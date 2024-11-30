@@ -1,0 +1,20 @@
+@startuml mqtt_ble
+
+title "MQTT BLE Set Request"
+
+participant "Home Assistant" as HA
+participant "MQTT Broker" as MB
+participant "Gateway" as GW
+
+HA -> MB : PUB: ha/gw/ble [mqtt_ser_packet]
+MB -> GW : SUB: ha/gw/ble [mqtt_ser_packet]
+GW -> HA : MQTT ACK
+GW <- GW : Extract info from mqtt_ser_packet
+GW --> "Node" : opcode + payload
+"Node" -> "Node" : Handle Opcode callback
+"Node" --> GW : ACK
+GW <- GW: serialize ble_mqtt_packet 
+GW -> MB : PUB: ha/gw/server [ble_mqtt_packet]
+MB -> HA : SUB: ha/gw/server [ble_mqtt_packet]
+HA -> GW : MQTT ACK
+@enduml

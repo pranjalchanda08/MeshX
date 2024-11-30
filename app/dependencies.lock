@@ -1,0 +1,37 @@
+dependencies:
+  example_init:
+    dependencies: []
+    source:
+      path: /home/pranjal/esp/esp-idf/examples/bluetooth/esp_ble_mesh/common_components/example_init
+      type: local
+    version: '*'
+  idf:
+    source:
+      type: idf
+    version: 5.3.1
+  prod_common:
+    dependencies: []
+    source:
+      path: /media/pranjal/SSD/ESP32/BLE-mesh-Node/app/prod_common
+      type: local
+    version: '*'
+  server_common:
+    dependencies: []
+    source:
+      path: /media/pranjal/SSD/ESP32/BLE-mesh-Node/app/elements/server/server_common
+      type: local
+    version: '*'
+  switch_relay:
+    dependencies: []
+    source:
+      path: /media/pranjal/SSD/ESP32/BLE-mesh-Node/app/elements/server/switch_relay
+      type: local
+    version: '*'
+direct_dependencies:
+- example_init
+- prod_common
+- server_common
+- switch_relay
+manifest_hash: 56cf0f5fe2185f9b1a5dbb45f70f7524998a8d2a08627ecb61fca8b3a5b097bf
+target: esp32c3
+version: 2.0.0

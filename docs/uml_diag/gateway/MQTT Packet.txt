@@ -1,0 +1,18 @@
+MQTT Packet
+
+struct mqtt_ble_packet __packed__
+{
+    uint16_t dest_addr;
+    uint8_t ttl;
+    uint16_t opcode;
+    uint16_t payload_length;
+    uint8_t payload_buff[PAYLOAD_MAX];
+}
+
+struct ble_mqtt_packet __packed__
+{
+    uint16_t src_addr;
+    uint16_t opcode;
+    uint16_t payload_length;
+    uint8_t payload_buff[PAYLOAD_MAX];
+}

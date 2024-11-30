@@ -1,0 +1,6 @@
+{
+    "idf.adapterTargetName": "esp32c3",
+    "idf.port": "/dev/ttyACM0",
+    "idf.flashType": "UART",
+    "sonarlint.pathToCompileCommands": "${workspaceFolder}/build/compile_commands.json"
+}

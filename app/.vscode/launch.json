@@ -1,0 +1,32 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "GDB",
+        "type": "cppdbg",
+        "request": "launch",
+        "MIMode": "gdb",
+        "miDebuggerPath": "C:\\Espressif\\tools\\riscv32-esp-elf-gdb\\14.2_20240403\\riscv32-esp-elf-gdb\\bin\\riscv32-esp-elf-gdb.exe",
+        // "program": "${workspaceFolder}/build/${command:espIdf.getProjectName}.elf",
+        "windows": {
+          "program": "${workspaceFolder}\\build\\switch_relay.elf"
+        },
+        "cwd": "${workspaceFolder}",
+        "environment": [{ "name": "PATH", "value": "${config:idf.customExtraPaths}" }],
+        "setupCommands": [
+          { "text": "target remote :3333" },
+          {"text":"b app_main"},
+          {"text": "monitor reset halt"},
+          { "text": "flushregs" }
+        //   {"text":"continue"},
+        //   { "text": "set remote hardware-watchpoint-limit 2"},
+        //   { "text": "mon reset halt" },
+        //   { "text": "b app_main" },
+        ],
+        "externalConsole": false,
+        "logging": {
+          "engineLogging": true
+        }
+      }
+    ]
+  }

@@ -1,0 +1,37 @@
+<mxfile host="app.diagrams.net" modified="2024-11-28T06:35:54.788Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0" etag="JcLRCQDSQdM4kfnUDD_j" version="24.0.7" type="device">
+  <diagram name="Page-1" id="543QGNzdWUNMMTd3TgoW">
+    <mxGraphModel dx="570" dy="299" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="I3Lr0o4DG5jpMSV9fAZ7-1" value="Application" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="240" y="280" width="360" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="I3Lr0o4DG5jpMSV9fAZ7-2" value="Library Abstraction Layer (LAL)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="240" y="300" width="360" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="I3Lr0o4DG5jpMSV9fAZ7-3" value="Platform SDK" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="240" y="320" width="220" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="I3Lr0o4DG5jpMSV9fAZ7-4" value="RTOS" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="460" y="320" width="140" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="I3Lr0o4DG5jpMSV9fAZ7-5" value="HAL" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="240" y="340" width="360" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="I3Lr0o4DG5jpMSV9fAZ7-6" value="Wi-Fi" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="240" y="360" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="I3Lr0o4DG5jpMSV9fAZ7-7" value="BLE" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="320" y="360" width="80" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="I3Lr0o4DG5jpMSV9fAZ7-8" value="IO PERIPHERALS" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="400" y="360" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="I3Lr0o4DG5jpMSV9fAZ7-9" value="802.11&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;PHY&amp;nbsp;&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="240" y="380" width="160" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
