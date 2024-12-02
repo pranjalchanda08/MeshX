@@ -15,10 +15,10 @@ file(GLOB_RECURSE ALL_DIRS
     "./*"
 )
 # Filter only directories
-set(INCLUDE_DIRS "")
+set(INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/elements/server/server_common/${DIR}")
 foreach(DIR ${ALL_DIRS})
     if(IS_DIRECTORY "${CMAKE_SOURCE_DIR}/elements/server/server_common/${DIR}")
-        list(APPEND INCLUDE_DIRS "${DIR}")
+        list(APPEND INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/elements/server/server_common/${DIR}")
     endif()
 endforeach()
 

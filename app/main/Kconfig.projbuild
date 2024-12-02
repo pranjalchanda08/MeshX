@@ -46,10 +46,20 @@ menu "Prod Configuration"
 
     config PROD_ENABLE_SERVER_ELEMENT
         bool "Add Servers to Product"
+    
+        config RELAY_SERVER_ELEMENT_NOS
+            int "Number of Relay actuator Elements to add"
+            range 0 8
+            default 0
+            depends on PROD_ENABLE_SERVER_ELEMENT
 
-    config RELAY_SERVER_ELEMENT_NOS
-        int "Number of Relay actuator Elements to add"
-        range 0 8
-        default 0
-        depends on PROD_ENABLE_SERVER_ELEMENT
+    config PROD_ENABLE_CLIENT_ELEMENT
+        bool "Add Clients to Product"
+
+        config RELAY_CLIENT_ELEMENT_NOS
+            int "Number of Relay switch Elements to add"
+            range 0 8
+            default 0
+            depends on PROD_ENABLE_CLIENT_ELEMENT
+
 endmenu

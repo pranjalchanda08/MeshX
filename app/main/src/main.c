@@ -1,8 +1,8 @@
-#include <board.h>
 #include <app_common.h>
 #include <prod_prov.h>
 #include <config_server.h>
-#include <relay_server_model.h>
+
+
 
 #define ESP_ERR_PRINT_RET(_e_str, _err)            \
     if (_err != ESP_OK)                            \
@@ -10,6 +10,8 @@
         ESP_LOGE(TAG, _e_str " (err 0x%x)", _err); \
         return _err;                               \
     }
+    
+    
 #define TAG "APP"
 #define CID_ESP 0x02E5
 
@@ -36,7 +38,7 @@ static esp_ble_mesh_model_t root_model[2] = {
 
 void app_cfg_srv_app_key_bind_hook(esp_ble_mesh_cfg_server_cb_param_t *param)
 {
-    hw_init(param->model->element->element_addr - esp_ble_mesh_get_primary_element_address());
+    return;
 }
 
 void app_prod_prov_cb(esp_ble_mesh_prov_cb_param_t *param, prod_prov_evt_t evt)
@@ -56,6 +58,8 @@ static esp_err_t ble_mesh_composition_init(dev_struct_t *p_dev)
     return ESP_OK;
 }
 
+extern esp_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev);
+
 static esp_err_t ble_mesh_element_init(dev_struct_t *p_dev)
 {
     if (!p_dev)
@@ -66,15 +70,8 @@ static esp_err_t ble_mesh_element_init(dev_struct_t *p_dev)
     p_dev->elements[0].vnd_models = ESP_BLE_MESH_MODEL_NONE;
     memset((void *)&p_dev->elements[0].sig_model_count, ROOT_MODEL_SIG_CNT, sizeof(p_dev->elements[0].sig_model_count));
     memset((void *)&p_dev->elements[0].vnd_model_count, ROOT_MODEL_VEN_CNT, sizeof(p_dev->elements[0].vnd_model_count));
-
-#if CONFIG_RELAY_SERVER_ELEMENT_NOS
-    esp_err_t err;
-    err = create_relay_elements(p_dev);
-    ESP_ERR_PRINT_RET("Failed to initialize BLE Relay Elements", err);
-
-#endif /* CONFIG_RELAY_SERVER_ELEMENT_NOS */
-
-    return ESP_OK;
+    
+    return create_ble_mesh_element_composition(p_dev);
 }
 
 static esp_err_t ble_mesh_init(void)
@@ -93,9 +90,16 @@ static esp_err_t ble_mesh_init(void)
     err = prod_init_config_server(&cfg_srv);
     ESP_ERR_PRINT_RET("Failed to initialize config server", err);
 
+#if CONFIG_PROD_ENABLE_SERVER_ELEMENT
     err = prod_srv_init();
     ESP_ERR_PRINT_RET("Failed to initialize prod server", err);
+#endif /* CONFIG_PROD_ENABLE_SERVER_ELEMENT */
 
+#if CONFIG_PROD_ENABLE_CLIENT_ELEMENT
+    err = prod_client_init();
+    ESP_ERR_PRINT_RET("Failed to initialise prod client", err);
+#endif /* CONFIG_PROD_ENABLE_CLIENT_ELEMENT */
+    
     err = esp_ble_mesh_init(&PROD_PROV_INSTANCE, &g_dev.composition);
 
     ESP_ERR_PRINT_RET("Failed to initialize mesh stack", err);

@@ -1,5 +1,5 @@
 # Message to indicate the component is being added
-message("   >> Adding switch relay")
+message("   >> Adding switch relay client")
 
 # Glob all .c files in config_server
 file(GLOB SW_RELAY_SRCS "*c")
@@ -12,9 +12,10 @@ set(INC_DIRS
     "${CMAKE_CURRENT_LIST_DIR}"
     )
 
+message("       >> Include Dir: ${INC_DIRS}")
+
 # Register the component
 idf_component_register(SRCS ${SRCS}
                        INCLUDE_DIRS ${INC_DIRS}
                        REQUIRES bt
-                                prod_common
-                                server_common)
+                                prod_common)

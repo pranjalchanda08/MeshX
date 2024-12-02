@@ -1,5 +1,16 @@
-set(srcs "main.c"
-    "board.c" )
+message("   >> Adding main")
+file(GLOB MAIN_SRCS "src/*c")
 
-idf_component_register(SRCS ${srcs}
-                    INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}")
+# Filter only directories
+set(INC_DIRS 
+    "${CMAKE_SOURCE_DIR}/main"
+    "${CMAKE_SOURCE_DIR}/main/src"
+    )
+
+message("       >> Include Dir: ${INC_DIRS}")
+
+idf_component_register( SRCS ${MAIN_SRCS}
+                        INCLUDE_DIRS "${INC_DIRS}"
+                        REQUIRES bt
+                                example_init
+                                nvs_flash)

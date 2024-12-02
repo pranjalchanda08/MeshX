@@ -4,6 +4,7 @@
 #include <string.h>
 #include <inttypes.h>
 #include <sdkconfig.h>
+#include <codegen.h>
 #include <esp_log.h>
 #include <nvs_flash.h>
 #include <esp_ble_mesh_defs.h>
@@ -15,7 +16,15 @@
 #include <esp_ble_mesh_provisioning_api.h>
 #include <ble_mesh_example_init.h>
 
-#define MAX_ELE_CNT (1 + CONFIG_RELAY_SERVER_ELEMENT_NOS)
+#if CONFIG_PROD_ENABLE_SERVER_ELEMENT
+    #include <prod_onoff_server.h>
+#endif /* CONFIG_PROD_ENABLE_SERVER_ELEMENT */
+
+#if CONFIG_PROD_ENABLE_CLIENT_ELEMENT
+    #include <prod_onoff_client.h>
+#endif /* CONFIG_PROD_ENABLE_CLIENT_ELEMENT */
+
+#define MAX_ELE_CNT CONFIG_MAX_ELEMENT_COUNT
 
 typedef struct dev_struct
 {

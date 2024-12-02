@@ -1,12 +1,13 @@
 dependencies:
   example_init:
     path: ${IDF_PATH}/examples/bluetooth/esp_ble_mesh/common_components/example_init
-  server_common:
-    path: ../elements/server/server_common
-  switch_relay:
-    path: ../elements/server/switch_relay
   prod_common:
     path: ../prod_common
-
-defines:
-  - "CONFIG_RELAY_ELEMENT_NOS=8"
+  server_common:
+    path: ../elements/server/server_common
+  switch_relay_server:
+    path: ../elements/server/switch_relay_server
+  client_common:
+    path: ../elements/client/client_common
+  switch_relay_client:
+    path: ../elements/client/switch_relay_client

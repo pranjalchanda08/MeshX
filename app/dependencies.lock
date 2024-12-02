@@ -1,4 +1,10 @@
 dependencies:
+  client_common:
+    dependencies: []
+    source:
+      path: /media/pranjal/SSD/ESP32/BLE-mesh-Node/app/elements/client/client_common
+      type: local
+    version: '*'
   example_init:
     dependencies: []
     source:
@@ -21,17 +27,25 @@ dependencies:
       path: /media/pranjal/SSD/ESP32/BLE-mesh-Node/app/elements/server/server_common
       type: local
     version: '*'
-  switch_relay:
+  switch_relay_client:
     dependencies: []
     source:
-      path: /media/pranjal/SSD/ESP32/BLE-mesh-Node/app/elements/server/switch_relay
+      path: /media/pranjal/SSD/ESP32/BLE-mesh-Node/app/elements/client/switch_relay_client
+      type: local
+    version: '*'
+  switch_relay_server:
+    dependencies: []
+    source:
+      path: /media/pranjal/SSD/ESP32/BLE-mesh-Node/app/elements/server/switch_relay_server
       type: local
     version: '*'
 direct_dependencies:
+- client_common
 - example_init
 - prod_common
 - server_common
-- switch_relay
-manifest_hash: 56cf0f5fe2185f9b1a5dbb45f70f7524998a8d2a08627ecb61fca8b3a5b097bf
+- switch_relay_client
+- switch_relay_server
+manifest_hash: 176fd4267d06f0cac03329b6186140381736049a515af3debf23a89988e45d01
 target: esp32c3
 version: 2.0.0

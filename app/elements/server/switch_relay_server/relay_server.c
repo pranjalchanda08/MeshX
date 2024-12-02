@@ -1,5 +1,4 @@
 
-#include "app_common.h"
 #include "relay_server_model.h"
 
 #if CONFIG_RELAY_SERVER_ELEMENT_NOS > 0

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "app_common.h"
-#include "prod_onoff_server.h"
 
 #define RELAY_SERVER_ELEMENT_NOS_DEF 1
 

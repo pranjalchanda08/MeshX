@@ -21,7 +21,7 @@ file(GLOB_RECURSE ALL_DIRS
 set(INCLUDE_DIRS "")
 foreach(DIR ${ALL_DIRS})
     if(IS_DIRECTORY "${CMAKE_SOURCE_DIR}/prod_common/${DIR}")
-        list(APPEND INCLUDE_DIRS "${DIR}")
+        list(APPEND INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/prod_common/${DIR}")
     endif()
 endforeach()
 
@@ -33,4 +33,6 @@ idf_component_register(SRCS ${SRCS}
                        INCLUDE_DIRS ${INCLUDE_DIRS}
                        REQUIRES bt
                                 example_init
-                                nvs_flash)
+                                nvs_flash
+                                server_common
+                                client_common)
