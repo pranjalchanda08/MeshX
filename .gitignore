@@ -54,3 +54,4 @@ dkms.conf
 build
 sdkconfig
 *.old
+codegen.h

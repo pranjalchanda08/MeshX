@@ -18,4 +18,5 @@ message("       >> Include Dir: ${INC_DIRS}")
 idf_component_register(SRCS ${SRCS}
                        INCLUDE_DIRS ${INC_DIRS}
                        REQUIRES bt
-                                prod_common)
+                                prod_common
+                                client_common)

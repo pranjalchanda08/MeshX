@@ -1,0 +1,115 @@
+{
+    "prod": {
+        "cid": "0x7908",
+        "products": [
+            {
+                "name": "4_relay_panel",
+                "pid": "0x0001",
+                "elements": [
+                    {
+                        "name": "switch_relay_client",
+                        "value": 4
+                    }
+                ]
+            },
+            {
+                "name": "4x4_Relay_Switch_Pannel",
+                "pid": "0x0002",
+                "elements": [
+                    {
+                        "name": "switch_relay_client",
+                        "value": 4
+                    },
+                    {
+                        "name": "switch_relay_server",
+                        "value": 4
+                    }
+                ]
+            }
+        ]
+    },
+    "elements": [
+        {
+            "name": "switch_relay_server",
+            "macro": {
+                "def": "CONFIG_RELAY_SERVER_COUNT",
+                "value": 0
+            },
+            "path": "../elements/server/switch_relay_server",
+            "deps": [
+                "server_common"
+            ]
+        },
+        {
+            "name": "switch_relay_client",
+            "macro": {
+                "def": "CONFIG_RELAY_CLIENT_COUNT",
+                "value": 0
+            },
+            "path": "../elements/client/switch_relay_client",
+            "deps": [
+                "client_common"
+            ]
+        },
+        {
+            "name": "example_init",
+            "macro": {
+                "def": "CONFIG_ENABLE_EXAMPLE_INIT",
+                "value": false
+            },
+            "path": "${IDF_PATH}/examples/bluetooth/esp_ble_mesh/common_components/example_init",
+            "deps": []
+        },
+        {
+            "name": "prod_common",
+            "macro": {
+                "def": "CONFIG_ENABLE_PROD_COMMON",
+                "value": false
+            },
+            "path": "../prod_common",
+            "deps": [
+                "example_init"
+            ]
+        },
+        {
+            "name": "config_server",
+            "macro": {
+                "def": "CONFIG_ENABLE_CONFIG_SERVER",
+                "value": true
+            },
+            "path": "../prod_common/config_server",
+            "deps": []
+        },
+        {
+            "name": "provisionig",
+            "macro": {
+                "def": "CONFIG_ENABLE_PROVISIONING",
+                "value": true
+            },
+            "path": "../prod_common/provisioning",
+            "deps": []
+        },
+        {
+            "name": "server_common",
+            "macro": {
+                "def": "CONFIG_ENABLE_SERVER_COMMON",
+                "value": false
+            },
+            "path": "../elements/server/server_common",
+            "deps": [
+                "prod_common"
+            ]
+        },
+        {
+            "name": "client_common",
+            "macro": {
+                "def": "CONFIG_ENABLE_CLIENT_COMMON",
+                "value": false
+            },
+            "path": "../elements/client/client_common",
+            "deps": [
+                "prod_common"
+            ]
+        }
+    ]
+}

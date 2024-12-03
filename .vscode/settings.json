@@ -31,4 +31,5 @@
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
     "editor.wordWrapColumn": 100,
+    "cmake.sourceDirectory": "/media/pranjal/SSD/ESP32/BLE-mesh-Node/app",
 }

@@ -5,8 +5,8 @@
 
 #define RELAY_CLIENT_ELEMENT_NOS_DEF 3
 
-#ifndef CONFIG_RELAY_CLIENT_ELEMENT_NOS
-#define CONFIG_RELAY_CLIENT_ELEMENT_NOS RELAY_CLIENT_ELEMENT_NOS_DEF
+#ifndef CONFIG_RELAY_CLIENT_COUNT
+#define CONFIG_RELAY_CLIENT_COUNT RELAY_CLIENT_ELEMENT_NOS_DEF
 #endif
 
 
@@ -16,9 +16,9 @@
 typedef struct relay_client_element
 {
     size_t model_cnt;
-    esp_ble_mesh_model_t relay_cli_sig_model_list[CONFIG_RELAY_CLIENT_ELEMENT_NOS][RELAY_CLI_MODEL_SIG_CNT];
-    esp_ble_mesh_client_t relay_cli_onoff_gen_list[CONFIG_RELAY_CLIENT_ELEMENT_NOS];
-    esp_ble_mesh_model_pub_t relay_cli_pub_list[CONFIG_RELAY_CLIENT_ELEMENT_NOS];
+    esp_ble_mesh_model_t relay_cli_sig_model_list[CONFIG_RELAY_CLIENT_COUNT][RELAY_CLI_MODEL_SIG_CNT];
+    esp_ble_mesh_client_t relay_cli_onoff_gen_list[CONFIG_RELAY_CLIENT_COUNT];
+    esp_ble_mesh_model_pub_t relay_cli_pub_list[CONFIG_RELAY_CLIENT_COUNT];
 } relay_client_elements_t;
 
 /**

@@ -16,14 +16,6 @@
 #include <esp_ble_mesh_provisioning_api.h>
 #include <ble_mesh_example_init.h>
 
-#if CONFIG_PROD_ENABLE_SERVER_ELEMENT
-    #include <prod_onoff_server.h>
-#endif /* CONFIG_PROD_ENABLE_SERVER_ELEMENT */
-
-#if CONFIG_PROD_ENABLE_CLIENT_ELEMENT
-    #include <prod_onoff_client.h>
-#endif /* CONFIG_PROD_ENABLE_CLIENT_ELEMENT */
-
 #define MAX_ELE_CNT CONFIG_MAX_ELEMENT_COUNT
 
 typedef struct dev_struct

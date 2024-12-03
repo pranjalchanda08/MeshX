@@ -6,8 +6,8 @@
         "type": "cppdbg",
         "request": "launch",
         "MIMode": "gdb",
-        "miDebuggerPath": "C:\\Espressif\\tools\\riscv32-esp-elf-gdb\\14.2_20240403\\riscv32-esp-elf-gdb\\bin\\riscv32-esp-elf-gdb.exe",
-        // "program": "${workspaceFolder}/build/${command:espIdf.getProjectName}.elf",
+        "miDebuggerPath": "/home/pranjal/.espressif/tools/riscv32-esp-elf-gdb/14.2_20240403/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb",
+        "program": "${workspaceFolder}/build/${command:espIdf.getProjectName}.elf",
         "windows": {
           "program": "${workspaceFolder}\\build\\switch_relay.elf"
         },

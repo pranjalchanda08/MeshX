@@ -46,6 +46,6 @@ direct_dependencies:
 - server_common
 - switch_relay_client
 - switch_relay_server
-manifest_hash: 176fd4267d06f0cac03329b6186140381736049a515af3debf23a89988e45d01
+manifest_hash: 58512b06c47b2fe47e8b8adf182feccb194d0e5b36c63f71672d8f02700c6852
 target: esp32c3
 version: 2.0.0

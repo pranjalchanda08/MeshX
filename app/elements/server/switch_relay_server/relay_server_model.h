@@ -4,8 +4,8 @@
 
 #define RELAY_SERVER_ELEMENT_NOS_DEF 1
 
-#ifndef CONFIG_RELAY_SERVER_ELEMENT_NOS
-#define CONFIG_RELAY_SERVER_ELEMENT_NOS RELAY_SERVER_ELEMENT_NOS_DEF
+#ifndef CONFIG_RELAY_SERVER_COUNT
+#define CONFIG_RELAY_SERVER_COUNT RELAY_SERVER_ELEMENT_NOS_DEF
 #endif
 
 
@@ -15,9 +15,9 @@
 typedef struct relay_element
 {
     size_t model_cnt;
-    esp_ble_mesh_model_t relay_server_sig_model_list[CONFIG_RELAY_SERVER_ELEMENT_NOS][RELAY_SRV_MODEL_SIG_CNT];
-    esp_ble_mesh_model_pub_t relay_server_pub_list[CONFIG_RELAY_SERVER_ELEMENT_NOS];
-    esp_ble_mesh_gen_onoff_srv_t relay_server_onoff_gen_list[CONFIG_RELAY_SERVER_ELEMENT_NOS];
+    esp_ble_mesh_model_t relay_server_sig_model_list[CONFIG_RELAY_SERVER_COUNT][RELAY_SRV_MODEL_SIG_CNT];
+    esp_ble_mesh_model_pub_t relay_server_pub_list[CONFIG_RELAY_SERVER_COUNT];
+    esp_ble_mesh_gen_onoff_srv_t relay_server_onoff_gen_list[CONFIG_RELAY_SERVER_COUNT];
 } relay_elements_t;
 
 /**

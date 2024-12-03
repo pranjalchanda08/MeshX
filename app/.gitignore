@@ -1,0 +1,4 @@
+codegen.h
+sdkconfig.*
+sdkconfig
+*.yml

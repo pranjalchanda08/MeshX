@@ -33,6 +33,4 @@ idf_component_register(SRCS ${SRCS}
                        INCLUDE_DIRS ${INCLUDE_DIRS}
                        REQUIRES bt
                                 example_init
-                                nvs_flash
-                                server_common
-                                client_common)
+                                nvs_flash)

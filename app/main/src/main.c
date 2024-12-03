@@ -1,7 +1,13 @@
 #include <app_common.h>
 #include <prod_prov.h>
 #include <config_server.h>
+#if CONFIG_ENABLE_SERVER_COMMON
+    #include <prod_onoff_server.h>
+#endif /* CONFIG_ENABLE_SERVER_COMMON */
 
+#if CONFIG_ENABLE_CLIENT_COMMON
+    #include <prod_onoff_client.h>
+#endif /* CONFIG_ENABLE_CLIENT_COMMON */
 
 
 #define ESP_ERR_PRINT_RET(_e_str, _err)            \
@@ -11,9 +17,9 @@
         return _err;                               \
     }
     
-    
+
 #define TAG "APP"
-#define CID_ESP 0x02E5
+#define CID_ESP CONFIG_CID_ID
 
 dev_struct_t g_dev;
 
@@ -52,6 +58,7 @@ static esp_err_t ble_mesh_composition_init(dev_struct_t *p_dev)
         return ESP_ERR_INVALID_STATE;
 
     p_dev->composition.cid = CID_ESP;
+    p_dev->composition.pid = CONFIG_PID_ID;
     p_dev->composition.element_count = p_dev->element_idx;
     p_dev->composition.elements = p_dev->elements;
 
@@ -90,15 +97,15 @@ static esp_err_t ble_mesh_init(void)
     err = prod_init_config_server(&cfg_srv);
     ESP_ERR_PRINT_RET("Failed to initialize config server", err);
 
-#if CONFIG_PROD_ENABLE_SERVER_ELEMENT
+#if CONFIG_ENABLE_SERVER_COMMON
     err = prod_srv_init();
     ESP_ERR_PRINT_RET("Failed to initialize prod server", err);
-#endif /* CONFIG_PROD_ENABLE_SERVER_ELEMENT */
+#endif /* CONFIG_ENABLE_SERVER_COMMON */
 
-#if CONFIG_PROD_ENABLE_CLIENT_ELEMENT
+#if CONFIG_ENABLE_CLIENT_COMMON
     err = prod_client_init();
     ESP_ERR_PRINT_RET("Failed to initialise prod client", err);
-#endif /* CONFIG_PROD_ENABLE_CLIENT_ELEMENT */
+#endif /* CONFIG_ENABLE_CLIENT_COMMON */
     
     err = esp_ble_mesh_init(&PROD_PROV_INSTANCE, &g_dev.composition);
 
@@ -107,6 +114,9 @@ static esp_err_t ble_mesh_init(void)
     err = esp_ble_mesh_node_prov_enable((esp_ble_mesh_prov_bearer_t)(ESP_BLE_MESH_PROV_ADV | ESP_BLE_MESH_PROV_GATT));
 
     ESP_ERR_PRINT_RET("Failed to enable mesh node", err);
+
+    err = esp_ble_mesh_set_unprovisioned_device_name(CONFIG_PRODUCT_NAME);
+    ESP_ERR_PRINT_RET("Name Set Error", err);
 
     ESP_LOGI(TAG, "BLE Mesh Node initialized");
 

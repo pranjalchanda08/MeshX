@@ -79,21 +79,21 @@ static esp_err_t dev_add_relay_srv_model_to_element_list(dev_struct_t *pdev, uin
 
 esp_err_t create_relay_client_elements(dev_struct_t *pdev)
 {
-#if CONFIG_RELAY_CLIENT_ELEMENT_NOS > 0
+#if CONFIG_RELAY_CLIENT_COUNT > 0
     esp_err_t err;
-    err = dev_create_relay_model_space(pdev, CONFIG_RELAY_CLIENT_ELEMENT_NOS);
+    err = dev_create_relay_model_space(pdev, CONFIG_RELAY_CLIENT_COUNT);
     if (err)
     {
         ESP_LOGE(TAG, "Relay Model create failed: (%d)", err);
         return err;
     }
-    err = dev_add_relay_srv_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, CONFIG_RELAY_CLIENT_ELEMENT_NOS);
+    err = dev_add_relay_srv_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, CONFIG_RELAY_CLIENT_COUNT);
     if (err)
     {
         ESP_LOGE(TAG, "Relay Model create failed: (%d)", err);
         return err;
     }
-#endif /* CONFIG_RELAY_CLIENT_ELEMENT_NOS > 0*/
+#endif /* CONFIG_RELAY_CLIENT_COUNT > 0*/
     return ESP_OK;
 }
 

@@ -10,7 +10,3 @@ set(PYTHON_SCRIPT scripts/code_gen.py)
 # set(TARGET switch_relay)
 project(${TARGET})
 
-execute_process(
-    COMMAND ${PYTHON_EXECUTABLE} ${PYTHON_SCRIPT}
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-)
