@@ -2,7 +2,7 @@
 message("   >> Adding switch relay client")
 
 # Glob all .c files in config_server
-file(GLOB SW_RELAY_SRCS "*c")
+file(GLOB SW_RELAY_SRCS "relay_client.c" "*c")
 # Define source files
 set(SRCS
     ${SW_RELAY_SRCS} # Use the variable without quotes or a $

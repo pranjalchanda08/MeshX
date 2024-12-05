@@ -1,13 +1,13 @@
 #pragma once
 
 #include "app_common.h"
+#include <prod_onoff_server.h>
 
 #define RELAY_SERVER_ELEMENT_NOS_DEF 1
 
 #ifndef CONFIG_RELAY_SERVER_COUNT
 #define CONFIG_RELAY_SERVER_COUNT RELAY_SERVER_ELEMENT_NOS_DEF
 #endif
-
 
 #define RELAY_SRV_MODEL_SIG_CNT 1 // No of SIG models in a relay model element
 #define RELAY_SRV_MODEL_VEN_CNT 0 // No of VEN models in a relay model element

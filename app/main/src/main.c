@@ -6,7 +6,7 @@
 #endif /* CONFIG_ENABLE_SERVER_COMMON */
 
 #if CONFIG_ENABLE_CLIENT_COMMON
-    #include <prod_onoff_client.h>
+    #include <prod_client.h>
 #endif /* CONFIG_ENABLE_CLIENT_COMMON */
 
 
@@ -96,11 +96,6 @@ static esp_err_t ble_mesh_init(void)
 
     err = prod_init_config_server(&cfg_srv);
     ESP_ERR_PRINT_RET("Failed to initialize config server", err);
-
-#if CONFIG_ENABLE_SERVER_COMMON
-    err = prod_srv_init();
-    ESP_ERR_PRINT_RET("Failed to initialize prod server", err);
-#endif /* CONFIG_ENABLE_SERVER_COMMON */
 
 #if CONFIG_ENABLE_CLIENT_COMMON
     err = prod_client_init();

@@ -2,7 +2,7 @@
 message("   >> Adding client common")
 
 # Glob all .c files in config_server
-file(GLOB GEN_ON_OFF_SRCS "gen_onoff_client/*c")
+file(GLOB GEN_ON_OFF_SRCS "gen_client/*c")
 # Define source files
 set(SRCS
     ${GEN_ON_OFF_SRCS} # Use the variable without quotes or a $

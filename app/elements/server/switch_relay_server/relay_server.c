@@ -39,7 +39,7 @@ static esp_err_t dev_create_relay_model_space(dev_struct_t *pdev, uint16_t n_max
 
 static esp_err_t dev_add_relay_srv_model_to_element_list(dev_struct_t *pdev, uint16_t *start_idx, uint16_t n_max)
 {
-    if (!pdev /*|| !pdev->elements*/)
+    if (!pdev)
         return ESP_ERR_INVALID_STATE;
 
     esp_ble_mesh_elem_t *elements = pdev->elements;
@@ -83,6 +83,14 @@ esp_err_t create_relay_elements(dev_struct_t *pdev)
     if (err)
     {
         ESP_LOGE(TAG, "Relay Model create failed: (%d)", err);
+     
+        return err;
+    }
+    err = prod_on_off_server_init();
+    if (err)
+    {
+        ESP_LOGE(TAG, "prod_on_off_server_init failed: (%d)", err);
+     
         return err;
     }
     return ESP_OK;

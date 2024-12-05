@@ -1,12 +1,3 @@
-/* main.c - Application main entry point */
-
-/*
- * SPDX-FileCopyrightText: 2017 Intel Corporation
- * SPDX-FileContributor: 2018-2021 Espressif Systems (Shanghai) CO LTD
- *
- * SPDX-License-Identifier: Apache-2.0
- */
-
 #include "app_common.h"
 #include "relay_client_model.h"
 
@@ -18,9 +9,10 @@
 static relay_client_elements_t relay_element_init_ctrl;
 
 static esp_ble_mesh_model_t relay_sig_template = ESP_BLE_MESH_SIG_MODEL(
-            ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_CLI, NULL, NULL, NULL);
+            ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_CLI, 
+            NULL, NULL, NULL);
 
-static esp_err_t dev_create_relay_model_space(dev_struct_t *pdev, uint16_t n_max)
+static esp_err_t dev_create_relay_model_space(dev_struct_t const *pdev, uint16_t n_max)
 {
     if (!pdev)
         return ESP_ERR_INVALID_STATE;
@@ -46,7 +38,7 @@ static esp_err_t dev_create_relay_model_space(dev_struct_t *pdev, uint16_t n_max
 
 static esp_err_t dev_add_relay_srv_model_to_element_list(dev_struct_t *pdev, uint16_t *start_idx, uint16_t n_max)
 {
-    if (!pdev /*|| !pdev->elements*/)
+    if (!pdev)
         return ESP_ERR_INVALID_STATE;
 
     esp_ble_mesh_elem_t *elements = pdev->elements;
@@ -96,4 +88,3 @@ esp_err_t create_relay_client_elements(dev_struct_t *pdev)
 #endif /* CONFIG_RELAY_CLIENT_COUNT > 0*/
     return ESP_OK;
 }
-

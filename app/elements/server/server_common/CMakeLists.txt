@@ -2,12 +2,13 @@
 message("   >> Adding server common")
 
 # Glob all .c files in config_server
-file(GLOB GEN_ON_OFF_SRCS "gen_onoff_server/*c")
+file(GLOB GEN_ON_OFF_SRV_SRCS "gen_onoff_server/*c")
+file(GLOB GEN_SRV_SRCS "gen_server/*c")
 # Define source files
 set(SRCS
-    ${GEN_ON_OFF_SRCS} # Use the variable without quotes or a $
+    ${GEN_ON_OFF_SRV_SRCS} # Use the variable without quotes or a $
+    ${GEN_SRV_SRCS}
 )
-
 # Glob all directories recursively
 file(GLOB_RECURSE ALL_DIRS
     RELATIVE "${CMAKE_SOURCE_DIR}/elements/server/server_common" # Use CMAKE_SOURCE_DIR for consistent paths

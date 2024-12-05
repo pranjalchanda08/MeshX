@@ -5,25 +5,20 @@ A Ble mesh end node
 
 ```txt
 ble-mesh-node
-├───components
-│   ├───client
-│   │   └───touch_pannel
-│   ├───hw_comp
-│   │   ├───ccww_ctl_light
-│   │   ├───curtain_motor
-│   │   ├───ir_blaster
-│   │   ├───oled_disp
-│   │   ├───relay
-│   │   └───rotary_enc
-│   └───server
-│       ├───curtain
-│       ├───fan
-│       ├───light_cwww
-│       ├───light_relay
-│       ├───light_rgb
-│       └───switch_relay
-└───docs
-    ├───arch_diag
-    └───uml_diag
-        └───gateway
+├── app
+│   ├── elements
+│   │   ├── client
+│   │   └── server
+│   ├── main
+│   │   └── src
+│   ├── prod_common
+│   │   ├── common
+│   │   ├── config_server
+│   │   └── provisioning
+│   └── scripts
+└── docs
+    ├── arch_diag
+    └── uml_diag
+        └── gateway
+
 ```

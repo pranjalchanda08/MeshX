@@ -4,7 +4,14 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "~/esp/esp-idf/**"
+                "${workspaceFolder}/elements/server/server_common/**",
+                "${workspaceFolder}/elements/server/switch_relay_server/**",
+                "${workspaceFolder}/elements/client/client_common/**",
+                "${workspaceFolder}/elements/client/switch_relay_client",
+                "~/esp/esp-idf/",
+                "~/esp/esp-idf/**",
+                "~/esp/esp-idf/components/xtensa/",
+                "~/esp/esp-idf/components/**"
             ],
             "defines": [
                 "_DEBUG",
@@ -15,9 +22,9 @@
             "compilerPath": "cl.exe",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "windows-msvc-x64",
-            "configurationProvider": "none"
+            "intelliSenseMode": "gcc-arm",
+            "compileCommands": "build/compile_commands.json"
         }
-        ],
+    ],
     "version": 4
 }

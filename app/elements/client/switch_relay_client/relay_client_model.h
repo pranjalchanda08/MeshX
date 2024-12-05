@@ -1,14 +1,13 @@
 #pragma once
 
 #include "app_common.h"
-#include "prod_onoff_client.h"
+#include "prod_client.h"
 
 #define RELAY_CLIENT_ELEMENT_NOS_DEF 3
 
 #ifndef CONFIG_RELAY_CLIENT_COUNT
 #define CONFIG_RELAY_CLIENT_COUNT RELAY_CLIENT_ELEMENT_NOS_DEF
 #endif
-
 
 #define RELAY_CLI_MODEL_SIG_CNT 1 // No of SIG models in a relay model element
 #define RELAY_CLI_MODEL_VEN_CNT 0 // No of VEN models in a relay model element
