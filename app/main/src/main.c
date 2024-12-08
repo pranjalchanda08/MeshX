@@ -2,13 +2,12 @@
 #include <prod_prov.h>
 #include <config_server.h>
 #if CONFIG_ENABLE_SERVER_COMMON
-    #include <prod_onoff_server.h>
+#include <prod_onoff_server.h>
 #endif /* CONFIG_ENABLE_SERVER_COMMON */
 
 #if CONFIG_ENABLE_CLIENT_COMMON
-    #include <prod_client.h>
+#include <prod_client.h>
 #endif /* CONFIG_ENABLE_CLIENT_COMMON */
-
 
 #define ESP_ERR_PRINT_RET(_e_str, _err)            \
     if (_err != ESP_OK)                            \
@@ -16,7 +15,6 @@
         ESP_LOGE(TAG, _e_str " (err 0x%x)", _err); \
         return _err;                               \
     }
-    
 
 #define TAG "APP"
 #define CID_ESP CONFIG_CID_ID
@@ -77,8 +75,17 @@ static esp_err_t ble_mesh_element_init(dev_struct_t *p_dev)
     p_dev->elements[0].vnd_models = ESP_BLE_MESH_MODEL_NONE;
     memset((void *)&p_dev->elements[0].sig_model_count, ROOT_MODEL_SIG_CNT, sizeof(p_dev->elements[0].sig_model_count));
     memset((void *)&p_dev->elements[0].vnd_model_count, ROOT_MODEL_VEN_CNT, sizeof(p_dev->elements[0].vnd_model_count));
-    
+
     return create_ble_mesh_element_composition(p_dev);
+}
+
+static esp_err_t app_tasks_init()
+{
+    esp_err_t err;
+
+    err = create_control_task();
+
+    return err;
 }
 
 static esp_err_t ble_mesh_init(void)
@@ -97,11 +104,6 @@ static esp_err_t ble_mesh_init(void)
     err = prod_init_config_server(&cfg_srv);
     ESP_ERR_PRINT_RET("Failed to initialize config server", err);
 
-#if CONFIG_ENABLE_CLIENT_COMMON
-    err = prod_client_init();
-    ESP_ERR_PRINT_RET("Failed to initialise prod client", err);
-#endif /* CONFIG_ENABLE_CLIENT_COMMON */
-    
     err = esp_ble_mesh_init(&PROD_PROV_INSTANCE, &g_dev.composition);
 
     ESP_ERR_PRINT_RET("Failed to initialize mesh stack", err);
@@ -130,6 +132,11 @@ void app_main(void)
         err = nvs_flash_init();
     }
     ESP_ERROR_CHECK(err);
+    err = app_tasks_init();
+    if (err)
+    {
+        ESP_LOGE(TAG, "Tasks initialisation failed (err 0x%x)", err);
+    }
     err = bluetooth_init();
     if (err)
     {

@@ -87,7 +87,7 @@ static esp_err_t ble_mesh_init(void)
         ESP_LOGE(TAG, "Failed to initialize config server (err %d)", err);
         return err;
     }
-    err = prod_srv_init();
+    err = prod_gen_srv_init();
     if (err != ESP_OK)
     {
         ESP_LOGE(TAG, "Failed to initialize prod server (err %d)", err);

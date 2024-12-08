@@ -2,3 +2,4 @@ codegen.h
 sdkconfig.*
 sdkconfig
 *.yml
+*.lock

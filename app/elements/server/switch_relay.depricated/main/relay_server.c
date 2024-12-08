@@ -165,7 +165,7 @@ static void app_ble_mesh_generic_server_cb(esp_ble_mesh_generic_server_cb_event_
     }
 }
 
-esp_err_t prod_srv_init()
+esp_err_t prod_gen_srv_init()
 {
     return esp_ble_mesh_register_generic_server_callback(app_ble_mesh_generic_server_cb);
 }

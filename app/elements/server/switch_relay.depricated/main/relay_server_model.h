@@ -23,7 +23,7 @@
     };                                                                                                                 \
     static gpio_handle_t RELAY_SRV_GPIO_HANDLE_##_n = {.pin = _pin, .dir = GPIO_MODE_OUTPUT};
 
-esp_err_t prod_srv_init();
+esp_err_t prod_gen_srv_init();
 
 #if CONFIG_RELAY_SERVER_COUNT > 0
 extern esp_ble_mesh_model_t RELAY_SRV_ELEMENT_INSTANCE(0)[1];

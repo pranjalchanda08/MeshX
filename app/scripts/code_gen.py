@@ -24,11 +24,13 @@ class CodeGen(CodeGenException):
         self.product = None
         self.pid = None
         self.cid = self.prod_profile['prod']['cid']
+        self.c_list = []
+        self.inc_list = []
         self.deps = {}
         self.yml = idf_yml
         self.__find_prod_from_target()
         self.file_insert = file_insert
-        self.genfile_h = "prod_common/common/codegen.h"
+        self.genfile_h = "main/common/codegen.h"
         self.define_fmt = "\n#define {} {}"
         os.system(f'touch {self.genfile_h}')
 
@@ -44,6 +46,17 @@ class CodeGen(CodeGenException):
         if self.product is None:
             raise CodeGenException("Product Not Found")
 
+    def __get_src_from_path(self, path):
+        if path not in self.inc_list:
+            self.inc_list.append(path)
+        entries = os.listdir(path)
+        files = [f for f in entries if os.path.isfile(os.path.join(path, f))]
+        for file in files:
+            if file.endswith('.c'):  # Check if the file ends with .c
+                filepath = os.path.join(path, file)
+                if filepath not in self.c_list:
+                    self.c_list.append(filepath)  # Add full path to list
+        
     def __resolve_dep_create_yml_dict(self, dep_s, value:int = 0):
         for _idx, dep in enumerate(self.prod_profile['elements']):
             if dep["name"] == dep_s:
@@ -57,6 +70,7 @@ class CodeGen(CodeGenException):
                     self.__resolve_dep_create_yml_dict(sub_dep)
 
     def close(self):
+        self.get_all_macro()
         self.file_insert += "\n\n#endif /* __AUTO_GEN__ */"
         with open(self.genfile_h, 'w') as genfile:
             genfile.write(str(gen) + '\n')
@@ -65,32 +79,76 @@ class CodeGen(CodeGenException):
         self.max_el = 1
         if self.product is not None:
             for element in self.product['elements']:
-                self.max_el += element['value']
+                values = element.values()
+                for value in values:
+                    self.max_el += value
         self.file_insert += self.define_fmt.format("CONFIG_CID_ID", self.cid)
         self.file_insert += self.define_fmt.format("CONFIG_PID_ID", self.pid)
         self.file_insert += self.define_fmt.format("CONFIG_PRODUCT_NAME", f'"{self.target[:16:]}"')
         self.file_insert += self.define_fmt.format("CONFIG_MAX_ELEMENT_COUNT", self.max_el)
         return self.file_insert
+    
+    def resolve_base_models_deps(self, base_model):
+        res_base_model = self.prod_profile['base_models'][base_model]
+        self.__get_src_from_path(res_base_model['path'])
+        for macro in res_base_model['macros']:
+            macro['value'] = True
 
-    def resolve_el_deps(self):
+    def resolve_defuat_servers(self):
+        for model in self.prod_profile['models']:
+            mod = self.prod_profile['models'][model]
+            if mod['default']:
+                self.__get_src_from_path(mod['path'])
+                self.resolve_model_deps(model)
+
+    def resolve_model_deps(self, model):
+        res_model = self.prod_profile['models'][model]
+        self.__get_src_from_path(res_model['path'])
+        for macro in res_model['macros']:
+            macro['value'] = True
+        if res_model['base_model'] is not None:
+            self.resolve_base_models_deps(res_model['base_model'])
+
+    def resolve_el_deps(self, element, value=0):
+        if self.product is not None:
+            element_ptr = self.prod_profile['elements'][element]
+            element_ptr['macros'][0]['value'] = value
+            self.__get_src_from_path(element_ptr['path'])
+            for model in element_ptr['models']:
+                self.resolve_model_deps(model)
+    
+    def resolve_prod_el(self):
         if self.product is not None:
             for element in self.product['elements']:
-                self.__resolve_dep_create_yml_dict(element['name'], value=element['value'])
-            with open(self.yml, 'w') as yml:
-                yaml.dump({"dependencies" : self.deps}, yml)
+                self.resolve_el_deps(list(element.keys())[0], list(element.values())[0])
 
-    def get_el_macro(self):
+    def get_all_macro(self):
         if self.product is not None:
-            for element_reg in self.prod_profile['elements']:
-                self.file_insert += self.define_fmt.format(element_reg['macro']['def'],
-                                                            int(element_reg['macro']['value']))
+            for _key in ['elements', 'models', 'base_models']:
+                for __key in self.prod_profile[_key]:
+                    for macro in self.prod_profile[_key][__key]['macros']:
+                        self.file_insert += self.define_fmt.format(macro['def'],
+                                                            int(macro['value']))
+    def create_cmake_list(self):
+        cmake_c_list_str = [f'    "../{x}"' for x in self.c_list]
+        cmake_h_list_str = [f'    "../{x}"' for x in self.inc_list]
+        cmake_src_list = f"set(DEP_SRC \n{'\n'.join(cmake_c_list_str)} \n)"
+        cmake_inc_list = f"set(DEP_INC \n{'\n'.join(cmake_h_list_str)} \n)"
+        return cmake_src_list, cmake_inc_list
 
 if __name__ == '__main__':
     gen = CodeGen(sys.argv[1])
-    gen.resolve_el_deps()
     gen.get_common_defs()
-    gen.get_el_macro()
+    gen.resolve_prod_el()
+    gen.resolve_defuat_servers()
     gen.close()
-    print(json.dumps(gen.deps, indent=4))
+    string_to_insert = gen.create_cmake_list()[0] + '\n' + gen.create_cmake_list()[1] + '\n'
+    temp_content = ""
+    with open("main/CMakeLists.tmp", "r+") as file:
+        temp_content = file.read()  # Read the existing content
+    with open("main/CMakeLists.txt", "w") as file:
+        file.seek(0)  # Move the file pointer to the beginning
+        file.write(string_to_insert + temp_content)  # Write the new string followed by the old content
+    # print(json.dumps(gen.deps, indent=4))
 
     print(f">> Autogen code created! \n{gen}")

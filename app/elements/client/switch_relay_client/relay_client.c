@@ -1,4 +1,6 @@
 #include "app_common.h"
+#if CONFIG_RELAY_CLIENT_COUNT > 0
+
 #include "relay_client_model.h"
 
 #define RELAY_OFF 0
@@ -36,7 +38,7 @@ static esp_err_t dev_create_relay_model_space(dev_struct_t const *pdev, uint16_t
     return ESP_OK;
 }
 
-static esp_err_t dev_add_relay_srv_model_to_element_list(dev_struct_t *pdev, uint16_t *start_idx, uint16_t n_max)
+static esp_err_t dev_add_relay_cli_model_to_element_list(dev_struct_t *pdev, uint16_t *start_idx, uint16_t n_max)
 {
     if (!pdev)
         return ESP_ERR_INVALID_STATE;
@@ -71,20 +73,25 @@ static esp_err_t dev_add_relay_srv_model_to_element_list(dev_struct_t *pdev, uin
 
 esp_err_t create_relay_client_elements(dev_struct_t *pdev)
 {
-#if CONFIG_RELAY_CLIENT_COUNT > 0
     esp_err_t err;
     err = dev_create_relay_model_space(pdev, CONFIG_RELAY_CLIENT_COUNT);
     if (err)
     {
-        ESP_LOGE(TAG, "Relay Model create failed: (%d)", err);
+        ESP_LOGE(TAG, "Relay Model space create failed: (%d)", err);
         return err;
     }
-    err = dev_add_relay_srv_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, CONFIG_RELAY_CLIENT_COUNT);
+    err = dev_add_relay_cli_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, CONFIG_RELAY_CLIENT_COUNT);
     if (err)
     {
-        ESP_LOGE(TAG, "Relay Model create failed: (%d)", err);
+        ESP_LOGE(TAG, "Relay Model add to element create failed: (%d)", err);
         return err;
     }
-#endif /* CONFIG_RELAY_CLIENT_COUNT > 0*/
+    err = prod_client_init();
+    if (err)
+    {
+        ESP_LOGE(TAG, "prod_client_init failed: (%d)", err);
+        return err;
+    }
     return ESP_OK;
 }
+#endif /* CONFIG_RELAY_CLIENT_COUNT > 0*/
