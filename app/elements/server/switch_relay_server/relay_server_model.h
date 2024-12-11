@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __RELAY_SERVER_MODEL_H__
+#define __RELAY_SERVER_MODEL_H__
 
 #include "app_common.h"
 #include <prod_onoff_server.h>
@@ -9,8 +10,13 @@
 #define CONFIG_RELAY_SERVER_COUNT RELAY_SERVER_ELEMENT_NOS_DEF
 #endif
 
-#define RELAY_SRV_MODEL_SIG_CNT 1 // No of SIG models in a relay model element
-#define RELAY_SRV_MODEL_VEN_CNT 0 // No of VEN models in a relay model element
+#define RELAY_SRV_MODEL_SIG_CNT RELAY_SIG_MAX_ID    // No of SIG models in a relay model element
+#define RELAY_SRV_MODEL_VEN_CNT 0                   // No of VEN models in a relay model element
+
+typedef enum{
+    RELAY_SIG_ONOFF_MODEL_ID,
+    RELAY_SIG_MAX_ID,
+}relay_sig_id_t;
 
 typedef struct relay_element
 {
@@ -29,3 +35,4 @@ typedef struct relay_element
  */
 esp_err_t create_relay_elements(dev_struct_t *pdev);
 
+#endif /*__RELAY_SERVER_MODEL_H__*/

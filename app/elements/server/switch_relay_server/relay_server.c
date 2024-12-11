@@ -6,33 +6,30 @@
 #define RELAY_OFF 0
 #define RELAY_ON !RELAY_OFF
 
-#define TAG "REL_SRV"
-
 static relay_elements_t relay_element_init_ctrl;
 
 static esp_ble_mesh_model_t relay_sig_template = ESP_BLE_MESH_SIG_MODEL(
             ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV, NULL, NULL, NULL);
 
-static esp_err_t dev_create_relay_model_space(dev_struct_t *pdev, uint16_t n_max)
+static esp_err_t dev_create_relay_model_space(uint16_t n_max)
 {
-    if (!pdev)
-        return ESP_ERR_INVALID_STATE;
-
     /* Assign Spaces for Model List, Publish List and onoff gen list */
     relay_element_init_ctrl.model_cnt = n_max;
 
     for (size_t relay_model_id = 0; relay_model_id < n_max; relay_model_id++)
     {
+#if CONFIG_GEN_ONOFF_SERVER_COUNT
         /* Perform memcpy to setup the constants */
-        memcpy( &relay_element_init_ctrl.relay_server_sig_model_list[relay_model_id][0],
+        memcpy( &relay_element_init_ctrl.relay_server_sig_model_list[relay_model_id][RELAY_SIG_ONOFF_MODEL_ID],
                 &relay_sig_template,
                 sizeof(esp_ble_mesh_model_t)
             );
         /* Set the dynamic spaces for the model */
-        void ** temp = (void**) &relay_element_init_ctrl.relay_server_sig_model_list[relay_model_id][0].pub;
+        void ** temp = (void**) &relay_element_init_ctrl.relay_server_sig_model_list[relay_model_id][RELAY_SIG_ONOFF_MODEL_ID].pub;
         *temp = relay_element_init_ctrl.relay_server_pub_list + relay_model_id;
-        relay_element_init_ctrl.relay_server_sig_model_list[relay_model_id][0].user_data =
+        relay_element_init_ctrl.relay_server_sig_model_list[relay_model_id][RELAY_SIG_ONOFF_MODEL_ID].user_data =
             relay_element_init_ctrl.relay_server_onoff_gen_list + relay_model_id;
+#endif /* CONFIG_GEN_ONOFF_SERVER_COUNT */
     }
     return ESP_OK;
 }
@@ -41,6 +38,12 @@ static esp_err_t dev_add_relay_srv_model_to_element_list(dev_struct_t *pdev, uin
 {
     if (!pdev)
         return ESP_ERR_INVALID_STATE;
+
+    if ((n_max + *start_idx) >= CONFIG_MAX_ELEMENT_COUNT)
+    {
+        ESP_LOGE(TAG, "No of elements limit reached");
+        return ESP_ERR_NO_MEM;
+    }
 
     esp_ble_mesh_elem_t *elements = pdev->elements;
 
@@ -73,7 +76,7 @@ static esp_err_t dev_add_relay_srv_model_to_element_list(dev_struct_t *pdev, uin
 esp_err_t create_relay_elements(dev_struct_t *pdev)
 {
     esp_err_t err;
-    err = dev_create_relay_model_space(pdev, CONFIG_RELAY_SERVER_COUNT);
+    err = dev_create_relay_model_space(CONFIG_RELAY_SERVER_COUNT);
     if (err)
     {
         ESP_LOGE(TAG, "Relay Model create failed: (%d)", err);

@@ -15,11 +15,14 @@ class CodeGen(CodeGenException):
     def __init__(self,
                  target_name,
                  prod_profile = "scripts/prod_profile.json",
+                 model_profile = "scripts/model_profile.json",
                  idf_yml = "main/idf_component.yml"):
         self.max_el = 1
         self.target = target_name
         with open(prod_profile) as pj:
             self.prod_profile = json.load(pj)
+        with open(model_profile) as mj:
+            self.prod_profile.update(json.load(mj))
         self.product_list = []
         self.product = None
         self.pid = None
@@ -99,13 +102,16 @@ class CodeGen(CodeGenException):
             mod = self.prod_profile['models'][model]
             if mod['default']:
                 self.__get_src_from_path(mod['path'])
-                self.resolve_model_deps(model)
+                self.resolve_model_deps(model, 0)
 
-    def resolve_model_deps(self, model):
+    def resolve_model_deps(self, model, val):
         res_model = self.prod_profile['models'][model]
         self.__get_src_from_path(res_model['path'])
         for macro in res_model['macros']:
-            macro['value'] = True
+            if isinstance(macro['value'], bool):
+                macro['value'] = True
+            else:
+                macro['value'] += val
         if res_model['base_model'] is not None:
             self.resolve_base_models_deps(res_model['base_model'])
 
@@ -114,8 +120,9 @@ class CodeGen(CodeGenException):
             element_ptr = self.prod_profile['elements'][element]
             element_ptr['macros'][0]['value'] = value
             self.__get_src_from_path(element_ptr['path'])
-            for model in element_ptr['models']:
-                self.resolve_model_deps(model)
+            for model_reg in element_ptr['models']:
+                for model_key, model_val in model_reg.items():
+                    self.resolve_model_deps(model_key, (model_val * value))
     
     def resolve_prod_el(self):
         if self.product is not None:

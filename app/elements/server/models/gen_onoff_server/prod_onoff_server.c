@@ -1,9 +1,12 @@
 #include "prod_onoff_server.h"
 
-#define TAG "ONOFF_SRV"
+#define TAG __func__
 
 static esp_err_t prod_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *param)
 {
+    esp_ble_mesh_gen_onoff_srv_t const *srv = (esp_ble_mesh_gen_onoff_srv_t *)param->model->user_data;
+    esp_ble_mesh_gen_onoff_state_t state = srv->state;
+
     if (ESP_BLE_MESH_ADDR_IS_UNICAST(param->ctx.recv_dst) 
     || (ESP_BLE_MESH_ADDR_BROADCAST(param->ctx.recv_dst))
     || (ESP_BLE_MESH_ADDR_IS_GROUP(param->ctx.recv_dst) 
@@ -17,9 +20,9 @@ static esp_err_t prod_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *
 
         esp_err_t err = control_task_send_msg(
                             CONTROL_TASK_MSG_CODE_TO_HAL, 
-                            CONTROL_TASK_MSG_EVT_SET_ON_OFF,
-                            param,
-                            sizeof(param));
+                            CONTROL_TASK_MSG_EVT_TO_HAL_SET_ON_OFF,
+                            &state,
+                            sizeof(esp_ble_mesh_gen_onoff_state_t));
         return err ? err : ESP_OK;
     }
     return ESP_ERR_NOT_ALLOWED;
@@ -65,14 +68,14 @@ static esp_err_t prod_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param_
 esp_err_t prod_on_off_server_init()
 {
     esp_err_t err;
-    err = prod_srv_reg_cb(ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV, prod_handle_gen_onoff_msg);
+    err = prod_gen_srv_reg_cb(ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV, prod_handle_gen_onoff_msg);
     if(err)
-        ESP_LOGE(TAG, "Failed to initialize prod_srv_reg_cb (Err: %d)", err);
+        ESP_LOGE(TAG, "Failed to initialize prod_gen_srv_reg_cb (Err: %d)", err);
 
 #if CONFIG_ENABLE_SERVER_COMMON
     err = prod_gen_srv_init();
     if(err)
         ESP_LOGE(TAG, "Failed to initialize prod server", err);
 #endif /* CONFIG_ENABLE_SERVER_COMMON */
-    return prod_gen_srv_init();
+    return err;
 }

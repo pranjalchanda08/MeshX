@@ -1,6 +1,7 @@
 #include <prod_light_server.h>
+#include <prod_gen_server.h>
 
-#define TAG "P_LIGHT_SRV"
+#define TAG __func__
 
 #define PROD_SERVER_INIT_MAGIC_NO   0x2483
 
@@ -8,7 +9,8 @@ static const char* server_state_str[] =
 {
     [ESP_BLE_MESH_LIGHTING_SERVER_STATE_CHANGE_EVT] = "SERVER_STATE_CHANGE_EVT",
     [ESP_BLE_MESH_LIGHTING_SERVER_RECV_GET_MSG_EVT] = "SERVER_RECV_GET_MSG_EVT",
-    [ESP_BLE_MESH_LIGHTING_SERVER_RECV_SET_MSG_EVT] = "SERVER_RECV_SET_MSG_EVT"
+    [ESP_BLE_MESH_LIGHTING_SERVER_RECV_SET_MSG_EVT] = "SERVER_RECV_SET_MSG_EVT",
+    [ESP_BLE_MESH_LIGHTING_SERVER_RECV_STATUS_MSG_EVT] = "SERVER_RECV_STATUS_MSG_EVT",
 };
 
 static uint16_t prod_lighting_server_init = 0;
@@ -28,15 +30,15 @@ static void prod_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_t
         || prod_lighting_server_cb_reg_table[i].model_id == param->model->vnd.model_id)
         && prod_lighting_server_cb_reg_table[i].cb)
         {
-            /* Despacth callback to lightingeric model type */
+            /* Despacth callback to lightng model type */
             prod_lighting_server_cb_reg_table[i].cb(param);
         }
     }
 }
 
-esp_err_t prod_srv_reg_cb(uint32_t model_id, prod_lighting_server_cb cb)
+esp_err_t prod_lighting_reg_cb(uint32_t model_id, prod_lighting_server_cb cb)
 {
-    if(prod_lighting_server_cb_reg_table_idx > CONFIG_MAX_PROD_LIGHTING_SRV_CB)
+    if(prod_lighting_server_cb_reg_table_idx >= CONFIG_MAX_PROD_LIGHTING_SRV_CB)
     {
         ESP_LOGE(TAG, "No Memory left in prod_lighting_server_cb_reg_table");
         return ESP_ERR_NO_MEM;
@@ -63,6 +65,11 @@ esp_err_t prod_lighting_srv_init(void)
     if(prod_lighting_server_init == PROD_SERVER_INIT_MAGIC_NO)
         return ESP_OK;
     prod_lighting_server_init = PROD_SERVER_INIT_MAGIC_NO;
+    esp_err_t err = prod_gen_srv_init();
+    
+    if (err)
+        return err;
+    
     return esp_ble_mesh_register_lighting_server_callback(prod_ble_lightness_server_cb);
 }
 

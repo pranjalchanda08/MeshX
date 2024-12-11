@@ -2,10 +2,10 @@
 #define __PROD_LIGHT_SERVER_H__
 
 #include <server_common.h>
-#include "esp_ble_mesh_lighting_model_api.h"
+#include <esp_ble_mesh_lighting_model_api.h>
 
 #ifndef CONFIG_MAX_PROD_LIGHTING_SRV_CB
-#define CONFIG_MAX_PROD_LIGHTING_SRV_CB   10
+#define CONFIG_MAX_PROD_LIGHTING_SRV_CB   3
 #endif
 
 typedef esp_err_t (* prod_lighting_server_cb) (esp_ble_mesh_lighting_server_cb_param_t *param);

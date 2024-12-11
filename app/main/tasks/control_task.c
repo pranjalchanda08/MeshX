@@ -4,16 +4,11 @@
 #define ENUM2STR(_enum) [_enum] = #_enum
 
 static void control_task_handler(void *args);
-static void control_task_msg_code_to_hal_handle(control_task_msg_evt_t evt, control_task_evt_params_t params);
-static void control_task_msg_code_system_handle(control_task_msg_evt_t evt, control_task_evt_params_t params);
-static void control_task_msg_code_to_ble_handle(control_task_msg_evt_t evt, control_task_evt_params_t params);
+static void control_task_msg_code_to_hal_handle(control_task_msg_evt_t evt, void* params);
+static void control_task_msg_code_system_handle(control_task_msg_evt_t evt, void* params);
+static void control_task_msg_code_to_ble_handle(control_task_msg_evt_t evt, void* params);
 
 static QueueHandle_t control_task_queue;
-static const char* msg_evt_str_table [] =
-{
-    ENUM2STR(CONTROL_TASK_MSG_EVT_SET_ON_OFF),
-    ENUM2STR(CONTROL_TASK_MSG_EVT_SET_LIGHTNESS)
-};
 
 static control_task_msg_handle_t control_task_msg_handle_table[] =
 {
@@ -40,7 +35,7 @@ esp_err_t create_control_task(void)
 
 esp_err_t control_task_send_msg(control_task_msg_code_t msg_code,
                                 control_task_msg_evt_t msg_evt,
-                                const control_task_evt_params_t msg_evt_params,
+                                const void* msg_evt_params,
                                 size_t sizeof_msg_evt_params)
 {
     control_task_msg_t send_msg;
@@ -63,19 +58,59 @@ esp_err_t control_task_send_msg(control_task_msg_code_t msg_code,
     return ESP_OK;
 }
 
-static void control_task_msg_code_to_hal_handle(control_task_msg_evt_t evt, control_task_evt_params_t params)
+static void control_task_msg_code_to_hal_handle(control_task_msg_evt_t evt, void* params)
 {
-    ESP_LOGI(TAG, "%s, %p", msg_evt_str_table[evt], params);
+    ESP_LOGD(TAG, "%p, %p", (void*)evt, params);
+    for (size_t event_bmap = 0; event_bmap < CONTROL_TASK_MSG_EVT_TO_HAL_MAX; event_bmap++)
+    {
+        if(evt & (1 << event_bmap))
+        {
+            switch (1 << event_bmap)
+            {
+                case CONTROL_TASK_MSG_EVT_TO_HAL_SET_ON_OFF:
+                    ESP_LOGI(TAG, "CONTROL_TASK_MSG_EVT_TO_HAL_SET_ON_OFF");
+                    break;
+                case CONTROL_TASK_MSG_EVT_TO_HAL_SET_TEMP:
+                    ESP_LOGI(TAG, "CONTROL_TASK_MSG_EVT_TO_HAL_SET_TEMP");
+                    break;
+                case CONTROL_TASK_MSG_EVT_TO_HAL_SET_LIGHTNESS:
+                    ESP_LOGI(TAG, "CONTROL_TASK_MSG_EVT_TO_HAL_SET_LIGHTNESS");
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 }
 
-static void control_task_msg_code_system_handle(control_task_msg_evt_t evt, control_task_evt_params_t params)
+static void control_task_msg_code_system_handle(control_task_msg_evt_t evt, void* params)
 {
-    ESP_LOGI(TAG, "%s, %p", msg_evt_str_table[evt], params);
+    ESP_LOGD(TAG, "%p, %p", (void*)evt, params);
 }
 
-static void control_task_msg_code_to_ble_handle(control_task_msg_evt_t evt, control_task_evt_params_t params)
+static void control_task_msg_code_to_ble_handle(control_task_msg_evt_t evt, void* params)
 {
-    ESP_LOGI(TAG, "%s, %p", msg_evt_str_table[evt], params);
+    ESP_LOGD(TAG, "%p, %p", (void*)evt, params);
+    for (size_t event_bmap = 0; event_bmap < CONTROL_TASK_MSG_EVT_TO_HAL_MAX; event_bmap++)
+    {
+        if(evt & (1 << event_bmap))
+        {
+            switch (1 << event_bmap)
+            {
+                case CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF:
+                    ESP_LOGI(TAG, "CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF");
+                    break;
+                case CONTROL_TASK_MSG_EVT_TO_BLE_SET_TEMP:
+                    ESP_LOGI(TAG, "CONTROL_TASK_MSG_EVT_TO_BLE_SET_TEMP");
+                    break;
+                case CONTROL_TASK_MSG_EVT_TO_BLE_SET_LIGHTNESS:
+                    ESP_LOGI(TAG, "CONTROL_TASK_MSG_EVT_TO_BLE_SET_LIGHTNESS");
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 }
 
 static esp_err_t create_control_task_msg_q(void)

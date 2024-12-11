@@ -9,49 +9,61 @@
 #include "esp_system.h"
 #include "esp_log.h"
 
-#define CONFIG_CONTROL_TASK_NAME    "control_task"
+#define CONFIG_CONTROL_TASK_NAME "control_task"
 
 #ifndef CONFIG_CONTROL_TASK_PRIO
-#define CONFIG_CONTROL_TASK_PRIO    5
+#define CONFIG_CONTROL_TASK_PRIO configTIMER_TASK_PRIORITY + 1
 #endif
 
 #ifndef CONFIG_CONTROL_TASK_STACK_SIZE
-#define CONFIG_CONTROL_TASK_STACK_SIZE  2048
+#define CONFIG_CONTROL_TASK_STACK_SIZE 2048
 #endif
 
 #ifndef CONFIG_CONTROL_TASK_QUEUE_LEN
-#define CONFIG_CONTROL_TASK_QUEUE_LEN   10
+#define CONFIG_CONTROL_TASK_QUEUE_LEN 10
 #endif
 
-typedef enum
+typedef enum PACKED_ATTR
 {
     CONTROL_TASK_MSG_CODE_TO_HAL,
     CONTROL_TASK_MSG_CODE_SYSTEM,
     CONTROL_TASK_MSG_CODE_TO_BLE,
-}control_task_msg_code_t;
+} control_task_msg_code_t;
 
-typedef enum
+typedef uint32_t control_task_msg_evt_t;
+
+enum PACKED_ATTR
 {
-    /* To HW Codes */
-    CONTROL_TASK_MSG_EVT_SET_ON_OFF       = 0x0100,
-    CONTROL_TASK_MSG_EVT_SET_LIGHTNESS    = 0x0101,
+    /* To HAL Codes */
+    CONTROL_TASK_MSG_EVT_TO_HAL_SET_ON_OFF         = (1 << 0),
+    CONTROL_TASK_MSG_EVT_TO_HAL_SET_TEMP           = (1 << 1),
+    CONTROL_TASK_MSG_EVT_TO_HAL_SET_LIGHTNESS      = (1 << 2),
+    CONTROL_TASK_MSG_EVT_TO_HAL_MAX,
+};
 
-}control_task_msg_evt_t;
+enum PACKED_ATTR
+{
+    /* To BLE Codes*/
+    CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF         = (1 << 0),
+    CONTROL_TASK_MSG_EVT_TO_BLE_SET_TEMP           = (1 << 1),
+    CONTROL_TASK_MSG_EVT_TO_BLE_SET_LIGHTNESS      = (1 << 2),
+    CONTROL_TASK_MSG_EVT_TO_BLE_MAX
 
-typedef void* control_task_evt_params_t;
-typedef void (*control_task_msg_handle_t)(control_task_msg_evt_t evt, control_task_evt_params_t params);
+};
+
+typedef void (*control_task_msg_handle_t)(control_task_msg_evt_t evt, void* params);
 
 typedef struct control_task_msg
 {
     control_task_msg_code_t msg_code;
     control_task_msg_evt_t msg_evt;
-    control_task_evt_params_t msg_evt_params;
-}control_task_msg_t;
+    void*  msg_evt_params;
+} control_task_msg_t;
 
 esp_err_t create_control_task(void);
 esp_err_t control_task_send_msg(control_task_msg_code_t msg_code,
                                 control_task_msg_evt_t msg_evt,
-                                const control_task_evt_params_t msg_evt_params,
+                                const void* msg_evt_params,
                                 size_t sizeof_msg_evt_params);
 
 #endif /* __CONTROL_TASK_H__ */

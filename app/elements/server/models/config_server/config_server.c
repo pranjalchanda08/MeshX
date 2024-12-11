@@ -1,6 +1,6 @@
 #include "config_server.h"
 
-#define TAG "CFG_SRV"
+#define TAG __func__
 
 esp_ble_mesh_cfg_srv_t g_prod_config_server = {
     /* 3 transmissions with 20ms interval */

@@ -1,6 +1,6 @@
 #include "prod_prov.h"
 
-#define TAG "PROV"
+#define TAG __func__
 
 static prov_params_t prov_params;
 

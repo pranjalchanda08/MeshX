@@ -6,8 +6,6 @@
 #define RELAY_OFF 0
 #define RELAY_ON !RELAY_OFF
 
-#define TAG "REL_SRV"
-
 static relay_client_elements_t relay_element_init_ctrl;
 
 static esp_ble_mesh_model_t relay_sig_template = ESP_BLE_MESH_SIG_MODEL(

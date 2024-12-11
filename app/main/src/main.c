@@ -1,13 +1,24 @@
 #include <app_common.h>
+
+#if CONFIG_ENABLE_PROVISIONING
 #include <prod_prov.h>
+#endif /* CONFIG_ENABLE_PROVISIONING */
+
+#if CONFIG_ENABLE_CONFIG_SERVER
 #include <config_server.h>
+#endif /* CONFIG_ENABLE_CONFIG_SERVER */
+
 #if CONFIG_ENABLE_SERVER_COMMON
 #include <prod_onoff_server.h>
 #endif /* CONFIG_ENABLE_SERVER_COMMON */
 
-#if CONFIG_ENABLE_CLIENT_COMMON
+#if CONFIG_GEN_ONOFF_CLIENT_COUNT
 #include <prod_client.h>
-#endif /* CONFIG_ENABLE_CLIENT_COMMON */
+#endif /* CONFIG_GEN_ONOFF_CLIENT_COUNT */
+
+#if CONFIG_ENABLE_LIGHT_CTL_SERVER
+#include <prod_light_ctl_srv.h>
+#endif /* CONFIG_ENABLE_LIGHT_CTL_SERVER */
 
 #define ESP_ERR_PRINT_RET(_e_str, _err)            \
     if (_err != ESP_OK)                            \
@@ -16,12 +27,11 @@
         return _err;                               \
     }
 
-#define TAG "APP"
 #define CID_ESP CONFIG_CID_ID
 
 dev_struct_t g_dev;
 
-#define ROOT_MODEL_SIG_CNT 1
+#define ROOT_MODEL_SIG_CNT ARRAY_SIZE(app_root_model)
 #define ROOT_MODEL_VEN_CNT 0
 
 void app_cfg_srv_app_key_bind_hook(esp_ble_mesh_cfg_server_cb_param_t *param);
@@ -29,26 +39,38 @@ void app_prod_prov_cb(esp_ble_mesh_prov_cb_param_t *param, prod_prov_evt_t evt);
 
 static uint8_t dev_uuid[16] = {0xdd, 0xdd};
 
+#if CONFIG_ENABLE_CONFIG_SERVER
 static config_server_params_t cfg_srv = {
-    .on_app_key_cb = app_cfg_srv_app_key_bind_hook};
+    .on_app_key_cb = app_cfg_srv_app_key_bind_hook
+};
+#endif
 
+#if CONFIG_ENABLE_PROVISIONING
 static prov_params_t prod_prov_cfg = {
     .uuid = dev_uuid,
-    .cb_reg = app_prod_prov_cb};
+    .cb_reg = app_prod_prov_cb
+};
+#endif
 
-static esp_ble_mesh_model_t root_model[2] = {
+static esp_ble_mesh_model_t app_root_model[] = {
+#if CONFIG_ENABLE_CONFIG_SERVER
     ESP_BLE_MESH_MODEL_CFG_SRV(&PROD_CONFIG_SERVER_INSTANCE),
+#endif /*CONFIG_ENABLE_CONFIG_SERVER*/
 };
 
+#if CONFIG_ENABLE_CONFIG_SERVER
 void app_cfg_srv_app_key_bind_hook(esp_ble_mesh_cfg_server_cb_param_t *param)
 {
     return;
 }
+#endif
 
+#if CONFIG_ENABLE_PROVISIONING
 void app_prod_prov_cb(esp_ble_mesh_prov_cb_param_t *param, prod_prov_evt_t evt)
 {
     return;
 }
+#endif
 
 static esp_err_t ble_mesh_composition_init(dev_struct_t *p_dev)
 {
@@ -71,11 +93,12 @@ static esp_err_t ble_mesh_element_init(dev_struct_t *p_dev)
         return ESP_ERR_INVALID_STATE;
 
     /* Initialise Root model */
-    p_dev->elements[0].sig_models = root_model;
+    p_dev->elements[0].sig_models = app_root_model;
     p_dev->elements[0].vnd_models = ESP_BLE_MESH_MODEL_NONE;
     memset((void *)&p_dev->elements[0].sig_model_count, ROOT_MODEL_SIG_CNT, sizeof(p_dev->elements[0].sig_model_count));
     memset((void *)&p_dev->elements[0].vnd_model_count, ROOT_MODEL_VEN_CNT, sizeof(p_dev->elements[0].vnd_model_count));
-
+    /* Root to be used with fixed format */
+    p_dev->element_idx++;
     return create_ble_mesh_element_composition(p_dev);
 }
 

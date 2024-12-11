@@ -1,6 +1,6 @@
 #include "prod_client.h"
 
-#define TAG "ONOFF_CLI"
+#define TAG __func__
 
 #define PROD_CLIENT_INIT_MAGIC  0x2378
 
