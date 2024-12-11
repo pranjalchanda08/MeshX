@@ -24,7 +24,7 @@ static void prod_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_t
              event, param->ctx.recv_op, param->ctx.addr, param->ctx.recv_dst);
 
     ESP_LOGI(TAG, "%s", server_state_str[event]);
-    for (size_t i = 0; i < prod_lighting_server_cb_reg_table_idx; i++)
+    for (size_t i = 0; i < prod_lighting_server_cb_reg_table_idx && i < CONFIG_MAX_PROD_LIGHTING_SRV_CB; i++)
     {
         if ((prod_lighting_server_cb_reg_table[i].model_id == param->model->model_id 
         || prod_lighting_server_cb_reg_table[i].model_id == param->model->vnd.model_id)
@@ -64,12 +64,8 @@ esp_err_t prod_lighting_srv_init(void)
 {
     if(prod_lighting_server_init == PROD_SERVER_INIT_MAGIC_NO)
         return ESP_OK;
-    prod_lighting_server_init = PROD_SERVER_INIT_MAGIC_NO;
-    esp_err_t err = prod_gen_srv_init();
-    
-    if (err)
-        return err;
-    
+
+    prod_lighting_server_init = PROD_SERVER_INIT_MAGIC_NO;    
     return esp_ble_mesh_register_lighting_server_callback(prod_ble_lightness_server_cb);
 }
 

@@ -19,6 +19,8 @@ static esp_err_t dev_create_relay_model_space(uint16_t n_max)
     for (size_t relay_model_id = 0; relay_model_id < n_max; relay_model_id++)
     {
 #if CONFIG_GEN_ONOFF_SERVER_COUNT
+        relay_element_init_ctrl.relay_server_onoff_gen_list[relay_model_id].rsp_ctrl.get_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
+        relay_element_init_ctrl.relay_server_onoff_gen_list[relay_model_id].rsp_ctrl.set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
         /* Perform memcpy to setup the constants */
         memcpy( &relay_element_init_ctrl.relay_server_sig_model_list[relay_model_id][RELAY_SIG_ONOFF_MODEL_ID],
                 &relay_sig_template,

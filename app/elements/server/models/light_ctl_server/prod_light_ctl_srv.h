@@ -1,6 +1,7 @@
 #ifndef __PROD_LIGHT_CTL_SRV_H__
 #define __PROD_LIGHT_CTL_SRV_H__
 
+#include "app_common.h"
 #include <prod_light_server.h>
 #include "control_task.h"
 

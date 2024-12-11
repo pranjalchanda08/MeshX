@@ -22,7 +22,11 @@ static void prod_ble_mesh_generic_server_cb(esp_ble_mesh_generic_server_cb_event
              event, param->ctx.recv_op, param->ctx.addr, param->ctx.recv_dst);
 
     ESP_LOGI(TAG, "%s", server_state_str[event]);
-    for (size_t i = 0; i < prod_gen_srv_reg_table_idx; i++)
+    
+    if(event != ESP_BLE_MESH_GENERIC_SERVER_STATE_CHANGE_EVT)
+        return;
+    
+    for (size_t i = 0; (i < prod_gen_srv_reg_table_idx) && (prod_gen_srv_reg_table_idx < CONFIG_MAX_PROD_SERVER_CB); i++)
     {
         if ((prod_gen_srv_reg_table[i].model_id == param->model->model_id 
         || prod_gen_srv_reg_table[i].model_id == param->model->vnd.model_id)

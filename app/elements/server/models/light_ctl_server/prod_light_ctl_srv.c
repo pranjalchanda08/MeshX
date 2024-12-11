@@ -8,8 +8,8 @@ esp_ble_mesh_light_ctl_setup_srv_t light_ctl_setup_server;
 
 static esp_err_t send_hw_msg(esp_ble_mesh_lighting_server_cb_param_t *param, control_task_msg_evt_t msg_evt)
 {
-    esp_ble_mesh_light_ctl_srv_t *srv = (esp_ble_mesh_light_ctl_srv_t*) param->model->user_data;
-    esp_ble_mesh_light_ctl_state_t *state = srv->state;
+    const esp_ble_mesh_light_ctl_srv_t *srv = (esp_ble_mesh_light_ctl_srv_t*) param->model->user_data;
+    const esp_ble_mesh_light_ctl_state_t *state = srv->state;
 
     if (ESP_BLE_MESH_ADDR_IS_UNICAST(param->ctx.recv_dst) 
     || (ESP_BLE_MESH_ADDR_BROADCAST(param->ctx.recv_dst))
@@ -190,5 +190,6 @@ esp_err_t prod_light_ctl_server_init(void)
     err = prod_lighting_srv_init();
     if(err)
         ESP_LOGE(TAG, "Failed to initialize prod server");
+
     return err;
 }

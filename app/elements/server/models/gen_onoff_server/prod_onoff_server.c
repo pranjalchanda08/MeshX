@@ -1,7 +1,5 @@
 #include "prod_onoff_server.h"
 
-#define TAG __func__
-
 static esp_err_t prod_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *param)
 {
     esp_ble_mesh_gen_onoff_srv_t const *srv = (esp_ble_mesh_gen_onoff_srv_t *)param->model->user_data;
@@ -16,7 +14,7 @@ static esp_err_t prod_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *
         /* Send msg for hw manipulation */
         ESP_LOGI(TAG, "HW change requested, Element_id: 0x%x, state 0x%x",
                     param->model->element_idx,
-                    param->value.set.onoff.onoff);
+                    state.onoff);
 
         esp_err_t err = control_task_send_msg(
                             CONTROL_TASK_MSG_CODE_TO_HAL, 
@@ -31,8 +29,6 @@ static esp_err_t prod_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *
 static esp_err_t prod_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param_t *param)
 {
     esp_ble_mesh_gen_onoff_srv_t *srv = (esp_ble_mesh_gen_onoff_srv_t *)param->model->user_data;
-    srv->state.onoff = param->value.set.onoff.onoff;
-
     bool send_reply_to_src = false;
 
     switch (param->ctx.recv_op)
@@ -42,7 +38,8 @@ static esp_err_t prod_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param_
         break;
     case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET:
     case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK:
-
+        srv->state.onoff = param->value.state_change.onoff_set.onoff;
+        ESP_LOGI(TAG, "state_change: %d", srv->state.onoff);
         send_reply_to_src = param->ctx.recv_op == ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET;
         
         /* Publish STATUS to respective subcribers */
@@ -75,7 +72,7 @@ esp_err_t prod_on_off_server_init()
 #if CONFIG_ENABLE_SERVER_COMMON
     err = prod_gen_srv_init();
     if(err)
-        ESP_LOGE(TAG, "Failed to initialize prod server", err);
+        ESP_LOGE(TAG, "Failed to initialize prod server");
 #endif /* CONFIG_ENABLE_SERVER_COMMON */
     return err;
 }

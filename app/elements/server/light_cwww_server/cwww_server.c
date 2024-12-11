@@ -117,6 +117,7 @@ esp_err_t create_cwww_elements(dev_struct_t *pdev)
      
         return err;
     }
+
     err = prod_light_ctl_server_init();
     if (err)
     {
