@@ -67,7 +67,8 @@ static esp_err_t dev_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, uint
     }
 
     esp_ble_mesh_elem_t *elements = pdev->elements;
-
+    cwww_element_init_ctrl.element_id_start = *start_idx;
+    
     for (size_t i = *start_idx; i < (n_max + *start_idx); i++)
     {
         if (i == 0)
@@ -90,7 +91,7 @@ static esp_err_t dev_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, uint
         }
     }
     /* Increment the index for further registrations */
-    *start_idx += n_max;
+    cwww_element_init_ctrl.element_id_end = *start_idx += n_max;
     return ESP_OK;
 }
 

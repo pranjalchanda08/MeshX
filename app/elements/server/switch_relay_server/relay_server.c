@@ -48,6 +48,7 @@ static esp_err_t dev_add_relay_srv_model_to_element_list(dev_struct_t *pdev, uin
     }
 
     esp_ble_mesh_elem_t *elements = pdev->elements;
+    relay_element_init_ctrl.element_id_start = *start_idx;
 
     for (size_t i = *start_idx; i < (n_max + *start_idx); i++)
     {

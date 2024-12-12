@@ -10,15 +10,23 @@
 
 #define PROD_CONFIG_SERVER_INSTANCE g_prod_config_server
 
-typedef void (*config_srv_cb)(esp_ble_mesh_cfg_server_cb_param_t *param);
-
-typedef struct config_server_params
+typedef enum
 {
-    config_srv_cb on_app_key_cb;
-}config_server_params_t;
+    CONFIG_EVT_MODEL_APP_KEY_ADD        = 0x01,
+    CONFIG_EVT_MODEL_SUB_ADD            = 0x02,   
+    CONFIG_EVT_MODEL_SUB_DEL            = 0x04,
+    CONFIG_EVT_MODEL_PUB_ADD            = 0x08,
+    CONFIG_EVT_MODEL_PUB_DEL            = 0x10,
+    CONFIG_EVT_APP_BIND                 = 0x20,
+    CONFIG_EVT_APP_UNBIND               = 0x40,
+    CONFIG_EVT_ALL                      = 0xFFFFFFFF
+}config_evt_t;
+
+typedef void (*config_srv_cb)(const esp_ble_mesh_cfg_server_cb_param_t *param, config_evt_t evt);
 
 extern esp_ble_mesh_cfg_srv_t g_prod_config_server;
 
-esp_err_t prod_init_config_server(config_server_params_t * svr_cfg);
+esp_err_t prod_init_config_server();
+esp_err_t prod_config_server_cb_reg(config_srv_cb cb, uint32_t config_evt_bmap);
 
 #endif

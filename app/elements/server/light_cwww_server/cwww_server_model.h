@@ -23,6 +23,8 @@ typedef enum{
 typedef struct cwww_element
 {
     size_t model_cnt;
+    size_t element_id_end;
+    size_t element_id_start;
     esp_ble_mesh_model_t cwww_server_sig_model_list[CONFIG_LIGHT_CWWW_SRV_COUNT][CWWW_SRV_MODEL_SIG_CNT];
     esp_ble_mesh_model_pub_t cwww_server_pub_list[CONFIG_LIGHT_CWWW_SRV_COUNT][CWWW_SRV_MODEL_SIG_CNT];
     esp_ble_mesh_gen_onoff_srv_t cwww_server_onoff_gen_list[CONFIG_LIGHT_CWWW_SRV_COUNT];
