@@ -8,6 +8,7 @@
 #include "freertos/task.h"
 #include "esp_system.h"
 #include "esp_log.h"
+#include "app_common.h"
 
 #define CONFIG_CONTROL_TASK_NAME "control_task"
 
@@ -59,7 +60,7 @@ typedef enum PACKED_ATTR
     CONTROL_TASK_MSG_CODE_SYSTEM_MAX,
 }control_task_msg_evt_system_t;
 
-typedef esp_err_t (*control_task_msg_handle_t)(control_task_msg_evt_t evt, void *params);
+typedef esp_err_t (*control_task_msg_handle_t)(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params);
 
 typedef struct control_task_msg
 {
@@ -75,8 +76,8 @@ typedef struct control_task_evt_cb_reg
     struct control_task_evt_cb_reg * next;
 }control_task_evt_cb_reg_t;
 
-esp_err_t create_control_task(void);
-esp_err_t control_task_reg_evt_cb(control_task_msg_code_t msg_code,
+esp_err_t create_control_task(dev_struct_t * pdev);
+esp_err_t control_task_reg_msg_code_handler_cb(control_task_msg_code_t msg_code,
                                 control_task_msg_evt_t evt_bmap,
                                 control_task_msg_handle_t cb);
 esp_err_t control_task_send_msg(control_task_msg_code_t msg_code,

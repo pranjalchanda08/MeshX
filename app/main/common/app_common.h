@@ -9,7 +9,6 @@
 #include <nvs_flash.h>
 #include <esp_ble_mesh_defs.h>
 #include <ble_mesh_example_init.h>
-#include <control_task.h>
 
 #define TAG __func__
 

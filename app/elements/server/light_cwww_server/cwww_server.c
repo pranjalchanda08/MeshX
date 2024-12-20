@@ -24,7 +24,7 @@
 
 static cwww_elements_t cwww_element_init_ctrl;
 
-static const esp_ble_mesh_model_t cwww_sig_template[CWWW_SRV_MODEL_SIG_CNT] =
+static esp_ble_mesh_model_t cwww_sig_template[CWWW_SRV_MODEL_SIG_CNT] __attribute__((section(".text"))) =
 {
     ESP_BLE_MESH_SIG_MODEL(ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV, NULL, NULL, NULL),
     ESP_BLE_MESH_SIG_MODEL(ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV, NULL, NULL, NULL),
