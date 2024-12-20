@@ -4,5 +4,6 @@
     "idf.flashType": "UART",
     "sonarlint.pathToCompileCommands": "${workspaceFolder}/build/compile_commands.json",
     "C_Cpp.autocomplete": "default",
-    "files.insertFinalNewline": true
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true
 }

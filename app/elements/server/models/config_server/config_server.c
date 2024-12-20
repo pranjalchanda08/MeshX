@@ -15,11 +15,30 @@
 /* Structure for storing callback registrations */
 typedef struct config_server_cb_reg
 {
-    config_srv_cb cb;                     /**< Registered callback function */
-    uint32_t evt_bmap;                    /**< Bitmap of events the callback is registered for */
-    struct config_server_cb_reg *next;    /**< Pointer to the next callback registration */
+    config_srv_cb cb;                  /**< Registered callback function */
+    uint32_t evt_bmap;                 /**< Bitmap of events the callback is registered for */
+    struct config_server_cb_reg *next; /**< Pointer to the next callback registration */
 } config_server_cb_reg_t;
 
+/* Struct for storing the Model id to config evt */
+typedef struct config_server_model_evt_map
+{
+    uint16_t model_op_code;
+    const char *op_str;
+    config_evt_t config_evt;
+} config_server_model_evt_map_t;
+
+static const config_server_model_evt_map_t config_server_model_evt_map_table[] = {
+    {ESP_BLE_MESH_MODEL_OP_APP_KEY_ADD, "OP_APP_KEY_ADD", CONFIG_EVT_MODEL_APP_KEY_ADD},
+    {ESP_BLE_MESH_MODEL_OP_NET_KEY_ADD, "OP_NET_KEY_ADD", CONFIG_EVT_MODEL_APP_KEY_ADD},
+    {ESP_BLE_MESH_MODEL_OP_MODEL_SUB_ADD, "OP_MODEL_SUB_ADD", CONFIG_EVT_MODEL_SUB_ADD},
+    {ESP_BLE_MESH_MODEL_OP_MODEL_PUB_SET, "OP_MODEL_PUB_SET", CONFIG_EVT_MODEL_PUB_ADD},
+    {ESP_BLE_MESH_MODEL_OP_MODEL_APP_BIND, "OP_MODEL_APP_BIND", CONFIG_EVT_MODEL_APP_KEY_BIND},
+    {ESP_BLE_MESH_MODEL_OP_NET_KEY_DELETE, "OP_NET_KEY_DELETE", CONFIG_EVT_MODEL_NET_KEY_DEL},
+    {ESP_BLE_MESH_MODEL_OP_APP_KEY_DELETE, "OP_APP_KEY_DELETE", CONFIG_EVT_MODEL_APP_KEY_DEL},
+    {ESP_BLE_MESH_MODEL_OP_MODEL_SUB_DELETE, "OP_MODEL_SUB_DELETE", CONFIG_EVT_MODEL_SUB_DEL},
+    {ESP_BLE_MESH_MODEL_OP_MODEL_APP_UNBIND, "OP_MODEL_APP_UNBIND", CONFIG_EVT_MODEL_APP_KEY_UNBIND},
+};
 /* Global variable for Configuration Server parameters */
 esp_ble_mesh_cfg_srv_t g_prod_config_server = {
     /* 3 transmissions with 20ms interval */
@@ -56,7 +75,7 @@ static void prod_config_server_cb_dispatch(const esp_ble_mesh_cfg_server_cb_para
 {
     if (config_server_cb_reg_table == NULL)
     {
-        ESP_LOGW(TAG, "No config server callback registered for event: %p", (void*)evt);
+        ESP_LOGW(TAG, "No config server callback registered for event: %p", (void *)evt);
         return;
     }
 
@@ -86,54 +105,14 @@ static void prod_ble_mesh_config_server_cb(esp_ble_mesh_cfg_server_cb_event_t ev
 {
     if (event == ESP_BLE_MESH_CFG_SERVER_STATE_CHANGE_EVT)
     {
-        switch (param->ctx.recv_op)
+        for (size_t map_id = 0; map_id < ARRAY_SIZE(config_server_model_evt_map_table); map_id++)
         {
-        case ESP_BLE_MESH_MODEL_OP_APP_KEY_ADD:
-            ESP_LOGI(TAG, "ESP_BLE_MESH_MODEL_OP_APP_KEY_ADD");
-            ESP_LOGD(TAG, "net_idx 0x%04x, app_idx 0x%04x",
-                     param->value.state_change.appkey_add.net_idx,
-                     param->value.state_change.appkey_add.app_idx);
-            ESP_LOG_BUFFER_HEX("AppKey", param->value.state_change.appkey_add.app_key, 16);
-            prod_config_server_cb_dispatch(param, CONFIG_EVT_MODEL_APP_KEY_ADD);
-            break;
-        case ESP_BLE_MESH_MODEL_OP_MODEL_APP_BIND:
-            ESP_LOGI(TAG, "ESP_BLE_MESH_MODEL_OP_MODEL_APP_BIND");
-            ESP_LOGD(TAG, "elem_addr 0x%04x, app_idx 0x%04x, cid 0x%04x, mod_id 0x%04x",
-                     param->value.state_change.mod_app_bind.element_addr,
-                     param->value.state_change.mod_app_bind.app_idx,
-                     param->value.state_change.mod_app_bind.company_id,
-                     param->value.state_change.mod_app_bind.model_id);
-            prod_config_server_cb_dispatch(param, CONFIG_EVT_APP_BIND);
-            break;
-        case ESP_BLE_MESH_MODEL_OP_MODEL_SUB_ADD:
-            ESP_LOGI(TAG, "ESP_BLE_MESH_MODEL_OP_MODEL_SUB_ADD");
-            ESP_LOGD(TAG, "elem_addr 0x%04x, sub_addr 0x%04x, cid 0x%04x, mod_id 0x%04x",
-                     param->value.state_change.mod_sub_add.element_addr,
-                     param->value.state_change.mod_sub_add.sub_addr,
-                     param->value.state_change.mod_sub_add.company_id,
-                     param->value.state_change.mod_sub_add.model_id);
-            prod_config_server_cb_dispatch(param, CONFIG_EVT_MODEL_SUB_ADD);
-            break;
-        case ESP_BLE_MESH_MODEL_OP_MODEL_PUB_SET:
-            ESP_LOGI(TAG, "ESP_BLE_MESH_MODEL_OP_MODEL_PUB_SET");
-            ESP_LOGD(TAG, "elem_addr 0x%04x, pub_addr 0x%04x, cid 0x%04x, mod_id 0x%04x",
-                     param->value.state_change.mod_pub_set.element_addr,
-                     param->value.state_change.mod_pub_set.pub_addr,
-                     param->value.state_change.mod_pub_set.company_id,
-                     param->value.state_change.mod_pub_set.model_id);
-            prod_config_server_cb_dispatch(param, CONFIG_EVT_MODEL_PUB_ADD);
-            break;
-        case ESP_BLE_MESH_MODEL_OP_MODEL_SUB_DELETE:
-            ESP_LOGI(TAG, "ESP_BLE_MESH_MODEL_OP_MODEL_PUB_SET");
-            prod_config_server_cb_dispatch(param, CONFIG_EVT_MODEL_SUB_DEL);
-            break;
-        case ESP_BLE_MESH_MODEL_OP_MODEL_APP_UNBIND:
-            ESP_LOGI(TAG, "ESP_BLE_MESH_MODEL_OP_MODEL_APP_UNBIND");
-            prod_config_server_cb_dispatch(param, CONFIG_EVT_MODEL_SUB_DEL);
-            break;
-        default:
-            ESP_LOGW(TAG, "Unhandled config op-code: %p", (void *)param->ctx.recv_op);
-            break;
+            if (config_server_model_evt_map_table[map_id].model_op_code == param->ctx.recv_op)
+            {
+                ESP_LOGI(TAG, "%s", config_server_model_evt_map_table[map_id].op_str);
+                prod_config_server_cb_dispatch(param, config_server_model_evt_map_table[map_id].config_evt);
+                break;
+            }
         }
     }
 }

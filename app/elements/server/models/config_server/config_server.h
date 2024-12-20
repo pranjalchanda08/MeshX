@@ -13,13 +13,16 @@
 typedef enum
 {
     CONFIG_EVT_MODEL_APP_KEY_ADD        = 0x01,
-    CONFIG_EVT_MODEL_SUB_ADD            = 0x02,   
-    CONFIG_EVT_MODEL_SUB_DEL            = 0x04,
-    CONFIG_EVT_MODEL_PUB_ADD            = 0x08,
-    CONFIG_EVT_MODEL_PUB_DEL            = 0x10,
-    CONFIG_EVT_APP_BIND                 = 0x20,
-    CONFIG_EVT_APP_UNBIND               = 0x40,
-    CONFIG_EVT_ALL                      = 0xFFFFFFFF
+    CONFIG_EVT_MODEL_APP_KEY_DEL        = 0x02,
+    CONFIG_EVT_MODEL_APP_KEY_BIND       = 0x04,
+    CONFIG_EVT_MODEL_APP_KEY_UNBIND     = 0x08,
+    CONFIG_EVT_MODEL_SUB_ADD            = 0x10,
+    CONFIG_EVT_MODEL_SUB_DEL            = 0x20,
+    CONFIG_EVT_MODEL_PUB_ADD            = 0x40,
+    CONFIG_EVT_MODEL_PUB_DEL            = 0x80,
+    CONFIG_EVT_MODEL_NET_KEY_ADD        = 0x100,
+    CONFIG_EVT_MODEL_NET_KEY_DEL        = 0x200,
+    CONFIG_EVT_ALL                      = 0xFFFF
 }config_evt_t;
 
 typedef void (*config_srv_cb)(const esp_ble_mesh_cfg_server_cb_param_t *param, config_evt_t evt);

@@ -3,25 +3,18 @@
 #define TAG CONFIG_CONTROL_TASK_NAME
 #define ENUM2STR(_enum) [_enum] = #_enum
 
-static void control_task_handler(void *args);
-static void control_task_msg_code_to_hal_handle(control_task_msg_evt_t evt, void* params);
-static void control_task_msg_code_system_handle(control_task_msg_evt_t evt, void* params);
-static void control_task_msg_code_to_ble_handle(control_task_msg_evt_t evt, void* params);
+static void control_task_handler(const void *args);
 
 static QueueHandle_t control_task_queue;
 
-static control_task_msg_handle_t control_task_msg_handle_table[] =
-{
-    [CONTROL_TASK_MSG_CODE_TO_HAL] = &control_task_msg_code_to_hal_handle,
-    [CONTROL_TASK_MSG_CODE_SYSTEM] = &control_task_msg_code_system_handle,
-    [CONTROL_TASK_MSG_CODE_TO_BLE] = &control_task_msg_code_to_ble_handle
-};
+/* Link list heads per Task msg code type */
+static control_task_evt_cb_reg_t * control_task_msg_code_list_heads [CONTROL_TASK_MSG_CODE_MAX];
 
 esp_err_t create_control_task(void)
 {
     BaseType_t err;
     err = xTaskCreate(
-        &control_task_handler,
+        (TaskFunction_t)&control_task_handler,
         CONFIG_CONTROL_TASK_NAME,
         CONFIG_CONTROL_TASK_STACK_SIZE,
         NULL,
@@ -29,7 +22,7 @@ esp_err_t create_control_task(void)
         NULL);
     if (err != pdPASS)
         return ESP_FAIL;
-    
+
     return ESP_OK;
 }
 
@@ -40,7 +33,7 @@ esp_err_t control_task_send_msg(control_task_msg_code_t msg_code,
 {
     control_task_msg_t send_msg;
     BaseType_t pxHigherPriorityTaskWoken = pdFALSE;
-    
+
     if(sizeof_msg_evt_params != 0){
         send_msg.msg_evt_params = pvPortMalloc(sizeof_msg_evt_params);
         if(!send_msg.msg_evt_params)
@@ -58,59 +51,58 @@ esp_err_t control_task_send_msg(control_task_msg_code_t msg_code,
     return ESP_OK;
 }
 
-static void control_task_msg_code_to_hal_handle(control_task_msg_evt_t evt, void* params)
+esp_err_t control_task_reg_evt_cb(control_task_msg_code_t msg_code, control_task_msg_evt_t evt_bmap, control_task_msg_handle_t cb)
 {
-    ESP_LOGD(TAG, "%p, %p", (void*)evt, params);
-    for (size_t event_bmap = 0; event_bmap < CONTROL_TASK_MSG_EVT_TO_HAL_MAX; event_bmap++)
-    {
-        if(evt & (1 << event_bmap))
-        {
-            switch (1 << event_bmap)
-            {
-                case CONTROL_TASK_MSG_EVT_TO_HAL_SET_ON_OFF:
-                    ESP_LOGI(TAG, "CONTROL_TASK_MSG_EVT_TO_HAL_SET_ON_OFF");
-                    break;
-                case CONTROL_TASK_MSG_EVT_TO_HAL_SET_TEMP:
-                    ESP_LOGI(TAG, "CONTROL_TASK_MSG_EVT_TO_HAL_SET_TEMP");
-                    break;
-                case CONTROL_TASK_MSG_EVT_TO_HAL_SET_LIGHTNESS:
-                    ESP_LOGI(TAG, "CONTROL_TASK_MSG_EVT_TO_HAL_SET_LIGHTNESS");
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
+
+    if (cb == NULL
+    || evt_bmap == 0
+    || msg_code >= CONTROL_TASK_MSG_CODE_MAX)
+        return ESP_ERR_INVALID_ARG; // Invalid arguments
+
+    control_task_evt_cb_reg_t **ptr = &control_task_msg_code_list_heads[msg_code];
+
+    while (*ptr != NULL)
+        ptr = &(*ptr)->next;
+
+    *ptr = (control_task_evt_cb_reg_t *)malloc(sizeof(control_task_evt_cb_reg_t));
+    if (*ptr == NULL)
+        return ESP_ERR_NO_MEM; // Memory allocation failed
+
+    (*ptr)->cb = cb;
+    (*ptr)->msg_evt_bmap = evt_bmap;
+    (*ptr)->next = NULL;
+
+    return ESP_OK;
 }
 
-static void control_task_msg_code_system_handle(control_task_msg_evt_t evt, void* params)
+static esp_err_t control_task_msg_dispatch(control_task_msg_code_t msg_code,
+    control_task_msg_evt_t evt,
+    void* params)
 {
-    ESP_LOGD(TAG, "%p, %p", (void*)evt, params);
-}
+    control_task_evt_cb_reg_t *ptr = control_task_msg_code_list_heads[msg_code];
+    bool evt_handled = false;
 
-static void control_task_msg_code_to_ble_handle(control_task_msg_evt_t evt, void* params)
-{
-    ESP_LOGD(TAG, "%p, %p", (void*)evt, params);
-    for (size_t event_bmap = 0; event_bmap < CONTROL_TASK_MSG_EVT_TO_HAL_MAX; event_bmap++)
+    if (ptr == NULL)
     {
-        if(evt & (1 << event_bmap))
-        {
-            switch (1 << event_bmap)
-            {
-                case CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF:
-                    ESP_LOGI(TAG, "CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF");
-                    break;
-                case CONTROL_TASK_MSG_EVT_TO_BLE_SET_TEMP:
-                    ESP_LOGI(TAG, "CONTROL_TASK_MSG_EVT_TO_BLE_SET_TEMP");
-                    break;
-                case CONTROL_TASK_MSG_EVT_TO_BLE_SET_LIGHTNESS:
-                    ESP_LOGI(TAG, "CONTROL_TASK_MSG_EVT_TO_BLE_SET_LIGHTNESS");
-                    break;
-                default:
-                    break;
-            }
-        }
+        ESP_LOGE(TAG, "No control task msg callback registered for msg: %p", (void*)msg_code);
+        return ESP_ERR_INVALID_STATE;
     }
+
+    ESP_LOGI(TAG, "msg_code: %p, evt: %p", (void*) msg_code, (void*) evt);
+
+    while (ptr)
+    {
+        if ((evt & ptr->msg_evt_bmap) && (ptr->cb != NULL)){
+            ptr->cb(evt, params); // Call the registered callback
+            evt_handled = true;
+        }
+
+        ptr = ptr->next; // Move to the next registration
+    }
+    if(evt_handled == false)
+        ESP_LOGW(TAG, "No handler reg for EVT %p", (void*) evt);
+
+    return ESP_OK;
 }
 
 static esp_err_t create_control_task_msg_q(void)
@@ -125,23 +117,22 @@ static esp_err_t create_control_task_msg_q(void)
     return ESP_OK;
 }
 
-static void control_task_handler(void *args)
+static void control_task_handler(const void *args)
 {
     esp_err_t err;
     control_task_msg_t recv_msg;
     ESP_UNUSED(args);
     err = create_control_task_msg_q();
     if (err)
-    {
         ESP_LOGE(TAG, "Failed to initialise Control Task Msg Q Err: 0x%x", err);
-    }
 
     while (true)
     {
-        if (xQueueReceive(control_task_queue, &recv_msg, portMAX_DELAY) == pdTRUE 
-            && control_task_msg_handle_table[recv_msg.msg_code])
+        if (xQueueReceive(control_task_queue, &recv_msg, portMAX_DELAY) == pdTRUE)
         {
-            control_task_msg_handle_table[recv_msg.msg_code](recv_msg.msg_evt, recv_msg.msg_evt_params);
+            err = control_task_msg_dispatch(recv_msg.msg_code, recv_msg.msg_evt, recv_msg.msg_evt_params);
+            if(err)
+                ESP_LOGE(TAG, "Err: 0x%x", err);
             if (recv_msg.msg_evt_params)
             {
                 /* If Params were passed Free the allocated memory */

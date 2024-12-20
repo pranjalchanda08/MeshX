@@ -18,12 +18,21 @@ typedef enum{
     RELAY_SIG_MAX_ID,
 }relay_sig_id_t;
 
+typedef struct prod_gen_ctx
+{
+    uint8_t state;
+    uint8_t tid;
+    uint16_t pub_addr;
+    uint16_t net_id;
+    uint16_t app_id;
+}relay_srv_model_ctx_t;
+
 typedef struct relay_element
 {
     size_t model_cnt;
     size_t element_id_end;
     size_t element_id_start;
-    prod_gen_ctx_t prod_gen_ctx[CONFIG_RELAY_SERVER_COUNT];
+    relay_srv_model_ctx_t prod_gen_ctx[CONFIG_RELAY_SERVER_COUNT];
     esp_ble_mesh_model_t relay_server_sig_model_list[CONFIG_RELAY_SERVER_COUNT][RELAY_SRV_MODEL_SIG_CNT];
     esp_ble_mesh_model_pub_t relay_server_pub_list[CONFIG_RELAY_SERVER_COUNT];
     esp_ble_mesh_gen_onoff_srv_t relay_server_onoff_gen_list[CONFIG_RELAY_SERVER_COUNT];

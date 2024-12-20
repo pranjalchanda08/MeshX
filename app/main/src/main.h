@@ -10,9 +10,9 @@
 #include <config_server.h>
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
-#if CONFIG_ENABLE_SERVER_COMMON
+#if CONFIG_GEN_ONOFF_SERVER_COUNT
 #include <prod_onoff_server.h>
-#endif /* CONFIG_ENABLE_SERVER_COMMON */
+#endif /* CONFIG_GEN_ONOFF_SERVER_COUNT */
 
 #if CONFIG_GEN_ONOFF_CLIENT_COUNT
 #include <prod_onoff_client.h>

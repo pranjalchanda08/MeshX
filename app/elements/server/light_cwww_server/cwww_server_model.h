@@ -1,9 +1,10 @@
 #ifndef __CWWW_SERVER_MODEL_H__
 #define __CWWW_SERVER_MODEL_H__
 
+#include <string.h>
+#include <app_common.h>
 #include <prod_onoff_server.h>
 #include <prod_light_ctl_srv.h>
-#include <app_common.h>
 
 #define CWWW_SERVER_ELEMENT_NOS_DEF 1
 
@@ -20,11 +21,26 @@ typedef enum{
     CWWW_SIG_ID_MAX
 }cwww_sig_id_t;
 
+typedef struct light_ctl_cli_ctx
+{
+    uint8_t tid;
+    uint8_t state;
+    uint16_t lightness;
+    uint16_t temperature;
+    uint16_t delta_uv;
+    uint16_t lightness_range_max;
+    uint16_t lightness_range_min;
+    uint16_t pub_addr;
+    uint16_t net_id;
+    uint16_t app_id;
+} cwww_server_ctx_t;
+
 typedef struct cwww_element
 {
     size_t model_cnt;
     size_t element_id_end;
     size_t element_id_start;
+    cwww_server_ctx_t cwww_server_ctx[CONFIG_LIGHT_CWWW_SRV_COUNT];
     esp_ble_mesh_model_t cwww_server_sig_model_list[CONFIG_LIGHT_CWWW_SRV_COUNT][CWWW_SRV_MODEL_SIG_CNT];
     esp_ble_mesh_model_pub_t cwww_server_pub_list[CONFIG_LIGHT_CWWW_SRV_COUNT][CWWW_SRV_MODEL_SIG_CNT];
     esp_ble_mesh_gen_onoff_srv_t cwww_server_onoff_gen_list[CONFIG_LIGHT_CWWW_SRV_COUNT];

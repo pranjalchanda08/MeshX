@@ -120,6 +120,7 @@ static esp_err_t ble_mesh_element_init(dev_struct_t *p_dev)
     memset((void *)&p_dev->elements[0].sig_model_count, ROOT_MODEL_SIG_CNT, sizeof(p_dev->elements[0].sig_model_count));
     memset((void *)&p_dev->elements[0].vnd_model_count, ROOT_MODEL_VEN_CNT, sizeof(p_dev->elements[0].vnd_model_count));
 
+    ESP_LOGI(TAG, "Root: SIG : %d, VEN: %d", p_dev->elements[0].sig_model_count, p_dev->elements[0].vnd_model_count);
     /* Root to be used with fixed format */
     p_dev->element_idx++;
     return create_ble_mesh_element_composition(p_dev);
@@ -165,11 +166,11 @@ static esp_err_t ble_mesh_init(void)
     err = esp_ble_mesh_init(&PROD_PROV_INSTANCE, &g_dev.composition);
     ESP_ERR_PRINT_RET("Failed to initialize mesh stack", err);
 
-    err = esp_ble_mesh_node_prov_enable((esp_ble_mesh_prov_bearer_t)(ESP_BLE_MESH_PROV_ADV | ESP_BLE_MESH_PROV_GATT));
-    ESP_ERR_PRINT_RET("Failed to enable mesh node", err);
-
     err = esp_ble_mesh_set_unprovisioned_device_name(CONFIG_PRODUCT_NAME);
     ESP_ERR_PRINT_RET("Name Set Error", err);
+
+    err = esp_ble_mesh_node_prov_enable((esp_ble_mesh_prov_bearer_t)(ESP_BLE_MESH_PROV_ADV | ESP_BLE_MESH_PROV_GATT));
+    ESP_ERR_PRINT_RET("Failed to enable mesh node", err);
 
     ESP_LOGI(TAG, "BLE Mesh Node initialized");
 
@@ -198,6 +199,7 @@ void app_main(void)
     if (err)
     {
         ESP_LOGE(TAG, "Tasks initialization failed (err 0x%x)", err);
+        return;
     }
 
     err = bluetooth_init();
@@ -214,5 +216,6 @@ void app_main(void)
     if (err)
     {
         ESP_LOGE(TAG, "Bluetooth mesh init failed (err 0x%x)", err);
+        return;
     }
 }

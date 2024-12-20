@@ -10,15 +10,6 @@
 
 typedef esp_err_t (* prod_server_cb) (esp_ble_mesh_generic_server_cb_param_t *param);
 
-typedef struct prod_gen_ctx
-{
-    uint8_t state;
-    uint8_t tid;
-    uint16_t pub_addr;
-    uint16_t net_id;
-    uint16_t app_id;
-}prod_gen_ctx_t;
-
 typedef struct prod_server_cb_reg
 {
     uint32_t model_id;
