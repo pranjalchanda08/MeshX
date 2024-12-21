@@ -2,5 +2,5 @@ build
 codegen.h
 sdkconfig.*
 sdkconfig
-*.yml
+idf_component.yml
 *.lock
