@@ -131,11 +131,11 @@ static esp_err_t ble_mesh_element_init(dev_struct_t *p_dev)
  *
  * @return ESP_OK on success, error code otherwise.
  */
-static esp_err_t app_tasks_init()
+static esp_err_t app_tasks_init(dev_struct_t * pdev)
 {
     esp_err_t err;
 
-    err = create_control_task();
+    err = create_control_task(pdev);
 
     return err;
 }
@@ -195,7 +195,7 @@ void app_main(void)
     }
     ESP_ERROR_CHECK(err);
 
-    err = app_tasks_init();
+    err = app_tasks_init(&g_dev);
     if (err)
     {
         ESP_LOGE(TAG, "Tasks initialization failed (err 0x%x)", err);

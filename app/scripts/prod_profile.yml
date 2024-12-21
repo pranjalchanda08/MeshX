@@ -1,0 +1,25 @@
+prod:
+    cid: 0x7908
+    products:
+        - name: 4_relay_panel
+          pid: 0x0001
+          elements:
+              - switch_relay_server: 4
+
+        - name: 4x4_Relay_Switch_Pannel
+          pid: 0x0002
+          elements:
+              - switch_relay_client: 4
+              - switch_relay_server: 4
+
+        - name: CTL_light_strip
+          pid: 0x0003
+          elements:
+              - light_cwww_server: 1
+
+        - name: all_in_one
+          pid: 0x0004
+          elements:
+              - switch_relay_client: 1
+              - switch_relay_server: 1
+              - light_cwww_server: 1
