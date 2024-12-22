@@ -1,3 +1,12 @@
+/**
+ * @file relay_server_model.h
+ * @brief Header file for the Relay Server Model.
+ *
+ * This file contains the definitions and function prototypes for the Relay Server Model.
+ * The Relay Server Model is responsible for managing the relay elements and their states.
+ *
+ * @author [Pranjal Chanda]
+ */
 #ifndef __RELAY_SERVER_MODEL_H__
 #define __RELAY_SERVER_MODEL_H__
 

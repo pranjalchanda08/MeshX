@@ -1,5 +1,5 @@
 /**
- * @file relay_server_model.h
+ * @file relay_server.c
  * @brief Relay server model implementation for BLE Mesh networks.
  *
  * This file contains the implementation of the relay server model for BLE Mesh.
@@ -26,14 +26,14 @@
  * @param _element_id The element ID.
  * @return The relative index of the element.
  */
-#define GET_RELATIVE_EL_IDX(_element_id) _element_id - relay_element_init_ctrl.element_id_start
+#define GET_RELATIVE_EL_IDX(_element_id) ((_element_id) - (relay_element_init_ctrl.element_id_start))
 
 /**
  * @brief Check if an element ID is within range.
  * @param _element_id The element ID.
  * @return True if the element ID is within range, false otherwise.
  */
-#define IS_EL_IN_RANGE(_element_id) (_element_id >= relay_element_init_ctrl.element_id_start && _element_id < relay_element_init_ctrl.element_id_end)
+#define IS_EL_IN_RANGE(_element_id) ((_element_id) >= relay_element_init_ctrl.element_id_start && (_element_id) < relay_element_init_ctrl.element_id_end)
 
 /**
  * @brief Structure to manage relay element initialization.
@@ -67,7 +67,7 @@ static void relay_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
     switch (evt)
     {
     case CONFIG_EVT_MODEL_APP_KEY_BIND:
-        element_id = param->value.state_change.mod_app_bind.element_addr - esp_ble_mesh_get_primary_element_address();
+        element_id = (param->value.state_change.mod_app_bind.element_addr - esp_ble_mesh_get_primary_element_address());
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
@@ -77,7 +77,7 @@ static void relay_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
         break;
     case CONFIG_EVT_MODEL_PUB_ADD:
     case CONFIG_EVT_MODEL_PUB_DEL:
-        element_id = param->value.state_change.mod_pub_set.element_addr - esp_ble_mesh_get_primary_element_address();
+        element_id = (param->value.state_change.mod_pub_set.element_addr - esp_ble_mesh_get_primary_element_address());
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
@@ -151,7 +151,7 @@ static esp_err_t dev_add_relay_srv_model_to_element_list(dev_struct_t *pdev, uin
         if (i == 0)
         {
             memcpy(&elements[i].sig_models[1],
-                   relay_element_init_ctrl.relay_server_sig_model_list[i - *start_idx],
+                   relay_element_init_ctrl.relay_server_sig_model_list[i],
                    sizeof(esp_ble_mesh_model_t));
             uint8_t *ref_ptr = (uint8_t *)&elements[i].sig_model_count;
             (*ref_ptr)++;
@@ -159,14 +159,15 @@ static esp_err_t dev_add_relay_srv_model_to_element_list(dev_struct_t *pdev, uin
         else
         {
             elements[i].sig_models = relay_element_init_ctrl.relay_server_sig_model_list[i - *start_idx];
-            elements[i].vnd_models = ESP_BLE_MESH_MODEL_NONE;
+            elements[i].vnd_models = ESP_BLE_MESH_MODEL_NONE; // No vendor models are assigned to this element
             uint8_t *ref_ptr = (uint8_t *)&elements[i].sig_model_count;
+            // Set the number of SIG models for the relay server element
             *ref_ptr = RELAY_SRV_MODEL_SIG_CNT;
             ref_ptr = (uint8_t *)&elements[i].vnd_model_count;
             *ref_ptr = RELAY_SRV_MODEL_VEN_CNT;
         }
     }
-    relay_element_init_ctrl.element_id_end = *start_idx += n_max;
+    relay_element_init_ctrl.element_id_end = (*start_idx += n_max);
     return ESP_OK;
 }
 
