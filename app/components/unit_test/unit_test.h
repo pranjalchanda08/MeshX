@@ -17,13 +17,23 @@
 #include "argtable3/argtable3.h"
 #include "module_id.h"
 
-typedef esp_err_t (*module_callback_t)(int argc, char **argv);
+typedef esp_err_t (*module_callback_t)(int cmd_id, int argc, char **argv);
 
 typedef struct callback_node {
-    module_id_t module_id;
     module_callback_t callback;
-    struct callback_node *next;
 } unit_test_callback_t;
+
+/**
+ * @brief Registers the unit test (ut) command with the ESP console.
+ *
+ * This function creates a new console command "ut" which is used for running unit tests.
+ * The command is registered with the ESP console using the esp_console_cmd_register function.
+ *
+ * @return
+ *     - ESP_OK: Success
+ *     - Other error codes: Failure
+ */
+esp_err_t register_ut_command();
 
 /**
  * @brief Initialize the production console.
