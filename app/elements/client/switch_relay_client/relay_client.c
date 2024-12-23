@@ -6,20 +6,19 @@
 
 #if CONFIG_ENABLE_CONFIG_SERVER
 #include "config_server.h"
-#define CONFIG_SERVER_CB_MASK                   CONFIG_EVT_MODEL_PUB_ADD | CONFIG_EVT_MODEL_SUB_ADD | CONFIG_EVT_MODEL_APP_KEY_BIND
+#define CONFIG_SERVER_CB_MASK CONFIG_EVT_MODEL_PUB_ADD | CONFIG_EVT_MODEL_SUB_ADD | CONFIG_EVT_MODEL_APP_KEY_BIND
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
 #if defined(__CONTROL_TASK_H__)
-#define CONTROL_TASK_MSG_CODE_EVT_MASK          CONTROL_TASK_MSG_EVT_TO_HAL_SET_ON_OFF
+#define CONTROL_TASK_MSG_CODE_EVT_MASK CONTROL_TASK_MSG_EVT_TO_HAL_SET_ON_OFF
 #endif /* __CONTROL_TASK_H__ */
 
-#define RELAY_CLI_PROD_ONOFF_ENABLE_CB          true
-#define CONFIG_RELAY_PROD_ONOFF_SET_ACK         true
-#define RELAY_CLI_PROD_ONOFF_CLI_CB_EVT_BMAP    PROD_ONOFF_CLI_EVT_GET | PROD_ONOFF_CLI_EVT_SET
+#define RELAY_CLI_PROD_ONOFF_ENABLE_CB true
+#define CONFIG_RELAY_PROD_ONOFF_SET_ACK true
+#define RELAY_CLI_PROD_ONOFF_CLI_CB_EVT_BMAP PROD_ONOFF_CLI_EVT_GET | PROD_ONOFF_CLI_EVT_SET
 
-#define GET_RELATIVE_EL_IDX(_element_id)        _element_id - relay_element_init_ctrl.element_id_start
-#define IS_EL_IN_RANGE(_element_id)             (_element_id >= relay_element_init_ctrl.element_id_start \
-                                                && _element_id < relay_element_init_ctrl.element_id_end)
+#define GET_RELATIVE_EL_IDX(_element_id) _element_id - relay_element_init_ctrl.element_id_start
+#define IS_EL_IN_RANGE(_element_id) (_element_id >= relay_element_init_ctrl.element_id_start && _element_id < relay_element_init_ctrl.element_id_end)
 
 static relay_client_elements_t relay_element_init_ctrl;
 
@@ -55,11 +54,17 @@ static esp_err_t dev_add_relay_cli_model_to_element_list(dev_struct_t *pdev, uin
     if (!pdev)
         return ESP_ERR_INVALID_STATE;
 
+    if ((n_max + *start_idx) >= CONFIG_MAX_ELEMENT_COUNT)
+    {
+        ESP_LOGE(TAG, "No of elements limit reached");
+        return ESP_ERR_NO_MEM;
+    }
+
     esp_ble_mesh_elem_t *elements = pdev->elements;
 
     relay_element_init_ctrl.element_id_start = *start_idx;
 
-    for (size_t i = *start_idx; i < (n_max + *start_idx) && i < CONFIG_RELAY_CLIENT_COUNT; i++)
+    for (size_t i = *start_idx; i < (n_max + *start_idx); i++)
     {
         if (i == 0)
         {
@@ -72,6 +77,7 @@ static esp_err_t dev_add_relay_cli_model_to_element_list(dev_struct_t *pdev, uin
         }
         else
         {
+            ESP_LOGI(TAG, "Relay Client Element: %d", i);
             elements[i].sig_models = relay_element_init_ctrl.relay_cli_sig_model_list[i - *start_idx];
             elements[i].vnd_models = ESP_BLE_MESH_MODEL_NONE;
             uint8_t *ref_ptr = (uint8_t *)&elements[i].sig_model_count;
@@ -99,16 +105,16 @@ void relay_el_generic_client_cb(const esp_ble_mesh_generic_client_cb_param_t *pa
 
     switch (evt)
     {
-        case PROD_ONOFF_CLI_EVT_GET:
-            el_ctx->state = param->status_cb.onoff_status.present_onoff;
-            ESP_LOGI(TAG, "GET resp: %d", el_ctx->state);
-            break;
-        case PROD_ONOFF_CLI_EVT_SET:
-            el_ctx->state ^= 1;
-            ESP_LOGI(TAG, "Next state: %d", el_ctx->state);
-            break;
-        default:
-            break;
+    case PROD_ONOFF_CLI_EVT_GET:
+        el_ctx->state = param->status_cb.onoff_status.present_onoff;
+        ESP_LOGI(TAG, "GET resp: %d", el_ctx->state);
+        break;
+    case PROD_ONOFF_CLI_EVT_SET:
+        el_ctx->state ^= 1;
+        ESP_LOGI(TAG, "Next state: %d", el_ctx->state);
+        break;
+    default:
+        break;
     }
 }
 
@@ -123,29 +129,29 @@ static void relay_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
     ESP_LOGD(TAG, "EVT: %p", (void *)evt);
     switch (evt)
     {
-        case CONFIG_EVT_MODEL_APP_KEY_BIND:
-            element_id = param->value.state_change.mod_app_bind.element_addr - esp_ble_mesh_get_primary_element_address();
-            if (!IS_EL_IN_RANGE(element_id))
-                return;
-            rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-            el_ctx = &relay_element_init_ctrl.rel_cli_ctx[rel_el_id];
-            el_ctx->app_id = param->value.state_change.appkey_add.app_idx;
-            el_ctx->net_id = param->value.state_change.appkey_add.net_idx;
-            break;
-        case CONFIG_EVT_MODEL_PUB_ADD:
-        case CONFIG_EVT_MODEL_PUB_DEL:
-            element_id = param->value.state_change.mod_pub_set.element_addr - esp_ble_mesh_get_primary_element_address();
-            if (!IS_EL_IN_RANGE(element_id))
-                return;
-            rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-            el_ctx = &relay_element_init_ctrl.rel_cli_ctx[rel_el_id];
-            el_ctx->pub_addr = evt == CONFIG_EVT_MODEL_PUB_ADD ? param->value.state_change.mod_pub_set.pub_addr
-                                    : ESP_BLE_MESH_ADDR_UNASSIGNED;
-            el_ctx->app_id = param->value.state_change.mod_pub_set.app_idx;
-            ESP_LOGI(TAG, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
-            break;
-        default:
-            break;
+    case CONFIG_EVT_MODEL_APP_KEY_BIND:
+        element_id = param->value.state_change.mod_app_bind.element_addr - esp_ble_mesh_get_primary_element_address();
+        if (!IS_EL_IN_RANGE(element_id))
+            return;
+        rel_el_id = GET_RELATIVE_EL_IDX(element_id);
+        el_ctx = &relay_element_init_ctrl.rel_cli_ctx[rel_el_id];
+        el_ctx->app_id = param->value.state_change.appkey_add.app_idx;
+        el_ctx->net_id = param->value.state_change.appkey_add.net_idx;
+        break;
+    case CONFIG_EVT_MODEL_PUB_ADD:
+    case CONFIG_EVT_MODEL_PUB_DEL:
+        element_id = param->value.state_change.mod_pub_set.element_addr - esp_ble_mesh_get_primary_element_address();
+        if (!IS_EL_IN_RANGE(element_id))
+            return;
+        rel_el_id = GET_RELATIVE_EL_IDX(element_id);
+        el_ctx = &relay_element_init_ctrl.rel_cli_ctx[rel_el_id];
+        el_ctx->pub_addr = evt == CONFIG_EVT_MODEL_PUB_ADD ? param->value.state_change.mod_pub_set.pub_addr
+                                                           : ESP_BLE_MESH_ADDR_UNASSIGNED;
+        el_ctx->app_id = param->value.state_change.mod_pub_set.app_idx;
+        ESP_LOGI(TAG, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
+        break;
+    default:
+        break;
     }
 }
 #endif /* #if CONFIG_ENABLE_CONFIG_SERVER */
@@ -156,7 +162,7 @@ static esp_err_t relay_cli_control_task_msg_handle(dev_struct_t *pdev, control_t
     esp_err_t err = ESP_OK;
     if (evt == CONTROL_TASK_MSG_EVT_TO_HAL_SET_ON_OFF)
     {
-        const esp_ble_mesh_gen_onoff_srv_t *srv = (const esp_ble_mesh_gen_onoff_srv_t *) params;
+        const esp_ble_mesh_gen_onoff_srv_t *srv = (const esp_ble_mesh_gen_onoff_srv_t *)params;
         const uint16_t el_id = srv->model->element_idx;
         err = ble_mesh_send_relay_msg(pdev, el_id, true, CONFIG_RELAY_PROD_ONOFF_SET_ACK);
     }
@@ -176,7 +182,7 @@ static esp_err_t relay_cli_unit_test_cb_handler(int cmd_id, int argc, char **arg
 
 esp_err_t ble_mesh_send_relay_msg(dev_struct_t *pdev, uint16_t element_id, uint8_t set_get, uint8_t ack)
 {
-    if(!pdev || !IS_EL_IN_RANGE(element_id))
+    if (!pdev || !IS_EL_IN_RANGE(element_id))
         return ESP_ERR_INVALID_ARG;
 
     esp_err_t err = ESP_OK;
@@ -259,10 +265,9 @@ esp_err_t create_relay_client_elements(dev_struct_t *pdev)
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 #if defined(__CONTROL_TASK_H__)
     err = control_task_reg_msg_code_handler_cb(
-                CONTROL_TASK_MSG_CODE_TO_HAL,
-                CONTROL_TASK_MSG_CODE_EVT_MASK,
-                (control_task_msg_handle_t) &relay_cli_control_task_msg_handle
-    );
+        CONTROL_TASK_MSG_CODE_TO_HAL,
+        CONTROL_TASK_MSG_CODE_EVT_MASK,
+        (control_task_msg_handle_t)&relay_cli_control_task_msg_handle);
     if (err)
     {
         ESP_LOGE(TAG, "control task callback reg failed: (%d)", err);
