@@ -11,8 +11,10 @@
 #include "unit_test.h"
 #include "esp_log.h"
 
-#define TAG __func__
-static unit_test_callback_t *callback_list = NULL;
+#define TAG "unit_test"
+#define UT_CMD_MIN_ARGS 4
+
+static unit_test_callback_t callback_list[MODULE_ID_MAX];
 
 /**
  * @brief Handles unit test commands by invoking the appropriate callback based on the module ID.
@@ -28,26 +30,35 @@ static unit_test_callback_t *callback_list = NULL;
  *      - ESP_ERR_INVALID_ARG: If the number of arguments is insufficient.
  *      - ESP_ERR_NOT_FOUND: If no unit test is registered for the specified module ID.
  */
-static int ut_command_handler(int argc, char **argv) {
-    if (argc < 2) {
+static esp_err_t ut_command_handler(int argc, char **argv) {
+    if (argc < UT_CMD_MIN_ARGS) {
         ESP_LOGE(TAG, "Insufficient arguments");
         return ESP_ERR_INVALID_ARG;
     }
 
+    int cmd_id = atoi(argv[2]);
+    int parsed_argc = atoi(argv[3]);
     module_id_t module_id = atoi(argv[1]);
-    if(module_id >= MODULE_ID_MAX)
+    ESP_LOGI(TAG, "Unit Test: Params -> argc: %d, Module: %d, cmd_id: %d", parsed_argc, cmd_id , module_id);
+    if (parsed_argc > (argc - UT_CMD_MIN_ARGS))
     {
+        ESP_LOGE(TAG, "Insufficient module arguments");
+        return ESP_ERR_INVALID_ARG;
+    }
+
+    for (size_t i = 0; i < parsed_argc; i++)
+    {
+        ESP_LOGI(TAG, "argv[%d]: %s", i, argv[i + UT_CMD_MIN_ARGS]);
+    }
+
+    if (module_id >= MODULE_ID_MAX) {
         ESP_LOGE(TAG, "Module ID %d unknown", module_id);
         return ESP_ERR_INVALID_ARG;
     }
-    unit_test_callback_t *current = callback_list;
 
-    while (current != NULL) {
-        if (current->module_id == module_id) {
-            current->callback(argc, argv);
-            return ESP_OK;
-        }
-        current = current->next;
+    if(NULL != callback_list[module_id].callback)
+    {
+        return callback_list[module_id].callback(cmd_id, parsed_argc, (argv + UT_CMD_MIN_ARGS));
     }
 
     ESP_LOGE(TAG, "No unit test registered for module ID %d", module_id);
@@ -64,7 +75,7 @@ static int ut_command_handler(int argc, char **argv) {
  *     - ESP_OK: Success
  *     - Other error codes: Failure
  */
-static esp_err_t register_ut_command() {
+esp_err_t register_ut_command() {
     const esp_console_cmd_t cmd = {
         .command = "ut",
         .help = "Run unit tests",
@@ -133,14 +144,9 @@ esp_err_t init_prod_console() {
  *     - ESP_FAIL: Failed to register the unit test
  */
 esp_err_t register_unit_test(module_id_t module_id, module_callback_t callback) {
-    unit_test_callback_t *new_node = (unit_test_callback_t *)malloc(sizeof(unit_test_callback_t));
-    if (new_node == NULL) {
-        ESP_LOGE(TAG, "Failed to allocate memory for new callback node");
-        return ESP_ERR_NO_MEM;
-    }
-    new_node->module_id = module_id;
-    new_node->callback = callback;
-    new_node->next = callback_list;
-    callback_list = new_node;
+    if(module_id >= MODULE_ID_MAX)
+        return ESP_ERR_INVALID_ARG;
+
+    callback_list[module_id].callback = callback;
     return ESP_OK;
 }

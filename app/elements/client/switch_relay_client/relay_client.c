@@ -23,7 +23,7 @@
 
 static relay_client_elements_t relay_element_init_ctrl;
 
-static esp_ble_mesh_model_t relay_sig_template __attribute__((section(".text"))) = ESP_BLE_MESH_SIG_MODEL(
+static const esp_ble_mesh_model_t relay_sig_template = ESP_BLE_MESH_SIG_MODEL(
     ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_CLI,
     NULL, NULL, NULL);
 
@@ -164,6 +164,13 @@ static esp_err_t relay_cli_control_task_msg_handle(dev_struct_t *pdev, control_t
     return err;
 }
 #endif /* __CONTROL_TASK_H__ */
+#if CONFIG_ENABLE_UNIT_TEST
+static esp_err_t relay_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv)
+{
+    ESP_LOGI(TAG, "Relay Client Unit Test: Params -> argc: %d, cmd_id: %d", argc, cmd_id);
+    return ESP_OK;
+}
+#endif /* CONFIG_ENABLE_UNIT_TEST */
 
 #endif /* RELAY_CLI_PROD_ONOFF_ENABLE_CB */
 
@@ -262,6 +269,14 @@ esp_err_t create_relay_client_elements(dev_struct_t *pdev)
         return err;
     }
 #endif /* __CONTROL_TASK_H__ */
+#if CONFIG_ENABLE_UNIT_TEST
+    err = register_unit_test(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, &relay_cli_unit_test_cb_handler);
+    if (err)
+    {
+        ESP_LOGE(TAG, "unit_test reg failed: (%d)", err);
+        return err;
+    }
+#endif /* CONFIG_ENABLE_UNIT_TEST */
 #endif /* RELAY_CLI_PROD_ONOFF_ENABLE_CB */
 
     err = prod_onoff_client_init();

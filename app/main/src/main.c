@@ -220,7 +220,19 @@ void app_main(void)
     }
 
 #if CONFIG_ENABLE_UNIT_TEST
+    err = register_ut_command();
+    if (err)
+    {
+        ESP_LOGE(TAG, "Failed to register unit test command (err 0x%x)", err);
+        return;
+    }
+
     err = init_prod_console();
+    if (err)
+    {
+        ESP_LOGE(TAG, "Failed to initialize production console (err 0x%x)", err);
+        return;
+    }
 #endif /* CONFIG_ENABLE_UNIT_TEST */
 
 }
