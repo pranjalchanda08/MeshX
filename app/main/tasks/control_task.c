@@ -101,18 +101,14 @@ esp_err_t control_task_reg_msg_code_handler_cb(control_task_msg_code_t msg_code,
     if (callback == NULL || evt_bmap == 0 || msg_code >= CONTROL_TASK_MSG_CODE_MAX)
         return ESP_ERR_INVALID_ARG; // Invalid arguments
 
-    control_task_evt_cb_reg_t **ptr = &control_task_msg_code_list_heads[msg_code];
-
-    while (*ptr != NULL)
-        ptr = &(*ptr)->next;
-
-    *ptr = (control_task_evt_cb_reg_t *)malloc(sizeof(control_task_evt_cb_reg_t));
-    if (*ptr == NULL)
+    control_task_evt_cb_reg_t *new_node = (control_task_evt_cb_reg_t *)malloc(sizeof(control_task_evt_cb_reg_t));
+    if (new_node == NULL)
         return ESP_ERR_NO_MEM; // Memory allocation failed
 
-    (*ptr)->cb = callback;
-    (*ptr)->msg_evt_bmap = evt_bmap;
-    (*ptr)->next = NULL;
+    new_node->cb = callback;
+    new_node->msg_evt_bmap = evt_bmap;
+    new_node->next = control_task_msg_code_list_heads[msg_code];
+    control_task_msg_code_list_heads[msg_code] = new_node;
 
     return ESP_OK;
 }

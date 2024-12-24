@@ -11,6 +11,8 @@ prod:
           elements:
               - switch_relay_client: 4
               - switch_relay_server: 4
+          components:
+              - unit_test : true
 
         - name: CTL_light_strip
           pid: 0x0003

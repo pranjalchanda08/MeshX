@@ -137,7 +137,7 @@ static esp_err_t dev_add_relay_srv_model_to_element_list(dev_struct_t *pdev, uin
     if (!pdev)
         return ESP_ERR_INVALID_STATE;
 
-    if ((n_max + *start_idx) >= CONFIG_MAX_ELEMENT_COUNT)
+    if ((n_max + *start_idx) > CONFIG_MAX_ELEMENT_COUNT)
     {
         ESP_LOGE(TAG, "No of elements limit reached");
         return ESP_ERR_NO_MEM;
