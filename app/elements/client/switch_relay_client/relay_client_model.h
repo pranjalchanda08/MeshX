@@ -12,6 +12,11 @@
 #define RELAY_CLI_MODEL_SIG_CNT 1 // No of SIG models in a relay model element
 #define RELAY_CLI_MODEL_VEN_CNT 0 // No of VEN models in a relay model element
 
+#define RELAY_CLI_MSG_SET 0
+#define RELAY_CLI_MSG_GET 1
+#define RELAY_CLI_MSG_ACK 1
+#define RELAY_CLI_MSG_NO_ACK 0
+
 typedef struct rel_cli_ctx
 {
     uint8_t state;
@@ -20,6 +25,13 @@ typedef struct rel_cli_ctx
     uint16_t net_id;
     uint16_t app_id;
 } rel_cli_ctx_t;
+
+typedef struct relay_client_msg
+{
+    uint16_t element_id;
+    uint8_t set_get;
+    uint8_t ack;
+} relay_client_msg_t;
 
 typedef struct relay_client_element
 {

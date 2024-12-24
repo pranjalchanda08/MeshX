@@ -39,7 +39,7 @@ static esp_err_t ut_command_handler(int argc, char **argv) {
     int cmd_id = atoi(argv[2]);
     int parsed_argc = atoi(argv[3]);
     module_id_t module_id = atoi(argv[1]);
-    ESP_LOGI(TAG, "Unit Test: Params -> argc: %d, Module: %d, cmd_id: %d", parsed_argc, cmd_id , module_id);
+    ESP_LOGD(TAG, "Unit Test: Params -> argc: %d, Module: %d, cmd_id: %d", parsed_argc, cmd_id , module_id);
     if (parsed_argc > (argc - UT_CMD_MIN_ARGS))
     {
         ESP_LOGE(TAG, "Insufficient module arguments");
@@ -48,7 +48,7 @@ static esp_err_t ut_command_handler(int argc, char **argv) {
 
     for (size_t i = 0; i < parsed_argc; i++)
     {
-        ESP_LOGI(TAG, "argv[%d]: %s", i, argv[i + UT_CMD_MIN_ARGS]);
+        ESP_LOGD(TAG, "argv[%d]: %s", i, argv[i + UT_CMD_MIN_ARGS]);
     }
 
     if (module_id >= MODULE_ID_MAX) {

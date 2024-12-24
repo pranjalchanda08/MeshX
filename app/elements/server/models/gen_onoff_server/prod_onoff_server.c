@@ -29,36 +29,30 @@ static esp_err_t prod_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *
 static esp_err_t prod_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param_t *param)
 {
     esp_ble_mesh_gen_onoff_srv_t *srv = (esp_ble_mesh_gen_onoff_srv_t *)param->model->user_data;
-    bool send_reply_to_src = false;
 
     switch (param->ctx.recv_op)
     {
-    case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_GET:
-        send_reply_to_src = true;
-        break;
-    case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET:
-    case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK:
-        srv->state.onoff = param->value.state_change.onoff_set.onoff;
-        ESP_LOGI(TAG, "state_change: %d", srv->state.onoff);
-        send_reply_to_src = param->ctx.recv_op == ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET;
-
-        /* Publish STATUS to respective subcribers */
-        esp_ble_mesh_model_publish(param->model,
-                                    ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_STATUS,
-                                    sizeof(srv->state.onoff),
-                                    &srv->state.onoff,
-                                    ROLE_NODE);
-        ESP_ERROR_CHECK(prod_perform_hw_change(param));
-        break;
-    default:
-        break;
+        case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_GET:
+            break;
+        case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET:
+        case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK:
+            srv->state.onoff = param->value.state_change.onoff_set.onoff;
+            ESP_LOGI(TAG, "state_change: %d", srv->state.onoff);
+            if(param->ctx.recv_dst != param->model->pub->publish_addr)
+            {
+                /* Here the message wa received from unregistered source and mention the state to the respective client */
+                ESP_LOGI(TAG, "Publishing to 0x%x", param->model->pub->publish_addr);
+                param->ctx.addr = param->model->pub->publish_addr;
+                esp_ble_mesh_server_model_send_msg(param->model,
+                                            &param->ctx,
+                                            ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_STATUS,
+                                            sizeof(srv->state.onoff), &srv->state.onoff);
+            }
+            ESP_ERROR_CHECK(prod_perform_hw_change(param));
+            break;
+        default:
+            break;
     }
-    if (send_reply_to_src)
-        esp_ble_mesh_server_model_send_msg(param->model,
-                                    &param->ctx,
-                                    ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_STATUS,
-                                    sizeof(srv->state.onoff), &srv->state.onoff);
-
     return ESP_OK;
 }
 
