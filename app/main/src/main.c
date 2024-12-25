@@ -172,17 +172,17 @@ static esp_err_t ble_mesh_init(void)
 {
     esp_err_t err;
 
-    err = ble_mesh_element_init(&g_dev);
-    ESP_ERR_PRINT_RET("Failed to initialize BLE Elements", err);
-
-    err = ble_mesh_composition_init(&g_dev);
-    ESP_ERR_PRINT_RET("Failed to initialize BLE Composition", err);
-
     err = prod_init_prov(&prod_prov_cfg);
     ESP_ERR_PRINT_RET("Failed to initialize Prov server", err);
 
     err = prod_init_config_server();
     ESP_ERR_PRINT_RET("Failed to initialize config server", err);
+
+    err = ble_mesh_element_init(&g_dev);
+    ESP_ERR_PRINT_RET("Failed to initialize BLE Elements", err);
+
+    err = ble_mesh_composition_init(&g_dev);
+    ESP_ERR_PRINT_RET("Failed to initialize BLE Composition", err);
 
     err = esp_ble_mesh_init(&PROD_PROV_INSTANCE, &g_dev.composition);
     ESP_ERR_PRINT_RET("Failed to initialize mesh stack", err);

@@ -15,10 +15,13 @@
 /* Structure for storing callback registrations */
 typedef struct config_server_cb_reg
 {
-    config_srv_cb cb;                  /**< Registered callback function */
-    uint32_t evt_bmap;                 /**< Bitmap of events the callback is registered for */
-    struct config_server_cb_reg *next; /**< Pointer to the next callback registration */
+    config_srv_cb cb;                       /**< Registered callback function */
+    uint32_t evt_bmap;                      /**< Bitmap of events the callback is registered for */
+    SLIST_ENTRY(config_server_cb_reg) next; /**< Pointer to the next callback registration */
 } config_server_cb_reg_t;
+
+SLIST_HEAD(config_server_cb_reg_head, config_server_cb_reg);
+static struct config_server_cb_reg_head config_server_cb_reg_table = SLIST_HEAD_INITIALIZER(config_server_cb_reg_table);
 
 /* Struct for storing the Model id to config evt */
 typedef struct config_server_model_evt_map
@@ -39,6 +42,10 @@ static const config_server_model_evt_map_t config_server_model_evt_map_table[] =
     {ESP_BLE_MESH_MODEL_OP_MODEL_SUB_DELETE, "OP_MODEL_SUB_DELETE", CONFIG_EVT_MODEL_SUB_DEL},
     {ESP_BLE_MESH_MODEL_OP_MODEL_APP_UNBIND, "OP_MODEL_APP_UNBIND", CONFIG_EVT_MODEL_APP_KEY_UNBIND},
 };
+
+/* Mutex for protecting the callback registration table */
+static SemaphoreHandle_t config_server_mutex;
+
 /* Global variable for Configuration Server parameters */
 esp_ble_mesh_cfg_srv_t g_prod_config_server = {
     /* 3 transmissions with 20ms interval */
@@ -59,9 +66,6 @@ esp_ble_mesh_cfg_srv_t g_prod_config_server = {
     .default_ttl = 7,
 };
 
-/* Linked list head for callback registration table */
-static config_server_cb_reg_t *config_server_cb_reg_table = NULL;
-
 /**
  * @brief Dispatches configuration events to registered callbacks.
  *
@@ -73,21 +77,20 @@ static config_server_cb_reg_t *config_server_cb_reg_table = NULL;
  */
 static void prod_config_server_cb_dispatch(const esp_ble_mesh_cfg_server_cb_param_t *param, config_evt_t evt)
 {
-    if (config_server_cb_reg_table == NULL)
+    if (SLIST_EMPTY(&config_server_cb_reg_table))
     {
         ESP_LOGW(TAG, "No config server callback registered for event: %p", (void *)evt);
         return;
     }
 
-    config_server_cb_reg_t *ptr = config_server_cb_reg_table;
+    config_server_cb_reg_t *ptr;
 
-    while (ptr)
+    SLIST_FOREACH(ptr, &config_server_cb_reg_table, next)
     {
         if ((evt & ptr->evt_bmap) && ptr->cb != NULL)
         {
             ptr->cb(param, evt); // Call the registered callback
         }
-        ptr = ptr->next; // Move to the next registration
     }
 }
 
@@ -126,6 +129,12 @@ static void prod_ble_mesh_config_server_cb(esp_ble_mesh_cfg_server_cb_event_t ev
  */
 esp_err_t prod_init_config_server()
 {
+    config_server_mutex = xSemaphoreCreateMutex();
+    if (config_server_mutex == NULL)
+    {
+        return ESP_ERR_NO_MEM; // Mutex creation failed
+    }
+
     esp_ble_mesh_register_config_server_callback((esp_ble_mesh_cfg_server_cb_t)&prod_ble_mesh_config_server_cb);
     return ESP_OK;
 }
@@ -147,22 +156,21 @@ esp_err_t prod_config_server_cb_reg(config_srv_cb cb, uint32_t config_evt_bmap)
         return ESP_ERR_INVALID_ARG; // Invalid arguments
     }
 
-    config_server_cb_reg_t **ptr = &config_server_cb_reg_table;
-
-    while (*ptr != NULL)
+    if (xSemaphoreTake(config_server_mutex, portMAX_DELAY) == pdTRUE)
     {
-        ptr = &(*ptr)->next;
-    }
+        config_server_cb_reg_t *new_node = (config_server_cb_reg_t *)malloc(sizeof(config_server_cb_reg_t));
+        if (new_node == NULL)
+        {
+            xSemaphoreGive(config_server_mutex);
+            return ESP_ERR_NO_MEM; // Memory allocation failed
+        }
 
-    *ptr = (config_server_cb_reg_t *)malloc(sizeof(config_server_cb_reg_t));
-    if (*ptr == NULL)
-    {
-        return ESP_ERR_NO_MEM; // Memory allocation failed
-    }
+        new_node->cb = cb;
+        new_node->evt_bmap = config_evt_bmap;
+        SLIST_INSERT_HEAD(&config_server_cb_reg_table, new_node, next);
 
-    (*ptr)->cb = cb;
-    (*ptr)->evt_bmap = config_evt_bmap;
-    (*ptr)->next = NULL;
+        xSemaphoreGive(config_server_mutex);
+    }
 
     return ESP_OK;
 }
