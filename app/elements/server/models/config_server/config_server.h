@@ -1,3 +1,11 @@
+/**
+ * @file config_server.h
+ * @brief Header file for the production configuration server model.
+ *
+ * This file contains the definitions and function declarations for the
+ * production configuration server model used in the ESP32 BLE Mesh Node.
+ */
+
 #ifndef __PROD_CONFIG_SERVER__
 #define __PROD_CONFIG_SERVER__
 
@@ -7,29 +15,54 @@
 #include <esp_ble_mesh_generic_model_api.h>
 #include <esp_ble_mesh_local_data_operation_api.h>
 #include <esp_ble_mesh_config_model_api.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/semphr.h"
+#include "sys/queue.h"
 
 #define PROD_CONFIG_SERVER_INSTANCE g_prod_config_server
 
+/**
+ * @brief Enumeration of configuration events.
+ */
 typedef enum
 {
-    CONFIG_EVT_MODEL_APP_KEY_ADD        = BIT0,
-    CONFIG_EVT_MODEL_APP_KEY_DEL        = BIT1,
-    CONFIG_EVT_MODEL_APP_KEY_BIND       = BIT2,
-    CONFIG_EVT_MODEL_APP_KEY_UNBIND     = BIT3,
-    CONFIG_EVT_MODEL_SUB_ADD            = BIT4,
-    CONFIG_EVT_MODEL_SUB_DEL            = BIT5,
-    CONFIG_EVT_MODEL_PUB_ADD            = BIT6,
-    CONFIG_EVT_MODEL_PUB_DEL            = BIT7,
-    CONFIG_EVT_MODEL_NET_KEY_ADD        = BIT8,
-    CONFIG_EVT_MODEL_NET_KEY_DEL        = BIT9,
-    CONFIG_EVT_ALL                      = 0xFFFFFFFF,
-}config_evt_t;
+    CONFIG_EVT_MODEL_APP_KEY_ADD        = BIT0, /**< Event for adding an application key. */
+    CONFIG_EVT_MODEL_APP_KEY_DEL        = BIT1, /**< Event for deleting an application key. */
+    CONFIG_EVT_MODEL_APP_KEY_BIND       = BIT2, /**< Event for binding an application key. */
+    CONFIG_EVT_MODEL_APP_KEY_UNBIND     = BIT3, /**< Event for unbinding an application key. */
+    CONFIG_EVT_MODEL_SUB_ADD            = BIT4, /**< Event for adding a subscription. */
+    CONFIG_EVT_MODEL_SUB_DEL            = BIT5, /**< Event for deleting a subscription. */
+    CONFIG_EVT_MODEL_PUB_ADD            = BIT6, /**< Event for adding a publication. */
+    CONFIG_EVT_MODEL_PUB_DEL            = BIT7, /**< Event for deleting a publication. */
+    CONFIG_EVT_MODEL_NET_KEY_ADD        = BIT8, /**< Event for adding a network key. */
+    CONFIG_EVT_MODEL_NET_KEY_DEL        = BIT9, /**< Event for deleting a network key. */
+    CONFIG_EVT_ALL                      = 0xFFFFFFFF, /**< Event for all configuration events. */
+} config_evt_t;
 
+/**
+ * @brief Callback function type for configuration server events.
+ *
+ * @param param Pointer to the callback parameter structure.
+ * @param evt The configuration event that occurred.
+ */
 typedef void (*config_srv_cb)(const esp_ble_mesh_cfg_server_cb_param_t *param, config_evt_t evt);
 
 extern esp_ble_mesh_cfg_srv_t g_prod_config_server;
 
+/**
+ * @brief Initialize the production configuration server.
+ *
+ * @return ESP_OK on success, or an error code on failure.
+ */
 esp_err_t prod_init_config_server();
+
+/**
+ * @brief Register a callback function for configuration server events.
+ *
+ * @param cb The callback function to register.
+ * @param config_evt_bmap Bitmap of configuration events to register for.
+ * @return ESP_OK on success, or an error code on failure.
+ */
 esp_err_t prod_config_server_cb_reg(config_srv_cb cb, uint32_t config_evt_bmap);
 
 #endif
