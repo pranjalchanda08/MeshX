@@ -38,9 +38,9 @@ typedef uint32_t control_task_msg_evt_t;
 typedef enum PACKED_ATTR
 {
     /* To HAL Codes */
-    CONTROL_TASK_MSG_EVT_TO_HAL_SET_ON_OFF      = (1 << 0), /* param: esp_ble_mesh_gen_onoff_srv_t */
-    CONTROL_TASK_MSG_EVT_TO_HAL_SET_CTL         = (1 << 1), /* param: esp_ble_mesh_light_ctl_srv_t */
-    CONTROL_TASK_MSG_EVT_TO_HAL_SET_LIGHTNESS   = (1 << 2),
+    CONTROL_TASK_MSG_EVT_TO_HAL_SET_ON_OFF      = BIT0, /* param: esp_ble_mesh_gen_onoff_srv_t */
+    CONTROL_TASK_MSG_EVT_TO_HAL_SET_CTL         = BIT1, /* param: esp_ble_mesh_light_ctl_srv_t */
+    CONTROL_TASK_MSG_EVT_TO_HAL_SET_LIGHTNESS   = BIT2,
     CONTROL_TASK_MSG_EVT_TO_HAL_MAX,
 } control_task_msg_evt_to_hal_t;
 
@@ -48,9 +48,9 @@ typedef enum PACKED_ATTR
 typedef enum PACKED_ATTR
 {
     /* To BLE Codes*/
-    CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF      = (1 << 0),
-    CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL         = (1 << 1),
-    CONTROL_TASK_MSG_EVT_TO_BLE_SET_LIGHTNESS   = (1 << 2),
+    CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF      = BIT0,
+    CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL         = BIT1,
+    CONTROL_TASK_MSG_EVT_TO_BLE_SET_LIGHTNESS   = BIT2,
     CONTROL_TASK_MSG_EVT_TO_BLE_MAX
 
 } control_task_msg_evt_to_ble_t;

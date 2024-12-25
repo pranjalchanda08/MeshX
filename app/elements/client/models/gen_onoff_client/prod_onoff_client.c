@@ -71,7 +71,7 @@ static void app_ble_mesh_generic_client_cb(esp_ble_mesh_generic_client_cb_event_
 {
     ESP_LOGI(TAG, "%s, op|src|dst: %04" PRIx32 "|%04x|%04x",
             client_state_str[event], param->params->ctx.recv_op, param->params->ctx.addr, param->params->ctx.recv_dst);
-    prod_onoff_reg_cb_dispatch(param, (prod_onoff_cli_evt_t)(1 << event));
+    prod_onoff_reg_cb_dispatch(param, (prod_onoff_cli_evt_t) BIT(event));
 }
 
 /**
@@ -121,5 +121,6 @@ esp_err_t prod_onoff_reg_cb(prod_onoff_cli_cb cb, uint32_t config_evt_bmap)
  */
 esp_err_t prod_onoff_client_init(void)
 {
-    return (prod_client_init_flag == PROD_CLIENT_INIT_MAGIC) ? ESP_OK : esp_ble_mesh_register_generic_client_callback((esp_ble_mesh_generic_client_cb_t)&app_ble_mesh_generic_client_cb);
+    return (prod_client_init_flag == PROD_CLIENT_INIT_MAGIC) ? ESP_OK :
+        esp_ble_mesh_register_generic_client_callback((esp_ble_mesh_generic_client_cb_t)&app_ble_mesh_generic_client_cb);
 }

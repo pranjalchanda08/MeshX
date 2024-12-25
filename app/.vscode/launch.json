@@ -14,10 +14,10 @@
         "cwd": "${workspaceFolder}",
         "environment": [{ "name": "PATH", "value": "${config:idf.customExtraPaths}" }],
         "setupCommands": [
-          { "text": "target remote :3333" },
-          {"text":"b app_main"},
+          {"text": "target remote :3333" },
+          {"text": "b app_main"},
           {"text": "monitor reset halt"},
-          { "text": "flushregs" }
+          {"text": "flushregs" }
         ],
         "externalConsole": false,
         "logging": {
