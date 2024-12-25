@@ -18,10 +18,6 @@
           {"text":"b app_main"},
           {"text": "monitor reset halt"},
           { "text": "flushregs" }
-        //   {"text":"continue"},
-        //   { "text": "set remote hardware-watchpoint-limit 2"},
-        //   { "text": "mon reset halt" },
-        //   { "text": "b app_main" },
         ],
         "externalConsole": false,
         "logging": {

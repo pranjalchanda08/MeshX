@@ -1,4 +1,14 @@
-#include <light_ctl_client.h>
+/**
+ * @file light_ctl_client.c
+ * @brief Implementation of the Light CTL Client model for ESP32 BLE Mesh.
+ *
+ * This file contains the implementation of the Light CTL Client model, including
+ * initialization, callback registration, and event handling.
+ *
+ * @date
+ */
+
+#include "light_ctl_client.h"
 
 #define TAG __func__
 
@@ -15,6 +25,15 @@ static const char *client_state_str[] = {
 
 static light_ctl_cli_cb_reg_t *light_ctl_cli_cb_reg_table;
 
+/**
+ * @brief Dispatch the registered callbacks for the Light CTL Client events.
+ *
+ * This function iterates through the registered callback table and calls the
+ * appropriate callback functions based on the event bitmap.
+ *
+ * @param[in] param Pointer to the BLE Mesh Light Client callback parameters.
+ * @param[in] evt The Light CTL Client event.
+ */
 static void light_ctl_cli_reg_cb_dispatch(const esp_ble_mesh_light_client_cb_param_t *param, light_ctl_cli_evt_t evt)
 {
     if (light_ctl_cli_cb_reg_table == NULL)
@@ -35,6 +54,15 @@ static void light_ctl_cli_reg_cb_dispatch(const esp_ble_mesh_light_client_cb_par
     }
 }
 
+/**
+ * @brief BLE Mesh Light Client callback function.
+ *
+ * This function is called by the BLE Mesh stack when a Light Client event occurs.
+ * It logs the event details and dispatches the registered callbacks.
+ *
+ * @param[in] event The Light Client event.
+ * @param[in] param Pointer to the BLE Mesh Light Client callback parameters.
+ */
 void app_ble_mesh_light_client_cb(esp_ble_mesh_light_client_cb_event_t event,
                                   const esp_ble_mesh_light_client_cb_param_t *param)
 {
@@ -44,6 +72,16 @@ void app_ble_mesh_light_client_cb(esp_ble_mesh_light_client_cb_event_t event,
     light_ctl_cli_reg_cb_dispatch(param, (light_ctl_cli_evt_t)(1 << event));
 }
 
+/**
+ * @brief Register a callback for Light CTL Client events.
+ *
+ * This function registers a callback function for the specified Light CTL Client
+ * events. The callback will be called when the corresponding events occur.
+ *
+ * @param[in] cb The callback function to register.
+ * @param[in] config_evt_bmap The event bitmap specifying the events to register for.
+ * @return ESP_OK on success, or an error code on failure.
+ */
 esp_err_t prod_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap)
 {
     if (cb == NULL || config_evt_bmap == 0)
@@ -64,6 +102,15 @@ esp_err_t prod_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap)
 
     return ESP_OK;
 }
+
+/**
+ * @brief Initialize the Light CTL Client model.
+ *
+ * This function initializes the Light CTL Client model by registering the
+ * Light Client callback with the BLE Mesh stack.
+ *
+ * @return ESP_OK on success, or an error code on failure.
+ */
 esp_err_t prod_light_ctl_client_init()
 {
     return (light_ctl_client_init_flag == LIGHT_CTL_CLIENT_INIT_MAGIC) ? ESP_OK

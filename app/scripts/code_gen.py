@@ -104,6 +104,14 @@ class CodeGen(CodeGenException):
         self.file_insert += self.define_fmt.format("CONFIG_MAX_ELEMENT_COUNT", self.max_el)
         return self.file_insert
 
+    def resolve_component_deps(self, component, value=0):
+        if self.product is not None:
+            comp_ptr = self.prod_profile['components'][component]
+            comp_ptr['macros'][0]['value'] = value
+            self.__get_src_from_path(comp_ptr['path'])
+            for macro in comp_ptr['macros']:
+                macro['value'] = value
+
     def resolve_base_models_deps(self, base_model):
         res_base_model = self.prod_profile['base_models'][base_model]
         self.__get_src_from_path(res_base_model['path'])
@@ -141,10 +149,15 @@ class CodeGen(CodeGenException):
         if self.product is not None:
             for element in self.product['elements']:
                 self.resolve_el_deps(list(element.keys())[0], list(element.values())[0])
+            try:
+                for component in self.product['components']:
+                    self.resolve_component_deps(list(component.keys())[0], list(component.values())[0])
+            except KeyError:
+                pass
 
     def get_all_macro(self):
         if self.product is not None:
-            for _key in ['elements', 'models', 'base_models']:
+            for _key in ['elements', 'models', 'base_models', 'components']:
                 for __key in self.prod_profile[_key]:
                     for macro in self.prod_profile[_key][__key]['macros']:
                         self.file_insert += self.define_fmt.format(macro['def'],

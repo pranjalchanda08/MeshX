@@ -1,3 +1,11 @@
+/**
+ * @file cwww_server.c
+ * @brief Implementation of the CW-WW server model for BLE Mesh.
+ *
+ * This file contains the implementation of the CW-WW server model for BLE Mesh,
+ * including initialization, configuration, and event handling.
+ */
+
 #include <cwww_server_model.h>
 
 #if CONFIG_LIGHT_CWWW_SRV_COUNT > 0
@@ -17,14 +25,12 @@
 #define IS_EL_IN_RANGE(_element_id)         (_element_id >= cwww_element_init_ctrl.element_id_start \
                                             && _element_id < cwww_element_init_ctrl.element_id_end)
 
-
 #define CWWW_TEMP_MIN   2700
 #define CWWW_TEMP_MAX   6500
 
-
 static cwww_elements_t cwww_element_init_ctrl;
 
-static esp_ble_mesh_model_t cwww_sig_template[CWWW_SRV_MODEL_SIG_CNT] __attribute__((section(".text"))) =
+static const esp_ble_mesh_model_t cwww_sig_template[CWWW_SRV_MODEL_SIG_CNT] =
 {
     ESP_BLE_MESH_SIG_MODEL(ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV, NULL, NULL, NULL),
     ESP_BLE_MESH_SIG_MODEL(ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV, NULL, NULL, NULL),
@@ -76,6 +82,14 @@ static void cwww_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
 }
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
+/**
+ * @brief Create space for CW-WW models.
+ *
+ * This function allocates and initializes the space required for CW-WW models.
+ *
+ * @param n_max Maximum number of models.
+ * @return ESP_OK on success, or an error code on failure.
+ */
 static esp_err_t dev_create_cwww_model_space(uint16_t n_max)
 {
     /* Assign Spaces for Model List, Publish List and onoff gen list */
@@ -117,6 +131,16 @@ static esp_err_t dev_create_cwww_model_space(uint16_t n_max)
     return ESP_OK;
 }
 
+/**
+ * @brief Add CW-WW server models to the element list.
+ *
+ * This function adds the CW-WW server models to the specified element list.
+ *
+ * @param pdev Pointer to the device structure.
+ * @param start_idx Pointer to the starting index.
+ * @param n_max Maximum number of models.
+ * @return ESP_OK on success, or an error code on failure.
+ */
 static esp_err_t dev_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, uint16_t *start_idx, uint16_t n_max)
 {
     if (!pdev)
@@ -157,6 +181,14 @@ static esp_err_t dev_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, uint
     return ESP_OK;
 }
 
+/**
+ * @brief Create CW-WW elements.
+ *
+ * This function creates the CW-WW elements for the specified device.
+ *
+ * @param pdev Pointer to the device structure.
+ * @return ESP_OK on success, or an error code on failure.
+ */
 esp_err_t create_cwww_elements(dev_struct_t *pdev)
 {
     esp_err_t err;

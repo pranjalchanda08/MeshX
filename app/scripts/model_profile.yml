@@ -1,3 +1,4 @@
+# Elements Build registration
 elements:
     switch_relay_server:
         path: "elements/server/switch_relay_server"
@@ -24,6 +25,7 @@ elements:
             - light_ctl_server: 1
             - gen_onoff_server: 1
 
+# Models Build registration
 models:
     server_common:
         path: "elements/server"
@@ -97,6 +99,7 @@ models:
               value: 0
         base_model: null
 
+# Base model build registration
 base_models:
     gen_server:
         path: "elements/server/models/base/gen_server"
@@ -108,4 +111,14 @@ base_models:
         path: "elements/server/models/base/light_server"
         macros:
             - def: "CONFIG_ENABLE_LIGHT_SERVER"
+              value: false
+
+# Components build registration
+components:
+    unit_test:
+        path: components/unit_test
+        type: software
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_UNIT_TEST"
               value: false

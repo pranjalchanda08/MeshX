@@ -8,7 +8,7 @@
  * @author [Pranjal Chanda]
  */
 
-#include <main.h>
+#include "main.h"
 
 #define ROOT_MODEL_SIG_CNT ARRAY_SIZE(app_root_model)
 #define ROOT_MODEL_VEN_CNT 0
@@ -29,7 +29,7 @@ void app_cfg_srv_app_key_bind_hook(const esp_ble_mesh_cfg_server_cb_param_t *par
 void app_prod_prov_cb(const esp_ble_mesh_prov_cb_param_t *param, prod_prov_evt_t evt);
 
 /** Device UUID for provisioning. */
-static uint8_t dev_uuid[16] = {0xdd, 0xdd};
+static uint8_t dev_uuid[16] = {0xdd, 0xdd, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 dev_struct_t g_dev;
 
@@ -136,6 +136,7 @@ static esp_err_t app_tasks_init(dev_struct_t * pdev)
     esp_err_t err;
 
     err = create_control_task(pdev);
+    ESP_ERR_PRINT_RET("Failed to create control task", err);
 
     return err;
 }
@@ -186,7 +187,6 @@ void app_main(void)
 {
     esp_err_t err;
 
-    ESP_LOGI(TAG, "Initializing...");
     err = nvs_flash_init();
     if (err == ESP_ERR_NVS_NO_FREE_PAGES)
     {
@@ -218,4 +218,21 @@ void app_main(void)
         ESP_LOGE(TAG, "Bluetooth mesh init failed (err 0x%x)", err);
         return;
     }
+
+#if CONFIG_ENABLE_UNIT_TEST
+    err = register_ut_command();
+    if (err)
+    {
+        ESP_LOGE(TAG, "Failed to register unit test command (err 0x%x)", err);
+        return;
+    }
+
+    err = init_prod_console();
+    if (err)
+    {
+        ESP_LOGE(TAG, "Failed to initialize production console (err 0x%x)", err);
+        return;
+    }
+#endif /* CONFIG_ENABLE_UNIT_TEST */
+
 }

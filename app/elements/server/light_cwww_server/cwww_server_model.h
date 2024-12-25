@@ -1,3 +1,13 @@
+/**
+ * @file cwww_server_model.h
+ * @brief Header file for CWWW Server Model
+ *
+ * This file contains the definitions and function prototypes for the CWWW Server Model.
+ * It includes the necessary includes, macros, and data structures required for the model.
+ *
+ * @author [Pranjal Chanda]
+ */
+
 #ifndef __CWWW_SERVER_MODEL_H__
 #define __CWWW_SERVER_MODEL_H__
 
@@ -19,7 +29,7 @@ typedef enum{
     CWWW_SIG_ONOFF_MODEL_ID,
     CWWW_SIG_L_CTL_MODEL_ID,
     CWWW_SIG_ID_MAX
-}cwww_sig_id_t;
+} cwww_sig_id_t;
 
 typedef struct light_ctl_cli_ctx
 {
@@ -51,9 +61,11 @@ typedef struct cwww_element
 /**
  * @brief Create Dynamic CWWW Server Model Elements
  *
- * @param[in]       pdev    Pointer to device structure
+ * This function creates dynamic CWWW server model elements for the given device structure.
  *
- * @return esp_err_t
+ * @param[in] pdev Pointer to device structure
+ *
+ * @return esp_err_t Returns ESP_OK on success or an error code on failure
  */
 esp_err_t create_cwww_elements(dev_struct_t *pdev);
 

@@ -10,6 +10,10 @@
 #include <esp_ble_mesh_defs.h>
 #include <ble_mesh_example_init.h>
 
+#if CONFIG_ENABLE_UNIT_TEST
+#include <unit_test.h>
+#endif /* CONFIG_ENABLE_UNIT_TEST */
+
 #define TAG __func__
 
 #define MAX_ELE_CNT CONFIG_MAX_ELEMENT_COUNT

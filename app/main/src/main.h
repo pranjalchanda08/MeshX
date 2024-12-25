@@ -2,6 +2,10 @@
 
 #include <app_common.h>
 
+#if CONFIG_ENABLE_UNIT_TEST
+#include <unit_test.h>
+#endif /* CONFIG_ENABLE_UNIT_TEST */
+
 #if CONFIG_ENABLE_PROVISIONING
 #include <prod_prov.h>
 #endif /* CONFIG_ENABLE_PROVISIONING */

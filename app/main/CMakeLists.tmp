@@ -5,7 +5,7 @@ file(GLOB MAIN_SRCS "src/*c")
 file(GLOB TASK_SRCS "tasks/*c")
 
 # Filter only directories
-set(INC_DIRS 
+set(INC_DIRS
     "${CMAKE_SOURCE_DIR}/main"
     "${CMAKE_SOURCE_DIR}/main/src"
     "${CMAKE_SOURCE_DIR}/main/common"
@@ -22,7 +22,9 @@ set(SRCSX
     )
 
 idf_component_register( SRCS ${SRCSX}
-                        INCLUDE_DIRS "${INC_DIRS}" 
+                        INCLUDE_DIRS "${INC_DIRS}"
                         REQUIRES bt
                                 example_init
-                                nvs_flash)
+                                nvs_flash
+                                console
+                                esp_driver_uart)

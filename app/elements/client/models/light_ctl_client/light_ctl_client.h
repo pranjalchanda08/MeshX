@@ -1,3 +1,16 @@
+/**
+ * @file light_ctl_client.h
+ * @brief Header file for the Light CTL (Color Temperature Light) Client model.
+ *
+ * This file contains the definitions and function declarations for the Light CTL Client model
+ * used in ESP32 BLE Mesh applications. The Light CTL Client model is responsible for sending
+ * messages to control the color temperature and lightness of a light.
+ *
+ * The file includes necessary BLE Mesh headers and defines the event types, callback function
+ * types, and structures used for registering and handling Light CTL Client events.
+ *
+ */
+
 #ifndef __LIGHT_CTL_CLIENT_H__
 #define __LIGHT_CTL_CLIENT_H__
 
@@ -24,7 +37,33 @@ typedef struct light_ctl_cli_cb_reg
     struct light_ctl_cli_cb_reg *next; /**< Pointer to the next callback registration */
 } light_ctl_cli_cb_reg_t;
 
+/**
+ * @brief Register a callback function for the Light CTL Client.
+ *
+ * This function registers a callback function that will be called when specific
+ * events occur in the Light CTL Client model.
+ *
+ * @param[in] cb The callback function to register.
+ * @param[in] config_evt_bmap A bitmap representing the configuration events to register for.
+ *
+ * @return
+ *    - ESP_OK: Success
+ *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - ESP_FAIL: Other failures
+ */
 esp_err_t prod_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap);
+
+/**
+ * @brief Initialize the Light CTL Client model.
+ *
+ * This function initializes the Light CTL Client model, setting up necessary
+ * resources and configurations.
+ *
+ * @return
+ *    - ESP_OK: Success
+ *    - ESP_ERR_NO_MEM: Out of memory
+ *    - ESP_FAIL: Other failures
+ */
 esp_err_t prod_light_ctl_client_init();
 
 #endif /*__LIGHT_CTL_CLIENT_H__*/
