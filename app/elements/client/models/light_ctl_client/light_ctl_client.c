@@ -69,7 +69,7 @@ void app_ble_mesh_light_client_cb(esp_ble_mesh_light_client_cb_event_t event,
     ESP_LOGI(TAG, "event 0x%02x, opcode 0x%04" PRIx32 ", src 0x%04x, dst 0x%04x",
              event, param->params->ctx.recv_op, param->params->ctx.addr, param->params->ctx.recv_dst);
     ESP_LOGI(TAG, "%s", client_state_str[event]);
-    light_ctl_cli_reg_cb_dispatch(param, (light_ctl_cli_evt_t)(1 << event));
+    light_ctl_cli_reg_cb_dispatch(param, (light_ctl_cli_evt_t)BIT(event));
 }
 
 /**

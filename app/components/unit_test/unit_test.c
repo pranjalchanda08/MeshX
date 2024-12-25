@@ -100,7 +100,7 @@ esp_err_t init_prod_console() {
     esp_console_repl_t *repl = NULL;
     esp_console_repl_config_t repl_config = ESP_CONSOLE_REPL_CONFIG_DEFAULT();
 
-    repl_config.prompt = "ble_node>";
+    repl_config.prompt = "X>";
 
     // install console REPL environment
 #if CONFIG_ESP_CONSOLE_UART
