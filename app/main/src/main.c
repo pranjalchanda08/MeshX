@@ -31,6 +31,26 @@ void app_prod_prov_cb(const esp_ble_mesh_prov_cb_param_t *param, prod_prov_evt_t
 /** Device UUID for provisioning. */
 static uint8_t dev_uuid[16] = {0xdd, 0xdd, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
+static const char meshX_banner[] = {
+"*********************************************************************************************************************\n"
+"* MMMMMMMM               MMMMMMMM                                     hhhhhhh                 XXXXXXX       XXXXXXX *\n"
+"* M:::::::M             M:::::::M                                     h:::::h                 X:::::X       X:::::X *\n"
+"* M::::::::M           M::::::::M                                     h:::::h                 X:::::X       X:::::X *\n"
+"* M:::::::::M         M:::::::::M                                     h:::::h                 X::::::X      X:::::X *\n"
+"* M::::::::::M       M::::::::::M    eeeeeeeeeeee        ssssssssss   h:::: hhhhhh            XX:::::X     X:::::XX *\n"
+"* M:::::::::::M     M:::::::::::M  ee::::::::::::ee    ss::::::::::s  h::::::::::hhh            X:::::X   X:::::X   *\n"
+"* M:::::::M::::M   M::::M:::::::M e::::::eeeee:::::eess:::::::::::::s h::::::::::::::hh           X:::::X:::::X     *\n"
+"* M::::::M M::::M M::::M M::::::Me::::::e     e:::::es::::::ssss:::::sh:::::::hhh::::::h           X:::::::::X      *\n"
+"* M::::::M  M::::M::::M  M::::::Me:::::::eeeee::::::e s:::::s  ssssss h::::::h   h::::::h          X:::::::::X      *\n"
+"* M::::::M   M:::::::M   M::::::Me:::::::::::::::::e    s::::::s      h:::::h     h:::::h         X:::::X:::::X     *\n"
+"* M::::::M    M:::::M    M::::::Me::::::eeeeeeeeeee        s::::::s   h:::::h     h:::::h        X:::::X X:::::X    *\n"
+"* M::::::M     MMMMM     M::::::Me:::::::e           ssssss   s:::::s h:::::h     h:::::h     XXX:::::X   X:::::XXX *\n"
+"* M::::::M               M::::::Me::::::::e          s:::::ssss::::::sh:::::h     h:::::h     X::::::X     X::::::X *\n"
+"* M::::::M               M::::::M e::::::::eeeeeeee  s::::::::::::::s h:::::h     h:::::h     X:::::X       X:::::X *\n"
+"* M::::::M               M::::::M  ee:::::::::::::e   s:::::::::::ss  h:::::h     h:::::h     X:::::X       X:::::X *\n"
+"* MMMMMMMM               MMMMMMMM    eeeeeeeeeeeeee    sssssssssss    hhhhhhh     hhhhhhh     XXXXXXX       XXXXXXX *\n"
+"*********************************************************************************************************************\n"
+};
 dev_struct_t g_dev;
 
 #if CONFIG_ENABLE_PROVISIONING
@@ -219,6 +239,8 @@ void app_main(void)
         return;
     }
 
+    printf("%s", meshX_banner);
+
 #if CONFIG_ENABLE_UNIT_TEST
     err = register_ut_command();
     if (err)
@@ -234,5 +256,4 @@ void app_main(void)
         return;
     }
 #endif /* CONFIG_ENABLE_UNIT_TEST */
-
 }
