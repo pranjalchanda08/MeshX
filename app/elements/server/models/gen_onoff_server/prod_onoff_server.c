@@ -5,7 +5,9 @@ static esp_err_t prod_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *
     esp_ble_mesh_gen_onoff_srv_t const *srv = (esp_ble_mesh_gen_onoff_srv_t *)param->model->user_data;
     esp_ble_mesh_gen_onoff_state_t state = srv->state;
 
-    if (ESP_BLE_MESH_ADDR_IS_UNICAST(param->ctx.recv_dst) || (ESP_BLE_MESH_ADDR_BROADCAST(param->ctx.recv_dst)) || (ESP_BLE_MESH_ADDR_IS_GROUP(param->ctx.recv_dst) && (esp_ble_mesh_is_model_subscribed_to_group(param->model, param->ctx.recv_dst))))
+    if (ESP_BLE_MESH_ADDR_IS_UNICAST(param->ctx.recv_dst)
+    || (ESP_BLE_MESH_ADDR_BROADCAST(param->ctx.recv_dst))
+    || (ESP_BLE_MESH_ADDR_IS_GROUP(param->ctx.recv_dst) && (esp_ble_mesh_is_model_subscribed_to_group(param->model, param->ctx.recv_dst))))
     {
         /* Send msg for hw manipulation */
         ESP_LOGI(TAG, "HW change requested, Element_id: 0x%x, state 0x%x",
@@ -39,10 +41,12 @@ static esp_err_t prod_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param_
     default:
         break;
     }
-    if (send_reply)
+    if (send_reply
+    /* This is meant to notify the respective publish client */
+    || param->ctx.addr != param->model->pub->publish_addr)
     {
-        /* Here the message wa received from unregistered source and mention the state to the respective client */
-        ESP_LOGI(TAG, "Publishing to 0x%x", param->model->pub->publish_addr);
+        /* Here the message was received from unregistered source and mention the state to the respective client */
+        ESP_LOGI(TAG, "PUB: 0x%x, 0x%x", param->ctx.addr, param->model->pub->publish_addr);
         param->ctx.addr = param->model->pub->publish_addr;
         esp_ble_mesh_server_model_send_msg(param->model,
                                            &param->ctx,
