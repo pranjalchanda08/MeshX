@@ -386,6 +386,13 @@ esp_err_t create_relay_client_elements(dev_struct_t *pdev)
         return err;
     }
 
+    err = prod_onoff_client_init();
+    if (err)
+    {
+        ESP_LOGE(TAG, "prod_onoff_client_init failed: (%d)", err);
+        return err;
+    }
+
 #if RELAY_CLI_PROD_ONOFF_ENABLE_CB
     err = prod_onoff_reg_cb(&relay_el_generic_client_cb, RELAY_CLI_PROD_ONOFF_CLI_CB_EVT_BMAP);
     if (err)
@@ -393,6 +400,7 @@ esp_err_t create_relay_client_elements(dev_struct_t *pdev)
         ESP_LOGE(TAG, "Relay Model callback reg failed: (%d)", err);
         return err;
     }
+
 #if CONFIG_ENABLE_CONFIG_SERVER
     err = prod_config_server_cb_reg(&relay_client_config_srv_cb, CONFIG_SERVER_CB_MASK);
     if (err)
@@ -421,13 +429,6 @@ esp_err_t create_relay_client_elements(dev_struct_t *pdev)
     }
 #endif /* CONFIG_ENABLE_UNIT_TEST */
 #endif /* RELAY_CLI_PROD_ONOFF_ENABLE_CB */
-
-    err = prod_onoff_client_init();
-    if (err)
-    {
-        ESP_LOGE(TAG, "prod_onoff_client_init failed: (%d)", err);
-        return err;
-    }
 
     return ESP_OK;
 }

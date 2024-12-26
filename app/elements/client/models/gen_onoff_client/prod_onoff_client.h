@@ -1,5 +1,3 @@
-#pragma once
-
 /**
  * @file prod_onoff_client.h
  * @brief Header file for the On/Off client model in BLE mesh.
@@ -7,12 +5,15 @@
  * This file contains the definitions and function prototypes for the On/Off client model.
  */
 
+#pragma once
 #include <esp_ble_mesh_defs.h>
 #include <esp_ble_mesh_common_api.h>
 #include <esp_ble_mesh_networking_api.h>
 #include <esp_ble_mesh_generic_model_api.h>
 #include <esp_ble_mesh_local_data_operation_api.h>
-
+#include "freertos/FreeRTOS.h"
+#include "freertos/semphr.h"
+#include <sys/queue.h>
 /**
  * @brief Enumeration of On/Off client events.
  */
@@ -36,11 +37,10 @@ typedef void (*prod_onoff_cli_cb)(const esp_ble_mesh_generic_client_cb_param_t *
 /**
  * @brief Structure for On/Off client callback registration.
  */
-typedef struct prod_onoff_cli_cb_reg
-{
-    prod_onoff_cli_cb cb;               /**< Registered callback function */
-    uint32_t evt_bmap;                  /**< Bitmap of events the callback is registered for */
-    struct prod_onoff_cli_cb_reg *next; /**< Pointer to the next callback registration */
+typedef struct prod_onoff_cli_cb_reg {
+    prod_onoff_cli_cb cb;
+    uint32_t evt_bmap;
+    SLIST_ENTRY(prod_onoff_cli_cb_reg) entries;
 } prod_onoff_cli_cb_reg_t;
 
 /**
