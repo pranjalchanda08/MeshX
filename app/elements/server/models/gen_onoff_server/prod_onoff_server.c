@@ -9,6 +9,18 @@
  */
 #include "prod_onoff_server.h"
 
+/**
+ * @brief Perform hardware change based on the BLE Mesh generic server callback parameter.
+ *
+ * This function is responsible for executing the necessary hardware changes
+ * when a BLE Mesh generic server event occurs.
+ *
+ * @param param Pointer to the BLE Mesh generic server callback parameter structure.
+ *
+ * @return
+ *     - ESP_OK: Success
+ *     - ESP_FAIL: Failure
+ */
 static esp_err_t prod_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *param)
 {
     esp_ble_mesh_gen_onoff_srv_t const *srv = (esp_ble_mesh_gen_onoff_srv_t *)param->model->user_data;
@@ -33,6 +45,20 @@ static esp_err_t prod_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *
     return ESP_ERR_NOT_ALLOWED;
 }
 
+/**
+ * @brief Handle Generic OnOff messages for the server model.
+ *
+ * This function processes the received Generic OnOff messages and performs
+ * the necessary actions based on the message type and content.
+ *
+ * @param param Pointer to the callback parameter structure containing the
+ *              details of the received message.
+ *
+ * @return
+ *    - ESP_OK: Success
+ *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - ESP_FAIL: Other failures
+ */
 static esp_err_t prod_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param_t *param)
 {
     esp_ble_mesh_gen_onoff_srv_t *srv = (esp_ble_mesh_gen_onoff_srv_t *)param->model->user_data;
@@ -66,13 +92,18 @@ static esp_err_t prod_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param_
     return ESP_OK;
 }
 
+/**
+ * @brief Initialize the On/Off server model.
+ *
+ * This function initializes the On/Off server model for the BLE mesh node.
+ *
+ * @return
+ *     - ESP_OK: Success
+ *     - ESP_FAIL: Failure
+ */
 esp_err_t prod_on_off_server_init()
 {
-    esp_err_t err;
-    err = prod_gen_srv_reg_cb(ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV, prod_handle_gen_onoff_msg);
-    if (err){
-        ESP_LOGE(TAG, "Failed to initialize prod_gen_srv_reg_cb (Err: %d)", err);
-    }
+    esp_err_t err = ESP_OK;
 
 #if CONFIG_ENABLE_SERVER_COMMON
     err = prod_gen_srv_init();
@@ -80,5 +111,11 @@ esp_err_t prod_on_off_server_init()
         ESP_LOGE(TAG, "Failed to initialize prod server");
     }
 #endif /* CONFIG_ENABLE_SERVER_COMMON */
+
+    err = prod_gen_srv_reg_cb(ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV, prod_handle_gen_onoff_msg);
+    if (err){
+        ESP_LOGE(TAG, "Failed to initialize prod_gen_srv_reg_cb (Err: %d)", err);
+    }
+
     return err;
 }

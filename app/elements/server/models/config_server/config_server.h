@@ -9,12 +9,12 @@
 #ifndef __PROD_CONFIG_SERVER__
 #define __PROD_CONFIG_SERVER__
 
-#include <esp_ble_mesh_defs.h>
-#include <esp_ble_mesh_common_api.h>
-#include <esp_ble_mesh_networking_api.h>
-#include <esp_ble_mesh_generic_model_api.h>
-#include <esp_ble_mesh_local_data_operation_api.h>
-#include <esp_ble_mesh_config_model_api.h>
+#include "esp_ble_mesh_defs.h"
+#include "esp_ble_mesh_common_api.h"
+#include "esp_ble_mesh_networking_api.h"
+#include "esp_ble_mesh_generic_model_api.h"
+#include "esp_ble_mesh_local_data_operation_api.h"
+#include "esp_ble_mesh_config_model_api.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
 #include "sys/queue.h"
