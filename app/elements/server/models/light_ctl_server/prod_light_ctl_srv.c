@@ -1,3 +1,14 @@
+/**
+ * @file prod_light_ctl_srv.c
+ * @brief Implementation of the Light CTL Server model for BLE Mesh Node.
+ *
+ * This file contains the implementation of the Light CTL (Color Temperature Light) Server model
+ * for the BLE Mesh Node. The Light CTL Server model is responsible for controlling the color
+ * temperature and lightness of a light.
+ *
+ * @auther Pranjal Chanda
+ */
+
 #include <prod_light_ctl_srv.h>
 
 #define TAG __func__
@@ -5,6 +16,19 @@
 
 uint8_t ctl_status_pack[CTL_REPLY_PACK_LEN_MAX];
 
+
+/**
+ * @brief Perform hardware change for the light control server model.
+ *
+ * This function is responsible for performing the necessary hardware changes
+ * based on the parameters provided by the BLE Mesh lighting server callback.
+ *
+ * @param param Pointer to the BLE Mesh lighting server callback parameters.
+ *
+ * @return
+ *     - ESP_OK: Success
+ *     - ESP_FAIL: Failure
+ */
 static esp_err_t prod_perform_hw_change(esp_ble_mesh_lighting_server_cb_param_t *param)
 {
     const esp_ble_mesh_light_ctl_srv_t *srv = (esp_ble_mesh_light_ctl_srv_t*) param->model->user_data;
@@ -29,6 +53,19 @@ static esp_err_t prod_perform_hw_change(esp_ble_mesh_lighting_server_cb_param_t 
     return ESP_ERR_NOT_ALLOWED;
 }
 
+/**
+ * @brief Handle Light CTL messages for the lighting server model.
+ *
+ * This function processes incoming Light CTL messages and performs the necessary
+ * actions based on the message parameters.
+ *
+ * @param param Pointer to the BLE Mesh lighting server callback parameter structure.
+ *
+ * @return
+ *    - ESP_OK: Success
+ *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - ESP_FAIL: Other failures
+ */
 static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param_t *param)
 {
     esp_ble_mesh_light_ctl_srv_t *srv = (esp_ble_mesh_light_ctl_srv_t*) param->model->user_data;
@@ -161,6 +198,17 @@ static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param
                     ROLE_NODE);
 }
 
+/**
+ * @brief Initialize the Light CTL Server model.
+ *
+ * This function initializes the Light CTL (Color Temperature Light) Server model
+ * for the BLE Mesh Node. It sets up the necessary configurations and state for
+ * the Light CTL Server to operate correctly.
+ *
+ * @return
+ *     - ESP_OK: Success
+ *     - ESP_FAIL: Failure
+ */
 esp_err_t prod_light_ctl_server_init(void)
 {
     esp_err_t err = ESP_OK;
