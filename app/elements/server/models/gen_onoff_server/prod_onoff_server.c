@@ -1,3 +1,12 @@
+/**
+ * @file prod_onoff_server.c
+ * @brief Header file for the On/Off Server model in the BLE Mesh Node application.
+ *
+ * This file contains the function defination for the
+ * On/Off Server model used in the BLE Mesh Node application.
+ *
+ * @auther Pranjal Chanda
+ */
 #include "prod_onoff_server.h"
 
 static esp_err_t prod_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *param)
@@ -51,7 +60,8 @@ static esp_err_t prod_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param_
         esp_ble_mesh_server_model_send_msg(param->model,
                                            &param->ctx,
                                            ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_STATUS,
-                                           sizeof(srv->state.onoff), &srv->state.onoff);
+                                           sizeof(srv->state.onoff),
+                                           &srv->state.onoff);
     }
     return ESP_OK;
 }
@@ -60,13 +70,15 @@ esp_err_t prod_on_off_server_init()
 {
     esp_err_t err;
     err = prod_gen_srv_reg_cb(ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV, prod_handle_gen_onoff_msg);
-    if (err)
+    if (err){
         ESP_LOGE(TAG, "Failed to initialize prod_gen_srv_reg_cb (Err: %d)", err);
+    }
 
 #if CONFIG_ENABLE_SERVER_COMMON
     err = prod_gen_srv_init();
-    if (err)
+    if (err){
         ESP_LOGE(TAG, "Failed to initialize prod server");
+    }
 #endif /* CONFIG_ENABLE_SERVER_COMMON */
     return err;
 }
