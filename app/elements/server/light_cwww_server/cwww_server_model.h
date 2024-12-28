@@ -25,26 +25,38 @@
 #define CWWW_SRV_MODEL_SIG_CNT CWWW_SIG_ID_MAX   // No of SIG models in a cwww model element
 #define CWWW_SRV_MODEL_VEN_CNT 0                    // No of VEN models in a cwww model element
 
+/**
+ * @brief Enumeration of CW-WW SIG model IDs.
+ */
 typedef enum{
-    CWWW_SIG_ONOFF_MODEL_ID,
-    CWWW_SIG_L_CTL_MODEL_ID,
-    CWWW_SIG_ID_MAX
+    CWWW_SIG_ONOFF_MODEL_ID, /**< On/Off model ID */
+    CWWW_SIG_L_CTL_MODEL_ID, /**< Light CTL model ID */
+    CWWW_SIG_ID_MAX          /**< Maximum number of model IDs */
 } cwww_sig_id_t;
 
+/**
+ * @brief Context structure for the Light CTL Client model.
+ */
 typedef struct light_ctl_cli_ctx
 {
-    uint8_t tid;
-    uint8_t state;
-    uint16_t lightness;
-    uint16_t temperature;
-    uint16_t delta_uv;
-    uint16_t lightness_range_max;
-    uint16_t lightness_range_min;
-    uint16_t pub_addr;
-    uint16_t net_id;
-    uint16_t app_id;
+    uint8_t tid;                  /**< Transaction ID */
+    uint8_t state;                /**< Current state */
+    uint16_t lightness;           /**< Lightness level */
+    uint16_t temperature;         /**< Color temperature */
+    uint16_t delta_uv;            /**< Delta UV value */
+    uint16_t lightness_range_max; /**< Maximum lightness range */
+    uint16_t lightness_range_min; /**< Minimum lightness range */
+    uint16_t pub_addr;            /**< Publication address */
+    uint16_t net_id;              /**< Network ID */
+    uint16_t app_id;              /**< Application ID */
 } cwww_server_ctx_t;
 
+/**
+ * @brief Structure representing a CW-WW element in the BLE mesh network.
+ *
+ * This structure contains all the necessary context and configuration for
+ * controlling a CW-WW (Cool White - Warm White) light element in a BLE mesh network.
+ */
 typedef struct cwww_element
 {
     size_t model_cnt;

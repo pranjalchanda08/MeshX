@@ -1,3 +1,22 @@
+/**
+ * @file relay_client_model.h
+ * @brief Header file for the Relay Client Model in BLE Mesh.
+ *
+ * This file contains the definitions and function declarations for the Relay Client Model
+ * used in BLE Mesh applications. The Relay Client Model is responsible for managing relay
+ * client elements, sending messages to relay nodes or groups, and handling the state and
+ * context of relay clients.
+ *
+ * @details
+ * The file defines constants, data structures, and function prototypes for creating and
+ * managing relay client elements. It includes the following key components:
+ * - Definitions for the number of relay client elements, SIG models, and message types.
+ * - Data structures for relay client context, messages, and elements.
+ * - Function prototypes for creating relay client elements and sending messages.
+ *
+ * @author [Pranjal Chanda]
+ *
+ */
 #pragma once
 
 #include "app_common.h"
@@ -17,22 +36,31 @@
 #define RELAY_CLI_MSG_ACK 1
 #define RELAY_CLI_MSG_NO_ACK 0
 
+/**
+ * @brief Structure to hold the context of the relay client.
+ */
 typedef struct rel_cli_ctx
 {
-    uint8_t state;
-    uint8_t tid;
-    uint16_t pub_addr;
-    uint16_t net_id;
-    uint16_t app_id;
+    uint8_t state;      /**< State of the relay client */
+    uint8_t tid;        /**< Transaction ID */
+    uint16_t pub_addr;  /**< Publish address */
+    uint16_t net_id;    /**< Network ID */
+    uint16_t app_id;    /**< Application ID */
 } rel_cli_ctx_t;
 
+/**
+ * @brief Structure to hold the relay client message.
+ */
 typedef struct relay_client_msg
 {
-    uint16_t element_id;
-    uint8_t set_get;
-    uint8_t ack;
+    uint16_t element_id; /**< Element ID */
+    uint8_t set_get;     /**< Set/Get flag */
+    uint8_t ack;         /**< Acknowledgment flag */
 } relay_client_msg_t;
 
+/**
+ * @brief Structure to hold the relay client elements.
+ */
 typedef struct relay_client_element
 {
     size_t model_cnt;

@@ -22,9 +22,18 @@ static const char* server_state_str[] =
 };
 
 static uint16_t prod_server_init = 0;
+
 static struct prod_server_cb_reg_head prod_server_cb_reg_list = SLIST_HEAD_INITIALIZER(prod_server_cb_reg_list);
 static SemaphoreHandle_t prod_server_mutex;
 
+/**
+ * @brief Callback function for BLE Mesh Generic Server events.
+ *
+ * This function is called whenever a BLE Mesh Generic Server event occurs.
+ *
+ * @param event The event type for the BLE Mesh Generic Server.
+ * @param param Parameters associated with the event.
+ */
 static void prod_ble_mesh_generic_server_cb(esp_ble_mesh_generic_server_cb_event_t event,
                                            esp_ble_mesh_generic_server_cb_param_t *param)
 {
@@ -49,6 +58,20 @@ static void prod_ble_mesh_generic_server_cb(esp_ble_mesh_generic_server_cb_event
     xSemaphoreGive(prod_server_mutex);
 }
 
+/**
+ * @brief Register a callback function for the production server model.
+ *
+ * This function registers a callback function that will be called when
+ * specific events related to the production server model occur.
+ *
+ * @param model_id The ID of the model for which the callback is being registered.
+ * @param cb The callback function to be registered.
+ *
+ * @return
+ *     - ESP_OK: Callback registered successfully.
+ *     - ESP_ERR_INVALID_ARG: Invalid arguments.
+ *     - ESP_FAIL: Failed to register the callback.
+ */
 esp_err_t prod_gen_srv_reg_cb(uint32_t model_id, prod_server_cb cb)
 {
     xSemaphoreTake(prod_server_mutex, portMAX_DELAY);
@@ -76,6 +99,18 @@ esp_err_t prod_gen_srv_reg_cb(uint32_t model_id, prod_server_cb cb)
     return ESP_OK;
 }
 
+/**
+ * @brief Callback function to deregister a generic server model.
+ *
+ * This function is called to deregister a generic server model identified by the given model ID.
+ *
+ * @param model_id The ID of the model to be deregistered.
+ *
+ * @return
+ *     - ESP_OK: Success
+ *     - ESP_ERR_INVALID_ARG: Invalid argument
+ *     - ESP_FAIL: Other failures
+ */
 esp_err_t prod_gen_srv_dereg_cb(uint32_t model_id)
 {
     xSemaphoreTake(prod_server_mutex, portMAX_DELAY);
@@ -93,6 +128,16 @@ esp_err_t prod_gen_srv_dereg_cb(uint32_t model_id)
     return ESP_ERR_NOT_FOUND;
 }
 
+/**
+ * @brief Initialize the production generic server.
+ *
+ * This function sets up the necessary configurations and initializes the
+ * production generic server for the BLE mesh node.
+ *
+ * @return
+ *     - ESP_OK: Success
+ *     - ESP_FAIL: Failed to initialize the server
+ */
 esp_err_t prod_gen_srv_init(void)
 {
     if(prod_server_init == PROD_SERVER_INIT_MAGIC_NO)

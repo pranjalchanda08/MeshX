@@ -186,16 +186,9 @@ static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param
                                 &param->ctx,
                                 status_op,
                                 ctl_status_pack_idx, ctl_status_pack);
-        if(err)
-            return err;
     }
 
-    /* Publish current Status to the group */
-    return esp_ble_mesh_model_publish(param->model,
-                    status_op,
-                    ctl_status_pack_idx,
-                    ctl_status_pack,
-                    ROLE_NODE);
+    return err;
 }
 
 /**
@@ -212,13 +205,14 @@ static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param
 esp_err_t prod_light_ctl_server_init(void)
 {
     esp_err_t err = ESP_OK;
-    err = prod_lighting_reg_cb(ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV, prod_handle_light_ctl_msg);
-    if(err)
-        ESP_LOGE(TAG, "Failed to initialize prod_gen_srv_reg_cb (Err: %d)", err);
 
     err = prod_lighting_srv_init();
     if(err)
         ESP_LOGE(TAG, "Failed to initialize prod server");
+
+    err = prod_lighting_reg_cb(ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV, prod_handle_light_ctl_msg);
+    if(err)
+        ESP_LOGE(TAG, "Failed to initialize prod_gen_srv_reg_cb (Err: %d)", err);
 
     return err;
 }
