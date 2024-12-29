@@ -59,3 +59,32 @@ esp_err_t prod_onoff_client_init(void);
  * @return ESP_OK on success, or an error code on failure.
  */
 esp_err_t prod_onoff_reg_cb(prod_onoff_cli_cb cb, uint32_t config_evt_bmap);
+
+
+/**
+ * @brief Send a generic on/off client message.
+ *
+ * This function sends a generic on/off client message with the specified parameters.
+ *
+ * @param[in] model   Pointer to the BLE Mesh model structure.
+ * @param[in] opcode  The operation code of the message.
+ * @param[in] addr    The destination address to which the message is sent.
+ * @param[in] net_idx The network index to be used for sending the message.
+ * @param[in] app_idx The application index to be used for sending the message.
+ * @param[in] state   The state value to be sent in the message.
+ * @param[in] tid     The transaction ID to be used for the message.
+ *
+ * @return
+ *    - ESP_OK: Success
+ *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - ESP_ERR_NO_MEM: Out of memory
+ *    - ESP_FAIL: Sending message failed
+ */
+esp_err_t prod_onoff_client_send_msg(esp_ble_mesh_model_t *model,
+        uint16_t opcode,
+        uint16_t addr,
+        uint16_t net_idx,
+        uint16_t app_idx,
+        uint8_t state,
+        uint8_t tid
+);
