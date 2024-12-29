@@ -25,6 +25,14 @@ elements:
             - light_ctl_server: 1
             - gen_onoff_server: 1
 
+    light_cwww_client:
+        path: "elements/client/light_cwww_client"
+        macros:
+            - def: "CONFIG_LIGHT_CWWW_CLIENT_COUNT"
+              value: 0
+        models:
+            - light_ctl_client: 1
+            - gen_onoff_client: 1
 # Models Build registration
 models:
     server_common:

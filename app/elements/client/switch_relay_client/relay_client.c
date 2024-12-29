@@ -99,7 +99,7 @@ static esp_err_t dev_add_relay_cli_model_to_element_list(dev_struct_t *pdev, uin
     if (!pdev)
         return ESP_ERR_INVALID_STATE;
 
-    if ((n_max + *start_idx) > CONFIG_MAX_ELEMENT_COUNT)
+    if (!start_idx || (n_max + *start_idx) > CONFIG_MAX_ELEMENT_COUNT)
     {
         ESP_LOGE(TAG, "No of elements limit reached namx|start_idx|config_max: %d|%d|%d", n_max, *start_idx, CONFIG_MAX_ELEMENT_COUNT);
         return ESP_ERR_NO_MEM;
@@ -249,7 +249,7 @@ static void relay_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
 static esp_err_t relay_cli_control_task_msg_handle(dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
 {
     esp_err_t err = ESP_OK;
-    if (evt == CONTROL_TASK_MSG_EVT_TO_HAL_SET_ON_OFF)
+    if (evt == CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF)
     {
         const relay_client_msg_t *msg = (const relay_client_msg_t *)params;
         err = ble_mesh_send_relay_msg(pdev,
@@ -310,54 +310,40 @@ esp_err_t ble_mesh_send_relay_msg(dev_struct_t *pdev, uint16_t element_id, uint8
         return ESP_ERR_INVALID_ARG;
 
     esp_err_t err = ESP_OK;
-    esp_ble_mesh_client_common_param_t common = {0};
-    esp_ble_mesh_generic_client_set_state_t set = {0};
-
     esp_ble_mesh_elem_t *element = &pdev->elements[element_id];
     esp_ble_mesh_model_t *model = &element->sig_models[0];
 
     size_t rel_el_id = element_id - relay_element_init_ctrl.element_id_start;
     rel_cli_ctx_t *el_ctx = &relay_element_init_ctrl.rel_cli_ctx[rel_el_id];
 
-    common.model = model;
+
+    uint16_t opcode = ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_GET;
     if (RELAY_CLI_MSG_SET == set_get)
     {
-        if (ack)
-            common.opcode = ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET;
-        else
-            common.opcode = ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK;
+        opcode = ack ? ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET : ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK;
     }
-    else
-        common.opcode = ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_GET;
 
-    ESP_LOGD(TAG, "OPCODE: %p", (void *)common.opcode);
+    ESP_LOGD(TAG, "OPCODE: %p", (void *)(uint32_t)opcode);
 
-    common.ctx.addr = el_ctx->pub_addr;
-    common.ctx.net_idx = el_ctx->net_id;
-    common.ctx.app_idx = el_ctx->app_id;
-    common.msg_timeout = 0; /* 0 indicates that timeout value from menuconfig will be used */
-    common.ctx.send_ttl = 3;
-#if ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 2, 0)
-    common.msg_role = ROLE_NODE;
-#endif
-    if (common.opcode != ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_GET)
+    /* Send message to the relay client */
+    err = prod_onoff_client_send_msg(
+            model,
+            opcode,
+            el_ctx->pub_addr,
+            el_ctx->net_id,
+            el_ctx->app_id,
+            el_ctx->state,
+            el_ctx->tid
+        );
+    if (err)
     {
-        set.onoff_set.op_en = false;
-        set.onoff_set.onoff = el_ctx->state;
-        set.onoff_set.tid = el_ctx->tid++;
-        err = esp_ble_mesh_generic_client_set_state(&common, &set);
-        if (err)
-        {
-            ESP_LOGE(TAG, "Send Generic OnOff failed");
-            return err;
-        }
-        else if (common.opcode == ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK)
-        {
-            el_ctx->state ^= 1;
-        }
+        ESP_LOGE(TAG, "Relay Client Send Message failed: (%d)", err);
     }
-
-    return ESP_OK;
+    else {
+        el_ctx->tid++;
+        el_ctx->state = opcode == ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK ? el_ctx->state : !el_ctx->state;
+    }
+    return err;
 }
 
 /**
