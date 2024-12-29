@@ -136,3 +136,65 @@ esp_err_t prod_onoff_client_init(void)
 
     return esp_ble_mesh_register_generic_client_callback((esp_ble_mesh_generic_client_cb_t)&app_ble_mesh_generic_client_cb);
 }
+
+/**
+ * @brief Send a generic on/off client message.
+ *
+ * This function sends a generic on/off client message with the specified parameters.
+ *
+ * @param[in] model   Pointer to the BLE Mesh model structure.
+ * @param[in] opcode  The operation code of the message.
+ * @param[in] addr    The destination address to which the message is sent.
+ * @param[in] net_idx The network index to be used for sending the message.
+ * @param[in] app_idx The application index to be used for sending the message.
+ * @param[in] state   The state value to be sent in the message.
+ * @param[in] tid     The transaction ID to be used for the message.
+ *
+ * @return
+ *    - ESP_OK: Success
+ *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - ESP_ERR_NO_MEM: Out of memory
+ *    - ESP_FAIL: Sending message failed
+ */
+esp_err_t prod_onoff_client_send_msg(
+        esp_ble_mesh_model_t *model,
+        uint16_t opcode,
+        uint16_t addr,
+        uint16_t net_idx,
+        uint16_t app_idx,
+        uint8_t state,
+        uint8_t tid
+)
+{
+    esp_err_t err;
+    esp_ble_mesh_client_common_param_t common = {0};
+    esp_ble_mesh_generic_client_set_state_t set = {0};
+
+    common.model = model;
+    common.opcode = opcode;
+    common.ctx.addr = addr;
+    common.ctx.net_idx = net_idx;
+    common.ctx.app_idx = app_idx;
+    common.msg_timeout = 0; /* 0 indicates that timeout value from menuconfig will be used */
+    common.ctx.send_ttl = 3;
+#if ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 2, 0)
+    common.msg_role = ROLE_NODE;
+#endif
+    if (common.opcode != ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_GET)
+    {
+        set.onoff_set.op_en = false;
+        set.onoff_set.onoff = state;
+        set.onoff_set.tid = tid;
+        err = esp_ble_mesh_generic_client_set_state(&common, &set);
+        if (err)
+        {
+            ESP_LOGE(TAG, "Send Generic OnOff failed");
+            return err;
+        }
+    }
+    else{
+        /* TODO: Issue: #14 */
+        err = ESP_ERR_NOT_SUPPORTED;
+    }
+    return err;
+}
