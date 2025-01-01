@@ -36,9 +36,9 @@ static esp_err_t ut_command_handler(int argc, char **argv) {
         return ESP_ERR_INVALID_ARG;
     }
 
-    int cmd_id = atoi(argv[2]);
-    int parsed_argc = atoi(argv[3]);
-    module_id_t module_id = atoi(argv[1]);
+    int cmd_id = UT_GET_ARG(2, uint16_t, argv);
+    int parsed_argc = UT_GET_ARG(3, uint16_t, argv);
+    module_id_t module_id = UT_GET_ARG(1, uint16_t, argv);
     ESP_LOGD(TAG, "Unit Test: Params -> argc: %d, Module: %d, cmd_id: %d", parsed_argc, cmd_id , module_id);
     if (parsed_argc > (argc - UT_CMD_MIN_ARGS))
     {

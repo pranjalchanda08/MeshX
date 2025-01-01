@@ -276,7 +276,7 @@ static esp_err_t relay_cli_unit_test_cb_handler(int cmd_id, int argc, char **arg
         return ESP_ERR_INVALID_ARG;
     }
     relay_cli_cmd_t cmd = (relay_cli_cmd_t)cmd_id;
-    msg.element_id = (uint16_t)atoi(argv[0]);
+    msg.element_id = UT_GET_ARG(0, uint16_t, argv);
     msg.set_get = (cmd == RELAY_CLI_CMD_GET) ? RELAY_CLI_MSG_GET : RELAY_CLI_MSG_SET;
     msg.ack = (cmd == RELAY_CLI_CMD_SET_UNACK) ? RELAY_CLI_MSG_NO_ACK : RELAY_CLI_MSG_ACK;
     err = control_task_send_msg(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF, &msg, sizeof(msg));

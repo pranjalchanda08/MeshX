@@ -19,6 +19,13 @@
 #define CWWW_CLI_MSG_ACK 1
 #define CWWW_CLI_MSG_NO_ACK 0
 
+#define CWWW_ARG_BMAP_ONOFF_SET         BIT0
+#define CWWW_ARG_BMAP_LIGHTNESS_SET     BIT1
+#define CWWW_ARG_BMAP_TEMPERATURE_SET   BIT2
+#define CWWW_ARG_BMAP_DELTA_UV_SET      BIT3
+#define CWWW_ARG_BMAP_CTL_SET           (CWWW_ARG_BMAP_LIGHTNESS_SET | CWWW_ARG_BMAP_TEMPERATURE_SET | CWWW_ARG_BMAP_DELTA_UV_SET)
+#define CWWW_ARG_BMAP_ALL               (CWWW_ARG_BMAP_ONOFF_SET | CWWW_ARG_BMAP_CTL_SET)
+
 /**
  * @brief Enumeration of CW-WW SIG model IDs.
  */
@@ -51,9 +58,13 @@ typedef struct cwww_cli_ctx
  */
 typedef struct cwww_client_msg
 {
-    uint8_t ack;         /**< Acknowledgment flag */
-    uint8_t set_get;     /**< Set/Get flag */
-    uint16_t element_id; /**< Element ID */
+    uint8_t ack;          /**< Acknowledgment flag */
+    uint8_t arg_bmap;     /**< Argument bitmap */
+    uint8_t set_get;      /**< Set/Get flag */
+    uint16_t element_id;  /**< Element ID */
+    uint16_t temperature; /**< Temperature */
+    uint16_t lightness;   /**< Lightness */
+    uint16_t delta_uv;    /**< Delta UV */
 } cwww_client_msg_t;
 
 /**

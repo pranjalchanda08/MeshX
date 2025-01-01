@@ -17,6 +17,26 @@
 #include "argtable3/argtable3.h"
 #include "module_id.h"
 
+/**
+ * @brief Macro to extract an argument from the argument list.
+ */
+#define UT_GET_ARG(_x, _type, _argv)   (_type) atoi( _argv [_x] )
+
+/**
+ * @brief Callback function for unit test modules.
+ *
+ * This function is used to define the callback function signature for unit test modules.
+ * The callback function is invoked when a unit test command is received by the production console.
+ *
+ * @param cmd_id The command ID to be processed.
+ * @param argc The number of arguments provided.
+ * @param argv The array of arguments.
+ *
+ * @return
+ *     - ESP_OK: Success
+ *     - ESP_ERR_INVALID_ARG: Invalid arguments
+ *     - Other error codes depending on the implementation
+ */
 typedef esp_err_t (*module_callback_t)(int cmd_id, int argc, char **argv);
 
 typedef struct callback_node {
