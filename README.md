@@ -39,6 +39,10 @@ Before using this project, make sure you have:
 
 ## Build
 
+### Prerequisites
+
+* Install docker: [docker-ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+
 ```sh
 $ cd app
 $ sh scripts/build.sh <procuct_name_string>
