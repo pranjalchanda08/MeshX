@@ -221,6 +221,18 @@ static esp_err_t cwww_cli_control_task_msg_handle(dev_struct_t *pdev, control_ta
     cwww_cli_sig_id_t model_id = evt == CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF ?
                                         CWWW_CLI_SIG_ONOFF_MODEL_ID : CWWW_CLI_SIG_L_CTL_MODEL_ID;
 
+    uint16_t element_id = msg->element_id;
+    size_t rel_el_id = element_id - cwww_client_element_init_ctrl.element_id_start;
+    cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl.cwww_cli_ctx[rel_el_id];
+
+    if(model_id == CWWW_CLI_SIG_L_CTL_MODEL_ID)
+    {
+        /* Set new context value as per msg sent */
+        el_ctx->delta_uv =  msg->arg_bmap & CWWW_ARG_BMAP_DELTA_UV_SET ? msg->delta_uv : el_ctx->delta_uv;
+        el_ctx->lightness = msg->arg_bmap & CWWW_ARG_BMAP_LIGHTNESS_SET ? msg->lightness : el_ctx->lightness;
+        el_ctx->temperature = msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_SET ? msg->temperature : el_ctx->temperature;
+    }
+    /* Send message to the cwww client */
     err = ble_mesh_send_cwww_msg(pdev,
                                  model_id,
                                  msg->element_id,
@@ -234,6 +246,158 @@ static esp_err_t cwww_cli_control_task_msg_handle(dev_struct_t *pdev, control_ta
 }
 #endif /* __CONTROL_TASK_H__ */
 
+#if CONFIG_ENABLE_UNIT_TEST
+
+typedef enum
+{
+    /* ONOFF UT COMMANDS */
+    CWWW_CLI_UT_CMD_ONOFF_GET = 0x00,
+    CWWW_CLI_UT_CMD_ONOFF_SET = 0x01,
+    CWWW_CLI_UT_CMD_ONOFF_SET_UNACK = 0x02,
+    /* CTL UT COMMANDS */
+    CWWW_CLI_UT_CMD_CTL_GET = 0x03,
+    CWWW_CLI_UT_CMD_CTL_SET = 0x04,
+    CWWW_CLI_UT_CMD_CTL_SET_UNACK = 0x05,
+    CWWW_CLI_UT_CMD_LIGHTNESS_GET = 0x06,
+    CWWW_CLI_UT_CMD_LIGHTNESS_SET = 0x07,
+    CWWW_CLI_UT_CMD_LIGHTNESS_SET_UNACK = 0x08,
+    CWWW_CLI_UT_CMD_TEMPERATURE_GET = 0x09,
+    CWWW_CLI_UT_CMD_TEMPERATURE_SET = 0x0A,
+    CWWW_CLI_UT_CMD_TEMPERATURE_SET_UNACK = 0x0B,
+    CWWW_CLI_UT_CMD_DELTA_UV_GET = 0x0C,
+    CWWW_CLI_UT_CMD_DELTA_UV_SET = 0x0D,
+    CWWW_CLI_UT_CMD_DELTA_UV_SET_UNACK = 0x0E,
+    CWWW_CLI_MAX_CMD
+} cwww_cli_cmd_t;
+
+/**
+ * @brief Callback handler for the CW-WW client unit test command.
+ *
+ * This function handles the CW-WW client unit test command by processing the
+ * provided command ID and arguments.
+ *
+ * @param[in] cmd_id The command ID to be processed.
+ * @param[in] argc The number of arguments provided.
+ * @param[in] argv The array of arguments.
+ *
+ * @return
+ *     - ESP_OK: Success
+ *     - ESP_ERR_INVALID_ARG: Invalid arguments
+ *     - Other error codes depending on the implementation
+ */
+static esp_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv)
+{
+    esp_err_t err = ESP_OK;
+    cwww_client_msg_t msg = {0};
+    msg.element_id = UT_GET_ARG(0, uint16_t, argv);
+    cwww_cli_cmd_t cmd = (cwww_cli_cmd_t)cmd_id;
+
+    ESP_LOGI(TAG, "argc|cmd_id: %d|%d", argc, cmd_id);
+    if (argc < 1 || cmd_id >= CWWW_CLI_MAX_CMD)
+    {
+        ESP_LOGE(TAG, "Relay Client Unit Test: Invalid number of arguments");
+        return ESP_ERR_INVALID_ARG;
+    }
+
+    control_task_msg_evt_to_ble_t msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_MAX;
+    switch (cmd)
+    {
+        case CWWW_CLI_UT_CMD_ONOFF_GET:
+            /* ut 1 0 1 <el_id> */
+            msg.ack = CWWW_CLI_MSG_ACK;
+            msg.set_get = CWWW_CLI_MSG_GET;
+            msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF;
+            break;
+        case CWWW_CLI_UT_CMD_ONOFF_SET:
+            /* ut 1 1 1 <el_id> */
+        case CWWW_CLI_UT_CMD_ONOFF_SET_UNACK:
+            /* ut 1 2 1 <el_id> */
+            msg.set_get = CWWW_CLI_MSG_SET;
+            msg.arg_bmap = CWWW_ARG_BMAP_ONOFF_SET;
+            msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF;
+            msg.ack = cmd == CWWW_CLI_UT_CMD_ONOFF_SET ? CWWW_CLI_MSG_ACK : CWWW_CLI_MSG_NO_ACK;
+            break;
+        case CWWW_CLI_UT_CMD_CTL_GET:
+            /* ut 1 3 1 <el_id> */
+            msg.ack = CWWW_CLI_MSG_NO_ACK;
+            msg.set_get = CWWW_CLI_MSG_GET;
+            msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL;
+            break;
+        case CWWW_CLI_UT_CMD_CTL_SET:
+            /* ut 1 4 1 <el_id> <temp> <light> <delta_uv> */
+        case CWWW_CLI_UT_CMD_CTL_SET_UNACK:
+            /* ut 1 5 1 <el_id> <temp> <light> <delta_uv> */
+            if (argc >= 2) msg.temperature = UT_GET_ARG(1, uint16_t, argv);
+            if (argc >= 3) msg.lightness = UT_GET_ARG(2, uint16_t, argv);
+            if (argc >= 4) msg.delta_uv = UT_GET_ARG(3, uint16_t, argv);
+            msg.set_get = CWWW_CLI_MSG_SET;
+            msg.arg_bmap = CWWW_ARG_BMAP_CTL_SET;
+            msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL;
+            msg.ack = cmd == CWWW_CLI_UT_CMD_CTL_SET ? CWWW_CLI_MSG_ACK : CWWW_CLI_MSG_NO_ACK;
+            break;
+        case CWWW_CLI_UT_CMD_LIGHTNESS_GET:
+            /* ut 1 6 1 <el_id> */
+            msg.ack = CWWW_CLI_MSG_NO_ACK;
+            msg.set_get = CWWW_CLI_MSG_GET;
+            msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL;
+            break;
+        case CWWW_CLI_UT_CMD_LIGHTNESS_SET:
+            /* ut 1 7 1 <el_id> <light> */
+        case CWWW_CLI_UT_CMD_LIGHTNESS_SET_UNACK:
+            /* ut 1 8 1 <el_id> <light> */
+            if (argc >= 2) msg.lightness = UT_GET_ARG(1, uint16_t, argv);
+            msg.set_get = CWWW_CLI_MSG_SET;
+            msg.arg_bmap = CWWW_ARG_BMAP_LIGHTNESS_SET;
+            msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL;
+            msg.ack = cmd == CWWW_CLI_UT_CMD_LIGHTNESS_SET ? CWWW_CLI_MSG_ACK : CWWW_CLI_MSG_NO_ACK;
+            break;
+        case CWWW_CLI_UT_CMD_TEMPERATURE_SET:
+            /* ut 1 9 1 <el_id> <temp> */
+        case CWWW_CLI_UT_CMD_TEMPERATURE_SET_UNACK:
+            /* ut 1 10 1 <el_id> <temp> */
+            if (argc >= 2) msg.temperature = UT_GET_ARG(1, uint16_t, argv);
+            msg.set_get = CWWW_CLI_MSG_SET;
+            msg.arg_bmap = CWWW_ARG_BMAP_TEMPERATURE_SET;
+            msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL;
+            msg.ack = cmd == CWWW_CLI_UT_CMD_TEMPERATURE_SET ? CWWW_CLI_MSG_ACK : CWWW_CLI_MSG_NO_ACK;
+            break;
+        case CWWW_CLI_UT_CMD_TEMPERATURE_GET:
+            /* ut 1 11 1 <el_id> */
+            msg.ack = CWWW_CLI_MSG_NO_ACK;
+            msg.set_get = CWWW_CLI_MSG_GET;
+            msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL;
+            break;
+        case CWWW_CLI_UT_CMD_DELTA_UV_SET:
+            /* ut 1 12 1 <el_id> <delta_uv> */
+        case CWWW_CLI_UT_CMD_DELTA_UV_SET_UNACK:
+            /* ut 1 13 1 <el_id> <delta_uv> */
+            if (argc >= 2) msg.delta_uv = UT_GET_ARG(1, uint16_t, argv);
+            msg.set_get = CWWW_CLI_MSG_SET;
+            msg.arg_bmap = CWWW_ARG_BMAP_DELTA_UV_SET;
+            msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL;
+            msg.ack = cmd == CWWW_CLI_UT_CMD_DELTA_UV_SET ? CWWW_CLI_MSG_ACK : CWWW_CLI_MSG_NO_ACK;
+            break;
+        case CWWW_CLI_UT_CMD_DELTA_UV_GET:
+            /* ut 1 14 1 <el_id> */
+            msg.ack = CWWW_CLI_MSG_NO_ACK;
+            msg.set_get = CWWW_CLI_MSG_GET;
+            msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL;
+            break;
+        default:
+            ESP_LOGE(TAG, "CWWW Client Unit Test: Invalid command");
+            return ESP_ERR_INVALID_ARG;
+    }
+
+    err = control_task_send_msg(CONTROL_TASK_MSG_CODE_TO_BLE, msg_evt, &msg, sizeof(msg));
+    if (err)
+    {
+        ESP_LOGE(TAG, "CWWW Client Unit Test: Command %d failed", cmd);
+    }
+    return err;
+}
+
+#endif /* CONFIG_ENABLE_UNIT_TEST */
+
 #endif /* CWWW_CLI_PROD_ONOFF_ENABLE_CB */
 /**
  * @brief Creates a CW-WW model space for the given device.
@@ -242,8 +406,8 @@ static esp_err_t cwww_cli_control_task_msg_handle(dev_struct_t *pdev, control_ta
  * model space for the specified device. It sets up the necessary structures and configurations
  * to manage the CW-WW model.
  *
- * @param pdev Pointer to the device structure.
- * @param n_max Maximum number of elements that can be created in the model space.
+ * @param[in] pdev Pointer to the device structure.
+ * @param[in] n_max Maximum number of elements that can be created in the model space.
  *
  * @return
  *     - ESP_OK: Success
@@ -410,11 +574,33 @@ esp_err_t create_cwww_client_elements(dev_struct_t *pdev)
         return err;
     }
 #endif /* __CONTROL_TASK_H__ */
+#if CONFIG_ENABLE_UNIT_TEST
+    err = register_unit_test(MODULE_ID_ELEMENT_LIGHT_CWWWW_CLIENT, &cwww_cli_unit_test_cb_handler);
+    if (err)
+    {
+        ESP_LOGE(TAG, "unit_test reg failed: (%d)", err);
+        return err;
+    }
+#endif /* CONFIG_ENABLE_UNIT_TEST */
 #endif /* CWWW_CLI_PROD_ONOFF_ENABLE_CB */
 
     return ESP_OK;
 }
 
+/**
+ * @brief Send a CW/WW (Cool White/Warm White) message over BLE Mesh.
+ *
+ * @param[in] pdev Pointer to the device structure.
+ * @param[in] model_id Model ID of the CW/WW client.
+ * @param[in] element_id Element ID to which the message is addressed.
+ * @param[in] set_get Flag indicating whether the message is a set (1) or get (0) operation.
+ * @param[in] ack Flag indicating whether the message requires an acknowledgment (1) or not (0).
+ *
+ * @return
+ *     - ESP_OK: Success
+ *     - ESP_ERR_INVALID_ARG: Invalid argument
+ *     - ESP_FAIL: Sending message failed
+ */
 esp_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id, uint16_t element_id, uint8_t set_get, uint8_t ack)
 {
     if (!pdev)
