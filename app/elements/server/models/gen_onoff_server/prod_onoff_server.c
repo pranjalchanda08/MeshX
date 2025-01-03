@@ -81,7 +81,7 @@ static esp_err_t prod_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param_
     || param->ctx.addr != param->model->pub->publish_addr)
     {
         /* Here the message was received from unregistered source and mention the state to the respective client */
-        ESP_LOGI(TAG, "PUB: 0x%x, 0x%x", param->ctx.addr, param->model->pub->publish_addr);
+        ESP_LOGI(TAG, "PUB: src|pub %x|%x", param->ctx.addr, param->model->pub->publish_addr);
         param->ctx.addr = param->model->pub->publish_addr;
         esp_ble_mesh_server_model_send_msg(param->model,
                                            &param->ctx,

@@ -15,14 +15,6 @@
 
 #define PROD_SERVER_INIT_MAGIC_NO   0x2483
 
-static const char* server_state_str[] =
-{
-    [ESP_BLE_MESH_LIGHTING_SERVER_STATE_CHANGE_EVT] = "STATE_CHANGE_EVT",
-    [ESP_BLE_MESH_LIGHTING_SERVER_RECV_GET_MSG_EVT] = "RECV_GET_MSG_EVT",
-    [ESP_BLE_MESH_LIGHTING_SERVER_RECV_SET_MSG_EVT] = "RECV_SET_MSG_EVT",
-    [ESP_BLE_MESH_LIGHTING_SERVER_RECV_STATUS_MSG_EVT] = "RECV_STATUS_MSG_EVT",
-};
-
 static uint16_t prod_lighting_server_init = 0;
 static struct prod_lighting_server_cb_list prod_lighting_server_cb_reg_table = SLIST_HEAD_INITIALIZER(prod_lighting_server_cb_reg_table);
 static SemaphoreHandle_t prod_lighting_server_mutex;
@@ -38,10 +30,8 @@ static SemaphoreHandle_t prod_lighting_server_mutex;
 static void prod_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_t event,
                                          esp_ble_mesh_lighting_server_cb_param_t *param)
 {
-    ESP_LOGD(TAG, "event 0x%02x, opcode 0x%04" PRIx32 ", src 0x%04x, dst 0x%04x",
-             event, param->ctx.recv_op, param->ctx.addr, param->ctx.recv_dst);
-
-    ESP_LOGI(TAG, "%s", server_state_str[event]);
+    ESP_LOGI(TAG, "evt|op|src|dst: %02x|%04x|%04x|%04x",
+            event, (unsigned)param->ctx.recv_op, param->ctx.addr, param->ctx.recv_dst);
 
     if (xSemaphoreTake(prod_lighting_server_mutex, portMAX_DELAY) == pdTRUE) {
         prod_lighting_server_cb_reg_t *entry;
