@@ -73,9 +73,12 @@ static void prod_onoff_reg_cb_dispatch(const esp_ble_mesh_generic_client_cb_para
 static void app_ble_mesh_generic_client_cb(esp_ble_mesh_generic_client_cb_event_t event,
                                            const esp_ble_mesh_generic_client_cb_param_t *param)
 {
-    ESP_LOGI(TAG, "%s, op|src|dst: %04" PRIx32 "|%04x|%04x",
-            client_state_str[event], param->params->ctx.recv_op, param->params->ctx.addr, param->params->ctx.recv_dst);
-    prod_onoff_reg_cb_dispatch(param, (prod_onoff_cli_evt_t) BIT(event));
+    ESP_LOGI(TAG, "%s, err|op|src|dst: %d|%04" PRIx32 "|%04x|%04x",
+            client_state_str[event], param->error_code, param->params->ctx.recv_op, param->params->ctx.addr, param->params->ctx.recv_dst);
+    if(param->error_code == ESP_OK)
+    {
+        prod_onoff_reg_cb_dispatch(param, (prod_onoff_cli_evt_t) BIT(event));
+    }
 }
 
 /**
