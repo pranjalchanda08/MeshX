@@ -89,7 +89,7 @@ static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param
                 srv->state->temperature = param->value.state_change.ctl_set.temperature;
                 srv->state->lightness = param->value.state_change.ctl_set.lightness;
                 srv->state->delta_uv = param->value.state_change.ctl_set.delta_uv;
-                ESP_LOGI(TAG, "lightness %d, temperature %d, delta uv %d",
+                ESP_LOGI(TAG, "lightness|temp|del_uv:%d|%d|%d",
                      srv->state->lightness,
                      srv->state->temperature,
                      srv->state->delta_uv);
@@ -100,10 +100,10 @@ static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param
             if(op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET_UNACK)
                 send_reply_to_src = true;
 
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature >> 8;
             ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature & 0xFF;
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->lightness >> 8;
+            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature >> 8;
             ctl_status_pack[ctl_status_pack_idx++] = srv->state->lightness & 0xFF;
+            ctl_status_pack[ctl_status_pack_idx++] = srv->state->lightness >> 8;
 
             break;
         case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET:
@@ -113,7 +113,7 @@ static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param
             if(op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET){
                 srv->state->temperature = param->value.state_change.ctl_temp_set.temperature;
                 srv->state->delta_uv = param->value.state_change.ctl_temp_set.delta_uv;
-                ESP_LOGI(TAG, "temperature %d, delta uv %d",
+                ESP_LOGI(TAG, "lightness|del_uv:%d|%d",
                         srv->state->temperature,
                         srv->state->delta_uv);
                 err = prod_perform_hw_change(param);
@@ -123,10 +123,10 @@ static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param
             if(op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK)
                 send_reply_to_src = true;
 
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature >> 8;
             ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature & 0xFF;
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->delta_uv >> 8;
+            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature >> 8;
             ctl_status_pack[ctl_status_pack_idx++] = srv->state->delta_uv & 0xFF;
+            ctl_status_pack[ctl_status_pack_idx++] = srv->state->delta_uv >> 8;
             break;
         /*!< Light CTL Setup Message Opcode */
         case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_SET:
@@ -134,7 +134,7 @@ static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param
         case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_SET_UNACK:
             if(op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_GET)
             {
-                ESP_LOGI(TAG, "lightness %d, temperature %d, delta uv %d",
+                ESP_LOGI(TAG, "lightness|temp|del_uv:%d|%d|%d",
                         param->value.state_change.ctl_default_set.lightness,
                         param->value.state_change.ctl_default_set.temperature,
                         param->value.state_change.ctl_default_set.delta_uv);
@@ -145,12 +145,12 @@ static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param
             if(op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_SET_UNACK)
                 send_reply_to_src = true;
 
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->lightness_default >> 8;
             ctl_status_pack[ctl_status_pack_idx++] = srv->state->lightness_default & 0xFF;
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature_default >> 8;
+            ctl_status_pack[ctl_status_pack_idx++] = srv->state->lightness_default >> 8;
             ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature_default & 0xFF;
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->delta_uv_default >> 8;
+            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature_default >> 8;
             ctl_status_pack[ctl_status_pack_idx++] = srv->state->delta_uv_default & 0xFF;
+            ctl_status_pack[ctl_status_pack_idx++] = srv->state->delta_uv_default >> 8;
             status_op = ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS;
             break;
         case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET:
@@ -158,7 +158,7 @@ static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param
         case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK:
             if(op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET)
             {
-                ESP_LOGI(TAG, "temperature min %d, max %d",
+                ESP_LOGI(TAG, "temp min|max: %dK|%dK",
                         param->value.state_change.ctl_temp_range_set.range_min,
                         param->value.state_change.ctl_temp_range_set.range_max);
                 srv->state->temperature_range_min = param->value.state_change.ctl_temp_range_set.range_min;
@@ -169,8 +169,8 @@ static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param
                 send_reply_to_src = true;
             }
             ctl_status_pack[ctl_status_pack_idx++] = 1; // Status Code
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature_range_min >> 8;
             ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature_range_min & 0xFF;
+            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature_range_min >> 8;
             ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature_range_max & 0xFF;
             ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature_range_max >> 8;
             status_op = ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS;
@@ -179,8 +179,12 @@ static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param
             ESP_LOGW(TAG, "CTL Unhandled Event %p", (void*)param->ctx.recv_op);
             break;
     }
-    if (send_reply_to_src)
+    if (send_reply_to_src
+    /* This is meant to notify the respective publish client */
+    || param->ctx.addr != param->model->pub->publish_addr)
     {
+        /* Here the message was received from unregistered source and mention the state to the respective client */
+        ESP_LOGI(TAG, "PUB: src|pub %x|%x", param->ctx.addr, param->model->pub->publish_addr);
         /* ACK to Source */
         err = esp_ble_mesh_server_model_send_msg(param->model,
                                 &param->ctx,

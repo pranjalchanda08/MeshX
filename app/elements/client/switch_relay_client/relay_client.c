@@ -248,10 +248,14 @@ static void relay_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
  */
 static esp_err_t relay_cli_control_task_msg_handle(dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
 {
+    const relay_client_msg_t *msg = (const relay_client_msg_t *)params;
     esp_err_t err = ESP_OK;
+
+    if (!pdev || !IS_EL_IN_RANGE(msg->element_id))
+        return ESP_ERR_INVALID_ARG;
+
     if (evt == CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF)
     {
-        const relay_client_msg_t *msg = (const relay_client_msg_t *)params;
         err = ble_mesh_send_relay_msg(pdev,
                                       msg->element_id,
                                       msg->set_get,

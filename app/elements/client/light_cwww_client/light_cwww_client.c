@@ -112,25 +112,48 @@ static void cwww_client_generic_client_cb(const esp_ble_mesh_generic_client_cb_p
  * @param param Pointer to the structure containing the event parameters.
  * @param evt The specific Light CTL Client event that occurred.
  */
-static void cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t *param, light_ctl_cli_evt_t evt)
+static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t *param, light_ctl_cli_evt_t evt)
 {
     uint8_t element_id = param->params->model->element_idx;
     if (!IS_EL_IN_RANGE(element_id))
-    {
-        return;
-    }
+        return false;
 
     size_t rel_el_id = GET_RELATIVE_EL_IDX(element_id);
     cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl.cwww_cli_ctx[rel_el_id];
     cwww_client_msg_t msg = {0};
 
-    el_ctx->lightness = param->status_cb.ctl_status.present_ctl_lightness;
-    el_ctx->temperature = param->status_cb.ctl_status.present_ctl_temperature;
+    if(param->params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_STATUS)
+    {
+        el_ctx->lightness = param->status_cb.ctl_status.present_ctl_lightness;
+        el_ctx->temperature = param->status_cb.ctl_status.present_ctl_temperature;
+    }
+    else if (param->params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS)
+    {
+        el_ctx->delta_uv = param->status_cb.ctl_temperature_status.present_ctl_delta_uv;
+        el_ctx->temperature = param->status_cb.ctl_temperature_status.present_ctl_temperature;
+    }
+    else if ((param->params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS)
+          && (param->status_cb.ctl_temperature_range_status.status_code == ESP_OK))
+    {
+        el_ctx->lightness_range_max = param->status_cb.ctl_temperature_range_status.range_max;
+        el_ctx->lightness_range_min = param->status_cb.ctl_temperature_range_status.range_min;
+    }
+    else if (ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS == param->params->opcode)
+    {
+        el_ctx->temp_def = param->status_cb.ctl_default_status.temperature;
+        el_ctx->dwlta_uv_def = param->status_cb.ctl_default_status.delta_uv;
+        el_ctx->lightness_def = param->status_cb.ctl_default_status.lightness;
+    }
+    else
+    {
+        /* Return as No CTL related OPCode were received */
+        return false;
+    }
 
     switch (evt)
     {
         case LIGHT_CTL_CLI_PUBLISH:
-            ESP_LOGD(TAG, "PUBLISH: %d %d",
+            ESP_LOGI(TAG, "PUBLISH: %d %d",
                 el_ctx->lightness,
                 el_ctx->temperature);
             break;
@@ -148,7 +171,7 @@ static void cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
             control_task_send_msg(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL, &msg, sizeof(msg));
             break;
         case LIGHT_CTL_CLI_EVT_SET:
-            ESP_LOGD(TAG, "SET: %d, %d",
+            ESP_LOGI(TAG, "SET: %d, %d",
                      el_ctx->lightness,
                      el_ctx->temperature);
             break;
@@ -156,6 +179,7 @@ static void cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
             ESP_LOGW(TAG, "Unhandled event: %d", evt);
             break;
     }
+    return true;
 }
 #if CONFIG_ENABLE_CONFIG_SERVER
 /**
@@ -183,7 +207,6 @@ static void cwww_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
         el_ctx = &cwww_client_element_init_ctrl.cwww_cli_ctx[rel_el_id];
         el_ctx->app_id = param->value.state_change.appkey_add.app_idx;
-        el_ctx->net_id = param->value.state_change.appkey_add.net_idx;
         break;
     case CONFIG_EVT_MODEL_PUB_ADD:
     case CONFIG_EVT_MODEL_PUB_DEL:
@@ -225,12 +248,19 @@ static esp_err_t cwww_cli_control_task_msg_handle(dev_struct_t *pdev, control_ta
     size_t rel_el_id = element_id - cwww_client_element_init_ctrl.element_id_start;
     cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl.cwww_cli_ctx[rel_el_id];
 
+    if (!IS_EL_IN_RANGE(element_id))
+    {
+        return ESP_ERR_INVALID_ARG;
+    }
+
     if(model_id == CWWW_CLI_SIG_L_CTL_MODEL_ID)
     {
         /* Set new context value as per msg sent */
-        el_ctx->delta_uv =  msg->arg_bmap & CWWW_ARG_BMAP_DELTA_UV_SET ? msg->delta_uv : el_ctx->delta_uv;
-        el_ctx->lightness = msg->arg_bmap & CWWW_ARG_BMAP_LIGHTNESS_SET ? msg->lightness : el_ctx->lightness;
-        el_ctx->temperature = msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_SET ? msg->temperature : el_ctx->temperature;
+        el_ctx->delta_uv = (msg->arg_bmap & CWWW_ARG_BMAP_DELTA_UV_SET) ? msg->delta_uv : el_ctx->delta_uv;
+        el_ctx->lightness = (msg->arg_bmap & CWWW_ARG_BMAP_LIGHTNESS_SET) ? msg->lightness : el_ctx->lightness;
+        el_ctx->temperature = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_SET) ? msg->temperature : el_ctx->temperature;
+        el_ctx->lightness_range_max = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MAX) ? msg->lightness_range_max : el_ctx->lightness_range_max;
+        el_ctx->lightness_range_min = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MIN) ? msg->lightness_range_min : el_ctx->lightness_range_min;
     }
     /* Send message to the cwww client */
     err = ble_mesh_send_cwww_msg(pdev,
@@ -251,22 +281,21 @@ static esp_err_t cwww_cli_control_task_msg_handle(dev_struct_t *pdev, control_ta
 typedef enum
 {
     /* ONOFF UT COMMANDS */
-    CWWW_CLI_UT_CMD_ONOFF_GET = 0x00,
-    CWWW_CLI_UT_CMD_ONOFF_SET = 0x01,
-    CWWW_CLI_UT_CMD_ONOFF_SET_UNACK = 0x02,
+    CWWW_CLI_UT_CMD_ONOFF_GET = 0,
+    CWWW_CLI_UT_CMD_ONOFF_SET,
+    CWWW_CLI_UT_CMD_ONOFF_SET_UNACK,
     /* CTL UT COMMANDS */
-    CWWW_CLI_UT_CMD_CTL_GET = 0x03,
-    CWWW_CLI_UT_CMD_CTL_SET = 0x04,
-    CWWW_CLI_UT_CMD_CTL_SET_UNACK = 0x05,
-    CWWW_CLI_UT_CMD_LIGHTNESS_GET = 0x06,
-    CWWW_CLI_UT_CMD_LIGHTNESS_SET = 0x07,
-    CWWW_CLI_UT_CMD_LIGHTNESS_SET_UNACK = 0x08,
-    CWWW_CLI_UT_CMD_TEMPERATURE_GET = 0x09,
-    CWWW_CLI_UT_CMD_TEMPERATURE_SET = 0x0A,
-    CWWW_CLI_UT_CMD_TEMPERATURE_SET_UNACK = 0x0B,
-    CWWW_CLI_UT_CMD_DELTA_UV_GET = 0x0C,
-    CWWW_CLI_UT_CMD_DELTA_UV_SET = 0x0D,
-    CWWW_CLI_UT_CMD_DELTA_UV_SET_UNACK = 0x0E,
+    CWWW_CLI_UT_CMD_CTL_GET,
+    CWWW_CLI_UT_CMD_CTL_SET,
+    CWWW_CLI_UT_CMD_CTL_SET_UNACK,
+    CWWW_CLI_UT_CMD_LIGHTNESS_SET,
+    CWWW_CLI_UT_CMD_LIGHTNESS_SET_UNACK,
+    CWWW_CLI_UT_CMD_TEMPERATURE_SET,
+    CWWW_CLI_UT_CMD_TEMPERATURE_SET_UNACK,
+    CWWW_CLI_UT_CMD_DELTA_UV_SET,
+    CWWW_CLI_UT_CMD_DELTA_UV_SET_UNACK,
+    CWWW_CLI_UT_CMD_TEMPERATURE_RANGE_SET,
+    CWWW_CLI_UT_CMD_TEMPERATURE_RANGE_SET_UNACK,
     CWWW_CLI_MAX_CMD
 } cwww_cli_cmd_t;
 
@@ -324,9 +353,9 @@ static esp_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv
             msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL;
             break;
         case CWWW_CLI_UT_CMD_CTL_SET:
-            /* ut 1 4 1 <el_id> <temp> <light> <delta_uv> */
+            /* ut 1 4 4 <el_id> <temp> <light> <delta_uv> */
         case CWWW_CLI_UT_CMD_CTL_SET_UNACK:
-            /* ut 1 5 1 <el_id> <temp> <light> <delta_uv> */
+            /* ut 1 5 4 <el_id> <temp> <light> <delta_uv> */
             if (argc >= 2) msg.temperature = UT_GET_ARG(1, uint16_t, argv);
             if (argc >= 3) msg.lightness = UT_GET_ARG(2, uint16_t, argv);
             if (argc >= 4) msg.delta_uv = UT_GET_ARG(3, uint16_t, argv);
@@ -335,16 +364,10 @@ static esp_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv
             msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL;
             msg.ack = cmd == CWWW_CLI_UT_CMD_CTL_SET ? CWWW_CLI_MSG_ACK : CWWW_CLI_MSG_NO_ACK;
             break;
-        case CWWW_CLI_UT_CMD_LIGHTNESS_GET:
-            /* ut 1 6 1 <el_id> */
-            msg.ack = CWWW_CLI_MSG_NO_ACK;
-            msg.set_get = CWWW_CLI_MSG_GET;
-            msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL;
-            break;
         case CWWW_CLI_UT_CMD_LIGHTNESS_SET:
-            /* ut 1 7 1 <el_id> <light> */
+            /* ut 1 6 2 <el_id> <light> */
         case CWWW_CLI_UT_CMD_LIGHTNESS_SET_UNACK:
-            /* ut 1 8 1 <el_id> <light> */
+            /* ut 1 7 2 <el_id> <light> */
             if (argc >= 2) msg.lightness = UT_GET_ARG(1, uint16_t, argv);
             msg.set_get = CWWW_CLI_MSG_SET;
             msg.arg_bmap = CWWW_ARG_BMAP_LIGHTNESS_SET;
@@ -352,36 +375,35 @@ static esp_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv
             msg.ack = cmd == CWWW_CLI_UT_CMD_LIGHTNESS_SET ? CWWW_CLI_MSG_ACK : CWWW_CLI_MSG_NO_ACK;
             break;
         case CWWW_CLI_UT_CMD_TEMPERATURE_SET:
-            /* ut 1 9 1 <el_id> <temp> */
+            /* ut 1 8 2 <el_id> <temp> */
         case CWWW_CLI_UT_CMD_TEMPERATURE_SET_UNACK:
-            /* ut 1 10 1 <el_id> <temp> */
+            /* ut 1 9 2 <el_id> <temp> */
             if (argc >= 2) msg.temperature = UT_GET_ARG(1, uint16_t, argv);
             msg.set_get = CWWW_CLI_MSG_SET;
             msg.arg_bmap = CWWW_ARG_BMAP_TEMPERATURE_SET;
             msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL;
             msg.ack = cmd == CWWW_CLI_UT_CMD_TEMPERATURE_SET ? CWWW_CLI_MSG_ACK : CWWW_CLI_MSG_NO_ACK;
             break;
-        case CWWW_CLI_UT_CMD_TEMPERATURE_GET:
-            /* ut 1 11 1 <el_id> */
-            msg.ack = CWWW_CLI_MSG_NO_ACK;
-            msg.set_get = CWWW_CLI_MSG_GET;
-            msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL;
-            break;
         case CWWW_CLI_UT_CMD_DELTA_UV_SET:
-            /* ut 1 12 1 <el_id> <delta_uv> */
+            /* ut 1 10 2 <el_id> <delta_uv> */
         case CWWW_CLI_UT_CMD_DELTA_UV_SET_UNACK:
-            /* ut 1 13 1 <el_id> <delta_uv> */
+            /* ut 1 11 2 <el_id> <delta_uv> */
             if (argc >= 2) msg.delta_uv = UT_GET_ARG(1, uint16_t, argv);
             msg.set_get = CWWW_CLI_MSG_SET;
             msg.arg_bmap = CWWW_ARG_BMAP_DELTA_UV_SET;
             msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL;
             msg.ack = cmd == CWWW_CLI_UT_CMD_DELTA_UV_SET ? CWWW_CLI_MSG_ACK : CWWW_CLI_MSG_NO_ACK;
             break;
-        case CWWW_CLI_UT_CMD_DELTA_UV_GET:
-            /* ut 1 14 1 <el_id> */
-            msg.ack = CWWW_CLI_MSG_NO_ACK;
-            msg.set_get = CWWW_CLI_MSG_GET;
+        case CWWW_CLI_UT_CMD_TEMPERATURE_RANGE_SET:
+            /* ut 1 12 3 <el_id> <min> <max> */
+        case CWWW_CLI_UT_CMD_TEMPERATURE_RANGE_SET_UNACK:
+            /* ut 1 13 3 <el_id> <min> <max> */
+            if (argc >= 2) msg.lightness_range_min = UT_GET_ARG(1, uint16_t, argv);
+            if (argc >= 3) msg.lightness_range_max = UT_GET_ARG(2, uint16_t, argv);
+            msg.set_get = CWWW_CLI_MSG_SET;
+            msg.arg_bmap = CWWW_ARG_BMAP_CTL_SET;
             msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL;
+            msg.ack = cmd == CWWW_CLI_UT_CMD_TEMPERATURE_RANGE_SET ? CWWW_CLI_MSG_ACK : CWWW_CLI_MSG_NO_ACK;
             break;
         default:
             ESP_LOGE(TAG, "CWWW Client Unit Test: Invalid command");

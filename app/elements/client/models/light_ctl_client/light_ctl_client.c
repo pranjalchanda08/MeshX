@@ -16,13 +16,6 @@
 
 static uint16_t light_ctl_client_init_flag = 0;
 
-static const char *client_state_str[] = {
-    [ESP_BLE_MESH_LIGHT_CLIENT_GET_STATE_EVT] = "GET_STATE_EVT",
-    [ESP_BLE_MESH_LIGHT_CLIENT_SET_STATE_EVT] = "SET_STATE_EVT",
-    [ESP_BLE_MESH_LIGHT_CLIENT_PUBLISH_EVT] = "PUBLISH_EVT",
-    [ESP_BLE_MESH_LIGHT_CLIENT_TIMEOUT_EVT] = "TIMEOUT_EVT",
-};
-
 SLIST_HEAD(light_ctl_cli_cb_reg_head, light_ctl_cli_cb_reg);
 static struct light_ctl_cli_cb_reg_head light_ctl_cli_cb_reg_table = SLIST_HEAD_INITIALIZER(light_ctl_cli_cb_reg_table);
 static SemaphoreHandle_t light_ctl_cli_cb_reg_mutex;
@@ -43,9 +36,9 @@ static void light_ctl_cli_reg_cb_dispatch(const esp_ble_mesh_light_client_cb_par
         light_ctl_cli_cb_reg_t *ptr;
         SLIST_FOREACH(ptr, &light_ctl_cli_cb_reg_table, next)
         {
-            if ((evt & ptr->evt_bmap) && ptr->cb != NULL)
+            if ((evt & ptr->evt_bmap) && ptr->cb != NULL && ptr->cb(param, evt)) // Call the registered callback
             {
-                ptr->cb(param, evt); // Call the registered callback
+                break;
             }
         }
         xSemaphoreGive(light_ctl_cli_cb_reg_mutex);
@@ -68,10 +61,12 @@ static void light_ctl_cli_reg_cb_dispatch(const esp_ble_mesh_light_client_cb_par
 void app_ble_mesh_light_client_cb(esp_ble_mesh_light_client_cb_event_t event,
                                   const esp_ble_mesh_light_client_cb_param_t *param)
 {
-    ESP_LOGI(TAG, "event 0x%02x, opcode 0x%04" PRIx32 ", src 0x%04x, dst 0x%04x",
-             event, param->params->ctx.recv_op, param->params->ctx.addr, param->params->ctx.recv_dst);
-    ESP_LOGI(TAG, "%s", client_state_str[event]);
-    light_ctl_cli_reg_cb_dispatch(param, (light_ctl_cli_evt_t)BIT(event));
+    ESP_LOGI(TAG, "evt|err|op|src|dst: %02x|%d|%04x|%04x|%04x",
+            event, param->error_code, (unsigned)param->params->ctx.recv_op, param->params->ctx.addr, param->params->ctx.recv_dst);
+    if(param->error_code == ESP_OK)
+    {
+        light_ctl_cli_reg_cb_dispatch(param, (light_ctl_cli_evt_t)BIT(event));
+    }
 }
 
 /**

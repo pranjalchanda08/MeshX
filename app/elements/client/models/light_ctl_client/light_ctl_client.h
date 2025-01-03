@@ -32,7 +32,7 @@ typedef enum
     LIGHT_CTL_CLI_EVT_ALL = (LIGHT_CTL_CLI_EVT_GET | LIGHT_CTL_CLI_EVT_SET | LIGHT_CTL_CLI_PUBLISH | LIGHT_CTL_CLI_TIMEOUT)
 } light_ctl_cli_evt_t;
 
-typedef void (*light_cli_cb)(const esp_ble_mesh_light_client_cb_param_t *param, light_ctl_cli_evt_t evt);
+typedef bool (*light_cli_cb)(const esp_ble_mesh_light_client_cb_param_t *param, light_ctl_cli_evt_t evt);
 typedef struct light_ctl_cli_cb_reg
 {
     light_cli_cb cb;                   /**< Registered callback function */
