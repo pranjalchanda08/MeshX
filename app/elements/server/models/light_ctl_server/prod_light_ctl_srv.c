@@ -168,7 +168,7 @@ static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param
             {
                 send_reply_to_src = true;
             }
-            ctl_status_pack[ctl_status_pack_idx++] = 1; // Status Code
+            ctl_status_pack[ctl_status_pack_idx++] = 0; // Status Code
             ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature_range_min & 0xFF;
             ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature_range_min >> 8;
             ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature_range_max & 0xFF;
@@ -190,6 +190,8 @@ static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param
                                 &param->ctx,
                                 status_op,
                                 ctl_status_pack_idx, ctl_status_pack);
+        if(err)
+            ESP_LOGE(TAG, "Failed to send CTL status message (Err: %x)", err);
     }
 
     return err;
@@ -215,6 +217,10 @@ esp_err_t prod_light_ctl_server_init(void)
         ESP_LOGE(TAG, "Failed to initialize prod server");
 
     err = prod_lighting_reg_cb(ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV, prod_handle_light_ctl_msg);
+    if(err)
+        ESP_LOGE(TAG, "Failed to initialize prod_gen_srv_reg_cb (Err: %d)", err);
+
+    err = prod_lighting_reg_cb(ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SETUP_SRV, prod_handle_light_ctl_msg);
     if(err)
         ESP_LOGE(TAG, "Failed to initialize prod_gen_srv_reg_cb (Err: %d)", err);
 

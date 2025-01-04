@@ -100,13 +100,18 @@ typedef struct cwww_client_element
 esp_err_t create_cwww_client_elements(dev_struct_t *pdev);
 
 /**
- * @brief Send Msg to cwww node or group represented by the provisioned publish address
+ * @brief Send a CW/WW (Cool White/Warm White) message over BLE Mesh.
  *
- * @param[in] pdev          Pointer to dev_struct
- * @param[in] element_id    Element id of cwww client
- * @param[in] model_id      Model id of cwww client
- * @param[in] set_get       Message type: Set -> 1 Get -> 0
- * @param[in] ack           Set with ack, 1/0
- * @return esp_err_t
+ * @param[in] pdev          Pointer to the device structure.
+ * @param[in] model_id      Model ID of the CW/WW client.
+ * @param[in] element_id    Element ID to which the message is addressed.
+ * @param[in] set_get       Flag indicating whether the message is a set (1) or get (0) operation.
+ * @param[in] is_range      Flag indicating whether the message is a temperature range set (1) or not (0).
+ * @param[in] ack           Flag indicating whether the message requires an acknowledgment (1) or not (0).
+ *
+ * @return
+ *     - ESP_OK: Success
+ *     - ESP_ERR_INVALID_ARG: Invalid argument
+ *     - ESP_FAIL: Sending message failed
  */
-esp_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id, uint16_t element_id, uint8_t set_get, uint8_t ack);
+esp_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id, uint16_t element_id, uint8_t set_get, uint8_t is_range, uint8_t ack);

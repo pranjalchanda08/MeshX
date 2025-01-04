@@ -130,112 +130,102 @@ esp_err_t prod_light_ctl_client_init()
  *
  * This function sends a Light CTL message with the specified parameters.
  *
- * @param[in] model Pointer to the BLE Mesh model.
- * @param[in] opcode Opcode of the message to be sent.
- * @param[in] addr Destination address of the message.
- * @param[in] net_idx Network index to be used.
- * @param[in] app_idx Application index to be used.
- * @param[in] lightness Lightness value to be sent.
- * @param[in] temperature Temperature value to be sent.
- * @param[in] delta_uv Delta UV value to be sent.
- * @param[in] tid Transaction ID.
+ * @param[in] params Pointer to the structure containing the message parameters.
  *
- * @return ESP_OK on success or an error code on failure.
+ * @return
+ *    - ESP_OK: Success
+ *    - Appropriate error code on failure
  */
-esp_err_t prod_light_ctl_send_msg(esp_ble_mesh_model_t *model,
-                                  uint16_t opcode,
-                                  uint16_t addr,
-                                  uint16_t net_idx,
-                                  uint16_t app_idx,
-                                  uint16_t lightness,
-                                  uint16_t temperature,
-                                  uint16_t delta_uv,
-                                  uint8_t tid)
+esp_err_t prod_light_ctl_send_msg(light_ctl_send_args_t * params)
 {
     esp_err_t err = ESP_OK;
+    bool send_msg = false;
     esp_ble_mesh_client_common_param_t common = {0};
     esp_ble_mesh_light_client_set_state_t set = {0};
+    if(params == NULL)
+        return ESP_ERR_INVALID_ARG;
 
-    common.model = model;
-    common.opcode = opcode;
-    common.ctx.addr = addr;
-    common.ctx.net_idx = net_idx;
-    common.ctx.app_idx = app_idx;
+    common.model = params->model;
+    common.opcode = params->opcode;
+    common.ctx.addr = params->addr;
+    common.ctx.net_idx = params->net_idx;
+    common.ctx.app_idx = params->app_idx;
     common.msg_timeout = 0; /* 0 indicates that timeout value from menuconfig will be used */
     common.ctx.send_ttl = 3;
 #if ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 2, 0)
     common.msg_role = ROLE_NODE;
 #endif
 
-    if(opcode != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_GET)
+    if(params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET ||
+       params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET_UNACK)
     {
-        set.ctl_set.tid = tid;
+        set.ctl_set.tid = params->tid;
         set.ctl_set.op_en = false;
-        set.ctl_set.ctl_delta_uv = delta_uv;
-        set.ctl_set.ctl_lightness = lightness;
-        set.ctl_set.ctl_temperature = temperature;
-
+        set.ctl_set.ctl_delta_uv = params->delta_uv;
+        set.ctl_set.ctl_lightness = params->lightness;
+        set.ctl_set.ctl_temperature = params->temperature;
+        send_msg = true;
+    }
+    else if(params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET ||
+            params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK)
+    {
+        set.ctl_temperature_range_set.range_min = params->temp_range_min;
+        set.ctl_temperature_range_set.range_max = params->temp_range_max;
+        send_msg = true;
+    }
+    else{
+        /* TODO: Issue: #14 */
+        err = ESP_ERR_NOT_SUPPORTED;
+    }
+    if(send_msg)
+    {
         err = esp_ble_mesh_light_client_set_state(&common, &set);
         if (err)
         {
             ESP_LOGE(TAG, "Light CTL Client Send Message failed: (%d)", err);
         }
     }
-    else{
-        /* TODO: Issue: #14 */
-        err = ESP_ERR_NOT_SUPPORTED;
-    }
     return err;
 }
 
 /**
- * @brief Send a Light CTL Temperature message.
+ * @brief Sends a message to control the light temperature.
  *
- * This function sends a Light CTL Temperature message to a specified address.
+ * This function sends a message to adjust the light temperature using the provided parameters.
  *
- * @param[in] model       Pointer to the BLE Mesh model.
- * @param[in] opcode      Opcode of the message.
- * @param[in] addr        Destination address of the message.
- * @param[in] net_idx     Network index to be used.
- * @param[in] app_idx     Application index to be used.
- * @param[in] temperature Light CTL Temperature value.
- * @param[in] delta_uv    Light CTL Delta UV value.
- * @param[in] tid         Transaction ID.
+ * @param[in] params Pointer to a structure containing the parameters for the light temperature control message.
  *
  * @return
- *     - ESP_OK on success
- *     - Appropriate error code on failure
+ *    - ESP_OK: Success
+ *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - ESP_FAIL: Sending message failed
  */
-esp_err_t prod_light_ctl_temperature_send_msg(esp_ble_mesh_model_t *model,
-                                  uint16_t opcode,
-                                  uint16_t addr,
-                                  uint16_t net_idx,
-                                  uint16_t app_idx,
-                                  uint16_t temperature,
-                                  uint16_t delta_uv,
-                                  uint8_t tid)
+esp_err_t prod_light_ctl_temperature_send_msg(light_ctl_send_args_t * params)
 {
     esp_err_t err = ESP_OK;
     esp_ble_mesh_client_common_param_t common = {0};
     esp_ble_mesh_light_client_set_state_t set = {0};
 
-    common.model = model;
-    common.opcode = opcode;
-    common.ctx.addr = addr;
-    common.ctx.net_idx = net_idx;
-    common.ctx.app_idx = app_idx;
+    if(params == NULL)
+        return ESP_ERR_INVALID_ARG;
+
+    common.model = params->model;
+    common.opcode = params->opcode;
+    common.ctx.addr = params->addr;
+    common.ctx.net_idx = params->net_idx;
+    common.ctx.app_idx = params->app_idx;
     common.msg_timeout = 0; /* 0 indicates that timeout value from menuconfig will be used */
     common.ctx.send_ttl = 3;
 #if ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 2, 0)
     common.msg_role = ROLE_NODE;
 #endif
 
-    if(opcode != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_GET)
+    if(params->opcode != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_GET)
     {
-        set.ctl_temperature_set.tid = tid;
+        set.ctl_temperature_set.tid = params->tid;
         set.ctl_temperature_set.op_en = false;
-        set.ctl_temperature_set.ctl_delta_uv = delta_uv;
-        set.ctl_temperature_set.ctl_temperature = temperature;
+        set.ctl_temperature_set.ctl_delta_uv = params->delta_uv;
+        set.ctl_temperature_set.ctl_temperature = params->temperature;
 
         err = esp_ble_mesh_light_client_set_state(&common, &set);
         if (err)
