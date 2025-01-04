@@ -63,7 +63,7 @@ static prov_params_t prod_prov_cfg = {
 #if CONFIG_ENABLE_LIGHT_CTL_SERVER
 /** Light CTL state. */
 esp_ble_mesh_light_ctl_state_t ctl_state;
-ESP_BLE_MESH_MODEL_PUB_DEFINE(ctl_setup_pub, 2 + 6, ROLE_NODE);
+ESP_BLE_MESH_MODEL_PUB_DEFINE(ctl_setup_pub, 16, ROLE_NODE);
 
 /** Light CTL setup server model. */
 static esp_ble_mesh_light_ctl_setup_srv_t ctl_setup_server = {

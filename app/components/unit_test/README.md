@@ -19,5 +19,5 @@
 |                     |           | CWWW_CLI_UT_CMD_TEMPERATURE_SET_UNACK | (0x09) | ut 1 9 2  `[el_id]` `[temperature]`                      | Send CWWW TEMPERATURE SET UNACK Command to element_id           | PASS   |
 |                     |           | CWWW_CLI_UT_CMD_DELTA_UV_SET          | (0x0A) | ut 1 10 2 `[el_id]` `[delta_uv]`                         | Send CWWW DELTA UV SET Command to element_id                    | PASS   |
 |                     |           | CWWW_CLI_UT_CMD_DELTA_UV_SET_UNACK    | (0x0B) | ut 1 11 2 `[el_id]` `[delta_uv]`                         | Send CWWW DELTA UV SET UNACK Command to element_id              | PASS   |
-|                     |           | CWWW_CLI_UT_CMD_TEMOP_RANGE_SET       | (0x0C) | ut 1 12 3 `[el_id]` `[min]` `[max]`                      | Send CWWW TEMPERATURE RANGE SET for target publish server       | TBT    |
-|                     |           | CWWW_CLI_UT_CMD_TEMOP_RANGE_SET_UNACK | (0x0D) | ut 1 13 3 `[el_id]` `[min]` `[max]`                      | Send CWWW TEMPERATURE RANGE SET UNACK for target publish server | TBT    |
+|                     |           | CWWW_CLI_UT_CMD_TEMOP_RANGE_SET       | (0x0C) | ut 1 12 3 `[el_id]` `[min]` `[max]`                      | Send CWWW TEMPERATURE RANGE SET for target publish server       | PASS   |
+|                     |           | CWWW_CLI_UT_CMD_TEMOP_RANGE_SET_UNACK | (0x0D) | ut 1 13 3 `[el_id]` `[min]` `[max]`                      | Send CWWW TEMPERATURE RANGE SET UNACK for target publish server | PASS   |
