@@ -41,6 +41,25 @@ typedef struct light_ctl_cli_cb_reg
 } light_ctl_cli_cb_reg_t;
 
 /**
+ * @brief Structure to hold arguments for sending Light CTL messages.
+ */
+typedef struct light_ctl_send_args
+{
+    esp_ble_mesh_model_t *model; /**< Pointer to the BLE Mesh model. */
+    uint16_t opcode;             /**< Opcode of the message to be sent. */
+    uint16_t addr;               /**< Destination address of the message. */
+    uint16_t net_idx;            /**< Network index to be used for sending the message. */
+    uint16_t app_idx;            /**< Application index to be used for sending the message. */
+    uint16_t lightness;          /**< Lightness value to be sent. */
+    uint16_t temperature;        /**< Temperature value to be sent. */
+    uint16_t delta_uv;           /**< Delta UV value to be sent. */
+    uint16_t temp_range_min;     /**< Minimum temperature value in the range. */
+    uint16_t temp_range_max;     /**< Maximum temperature value in the range. */
+    uint8_t temp_range_flag;     /**< Flag to indicate if the temperature range is sent. */
+    uint8_t tid;                 /**< Transaction ID to identify the message. */
+} light_ctl_send_args_t;
+
+/**
  * @brief Register a callback function for the Light CTL Client.
  *
  * This function registers a callback function that will be called when specific
@@ -74,53 +93,26 @@ esp_err_t prod_light_ctl_client_init();
  *
  * This function sends a Light CTL message with the specified parameters.
  *
- * @param model Pointer to the BLE Mesh model.
- * @param opcode Opcode of the message to be sent.
- * @param addr Destination address of the message.
- * @param net_idx Network index to be used.
- * @param app_idx Application index to be used.
- * @param lightness Lightness value to be sent.
- * @param temperature Temperature value to be sent.
- * @param delta_uv Delta UV value to be sent.
- * @param tid Transaction ID.
- *
- * @return ESP_OK on success or an error code on failure.
- */
-esp_err_t prod_light_ctl_send_msg(esp_ble_mesh_model_t *model,
-                                  uint16_t opcode,
-                                  uint16_t addr,
-                                  uint16_t net_idx,
-                                  uint16_t app_idx,
-                                  uint16_t lightness,
-                                  uint16_t temperature,
-                                  uint16_t delta_uv,
-                                  uint8_t tid);
-
-/**
- * @brief Send a Light CTL Temperature message.
- *
- * This function sends a Light CTL Temperature message to a specified address.
- *
- * @param model       Pointer to the BLE Mesh model.
- * @param opcode      Opcode of the message.
- * @param addr        Destination address of the message.
- * @param net_idx     Network index to be used.
- * @param app_idx     Application index to be used.
- * @param temperature Light CTL Temperature value.
- * @param delta_uv    Light CTL Delta UV value.
- * @param tid         Transaction ID.
+ * @param[in] params Pointer to the structure containing the message parameters.
  *
  * @return
- *     - ESP_OK on success
- *     - Appropriate error code on failure
+ *    - ESP_OK: Success
+ *    - Appropriate error code on failure
  */
-esp_err_t prod_light_ctl_temperature_send_msg(esp_ble_mesh_model_t *model,
-                                              uint16_t opcode,
-                                              uint16_t addr,
-                                              uint16_t net_idx,
-                                              uint16_t app_idx,
-                                              uint16_t temperature,
-                                              uint16_t delta_uv,
-                                              uint8_t tid);
+esp_err_t prod_light_ctl_send_msg(light_ctl_send_args_t * params);
+
+/**
+ * @brief Sends a message to control the light temperature.
+ *
+ * This function sends a message to adjust the light temperature using the provided parameters.
+ *
+ * @param[in] params Pointer to a structure containing the parameters for the light temperature control message.
+ *
+ * @return
+ *    - ESP_OK: Success
+ *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - ESP_FAIL: Sending message failed
+ */
+esp_err_t prod_light_ctl_temperature_send_msg(light_ctl_send_args_t * params);
 
 #endif /*__LIGHT_CTL_CLIENT_H__*/

@@ -153,9 +153,11 @@ static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
     switch (evt)
     {
         case LIGHT_CTL_CLI_PUBLISH:
-            ESP_LOGI(TAG, "PUBLISH: %d %d",
+            ESP_LOGI(TAG, "PUBLISH: %d|%d|%d|%d",
                 el_ctx->lightness,
-                el_ctx->temperature);
+                el_ctx->temperature,
+                el_ctx->lightness_range_max,
+                el_ctx->lightness_range_min);
             break;
         case LIGHT_CTL_CLI_TIMEOUT:
             ESP_LOGD(TAG, "Timeout");
@@ -247,6 +249,7 @@ static esp_err_t cwww_cli_control_task_msg_handle(dev_struct_t *pdev, control_ta
     uint16_t element_id = msg->element_id;
     size_t rel_el_id = element_id - cwww_client_element_init_ctrl.element_id_start;
     cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl.cwww_cli_ctx[rel_el_id];
+    bool is_temp_range = false;
 
     if (!IS_EL_IN_RANGE(element_id))
     {
@@ -261,12 +264,14 @@ static esp_err_t cwww_cli_control_task_msg_handle(dev_struct_t *pdev, control_ta
         el_ctx->temperature = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_SET) ? msg->temperature : el_ctx->temperature;
         el_ctx->lightness_range_max = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MAX) ? msg->lightness_range_max : el_ctx->lightness_range_max;
         el_ctx->lightness_range_min = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MIN) ? msg->lightness_range_min : el_ctx->lightness_range_min;
+        is_temp_range = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MAX) || (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MIN);
     }
     /* Send message to the cwww client */
     err = ble_mesh_send_cwww_msg(pdev,
                                  model_id,
                                  msg->element_id,
                                  msg->set_get,
+                                 is_temp_range,
                                  msg->ack);
     if (err)
     {
@@ -401,7 +406,7 @@ static esp_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv
             if (argc >= 2) msg.lightness_range_min = UT_GET_ARG(1, uint16_t, argv);
             if (argc >= 3) msg.lightness_range_max = UT_GET_ARG(2, uint16_t, argv);
             msg.set_get = CWWW_CLI_MSG_SET;
-            msg.arg_bmap = CWWW_ARG_BMAP_CTL_SET;
+            msg.arg_bmap = CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET;
             msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL;
             msg.ack = cmd == CWWW_CLI_UT_CMD_TEMPERATURE_RANGE_SET ? CWWW_CLI_MSG_ACK : CWWW_CLI_MSG_NO_ACK;
             break;
@@ -612,18 +617,19 @@ esp_err_t create_cwww_client_elements(dev_struct_t *pdev)
 /**
  * @brief Send a CW/WW (Cool White/Warm White) message over BLE Mesh.
  *
- * @param[in] pdev Pointer to the device structure.
- * @param[in] model_id Model ID of the CW/WW client.
- * @param[in] element_id Element ID to which the message is addressed.
- * @param[in] set_get Flag indicating whether the message is a set (1) or get (0) operation.
- * @param[in] ack Flag indicating whether the message requires an acknowledgment (1) or not (0).
+ * @param[in] pdev          Pointer to the device structure.
+ * @param[in] model_id      Model ID of the CW/WW client.
+ * @param[in] element_id    Element ID to which the message is addressed.
+ * @param[in] set_get       Flag indicating whether the message is a set (1) or get (0) operation.
+ * @param[in] is_range      Flag indicating whether the message is a temperature range set (1) or not (0).
+ * @param[in] ack           Flag indicating whether the message requires an acknowledgment (1) or not (0).
  *
  * @return
  *     - ESP_OK: Success
  *     - ESP_ERR_INVALID_ARG: Invalid argument
  *     - ESP_FAIL: Sending message failed
  */
-esp_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id, uint16_t element_id, uint8_t set_get, uint8_t ack)
+esp_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id, uint16_t element_id, uint8_t set_get, uint8_t is_range, uint8_t ack)
 {
     if (!pdev)
     {
@@ -642,6 +648,7 @@ esp_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id,
     esp_ble_mesh_model_t *model = &element->sig_models[model_id];
     cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl.cwww_cli_ctx[rel_el_id];
     esp_err_t err = ESP_OK;
+    light_ctl_send_args_t ctl_params = {0};
     uint16_t opcode = 0;
 
     switch (model_id)
@@ -663,13 +670,34 @@ esp_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id,
 
         case CWWW_CLI_SIG_L_CTL_MODEL_ID:
             if (set_get == CWWW_CLI_MSG_SET) {
-                opcode = ack ? ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET : ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET_UNACK;
+                if(is_range)
+                {
+                    opcode = ack ? ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET : ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK;
+                    ctl_params.temp_range_flag = true;
+                    ctl_params.temp_range_max = el_ctx->lightness_range_max;
+                    ctl_params.temp_range_min = el_ctx->lightness_range_min;
+                }
+                else
+                {
+                    opcode = ack ? ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET : ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET_UNACK;
+                    ctl_params.temp_range_flag = false;
+                    ctl_params.delta_uv = el_ctx->delta_uv;
+                    ctl_params.lightness = el_ctx->lightness;
+                    ctl_params.temperature = el_ctx->temperature;
+                }
             } else {
                 opcode = ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_GET;
             }
-            ESP_LOGD(TAG, "OPCODE: %p", (void *)(uint32_t)opcode);
-            err = prod_light_ctl_send_msg(model, opcode, el_ctx->pub_addr, el_ctx->net_id, el_ctx->app_id,
-                                          el_ctx->lightness, el_ctx->temperature, el_ctx->delta_uv, el_ctx->tid);
+
+            ctl_params.model = model;
+            ctl_params.opcode = opcode;
+            ctl_params.tid = el_ctx->tid;
+            ctl_params.addr = el_ctx->pub_addr;
+            ctl_params.app_idx = el_ctx->app_id;
+
+
+            ESP_LOGI(TAG, "OPCODE: %p", (void *)(uint32_t)opcode);
+            err = prod_light_ctl_send_msg(&ctl_params);
             if (!err)
             {
                 el_ctx->tid++;
