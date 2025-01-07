@@ -1,4 +1,5 @@
 #include "prod_prov.h"
+#include "string.h"
 
 #define TAG __func__
 
@@ -9,7 +10,7 @@ esp_ble_mesh_prov_t g_prod_prov;
 static void callback_despatch(esp_ble_mesh_prov_cb_param_t *param, prod_prov_evt_t evt)
 {
     if(prov_params.cb_reg)
-    {   
+    {
         prov_params.cb_reg(param, evt);
     }
 }
@@ -61,9 +62,7 @@ static void app_ble_mesh_provisioning_cb(esp_ble_mesh_prov_cb_event_t event,
 
 esp_err_t prod_init_prov(prov_params_t * svr_cfg)
 {
-    if(svr_cfg->uuid == NULL)
-        return ESP_ERR_NOT_ALLOWED;
-    prov_params.uuid = svr_cfg->uuid;
+    memcpy(&prov_params.uuid, svr_cfg->uuid, sizeof(prov_params.uuid));
     prov_params.cb_reg = svr_cfg->cb_reg;
 
     g_prod_prov.uuid = prov_params.uuid;

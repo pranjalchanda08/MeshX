@@ -18,7 +18,7 @@ typedef enum{
 typedef void (*prod_prov_cb)(const esp_ble_mesh_prov_cb_param_t *param, prod_prov_evt_t evt);
 typedef struct prov_params
 {
-    const uint8_t *uuid;
+    uint8_t uuid[16];
     prod_prov_cb cb_reg;
 }prov_params_t;
 
