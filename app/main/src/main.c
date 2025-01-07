@@ -14,22 +14,12 @@
 #define ROOT_MODEL_VEN_CNT 0
 
 /**
- * @brief Hook for application-specific AppKey binding handling.
- *
- * @param[in] param Pointer to BLE Mesh configuration server callback parameters.
- */
-void app_cfg_srv_app_key_bind_hook(const esp_ble_mesh_cfg_server_cb_param_t *param);
-
-/**
  * @brief Callback for provisioning events.
  *
  * @param[in] param Pointer to BLE Mesh provisioning callback parameters.
  * @param[in] evt Provisioning event type.
  */
 void app_prod_prov_cb(const esp_ble_mesh_prov_cb_param_t *param, prod_prov_evt_t evt);
-
-/** Device UUID for provisioning. */
-static uint8_t dev_uuid[16] = {0xdd, 0xdd, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 static const char meshX_banner[] = {
 "*********************************************************************************************************************\n"
@@ -51,78 +41,13 @@ static const char meshX_banner[] = {
 "* MMMMMMMM               MMMMMMMM    eeeeeeeeeeeeee    sssssssssss    hhhhhhh     hhhhhhh     XXXXXXX       XXXXXXX *\n"
 "*********************************************************************************************************************\n"
 };
-dev_struct_t g_dev;
 
-#if CONFIG_ENABLE_PROVISIONING
-/** Provisioning parameters for BLE Mesh. */
-static prov_params_t prod_prov_cfg = {
-    .uuid = dev_uuid,
-    .cb_reg = app_prod_prov_cb};
-#endif
-
-#if CONFIG_ENABLE_LIGHT_CTL_SERVER
-/** Light CTL state. */
-esp_ble_mesh_light_ctl_state_t ctl_state;
-ESP_BLE_MESH_MODEL_PUB_DEFINE(ctl_setup_pub, 16, ROLE_NODE);
-
-/** Light CTL setup server model. */
-static esp_ble_mesh_light_ctl_setup_srv_t ctl_setup_server = {
-    .rsp_ctrl = {
-        .get_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP,
-        .set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP,
-    },
-    .state = &ctl_state,
-};
-#endif
-
-/** Root models for BLE Mesh elements. */
-static esp_ble_mesh_model_t app_root_model[] = {
-#if CONFIG_ENABLE_CONFIG_SERVER
-    ESP_BLE_MESH_MODEL_CFG_SRV(&PROD_CONFIG_SERVER_INSTANCE),
-#endif /* CONFIG_ENABLE_CONFIG_SERVER */
-#if CONFIG_ENABLE_LIGHT_CTL_SERVER
-    ESP_BLE_MESH_MODEL_LIGHT_CTL_SETUP_SRV(&ctl_setup_pub, &ctl_setup_server),
-#endif
-};
-
-#if CONFIG_ENABLE_CONFIG_SERVER
-void app_cfg_srv_app_key_bind_hook(const esp_ble_mesh_cfg_server_cb_param_t *param)
-{
-    ESP_UNUSED(param);
-    return;
-}
-#endif
-
-#if CONFIG_ENABLE_PROVISIONING
-void app_prod_prov_cb(const esp_ble_mesh_prov_cb_param_t *param, prod_prov_evt_t evt)
-{
-    ESP_UNUSED(param);
-    ESP_UNUSED(evt);
-    return;
-}
-#endif
-
-/**
- * @brief Initializes BLE Mesh composition data.
- *
- * @param[in] p_dev Pointer to the device structure.
- * @return ESP_OK on success, error code otherwise.
- */
-static esp_err_t ble_mesh_composition_init(dev_struct_t *p_dev)
-{
-    if (!p_dev)
-        return ESP_ERR_INVALID_STATE;
-
-    p_dev->composition.cid = CID_ESP;
-    p_dev->composition.pid = CONFIG_PID_ID;
-    p_dev->composition.element_count = p_dev->element_idx;
-    p_dev->composition.elements = p_dev->elements;
-
-    return ESP_OK;
-}
+static dev_struct_t g_dev;
 
 extern esp_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev);
-
+extern esp_err_t ble_mesh_composition_init(dev_struct_t *p_dev);
+extern esp_ble_mesh_model_t * get_root_models(void);
+extern size_t get_root_models_size(void);
 /**
  * @brief Initializes BLE Mesh elements.
  *
@@ -135,9 +60,9 @@ static esp_err_t ble_mesh_element_init(dev_struct_t *p_dev)
         return ESP_ERR_INVALID_STATE;
 
     /* Initialize root model */
-    p_dev->elements[0].sig_models = app_root_model;
+    p_dev->elements[0].sig_models = get_root_models();
     p_dev->elements[0].vnd_models = ESP_BLE_MESH_MODEL_NONE;
-    memset((void *)&p_dev->elements[0].sig_model_count, ROOT_MODEL_SIG_CNT, sizeof(p_dev->elements[0].sig_model_count));
+    memset((void *)&p_dev->elements[0].sig_model_count, get_root_models_size(), sizeof(p_dev->elements[0].sig_model_count));
     memset((void *)&p_dev->elements[0].vnd_model_count, ROOT_MODEL_VEN_CNT, sizeof(p_dev->elements[0].vnd_model_count));
 
     ESP_LOGI(TAG, "Root: SIG : %d, VEN: %d", p_dev->elements[0].sig_model_count, p_dev->elements[0].vnd_model_count);
@@ -171,12 +96,6 @@ static esp_err_t app_tasks_init(dev_struct_t * pdev)
 static esp_err_t ble_mesh_init(void)
 {
     esp_err_t err;
-
-    err = prod_init_prov(&prod_prov_cfg);
-    ESP_ERR_PRINT_RET("Failed to initialize Prov server", err);
-
-    err = prod_init_config_server();
-    ESP_ERR_PRINT_RET("Failed to initialize config server", err);
 
     err = ble_mesh_element_init(&g_dev);
     ESP_ERR_PRINT_RET("Failed to initialize BLE Elements", err);
@@ -228,8 +147,6 @@ void app_main(void)
         ESP_LOGE(TAG, "esp32_bluetooth_init failed (err 0x%x)", err);
         return;
     }
-
-    ble_mesh_get_dev_uuid(dev_uuid);
 
     /* Initialize the Bluetooth Mesh Subsystem */
     err = ble_mesh_init();
