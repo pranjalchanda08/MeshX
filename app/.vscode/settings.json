@@ -5,5 +5,9 @@
     "sonarlint.pathToCompileCommands": "${workspaceFolder}/build/compile_commands.json",
     "C_Cpp.autocomplete": "default",
     "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true
+    "files.trimTrailingWhitespace": true,
+    "files.associations": {
+        "*.h": "c",
+        "*.c": "c"
+    }
 }

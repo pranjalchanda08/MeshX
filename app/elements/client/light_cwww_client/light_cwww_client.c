@@ -38,9 +38,9 @@
 #endif /* __CONTROL_TASK_H__ */
 
 #define CWWW_CLI_PROD_ONOFF_ENABLE_CB       true
-#define GET_RELATIVE_EL_IDX(_element_id)    ((_element_id) - cwww_client_element_init_ctrl.element_id_start)
 #define IS_EL_IN_RANGE(_element_id)         ((_element_id) >= cwww_client_element_init_ctrl.element_id_start \
                                             && (_element_id) < cwww_client_element_init_ctrl.element_id_end)
+#define GET_RELATIVE_EL_IDX(_element_id)    ((_element_id) - cwww_client_element_init_ctrl.element_id_start)
 
 #define CWWW_CLI_PROD_ONOFF_CLI_CB_EVT_BMAP PROD_ONOFF_CLI_EVT_ALL
 #define CWWW_CLI_PROD_CTL_CLI_CB_EVT_BMAP   LIGHT_CTL_CLI_EVT_ALL
@@ -124,12 +124,12 @@ static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
 
     if(param->params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_STATUS)
     {
-        el_ctx->lightness = param->status_cb.ctl_status.present_ctl_lightness;
+        el_ctx->lightness   = param->status_cb.ctl_status.present_ctl_lightness;
         el_ctx->temperature = param->status_cb.ctl_status.present_ctl_temperature;
     }
     else if (param->params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS)
     {
-        el_ctx->delta_uv = param->status_cb.ctl_temperature_status.present_ctl_delta_uv;
+        el_ctx->delta_uv    = param->status_cb.ctl_temperature_status.present_ctl_delta_uv;
         el_ctx->temperature = param->status_cb.ctl_temperature_status.present_ctl_temperature;
     }
     else if ((param->params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS)
@@ -140,8 +140,8 @@ static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
     }
     else if (ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS == param->params->opcode)
     {
-        el_ctx->temp_def = param->status_cb.ctl_default_status.temperature;
-        el_ctx->dwlta_uv_def = param->status_cb.ctl_default_status.delta_uv;
+        el_ctx->temp_def      = param->status_cb.ctl_default_status.temperature;
+        el_ctx->dwlta_uv_def  = param->status_cb.ctl_default_status.delta_uv;
         el_ctx->lightness_def = param->status_cb.ctl_default_status.lightness;
     }
     else
@@ -246,10 +246,10 @@ static esp_err_t cwww_cli_control_task_msg_handle(dev_struct_t *pdev, control_ta
     cwww_cli_sig_id_t model_id = evt == CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF ?
                                         CWWW_CLI_SIG_ONOFF_MODEL_ID : CWWW_CLI_SIG_L_CTL_MODEL_ID;
 
+    bool is_temp_range = false;
     uint16_t element_id = msg->element_id;
     size_t rel_el_id = element_id - cwww_client_element_init_ctrl.element_id_start;
     cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl.cwww_cli_ctx[rel_el_id];
-    bool is_temp_range = false;
 
     if (!IS_EL_IN_RANGE(element_id))
     {
@@ -259,8 +259,8 @@ static esp_err_t cwww_cli_control_task_msg_handle(dev_struct_t *pdev, control_ta
     if(model_id == CWWW_CLI_SIG_L_CTL_MODEL_ID)
     {
         /* Set new context value as per msg sent */
-        el_ctx->delta_uv = (msg->arg_bmap & CWWW_ARG_BMAP_DELTA_UV_SET) ? msg->delta_uv : el_ctx->delta_uv;
-        el_ctx->lightness = (msg->arg_bmap & CWWW_ARG_BMAP_LIGHTNESS_SET) ? msg->lightness : el_ctx->lightness;
+        el_ctx->delta_uv    = (msg->arg_bmap & CWWW_ARG_BMAP_DELTA_UV_SET) ? msg->delta_uv : el_ctx->delta_uv;
+        el_ctx->lightness   = (msg->arg_bmap & CWWW_ARG_BMAP_LIGHTNESS_SET) ? msg->lightness : el_ctx->lightness;
         el_ctx->temperature = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_SET) ? msg->temperature : el_ctx->temperature;
         el_ctx->lightness_range_max = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MAX) ? msg->lightness_range_max : el_ctx->lightness_range_max;
         el_ctx->lightness_range_min = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MIN) ? msg->lightness_range_min : el_ctx->lightness_range_min;
@@ -458,7 +458,7 @@ static esp_err_t dev_create_cwww_model_space(dev_struct_t const *pdev, uint16_t 
                &cwww_cli_sig_template[CWWW_CLI_SIG_ONOFF_MODEL_ID],
                sizeof(esp_ble_mesh_model_t));
         /* Set the dynamic spaces for the model */
-        temp = (void **)&cwww_client_element_init_ctrl.cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_ONOFF_MODEL_ID].pub;
+        temp  = (void **)&cwww_client_element_init_ctrl.cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_ONOFF_MODEL_ID].pub;
         *temp = &cwww_client_element_init_ctrl.cwww_cli_pub_list[cwww_model_id][CWWW_CLI_SIG_ONOFF_MODEL_ID];
         cwww_client_element_init_ctrl.cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_ONOFF_MODEL_ID].user_data =
             &cwww_client_element_init_ctrl.cwww_cli_list[cwww_model_id][CWWW_CLI_SIG_ONOFF_MODEL_ID];
@@ -468,7 +468,7 @@ static esp_err_t dev_create_cwww_model_space(dev_struct_t const *pdev, uint16_t 
         memcpy(&cwww_client_element_init_ctrl.cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID],
                &cwww_cli_sig_template[CWWW_CLI_SIG_L_CTL_MODEL_ID],
                sizeof(esp_ble_mesh_model_t));
-        temp = (void **)&cwww_client_element_init_ctrl.cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID].pub;
+        temp  = (void **)&cwww_client_element_init_ctrl.cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID].pub;
         *temp = &cwww_client_element_init_ctrl.cwww_cli_pub_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID];
         cwww_client_element_init_ctrl.cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID].user_data =
             &cwww_client_element_init_ctrl.cwww_cli_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID];
@@ -524,9 +524,9 @@ static esp_err_t dev_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, uint
             ESP_LOGD(TAG, "CWWW Client Element: %d", i);
             elements[i].sig_models = cwww_client_element_init_ctrl.cwww_cli_sig_model_list[i - *start_idx];
             elements[i].vnd_models = ESP_BLE_MESH_MODEL_NONE;
-            ref_ptr = (uint8_t *)&elements[i].sig_model_count;
+            ref_ptr  = (uint8_t *)&elements[i].sig_model_count;
             *ref_ptr = CWWW_CLI_MODEL_SIG_CNT;
-            ref_ptr = (uint8_t *)&elements[i].vnd_model_count;
+            ref_ptr  = (uint8_t *)&elements[i].vnd_model_count;
             *ref_ptr = CWWW_CLI_MODEL_VEN_CNT;
         }
     }
@@ -644,12 +644,12 @@ esp_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id,
         return ESP_ERR_INVALID_ARG;
     }
 
-    esp_ble_mesh_elem_t *element = &pdev->elements[element_id];
-    esp_ble_mesh_model_t *model = &element->sig_models[model_id];
-    cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl.cwww_cli_ctx[rel_el_id];
-    esp_err_t err = ESP_OK;
-    light_ctl_send_args_t ctl_params = {0};
     uint16_t opcode = 0;
+    esp_err_t err   = ESP_OK;
+    esp_ble_mesh_elem_t *element = &pdev->elements[element_id];
+    esp_ble_mesh_model_t *model  = &element->sig_models[model_id];
+    cwww_cli_ctx_t *el_ctx       = &cwww_client_element_init_ctrl.cwww_cli_ctx[rel_el_id];
+    light_ctl_send_args_t ctl_params = {0};
 
     switch (model_id)
     {
@@ -660,7 +660,7 @@ esp_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id,
                 opcode = ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_GET;
             }
             ESP_LOGD(TAG, "OPCODE: %p", (void *)(uint32_t)opcode);
-            err = prod_onoff_client_send_msg(model, opcode, el_ctx->pub_addr, el_ctx->net_id, el_ctx->app_id, el_ctx->state, el_ctx->tid);
+            err = prod_onoff_client_send_msg(model, opcode, el_ctx->pub_addr, pdev->meshx_store.net_key_id, el_ctx->app_id, el_ctx->state, el_ctx->tid);
             if (!err)
             {
                 el_ctx->tid++;
@@ -673,28 +673,28 @@ esp_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id,
                 if(is_range)
                 {
                     opcode = ack ? ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET : ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK;
-                    ctl_params.temp_range_flag = true;
-                    ctl_params.temp_range_max = el_ctx->lightness_range_max;
-                    ctl_params.temp_range_min = el_ctx->lightness_range_min;
+                    ctl_params.temp_range_flag  = true;
+                    ctl_params.temp_range_max   = el_ctx->lightness_range_max;
+                    ctl_params.temp_range_min   = el_ctx->lightness_range_min;
                 }
                 else
                 {
                     opcode = ack ? ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET : ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET_UNACK;
-                    ctl_params.temp_range_flag = false;
-                    ctl_params.delta_uv = el_ctx->delta_uv;
-                    ctl_params.lightness = el_ctx->lightness;
-                    ctl_params.temperature = el_ctx->temperature;
+                    ctl_params.temp_range_flag  = false;
+                    ctl_params.delta_uv         = el_ctx->delta_uv;
+                    ctl_params.lightness        = el_ctx->lightness;
+                    ctl_params.temperature      = el_ctx->temperature;
                 }
             } else {
                 opcode = ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_GET;
             }
 
-            ctl_params.model = model;
-            ctl_params.opcode = opcode;
-            ctl_params.tid = el_ctx->tid;
-            ctl_params.addr = el_ctx->pub_addr;
-            ctl_params.app_idx = el_ctx->app_id;
-
+            ctl_params.model    = model;
+            ctl_params.opcode   = opcode;
+            ctl_params.tid      = el_ctx->tid;
+            ctl_params.addr     = el_ctx->pub_addr;
+            ctl_params.app_idx  = el_ctx->app_id;
+            ctl_params.net_idx  = pdev->meshx_store.net_key_id;
 
             ESP_LOGI(TAG, "OPCODE: %p", (void *)(uint32_t)opcode);
             err = prod_light_ctl_send_msg(&ctl_params);

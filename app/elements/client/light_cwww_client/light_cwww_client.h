@@ -47,7 +47,6 @@ typedef struct cwww_cli_ctx
 {
     uint8_t tid;                  /**< Transaction ID */
     uint8_t state;                /**< State of the cwww client */
-    uint16_t net_id;              /**< Network ID */
     uint16_t app_id;              /**< Application ID */
     uint16_t pub_addr;            /**< Publish address */
     uint16_t delta_uv;            /**< Delta UV value */

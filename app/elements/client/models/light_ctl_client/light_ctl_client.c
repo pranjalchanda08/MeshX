@@ -84,7 +84,7 @@ esp_err_t prod_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap)
     if (cb == NULL || config_evt_bmap == 0)
         return ESP_ERR_INVALID_ARG; // Invalid arguments
 
-    struct light_ctl_cli_cb_reg *new_entry = (struct light_ctl_cli_cb_reg *)malloc(sizeof(struct light_ctl_cli_cb_reg));
+    struct light_ctl_cli_cb_reg *new_entry = (struct light_ctl_cli_cb_reg *) malloc(sizeof(struct light_ctl_cli_cb_reg));
     if (new_entry == NULL)
         return ESP_ERR_NO_MEM; // Memory allocation failed
 
@@ -142,15 +142,16 @@ esp_err_t prod_light_ctl_send_msg(light_ctl_send_args_t * params)
     bool send_msg = false;
     esp_ble_mesh_client_common_param_t common = {0};
     esp_ble_mesh_light_client_set_state_t set = {0};
+
     if(params == NULL)
         return ESP_ERR_INVALID_ARG;
 
-    common.model = params->model;
-    common.opcode = params->opcode;
-    common.ctx.addr = params->addr;
-    common.ctx.net_idx = params->net_idx;
-    common.ctx.app_idx = params->app_idx;
-    common.msg_timeout = 0; /* 0 indicates that timeout value from menuconfig will be used */
+    common.model        = params->model;
+    common.opcode       = params->opcode;
+    common.ctx.addr     = params->addr;
+    common.ctx.net_idx  = params->net_idx;
+    common.ctx.app_idx  = params->app_idx;
+    common.msg_timeout  = 0; /* 0 indicates that timeout value from menuconfig will be used */
     common.ctx.send_ttl = 3;
 #if ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 2, 0)
     common.msg_role = ROLE_NODE;
@@ -159,10 +160,10 @@ esp_err_t prod_light_ctl_send_msg(light_ctl_send_args_t * params)
     if(params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET ||
        params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET_UNACK)
     {
-        set.ctl_set.tid = params->tid;
-        set.ctl_set.op_en = false;
-        set.ctl_set.ctl_delta_uv = params->delta_uv;
-        set.ctl_set.ctl_lightness = params->lightness;
+        set.ctl_set.op_en           = false;
+        set.ctl_set.tid             = params->tid;
+        set.ctl_set.ctl_delta_uv    = params->delta_uv;
+        set.ctl_set.ctl_lightness   = params->lightness;
         set.ctl_set.ctl_temperature = params->temperature;
         send_msg = true;
     }
@@ -209,12 +210,12 @@ esp_err_t prod_light_ctl_temperature_send_msg(light_ctl_send_args_t * params)
     if(params == NULL)
         return ESP_ERR_INVALID_ARG;
 
-    common.model = params->model;
-    common.opcode = params->opcode;
-    common.ctx.addr = params->addr;
-    common.ctx.net_idx = params->net_idx;
-    common.ctx.app_idx = params->app_idx;
-    common.msg_timeout = 0; /* 0 indicates that timeout value from menuconfig will be used */
+    common.model        = params->model;
+    common.opcode       = params->opcode;
+    common.ctx.addr     = params->addr;
+    common.ctx.net_idx  = params->net_idx;
+    common.ctx.app_idx  = params->app_idx;
+    common.msg_timeout  = 0; /* 0 indicates that timeout value from menuconfig will be used */
     common.ctx.send_ttl = 3;
 #if ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 2, 0)
     common.msg_role = ROLE_NODE;
@@ -222,9 +223,9 @@ esp_err_t prod_light_ctl_temperature_send_msg(light_ctl_send_args_t * params)
 
     if(params->opcode != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_GET)
     {
-        set.ctl_temperature_set.tid = params->tid;
-        set.ctl_temperature_set.op_en = false;
-        set.ctl_temperature_set.ctl_delta_uv = params->delta_uv;
+        set.ctl_temperature_set.op_en           = false;
+        set.ctl_temperature_set.tid             = params->tid;
+        set.ctl_temperature_set.ctl_delta_uv    = params->delta_uv;
         set.ctl_temperature_set.ctl_temperature = params->temperature;
 
         err = esp_ble_mesh_light_client_set_state(&common, &set);

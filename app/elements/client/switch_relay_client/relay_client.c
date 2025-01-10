@@ -46,8 +46,8 @@ static const esp_ble_mesh_model_t relay_sig_template = ESP_BLE_MESH_SIG_MODEL(
 
 typedef enum
 {
-    RELAY_CLI_CMD_GET = 0x00,
-    RELAY_CLI_CMD_SET = 0x01,
+    RELAY_CLI_CMD_GET       = 0x00,
+    RELAY_CLI_CMD_SET       = 0x01,
     RELAY_CLI_CMD_SET_UNACK = 0x02,
     RELAY_CLI_MAX_CMD
 } relay_cli_cmd_t;
@@ -99,7 +99,10 @@ static esp_err_t dev_add_relay_cli_model_to_element_list(dev_struct_t *pdev, uin
     if (!pdev)
         return ESP_ERR_INVALID_STATE;
 
-    if (!start_idx || (n_max + *start_idx) > CONFIG_MAX_ELEMENT_COUNT)
+    if (!start_idx)
+        return ESP_ERR_INVALID_ARG;
+
+    if ((n_max + *start_idx) > CONFIG_MAX_ELEMENT_COUNT)
     {
         ESP_LOGE(TAG, "No of elements limit reached namx|start_idx|config_max: %d|%d|%d", n_max, *start_idx, CONFIG_MAX_ELEMENT_COUNT);
         return ESP_ERR_NO_MEM;
@@ -315,9 +318,9 @@ esp_err_t ble_mesh_send_relay_msg(dev_struct_t *pdev, uint16_t element_id, uint8
 
     esp_err_t err = ESP_OK;
     esp_ble_mesh_elem_t *element = &pdev->elements[element_id];
-    esp_ble_mesh_model_t *model = &element->sig_models[0];
+    esp_ble_mesh_model_t *model  = &element->sig_models[0];
 
-    size_t rel_el_id = element_id - relay_element_init_ctrl.element_id_start;
+    size_t rel_el_id      = element_id - relay_element_init_ctrl.element_id_start;
     rel_cli_ctx_t *el_ctx = &relay_element_init_ctrl.rel_cli_ctx[rel_el_id];
 
 
@@ -334,7 +337,7 @@ esp_err_t ble_mesh_send_relay_msg(dev_struct_t *pdev, uint16_t element_id, uint8
             model,
             opcode,
             el_ctx->pub_addr,
-            el_ctx->net_id,
+            pdev->meshx_store.net_key_id,
             el_ctx->app_id,
             el_ctx->state,
             el_ctx->tid

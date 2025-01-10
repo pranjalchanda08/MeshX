@@ -41,11 +41,10 @@
  */
 typedef struct rel_cli_ctx
 {
-    uint8_t state;      /**< State of the relay client */
     uint8_t tid;        /**< Transaction ID */
-    uint16_t pub_addr;  /**< Publish address */
-    uint16_t net_id;    /**< Network ID */
+    uint8_t state;      /**< State of the relay client */
     uint16_t app_id;    /**< Application ID */
+    uint16_t pub_addr;  /**< Publish address */
 } rel_cli_ctx_t;
 
 /**
@@ -53,9 +52,9 @@ typedef struct rel_cli_ctx
  */
 typedef struct relay_client_msg
 {
-    uint16_t element_id; /**< Element ID */
-    uint8_t set_get;     /**< Set/Get flag */
     uint8_t ack;         /**< Acknowledgment flag */
+    uint8_t set_get;     /**< Set/Get flag */
+    uint16_t element_id; /**< Element ID */
 } relay_client_msg_t;
 
 /**
@@ -66,10 +65,10 @@ typedef struct relay_client_element
     size_t model_cnt;
     size_t element_id_end;
     size_t element_id_start;
-    esp_ble_mesh_model_t relay_cli_sig_model_list[CONFIG_RELAY_CLIENT_COUNT][RELAY_CLI_MODEL_SIG_CNT];
-    esp_ble_mesh_client_t relay_cli_onoff_gen_list[CONFIG_RELAY_CLIENT_COUNT];
-    esp_ble_mesh_model_pub_t relay_cli_pub_list[CONFIG_RELAY_CLIENT_COUNT];
     rel_cli_ctx_t rel_cli_ctx[CONFIG_RELAY_CLIENT_COUNT];
+    esp_ble_mesh_model_pub_t relay_cli_pub_list[CONFIG_RELAY_CLIENT_COUNT];
+    esp_ble_mesh_client_t relay_cli_onoff_gen_list[CONFIG_RELAY_CLIENT_COUNT];
+    esp_ble_mesh_model_t relay_cli_sig_model_list[CONFIG_RELAY_CLIENT_COUNT][RELAY_CLI_MODEL_SIG_CNT];
 } relay_client_elements_t;
 
 /**
