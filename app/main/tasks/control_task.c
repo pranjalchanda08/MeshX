@@ -138,7 +138,7 @@ static esp_err_t control_task_msg_dispatch(
     bool evt_handled = false;
 
     if (ptr == NULL) {
-        ESP_LOGE(TAG, "No control task msg callback registered for msg: %p", (void*)msg_code);
+        ESP_LOGW(TAG, "No control task msg callback registered for msg: %p", (void*)msg_code);
         return ESP_ERR_INVALID_STATE;
     }
 
@@ -152,7 +152,7 @@ static esp_err_t control_task_msg_dispatch(
         ptr = ptr->next; // Move to the next registration
     }
     if (!evt_handled)
-        ESP_LOGW(TAG, "No handler reg for EVT %p", (void*) evt);
+        ESP_LOGD(TAG, "No handler reg for EVT %p", (void*) evt);
 
     return ESP_OK;
 }

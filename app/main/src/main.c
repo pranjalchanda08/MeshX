@@ -13,14 +13,6 @@
 #define ROOT_MODEL_SIG_CNT ARRAY_SIZE(app_root_model)
 #define ROOT_MODEL_VEN_CNT 0
 
-/**
- * @brief Callback for provisioning events.
- *
- * @param[in] param Pointer to BLE Mesh provisioning callback parameters.
- * @param[in] evt Provisioning event type.
- */
-void app_prod_prov_cb(const esp_ble_mesh_prov_cb_param_t *param, prod_prov_evt_t evt);
-
 static const char meshX_banner[] = {
 "*********************************************************************************************************************\n"
 "* MMMMMMMM               MMMMMMMM                                     hhhhhhh                 XXXXXXX       XXXXXXX *\n"
@@ -156,7 +148,7 @@ void app_main(void)
         return;
     }
 
-    printf("%s", meshX_banner);
+    printf(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_CYAN) "%s" LOG_ANSI_COLOR_RESET, meshX_banner);
 
 #if CONFIG_ENABLE_UNIT_TEST
     err = register_ut_command();

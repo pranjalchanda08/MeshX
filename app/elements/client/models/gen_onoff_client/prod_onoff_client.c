@@ -21,8 +21,8 @@ static SemaphoreHandle_t prod_onoff_cli_mutex;
  */
 static const char *client_state_str[] =
 {
-    [ESP_BLE_MESH_GENERIC_CLIENT_PUBLISH_EVT] = "PUBLISH_EVT",
-    [ESP_BLE_MESH_GENERIC_CLIENT_TIMEOUT_EVT] = "TIMEOUT_EVT",
+    [ESP_BLE_MESH_GENERIC_CLIENT_PUBLISH_EVT]   = "PUBLISH_EVT",
+    [ESP_BLE_MESH_GENERIC_CLIENT_TIMEOUT_EVT]   = "TIMEOUT_EVT",
     [ESP_BLE_MESH_GENERIC_CLIENT_GET_STATE_EVT] = "GET_STATE_EVT",
     [ESP_BLE_MESH_GENERIC_CLIENT_SET_STATE_EVT] = "SET_STATE_EVT",
 };
@@ -98,7 +98,7 @@ esp_err_t prod_onoff_reg_cb(prod_onoff_cli_cb cb, uint32_t config_evt_bmap)
         return ESP_ERR_INVALID_ARG; // Invalid arguments
     }
 
-    prod_onoff_cli_cb_reg_t *new_entry = (prod_onoff_cli_cb_reg_t *)malloc(sizeof(prod_onoff_cli_cb_reg_t));
+    prod_onoff_cli_cb_reg_t *new_entry = (prod_onoff_cli_cb_reg_t *) malloc(sizeof(prod_onoff_cli_cb_reg_t));
     if (new_entry == NULL)
     {
         return ESP_ERR_NO_MEM; // Memory allocation failed
@@ -173,21 +173,21 @@ esp_err_t prod_onoff_client_send_msg(
     esp_ble_mesh_client_common_param_t common = {0};
     esp_ble_mesh_generic_client_set_state_t set = {0};
 
-    common.model = model;
-    common.opcode = opcode;
-    common.ctx.addr = addr;
-    common.ctx.net_idx = net_idx;
-    common.ctx.app_idx = app_idx;
-    common.msg_timeout = 0; /* 0 indicates that timeout value from menuconfig will be used */
+    common.model        = model;
+    common.opcode       = opcode;
+    common.ctx.addr     = addr;
+    common.ctx.net_idx  = net_idx;
+    common.ctx.app_idx  = app_idx;
+    common.msg_timeout  = 0; /* 0 indicates that timeout value from menuconfig will be used */
     common.ctx.send_ttl = 3;
 #if ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 2, 0)
     common.msg_role = ROLE_NODE;
 #endif
     if (common.opcode != ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_GET)
     {
-        set.onoff_set.op_en = false;
+        set.onoff_set.tid   = tid;
         set.onoff_set.onoff = state;
-        set.onoff_set.tid = tid;
+        set.onoff_set.op_en = false;
         err = esp_ble_mesh_generic_client_set_state(&common, &set);
         if (err)
         {
