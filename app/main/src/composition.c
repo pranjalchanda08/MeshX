@@ -74,10 +74,19 @@
         return _err;                               \
     }
 
+/**
+ * @brief Mask for control task provisioning events.
+ *
+ * This macro defines a mask that combines multiple control task message events
+ * related to provisioning.
+ */
+#define CONTROL_TASK_PROV_EVT_MASK CONTROL_TASK_MSG_EVT_IDENTIFY_START \
+                                 | CONTROL_TASK_MSG_EVT_IDENTIFY_STOP \
+                                 | CONTROL_TASK_MSG_EVT_NODE_RESET
+
 #if CONFIG_ENABLE_PROVISIONING
 /** Provisioning parameters for BLE Mesh. */
-static prov_params_t prod_prov_cfg = {
-    .cb_reg = NULL};
+static prov_params_t prod_prov_cfg;
 #endif
 
 #if CONFIG_ENABLE_LIGHT_CTL_SERVER
@@ -105,14 +114,24 @@ static esp_ble_mesh_model_t app_root_model[] = {
 #endif
 };
 
-#if CONFIG_ENABLE_PROVISIONING
-void app_prod_prov_cb(const esp_ble_mesh_prov_cb_param_t *param, prod_prov_evt_t evt)
+static esp_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)
 {
-    ESP_UNUSED(param);
-    ESP_UNUSED(evt);
-    return;
+    const esp_ble_mesh_prov_cb_param_t *param = (esp_ble_mesh_prov_cb_param_t*) params;
+
+    switch (evt)
+    {
+        case CONTROL_TASK_MSG_EVT_PROVISION_STOP:
+            pdev->meshx_store.net_key_id = param->node_prov_complete.net_idx;
+            pdev->meshx_store.node_addr  = param->node_prov_complete.addr;
+            break;
+        case CONTROL_TASK_MSG_EVT_IDENTIFY_START:
+            ESP_LOGI(TAG, "Identify Start");
+            break;
+        default:
+            break;
+    }
+    return ESP_OK;
 }
-#endif
 
 /**
  * @brief Returns the root models for BLE Mesh elements.
@@ -171,6 +190,12 @@ esp_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev)
 
     err = prod_init_prov(&prod_prov_cfg);
     ESP_ERR_PRINT_RET("Failed to initialize Prov server", err);
+
+    err = control_task_reg_msg_code_handler_cb(
+            CONTROL_TASK_MSG_CODE_PROVISION,
+            CONTROL_TASK_PROV_EVT_MASK,
+            &meshx_prov_control_task_handler);
+    ESP_ERR_PRINT_RET("Failed to register control task callback", err);
 
     err = prod_init_config_server();
     ESP_ERR_PRINT_RET("Failed to initialize config server", err);

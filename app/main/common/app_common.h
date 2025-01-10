@@ -1,3 +1,13 @@
+/**
+ * @file app_common.h
+ * @brief Common application definitions and includes for BLE Mesh Node.
+ *
+ * This header file contains common definitions, includes, and data structures
+ * used across the BLE Mesh Node application.
+ *
+ * @author Pranjal Chanda
+ */
+
 #pragma once
 
 #include <stdio.h>
@@ -18,15 +28,23 @@
 
 #define MAX_ELE_CNT CONFIG_MAX_ELEMENT_COUNT
 
+/**
+ * @brief Structure to store mesh application data.
+ */
+typedef struct meshx_app_store
+{
+    uint16_t net_key_id; /**< Network key identifier */
+    uint16_t node_addr;  /**< Node address */
+} meshx_app_store_t;
+
+/**
+ * @brief Structure representing the device composition and elements.
+ */
 typedef struct dev_struct
 {
-    /* Represents the device composition */
-    esp_ble_mesh_comp_t composition;
-    /**
-     * Pointer to Elements list
-     * Shall be initialised with max number of elements in the app layer
-     */
-    esp_ble_mesh_elem_t elements[MAX_ELE_CNT];
-    size_t element_idx;
-    uint8_t uuid[16];
-}dev_struct_t;
+    uint8_t uuid[16];               /**< Device UUID */
+    size_t element_idx;             /**< Index of the current element */
+    meshx_app_store_t meshx_store;  /**< Mesh application store */
+    esp_ble_mesh_comp_t composition; /**< Device composition */
+    esp_ble_mesh_elem_t elements[MAX_ELE_CNT]; /**< Array of elements */
+} dev_struct_t;
