@@ -68,7 +68,7 @@ esp_ble_mesh_prov_t g_prod_prov;
 
 static esp_err_t send_control_msg(const esp_ble_mesh_prov_cb_param_t *param, control_task_msg_evt_provision_t evt)
 {
-    return control_task_send_msg(CONTROL_TASK_MSG_CODE_PROVISION, evt, param, sizeof(esp_ble_mesh_prov_cb_param_t));
+    return control_task_publish(CONTROL_TASK_MSG_CODE_PROVISION, evt, param, sizeof(esp_ble_mesh_prov_cb_param_t));
 }
 
 /**

@@ -91,7 +91,7 @@ static void cwww_client_generic_client_cb(const esp_ble_mesh_generic_client_cb_p
             * 2. Timeout occurs
             * 3. #1 and #2 are repeated with no break in stetes.
             */
-            control_task_send_msg(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF, &msg, sizeof(msg));
+            control_task_publish(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF, &msg, sizeof(msg));
             break;
         case PROD_ONOFF_CLI_EVT_SET:
             el_ctx->state = !param->status_cb.onoff_status.present_onoff;
@@ -170,7 +170,7 @@ static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
             * 2. Timeout occurs
             * 3. #1 and #2 are repeated with no break in stetes.
             */
-            control_task_send_msg(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL, &msg, sizeof(msg));
+            control_task_publish(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL, &msg, sizeof(msg));
             break;
         case LIGHT_CTL_CLI_EVT_SET:
             ESP_LOGI(TAG, "SET: %d, %d",
@@ -415,7 +415,7 @@ static esp_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv
             return ESP_ERR_INVALID_ARG;
     }
 
-    err = control_task_send_msg(CONTROL_TASK_MSG_CODE_TO_BLE, msg_evt, &msg, sizeof(msg));
+    err = control_task_publish(CONTROL_TASK_MSG_CODE_TO_BLE, msg_evt, &msg, sizeof(msg));
     if (err)
     {
         ESP_LOGE(TAG, "CWWW Client Unit Test: Command %d failed", cmd);
@@ -591,7 +591,7 @@ esp_err_t create_cwww_client_elements(dev_struct_t *pdev)
         return err;
     }
 #if defined(__CONTROL_TASK_H__)
-    err = control_task_reg_msg_code_handler_cb(
+    err = control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_TO_BLE,
         CONTROL_TASK_MSG_CODE_EVT_MASK,
         (control_task_msg_handle_t)&cwww_cli_control_task_msg_handle);
