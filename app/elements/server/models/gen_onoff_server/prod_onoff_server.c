@@ -35,7 +35,7 @@ static esp_err_t prod_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *
                  param->model->element_idx,
                  state.onoff);
 
-        esp_err_t err = control_task_send_msg(
+        esp_err_t err = control_task_publish(
             CONTROL_TASK_MSG_CODE_TO_HAL,
             CONTROL_TASK_MSG_EVT_TO_HAL_SET_ON_OFF,
             srv,

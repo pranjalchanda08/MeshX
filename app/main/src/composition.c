@@ -191,7 +191,7 @@ esp_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev)
     err = prod_init_prov(&prod_prov_cfg);
     ESP_ERR_PRINT_RET("Failed to initialize Prov server", err);
 
-    err = control_task_reg_msg_code_handler_cb(
+    err = control_task_msg_subscribe(
             CONTROL_TASK_MSG_CODE_PROVISION,
             CONTROL_TASK_PROV_EVT_MASK,
             &meshx_prov_control_task_handler);

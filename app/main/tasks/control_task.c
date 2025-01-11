@@ -59,7 +59,7 @@ esp_err_t create_control_task(dev_struct_t * pdev)
  * @param[in] sizeof_msg_evt_params Size of the message parameters.
  * @return ESP_OK on success, or an error code on failure.
  */
-esp_err_t control_task_send_msg(control_task_msg_code_t msg_code,
+esp_err_t control_task_publish(control_task_msg_code_t msg_code,
                                 control_task_msg_evt_t msg_evt,
                                 const void* msg_evt_params,
                                 size_t sizeof_msg_evt_params)
@@ -94,7 +94,7 @@ esp_err_t control_task_send_msg(control_task_msg_code_t msg_code,
  * @param[in] callback        Callback function to handle the message and event.
  * @return ESP_OK on success, or an error code on failure.
  */
-esp_err_t control_task_reg_msg_code_handler_cb(control_task_msg_code_t msg_code,
+esp_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code,
             control_task_msg_evt_t evt_bmap,
             control_task_msg_handle_t callback)
 {
