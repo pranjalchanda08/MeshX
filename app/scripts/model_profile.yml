@@ -130,3 +130,10 @@ components:
         macros:
             - def: "CONFIG_ENABLE_UNIT_TEST"
               value: false
+    os_timer:
+        path: components/os_timer
+        type: software
+        default: true   # os_timer is a default component required. It is enabled by default.
+        macros:
+            - def: "CONFIG_ENABLE_OS_TIMER"
+              value: false
