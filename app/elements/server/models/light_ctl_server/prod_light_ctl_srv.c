@@ -43,7 +43,7 @@ static esp_err_t prod_perform_hw_change(esp_ble_mesh_lighting_server_cb_param_t 
         ESP_LOGI(TAG, "HW change requested, Element_id: 0x%x",
                     param->model->element_idx);
 
-        esp_err_t err = control_task_send_msg(
+        esp_err_t err = control_task_publish(
                             CONTROL_TASK_MSG_CODE_TO_HAL,
                             CONTROL_TASK_MSG_EVT_TO_HAL_SET_CTL,
                             srv,

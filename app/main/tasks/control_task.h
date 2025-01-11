@@ -145,28 +145,42 @@ typedef struct control_task_evt_cb_reg
  */
 esp_err_t create_control_task(dev_struct_t * pdev);
 
+
 /**
- * @brief Register a message code handler callback for the control task.
+ * @brief Subscribe to a control task message.
  *
- * @param msg_code  Message code.
- * @param evt_bmap  Bitmap of events.
- * @param cb        Callback function pointer.
- * @return ESP_OK on success, or an error code on failure.
+ * This function allows you to subscribe to a specific control task message
+ * identified by the given message code. When the message is received, the
+ * specified callback function will be invoked.
+ *
+ * @param msg_code  The message code to subscribe to.
+ * @param evt_bmap  The event bitmap associated with the message.
+ * @param cb        The callback function to be called when the message is received.
+ *
+ * @return
+ *     - ESP_OK: Success
+ *     - ESP_ERR_INVALID_ARG: Invalid argument
+ *     - ESP_FAIL: Other failures
  */
-esp_err_t control_task_reg_msg_code_handler_cb(control_task_msg_code_t msg_code,
+esp_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code,
                                 control_task_msg_evt_t evt_bmap,
                                 control_task_msg_handle_t cb);
 
 /**
- * @brief Send a message to the control task.
+ * @brief Publish a control task message.
  *
- * @param msg_code                  Message code.
- * @param msg_evt                   Message event.
- * @param msg_evt_params            Pointer to message event parameters.
- * @param sizeof_msg_evt_params     Size of message event parameters.
+ * This function allows you to publish a control task message with the given
+ * message code, event, and event parameters.
+ * The message will be sent to the control task for processing.
+ *
+ * @param msg_code              The message code to publish.
+ * @param msg_evt               The event associated with the message.
+ * @param msg_evt_params        Pointer to the event parameters.
+ * @param sizeof_msg_evt_params Size of the event parameters.
  * @return ESP_OK on success, or an error code on failure.
  */
-esp_err_t control_task_send_msg(control_task_msg_code_t msg_code,
+
+esp_err_t control_task_publish(control_task_msg_code_t msg_code,
                                 control_task_msg_evt_t msg_evt,
                                 const void *msg_evt_params,
                                 size_t sizeof_msg_evt_params);
