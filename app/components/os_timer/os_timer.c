@@ -22,6 +22,8 @@
  */
 #define OS_TIMER_CONTROL_TASK_EVT_MASK (CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_DISARM | \
                                         CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_ARM |    \
+                                        CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_REARM |  \
+                                        CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD | \
                                         CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE)
 
  /**
@@ -44,9 +46,11 @@ typedef enum
 {
     OS_TIMER_CLI_CMD_CREATE,
     OS_TIMER_CLI_CMD_ARM,
+    OS_TIMER_CLI_CMD_REARM,
     OS_TIMER_CLI_CMD_DISARM,
     OS_TIMER_CLI_CMD_DELETE,
-    OS_TIMER_CLI_CMD_TASK
+    OS_TIMER_CLI_CMD_PERIOD_SET,
+    OS_TIMER_CLI_CMD_MAX
 } os_timer_cli_cmd_t;
 
 /**
@@ -83,7 +87,7 @@ static esp_err_t os_timer_unit_test_cb_handler(int cmd_id, int argc, char **argv
     static os_timer_t* ut_os_timer;
 
     ESP_LOGI(TAG, "argc|cmd_id: %d|%d", argc, cmd_id);
-    if (cmd_id >= OS_TIMER_CLI_CMD_TASK)
+    if (cmd_id >= OS_TIMER_CLI_CMD_MAX)
     {
         ESP_LOGE(TAG, "Invalid number of arguments");
         return ESP_ERR_INVALID_ARG;
@@ -101,13 +105,22 @@ static esp_err_t os_timer_unit_test_cb_handler(int cmd_id, int argc, char **argv
             /* ut 2 1 0 */
             err = os_timer_start(ut_os_timer);
             break;
-        case OS_TIMER_CLI_CMD_DISARM:
+        case OS_TIMER_CLI_CMD_REARM:
             /* ut 2 2 0 */
+            err = os_timer_restart(ut_os_timer);
+            break;
+        case OS_TIMER_CLI_CMD_DISARM:
+            /* ut 2 3 0 */
             err = os_timer_stop(ut_os_timer);
             break;
         case OS_TIMER_CLI_CMD_DELETE:
-            /* ut 2 3 0 */
-            err = os_timer_delete(ut_os_timer);
+            /* ut 2 4 0 */
+            err = os_timer_delete(&ut_os_timer);
+            break;
+        case OS_TIMER_CLI_CMD_PERIOD_SET:
+            /* ut 2 5 1 [new period ms] */
+            ut_period =  UT_GET_ARG(0, uint32_t, argv);
+            err = os_timer_set_period(ut_os_timer, ut_period);
             break;
         default:
             break;
@@ -161,21 +174,35 @@ static esp_err_t os_timer_control_task_cb(const dev_struct_t *pdev, control_task
     switch (evt)
     {
         case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_ARM:
-            ESP_LOGI(TAG, "Starting timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
+            ESP_LOGD(TAG, "Starting timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
             if (xTimerStart(msg_params->timer_handle, 0) != pdPASS)
             {
                 return ESP_FAIL;
             }
             break;
+        case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_REARM:
+            ESP_LOGD(TAG, "Rearming timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
+            if (xTimerReset(msg_params->timer_handle, 0) != pdPASS)
+            {
+                return ESP_FAIL;
+            }
+            break;
         case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_DISARM:
-            ESP_LOGI(TAG, "Stopping timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
+            ESP_LOGD(TAG, "Stopping timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
             if (xTimerStop(msg_params->timer_handle, 0) != pdPASS)
             {
                 return ESP_FAIL;
             }
             break;
+        case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD:
+            ESP_LOGD(TAG, "Timer %s period set: %ld", OS_TMER_GET_TIMER_NAME(msg_params), msg_params->period);
+            if (xTimerChangePeriod(msg_params->timer_handle, pdMS_TO_TICKS(msg_params->period), 0) != pdPASS)
+            {
+                return ESP_FAIL;
+            }
+            break;
         case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE:
-            ESP_LOGI(TAG, "Timer %s fire", OS_TMER_GET_TIMER_NAME(msg_params));
+            ESP_LOGD(TAG, "Timer %s fire", OS_TMER_GET_TIMER_NAME(msg_params));
             /* call respective callback */
             if (msg_params->cb)
                 msg_params->cb(msg_params);
@@ -245,7 +272,7 @@ esp_err_t os_timer_create(
 
     esp_err_t err = ESP_OK;
 
-    *timer_handle = (os_timer_t *) pvPortMalloc(OS_TIMER_SIZE);
+    *timer_handle = (os_timer_t *) malloc(OS_TIMER_SIZE);
     if (*timer_handle == NULL)
         return ESP_ERR_NO_MEM;
 
@@ -263,7 +290,7 @@ esp_err_t os_timer_create(
     );
     if (NULL == (*timer_handle)->timer_handle)
     {
-        vPortFree(*timer_handle);
+        free(*timer_handle);
         return ESP_ERR_NO_MEM;
     }
 
@@ -294,6 +321,61 @@ esp_err_t os_timer_start(const os_timer_t *timer_handle)
     return control_task_publish(
         CONTROL_TASK_MSG_CODE_SYSTEM,
         CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_ARM,
+        timer_handle,
+        OS_TIMER_SIZE
+    );
+}
+
+/**
+ * @brief Restart a timer.
+ *
+ * This function re-starts the given timer.
+ *
+ * @param timer_handle The timer handle.
+ *
+ * @return ESP_OK on success, or an error code on failure.
+ */
+esp_err_t os_timer_restart(const os_timer_t *timer_handle)
+{
+    if (timer_handle == NULL)
+    {
+        return ESP_ERR_INVALID_STATE;
+    }
+    if (timer_handle->init != OS_TIMER_INIT_MAGIC)
+        return ESP_ERR_INVALID_STATE;
+
+    return control_task_publish(
+        CONTROL_TASK_MSG_CODE_SYSTEM,
+        CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_REARM,
+        timer_handle,
+        OS_TIMER_SIZE
+    );
+}
+
+/**
+ * @brief Set period on an initialised timer.
+ *
+ * This function reset period of initialised timer.
+ *
+ * @param timer_handle  The timer handle.
+ * @param period_ms     New period in ms
+ *
+ * @return ESP_OK on success, or an error code on failure.
+ */
+esp_err_t os_timer_set_period(os_timer_t *timer_handle, const uint32_t period_ms)
+{
+    if (timer_handle == NULL)
+    {
+        return ESP_ERR_INVALID_STATE;
+    }
+    if (timer_handle->init != OS_TIMER_INIT_MAGIC)
+        return ESP_ERR_INVALID_STATE;
+
+    timer_handle->period = period_ms;
+
+    return control_task_publish(
+        CONTROL_TASK_MSG_CODE_SYSTEM,
+        CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD,
         timer_handle,
         OS_TIMER_SIZE
     );
@@ -335,25 +417,25 @@ esp_err_t os_timer_stop(const os_timer_t *timer_handle)
  * @return ESP_OK on success, or an error code on failure.
  */
 
-esp_err_t os_timer_delete(os_timer_t *timer_handle)
+esp_err_t os_timer_delete(os_timer_t **timer_handle)
 {
     if (timer_handle == NULL)
     {
         return ESP_ERR_INVALID_STATE;
     }
 
-    if (timer_handle->init != OS_TIMER_INIT_MAGIC)
+    if ((*timer_handle)->init != OS_TIMER_INIT_MAGIC)
         return ESP_ERR_INVALID_STATE;
 
-    ESP_LOGI(TAG, "Deleting timer %s", OS_TMER_GET_TIMER_NAME(timer_handle));
-    if (xTimerDelete(timer_handle->timer_handle, 0) != pdPASS)
+    ESP_LOGI(TAG, "Deleting timer %s", OS_TMER_GET_TIMER_NAME((*timer_handle)));
+    if (xTimerDelete((*timer_handle)->timer_handle, 0) != pdPASS)
     {
         return ESP_FAIL;
     }
-    SLIST_REMOVE(&os_timer_reg_table_head, timer_handle, os_timer, next);
-    vPortFree(timer_handle);
+    (*timer_handle)->init = 0;
 
-    timer_handle->init = 0;
+    SLIST_REMOVE(&os_timer_reg_table_head, *timer_handle, os_timer, next);
+    free(*timer_handle);
 
     return ESP_OK;
 }
