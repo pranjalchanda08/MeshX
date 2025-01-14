@@ -104,6 +104,29 @@ esp_err_t os_timer_create(const char *name, uint32_t period, bool reload, os_tim
 esp_err_t os_timer_start(const os_timer_t *timer_handle);
 
 /**
+ * @brief Restart a timer.
+ *
+ * This function re-starts the given timer.
+ *
+ * @param timer_handle The timer handle.
+ *
+ * @return ESP_OK on success, or an error code on failure.
+ */
+esp_err_t os_timer_restart(const os_timer_t *timer_handle);
+
+/**
+ * @brief Set period on an initialised timer.
+ *
+ * This function reset period of initialised timer.
+ *
+ * @param timer_handle  The timer handle.
+ * @param period_ms     New period in ms
+ *
+ * @return ESP_OK on success, or an error code on failure.
+ */
+esp_err_t os_timer_set_period(os_timer_t *timer_handle, const uint32_t period_ms);
+
+/**
  * @brief Stop a timer.
  *
  * This function stops the given timer.
@@ -124,6 +147,6 @@ esp_err_t os_timer_stop(const os_timer_t *timer_handle);
  * @return ESP_OK on success, or an error code on failure.
  */
 
-esp_err_t os_timer_delete(os_timer_t *timer_handle);
+esp_err_t os_timer_delete(os_timer_t **timer_handle);
 
 #endif /* __OS_TIMER_H__ */
