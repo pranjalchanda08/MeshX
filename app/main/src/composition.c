@@ -81,6 +81,7 @@
  * related to provisioning.
  */
 #define CONTROL_TASK_PROV_EVT_MASK CONTROL_TASK_MSG_EVT_IDENTIFY_START \
+                                 | CONTROL_TASK_MSG_EVT_PROVISION_STOP \
                                  | CONTROL_TASK_MSG_EVT_IDENTIFY_STOP \
                                  | CONTROL_TASK_MSG_EVT_NODE_RESET
 
@@ -114,6 +115,19 @@ static esp_ble_mesh_model_t app_root_model[] = {
 #endif
 };
 
+/**
+ * @brief Handles provisioning control task events.
+ *
+ * This function processes various provisioning-related events and updates
+ * the device structure accordingly. It handles events such as provisioning
+ * completion and identification start.
+ *
+ * @param[in] pdev Pointer to the device structure.
+ * @param[in] evt The control task message event type.
+ * @param[in] params Pointer to the event parameters.
+ *
+ * @return ESP_OK on success, or an error code on failure.
+ */
 static esp_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)
 {
     const esp_ble_mesh_prov_cb_param_t *param = (esp_ble_mesh_prov_cb_param_t*) params;

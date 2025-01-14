@@ -37,8 +37,15 @@ Before using this project, make sure you have:
 * ESP-IDF installed for compiling the firmware.
 * A computer with Python installed for managing dependencies.
 * Install docker: [docker-ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+* Python: 3.12+
 
 ## Build
+
+source the terminal
+```sh
+$ export IDF_PATH=</idf_path>
+$ source $IDF_PATH/export.sh
+```
 
 ```sh
 $ cd app
