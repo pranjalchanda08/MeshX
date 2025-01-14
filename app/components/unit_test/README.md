@@ -21,3 +21,7 @@
 |                     |           | CWWW_CLI_UT_CMD_DELTA_UV_SET_UNACK    | (0x0B) | ut 1 11 2 `[el_id]` `[delta_uv]`                         | Send CWWW DELTA UV SET UNACK Command to element_id              | PASS   |
 |                     |           | CWWW_CLI_UT_CMD_TEMOP_RANGE_SET       | (0x0C) | ut 1 12 3 `[el_id]` `[min]` `[max]`                      | Send CWWW TEMPERATURE RANGE SET for target publish server       | PASS   |
 |                     |           | CWWW_CLI_UT_CMD_TEMOP_RANGE_SET_UNACK | (0x0D) | ut 1 13 3 `[el_id]` `[min]` `[max]`                      | Send CWWW TEMPERATURE RANGE SET UNACK for target publish server | PASS   |
+| OS Timer            | 0x02      | OS_TIMER_CLI_CMD_CREATE               | (0x00) | ut 2 0 2 `[period_ms]` `[reload]`                        | Initiallise Unit Test OS Timer Instance                         | PASS   |
+|                     |           | OS_TIMER_CLI_CMD_ARM                  | (0x01) | ut 2 1 0                                                 | Arm Unit Test OS Timer Instance                                 | PASS   |
+|                     |           | OS_TIMER_CLI_CMD_DISARM               | (0x02) | ut 2 2 0                                                 | Disarm Unit Test OS Timer Instance                              | PASS   |
+|                     |           | OS_TIMER_CLI_CMD_DELETE               | (0x03) | ut 2 3 0                                                 | Delete Unit Test OS Timer Instance                              | PASS   |

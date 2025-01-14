@@ -126,6 +126,13 @@ void app_main(void)
     }
     ESP_ERROR_CHECK(err);
 
+    err = os_timer_init();
+    if (err)
+    {
+        ESP_LOGE(TAG, "OS Timer Init failed (err 0x%x)", err);
+        return;
+    }
+
     err = app_tasks_init(&g_dev);
     if (err)
     {
