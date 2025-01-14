@@ -93,8 +93,7 @@ typedef enum PACKED_ATTR
     CONTROL_TASK_MSG_EVT_SYSTEM_RESTART      = BIT0,    /**< Event to restart the system. */
     CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_ARM    = BIT1,    /**< Event to arm an OS Timer */
     CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_DISARM = BIT2,    /**< Event to stop an OS Timer */
-    CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_DELETE = BIT3,    /**< Event to del an OS Timer */
-    CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE   = BIT4,    /**< Event to fire timedout OS Timer */
+    CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE   = BIT3,    /**< Event to fire timedout OS Timer */
     CONTROL_TASK_MSG_EVT_SYSTEM_MAX, /**< Maximum system event value. */
 } control_task_msg_evt_system_t;
 

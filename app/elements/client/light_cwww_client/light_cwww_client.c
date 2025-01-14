@@ -329,7 +329,7 @@ static esp_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv
     ESP_LOGI(TAG, "argc|cmd_id: %d|%d", argc, cmd_id);
     if (argc < 1 || cmd_id >= CWWW_CLI_MAX_CMD)
     {
-        ESP_LOGE(TAG, "Relay Client Unit Test: Invalid number of arguments");
+        ESP_LOGE(TAG, "CWW Client Unit Test: Invalid number of arguments");
         return ESP_ERR_INVALID_ARG;
     }
 

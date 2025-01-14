@@ -17,27 +17,33 @@
 #include "sys/queue.h"
 
 /**
+ * @brief return os_timer_t size
+ */
+#define OS_TIMER_SIZE sizeof(os_timer_t)
+
+/**
  * @brief return timer registered name pointer
  */
 #define OS_TMER_GET_TIMER_NAME(timer) (timer->name)
 
 /**
- * @typedef os_timer_t
+ * @typedef os_timer_handle_t
  * @brief Alias for the FreeRTOS TimerHandle_t type.
  *
  * This typedef provides a more convenient name for the FreeRTOS
  * timer handle type, used for creating and managing timers.
  */
-typedef TimerHandle_t os_timer_t;
+typedef TimerHandle_t os_timer_handle_t;
 
+typedef struct os_timer os_timer_t;
 /**
  * @brief Timer callback function prototype.
  *
  * This function is called when the timer expires.
  *
- * @param timer_id The timer handle.
+ * @param timer_handle The timer handle.
  */
-typedef void (*os_timer_cb_t)(os_timer_t timer_id);
+typedef void (*os_timer_cb_t)(const os_timer_t* p_timer);
 
 /**
  * @brief Structure to hold parameters for the OS timer control task message.
@@ -47,15 +53,16 @@ typedef void (*os_timer_cb_t)(os_timer_t timer_id);
  * the timer period, providing a name for the timer, and assigning a callback
  * function to be executed when the timer expires.
  */
-typedef struct os_timer_reg_list
+struct os_timer
 {
+    uint16_t init;
     bool reload;
     uint32_t period;
     os_timer_cb_t cb;
     const char *name;
-    os_timer_t timer_handle;
-    SLIST_ENTRY(os_timer_reg_list) next;
-} os_timer_reg_list_t;
+    os_timer_handle_t timer_handle;
+    SLIST_ENTRY(os_timer) next;
+};
 
 /**
  * @brief Initialize the OS timer module.
@@ -77,42 +84,46 @@ esp_err_t os_timer_init(void);
  * @param[in] cb            The callback function to be called when the timer expires.
  * @param[inout] timer_handle  The timer handle.
  *
+ * @usage:
+ *  os_timer_t * os_timer_inst;
+ *  esp_err_t err = os_timer_create("Example_Timer", 1000, 1, &example_os_timer_cb, &os_timer_inst);
+ *
  * @return ESP_OK on success, or an error code on failure.
  */
-esp_err_t os_timer_create(const char *name, uint32_t period, bool reload, os_timer_cb_t cb, os_timer_t *timer_handle);
+esp_err_t os_timer_create(const char *name, uint32_t period, bool reload, os_timer_cb_t cb, os_timer_t **timer_handle);
 
 /**
  * @brief Start a timer.
  *
  * This function starts the given timer.
  *
- * @param timer_id The timer handle.
+ * @param timer_handle The timer handle.
  *
  * @return ESP_OK on success, or an error code on failure.
  */
-esp_err_t os_timer_start(os_timer_t timer_id);
+esp_err_t os_timer_start(const os_timer_t *timer_handle);
 
 /**
  * @brief Stop a timer.
  *
  * This function stops the given timer.
  *
- * @param timer_id The timer handle.
+ * @param timer_handle The timer handle.
  *
  * @return ESP_OK on success, or an error code on failure.
  */
-esp_err_t os_timer_stop(os_timer_t timer_id);
+esp_err_t os_timer_stop(const os_timer_t *timer_handle);
 
 /**
  * @brief Delete a timer.
  *
  * This function deletes the given timer.
  *
- * @param timer_id The timer handle.
+ * @param timer_handle The timer handle.
  *
  * @return ESP_OK on success, or an error code on failure.
  */
 
-esp_err_t os_timer_delete(os_timer_t timer_id);
+esp_err_t os_timer_delete(os_timer_t *timer_handle);
 
 #endif /* __OS_TIMER_H__ */
