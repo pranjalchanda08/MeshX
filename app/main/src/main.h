@@ -1,6 +1,7 @@
 #pragma once
 
 #include <app_common.h>
+#include <os_timer.h>
 
 #if CONFIG_ENABLE_UNIT_TEST
 #include <unit_test.h>
