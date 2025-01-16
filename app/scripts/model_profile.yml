@@ -137,3 +137,10 @@ components:
         macros:
             - def: "CONFIG_ENABLE_OS_TIMER"
               value: false
+    meshx_nvs:
+        path: components/meshx_nvs
+        type: software
+        default: true   # meshx_nvs is a default component required. It is enabled by default.
+        macros:
+            - def: "CONFIG_ENABLE_MESHX_NVS"
+              value: false
