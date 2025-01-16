@@ -49,7 +49,10 @@ class CodeGen(CodeGenException):
         self.file_insert = file_insert
         self.genfile_h = "main/common/codegen.h"
         self.define_fmt = "\n#define {}{}{}"
-        os.system(f'touch {self.genfile_h}')  # Create the header file
+        if os.name == 'nt':
+            os.system(f'echo.>{self.genfile_h}')  # Create the header file
+        elif os.name =='posix':
+            os.system(f'touch {self.genfile_h}')  # Create the header file
 
     def __str__(self):
         """
@@ -86,7 +89,7 @@ class CodeGen(CodeGenException):
         files = [f for f in entries if os.path.isfile(os.path.join(path, f))]
         for file in files:
             if file.endswith('.c'):  # Check if the file ends with .c
-                filepath = os.path.join(path, file)
+                filepath = f"{path}/{file}"
                 if filepath not in self.c_list:
                     self.c_list.append(filepath)  # Add full path to list
 
