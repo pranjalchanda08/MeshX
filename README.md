@@ -41,16 +41,24 @@ Before using this project, make sure you have:
 
 ## Build
 
-source the terminal
+Source the terminal
 ```sh
 $ export IDF_PATH=</idf_path>
 $ source $IDF_PATH/export.sh
 ```
 
+Linux
 ```sh
 $ cd app
-$ sh scripts/build.sh <procuct_name_string>
+$ sh scripts/build.sh <product_name_string>
 ```
+
+Windows
+```sh
+$ cd app
+$ .\scripts\build.bat <product_name_string>
+```
+
 ## Adding a Product to build
 
 Modify `scripts/prod_profile.yml` to add another entry under the `products` object for the build.
