@@ -424,7 +424,7 @@ esp_err_t os_timer_delete(os_timer_t **timer_handle)
         return ESP_ERR_INVALID_STATE;
     }
 
-    if ((*timer_handle)->init != OS_TIMER_INIT_MAGIC)
+    if (*timer_handle == NULL || (*timer_handle)->init != OS_TIMER_INIT_MAGIC)
         return ESP_ERR_INVALID_STATE;
 
     ESP_LOGI(TAG, "Deleting timer %s", OS_TMER_GET_TIMER_NAME((*timer_handle)));
