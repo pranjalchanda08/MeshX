@@ -33,6 +33,14 @@ typedef struct meshx_nvs {
 }meshx_nvs_t;
 
 /**
+ * @brief MeshX NVS Initialisation
+ *
+ * @return
+ *  - ESP_OK: Success.
+ */
+esp_err_t meshx_nvs_init(void);
+
+/**
  * @brief Erase all key-value pairs stored in the NVS.
  *
  * This function clears all data stored in the Non-Volatile Storage.
@@ -90,14 +98,14 @@ esp_err_t meshx_nvs_open(void);
  *
  * This function retrieves a value associated with the given key from the NVS.
  *
- * @param[in]       key        The key identifying the value to be retrieved.
- * @param[out]      blob       Pointer to the buffer where the value will be stored.
- * @param[inout]    blob_size  Size of the buffer in bytes.
+ * @param[in]    key         The key identifying the value to be retrieved.
+ * @param[out]   blob        Pointer to the buffer where the value will be stored.
+ * @param[in]    blob_size   Size of the buffer in bytes.
  *
  * @return
  *  - ESP_OK: Success.
  */
-esp_err_t meshx_nvs_get(char const* key, uint8_t* blob, size_t *blob_size);
+esp_err_t meshx_nvs_get(char const *key, void *blob, size_t blob_size);
 
 /**
  * @brief Set a value in the NVS.
@@ -112,7 +120,7 @@ esp_err_t meshx_nvs_get(char const* key, uint8_t* blob, size_t *blob_size);
  * @return
  *  - ESP_OK: Success.
  */
-esp_err_t meshx_nvs_set(char const* key, uint8_t const* blob, size_t blob_size, bool arm_timer);
+esp_err_t meshx_nvs_set(char const* key, void const* blob, size_t blob_size, bool arm_timer);
 
 #endif /* __MESHX_NVS_H__ */
 
