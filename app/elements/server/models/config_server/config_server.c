@@ -1,11 +1,13 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file config_server.c
  * @brief Implementation of the Configuration Server for ESP BLE Mesh.
  *
  * This file contains the initialization and event handling logic for the BLE Mesh
  * Configuration Server, including the management of callback registrations and event dispatching.
  *
- * @author [Pranjal Chanda]
+ *
  */
 
 #include "config_server.h"

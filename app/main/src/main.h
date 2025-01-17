@@ -1,3 +1,10 @@
+/**
+ * Copyright © 2024 - 2025 MeshX
+ *
+ * @file    main.h
+ * @brief   Headers for main.c
+ *
+ */
 #pragma once
 
 #include <app_common.h>

@@ -1,11 +1,11 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file os_timer.h
  * @brief Header file for OS timer utilities.
  *
  * This file contains the definitions and includes necessary for
  * working with OS timers in the ESP32 BLE mesh node application.
- *
- * @author Pranjal Chanda
  */
 
 #ifndef __OS_TIMER_H__

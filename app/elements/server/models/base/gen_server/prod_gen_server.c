@@ -1,11 +1,13 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file prod_gen_server.c
  * @brief Implementation of the BLE Mesh Generic Server for the product.
  *
  * This file contains the implementation of the BLE Mesh Generic Server
  * for handling various server events and registering callbacks.
  *
- * @auther Pranjal Chanda
+ *
  */
 
 #include "prod_gen_server.h"

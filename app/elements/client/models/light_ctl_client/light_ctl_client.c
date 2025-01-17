@@ -1,11 +1,13 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file light_ctl_client.c
  * @brief Implementation of the Light CTL Client model for ESP32 BLE Mesh.
  *
  * This file contains the implementation of the Light CTL Client model, including
  * initialization, callback registration, and event handling.
  *
- * @auther Pranjal Chanda
+ *
  */
 
 #include "light_ctl_client.h"

@@ -1,11 +1,13 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file unit_test.h
  * @brief Header file for the production console unit test functionality.
  *
  * This file contains the declarations and definitions for initializing the
  * production console and registering unit test callbacks for different modules.
  *
- * @author [Pranjal Chanda]
+ *
  */
 #ifndef __PROD_UNIT_TEST_H__
 #define __PROD_UNIT_TEST_H__

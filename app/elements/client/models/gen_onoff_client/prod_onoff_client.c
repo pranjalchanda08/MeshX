@@ -1,4 +1,6 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file prod_onoff_client.c
  * @brief Implementation of the Generic OnOff Client Model for BLE Mesh.
  *

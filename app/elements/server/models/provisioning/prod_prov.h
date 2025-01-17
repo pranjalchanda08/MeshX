@@ -1,4 +1,6 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file prod_prov.h
  * @brief Header file for provisioning related definitions and functions.
  *

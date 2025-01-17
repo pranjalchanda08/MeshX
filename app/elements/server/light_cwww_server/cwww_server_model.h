@@ -1,11 +1,13 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file cwww_server_model.h
  * @brief Header file for CWWW Server Model
  *
  * This file contains the definitions and function prototypes for the CWWW Server Model.
  * It includes the necessary includes, macros, and data structures required for the model.
  *
- * @author [Pranjal Chanda]
+ *
  */
 
 #ifndef __CWWW_SERVER_MODEL_H__

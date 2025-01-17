@@ -1,4 +1,6 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file control_task.c
  * @brief Implementation of control task for event handling and messaging.
  *
@@ -6,7 +8,6 @@
  * creating the task, sending messages, registering message handlers, and handling events.
  * The control task uses FreeRTOS for inter-task communication and event-driven architecture.
  *
- * @author [Pranjal Chanda]
  */
 
 #include <control_task.h>

@@ -1,4 +1,6 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file light_ctl_client.h
  * @brief Header file for the Light CTL (Color Temperature Light) Client model.
  *

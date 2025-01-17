@@ -1,4 +1,6 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file light_cwww_client.c
  * @brief Implementation of the CW-WW (Cool White - Warm White) client model for BLE Mesh.
  *
@@ -15,8 +17,7 @@
  * - Handling of configuration server events such as model publication and application key binding.
  * - Handling of generic client callback events for CW-WW models.
  * - Sending CW-WW messages to the server.
- *
- * @author Pranjal Chanda
+ * 
  */
 #include "light_cwww_client.h"
 
