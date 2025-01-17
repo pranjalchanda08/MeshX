@@ -32,8 +32,8 @@ jobs:
       run: |
         cd app
         export APP_PATH=$(pwd)
-        sudo docker run --rm -v $PWD:$APP_PATH -w $APP_PATH -u $UID -e HOME=/tmp espressif/idf:release-v5.4 idf.py -DTARGET="all_in_one" set-target esp32c3
 
+        sudo docker run --rm -v $PWD:$APP_PATH -w $APP_PATH -u $UID -e HOME=/tmp espressif/idf:release-v5.4 /bin/bash -c idf.py -DTARGET="all_in_one" set-target esp32c3
         for product in $(python -c "import yaml; print(' '.join([p['name'] for p in yaml.safe_load(open('scripts/prod_profile.yml'))['prod']['products']]))"); do
           sh scripts/build_ci.sh $product
         done
