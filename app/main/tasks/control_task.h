@@ -1,4 +1,6 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file control_task.h
  * @brief Header file for the control task in the BLE mesh node application.
  *

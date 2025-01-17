@@ -1,11 +1,13 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file prod_gen_server.h
  * @brief Header file for the generic server model in the BLE mesh node application.
  *
  * This file contains the function declarations and data structures for registering,
  * deregistering, and initializing the generic server model callbacks in the BLE mesh node application.
  *
- * @auther Pranjal Chanda
+ *
  */
 
 #ifndef __PROD_GEN_SERVER_H__

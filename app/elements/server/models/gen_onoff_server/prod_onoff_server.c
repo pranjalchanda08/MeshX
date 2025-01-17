@@ -1,11 +1,13 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file prod_onoff_server.c
  * @brief Header file for the On/Off Server model in the BLE Mesh Node application.
  *
  * This file contains the function defination for the
  * On/Off Server model used in the BLE Mesh Node application.
  *
- * @auther Pranjal Chanda
+ *
  */
 #include "prod_onoff_server.h"
 

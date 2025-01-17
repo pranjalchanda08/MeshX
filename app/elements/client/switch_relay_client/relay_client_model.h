@@ -1,4 +1,6 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file relay_client_model.h
  * @brief Header file for the Relay Client Model in BLE Mesh.
  *
@@ -13,8 +15,6 @@
  * - Definitions for the number of relay client elements, SIG models, and message types.
  * - Data structures for relay client context, messages, and elements.
  * - Function prototypes for creating relay client elements and sending messages.
- *
- * @author [Pranjal Chanda]
  *
  */
 #pragma once

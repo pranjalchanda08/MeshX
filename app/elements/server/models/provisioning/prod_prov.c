@@ -1,11 +1,12 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file prod_prov.c
  * @brief This file contains the implementation of the provisioning process for the BLE mesh node.
  *
  * The provisioning process is responsible for setting up the BLE mesh node, including
  * initializing necessary components and handling communication with other nodes.
- *
- * @author Pranjal Chanda
+ * 
  */
 
 #include "prod_prov.h"

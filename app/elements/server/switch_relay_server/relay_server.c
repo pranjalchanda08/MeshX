@@ -1,4 +1,6 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file relay_server.c
  * @brief Relay server model implementation for BLE Mesh networks.
  *

@@ -1,11 +1,12 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file app_common.h
  * @brief Common application definitions and includes for BLE Mesh Node.
  *
  * This header file contains common definitions, includes, and data structures
  * used across the BLE Mesh Node application.
- *
- * @author Pranjal Chanda
+ * 
  */
 
 #pragma once

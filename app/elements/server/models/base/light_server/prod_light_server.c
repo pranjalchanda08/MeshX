@@ -1,11 +1,13 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file prod_light_server.c
  * @brief Implementation of the BLE Mesh Lighting Server for the ESP32.
  *
  * This file contains the implementation of the BLE Mesh Lighting Server,
  * including initialization, event handling, and callback registration.
  *
- * @author [Pranjal Chanda]
+ *
  */
 
 #include "prod_light_server.h"
