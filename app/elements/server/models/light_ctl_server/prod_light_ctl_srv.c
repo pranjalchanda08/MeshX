@@ -1,12 +1,13 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file prod_light_ctl_srv.c
  * @brief Implementation of the Light CTL Server model for BLE Mesh Node.
  *
  * This file contains the implementation of the Light CTL (Color Temperature Light) Server model
  * for the BLE Mesh Node. The Light CTL Server model is responsible for controlling the color
  * temperature and lightness of a light.
- *
- * @auther Pranjal Chanda
+ * 
  */
 
 #include <prod_light_ctl_srv.h>

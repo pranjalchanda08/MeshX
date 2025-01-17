@@ -1,11 +1,12 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file main.c
  * @brief Main application file for ESP BLE Mesh node.
  *
  * This file contains initialization routines for BLE Mesh provisioning, configuration,
  * and light control servers, as well as the main application entry point.
  *
- * @author [Pranjal Chanda]
  */
 
 #include "main.h"

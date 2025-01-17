@@ -1,4 +1,6 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file composition.c
  * @brief BLE Mesh Composition Initialization and Element Creation
  *
@@ -9,39 +11,6 @@
  * The file includes necessary headers and conditionally includes headers based on configuration
  * macros. It defines macros for error handling and contains static variables for provisioning
  * parameters and Light CTL state.
- *
- * Functions:
- * - get_root_models: Returns the root models for BLE Mesh elements.
- * - get_root_models_size: Returns the size of the root models.
- * - ble_mesh_composition_init: Initializes BLE Mesh composition data.
- * - create_ble_mesh_element_composition: Creates the BLE Mesh element composition.
- *
- * Configuration Macros:
- * - CONFIG_RELAY_SERVER_COUNT: Enables inclusion of relay server model.
- * - CONFIG_RELAY_CLIENT_COUNT: Enables inclusion of relay client model.
- * - CONFIG_LIGHT_CWWW_SRV_COUNT: Enables inclusion of CWWW server model.
- * - CONFIG_LIGHT_CWWW_CLIENT_COUNT: Enables inclusion of CWWW client model.
- * - CONFIG_ENABLE_PROVISIONING: Enables provisioning parameters for BLE Mesh.
- * - CONFIG_ENABLE_LIGHT_CTL_SERVER: Enables Light CTL server model.
- * - CONFIG_ENABLE_CONFIG_SERVER: Enables configuration server model.
- * - CONFIG_MAX_ELEMENT_COUNT: Defines the maximum number of elements.
- *
- * Error Handling:
- * The ESP_ERR_PRINT_RET macro is used for printing error messages and returning error codes.
- *
- * Provisioning:
- * The prod_prov_cfg structure holds provisioning parameters for BLE Mesh.
- *
- * Light CTL Server:
- * The ctl_state variable holds the Light CTL state, and the ctl_setup_server structure defines
- * the Light CTL setup server model.
- *
- * Root Models:
- * The app_root_model array holds the root models for BLE Mesh elements.
- *
- * @note This file is part of the MeshX application.
- *
- * @author Pranjal Chanda
  *
  */
 

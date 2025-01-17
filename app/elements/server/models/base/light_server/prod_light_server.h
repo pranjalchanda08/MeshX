@@ -1,4 +1,6 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file prod_light_server.h
  * @brief Header file for the production lighting server.
  *

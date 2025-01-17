@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
+
+"""
+    Copyright © 2024 - 2025 MeshX
+"""
+
 import yaml
-import json
 import os
 import sys
 
@@ -246,6 +250,5 @@ if __name__ == '__main__':
     with open("main/CMakeLists.txt", "w") as file:
         file.seek(0)  # Move the file pointer to the beginning
         file.write(string_to_insert + temp_content)  # Write the new string followed by the old content
-    # print(json.dumps(gen.deps, indent=4))
 
     print(f">> Autogen code created! \n{gen}")

@@ -1,4 +1,6 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file server_common.h
  * @brief Common definitions and includes for the BLE Mesh server.
  *

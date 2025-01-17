@@ -1,4 +1,6 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file prod_onoff_client.h
  * @brief Header file for the On/Off client model in BLE mesh.
  *

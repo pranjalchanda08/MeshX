@@ -1,4 +1,6 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file module_id.h
  * @brief Defines module IDs for different elements in the BLE mesh node application.
  *
@@ -26,3 +28,4 @@ typedef enum {
 } module_id_t;
 
 #endif // MODULE_ID_H
+

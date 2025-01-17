@@ -1,11 +1,11 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file os_timer.c
  * @brief Implementation of OS timer functionalities for BLE mesh node.
  *
  * This file contains the implementation of the OS timer functionalities used in the BLE mesh node application.
  * It includes the necessary includes, definitions, and initialization of the timer registration table.
- *
- * @author Pranjal Chanda
  */
 
 #include "os_timer.h"

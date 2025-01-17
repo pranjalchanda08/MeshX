@@ -1,13 +1,14 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file unit_test.c
  * @brief Unit test module for the production console.
  *
  * This file contains the implementation of the unit test module for the production console.
  * It provides functions to register unit test commands and initialize the console for
  * production use.
- *
- * @author [Pranjal Chanda]
  */
+
 #include "unit_test.h"
 #include "esp_log.h"
 
