@@ -1,23 +1,30 @@
 # MeshX Proprietary License (MPL) v1.0
 
-Copyright © 2025 `MeshX`. All Rights Reserved.
+Copyright (c) 2025 MeshX. All Rights Reserved.
+
+---
+### **0. Preamble**
+MeshX Proprietary License is intended to protect the efforts and intellectual property of MeshX team and its Users from any claims that are not in terms of this
+license agreement. This license will be updated from time to time. No one other than MeshX owners have rights to make any changes to this license.
+
+Using or implementing the Software by any User will automatically tantamount to unconditionally agreeing to the terms of this license.
 
 ---
 
 ### **1. Grant of License**
-You are hereby granted a limited, non-exclusive, non-transferable, and revocable license to use, modify, and contribute to the software known as **MeshX** (the "Software") subject to the terms outlined in this license.
+You are hereby granted a limited, non-exclusive, non-transferable, and revocable license to use, modify, and contribute to the software known as **MeshX** (hereby called as the "Software") subject to the terms outlined in this license.
 
 ---
 
 ### **2. Ownership**
-The Software, including any modifications, enhancements, or derivatives, remains the sole and exclusive property of **Pranjal Chanda** and **Akash Kollipara** ("the Owners").
+The Software, including any modifications, enhancements, or derivatives, remains the sole and exclusive property of **Pranjal Chanda** and **Akash Kollipara** (hereby called as the "Owners").
 No rights, title, or interest in the Software are transferred to you, except as expressly permitted in this license.
 
 ---
 
 ### **3. Contributions**
 1. **Submission of Contributions**:
-   - Anybody can be a `contributor`. If `contributor` submits modifications, bug fixes, patches, or other contributions ("Contributions") to the Software, you agree that:
+   - Anybody can be a `contributor`. If `contributor` submits modifications, bug fixes, patches, or other contributions (hereby referred as "Contributions") to the Software, you agree that:
      - You have the right to submit the Contributions.
      - The Owners may use, distribute, and incorporate the Contributions into the Software at their sole discretion.
 2. **License to Contributions**:
@@ -48,7 +55,7 @@ THE SOFTWARE IS PROVIDED "AS IS," WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ---
 
 ### **7. Termination**
-This license is effective until terminated. The Owners may terminate your rights under this license at any time for any breach of the terms. Upon termination, you must cease all use of the Software and delete all copies in your possession.
+Use of the Software is permitted until license is revoked or terminated. The Owners may revoke your rights under this license at any time **for any breach of the terms**. Upon termination, you must cease all use of the Software and delete all copies in your possession.
 
 ---
 
