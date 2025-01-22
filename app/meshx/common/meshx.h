@@ -1,11 +1,12 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file    main.h
- * @brief   Headers for main.c
+ * @file    meshx.h
+ * @brief   Headers for meshx.c
  *
  */
-#pragma once
+#ifndef __MESHX_H__
+#define __MESHX_H__
 
 #include <app_common.h>
 #include <os_timer.h>
@@ -43,3 +44,13 @@
     }
 
 #define CID_ESP CONFIG_CID_ID
+
+/**
+ * @brief MeshX initialisation function
+ *
+ * @return ESP_OK, Success
+ */
+
+esp_err_t meshx_init(void);
+
+#endif /* __MESHX_H__ */

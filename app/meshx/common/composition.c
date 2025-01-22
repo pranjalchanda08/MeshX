@@ -15,7 +15,7 @@
  */
 
 #include "app_common.h"
-#include "main.h"
+#include "meshx.h"
 
 #if CONFIG_RELAY_SERVER_COUNT
 #include "relay_server_model.h"

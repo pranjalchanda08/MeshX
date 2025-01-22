@@ -22,8 +22,8 @@ class CodeGen(CodeGenException):
     def __init__(self,
                  target_name,
                  prod_profile="scripts/prod_profile.yml",
-                 model_profile="scripts/model_profile.yml",
-                 idf_yml="main/idf_component.yml"):
+                 model_profile="scripts/model_profile.yml"
+            ):
         """
         Initialize the CodeGen class with product and model profiles in YAML format.
 
@@ -31,7 +31,6 @@ class CodeGen(CodeGenException):
             target_name (str): Name of the target product.
             prod_profile (str): Path to the product profile YAML file.
             model_profile (str): Path to the model profile YAML file.
-            idf_yml (str): Path to the IDF component YAML file.
         """
         self.max_el = 1
         self.target = target_name
@@ -48,10 +47,9 @@ class CodeGen(CodeGenException):
         self.c_list = []  # List of source files
         self.inc_list = []  # List of include directories
         self.deps = {}  # Dependency dictionary
-        self.yml = idf_yml
         self.__find_prod_from_target()
         self.file_insert = file_insert
-        self.genfile_h = "main/common/codegen.h"
+        self.genfile_h = "meshx/common/codegen.h"
         self.define_fmt = "\n#define {}{}{}"
         if os.name == 'nt':
             os.system(f'echo.>{self.genfile_h}')  # Create the header file
@@ -245,9 +243,9 @@ if __name__ == '__main__':
     gen.close()
     string_to_insert = gen.create_cmake_list()[0] + '\n' + gen.create_cmake_list()[1] + '\n'
     temp_content = ""
-    with open("main/CMakeLists.tmp", "r+") as file:
+    with open("meshx/CMakeLists.tmp", "r+") as file:
         temp_content = file.read()  # Read the existing content
-    with open("main/CMakeLists.txt", "w") as file:
+    with open("meshx/CMakeLists.txt", "w") as file:
         file.seek(0)  # Move the file pointer to the beginning
         file.write(string_to_insert + temp_content)  # Write the new string followed by the old content
 
