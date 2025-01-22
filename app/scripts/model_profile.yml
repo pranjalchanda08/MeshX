@@ -1,7 +1,7 @@
 # Elements Build registration
 elements:
     switch_relay_server:
-        path: "elements/server/switch_relay_server"
+        path: "meshx/elements/server/switch_relay_server"
         macros:
             - def: "CONFIG_RELAY_SERVER_COUNT"
               value: 0
@@ -9,7 +9,7 @@ elements:
             - gen_onoff_server: 1
 
     switch_relay_client:
-        path: "elements/client/switch_relay_client"
+        path: "meshx/elements/client/switch_relay_client"
         macros:
             - def: "CONFIG_RELAY_CLIENT_COUNT"
               value: 0
@@ -17,7 +17,7 @@ elements:
             - gen_onoff_client: 1
 
     light_cwww_server:
-        path: "elements/server/light_cwww_server"
+        path: "meshx/elements/server/light_cwww_server"
         macros:
             - def: "CONFIG_LIGHT_CWWW_SRV_COUNT"
               value: 0
@@ -26,7 +26,7 @@ elements:
             - gen_onoff_server: 1
 
     light_cwww_client:
-        path: "elements/client/light_cwww_client"
+        path: "meshx/elements/client/light_cwww_client"
         macros:
             - def: "CONFIG_LIGHT_CWWW_CLIENT_COUNT"
               value: 0
@@ -36,7 +36,7 @@ elements:
 # Models Build registration
 models:
     server_common:
-        path: "elements/server"
+        path: "meshx/elements/server"
         type: "common"
         default: true
         macros:
@@ -45,7 +45,7 @@ models:
         base_model: null
 
     provisioning:
-        path: "elements/server/models/provisioning"
+        path: "meshx/elements/server/models/provisioning"
         type: "server"
         default: true
         macros:
@@ -54,7 +54,7 @@ models:
         base_model: null
 
     config_server:
-        path: "elements/server/models/config_server"
+        path: "meshx/elements/server/models/config_server"
         type: "server"
         default: true
         macros:
@@ -63,7 +63,7 @@ models:
         base_model: null
 
     gen_onoff_client:
-        path: "elements/client/models/gen_onoff_client"
+        path: "meshx/elements/client/models/gen_onoff_client"
         type: "client"
         default: false
         macros:
@@ -72,7 +72,7 @@ models:
         base_model: null
 
     gen_onoff_server:
-        path: "elements/server/models/gen_onoff_server"
+        path: "meshx/elements/server/models/gen_onoff_server"
         type: "server"
         default: false
         macros:
@@ -81,7 +81,7 @@ models:
         base_model: "gen_server"
 
     light_ctl_server:
-        path: "elements/server/models/light_ctl_server"
+        path: "meshx/elements/server/models/light_ctl_server"
         type: "server"
         default: false
         macros:
@@ -90,7 +90,7 @@ models:
         base_model: "light_server"
 
     light_hsl_server:
-        path: "elements/server/models/light_hsl_server"
+        path: "meshx/elements/server/models/light_hsl_server"
         type: "server"
         default: false
         macros:
@@ -99,7 +99,7 @@ models:
         base_model: "light_server"
 
     light_ctl_client:
-        path: "elements/client/models/light_ctl_client"
+        path: "meshx/elements/client/models/light_ctl_client"
         type: "client"
         default: false
         macros:
@@ -110,35 +110,56 @@ models:
 # Base model build registration
 base_models:
     gen_server:
-        path: "elements/server/models/base/gen_server"
+        path: "meshx/elements/server/models/base/gen_server"
         macros:
             - def: "CONFIG_ENABLE_GEN_SERVER"
               value: false
 
     light_server:
-        path: "elements/server/models/base/light_server"
+        path: "meshx/elements/server/models/base/light_server"
         macros:
             - def: "CONFIG_ENABLE_LIGHT_SERVER"
               value: false
 
 # Components build registration
 components:
+    common:
+        path: meshx/common
+        type: software
+        default: true
+        macros:
+            - def: "CONFIG_MESHX_COMMON"
+              value: false
+    tasks:
+        path: meshx/components/tasks
+        type: software
+        default: true
+        macros:
+            - def: "CONFIG_MESHX_TASKS"
+              value: false
+    esp_init:
+        path: meshx/components/esp_init
+        type: software
+        default: true
+        macros:
+            - def: "CONFIG_ESP_BT_INIT"
+              value: false
     unit_test:
-        path: components/unit_test
+        path: meshx/components/unit_test
         type: software
         default: false
         macros:
             - def: "CONFIG_ENABLE_UNIT_TEST"
               value: false
     os_timer:
-        path: components/os_timer
+        path: meshx/components/os_timer
         type: software
         default: true   # os_timer is a default component required. It is enabled by default.
         macros:
             - def: "CONFIG_ENABLE_OS_TIMER"
               value: false
     meshx_nvs:
-        path: components/meshx_nvs
+        path: meshx/components/meshx_nvs
         type: software
         default: true   # meshx_nvs is a default component required. It is enabled by default.
         macros:

@@ -1,0 +1,19 @@
+# This is the MeshX CMakeLists.txt template. Any changes made to this file shall directy reflect to the generated CMakeLists.txt
+
+# Filter only directories
+set(INC_DIRS
+    ${DEP_INC}
+    )
+
+message("       >> Include Dir: ${INC_DIRS} ${TARGET}")
+
+set(SRCSX
+    ${DEP_SRC}
+    )
+
+idf_component_register( SRCS ${SRCSX}
+                        INCLUDE_DIRS "${INC_DIRS}"
+                        REQUIRES bt
+                                nvs_flash
+                                console
+                                esp_driver_uart)
