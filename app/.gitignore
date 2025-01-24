@@ -1,5 +1,4 @@
 build
-codegen.h
 sdkconfig.*
 sdkconfig
 idf_component.yml
