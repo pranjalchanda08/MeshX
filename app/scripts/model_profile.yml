@@ -123,26 +123,12 @@ base_models:
 
 # Components build registration
 components:
-    common:
-        path: meshx/common
+    default:
+        path: meshx/default
         type: software
-        default: true
+        default: true                       # Contains all mandatory source files
         macros:
-            - def: "CONFIG_MESHX_COMMON"
-              value: false
-    tasks:
-        path: meshx/components/tasks
-        type: software
-        default: true
-        macros:
-            - def: "CONFIG_MESHX_TASKS"
-              value: false
-    esp_init:
-        path: meshx/components/esp_init
-        type: software
-        default: true
-        macros:
-            - def: "CONFIG_ESP_BT_INIT"
+            - def: "CONFIG_MESHX_DEFAULT"
               value: false
     unit_test:
         path: meshx/components/unit_test
@@ -150,18 +136,4 @@ components:
         default: false
         macros:
             - def: "CONFIG_ENABLE_UNIT_TEST"
-              value: false
-    os_timer:
-        path: meshx/components/os_timer
-        type: software
-        default: true   # os_timer is a default component required. It is enabled by default.
-        macros:
-            - def: "CONFIG_ENABLE_OS_TIMER"
-              value: false
-    meshx_nvs:
-        path: meshx/components/meshx_nvs
-        type: software
-        default: true   # meshx_nvs is a default component required. It is enabled by default.
-        macros:
-            - def: "CONFIG_ENABLE_MESHX_NVS"
               value: false
