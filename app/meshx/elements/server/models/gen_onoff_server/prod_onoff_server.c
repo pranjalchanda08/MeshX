@@ -38,8 +38,8 @@ static esp_err_t prod_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *
                  state.onoff);
 
         esp_err_t err = control_task_publish(
-            CONTROL_TASK_MSG_CODE_TO_HAL,
-            CONTROL_TASK_MSG_EVT_TO_HAL_SET_ON_OFF,
+            CONTROL_TASK_MSG_CODE_EL_STATE_CH,
+            CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF,
             srv,
             sizeof(esp_ble_mesh_gen_onoff_srv_t));
         return err ? err : ESP_OK;

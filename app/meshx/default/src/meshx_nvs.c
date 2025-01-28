@@ -15,6 +15,7 @@
 #define MESHX_NVS_NAMESPACE_PID     "MESHX_PID"
 #define MESHX_NVS_NAMESPACE_CID     "MESHX_CID"
 #define MESHX_NVS_TIMER_NAME        "MESHX_COMMIT_TIMER"
+#define MESHX_NVS_ELEMENT_CTX       "MESHX_EL_%04x"
 #define MESHX_NVS_RELOAD_ONE_SHOT   pdFALSE
 
 #if CONFIG_ENABLE_UNIT_TEST
@@ -319,6 +320,47 @@ esp_err_t meshx_nvs_set(char const* key, void const* blob, size_t blob_size, boo
     }
 
     return nvs_set_blob(meshx_nvs_inst.meshx_nvs_handle, key, blob, blob_size);
+}
+
+/**
+ * @brief Retrieve the context of a specific element from NVS.
+ *
+ * This function fetches the stored context of a given element identified by its ID from
+ * the Non-Volatile Storage (NVS).
+ *
+ * @param element_id The ID of the element whose context is to be retrieved.
+ * @param blob Pointer to the buffer where the retrieved context will be stored.
+ * @param blob_size Size of the buffer provided to store the context.
+ *
+ * @return
+ *     - ESP_OK: Successfully retrieved the context.
+ */
+esp_err_t meshx_nvs_elemnt_ctx_get(uint16_t element_id, void *blob, size_t blob_size)
+{
+    char key[NVS_KEY_NAME_MAX_SIZE];
+    snprintf(key, NVS_KEY_NAME_MAX_SIZE, MESHX_NVS_ELEMENT_CTX, element_id);
+    return meshx_nvs_get(key, blob, blob_size);
+}
+
+/**
+ * @brief Store the context of a specific element to NVS.
+ *
+ * This function saves the context of a given element identified by its ID to
+ * the Non-Volatile Storage (NVS).
+ *
+ * @param element_id The ID of the element whose context is to be stored.
+ * @param blob Pointer to the buffer containing the context to be stored.
+ * @param blob_size Size of the buffer containing the context.
+ *
+ * @return
+ *     - ESP_OK: Successfully stored the context.
+ */
+
+esp_err_t meshx_nvs_elemnt_ctx_set(uint16_t element_id, const void *blob, size_t blob_size)
+{
+    char key[NVS_KEY_NAME_MAX_SIZE];
+    snprintf(key, NVS_KEY_NAME_MAX_SIZE, MESHX_NVS_ELEMENT_CTX, element_id);
+    return meshx_nvs_set(key, blob, blob_size, MESHX_NVS_AUTO_COMMIT);
 }
 
 #if CONFIG_ENABLE_UNIT_TEST
