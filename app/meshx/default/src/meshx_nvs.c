@@ -12,7 +12,9 @@
 
 #define MESHX_NVS_INIT_MAGIC        0x5489
 #define MESHX_NVS_NAMESPACE         "MESHX_NVS"
-#define MESHX_NVS_TIMER_NAME        "MESHX_TIMER"
+#define MESHX_NVS_NAMESPACE_PID     "MESHX_PID"
+#define MESHX_NVS_NAMESPACE_CID     "MESHX_CID"
+#define MESHX_NVS_TIMER_NAME        "MESHX_COMMIT_TIMER"
 #define MESHX_NVS_RELOAD_ONE_SHOT   pdFALSE
 
 #if CONFIG_ENABLE_UNIT_TEST
@@ -45,6 +47,54 @@ static void meshx_nvs_os_timer_cb(const os_timer_t *p_timer)
         ESP_LOGE(TAG, "meshx_nvs_commit %p", (void *)err);
 }
 #endif /* MESHX_NVS_TIMER_PERIOD */
+
+/**
+ * @brief Erase the NVS and set the product ID.
+ *
+ * This function erases the NVS and sets the product ID.
+ *
+ * @return
+ *  - ESP_OK: Success.
+ */
+static esp_err_t meshx_nvs_erase_prod_init(void)
+{
+    esp_err_t err = ESP_OK;
+    err = meshx_nvs_erase();
+    if (err)
+    {
+        ESP_LOGE(TAG, "meshx_nvs_erase %p", (void *)err);
+        return err;
+    }
+
+    meshx_nvs_inst.pid = CONFIG_PID_ID;
+    meshx_nvs_inst.cid = CONFIG_CID_ID;
+
+    err = meshx_nvs_set(
+        MESHX_NVS_NAMESPACE_PID,
+        &(meshx_nvs_inst.pid),
+        sizeof(meshx_nvs_inst.pid),
+        MESHX_NVS_NO_AUTO_COMMIT);
+
+    if (err)
+    {
+        ESP_LOGE(TAG, "meshx_nvs_set %p", (void *)err);
+        return err;
+    }
+
+    err = meshx_nvs_set(
+        MESHX_NVS_NAMESPACE_CID,
+        &(meshx_nvs_inst.cid),
+        sizeof(meshx_nvs_inst.cid),
+        MESHX_NVS_AUTO_COMMIT);
+
+    if (err)
+    {
+        ESP_LOGE(TAG, "meshx_nvs_set %p", (void *)err);
+        return err;
+    }
+
+    return err;
+}
 
 /**
  * @brief MeshX NVS Initialisation
@@ -116,6 +166,36 @@ esp_err_t meshx_nvs_open(void)
 #endif /* MESHX_NVS_TIMER_PERIOD */
 
     meshx_nvs_inst.init = MESHX_NVS_INIT_MAGIC;
+
+    err = meshx_nvs_get(
+        MESHX_NVS_NAMESPACE_CID,
+            &(meshx_nvs_inst.cid),
+        sizeof(meshx_nvs_inst.cid));
+
+    err += meshx_nvs_get(
+        MESHX_NVS_NAMESPACE_PID,
+            &(meshx_nvs_inst.pid),
+        sizeof(meshx_nvs_inst.pid));
+
+    if(err != ESP_OK)
+    {
+        ESP_LOGW(TAG, "Product ID not found in NVS reinitializing MeshX NVS");
+        err = meshx_nvs_erase_prod_init();
+    }
+
+    else
+    {
+        if (meshx_nvs_inst.cid == CONFIG_CID_ID && meshx_nvs_inst.pid == CONFIG_PID_ID)
+        {
+            ESP_LOGI(TAG, "Product ID match: %x|%x", meshx_nvs_inst.pid, meshx_nvs_inst.cid);
+        }
+        else
+        {
+            ESP_LOGW(TAG, "Product ID mismatch: %x|%x", meshx_nvs_inst.pid, meshx_nvs_inst.cid);
+            err = meshx_nvs_erase_prod_init();
+        }
+    }
+
     return err;
 }
 
@@ -289,7 +369,7 @@ static esp_err_t meshx_nvs_unit_test_cb_handler(int cmd_id, int argc, char **arg
             err = meshx_nvs_open();
             break;
         case MESHX_NVS_CLI_CMD_SET:
-            arm_timer = UT_GET_ARG(0, bool, argv) == 0 ? false : true;
+            arm_timer = UT_GET_ARG(0, bool, argv) == 0 ? MESHX_NVS_NO_AUTO_COMMIT : MESHX_NVS_AUTO_COMMIT;
             err = meshx_nvs_set(MESHX_NVS_UNIT_TEST_KEY, &ut_blob, sizeof(ut_blob), arm_timer);
             break;
         case MESHX_NVS_CLI_CMD_GET:

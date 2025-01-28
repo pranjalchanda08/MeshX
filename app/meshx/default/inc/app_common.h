@@ -6,7 +6,7 @@
  *
  * This header file contains common definitions, includes, and data structures
  * used across the BLE Mesh Node application.
- * 
+ *
  */
 
 #pragma once
@@ -28,6 +28,7 @@
 #define TAG __func__
 
 #define MAX_ELE_CNT CONFIG_MAX_ELEMENT_COUNT
+#define MESHX_NVS_STORE "meshx_store"
 
 /**
  * @brief Structure to store mesh application data.
