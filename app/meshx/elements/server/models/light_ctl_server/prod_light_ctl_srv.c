@@ -7,7 +7,7 @@
  * This file contains the implementation of the Light CTL (Color Temperature Light) Server model
  * for the BLE Mesh Node. The Light CTL Server model is responsible for controlling the color
  * temperature and lightness of a light.
- * 
+ *
  */
 
 #include <prod_light_ctl_srv.h>
@@ -45,8 +45,8 @@ static esp_err_t prod_perform_hw_change(esp_ble_mesh_lighting_server_cb_param_t 
                     param->model->element_idx);
 
         esp_err_t err = control_task_publish(
-                            CONTROL_TASK_MSG_CODE_TO_HAL,
-                            CONTROL_TASK_MSG_EVT_TO_HAL_SET_CTL,
+                            CONTROL_TASK_MSG_CODE_EL_STATE_CH,
+                            CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL,
                             srv,
                             sizeof(esp_ble_mesh_light_ctl_srv_t));
         return err;

@@ -34,7 +34,6 @@ typedef struct prod_gen_ctx
     uint8_t state;
     uint8_t tid;
     uint16_t pub_addr;
-    uint16_t net_id;
     uint16_t app_id;
 }relay_srv_model_ctx_t;
 
