@@ -80,6 +80,23 @@ static esp_err_t app_tasks_init(dev_struct_t * pdev)
 }
 
 /**
+ * @brief Restore the device state from the NVS.
+ *
+ * @param[in] pdev Pointer to the device structure.
+ * @return ESP_OK on success, error code otherwise.
+ *
+ */
+static esp_err_t meshx_dev_restore(dev_struct_t *pdev)
+{
+    esp_err_t err = ESP_OK;
+
+    err = meshx_nvs_get(MESHX_NVS_STORE, &pdev->meshx_store, sizeof(pdev->meshx_store));
+    ESP_ERR_PRINT_RET("Failed to restore meshx device state", err);
+
+    return err;
+}
+
+/**
  * @brief Initializes the BLE Mesh subsystem.
  *
  * This function sets up provisioning, configuration servers, and BLE Mesh stack initialization.
@@ -89,6 +106,8 @@ static esp_err_t app_tasks_init(dev_struct_t * pdev)
 static esp_err_t ble_mesh_init(void)
 {
     esp_err_t err;
+
+    meshx_dev_restore(&g_dev);
 
     err = ble_mesh_element_init(&g_dev);
     ESP_ERR_PRINT_RET("Failed to initialize BLE Elements", err);
@@ -128,6 +147,9 @@ esp_err_t meshx_init(void)
     }
 
     ESP_ERROR_CHECK(err);
+
+    err = meshx_nvs_open();
+    ESP_ERR_PRINT_RET("MeshX NVS Open failed", err);
 
     err = os_timer_init();
     ESP_ERR_PRINT_RET("OS Timer Init failed", err);
