@@ -148,9 +148,6 @@ esp_err_t meshx_init(void)
 
     ESP_ERROR_CHECK(err);
 
-    err = meshx_nvs_open();
-    ESP_ERR_PRINT_RET("MeshX NVS Open failed", err);
-
     err = os_timer_init();
     ESP_ERR_PRINT_RET("OS Timer Init failed", err);
 
@@ -159,6 +156,9 @@ esp_err_t meshx_init(void)
 
     err = app_tasks_init(&g_dev);
     ESP_ERR_PRINT_RET("Tasks initialization failed", err);
+
+    err = meshx_nvs_open();
+    ESP_ERR_PRINT_RET("MeshX NVS Open failed", err);
 
     err = bluetooth_init();
     ESP_ERR_PRINT_RET("esp32_bluetooth_init failed", err);

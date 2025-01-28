@@ -126,5 +126,36 @@ esp_err_t meshx_nvs_get(char const *key, void *blob, size_t blob_size);
  */
 esp_err_t meshx_nvs_set(char const* key, void const* blob, size_t blob_size, bool arm_timer);
 
+/**
+ * @brief Retrieve the context of a specific element from NVS.
+ *
+ * This function fetches the stored context of a given element identified by its ID from
+ * the Non-Volatile Storage (NVS).
+ *
+ * @param element_id The ID of the element whose context is to be retrieved.
+ * @param blob Pointer to the buffer where the retrieved context will be stored.
+ * @param blob_size Size of the buffer provided to store the context.
+ *
+ * @return
+ *     - ESP_OK: Successfully retrieved the context.
+ */
+esp_err_t meshx_nvs_elemnt_ctx_get(uint16_t element_id, void *blob, size_t blob_size);
+
+/**
+ * @brief Store the context of a specific element to NVS.
+ *
+ * This function saves the context of a given element identified by its ID to
+ * the Non-Volatile Storage (NVS).
+ *
+ * @param element_id The ID of the element whose context is to be stored.
+ * @param blob Pointer to the buffer containing the context to be stored.
+ * @param blob_size Size of the buffer containing the context.
+ *
+ * @return
+ *     - ESP_OK: Successfully stored the context.
+ */
+
+esp_err_t meshx_nvs_elemnt_ctx_set(uint16_t element_id, const void *blob, size_t blob_size);
+
 #endif /* __MESHX_NVS_H__ */
 

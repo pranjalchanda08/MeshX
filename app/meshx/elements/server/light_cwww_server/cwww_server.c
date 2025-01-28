@@ -9,6 +9,7 @@
  */
 
 #include <cwww_server_model.h>
+#include <meshx_nvs.h>
 
 #if CONFIG_LIGHT_CWWW_SRV_COUNT > 0
 
@@ -22,6 +23,9 @@
     CONFIG_EVT_MODEL_PUB_ADD  \
     | CONFIG_EVT_MODEL_SUB_ADD | CONFIG_EVT_MODEL_APP_KEY_BIND
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
+
+#define CONTROL_TASK_EVT_MASK   CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF \
+                              | CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL
 
 #define GET_RELATIVE_EL_IDX(_element_id)    _element_id - cwww_element_init_ctrl.element_id_start
 #define IS_EL_IN_RANGE(_element_id)         (_element_id >= cwww_element_init_ctrl.element_id_start \
@@ -64,7 +68,7 @@ static void cwww_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
         el_ctx = &cwww_element_init_ctrl.cwww_server_ctx[rel_el_id];
         el_ctx->app_id = param->value.state_change.appkey_add.app_idx;
-        el_ctx->net_id = param->value.state_change.appkey_add.net_idx;
+        meshx_nvs_elemnt_ctx_set(element_id, el_ctx, sizeof(cwww_server_ctx_t));
         break;
     case CONFIG_EVT_MODEL_PUB_ADD:
     case CONFIG_EVT_MODEL_PUB_DEL:
@@ -76,6 +80,7 @@ static void cwww_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
         el_ctx->pub_addr = evt == CONFIG_EVT_MODEL_PUB_ADD ? param->value.state_change.mod_pub_set.pub_addr
                                                            : ESP_BLE_MESH_ADDR_UNASSIGNED;
         el_ctx->app_id = param->value.state_change.mod_pub_set.app_idx;
+        meshx_nvs_elemnt_ctx_set(element_id, el_ctx, sizeof(cwww_server_ctx_t));
         ESP_LOGI(TAG, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
         break;
     default:
@@ -134,6 +139,38 @@ static esp_err_t dev_create_cwww_model_space(uint16_t n_max)
 }
 
 /**
+ * @brief Restore saved CW-WW model states.
+ *
+ * This function restores the CW-WW model states from the NVS.
+ *
+ * @param element_id    Relative Element ID.
+ * @return ESP_OK on success, or an error code on failure.
+ */
+static esp_err_t meshx_restore_model_states(uint16_t element_id)
+{
+    esp_err_t err = ESP_OK;
+    cwww_server_ctx_t const *el_ctx = &cwww_element_init_ctrl.cwww_server_ctx[element_id];
+
+    for (size_t i = 0; i < CWWW_SRV_MODEL_SIG_CNT; i++)
+    {
+        if (cwww_element_init_ctrl.cwww_server_sig_model_list[element_id][i].model_id == ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV)
+        {
+            esp_ble_mesh_gen_onoff_srv_t *srv = (esp_ble_mesh_gen_onoff_srv_t *)cwww_element_init_ctrl.cwww_server_sig_model_list[element_id][i].user_data;
+            srv->state.onoff = el_ctx->state;
+        }
+        else if (cwww_element_init_ctrl.cwww_server_sig_model_list[element_id][i].model_id == ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV)
+        {
+            esp_ble_mesh_light_ctl_srv_t *srv = (esp_ble_mesh_light_ctl_srv_t *)cwww_element_init_ctrl.cwww_server_sig_model_list[element_id][i].user_data;
+            srv->state->delta_uv = el_ctx->delta_uv;
+            srv->state->lightness = el_ctx->lightness;
+            srv->state->temperature = el_ctx->temperature;
+            srv->state->temperature_range_min = el_ctx->temp_range_min;
+            srv->state->temperature_range_max = el_ctx->temp_range_max;
+        }
+    }
+    return err;
+}
+/**
  * @brief Add CW-WW server models to the element list.
  *
  * This function adds the CW-WW server models to the specified element list.
@@ -153,11 +190,12 @@ static esp_err_t dev_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, uint
         ESP_LOGE(TAG, "No of elements limit reached");
         return ESP_ERR_NO_MEM;
     }
+    esp_err_t err = ESP_OK;
     uint8_t *ref_ptr = NULL;
     esp_ble_mesh_elem_t *elements = pdev->elements;
     cwww_element_init_ctrl.element_id_start = *start_idx;
 
-    for (size_t i = *start_idx; i < (n_max + *start_idx); i++)
+    for (uint16_t i = *start_idx; i < (n_max + *start_idx); i++)
     {
         if (i == 0)
         {
@@ -177,12 +215,76 @@ static esp_err_t dev_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, uint
             ref_ptr = (uint8_t *)&elements[i].vnd_model_count;
             *ref_ptr = CWWW_SRV_MODEL_VEN_CNT;
         }
+
+        err = meshx_nvs_elemnt_ctx_get(i, &(cwww_element_init_ctrl.cwww_server_ctx[i - *start_idx]), sizeof(cwww_server_ctx_t));
+        if (err != ESP_OK)
+        {
+            ESP_LOGW(TAG, "Failed to get cwww element context: (0x%x)", err);
+        }
+
+        err = meshx_restore_model_states(i - *start_idx);
+        if (err != ESP_OK)
+        {
+            ESP_LOGW(TAG, "Failed to restore cwww model states: (0x%x)", err);
+        }
     }
     /* Increment the index for further registrations */
     cwww_element_init_ctrl.element_id_end = *start_idx += n_max;
     return ESP_OK;
 }
 
+/**
+ * @brief CW-WW server model event handler.
+ *
+ * This function handles events from the CW-WW server model.
+ *
+ * @param pdev Pointer to the device structure.
+ * @param evt Event type.
+ * @param params Pointer to the event parameters.
+ * @return ESP_OK on success, or an error code on failure.
+ */
+static esp_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, control_task_msg_evt_t evt, void *params)
+{
+    ESP_UNUSED(pdev);
+    size_t rel_el_id = 0;
+    esp_err_t err = ESP_OK;
+    cwww_server_ctx_t *el_ctx = NULL;
+    esp_ble_mesh_light_ctl_srv_t const *p_ctl_srv = NULL;
+    esp_ble_mesh_gen_onoff_srv_t const *p_onoff_srv = NULL;
+    esp_ble_mesh_model_t const *p_model = (esp_ble_mesh_model_t *) params;
+
+    uint16_t element_id = p_model->element_idx;
+
+    if (!IS_EL_IN_RANGE(element_id))
+        return ESP_OK;
+
+    rel_el_id = GET_RELATIVE_EL_IDX(element_id);
+    el_ctx = &cwww_element_init_ctrl.cwww_server_ctx[rel_el_id];
+
+    switch(evt){
+        case CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF:
+            p_onoff_srv = (esp_ble_mesh_gen_onoff_srv_t const *) params;
+            el_ctx->state = p_onoff_srv->state.onoff;
+            break;
+        case CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL:
+            p_ctl_srv = (esp_ble_mesh_light_ctl_srv_t const *) params;
+            el_ctx->delta_uv = p_ctl_srv->state->delta_uv;
+            el_ctx->lightness = p_ctl_srv->state->lightness;
+            el_ctx->temperature = p_ctl_srv->state->temperature;
+            el_ctx->temp_range_min = p_ctl_srv->state->temperature_range_min;
+            el_ctx->temp_range_max = p_ctl_srv->state->temperature_range_max;
+            break;
+        default:
+            break;
+    }
+
+    err = meshx_nvs_elemnt_ctx_set(element_id, el_ctx, sizeof(cwww_server_ctx_t));
+    if (err != ESP_OK)
+    {
+        ESP_LOGE(TAG, "Failed to set relay element context: (%d)", err);
+    }
+    return ESP_OK;
+}
 /**
  * @brief Create CW-WW elements.
  *
@@ -215,6 +317,16 @@ esp_err_t create_cwww_elements(dev_struct_t *pdev)
         return err;
     }
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
+    err = control_task_msg_subscribe(
+            CONTROL_TASK_MSG_CODE_EL_STATE_CH,
+            CONTROL_TASK_EVT_MASK,
+            (control_task_msg_handle_t)&meshx_el_control_task_handler);
+    if (err)
+    {
+        ESP_LOGE(TAG, "Failed to register control task callback: (%d)", err);
+        return err;
+    }
+
     err = prod_on_off_server_init();
     if (err)
     {
