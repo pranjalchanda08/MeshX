@@ -53,7 +53,7 @@
  */
 typedef enum PACKED_ATTR
 {
-    CONTROL_TASK_MSG_CODE_TO_HAL,       /**< Message code for HAL events. */
+    CONTROL_TASK_MSG_CODE_EL_STATE_CH,  /**< Message code for Element state change */
     CONTROL_TASK_MSG_CODE_SYSTEM,       /**< Message code for system events. */
     CONTROL_TASK_MSG_CODE_TO_BLE,       /**< Message code for BLE events. */
     CONTROL_TASK_MSG_CODE_PROVISION,    /**< Message code for provisioning events. */
@@ -70,11 +70,10 @@ typedef uint32_t control_task_msg_evt_t;
  */
 typedef enum PACKED_ATTR
 {
-    CONTROL_TASK_MSG_EVT_TO_HAL_SET_ON_OFF      = BIT0, /**< Event to set on/off state. */
-    CONTROL_TASK_MSG_EVT_TO_HAL_SET_CTL         = BIT1, /**< Event to set CTL state. */
-    CONTROL_TASK_MSG_EVT_TO_HAL_SET_LIGHTNESS   = BIT2, /**< Event to set lightness state. */
-    CONTROL_TASK_MSG_EVT_TO_HAL_MAX,                    /**< Maximum HAL event value. */
-} control_task_msg_evt_to_hal_t;
+    CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF      = BIT0, /**< Event to set on/off state. */
+    CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL         = BIT1, /**< Event to set CTL state. */
+    CONTROL_TASK_MSG_EVT_EL_STATE_CH_MAX,                    /**< Maximum HAL event value. */
+} control_task_msg_evt_el_state_ch_t;
 
 /**
  * @brief Enumeration for control task message events to BLE.

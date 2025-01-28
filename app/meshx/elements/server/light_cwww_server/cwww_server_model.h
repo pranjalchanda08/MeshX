@@ -46,10 +46,9 @@ typedef struct light_ctl_cli_ctx
     uint16_t lightness;           /**< Lightness level */
     uint16_t temperature;         /**< Color temperature */
     uint16_t delta_uv;            /**< Delta UV value */
-    uint16_t lightness_range_max; /**< Maximum lightness range */
-    uint16_t lightness_range_min; /**< Minimum lightness range */
+    uint16_t temp_range_max;      /**< Maximum temperature range */
+    uint16_t temp_range_min;      /**< Minimum temperature range */
     uint16_t pub_addr;            /**< Publication address */
-    uint16_t net_id;              /**< Network ID */
     uint16_t app_id;              /**< Application ID */
 } cwww_server_ctx_t;
 
