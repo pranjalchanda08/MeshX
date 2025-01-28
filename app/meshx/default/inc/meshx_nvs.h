@@ -23,9 +23,13 @@
 #define MESHX_NVS_TIMER_PERIOD      MESHX_NVS_TIMER_PERIOD_DEF
 #endif /* MESHX_NVS_TIMER_PERIOD */
 
+#define MESHX_NVS_AUTO_COMMIT       true
+#define MESHX_NVS_NO_AUTO_COMMIT    false
 
 typedef struct meshx_nvs {
     uint16_t init;
+    uint16_t cid;
+    uint16_t pid;
     nvs_handle_t meshx_nvs_handle;
 #ifdef MESHX_NVS_TIMER_PERIOD
     os_timer_t *meshx_nvs_stability_timer;

@@ -106,6 +106,7 @@ static esp_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_tas
         case CONTROL_TASK_MSG_EVT_PROVISION_STOP:
             pdev->meshx_store.net_key_id = param->node_prov_complete.net_idx;
             pdev->meshx_store.node_addr  = param->node_prov_complete.addr;
+            meshx_nvs_set(MESHX_NVS_STORE, &pdev->meshx_store, sizeof(pdev->meshx_store), MESHX_NVS_AUTO_COMMIT);
             break;
         case CONTROL_TASK_MSG_EVT_IDENTIFY_START:
             ESP_LOGI(TAG, "Identify Start");
