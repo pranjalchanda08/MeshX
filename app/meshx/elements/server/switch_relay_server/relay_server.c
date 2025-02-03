@@ -126,6 +126,26 @@ static esp_err_t dev_create_relay_model_space(uint16_t n_max)
 }
 
 /**
+ * @brief Restore saved relay model states.
+ *
+ * Restores the relay model states from the NVS.
+ *
+ * @param element_id Relative element ID.
+ * @return ESP_OK on success, error code otherwise.
+ */
+static esp_err_t meshx_restore_model_states(uint16_t element_id)
+{
+    esp_err_t err = ESP_OK;
+    relay_srv_model_ctx_t const *el_ctx = &relay_element_init_ctrl.prod_gen_ctx[element_id];
+    esp_ble_mesh_gen_onoff_srv_t *srv = NULL;
+    for (size_t i = 0; i < RELAY_SRV_MODEL_SIG_CNT; i++)
+    {
+        srv = (esp_ble_mesh_gen_onoff_srv_t *)relay_element_init_ctrl.relay_server_sig_model_list[element_id][i].user_data;
+        srv->state.onoff = el_ctx->state;
+    }
+    return err;
+}
+/**
  * @brief Add relay server models to the element list.
  *
  * Registers the relay server models to the BLE Mesh element list.
@@ -175,6 +195,14 @@ static esp_err_t dev_add_relay_srv_model_to_element_list(dev_struct_t *pdev, uin
         {
             ESP_LOGW(TAG, "Failed to get relay element context: (0x%x)", err);
         }
+        else
+        {
+            err = meshx_restore_model_states(i - *start_idx);
+            if (err != ESP_OK)
+            {
+                ESP_LOGW(TAG, "Failed to restore relay model states: (0x%x)", err);
+            }
+        }
     }
     relay_element_init_ctrl.element_id_end = (*start_idx += n_max);
     return ESP_OK;
@@ -186,18 +214,20 @@ static esp_err_t dev_add_relay_srv_model_to_element_list(dev_struct_t *pdev, uin
  * This function handles events from the relay server model, such as setting the relay state.
  *
  * @param param Pointer to the callback parameter structure.
+ * @param evt Relay server event type.
+ * @param params Pointer to the parameters for the event.
  * @return ESP_OK on success, error code otherwise.
  */
 static esp_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, control_task_msg_evt_t evt, void *params)
 {
     ESP_UNUSED(pdev);
+    ESP_UNUSED(evt);
     size_t rel_el_id = 0;
     esp_err_t err = ESP_OK;
     relay_srv_model_ctx_t *el_ctx = NULL;
-    esp_ble_mesh_gen_onoff_srv_t const *p_onoff_srv = NULL;
-    esp_ble_mesh_model_t const *p_model = (esp_ble_mesh_model_t *) params;
+    esp_ble_mesh_gen_onoff_srv_t const *p_onoff_srv = (esp_ble_mesh_gen_onoff_srv_t*) params;
 
-    uint16_t element_id = p_model->element_idx;
+    uint16_t element_id = p_onoff_srv->model->element_idx;
 
     if (!IS_EL_IN_RANGE(element_id))
         return ESP_OK;

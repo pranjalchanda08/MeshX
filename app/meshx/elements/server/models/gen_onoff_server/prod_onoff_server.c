@@ -72,7 +72,6 @@ static esp_err_t prod_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param_
     case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET:
     case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK:
         srv->state.onoff = param->value.state_change.onoff_set.onoff;
-        ESP_LOGI(TAG, "state_change: %d", srv->state.onoff);
         ESP_ERROR_CHECK(prod_perform_hw_change(param));
         break;
     default:
