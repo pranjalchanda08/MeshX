@@ -11,6 +11,11 @@
 #include "meshx_nvs.h"
 
 #define MESHX_NVS_INIT_MAGIC        0x5489
+
+#ifdef CONFIG_BLE_MESH_SPECIFIC_PARTITION
+#define MESHX_NVS_PARTITION         CONFIG_BLE_MESH_PARTITION_NAME
+#endif
+
 #define MESHX_NVS_NAMESPACE         "MESHX_NVS"
 #define MESHX_NVS_NAMESPACE_PID     "MESHX_PID"
 #define MESHX_NVS_NAMESPACE_CID     "MESHX_CID"
@@ -134,7 +139,7 @@ esp_err_t meshx_nvs_open(void)
 
     esp_err_t err;
 
-#ifndef MESHX_NVS_PARTITION
+#ifndef CONFIG_BLE_MESH_SPECIFIC_PARTITION
     err = nvs_open(
         MESHX_NVS_NAMESPACE,
         NVS_READWRITE,
@@ -145,7 +150,7 @@ esp_err_t meshx_nvs_open(void)
         MESHX_NVS_NAMESPACE,
         NVS_READWRITE,
         &(meshx_nvs_inst.meshx_nvs_handle));
-#endif /* MESHX_NVS_PARTITION */
+#endif /* CONFIG_BLE_MESH_SPECIFIC_PARTITION */
     if (err)
     {
         ESP_LOGE(TAG, "nvs_open %p", (void *)err);
