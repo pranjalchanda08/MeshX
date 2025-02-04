@@ -90,6 +90,9 @@ static esp_err_t meshx_dev_restore(dev_struct_t *pdev)
 {
     esp_err_t err = ESP_OK;
 
+    err = meshx_nvs_open();
+    ESP_ERR_PRINT_RET("MeshX NVS Open failed", err);
+
     err = meshx_nvs_get(MESHX_NVS_STORE, &pdev->meshx_store, sizeof(pdev->meshx_store));
     ESP_ERR_PRINT_RET("Failed to restore meshx device state", err);
 
@@ -156,9 +159,6 @@ esp_err_t meshx_init(void)
 
     err = app_tasks_init(&g_dev);
     ESP_ERR_PRINT_RET("Tasks initialization failed", err);
-
-    err = meshx_nvs_open();
-    ESP_ERR_PRINT_RET("MeshX NVS Open failed", err);
 
     err = bluetooth_init();
     ESP_ERR_PRINT_RET("esp32_bluetooth_init failed", err);
