@@ -301,6 +301,65 @@ static esp_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, control
 el_ctrl_task_hndlr_exit:
     return ESP_OK;
 }
+
+/**
+ * @brief Callback function for relay server model events for Provisioning events.
+ *
+ * @param param Pointer to the callback parameter structure.
+ * @param evt Relay server event type.
+ * @param params Pointer to the parameters for the event.
+ * @return ESP_OK on success, error code otherwise.
+ */
+static esp_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, control_task_msg_evt_t evt, void const *params)
+{
+    ESP_UNUSED(pdev);
+    ESP_UNUSED(evt);
+    ESP_UNUSED(params);
+
+    size_t rel_el_id = 0;
+    esp_ble_mesh_msg_ctx_t ctx;
+    esp_err_t err = ESP_OK;
+
+    for(size_t el_id = cwww_element_init_ctrl.element_id_start; el_id < cwww_element_init_ctrl.element_id_end; el_id++)
+    {
+        rel_el_id   = GET_RELATIVE_EL_IDX(el_id);
+        ctx.net_idx = pdev->meshx_store.net_key_id;
+        ctx.app_idx = cwww_element_init_ctrl.cwww_server_ctx[rel_el_id].app_id;
+        ctx.addr    = cwww_element_init_ctrl.cwww_server_ctx[rel_el_id].pub_addr;
+        ctx.send_ttl = ESP_BLE_MESH_TTL_DEFAULT;
+        ctx.send_cred = 0;
+        ctx.send_tag = BIT(1);
+
+        if(ctx.addr == ESP_BLE_MESH_ADDR_UNASSIGNED || ctx.app_idx == ESP_BLE_MESH_KEY_UNUSED)
+            continue;
+
+        ESP_LOGI(TAG, "cwww_prov_control_task_handler: Element_id: 0x%x, App_idx: 0x%x, Pub_addr: 0x%x",
+                    el_id, ctx.app_idx, ctx.addr);
+        err = esp_ble_mesh_server_model_send_msg(&cwww_element_init_ctrl.cwww_server_sig_model_list[rel_el_id][CWWW_SIG_ONOFF_MODEL_ID],
+                                                 &ctx,
+                                                 ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_STATUS,
+                                                 sizeof(cwww_element_init_ctrl.cwww_server_ctx[rel_el_id].state),
+                                                 &cwww_element_init_ctrl.cwww_server_ctx[rel_el_id].state);
+        if (err)
+        {
+            ESP_LOGE(TAG, "Failed to send ONOFF status message (Err: %x)", err);
+            return err;
+        }
+
+        err = prod_send_ctl_status(&cwww_element_init_ctrl.cwww_server_sig_model_list[rel_el_id][CWWW_SIG_L_CTL_MODEL_ID],
+                                   &ctx,
+                                   cwww_element_init_ctrl.cwww_server_ctx[rel_el_id].lightness,
+                                   cwww_element_init_ctrl.cwww_server_ctx[rel_el_id].temperature);
+        if (err)
+        {
+            ESP_LOGE(TAG, "Failed to send CTL status message (Err: %x)", err);
+            return err;
+        }
+    }
+
+    return err;
+}
+
 /**
  * @brief Create CW-WW elements.
  *
@@ -337,6 +396,17 @@ esp_err_t create_cwww_elements(dev_struct_t *pdev)
             CONTROL_TASK_MSG_CODE_EL_STATE_CH,
             CONTROL_TASK_EVT_MASK,
             (control_task_msg_handle_t)&meshx_el_control_task_handler);
+    if (err)
+    {
+        ESP_LOGE(TAG, "Failed to register control task callback: (%d)", err);
+        return err;
+    }
+
+
+    err = control_task_msg_subscribe(
+            CONTROL_TASK_MSG_CODE_PROVISION,
+            CONTROL_TASK_MSG_EVT_EN_NODE_PROV,
+            (control_task_msg_handle_t)&cwww_prov_control_task_handler);
     if (err)
     {
         ESP_LOGE(TAG, "Failed to register control task callback: (%d)", err);
