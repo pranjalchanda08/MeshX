@@ -6,7 +6,7 @@
  *
  * This file contains the function declarations and necessary includes for
  * initializing and managing the Light CTL Server in the BLE mesh network.
- * 
+ *
  */
 
 #ifndef __PROD_LIGHT_CTL_SRV_H__
@@ -28,5 +28,21 @@
  *    - ESP_FAIL: Initialization failed
  */
 esp_err_t prod_light_ctl_server_init(void);
+/**
+ * @brief Send the Light CTL Status message to the client.
+ *
+ * This function sends the Light CTL Status message to the client with the
+ * specified lightness and temperature values.
+ *
+ * @param model Pointer to the Light CTL Server model.
+ * @param ctx Pointer to the BLE Mesh message context.
+ * @param lightness Lightness value to send.
+ * @param temperature Temperature value to send.
+ *
+ * @return
+ *     - ESP_OK: Success
+ *     - ESP_FAIL: Failure
+ */
+esp_err_t prod_send_ctl_status(esp_ble_mesh_model_t *model, esp_ble_mesh_msg_ctx_t* ctx, uint16_t lightness, uint16_t temperature);
 
 #endif /*__PROD_LIGHT_CTL_SRV_H__*/
