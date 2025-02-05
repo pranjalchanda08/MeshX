@@ -222,7 +222,6 @@ esp_err_t prod_send_ctl_status(esp_ble_mesh_model_t *model, esp_ble_mesh_msg_ctx
     ctl_status_pack[ctl_status_pack_idx++] = lightness & 0xFF;
     ctl_status_pack[ctl_status_pack_idx++] = lightness >> 8;
 
-    ESP_LOGI(TAG, "lightness|temp: %d|%d", lightness, temperature);
     return esp_ble_mesh_server_model_send_msg(model, ctx, ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_STATUS, ctl_status_pack_idx, ctl_status_pack);
 }
 /**
