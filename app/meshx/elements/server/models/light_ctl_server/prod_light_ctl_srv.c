@@ -199,6 +199,33 @@ static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param
 }
 
 /**
+ * @brief Send the Light CTL Status message to the client.
+ *
+ * This function sends the Light CTL Status message to the client with the
+ * specified lightness and temperature values.
+ *
+ * @param model Pointer to the Light CTL Server model.
+ * @param ctx Pointer to the BLE Mesh message context.
+ * @param lightness Lightness value to send.
+ * @param temperature Temperature value to send.
+ *
+ * @return
+ *     - ESP_OK: Success
+ *     - ESP_FAIL: Failure
+ */
+esp_err_t prod_send_ctl_status(esp_ble_mesh_model_t *model, esp_ble_mesh_msg_ctx_t* ctx, uint16_t lightness, uint16_t temperature)
+{
+    uint8_t ctl_status_pack_idx = 0;
+
+    ctl_status_pack[ctl_status_pack_idx++] = temperature & 0xFF;
+    ctl_status_pack[ctl_status_pack_idx++] = temperature >> 8;
+    ctl_status_pack[ctl_status_pack_idx++] = lightness & 0xFF;
+    ctl_status_pack[ctl_status_pack_idx++] = lightness >> 8;
+
+    ESP_LOGI(TAG, "lightness|temp: %d|%d", lightness, temperature);
+    return esp_ble_mesh_server_model_send_msg(model, ctx, ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_STATUS, ctl_status_pack_idx, ctl_status_pack);
+}
+/**
  * @brief Initialize the Light CTL Server model.
  *
  * This function initializes the Light CTL (Color Temperature Light) Server model
