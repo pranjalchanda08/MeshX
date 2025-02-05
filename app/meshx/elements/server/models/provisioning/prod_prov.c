@@ -6,7 +6,7 @@
  *
  * The provisioning process is responsible for setting up the BLE mesh node, including
  * initializing necessary components and handling communication with other nodes.
- * 
+ *
  */
 
 #include "prod_prov.h"
@@ -38,6 +38,7 @@ static prov_cb_evt_ctrl_task_evt_table_t prov_cb_evt_ctrl_task_evt_table[ESP_BLE
     [ESP_BLE_MESH_NODE_PROV_COMPLETE_EVT]           = {"ESP_BLE_MESH_NODE_PROV_COMPLETE_EVT",           CONTROL_TASK_MSG_EVT_PROVISION_STOP},
     [ESP_BLE_MESH_NODE_PROV_LINK_OPEN_EVT]          = {"ESP_BLE_MESH_NODE_PROV_LINK_OPEN_EVT",          CONTROL_TASK_MSG_EVT_IDENTIFY_START},
     [ESP_BLE_MESH_NODE_PROV_LINK_CLOSE_EVT]         = {"ESP_BLE_MESH_NODE_PROV_LINK_CLOSE_EVT",         CONTROL_TASK_MSG_EVT_IDENTIFY_STOP},
+    [ESP_BLE_MESH_NODE_PROV_ENABLE_COMP_EVT]        = {"ESP_BLE_MESH_NODE_PROV_ENABLE_COMP_EVT",        CONTROL_TASK_MSG_EVT_EN_NODE_PROV},
     [ESP_BLE_MESH_PROXY_SERVER_CONNECTED_EVT]       = {"ESP_BLE_MESH_PROXY_SERVER_CONNECTED_EVT",       CONTROL_TASK_MSG_EVT_PROXY_CONNECT},
     [ESP_BLE_MESH_PROXY_SERVER_DISCONNECTED_EVT]    = {"ESP_BLE_MESH_PROXY_SERVER_DISCONNECTED_EVT",    CONTROL_TASK_MSG_EVT_PROXY_DISCONN},
 };
