@@ -38,7 +38,7 @@
  * @brief Control task stack size configuration.
  */
 #ifndef CONFIG_CONTROL_TASK_STACK_SIZE
-#define CONFIG_CONTROL_TASK_STACK_SIZE 2048
+#define CONFIG_CONTROL_TASK_STACK_SIZE 4096
 #endif
 
 /**
