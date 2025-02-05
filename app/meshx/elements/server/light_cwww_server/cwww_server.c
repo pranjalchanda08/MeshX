@@ -57,6 +57,7 @@ static void cwww_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
     cwww_server_ctx_t *el_ctx = NULL;
     size_t rel_el_id = 0;
     uint16_t element_id = 0;
+    bool nvs_save = false;
 
     ESP_LOGD(TAG, "EVT: %p", (void *)evt);
     switch (evt)
@@ -68,7 +69,8 @@ static void cwww_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
         el_ctx = &cwww_element_init_ctrl.cwww_server_ctx[rel_el_id];
         el_ctx->app_id = param->value.state_change.appkey_add.app_idx;
-        meshx_nvs_elemnt_ctx_set(element_id, el_ctx, sizeof(cwww_server_ctx_t));
+        nvs_save = true;
+
         break;
     case CONFIG_EVT_MODEL_PUB_ADD:
     case CONFIG_EVT_MODEL_PUB_DEL:
@@ -80,11 +82,19 @@ static void cwww_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
         el_ctx->pub_addr = evt == CONFIG_EVT_MODEL_PUB_ADD ? param->value.state_change.mod_pub_set.pub_addr
                                                            : ESP_BLE_MESH_ADDR_UNASSIGNED;
         el_ctx->app_id = param->value.state_change.mod_pub_set.app_idx;
-        meshx_nvs_elemnt_ctx_set(element_id, el_ctx, sizeof(cwww_server_ctx_t));
+        nvs_save = true;
         ESP_LOGI(TAG, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
         break;
     default:
         break;
+    }
+    if(nvs_save)
+    {
+        esp_err_t err = meshx_nvs_elemnt_ctx_set(element_id, el_ctx, sizeof(cwww_server_ctx_t));
+        if (err != ESP_OK)
+        {
+            ESP_LOGE(TAG, "Failed to set cwww server element context: (%d)", err);
+        }
     }
 }
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
@@ -333,8 +343,6 @@ static esp_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, contro
         if(ctx.addr == ESP_BLE_MESH_ADDR_UNASSIGNED || ctx.app_idx == ESP_BLE_MESH_KEY_UNUSED)
             continue;
 
-        ESP_LOGI(TAG, "cwww_prov_control_task_handler: Element_id: 0x%x, App_idx: 0x%x, Pub_addr: 0x%x",
-                    el_id, ctx.app_idx, ctx.addr);
         err = esp_ble_mesh_server_model_send_msg(&cwww_element_init_ctrl.cwww_server_sig_model_list[rel_el_id][CWWW_SIG_ONOFF_MODEL_ID],
                                                  &ctx,
                                                  ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_STATUS,

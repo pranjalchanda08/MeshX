@@ -18,6 +18,7 @@
  */
 #include "app_common.h"
 #include "control_task.h"
+#include "meshx_nvs.h"
 
 #if CONFIG_RELAY_CLIENT_COUNT
 #include "relay_client_model.h"
@@ -108,11 +109,11 @@ static esp_err_t dev_add_relay_cli_model_to_element_list(dev_struct_t *pdev, uin
         return ESP_ERR_NO_MEM;
     }
 
+    esp_err_t err = ESP_OK;
     esp_ble_mesh_elem_t *elements = pdev->elements;
-
     relay_element_init_ctrl.element_id_start = *start_idx;
 
-    for (size_t i = *start_idx; i < (n_max + *start_idx); i++)
+    for (uint16_t i = *start_idx; i < (n_max + *start_idx); i++)
     {
         if (i == 0)
         {
@@ -132,6 +133,11 @@ static esp_err_t dev_add_relay_cli_model_to_element_list(dev_struct_t *pdev, uin
             *ref_ptr = RELAY_CLI_MODEL_SIG_CNT;
             ref_ptr = (uint8_t *)&elements[i].vnd_model_count;
             *ref_ptr = RELAY_CLI_MODEL_VEN_CNT;
+        }
+        err = meshx_nvs_elemnt_ctx_get(i, &(relay_element_init_ctrl.rel_cli_ctx[i - *start_idx]), sizeof(rel_cli_ctx_t));
+        if (err != ESP_OK)
+        {
+            ESP_LOGW(TAG, "Failed to get cwww cli element context: (0x%x)", err);
         }
     }
     /* Increment the index for further registrations */
@@ -208,6 +214,7 @@ static void relay_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
     rel_cli_ctx_t *el_ctx = NULL;
     size_t rel_el_id = 0;
     uint16_t element_id = 0;
+    bool nvs_save = false;
 
     ESP_LOGD(TAG, "EVT: %p", (void *)evt);
     switch (evt)
@@ -219,6 +226,7 @@ static void relay_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
         el_ctx = &relay_element_init_ctrl.rel_cli_ctx[rel_el_id];
         el_ctx->app_id = param->value.state_change.mod_app_bind.app_idx;
+        nvs_save = true;
         break;
     case CONFIG_EVT_MODEL_PUB_ADD:
     case CONFIG_EVT_MODEL_PUB_DEL:
@@ -230,10 +238,19 @@ static void relay_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
         el_ctx->pub_addr = evt == CONFIG_EVT_MODEL_PUB_ADD ? param->value.state_change.mod_pub_set.pub_addr
                                                            : ESP_BLE_MESH_ADDR_UNASSIGNED;
         el_ctx->app_id = param->value.state_change.mod_pub_set.app_idx;
+        nvs_save = true;
         ESP_LOGI(TAG, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
         break;
     default:
         break;
+    }
+    if(nvs_save)
+    {
+        esp_err_t err = meshx_nvs_elemnt_ctx_set(element_id, el_ctx, sizeof(rel_cli_ctx_t));
+        if (err != ESP_OK)
+        {
+            ESP_LOGE(TAG, "Failed to set relay element context: (%d)", err);
+        }
     }
 }
 #endif /* #if CONFIG_ENABLE_CONFIG_SERVER */
