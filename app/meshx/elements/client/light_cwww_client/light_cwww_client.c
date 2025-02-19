@@ -438,6 +438,147 @@ static esp_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv
 #endif /* CONFIG_ENABLE_UNIT_TEST */
 
 #endif /* CWWW_CLI_PROD_ONOFF_ENABLE_CB */
+
+/**
+ * @brief Initializes the CW-WW client model.
+ *
+ * This function initializes the CW-WW client model by allocating memory for the
+ * CW-WW client context, client list, publish list, and CW-WW client model list.
+ *
+ * @param[in] n_max Maximum number of elements that can be created in the model space.
+ *
+ * @return
+ *     - ESP_OK: Success
+ *     - ESP_ERR_NO_MEM: Memory allocation failure
+ *     - ESP_ERR_INVALID_ARG: Invalid arguments
+ */
+static esp_err_t meshx_element_struct_init(uint16_t n_max)
+{
+
+    cwww_client_element_init_ctrl.model_cnt = n_max;
+    cwww_client_element_init_ctrl.element_id_end = 0;
+    cwww_client_element_init_ctrl.element_id_start = 0;
+
+    cwww_client_element_init_ctrl.cwww_cli_ctx = (cwww_cli_ctx_t *)calloc(n_max, sizeof(cwww_cli_ctx_t));
+    if (!cwww_client_element_init_ctrl.cwww_cli_ctx)
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for cwww client context");
+        return ESP_ERR_NO_MEM;
+    }
+    cwww_client_element_init_ctrl.cwww_cli_list = (esp_ble_mesh_client_t **)calloc(n_max, sizeof(esp_ble_mesh_client_t *));
+    if (!cwww_client_element_init_ctrl.cwww_cli_list)
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for cwww client list");
+        return ESP_ERR_NO_MEM;
+    }
+    else
+    {
+        for (size_t i = 0; i < n_max; i++)
+        {
+            cwww_client_element_init_ctrl.cwww_cli_list[i] = (esp_ble_mesh_client_t *)calloc(CWWW_CLI_MODEL_SIG_CNT, sizeof(esp_ble_mesh_client_t));
+            if (!cwww_client_element_init_ctrl.cwww_cli_list[i])
+            {
+                ESP_LOGE(TAG, "Failed to allocate memory for cwww client list");
+                return ESP_ERR_NO_MEM;
+            }
+        }
+    }
+    cwww_client_element_init_ctrl.cwww_cli_pub_list = (esp_ble_mesh_model_pub_t **)calloc(n_max, sizeof(esp_ble_mesh_model_pub_t *));
+    if (!cwww_client_element_init_ctrl.cwww_cli_pub_list)
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for cwww client pub list");
+        return ESP_ERR_NO_MEM;
+    }
+    else
+    {
+        for (size_t i = 0; i < n_max; i++)
+        {
+            cwww_client_element_init_ctrl.cwww_cli_pub_list[i] = (esp_ble_mesh_model_pub_t *)calloc(CWWW_CLI_MODEL_SIG_CNT, sizeof(esp_ble_mesh_model_pub_t));
+            if (!cwww_client_element_init_ctrl.cwww_cli_pub_list[i])
+            {
+                ESP_LOGE(TAG, "Failed to allocate memory for cwww client pub list");
+                return ESP_ERR_NO_MEM;
+            }
+        }
+    }
+    cwww_client_element_init_ctrl.cwww_cli_sig_model_list = (esp_ble_mesh_model_t **)calloc(n_max, sizeof(esp_ble_mesh_model_t *));
+    if (!cwww_client_element_init_ctrl.cwww_cli_sig_model_list)
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for cwww client sig model list");
+        return ESP_ERR_NO_MEM;
+    }
+    else
+    {
+        for (size_t i = 0; i < n_max; i++)
+        {
+            cwww_client_element_init_ctrl.cwww_cli_sig_model_list[i] = (esp_ble_mesh_model_t *)calloc(CWWW_CLI_MODEL_SIG_CNT, sizeof(esp_ble_mesh_model_t));
+            if (!cwww_client_element_init_ctrl.cwww_cli_sig_model_list[i])
+            {
+                ESP_LOGE(TAG, "Failed to allocate memory for cwww client sig model list");
+                return ESP_ERR_NO_MEM;
+            }
+        }
+    }
+
+    return ESP_OK;
+}
+
+/**
+ * @brief Deinitializes the CW-WW client model.
+ *
+ * This function deinitializes the CW-WW client model by freeing the memory allocated
+ * for the CW-WW client context, client list, publish list, and CW-WW client model list.
+ *
+ * @param[in] n_max Maximum number of elements that can be created in the model space.
+ */
+static void meshx_element_struct_deinit(uint16_t n_max)
+{
+    if (cwww_client_element_init_ctrl.cwww_cli_ctx)
+    {
+        free(cwww_client_element_init_ctrl.cwww_cli_ctx);
+        cwww_client_element_init_ctrl.cwww_cli_ctx = NULL;
+    }
+    if (cwww_client_element_init_ctrl.cwww_cli_list)
+    {
+        for (size_t i = 0; i < n_max; i++)
+        {
+            if (cwww_client_element_init_ctrl.cwww_cli_list[i])
+            {
+                free(cwww_client_element_init_ctrl.cwww_cli_list[i]);
+                cwww_client_element_init_ctrl.cwww_cli_list[i] = NULL;
+            }
+        }
+        free(cwww_client_element_init_ctrl.cwww_cli_list);
+        cwww_client_element_init_ctrl.cwww_cli_list = NULL;
+    }
+    if (cwww_client_element_init_ctrl.cwww_cli_pub_list)
+    {
+        for (size_t i = 0; i < n_max; i++)
+        {
+            if (cwww_client_element_init_ctrl.cwww_cli_pub_list[i])
+            {
+                free(cwww_client_element_init_ctrl.cwww_cli_pub_list[i]);
+                cwww_client_element_init_ctrl.cwww_cli_pub_list[i] = NULL;
+            }
+        }
+        free(cwww_client_element_init_ctrl.cwww_cli_pub_list);
+        cwww_client_element_init_ctrl.cwww_cli_pub_list = NULL;
+    }
+    if (cwww_client_element_init_ctrl.cwww_cli_sig_model_list)
+    {
+        for (size_t i = 0; i < n_max; i++)
+        {
+            if (cwww_client_element_init_ctrl.cwww_cli_sig_model_list[i])
+            {
+                free(cwww_client_element_init_ctrl.cwww_cli_sig_model_list[i]);
+                cwww_client_element_init_ctrl.cwww_cli_sig_model_list[i] = NULL;
+            }
+        }
+        free(cwww_client_element_init_ctrl.cwww_cli_sig_model_list);
+        cwww_client_element_init_ctrl.cwww_cli_sig_model_list = NULL;
+    }
+}
+
 /**
  * @brief Creates a CW-WW model space for the given device.
  *
@@ -459,9 +600,14 @@ static esp_err_t dev_create_cwww_model_space(dev_struct_t const *pdev, uint16_t 
         return ESP_ERR_INVALID_STATE;
 
     /* Assign Spaces for Model List, Publish List and onoff gen list */
-    cwww_client_element_init_ctrl.model_cnt = n_max;
     void **temp = NULL;
-
+    esp_err_t err = meshx_element_struct_init(n_max);
+    if (err)
+    {
+        ESP_LOGE(TAG, "Failed to initialize cwww element structures: (%d)", err);
+        meshx_element_struct_deinit(n_max);
+        return err;
+    }
     for (size_t cwww_model_id = 0; cwww_model_id < n_max && cwww_model_id < CWWW_CLI_MODEL_SIG_CNT; cwww_model_id++)
     {
 #if CONFIG_GEN_ONOFF_CLIENT_COUNT

@@ -8,7 +8,7 @@
  * including initialization, configuration, and event handling.
  */
 
-#include <cwww_server_model.h>
+#include <cwww_server_element.h>
 #include <meshx_nvs.h>
 
 #if CONFIG_LIGHT_CWWW_SRV_COUNT > 0
@@ -100,6 +100,156 @@ static void cwww_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
 /**
+ * @brief Initializes the mesh element structure by freeing allocated memory.
+ *
+ * This function allocates memory for various components of the mesh element
+ * structure, including server context, server signature model list, server
+ * publication list, server on/off generic list, server light control list, and
+ * light control state. It ensures that all pointers are set to NULL after
+ * freeing the memory to avoid dangling pointers.
+ *
+ * @param n_max The maximum number of elements in the server signature model list
+ *              and server publication list.
+ *
+ * @return
+ *     - ESP_OK: Successfully deinitialized the mesh element structure.
+ */
+static esp_err_t meshx_element_struct_init(uint16_t n_max)
+{
+    cwww_element_init_ctrl.model_cnt = n_max;
+    cwww_element_init_ctrl.element_id_end = 0;
+    cwww_element_init_ctrl.element_id_start = 0;
+
+    cwww_element_init_ctrl.cwww_server_ctx = (cwww_server_ctx_t *)calloc(n_max, sizeof(cwww_server_ctx_t));
+    if (!cwww_element_init_ctrl.cwww_server_ctx)
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for cwww server context");
+        return ESP_ERR_NO_MEM;
+    }
+    cwww_element_init_ctrl.cwww_server_sig_model_list = (esp_ble_mesh_model_t **)calloc(n_max, sizeof(esp_ble_mesh_model_t *));
+    if (!cwww_element_init_ctrl.cwww_server_sig_model_list)
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for cwww server sig model list");
+        return ESP_ERR_NO_MEM;
+    }
+    else
+    {
+        for (size_t i = 0; i < n_max; i++)
+        {
+            cwww_element_init_ctrl.cwww_server_sig_model_list[i] = (esp_ble_mesh_model_t *)calloc(CWWW_SRV_MODEL_SIG_CNT, sizeof(esp_ble_mesh_model_t));
+            if (!cwww_element_init_ctrl.cwww_server_sig_model_list[i])
+            {
+                ESP_LOGE(TAG, "Failed to allocate memory for cwww server sig model list");
+                return ESP_ERR_NO_MEM;
+            }
+        }
+    }
+    cwww_element_init_ctrl.cwww_server_pub_list = (esp_ble_mesh_model_pub_t **)calloc(n_max, sizeof(esp_ble_mesh_model_pub_t *));
+    if (!cwww_element_init_ctrl.cwww_server_pub_list)
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for cwww server pub list");
+        return ESP_ERR_NO_MEM;
+    }
+    else
+    {
+        for (size_t i = 0; i < n_max; i++)
+        {
+            cwww_element_init_ctrl.cwww_server_pub_list[i] = (esp_ble_mesh_model_pub_t *)calloc(CWWW_SRV_MODEL_SIG_CNT, sizeof(esp_ble_mesh_model_pub_t));
+            if (!cwww_element_init_ctrl.cwww_server_pub_list[i])
+            {
+                ESP_LOGE(TAG, "Failed to allocate memory for cwww server pub list");
+                return ESP_ERR_NO_MEM;
+            }
+        }
+    }
+    cwww_element_init_ctrl.cwww_server_onoff_gen_list = (esp_ble_mesh_gen_onoff_srv_t *)calloc(n_max, sizeof(esp_ble_mesh_gen_onoff_srv_t));
+    if (!cwww_element_init_ctrl.cwww_server_onoff_gen_list)
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for cwww server onoff gen list");
+        return ESP_ERR_NO_MEM;
+    }
+    cwww_element_init_ctrl.cwww_server_light_ctl_list = (esp_ble_mesh_light_ctl_srv_t *)calloc(n_max, sizeof(esp_ble_mesh_light_ctl_srv_t));
+    if (!cwww_element_init_ctrl.cwww_server_light_ctl_list)
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for cwww server light ctl list");
+        return ESP_ERR_NO_MEM;
+    }
+    cwww_element_init_ctrl.cwww_light_ctl_state = (esp_ble_mesh_light_ctl_state_t *)calloc(n_max, sizeof(esp_ble_mesh_light_ctl_state_t));
+    if (!cwww_element_init_ctrl.cwww_light_ctl_state)
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for cwww light ctl state");
+        return ESP_ERR_NO_MEM;
+    }
+    return ESP_OK;
+}
+
+/**
+ * @brief Deinitializes the mesh element structure by freeing allocated memory.
+ *
+ * This function deallocates memory for various components of the mesh element
+ * structure, including server context, server signature model list, server
+ * publication list, server on/off generic list, server light control list, and
+ * light control state. It ensures that all pointers are set to NULL after
+ * freeing the memory to avoid dangling pointers.
+ *
+ * @param n_max The maximum number of elements in the server signature model list
+ *              and server publication list.
+ *
+ * @return
+ *     - ESP_OK: Successfully deinitialized the mesh element structure.
+ */
+
+static esp_err_t meshx_element_struct_deinit(uint16_t n_max)
+{
+    if (cwww_element_init_ctrl.cwww_server_ctx)
+    {
+        free(cwww_element_init_ctrl.cwww_server_ctx);
+        cwww_element_init_ctrl.cwww_server_ctx = NULL;
+    }
+    if (cwww_element_init_ctrl.cwww_server_sig_model_list)
+    {
+        for (size_t i = 0; i < n_max; i++)
+        {
+            if (cwww_element_init_ctrl.cwww_server_sig_model_list[i])
+            {
+                free(cwww_element_init_ctrl.cwww_server_sig_model_list[i]);
+                cwww_element_init_ctrl.cwww_server_sig_model_list[i] = NULL;
+            }
+        }
+        free(cwww_element_init_ctrl.cwww_server_sig_model_list);
+        cwww_element_init_ctrl.cwww_server_sig_model_list = NULL;
+    }
+    if (cwww_element_init_ctrl.cwww_server_pub_list)
+    {
+        for (size_t i = 0; i < n_max; i++)
+        {
+            if (cwww_element_init_ctrl.cwww_server_pub_list[i])
+            {
+                free(cwww_element_init_ctrl.cwww_server_pub_list[i]);
+                cwww_element_init_ctrl.cwww_server_pub_list[i] = NULL;
+            }
+        }
+        free(cwww_element_init_ctrl.cwww_server_pub_list);
+        cwww_element_init_ctrl.cwww_server_pub_list = NULL;
+    }
+    if (cwww_element_init_ctrl.cwww_server_onoff_gen_list)
+    {
+        free(cwww_element_init_ctrl.cwww_server_onoff_gen_list);
+        cwww_element_init_ctrl.cwww_server_onoff_gen_list = NULL;
+    }
+    if (cwww_element_init_ctrl.cwww_server_light_ctl_list)
+    {
+        free(cwww_element_init_ctrl.cwww_server_light_ctl_list);
+        cwww_element_init_ctrl.cwww_server_light_ctl_list = NULL;
+    }
+    if (cwww_element_init_ctrl.cwww_light_ctl_state)
+    {
+        free(cwww_element_init_ctrl.cwww_light_ctl_state);
+        cwww_element_init_ctrl.cwww_light_ctl_state = NULL;
+    }
+    return ESP_OK;
+}
+/**
  * @brief Create space for CW-WW models.
  *
  * This function allocates and initializes the space required for CW-WW models.
@@ -110,8 +260,14 @@ static void cwww_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
 static esp_err_t dev_create_cwww_model_space(uint16_t n_max)
 {
     /* Assign Spaces for Model List, Publish List and onoff gen list */
-    cwww_element_init_ctrl.model_cnt = n_max;
     void ** temp;
+    esp_err_t err = meshx_element_struct_init(n_max);
+    if (err)
+    {
+        ESP_LOGE(TAG, "Failed to initialize cwww element structures: (%d)", err);
+        meshx_element_struct_deinit(n_max);
+        return err;
+    }
     for (size_t cwww_rel_el_id = 0; cwww_rel_el_id < n_max; cwww_rel_el_id++)
     {
 #if CONFIG_GEN_ONOFF_SERVER_COUNT
@@ -145,7 +301,7 @@ static esp_err_t dev_create_cwww_model_space(uint16_t n_max)
             cwww_element_init_ctrl.cwww_server_light_ctl_list + cwww_rel_el_id;
 #endif /* CONFIG_ENABLE_LIGHT_CTL_SERVER */
     }
-    return ESP_OK;
+    return err;
 }
 
 /**
