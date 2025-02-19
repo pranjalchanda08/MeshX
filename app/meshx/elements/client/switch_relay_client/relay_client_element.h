@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file relay_client_model.h
+ * @file relay_client_element.h
  * @brief Header file for the Relay Client Model in BLE Mesh.
  *
  * This file contains the definitions and function declarations for the Relay Client Model
@@ -65,10 +65,10 @@ typedef struct relay_client_element
     size_t model_cnt;
     size_t element_id_end;
     size_t element_id_start;
-    rel_cli_ctx_t rel_cli_ctx[CONFIG_RELAY_CLIENT_COUNT];
-    esp_ble_mesh_model_pub_t relay_cli_pub_list[CONFIG_RELAY_CLIENT_COUNT];
-    esp_ble_mesh_client_t relay_cli_onoff_gen_list[CONFIG_RELAY_CLIENT_COUNT];
-    esp_ble_mesh_model_t relay_cli_sig_model_list[CONFIG_RELAY_CLIENT_COUNT][RELAY_CLI_MODEL_SIG_CNT];
+    rel_cli_ctx_t *rel_cli_ctx;
+    esp_ble_mesh_model_pub_t *relay_cli_pub_list;
+    esp_ble_mesh_client_t *relay_cli_onoff_gen_list;
+    esp_ble_mesh_model_t **relay_cli_sig_model_list;
 } relay_client_elements_t;
 
 /**
