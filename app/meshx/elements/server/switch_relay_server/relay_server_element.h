@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file relay_server_model.h
+ * @file relay_server_element.h
  * @brief Header file for the Relay Server Model.
  *
  * This file contains the definitions and function prototypes for the Relay Server Model.
@@ -42,10 +42,10 @@ typedef struct relay_element
     size_t model_cnt;
     size_t element_id_end;
     size_t element_id_start;
-    relay_srv_model_ctx_t prod_gen_ctx[CONFIG_RELAY_SERVER_COUNT];
-    esp_ble_mesh_model_t relay_server_sig_model_list[CONFIG_RELAY_SERVER_COUNT][RELAY_SRV_MODEL_SIG_CNT];
-    esp_ble_mesh_model_pub_t relay_server_pub_list[CONFIG_RELAY_SERVER_COUNT];
-    esp_ble_mesh_gen_onoff_srv_t relay_server_onoff_gen_list[CONFIG_RELAY_SERVER_COUNT];
+    relay_srv_model_ctx_t *prod_gen_ctx;
+    esp_ble_mesh_model_t **relay_server_sig_model_list;
+    esp_ble_mesh_model_pub_t *relay_server_pub_list;
+    esp_ble_mesh_gen_onoff_srv_t *relay_server_onoff_gen_list;
 } relay_elements_t;
 
 /**
