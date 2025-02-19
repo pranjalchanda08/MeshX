@@ -83,10 +83,10 @@ typedef struct cwww_client_element
     size_t model_cnt;
     size_t element_id_end;
     size_t element_id_start;
-    cwww_cli_ctx_t cwww_cli_ctx[CONFIG_LIGHT_CWWW_CLIENT_COUNT];
-    esp_ble_mesh_client_t cwww_cli_list[CONFIG_LIGHT_CWWW_CLIENT_COUNT][CWWW_CLI_MODEL_SIG_CNT];
-    esp_ble_mesh_model_pub_t cwww_cli_pub_list[CONFIG_LIGHT_CWWW_CLIENT_COUNT][CWWW_CLI_MODEL_SIG_CNT];
-    esp_ble_mesh_model_t cwww_cli_sig_model_list[CONFIG_LIGHT_CWWW_CLIENT_COUNT][CWWW_CLI_MODEL_SIG_CNT];
+    cwww_cli_ctx_t *cwww_cli_ctx;
+    esp_ble_mesh_client_t **cwww_cli_list;
+    esp_ble_mesh_model_pub_t **cwww_cli_pub_list;
+    esp_ble_mesh_model_t **cwww_cli_sig_model_list;
 } cwww_client_elements_t;
 
 /**

@@ -18,15 +18,15 @@
 #include "meshx.h"
 
 #if CONFIG_RELAY_SERVER_COUNT
-#include "relay_server_model.h"
+#include "relay_server_element.h"
 #endif /* CONFIG_RELAY_SERVER_COUNT */
 
 #if CONFIG_RELAY_CLIENT_COUNT
-#include "relay_client_model.h"
+#include "relay_client_element.h"
 #endif /* CONFIG_RELAY_CLIENT_COUNT */
 
 #if CONFIG_LIGHT_CWWW_SRV_COUNT
-#include "cwww_server_model.h"
+#include "cwww_server_element.h"
 #endif /* CONFIG_LIGHT_CWWW_SRV_COUNT */
 
 #if CONFIG_LIGHT_CWWW_CLIENT_COUNT

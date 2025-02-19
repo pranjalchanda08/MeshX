@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file cwww_server_model.h
+ * @file cwww_server_element.h
  * @brief Header file for CWWW Server Model
  *
  * This file contains the definitions and function prototypes for the CWWW Server Model.
@@ -10,8 +10,8 @@
  *
  */
 
-#ifndef __CWWW_SERVER_MODEL_H__
-#define __CWWW_SERVER_MODEL_H__
+#ifndef __CWWW_SERVER_ELEMENT_H__
+#define __CWWW_SERVER_ELEMENT_H__
 
 #include <string.h>
 #include <app_common.h>
@@ -63,12 +63,12 @@ typedef struct cwww_element
     size_t model_cnt;
     size_t element_id_end;
     size_t element_id_start;
-    cwww_server_ctx_t cwww_server_ctx[CONFIG_LIGHT_CWWW_SRV_COUNT];
-    esp_ble_mesh_model_t cwww_server_sig_model_list[CONFIG_LIGHT_CWWW_SRV_COUNT][CWWW_SRV_MODEL_SIG_CNT];
-    esp_ble_mesh_model_pub_t cwww_server_pub_list[CONFIG_LIGHT_CWWW_SRV_COUNT][CWWW_SRV_MODEL_SIG_CNT];
-    esp_ble_mesh_gen_onoff_srv_t cwww_server_onoff_gen_list[CONFIG_LIGHT_CWWW_SRV_COUNT];
-    esp_ble_mesh_light_ctl_srv_t cwww_server_light_ctl_list[CONFIG_LIGHT_CWWW_SRV_COUNT];
-    esp_ble_mesh_light_ctl_state_t cwww_light_ctl_state[CONFIG_LIGHT_CWWW_SRV_COUNT];
+    cwww_server_ctx_t *cwww_server_ctx;
+    esp_ble_mesh_model_t **cwww_server_sig_model_list;
+    esp_ble_mesh_model_pub_t **cwww_server_pub_list;
+    esp_ble_mesh_gen_onoff_srv_t *cwww_server_onoff_gen_list;
+    esp_ble_mesh_light_ctl_srv_t *cwww_server_light_ctl_list;
+    esp_ble_mesh_light_ctl_state_t *cwww_light_ctl_state;
 } cwww_elements_t;
 
 /**
@@ -82,4 +82,4 @@ typedef struct cwww_element
  */
 esp_err_t create_cwww_elements(dev_struct_t *pdev);
 
-#endif /*__CWWW_SERVER_MODEL_H__*/
+#endif /*__CWWW_SERVER_ELEMENT_H__*/

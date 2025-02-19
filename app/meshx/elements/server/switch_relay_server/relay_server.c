@@ -8,7 +8,7 @@
  * It includes functions to initialize, configure, and manage relay server elements.
  */
 
-#include "relay_server_model.h"
+#include "relay_server_element.h"
 #include "meshx_nvs.h"
 
 #if CONFIG_RELAY_SERVER_COUNT > 0
@@ -97,6 +97,114 @@ static void relay_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
 /**
+ * @brief Initialize the mesh element structure by allocating memory for various components.
+ *
+ * This function initializes the mesh element structure by allocating memory for
+ * various components, including server context, server signature model list,
+ * server publication list, server on/off generic list, and server light control list.
+ *
+ * @param n_max The maximum number of elements in the server signature model list
+ *              and server publication list.
+ *
+ * @return
+ *     - ESP_OK: Successfully initialized the mesh element structure.
+ *     - ESP_ERR_NO_MEM: Failed to allocate memory for the mesh element structure.
+ */
+static esp_err_t meshx_element_struct_init(uint16_t n_max)
+{
+
+    relay_element_init_ctrl.model_cnt = n_max;
+    relay_element_init_ctrl.element_id_end = 0;
+    relay_element_init_ctrl.element_id_start = 0;
+
+    relay_element_init_ctrl.prod_gen_ctx = (relay_srv_model_ctx_t *) calloc(n_max, sizeof(relay_srv_model_ctx_t));
+    if (!relay_element_init_ctrl.prod_gen_ctx)
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for relay server context");
+        return ESP_ERR_NO_MEM;
+    }
+    relay_element_init_ctrl.relay_server_sig_model_list = (esp_ble_mesh_model_t **)calloc(n_max, sizeof(esp_ble_mesh_model_t *));
+    if (!relay_element_init_ctrl.relay_server_sig_model_list)
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for relay server SIG model list");
+        return ESP_ERR_NO_MEM;
+    }
+    else
+    {
+        for (size_t i = 0; i < n_max; i++)
+        {
+            relay_element_init_ctrl.relay_server_sig_model_list[i] = (esp_ble_mesh_model_t *)calloc(RELAY_SRV_MODEL_SIG_CNT, sizeof(esp_ble_mesh_model_t));
+            if (!relay_element_init_ctrl.relay_server_sig_model_list[i])
+            {
+                ESP_LOGE(TAG, "Failed to allocate memory for relay server SIG model list");
+                return ESP_ERR_NO_MEM;
+            }
+        }
+    }
+    relay_element_init_ctrl.relay_server_pub_list = (esp_ble_mesh_model_pub_t *)calloc(n_max, sizeof(esp_ble_mesh_model_pub_t));
+    if (!relay_element_init_ctrl.relay_server_pub_list)
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for relay server publication list");
+        return ESP_ERR_NO_MEM;
+    }
+    relay_element_init_ctrl.relay_server_onoff_gen_list = (esp_ble_mesh_gen_onoff_srv_t *)calloc(n_max, sizeof(esp_ble_mesh_gen_onoff_srv_t));
+    if (!relay_element_init_ctrl.relay_server_onoff_gen_list)
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for relay server onoff generic list");
+        return ESP_ERR_NO_MEM;
+    }
+    return ESP_OK;
+}
+
+/**
+ * @brief Deinitializes the mesh element structure by freeing allocated memory.
+ *
+ * This function deallocates memory for various components of the mesh element
+ * structure, including server context, server signature model list, server
+ * publication list, server on/off generic list, server light control list, and
+ * light control state. It ensures that all pointers are set to NULL after
+ * freeing the memory to avoid dangling pointers.
+ *
+ * @param n_max The maximum number of elements in the server signature model list
+ *              and server publication list.
+ *
+ * @return
+ *     - ESP_OK: Successfully deinitialized the mesh element structure.
+ */
+static esp_err_t meshx_element_struct_deinit(uint16_t n_max)
+{
+    if (relay_element_init_ctrl.prod_gen_ctx)
+    {
+        free(relay_element_init_ctrl.prod_gen_ctx);
+        relay_element_init_ctrl.prod_gen_ctx = NULL;
+    }
+    if (relay_element_init_ctrl.relay_server_sig_model_list)
+    {
+        for (size_t i = 0; i < n_max; i++)
+        {
+            if (relay_element_init_ctrl.relay_server_sig_model_list[i])
+            {
+                free(relay_element_init_ctrl.relay_server_sig_model_list[i]);
+                relay_element_init_ctrl.relay_server_sig_model_list[i] = NULL;
+            }
+        }
+        free(relay_element_init_ctrl.relay_server_sig_model_list);
+        relay_element_init_ctrl.relay_server_sig_model_list = NULL;
+    }
+    if (relay_element_init_ctrl.relay_server_pub_list)
+    {
+        free(relay_element_init_ctrl.relay_server_pub_list);
+        relay_element_init_ctrl.relay_server_pub_list = NULL;
+    }
+    if (relay_element_init_ctrl.relay_server_onoff_gen_list)
+    {
+        free(relay_element_init_ctrl.relay_server_onoff_gen_list);
+        relay_element_init_ctrl.relay_server_onoff_gen_list = NULL;
+    }
+    return ESP_OK;
+}
+
+/**
  * @brief Create relay model space.
  *
  * Allocates memory and initializes space for relay models.
@@ -106,8 +214,13 @@ static void relay_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
  */
 static esp_err_t dev_create_relay_model_space(uint16_t n_max)
 {
-    relay_element_init_ctrl.model_cnt = n_max;
-
+    esp_err_t err = meshx_element_struct_init(n_max);
+    if (err)
+    {
+        ESP_LOGE(TAG, "Relay Model space create failed: (%d)", err);
+        meshx_element_struct_deinit(n_max);
+        return err;
+    }
     for (size_t relay_model_id = 0; relay_model_id < n_max; relay_model_id++)
     {
 #if CONFIG_GEN_ONOFF_SERVER_COUNT

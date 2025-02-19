@@ -21,7 +21,7 @@
 #include "meshx_nvs.h"
 
 #if CONFIG_RELAY_CLIENT_COUNT
-#include "relay_client_model.h"
+#include "relay_client_element.h"
 
 #if CONFIG_ENABLE_CONFIG_SERVER
 #include "config_server.h"
@@ -45,13 +45,102 @@ static const esp_ble_mesh_model_t relay_sig_template = ESP_BLE_MESH_SIG_MODEL(
     ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_CLI,
     NULL, NULL, NULL);
 
-typedef enum
+/**
+ * @brief Initializes the mesh element structure.
+ *
+ * This function initializes the mesh element structure with the specified maximum number of elements.
+ *
+ * @param n_max The maximum number of elements to initialize.
+ *
+ * @return
+ *     - ESP_OK: Success
+ *     - ESP_ERR_NO_MEM: Memory allocation failure
+ *     - ESP_ERR_INVALID_ARG: Invalid argument
+ */
+static esp_err_t meshx_element_struct_init(uint16_t n_max)
 {
-    RELAY_CLI_CMD_GET       = 0x00,
-    RELAY_CLI_CMD_SET       = 0x01,
-    RELAY_CLI_CMD_SET_UNACK = 0x02,
-    RELAY_CLI_MAX_CMD
-} relay_cli_cmd_t;
+
+    relay_element_init_ctrl.model_cnt = n_max;
+    relay_element_init_ctrl.element_id_end = 0;
+    relay_element_init_ctrl.element_id_start = 0;
+
+    relay_element_init_ctrl.rel_cli_ctx = (rel_cli_ctx_t *)calloc(n_max, sizeof(rel_cli_ctx_t));
+    if (!relay_element_init_ctrl.rel_cli_ctx)
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for relay client context");
+        return ESP_ERR_NO_MEM;
+    }
+    relay_element_init_ctrl.relay_cli_pub_list = (esp_ble_mesh_model_pub_t *)calloc(n_max, sizeof(esp_ble_mesh_model_pub_t));
+    if (!relay_element_init_ctrl.relay_cli_pub_list)
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for relay client pub list");
+        return ESP_ERR_NO_MEM;
+    }
+    relay_element_init_ctrl.relay_cli_onoff_gen_list = (esp_ble_mesh_client_t *)calloc(n_max, sizeof(esp_ble_mesh_client_t));
+    if (!relay_element_init_ctrl.relay_cli_onoff_gen_list)
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for relay client onoff gen list");
+        return ESP_ERR_NO_MEM;
+    }
+    relay_element_init_ctrl.relay_cli_sig_model_list = (esp_ble_mesh_model_t **)calloc(n_max, sizeof(esp_ble_mesh_model_t *));
+    if (!relay_element_init_ctrl.relay_cli_sig_model_list)
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for relay client sig model list");
+        return ESP_ERR_NO_MEM;
+    }
+    else
+    {
+        for (size_t i = 0; i < n_max; i++)
+        {
+            relay_element_init_ctrl.relay_cli_sig_model_list[i] = (esp_ble_mesh_model_t *)calloc(RELAY_CLI_MODEL_SIG_CNT, sizeof(esp_ble_mesh_model_t));
+            if (!relay_element_init_ctrl.relay_cli_sig_model_list[i])
+            {
+                ESP_LOGE(TAG, "Failed to allocate memory for relay client sig model list");
+                return ESP_ERR_NO_MEM;
+            }
+        }
+    }
+    return ESP_OK;
+}
+
+/**
+ * @brief Deinitializes the mesh element structure.
+ *
+ * This function deinitializes the mesh element structure by freeing the allocated memory.
+ *
+ * @param n_max The maximum number of elements to deinitialize.
+ */
+static void meshx_element_struct_deinit(uint16_t n_max)
+{
+    if (relay_element_init_ctrl.rel_cli_ctx)
+    {
+        free(relay_element_init_ctrl.rel_cli_ctx);
+        relay_element_init_ctrl.rel_cli_ctx = NULL;
+    }
+    if (relay_element_init_ctrl.relay_cli_pub_list)
+    {
+        free(relay_element_init_ctrl.relay_cli_pub_list);
+        relay_element_init_ctrl.relay_cli_pub_list = NULL;
+    }
+    if (relay_element_init_ctrl.relay_cli_onoff_gen_list)
+    {
+        free(relay_element_init_ctrl.relay_cli_onoff_gen_list);
+        relay_element_init_ctrl.relay_cli_onoff_gen_list = NULL;
+    }
+    if (relay_element_init_ctrl.relay_cli_sig_model_list)
+    {
+        for (size_t i = 0; i < n_max; i++)
+        {
+            if (relay_element_init_ctrl.relay_cli_sig_model_list[i])
+            {
+                free(relay_element_init_ctrl.relay_cli_sig_model_list[i]);
+                relay_element_init_ctrl.relay_cli_sig_model_list[i] = NULL;
+            }
+        }
+        free(relay_element_init_ctrl.relay_cli_sig_model_list);
+        relay_element_init_ctrl.relay_cli_sig_model_list = NULL;
+    }
+}
 
 /**
  * @brief Create Dynamic Relay Model Elements
@@ -67,8 +156,14 @@ static esp_err_t dev_create_relay_model_space(dev_struct_t const *pdev, uint16_t
         return ESP_ERR_INVALID_STATE;
 
     /* Assign Spaces for Model List, Publish List and onoff gen list */
-    relay_element_init_ctrl.model_cnt = n_max;
-
+    esp_err_t err = meshx_element_struct_init(n_max);
+    if (err)
+    {
+        ESP_LOGE(TAG, "Failed to initialize relay element structures: (%d)", err);
+        meshx_element_struct_deinit(n_max);
+        return err;
+    }
+#if CONFIG_GEN_ONOFF_CLIENT_COUNT
     for (size_t relay_model_id = 0; relay_model_id < n_max; relay_model_id++)
     {
         /* Perform memcpy to setup the constants */
@@ -81,6 +176,7 @@ static esp_err_t dev_create_relay_model_space(dev_struct_t const *pdev, uint16_t
         relay_element_init_ctrl.relay_cli_sig_model_list[relay_model_id][0].user_data =
             relay_element_init_ctrl.relay_cli_onoff_gen_list + relay_model_id;
     }
+#endif /* CONFIG_GEN_ONOFF_CLIENT_COUNT */
     return ESP_OK;
 }
 
@@ -289,6 +385,29 @@ static esp_err_t relay_cli_control_task_msg_handle(dev_struct_t *pdev, control_t
 }
 #endif /* __CONTROL_TASK_H__ */
 #if CONFIG_ENABLE_UNIT_TEST
+typedef enum
+{
+    RELAY_CLI_CMD_GET       = 0x00,
+    RELAY_CLI_CMD_SET       = 0x01,
+    RELAY_CLI_CMD_SET_UNACK = 0x02,
+    RELAY_CLI_MAX_CMD
+} relay_cli_cmd_t;
+
+/**
+ * @brief Callback handler for the Relay client unit test command.
+ *
+ * This function handles the Relay client unit test command by processing the
+ * provided command ID and arguments.
+ *
+ * @param[in] cmd_id The command ID to be processed.
+ * @param[in] argc The number of arguments provided.
+ * @param[in] argv The array of arguments.
+ *
+ * @return
+ *     - ESP_OK: Success
+ *     - ESP_ERR_INVALID_ARG: Invalid arguments
+ *     - Other error codes depending on the implementation
+ */
 static esp_err_t relay_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv)
 {
     esp_err_t err = ESP_OK;
