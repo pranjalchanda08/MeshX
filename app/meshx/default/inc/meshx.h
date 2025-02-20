@@ -45,12 +45,40 @@
 
 #define CID_ESP CONFIG_CID_ID
 
+typedef enum meshx_element_type
+{
+    MESHX_ELEMENT_TYPE_RELAY_SERVER,
+    MESHX_ELEMENT_TYPE_RELAY_CLIENT,
+    MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER,
+    MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT,
+    MESHX_ELEMENT_TYPE_MAX
+}meshx_element_type_t;
+
+typedef struct element_comp
+{
+    meshx_element_type_t type;
+    uint16_t element_cnt;
+}element_comp_t;
+
+typedef struct meshx_config
+{
+    uint16_t cid;
+    uint16_t pid;
+    char *product_name;
+    uint32_t meshx_nvs_save_period;
+    uint16_t element_comp_arr_len;
+    element_comp_t *element_comp_arr;
+}meshx_config_t;
+
 /**
  * @brief MeshX initialisation function
+ *
+ * This function initialises the MeshX stack with the given configuration.
+ * @param config Pointer to the configuration structure
  *
  * @return ESP_OK, Success
  */
 
-esp_err_t meshx_init(void);
+esp_err_t meshx_init(meshx_config_t const *config);
 
 #endif /* __MESHX_H__ */

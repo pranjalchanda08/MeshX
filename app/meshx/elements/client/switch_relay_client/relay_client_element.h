@@ -62,7 +62,7 @@ typedef struct relay_client_msg
  */
 typedef struct relay_client_element
 {
-    size_t model_cnt;
+    size_t element_cnt;
     size_t element_id_end;
     size_t element_id_start;
     rel_cli_ctx_t *rel_cli_ctx;
@@ -74,11 +74,12 @@ typedef struct relay_client_element
 /**
  * @brief Create Dynamic Relay Model Elements
  *
- * @param[in]       pdev    Pointer to device structure
+ * @param[in]       pdev            Pointer to device structure
+ * @param[in]       element_cnt     Maximum number of relay models
  *
  * @return esp_err_t
  */
-esp_err_t create_relay_client_elements(dev_struct_t *pdev);
+esp_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cnt);
 
 /**
  * @brief Send Msg to relay node or group represented by the provisioned publish address
