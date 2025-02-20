@@ -57,6 +57,8 @@ typedef enum PACKED_ATTR
     CONTROL_TASK_MSG_CODE_SYSTEM,       /**< Message code for system events. */
     CONTROL_TASK_MSG_CODE_TO_BLE,       /**< Message code for BLE events. */
     CONTROL_TASK_MSG_CODE_PROVISION,    /**< Message code for provisioning events. */
+    CONTROL_TASK_MSG_CODE_TO_APP,       /**< Message code for application events. */
+    CONTROL_TASK_MSG_CODE_TO_MESHX,     /**< Message code for meshX events from app */
     CONTROL_TASK_MSG_CODE_MAX,          /**< Maximum message code value. */
 } control_task_msg_code_t;
 
