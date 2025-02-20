@@ -80,7 +80,7 @@ typedef struct cwww_client_msg
  */
 typedef struct cwww_client_element
 {
-    size_t model_cnt;
+    size_t element_cnt;
     size_t element_id_end;
     size_t element_id_start;
     cwww_cli_ctx_t *cwww_cli_ctx;
@@ -92,11 +92,12 @@ typedef struct cwww_client_element
 /**
  * @brief Create Dynamic Relay Model Elements
  *
- * @param[in] pdev    Pointer to device structure
+ * @param[in] pdev          Pointer to device structure
+ * @param[in] element_cnt   Maximum number of relay models
  *
  * @return esp_err_t
  */
-esp_err_t create_cwww_client_elements(dev_struct_t *pdev);
+esp_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt);
 
 /**
  * @brief Send a CW/WW (Cool White/Warm White) message over BLE Mesh.

@@ -39,7 +39,7 @@ typedef struct prod_gen_ctx
 
 typedef struct relay_element
 {
-    size_t model_cnt;
+    size_t element_cnt;
     size_t element_id_end;
     size_t element_id_start;
     relay_srv_model_ctx_t *prod_gen_ctx;
@@ -51,10 +51,11 @@ typedef struct relay_element
 /**
  * @brief Create Dynamic Relay Model Elements
  *
- * @param[in]       pdev    Pointer to device structure
+ * @param[in] pdev    Pointer to device structure
+ * @param[in] element_cnt Maximum number of relay models
  *
  * @return esp_err_t
  */
-esp_err_t create_relay_elements(dev_struct_t *pdev);
+esp_err_t create_relay_elements(dev_struct_t *pdev, uint16_t element_cnt);
 
 #endif /*__RELAY_SERVER_MODEL_H__*/
