@@ -36,6 +36,24 @@ typedef enum{
     CWWW_SIG_ID_MAX          /**< Maximum number of model IDs */
 } cwww_sig_id_t;
 
+typedef struct meshx_el_light_cwww_server_state{
+    union
+    {
+        struct
+        {
+            uint8_t state;
+        }on_off;
+        struct
+        {
+            uint16_t lightness;
+            uint16_t temperature;
+            uint16_t delta_uv;
+            uint16_t temp_range_min;
+            uint16_t temp_range_max;
+        }ctl;
+    }state_change;
+}meshx_el_light_cwww_server_state_t;
+
 /**
  * @brief Context structure for the Light CTL Client model.
  */
