@@ -60,7 +60,7 @@ typedef struct light_ctl_cli_ctx
  */
 typedef struct cwww_element
 {
-    size_t model_cnt;
+    size_t element_cnt;
     size_t element_id_end;
     size_t element_id_start;
     cwww_server_ctx_t *cwww_server_ctx;
@@ -77,9 +77,10 @@ typedef struct cwww_element
  * This function creates dynamic CWWW server model elements for the given device structure.
  *
  * @param[in] pdev Pointer to device structure
+ * @param[in] element_cnt Maximum number of CWWW server models
  *
  * @return esp_err_t Returns ESP_OK on success or an error code on failure
  */
-esp_err_t create_cwww_elements(dev_struct_t *pdev);
+esp_err_t create_cwww_elements(dev_struct_t *pdev, uint16_t element_cnt);
 
 #endif /*__CWWW_SERVER_ELEMENT_H__*/

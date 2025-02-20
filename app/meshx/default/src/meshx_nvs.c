@@ -59,10 +59,13 @@ static void meshx_nvs_os_timer_cb(const os_timer_t *p_timer)
  *
  * This function erases the NVS and sets the product ID.
  *
+ * @param[in] cid Company ID
+ * @param[in] pid Product ID
+ *
  * @return
  *  - ESP_OK: Success.
  */
-static esp_err_t meshx_nvs_erase_prod_init(void)
+static esp_err_t meshx_nvs_erase_prod_init(uint16_t cid, uint16_t pid)
 {
     esp_err_t err = ESP_OK;
     err = meshx_nvs_erase();
@@ -72,8 +75,8 @@ static esp_err_t meshx_nvs_erase_prod_init(void)
         return err;
     }
 
-    meshx_nvs_inst.pid = CONFIG_PID_ID;
-    meshx_nvs_inst.cid = CONFIG_CID_ID;
+    meshx_nvs_inst.pid = pid;
+    meshx_nvs_inst.cid = cid;
 
     err = meshx_nvs_set(
         MESHX_NVS_NAMESPACE_PID,
@@ -126,11 +129,14 @@ esp_err_t meshx_nvs_init(void)
  *
  * This function initializes the NVS and sets a timeout for stability operations.
  * @note: NVS Namespace: MESHX_NVS_NAMESPACE
- *
+ * @param[in] cid Company ID
+ * @param[in] pid Product ID
+ * @param[in] commit_timeout_ms Timeout for stability operations in milliseconds.
+ *                              0 -> use MESHX_NVS_TIMER_PERIOD
  * @return
  *  - ESP_OK: Success.
  */
-esp_err_t meshx_nvs_open(void)
+esp_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_ms)
 {
     if (meshx_nvs_inst.init == MESHX_NVS_INIT_MAGIC)
     {
@@ -158,9 +164,13 @@ esp_err_t meshx_nvs_open(void)
     }
 
 #if MESHX_NVS_TIMER_PERIOD
+    if(commit_timeout_ms == 0)
+    {
+        commit_timeout_ms = MESHX_NVS_TIMER_PERIOD;
+    }
     err = os_timer_create(
         MESHX_NVS_TIMER_NAME,
-        MESHX_NVS_TIMER_PERIOD,
+        commit_timeout_ms,
         MESHX_NVS_RELOAD_ONE_SHOT,
         &meshx_nvs_os_timer_cb,
         &(meshx_nvs_inst.meshx_nvs_stability_timer));
@@ -169,6 +179,8 @@ esp_err_t meshx_nvs_open(void)
         ESP_LOGE(TAG, "os_timer_create %p", (void *)err);
         return err;
     }
+#else
+    ESP_UNUSED(commit_timeout_ms);
 #endif /* MESHX_NVS_TIMER_PERIOD */
 
     meshx_nvs_inst.init = MESHX_NVS_INIT_MAGIC;
@@ -186,19 +198,19 @@ esp_err_t meshx_nvs_open(void)
     if(err != ESP_OK)
     {
         ESP_LOGW(TAG, "Product ID not found in NVS reinitializing MeshX NVS");
-        err = meshx_nvs_erase_prod_init();
+        err = meshx_nvs_erase_prod_init(cid, pid);
     }
 
     else
     {
-        if (meshx_nvs_inst.cid == CONFIG_CID_ID && meshx_nvs_inst.pid == CONFIG_PID_ID)
+        if (meshx_nvs_inst.cid == cid && meshx_nvs_inst.pid == pid)
         {
             ESP_LOGI(TAG, "Product ID match: %x|%x", meshx_nvs_inst.pid, meshx_nvs_inst.cid);
         }
         else
         {
             ESP_LOGW(TAG, "Product ID mismatch: %x|%x", meshx_nvs_inst.pid, meshx_nvs_inst.cid);
-            err = meshx_nvs_erase_prod_init();
+            err = meshx_nvs_erase_prod_init(cid, pid);
         }
     }
 
@@ -413,7 +425,8 @@ static esp_err_t meshx_nvs_unit_test_cb_handler(int cmd_id, int argc, char **arg
     switch(cmd_id)
     {
         case MESHX_NVS_CLI_CMD_OPEN:
-            err = meshx_nvs_open();
+            /* MeshX NVS Open uses defaut values */
+            err = meshx_nvs_open(CONFIG_CID_ID, CONFIG_PID_ID, 0);
             break;
         case MESHX_NVS_CLI_CMD_SET:
             arm_timer = UT_GET_ARG(0, bool, argv) == 0 ? MESHX_NVS_NO_AUTO_COMMIT : MESHX_NVS_AUTO_COMMIT;

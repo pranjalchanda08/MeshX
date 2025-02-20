@@ -90,12 +90,15 @@ esp_err_t meshx_nvs_remove(char const* key);
  * @brief Open the NVS with a timeout.
  *
  * This function initializes the NVS and sets a timeout for stability operations.
- *
- *
+ * @note: NVS Namespace: MESHX_NVS_NAMESPACE
+ * @param[in] cid Company ID
+ * @param[in] pid Product ID
+ * @param[in] commit_timeout_ms Timeout for stability operations in milliseconds.
+ *                              0 -> use MESHX_NVS_TIMER_PERIOD
  * @return
  *  - ESP_OK: Success.
  */
-esp_err_t meshx_nvs_open(void);
+esp_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_ms);
 
 /**
  * @brief Get a value from the NVS.

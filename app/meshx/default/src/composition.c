@@ -59,6 +59,15 @@
 static prov_params_t prod_prov_cfg;
 #endif
 
+typedef esp_err_t (*element_comp_fn_t)(dev_struct_t *pdev, uint16_t element_cnt);
+
+static element_comp_fn_t element_comp_fn [MESHX_ELEMENT_TYPE_MAX] = {
+    [MESHX_ELEMENT_TYPE_RELAY_SERVER]       = &create_relay_elements,
+    [MESHX_ELEMENT_TYPE_RELAY_CLIENT]       = &create_relay_client_elements,
+    [MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT]  = &create_cwww_client_elements,
+    [MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER]  = &create_cwww_elements,
+};
+
 #if CONFIG_ENABLE_LIGHT_CTL_SERVER
 /** Light CTL state. */
 esp_ble_mesh_light_ctl_state_t ctl_state;
@@ -75,7 +84,7 @@ static esp_ble_mesh_light_ctl_setup_srv_t ctl_setup_server = {
 #endif
 
 /** Root models for BLE Mesh elements. */
-static esp_ble_mesh_model_t app_root_model[] = {
+static esp_ble_mesh_model_t meshx_root_model_arr[] = {
 #if CONFIG_ENABLE_CONFIG_SERVER
     ESP_BLE_MESH_MODEL_CFG_SRV(&PROD_CONFIG_SERVER_INSTANCE),
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
@@ -122,37 +131,19 @@ static esp_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_tas
  *
  * @return Pointer to the root models.
  */
-esp_ble_mesh_model_t * get_root_models(void)
+esp_ble_mesh_model_t * get_root_sig_models(void)
 {
-    return app_root_model;
+    return meshx_root_model_arr;
 }
 
 /**
- * @brief Returns the size of the root models.
+ * @brief Returns the count of the root models.
  *
  * @return Size of the root models.
  */
-size_t get_root_models_size(void)
+size_t get_root_sig_models_count(void)
 {
-    return ARRAY_SIZE(app_root_model);
-}
-/**
- * @brief Initializes BLE Mesh composition data.
- *
- * @param[in] p_dev Pointer to the device structure.
- * @return ESP_OK on success, error code otherwise.
- */
-esp_err_t ble_mesh_composition_init(dev_struct_t *p_dev)
-{
-    if (!p_dev)
-        return ESP_ERR_INVALID_STATE;
-
-    p_dev->composition.cid = CID_ESP;
-    p_dev->composition.pid = CONFIG_PID_ID;
-    p_dev->composition.element_count = p_dev->element_idx;
-    p_dev->composition.elements = p_dev->elements;
-
-    return ESP_OK;
+    return ARRAY_SIZE(meshx_root_model_arr);
 }
 
 /**
@@ -165,10 +156,13 @@ esp_err_t ble_mesh_composition_init(dev_struct_t *p_dev)
  *
  * @return ESP_OK on success, or an error code on failure.
  */
-esp_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev)
+esp_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_config_t const *config)
 {
 #if CONFIG_MAX_ELEMENT_COUNT > 0
     esp_err_t err;
+
+    if(!p_dev || !config || !config->element_comp_arr_len || !config->element_comp_arr)
+        return ESP_ERR_INVALID_ARG;
 
     ble_mesh_get_dev_uuid(prod_prov_cfg.uuid);
 
@@ -184,29 +178,19 @@ esp_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev)
     err = prod_init_config_server();
     ESP_ERR_PRINT_RET("Failed to initialize config server", err);
 
-#if CONFIG_RELAY_SERVER_COUNT
-    err = create_relay_elements(p_dev);
-    ESP_ERR_PRINT_RET("Failed to initialize BLE Relay Elements", err);
-#endif /* CONFIG_RELAY_SERVER_COUNT */
-
-#if CONFIG_RELAY_CLIENT_COUNT
-    err = create_relay_client_elements(p_dev);
-    ESP_ERR_PRINT_RET("Failed to initialize BLE Relay Client Elements", err);
-#endif /* CONFIG_RELAY_CLIENT_COUNT */
-
-#if CONFIG_LIGHT_CWWW_SRV_COUNT
-    err = create_cwww_elements(p_dev);
-    ESP_ERR_PRINT_RET("Failed to initialize CWWW Elements", err);
-#endif /* CONFIG_LIGHT_CWWW_SRV_COUNT */
-
-#if CONFIG_LIGHT_CWWW_CLIENT_COUNT
-    err = create_cwww_client_elements(p_dev);
-    ESP_ERR_PRINT_RET("Failed to initialize CWWW Client Elements", err);
-#endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */
-
-    ARG_UNUSED(err);
-    ARG_UNUSED(p_dev);
+    for(uint16_t element_id = 0; element_id < config->element_comp_arr_len; element_id++)
+    {
+        if(config->element_comp_arr[element_id].element_cnt != 0)
+        {
+            err = element_comp_fn[config->element_comp_arr[element_id].type](p_dev, config->element_comp_arr[element_id].element_cnt);
+            if(err)
+            {
+                ESP_LOGE(TAG, "Element composition failed: (%d)", err);
+                return err;
+            }
+        }
+    }
 
 #endif /* CONFIG_MAX_ELEMENT_COUNT */
-    return ESP_OK;
+    return err;
 }
