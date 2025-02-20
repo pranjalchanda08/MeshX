@@ -116,7 +116,7 @@ static void cwww_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
  */
 static esp_err_t meshx_element_struct_init(uint16_t n_max)
 {
-    cwww_element_init_ctrl.model_cnt = n_max;
+    cwww_element_init_ctrl.element_cnt = n_max;
     cwww_element_init_ctrl.element_id_end = 0;
     cwww_element_init_ctrl.element_id_start = 0;
 
@@ -530,18 +530,20 @@ static esp_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, contro
  * This function creates the CW-WW elements for the specified device.
  *
  * @param pdev Pointer to the device structure.
+ * @param element_cnt Maximum number of CW-WW elements.
+ *
  * @return ESP_OK on success, or an error code on failure.
  */
-esp_err_t create_cwww_elements(dev_struct_t *pdev)
+esp_err_t create_cwww_elements(dev_struct_t *pdev, uint16_t element_cnt)
 {
     esp_err_t err;
-    err = dev_create_cwww_model_space(CONFIG_LIGHT_CWWW_SRV_COUNT);
+    err = dev_create_cwww_model_space(element_cnt);
     if (err)
     {
         ESP_LOGE(TAG, "CWWW Model create failed: (%d)", err);
         return err;
     }
-    err = dev_add_cwww_srv_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, CONFIG_LIGHT_CWWW_SRV_COUNT);
+    err = dev_add_cwww_srv_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, element_cnt);
     if (err)
     {
         ESP_LOGE(TAG, "CWWW Model create failed: (%d)", err);

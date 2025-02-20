@@ -113,7 +113,7 @@ static void relay_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
 static esp_err_t meshx_element_struct_init(uint16_t n_max)
 {
 
-    relay_element_init_ctrl.model_cnt = n_max;
+    relay_element_init_ctrl.element_cnt = n_max;
     relay_element_init_ctrl.element_id_end = 0;
     relay_element_init_ctrl.element_id_start = 0;
 
@@ -409,18 +409,20 @@ static esp_err_t relay_prov_control_task_handler(dev_struct_t const *pdev, contr
  * Initializes and registers relay elements in the BLE Mesh network.
  *
  * @param pdev Pointer to the device structure.
+ * @param element_cnt Maximum number of relay elements.
+ *
  * @return ESP_OK on success, error code otherwise.
  */
-esp_err_t create_relay_elements(dev_struct_t *pdev)
+esp_err_t create_relay_elements(dev_struct_t *pdev, uint16_t element_cnt)
 {
     esp_err_t err;
-    err = dev_create_relay_model_space(CONFIG_RELAY_SERVER_COUNT);
+    err = dev_create_relay_model_space(element_cnt);
     if (err)
     {
         ESP_LOGE(TAG, "Relay Model create failed: (%d)", err);
         return err;
     }
-    err = dev_add_relay_srv_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, CONFIG_RELAY_SERVER_COUNT);
+    err = dev_add_relay_srv_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, element_cnt);
     if (err)
     {
         ESP_LOGE(TAG, "Relay Model create failed: (%d)", err);

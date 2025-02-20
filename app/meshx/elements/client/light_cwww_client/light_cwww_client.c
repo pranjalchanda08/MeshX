@@ -455,7 +455,7 @@ static esp_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv
 static esp_err_t meshx_element_struct_init(uint16_t n_max)
 {
 
-    cwww_client_element_init_ctrl.model_cnt = n_max;
+    cwww_client_element_init_ctrl.element_cnt = n_max;
     cwww_client_element_init_ctrl.element_id_end = 0;
     cwww_client_element_init_ctrl.element_id_start = 0;
 
@@ -703,22 +703,23 @@ static esp_err_t dev_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, uint
 /**
  * @brief Create Dynamic Light CWWW Elements
  *
- * @param[in]       pdev    Pointer to device structure
+ * @param[in] pdev          Pointer to device structure
+ * @param[in] element_cnt   Number of elements to be created
  *
  * @return esp_err_t
  */
-esp_err_t create_cwww_client_elements(dev_struct_t *pdev)
+esp_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
 {
     esp_err_t err;
 
-    err = dev_create_cwww_model_space(pdev, CONFIG_LIGHT_CWWW_CLIENT_COUNT);
+    err = dev_create_cwww_model_space(pdev, element_cnt);
     if (err)
     {
         ESP_LOGE(TAG, "CWWW Model space create failed: (%d)", err);
         return err;
     }
 
-    err = dev_add_cwww_cli_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, CONFIG_LIGHT_CWWW_CLIENT_COUNT);
+    err = dev_add_cwww_cli_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, element_cnt);
     if (err)
     {
         ESP_LOGE(TAG, "CWWW Model add to element create failed: (%d)", err);
