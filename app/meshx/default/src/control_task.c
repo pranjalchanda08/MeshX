@@ -143,7 +143,7 @@ static esp_err_t control_task_msg_dispatch(
         return ESP_ERR_INVALID_STATE;
     }
 
-    ESP_LOGI(TAG, "msg|evt: %p|%p", (void*) msg_code, (void*) evt);
+    ESP_LOGD(TAG, "msg|evt: %p|%p", (void*) msg_code, (void*) evt);
 
     while (ptr) {
         if ((evt & ptr->msg_evt_bmap) && (ptr->cb != NULL)) {
