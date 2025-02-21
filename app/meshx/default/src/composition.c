@@ -62,10 +62,18 @@ static prov_params_t prod_prov_cfg;
 typedef esp_err_t (*element_comp_fn_t)(dev_struct_t *pdev, uint16_t element_cnt);
 
 static element_comp_fn_t element_comp_fn [MESHX_ELEMENT_TYPE_MAX] = {
+#if CONFIG_RELAY_SERVER_COUNT
     [MESHX_ELEMENT_TYPE_RELAY_SERVER]       = &create_relay_elements,
+#endif /* CONFIG_RELAY_SERVER_COUNT */
+#if CONFIG_RELAY_CLIENT_COUNT
     [MESHX_ELEMENT_TYPE_RELAY_CLIENT]       = &create_relay_client_elements,
-    [MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT]  = &create_cwww_client_elements,
+#endif /* CONFIG_RELAY_CLIENT_COUNT */
+#if CONFIG_LIGHT_CWWW_SRV_COUNT
     [MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER]  = &create_cwww_elements,
+#endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */
+#if CONFIG_LIGHT_CWWW_CLIENT_COUNT
+    [MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT]  = &create_cwww_client_elements,
+#endif /* CONFIG_LIGHT_CWWW_SRV_COUNT */
 };
 
 #if CONFIG_ENABLE_LIGHT_CTL_SERVER

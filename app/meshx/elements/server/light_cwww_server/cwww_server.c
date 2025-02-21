@@ -10,6 +10,7 @@
 
 #include <cwww_server_element.h>
 #include <meshx_nvs.h>
+#include <meshx_api.h>
 
 #if CONFIG_LIGHT_CWWW_SRV_COUNT > 0
 
@@ -428,6 +429,8 @@ static esp_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, control
     uint16_t element_id = 0;
     size_t rel_el_id;
     cwww_server_ctx_t *el_ctx = NULL;
+    meshx_el_light_cwww_server_evt_t app_msg;
+    cwww_sig_id_t sig_func = CWWW_SIG_ONOFF_MODEL_ID;
 
     switch (evt) {
         case CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF:
@@ -438,6 +441,9 @@ static esp_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, control
             rel_el_id = GET_RELATIVE_EL_IDX(element_id);
             el_ctx = &cwww_element_init_ctrl.cwww_server_ctx[rel_el_id];
             el_ctx->state = p_onoff_srv->state.onoff;
+
+            sig_func = CWWW_SIG_ONOFF_MODEL_ID;
+            app_msg.state_change.on_off.state = el_ctx->state;
             break;
         }
         case CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL:
@@ -452,6 +458,13 @@ static esp_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, control
             el_ctx->temperature = p_ctl_srv->state->temperature;
             el_ctx->temp_range_min = p_ctl_srv->state->temperature_range_min;
             el_ctx->temp_range_max = p_ctl_srv->state->temperature_range_max;
+
+            sig_func = CWWW_SIG_L_CTL_MODEL_ID;
+            app_msg.state_change.ctl.delta_uv = el_ctx->delta_uv;
+            app_msg.state_change.ctl.lightness = el_ctx->lightness;
+            app_msg.state_change.ctl.temperature = el_ctx->temperature;
+            app_msg.state_change.ctl.temp_range_min = el_ctx->temp_range_min;
+            app_msg.state_change.ctl.temp_range_max = el_ctx->temp_range_max;
             break;
         }
         default:
@@ -460,9 +473,11 @@ static esp_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, control
 
     err = meshx_nvs_elemnt_ctx_set(element_id, el_ctx, sizeof(cwww_server_ctx_t));
     if (err != ESP_OK)
-    {
         ESP_LOGE(TAG, "Failed to set relay element context: (%d)", err);
-    }
+
+    err = meshx_send_msg_to_app(element_id, MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER, (uint16_t) sig_func, sizeof(meshx_el_light_cwww_server_evt_t), &app_msg);
+    if (err != ESP_OK)
+        ESP_LOGE(TAG, "Failed to send relay state change message: (%d)", err);
 
 el_ctrl_task_hndlr_exit:
     return ESP_OK;

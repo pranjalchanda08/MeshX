@@ -67,6 +67,12 @@ typedef enum PACKED_ATTR
  */
 typedef uint32_t control_task_msg_evt_t;
 
+typedef enum PACKED_ATTR
+{
+    CONTROL_TASK_MSG_EVT_DATA = BIT0,   /**< Data message */
+    CONTROL_TASK_MSG_EVT_CTRL = BIT1,   /**< Control message */
+    CONTROL_TASK_MSG_EVT_MAX,           /**< Maximum event value */
+} control_task_msg_evt_to_app_meshx_t;
 /**
  * @brief Enumeration for control task message events to HAL.
  */
