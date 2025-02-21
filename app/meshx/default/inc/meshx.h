@@ -11,6 +11,7 @@
 #include <app_common.h>
 #include <os_timer.h>
 #include <meshx_nvs.h>
+#include <meshx_api.h>
 
 #if CONFIG_ENABLE_UNIT_TEST
 #include <unit_test.h>
@@ -24,17 +25,21 @@
 #include <config_server.h>
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
-#if CONFIG_GEN_ONOFF_SERVER_COUNT
-#include <prod_onoff_server.h>
-#endif /* CONFIG_GEN_ONOFF_SERVER_COUNT */
+#if CONFIG_RELAY_SERVER_COUNT
+#include <relay_server_element.h>
+#endif /* CONFIG_RELAY_SERVER_COUNT */
 
-#if CONFIG_GEN_ONOFF_CLIENT_COUNT
-#include <prod_onoff_client.h>
-#endif /* CONFIG_GEN_ONOFF_CLIENT_COUNT */
+#if CONFIG_RELAY_CLIENT_COUNT
+#include <relay_client_element.h>
+#endif /* CONFIG_RELAY_CLIENT_COUNT */
 
-#if CONFIG_ENABLE_LIGHT_CTL_SERVER
-#include <prod_light_ctl_srv.h>
-#endif /* CONFIG_ENABLE_LIGHT_CTL_SERVER */
+#if CONFIG_LIGHT_CWWW_SRV_COUNT
+#include <cwww_server_element.h>
+#endif /* CONFIG_LIGHT_CWWW_SRV_COUNT */
+
+#if CONFIG_LIGHT_CWWW_CLIENT_COUNT
+#include <light_cwww_client.h>
+#endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */
 
 #define ESP_ERR_PRINT_RET(_e_str, _err)            \
     if (_err != ESP_OK)                            \
@@ -44,15 +49,6 @@
     }
 
 #define CID_ESP CONFIG_CID_ID
-
-typedef enum meshx_element_type
-{
-    MESHX_ELEMENT_TYPE_RELAY_SERVER,
-    MESHX_ELEMENT_TYPE_RELAY_CLIENT,
-    MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER,
-    MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT,
-    MESHX_ELEMENT_TYPE_MAX
-}meshx_element_type_t;
 
 typedef struct element_comp
 {
