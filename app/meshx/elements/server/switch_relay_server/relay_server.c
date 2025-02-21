@@ -10,6 +10,7 @@
 
 #include "relay_server_element.h"
 #include "meshx_nvs.h"
+#include "meshx_api.h"
 
 #if CONFIG_RELAY_SERVER_COUNT > 0
 
@@ -339,7 +340,7 @@ static esp_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, control
     esp_err_t err = ESP_OK;
     relay_srv_model_ctx_t *el_ctx = NULL;
     esp_ble_mesh_gen_onoff_srv_t const *p_onoff_srv = (esp_ble_mesh_gen_onoff_srv_t*) params;
-
+    meshx_el_relay_server_evt_t state;
     uint16_t element_id = p_onoff_srv->model->element_idx;
 
     if (!IS_EL_IN_RANGE(element_id))
@@ -353,9 +354,13 @@ static esp_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, control
 
     err = meshx_nvs_elemnt_ctx_set(element_id, el_ctx, sizeof(relay_srv_model_ctx_t));
     if (err != ESP_OK)
-    {
         ESP_LOGE(TAG, "Failed to set relay element context: (%d)", err);
-    }
+
+    state.on_off = el_ctx->state;
+    err = meshx_send_msg_to_app(element_id, MESHX_ELEMENT_TYPE_RELAY_SERVER, RELAY_SIG_ONOFF_MODEL_ID, sizeof(meshx_el_relay_server_evt_t), &state);
+    if (err != ESP_OK)
+        ESP_LOGE(TAG, "Failed to send relay state change message: (%d)", err);
+
     return ESP_OK;
 }
 

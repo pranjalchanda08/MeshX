@@ -11,10 +11,13 @@
 #include <meshx_api.h>
 #include <control_task.h>
 
+#define MESSAGE_BUFF_CLEAR(buff)        memset(&buff, 0, sizeof(buff))
+
 static struct{
 
-    meshx_app_cb app_cb;
-    char msg_buff[MESHX_APP_API_MSG_MAX_SIZE];
+    meshx_app_data_cb_t app_data_cb;    /**< BLE Mesh application data callback */
+    meshx_app_ctrl_cb_t app_ctrl_cb;    /**< BLE Mesh application control callback */
+    meshx_app_api_msg_t msg_buff;       /**< BLE Mesh application message buffer */
 }meshx_api_ctrl;
 
 /**
@@ -30,23 +33,50 @@ static struct{
  */
 static esp_err_t meshx_el_control_task_handler(const dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)
 {
-    meshx_app_api_msg_header_t *msg_hdr = (meshx_app_api_msg_header_t *)params;
-    void *msg = msg_hdr + sizeof(meshx_app_api_msg_header_t);
+    meshx_app_api_msg_t *msg = (meshx_app_api_msg_t *)params;
 
     esp_err_t err = ESP_OK;
 
-    if (!pdev || !msg_hdr)
-    {
+    if (!pdev)
         return ESP_ERR_INVALID_ARG;
-    }
 
-    if (meshx_api_ctrl.app_cb)
-    {
-        err = meshx_api_ctrl.app_cb(msg_hdr, msg);
-    }
+    if(evt == CONTROL_TASK_MSG_EVT_DATA)
+        err = meshx_api_ctrl.app_data_cb ? meshx_api_ctrl.app_data_cb(&msg->msg_type_u.element_msg, msg->payload_u.data) : ESP_OK;
 
-    ESP_UNUSED(evt);
+    else
+        err = meshx_api_ctrl.app_ctrl_cb ? meshx_api_ctrl.app_ctrl_cb(&msg->msg_type_u.ctrl_msg, msg->payload_u.data) : ESP_OK;
+
     return err;
+}
+
+/**
+ * @brief Prepares a message to be sent to the BLE Mesh application.
+ *
+ * This function prepares a message to be sent to the BLE Mesh application.
+ *
+ * @param[in] element_id    The element ID.
+ * @param[in] element_type  The element type.
+ * @param[in] func_id       The function ID.
+ * @param[in] msg_len       The message length.
+ * @param[in] msg           Pointer to the message.
+ *
+ * @return ESP_OK on success, error code otherwise.
+ */
+static esp_err_t meshx_prepare_data_message(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg)
+{
+    if (!msg || msg_len > MESHX_APP_API_MSG_MAX_SIZE)
+        return ESP_ERR_INVALID_ARG;
+
+    MESSAGE_BUFF_CLEAR(meshx_api_ctrl.msg_buff);
+
+    meshx_api_ctrl.msg_buff.msg_type_u.element_msg.func_id = func_id;
+    meshx_api_ctrl.msg_buff.msg_type_u.element_msg.msg_len = msg_len;
+    meshx_api_ctrl.msg_buff.msg_type_u.element_msg.element_id = element_id;
+    meshx_api_ctrl.msg_buff.msg_type_u.element_msg.element_type = element_type;
+
+    memcpy(meshx_api_ctrl.msg_buff.payload_u.data, msg, msg_len);
+
+    return ESP_OK;
 }
 
 /**
@@ -62,29 +92,46 @@ static esp_err_t meshx_el_control_task_handler(const dev_struct_t *pdev, control
  *
  * @return ESP_OK on success, error code otherwise.
  */
-esp_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, void *msg)
+esp_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg)
 {
     esp_err_t err = ESP_OK;
 
-    if(!msg || msg_len > MESHX_APP_API_MSG_MAX_SIZE)
-        return ESP_ERR_INVALID_ARG;
-
-    meshx_app_api_msg_header_t msg_hdr = {
-        .func_id = func_id,
-        .msg_len = msg_len,
-        .elemment_id = element_id,
-        .element_type = element_type,
-    };
-
-    memset(meshx_api_ctrl.msg_buff, 0, MESHX_APP_API_MSG_MAX_SIZE);
-    memcpy(meshx_api_ctrl.msg_buff, &msg_hdr, sizeof(meshx_app_api_msg_header_t));
-    memcpy(meshx_api_ctrl.msg_buff + sizeof(meshx_app_api_msg_header_t), msg, msg_len);
-
-    err = control_task_publish(CONTROL_TASK_MSG_CODE_TO_APP, UINT32_MAX, meshx_api_ctrl.msg_buff, msg_len + sizeof(meshx_app_api_msg_header_t));
+    err = meshx_prepare_data_message(element_id, element_type, func_id, msg_len,msg);
     if(err)
-    {
-        ESP_LOGE(TAG, "Failed to send message to app: (%d)", err);
-    }
+        ESP_LOGE(TAG, "Failed to create message: (0x%x)", err);
+
+    err = control_task_publish(CONTROL_TASK_MSG_CODE_TO_APP, CONTROL_TASK_MSG_EVT_DATA, &meshx_api_ctrl.msg_buff, sizeof(meshx_app_api_msg_t));
+    if(err)
+        ESP_LOGE(TAG, "Failed to send message to app: (0x%x)", err);
+
+    return err;
+}
+
+/**
+ * @brief Sends a message to the element
+ *
+ * This function sends a message to the element from BLE mesh Application.
+ * Majorly used to send message to BLE Mesh Element Client
+ *
+ * @param[in] element_id    The element ID.
+ * @param[in] element_type  The element type.
+ * @param[in] func_id       The function ID.
+ * @param[in] msg_len       The message length.
+ * @param[in] msg           Pointer to the message.
+ *
+ * @return ESP_OK on success, error code otherwise.
+ */
+esp_err_t meshx_send_msg_to_element(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg)
+{
+    esp_err_t err = ESP_OK;
+
+    err = meshx_prepare_data_message(element_id, element_type, func_id, msg_len,msg);
+    if(err)
+        ESP_LOGE(TAG, "Failed to create message: (0x%x)", err);
+
+    err = control_task_publish(CONTROL_TASK_MSG_CODE_TO_MESHX, CONTROL_TASK_MSG_EVT_DATA, &meshx_api_ctrl.msg_buff, sizeof(meshx_app_api_msg_t));
+    if(err)
+        ESP_LOGE(TAG, "Failed to send message to app: (0x%x)", err);
 
     return err;
 }
@@ -93,17 +140,19 @@ esp_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, uint
  * @brief Registers the BLE Mesh application callback.
  *
  * This function registers the BLE Mesh application callback.
+ * Shall be used to get event from BLE mesh Server Elements
  *
  * @param[in] cb Pointer to the application callback.
  *
  * @return ESP_OK on success, error code otherwise.
  */
-esp_err_t meshx_app_reg_element_callback(meshx_app_cb cb)
+esp_err_t meshx_app_reg_element_callback(meshx_app_data_cb_t cb)
 {
     esp_err_t err = ESP_OK;
+
     err = control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_TO_APP,
-        UINT32_MAX,
+        CONTROL_TASK_MSG_EVT_DATA,
         (control_task_msg_handle_t)&meshx_el_control_task_handler);
     if (err)
     {
@@ -111,7 +160,35 @@ esp_err_t meshx_app_reg_element_callback(meshx_app_cb cb)
         return err;
     }
 
-    meshx_api_ctrl.app_cb = cb;
+    meshx_api_ctrl.app_data_cb = cb;
+
+    return err;
+}
+
+/**
+ * @brief Registers the BLE Mesh application control callback.
+ *
+ * This function registers the BLE Mesh application control callback.
+ *
+ * @param[in] cb Pointer to the control callback.
+ *
+ * @return ESP_OK on success, error code otherwise.
+ */
+esp_err_t meshx_app_reg_system_events_callback(meshx_app_ctrl_cb_t cb)
+{
+    esp_err_t err = ESP_OK;
+
+    err = control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_TO_APP,
+        CONTROL_TASK_MSG_EVT_CTRL,
+        (control_task_msg_handle_t)&meshx_el_control_task_handler);
+    if (err)
+    {
+        ESP_LOGE(TAG, "Failed to register control task callback: (%d)", err);
+        return err;
+    }
+
+    meshx_api_ctrl.app_ctrl_cb = cb;
 
     return err;
 }
