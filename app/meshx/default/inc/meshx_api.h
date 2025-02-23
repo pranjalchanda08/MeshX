@@ -1,10 +1,21 @@
+/**
+ * @file meshx_api.h
+ * @brief This file contains the API definitions for the MeshX application.
+ *
+ * The MeshX API provides functions and structures to interact with the BLE Mesh application.
+ * It includes message types, payload structures, and callback function definitions.
+ *
+ * @author Pranjal Chanda
+ */
+
 #ifndef __MESHX_API_H__
 #define __MESHX_API_H__
 
 #include <app_common.h>
 #include <control_task.h>
+#include <meshx_elements.h>
 
-#define MESHX_APP_API_MSG_MAX_SIZE  32
+#define MESHX_APP_API_MSG_MAX_SIZE  sizeof(meshx_data_payload_t)
 
 /* MeshX Function ID Relay Server */
 #define MESHX_ELEMENT_FUNC_ID_RELAY_SERVER_ONN_OFF          0x00
@@ -36,15 +47,17 @@ typedef enum meshx_element_type
 
 /**
  * @brief Structure defines the payload for MESHX_ELEMENT_TYPE_RELAY_SERVER
-*/
-typedef struct meshx_el_relay_server_evt{
+ */
+typedef struct meshx_el_relay_server_evt
+{
    uint8_t on_off;
 }meshx_el_relay_server_evt_t;
 
 /**
  * @brief Structure defines the payload for MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER
-*/
-typedef struct meshx_el_light_cwww_server_evt{
+ */
+typedef struct meshx_el_light_cwww_server_evt
+{
     union
     {
         struct
@@ -65,16 +78,39 @@ typedef struct meshx_el_light_cwww_server_evt{
 /**
  * @brief Structure defines the payload for MESHX_ELEMENT_TYPE_RELAY_CLIENT
  */
-typedef struct meshx_el_relay_client_state{
+typedef struct meshx_el_relay_client_state
+{
    uint8_t err_code;
 }meshx_el_relay_client_evt_t;
 
 /**
- * @brief Structure defines the payload for MESHX_ELEMENT_TYPE_RELAY_CLIENT
+ * @brief Structure defines the payload for MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT
  */
-typedef struct meshx_el_light_cwww_client_evt{
+typedef struct meshx_el_light_cwww_client_evt
+{
    uint8_t err_code;
 }meshx_el_light_cwww_client_evt_t;
+/**
+ * @brief Structure for the BLE Mesh application control message.
+ *
+ * This structure defines the BLE Mesh application control payloads.
+ *
+ */
+typedef union meshx_data_payload
+{
+    meshx_el_relay_client_evt_t relay_client_evt;
+    meshx_el_relay_server_evt_t relay_server_evt;
+    meshx_el_light_cwww_client_evt_t light_cwww_client_evt;
+    meshx_el_light_cwww_server_evt_t light_cwww_server_evt;
+} meshx_data_payload_t;
+
+/**
+ * @brief Structure defines the payload for meshx_ctrl_payload
+ */
+typedef union meshx_ctrl_payload
+{
+    uint32_t reserved;
+} meshx_ctrl_payload_t;
 
 /**
  * @brief Structure for the BLE Mesh application element message header.
@@ -82,7 +118,8 @@ typedef struct meshx_el_light_cwww_client_evt{
  * This structure defines the header for BLE Mesh application element messages.
  *
  */
-typedef struct meshx_app_element_msg_header{
+typedef struct meshx_app_element_msg_header
+{
     uint16_t element_id;               /* Element ID */
     uint16_t element_type;             /* meshx_element_type_t */
     uint16_t func_id;                  /* Functionality number */
@@ -95,7 +132,8 @@ typedef struct meshx_app_element_msg_header{
  * This structure defines the header for BLE Mesh application control messages.
  *
  */
-typedef struct meshx_ctrl_msg_header{
+typedef struct meshx_ctrl_msg_header
+{
     uint16_t evt;                   /* Event */
     uint16_t reserved;              /* Reserved */
 }meshx_ctrl_msg_header_t;
@@ -106,21 +144,15 @@ typedef struct meshx_ctrl_msg_header{
  * This structure defines the BLE Mesh application API message.
  *
  */
-typedef struct meshx_app_api_msg{
+typedef struct meshx_app_api_msg
+{
     union
     {
         meshx_ctrl_msg_header_t ctrl_msg;
         meshx_app_element_msg_header_t element_msg;
     }msg_type_u;
 
-    union
-    {
-        uint8_t data[MESHX_APP_API_MSG_MAX_SIZE];
-        meshx_el_relay_client_evt_t relay_client_evt;
-        meshx_el_relay_server_evt_t relay_server_evt;
-        meshx_el_light_cwww_client_evt_t light_cwww_client_evt;
-        meshx_el_light_cwww_server_evt_t light_cwww_server_evt;
-    }payload_u;
+    uint8_t data[MESHX_APP_API_MSG_MAX_SIZE];
 }meshx_app_api_msg_t;
 
 /**
@@ -133,7 +165,7 @@ typedef struct meshx_app_api_msg{
  *
  * @return ESP_OK on success, error code otherwise.
  */
-typedef esp_err_t (*meshx_app_data_cb_t)(const meshx_app_element_msg_header_t *msg_hdr, const void *msg);
+typedef esp_err_t (*meshx_app_data_cb_t)(const meshx_app_element_msg_header_t *msg_hdr, const meshx_data_payload_t *msg);
 
 /**
  * @brief BLE Mesh application control callback function.
@@ -145,7 +177,7 @@ typedef esp_err_t (*meshx_app_data_cb_t)(const meshx_app_element_msg_header_t *m
  *
  * @return ESP_OK on success, error code otherwise.
  */
-typedef esp_err_t (*meshx_app_ctrl_cb_t)(const meshx_ctrl_msg_header_t *msg_hdr, const void *msg);
+typedef esp_err_t (*meshx_app_ctrl_cb_t)(const meshx_ctrl_msg_header_t *msg_hdr, const meshx_ctrl_payload_t *msg);
 
 /**
  * @brief Sends a message to the BLE Mesh application.
@@ -199,4 +231,4 @@ esp_err_t meshx_app_reg_element_callback(meshx_app_data_cb_t cb);
  */
 esp_err_t meshx_app_reg_system_events_callback(meshx_app_ctrl_cb_t cb);
 
-#endif // __MESHX_API_H__
+#endif /* __MESHX_API_H__ */
