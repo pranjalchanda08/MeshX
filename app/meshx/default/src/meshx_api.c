@@ -31,9 +31,9 @@ static struct{
  *
  * @return ESP_OK on success, error code otherwise.
  */
-static esp_err_t meshx_el_control_task_handler(const dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)
+static esp_err_t meshx_el_control_task_handler(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
 {
-    meshx_app_api_msg_t *msg = (meshx_app_api_msg_t *)params;
+    const meshx_app_api_msg_t *msg = (const meshx_app_api_msg_t *)params;
 
     esp_err_t err = ESP_OK;
 
@@ -41,10 +41,12 @@ static esp_err_t meshx_el_control_task_handler(const dev_struct_t *pdev, control
         return ESP_ERR_INVALID_ARG;
 
     if(evt == CONTROL_TASK_MSG_EVT_DATA)
-        err = meshx_api_ctrl.app_data_cb ? meshx_api_ctrl.app_data_cb(&msg->msg_type_u.element_msg, msg->payload_u.data) : ESP_OK;
+        err = meshx_api_ctrl.app_data_cb ? meshx_api_ctrl.app_data_cb(&msg->msg_type_u.element_msg,
+                (const meshx_data_payload_t*) msg->data) : ESP_OK;
 
     else
-        err = meshx_api_ctrl.app_ctrl_cb ? meshx_api_ctrl.app_ctrl_cb(&msg->msg_type_u.ctrl_msg, msg->payload_u.data) : ESP_OK;
+        err = meshx_api_ctrl.app_ctrl_cb ? meshx_api_ctrl.app_ctrl_cb(&msg->msg_type_u.ctrl_msg,
+                (const meshx_ctrl_payload_t*) msg->data) : ESP_OK;
 
     return err;
 }
@@ -74,7 +76,7 @@ static esp_err_t meshx_prepare_data_message(uint16_t element_id, uint16_t elemen
     meshx_api_ctrl.msg_buff.msg_type_u.element_msg.element_id = element_id;
     meshx_api_ctrl.msg_buff.msg_type_u.element_msg.element_type = element_type;
 
-    memcpy(meshx_api_ctrl.msg_buff.payload_u.data, msg, msg_len);
+    memcpy(meshx_api_ctrl.msg_buff.data, msg, msg_len);
 
     return ESP_OK;
 }
