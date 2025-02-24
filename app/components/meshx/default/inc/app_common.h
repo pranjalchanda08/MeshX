@@ -44,9 +44,23 @@ typedef struct meshx_app_store
  */
 typedef struct dev_struct
 {
-    uint8_t uuid[16];               /**< Device UUID */
-    size_t element_idx;             /**< Index of the current element */
-    meshx_app_store_t meshx_store;  /**< Mesh application store */
-    esp_ble_mesh_comp_t composition; /**< Device composition */
+    uint8_t uuid[16];                          /**< Device UUID */
+    size_t element_idx;                        /**< Index of the current element */
+    meshx_app_store_t meshx_store;             /**< Mesh application store */
+    esp_ble_mesh_comp_t composition;           /**< Device composition */
     esp_ble_mesh_elem_t elements[MAX_ELE_CNT]; /**< Array of elements */
 } dev_struct_t;
+
+typedef esp_err_t (*element_comp_fn_t)(dev_struct_t *pdev, uint16_t element_cnt);
+
+typedef struct element_comp_table
+{
+    uint8_t idx;
+    element_comp_fn_t element_comp_fn;
+} element_comp_table_t;
+
+#define REG_MESHX_ELEMENT_FN(_name, _type, _fn)                      \
+    __section(".element_table") const element_comp_table_t _name = { \
+        .idx = _type,                                                \
+        .element_comp_fn = &_fn,                                     \
+    }

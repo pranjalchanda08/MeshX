@@ -16,4 +16,5 @@ set(SRCSX
 
 idf_component_register( SRCS ${SRCSX}
                         INCLUDE_DIRS "${INC_DIRS}"
+                        REQUIRES meshx
                     )

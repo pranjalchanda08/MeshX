@@ -468,4 +468,7 @@ esp_err_t create_relay_elements(dev_struct_t *pdev, uint16_t element_cnt)
     }
     return ESP_OK;
 }
+
+REG_MESHX_ELEMENT_FN(relay_srv_el, MESHX_ELEMENT_TYPE_RELAY_SERVER, create_relay_elements);
+
 #endif /* CONFIG_RELAY_SERVER_COUNT > 0 */

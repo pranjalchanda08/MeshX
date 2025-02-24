@@ -610,4 +610,7 @@ esp_err_t create_cwww_elements(dev_struct_t *pdev, uint16_t element_cnt)
     }
     return ESP_OK;
 }
+
+REG_MESHX_ELEMENT_FN(cwww_srv_el, MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER, create_cwww_elements);
+
 #endif /* CONFIG_LIGHT_CWWW_SRV_COUNT > 0*/
