@@ -25,6 +25,10 @@
 #include <unit_test.h>
 #endif /* CONFIG_ENABLE_UNIT_TEST */
 
+#ifndef CONFIG_SECTION_ENABLE_ELEMENT_TABLE
+#define CONFIG_SECTION_ENABLE_ELEMENT_TABLE 0
+#endif /* CONFIG_SECTION_ENABLE_ELEMENT_TABLE */
+
 #define TAG __func__
 
 #define MAX_ELE_CNT CONFIG_MAX_ELEMENT_COUNT
@@ -59,8 +63,11 @@ typedef struct element_comp_table
     element_comp_fn_t element_comp_fn;
 } element_comp_table_t;
 
+#if CONFIG_SECTION_ENABLE_ELEMENT_TABLE
+
 #define REG_MESHX_ELEMENT_FN(_name, _type, _fn)                      \
     __section(".element_table") const element_comp_table_t _name = { \
         .idx = _type,                                                \
         .element_comp_fn = &_fn,                                     \
     }
+#endif
