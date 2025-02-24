@@ -59,15 +59,17 @@
 static prov_params_t prod_prov_cfg;
 #endif
 
+#if CONFIG_SECTION_ENABLE_ELEMENT_TABLE
 #define MESHX_ELEMENT_COMP_TABLE_START  _element_table_start
 #define MESHX_ELEMENT_COMP_TABLE_STOP   _element_table_end
 
 extern element_comp_table_t MESHX_ELEMENT_COMP_TABLE_START;
 extern element_comp_table_t MESHX_ELEMENT_COMP_TABLE_STOP;
 
-__section(".element_table") const element_comp_table_t element_comp = {0, &create_relay_elements};
-#if 0
-__section(".element_table") element_comp_fn_t element_comp_fn [MESHX_ELEMENT_TYPE_MAX] = {
+#else
+
+element_comp_fn_t element_comp_fn [MESHX_ELEMENT_TYPE_MAX] =
+{
 #if CONFIG_RELAY_SERVER_COUNT
     [MESHX_ELEMENT_TYPE_RELAY_SERVER]       = &create_relay_elements,
 #endif /* CONFIG_RELAY_SERVER_COUNT */
@@ -81,7 +83,9 @@ __section(".element_table") element_comp_fn_t element_comp_fn [MESHX_ELEMENT_TYP
     [MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT]  = &create_cwww_client_elements,
 #endif /* CONFIG_LIGHT_CWWW_SRV_COUNT */
 };
-#endif
+
+#endif /* CONFIG_SECTION_ENABLE_ELEMENT_TABLE */
+
 
 #if CONFIG_ENABLE_LIGHT_CTL_SERVER
 /** Light CTL state. */
@@ -175,7 +179,9 @@ esp_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_config_
 {
 #if CONFIG_MAX_ELEMENT_COUNT > 0
     esp_err_t err;
-
+#if CONFIG_SECTION_ENABLE_ELEMENT_TABLE
+    element_comp_table_t *element_comp_table;
+#endif /* CONFIG_SECTION_ENABLE_ELEMENT_TABLE */
     if(!p_dev || !config || !config->element_comp_arr_len || !config->element_comp_arr)
         return ESP_ERR_INVALID_ARG;
 
@@ -192,9 +198,9 @@ esp_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_config_
 
     err = prod_init_config_server();
     ESP_ERR_PRINT_RET("Failed to initialize config server", err);
-#if 0
     for(uint16_t element_id = 0; element_id < config->element_comp_arr_len; element_id++)
     {
+#if !CONFIG_SECTION_ENABLE_ELEMENT_TABLE
         if(config->element_comp_arr[element_id].element_cnt != 0)
         {
             err = element_comp_fn[config->element_comp_arr[element_id].type](p_dev, config->element_comp_arr[element_id].element_cnt);
@@ -204,26 +210,23 @@ esp_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_config_
                 return err;
             }
         }
-    }
-#endif
-    unsigned int start = (uint32_t)&MESHX_ELEMENT_COMP_TABLE_START;
-    unsigned int end = (uint32_t)&MESHX_ELEMENT_COMP_TABLE_STOP;
-    ESP_LOGI(TAG, "%x %x", start, end);
-
-    for (uint16_t element_id = 0; element_id < config->element_comp_arr_len; element_id++)
-    {
-        const element_comp_table_t *element_comp_table = (element_comp_table_t *)start;
-        while (element_comp_table < (element_comp_table_t *)end)
+#else
+        element_comp_table = &MESHX_ELEMENT_COMP_TABLE_START;
+        while(element_comp_table < &MESHX_ELEMENT_COMP_TABLE_STOP)
         {
-            if (config->element_comp_arr[element_id].element_cnt != 0)
+            if(element_comp_table->idx == element_id && config->element_comp_arr[element_id].element_cnt != 0)
             {
                 err = element_comp_table->element_comp_fn(p_dev, config->element_comp_arr[element_id].element_cnt);
-                ESP_ERR_PRINT_RET("Element composition failed", err);
+                if(err)
+                {
+                    ESP_LOGE(TAG, "Element composition failed: (%d)", err);
+                    return err;
+                }
             }
             element_comp_table++;
         }
+#endif /* CONFIG_SECTION_ENABLE_ELEMENT_TABLE */
     }
-
 #endif /* CONFIG_MAX_ELEMENT_COUNT */
     return err;
 }
