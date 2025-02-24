@@ -227,7 +227,7 @@ esp_err_t prod_light_ctl_temperature_send_msg(light_ctl_send_args_t * params)
     common.msg_role = ROLE_NODE;
 #endif
 
-    if(params->opcode != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_GET)
+    if(params->opcode != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET)
     {
         set.ctl_temperature_set.op_en           = false;
         set.ctl_temperature_set.tid             = params->tid;
@@ -241,8 +241,12 @@ esp_err_t prod_light_ctl_temperature_send_msg(light_ctl_send_args_t * params)
         }
     }
     else{
-        /* TODO: Issue: #14 */
-        err = ESP_ERR_NOT_SUPPORTED;
+        err = esp_ble_mesh_client_model_send_msg(common.model, &common.ctx, common.opcode, 0, NULL, 0, true, ROLE_NODE);
+        if (err)
+        {
+            ESP_LOGE(TAG, "Send Generic OnOff failed");
+            return err;
+        }
     }
     return err;
 }
