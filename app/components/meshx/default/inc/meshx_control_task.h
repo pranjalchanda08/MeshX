@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file control_task.h
+ * @file meshx_control_task.h
  * @brief Header file for the control task in the BLE mesh node application.
  *
  * This file contains the definitions and function prototypes for the control task,
@@ -10,8 +10,8 @@
  * @author Pranjal Chanda
  */
 
-#ifndef __CONTROL_TASK_H__
-#define __CONTROL_TASK_H__
+#ifndef __MESHX_CONTROL_TASK__
+#define __MESHX_CONTROL_TASK__
 
 #include "stdio.h"
 #include "string.h"
@@ -25,7 +25,7 @@
 /**
  * @brief Control task name configuration.
  */
-#define CONFIG_CONTROL_TASK_NAME "control_task"
+#define CONFIG_CONTROL_TASK_NAME "meshx_control_task"
 
 /**
  * @brief Control task priority configuration.
@@ -201,4 +201,4 @@ esp_err_t control_task_publish(control_task_msg_code_t msg_code,
                                 const void *msg_evt_params,
                                 size_t sizeof_msg_evt_params);
 
-#endif /* __CONTROL_TASK_H__ */
+#endif /* __MESHX_CONTROL_TASK__ */

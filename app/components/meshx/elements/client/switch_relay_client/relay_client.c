@@ -17,7 +17,7 @@
  * @auther: Pranjal Chanda
  */
 #include "app_common.h"
-#include "control_task.h"
+#include "meshx_control_task.h"
 #include "meshx_nvs.h"
 #include "meshx_api.h"
 
@@ -29,9 +29,9 @@
 #define CONFIG_SERVER_CB_MASK CONFIG_EVT_MODEL_PUB_ADD | CONFIG_EVT_MODEL_SUB_ADD | CONFIG_EVT_MODEL_APP_KEY_BIND
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
-#if defined(__CONTROL_TASK_H__)
+#if defined(__MESHX_CONTROL_TASK__)
 #define CONTROL_TASK_MSG_CODE_EVT_MASK CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF
-#endif /* __CONTROL_TASK_H__ */
+#endif /* __MESHX_CONTROL_TASK__ */
 
 #define RELAY_CLI_PROD_ONOFF_ENABLE_CB true
 #define CONFIG_RELAY_PROD_ONOFF_SET_ACK true
@@ -352,7 +352,7 @@ static void relay_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
 }
 #endif /* #if CONFIG_ENABLE_CONFIG_SERVER */
 
-#if defined(__CONTROL_TASK_H__)
+#if defined(__MESHX_CONTROL_TASK__)
 /**
  * @brief Relay Client Control Task Message Handler
  *
@@ -384,7 +384,7 @@ static esp_err_t relay_cli_control_task_msg_handle(dev_struct_t *pdev, control_t
     }
     return err;
 }
-#endif /* __CONTROL_TASK_H__ */
+#endif /* __MESHX_CONTROL_TASK__ */
 #if CONFIG_ENABLE_UNIT_TEST
 typedef enum
 {
@@ -540,7 +540,7 @@ esp_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
         return err;
     }
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
-#if defined(__CONTROL_TASK_H__)
+#if defined(__MESHX_CONTROL_TASK__)
     err = control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_TO_BLE,
         CONTROL_TASK_MSG_CODE_EVT_MASK,
@@ -550,7 +550,7 @@ esp_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
         ESP_LOGE(TAG, "control task callback reg failed: (%d)", err);
         return err;
     }
-#endif /* __CONTROL_TASK_H__ */
+#endif /* __MESHX_CONTROL_TASK__ */
 #if CONFIG_ENABLE_UNIT_TEST
     err = register_unit_test(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, &relay_cli_unit_test_cb_handler);
     if (err)

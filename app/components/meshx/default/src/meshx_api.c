@@ -9,7 +9,7 @@
  * @author Pranjal Chanda
  */
 #include <meshx_api.h>
-#include <control_task.h>
+#include <meshx_control_task.h>
 
 #define MESSAGE_BUFF_CLEAR(buff)        memset(&buff, 0, sizeof(buff))
 

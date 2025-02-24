@@ -14,7 +14,7 @@
 
 #include "app_common.h"
 #include "prod_gen_server.h"
-#include "control_task.h"
+#include "meshx_control_task.h"
 
 /**
  * @brief Initialize the On/Off Server model.
