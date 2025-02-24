@@ -177,8 +177,12 @@ esp_err_t prod_light_ctl_send_msg(light_ctl_send_args_t * params)
         send_msg = true;
     }
     else{
-        /* TODO: Issue: #14 */
-        err = ESP_ERR_NOT_SUPPORTED;
+        err = esp_ble_mesh_client_model_send_msg(common.model, &common.ctx, common.opcode, 0, NULL, 0, true, ROLE_NODE);
+        if (err)
+        {
+            ESP_LOGE(TAG, "Send Generic OnOff failed");
+            return err;
+        }
     }
     if(send_msg)
     {
