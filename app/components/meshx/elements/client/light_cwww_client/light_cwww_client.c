@@ -38,9 +38,9 @@ __section(".element_table") const element_comp_table_t cwww_cli_el = {MESHX_ELEM
     | CONFIG_EVT_MODEL_SUB_ADD | CONFIG_EVT_MODEL_APP_KEY_BIND
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
-#if defined(__CONTROL_TASK_H__)
+#if defined(__MESHX_CONTROL_TASK__)
 #define CONTROL_TASK_MSG_CODE_EVT_MASK      CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF | CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL
-#endif /* __CONTROL_TASK_H__ */
+#endif /* __MESHX_CONTROL_TASK__ */
 
 #define CWWW_CLI_PROD_ONOFF_ENABLE_CB       true
 #define IS_EL_IN_RANGE(_element_id)         ((_element_id) >= cwww_client_element_init_ctrl.element_id_start \
@@ -243,7 +243,7 @@ static void cwww_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
 }
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
-#if defined(__CONTROL_TASK_H__)
+#if defined(__MESHX_CONTROL_TASK__)
 /**
  * @brief CWWW Client Control Task Message Handler
  *
@@ -294,7 +294,7 @@ static esp_err_t cwww_cli_control_task_msg_handle(dev_struct_t *pdev, control_ta
     }
     return err;
 }
-#endif /* __CONTROL_TASK_H__ */
+#endif /* __MESHX_CONTROL_TASK__ */
 
 #if CONFIG_ENABLE_UNIT_TEST
 
@@ -758,7 +758,7 @@ esp_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
         ESP_LOGE(TAG, "Light CWWW CTL Model callback reg failed: (%d)", err);
         return err;
     }
-#if defined(__CONTROL_TASK_H__)
+#if defined(__MESHX_CONTROL_TASK__)
     err = control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_TO_BLE,
         CONTROL_TASK_MSG_CODE_EVT_MASK,
@@ -768,7 +768,7 @@ esp_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
         ESP_LOGE(TAG, "control task callback reg failed: (%d)", err);
         return err;
     }
-#endif /* __CONTROL_TASK_H__ */
+#endif /* __MESHX_CONTROL_TASK__ */
 #if CONFIG_ENABLE_UNIT_TEST
     err = register_unit_test(MODULE_ID_ELEMENT_LIGHT_CWWWW_CLIENT, &cwww_cli_unit_test_cb_handler);
     if (err)
