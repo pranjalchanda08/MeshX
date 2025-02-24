@@ -27,6 +27,9 @@
 #if CONFIG_ENABLE_CONFIG_SERVER
 #include "config_server.h"
 
+#include "meshx_api.h"
+__section(".element_table") const element_comp_table_t cwww_cli_el = {MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT, &create_cwww_client_elements};
+
 /**
  * @brief Configuration server callback event mask for cwww server.
  */
@@ -778,6 +781,8 @@ esp_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
 
     return ESP_OK;
 }
+
+// REG_MESHX_ELEMENT_FN(cwww_cli_el, MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT, create_cwww_client_elements);
 
 /**
  * @brief Send a CW/WW (Cool White/Warm White) message over BLE Mesh.

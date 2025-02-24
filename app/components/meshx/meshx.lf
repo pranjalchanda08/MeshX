@@ -1,0 +1,13 @@
+[sections:element_table]
+entries:
+    .element_table              # means .element_table and .element_table.*
+
+[scheme:meshx_elements]
+entries:
+    element_table -> flash_rodata
+
+[mapping:meshx]
+archive: libmeshx.a
+entries:
+    * (meshx_elements);
+        element_table -> flash_rodata KEEP() ALIGN(4) SURROUND(element_table)
