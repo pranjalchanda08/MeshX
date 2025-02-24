@@ -19,6 +19,7 @@
 #include "app_common.h"
 #include "control_task.h"
 #include "meshx_nvs.h"
+#include "meshx_api.h"
 
 #if CONFIG_RELAY_CLIENT_COUNT
 #include "relay_client_element.h"
@@ -562,5 +563,7 @@ esp_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
 
     return ESP_OK;
 }
+
+REG_MESHX_ELEMENT_FN(relay_cli_el, MESHX_ELEMENT_TYPE_RELAY_CLIENT, create_relay_client_elements);
 
 #endif /* CONFIG_RELAY_CLIENT_COUNT > 0*/
