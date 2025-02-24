@@ -13,7 +13,7 @@
 #define __MESHX_NVS_H__
 
 #include <stdint.h>
-#include "control_task.h"
+#include "meshx_control_task.h"
 #include "os_timer.h"
 #include "nvs.h"
 

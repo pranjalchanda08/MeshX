@@ -12,7 +12,7 @@
 #define __OS_TIMER_H__
 
 #include <stdint.h>
-#include "control_task.h"
+#include "meshx_control_task.h"
 #include "freertos/timers.h"
 #include "sys/queue.h"
 

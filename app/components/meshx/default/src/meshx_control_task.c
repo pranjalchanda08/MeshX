@@ -10,7 +10,7 @@
  *
  */
 
-#include <control_task.h>
+#include <meshx_control_task.h>
 
 static void control_task_handler(void *args);
 

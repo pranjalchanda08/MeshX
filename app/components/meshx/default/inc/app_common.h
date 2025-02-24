@@ -70,4 +70,8 @@ typedef struct element_comp_table
         .idx = _type,                                                \
         .element_comp_fn = &_fn,                                     \
     }
-#endif
+
+#else
+#define REG_MESHX_ELEMENT_FN(_name, _type, _fn)
+
+#endif /* CONFIG_SECTION_ENABLE_ELEMENT_TABLE */

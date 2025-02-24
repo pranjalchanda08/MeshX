@@ -11,7 +11,7 @@
 
 #include "prod_prov.h"
 #include "string.h"
-#include "control_task.h"
+#include "meshx_control_task.h"
 
 #define TAG __func__
 

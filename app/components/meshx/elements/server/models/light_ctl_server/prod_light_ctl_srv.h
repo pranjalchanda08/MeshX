@@ -14,7 +14,7 @@
 
 #include "app_common.h"
 #include <prod_light_server.h>
-#include "control_task.h"
+#include "meshx_control_task.h"
 
 /**
  * @brief Initialize the Light CTL Server.

@@ -12,7 +12,7 @@
 #define __MESHX_API_H__
 
 #include <app_common.h>
-#include <control_task.h>
+#include <meshx_control_task.h>
 #include <meshx_elements.h>
 
 #define MESHX_APP_API_MSG_MAX_SIZE  sizeof(meshx_data_payload_t)

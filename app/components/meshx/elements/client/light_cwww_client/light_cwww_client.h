@@ -1,7 +1,7 @@
 #pragma once
 
 #include "app_common.h"
-#include "control_task.h"
+#include "meshx_control_task.h"
 #include "prod_onoff_client.h"
 #include "light_ctl_client.h"
 
