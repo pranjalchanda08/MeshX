@@ -7,7 +7,7 @@
 
 | Command                               | Cmd ID | UT Command                                               | Description                                                     | Status |
 | ------------------------------------- | ------ | -------------------------------------------------------- | --------------------------------------------------------------- | ------ |
-| RELAY_CLI_CMD_GET                     | 0x00   | ut 0 0 1  `[el_id]`                                      | Send Relay ONOFF GET msg to element_id                          | `FAIL` |
+| RELAY_CLI_CMD_GET                     | 0x00   | ut 0 0 1  `[el_id]`                                      | Send Relay ONOFF GET msg to element_id                          | PASS |
 | RELAY_CLI_CMD_SET                     | 0x01   | ut 0 1 1  `[el_id]`                                      | Send Relay ONOFF SET msg to element_id                          | PASS   |
 | RELAY_CLI_CMD_SET_UNACK               | 0x02   | ut 0 2 1  `[el_id]`                                      | Send Relay ONOFF SET UNACK msg to element_id                    | PASS   |
 
@@ -17,7 +17,7 @@
 
 | Command                               | Cmd ID | UT Command                                               | Description                                                     | Status |
 | ------------------------------------- | ------ | -------------------------------------------------------- | --------------------------------------------------------------- | ------ |
-| CWWW_CLI_UT_CMD_ONOFF_GET             | 0x00   | ut 1 0 1  `[el_id]`                                      | Send CWWW ONOFF GET msg to element_id                           | `FAIL` |
+| CWWW_CLI_UT_CMD_ONOFF_GET             | 0x00   | ut 1 0 1  `[el_id]`                                      | Send CWWW ONOFF GET msg to element_id                           | PASS |
 | CWWW_CLI_UT_CMD_ONOFF_SET             | 0x01   | ut 1 1 1  `[el_id]`                                      | Send CWWW ONOFF SET msg to element_id                           | PASS   |
 | CWWW_CLI_UT_CMD_ONOFF_SET_UNACK       | 0x02   | ut 1 2 1  `[el_id]`                                      | Send CWWW ONOFF SET UNACK msg to element_id                     | PASS   |
 | CWWW_CLI_UT_CMD_CTL_GET               | 0x03   | ut 1 3 1  `[el_id]`                                      | Send CWWW CTL GET Command to element_id                         | `FAIL` |
