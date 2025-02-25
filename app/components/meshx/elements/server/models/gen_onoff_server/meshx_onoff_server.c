@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file prod_onoff_server.c
+ * @file meshx_onoff_server.c
  * @brief Header file for the On/Off Server model in the BLE Mesh Node application.
  *
  * This file contains the function defination for the
@@ -9,7 +9,7 @@
  *
  *
  */
-#include "prod_onoff_server.h"
+#include "meshx_onoff_server.h"
 
 /**
  * @brief Perform hardware change based on the BLE Mesh generic server callback parameter.
@@ -23,7 +23,7 @@
  *     - ESP_OK: Success
  *     - ESP_FAIL: Failure
  */
-static esp_err_t prod_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *param)
+static esp_err_t meshx_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *param)
 {
     esp_ble_mesh_gen_onoff_srv_t const *srv = (esp_ble_mesh_gen_onoff_srv_t *)param->model->user_data;
 
@@ -31,7 +31,7 @@ static esp_err_t prod_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *
     || (ESP_BLE_MESH_ADDR_BROADCAST(param->ctx.recv_dst))
     || (ESP_BLE_MESH_ADDR_IS_GROUP(param->ctx.recv_dst) && (esp_ble_mesh_is_model_subscribed_to_group(param->model, param->ctx.recv_dst))))
     {
-        esp_err_t err = control_task_publish(
+        esp_err_t err = control_task_msg_publish(
             CONTROL_TASK_MSG_CODE_EL_STATE_CH,
             CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF,
             srv,
@@ -56,7 +56,7 @@ static esp_err_t prod_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *
  *    - ESP_ERR_INVALID_ARG: Invalid argument
  *    - ESP_FAIL: Other failures
  */
-static esp_err_t prod_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param_t *param)
+static esp_err_t meshx_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param_t *param)
 {
     esp_ble_mesh_gen_onoff_srv_t *srv = (esp_ble_mesh_gen_onoff_srv_t *)param->model->user_data;
     bool send_reply = (param->ctx.recv_op != ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK);
@@ -67,7 +67,7 @@ static esp_err_t prod_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param_
     case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET:
     case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK:
         srv->state.onoff = param->value.state_change.onoff_set.onoff;
-        ESP_ERROR_CHECK(prod_perform_hw_change(param));
+        ESP_ERROR_CHECK(meshx_perform_hw_change(param));
         break;
     default:
         break;
@@ -103,7 +103,7 @@ static esp_err_t prod_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param_
  *    - ESP_ERR_INVALID_ARG: Invalid argument
  *    - ESP_FAIL: Other failures
  */
-static esp_err_t prod_handle_gen_onoff_msg(const dev_struct_t *pdev, control_task_msg_evt_t model_id, esp_ble_mesh_generic_server_cb_param_t *param)
+static esp_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_task_msg_evt_t model_id, esp_ble_mesh_generic_server_cb_param_t *param)
 {
     ESP_UNUSED(pdev);
     ESP_LOGD(TAG, "op|src|dst:%04" PRIx32 "|%04x|%04x",
@@ -121,7 +121,7 @@ static esp_err_t prod_handle_gen_onoff_msg(const dev_struct_t *pdev, control_tas
     case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET:
     case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK:
         srv->state.onoff = param->value.state_change.onoff_set.onoff;
-        ESP_ERROR_CHECK(prod_perform_hw_change(param));
+        ESP_ERROR_CHECK(meshx_perform_hw_change(param));
         break;
     default:
         break;
@@ -151,7 +151,7 @@ static esp_err_t prod_handle_gen_onoff_msg(const dev_struct_t *pdev, control_tas
  *     - ESP_OK: Success
  *     - ESP_FAIL: Failure
  */
-esp_err_t prod_on_off_server_init()
+esp_err_t meshx_on_off_server_init()
 {
     esp_err_t err = ESP_OK;
 #if CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
@@ -162,14 +162,14 @@ esp_err_t prod_on_off_server_init()
     init_cnt++;
 #endif
 #if CONFIG_ENABLE_SERVER_COMMON
-    err = prod_gen_srv_init();
+    err = meshx_gen_srv_init();
     if (err){
-        ESP_LOGE(TAG, "Failed to initialize prod server");
+        ESP_LOGE(TAG, "Failed to initialize meshx server");
     }
 #endif /* CONFIG_ENABLE_SERVER_COMMON */
-    err = prod_gen_srv_reg_cb(ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV, (prod_server_cb) &prod_handle_gen_onoff_msg);
+    err = meshx_gen_srv_reg_cb(ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV, (meshx_server_cb) &meshx_handle_gen_onoff_msg);
     if (err){
-        ESP_LOGE(TAG, "Failed to initialize prod_gen_srv_reg_cb (Err: %d)", err);
+        ESP_LOGE(TAG, "Failed to initialize meshx_gen_srv_reg_cb (Err: %d)", err);
     }
 
     return err;

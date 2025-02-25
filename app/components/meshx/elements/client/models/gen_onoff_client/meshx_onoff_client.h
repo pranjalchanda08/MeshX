@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file prod_onoff_client.h
+ * @file meshx_onoff_client.h
  * @brief Header file for the On/Off client model in BLE mesh.
  *
  * This file contains the definitions and function prototypes for the On/Off client model.
@@ -21,12 +21,12 @@
  */
 typedef enum
 {
-    PROD_ONOFF_CLI_EVT_GET = BIT(ESP_BLE_MESH_GENERIC_CLIENT_GET_STATE_EVT),
-    PROD_ONOFF_CLI_EVT_SET = BIT(ESP_BLE_MESH_GENERIC_CLIENT_SET_STATE_EVT),
-    PROD_ONOFF_CLI_PUBLISH = BIT(ESP_BLE_MESH_GENERIC_CLIENT_PUBLISH_EVT),
-    PROD_ONOFF_CLI_TIMEOUT = BIT(ESP_BLE_MESH_GENERIC_CLIENT_TIMEOUT_EVT),
-    PROD_ONOFF_CLI_EVT_ALL = (PROD_ONOFF_CLI_EVT_GET | PROD_ONOFF_CLI_EVT_SET | PROD_ONOFF_CLI_PUBLISH | PROD_ONOFF_CLI_TIMEOUT)
-} prod_onoff_cli_evt_t;
+    MESHX_ONOFF_CLI_EVT_GET = BIT(ESP_BLE_MESH_GENERIC_CLIENT_GET_STATE_EVT),
+    MESHX_ONOFF_CLI_EVT_SET = BIT(ESP_BLE_MESH_GENERIC_CLIENT_SET_STATE_EVT),
+    MESHX_ONOFF_CLI_PUBLISH = BIT(ESP_BLE_MESH_GENERIC_CLIENT_PUBLISH_EVT),
+    MESHX_ONOFF_CLI_TIMEOUT = BIT(ESP_BLE_MESH_GENERIC_CLIENT_TIMEOUT_EVT),
+    MESHX_ONOFF_CLI_EVT_ALL = (MESHX_ONOFF_CLI_EVT_GET | MESHX_ONOFF_CLI_EVT_SET | MESHX_ONOFF_CLI_PUBLISH | MESHX_ONOFF_CLI_TIMEOUT)
+} meshx_onoff_cli_evt_t;
 
 /**
  * @brief Callback function type for On/Off client events.
@@ -34,23 +34,23 @@ typedef enum
  * @param param Pointer to the callback parameter structure.
  * @param evt Event type.
  */
-typedef void (*prod_onoff_cli_cb)(const esp_ble_mesh_generic_client_cb_param_t *param, prod_onoff_cli_evt_t evt);
+typedef void (*meshx_onoff_cli_cb)(const esp_ble_mesh_generic_client_cb_param_t *param, meshx_onoff_cli_evt_t evt);
 
 /**
  * @brief Structure for On/Off client callback registration.
  */
-typedef struct prod_onoff_cli_cb_reg {
-    prod_onoff_cli_cb cb;
+typedef struct meshx_onoff_cli_cb_reg {
+    meshx_onoff_cli_cb cb;
     uint32_t evt_bmap;
-    SLIST_ENTRY(prod_onoff_cli_cb_reg) entries;
-} prod_onoff_cli_cb_reg_t;
+    SLIST_ENTRY(meshx_onoff_cli_cb_reg) entries;
+} meshx_onoff_cli_cb_reg_t;
 
 /**
  * @brief Initialize the On/Off client model.
  *
  * @return ESP_OK on success, or an error code on failure.
  */
-esp_err_t prod_onoff_client_init(void);
+esp_err_t meshx_onoff_client_init(void);
 
 /**
  * @brief Register a callback function for On/Off client events.
@@ -60,7 +60,7 @@ esp_err_t prod_onoff_client_init(void);
  *
  * @return ESP_OK on success, or an error code on failure.
  */
-esp_err_t prod_onoff_reg_cb(prod_onoff_cli_cb cb, uint32_t config_evt_bmap);
+esp_err_t meshx_onoff_reg_cb(meshx_onoff_cli_cb cb, uint32_t config_evt_bmap);
 
 
 /**
@@ -82,7 +82,7 @@ esp_err_t prod_onoff_reg_cb(prod_onoff_cli_cb cb, uint32_t config_evt_bmap);
  *    - ESP_ERR_NO_MEM: Out of memory
  *    - ESP_FAIL: Sending message failed
  */
-esp_err_t prod_onoff_client_send_msg(esp_ble_mesh_model_t *model,
+esp_err_t meshx_onoff_client_send_msg(esp_ble_mesh_model_t *model,
         uint16_t opcode,
         uint16_t addr,
         uint16_t net_idx,

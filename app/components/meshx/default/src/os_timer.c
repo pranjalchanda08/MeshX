@@ -147,7 +147,7 @@ static void os_timer_fire_cb(const os_timer_handle_t timer_handle)
     {
         if (msg_params->timer_handle == timer_handle)
         {
-            control_task_publish(
+            control_task_msg_publish(
                 CONTROL_TASK_MSG_CODE_SYSTEM,
                 CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE,
                 msg_params,
@@ -318,7 +318,7 @@ esp_err_t os_timer_start(const os_timer_t *timer_handle)
     if (timer_handle->init != OS_TIMER_INIT_MAGIC)
         return ESP_ERR_INVALID_STATE;
 
-    return control_task_publish(
+    return control_task_msg_publish(
         CONTROL_TASK_MSG_CODE_SYSTEM,
         CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_ARM,
         timer_handle,
@@ -344,7 +344,7 @@ esp_err_t os_timer_restart(const os_timer_t *timer_handle)
     if (timer_handle->init != OS_TIMER_INIT_MAGIC)
         return ESP_ERR_INVALID_STATE;
 
-    return control_task_publish(
+    return control_task_msg_publish(
         CONTROL_TASK_MSG_CODE_SYSTEM,
         CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_REARM,
         timer_handle,
@@ -373,7 +373,7 @@ esp_err_t os_timer_set_period(os_timer_t *timer_handle, const uint32_t period_ms
 
     timer_handle->period = period_ms;
 
-    return control_task_publish(
+    return control_task_msg_publish(
         CONTROL_TASK_MSG_CODE_SYSTEM,
         CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD,
         timer_handle,
@@ -399,7 +399,7 @@ esp_err_t os_timer_stop(const os_timer_t *timer_handle)
     if (timer_handle->init != OS_TIMER_INIT_MAGIC)
         return ESP_ERR_INVALID_STATE;
 
-    return control_task_publish(
+    return control_task_msg_publish(
         CONTROL_TASK_MSG_CODE_SYSTEM,
         CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_DISARM,
         timer_handle,

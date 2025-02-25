@@ -15,7 +15,7 @@
 #include <string.h>
 #include <inttypes.h>
 #include <sdkconfig.h>
-#include <codegen.h>
+#include <meshx_config.h>
 #include <esp_log.h>
 #include <nvs_flash.h>
 #include <esp_ble_mesh_defs.h>

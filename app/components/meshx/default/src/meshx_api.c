@@ -102,7 +102,7 @@ esp_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, uint
     if(err)
         ESP_LOGE(TAG, "Failed to create message: (0x%x)", err);
 
-    err = control_task_publish(CONTROL_TASK_MSG_CODE_TO_APP, CONTROL_TASK_MSG_EVT_DATA, &meshx_api_ctrl.msg_buff, sizeof(meshx_app_api_msg_t));
+    err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_APP, CONTROL_TASK_MSG_EVT_DATA, &meshx_api_ctrl.msg_buff, sizeof(meshx_app_api_msg_t));
     if(err)
         ESP_LOGE(TAG, "Failed to send message to app: (0x%x)", err);
 
@@ -131,7 +131,7 @@ esp_err_t meshx_send_msg_to_element(uint16_t element_id, uint16_t element_type, 
     if(err)
         ESP_LOGE(TAG, "Failed to create message: (0x%x)", err);
 
-    err = control_task_publish(CONTROL_TASK_MSG_CODE_TO_MESHX, CONTROL_TASK_MSG_EVT_DATA, &meshx_api_ctrl.msg_buff, sizeof(meshx_app_api_msg_t));
+    err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_MESHX, CONTROL_TASK_MSG_EVT_DATA, &meshx_api_ctrl.msg_buff, sizeof(meshx_app_api_msg_t));
     if(err)
         ESP_LOGE(TAG, "Failed to send message to app: (0x%x)", err);
 

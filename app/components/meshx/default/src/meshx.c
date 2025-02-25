@@ -133,7 +133,7 @@ static esp_err_t ble_mesh_init(meshx_config_t const *config)
     err = ble_mesh_element_init(&g_dev, config);
     ESP_ERR_PRINT_RET("Failed to initialize BLE Elements", err);
 
-    err = esp_ble_mesh_init(&PROD_PROV_INSTANCE, &g_dev.composition);
+    err = esp_ble_mesh_init(&MESHX_PROV_INSTANCE, &g_dev.composition);
     ESP_ERR_PRINT_RET("Failed to initialize mesh stack", err);
 
     err = esp_ble_mesh_set_unprovisioned_device_name(config->product_name);
@@ -194,7 +194,7 @@ esp_err_t meshx_init(meshx_config_t const *config)
     err = register_ut_command();
     ESP_ERR_PRINT_RET("Failed to register unit test command", err);
 
-    err = init_prod_console();
+    err = init_unit_test_console();
     ESP_ERR_PRINT_RET("Failed to initialize production console", err);
 #endif /* CONFIG_ENABLE_UNIT_TEST */
 

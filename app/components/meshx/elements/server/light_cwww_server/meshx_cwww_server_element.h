@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file cwww_server_element.h
+ * @file meshx_cwww_server_element.h
  * @brief Header file for CWWW Server Model
  *
  * This file contains the definitions and function prototypes for the CWWW Server Model.
@@ -15,8 +15,8 @@
 
 #include <string.h>
 #include <app_common.h>
-#include <prod_onoff_server.h>
-#include <prod_light_ctl_srv.h>
+#include <meshx_onoff_server.h>
+#include <meshx_light_ctl_srv.h>
 
 #define CWWW_SERVER_ELEMENT_NOS_DEF 1
 
