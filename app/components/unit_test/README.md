@@ -55,4 +55,4 @@
 | MESHX_NVS_CLI_CMD_COMMIT | 0x03   | ut 3 3 0                      | MeshX NVS commit the MeshX NVS changes | PASS   |
 | MESHX_NVS_CLI_CMD_REMOVE | 0x04   | ut 3 4 0                      | MeshX NVS remove MeshX UT key          | PASS   |
 | MESHX_NVS_CLI_CMD_ERASE  | 0x05   | ut 3 5 0                      | MeshX NVS erase all from MeshX UT key  | PASS   |
-| MESHX_NVS_CLI_CMD_CLOSE  | 0x06   | ut 3 6 0                      | MeshX NVS erase all from MeshX UT key  | PASS   |
+| MESHX_NVS_CLI_CMD_CLOSE  | 0x06   | ut 3 6 0                      | MeshX NVS close driver                 | PASS   |

@@ -18,19 +18,19 @@
 #include "meshx.h"
 
 #if CONFIG_RELAY_SERVER_COUNT
-#include "relay_server_element.h"
+#include "meshx_relay_server_element.h"
 #endif /* CONFIG_RELAY_SERVER_COUNT */
 
 #if CONFIG_RELAY_CLIENT_COUNT
-#include "relay_client_element.h"
+#include "meshx_relay_client_element.h"
 #endif /* CONFIG_RELAY_CLIENT_COUNT */
 
 #if CONFIG_LIGHT_CWWW_SRV_COUNT
-#include "cwww_server_element.h"
+#include "meshx_cwww_server_element.h"
 #endif /* CONFIG_LIGHT_CWWW_SRV_COUNT */
 
 #if CONFIG_LIGHT_CWWW_CLIENT_COUNT
-#include "light_cwww_client.h"
+#include "meshx_light_cwww_client.h"
 #endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */
 
 /**
@@ -56,7 +56,7 @@
 
 #if CONFIG_ENABLE_PROVISIONING
 /** Provisioning parameters for BLE Mesh. */
-static prov_params_t prod_prov_cfg;
+static prov_params_t meshx_prov_cfg;
 #endif
 
 #if CONFIG_SECTION_ENABLE_ELEMENT_TABLE
@@ -105,7 +105,7 @@ static esp_ble_mesh_light_ctl_setup_srv_t ctl_setup_server = {
 /** Root models for BLE Mesh elements. */
 static esp_ble_mesh_model_t meshx_root_model_arr[] = {
 #if CONFIG_ENABLE_CONFIG_SERVER
-    ESP_BLE_MESH_MODEL_CFG_SRV(&PROD_CONFIG_SERVER_INSTANCE),
+    ESP_BLE_MESH_MODEL_CFG_SRV(&MESHX_CONFIG_SERVER_INSTANCE),
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 #if CONFIG_ENABLE_LIGHT_CTL_SERVER
     ESP_BLE_MESH_MODEL_LIGHT_CTL_SETUP_SRV(&ctl_setup_pub, &ctl_setup_server),
@@ -185,9 +185,9 @@ esp_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_config_
     if(!p_dev || !config || !config->element_comp_arr_len || !config->element_comp_arr)
         return ESP_ERR_INVALID_ARG;
 
-    ble_mesh_get_dev_uuid(prod_prov_cfg.uuid);
+    ble_mesh_get_dev_uuid(meshx_prov_cfg.uuid);
 
-    err = prod_init_prov(&prod_prov_cfg);
+    err = meshx_init_prov(&meshx_prov_cfg);
     ESP_ERR_PRINT_RET("Failed to initialize Prov server", err);
 
     err = control_task_msg_subscribe(
@@ -196,7 +196,7 @@ esp_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_config_
             &meshx_prov_control_task_handler);
     ESP_ERR_PRINT_RET("Failed to register control task callback", err);
 
-    err = prod_init_config_server();
+    err = meshx_init_config_server();
     ESP_ERR_PRINT_RET("Failed to initialize config server", err);
     for(uint16_t element_id = 0; element_id < config->element_comp_arr_len; element_id++)
     {

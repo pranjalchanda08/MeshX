@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file light_ctl_client.h
+ * @file meshx_light_ctl_client.h
  * @brief Header file for the Light CTL (Color Temperature Light) Client model.
  *
  * This file contains the definitions and function declarations for the Light CTL Client model
@@ -75,7 +75,7 @@ typedef struct light_ctl_send_args
  *    - ESP_ERR_INVALID_ARG: Invalid argument
  *    - ESP_FAIL: Other failures
  */
-esp_err_t prod_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap);
+esp_err_t meshx_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap);
 
 /**
  * @brief Initialize the Light CTL Client model.
@@ -88,7 +88,7 @@ esp_err_t prod_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap);
  *    - ESP_ERR_NO_MEM: Out of memory
  *    - ESP_FAIL: Other failures
  */
-esp_err_t prod_light_ctl_client_init();
+esp_err_t meshx_light_ctl_client_init();
 
 /**
  * @brief Send a Light CTL message.
@@ -101,7 +101,7 @@ esp_err_t prod_light_ctl_client_init();
  *    - ESP_OK: Success
  *    - Appropriate error code on failure
  */
-esp_err_t prod_light_ctl_send_msg(light_ctl_send_args_t * params);
+esp_err_t meshx_light_ctl_send_msg(light_ctl_send_args_t * params);
 
 /**
  * @brief Sends a message to control the light temperature.
@@ -115,6 +115,6 @@ esp_err_t prod_light_ctl_send_msg(light_ctl_send_args_t * params);
  *    - ESP_ERR_INVALID_ARG: Invalid argument
  *    - ESP_FAIL: Sending message failed
  */
-esp_err_t prod_light_ctl_temperature_send_msg(light_ctl_send_args_t * params);
+esp_err_t meshx_light_ctl_temperature_send_msg(light_ctl_send_args_t * params);
 
 #endif /*__LIGHT_CTL_CLIENT_H__*/

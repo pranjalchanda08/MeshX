@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file prod_light_ctl_srv.c
+ * @file meshx_light_ctl_srv.c
  * @brief Implementation of the Light CTL Server model for BLE Mesh Node.
  *
  * This file contains the implementation of the Light CTL (Color Temperature Light) Server model
@@ -10,7 +10,7 @@
  *
  */
 
-#include <prod_light_ctl_srv.h>
+#include <meshx_light_ctl_srv.h>
 
 #define TAG __func__
 #define CTL_REPLY_PACK_LEN_MAX  9
@@ -30,7 +30,7 @@ uint8_t ctl_status_pack[CTL_REPLY_PACK_LEN_MAX];
  *     - ESP_OK: Success
  *     - ESP_FAIL: Failure
  */
-static esp_err_t prod_perform_hw_change(esp_ble_mesh_lighting_server_cb_param_t *param)
+static esp_err_t meshx_perform_hw_change(esp_ble_mesh_lighting_server_cb_param_t *param)
 {
     const esp_ble_mesh_light_ctl_srv_t *srv = (esp_ble_mesh_light_ctl_srv_t*) param->model->user_data;
 
@@ -44,7 +44,7 @@ static esp_err_t prod_perform_hw_change(esp_ble_mesh_lighting_server_cb_param_t 
         ESP_LOGI(TAG, "HW change requested, Element_id: 0x%x",
                     param->model->element_idx);
 
-        esp_err_t err = control_task_publish(
+        esp_err_t err = control_task_msg_publish(
                             CONTROL_TASK_MSG_CODE_EL_STATE_CH,
                             CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL,
                             srv,
@@ -54,6 +54,7 @@ static esp_err_t prod_perform_hw_change(esp_ble_mesh_lighting_server_cb_param_t 
     return ESP_ERR_NOT_ALLOWED;
 }
 
+#if !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
 /**
  * @brief Handle Light CTL messages for the lighting server model.
  *
@@ -67,8 +68,31 @@ static esp_err_t prod_perform_hw_change(esp_ble_mesh_lighting_server_cb_param_t 
  *    - ESP_ERR_INVALID_ARG: Invalid argument
  *    - ESP_FAIL: Other failures
  */
-static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param_t *param)
+static esp_err_t meshx_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param_t *param)
 {
+#else
+/**
+ * @brief Handle Light CTL messages for the lighting server model.
+ *
+ * This function processes incoming Light CTL messages and performs the necessary
+ * actions based on the message parameters.
+ *
+ * @param pdev Pointer to the device structure.
+ * @param evt Event type of the control task message.
+ * @param param Pointer to the BLE Mesh lighting server callback parameter structure.
+ *
+ * @return
+ *    - ESP_OK: Success
+ *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - ESP_FAIL: Other failures
+ */
+static esp_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
+    const control_task_msg_evt_t evt,
+    esp_ble_mesh_lighting_server_cb_param_t *param)
+{
+    if(!pdev || (evt != ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV && evt != ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SETUP_SRV))
+        return ESP_ERR_INVALID_ARG;
+#endif /* !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
     esp_ble_mesh_light_ctl_srv_t *srv = (esp_ble_mesh_light_ctl_srv_t*) param->model->user_data;
 
     uint16_t status_op = 0;
@@ -94,7 +118,7 @@ static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param
                      srv->state->lightness,
                      srv->state->temperature,
                      srv->state->delta_uv);
-                err = prod_perform_hw_change(param);
+                err = meshx_perform_hw_change(param);
                 if(err)
                     return err;
             }
@@ -117,7 +141,7 @@ static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param
                 ESP_LOGI(TAG, "lightness|del_uv:%d|%d",
                         srv->state->temperature,
                         srv->state->delta_uv);
-                err = prod_perform_hw_change(param);
+                err = meshx_perform_hw_change(param);
                 if(err)
                     return err;
             }
@@ -213,7 +237,7 @@ static esp_err_t prod_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param
  *     - ESP_OK: Success
  *     - ESP_FAIL: Failure
  */
-esp_err_t prod_send_ctl_status(esp_ble_mesh_model_t *model, esp_ble_mesh_msg_ctx_t* ctx, uint16_t lightness, uint16_t temperature)
+esp_err_t meshx_send_ctl_status(esp_ble_mesh_model_t *model, esp_ble_mesh_msg_ctx_t* ctx, uint16_t lightness, uint16_t temperature)
 {
     uint8_t ctl_status_pack_idx = 0;
 
@@ -235,21 +259,28 @@ esp_err_t prod_send_ctl_status(esp_ble_mesh_model_t *model, esp_ble_mesh_msg_ctx
  *     - ESP_OK: Success
  *     - ESP_FAIL: Failure
  */
-esp_err_t prod_light_ctl_server_init(void)
+esp_err_t meshx_light_ctl_server_init(void)
 {
     esp_err_t err = ESP_OK;
+#if CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
+    /* Protect only one registration */
+    static uint8_t init_cntr = 0;
+    if (init_cntr)
+        return ESP_OK;
+    init_cntr++;
+#endif /* CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
 
-    err = prod_lighting_srv_init();
+    err = meshx_lighting_srv_init();
     if(err)
         ESP_LOGE(TAG, "Failed to initialize prod server");
 
-    err = prod_lighting_reg_cb(ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV, prod_handle_light_ctl_msg);
+    err = meshx_lighting_reg_cb(ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV, (meshx_lighting_server_cb)&meshx_handle_light_ctl_msg);
     if(err)
-        ESP_LOGE(TAG, "Failed to initialize prod_gen_srv_reg_cb (Err: %d)", err);
+        ESP_LOGE(TAG, "Failed to initialize meshx_gen_srv_reg_cb (Err: %d)", err);
 
-    err = prod_lighting_reg_cb(ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SETUP_SRV, prod_handle_light_ctl_msg);
+    err = meshx_lighting_reg_cb(ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SETUP_SRV, (meshx_lighting_server_cb)&meshx_handle_light_ctl_msg);
     if(err)
-        ESP_LOGE(TAG, "Failed to initialize prod_gen_srv_reg_cb (Err: %d)", err);
+        ESP_LOGE(TAG, "Failed to initialize meshx_gen_srv_reg_cb (Err: %d)", err);
 
     return err;
 }

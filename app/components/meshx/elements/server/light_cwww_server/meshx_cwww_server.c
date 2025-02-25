@@ -8,14 +8,14 @@
  * including initialization, configuration, and event handling.
  */
 
-#include <cwww_server_element.h>
+#include <meshx_cwww_server_element.h>
 #include <meshx_nvs.h>
 #include <meshx_api.h>
 
 #if CONFIG_LIGHT_CWWW_SRV_COUNT > 0
 
 #if CONFIG_ENABLE_CONFIG_SERVER
-#include "config_server.h"
+#include "meshx_config_server.h"
 
 /**
  * @brief Configuration server callback event mask for relay server.
@@ -258,7 +258,7 @@ static esp_err_t meshx_element_struct_deinit(uint16_t n_max)
  * @param n_max Maximum number of models.
  * @return ESP_OK on success, or an error code on failure.
  */
-static esp_err_t dev_create_cwww_model_space(uint16_t n_max)
+static esp_err_t meshx_dev_create_cwww_model_space(uint16_t n_max)
 {
     /* Assign Spaces for Model List, Publish List and onoff gen list */
     void ** temp;
@@ -347,7 +347,7 @@ static esp_err_t meshx_restore_model_states(uint16_t element_id)
  * @param n_max Maximum number of models.
  * @return ESP_OK on success, or an error code on failure.
  */
-static esp_err_t dev_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, uint16_t *start_idx, uint16_t n_max)
+static esp_err_t meshx_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, uint16_t *start_idx, uint16_t n_max)
 {
     if (!pdev)
         return ESP_ERR_INVALID_STATE;
@@ -525,7 +525,7 @@ static esp_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, contro
             return err;
         }
 
-        err = prod_send_ctl_status(&cwww_element_init_ctrl.cwww_server_sig_model_list[rel_el_id][CWWW_SIG_L_CTL_MODEL_ID],
+        err = meshx_send_ctl_status(&cwww_element_init_ctrl.cwww_server_sig_model_list[rel_el_id][CWWW_SIG_L_CTL_MODEL_ID],
                                    &ctx,
                                    cwww_element_init_ctrl.cwww_server_ctx[rel_el_id].lightness,
                                    cwww_element_init_ctrl.cwww_server_ctx[rel_el_id].temperature);
@@ -552,13 +552,13 @@ static esp_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, contro
 esp_err_t create_cwww_elements(dev_struct_t *pdev, uint16_t element_cnt)
 {
     esp_err_t err;
-    err = dev_create_cwww_model_space(element_cnt);
+    err = meshx_dev_create_cwww_model_space(element_cnt);
     if (err)
     {
         ESP_LOGE(TAG, "CWWW Model create failed: (%d)", err);
         return err;
     }
-    err = dev_add_cwww_srv_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, element_cnt);
+    err = meshx_add_cwww_srv_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, element_cnt);
     if (err)
     {
         ESP_LOGE(TAG, "CWWW Model create failed: (%d)", err);
@@ -566,7 +566,7 @@ esp_err_t create_cwww_elements(dev_struct_t *pdev, uint16_t element_cnt)
         return err;
     }
 #if CONFIG_ENABLE_CONFIG_SERVER
-    err = prod_config_server_cb_reg(&cwww_server_config_srv_cb, CONFIG_SERVER_CB_MASK);
+    err = meshx_config_server_cb_reg(&cwww_server_config_srv_cb, CONFIG_SERVER_CB_MASK);
     if (err)
     {
         ESP_LOGE(TAG, "Relay Model configserver callback reg failed: (%d)", err);
@@ -594,17 +594,17 @@ esp_err_t create_cwww_elements(dev_struct_t *pdev, uint16_t element_cnt)
         return err;
     }
 
-    err = prod_on_off_server_init();
+    err = meshx_on_off_server_init();
     if (err)
     {
-        ESP_LOGE(TAG, "prod_on_off_server_init failed: (%d)", err);
+        ESP_LOGE(TAG, "meshx_on_off_server_init failed: (%d)", err);
 
         return err;
     }
-    err = prod_light_ctl_server_init();
+    err = meshx_light_ctl_server_init();
     if (err)
     {
-        ESP_LOGE(TAG, "prod_light_ctl_server_init failed: (%d)", err);
+        ESP_LOGE(TAG, "meshx_light_ctl_server_init failed: (%d)", err);
 
         return err;
     }
