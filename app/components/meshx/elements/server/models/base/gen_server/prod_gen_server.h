@@ -18,7 +18,9 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
 #include "sys/queue.h"
+#include "meshx_control_task.h"
 
+#if !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
 /**
  * @typedef prod_server_cb
  * @brief Callback function type for the generic server model.
@@ -27,7 +29,11 @@
  * @return ESP_OK on success, or an appropriate error code on failure.
  */
 typedef esp_err_t (* prod_server_cb) (esp_ble_mesh_generic_server_cb_param_t *param);
+#else
 
+typedef control_task_msg_handle_t prod_server_cb;
+
+#endif /* CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
 /**
  * @struct prod_server_cb_reg
  * @brief Structure to register a callback for a specific model ID.
@@ -62,12 +68,19 @@ SLIST_HEAD(prod_server_cb_reg_head, prod_server_cb_reg);
 esp_err_t prod_gen_srv_reg_cb(uint32_t model_id, prod_server_cb cb);
 
 /**
- * @brief Deregister a callback for a specific model ID.
+ * @brief Callback function to deregister a generic server model.
  *
- * @param model_id Model ID for which the callback is deregistered.
- * @return ESP_OK on success, or an appropriate error code on failure.
+ * This function is called to deregister a generic server model identified by the given model ID.
+ *
+ * @param model_id The ID of the model to be deregistered.
+ * @param cb The callback function to be deregistered.
+ *
+ * @return
+ *     - ESP_OK: Success
+ *     - ESP_ERR_INVALID_ARG: Invalid argument
+ *     - ESP_FAIL: Other failures
  */
-esp_err_t prod_gen_srv_dereg_cb(uint32_t model_id);
+esp_err_t prod_gen_srv_dereg_cb(uint32_t model_id, prod_server_cb cb);
 
 /**
  * @brief Initialize the generic server model.
