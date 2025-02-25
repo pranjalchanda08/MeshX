@@ -75,7 +75,7 @@ static void meshx_onoff_reg_cb_dispatch(const esp_ble_mesh_generic_client_cb_par
 static void meshx_generic_client_cb(esp_ble_mesh_generic_client_cb_event_t event,
                                            const esp_ble_mesh_generic_client_cb_param_t *param)
 {
-    ESP_LOGI(TAG, "%s, err|op|src|dst: %d|%04" PRIx32 "|%04x|%04x",
+    ESP_LOGD(TAG, "%s, err|op|src|dst: %d|%04" PRIx32 "|%04x|%04x",
             client_state_str[event], param->error_code, param->params->ctx.recv_op, param->params->ctx.addr, param->params->ctx.recv_dst);
     if(param->error_code == ESP_OK)
     {

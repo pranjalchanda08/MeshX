@@ -42,6 +42,8 @@ typedef struct meshx_config
     uint32_t meshx_nvs_save_period;
     uint16_t element_comp_arr_len;
     element_comp_t *element_comp_arr;
+    meshx_app_data_cb_t app_element_cb;
+    meshx_app_ctrl_cb_t app_ctrl_cb;
 }meshx_config_t;
 
 /**
