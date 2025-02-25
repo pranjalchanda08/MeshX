@@ -1,16 +1,16 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file config_server.c
+ * @file meshx_config_server.c
  * @brief Implementation of the Configuration Server for ESP BLE Mesh.
  *
  * This file contains the initialization and event handling logic for the BLE Mesh
  * Configuration Server, including the management of callback registrations and event dispatching.
  *
- *
+ * @author Pranjal Chanda
  */
 
-#include "config_server.h"
+#include "meshx_config_server.h"
 
 #define TAG __func__
 
@@ -49,7 +49,7 @@ static const config_server_model_evt_map_t config_server_model_evt_map_table[] =
 static SemaphoreHandle_t config_server_mutex;
 
 /* Global variable for Configuration Server parameters */
-esp_ble_mesh_cfg_srv_t g_prod_config_server = {
+esp_ble_mesh_cfg_srv_t g_meshx_config_server = {
     /* 3 transmissions with 20ms interval */
     .net_transmit = ESP_BLE_MESH_TRANSMIT(2, 20),
     .relay = ESP_BLE_MESH_RELAY_ENABLED,
@@ -77,7 +77,7 @@ esp_ble_mesh_cfg_srv_t g_prod_config_server = {
  * @param[in] param Pointer to the BLE Mesh Configuration Server callback parameters.
  * @param[in] evt The event to dispatch.
  */
-static void prod_config_server_cb_dispatch(const esp_ble_mesh_cfg_server_cb_param_t *param, config_evt_t evt)
+static void meshx_config_server_cb_dispatch(const esp_ble_mesh_cfg_server_cb_param_t *param, config_evt_t evt)
 {
     if (SLIST_EMPTY(&config_server_cb_reg_table))
     {
@@ -105,7 +105,7 @@ static void prod_config_server_cb_dispatch(const esp_ble_mesh_cfg_server_cb_para
  * @param[in] event Configuration server event type.
  * @param[in] param Pointer to the BLE Mesh Configuration Server callback parameters.
  */
-static void prod_ble_mesh_config_server_cb(esp_ble_mesh_cfg_server_cb_event_t event,
+static void meshx_ble_mesh_config_server_cb(esp_ble_mesh_cfg_server_cb_event_t event,
                                            const esp_ble_mesh_cfg_server_cb_param_t *param)
 {
     if (event == ESP_BLE_MESH_CFG_SERVER_STATE_CHANGE_EVT)
@@ -115,7 +115,7 @@ static void prod_ble_mesh_config_server_cb(esp_ble_mesh_cfg_server_cb_event_t ev
             if (config_server_model_evt_map_table[map_id].model_op_code == param->ctx.recv_op)
             {
                 ESP_LOGI(TAG, "%s", config_server_model_evt_map_table[map_id].op_str);
-                prod_config_server_cb_dispatch(param, config_server_model_evt_map_table[map_id].config_evt);
+                meshx_config_server_cb_dispatch(param, config_server_model_evt_map_table[map_id].config_evt);
                 break;
             }
         }
@@ -129,7 +129,7 @@ static void prod_ble_mesh_config_server_cb(esp_ble_mesh_cfg_server_cb_event_t ev
  *
  * @return ESP_OK on success, an error code otherwise.
  */
-esp_err_t prod_init_config_server()
+esp_err_t meshx_init_config_server()
 {
     config_server_mutex = xSemaphoreCreateMutex();
     if (config_server_mutex == NULL)
@@ -137,7 +137,7 @@ esp_err_t prod_init_config_server()
         return ESP_ERR_NO_MEM; // Mutex creation failed
     }
 
-    esp_ble_mesh_register_config_server_callback((esp_ble_mesh_cfg_server_cb_t)&prod_ble_mesh_config_server_cb);
+    esp_ble_mesh_register_config_server_callback((esp_ble_mesh_cfg_server_cb_t)&meshx_ble_mesh_config_server_cb);
     return ESP_OK;
 }
 
@@ -151,7 +151,7 @@ esp_err_t prod_init_config_server()
  *
  * @return ESP_OK on success, an error code otherwise.
  */
-esp_err_t prod_config_server_cb_reg(config_srv_cb cb, uint32_t config_evt_bmap)
+esp_err_t meshx_config_server_cb_reg(config_srv_cb cb, uint32_t config_evt_bmap)
 {
     if (cb == NULL || config_evt_bmap == 0)
     {

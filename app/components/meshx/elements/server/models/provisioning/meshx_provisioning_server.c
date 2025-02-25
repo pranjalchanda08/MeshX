@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file prod_prov.c
+ * @file meshx_provisioning_server.c
  * @brief This file contains the implementation of the provisioning process for the BLE mesh node.
  *
  * The provisioning process is responsible for setting up the BLE mesh node, including
@@ -9,9 +9,9 @@
  *
  */
 
-#include "prod_prov.h"
 #include "string.h"
 #include "meshx_control_task.h"
+#include "meshx_provisioning_server.h"
 
 #define TAG __func__
 
@@ -55,7 +55,7 @@ static prov_params_t prov_params;
  *
  * This structure holds the global provisioning configuration.
  */
-esp_ble_mesh_prov_t g_prod_prov;
+esp_ble_mesh_prov_t g_meshx_prov;
 
 /**
  * @brief Send a control message to the control task.
@@ -70,7 +70,7 @@ esp_ble_mesh_prov_t g_prod_prov;
 
 static esp_err_t send_control_msg(const esp_ble_mesh_prov_cb_param_t *param, control_task_msg_evt_provision_t evt)
 {
-    return control_task_publish(CONTROL_TASK_MSG_CODE_PROVISION, evt, param, sizeof(esp_ble_mesh_prov_cb_param_t));
+    return control_task_msg_publish(CONTROL_TASK_MSG_CODE_PROVISION, evt, param, sizeof(esp_ble_mesh_prov_cb_param_t));
 }
 
 /**
@@ -81,7 +81,7 @@ static esp_err_t send_control_msg(const esp_ble_mesh_prov_cb_param_t *param, con
  * @param event The provisioning event type.
  * @param param Pointer to the provisioning event parameters.
  */
-static void app_ble_mesh_provisioning_cb(esp_ble_mesh_prov_cb_event_t event,
+static void meshx_provisioning_cb(esp_ble_mesh_prov_cb_event_t event,
                                          const esp_ble_mesh_prov_cb_param_t *param)
 {
     ESP_LOGD(TAG, "Event 0x%02x", event);
@@ -119,7 +119,7 @@ static void app_ble_mesh_provisioning_cb(esp_ble_mesh_prov_cb_event_t event,
  *    - ESP_OK: Success
  *    - ESP_FAIL: Failed to register provisioning callback
  */
-esp_err_t prod_init_prov(const prov_params_t * svr_cfg)
+esp_err_t meshx_init_prov(const prov_params_t * svr_cfg)
 {
     if (!svr_cfg)
     {
@@ -128,6 +128,6 @@ esp_err_t prod_init_prov(const prov_params_t * svr_cfg)
     }
     memcpy(&prov_params.uuid, svr_cfg->uuid, sizeof(prov_params.uuid));
 
-    g_prod_prov.uuid = prov_params.uuid;
-    return esp_ble_mesh_register_prov_callback((esp_ble_mesh_prov_cb_t)app_ble_mesh_provisioning_cb);
+    g_meshx_prov.uuid = prov_params.uuid;
+    return esp_ble_mesh_register_prov_callback((esp_ble_mesh_prov_cb_t)meshx_provisioning_cb);
 }

@@ -1,15 +1,17 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file config_server.h
- * @brief Header file for the production configuration server model.
+ * @file meshx_config_server.h
+ * @brief Header file for the meshxuction configuration server model.
  *
  * This file contains the definitions and function declarations for the
- * production configuration server model used in the ESP32 BLE Mesh Node.
+ * meshxuction configuration server model used in the ESP32 BLE Mesh Node.
+ *
+ *
  */
 
-#ifndef __PROD_CONFIG_SERVER__
-#define __PROD_CONFIG_SERVER__
+#ifndef __MESHX_CONFIG_SERVER__
+#define __MESHX_CONFIG_SERVER__
 
 #include "esp_ble_mesh_defs.h"
 #include "esp_ble_mesh_common_api.h"
@@ -21,7 +23,7 @@
 #include "freertos/semphr.h"
 #include "sys/queue.h"
 
-#define PROD_CONFIG_SERVER_INSTANCE g_prod_config_server
+#define MESHX_CONFIG_SERVER_INSTANCE g_meshx_config_server
 
 /**
  * @brief Enumeration of configuration events.
@@ -49,14 +51,14 @@ typedef enum
  */
 typedef void (*config_srv_cb)(const esp_ble_mesh_cfg_server_cb_param_t *param, config_evt_t evt);
 
-extern esp_ble_mesh_cfg_srv_t g_prod_config_server;
+extern esp_ble_mesh_cfg_srv_t g_meshx_config_server;
 
 /**
- * @brief Initialize the production configuration server.
+ * @brief Initialize the meshxuction configuration server.
  *
  * @return ESP_OK on success, or an error code on failure.
  */
-esp_err_t prod_init_config_server();
+esp_err_t meshx_init_config_server();
 
 /**
  * @brief Register a callback function for configuration server events.
@@ -65,6 +67,6 @@ esp_err_t prod_init_config_server();
  * @param config_evt_bmap Bitmap of configuration events to register for.
  * @return ESP_OK on success, or an error code on failure.
  */
-esp_err_t prod_config_server_cb_reg(config_srv_cb cb, uint32_t config_evt_bmap);
+esp_err_t meshx_config_server_cb_reg(config_srv_cb cb, uint32_t config_evt_bmap);
 
-#endif
+#endif /* __MESHX_CONFIG_SERVER__ */

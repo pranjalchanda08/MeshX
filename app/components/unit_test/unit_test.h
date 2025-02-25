@@ -9,8 +9,8 @@
  *
  *
  */
-#ifndef __PROD_UNIT_TEST_H__
-#define __PROD_UNIT_TEST_H__
+#ifndef __MESHX_UNIT_TEST_H__
+#define __MESHX_UNIT_TEST_H__
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -66,7 +66,7 @@ esp_err_t register_ut_command();
  *    - ESP_OK: Success
  *    - ESP_FAIL: Initialization failed
  */
-esp_err_t init_prod_console(void);
+esp_err_t init_unit_test_console(void);
 
 /**
  * @brief Register a unit test for a specific module.
@@ -82,4 +82,4 @@ esp_err_t init_prod_console(void);
  */
 esp_err_t register_unit_test(module_id_t module_id, module_callback_t callback) ;
 
-#endif /* __PROD_UNIT_TEST_H__ */
+#endif /* __MESHX_UNIT_TEST_H__ */

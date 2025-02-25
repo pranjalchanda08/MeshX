@@ -1,16 +1,16 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file light_ctl_client.c
+ * @file meshx_light_ctl_client.c
  * @brief Implementation of the Light CTL Client model for ESP32 BLE Mesh.
  *
  * This file contains the implementation of the Light CTL Client model, including
  * initialization, callback registration, and event handling.
  *
- *
+ * @author Pranjal Chanda
  */
 
-#include "light_ctl_client.h"
+#include "meshx_light_ctl_client.h"
 
 #define TAG __func__
 
@@ -60,10 +60,10 @@ static void light_ctl_cli_reg_cb_dispatch(const esp_ble_mesh_light_client_cb_par
  * @param[in] event The Light Client event.
  * @param[in] param Pointer to the BLE Mesh Light Client callback parameters.
  */
-void app_ble_mesh_light_client_cb(esp_ble_mesh_light_client_cb_event_t event,
+void meshx_light_client_cb(esp_ble_mesh_light_client_cb_event_t event,
                                   const esp_ble_mesh_light_client_cb_param_t *param)
 {
-    ESP_LOGI(TAG, "evt|err|op|src|dst: %02x|%d|%04x|%04x|%04x",
+    ESP_LOGD(TAG, "evt|err|op|src|dst: %02x|%d|%04x|%04x|%04x",
             event, param->error_code, (unsigned)param->params->ctx.recv_op, param->params->ctx.addr, param->params->ctx.recv_dst);
     if(param->error_code == ESP_OK)
     {
@@ -81,7 +81,7 @@ void app_ble_mesh_light_client_cb(esp_ble_mesh_light_client_cb_event_t event,
  * @param[in] config_evt_bmap The event bitmap specifying the events to register for.
  * @return ESP_OK on success, or an error code on failure.
  */
-esp_err_t prod_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap)
+esp_err_t meshx_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap)
 {
     if (cb == NULL || config_evt_bmap == 0)
         return ESP_ERR_INVALID_ARG; // Invalid arguments
@@ -110,7 +110,7 @@ esp_err_t prod_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap)
  *
  * @return ESP_OK on success, or an error code on failure.
  */
-esp_err_t prod_light_ctl_client_init()
+esp_err_t meshx_light_ctl_client_init()
 {
     if (light_ctl_client_init_flag == LIGHT_CTL_CLIENT_INIT_MAGIC)
         return ESP_OK;
@@ -119,7 +119,7 @@ esp_err_t prod_light_ctl_client_init()
     if (light_ctl_cli_cb_reg_mutex == NULL)
         return ESP_ERR_NO_MEM; // Failed to create mutex
 
-    esp_err_t err = esp_ble_mesh_register_light_client_callback((esp_ble_mesh_light_client_cb_t)&app_ble_mesh_light_client_cb);
+    esp_err_t err = esp_ble_mesh_register_light_client_callback((esp_ble_mesh_light_client_cb_t)&meshx_light_client_cb);
     if (err == ESP_OK)
     {
         light_ctl_client_init_flag = LIGHT_CTL_CLIENT_INIT_MAGIC;
@@ -138,7 +138,7 @@ esp_err_t prod_light_ctl_client_init()
  *    - ESP_OK: Success
  *    - Appropriate error code on failure
  */
-esp_err_t prod_light_ctl_send_msg(light_ctl_send_args_t * params)
+esp_err_t meshx_light_ctl_send_msg(light_ctl_send_args_t * params)
 {
     esp_err_t err = ESP_OK;
     bool send_msg = false;
@@ -207,7 +207,7 @@ esp_err_t prod_light_ctl_send_msg(light_ctl_send_args_t * params)
  *    - ESP_ERR_INVALID_ARG: Invalid argument
  *    - ESP_FAIL: Sending message failed
  */
-esp_err_t prod_light_ctl_temperature_send_msg(light_ctl_send_args_t * params)
+esp_err_t meshx_light_ctl_temperature_send_msg(light_ctl_send_args_t * params)
 {
     esp_err_t err = ESP_OK;
     esp_ble_mesh_client_common_param_t common = {0};

@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file relay_server_element.h
+ * @file meshx_relay_server_element.h
  * @brief Header file for the Relay Server Model.
  *
  * This file contains the definitions and function prototypes for the Relay Server Model.
@@ -13,7 +13,7 @@
 #define __RELAY_SERVER_MODEL_H__
 
 #include "app_common.h"
-#include <prod_onoff_server.h>
+#include <meshx_onoff_server.h>
 
 #define RELAY_SERVER_ELEMENT_NOS_DEF 1
 
@@ -29,7 +29,7 @@ typedef enum{
     RELAY_SIG_MAX_ID,
 }relay_sig_id_t;
 
-typedef struct prod_gen_ctx
+typedef struct meshx_gen_ctx
 {
     uint8_t state;
     uint8_t tid;
@@ -42,7 +42,7 @@ typedef struct relay_element
     size_t element_cnt;
     size_t element_id_end;
     size_t element_id_start;
-    relay_srv_model_ctx_t *prod_gen_ctx;
+    relay_srv_model_ctx_t *meshx_gen_ctx;
     esp_ble_mesh_model_t **relay_server_sig_model_list;
     esp_ble_mesh_model_pub_t *relay_server_pub_list;
     esp_ble_mesh_gen_onoff_srv_t *relay_server_onoff_gen_list;

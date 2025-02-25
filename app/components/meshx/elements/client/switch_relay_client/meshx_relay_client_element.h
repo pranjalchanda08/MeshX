@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file relay_client_element.h
+ * @file meshx_relay_client_element.h
  * @brief Header file for the Relay Client Model in BLE Mesh.
  *
  * This file contains the definitions and function declarations for the Relay Client Model
@@ -20,7 +20,7 @@
 #pragma once
 
 #include "app_common.h"
-#include "prod_onoff_client.h"
+#include "meshx_onoff_client.h"
 
 #define RELAY_CLIENT_ELEMENT_NOS_DEF 3
 

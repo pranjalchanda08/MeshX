@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file prod_light_ctl_srv.h
+ * @file meshx_light_ctl_srv.h
  * @brief Header file for the Light CTL Server module.
  *
  * This file contains the function declarations and necessary includes for
@@ -9,11 +9,11 @@
  *
  */
 
-#ifndef __PROD_LIGHT_CTL_SRV_H__
-#define __PROD_LIGHT_CTL_SRV_H__
+#ifndef __MESHX_LIGHT_CTL_SRV_H__
+#define __MESHX_LIGHT_CTL_SRV_H__
 
 #include "app_common.h"
-#include <prod_light_server.h>
+#include <meshx_light_server.h>
 #include "meshx_control_task.h"
 
 /**
@@ -27,7 +27,7 @@
  *    - ESP_OK: Success
  *    - ESP_FAIL: Initialization failed
  */
-esp_err_t prod_light_ctl_server_init(void);
+esp_err_t meshx_light_ctl_server_init(void);
 /**
  * @brief Send the Light CTL Status message to the client.
  *
@@ -43,6 +43,6 @@ esp_err_t prod_light_ctl_server_init(void);
  *     - ESP_OK: Success
  *     - ESP_FAIL: Failure
  */
-esp_err_t prod_send_ctl_status(esp_ble_mesh_model_t *model, esp_ble_mesh_msg_ctx_t* ctx, uint16_t lightness, uint16_t temperature);
+esp_err_t meshx_send_ctl_status(esp_ble_mesh_model_t *model, esp_ble_mesh_msg_ctx_t* ctx, uint16_t lightness, uint16_t temperature);
 
-#endif /*__PROD_LIGHT_CTL_SRV_H__*/
+#endif /*__MESHX_LIGHT_CTL_SRV_H__*/

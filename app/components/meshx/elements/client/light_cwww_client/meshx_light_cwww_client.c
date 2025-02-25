@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file light_cwww_client.c
+ * @file meshx_light_cwww_client.c
  * @brief Implementation of the CW-WW (Cool White - Warm White) client model for BLE Mesh.
  *
  * This file contains the implementation of the CW-WW client model, including initialization,
@@ -19,13 +19,13 @@
  * - Sending CW-WW messages to the server.
  *
  */
-#include "light_cwww_client.h"
+#include "meshx_light_cwww_client.h"
 #include "meshx_nvs.h"
 
 #if CONFIG_LIGHT_CWWW_CLIENT_COUNT > 0
 
 #if CONFIG_ENABLE_CONFIG_SERVER
-#include "config_server.h"
+#include "meshx_config_server.h"
 
 #include "meshx_api.h"
 __section(".element_table") const element_comp_table_t cwww_cli_el = {MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT, &create_cwww_client_elements};
@@ -42,13 +42,13 @@ __section(".element_table") const element_comp_table_t cwww_cli_el = {MESHX_ELEM
 #define CONTROL_TASK_MSG_CODE_EVT_MASK      CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF | CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL
 #endif /* __MESHX_CONTROL_TASK__ */
 
-#define CWWW_CLI_PROD_ONOFF_ENABLE_CB       true
+#define CWWW_CLI_MESHX_ONOFF_ENABLE_CB       true
 #define IS_EL_IN_RANGE(_element_id)         ((_element_id) >= cwww_client_element_init_ctrl.element_id_start \
                                             && (_element_id) < cwww_client_element_init_ctrl.element_id_end)
 #define GET_RELATIVE_EL_IDX(_element_id)    ((_element_id) - cwww_client_element_init_ctrl.element_id_start)
 
-#define CWWW_CLI_PROD_ONOFF_CLI_CB_EVT_BMAP PROD_ONOFF_CLI_EVT_ALL
-#define CWWW_CLI_PROD_CTL_CLI_CB_EVT_BMAP   LIGHT_CTL_CLI_EVT_ALL
+#define CWWW_CLI_MESHX_ONOFF_CLI_CB_EVT_BMAP MESHX_ONOFF_CLI_EVT_ALL
+#define CWWW_CLI_MESHX_CTL_CLI_CB_EVT_BMAP   LIGHT_CTL_CLI_EVT_ALL
 
 static const esp_ble_mesh_model_t cwww_cli_sig_template[CWWW_CLI_MODEL_SIG_CNT] = {
     ESP_BLE_MESH_SIG_MODEL(ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_CLI, NULL, NULL, NULL),
@@ -56,7 +56,7 @@ static const esp_ble_mesh_model_t cwww_cli_sig_template[CWWW_CLI_MODEL_SIG_CNT] 
 };
 cwww_client_elements_t cwww_client_element_init_ctrl;
 
-#if CWWW_CLI_PROD_ONOFF_ENABLE_CB
+#if CWWW_CLI_MESHX_ONOFF_ENABLE_CB
 
 /**
  * @brief CW-WW Client Generic Client Callback
@@ -66,7 +66,7 @@ cwww_client_elements_t cwww_client_element_init_ctrl;
  * @param param Pointer to the BLE Mesh generic client callback parameter structure.
  * @param evt Event type of the callback.
  */
-static void cwww_client_generic_client_cb(const esp_ble_mesh_generic_client_cb_param_t *param, prod_onoff_cli_evt_t evt)
+static void cwww_client_generic_client_cb(const esp_ble_mesh_generic_client_cb_param_t *param, meshx_onoff_cli_evt_t evt)
 {
     uint8_t element_id = param->params->model->element_idx;
     if (!IS_EL_IN_RANGE(element_id))
@@ -80,12 +80,12 @@ static void cwww_client_generic_client_cb(const esp_ble_mesh_generic_client_cb_p
 
     switch (evt)
     {
-        case PROD_ONOFF_CLI_PUBLISH:
+        case MESHX_ONOFF_CLI_PUBLISH:
             el_ctx->state = !param->status_cb.onoff_status.present_onoff;
             ESP_LOGD(TAG, "PUBLISH: %d", param->status_cb.onoff_status.present_onoff);
             ESP_LOGD(TAG, "Next state: %d", el_ctx->state);
             break;
-        case PROD_ONOFF_CLI_TIMEOUT:
+        case MESHX_ONOFF_CLI_TIMEOUT:
             ESP_LOGD(TAG, "Timeout");
             msg.element_id = param->params->model->element_idx;
             msg.set_get = CWWW_CLI_MSG_SET;
@@ -96,9 +96,9 @@ static void cwww_client_generic_client_cb(const esp_ble_mesh_generic_client_cb_p
             * 2. Timeout occurs
             * 3. #1 and #2 are repeated with no break in stetes.
             */
-            control_task_publish(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF, &msg, sizeof(msg));
+            control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF, &msg, sizeof(msg));
             break;
-        case PROD_ONOFF_CLI_EVT_SET:
+        case MESHX_ONOFF_CLI_EVT_SET:
             el_ctx->state = !param->status_cb.onoff_status.present_onoff;
             ESP_LOGD(TAG, "SET: %d", param->status_cb.onoff_status.present_onoff);
             ESP_LOGI(TAG, "Next state: %d", el_ctx->state);
@@ -158,11 +158,9 @@ static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
     switch (evt)
     {
         case LIGHT_CTL_CLI_PUBLISH:
-            ESP_LOGI(TAG, "PUBLISH: %d|%d|%d|%d",
+            ESP_LOGI(TAG, "PUBLISH: light|temp : %d|%d",
                 el_ctx->lightness,
-                el_ctx->temperature,
-                el_ctx->lightness_range_max,
-                el_ctx->lightness_range_min);
+                el_ctx->temperature);
             break;
         case LIGHT_CTL_CLI_TIMEOUT:
             ESP_LOGD(TAG, "Timeout");
@@ -175,7 +173,7 @@ static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
             * 2. Timeout occurs
             * 3. #1 and #2 are repeated with no break in stetes.
             */
-            control_task_publish(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL, &msg, sizeof(msg));
+            control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL, &msg, sizeof(msg));
             break;
         case LIGHT_CTL_CLI_EVT_SET:
             ESP_LOGI(TAG, "SET: %d, %d",
@@ -430,7 +428,7 @@ static esp_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv
             return ESP_ERR_INVALID_ARG;
     }
 
-    err = control_task_publish(CONTROL_TASK_MSG_CODE_TO_BLE, msg_evt, &msg, sizeof(msg));
+    err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE, msg_evt, &msg, sizeof(msg));
     if (err)
     {
         ESP_LOGE(TAG, "CWWW Client Unit Test: Command %d failed", cmd);
@@ -440,7 +438,7 @@ static esp_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv
 
 #endif /* CONFIG_ENABLE_UNIT_TEST */
 
-#endif /* CWWW_CLI_PROD_ONOFF_ENABLE_CB */
+#endif /* CWWW_CLI_MESHX_ONOFF_ENABLE_CB */
 
 /**
  * @brief Initializes the CW-WW client model.
@@ -597,7 +595,7 @@ static void meshx_element_struct_deinit(uint16_t n_max)
  *     - ESP_ERR_NO_MEM: Memory allocation failure
  *     - ESP_ERR_INVALID_ARG: Invalid arguments
  */
-static esp_err_t dev_create_cwww_model_space(dev_struct_t const *pdev, uint16_t n_max)
+static esp_err_t meshx_dev_create_cwww_model_space(dev_struct_t const *pdev, uint16_t n_max)
 {
     if (!pdev)
         return ESP_ERR_INVALID_STATE;
@@ -652,7 +650,7 @@ static esp_err_t dev_create_cwww_model_space(dev_struct_t const *pdev, uint16_t 
  *     - ESP_ERR_NO_MEM: Memory allocation failure
  *     - ESP_ERR_INVALID_ARG: Invalid arguments
  */
-static esp_err_t dev_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, uint16_t *start_idx, uint16_t n_max)
+static esp_err_t meshx_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, uint16_t *start_idx, uint16_t n_max)
 {
     if (!pdev || !start_idx)
     {
@@ -715,30 +713,30 @@ esp_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
 {
     esp_err_t err;
 
-    err = dev_create_cwww_model_space(pdev, element_cnt);
+    err = meshx_dev_create_cwww_model_space(pdev, element_cnt);
     if (err)
     {
         ESP_LOGE(TAG, "CWWW Model space create failed: (%d)", err);
         return err;
     }
 
-    err = dev_add_cwww_cli_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, element_cnt);
+    err = meshx_add_cwww_cli_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, element_cnt);
     if (err)
     {
         ESP_LOGE(TAG, "CWWW Model add to element create failed: (%d)", err);
         return err;
     }
 
-    err = prod_light_ctl_client_init();
+    err = meshx_light_ctl_client_init();
     if (err)
     {
-        ESP_LOGE(TAG, "prod_light_ctl_client_init failed: (%d)", err);
+        ESP_LOGE(TAG, "meshx_light_ctl_client_init failed: (%d)", err);
         return err;
     }
 
-#if CWWW_CLI_PROD_ONOFF_ENABLE_CB
+#if CWWW_CLI_MESHX_ONOFF_ENABLE_CB
 #if CONFIG_ENABLE_CONFIG_SERVER
-    err = prod_config_server_cb_reg(&cwww_client_config_srv_cb, CONFIG_SERVER_CB_MASK);
+    err = meshx_config_server_cb_reg(&cwww_client_config_srv_cb, CONFIG_SERVER_CB_MASK);
     if (err)
     {
         ESP_LOGE(TAG, "Light CWWW config server callback reg failed: (%d)", err);
@@ -746,13 +744,13 @@ esp_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
     }
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
-    err = prod_onoff_reg_cb(&cwww_client_generic_client_cb, CWWW_CLI_PROD_ONOFF_CLI_CB_EVT_BMAP);
+    err = meshx_onoff_reg_cb(&cwww_client_generic_client_cb, CWWW_CLI_MESHX_ONOFF_CLI_CB_EVT_BMAP);
     if (err)
     {
         ESP_LOGE(TAG, "Light CWWW ONOFF callback reg failed: (%d)", err);
         return err;
     }
-    err = prod_light_ctl_cli_reg_cb(&cwww_client_ctl_client_cb, CWWW_CLI_PROD_CTL_CLI_CB_EVT_BMAP);
+    err = meshx_light_ctl_cli_reg_cb(&cwww_client_ctl_client_cb, CWWW_CLI_MESHX_CTL_CLI_CB_EVT_BMAP);
     if (err)
     {
         ESP_LOGE(TAG, "Light CWWW CTL Model callback reg failed: (%d)", err);
@@ -777,7 +775,7 @@ esp_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
         return err;
     }
 #endif /* CONFIG_ENABLE_UNIT_TEST */
-#endif /* CWWW_CLI_PROD_ONOFF_ENABLE_CB */
+#endif /* CWWW_CLI_MESHX_ONOFF_ENABLE_CB */
 
     return ESP_OK;
 }
@@ -830,7 +828,7 @@ esp_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id,
                 opcode = ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_GET;
             }
             ESP_LOGD(TAG, "OPCODE: %p", (void *)(uint32_t)opcode);
-            err = prod_onoff_client_send_msg(model, opcode, el_ctx->pub_addr, pdev->meshx_store.net_key_id, el_ctx->app_id, el_ctx->state, el_ctx->tid);
+            err = meshx_onoff_client_send_msg(model, opcode, el_ctx->pub_addr, pdev->meshx_store.net_key_id, el_ctx->app_id, el_ctx->state, el_ctx->tid);
             if (!err)
             {
                 el_ctx->tid++;
@@ -866,8 +864,8 @@ esp_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id,
             ctl_params.app_idx  = el_ctx->app_id;
             ctl_params.net_idx  = pdev->meshx_store.net_key_id;
 
-            ESP_LOGI(TAG, "OPCODE: %p", (void *)(uint32_t)opcode);
-            err = prod_light_ctl_send_msg(&ctl_params);
+            ESP_LOGD(TAG, "OPCODE: %p", (void *)(uint32_t)opcode);
+            err = meshx_light_ctl_send_msg(&ctl_params);
             if (!err)
             {
                 el_ctx->tid++;
