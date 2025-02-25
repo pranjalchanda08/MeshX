@@ -36,15 +36,20 @@
 #define RELAY_CLI_MSG_ACK 1
 #define RELAY_CLI_MSG_NO_ACK 0
 
+typedef struct relay_client_state
+{
+    uint8_t on_off;         /**< On/Off state */
+    uint8_t prev_on_off;    /**< Previous On/Off state */
+} relay_client_state_t;
 /**
  * @brief Structure to hold the context of the relay client.
  */
 typedef struct rel_cli_ctx
 {
-    uint8_t tid;        /**< Transaction ID */
-    uint8_t state;      /**< State of the relay client */
-    uint16_t app_id;    /**< Application ID */
-    uint16_t pub_addr;  /**< Publish address */
+    uint8_t tid;                     /**< Transaction ID */
+    uint16_t app_id;                 /**< Application ID */
+    uint16_t pub_addr;               /**< Publish address */
+    relay_client_state_t state;      /**< State of the relay client */
 } rel_cli_ctx_t;
 
 /**

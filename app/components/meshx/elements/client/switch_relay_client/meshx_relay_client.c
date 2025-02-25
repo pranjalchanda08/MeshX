@@ -263,12 +263,33 @@ void meshx_relay_cli_generic_client_cb(const esp_ble_mesh_generic_client_cb_para
     size_t rel_el_id = GET_RELATIVE_EL_IDX(element_id);
     rel_cli_ctx_t *el_ctx = &relay_element_init_ctrl.rel_cli_ctx[rel_el_id];
     relay_client_msg_t msg = {0};
+    meshx_el_relay_client_evt_t app_notify;
+    esp_err_t err;
+
     switch (evt)
     {
+    case MESHX_ONOFF_CLI_EVT_SET:
     case MESHX_ONOFF_CLI_PUBLISH:
-        el_ctx->state = !param->status_cb.onoff_status.present_onoff;
-        ESP_LOGD(TAG, "PUBLISH: %d", param->status_cb.onoff_status.present_onoff);
-        ESP_LOGI(TAG, "Next state: %d", el_ctx->state);
+        if (el_ctx->state.prev_on_off != param->status_cb.onoff_status.present_onoff)
+        {
+            el_ctx->state.prev_on_off = param->status_cb.onoff_status.present_onoff;
+            app_notify.err_code = 0;
+            app_notify.on_off = el_ctx->state.prev_on_off;
+
+            err = meshx_send_msg_to_app(element_id,
+                                        MESHX_ELEMENT_TYPE_RELAY_CLIENT,
+                                        MESHX_ELEMENT_FUNC_ID_RELAY_SERVER_ONN_OFF,
+                                        sizeof(meshx_el_relay_client_evt_t),
+                                        &app_notify);
+            if (err != ESP_OK)
+            {
+                ESP_LOGE(TAG, "Failed to send relay state change message: (%d)", err);
+            }
+
+            el_ctx->state.on_off = !param->status_cb.onoff_status.present_onoff;
+            ESP_LOGD(TAG, "SET|PUBLISH: %d", param->status_cb.onoff_status.present_onoff);
+            ESP_LOGD(TAG, "Next state: %d", el_ctx->state.on_off);
+        }
         break;
     case MESHX_ONOFF_CLI_TIMEOUT:
         ESP_LOGD(TAG, "Timeout");
@@ -282,11 +303,17 @@ void meshx_relay_cli_generic_client_cb(const esp_ble_mesh_generic_client_cb_para
          * 3. #1 and #2 are repeated with no break in stetes.
          */
         control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF, &msg, sizeof(msg));
-        break;
-    case MESHX_ONOFF_CLI_EVT_SET:
-        el_ctx->state = !param->status_cb.onoff_status.present_onoff;
-        ESP_LOGD(TAG, "SET: %d", param->status_cb.onoff_status.present_onoff);
-        ESP_LOGI(TAG, "Next state: %d", el_ctx->state);
+
+        app_notify.err_code = 1;
+        err = meshx_send_msg_to_app(element_id,
+                                    MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT,
+                                    MESHX_ELEMENT_FUNC_ID_RELAY_SERVER_ONN_OFF,
+                                    sizeof(meshx_el_relay_client_evt_t),
+                                    &app_notify);
+        if (err != ESP_OK)
+        {
+            ESP_LOGE(TAG, "Failed to send relay state change message: (%d)", err);
+        }
         break;
     default:
         ESP_LOGW(TAG, "Unhandled event: %d", evt);
@@ -341,7 +368,7 @@ static void relay_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
     default:
         break;
     }
-    if(nvs_save)
+    if (nvs_save)
     {
         esp_err_t err = meshx_nvs_elemnt_ctx_set(element_id, el_ctx, sizeof(rel_cli_ctx_t));
         if (err != ESP_OK)
@@ -388,8 +415,8 @@ static esp_err_t relay_cli_control_task_msg_handle(dev_struct_t *pdev, control_t
 #if CONFIG_ENABLE_UNIT_TEST
 typedef enum
 {
-    RELAY_CLI_CMD_GET       = 0x00,
-    RELAY_CLI_CMD_SET       = 0x01,
+    RELAY_CLI_CMD_GET = 0x00,
+    RELAY_CLI_CMD_SET = 0x01,
     RELAY_CLI_CMD_SET_UNACK = 0x02,
     RELAY_CLI_MAX_CMD
 } relay_cli_cmd_t;
@@ -455,11 +482,10 @@ esp_err_t ble_mesh_send_relay_msg(dev_struct_t *pdev, uint16_t element_id, uint8
 
     esp_err_t err = ESP_OK;
     esp_ble_mesh_elem_t *element = &pdev->elements[element_id];
-    esp_ble_mesh_model_t *model  = &element->sig_models[0];
+    esp_ble_mesh_model_t *model = &element->sig_models[0];
 
-    size_t rel_el_id      = element_id - relay_element_init_ctrl.element_id_start;
+    size_t rel_el_id = element_id - relay_element_init_ctrl.element_id_start;
     rel_cli_ctx_t *el_ctx = &relay_element_init_ctrl.rel_cli_ctx[rel_el_id];
-
 
     uint16_t opcode = ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_GET;
     if (RELAY_CLI_MSG_SET == set_get)
@@ -471,21 +497,25 @@ esp_err_t ble_mesh_send_relay_msg(dev_struct_t *pdev, uint16_t element_id, uint8
 
     /* Send message to the relay client */
     err = meshx_onoff_client_send_msg(
-            model,
-            opcode,
-            el_ctx->pub_addr,
-            pdev->meshx_store.net_key_id,
-            el_ctx->app_id,
-            el_ctx->state,
-            el_ctx->tid
-        );
+        model,
+        opcode,
+        el_ctx->pub_addr,
+        pdev->meshx_store.net_key_id,
+        el_ctx->app_id,
+        el_ctx->state.on_off,
+        el_ctx->tid);
     if (err)
     {
         ESP_LOGE(TAG, "Relay Client Send Message failed: (%d)", err);
     }
-    else {
+    else
+    {
         el_ctx->tid++;
-        el_ctx->state = opcode == ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK ? el_ctx->state : !el_ctx->state;
+        if(opcode == ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK)
+        {
+            el_ctx->state.prev_on_off = el_ctx->state.on_off;
+            el_ctx->state.on_off = !el_ctx->state.on_off;
+        }
     }
     return err;
 }
