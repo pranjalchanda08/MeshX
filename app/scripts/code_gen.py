@@ -55,7 +55,7 @@ class CodeGen(CodeGenException):
         self.deps = {}  # Dependency dictionary
         self.__find_prod_from_target()
         self.file_insert = file_insert
-        self.genfile_h = self.meshx_root + "/default/inc/codegen.h"
+        self.genfile_h = self.meshx_root + "/default/inc/meshx_config.h"
         self.define_fmt = "\n#define {}{}{}"
         if os.name == 'nt':
             os.system(f'echo.>{self.genfile_h}')  # Create the header file

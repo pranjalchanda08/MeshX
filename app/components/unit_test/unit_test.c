@@ -95,7 +95,7 @@ esp_err_t register_ut_command() {
  *     - ESP_OK: Success
  *     - Other error codes: Failure
  */
-esp_err_t init_prod_console() {
+esp_err_t init_unit_test_console() {
     // Initialize the console
     esp_err_t err = ESP_OK;
     esp_console_repl_t *repl = NULL;

@@ -2,7 +2,7 @@
  * Copyright (c) 2025 Pranjal Chanda
  *
  * @brief: Relay Client Model
- * @file: relay_client.c
+ * @file: meshx_relay_client.c
  *
  * This file contains the implementation of the relay client model for BLE mesh.
  * It includes functions for creating relay model space, adding relay client models
@@ -22,10 +22,10 @@
 #include "meshx_api.h"
 
 #if CONFIG_RELAY_CLIENT_COUNT
-#include "relay_client_element.h"
+#include "meshx_relay_client_element.h"
 
 #if CONFIG_ENABLE_CONFIG_SERVER
-#include "config_server.h"
+#include "meshx_config_server.h"
 #define CONFIG_SERVER_CB_MASK CONFIG_EVT_MODEL_PUB_ADD | CONFIG_EVT_MODEL_SUB_ADD | CONFIG_EVT_MODEL_APP_KEY_BIND
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
@@ -33,9 +33,9 @@
 #define CONTROL_TASK_MSG_CODE_EVT_MASK CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF
 #endif /* __MESHX_CONTROL_TASK__ */
 
-#define RELAY_CLI_PROD_ONOFF_ENABLE_CB true
-#define CONFIG_RELAY_PROD_ONOFF_SET_ACK true
-#define RELAY_CLI_PROD_ONOFF_CLI_CB_EVT_BMAP PROD_ONOFF_CLI_EVT_ALL // PROD_ONOFF_CLI_EVT_GET | PROD_ONOFF_CLI_EVT_SET
+#define RELAY_CLI_MESHX_ONOFF_ENABLE_CB true
+#define CONFIG_RELAY_MESHX_ONOFF_SET_ACK true
+#define RELAY_CLI_MESHX_ONOFF_CLI_CB_EVT_BMAP MESHX_ONOFF_CLI_EVT_ALL // MESHX_ONOFF_CLI_EVT_GET | MESHX_ONOFF_CLI_EVT_SET
 
 #define GET_RELATIVE_EL_IDX(_element_id) _element_id - relay_element_init_ctrl.element_id_start
 #define IS_EL_IN_RANGE(_element_id) (_element_id >= relay_element_init_ctrl.element_id_start && _element_id < relay_element_init_ctrl.element_id_end)
@@ -151,7 +151,7 @@ static void meshx_element_struct_deinit(uint16_t n_max)
  *
  * @return esp_err_t
  */
-static esp_err_t dev_create_relay_model_space(dev_struct_t const *pdev, uint16_t n_max)
+static esp_err_t meshx_dev_create_relay_model_space(dev_struct_t const *pdev, uint16_t n_max)
 {
     if (!pdev)
         return ESP_ERR_INVALID_STATE;
@@ -192,7 +192,7 @@ static esp_err_t dev_create_relay_model_space(dev_struct_t const *pdev, uint16_t
  *
  * @return ESP_OK on success, error code otherwise.
  */
-static esp_err_t dev_add_relay_cli_model_to_element_list(dev_struct_t *pdev, uint16_t *start_idx, uint16_t n_max)
+static esp_err_t meshx_add_relay_cli_model_to_element_list(dev_struct_t *pdev, uint16_t *start_idx, uint16_t n_max)
 {
     if (!pdev)
         return ESP_ERR_INVALID_STATE;
@@ -242,7 +242,7 @@ static esp_err_t dev_add_relay_cli_model_to_element_list(dev_struct_t *pdev, uin
     return ESP_OK;
 }
 
-#if RELAY_CLI_PROD_ONOFF_ENABLE_CB
+#if RELAY_CLI_MESHX_ONOFF_ENABLE_CB
 /**
  * @brief Relay Client Generic Client Callback
  *
@@ -252,7 +252,7 @@ static esp_err_t dev_add_relay_cli_model_to_element_list(dev_struct_t *pdev, uin
  * @param[in] evt   Event type of the callback.
  * @return void
  */
-void relay_el_generic_client_cb(const esp_ble_mesh_generic_client_cb_param_t *param, prod_onoff_cli_evt_t evt)
+void meshx_relay_cli_generic_client_cb(const esp_ble_mesh_generic_client_cb_param_t *param, meshx_onoff_cli_evt_t evt)
 {
     uint8_t element_id = param->params->model->element_idx;
     if (!IS_EL_IN_RANGE(element_id))
@@ -265,12 +265,12 @@ void relay_el_generic_client_cb(const esp_ble_mesh_generic_client_cb_param_t *pa
     relay_client_msg_t msg = {0};
     switch (evt)
     {
-    case PROD_ONOFF_CLI_PUBLISH:
+    case MESHX_ONOFF_CLI_PUBLISH:
         el_ctx->state = !param->status_cb.onoff_status.present_onoff;
         ESP_LOGD(TAG, "PUBLISH: %d", param->status_cb.onoff_status.present_onoff);
-        ESP_LOGD(TAG, "Next state: %d", el_ctx->state);
+        ESP_LOGI(TAG, "Next state: %d", el_ctx->state);
         break;
-    case PROD_ONOFF_CLI_TIMEOUT:
+    case MESHX_ONOFF_CLI_TIMEOUT:
         ESP_LOGD(TAG, "Timeout");
         msg.element_id = param->params->model->element_idx;
         msg.set_get = RELAY_CLI_MSG_SET;
@@ -281,9 +281,9 @@ void relay_el_generic_client_cb(const esp_ble_mesh_generic_client_cb_param_t *pa
          * 2. Timeout occurs
          * 3. #1 and #2 are repeated with no break in stetes.
          */
-        control_task_publish(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF, &msg, sizeof(msg));
+        control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF, &msg, sizeof(msg));
         break;
-    case PROD_ONOFF_CLI_EVT_SET:
+    case MESHX_ONOFF_CLI_EVT_SET:
         el_ctx->state = !param->status_cb.onoff_status.present_onoff;
         ESP_LOGD(TAG, "SET: %d", param->status_cb.onoff_status.present_onoff);
         ESP_LOGI(TAG, "Next state: %d", el_ctx->state);
@@ -423,7 +423,7 @@ static esp_err_t relay_cli_unit_test_cb_handler(int cmd_id, int argc, char **arg
     msg.element_id = UT_GET_ARG(0, uint16_t, argv);
     msg.set_get = (cmd == RELAY_CLI_CMD_GET) ? RELAY_CLI_MSG_GET : RELAY_CLI_MSG_SET;
     msg.ack = (cmd == RELAY_CLI_CMD_SET_UNACK) ? RELAY_CLI_MSG_NO_ACK : RELAY_CLI_MSG_ACK;
-    err = control_task_publish(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF, &msg, sizeof(msg));
+    err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF, &msg, sizeof(msg));
     if (err)
     {
         ESP_LOGE(TAG, "Relay Client Unit Test: Command %d failed", cmd);
@@ -431,7 +431,7 @@ static esp_err_t relay_cli_unit_test_cb_handler(int cmd_id, int argc, char **arg
     return err;
 }
 #endif /* CONFIG_ENABLE_UNIT_TEST */
-#endif /* RELAY_CLI_PROD_ONOFF_ENABLE_CB */
+#endif /* RELAY_CLI_MESHX_ONOFF_ENABLE_CB */
 
 /**
  * @brief Sends a relay message over BLE mesh.
@@ -470,7 +470,7 @@ esp_err_t ble_mesh_send_relay_msg(dev_struct_t *pdev, uint16_t element_id, uint8
     ESP_LOGD(TAG, "OPCODE: %p", (void *)(uint32_t)opcode);
 
     /* Send message to the relay client */
-    err = prod_onoff_client_send_msg(
+    err = meshx_onoff_client_send_msg(
             model,
             opcode,
             el_ctx->pub_addr,
@@ -503,29 +503,29 @@ esp_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
 {
     esp_err_t err;
 
-    err = dev_create_relay_model_space(pdev, element_cnt);
+    err = meshx_dev_create_relay_model_space(pdev, element_cnt);
     if (err)
     {
         ESP_LOGE(TAG, "Relay Model space create failed: (%d)", err);
         return err;
     }
 
-    err = dev_add_relay_cli_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, element_cnt);
+    err = meshx_add_relay_cli_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, element_cnt);
     if (err)
     {
         ESP_LOGE(TAG, "Relay Model add to element create failed: (%d)", err);
         return err;
     }
 
-    err = prod_onoff_client_init();
+    err = meshx_onoff_client_init();
     if (err)
     {
-        ESP_LOGE(TAG, "prod_onoff_client_init failed: (%d)", err);
+        ESP_LOGE(TAG, "meshx_onoff_client_init failed: (%d)", err);
         return err;
     }
 
-#if RELAY_CLI_PROD_ONOFF_ENABLE_CB
-    err = prod_onoff_reg_cb(&relay_el_generic_client_cb, RELAY_CLI_PROD_ONOFF_CLI_CB_EVT_BMAP);
+#if RELAY_CLI_MESHX_ONOFF_ENABLE_CB
+    err = meshx_onoff_reg_cb(&meshx_relay_cli_generic_client_cb, RELAY_CLI_MESHX_ONOFF_CLI_CB_EVT_BMAP);
     if (err)
     {
         ESP_LOGE(TAG, "Relay Model callback reg failed: (%d)", err);
@@ -533,7 +533,7 @@ esp_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
     }
 
 #if CONFIG_ENABLE_CONFIG_SERVER
-    err = prod_config_server_cb_reg(&relay_client_config_srv_cb, CONFIG_SERVER_CB_MASK);
+    err = meshx_config_server_cb_reg(&relay_client_config_srv_cb, CONFIG_SERVER_CB_MASK);
     if (err)
     {
         ESP_LOGE(TAG, "Relay Model config server callback reg failed: (%d)", err);
@@ -559,7 +559,7 @@ esp_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
         return err;
     }
 #endif /* CONFIG_ENABLE_UNIT_TEST */
-#endif /* RELAY_CLI_PROD_ONOFF_ENABLE_CB */
+#endif /* RELAY_CLI_MESHX_ONOFF_ENABLE_CB */
 
     return ESP_OK;
 }

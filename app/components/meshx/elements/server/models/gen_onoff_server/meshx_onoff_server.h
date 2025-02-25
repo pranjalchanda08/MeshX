@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file prod_onoff_server.h
+ * @file meshx_onoff_server.h
  * @brief Header file for the On/Off Server model in the BLE Mesh Node application.
  *
  * This file contains the function declarations and necessary includes for the
@@ -9,11 +9,11 @@
  *
  */
 
-#ifndef __PROD_ONOFF_SERVER__
-#define __PROD_ONOFF_SERVER__
+#ifndef __MESHX_ONOFF_SERVER__
+#define __MESHX_ONOFF_SERVER__
 
 #include "app_common.h"
-#include "prod_gen_server.h"
+#include "meshx_gen_server.h"
 #include "meshx_control_task.h"
 
 /**
@@ -26,6 +26,6 @@
  *    - ESP_OK: Success
  *    - ESP_FAIL: Failure
  */
-esp_err_t prod_on_off_server_init(void);
+esp_err_t meshx_on_off_server_init(void);
 
-#endif /* __PROD_ONOFF_SERVER__ */
+#endif /* __MESHX_ONOFF_SERVER__ */

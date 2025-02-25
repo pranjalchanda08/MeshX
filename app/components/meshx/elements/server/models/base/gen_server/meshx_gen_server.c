@@ -1,8 +1,8 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file prod_gen_server.c
- * @brief Implementation of the BLE Mesh Generic Server for the product.
+ * @file meshx_gen_server.c
+ * @brief Implementation of the BLE Mesh Generic Server for the meshxuct.
  *
  * This file contains the implementation of the BLE Mesh Generic Server
  * for handling various server events and registering callbacks.
@@ -10,11 +10,11 @@
  *
  */
 
-#include "prod_gen_server.h"
+#include "meshx_gen_server.h"
 
 #define TAG __func__
 
-#define PROD_SERVER_INIT_MAGIC_NO 0x1121
+#define MESHX_SERVER_INIT_MAGIC_NO 0x1121
 
 static const char *server_state_str[] =
     {
@@ -22,11 +22,11 @@ static const char *server_state_str[] =
         [ESP_BLE_MESH_GENERIC_SERVER_RECV_GET_MSG_EVT] = "SRV_RECV_GET",
         [ESP_BLE_MESH_GENERIC_SERVER_RECV_SET_MSG_EVT] = "SRV_RECV_SET"};
 
-static uint16_t prod_server_init = 0;
+static uint16_t meshx_server_init = 0;
 
 #if !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
-static struct prod_server_cb_reg_head prod_server_cb_reg_list = SLIST_HEAD_INITIALIZER(prod_server_cb_reg_list);
-static SemaphoreHandle_t prod_server_mutex;
+static struct meshx_server_cb_reg_head meshx_server_cb_reg_list = SLIST_HEAD_INITIALIZER(meshx_server_cb_reg_list);
+static SemaphoreHandle_t meshx_server_mutex;
 #endif /* CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
 
 /**
@@ -37,7 +37,7 @@ static SemaphoreHandle_t prod_server_mutex;
  * @param event The event type for the BLE Mesh Generic Server.
  * @param param Parameters associated with the event.
  */
-static void prod_ble_mesh_generic_server_cb(esp_ble_mesh_generic_server_cb_event_t event,
+static void meshx_ble_mesh_generic_server_cb(esp_ble_mesh_generic_server_cb_event_t event,
                                             const esp_ble_mesh_generic_server_cb_param_t *param)
 {
     ESP_LOGD(TAG, "%s, op|src|dst:%04" PRIx32 "|%04x|%04x",
@@ -46,9 +46,9 @@ static void prod_ble_mesh_generic_server_cb(esp_ble_mesh_generic_server_cb_event
     if (event != ESP_BLE_MESH_GENERIC_SERVER_STATE_CHANGE_EVT)
         return;
 #if !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
-    xSemaphoreTake(prod_server_mutex, portMAX_DELAY);
-    struct prod_server_cb_reg *item;
-    SLIST_FOREACH(item, &prod_server_cb_reg_list, next)
+    xSemaphoreTake(meshx_server_mutex, portMAX_DELAY);
+    struct meshx_server_cb_reg *item;
+    SLIST_FOREACH(item, &meshx_server_cb_reg_list, next)
     {
         if ((item->model_id == param->model->model_id || item->model_id == param->model->vnd.model_id) && item->cb)
         {
@@ -57,9 +57,9 @@ static void prod_ble_mesh_generic_server_cb(esp_ble_mesh_generic_server_cb_event
             break;
         }
     }
-    xSemaphoreGive(prod_server_mutex);
+    xSemaphoreGive(meshx_server_mutex);
 #else
-    esp_err_t err = control_task_publish(
+    esp_err_t err = control_task_msg_publish(
         CONTROL_TASK_MSG_CODE_FRM_BLE,
         param->model->model_id,
         param,
@@ -72,10 +72,10 @@ static void prod_ble_mesh_generic_server_cb(esp_ble_mesh_generic_server_cb_event
 }
 
 /**
- * @brief Register a callback function for the production server model.
+ * @brief Register a callback function for the meshxuction server model.
  *
  * This function registers a callback function that will be called when
- * specific events related to the production server model occur.
+ * specific events related to the meshxuction server model occur.
  *
  * @param model_id The ID of the model for which the callback is being registered.
  * @param cb The callback function to be registered.
@@ -85,34 +85,34 @@ static void prod_ble_mesh_generic_server_cb(esp_ble_mesh_generic_server_cb_event
  *     - ESP_ERR_INVALID_ARG: Invalid arguments.
  *     - ESP_FAIL: Failed to register the callback.
  */
-esp_err_t prod_gen_srv_reg_cb(uint32_t model_id, prod_server_cb cb)
+esp_err_t meshx_gen_srv_reg_cb(uint32_t model_id, meshx_server_cb cb)
 {
     esp_err_t err = ESP_OK;
 #if !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
-    xSemaphoreTake(prod_server_mutex, portMAX_DELAY);
-    struct prod_server_cb_reg *item;
-    SLIST_FOREACH(item, &prod_server_cb_reg_list, next)
+    xSemaphoreTake(meshx_server_mutex, portMAX_DELAY);
+    struct meshx_server_cb_reg *item;
+    SLIST_FOREACH(item, &meshx_server_cb_reg_list, next)
     {
         if (item->model_id == model_id)
         {
             /* If already registered over-write */
             item->cb = cb;
-            xSemaphoreGive(prod_server_mutex);
+            xSemaphoreGive(meshx_server_mutex);
             return ESP_OK;
         }
     }
 
-    item = malloc(sizeof(struct prod_server_cb_reg));
+    item = malloc(sizeof(struct meshx_server_cb_reg));
     if (item == NULL)
     {
-        xSemaphoreGive(prod_server_mutex);
+        xSemaphoreGive(meshx_server_mutex);
         return ESP_ERR_NO_MEM;
     }
 
     item->model_id = model_id;
     item->cb = cb;
-    SLIST_INSERT_HEAD(&prod_server_cb_reg_list, item, next);
-    xSemaphoreGive(prod_server_mutex);
+    SLIST_INSERT_HEAD(&meshx_server_cb_reg_list, item, next);
+    xSemaphoreGive(meshx_server_mutex);
 
 #else
     err = control_task_msg_subscribe(
@@ -137,23 +137,23 @@ esp_err_t prod_gen_srv_reg_cb(uint32_t model_id, prod_server_cb cb)
  *     - ESP_ERR_INVALID_ARG: Invalid argument
  *     - ESP_FAIL: Other failures
  */
-esp_err_t prod_gen_srv_dereg_cb(uint32_t model_id, prod_server_cb cb)
+esp_err_t meshx_gen_srv_dereg_cb(uint32_t model_id, meshx_server_cb cb)
 {
 #if !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
-    xSemaphoreTake(prod_server_mutex, portMAX_DELAY);
-    struct prod_server_cb_reg *item;
-    struct prod_server_cb_reg *tmp;
-    SLIST_FOREACH_SAFE(item, &prod_server_cb_reg_list, next, tmp)
+    xSemaphoreTake(meshx_server_mutex, portMAX_DELAY);
+    struct meshx_server_cb_reg *item;
+    struct meshx_server_cb_reg *tmp;
+    SLIST_FOREACH_SAFE(item, &meshx_server_cb_reg_list, next, tmp)
     {
         if (item->model_id == model_id && item->cb == cb)
         {
-            SLIST_REMOVE(&prod_server_cb_reg_list, item, prod_server_cb_reg, next);
+            SLIST_REMOVE(&meshx_server_cb_reg_list, item, meshx_server_cb_reg, next);
             free(item);
-            xSemaphoreGive(prod_server_mutex);
+            xSemaphoreGive(meshx_server_mutex);
             return ESP_OK;
         }
     }
-    xSemaphoreGive(prod_server_mutex);
+    xSemaphoreGive(meshx_server_mutex);
     return ESP_ERR_NOT_FOUND;
 #else
     return control_task_msg_unsubscribe(
@@ -165,26 +165,26 @@ esp_err_t prod_gen_srv_dereg_cb(uint32_t model_id, prod_server_cb cb)
 }
 
 /**
- * @brief Initialize the production generic server.
+ * @brief Initialize the meshxuction generic server.
  *
  * This function sets up the necessary configurations and initializes the
- * production generic server for the BLE mesh node.
+ * meshxuction generic server for the BLE mesh node.
  *
  * @return
  *     - ESP_OK: Success
  *     - ESP_FAIL: Failed to initialize the server
  */
-esp_err_t prod_gen_srv_init(void)
+esp_err_t meshx_gen_srv_init(void)
 {
-    if (prod_server_init == PROD_SERVER_INIT_MAGIC_NO)
+    if (meshx_server_init == MESHX_SERVER_INIT_MAGIC_NO)
         return ESP_OK;
-    prod_server_init = PROD_SERVER_INIT_MAGIC_NO;
+    meshx_server_init = MESHX_SERVER_INIT_MAGIC_NO;
 #if !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
-    prod_server_mutex = xSemaphoreCreateMutex();
-    if (prod_server_mutex == NULL)
+    meshx_server_mutex = xSemaphoreCreateMutex();
+    if (meshx_server_mutex == NULL)
     {
         return ESP_ERR_NO_MEM;
     }
 #endif /* CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
-    return esp_ble_mesh_register_generic_server_callback((esp_ble_mesh_generic_server_cb_t)&prod_ble_mesh_generic_server_cb);
+    return esp_ble_mesh_register_generic_server_callback((esp_ble_mesh_generic_server_cb_t)&meshx_ble_mesh_generic_server_cb);
 }
