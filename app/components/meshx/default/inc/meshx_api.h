@@ -81,6 +81,7 @@ typedef struct meshx_el_light_cwww_server_evt
 typedef struct meshx_el_relay_client_state
 {
    uint8_t err_code;
+   uint8_t on_off;
 }meshx_el_relay_client_evt_t;
 
 /**
@@ -89,6 +90,21 @@ typedef struct meshx_el_relay_client_state
 typedef struct meshx_el_light_cwww_client_evt
 {
    uint8_t err_code;
+   union
+    {
+        struct
+        {
+            uint8_t state;
+        }on_off;
+        struct
+        {
+            uint16_t lightness;
+            uint16_t temperature;
+            uint16_t delta_uv;
+            uint16_t temp_range_min;
+            uint16_t temp_range_max;
+        }ctl;
+    }state_change;
 }meshx_el_light_cwww_client_evt_t;
 /**
  * @brief Structure for the BLE Mesh application control message.
