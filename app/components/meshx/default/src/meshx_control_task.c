@@ -115,6 +115,43 @@ esp_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code,
 }
 
 /**
+ * @brief Deregister a callback for a specific message code and event bitmap.
+ *
+ * This function allows deregistering a callback handler for a specific message code and event type.
+ *
+ * @param[in] msg_code  The message code to deregister the handler for.
+ * @param[in] evt_bmap  Bitmap of events to deregister for.
+ * @param[in] callback        Callback function to deregister.
+ * @return ESP_OK on success, or an error code on failure.
+ */
+esp_err_t control_task_msg_unsubscribe(control_task_msg_code_t msg_code,
+            control_task_msg_evt_t evt_bmap,
+            control_task_msg_handle_t callback)
+{
+    if (callback == NULL || evt_bmap == 0 || msg_code >= CONTROL_TASK_MSG_CODE_MAX)
+        return ESP_ERR_INVALID_ARG; // Invalid arguments
+
+    control_task_evt_cb_reg_t *prev = NULL;
+    control_task_evt_cb_reg_t *curr = control_task_msg_code_list_heads[msg_code];
+
+    while (curr) {
+        if (curr->cb == callback && curr->msg_evt_bmap == evt_bmap) {
+            if (prev == NULL) {
+                control_task_msg_code_list_heads[msg_code] = curr->next;
+            } else {
+                prev->next = curr->next;
+            }
+            free(curr);
+            return ESP_OK;
+        }
+        prev = curr;
+        curr = curr->next;
+    }
+
+    return ESP_ERR_NOT_FOUND;
+}
+
+/**
  * @brief Dispatch a message to the registered callbacks.
  *
  * This function dispatches a message to the registered handlers based on the message code
