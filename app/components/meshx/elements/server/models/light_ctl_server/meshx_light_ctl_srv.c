@@ -41,7 +41,7 @@ static esp_err_t meshx_perform_hw_change(esp_ble_mesh_lighting_server_cb_param_t
     )
     {
         /* Send msg for hw manipulation */
-        ESP_LOGI(TAG, "HW change requested, Element_id: 0x%x",
+        ESP_LOGD(TAG, "HW change requested, Element_id: 0x%x",
                     param->model->element_idx);
 
         esp_err_t err = control_task_msg_publish(

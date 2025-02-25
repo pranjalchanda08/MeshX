@@ -37,10 +37,12 @@ static element_comp_t element_comp_arr [] = {
 static const meshx_config_t meshx_config = {
     .cid = CONFIG_CID_ID,
     .pid = CONFIG_PID_ID,
+    .app_ctrl_cb = &meshx_app_ctrl_cb,
+    .app_element_cb = &meshx_app_data_cb,
     .product_name = CONFIG_PRODUCT_NAME,
     .element_comp_arr = element_comp_arr,
     .element_comp_arr_len = ARRAY_SIZE(element_comp_arr),
-    .meshx_nvs_save_period = CONFIG_MESHX_NVS_SAVE_PERIOD_MS
+    .meshx_nvs_save_period = CONFIG_MESHX_NVS_SAVE_PERIOD_MS,
 };
 
  /**
@@ -59,20 +61,6 @@ void app_main(void)
         ESP_LOGE(TAG, "MeshX Init failed (err: 0x%x)", err);
         return;
     }
-
-    err = meshx_app_reg_element_callback(&meshx_app_data_cb);
-    if(err)
-    {
-        ESP_LOGE(TAG, "Failed to register app data callback (err: 0x%x)", err);
-        return;
-    }
-
-    err = meshx_app_reg_system_events_callback(&meshx_app_ctrl_cb);
-    if(err)
-    {
-        ESP_LOGE(TAG, "Failed to register app control callback (err: 0x%x)", err);
-        return;
-    }
 }
 
 static esp_err_t meshx_app_data_cb (const meshx_app_element_msg_header_t *msg_hdr, const meshx_data_payload_t *data_payload_u)
@@ -86,7 +74,7 @@ static esp_err_t meshx_app_data_cb (const meshx_app_element_msg_header_t *msg_hd
             ESP_LOGI(TAG, "Relay Server Element ID: %d, Func ID: %d, Data: %d", msg_hdr->element_id, msg_hdr->func_id, data_payload_u->relay_server_evt.on_off);
             break;
         case MESHX_ELEMENT_TYPE_RELAY_CLIENT:
-            ESP_LOGI(TAG, "Relay Client Element ID: %d, Func ID: %d, Data: %d", msg_hdr->element_id, msg_hdr->func_id, data_payload_u->relay_client_evt.err_code);
+            ESP_LOGI(TAG, "Relay Client Element ID: %d, Func ID: %d, Data: %d", msg_hdr->element_id, msg_hdr->func_id, data_payload_u->relay_client_evt.on_off);
             break;
         case MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER:
             switch (msg_hdr->func_id)
@@ -104,8 +92,19 @@ static esp_err_t meshx_app_data_cb (const meshx_app_element_msg_header_t *msg_hd
             }
             break;
         case MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT:
-            ESP_LOGI(TAG, "Light CW-WW Client Element ID: %d, Func ID: %d, Data: %d", msg_hdr->element_id, msg_hdr->func_id, data_payload_u->light_cwww_client_evt.err_code);
-            break;
+            switch (msg_hdr->func_id)
+            {
+                case MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_ONN_OFF:
+                    ESP_LOGI(TAG, "Light CW-WW Client Element ID: %d, Func ID: %d, Data: %d", msg_hdr->element_id, msg_hdr->func_id, data_payload_u->light_cwww_server_evt.state_change.on_off.state);
+                    break;
+                case MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_CTL:
+                    ESP_LOGI(TAG, "Light CW-WW Client Element ID: %d, Func ID: %d, Data: %d|%d", msg_hdr->element_id, msg_hdr->func_id, data_payload_u->light_cwww_server_evt.state_change.ctl.lightness,
+                             data_payload_u->light_cwww_server_evt.state_change.ctl.temperature);
+                    break;
+                default:
+                    ESP_LOGW(TAG, "Unhandled function ID: %d", msg_hdr->func_id);
+                    break;
+            }break;
         default:
             ESP_LOGW(TAG, "Unhandled element type: %d", msg_hdr->element_type);
             break;

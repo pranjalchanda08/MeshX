@@ -36,6 +36,8 @@ static const char meshX_banner[] = {
 
 static dev_struct_t g_dev;
 
+static meshx_config_t g_config;
+
 extern size_t get_root_sig_models_count(void);
 extern esp_ble_mesh_model_t * get_root_sig_models(void);
 extern esp_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_config_t const *config);
@@ -172,6 +174,8 @@ esp_err_t meshx_init(meshx_config_t const *config)
 
     ESP_ERROR_CHECK(err);
 
+    memcpy(&g_config, config, sizeof(meshx_config_t));
+
     err = os_timer_init();
     ESP_ERR_PRINT_RET("OS Timer Init failed", err);
 
@@ -181,14 +185,22 @@ esp_err_t meshx_init(meshx_config_t const *config)
     err = meshx_tasks_init(&g_dev);
     ESP_ERR_PRINT_RET("Tasks initialization failed", err);
 
+    err = meshx_app_reg_element_callback(g_config.app_element_cb);
+    ESP_ERR_PRINT_RET("Failed to register app element callback", err);
+
+    err = meshx_app_reg_system_events_callback(g_config.app_ctrl_cb);
+    ESP_ERR_PRINT_RET("Failed to register app control callback", err);
+
     err = bluetooth_init();
     ESP_ERR_PRINT_RET("esp32_bluetooth_init failed", err);
 
     /* Initialize the Bluetooth Mesh Subsystem */
-    err = ble_mesh_init(config);
+    err = ble_mesh_init(&g_config);
     ESP_ERR_PRINT_RET("Bluetooth mesh init failed", err);
 
     printf(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_CYAN) "%s" LOG_ANSI_COLOR_RESET, meshX_banner);
+
+    esp_log_level_set("BLE_MESH", ESP_LOG_ERROR);
 
 #if CONFIG_ENABLE_UNIT_TEST
     err = register_ut_command();
