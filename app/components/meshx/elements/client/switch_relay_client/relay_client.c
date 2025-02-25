@@ -268,7 +268,7 @@ void relay_el_generic_client_cb(const esp_ble_mesh_generic_client_cb_param_t *pa
     case PROD_ONOFF_CLI_PUBLISH:
         el_ctx->state = !param->status_cb.onoff_status.present_onoff;
         ESP_LOGD(TAG, "PUBLISH: %d", param->status_cb.onoff_status.present_onoff);
-        ESP_LOGI(TAG, "Next state: %d", el_ctx->state);
+        ESP_LOGD(TAG, "Next state: %d", el_ctx->state);
         break;
     case PROD_ONOFF_CLI_TIMEOUT:
         ESP_LOGD(TAG, "Timeout");

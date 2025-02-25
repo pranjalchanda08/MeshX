@@ -25,9 +25,16 @@
 #include <unit_test.h>
 #endif /* CONFIG_ENABLE_UNIT_TEST */
 
+/*********************************************************************
+ *      FEATURE CONFIGURATION
+ * *******************************************************************/
 #ifndef CONFIG_SECTION_ENABLE_ELEMENT_TABLE
 #define CONFIG_SECTION_ENABLE_ELEMENT_TABLE 0
 #endif /* CONFIG_SECTION_ENABLE_ELEMENT_TABLE */
+
+#ifndef CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
+#define CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE 1
+#endif /* CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
 
 #define TAG __func__
 

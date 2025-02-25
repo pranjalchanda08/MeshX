@@ -55,7 +55,8 @@ typedef enum PACKED_ATTR
 {
     CONTROL_TASK_MSG_CODE_EL_STATE_CH,  /**< Message code for Element state change */
     CONTROL_TASK_MSG_CODE_SYSTEM,       /**< Message code for system events. */
-    CONTROL_TASK_MSG_CODE_TO_BLE,       /**< Message code for BLE events. */
+    CONTROL_TASK_MSG_CODE_TO_BLE,       /**< Message code to BLE layer. */
+    CONTROL_TASK_MSG_CODE_FRM_BLE,      /**< Message code from BLE layer. */
     CONTROL_TASK_MSG_CODE_PROVISION,    /**< Message code for provisioning events. */
     CONTROL_TASK_MSG_CODE_TO_APP,       /**< Message code for application events. */
     CONTROL_TASK_MSG_CODE_TO_MESHX,     /**< Message code for meshX events from app */
@@ -182,6 +183,19 @@ esp_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code,
                                 control_task_msg_evt_t evt_bmap,
                                 control_task_msg_handle_t cb);
 
+/**
+ * @brief Deregister a callback for a specific message code and event bitmap.
+ *
+ * This function allows deregistering a callback handler for a specific message code and event type.
+ *
+ * @param[in] msg_code  The message code to deregister the handler for.
+ * @param[in] evt_bmap  Bitmap of events to deregister for.
+ * @param[in] callback        Callback function to deregister.
+ * @return ESP_OK on success, or an error code on failure.
+ */
+esp_err_t control_task_msg_unsubscribe(control_task_msg_code_t msg_code,
+            control_task_msg_evt_t evt_bmap,
+            control_task_msg_handle_t callback);
 /**
  * @brief Publish a control task message.
  *
