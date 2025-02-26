@@ -70,6 +70,7 @@ typedef struct relay_client_element
     size_t element_cnt;
     size_t element_id_end;
     size_t element_id_start;
+    size_t element_model_init;
     rel_cli_ctx_t *rel_cli_ctx;
     esp_ble_mesh_model_pub_t *relay_cli_pub_list;
     esp_ble_mesh_client_t *relay_cli_onoff_gen_list;
