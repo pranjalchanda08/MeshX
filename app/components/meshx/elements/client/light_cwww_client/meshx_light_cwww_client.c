@@ -159,7 +159,8 @@ static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
     if (param->params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_STATUS)
     {
         if (el_ctx->prev_ctl_state.lightness != param->status_cb.ctl_status.present_ctl_lightness
-        || el_ctx->prev_ctl_state.temperature != param->status_cb.ctl_status.present_ctl_temperature)
+        || el_ctx->prev_ctl_state.temperature != param->status_cb.ctl_status.present_ctl_temperature
+        )
         {
             el_ctx->prev_ctl_state.lightness = param->status_cb.ctl_status.present_ctl_lightness;
             el_ctx->prev_ctl_state.temperature = param->status_cb.ctl_status.present_ctl_temperature;
@@ -210,7 +211,7 @@ static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
     case LIGHT_CTL_CLI_PUBLISH:
         if (state_change)
         {
-            ESP_LOGI(TAG, "PUBLISH: light|temp : %d|%d",
+            ESP_LOGD(TAG, "PUBLISH: light|temp : %d|%d",
                      el_ctx->prev_ctl_state.lightness,
                      el_ctx->prev_ctl_state.temperature);
 
@@ -223,7 +224,7 @@ static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
 
             err = meshx_send_msg_to_app(element_id,
                                         MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT,
-                                        MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_CTL,
+                                        MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_CLIENT_CTL,
                                         sizeof(meshx_el_light_cwww_client_evt_t),
                                         &app_notify);
             if (err != ESP_OK)
@@ -248,8 +249,8 @@ static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
         app_notify.err_code = 1;
         err = meshx_send_msg_to_app(element_id,
                                     MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT,
-                                    MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_CTL,
-                                    sizeof(meshx_el_relay_client_evt_t),
+                                    MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_CLIENT_CTL,
+                                    sizeof(meshx_el_light_cwww_client_evt_t),
                                     &app_notify);
         if (err != ESP_OK)
         {
