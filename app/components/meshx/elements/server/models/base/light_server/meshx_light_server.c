@@ -33,7 +33,7 @@ static SemaphoreHandle_t meshx_lighting_server_mutex;
 static void meshx_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_t event,
                                          const esp_ble_mesh_lighting_server_cb_param_t *param)
 {
-    ESP_LOGI(TAG, "evt|op|src|dst: %02x|%04x|%04x|%04x|%04x",
+    ESP_LOGD(TAG, "evt|op|src|dst: %02x|%04x|%04x|%04x|%04x",
             event, (unsigned)param->ctx.recv_op, param->ctx.addr, param->ctx.recv_dst,
             param->model->model_id);
 

@@ -40,36 +40,35 @@ typedef enum
     CWWW_CLI_SIG_ID_MAX          /**< Maximum number of model IDs */
 } cwww_cli_sig_id_t;
 
-typedef struct on_off_state
+typedef struct cwww_cli_on_off_state
 {
     uint8_t on_off; /**< On/Off state */
-} cwww_on_off_state_t;
+} cwww_cli_on_off_state_t;
 
-typedef struct ctl_state
+typedef struct cwww_cli_ctl_state
 {
-    uint16_t delta_uv;            /**< Delta UV value */
-    uint16_t lightness;           /**< Lightness level */
-    uint16_t temperature;         /**< Color temperature */
-    uint16_t lightness_range_max; /**< Maximum lightness range */
-    uint16_t lightness_range_min; /**< Minimum lightness range */
-    uint16_t temp_def;            /**< Default temperature */
-    uint16_t lightness_def;       /**< Default lightness */
-    uint16_t delta_uv_def;        /**< Default delta UV */
-} cwww_ctl_state_t;
+    uint16_t delta_uv;       /**< Delta UV value */
+    uint16_t lightness;      /**< Lightness level */
+    uint16_t temperature;    /**< Color temperature */
+    uint16_t temp_range_max; /**< Maximum Temperature range */
+    uint16_t temp_range_min; /**< Minimum Temperature range */
+    uint16_t temp_def;       /**< Default temperature */
+    uint16_t lightness_def;  /**< Default lightness */
+    uint16_t delta_uv_def;   /**< Default delta UV */
+} cwww_cli_ctl_state_t;
 
 /**
  * @brief Structure to hold the context of the cwww client.
  */
 typedef struct cwww_cli_ctx
 {
-    uint8_t tid;                     /**< Transaction ID */
-    cwww_on_off_state_t state;       /**< State of the cwww client */
-    cwww_on_off_state_t prev_state;  /**< State of the cwww client */
-    cwww_ctl_state_t ctl_state;      /**< State of the cwww client */
-    cwww_ctl_state_t prev_ctl_state; /**< State of the cwww client */
-    uint16_t app_id;                 /**< Application ID */
-    uint16_t pub_addr;               /**< Publish address */
-
+    uint8_t tid;                         /**< Transaction ID */
+    cwww_cli_on_off_state_t state;       /**< State of the cwww client */
+    cwww_cli_on_off_state_t prev_state;  /**< State of the cwww client */
+    cwww_cli_ctl_state_t ctl_state;      /**< State of the cwww client */
+    cwww_cli_ctl_state_t prev_ctl_state; /**< State of the cwww client */
+    uint16_t app_id;                     /**< Application ID */
+    uint16_t pub_addr;                   /**< Publish address */
 } cwww_cli_ctx_t;
 
 /**
@@ -77,15 +76,15 @@ typedef struct cwww_cli_ctx
  */
 typedef struct cwww_client_msg
 {
-    uint8_t ack;                  /**< Acknowledgment flag */
-    uint8_t arg_bmap;             /**< Argument bitmap */
-    uint8_t set_get;              /**< Set/Get flag */
-    uint16_t element_id;          /**< Element ID */
-    uint16_t temperature;         /**< Temperature */
-    uint16_t lightness;           /**< Lightness */
-    uint16_t delta_uv;            /**< Delta UV */
-    uint16_t lightness_range_max; /**< Maximum lightness range */
-    uint16_t lightness_range_min; /**< Minimum lightness range */
+    uint8_t ack;             /**< Acknowledgment flag */
+    uint8_t arg_bmap;        /**< Argument bitmap */
+    uint8_t set_get;         /**< Set/Get flag */
+    uint16_t element_id;     /**< Element ID */
+    uint16_t temperature;    /**< Temperature */
+    uint16_t lightness;      /**< Lightness */
+    uint16_t delta_uv;       /**< Delta UV */
+    uint16_t temp_range_max; /**< Maximum lightness range */
+    uint16_t temp_range_min; /**< Minimum lightness range */
 } cwww_client_msg_t;
 
 /**

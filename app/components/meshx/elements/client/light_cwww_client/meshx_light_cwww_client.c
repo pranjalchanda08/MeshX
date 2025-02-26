@@ -29,8 +29,6 @@
 #include "meshx_config_server.h"
 
 #include "meshx_api.h"
-__section(".element_table") const element_comp_table_t cwww_cli_el = {MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT, &create_cwww_client_elements};
-
 /**
  * @brief Configuration server callback event mask for cwww server.
  */
@@ -179,11 +177,11 @@ static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
     }
     else if ((param->params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS) && (param->status_cb.ctl_temperature_range_status.status_code == ESP_OK))
     {
-        if (el_ctx->prev_ctl_state.lightness_range_max != param->status_cb.ctl_temperature_range_status.range_max
-        ||  el_ctx->prev_ctl_state.lightness_range_min != param->status_cb.ctl_temperature_range_status.range_min)
+        if (el_ctx->prev_ctl_state.temp_range_max != param->status_cb.ctl_temperature_range_status.range_max
+        ||  el_ctx->prev_ctl_state.temp_range_min != param->status_cb.ctl_temperature_range_status.range_min)
         {
-            el_ctx->prev_ctl_state.lightness_range_max = param->status_cb.ctl_temperature_range_status.range_max;
-            el_ctx->prev_ctl_state.lightness_range_min = param->status_cb.ctl_temperature_range_status.range_min;
+            el_ctx->prev_ctl_state.temp_range_max = param->status_cb.ctl_temperature_range_status.range_max;
+            el_ctx->prev_ctl_state.temp_range_min = param->status_cb.ctl_temperature_range_status.range_min;
             state_change = true;
         }
     }
@@ -219,8 +217,8 @@ static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
             app_notify.state_change.ctl.delta_uv = el_ctx->prev_ctl_state.delta_uv;
             app_notify.state_change.ctl.lightness = el_ctx->prev_ctl_state.lightness;
             app_notify.state_change.ctl.temperature = el_ctx->prev_ctl_state.temperature;
-            app_notify.state_change.ctl.temp_range_max = el_ctx->prev_ctl_state.lightness_range_max;
-            app_notify.state_change.ctl.temp_range_min = el_ctx->prev_ctl_state.lightness_range_min;
+            app_notify.state_change.ctl.temp_range_max = el_ctx->prev_ctl_state.temp_range_max;
+            app_notify.state_change.ctl.temp_range_min = el_ctx->prev_ctl_state.temp_range_min;
 
             err = meshx_send_msg_to_app(element_id,
                                         MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT,
@@ -351,8 +349,8 @@ static esp_err_t cwww_cli_control_task_msg_handle(dev_struct_t *pdev, control_ta
         el_ctx->ctl_state.delta_uv = (msg->arg_bmap & CWWW_ARG_BMAP_DELTA_UV_SET) ? msg->delta_uv : el_ctx->ctl_state.delta_uv;
         el_ctx->ctl_state.lightness = (msg->arg_bmap & CWWW_ARG_BMAP_LIGHTNESS_SET) ? msg->lightness : el_ctx->ctl_state.lightness;
         el_ctx->ctl_state.temperature = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_SET) ? msg->temperature : el_ctx->ctl_state.temperature;
-        el_ctx->ctl_state.lightness_range_max = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MAX) ? msg->lightness_range_max : el_ctx->ctl_state.lightness_range_max;
-        el_ctx->ctl_state.lightness_range_min = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MIN) ? msg->lightness_range_min : el_ctx->ctl_state.lightness_range_min;
+        el_ctx->ctl_state.temp_range_max = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MAX) ? msg->temp_range_max : el_ctx->ctl_state.temp_range_max;
+        el_ctx->ctl_state.temp_range_min = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MIN) ? msg->temp_range_min : el_ctx->ctl_state.temp_range_min;
         is_temp_range = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MAX) || (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MIN);
     }
     /* Send message to the cwww client */
@@ -415,7 +413,7 @@ static esp_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv
     msg.element_id = UT_GET_ARG(0, uint16_t, argv);
     cwww_cli_cmd_t cmd = (cwww_cli_cmd_t)cmd_id;
 
-    ESP_LOGI(TAG, "argc|cmd_id: %d|%d", argc, cmd_id);
+    ESP_LOGD(TAG, "argc|cmd_id: %d|%d", argc, cmd_id);
     if (argc < 1 || cmd_id >= CWWW_CLI_MAX_CMD)
     {
         ESP_LOGE(TAG, "CWW Client Unit Test: Invalid number of arguments");
@@ -499,9 +497,9 @@ static esp_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv
     case CWWW_CLI_UT_CMD_TEMPERATURE_RANGE_SET_UNACK:
         /* ut 1 13 3 <el_id> <min> <max> */
         if (argc >= 2)
-            msg.lightness_range_min = UT_GET_ARG(1, uint16_t, argv);
+            msg.temp_range_min = UT_GET_ARG(1, uint16_t, argv);
         if (argc >= 3)
-            msg.lightness_range_max = UT_GET_ARG(2, uint16_t, argv);
+            msg.temp_range_max = UT_GET_ARG(2, uint16_t, argv);
         msg.set_get = CWWW_CLI_MSG_SET;
         msg.arg_bmap = CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET;
         msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL;
@@ -933,8 +931,8 @@ esp_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id,
             {
                 opcode = ack ? ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET : ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK;
                 ctl_params.temp_range_flag = true;
-                ctl_params.temp_range_max = el_ctx->ctl_state.lightness_range_max;
-                ctl_params.temp_range_min = el_ctx->ctl_state.lightness_range_min;
+                ctl_params.temp_range_max = el_ctx->ctl_state.temp_range_max;
+                ctl_params.temp_range_min = el_ctx->ctl_state.temp_range_min;
             }
             else
             {
