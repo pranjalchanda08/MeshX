@@ -319,6 +319,46 @@ static void cwww_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
 #if defined(__MESHX_CONTROL_TASK__)
+
+/**
+ * @brief CW-WW Client Freshboot Control Task Message Handler
+ *
+ * This function handles the CW-WW client control task messages.
+ *
+ * @param[in] pdev   Pointer to the device structure.
+ * @param[in] evt    Event type of the control task message.
+ * @param[in] params Pointer to the parameters of the control task message.
+ * @return esp_err_t
+ */
+static esp_err_t cwww_cli_freshboot_control_task_msg_handle(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+{
+    if(!pdev)
+        return ESP_ERR_INVALID_ARG;
+
+    ESP_UNUSED(params);
+    ESP_UNUSED(evt);
+    cwww_client_msg_t msg = {0};
+
+    for(uint8_t i = CWWW_CLI_SIG_ONOFF_MODEL_ID; i < CWWW_CLI_SIG_ID_MAX; i++)
+    {
+        if(false == (cwww_client_element_init_ctrl->element_model_init & BIT(i)))
+        {
+            ESP_LOGD(TAG, "Sending GET for model: %d", i);
+            msg.ack = CWWW_CLI_MSG_ACK;
+            msg.set_get = CWWW_CLI_MSG_GET;
+            msg.element_id = (uint16_t)cwww_client_element_init_ctrl->element_id_start;
+            if(i == CWWW_CLI_SIG_L_CTL_MODEL_ID)
+            {
+                control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL, &msg, sizeof(msg));
+            }
+            else
+            {
+                control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF, &msg, sizeof(msg));
+            }
+        }
+    }
+    return ESP_OK;
+}
 /**
  * @brief CWWW Client Control Task Message Handler
  *
@@ -860,6 +900,16 @@ esp_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
         ESP_LOGE(TAG, "control task callback reg failed: (%d)", err);
         return err;
     }
+    err = control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_SYSTEM,
+        CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT,
+        (control_task_msg_handle_t)&cwww_cli_freshboot_control_task_msg_handle);
+    if (err)
+    {
+        ESP_LOGE(TAG, "control task callback reg failed: (%d)", err);
+        return err;
+    }
+
 #endif /* __MESHX_CONTROL_TASK__ */
 #if CONFIG_ENABLE_UNIT_TEST
     err = register_unit_test(MODULE_ID_ELEMENT_LIGHT_CWWWW_CLIENT, &cwww_cli_unit_test_cb_handler);
