@@ -114,7 +114,7 @@ static esp_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
                 srv->state->temperature = param->value.state_change.ctl_set.temperature;
                 srv->state->lightness = param->value.state_change.ctl_set.lightness;
                 srv->state->delta_uv = param->value.state_change.ctl_set.delta_uv;
-                ESP_LOGI(TAG, "lightness|temp|del_uv:%d|%d|%d",
+                ESP_LOGD(TAG, "lightness|temp|del_uv:%d|%d|%d",
                      srv->state->lightness,
                      srv->state->temperature,
                      srv->state->delta_uv);
@@ -125,10 +125,10 @@ static esp_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
             if(op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET_UNACK)
                 send_reply_to_src = true;
 
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature & 0xFF;
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature >> 8;
             ctl_status_pack[ctl_status_pack_idx++] = srv->state->lightness & 0xFF;
             ctl_status_pack[ctl_status_pack_idx++] = srv->state->lightness >> 8;
+            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature & 0xFF;
+            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature >> 8;
 
             break;
         case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET:
@@ -209,7 +209,7 @@ static esp_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
     || param->ctx.addr != param->model->pub->publish_addr)
     {
         /* Here the message was received from unregistered source and mention the state to the respective client */
-        ESP_LOGI(TAG, "PUB: src|pub %x|%x", param->ctx.addr, param->model->pub->publish_addr);
+        ESP_LOGD(TAG, "PUB: src|pub %x|%x", param->ctx.addr, param->model->pub->publish_addr);
         /* ACK to Source */
         err = esp_ble_mesh_server_model_send_msg(param->model,
                                 &param->ctx,
