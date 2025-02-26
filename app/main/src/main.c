@@ -95,11 +95,13 @@ static esp_err_t meshx_app_data_cb (const meshx_app_element_msg_header_t *msg_hd
             switch (msg_hdr->func_id)
             {
                 case MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_ONN_OFF:
-                    ESP_LOGI(TAG, "Light CW-WW Client Element ID: %d, Func ID: %d, Data: %d", msg_hdr->element_id, msg_hdr->func_id, data_payload_u->light_cwww_server_evt.state_change.on_off.state);
+                    ESP_LOGI(TAG, "Light CW-WW Client Element ID: %d, Func ID: %d, Data: %d", msg_hdr->element_id, msg_hdr->func_id,
+                            data_payload_u->light_cwww_server_evt.state_change.on_off.state);
                     break;
                 case MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_CTL:
-                    ESP_LOGI(TAG, "Light CW-WW Client Element ID: %d, Func ID: %d, Data: %d|%d", msg_hdr->element_id, msg_hdr->func_id, data_payload_u->light_cwww_server_evt.state_change.ctl.lightness,
-                             data_payload_u->light_cwww_server_evt.state_change.ctl.temperature);
+                    ESP_LOGI(TAG, "Light CW-WW Client Element ID: %d, Func ID: %d, Data: %d|%d", msg_hdr->element_id, msg_hdr->func_id,
+                            data_payload_u->light_cwww_client_evt.state_change.ctl.lightness,
+                            data_payload_u->light_cwww_client_evt.state_change.ctl.temperature);
                     break;
                 default:
                     ESP_LOGW(TAG, "Unhandled function ID: %d", msg_hdr->func_id);

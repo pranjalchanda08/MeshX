@@ -24,6 +24,9 @@
 #define MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_ONN_OFF     0x00
 #define MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_CTL         0x01
 
+/* MeshX Function ID Light CWWW Server */
+#define MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_CLIENT_ONN_OFF     0x00
+#define MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_CLIENT_CTL         0x01
 /**
  * @brief Enumeration of BLE Mesh application API message types.
  */
