@@ -98,7 +98,7 @@ static void meshx_provisioning_cb(esp_ble_mesh_prov_cb_event_t event,
     }
     else
     {
-        ESP_LOGW(TAG, "Unhandled event: %d", event);
+        ESP_LOGD(TAG, "Unhandled event: %d", event);
     }
     if (event == ESP_BLE_MESH_NODE_PROV_COMPLETE_EVT)
     {

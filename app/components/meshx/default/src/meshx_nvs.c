@@ -415,7 +415,7 @@ static esp_err_t meshx_nvs_unit_test_cb_handler(int cmd_id, int argc, char **arg
     uint32_t ut_blob_get = 0x00;
     bool arm_timer;
 
-    ESP_LOGI(TAG, "argc|cmd_id: %d|%d", argc, cmd_id);
+    ESP_LOGD(TAG, "argc|cmd_id: %d|%d", argc, cmd_id);
     if (cmd_id >= MESHX_NVS_CLI_MAX)
     {
         ESP_LOGE(TAG, "Invalid number of arguments");

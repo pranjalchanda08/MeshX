@@ -13,10 +13,30 @@
 #include <meshx_light_ctl_srv.h>
 
 #define TAG __func__
-#define CTL_REPLY_PACK_LEN_MAX  9
 
-uint8_t ctl_status_pack[CTL_REPLY_PACK_LEN_MAX];
-
+/**
+ * @brief Light CTL status packet.
+ */
+typedef union ctl_status{
+    struct{
+        uint16_t lightness;
+        uint16_t temperature;
+    }ctl_status;
+    struct{
+        uint16_t temperature;
+        uint16_t delta_uv;
+    }ctl_temp_status;
+    struct{
+        uint16_t lightness_def;
+        uint16_t temperature_def;
+        uint16_t delta_uv_def;
+    }ctl_default;
+    struct{
+        uint8_t status_code;
+        uint16_t range_min;
+        uint16_t range_max;
+    }ctl_temp_range;
+}ctl_status_t;
 
 /**
  * @brief Perform hardware change for the light control server model.
@@ -97,11 +117,11 @@ static esp_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
 
     uint16_t status_op = 0;
     bool send_reply_to_src = false;
-    uint8_t ctl_status_pack_idx = 0;
+    uint8_t ctl_status_pack_len = 0;
     uint32_t op_code = param->ctx.recv_op;
     esp_err_t err = ESP_OK;
 
-    memset(ctl_status_pack, 0, sizeof(ctl_status_pack));
+    ctl_status_t ctl_status_union;
 
     switch (op_code)
     {
@@ -125,10 +145,9 @@ static esp_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
             if(op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET_UNACK)
                 send_reply_to_src = true;
 
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->lightness & 0xFF;
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->lightness >> 8;
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature & 0xFF;
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature >> 8;
+            ctl_status_union.ctl_status.temperature = srv->state->temperature;
+            ctl_status_union.ctl_status.lightness = srv->state->lightness;
+            ctl_status_pack_len = sizeof(ctl_status_union.ctl_status);
 
             break;
         case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET:
@@ -148,10 +167,10 @@ static esp_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
             if(op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK)
                 send_reply_to_src = true;
 
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature & 0xFF;
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature >> 8;
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->delta_uv & 0xFF;
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->delta_uv >> 8;
+            ctl_status_union.ctl_temp_status.temperature = srv->state->temperature;
+            ctl_status_union.ctl_temp_status.delta_uv = srv->state->delta_uv;
+            ctl_status_pack_len = sizeof(ctl_status_union.ctl_temp_status);
+
             break;
         /*!< Light CTL Setup Message Opcode */
         case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_SET:
@@ -170,12 +189,11 @@ static esp_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
             if(op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_SET_UNACK)
                 send_reply_to_src = true;
 
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->lightness_default & 0xFF;
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->lightness_default >> 8;
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature_default & 0xFF;
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature_default >> 8;
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->delta_uv_default & 0xFF;
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->delta_uv_default >> 8;
+            ctl_status_union.ctl_default.delta_uv_def = srv->state->delta_uv_default;
+            ctl_status_union.ctl_default.lightness_def = srv->state->lightness_default;
+            ctl_status_union.ctl_default.temperature_def = srv->state->temperature_default;
+            ctl_status_pack_len = sizeof(ctl_status_union.ctl_default);
+
             status_op = ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS;
             break;
         case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET:
@@ -193,11 +211,12 @@ static esp_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
             {
                 send_reply_to_src = true;
             }
-            ctl_status_pack[ctl_status_pack_idx++] = 0; // Status Code
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature_range_min & 0xFF;
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature_range_min >> 8;
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature_range_max & 0xFF;
-            ctl_status_pack[ctl_status_pack_idx++] = srv->state->temperature_range_max >> 8;
+
+            ctl_status_union.ctl_temp_range.status_code = ESP_OK;
+            ctl_status_union.ctl_temp_range.range_min = srv->state->temperature_range_min;
+            ctl_status_union.ctl_temp_range.range_max = srv->state->temperature_range_max;
+            ctl_status_pack_len = sizeof(ctl_status_union.ctl_temp_range);
+
             status_op = ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS;
             break;
         default:
@@ -214,7 +233,8 @@ static esp_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
         err = esp_ble_mesh_server_model_send_msg(param->model,
                                 &param->ctx,
                                 status_op,
-                                ctl_status_pack_idx, ctl_status_pack);
+                                ctl_status_pack_len,
+                                (uint8_t*)&ctl_status_union);
         if(err)
             ESP_LOGE(TAG, "Failed to send CTL status message (Err: %x)", err);
     }
@@ -239,14 +259,12 @@ static esp_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
  */
 esp_err_t meshx_send_ctl_status(esp_ble_mesh_model_t *model, esp_ble_mesh_msg_ctx_t* ctx, uint16_t lightness, uint16_t temperature)
 {
-    uint8_t ctl_status_pack_idx = 0;
+    ctl_status_t ctl_status_pack;
 
-    ctl_status_pack[ctl_status_pack_idx++] = temperature & 0xFF;
-    ctl_status_pack[ctl_status_pack_idx++] = temperature >> 8;
-    ctl_status_pack[ctl_status_pack_idx++] = lightness & 0xFF;
-    ctl_status_pack[ctl_status_pack_idx++] = lightness >> 8;
+    ctl_status_pack.ctl_status.lightness = lightness;
+    ctl_status_pack.ctl_status.temperature = temperature;
 
-    return esp_ble_mesh_server_model_send_msg(model, ctx, ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_STATUS, ctl_status_pack_idx, ctl_status_pack);
+    return esp_ble_mesh_server_model_send_msg(model, ctx, ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_STATUS, sizeof(ctl_status_pack.ctl_status), (uint8_t*)&ctl_status_pack);
 }
 /**
  * @brief Initialize the Light CTL Server model.
