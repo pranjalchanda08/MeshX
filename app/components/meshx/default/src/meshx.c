@@ -12,6 +12,7 @@
 #include "meshx.h"
 
 #define ROOT_MODEL_VEN_CNT 0
+#define FRESHBOOT_TIMEOUT_MS 1500
 
 static const char meshX_banner[] = {
 "*********************************************************************************************************************\n"
@@ -37,6 +38,7 @@ static const char meshX_banner[] = {
 static dev_struct_t g_dev;
 
 static meshx_config_t g_config;
+static os_timer_t *g_boot_timer;
 
 extern size_t get_root_sig_models_count(void);
 extern esp_ble_mesh_model_t * get_root_sig_models(void);
@@ -150,6 +152,49 @@ static esp_err_t ble_mesh_init(meshx_config_t const *config)
 }
 
 /**
+ * @brief Callback function for the boot timer.
+ *
+ * This function is called when the boot timer expires.
+ *
+ * @param[in] p_timer Pointer to the timer structure.
+ */
+static void meshx_init_boot_timer_arm_cb(const os_timer_t* p_timer)
+{
+    ESP_LOGD(TAG, "Fresh Boot Timer Expired");
+
+    esp_err_t err = control_task_msg_publish(
+        CONTROL_TASK_MSG_CODE_SYSTEM,
+        CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT,
+        p_timer,
+        OS_TIMER_SIZE
+    );
+    if(err)
+    {
+        ESP_LOGE(TAG, "Failed to publish fresh boot event: (%d)", err);
+    }
+}
+
+/**
+ * @brief Initializes the boot timer.
+ *
+ * @return ESP_OK on success, error code otherwise.
+ */
+static esp_err_t meshx_init_boot_timer(void)
+{
+    esp_err_t err = os_timer_create("boot_timer",
+        FRESHBOOT_TIMEOUT_MS,
+        false,
+        meshx_init_boot_timer_arm_cb,
+        &g_boot_timer
+    );
+    ESP_ERR_PRINT_RET("Failed to create boot timer", err);
+
+    err = os_timer_start(g_boot_timer);
+    ESP_ERR_PRINT_RET("Failed to start boot timer", err);
+
+    return err;
+}
+/**
  * @brief MeshX initialisation function
  *
  * This function initialises the MeshX stack with the given configuration.
@@ -179,11 +224,15 @@ esp_err_t meshx_init(meshx_config_t const *config)
     err = os_timer_init();
     ESP_ERR_PRINT_RET("OS Timer Init failed", err);
 
+
     err = meshx_nvs_init();
     ESP_ERR_PRINT_RET("MeshX NVS Init failed", err);
 
     err = meshx_tasks_init(&g_dev);
     ESP_ERR_PRINT_RET("Tasks initialization failed", err);
+
+    err = meshx_init_boot_timer();
+    ESP_ERR_PRINT_RET("Boot Timer Init failed", err);
 
     err = meshx_app_reg_element_callback(g_config.app_element_cb);
     ESP_ERR_PRINT_RET("Failed to register app element callback", err);
