@@ -440,7 +440,7 @@ static esp_err_t relay_cli_unit_test_cb_handler(int cmd_id, int argc, char **arg
 {
     esp_err_t err = ESP_OK;
     relay_client_msg_t msg = {0};
-    ESP_LOGI(TAG, "argc|cmd_id: %d|%d", argc, cmd_id);
+    ESP_LOGD(TAG, "argc|cmd_id: %d|%d", argc, cmd_id);
     if (argc < 1 || cmd_id >= RELAY_CLI_MAX_CMD)
     {
         ESP_LOGE(TAG, "Relay Client Unit Test: Invalid number of arguments");

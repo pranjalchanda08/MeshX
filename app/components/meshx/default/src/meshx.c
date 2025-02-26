@@ -194,13 +194,13 @@ esp_err_t meshx_init(meshx_config_t const *config)
     err = bluetooth_init();
     ESP_ERR_PRINT_RET("esp32_bluetooth_init failed", err);
 
+    esp_log_level_set("BLE_MESH", ESP_LOG_ERROR);
+
     /* Initialize the Bluetooth Mesh Subsystem */
     err = ble_mesh_init(&g_config);
     ESP_ERR_PRINT_RET("Bluetooth mesh init failed", err);
 
     printf(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_CYAN) "%s" LOG_ANSI_COLOR_RESET, meshX_banner);
-
-    esp_log_level_set("BLE_MESH", ESP_LOG_ERROR);
 
 #if CONFIG_ENABLE_UNIT_TEST
     err = register_ut_command();

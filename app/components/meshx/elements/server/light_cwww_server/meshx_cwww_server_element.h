@@ -24,32 +24,48 @@
 #define CONFIG_LIGHT_CWWW_SRV_COUNT CWWW_SERVER_ELEMENT_NOS_DEF
 #endif
 
-#define CWWW_SRV_MODEL_SIG_CNT CWWW_SIG_ID_MAX   // No of SIG models in a cwww model element
-#define CWWW_SRV_MODEL_VEN_CNT 0                    // No of VEN models in a cwww model element
+#define CWWW_SRV_MODEL_SIG_CNT CWWW_SIG_ID_MAX // No of SIG models in a cwww model element
+#define CWWW_SRV_MODEL_VEN_CNT 0               // No of VEN models in a cwww model element
 
 /**
  * @brief Enumeration of CW-WW SIG model IDs.
  */
-typedef enum{
+typedef enum
+{
     CWWW_SIG_ONOFF_MODEL_ID, /**< On/Off model ID */
     CWWW_SIG_L_CTL_MODEL_ID, /**< Light CTL model ID */
     CWWW_SIG_ID_MAX          /**< Maximum number of model IDs */
 } cwww_sig_id_t;
 
-/**
- * @brief Context structure for the Light CTL Client model.
- */
-typedef struct light_ctl_cli_ctx
+typedef struct cwww_srv_on_off_state
 {
-    uint8_t tid;                  /**< Transaction ID */
-    uint8_t state;                /**< Current state */
-    uint16_t lightness;           /**< Lightness level */
-    uint16_t temperature;         /**< Color temperature */
-    uint16_t delta_uv;            /**< Delta UV value */
-    uint16_t temp_range_max;      /**< Maximum temperature range */
-    uint16_t temp_range_min;      /**< Minimum temperature range */
-    uint16_t pub_addr;            /**< Publication address */
-    uint16_t app_id;              /**< Application ID */
+    uint8_t on_off; /**< On/Off state */
+} cwww_srv_on_off_state_t;
+
+typedef struct cwww_srv_ctl_state
+{
+    uint16_t delta_uv;       /**< Delta UV value */
+    uint16_t lightness;      /**< Lightness level */
+    uint16_t temperature;    /**< Color temperature */
+    uint16_t temp_range_max; /**< Maximum Temperature range */
+    uint16_t temp_range_min; /**< Minimum Temperature range */
+    uint16_t temp_def;       /**< Default temperature */
+    uint16_t lightness_def;  /**< Default lightness */
+    uint16_t delta_uv_def;   /**< Default delta UV */
+} cwww_srv_ctl_state_t;
+
+/**
+ * @brief Structure to hold the context of the cwww client.
+ */
+typedef struct cwww_srv_ctx
+{
+    uint8_t tid;                         /**< Transaction ID */
+    cwww_srv_on_off_state_t state;       /**< State of the cwww client */
+    cwww_srv_on_off_state_t prev_state;  /**< State of the cwww client */
+    cwww_srv_ctl_state_t ctl_state;      /**< State of the cwww client */
+    cwww_srv_ctl_state_t prev_ctl_state; /**< State of the cwww client */
+    uint16_t app_id;                     /**< Application ID */
+    uint16_t pub_addr;                   /**< Publish address */
 } cwww_server_ctx_t;
 
 /**
