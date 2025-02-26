@@ -42,8 +42,8 @@
 #endif /* __MESHX_CONTROL_TASK__ */
 
 #define CWWW_CLI_MESHX_ONOFF_ENABLE_CB true
-#define IS_EL_IN_RANGE(_element_id) ((_element_id) >= cwww_client_element_init_ctrl.element_id_start && (_element_id) < cwww_client_element_init_ctrl.element_id_end)
-#define GET_RELATIVE_EL_IDX(_element_id) ((_element_id) - cwww_client_element_init_ctrl.element_id_start)
+#define IS_EL_IN_RANGE(_element_id) ((_element_id) >= cwww_client_element_init_ctrl->element_id_start && (_element_id) < cwww_client_element_init_ctrl->element_id_end)
+#define GET_RELATIVE_EL_IDX(_element_id) ((_element_id) - cwww_client_element_init_ctrl->element_id_start)
 
 #define CWWW_CLI_MESHX_ONOFF_CLI_CB_EVT_BMAP MESHX_ONOFF_CLI_EVT_ALL
 #define CWWW_CLI_MESHX_CTL_CLI_CB_EVT_BMAP LIGHT_CTL_CLI_EVT_ALL
@@ -52,7 +52,7 @@ static const esp_ble_mesh_model_t cwww_cli_sig_template[CWWW_CLI_MODEL_SIG_CNT] 
     ESP_BLE_MESH_SIG_MODEL(ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_CLI, NULL, NULL, NULL),
     ESP_BLE_MESH_SIG_MODEL(ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_CLI, NULL, NULL, NULL),
 };
-cwww_client_elements_t cwww_client_element_init_ctrl;
+cwww_client_elements_t *cwww_client_element_init_ctrl;
 
 #if CWWW_CLI_MESHX_ONOFF_ENABLE_CB
 
@@ -73,7 +73,7 @@ static void cwww_client_generic_client_cb(const esp_ble_mesh_generic_client_cb_p
     }
 
     size_t rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-    cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl.cwww_cli_ctx[rel_el_id];
+    cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl->cwww_cli_ctx[rel_el_id];
     cwww_client_msg_t msg = {0};
     meshx_el_light_cwww_client_evt_t app_notify;
     esp_err_t err;
@@ -82,6 +82,7 @@ static void cwww_client_generic_client_cb(const esp_ble_mesh_generic_client_cb_p
     {
     case MESHX_ONOFF_CLI_EVT_SET:
     case MESHX_ONOFF_CLI_PUBLISH:
+        cwww_client_element_init_ctrl->element_model_init |= BIT(CWWW_CLI_SIG_ONOFF_MODEL_ID);
         if (el_ctx->prev_state.on_off != param->status_cb.onoff_status.present_onoff)
         {
             el_ctx->prev_state.on_off = param->status_cb.onoff_status.present_onoff;
@@ -148,7 +149,7 @@ static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
         return false;
 
     size_t rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-    cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl.cwww_cli_ctx[rel_el_id];
+    cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl->cwww_cli_ctx[rel_el_id];
     cwww_client_msg_t msg = {0};
     meshx_el_light_cwww_client_evt_t app_notify;
     esp_err_t err;
@@ -207,6 +208,7 @@ static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
     {
     case LIGHT_CTL_CLI_EVT_SET:
     case LIGHT_CTL_CLI_PUBLISH:
+        cwww_client_element_init_ctrl->element_model_init |= BIT(CWWW_CLI_SIG_L_CTL_MODEL_ID);
         if (state_change)
         {
             ESP_LOGD(TAG, "PUBLISH: light|temp : %d|%d",
@@ -285,7 +287,7 @@ static void cwww_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-        el_ctx = &cwww_client_element_init_ctrl.cwww_cli_ctx[rel_el_id];
+        el_ctx = &cwww_client_element_init_ctrl->cwww_cli_ctx[rel_el_id];
         el_ctx->app_id = param->value.state_change.appkey_add.app_idx;
         nvs_save = true;
         break;
@@ -295,7 +297,7 @@ static void cwww_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-        el_ctx = &cwww_client_element_init_ctrl.cwww_cli_ctx[rel_el_id];
+        el_ctx = &cwww_client_element_init_ctrl->cwww_cli_ctx[rel_el_id];
         el_ctx->pub_addr = evt == CONFIG_EVT_MODEL_PUB_ADD ? param->value.state_change.mod_pub_set.pub_addr
                                                            : ESP_BLE_MESH_ADDR_UNASSIGNED;
         el_ctx->app_id = param->value.state_change.mod_pub_set.app_idx;
@@ -335,8 +337,8 @@ static esp_err_t cwww_cli_control_task_msg_handle(dev_struct_t *pdev, control_ta
 
     bool is_temp_range = false;
     uint16_t element_id = msg->element_id;
-    size_t rel_el_id = element_id - cwww_client_element_init_ctrl.element_id_start;
-    cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl.cwww_cli_ctx[rel_el_id];
+    size_t rel_el_id = element_id - cwww_client_element_init_ctrl->element_id_start;
+    cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl->cwww_cli_ctx[rel_el_id];
 
     if (!IS_EL_IN_RANGE(element_id))
     {
@@ -538,18 +540,24 @@ static esp_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv
 static esp_err_t meshx_element_struct_init(uint16_t n_max)
 {
 
-    cwww_client_element_init_ctrl.element_cnt = n_max;
-    cwww_client_element_init_ctrl.element_id_end = 0;
-    cwww_client_element_init_ctrl.element_id_start = 0;
+    cwww_client_element_init_ctrl = (cwww_client_elements_t *)calloc(1, sizeof(cwww_client_elements_t));
+    if (!cwww_client_element_init_ctrl)
+    {
+        ESP_LOGE(TAG, "Failed to allocate memory for cwww client element control");
+        return ESP_ERR_NO_MEM;
+    }
+    cwww_client_element_init_ctrl->element_cnt = n_max;
+    cwww_client_element_init_ctrl->element_id_end = 0;
+    cwww_client_element_init_ctrl->element_id_start = 0;
 
-    cwww_client_element_init_ctrl.cwww_cli_ctx = (cwww_cli_ctx_t *)calloc(n_max, sizeof(cwww_cli_ctx_t));
-    if (!cwww_client_element_init_ctrl.cwww_cli_ctx)
+    cwww_client_element_init_ctrl->cwww_cli_ctx = (cwww_cli_ctx_t *)calloc(n_max, sizeof(cwww_cli_ctx_t));
+    if (!cwww_client_element_init_ctrl->cwww_cli_ctx)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww client context");
         return ESP_ERR_NO_MEM;
     }
-    cwww_client_element_init_ctrl.cwww_cli_list = (esp_ble_mesh_client_t **)calloc(n_max, sizeof(esp_ble_mesh_client_t *));
-    if (!cwww_client_element_init_ctrl.cwww_cli_list)
+    cwww_client_element_init_ctrl->cwww_cli_list = (esp_ble_mesh_client_t **)calloc(n_max, sizeof(esp_ble_mesh_client_t *));
+    if (!cwww_client_element_init_ctrl->cwww_cli_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww client list");
         return ESP_ERR_NO_MEM;
@@ -558,16 +566,16 @@ static esp_err_t meshx_element_struct_init(uint16_t n_max)
     {
         for (size_t i = 0; i < n_max; i++)
         {
-            cwww_client_element_init_ctrl.cwww_cli_list[i] = (esp_ble_mesh_client_t *)calloc(CWWW_CLI_MODEL_SIG_CNT, sizeof(esp_ble_mesh_client_t));
-            if (!cwww_client_element_init_ctrl.cwww_cli_list[i])
+            cwww_client_element_init_ctrl->cwww_cli_list[i] = (esp_ble_mesh_client_t *)calloc(CWWW_CLI_MODEL_SIG_CNT, sizeof(esp_ble_mesh_client_t));
+            if (!cwww_client_element_init_ctrl->cwww_cli_list[i])
             {
                 ESP_LOGE(TAG, "Failed to allocate memory for cwww client list");
                 return ESP_ERR_NO_MEM;
             }
         }
     }
-    cwww_client_element_init_ctrl.cwww_cli_pub_list = (esp_ble_mesh_model_pub_t **)calloc(n_max, sizeof(esp_ble_mesh_model_pub_t *));
-    if (!cwww_client_element_init_ctrl.cwww_cli_pub_list)
+    cwww_client_element_init_ctrl->cwww_cli_pub_list = (esp_ble_mesh_model_pub_t **)calloc(n_max, sizeof(esp_ble_mesh_model_pub_t *));
+    if (!cwww_client_element_init_ctrl->cwww_cli_pub_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww client pub list");
         return ESP_ERR_NO_MEM;
@@ -576,16 +584,16 @@ static esp_err_t meshx_element_struct_init(uint16_t n_max)
     {
         for (size_t i = 0; i < n_max; i++)
         {
-            cwww_client_element_init_ctrl.cwww_cli_pub_list[i] = (esp_ble_mesh_model_pub_t *)calloc(CWWW_CLI_MODEL_SIG_CNT, sizeof(esp_ble_mesh_model_pub_t));
-            if (!cwww_client_element_init_ctrl.cwww_cli_pub_list[i])
+            cwww_client_element_init_ctrl->cwww_cli_pub_list[i] = (esp_ble_mesh_model_pub_t *)calloc(CWWW_CLI_MODEL_SIG_CNT, sizeof(esp_ble_mesh_model_pub_t));
+            if (!cwww_client_element_init_ctrl->cwww_cli_pub_list[i])
             {
                 ESP_LOGE(TAG, "Failed to allocate memory for cwww client pub list");
                 return ESP_ERR_NO_MEM;
             }
         }
     }
-    cwww_client_element_init_ctrl.cwww_cli_sig_model_list = (esp_ble_mesh_model_t **)calloc(n_max, sizeof(esp_ble_mesh_model_t *));
-    if (!cwww_client_element_init_ctrl.cwww_cli_sig_model_list)
+    cwww_client_element_init_ctrl->cwww_cli_sig_model_list = (esp_ble_mesh_model_t **)calloc(n_max, sizeof(esp_ble_mesh_model_t *));
+    if (!cwww_client_element_init_ctrl->cwww_cli_sig_model_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww client sig model list");
         return ESP_ERR_NO_MEM;
@@ -594,8 +602,8 @@ static esp_err_t meshx_element_struct_init(uint16_t n_max)
     {
         for (size_t i = 0; i < n_max; i++)
         {
-            cwww_client_element_init_ctrl.cwww_cli_sig_model_list[i] = (esp_ble_mesh_model_t *)calloc(CWWW_CLI_MODEL_SIG_CNT, sizeof(esp_ble_mesh_model_t));
-            if (!cwww_client_element_init_ctrl.cwww_cli_sig_model_list[i])
+            cwww_client_element_init_ctrl->cwww_cli_sig_model_list[i] = (esp_ble_mesh_model_t *)calloc(CWWW_CLI_MODEL_SIG_CNT, sizeof(esp_ble_mesh_model_t));
+            if (!cwww_client_element_init_ctrl->cwww_cli_sig_model_list[i])
             {
                 ESP_LOGE(TAG, "Failed to allocate memory for cwww client sig model list");
                 return ESP_ERR_NO_MEM;
@@ -616,49 +624,54 @@ static esp_err_t meshx_element_struct_init(uint16_t n_max)
  */
 static void meshx_element_struct_deinit(uint16_t n_max)
 {
-    if (cwww_client_element_init_ctrl.cwww_cli_ctx)
+    if (cwww_client_element_init_ctrl->cwww_cli_ctx)
     {
-        free(cwww_client_element_init_ctrl.cwww_cli_ctx);
-        cwww_client_element_init_ctrl.cwww_cli_ctx = NULL;
+        free(cwww_client_element_init_ctrl->cwww_cli_ctx);
+        cwww_client_element_init_ctrl->cwww_cli_ctx = NULL;
     }
-    if (cwww_client_element_init_ctrl.cwww_cli_list)
+    if (cwww_client_element_init_ctrl->cwww_cli_list)
     {
         for (size_t i = 0; i < n_max; i++)
         {
-            if (cwww_client_element_init_ctrl.cwww_cli_list[i])
+            if (cwww_client_element_init_ctrl->cwww_cli_list[i])
             {
-                free(cwww_client_element_init_ctrl.cwww_cli_list[i]);
-                cwww_client_element_init_ctrl.cwww_cli_list[i] = NULL;
+                free(cwww_client_element_init_ctrl->cwww_cli_list[i]);
+                cwww_client_element_init_ctrl->cwww_cli_list[i] = NULL;
             }
         }
-        free(cwww_client_element_init_ctrl.cwww_cli_list);
-        cwww_client_element_init_ctrl.cwww_cli_list = NULL;
+        free(cwww_client_element_init_ctrl->cwww_cli_list);
+        cwww_client_element_init_ctrl->cwww_cli_list = NULL;
     }
-    if (cwww_client_element_init_ctrl.cwww_cli_pub_list)
+    if (cwww_client_element_init_ctrl->cwww_cli_pub_list)
     {
         for (size_t i = 0; i < n_max; i++)
         {
-            if (cwww_client_element_init_ctrl.cwww_cli_pub_list[i])
+            if (cwww_client_element_init_ctrl->cwww_cli_pub_list[i])
             {
-                free(cwww_client_element_init_ctrl.cwww_cli_pub_list[i]);
-                cwww_client_element_init_ctrl.cwww_cli_pub_list[i] = NULL;
+                free(cwww_client_element_init_ctrl->cwww_cli_pub_list[i]);
+                cwww_client_element_init_ctrl->cwww_cli_pub_list[i] = NULL;
             }
         }
-        free(cwww_client_element_init_ctrl.cwww_cli_pub_list);
-        cwww_client_element_init_ctrl.cwww_cli_pub_list = NULL;
+        free(cwww_client_element_init_ctrl->cwww_cli_pub_list);
+        cwww_client_element_init_ctrl->cwww_cli_pub_list = NULL;
     }
-    if (cwww_client_element_init_ctrl.cwww_cli_sig_model_list)
+    if (cwww_client_element_init_ctrl->cwww_cli_sig_model_list)
     {
         for (size_t i = 0; i < n_max; i++)
         {
-            if (cwww_client_element_init_ctrl.cwww_cli_sig_model_list[i])
+            if (cwww_client_element_init_ctrl->cwww_cli_sig_model_list[i])
             {
-                free(cwww_client_element_init_ctrl.cwww_cli_sig_model_list[i]);
-                cwww_client_element_init_ctrl.cwww_cli_sig_model_list[i] = NULL;
+                free(cwww_client_element_init_ctrl->cwww_cli_sig_model_list[i]);
+                cwww_client_element_init_ctrl->cwww_cli_sig_model_list[i] = NULL;
             }
         }
-        free(cwww_client_element_init_ctrl.cwww_cli_sig_model_list);
-        cwww_client_element_init_ctrl.cwww_cli_sig_model_list = NULL;
+        free(cwww_client_element_init_ctrl->cwww_cli_sig_model_list);
+        cwww_client_element_init_ctrl->cwww_cli_sig_model_list = NULL;
+    }
+    if(cwww_client_element_init_ctrl)
+    {
+        free(cwww_client_element_init_ctrl);
+        cwww_client_element_init_ctrl = NULL;
     }
 }
 
@@ -695,24 +708,24 @@ static esp_err_t meshx_dev_create_cwww_model_space(dev_struct_t const *pdev, uin
     {
 #if CONFIG_GEN_ONOFF_CLIENT_COUNT
         /* Perform memcpy to setup the constants */
-        memcpy(&cwww_client_element_init_ctrl.cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_ONOFF_MODEL_ID],
+        memcpy(&cwww_client_element_init_ctrl->cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_ONOFF_MODEL_ID],
                &cwww_cli_sig_template[CWWW_CLI_SIG_ONOFF_MODEL_ID],
                sizeof(esp_ble_mesh_model_t));
         /* Set the dynamic spaces for the model */
-        temp = (void **)&cwww_client_element_init_ctrl.cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_ONOFF_MODEL_ID].pub;
-        *temp = &cwww_client_element_init_ctrl.cwww_cli_pub_list[cwww_model_id][CWWW_CLI_SIG_ONOFF_MODEL_ID];
-        cwww_client_element_init_ctrl.cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_ONOFF_MODEL_ID].user_data =
-            &cwww_client_element_init_ctrl.cwww_cli_list[cwww_model_id][CWWW_CLI_SIG_ONOFF_MODEL_ID];
+        temp = (void **)&cwww_client_element_init_ctrl->cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_ONOFF_MODEL_ID].pub;
+        *temp = &cwww_client_element_init_ctrl->cwww_cli_pub_list[cwww_model_id][CWWW_CLI_SIG_ONOFF_MODEL_ID];
+        cwww_client_element_init_ctrl->cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_ONOFF_MODEL_ID].user_data =
+            &cwww_client_element_init_ctrl->cwww_cli_list[cwww_model_id][CWWW_CLI_SIG_ONOFF_MODEL_ID];
 #endif /* CONFIG_GEN_ONOFF_CLIENT_COUNT */
 
 #if CONFIG_LIGHT_CTL_CLIENT_COUNT
-        memcpy(&cwww_client_element_init_ctrl.cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID],
+        memcpy(&cwww_client_element_init_ctrl->cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID],
                &cwww_cli_sig_template[CWWW_CLI_SIG_L_CTL_MODEL_ID],
                sizeof(esp_ble_mesh_model_t));
-        temp = (void **)&cwww_client_element_init_ctrl.cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID].pub;
-        *temp = &cwww_client_element_init_ctrl.cwww_cli_pub_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID];
-        cwww_client_element_init_ctrl.cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID].user_data =
-            &cwww_client_element_init_ctrl.cwww_cli_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID];
+        temp = (void **)&cwww_client_element_init_ctrl->cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID].pub;
+        *temp = &cwww_client_element_init_ctrl->cwww_cli_pub_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID];
+        cwww_client_element_init_ctrl->cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID].user_data =
+            &cwww_client_element_init_ctrl->cwww_cli_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID];
 #endif /* CONFIG_LIGHT_CTL_CLIENT_COUNT */
     }
     return ESP_OK;
@@ -748,7 +761,7 @@ static esp_err_t meshx_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, ui
     esp_err_t err = ESP_OK;
     esp_ble_mesh_elem_t *elements = pdev->elements;
 
-    cwww_client_element_init_ctrl.element_id_start = *start_idx;
+    cwww_client_element_init_ctrl->element_id_start = *start_idx;
 
     for (uint16_t i = *start_idx; i < (n_max + *start_idx) && (i - *start_idx) < CWWW_CLI_MODEL_SIG_CNT; i++)
     {
@@ -756,7 +769,7 @@ static esp_err_t meshx_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, ui
         {
             /* Insert the first SIG model in root model to save element virtual addr space */
             memcpy(&elements[i].sig_models[1],
-                   cwww_client_element_init_ctrl.cwww_cli_sig_model_list[i - *start_idx],
+                   cwww_client_element_init_ctrl->cwww_cli_sig_model_list[i - *start_idx],
                    sizeof(esp_ble_mesh_model_t));
             ref_ptr = (uint8_t *)&elements[i].sig_model_count;
             (*ref_ptr)++;
@@ -764,21 +777,21 @@ static esp_err_t meshx_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, ui
         else
         {
             ESP_LOGD(TAG, "CWWW Client Element: %d", i);
-            elements[i].sig_models = cwww_client_element_init_ctrl.cwww_cli_sig_model_list[i - *start_idx];
+            elements[i].sig_models = cwww_client_element_init_ctrl->cwww_cli_sig_model_list[i - *start_idx];
             elements[i].vnd_models = ESP_BLE_MESH_MODEL_NONE;
             ref_ptr = (uint8_t *)&elements[i].sig_model_count;
             *ref_ptr = CWWW_CLI_MODEL_SIG_CNT;
             ref_ptr = (uint8_t *)&elements[i].vnd_model_count;
             *ref_ptr = CWWW_CLI_MODEL_VEN_CNT;
         }
-        err = meshx_nvs_elemnt_ctx_get(i, &(cwww_client_element_init_ctrl.cwww_cli_ctx[i - *start_idx]), sizeof(cwww_cli_ctx_t));
+        err = meshx_nvs_elemnt_ctx_get(i, &(cwww_client_element_init_ctrl->cwww_cli_ctx[i - *start_idx]), sizeof(cwww_cli_ctx_t));
         if (err != ESP_OK)
         {
             ESP_LOGW(TAG, "Failed to get cwww cli element context: (0x%x)", err);
         }
     }
     /* Increment the index for further registrations */
-    cwww_client_element_init_ctrl.element_id_end = *start_idx += n_max;
+    cwww_client_element_init_ctrl->element_id_end = *start_idx += n_max;
     return ESP_OK;
 }
 
@@ -886,7 +899,7 @@ esp_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id,
         return ESP_ERR_INVALID_ARG;
     }
 
-    size_t rel_el_id = element_id - cwww_client_element_init_ctrl.element_id_start;
+    size_t rel_el_id = element_id - cwww_client_element_init_ctrl->element_id_start;
     if (rel_el_id >= CONFIG_LIGHT_CWWW_CLIENT_COUNT)
     {
         ESP_LOGE(TAG, "Invalid element id: %d", element_id);
@@ -897,7 +910,7 @@ esp_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id,
     esp_err_t err = ESP_OK;
     esp_ble_mesh_elem_t *element = &pdev->elements[element_id];
     esp_ble_mesh_model_t *model = &element->sig_models[model_id];
-    cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl.cwww_cli_ctx[rel_el_id];
+    cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl->cwww_cli_ctx[rel_el_id];
     light_ctl_send_args_t ctl_params = {0};
 
     switch (model_id)

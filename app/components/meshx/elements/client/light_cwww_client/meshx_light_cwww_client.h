@@ -95,6 +95,7 @@ typedef struct cwww_client_element
     size_t element_cnt;
     size_t element_id_end;
     size_t element_id_start;
+    size_t element_model_init;
     cwww_cli_ctx_t *cwww_cli_ctx;
     esp_ble_mesh_client_t **cwww_cli_list;
     esp_ble_mesh_model_pub_t **cwww_cli_pub_list;
