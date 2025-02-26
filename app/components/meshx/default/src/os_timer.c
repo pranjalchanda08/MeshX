@@ -86,7 +86,7 @@ static esp_err_t os_timer_unit_test_cb_handler(int cmd_id, int argc, char **argv
     bool ut_reload = false;
     static os_timer_t* ut_os_timer;
 
-    ESP_LOGI(TAG, "argc|cmd_id: %d|%d", argc, cmd_id);
+    ESP_LOGD(TAG, "argc|cmd_id: %d|%d", argc, cmd_id);
     if (cmd_id >= OS_TIMER_CLI_CMD_MAX)
     {
         ESP_LOGE(TAG, "Invalid number of arguments");
