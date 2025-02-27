@@ -1,0 +1,3 @@
+[submodule "tools/doxygen"]
+	path = tools/doxygen
+	url = https://github.com/doxygen/doxygen.git

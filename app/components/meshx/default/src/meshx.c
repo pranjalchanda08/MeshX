@@ -194,6 +194,7 @@ static esp_err_t meshx_init_boot_timer(void)
 
     return err;
 }
+
 /**
  * @brief MeshX initialisation function
  *
@@ -202,7 +203,6 @@ static esp_err_t meshx_init_boot_timer(void)
  *
  * @return ESP_OK, Success
  */
-
 esp_err_t meshx_init(meshx_config_t const *config)
 {
     if(!config)
