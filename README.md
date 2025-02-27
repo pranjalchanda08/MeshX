@@ -20,6 +20,8 @@
 * MMMMMMMM               MMMMMMMM    eeeeeeeeeeeeee    sssssssssss    hhhhhhh     hhhhhhh     XXXXXXX       XXXXXXX *
 *********************************************************************************************************************
 ```
+[![CI Pipeline:main](https://github.com/pranjalchanda08/MeshX/actions/workflows/ci.yml/badge.svg)](https://github.com/pranjalchanda08/MeshX/actions/workflows/ci.yml) ![Static Badge](https://img.shields.io/badge/Release-v0.2-blue?link=https%3A%2F%2Fgithub.com%2Fpranjalchanda08%2FMeshX%2Freleases%2Ftag%2Fv0.2)
+
 
 This repository provides an implementation for Bluetooth Low Energy (BLE) Mesh network nodes using ESP32. The project allows you to create BLE mesh nodes that can communicate with each other, enabling the development of smart home solutions or other IoT-based applications.
 
@@ -28,6 +30,25 @@ This repository provides an implementation for Bluetooth Low Energy (BLE) Mesh n
 * ESP32 Compatibility: Works with ESP32 and compatible microcontrollers.
 * Simple Setup: Easy-to-follow steps for setting up and configuring nodes.
 * Scalable: Supports multiple nodes in the mesh network, ideal for smart home and IoT applications.
+
+## Capabilities
+
+### Server
+
+| Element           | Models                |
+| ----------------- | --------------------- |
+| Relay Server      | Generic On Off Server |
+| Light CWWW Server | Generic On Off Server |
+|                   | Light CTL Server      |
+
+### Client
+
+| Element           | Models                |
+| ----------------- | --------------------- |
+| Relay Client      | Generic On Off Client |
+| Light CWWW Client | Generic On Off Client |
+|                   | Light CTL Client      |
+
 
 ## Prerequisites
 
