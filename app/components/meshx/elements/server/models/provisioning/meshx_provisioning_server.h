@@ -30,11 +30,16 @@ typedef struct prov_params
 extern esp_ble_mesh_prov_t g_meshx_prov;
 
 /**
- * @brief Initialize the provisioning with the given parameters.
+ * @brief Initialize provisioning parameters.
  *
- * @param[in] svr_cfg Pointer to the provisioning parameters.
+ * This function initializes the provisioning parameters by copying the UUID from the provided
+ * server configuration and registering the provisioning callback.
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @param[in] svr_cfg Pointer to the provisioning parameters structure containing the UUID.
+ *
+ * @return
+ *    - ESP_OK: Success
+ *    - ESP_FAIL: Failed to register provisioning callback
  */
 esp_err_t meshx_init_prov(const prov_params_t * svr_cfg);
 

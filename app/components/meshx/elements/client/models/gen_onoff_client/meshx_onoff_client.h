@@ -53,11 +53,13 @@ typedef struct meshx_onoff_cli_cb_reg {
 esp_err_t meshx_onoff_client_init(void);
 
 /**
- * @brief Register a callback function for On/Off client events.
+ * @brief Register a callback for OnOff Client events.
  *
- * @param cb Callback function to register.
- * @param config_evt_bmap Bitmap of events to register the callback for.
+ * This function allows users to register a callback for handling specific
+ * OnOff Client events based on a provided event bitmap.
  *
+ * @param[in] cb              Pointer to the callback function to register.
+ * @param[in] config_evt_bmap Bitmap of events to register for.
  * @return ESP_OK on success, or an error code on failure.
  */
 esp_err_t meshx_onoff_reg_cb(meshx_onoff_cli_cb cb, uint32_t config_evt_bmap);

@@ -7,7 +7,7 @@
  * This file contains the implementation of the BLE Mesh Lighting Server,
  * including initialization, event handling, and callback registration.
  *
- *
+ * @author Pranjal Chanda
  */
 
 #include "meshx_light_server.h"
@@ -22,6 +22,7 @@ static uint16_t meshx_lighting_server_init = 0;
 static struct meshx_lighting_server_cb_list meshx_lighting_server_cb_reg_table = SLIST_HEAD_INITIALIZER(meshx_lighting_server_cb_reg_table);
 static SemaphoreHandle_t meshx_lighting_server_mutex;
 #endif /* !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
+
 /**
  * @brief Callback function for BLE Mesh Lightness Server events.
  *

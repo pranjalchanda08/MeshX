@@ -6,6 +6,8 @@
  *
  * This file contains the declarations and definitions for the production
  * lighting server, including callback registration and initialization functions.
+ *
+ * @author Pranjal Chanda
  */
 
 #ifndef __MESHX_LIGHT_SERVER_H__
@@ -21,6 +23,7 @@
 #endif
 
 #if !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
+
 /**
  * @brief Type definition for the production lighting server callback function.
  *
@@ -48,12 +51,18 @@ typedef struct meshx_lighting_server_cb_reg
 SLIST_HEAD(meshx_lighting_server_cb_list, meshx_lighting_server_cb_reg);
 
 /**
- * @brief Register a callback function for a specific lighting server model.
+ * @brief Register a callback function for the lighting server model.
  *
- * @param model_id Model ID for the lighting server.
- * @param cb Callback function to be registered.
+ * This function registers a callback function that will be called when
+ * certain events occur in the lighting server model.
  *
- * @return ESP_OK on success, or an appropriate error code on failure.
+ * @param[in] model_id  The ID of the lighting server model.
+ * @param[in] cb        The callback function to register.
+ *
+ * @return
+ *    - ESP_OK: Success
+ *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - ESP_FAIL: Other failures
  */
 esp_err_t meshx_lighting_reg_cb(uint32_t model_id, meshx_lighting_server_cb cb);
 

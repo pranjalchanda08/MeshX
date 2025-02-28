@@ -1,21 +1,16 @@
-/*
- * Copyright (c) 2025 Pranjal Chanda
+/**
+ * Copyright (c) 2024 - 2025 MeshX
  *
- * @brief: Relay Client Model
- * @file: meshx_relay_client.c
+ * @file meshx_relay_client.c
+ * @brief Implementation of the relay client model for BLE Mesh.
  *
- * This file contains the implementation of the relay client model for BLE mesh.
- * It includes functions for creating relay model space, adding relay client models
- * to the element list, handling control task messages, and sending relay messages.
+ * This file contains the implementation of the relay client model for BLE Mesh,
+ * including initialization, configuration, and event handling.
  *
- * The relay client model is responsible for controlling the on/off state of relay
- * devices in the BLE mesh network.
+ * @author Pranjal Chanda
  *
- * This implementation supports configuration server callbacks, control task message
- * handling, and unit testing.
- *
- * @auther: Pranjal Chanda
  */
+
 #include "app_common.h"
 #include "meshx_control_task.h"
 #include "meshx_nvs.h"
@@ -476,7 +471,7 @@ typedef enum
  * @return
  *     - ESP_OK: Success
  *     - ESP_ERR_INVALID_ARG: Invalid arguments
- *     - Other error codes depending on the implementation
+ *   >  - Other error codes depending on the implementation
  */
 static esp_err_t relay_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv)
 {
@@ -563,13 +558,12 @@ esp_err_t ble_mesh_send_relay_msg(dev_struct_t *pdev, uint16_t element_id, uint8
 }
 
 /**
- * @brief Create relay model space.
+ * @brief Create Dynamic Relay Model Elements
  *
- * Allocates memory and initializes space for relay models.
+ * @param[in]       pdev            Pointer to device structure
+ * @param[in]       element_cnt     Maximum number of relay models
  *
- * @param[in] p_dev Pointer to the device structure.
- * @param[in] element_cnt Maximum number of relay models.
- * @return ESP_OK on success, error code otherwise.
+ * @return esp_err_t
  */
 esp_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
 {

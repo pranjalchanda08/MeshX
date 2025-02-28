@@ -18,6 +18,8 @@
  * - Handling of generic client callback events for CW-WW models.
  * - Sending CW-WW messages to the server.
  *
+ * @author Pranjal Chanda
+ *
  */
 #include "meshx_light_cwww_client.h"
 #include "meshx_nvs.h"
@@ -27,8 +29,8 @@
 
 #if CONFIG_ENABLE_CONFIG_SERVER
 #include "meshx_config_server.h"
-
 #include "meshx_api.h"
+
 /**
  * @brief Configuration server callback event mask for cwww server.
  */
@@ -37,6 +39,9 @@
     | CONFIG_EVT_MODEL_SUB_ADD | CONFIG_EVT_MODEL_APP_KEY_BIND
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
+/**
+ * @defgroup CONTROL_TASK configs
+ */
 #if defined(__MESHX_CONTROL_TASK__)
 #define CONTROL_TASK_MSG_CODE_EVT_MASK CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF | CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL
 #endif /* __MESHX_CONTROL_TASK__ */
@@ -48,6 +53,10 @@
 #define CWWW_CLI_MESHX_ONOFF_CLI_CB_EVT_BMAP MESHX_ONOFF_CLI_EVT_ALL
 #define CWWW_CLI_MESHX_CTL_CLI_CB_EVT_BMAP LIGHT_CTL_CLI_EVT_ALL
 
+/**
+ * @var cwww_cli_sig_template
+ * @brief CW-WW client SIG model template.
+ */
 static const esp_ble_mesh_model_t cwww_cli_sig_template[CWWW_CLI_MODEL_SIG_CNT] = {
     ESP_BLE_MESH_SIG_MODEL(ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_CLI, NULL, NULL, NULL),
     ESP_BLE_MESH_SIG_MODEL(ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_CLI, NULL, NULL, NULL),
@@ -61,8 +70,8 @@ cwww_client_elements_t *cwww_client_element_init_ctrl;
  *
  * This function handles the CW-WW client generic client callback events.
  *
- * @param param Pointer to the BLE Mesh generic client callback parameter structure.
- * @param evt Event type of the callback.
+ * @param[in] param Pointer to the BLE Mesh generic client callback parameter structure.
+ * @param[in] evt Event type of the callback.
  */
 static void cwww_client_generic_client_cb(const esp_ble_mesh_generic_client_cb_param_t *param, meshx_onoff_cli_evt_t evt)
 {
@@ -139,8 +148,8 @@ static void cwww_client_generic_client_cb(const esp_ble_mesh_generic_client_cb_p
  *
  * This function is called whenever a Light CTL Client event occurs.
  *
- * @param param Pointer to the structure containing the event parameters.
- * @param evt The specific Light CTL Client event that occurred.
+ * @param[in] param Pointer to the structure containing the event parameters.
+ * @param[in] evt The specific Light CTL Client event that occurred.
  */
 static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t *param, light_ctl_cli_evt_t evt)
 {
@@ -270,8 +279,8 @@ static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
  * This function handles events from the configuration server, such as model publication
  * and application binding events.
  *
- * @param param Pointer to the callback parameter structure.
- * @param evt Configuration event type.
+ * @param[in] param Pointer to the callback parameter structure.
+ * @param[in] evt Configuration event type.
  */
 static void cwww_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *param, config_evt_t evt)
 {
@@ -412,7 +421,10 @@ static esp_err_t cwww_cli_control_task_msg_handle(dev_struct_t *pdev, control_ta
 
 #if CONFIG_ENABLE_UNIT_TEST
 
-typedef enum
+/**
+ * @brief CW-WW Client Unit Test Command IDs.
+ */
+typedef enum cwww_cli_cmd
 {
     /* ONOFF UT COMMANDS */
     CWWW_CLI_UT_CMD_ONOFF_GET = 0,
@@ -776,9 +788,9 @@ static esp_err_t meshx_dev_create_cwww_model_space(dev_struct_t const *pdev, uin
  * This function adds the CW-WW client models to the element list of the specified device.
  * It initializes the necessary structures and configurations for each model.
  *
- * @param pdev Pointer to the device structure.
- * @param element_idx Pointer to the element index.
- * @param n_max Maximum number of elements that can be created in the model space.
+ * @param[in] pdev      Pointer to the device structure.
+ * @param[in] start_idx Pointer to the element index.
+ * @param[in] n_max     Maximum number of elements that can be created in the model space.
  *
  * @return
  *     - ESP_OK: Success
@@ -836,10 +848,10 @@ static esp_err_t meshx_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, ui
 }
 
 /**
- * @brief Create Dynamic Light CWWW Elements
+ * @brief Create Dynamic Relay Model Elements
  *
  * @param[in] pdev          Pointer to device structure
- * @param[in] element_cnt   Number of elements to be created
+ * @param[in] element_cnt   Maximum number of relay models
  *
  * @return esp_err_t
  */

@@ -72,14 +72,18 @@ void meshx_light_client_cb(esp_ble_mesh_light_client_cb_event_t event,
 }
 
 /**
- * @brief Register a callback for Light CTL Client events.
+ * @brief Register a callback function for the Light CTL Client.
  *
- * This function registers a callback function for the specified Light CTL Client
- * events. The callback will be called when the corresponding events occur.
+ * This function registers a callback function that will be called when specific
+ * events occur in the Light CTL Client model.
  *
- * @param[in] cb The callback function to register.
- * @param[in] config_evt_bmap The event bitmap specifying the events to register for.
- * @return ESP_OK on success, or an error code on failure.
+ * @param[in] cb                The callback function to register.
+ * @param[in] config_evt_bmap   A bitmap representing the configuration events to register for.
+ *
+ * @return
+ *    - ESP_OK: Success
+ *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - ESP_FAIL: Other failures
  */
 esp_err_t meshx_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap)
 {

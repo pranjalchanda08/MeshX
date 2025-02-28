@@ -16,6 +16,7 @@
 
 #include "app_common.h"
 #include "meshx.h"
+#include "ble_mesh_example_init.h"
 
 #if CONFIG_RELAY_SERVER_COUNT
 #include "meshx_relay_server_element.h"
@@ -68,8 +69,7 @@ extern element_comp_table_t MESHX_ELEMENT_COMP_TABLE_STOP;
 
 #else
 
-element_comp_fn_t element_comp_fn [MESHX_ELEMENT_TYPE_MAX] =
-{
+element_comp_fn_t element_comp_fn [MESHX_ELEMENT_TYPE_MAX] = {
 #if CONFIG_RELAY_SERVER_COUNT
     [MESHX_ELEMENT_TYPE_RELAY_SERVER]       = &create_relay_elements,
 #endif /* CONFIG_RELAY_SERVER_COUNT */
@@ -172,6 +172,7 @@ size_t get_root_sig_models_count(void)
  * relay clients, and CWWW (Cool White and Warm White) servers.
  *
  * @param[in] p_dev Pointer to the device structure containing element information.
+ * @param[in] config Pointer to the meshx configuration.
  *
  * @return ESP_OK on success, or an error code on failure.
  */

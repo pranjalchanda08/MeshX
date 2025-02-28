@@ -14,7 +14,9 @@
 
 #define TAG __func__
 
-/* Structure for storing callback registrations */
+/**
+ * @brief Structure for storing the configuration server callback registration.
+ */
 typedef struct config_server_cb_reg
 {
     config_srv_cb cb;                       /**< Registered callback function */
@@ -25,7 +27,9 @@ typedef struct config_server_cb_reg
 SLIST_HEAD(config_server_cb_reg_head, config_server_cb_reg);
 static struct config_server_cb_reg_head config_server_cb_reg_table = SLIST_HEAD_INITIALIZER(config_server_cb_reg_table);
 
-/* Struct for storing the Model id to config evt */
+/**
+ * @brief Mapping of BLE Mesh model operation codes to configuration events.
+ */
 typedef struct config_server_model_evt_map
 {
     uint16_t model_op_code;

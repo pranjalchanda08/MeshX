@@ -35,10 +35,14 @@ typedef enum
 } light_ctl_cli_evt_t;
 
 typedef bool (*light_cli_cb)(const esp_ble_mesh_light_client_cb_param_t *param, light_ctl_cli_evt_t evt);
+
+/**
+ * @brief Structure to hold the Light CTL Client context.
+ */
 typedef struct light_ctl_cli_cb_reg
 {
-    light_cli_cb cb;                   /**< Registered callback function */
-    uint32_t evt_bmap;                 /**< Bitmap of events the callback is registered for */
+    light_cli_cb cb;                        /**< Registered callback function */
+    uint32_t evt_bmap;                      /**< Bitmap of events the callback is registered for */
     SLIST_ENTRY(light_ctl_cli_cb_reg) next; /**< SLIST entry for the next callback registration */
 } light_ctl_cli_cb_reg_t;
 
@@ -67,8 +71,8 @@ typedef struct light_ctl_send_args
  * This function registers a callback function that will be called when specific
  * events occur in the Light CTL Client model.
  *
- * @param[in] cb The callback function to register.
- * @param[in] config_evt_bmap A bitmap representing the configuration events to register for.
+ * @param[in] cb                The callback function to register.
+ * @param[in] config_evt_bmap   A bitmap representing the configuration events to register for.
  *
  * @return
  *    - ESP_OK: Success

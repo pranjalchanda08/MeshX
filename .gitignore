@@ -55,3 +55,4 @@ build
 sdkconfig
 *.old
 codegen.h
+doxygen

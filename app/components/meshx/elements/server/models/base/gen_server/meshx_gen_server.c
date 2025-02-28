@@ -16,11 +16,14 @@
 
 #define MESHX_SERVER_INIT_MAGIC_NO 0x1121
 
-static const char *server_state_str[] =
-    {
-        [ESP_BLE_MESH_GENERIC_SERVER_STATE_CHANGE_EVT] = "SRV_STATE_CH",
-        [ESP_BLE_MESH_GENERIC_SERVER_RECV_GET_MSG_EVT] = "SRV_RECV_GET",
-        [ESP_BLE_MESH_GENERIC_SERVER_RECV_SET_MSG_EVT] = "SRV_RECV_SET"};
+/**
+ * @brief String representation of the server state change events.
+ */
+static const char *server_state_str[] = {
+    [ESP_BLE_MESH_GENERIC_SERVER_STATE_CHANGE_EVT] = "SRV_STATE_CH",
+    [ESP_BLE_MESH_GENERIC_SERVER_RECV_GET_MSG_EVT] = "SRV_RECV_GET",
+    [ESP_BLE_MESH_GENERIC_SERVER_RECV_SET_MSG_EVT] = "SRV_RECV_SET"
+};
 
 static uint16_t meshx_server_init = 0;
 
@@ -77,8 +80,8 @@ static void meshx_ble_mesh_generic_server_cb(esp_ble_mesh_generic_server_cb_even
  * This function registers a callback function that will be called when
  * specific events related to the meshxuction server model occur.
  *
- * @param model_id The ID of the model for which the callback is being registered.
- * @param cb The callback function to be registered.
+ * @param[in] model_id  The ID of the model for which the callback is being registered.
+ * @param[in] cb        The callback function to be registered.
  *
  * @return
  *     - ESP_OK: Callback registered successfully.
@@ -129,8 +132,8 @@ esp_err_t meshx_gen_srv_reg_cb(uint32_t model_id, meshx_server_cb cb)
  *
  * This function is called to deregister a generic server model identified by the given model ID.
  *
- * @param model_id The ID of the model to be deregistered.
- * @param cb The callback function to be deregistered.
+ * @param[in] model_id  The ID of the model to be deregistered.
+ * @param[in] cb        The callback function to be deregistered.
  *
  * @return
  *     - ESP_OK: Success

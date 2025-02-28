@@ -112,8 +112,7 @@ esp_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, uint
 /**
  * @brief Sends a message to the element
  *
- * This function sends a message to the element from BLE mesh Application.
- * Majorly used to send message to BLE Mesh Element Client
+ * This function sends a message to the element from BLE mesh Application
  *
  * @param[in] element_id    The element ID.
  * @param[in] element_type  The element type.
@@ -141,8 +140,7 @@ esp_err_t meshx_send_msg_to_element(uint16_t element_id, uint16_t element_type, 
 /**
  * @brief Registers the BLE Mesh application callback.
  *
- * This function registers the BLE Mesh application callback.
- * Shall be used to get event from BLE mesh Server Elements
+ * This function registers the BLE Mesh application data path callback.
  *
  * @param[in] cb Pointer to the application callback.
  *

@@ -41,8 +41,11 @@
  */
 typedef esp_err_t (*module_callback_t)(int cmd_id, int argc, char **argv);
 
+/**
+ * @brief Structure to hold the unit test callback function.
+ */
 typedef struct callback_node {
-    module_callback_t callback;
+    module_callback_t callback;     /**< Callback function */
 } unit_test_callback_t;
 
 /**
@@ -71,14 +74,15 @@ esp_err_t init_unit_test_console(void);
 /**
  * @brief Register a unit test for a specific module.
  *
- * This function registers a unit test callback for a given module.
+ * This function registers a unit test callback for the given module ID.
  *
- * @param module_id The ID of the module for which the unit test is being registered.
- * @param callback The callback function to be called for the unit test.
+ * @param[in] module_id     The ID of the module for which the unit test is being registered.
+ * @param[in] callback      The callback function to be called for the unit test.
  *
  * @return
- *    - ESP_OK: Success
- *    - ESP_FAIL: Registration failed
+ *     - ESP_OK: Success
+ *     - ESP_ERR_INVALID_ARG: Invalid arguments
+ *     - ESP_FAIL: Failed to register the unit test
  */
 esp_err_t register_unit_test(module_id_t module_id, module_callback_t callback) ;
 

@@ -37,11 +37,17 @@ typedef enum
     CWWW_SIG_ID_MAX          /**< Maximum number of model IDs */
 } cwww_sig_id_t;
 
+/**
+ * @brief Structure to hold the CW-WW server on/off state.
+ */
 typedef struct cwww_srv_on_off_state
 {
     uint8_t on_off; /**< On/Off state */
 } cwww_srv_on_off_state_t;
 
+/**
+ * @brief Structure to hold the CW-WW server control state.
+ */
 typedef struct cwww_srv_ctl_state
 {
     uint16_t delta_uv;       /**< Delta UV value */
