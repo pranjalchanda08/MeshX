@@ -61,11 +61,14 @@ extern esp_ble_mesh_cfg_srv_t g_meshx_config_server;
 esp_err_t meshx_init_config_server();
 
 /**
- * @brief Register a callback function for configuration server events.
+ * @brief Registers a configuration server callback for specific events.
  *
- * @param cb The callback function to register.
- * @param config_evt_bmap Bitmap of configuration events to register for.
- * @return ESP_OK on success, or an error code on failure.
+ * Adds a new callback registration to the linked list for dispatching events.
+ *
+ * @param[in] cb Callback function to register.
+ * @param[in] config_evt_bmap Bitmap of events the callback is interested in.
+ *
+ * @return ESP_OK on success, an error code otherwise.
  */
 esp_err_t meshx_config_server_cb_reg(config_srv_cb cb, uint32_t config_evt_bmap);
 

@@ -25,33 +25,33 @@
 /**
  * @brief Control task name configuration.
  */
-#define CONFIG_CONTROL_TASK_NAME "meshx_control_task"
+#define CONFIG_CONTROL_TASK_NAME        "meshx_control_task"
 
 /**
  * @brief Control task priority configuration.
  */
 #ifndef CONFIG_CONTROL_TASK_PRIO
-#define CONFIG_CONTROL_TASK_PRIO configTIMER_TASK_PRIORITY + 1
+#define CONFIG_CONTROL_TASK_PRIO        configTIMER_TASK_PRIORITY + 1
 #endif
 
 /**
  * @brief Control task stack size configuration.
  */
 #ifndef CONFIG_CONTROL_TASK_STACK_SIZE
-#define CONFIG_CONTROL_TASK_STACK_SIZE 4096
+#define CONFIG_CONTROL_TASK_STACK_SIZE  4096
 #endif
 
 /**
  * @brief Control task queue length configuration.
  */
 #ifndef CONFIG_CONTROL_TASK_QUEUE_LEN
-#define CONFIG_CONTROL_TASK_QUEUE_LEN 10
+#define CONFIG_CONTROL_TASK_QUEUE_LEN   10
 #endif
 
 /**
  * @brief Enumeration for control task message codes.
  */
-typedef enum PACKED_ATTR
+typedef enum control_task_msg_code
 {
     CONTROL_TASK_MSG_CODE_EL_STATE_CH,  /**< Message code for Element state change */
     CONTROL_TASK_MSG_CODE_SYSTEM,       /**< Message code for system events. */
@@ -68,16 +68,20 @@ typedef enum PACKED_ATTR
  */
 typedef uint32_t control_task_msg_evt_t;
 
-typedef enum PACKED_ATTR
+/**
+ * @brief Enumeration for control task message events to application.
+ */
+typedef enum control_task_msg_evt_to_app_meshx
 {
     CONTROL_TASK_MSG_EVT_DATA = BIT0,   /**< Data message */
     CONTROL_TASK_MSG_EVT_CTRL = BIT1,   /**< Control message */
     CONTROL_TASK_MSG_EVT_MAX,           /**< Maximum event value */
 } control_task_msg_evt_to_app_meshx_t;
+
 /**
  * @brief Enumeration for control task message events to HAL.
  */
-typedef enum PACKED_ATTR
+typedef enum control_task_msg_evt_el_state_ch
 {
     CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF      = BIT0, /**< Event to set on/off state. */
     CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL         = BIT1, /**< Event to set CTL state. */
@@ -87,7 +91,7 @@ typedef enum PACKED_ATTR
 /**
  * @brief Enumeration for control task message events to BLE.
  */
-typedef enum PACKED_ATTR
+typedef enum control_task_msg_evt_to_ble
 {
     CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF      = BIT0, /**< Event to set on/off state. */
     CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL         = BIT1, /**< Event to set CTL state. */
@@ -98,7 +102,7 @@ typedef enum PACKED_ATTR
 /**
  * @brief Enumeration for control task system events.
  */
-typedef enum PACKED_ATTR
+typedef enum control_task_msg_evt_system
 {
     CONTROL_TASK_MSG_EVT_SYSTEM_RESTART      = BIT0,    /**< Event to restart the system. */
     CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_ARM    = BIT1,    /**< Event to arm an OS Timer */
@@ -107,13 +111,13 @@ typedef enum PACKED_ATTR
     CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE   = BIT4,    /**< Event to fire timedout OS Timer */
     CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD = BIT5,    /**< Event to set timedout OS Timer */
     CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT   = BIT6,    /**< Event to indicate fresh boot */
-    CONTROL_TASK_MSG_EVT_SYSTEM_MAX, /**< Maximum system event value. */
+    CONTROL_TASK_MSG_EVT_SYSTEM_MAX,                    /**< Maximum system event value. */
 } control_task_msg_evt_system_t;
 
 /**
  * @brief Enumeration for control task provisioning events.
  */
-typedef enum PACKED_ATTR
+typedef enum control_task_msg_evt_provision
 {
     CONTROL_TASK_MSG_EVT_PROVISION_STOP         = BIT1, /**< ESP_BLE_MESH_NODE_PROV_COMPLETE_EVT */
     CONTROL_TASK_MSG_EVT_IDENTIFY_START         = BIT2, /**< EESP_BLE_MESH_NODE_PROV_LINK_OPEN_EVT */
@@ -158,11 +162,12 @@ typedef struct control_task_evt_cb_reg
 /**
  * @brief Create the control task.
  *
- * @param pdev  Pointer to the device structure.
+ * This function creates a FreeRTOS task to handle control events.
+ *
+ * @param[in] pdev Pointer to the device structure (dev_struct_t).
  * @return ESP_OK on success, or an error code on failure.
  */
 esp_err_t create_control_task(dev_struct_t * pdev);
-
 
 /**
  * @brief Subscribe to a control task message.
@@ -171,18 +176,16 @@ esp_err_t create_control_task(dev_struct_t * pdev);
  * identified by the given message code. When the message is received, the
  * specified callback function will be invoked.
  *
- * @param msg_code  The message code to subscribe to.
- * @param evt_bmap  The event bitmap associated with the message.
- * @param cb        The callback function to be called when the message is received.
+ * @param[in] msg_code  The message code to subscribe to.
+ * @param[in] evt_bmap  The event bitmap associated with the message.
+ * @param[in] callback  The callback function to be called when the message is received.
  *
  * @return
  *     - ESP_OK: Success
  *     - ESP_ERR_INVALID_ARG: Invalid argument
  *     - ESP_FAIL: Other failures
  */
-esp_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code,
-                                control_task_msg_evt_t evt_bmap,
-                                control_task_msg_handle_t cb);
+esp_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code, control_task_msg_evt_t evt_bmap, control_task_msg_handle_t cbcallback);
 
 /**
  * @brief Deregister a callback for a specific message code and event bitmap.
@@ -194,9 +197,8 @@ esp_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code,
  * @param[in] callback        Callback function to deregister.
  * @return ESP_OK on success, or an error code on failure.
  */
-esp_err_t control_task_msg_unsubscribe(control_task_msg_code_t msg_code,
-            control_task_msg_evt_t evt_bmap,
-            control_task_msg_handle_t callback);
+esp_err_t control_task_msg_unsubscribe(control_task_msg_code_t msg_code, control_task_msg_evt_t evt_bmap, control_task_msg_handle_t callback);
+
 /**
  * @brief Publish a control task message.
  *
@@ -204,16 +206,12 @@ esp_err_t control_task_msg_unsubscribe(control_task_msg_code_t msg_code,
  * message code, event, and event parameters.
  * The message will be sent to the control task for processing.
  *
- * @param msg_code              The message code to publish.
- * @param msg_evt               The event associated with the message.
- * @param msg_evt_params        Pointer to the event parameters.
- * @param sizeof_msg_evt_params Size of the event parameters.
+ * @param[in] msg_code              The message code to publish.
+ * @param[in] msg_evt               The event associated with the message.
+ * @param[in] msg_evt_params        Pointer to the event parameters.
+ * @param[in] sizeof_msg_evt_params Size of the event parameters.
  * @return ESP_OK on success, or an error code on failure.
  */
-
-esp_err_t control_task_msg_publish(control_task_msg_code_t msg_code,
-                                control_task_msg_evt_t msg_evt,
-                                const void *msg_evt_params,
-                                size_t sizeof_msg_evt_params);
+esp_err_t control_task_msg_publish(control_task_msg_code_t msg_code, control_task_msg_evt_t msg_evt, const void *msg_evt_params, size_t sizeof_msg_evt_params);
 
 #endif /* __MESHX_CONTROL_TASK__ */

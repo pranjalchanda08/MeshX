@@ -1,3 +1,11 @@
+/**
+ * Copyright © 2024 - 2025 MeshX
+ *
+ * @file meshx_light_cwww_client.h
+ * @brief Implementation of the CW-WW (Cool White - Warm White) client model for BLE Mesh.
+ *
+ * @author Pranjal Chanda
+ */
 #pragma once
 
 #include "app_common.h"
@@ -5,18 +13,60 @@
 #include "meshx_onoff_client.h"
 #include "meshx_light_ctl_client.h"
 
+/**
+ * @def CWWW_CLIENT_ELEMENT_NOS_DEF
+ * @brief Defines the number of CW-WW client elements.
+ *
+ * This macro defines the number of CW-WW (Cool White - Warm White) client elements
+ * used in the MeshX application.
+ */
 #define CWWW_CLIENT_ELEMENT_NOS_DEF 3
 
+/**
+ * @def CONFIG_LIGHT_CWWW_CLIENT_COUNT
+ * @brief Number of CW-WW client elements.
+ *
+ * This macro defines the number of CW-WW client elements. If it is not defined,
+ * it will default to CWWW_CLIENT_ELEMENT_NOS_DEF.
+ */
 #ifndef CONFIG_LIGHT_CWWW_CLIENT_COUNT
 #define CONFIG_LIGHT_CWWW_CLIENT_COUNT CWWW_CLIENT_ELEMENT_NOS_DEF
 #endif
 
+/**
+ * @def CWWW_CLI_MODEL_SIG_CNT
+ * @brief Number of SIG models in a CW-WW model element.
+ */
 #define CWWW_CLI_MODEL_SIG_CNT CWWW_CLI_SIG_ID_MAX // No of SIG models in a cwww model element
-#define CWWW_CLI_MODEL_VEN_CNT 0                   // No of VEN models in a cwww model element
 
+/**
+ * @def CWWW_CLI_MODEL_VEN_CNT
+ * @brief Number of Vendor models in a CW-WW model element.
+ */
+#define CWWW_CLI_MODEL_VEN_CNT 0 // No of VEN models in a cwww model element
+
+/**
+ * @def CWWW_CLI_MSG_SET
+ * @brief Message type for setting CW-WW client state.
+ */
 #define CWWW_CLI_MSG_SET 0
+
+/**
+ * @def CWWW_CLI_MSG_GET
+ * @brief Message type for getting CW-WW client state.
+ */
 #define CWWW_CLI_MSG_GET 1
+
+/**
+ * @def CWWW_CLI_MSG_ACK
+ * @brief Acknowledgment message type.
+ */
 #define CWWW_CLI_MSG_ACK 1
+
+/**
+ * @def CWWW_CLI_MSG_NO_ACK
+ * @brief Non-acknowledgment message type.
+ */
 #define CWWW_CLI_MSG_NO_ACK 0
 
 #define CWWW_ARG_BMAP_ONOFF_SET BIT0
@@ -26,8 +76,22 @@
 #define CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MIN BIT4
 #define CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MAX BIT5
 
+/**
+ * @def CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET
+ * @brief Argument bitmap for setting the temperature range.
+ */
 #define CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET (CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MIN | CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MAX)
+
+/**
+ * @def CWWW_ARG_BMAP_CTL_SET
+ * @brief Argument bitmap for setting the CW-WW client control state.
+ */
 #define CWWW_ARG_BMAP_CTL_SET (CWWW_ARG_BMAP_LIGHTNESS_SET | CWWW_ARG_BMAP_TEMPERATURE_SET | CWWW_ARG_BMAP_DELTA_UV_SET)
+
+/**
+ * @def CWWW_ARG_BMAP_ALL
+ * @brief Argument bitmap for setting all CW-WW client states.
+ */
 #define CWWW_ARG_BMAP_ALL (CWWW_ARG_BMAP_ONOFF_SET | CWWW_ARG_BMAP_CTL_SET | CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET)
 
 /**
@@ -40,11 +104,17 @@ typedef enum
     CWWW_CLI_SIG_ID_MAX          /**< Maximum number of model IDs */
 } cwww_cli_sig_id_t;
 
+/**
+ * @brief Structure to hold the CW-WW client on/off state.
+ */
 typedef struct cwww_cli_on_off_state
 {
     uint8_t on_off; /**< On/Off state */
 } cwww_cli_on_off_state_t;
 
+/**
+ * @brief Structure to hold the CW-WW client control state.
+ */
 typedef struct cwww_cli_ctl_state
 {
     uint16_t delta_uv;       /**< Delta UV value */
@@ -92,14 +162,14 @@ typedef struct cwww_client_msg
  */
 typedef struct cwww_client_element
 {
-    size_t element_cnt;
-    size_t element_id_end;
-    size_t element_id_start;
-    size_t element_model_init;
-    cwww_cli_ctx_t *cwww_cli_ctx;
-    esp_ble_mesh_client_t **cwww_cli_list;
-    esp_ble_mesh_model_pub_t **cwww_cli_pub_list;
-    esp_ble_mesh_model_t **cwww_cli_sig_model_list;
+    size_t element_cnt;                             /**< Number of elements */
+    size_t element_id_end;                          /**< Ending ID of the element */
+    size_t element_id_start;                        /**< Starting ID of the element */
+    size_t element_model_init;                      /**< Initialization status of the element model */
+    cwww_cli_ctx_t *cwww_cli_ctx;                   /**< Context of the cwww client */
+    esp_ble_mesh_client_t **cwww_cli_list;          /**< List of cwww client structures */
+    esp_ble_mesh_model_pub_t **cwww_cli_pub_list;   /**< List of cwww client publication structures */
+    esp_ble_mesh_model_t **cwww_cli_sig_model_list; /**< List of cwww client SIG model structures */
 } cwww_client_elements_t;
 
 /**

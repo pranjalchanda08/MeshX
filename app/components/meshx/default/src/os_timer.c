@@ -6,12 +6,14 @@
  *
  * This file contains the implementation of the OS timer functionalities used in the BLE mesh node application.
  * It includes the necessary includes, definitions, and initialization of the timer registration table.
+ *
+ * @author Pranjal Chanda
  */
 
 #include "os_timer.h"
 
 #define OS_TIMER_INIT_MAGIC 0x3892
- /**
+/**
  * @def OS_TIMER_CONTROL_TASK_EVT_MASK
  * @brief Mask for OS timer control task events.
  *
@@ -26,13 +28,13 @@
                                         CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD | \
                                         CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE)
 
- /**
+/**
  * @struct os_timer_reg_head
  * @brief Head of the singly linked list for OS timer control task message parameters.
  */
 SLIST_HEAD(os_timer_reg_head, os_timer);
 
- /**
+/**
  * @var os_timer_reg_table_head
  * @brief Head of the OS timer registration table.
  *
@@ -42,6 +44,9 @@ static struct os_timer_reg_head os_timer_reg_table_head = SLIST_HEAD_INITIALIZER
 
 #if CONFIG_ENABLE_UNIT_TEST
 
+/**
+ * @brief OS Timer CLI command enumeration.
+ */
 typedef enum
 {
     OS_TIMER_CLI_CMD_CREATE,
@@ -57,7 +62,7 @@ typedef enum
  * @brief OS Timer Unit Test Callback handler
  * @param[in] p_timer   Callback params
  */
-static void os_timer_ut_cb_handler(const os_timer_t* p_timer)
+static void os_timer_ut_cb_handler(const os_timer_t *p_timer)
 {
     ESP_LOGI(TAG, "%s|%ld|%d", p_timer->name, p_timer->period, p_timer->reload);
 }
@@ -80,11 +85,11 @@ static void os_timer_ut_cb_handler(const os_timer_t* p_timer)
 static esp_err_t os_timer_unit_test_cb_handler(int cmd_id, int argc, char **argv)
 {
     esp_err_t err = ESP_OK;
-    os_timer_cli_cmd_t cmd = (os_timer_cli_cmd_t) cmd_id;
+    os_timer_cli_cmd_t cmd = (os_timer_cli_cmd_t)cmd_id;
 
     uint32_t ut_period = 0;
     bool ut_reload = false;
-    static os_timer_t* ut_os_timer;
+    static os_timer_t *ut_os_timer;
 
     ESP_LOGD(TAG, "argc|cmd_id: %d|%d", argc, cmd_id);
     if (cmd_id >= OS_TIMER_CLI_CMD_MAX)
@@ -93,39 +98,39 @@ static esp_err_t os_timer_unit_test_cb_handler(int cmd_id, int argc, char **argv
         return ESP_ERR_INVALID_ARG;
     }
 
-    switch(cmd)
+    switch (cmd)
     {
-        case OS_TIMER_CLI_CMD_CREATE:
-            /* ut 2 0 2 [period_ms] [reload]*/
-            ut_period = UT_GET_ARG(0, uint32_t, argv);
-            ut_reload = UT_GET_ARG(1, uint32_t, argv) == 0 ? false : true;
-            err = os_timer_create("OS_TIMER_UT", ut_period, ut_reload, os_timer_ut_cb_handler, &ut_os_timer);
-            break;
-        case OS_TIMER_CLI_CMD_ARM:
-            /* ut 2 1 0 */
-            err = os_timer_start(ut_os_timer);
-            break;
-        case OS_TIMER_CLI_CMD_REARM:
-            /* ut 2 2 0 */
-            err = os_timer_restart(ut_os_timer);
-            break;
-        case OS_TIMER_CLI_CMD_DISARM:
-            /* ut 2 3 0 */
-            err = os_timer_stop(ut_os_timer);
-            break;
-        case OS_TIMER_CLI_CMD_DELETE:
-            /* ut 2 4 0 */
-            err = os_timer_delete(&ut_os_timer);
-            break;
-        case OS_TIMER_CLI_CMD_PERIOD_SET:
-            /* ut 2 5 1 [new period ms] */
-            ut_period =  UT_GET_ARG(0, uint32_t, argv);
-            err = os_timer_set_period(ut_os_timer, ut_period);
-            break;
-        default:
-            break;
+    case OS_TIMER_CLI_CMD_CREATE:
+        /* ut 2 0 2 [period_ms] [reload]*/
+        ut_period = UT_GET_ARG(0, uint32_t, argv);
+        ut_reload = UT_GET_ARG(1, uint32_t, argv) == 0 ? false : true;
+        err = os_timer_create("OS_TIMER_UT", ut_period, ut_reload, os_timer_ut_cb_handler, &ut_os_timer);
+        break;
+    case OS_TIMER_CLI_CMD_ARM:
+        /* ut 2 1 0 */
+        err = os_timer_start(ut_os_timer);
+        break;
+    case OS_TIMER_CLI_CMD_REARM:
+        /* ut 2 2 0 */
+        err = os_timer_restart(ut_os_timer);
+        break;
+    case OS_TIMER_CLI_CMD_DISARM:
+        /* ut 2 3 0 */
+        err = os_timer_stop(ut_os_timer);
+        break;
+    case OS_TIMER_CLI_CMD_DELETE:
+        /* ut 2 4 0 */
+        err = os_timer_delete(&ut_os_timer);
+        break;
+    case OS_TIMER_CLI_CMD_PERIOD_SET:
+        /* ut 2 5 1 [new period ms] */
+        ut_period = UT_GET_ARG(0, uint32_t, argv);
+        err = os_timer_set_period(ut_os_timer, ut_period);
+        break;
+    default:
+        break;
     }
-    if(err)
+    if (err)
         ESP_LOGE(TAG, "err: 0x%x", err);
 
     return err;
@@ -173,42 +178,42 @@ static esp_err_t os_timer_control_task_cb(const dev_struct_t *pdev, control_task
 
     switch (evt)
     {
-        case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_ARM:
-            ESP_LOGD(TAG, "Starting timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
-            if (xTimerStart(msg_params->timer_handle, 0) != pdPASS)
-            {
-                return ESP_FAIL;
-            }
-            break;
-        case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_REARM:
-            ESP_LOGD(TAG, "Rearming timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
-            if (xTimerReset(msg_params->timer_handle, 0) != pdPASS)
-            {
-                return ESP_FAIL;
-            }
-            break;
-        case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_DISARM:
-            ESP_LOGD(TAG, "Stopping timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
-            if (xTimerStop(msg_params->timer_handle, 0) != pdPASS)
-            {
-                return ESP_FAIL;
-            }
-            break;
-        case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD:
-            ESP_LOGD(TAG, "Timer %s period set: %ld", OS_TMER_GET_TIMER_NAME(msg_params), msg_params->period);
-            if (xTimerChangePeriod(msg_params->timer_handle, pdMS_TO_TICKS(msg_params->period), 0) != pdPASS)
-            {
-                return ESP_FAIL;
-            }
-            break;
-        case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE:
-            ESP_LOGD(TAG, "Timer %s fire", OS_TMER_GET_TIMER_NAME(msg_params));
-            /* call respective callback */
-            if (msg_params->cb)
-                msg_params->cb(msg_params);
-            break;
-        default:
-            break;
+    case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_ARM:
+        ESP_LOGD(TAG, "Starting timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
+        if (xTimerStart(msg_params->timer_handle, 0) != pdPASS)
+        {
+            return ESP_FAIL;
+        }
+        break;
+    case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_REARM:
+        ESP_LOGD(TAG, "Rearming timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
+        if (xTimerReset(msg_params->timer_handle, 0) != pdPASS)
+        {
+            return ESP_FAIL;
+        }
+        break;
+    case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_DISARM:
+        ESP_LOGD(TAG, "Stopping timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
+        if (xTimerStop(msg_params->timer_handle, 0) != pdPASS)
+        {
+            return ESP_FAIL;
+        }
+        break;
+    case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD:
+        ESP_LOGD(TAG, "Timer %s period set: %ld", OS_TMER_GET_TIMER_NAME(msg_params), msg_params->period);
+        if (xTimerChangePeriod(msg_params->timer_handle, pdMS_TO_TICKS(msg_params->period), 0) != pdPASS)
+        {
+            return ESP_FAIL;
+        }
+        break;
+    case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE:
+        ESP_LOGD(TAG, "Timer %s fire", OS_TMER_GET_TIMER_NAME(msg_params));
+        /* call respective callback */
+        if (msg_params->cb)
+            msg_params->cb(msg_params);
+        break;
+    default:
+        break;
     }
 
     ESP_UNUSED(pdev);
@@ -247,13 +252,18 @@ esp_err_t os_timer_init(void)
  *
  * This function creates a timer with the given period and callback function.
  *
- * @param name      The name of the timer.
- * @param period    The period of the timer in milliseconds.
- * @param reload    If true, the timer will automatically reload after expiring.
- * @param cb        The callback function to be called when the timer expires.
- * @param timer_handle  Timer handle return
+ * @param[in] name              The name of the timer.
+ * @param[in] period            The period of the timer in milliseconds.
+ * @param[in] reload            If true, the timer will automatically reload after expiring.
+ * @param[in] cb                The callback function to be called when the timer expires.
+ * @param[inout] timer_handle   The timer handle.
  *
- * @return The timer handle on success, or NULL on failure.
+ * Example:
+ * ```c
+ *  os_timer_t * os_timer_inst;
+ *  esp_err_t err = os_timer_create("Example_Timer", 1000, 1, &example_os_timer_cb, &os_timer_inst);
+ * ```
+ * @return ESP_OK on success, or an error code on failure.
  */
 esp_err_t os_timer_create(
     const char *name,
@@ -267,12 +277,12 @@ esp_err_t os_timer_create(
         return ESP_ERR_INVALID_STATE;
     }
 
-    if((*timer_handle) != NULL && (*timer_handle)->init == OS_TIMER_INIT_MAGIC)
+    if ((*timer_handle) != NULL && (*timer_handle)->init == OS_TIMER_INIT_MAGIC)
         return ESP_ERR_INVALID_STATE;
 
     esp_err_t err = ESP_OK;
 
-    *timer_handle = (os_timer_t *) malloc(OS_TIMER_SIZE);
+    *timer_handle = (os_timer_t *)malloc(OS_TIMER_SIZE);
     if (*timer_handle == NULL)
         return ESP_ERR_NO_MEM;
 
@@ -286,8 +296,7 @@ esp_err_t os_timer_create(
         pdMS_TO_TICKS((*timer_handle)->period),
         (*timer_handle)->reload,
         NULL,
-        os_timer_fire_cb
-    );
+        os_timer_fire_cb);
     if (NULL == (*timer_handle)->timer_handle)
     {
         free(*timer_handle);
@@ -322,8 +331,7 @@ esp_err_t os_timer_start(const os_timer_t *timer_handle)
         CONTROL_TASK_MSG_CODE_SYSTEM,
         CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_ARM,
         timer_handle,
-        OS_TIMER_SIZE
-    );
+        OS_TIMER_SIZE);
 }
 
 /**
@@ -348,8 +356,7 @@ esp_err_t os_timer_restart(const os_timer_t *timer_handle)
         CONTROL_TASK_MSG_CODE_SYSTEM,
         CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_REARM,
         timer_handle,
-        OS_TIMER_SIZE
-    );
+        OS_TIMER_SIZE);
 }
 
 /**
@@ -377,8 +384,7 @@ esp_err_t os_timer_set_period(os_timer_t *timer_handle, const uint32_t period_ms
         CONTROL_TASK_MSG_CODE_SYSTEM,
         CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD,
         timer_handle,
-        OS_TIMER_SIZE
-    );
+        OS_TIMER_SIZE);
 }
 
 /**
@@ -403,8 +409,7 @@ esp_err_t os_timer_stop(const os_timer_t *timer_handle)
         CONTROL_TASK_MSG_CODE_SYSTEM,
         CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_DISARM,
         timer_handle,
-        OS_TIMER_SIZE
-    );
+        OS_TIMER_SIZE);
 }
 
 /**

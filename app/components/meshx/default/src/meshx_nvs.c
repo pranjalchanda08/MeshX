@@ -1,4 +1,6 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file meshx_nvs.c
  * @brief Implementation for MeshX Non-Volatile Storage (NVS) operations.
  *
@@ -124,15 +126,20 @@ esp_err_t meshx_nvs_init(void)
 #endif /* CONFIG_ENABLE_UNIT_TEST */
     return err;
 }
+
 /**
  * @brief Open the NVS with a timeout.
  *
  * This function initializes the NVS and sets a timeout for stability operations.
- * @note: NVS Namespace: MESHX_NVS_NAMESPACE
+ * @note NVS Namespace: MESHX_NVS_NAMESPACE
+ *
  * @param[in] cid Company ID
  * @param[in] pid Product ID
  * @param[in] commit_timeout_ms Timeout for stability operations in milliseconds.
- *                              0 -> use MESHX_NVS_TIMER_PERIOD
+ *
+ *
+ * @note commit_timeout_ms = 0 -> use MESHX_NVS_TIMER_PERIOD
+ * 
  * @return
  *  - ESP_OK: Success.
  */
@@ -345,9 +352,9 @@ esp_err_t meshx_nvs_set(char const* key, void const* blob, size_t blob_size, boo
  * This function fetches the stored context of a given element identified by its ID from
  * the Non-Volatile Storage (NVS).
  *
- * @param element_id The ID of the element whose context is to be retrieved.
- * @param blob Pointer to the buffer where the retrieved context will be stored.
- * @param blob_size Size of the buffer provided to store the context.
+ * @param[in]   element_id  The ID of the element whose context is to be retrieved.
+ * @param[out]  blob        Pointer to the buffer where the retrieved context will be stored.
+ * @param[in]   blob_size   Size of the buffer provided to store the context.
  *
  * @return
  *     - ESP_OK: Successfully retrieved the context.
@@ -365,14 +372,13 @@ esp_err_t meshx_nvs_elemnt_ctx_get(uint16_t element_id, void *blob, size_t blob_
  * This function saves the context of a given element identified by its ID to
  * the Non-Volatile Storage (NVS).
  *
- * @param element_id The ID of the element whose context is to be stored.
- * @param blob Pointer to the buffer containing the context to be stored.
- * @param blob_size Size of the buffer containing the context.
+ * @param[in] element_id    The ID of the element whose context is to be stored.
+ * @param[in] blob          Pointer to the buffer containing the context to be stored.
+ * @param[in] blob_size     Size of the buffer containing the context.
  *
  * @return
  *     - ESP_OK: Successfully stored the context.
  */
-
 esp_err_t meshx_nvs_elemnt_ctx_set(uint16_t element_id, const void *blob, size_t blob_size)
 {
     char key[NVS_KEY_NAME_MAX_SIZE];
@@ -382,7 +388,10 @@ esp_err_t meshx_nvs_elemnt_ctx_set(uint16_t element_id, const void *blob, size_t
 
 #if CONFIG_ENABLE_UNIT_TEST
 
-typedef enum{
+/**
+ * @brief MeshX NVS unit test command IDs.
+ */
+typedef enum meshx_nvs_cli_cmd{
     MESHX_NVS_CLI_CMD_OPEN,         /* ut 3 0 0 */
     MESHX_NVS_CLI_CMD_SET,          /* ut 3 1 1 [arm_timer?] */
     MESHX_NVS_CLI_CMD_GET,          /* ut 3 2 0 */

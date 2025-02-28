@@ -1,19 +1,36 @@
 /**
- * Copyright © 2024 - 2025 MeshX
+ * @copyright Copyright © 2024 - 2025 MeshX
  *
- * @file meshX.c
+ * @file meshx.c
  * @brief meshX application file for ESP BLE Mesh node.
  *
  * This file contains initialization routines for BLE Mesh provisioning, configuration,
  * and light control servers, as well as the main application entry point.
  *
+ * @author Pranjal Chanda
+ *
  */
-
 #include "meshx.h"
 
+/**
+ * @def ROOT_MODEL_VEN_CNT
+ * @brief Defines the vendor count for the root model.
+ */
 #define ROOT_MODEL_VEN_CNT 0
+
+/**
+ * @def FRESHBOOT_TIMEOUT_MS
+ * @brief Defines the timeout duration in milliseconds for a fresh boot.
+ */
 #define FRESHBOOT_TIMEOUT_MS 1500
 
+
+/**
+ * @var meshX_banner
+ * A static constant character array that contains the banner information for
+ * the MeshX component. This banner is used for display purposes to indicate
+ * the presence of the MeshX component in the application.
+ */
 static const char meshX_banner[] = {
 "*********************************************************************************************************************\n"
 "* MMMMMMMM               MMMMMMMM                                     hhhhhhh                 XXXXXXX       XXXXXXX *\n"
@@ -43,6 +60,7 @@ static os_timer_t *g_boot_timer;
 extern size_t get_root_sig_models_count(void);
 extern esp_ble_mesh_model_t * get_root_sig_models(void);
 extern esp_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_config_t const *config);
+
 /**
  * @brief Initializes BLE Mesh elements.
  *
@@ -102,6 +120,8 @@ static esp_err_t meshx_tasks_init(dev_struct_t * pdev)
  * @brief Restore the device state from the NVS.
  *
  * @param[in] pdev Pointer to the device structure.
+ * @param[in] config Pointer to the meshX configuration.
+ * 
  * @return ESP_OK on success, error code otherwise.
  *
  */
@@ -199,62 +219,75 @@ static esp_err_t meshx_init_boot_timer(void)
  * @brief MeshX initialisation function
  *
  * This function initialises the MeshX stack with the given configuration.
- * @param config Pointer to the configuration structure
+ *
+ * @param[in] config Pointer to the configuration structure
  *
  * @return ESP_OK, Success
  */
 esp_err_t meshx_init(meshx_config_t const *config)
 {
+    /* Check if the configuration is valid */
     if(!config)
         return ESP_ERR_INVALID_ARG;
 
     esp_err_t err = ESP_OK;
 
+    /* Initialize NVS flash */
     err = nvs_flash_init();
     if (err == ESP_ERR_NVS_NO_FREE_PAGES)
     {
         ESP_ERROR_CHECK(nvs_flash_erase());
         err = nvs_flash_init();
     }
-
     ESP_ERROR_CHECK(err);
 
+    /* Copy the configuration to the global config structure */
     memcpy(&g_config, config, sizeof(meshx_config_t));
 
+    /* Initialize OS timer */
     err = os_timer_init();
     ESP_ERR_PRINT_RET("OS Timer Init failed", err);
 
-
+    /* Initialize MeshX NVS */
     err = meshx_nvs_init();
     ESP_ERR_PRINT_RET("MeshX NVS Init failed", err);
 
+    /* Initialize application tasks */
     err = meshx_tasks_init(&g_dev);
     ESP_ERR_PRINT_RET("Tasks initialization failed", err);
 
+    /* Initialize boot timer */
     err = meshx_init_boot_timer();
     ESP_ERR_PRINT_RET("Boot Timer Init failed", err);
 
+    /* Register application element callback */
     err = meshx_app_reg_element_callback(g_config.app_element_cb);
     ESP_ERR_PRINT_RET("Failed to register app element callback", err);
 
+    /* Register application control callback */
     err = meshx_app_reg_system_events_callback(g_config.app_ctrl_cb);
     ESP_ERR_PRINT_RET("Failed to register app control callback", err);
 
+    /* Initialize Bluetooth */
     err = bluetooth_init();
     ESP_ERR_PRINT_RET("esp32_bluetooth_init failed", err);
 
+    /* Set log level for BLE Mesh */
     esp_log_level_set("BLE_MESH", ESP_LOG_ERROR);
 
     /* Initialize the Bluetooth Mesh Subsystem */
     err = ble_mesh_init(&g_config);
     ESP_ERR_PRINT_RET("Bluetooth mesh init failed", err);
 
+    /* Print the MeshX banner */
     printf(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_CYAN) "%s" LOG_ANSI_COLOR_RESET, meshX_banner);
 
 #if CONFIG_ENABLE_UNIT_TEST
+    /* Register unit test command */
     err = register_ut_command();
     ESP_ERR_PRINT_RET("Failed to register unit test command", err);
 
+    /* Initialize unit test console */
     err = init_unit_test_console();
     ESP_ERR_PRINT_RET("Failed to initialize production console", err);
 #endif /* CONFIG_ENABLE_UNIT_TEST */

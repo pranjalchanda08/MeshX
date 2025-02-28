@@ -17,24 +17,24 @@
 /**
  * @brief Light CTL status packet.
  */
-typedef union ctl_status{
+typedef union ctl_status_pack{
     struct{
-        uint16_t lightness;
-        uint16_t temperature;
+        uint16_t lightness;         /**< Lightness level */
+        uint16_t temperature;       /**< Color temperature */
     }ctl_status;
     struct{
-        uint16_t temperature;
-        uint16_t delta_uv;
+        uint16_t temperature;       /**< Color temperature */
+        uint16_t delta_uv;          /**< Delta UV value */
     }ctl_temp_status;
     struct{
-        uint16_t lightness_def;
-        uint16_t temperature_def;
-        uint16_t delta_uv_def;
+        uint16_t lightness_def;     /**< Default lightness */
+        uint16_t temperature_def;   /**< Default temperature */
+        uint16_t delta_uv_def;      /**< Default delta UV */
     }ctl_default;
     struct{
-        uint8_t status_code;
-        uint16_t range_min;
-        uint16_t range_max;
+        uint8_t status_code;        /**< Status code */
+        uint16_t range_min;         /**< Minimum temperature range */
+        uint16_t range_max;         /**< Maximum temperature range */
     }ctl_temp_range;
 }ctl_status_t;
 

@@ -136,8 +136,8 @@ esp_err_t init_unit_test_console() {
  *
  * This function registers a unit test callback for the given module ID.
  *
- * @param module_id The ID of the module for which the unit test is being registered.
- * @param callback The callback function to be called for the unit test.
+ * @param[in] module_id     The ID of the module for which the unit test is being registered.
+ * @param[in] callback      The callback function to be called for the unit test.
  *
  * @return
  *     - ESP_OK: Success

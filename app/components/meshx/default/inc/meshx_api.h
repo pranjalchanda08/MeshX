@@ -242,7 +242,7 @@ esp_err_t meshx_app_reg_element_callback(meshx_app_data_cb_t cb);
 /**
  * @brief Registers the BLE Mesh application control callback.
  *
- * This function registers the BLE Mesh application control path callback.
+ * This function registers the BLE Mesh application control callback.
  *
  * @param[in] cb Pointer to the control callback.
  *

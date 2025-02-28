@@ -37,33 +37,33 @@ typedef control_task_msg_handle_t meshx_server_cb;
 /**
  * @struct meshx_server_cb_reg
  * @brief Structure to register a callback for a specific model ID.
- *
- * @var meshx_server_cb_reg::model_id
- * Model ID for which the callback is registered.
- * @var meshx_server_cb_reg::cb
- * Callback function for the specified model ID.
- * @var meshx_server_cb_reg::next
- * Pointer to the next registered callback in the list.
  */
 typedef struct meshx_server_cb_reg
 {
-    uint32_t model_id;
-    meshx_server_cb cb;
-    SLIST_ENTRY(meshx_server_cb_reg) next;
+    uint32_t model_id;                      /**< Model ID */
+    meshx_server_cb cb;                     /**< Callback function */
+    SLIST_ENTRY(meshx_server_cb_reg) next;  /**< Pointer to the next callback registration */
 } meshx_server_cb_reg_t;
 
 /**
- * @var meshx_server_cb_reg_head
+ * @struct meshx_server_cb_reg_head
  * @brief Head of the list of registered callbacks.
  */
 SLIST_HEAD(meshx_server_cb_reg_head, meshx_server_cb_reg);
 
 /**
- * @brief Register a callback for a specific model ID.
+ * @brief Register a callback function for the meshxuction server model.
  *
- * @param model_id Model ID for which the callback is registered.
- * @param cb Callback function for the specified model ID.
- * @return ESP_OK on success, or an appropriate error code on failure.
+ * This function registers a callback function that will be called when
+ * specific events related to the meshxuction server model occur.
+ *
+ * @param[in] model_id  The ID of the model for which the callback is being registered.
+ * @param[in] cb        The callback function to be registered.
+ *
+ * @return
+ *     - ESP_OK: Callback registered successfully.
+ *     - ESP_ERR_INVALID_ARG: Invalid arguments.
+ *     - ESP_FAIL: Failed to register the callback.
  */
 esp_err_t meshx_gen_srv_reg_cb(uint32_t model_id, meshx_server_cb cb);
 
@@ -72,8 +72,8 @@ esp_err_t meshx_gen_srv_reg_cb(uint32_t model_id, meshx_server_cb cb);
  *
  * This function is called to deregister a generic server model identified by the given model ID.
  *
- * @param model_id The ID of the model to be deregistered.
- * @param cb The callback function to be deregistered.
+ * @param[in] model_id  The ID of the model to be deregistered.
+ * @param[in] cb        The callback function to be deregistered.
  *
  * @return
  *     - ESP_OK: Success

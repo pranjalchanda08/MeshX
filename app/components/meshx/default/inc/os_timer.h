@@ -6,6 +6,8 @@
  *
  * This file contains the definitions and includes necessary for
  * working with OS timers in the ESP32 BLE mesh node application.
+ *
+ * @author Pranjal Chanda
  */
 
 #ifndef __OS_TIMER_H__
@@ -35,13 +37,20 @@
  */
 typedef TimerHandle_t os_timer_handle_t;
 
+/**
+ * @typedef os_timer_t
+ * @brief Alias for the os_timer structure.
+ *
+ * This typedef provides a more convenient name for the os_timer
+ * structure, which holds the parameters for the OS timer control task message.
+ */
 typedef struct os_timer os_timer_t;
 /**
  * @brief Timer callback function prototype.
  *
  * This function is called when the timer expires.
  *
- * @param timer_handle The timer handle.
+ * @param[in] p_timer The timer handle.
  */
 typedef void (*os_timer_cb_t)(const os_timer_t* p_timer);
 
@@ -84,10 +93,11 @@ esp_err_t os_timer_init(void);
  * @param[in] cb            The callback function to be called when the timer expires.
  * @param[inout] timer_handle  The timer handle.
  *
- * @usage:
+ * Example:
+ * ```c
  *  os_timer_t * os_timer_inst;
  *  esp_err_t err = os_timer_create("Example_Timer", 1000, 1, &example_os_timer_cb, &os_timer_inst);
- *
+ * ```
  * @return ESP_OK on success, or an error code on failure.
  */
 esp_err_t os_timer_create(const char *name, uint32_t period, bool reload, os_timer_cb_t cb, os_timer_t **timer_handle);

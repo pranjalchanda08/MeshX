@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file cwww_server.c
+ * @file meshx_cwww_server.c
  * @brief Implementation of the CW-WW server model for BLE Mesh.
  *
  * This file contains the implementation of the CW-WW server model for BLE Mesh,
