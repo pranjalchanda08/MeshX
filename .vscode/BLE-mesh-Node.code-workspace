@@ -7,7 +7,8 @@
 	"settings": {
 		"files.associations": {
 			"*.h": "c",
-			"*.c": "c"
+			"*.c": "c",
+			"cstdint": "c"
 		},
 		"idf.espIdfPath": "${env:HOME}/esp/esp-idf"
 	}
