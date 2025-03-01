@@ -50,8 +50,8 @@ static const esp_ble_mesh_model_t cwww_sig_template[CWWW_SRV_MODEL_SIG_CNT] =
  * This function handles events from the configuration server, such as model publication
  * and application binding events.
  *
- * @param param Pointer to the callback parameter structure.
- * @param evt Configuration event type.
+ * @param[in] param Pointer to the callback parameter structure.
+ * @param[in] evt Configuration event type.
  */
 static void cwww_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *param, config_evt_t evt)
 {
@@ -109,7 +109,7 @@ static void cwww_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
  * light control state. It ensures that all pointers are set to NULL after
  * freeing the memory to avoid dangling pointers.
  *
- * @param n_max The maximum number of elements in the server signature model list
+ * @param[in] n_max The maximum number of elements in the server signature model list
  *              and server publication list.
  *
  * @return
@@ -193,7 +193,7 @@ static esp_err_t meshx_element_struct_init(uint16_t n_max)
  * light control state. It ensures that all pointers are set to NULL after
  * freeing the memory to avoid dangling pointers.
  *
- * @param n_max The maximum number of elements in the server signature model list
+ * @param[in] n_max The maximum number of elements in the server signature model list
  *              and server publication list.
  *
  * @return
@@ -417,9 +417,9 @@ static esp_err_t meshx_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, ui
  *   - Updates the delta UV, lightness, temperature, and temperature range of the corresponding element context.
  *
  * If the element ID is out of range, the function exits without making any changes.
- * @param pdev Pointer to the device structure.
- * @param evt Event type.
- * @param params Pointer to the event parameters.
+ * @param[in] pdev Pointer to the device structure.
+ * @param[in] evt Event type.
+ * @param[in] params Pointer to the event parameters.
  * @return ESP_OK on success, or an error code on failure.
  */
 static esp_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, control_task_msg_evt_t evt, void const *params)
@@ -498,9 +498,9 @@ el_ctrl_task_hndlr_exit:
 /**
  * @brief Callback function for relay server model events for Provisioning events.
  *
- * @param param Pointer to the callback parameter structure.
- * @param evt Relay server event type.
- * @param params Pointer to the parameters for the event.
+ * @param[in] pdev      Pointer to the device structure.
+ * @param[in] evt       Relay server event type.
+ * @param[in] params    Pointer to the parameters for the event.
  * @return ESP_OK on success, error code otherwise.
  */
 static esp_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, control_task_msg_evt_t evt, void const *params)
@@ -552,14 +552,14 @@ static esp_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, contro
 }
 
 /**
- * @brief Create CW-WW elements.
+ * @brief Create Dynamic CWWW Server Model Elements
  *
- * This function creates the CW-WW elements for the specified device.
+ * This function creates dynamic CWWW server model elements for the given device structure.
  *
- * @param pdev Pointer to the device structure.
- * @param element_cnt Maximum number of CW-WW elements.
+ * @param[in] pdev          Pointer to device structure
+ * @param[in] element_cnt   Maximum number of CWWW server models
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return esp_err_t Returns ESP_OK on success or an error code on failure
  */
 esp_err_t create_cwww_elements(dev_struct_t *pdev, uint16_t element_cnt)
 {
