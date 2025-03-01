@@ -327,9 +327,9 @@ static esp_err_t meshx_add_relay_srv_model_to_element_list(dev_struct_t *pdev, u
  *
  * This function handles events from the relay server model, such as setting the relay state.
  *
- * @param param Pointer to the callback parameter structure.
- * @param evt Relay server event type.
- * @param params Pointer to the parameters for the event.
+ * @param[in] pdev      Pointer to the callback parameter structure.
+ * @param[in] evt       Relay server event type.
+ * @param[in] params    Pointer to the parameters for the event.
  * @return ESP_OK on success, error code otherwise.
  */
 static esp_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, control_task_msg_evt_t evt, void *params)
@@ -367,9 +367,10 @@ static esp_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, control
 /**
  * @brief Callback function for relay server model events for Provisioning events.
  *
- * @param param Pointer to the callback parameter structure.
- * @param evt Relay server event type.
- * @param params Pointer to the parameters for the event.
+ * @param[in] pdev      Pointer to the device structure.
+ * @param[in] evt       Relay server event type.
+ * @param[in] params    Pointer to the parameters for the event.
+ *
  * @return ESP_OK on success, error code otherwise.
  */
 static esp_err_t relay_prov_control_task_handler(dev_struct_t const *pdev, control_task_msg_evt_t evt, void const *params)
@@ -408,15 +409,14 @@ static esp_err_t relay_prov_control_task_handler(dev_struct_t const *pdev, contr
 
     return ESP_OK;
 }
+
 /**
- * @brief Create relay elements.
+ * @brief Create Dynamic Relay Model Elements
  *
- * Initializes and registers relay elements in the BLE Mesh network.
+ * @param[in] pdev          Pointer to device structure
+ * @param[in] element_cnt   Maximum number of relay models
  *
- * @param pdev Pointer to the device structure.
- * @param element_cnt Maximum number of relay elements.
- *
- * @return ESP_OK on success, error code otherwise.
+ * @return esp_err_t
  */
 esp_err_t create_relay_elements(dev_struct_t *pdev, uint16_t element_cnt)
 {

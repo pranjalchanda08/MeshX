@@ -98,8 +98,8 @@ typedef struct cwww_element
  *
  * This function creates dynamic CWWW server model elements for the given device structure.
  *
- * @param[in] pdev Pointer to device structure
- * @param[in] element_cnt Maximum number of CWWW server models
+ * @param[in] pdev          Pointer to device structure
+ * @param[in] element_cnt   Maximum number of CWWW server models
  *
  * @return esp_err_t Returns ESP_OK on success or an error code on failure
  */

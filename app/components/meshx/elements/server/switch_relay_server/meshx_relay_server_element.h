@@ -58,8 +58,8 @@ typedef struct relay_element
 /**
  * @brief Create Dynamic Relay Model Elements
  *
- * @param[in] pdev    Pointer to device structure
- * @param[in] element_cnt Maximum number of relay models
+ * @param[in] pdev          Pointer to device structure
+ * @param[in] element_cnt   Maximum number of relay models
  *
  * @return esp_err_t
  */
