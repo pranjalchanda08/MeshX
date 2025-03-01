@@ -130,7 +130,7 @@ esp_err_t meshx_light_ctl_client_init()
     }
     return err;
 }
-
+ 
 /**
  * @brief Send a Light CTL message.
  *
