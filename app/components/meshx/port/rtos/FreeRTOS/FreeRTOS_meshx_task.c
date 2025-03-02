@@ -1,5 +1,5 @@
 /**
- * @file esp_meshx_task.c
+ * @file FreeRTOS_meshx_task.c
  * @brief MeshX Task Implementation
  *
  * This file implements the MeshX Task.

@@ -1,5 +1,5 @@
 /**
- * @file esp_meshx_sem.c
+ * @file FreeRTOS_meshx_sem.c
  * @brief MeshX Semaphore Implementation
  *
  * This file implements the MeshX Semaphore.

@@ -1,5 +1,5 @@
 /**
- * @file esp_meshx_msg_q.c
+ * @file FreeRTOS_meshx_msg_q.c
  * @brief MeshX Message Queue Implementation
  *
  * This file implements the MeshX Message Queue.
