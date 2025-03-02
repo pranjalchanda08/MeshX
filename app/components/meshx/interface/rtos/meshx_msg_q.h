@@ -13,7 +13,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
-#include "meshx_err_t"
+#include "meshx_err.h"
 
 /**
  * @brief MeshX Message Queue Structure
