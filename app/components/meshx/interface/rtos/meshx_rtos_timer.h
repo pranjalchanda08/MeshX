@@ -4,16 +4,18 @@
 
 #include <stdint.h>
 #include "meshx_err.h"
-#include "freertos/timers.h"
 
 typedef void (*meshx_rtos_timer_callback_t)(void *);
 
 typedef struct meshx_rtos_timer
 {
-    TimerHandle_t timer_handle;
+    /* Public */
     meshx_rtos_timer_callback_t timer_cb;
     void *timer_arg;
+    const char *timer_name;
     uint32_t timer_period;
+    /* Private */
+    void *__timer_handle;
 }meshx_rtos_timer_t;
 
 /**
@@ -22,6 +24,7 @@ typedef struct meshx_rtos_timer
  * This function initializes and creates a new RTOS timer with the specified parameters.
  *
  * @param[out] timer Pointer to the meshx_rtos_timer_t structure to be initialized.
+ * @param[in] name  Timer Name String
  * @param[in] cb Callback function to be invoked when the timer expires.
  * @param[in] arg Argument to be passed to the callback function.
  * @param[in] period_ms Timer period in milliseconds.
@@ -29,7 +32,7 @@ typedef struct meshx_rtos_timer
  * @return meshx_err_t Returns MESHX_SUCCESS if the timer was created successfully,
  *                     or an error code if the creation failed.
  */
-meshx_err_t meshx_rtos_timer_create(meshx_rtos_timer_t *timer, meshx_rtos_timer_callback_t cb, void *arg, uint32_t period_ms);
+meshx_err_t meshx_rtos_timer_create(meshx_rtos_timer_t *timer, const char * name, meshx_rtos_timer_callback_t cb, void *arg, uint32_t period_ms);
 
 /**
  * @brief Starts the RTOS timer.

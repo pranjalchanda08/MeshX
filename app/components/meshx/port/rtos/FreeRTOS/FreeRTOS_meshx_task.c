@@ -31,7 +31,7 @@ meshx_err_t meshx_task_create(meshx_task_t *task_handle)
 
     TaskHandle_t task_handle_temp = NULL;
     BaseType_t err = xTaskCreate(
-        task_handle->task_cb,
+        (TaskFunction_t)task_handle->task_cb,
         task_handle->task_name,
         task_handle->stack_size,
         task_handle->arg,
