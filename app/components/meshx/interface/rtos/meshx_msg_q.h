@@ -60,7 +60,7 @@ meshx_err_t meshx_msg_q_delete(meshx_msg_q_t *msg_q_handle);
  *
  * @return None
  */
-meshx_err_t meshx_msg_q_send(meshx_msg_q_t *msg_q_handle, void *msg, size_t msg_len, uint32_t delay_ms);
+meshx_err_t meshx_msg_q_send(meshx_msg_q_t *msg_q_handle, void const *msg, size_t msg_len, uint32_t delay_ms);
 
 /**
  * @brief Receive a Message from a MeshX Message Queue

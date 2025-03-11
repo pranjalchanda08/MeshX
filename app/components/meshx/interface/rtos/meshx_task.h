@@ -23,7 +23,7 @@
  *
  * @return None
  */
-typedef meshx_err_t (*meshx_task_cb_t)(meshx_err_t *arg);
+typedef void (*meshx_task_cb_t)(void *arg);
 
 /**
  * @brief MeshX Task Structure
@@ -32,12 +32,12 @@ typedef struct meshx_task
 {
     /* Public */
     const char *task_name;   /**< Task Name */
-    meshx_err_t *arg;               /**< Task Argument */
+    void *arg;               /**< Task Argument */
     size_t stack_size;       /**< Task Stack Size */
     int priority;            /**< Task Priority */
     meshx_task_cb_t task_cb; /**< Task Callback */
     /* Private */
-    meshx_err_t *__task_handle;     /**< Task Handle */
+    void *__task_handle; /**< Task Handle */
 } meshx_task_t;
 
 /**

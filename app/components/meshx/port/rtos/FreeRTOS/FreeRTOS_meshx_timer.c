@@ -16,6 +16,7 @@ static void timer_callback(TimerHandle_t xTimer)
  * This function initializes and creates a new RTOS timer with the specified parameters.
  *
  * @param[out] timer Pointer to the meshx_rtos_timer_t structure to be initialized.
+ * @param[in] name  Timer Name String
  * @param[in] cb Callback function to be invoked when the timer expires.
  * @param[in] arg Argument to be passed to the callback function.
  * @param[in] period_ms Timer period in milliseconds.
@@ -23,26 +24,27 @@ static void timer_callback(TimerHandle_t xTimer)
  * @return meshx_err_t Returns MESHX_SUCCESS if the timer was created successfully,
  *                     or an error code if the creation failed.
  */
-meshx_err_t meshx_rtos_timer_create(meshx_rtos_timer_t *timer, meshx_rtos_timer_callback_t cb, void *arg, uint32_t period_ms)
+meshx_err_t meshx_rtos_timer_create(meshx_rtos_timer_t *timer, const char * name, meshx_rtos_timer_callback_t cb, void *arg, uint32_t period_ms)
 {
     if (timer == NULL || cb == NULL) {
-        return MESHX_ERR_INVALID_PARAMS;
+        return MESHX_INVALID_ARG;
     }
 
+    timer->timer_name = name;
     timer->timer_cb = cb;
     timer->timer_arg = arg;
     timer->timer_period = period_ms;
 
-    timer->timer_handle = xTimerCreate(
-        "meshx_timer",
+    timer->__timer_handle = xTimerCreate(
+        timer->timer_name,
         pdMS_TO_TICKS(period_ms),
         pdTRUE,  // Auto reload
         (void *)timer,
         timer_callback
     );
 
-    if (timer->timer_handle == NULL) {
-        return MESHX_ERR_NO_MEM;
+    if (timer->__timer_handle == NULL) {
+        return MESHX_NO_MEM;
     }
 
     return MESHX_SUCCESS;
@@ -60,12 +62,12 @@ meshx_err_t meshx_rtos_timer_create(meshx_rtos_timer_t *timer, meshx_rtos_timer_
  */
 meshx_err_t meshx_rtos_timer_start(meshx_rtos_timer_t *timer)
 {
-    if (timer == NULL || timer->timer_handle == NULL) {
-        return MESHX_ERR_INVALID_PARAMS;
+    if (timer == NULL || timer->__timer_handle == NULL) {
+        return MESHX_INVALID_ARG;
     }
 
-    if (xTimerStart(timer->timer_handle, 0) != pdPASS) {
-        return MESHX_ERR_TIMER_START;
+    if (xTimerStart(timer->__timer_handle, 0) != pdPASS) {
+        return MESHX_FAIL;
     }
 
     return MESHX_SUCCESS;
@@ -83,12 +85,12 @@ meshx_err_t meshx_rtos_timer_start(meshx_rtos_timer_t *timer)
  */
 meshx_err_t meshx_rtos_timer_stop(meshx_rtos_timer_t *timer)
 {
-    if (timer == NULL || timer->timer_handle == NULL) {
-        return MESHX_ERR_INVALID_PARAMS;
+    if (timer == NULL || timer->__timer_handle == NULL) {
+        return MESHX_INVALID_ARG;
     }
 
-    if (xTimerStop(timer->timer_handle, 0) != pdPASS) {
-        return MESHX_ERR_TIMER_STOP;
+    if (xTimerStop(timer->__timer_handle, 0) != pdPASS) {
+        return MESHX_FAIL;
     }
 
     return MESHX_SUCCESS;
@@ -106,15 +108,15 @@ meshx_err_t meshx_rtos_timer_stop(meshx_rtos_timer_t *timer)
  */
 meshx_err_t meshx_rtos_timer_delete(meshx_rtos_timer_t *timer)
 {
-    if (timer == NULL || timer->timer_handle == NULL) {
-        return MESHX_ERR_INVALID_PARAMS;
+    if (timer == NULL || timer->__timer_handle == NULL) {
+        return MESHX_INVALID_ARG;
     }
 
-    if (xTimerDelete(timer->timer_handle, 0) != pdPASS) {
-        return MESHX_ERR_TIMER_DELETE;
+    if (xTimerDelete(timer->__timer_handle, 0) != pdPASS) {
+        return MESHX_FAIL;
     }
 
-    timer->timer_handle = NULL;
+    timer->__timer_handle = NULL;
     return MESHX_SUCCESS;
 }
 
@@ -131,12 +133,12 @@ meshx_err_t meshx_rtos_timer_delete(meshx_rtos_timer_t *timer)
  */
 meshx_err_t meshx_rtos_timer_change_period(meshx_rtos_timer_t *timer, uint32_t new_period_ms)
 {
-    if (timer == NULL || timer->timer_handle == NULL) {
-        return MESHX_ERR_INVALID_PARAMS;
+    if (timer == NULL || timer->__timer_handle == NULL) {
+        return MESHX_INVALID_ARG;
     }
 
-    if (xTimerChangePeriod(timer->timer_handle, pdMS_TO_TICKS(new_period_ms), 0) != pdPASS) {
-        return MESHX_ERR_TIMER_CHANGE_PERIOD;
+    if (xTimerChangePeriod(timer->__timer_handle, pdMS_TO_TICKS(new_period_ms), 0) != pdPASS) {
+        return MESHX_FAIL;
     }
 
     timer->timer_period = new_period_ms;
@@ -155,12 +157,12 @@ meshx_err_t meshx_rtos_timer_change_period(meshx_rtos_timer_t *timer, uint32_t n
  */
 meshx_err_t meshx_rtos_timer_reset(meshx_rtos_timer_t *timer)
 {
-    if (timer == NULL || timer->timer_handle == NULL) {
-        return MESHX_ERR_INVALID_PARAMS;
+    if (timer == NULL || timer->__timer_handle == NULL) {
+        return MESHX_INVALID_ARG;
     }
 
-    if (xTimerReset(timer->timer_handle, 0) != pdPASS) {
-        return MESHX_ERR_TIMER_RESET;
+    if (xTimerReset(timer->__timer_handle, 0) != pdPASS) {
+        return MESHX_FAIL;
     }
 
     return MESHX_SUCCESS;

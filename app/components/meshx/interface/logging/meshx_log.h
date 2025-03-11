@@ -36,10 +36,10 @@
 
 // Log levels
 
-#define MESHX_LOG_DEBUG     1 // Blue
-#define MESHX_LOG_INFO      2  // Green
-#define MESHX_LOG_WARN      3  // Yellow
-#define MESHX_LOG_ERROR     4 // Red
+#define MESHX_LOG_DEBUG     1   // Blue
+#define MESHX_LOG_INFO      2   // Green
+#define MESHX_LOG_WARN      3   // Yellow
+#define MESHX_LOG_ERROR     4   // Red
 #define MESHX_LOG_NONE      5
 #define MESHX_LOG_MAX       6
 

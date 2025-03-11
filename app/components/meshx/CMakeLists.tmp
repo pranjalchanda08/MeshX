@@ -1,15 +1,30 @@
 # This is the MeshX CMakeLists.txt template. Any changes made to this file shall directy reflect to the generated CMakeLists.txt
 
 # Filter only directories
+
+set(INTERFACE_DIRS
+    "interface/logging"
+    "interface/rtos")
+
+set(LOGGING_SRC
+    "interface/logging/meshx_log.c")
+
+file(GLOB FREERTOS_SRC
+    "port/rtos/FreeRTOS/*.c")
+
 set(INC_DIRS
     ${DEP_INC}
+    ${INTERFACE_DIRS}
     )
-
-message("       >> Include Dir: ${INC_DIRS} ${TARGET}")
 
 set(SRCSX
     ${DEP_SRC}
+    ${LOGGING_SRC}
+    ${FREERTOS_SRC}
     )
+
+message("       >> Include Dir: ${INC_DIRS}")
+message("       >> libmeshx.a : ${SRCSX}")
 
 idf_component_register( SRCS ${SRCSX}
                         INCLUDE_DIRS "${INC_DIRS}"

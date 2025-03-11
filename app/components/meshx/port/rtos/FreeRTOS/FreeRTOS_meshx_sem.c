@@ -76,7 +76,7 @@ meshx_err_t meshx_sem_take(meshx_sem_t *sem_handle, uint32_t delay_ms)
     }
 
     BaseType_t err = xPortInIsrContext() ? xSemaphoreTakeFromISR(sem_handle->__sem_handle, NULL) : xSemaphoreTake(sem_handle->__sem_handle, delay_ms);
-    if(err != pdPass)
+    if(err != pdPASS)
     {
         return MESHX_FAIL;
     }

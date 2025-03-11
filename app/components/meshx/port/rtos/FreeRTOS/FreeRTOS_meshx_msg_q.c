@@ -29,7 +29,7 @@ meshx_err_t meshx_msg_q_create(meshx_msg_q_t *msg_q_handle)
     }
 
     // Create a FreeRTOS queue
-    QueueHandle_t queue = xQueueCreate(MESHX_MSG_Q_LENGTH, sizeof(meshx_msg_t));
+    QueueHandle_t queue = xQueueCreate(msg_q_handle->max_msg_count, msg_q_handle->max_msg_len);
 
     if (queue == NULL)
     {
@@ -38,7 +38,7 @@ meshx_err_t meshx_msg_q_create(meshx_msg_q_t *msg_q_handle)
     }
 
     // Store the queue handle in the msg_q_handle
-    *msg_q_handle->__msg_q_handle = (meshx_msg_q_t)queue;
+    msg_q_handle->__msg_q_handle = queue;
 
     return MESHX_SUCCESS;
 }
@@ -75,14 +75,17 @@ meshx_err_t meshx_msg_q_delete(meshx_msg_q_t *msg_q_handle)
  *
  * @return None
  */
-meshx_err_t meshx_msg_q_send(meshx_msg_q_t *msg_q_handle, void *msg, size_t msg_len, uint32_t delay_ms)
+meshx_err_t meshx_msg_q_send(meshx_msg_q_t *msg_q_handle, void const *msg, size_t msg_len, uint32_t delay_ms)
 {
     if (msg_q_handle == NULL || msg == NULL || msg_len == 0)
     {
         return MESHX_INVALID_ARG;
     }
 
-    BaseType ret =  xPortInIsrContext() ? xQueueSendFromISR(control_task_queue, &send_msg, &pxHigherPriorityTaskWoken) : xQueueSend(control_task_queue, &send_msg, delay_ms);
+    BaseType_t pxHigherPriorityTaskWoken = pdFALSE;
+
+    BaseType_t ret =  xPortInIsrContext() ? xQueueSendFromISR(msg_q_handle->__msg_q_handle, msg, &pxHigherPriorityTaskWoken)
+        : xQueueSend(msg_q_handle->__msg_q_handle, msg, delay_ms);
 
     if (ret!= pdPASS)
     {
@@ -110,15 +113,15 @@ meshx_err_t meshx_msg_q_recv(meshx_msg_q_t *msg_q_handle, void *msg, size_t msg_
     {
         return MESHX_INVALID_ARG;
     }
+    BaseType_t pxHigherPriorityTaskWoken = pdFALSE;
 
-    BaseType ret =  xPortInIsrContext() ? xQueueReceiveFromISR(control_task_queue, &recv_msg, &pxHigherPriorityTaskWoken) : xQueueReceive(control_task_queue, &recv_msg, delay_ms);
+    BaseType_t ret =  xPortInIsrContext() ? xQueueReceiveFromISR(msg_q_handle->__msg_q_handle, msg, &pxHigherPriorityTaskWoken)
+        : xQueueReceive(msg_q_handle->__msg_q_handle, msg, delay_ms);
 
     if (ret!= pdPASS)
     {
         return MESHX_FAIL;
     }
-
-    memcpy(msg, recv_msg.msg, msg_len);
 
     return MESHX_SUCCESS;
 }
