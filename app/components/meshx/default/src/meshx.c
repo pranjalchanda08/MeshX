@@ -81,14 +81,14 @@ static meshx_err_t ble_mesh_element_init(dev_struct_t *p_dev, meshx_config_t con
     memset((void *)&p_dev->elements[0].sig_model_count, get_root_sig_models_count(), sizeof(p_dev->elements[0].sig_model_count));
     memset((void *)&p_dev->elements[0].vnd_model_count, ROOT_MODEL_VEN_CNT, sizeof(p_dev->elements[0].vnd_model_count));
 
-    ESP_LOGI(TAG, "Root: SIG : %d, VEN: %d", p_dev->elements[0].sig_model_count, p_dev->elements[0].vnd_model_count);
+    MESHX_LOGI(MODULE_ID_COMMON, "Root: SIG : %d, VEN: %d", p_dev->elements[0].sig_model_count, p_dev->elements[0].vnd_model_count);
     /* Root to be used with fixed format */
     p_dev->element_idx++;
 
     err = create_ble_mesh_element_composition(p_dev, config);
     if(err)
     {
-        ESP_LOGE(TAG, "Failed to create BLE Mesh Element Composition: (%d)", err);
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to create BLE Mesh Element Composition: (%d)", err);
         return err;
     }
     p_dev->composition.cid = config->cid;
@@ -111,7 +111,7 @@ static meshx_err_t meshx_tasks_init(dev_struct_t * pdev)
     meshx_err_t err;
 
     err = create_control_task(pdev);
-    ESP_ERR_PRINT_RET("Failed to create control task", err);
+    MESHX_ERR_PRINT_RET("Failed to create control task", err);
 
     return err;
 }
@@ -130,10 +130,10 @@ static meshx_err_t meshx_dev_restore(dev_struct_t *pdev, meshx_config_t const *c
     meshx_err_t err = MESHX_SUCCESS;
 
     err = meshx_nvs_open(config->cid, config->pid, config->meshx_nvs_save_period);
-    ESP_ERR_PRINT_RET("MeshX NVS Open failed", err);
+    MESHX_ERR_PRINT_RET("MeshX NVS Open failed", err);
 
     err = meshx_nvs_get(MESHX_NVS_STORE, &pdev->meshx_store, sizeof(pdev->meshx_store));
-    ESP_ERR_PRINT_RET("Failed to restore meshx device state", err);
+    MESHX_ERR_PRINT_RET("Failed to restore meshx device state", err);
 
     return err;
 }
@@ -155,18 +155,18 @@ static meshx_err_t ble_mesh_init(meshx_config_t const *config)
     meshx_dev_restore(&g_dev, config);
 
     err = ble_mesh_element_init(&g_dev, config);
-    ESP_ERR_PRINT_RET("Failed to initialize BLE Elements", err);
+    MESHX_ERR_PRINT_RET("Failed to initialize BLE Elements", err);
 
     err = esp_ble_mesh_init(&MESHX_PROV_INSTANCE, &g_dev.composition);
-    ESP_ERR_PRINT_RET("Failed to initialize mesh stack", err);
+    MESHX_ERR_PRINT_RET("Failed to initialize mesh stack", err);
 
     err = esp_ble_mesh_set_unprovisioned_device_name(config->product_name);
-    ESP_ERR_PRINT_RET("Name Set Error", err);
+    MESHX_ERR_PRINT_RET("Name Set Error", err);
 
     err = esp_ble_mesh_node_prov_enable((esp_ble_mesh_prov_bearer_t)(ESP_BLE_MESH_PROV_ADV | ESP_BLE_MESH_PROV_GATT));
-    ESP_ERR_PRINT_RET("Failed to enable mesh node", err);
+    MESHX_ERR_PRINT_RET("Failed to enable mesh node", err);
 
-    ESP_LOGI(TAG, "BLE Mesh Node initialized");
+    MESHX_LOGI(MODULE_ID_COMMON, "BLE Mesh Node initialized");
 
     return MESHX_SUCCESS;
 }
@@ -180,7 +180,7 @@ static meshx_err_t ble_mesh_init(meshx_config_t const *config)
  */
 static void meshx_init_boot_timer_arm_cb(const os_timer_t* p_timer)
 {
-    ESP_LOGD(TAG, "Fresh Boot Timer Expired");
+    MESHX_LOGD(MODULE_ID_COMMON, "Fresh Boot Timer Expired");
 
     meshx_err_t err = control_task_msg_publish(
         CONTROL_TASK_MSG_CODE_SYSTEM,
@@ -190,7 +190,7 @@ static void meshx_init_boot_timer_arm_cb(const os_timer_t* p_timer)
     );
     if(err)
     {
-        ESP_LOGE(TAG, "Failed to publish fresh boot event: (%d)", err);
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to publish fresh boot event: (%d)", err);
     }
 }
 
@@ -207,10 +207,10 @@ static meshx_err_t meshx_init_boot_timer(void)
         meshx_init_boot_timer_arm_cb,
         &g_boot_timer
     );
-    ESP_ERR_PRINT_RET("Failed to create boot timer", err);
+    MESHX_ERR_PRINT_RET("Failed to create boot timer", err);
 
     err = os_timer_start(g_boot_timer);
-    ESP_ERR_PRINT_RET("Failed to start boot timer", err);
+    MESHX_ERR_PRINT_RET("Failed to start boot timer", err);
 
     return err;
 }
@@ -235,33 +235,41 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     /* Copy the configuration to the global config structure */
     memcpy(&g_config, config, sizeof(meshx_config_t));
 
+    meshx_logging_t logging_cfg;
+
+    logging_cfg.def_log_level = config->meshx_log_level == MESHX_LOG_VERBOSE ?
+        CONFIG_MESHX_DEFAULT_LOG_LEVEL : config->meshx_log_level;
+
+    err = meshx_logging_init(&logging_cfg);
+    MESHX_ERR_PRINT_RET("Logging init failed", err);
+
     /* Initialize OS timer */
     err = os_timer_init();
-    ESP_ERR_PRINT_RET("OS Timer Init failed", err);
+    MESHX_ERR_PRINT_RET("OS Timer Init failed", err);
 
     /* Initialize MeshX NVS */
     err = meshx_nvs_init();
-    ESP_ERR_PRINT_RET("MeshX NVS Init failed", err);
+    MESHX_ERR_PRINT_RET("MeshX NVS Init failed", err);
 
     /* Initialize application tasks */
     err = meshx_tasks_init(&g_dev);
-    ESP_ERR_PRINT_RET("Tasks initialization failed", err);
+    MESHX_ERR_PRINT_RET("Tasks initialization failed", err);
 
     /* Initialize boot timer */
     err = meshx_init_boot_timer();
-    ESP_ERR_PRINT_RET("Boot Timer Init failed", err);
+    MESHX_ERR_PRINT_RET("Boot Timer Init failed", err);
 
     /* Register application element callback */
     err = meshx_app_reg_element_callback(g_config.app_element_cb);
-    ESP_ERR_PRINT_RET("Failed to register app element callback", err);
+    MESHX_ERR_PRINT_RET("Failed to register app element callback", err);
 
     /* Register application control callback */
     err = meshx_app_reg_system_events_callback(g_config.app_ctrl_cb);
-    ESP_ERR_PRINT_RET("Failed to register app control callback", err);
+    MESHX_ERR_PRINT_RET("Failed to register app control callback", err);
 
     /* Initialize the Bluetooth Mesh Subsystem */
     err = ble_mesh_init(&g_config);
-    ESP_ERR_PRINT_RET("Bluetooth mesh init failed", err);
+    MESHX_ERR_PRINT_RET("Bluetooth mesh init failed", err);
 
     /* Print the MeshX banner */
     printf(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_CYAN) "%s" LOG_ANSI_COLOR_RESET, meshX_banner);
@@ -269,11 +277,11 @@ meshx_err_t meshx_init(meshx_config_t const *config)
 #if CONFIG_ENABLE_UNIT_TEST
     /* Register unit test command */
     err = register_ut_command();
-    ESP_ERR_PRINT_RET("Failed to register unit test command", err);
+    MESHX_ERR_PRINT_RET("Failed to register unit test command", err);
 
     /* Initialize unit test console */
     err = init_unit_test_console();
-    ESP_ERR_PRINT_RET("Failed to initialize production console", err);
+    MESHX_ERR_PRINT_RET("Failed to initialize production console", err);
 #endif /* CONFIG_ENABLE_UNIT_TEST */
 
     return err;

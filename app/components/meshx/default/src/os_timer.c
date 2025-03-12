@@ -64,7 +64,7 @@ typedef enum
  */
 static void os_timer_ut_cb_handler(const os_timer_t *p_timer)
 {
-    ESP_LOGI(TAG, "%s|%ld", OS_TMER_GET_TIMER_NAME(p_timer), p_timer->period);
+    MESHX_LOGI(MODULE_ID_COMPONENT_OS_TIMER, "%s|%ld", OS_TMER_GET_TIMER_NAME(p_timer), p_timer->period);
 }
 
 /**
@@ -91,10 +91,10 @@ static meshx_err_t os_timer_unit_test_cb_handler(int cmd_id, int argc, char **ar
     bool ut_reload = false;
     static os_timer_t *ut_os_timer;
 
-    ESP_LOGD(TAG, "argc|cmd_id: %d|%d", argc, cmd_id);
+    MESHX_LOGD(MODULE_ID_COMPONENT_OS_TIMER, "argc|cmd_id: %d|%d", argc, cmd_id);
     if (cmd_id >= OS_TIMER_CLI_CMD_MAX)
     {
-        ESP_LOGE(TAG, "Invalid number of arguments");
+        MESHX_LOGE(MODULE_ID_COMPONENT_OS_TIMER, "Invalid number of arguments");
         return MESHX_INVALID_ARG;
     }
 
@@ -131,7 +131,7 @@ static meshx_err_t os_timer_unit_test_cb_handler(int cmd_id, int argc, char **ar
         break;
     }
     if (err)
-        ESP_LOGE(TAG, "err: 0x%x", err);
+        MESHX_LOGE(MODULE_ID_COMPONENT_OS_TIMER, "err: 0x%x", err);
 
     return err;
 }
@@ -180,27 +180,27 @@ static meshx_err_t os_timer_control_task_cb(const dev_struct_t *pdev, control_ta
     switch (evt)
     {
     case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_ARM:
-        ESP_LOGD(TAG, "Starting timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
+        MESHX_LOGD(MODULE_ID_COMPONENT_OS_TIMER, "Starting timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
         err = meshx_rtos_timer_start(&msg_params->timer_handle);
         break;
 
     case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_REARM:
-        ESP_LOGD(TAG, "Rearming timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
+        MESHX_LOGD(MODULE_ID_COMPONENT_OS_TIMER, "Rearming timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
         err = meshx_rtos_timer_reset(&msg_params->timer_handle);
         break;
 
     case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_DISARM:
-        ESP_LOGD(TAG, "Stopping timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
+        MESHX_LOGD(MODULE_ID_COMPONENT_OS_TIMER, "Stopping timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
         err = meshx_rtos_timer_stop(&msg_params->timer_handle);
         break;
 
     case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD:
-        ESP_LOGD(TAG, "Timer %s period set: %ld", OS_TMER_GET_TIMER_NAME(msg_params), msg_params->period);
+        MESHX_LOGD(MODULE_ID_COMPONENT_OS_TIMER, "Timer %s period set: %ld", OS_TMER_GET_TIMER_NAME(msg_params), msg_params->period);
         err = meshx_rtos_timer_change_period(&msg_params->timer_handle, msg_params->period);
         break;
 
     case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE:
-        ESP_LOGD(TAG, "Timer %s fire", OS_TMER_GET_TIMER_NAME(msg_params));
+        MESHX_LOGD(MODULE_ID_COMPONENT_OS_TIMER, "Timer %s fire", OS_TMER_GET_TIMER_NAME(msg_params));
         /* call respective callback */
         if (msg_params->cb)
             msg_params->cb(msg_params);
@@ -230,7 +230,7 @@ meshx_err_t os_timer_init(void)
     err = register_unit_test(MODULE_ID_COMPONENT_OS_TIMER, &os_timer_unit_test_cb_handler);
     if (err)
     {
-        ESP_LOGE(TAG, "unit_test reg failed: (%d)", err);
+        MESHX_LOGE(MODULE_ID_COMPONENT_OS_TIMER, "unit_test reg failed: (%d)", err);
         return err;
     }
 #endif /* CONFIG_ENABLE_UNIT_TEST */
@@ -427,7 +427,7 @@ meshx_err_t os_timer_delete(os_timer_t **timer_handle)
     if (*timer_handle == NULL || (*timer_handle)->init != OS_TIMER_INIT_MAGIC)
         return MESHX_INVALID_STATE;
 
-    ESP_LOGI(TAG, "Deleting timer %s", OS_TMER_GET_TIMER_NAME((*timer_handle)));
+    MESHX_LOGI(MODULE_ID_COMPONENT_OS_TIMER, "Deleting timer %s", OS_TMER_GET_TIMER_NAME((*timer_handle)));
 
     err = meshx_rtos_timer_delete(&(*timer_handle)->timer_handle);
     if (err)

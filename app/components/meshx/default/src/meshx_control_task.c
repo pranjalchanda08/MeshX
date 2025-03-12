@@ -49,7 +49,6 @@ meshx_err_t create_control_task(dev_struct_t *pdev)
     };
 
     return meshx_task_create(&task_handle);
-
 }
 
 /* @brief Publish a control task message.
@@ -73,9 +72,9 @@ meshx_err_t control_task_msg_publish(control_task_msg_code_t msg_code,
 
     if (sizeof_msg_evt_params != 0)
     {
-        send_msg.msg_evt_params = pvPortMalloc(sizeof_msg_evt_params);
-        if (!send_msg.msg_evt_params)
-            return MESHX_NO_MEM;
+        meshx_err_t err = meshx_rtos_malloc(&send_msg.msg_evt_params, sizeof_msg_evt_params);
+        if (err)
+            return err;
         /* Copy the params to allocated space */
         memcpy(send_msg.msg_evt_params, msg_evt_params, sizeof_msg_evt_params);
     }
@@ -109,9 +108,10 @@ meshx_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code,
     if (callback == NULL || evt_bmap == 0 || msg_code >= CONTROL_TASK_MSG_CODE_MAX)
         return MESHX_INVALID_ARG; // Invalid arguments
 
-    control_task_evt_cb_reg_t *new_node = (control_task_evt_cb_reg_t *) malloc(sizeof(control_task_evt_cb_reg_t));
-    if (new_node == NULL)
-        return MESHX_NO_MEM; // Memory allocation failed
+    control_task_evt_cb_reg_t *new_node = NULL;
+    meshx_err_t err = meshx_rtos_malloc((void**)&new_node, sizeof(control_task_evt_cb_reg_t));
+    if (err || !new_node)
+        return err; // Memory allocation failed
 
     new_node->cb = callback;
     new_node->msg_evt_bmap = evt_bmap;
@@ -146,15 +146,11 @@ meshx_err_t control_task_msg_unsubscribe(control_task_msg_code_t msg_code,
         if (curr->cb == callback && curr->msg_evt_bmap == evt_bmap)
         {
             if (prev == NULL)
-            {
                 control_task_msg_code_list_heads[msg_code] = curr->next;
-            }
             else
-            {
                 prev->next = curr->next;
-            }
-            free(curr);
-            return MESHX_SUCCESS;
+
+            return meshx_rtos_free((void**)&curr);
         }
         prev = curr;
         curr = curr->next;
@@ -189,11 +185,11 @@ static meshx_err_t control_task_msg_dispatch(
 
     if (ptr == NULL)
     {
-        ESP_LOGW(TAG, "No control task msg callback registered for msg: %p", (void *)msg_code);
+        MESHX_LOGW(MODULE_ID_COMMON, "No control task msg callback registered for msg: %p", (void *)msg_code);
         return MESHX_INVALID_STATE;
     }
 
-    ESP_LOGD(TAG, "msg|evt: %p|%p", (void *)msg_code, (void *)evt);
+    MESHX_LOGD(MODULE_ID_COMMON, "msg|evt: %p|%p", (void *)msg_code, (void *)evt);
 
     while (ptr)
     {
@@ -205,7 +201,7 @@ static meshx_err_t control_task_msg_dispatch(
         ptr = ptr->next; // Move to the next registration
     }
     if (!evt_handled)
-        ESP_LOGD(TAG, "No handler reg for EVT %p", (void *)evt);
+        MESHX_LOGD(MODULE_ID_COMMON, "No handler reg for EVT %p", (void *)evt);
 
     return MESHX_SUCCESS;
 }
@@ -237,20 +233,20 @@ static void control_task_handler(void *args)
     dev_struct_t *pdev = (dev_struct_t *)args;
     err = create_control_task_msg_q();
     if (err)
-        ESP_LOGE(TAG, "Failed to initialise Control Task Msg Q Err: 0x%x", err);
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to initialise Control Task Msg Q Err: 0x%x", err);
 
     while (true)
     {
-        if (meshx_msg_q_recv(&control_task_queue, &recv_msg, UINT32_MAX) == pdTRUE)
+        if (meshx_msg_q_recv(&control_task_queue, &recv_msg, UINT32_MAX) == MESHX_SUCCESS)
         {
             err = control_task_msg_dispatch(pdev, recv_msg.msg_code, recv_msg.msg_evt, recv_msg.msg_evt_params);
             if (err)
-                ESP_LOGE(TAG, "Err: 0x%x", err);
+                MESHX_LOGE(MODULE_ID_COMMON, "Err: 0x%x", err);
             if (recv_msg.msg_evt_params)
             {
                 /* If Params were passed Free the allocated memory */
-                vPortFree(recv_msg.msg_evt_params);
-                ESP_LOGD(TAG, "ESP Heap available: %d", xPortGetFreeHeapSize());
+                meshx_rtos_free(&recv_msg.msg_evt_params);
+                MESHX_LOGD(MODULE_ID_COMMON, "ESP Heap available: %d", meshx_rtos_get_free_heap());
             }
         }
     }
