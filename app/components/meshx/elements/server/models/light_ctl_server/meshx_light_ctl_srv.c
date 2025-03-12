@@ -48,7 +48,7 @@ typedef union ctl_status_pack{
  *
  * @return
  *     - MESHX_SUCCESS: Success
- *     - ESP_FAIL: Failure
+ *     - MESHX_FAIL: Failure
  */
 static meshx_err_t meshx_perform_hw_change(esp_ble_mesh_lighting_server_cb_param_t *param)
 {
@@ -86,7 +86,7 @@ static meshx_err_t meshx_perform_hw_change(esp_ble_mesh_lighting_server_cb_param
  * @return
  *    - MESHX_SUCCESS: Success
  *    - MESHX_INVALID_ARG: Invalid argument
- *    - ESP_FAIL: Other failures
+ *    - MESHX_FAIL: Other failures
  */
 static meshx_err_t meshx_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param_t *param)
 {
@@ -104,7 +104,7 @@ static meshx_err_t meshx_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_pa
  * @return
  *    - MESHX_SUCCESS: Success
  *    - MESHX_INVALID_ARG: Invalid argument
- *    - ESP_FAIL: Other failures
+ *    - MESHX_FAIL: Other failures
  */
 static meshx_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
     const control_task_msg_evt_t evt,
@@ -255,7 +255,7 @@ static meshx_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
  *
  * @return
  *     - MESHX_SUCCESS: Success
- *     - ESP_FAIL: Failure
+ *     - MESHX_FAIL: Failure
  */
 meshx_err_t meshx_send_ctl_status(esp_ble_mesh_model_t *model, esp_ble_mesh_msg_ctx_t* ctx, uint16_t lightness, uint16_t temperature)
 {
@@ -275,7 +275,7 @@ meshx_err_t meshx_send_ctl_status(esp_ble_mesh_model_t *model, esp_ble_mesh_msg_
  *
  * @return
  *     - MESHX_SUCCESS: Success
- *     - ESP_FAIL: Failure
+ *     - MESHX_FAIL: Failure
  */
 meshx_err_t meshx_light_ctl_server_init(void)
 {

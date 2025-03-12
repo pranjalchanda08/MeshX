@@ -48,7 +48,7 @@ static meshx_nvs_t meshx_nvs_inst;
 static void meshx_nvs_os_timer_cb(const os_timer_t *p_timer)
 {
     meshx_err_t err = MESHX_SUCCESS;
-    ESP_LOGD(TAG, "%s fire", p_timer->name);
+    ESP_LOGD(TAG, "%s fire", OS_TMER_GET_TIMER_NAME(p_timer));
 
     err = meshx_nvs_commit();
     if (err)

@@ -138,7 +138,7 @@ esp_err_t bluetooth_init(void)
     mesh_sem = xSemaphoreCreateBinary();
     if (mesh_sem == NULL) {
         ESP_LOGE(TAG, "Failed to create mesh semaphore");
-        return ESP_FAIL;
+        return MESHX_FAIL;
     }
 
     ret = nimble_port_init();

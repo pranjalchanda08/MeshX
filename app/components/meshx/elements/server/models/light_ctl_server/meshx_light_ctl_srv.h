@@ -25,7 +25,7 @@
  *
  * @return
  *    - MESHX_SUCCESS: Success
- *    - ESP_FAIL: Initialization failed
+ *    - MESHX_FAIL: Initialization failed
  */
 meshx_err_t meshx_light_ctl_server_init(void);
 /**
@@ -41,7 +41,7 @@ meshx_err_t meshx_light_ctl_server_init(void);
  *
  * @return
  *     - MESHX_SUCCESS: Success
- *     - ESP_FAIL: Failure
+ *     - MESHX_FAIL: Failure
  */
 meshx_err_t meshx_send_ctl_status(esp_ble_mesh_model_t *model, esp_ble_mesh_msg_ctx_t* ctx, uint16_t lightness, uint16_t temperature);
 

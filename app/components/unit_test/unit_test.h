@@ -68,7 +68,7 @@ meshx_err_t register_ut_command();
  *
  * @return
  *    - MESHX_SUCCESS: Success
- *    - ESP_FAIL: Initialization failed
+ *    - MESHX_FAIL: Initialization failed
  */
 meshx_err_t init_unit_test_console(void);
 
@@ -83,7 +83,7 @@ meshx_err_t init_unit_test_console(void);
  * @return
  *     - MESHX_SUCCESS: Success
  *     - MESHX_INVALID_ARG: Invalid arguments
- *     - ESP_FAIL: Failed to register the unit test
+ *     - MESHX_FAIL: Failed to register the unit test
  */
 meshx_err_t register_unit_test(module_id_t module_id, module_callback_t callback) ;
 

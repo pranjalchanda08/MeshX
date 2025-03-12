@@ -142,7 +142,7 @@ meshx_err_t init_unit_test_console() {
  * @return
  *     - MESHX_SUCCESS: Success
  *     - MESHX_INVALID_ARG: Invalid arguments
- *     - ESP_FAIL: Failed to register the unit test
+ *     - MESHX_FAIL: Failed to register the unit test
  */
 meshx_err_t register_unit_test(module_id_t module_id, module_callback_t callback) {
     if(module_id >= MODULE_ID_MAX)

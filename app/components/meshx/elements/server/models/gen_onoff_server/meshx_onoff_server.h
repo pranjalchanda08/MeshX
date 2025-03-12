@@ -24,7 +24,7 @@
  *
  * @return
  *    - MESHX_SUCCESS: Success
- *    - ESP_FAIL: Failure
+ *    - MESHX_FAIL: Failure
  */
 meshx_err_t meshx_on_off_server_init(void);
 

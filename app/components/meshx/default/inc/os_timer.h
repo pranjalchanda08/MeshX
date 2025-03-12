@@ -14,9 +14,9 @@
 #define __OS_TIMER_H__
 
 #include <stdint.h>
-#include "meshx_control_task.h"
-#include "freertos/timers.h"
 #include "sys/queue.h"
+#include "meshx_control_task.h"
+#include "meshx_rtos_timer.h"
 
 /**
  * @brief return os_timer_t size
@@ -26,16 +26,16 @@
 /**
  * @brief return timer registered name pointer
  */
-#define OS_TMER_GET_TIMER_NAME(timer) (timer->name)
+#define OS_TMER_GET_TIMER_NAME(timer) (timer->timer_handle.timer_name)
 
 /**
  * @typedef os_timer_handle_t
- * @brief Alias for the FreeRTOS TimerHandle_t type.
+ * @brief Alias for the meshx_rtos_timer_t type.
  *
  * This typedef provides a more convenient name for the FreeRTOS
  * timer handle type, used for creating and managing timers.
  */
-typedef TimerHandle_t os_timer_handle_t;
+typedef meshx_rtos_timer_t os_timer_handle_t;
 
 /**
  * @typedef os_timer_t
@@ -65,10 +65,8 @@ typedef void (*os_timer_cb_t)(const os_timer_t* p_timer);
 struct os_timer
 {
     uint16_t init;
-    bool reload;
     uint32_t period;
     os_timer_cb_t cb;
-    const char *name;
     os_timer_handle_t timer_handle;
     SLIST_ENTRY(os_timer) next;
 };

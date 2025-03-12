@@ -144,6 +144,6 @@ meshx_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cn
  * @return
  *     - MESHX_SUCCESS: Success
  *     - MESHX_INVALID_ARG: Invalid argument
- *     - ESP_FAIL: Sending message failed
+ *     - MESHX_FAIL: Sending message failed
  */
 meshx_err_t ble_mesh_send_relay_msg(dev_struct_t *pdev, uint16_t element_id, uint8_t set_get, uint8_t ack);

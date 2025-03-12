@@ -66,7 +66,7 @@ static void meshx_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_
  * @return
  *    - MESHX_SUCCESS: Success
  *    - MESHX_INVALID_ARG: Invalid argument
- *    - ESP_FAIL: Other failures
+ *    - MESHX_FAIL: Other failures
  */
 meshx_err_t meshx_lighting_reg_cb(uint32_t model_id, meshx_lighting_server_cb cb)
 {
@@ -108,7 +108,7 @@ meshx_err_t meshx_lighting_reg_cb(uint32_t model_id, meshx_lighting_server_cb cb
  *
  * @return
  *     - MESHX_SUCCESS: Success
- *     - ESP_FAIL: Failed to initialize the lighting server
+ *     - MESHX_FAIL: Failed to initialize the lighting server
  */
 meshx_err_t meshx_lighting_srv_init(void)
 {
@@ -118,7 +118,7 @@ meshx_err_t meshx_lighting_srv_init(void)
     meshx_lighting_server_mutex = xSemaphoreCreateMutex();
     if (meshx_lighting_server_mutex == NULL) {
         ESP_LOGE(TAG, "Failed to create mutex");
-        return ESP_FAIL;
+        return MESHX_FAIL;
     }
 #endif /* !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
     meshx_lighting_server_init = MESHX_SERVER_INIT_MAGIC_NO;

@@ -159,7 +159,7 @@ meshx_err_t meshx_onoff_client_init(void)
  *    - MESHX_SUCCESS: Success
  *    - MESHX_INVALID_ARG: Invalid argument
  *    - MESHX_NO_MEM: Out of memory
- *    - ESP_FAIL: Sending message failed
+ *    - MESHX_FAIL: Sending message failed
  */
 meshx_err_t meshx_onoff_client_send_msg(
         esp_ble_mesh_model_t *model,

@@ -63,7 +63,7 @@ SLIST_HEAD(meshx_server_cb_reg_head, meshx_server_cb_reg);
  * @return
  *     - MESHX_SUCCESS: Callback registered successfully.
  *     - MESHX_INVALID_ARG: Invalid arguments.
- *     - ESP_FAIL: Failed to register the callback.
+ *     - MESHX_FAIL: Failed to register the callback.
  */
 meshx_err_t meshx_gen_srv_reg_cb(uint32_t model_id, meshx_server_cb cb);
 
@@ -78,7 +78,7 @@ meshx_err_t meshx_gen_srv_reg_cb(uint32_t model_id, meshx_server_cb cb);
  * @return
  *     - MESHX_SUCCESS: Success
  *     - MESHX_INVALID_ARG: Invalid argument
- *     - ESP_FAIL: Other failures
+ *     - MESHX_FAIL: Other failures
  */
 meshx_err_t meshx_gen_srv_dereg_cb(uint32_t model_id, meshx_server_cb cb);
 

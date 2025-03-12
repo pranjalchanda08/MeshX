@@ -78,7 +78,7 @@ typedef struct light_ctl_send_args
  * @return
  *    - MESHX_SUCCESS: Success
  *    - MESHX_INVALID_ARG: Invalid argument
- *    - ESP_FAIL: Other failures
+ *    - MESHX_FAIL: Other failures
  */
 meshx_err_t meshx_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap);
 
@@ -91,7 +91,7 @@ meshx_err_t meshx_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap
  * @return
  *    - MESHX_SUCCESS: Success
  *    - MESHX_NO_MEM: Out of memory
- *    - ESP_FAIL: Other failures
+ *    - MESHX_FAIL: Other failures
  */
 meshx_err_t meshx_light_ctl_client_init();
 
@@ -118,7 +118,7 @@ meshx_err_t meshx_light_ctl_send_msg(light_ctl_send_args_t * params);
  * @return
  *    - MESHX_SUCCESS: Success
  *    - MESHX_INVALID_ARG: Invalid argument
- *    - ESP_FAIL: Sending message failed
+ *    - MESHX_FAIL: Sending message failed
  */
 meshx_err_t meshx_light_ctl_temperature_send_msg(light_ctl_send_args_t * params);
 

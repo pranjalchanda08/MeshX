@@ -62,7 +62,7 @@ SLIST_HEAD(meshx_lighting_server_cb_list, meshx_lighting_server_cb_reg);
  * @return
  *    - MESHX_SUCCESS: Success
  *    - MESHX_INVALID_ARG: Invalid argument
- *    - ESP_FAIL: Other failures
+ *    - MESHX_FAIL: Other failures
  */
 meshx_err_t meshx_lighting_reg_cb(uint32_t model_id, meshx_lighting_server_cb cb);
 
