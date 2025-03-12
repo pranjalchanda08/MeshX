@@ -100,7 +100,7 @@ meshx_err_t control_task_msg_publish(control_task_msg_code_t msg_code,
  * @return
  *     - MESHX_SUCCESS: Success
  *     - MESHX_INVALID_ARG: Invalid argument
- *     - ESP_FAIL: Other failures
+ *     - MESHX_FAIL: Other failures
  */
 meshx_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code,
                                      control_task_msg_evt_t evt_bmap,

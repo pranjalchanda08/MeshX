@@ -510,7 +510,7 @@ static meshx_err_t relay_cli_unit_test_cb_handler(int cmd_id, int argc, char **a
  * @return
  *     - MESHX_SUCCESS: Success
  *     - MESHX_INVALID_ARG: Invalid argument
- *     - ESP_FAIL: Sending message failed
+ *     - MESHX_FAIL: Sending message failed
  */
 meshx_err_t ble_mesh_send_relay_msg(dev_struct_t *pdev, uint16_t element_id, uint8_t set_get, uint8_t ack)
 {

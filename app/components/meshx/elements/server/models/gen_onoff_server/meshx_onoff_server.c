@@ -21,7 +21,7 @@
  *
  * @return
  *     - MESHX_SUCCESS: Success
- *     - ESP_FAIL: Failure
+ *     - MESHX_FAIL: Failure
  */
 static meshx_err_t meshx_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *param)
 {
@@ -54,7 +54,7 @@ static meshx_err_t meshx_perform_hw_change(esp_ble_mesh_generic_server_cb_param_
  * @return
  *    - MESHX_SUCCESS: Success
  *    - MESHX_INVALID_ARG: Invalid argument
- *    - ESP_FAIL: Other failures
+ *    - MESHX_FAIL: Other failures
  */
 static meshx_err_t meshx_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param_t *param)
 {
@@ -101,7 +101,7 @@ static meshx_err_t meshx_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_par
  * @return
  *    - MESHX_SUCCESS: Success
  *    - MESHX_INVALID_ARG: Invalid argument
- *    - ESP_FAIL: Other failures
+ *    - MESHX_FAIL: Other failures
  */
 static meshx_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_task_msg_evt_t model_id, esp_ble_mesh_generic_server_cb_param_t *param)
 {
@@ -149,7 +149,7 @@ static meshx_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_
  *
  * @return
  *     - MESHX_SUCCESS: Success
- *     - ESP_FAIL: Failure
+ *     - MESHX_FAIL: Failure
  */
 meshx_err_t meshx_on_off_server_init()
 {

@@ -15,16 +15,17 @@ static void timer_callback(TimerHandle_t xTimer)
  *
  * This function initializes and creates a new RTOS timer with the specified parameters.
  *
- * @param[out] timer Pointer to the meshx_rtos_timer_t structure to be initialized.
- * @param[in] name  Timer Name String
- * @param[in] cb Callback function to be invoked when the timer expires.
- * @param[in] arg Argument to be passed to the callback function.
+ * @param[out] timer    Pointer to the meshx_rtos_timer_t structure to be initialized.
+ * @param[in] name      Timer Name String
+ * @param[in] cb        Callback function to be invoked when the timer expires.
+ * @param[in] arg       Argument to be passed to the callback function.
  * @param[in] period_ms Timer period in milliseconds.
+ * @param[in] reload    Flag set if timer is a auto reload type.
  *
  * @return meshx_err_t Returns MESHX_SUCCESS if the timer was created successfully,
  *                     or an error code if the creation failed.
  */
-meshx_err_t meshx_rtos_timer_create(meshx_rtos_timer_t *timer, const char * name, meshx_rtos_timer_callback_t cb, void *arg, uint32_t period_ms)
+meshx_err_t meshx_rtos_timer_create(meshx_rtos_timer_t *timer, const char * name, meshx_rtos_timer_callback_t cb, void *arg, uint32_t period_ms, bool reload)
 {
     if (timer == NULL || cb == NULL) {
         return MESHX_INVALID_ARG;
@@ -33,13 +34,14 @@ meshx_err_t meshx_rtos_timer_create(meshx_rtos_timer_t *timer, const char * name
     timer->timer_name = name;
     timer->timer_cb = cb;
     timer->timer_arg = arg;
-    timer->timer_period = period_ms;
+    timer->timer_period = pdMS_TO_TICKS(period_ms);
+    timer->auto_reload = reload;
 
     timer->__timer_handle = xTimerCreate(
         timer->timer_name,
-        pdMS_TO_TICKS(period_ms),
-        pdTRUE,  // Auto reload
-        (void *)timer,
+        timer->timer_period,
+        timer->auto_reload,
+        NULL,
         timer_callback
     );
 

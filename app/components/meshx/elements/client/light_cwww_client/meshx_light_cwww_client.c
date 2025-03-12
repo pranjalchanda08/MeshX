@@ -951,7 +951,7 @@ REG_MESHX_ELEMENT_FN(cwww_cli_el, MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT, create_c
  * @return
  *     - MESHX_SUCCESS: Success
  *     - MESHX_INVALID_ARG: Invalid argument
- *     - ESP_FAIL: Sending message failed
+ *     - MESHX_FAIL: Sending message failed
  */
 meshx_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id, uint16_t element_id, uint8_t set_get, uint8_t is_range, uint8_t ack)
 {

@@ -64,7 +64,7 @@ typedef enum
  */
 static void os_timer_ut_cb_handler(const os_timer_t *p_timer)
 {
-    ESP_LOGI(TAG, "%s|%ld|%d", p_timer->name, p_timer->period, p_timer->reload);
+    ESP_LOGI(TAG, "%s|%ld", OS_TMER_GET_TIMER_NAME(p_timer), p_timer->period);
 }
 
 /**
@@ -145,12 +145,12 @@ static meshx_err_t os_timer_unit_test_cb_handler(int cmd_id, int argc, char **ar
  *
  * @param timer_handle  Timer haandle callback param
  */
-static void os_timer_fire_cb(const os_timer_handle_t timer_handle)
+static void os_timer_fire_cb(const void* timer_handle)
 {
     os_timer_t *msg_params;
     SLIST_FOREACH(msg_params, &os_timer_reg_table_head, next)
     {
-        if (msg_params->timer_handle == timer_handle)
+        if (msg_params == timer_handle)
         {
             control_task_msg_publish(
                 CONTROL_TASK_MSG_CODE_SYSTEM,
@@ -175,50 +175,45 @@ static void os_timer_fire_cb(const os_timer_handle_t timer_handle)
 static meshx_err_t os_timer_control_task_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)
 {
     os_timer_t *msg_params = (os_timer_t *)params;
+    meshx_err_t err = MESHX_SUCCESS;
 
     switch (evt)
     {
     case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_ARM:
         ESP_LOGD(TAG, "Starting timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
-        if (xTimerStart(msg_params->timer_handle, 0) != pdPASS)
-        {
-            return ESP_FAIL;
-        }
+        err = meshx_rtos_timer_start(&msg_params->timer_handle);
         break;
+
     case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_REARM:
         ESP_LOGD(TAG, "Rearming timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
-        if (xTimerReset(msg_params->timer_handle, 0) != pdPASS)
-        {
-            return ESP_FAIL;
-        }
+        err = meshx_rtos_timer_reset(&msg_params->timer_handle);
         break;
+
     case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_DISARM:
         ESP_LOGD(TAG, "Stopping timer %s", OS_TMER_GET_TIMER_NAME(msg_params));
-        if (xTimerStop(msg_params->timer_handle, 0) != pdPASS)
-        {
-            return ESP_FAIL;
-        }
+        err = meshx_rtos_timer_stop(&msg_params->timer_handle);
         break;
+
     case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD:
         ESP_LOGD(TAG, "Timer %s period set: %ld", OS_TMER_GET_TIMER_NAME(msg_params), msg_params->period);
-        if (xTimerChangePeriod(msg_params->timer_handle, pdMS_TO_TICKS(msg_params->period), 0) != pdPASS)
-        {
-            return ESP_FAIL;
-        }
+        err = meshx_rtos_timer_change_period(&msg_params->timer_handle, msg_params->period);
         break;
+
     case CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE:
         ESP_LOGD(TAG, "Timer %s fire", OS_TMER_GET_TIMER_NAME(msg_params));
         /* call respective callback */
         if (msg_params->cb)
             msg_params->cb(msg_params);
         break;
+
     default:
+        err = MESHX_INVALID_ARG;
         break;
     }
 
     ESP_UNUSED(pdev);
 
-    return MESHX_SUCCESS;
+    return err;
 }
 
 /**
@@ -287,20 +282,18 @@ meshx_err_t os_timer_create(
         return MESHX_NO_MEM;
 
     (*timer_handle)->cb = cb;
-    (*timer_handle)->name = name;
     (*timer_handle)->period = period;
-    (*timer_handle)->reload = reload;
 
-    (*timer_handle)->timer_handle = xTimerCreate(
-        (*timer_handle)->name,
-        pdMS_TO_TICKS((*timer_handle)->period),
-        (*timer_handle)->reload,
-        NULL,
-        os_timer_fire_cb);
-    if (NULL == (*timer_handle)->timer_handle)
+    err = meshx_rtos_timer_create(&(*timer_handle)->timer_handle,
+        name,
+        (meshx_rtos_timer_callback_t)&os_timer_fire_cb,
+        *timer_handle,
+        period,
+        reload);
+    if (err)
     {
         free(*timer_handle);
-        return MESHX_NO_MEM;
+        return err;
     }
 
     SLIST_INSERT_HEAD(&os_timer_reg_table_head, (*timer_handle), next);
@@ -424,6 +417,8 @@ meshx_err_t os_timer_stop(const os_timer_t *timer_handle)
 
 meshx_err_t os_timer_delete(os_timer_t **timer_handle)
 {
+    meshx_err_t err;
+
     if (timer_handle == NULL)
     {
         return MESHX_INVALID_STATE;
@@ -433,10 +428,11 @@ meshx_err_t os_timer_delete(os_timer_t **timer_handle)
         return MESHX_INVALID_STATE;
 
     ESP_LOGI(TAG, "Deleting timer %s", OS_TMER_GET_TIMER_NAME((*timer_handle)));
-    if (xTimerDelete((*timer_handle)->timer_handle, 0) != pdPASS)
-    {
-        return ESP_FAIL;
-    }
+
+    err = meshx_rtos_timer_delete(&(*timer_handle)->timer_handle);
+    if (err)
+        return err;
+
     (*timer_handle)->init = 0;
 
     SLIST_REMOVE(&os_timer_reg_table_head, *timer_handle, os_timer, next);

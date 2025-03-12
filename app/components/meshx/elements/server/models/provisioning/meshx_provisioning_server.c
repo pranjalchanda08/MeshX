@@ -117,7 +117,7 @@ static void meshx_provisioning_cb(esp_ble_mesh_prov_cb_event_t event,
  *
  * @return
  *    - MESHX_SUCCESS: Success
- *    - ESP_FAIL: Failed to register provisioning callback
+ *    - MESHX_FAIL: Failed to register provisioning callback
  */
 meshx_err_t meshx_init_prov(const prov_params_t * svr_cfg)
 {
