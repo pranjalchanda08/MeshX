@@ -127,9 +127,9 @@ typedef struct relay_client_element
  * @param[in]       pdev            Pointer to device structure
  * @param[in]       element_cnt     Maximum number of relay models
  *
- * @return esp_err_t
+ * @return meshx_err_t
  */
-esp_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cnt);
+meshx_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cnt);
 
 /**
  * @brief Sends a relay message over BLE mesh.
@@ -142,8 +142,8 @@ esp_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
  * @param[in] ack Indicates whether an acknowledgment is required (1) or not (0).
  *
  * @return
- *     - ESP_OK: Success
- *     - ESP_ERR_INVALID_ARG: Invalid argument
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_INVALID_ARG: Invalid argument
  *     - ESP_FAIL: Sending message failed
  */
-esp_err_t ble_mesh_send_relay_msg(dev_struct_t *pdev, uint16_t element_id, uint8_t set_get, uint8_t ack);
+meshx_err_t ble_mesh_send_relay_msg(dev_struct_t *pdev, uint16_t element_id, uint8_t set_get, uint8_t ack);

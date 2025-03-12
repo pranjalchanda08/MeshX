@@ -21,6 +21,7 @@
 #include <esp_log.h>
 #include <nvs_flash.h>
 #include <esp_ble_mesh_defs.h>
+#include <meshx_err.h>
 
 #if CONFIG_ENABLE_UNIT_TEST
 #include <unit_test.h>
@@ -78,9 +79,9 @@ typedef struct dev_struct
  * @param[in] pdev          Pointer to the device structure.
  * @param[in] element_cnt   Number of elements.
  *
- * @return esp_err_t
+ * @return meshx_err_t
  */
-typedef esp_err_t (*element_comp_fn_t)(dev_struct_t *pdev, uint16_t element_cnt);
+typedef meshx_err_t (*element_comp_fn_t)(dev_struct_t *pdev, uint16_t element_cnt);
 
 /**
  * @struct element_comp_table

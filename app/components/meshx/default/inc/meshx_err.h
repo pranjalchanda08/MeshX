@@ -20,6 +20,7 @@ typedef enum
     MESHX_SUCCESS = 0,   /**< Success */
     MESHX_FAIL,          /**< Failure */
     MESHX_INVALID_ARG,   /**< Invalid Argument */
+    MESHX_ERR_PLAT,      /**< Platform Error */
     MESHX_NO_MEM,        /**< No Memory */
     MESHX_INVALID_STATE, /**< Invalid State */
     MESHX_NOT_FOUND,     /**< Not Found */

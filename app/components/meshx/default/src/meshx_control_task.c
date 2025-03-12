@@ -18,7 +18,11 @@ static void control_task_handler(void *args);
 /**
  * @brief Queue handle for control task messages.
  */
-static QueueHandle_t control_task_queue;
+static meshx_msg_q_t control_task_queue =
+{
+    .max_msg_count = CONFIG_CONTROL_TASK_QUEUE_LEN,
+    .max_msg_len = sizeof(control_task_msg_t)
+};
 
 /**
  * @brief Linked list heads for registered callbacks per message code.
@@ -31,26 +35,24 @@ static control_task_evt_cb_reg_t *control_task_msg_code_list_heads[CONTROL_TASK_
  * This function creates a FreeRTOS task to handle control events.
  *
  * @param[in] pdev Pointer to the device structure (dev_struct_t).
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t create_control_task(dev_struct_t *pdev)
+meshx_err_t create_control_task(dev_struct_t *pdev)
 {
-    BaseType_t err;
-    err = xTaskCreate(
-        &control_task_handler,
-        CONFIG_CONTROL_TASK_NAME,
-        CONFIG_CONTROL_TASK_STACK_SIZE,
-        pdev,
-        CONFIG_CONTROL_TASK_PRIO,
-        NULL);
-    if (err != pdPASS)
-        return ESP_FAIL;
 
-    return ESP_OK;
+    meshx_task_t task_handle = {
+        .arg = pdev,
+        .task_cb = control_task_handler,
+        .priority = CONFIG_CONTROL_TASK_PRIO,
+        .task_name = CONFIG_CONTROL_TASK_NAME,
+        .stack_size = CONFIG_CONTROL_TASK_STACK_SIZE,
+    };
+
+    return meshx_task_create(&task_handle);
+
 }
 
 /* @brief Publish a control task message.
- * @brief Publish a control task message.
  *
  * This function allows you to publish a control task message with the given
  * message code, event, and event parameters.
@@ -60,21 +62,20 @@ esp_err_t create_control_task(dev_struct_t *pdev)
  * @param[in] msg_evt               The event associated with the message.
  * @param[in] msg_evt_params        Pointer to the event parameters.
  * @param[in] sizeof_msg_evt_params Size of the event parameters.
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t control_task_msg_publish(control_task_msg_code_t msg_code,
+meshx_err_t control_task_msg_publish(control_task_msg_code_t msg_code,
                                    control_task_msg_evt_t msg_evt,
                                    const void *msg_evt_params,
                                    size_t sizeof_msg_evt_params)
 {
     control_task_msg_t send_msg;
-    BaseType_t pxHigherPriorityTaskWoken = pdFALSE;
 
     if (sizeof_msg_evt_params != 0)
     {
         send_msg.msg_evt_params = pvPortMalloc(sizeof_msg_evt_params);
         if (!send_msg.msg_evt_params)
-            return ESP_ERR_NO_MEM;
+            return MESHX_NO_MEM;
         /* Copy the params to allocated space */
         memcpy(send_msg.msg_evt_params, msg_evt_params, sizeof_msg_evt_params);
     }
@@ -82,9 +83,7 @@ esp_err_t control_task_msg_publish(control_task_msg_code_t msg_code,
     send_msg.msg_code = msg_code;
     send_msg.msg_evt = msg_evt;
 
-    xPortInIsrContext() ? xQueueSendFromISR(control_task_queue, &send_msg, &pxHigherPriorityTaskWoken) : xQueueSend(control_task_queue, &send_msg, portMAX_DELAY);
-
-    return ESP_OK;
+    return meshx_msg_q_send(&control_task_queue, &send_msg, sizeof(send_msg), UINT32_MAX);
 }
 
 /**
@@ -99,27 +98,27 @@ esp_err_t control_task_msg_publish(control_task_msg_code_t msg_code,
  * @param[in] callback  The callback function to be called when the message is received.
  *
  * @return
- *     - ESP_OK: Success
- *     - ESP_ERR_INVALID_ARG: Invalid argument
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_INVALID_ARG: Invalid argument
  *     - ESP_FAIL: Other failures
  */
-esp_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code,
+meshx_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code,
                                      control_task_msg_evt_t evt_bmap,
                                      control_task_msg_handle_t callback)
 {
     if (callback == NULL || evt_bmap == 0 || msg_code >= CONTROL_TASK_MSG_CODE_MAX)
-        return ESP_ERR_INVALID_ARG; // Invalid arguments
+        return MESHX_INVALID_ARG; // Invalid arguments
 
-    control_task_evt_cb_reg_t *new_node = (control_task_evt_cb_reg_t *)malloc(sizeof(control_task_evt_cb_reg_t));
+    control_task_evt_cb_reg_t *new_node = (control_task_evt_cb_reg_t *) malloc(sizeof(control_task_evt_cb_reg_t));
     if (new_node == NULL)
-        return ESP_ERR_NO_MEM; // Memory allocation failed
+        return MESHX_NO_MEM; // Memory allocation failed
 
     new_node->cb = callback;
     new_node->msg_evt_bmap = evt_bmap;
     new_node->next = control_task_msg_code_list_heads[msg_code];
     control_task_msg_code_list_heads[msg_code] = new_node;
 
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -130,14 +129,14 @@ esp_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code,
  * @param[in] msg_code  The message code to deregister the handler for.
  * @param[in] evt_bmap  Bitmap of events to deregister for.
  * @param[in] callback  Callback function to deregister.
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t control_task_msg_unsubscribe(control_task_msg_code_t msg_code,
+meshx_err_t control_task_msg_unsubscribe(control_task_msg_code_t msg_code,
                                        control_task_msg_evt_t evt_bmap,
                                        control_task_msg_handle_t callback)
 {
     if (callback == NULL || evt_bmap == 0 || msg_code >= CONTROL_TASK_MSG_CODE_MAX)
-        return ESP_ERR_INVALID_ARG; // Invalid arguments
+        return MESHX_INVALID_ARG; // Invalid arguments
 
     control_task_evt_cb_reg_t *prev = NULL;
     control_task_evt_cb_reg_t *curr = control_task_msg_code_list_heads[msg_code];
@@ -155,13 +154,13 @@ esp_err_t control_task_msg_unsubscribe(control_task_msg_code_t msg_code,
                 prev->next = curr->next;
             }
             free(curr);
-            return ESP_OK;
+            return MESHX_SUCCESS;
         }
         prev = curr;
         curr = curr->next;
     }
 
-    return ESP_ERR_NOT_FOUND;
+    return MESHX_NOT_FOUND;
 }
 
 /**
@@ -174,16 +173,16 @@ esp_err_t control_task_msg_unsubscribe(control_task_msg_code_t msg_code,
  * @param[in] msg_code  The message code of the received message.
  * @param[in] evt       The event type of the received message.
  * @param[in] params    Pointer to the message parameters.
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static esp_err_t control_task_msg_dispatch(
+static meshx_err_t control_task_msg_dispatch(
     dev_struct_t *pdev,
     control_task_msg_code_t msg_code,
     control_task_msg_evt_t evt,
     void *params)
 {
     if (!pdev)
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
 
     control_task_evt_cb_reg_t *ptr = control_task_msg_code_list_heads[msg_code];
     bool evt_handled = false;
@@ -191,7 +190,7 @@ static esp_err_t control_task_msg_dispatch(
     if (ptr == NULL)
     {
         ESP_LOGW(TAG, "No control task msg callback registered for msg: %p", (void *)msg_code);
-        return ESP_ERR_INVALID_STATE;
+        return MESHX_INVALID_STATE;
     }
 
     ESP_LOGD(TAG, "msg|evt: %p|%p", (void *)msg_code, (void *)evt);
@@ -208,7 +207,7 @@ static esp_err_t control_task_msg_dispatch(
     if (!evt_handled)
         ESP_LOGD(TAG, "No handler reg for EVT %p", (void *)evt);
 
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -216,18 +215,11 @@ static esp_err_t control_task_msg_dispatch(
  *
  * This function initializes the FreeRTOS queue for handling control task messages.
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static esp_err_t create_control_task_msg_q(void)
+static meshx_err_t create_control_task_msg_q(void)
 {
-    control_task_queue = xQueueCreate(CONFIG_CONTROL_TASK_QUEUE_LEN, sizeof(control_task_msg_t));
-
-    if (control_task_queue == NULL)
-    {
-        return ESP_FAIL;
-    }
-
-    return ESP_OK;
+    return meshx_msg_q_create(&control_task_queue);
 }
 
 /**
@@ -240,7 +232,7 @@ static esp_err_t create_control_task_msg_q(void)
  */
 static void control_task_handler(void *args)
 {
-    esp_err_t err;
+    meshx_err_t err;
     control_task_msg_t recv_msg;
     dev_struct_t *pdev = (dev_struct_t *)args;
     err = create_control_task_msg_q();
@@ -249,7 +241,7 @@ static void control_task_handler(void *args)
 
     while (true)
     {
-        if (xQueueReceive(control_task_queue, &recv_msg, portMAX_DELAY) == pdTRUE)
+        if (meshx_msg_q_recv(&control_task_queue, &recv_msg, UINT32_MAX) == pdTRUE)
         {
             err = control_task_msg_dispatch(pdev, recv_msg.msg_code, recv_msg.msg_evt, recv_msg.msg_evt_params);
             if (err)

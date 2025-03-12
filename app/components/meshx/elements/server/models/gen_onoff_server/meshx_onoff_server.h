@@ -23,9 +23,9 @@
  * configurations and state variables.
  *
  * @return
- *    - ESP_OK: Success
+ *    - MESHX_SUCCESS: Success
  *    - ESP_FAIL: Failure
  */
-esp_err_t meshx_on_off_server_init(void);
+meshx_err_t meshx_on_off_server_init(void);
 
 #endif /* __MESHX_ONOFF_SERVER__ */

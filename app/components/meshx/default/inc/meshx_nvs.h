@@ -44,9 +44,9 @@ typedef struct meshx_nvs {
  * @brief MeshX NVS Initialisation
  *
  * @return
- *  - ESP_OK: Success.
+ *  - MESHX_SUCCESS: Success.
  */
-esp_err_t meshx_nvs_init(void);
+meshx_err_t meshx_nvs_init(void);
 
 /**
  * @brief Erase all key-value pairs stored in the NVS.
@@ -54,9 +54,9 @@ esp_err_t meshx_nvs_init(void);
  * This function clears all data stored in the Non-Volatile Storage.
  *
  * @return
- *  - ESP_OK: Success.
+ *  - MESHX_SUCCESS: Success.
  */
-esp_err_t meshx_nvs_erase(void);
+meshx_err_t meshx_nvs_erase(void);
 
 /**
  * @brief Commit changes to the NVS.
@@ -64,9 +64,9 @@ esp_err_t meshx_nvs_erase(void);
  * This function ensures that any pending changes to the NVS are flushed to persistent storage.
  *
  * @return
- *  - ESP_OK: Success.
+ *  - MESHX_SUCCESS: Success.
  */
-esp_err_t meshx_nvs_commit(void);
+meshx_err_t meshx_nvs_commit(void);
 
 /**
  * @brief Close the NVS handle.
@@ -74,9 +74,9 @@ esp_err_t meshx_nvs_commit(void);
  * This function releases any resources associated with the NVS handle.
  *
  * @return
- *  - ESP_OK: Success.
+ *  - MESHX_SUCCESS: Success.
  */
-esp_err_t meshx_nvs_close(void);
+meshx_err_t meshx_nvs_close(void);
 
 /**
  * @brief Remove a key-value pair from the NVS.
@@ -86,9 +86,9 @@ esp_err_t meshx_nvs_close(void);
  * @param[in] key The key identifying the value to be removed.
  *
  * @return
- *  - ESP_OK: Success.
+ *  - MESHX_SUCCESS: Success.
  */
-esp_err_t meshx_nvs_remove(char const* key);
+meshx_err_t meshx_nvs_remove(char const* key);
 
 /**
  * @brief Open the NVS with a timeout.
@@ -104,9 +104,9 @@ esp_err_t meshx_nvs_remove(char const* key);
  * @note commit_timeout_ms = 0 -> use MESHX_NVS_TIMER_PERIOD
  *
  * @return
- *  - ESP_OK: Success.
+ *  - MESHX_SUCCESS: Success.
  */
-esp_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_ms);
+meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_ms);
 
 /**
  * @brief Get a value from the NVS.
@@ -118,9 +118,9 @@ esp_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_ms)
  * @param[in]    blob_size   Size of the buffer in bytes.
  *
  * @return
- *  - ESP_OK: Success.
+ *  - MESHX_SUCCESS: Success.
  */
-esp_err_t meshx_nvs_get(char const *key, void *blob, size_t blob_size);
+meshx_err_t meshx_nvs_get(char const *key, void *blob, size_t blob_size);
 
 /**
  * @brief Set a value in the NVS.
@@ -133,9 +133,9 @@ esp_err_t meshx_nvs_get(char const *key, void *blob, size_t blob_size);
  * @param[in] arm_timer  Re-arm stability timer and auto commit
  *
  * @return
- *  - ESP_OK: Success.
+ *  - MESHX_SUCCESS: Success.
  */
-esp_err_t meshx_nvs_set(char const* key, void const* blob, size_t blob_size, bool arm_timer);
+meshx_err_t meshx_nvs_set(char const* key, void const* blob, size_t blob_size, bool arm_timer);
 
 /**
  * @brief Retrieve the context of a specific element from NVS.
@@ -148,9 +148,9 @@ esp_err_t meshx_nvs_set(char const* key, void const* blob, size_t blob_size, boo
  * @param[in]   blob_size   Size of the buffer provided to store the context.
  *
  * @return
- *     - ESP_OK: Successfully retrieved the context.
+ *     - MESHX_SUCCESS: Successfully retrieved the context.
  */
-esp_err_t meshx_nvs_elemnt_ctx_get(uint16_t element_id, void *blob, size_t blob_size);
+meshx_err_t meshx_nvs_elemnt_ctx_get(uint16_t element_id, void *blob, size_t blob_size);
 
 /**
  * @brief Store the context of a specific element to NVS.
@@ -163,9 +163,9 @@ esp_err_t meshx_nvs_elemnt_ctx_get(uint16_t element_id, void *blob, size_t blob_
  * @param[in] blob_size     Size of the buffer containing the context.
  *
  * @return
- *     - ESP_OK: Successfully stored the context.
+ *     - MESHX_SUCCESS: Successfully stored the context.
  */
-esp_err_t meshx_nvs_elemnt_ctx_set(uint16_t element_id, const void *blob, size_t blob_size);
+meshx_err_t meshx_nvs_elemnt_ctx_set(uint16_t element_id, const void *blob, size_t blob_size);
 
 #endif /* __MESHX_NVS_H__ */
 

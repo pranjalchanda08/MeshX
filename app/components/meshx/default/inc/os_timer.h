@@ -78,9 +78,9 @@ struct os_timer
  *
  * This function initializes the OS timer module.
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t os_timer_init(void);
+meshx_err_t os_timer_init(void);
 
 /**
  * @brief Create a timer.
@@ -96,11 +96,11 @@ esp_err_t os_timer_init(void);
  * Example:
  * ```c
  *  os_timer_t * os_timer_inst;
- *  esp_err_t err = os_timer_create("Example_Timer", 1000, 1, &example_os_timer_cb, &os_timer_inst);
+ *  meshx_err_t err = os_timer_create("Example_Timer", 1000, 1, &example_os_timer_cb, &os_timer_inst);
  * ```
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t os_timer_create(const char *name, uint32_t period, bool reload, os_timer_cb_t cb, os_timer_t **timer_handle);
+meshx_err_t os_timer_create(const char *name, uint32_t period, bool reload, os_timer_cb_t cb, os_timer_t **timer_handle);
 
 /**
  * @brief Start a timer.
@@ -109,9 +109,9 @@ esp_err_t os_timer_create(const char *name, uint32_t period, bool reload, os_tim
  *
  * @param timer_handle The timer handle.
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t os_timer_start(const os_timer_t *timer_handle);
+meshx_err_t os_timer_start(const os_timer_t *timer_handle);
 
 /**
  * @brief Restart a timer.
@@ -120,9 +120,9 @@ esp_err_t os_timer_start(const os_timer_t *timer_handle);
  *
  * @param timer_handle The timer handle.
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t os_timer_restart(const os_timer_t *timer_handle);
+meshx_err_t os_timer_restart(const os_timer_t *timer_handle);
 
 /**
  * @brief Set period on an initialised timer.
@@ -132,9 +132,9 @@ esp_err_t os_timer_restart(const os_timer_t *timer_handle);
  * @param timer_handle  The timer handle.
  * @param period_ms     New period in ms
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t os_timer_set_period(os_timer_t *timer_handle, const uint32_t period_ms);
+meshx_err_t os_timer_set_period(os_timer_t *timer_handle, const uint32_t period_ms);
 
 /**
  * @brief Stop a timer.
@@ -143,9 +143,9 @@ esp_err_t os_timer_set_period(os_timer_t *timer_handle, const uint32_t period_ms
  *
  * @param timer_handle The timer handle.
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t os_timer_stop(const os_timer_t *timer_handle);
+meshx_err_t os_timer_stop(const os_timer_t *timer_handle);
 
 /**
  * @brief Delete a timer.
@@ -154,9 +154,9 @@ esp_err_t os_timer_stop(const os_timer_t *timer_handle);
  *
  * @param timer_handle The timer handle.
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
 
-esp_err_t os_timer_delete(os_timer_t **timer_handle);
+meshx_err_t os_timer_delete(os_timer_t **timer_handle);
 
 #endif /* __OS_TIMER_H__ */

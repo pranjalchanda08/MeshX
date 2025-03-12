@@ -15,12 +15,12 @@
 
 #include "stdio.h"
 #include "string.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/portmacro.h"
-#include "freertos/task.h"
-#include "esp_system.h"
 #include "esp_log.h"
 #include "app_common.h"
+#include "meshx_log.h"
+#include "meshx_task.h"
+#include "meshx_msg_q.h"
+#include "meshx_rtos_utils.h"
 
 /**
  * @brief Control task name configuration.
@@ -135,9 +135,9 @@ typedef enum control_task_msg_evt_provision
  * @param pdev      Pointer to the device structure.
  * @param evt       Event code.
  * @param params    Pointer to the event parameters.
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-typedef esp_err_t (*control_task_msg_handle_t)(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params);
+typedef meshx_err_t (*control_task_msg_handle_t)(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params);
 
 /**
  * @brief Structure for control task message.
@@ -165,9 +165,9 @@ typedef struct control_task_evt_cb_reg
  * This function creates a FreeRTOS task to handle control events.
  *
  * @param[in] pdev Pointer to the device structure (dev_struct_t).
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t create_control_task(dev_struct_t * pdev);
+meshx_err_t create_control_task(dev_struct_t * pdev);
 
 /**
  * @brief Subscribe to a control task message.
@@ -181,11 +181,11 @@ esp_err_t create_control_task(dev_struct_t * pdev);
  * @param[in] callback  The callback function to be called when the message is received.
  *
  * @return
- *     - ESP_OK: Success
- *     - ESP_ERR_INVALID_ARG: Invalid argument
- *     - ESP_FAIL: Other failures
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_INVALID_ARG: Invalid argument
+ *     - MESHX_FAIL: Other failures
  */
-esp_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code, control_task_msg_evt_t evt_bmap, control_task_msg_handle_t cbcallback);
+meshx_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code, control_task_msg_evt_t evt_bmap, control_task_msg_handle_t cbcallback);
 
 /**
  * @brief Deregister a callback for a specific message code and event bitmap.
@@ -195,9 +195,9 @@ esp_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code, control_t
  * @param[in] msg_code  The message code to deregister the handler for.
  * @param[in] evt_bmap  Bitmap of events to deregister for.
  * @param[in] callback        Callback function to deregister.
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t control_task_msg_unsubscribe(control_task_msg_code_t msg_code, control_task_msg_evt_t evt_bmap, control_task_msg_handle_t callback);
+meshx_err_t control_task_msg_unsubscribe(control_task_msg_code_t msg_code, control_task_msg_evt_t evt_bmap, control_task_msg_handle_t callback);
 
 /**
  * @brief Publish a control task message.
@@ -210,8 +210,8 @@ esp_err_t control_task_msg_unsubscribe(control_task_msg_code_t msg_code, control
  * @param[in] msg_evt               The event associated with the message.
  * @param[in] msg_evt_params        Pointer to the event parameters.
  * @param[in] sizeof_msg_evt_params Size of the event parameters.
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t control_task_msg_publish(control_task_msg_code_t msg_code, control_task_msg_evt_t msg_evt, const void *msg_evt_params, size_t sizeof_msg_evt_params);
+meshx_err_t control_task_msg_publish(control_task_msg_code_t msg_code, control_task_msg_evt_t msg_evt, const void *msg_evt_params, size_t sizeof_msg_evt_params);
 
 #endif /* __MESHX_CONTROL_TASK__ */

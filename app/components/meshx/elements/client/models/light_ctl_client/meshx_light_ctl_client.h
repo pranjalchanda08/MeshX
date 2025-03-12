@@ -16,6 +16,7 @@
 #ifndef __LIGHT_CTL_CLIENT_H__
 #define __LIGHT_CTL_CLIENT_H__
 
+#include "meshx_err.h"
 #include "esp_ble_mesh_defs.h"
 #include "esp_ble_mesh_common_api.h"
 #include "esp_ble_mesh_networking_api.h"
@@ -75,11 +76,11 @@ typedef struct light_ctl_send_args
  * @param[in] config_evt_bmap   A bitmap representing the configuration events to register for.
  *
  * @return
- *    - ESP_OK: Success
- *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - MESHX_SUCCESS: Success
+ *    - MESHX_INVALID_ARG: Invalid argument
  *    - ESP_FAIL: Other failures
  */
-esp_err_t meshx_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap);
+meshx_err_t meshx_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap);
 
 /**
  * @brief Initialize the Light CTL Client model.
@@ -88,11 +89,11 @@ esp_err_t meshx_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap);
  * resources and configurations.
  *
  * @return
- *    - ESP_OK: Success
- *    - ESP_ERR_NO_MEM: Out of memory
+ *    - MESHX_SUCCESS: Success
+ *    - MESHX_NO_MEM: Out of memory
  *    - ESP_FAIL: Other failures
  */
-esp_err_t meshx_light_ctl_client_init();
+meshx_err_t meshx_light_ctl_client_init();
 
 /**
  * @brief Send a Light CTL message.
@@ -102,10 +103,10 @@ esp_err_t meshx_light_ctl_client_init();
  * @param[in] params Pointer to the structure containing the message parameters.
  *
  * @return
- *    - ESP_OK: Success
+ *    - MESHX_SUCCESS: Success
  *    - Appropriate error code on failure
  */
-esp_err_t meshx_light_ctl_send_msg(light_ctl_send_args_t * params);
+meshx_err_t meshx_light_ctl_send_msg(light_ctl_send_args_t * params);
 
 /**
  * @brief Sends a message to control the light temperature.
@@ -115,10 +116,10 @@ esp_err_t meshx_light_ctl_send_msg(light_ctl_send_args_t * params);
  * @param[in] params Pointer to a structure containing the parameters for the light temperature control message.
  *
  * @return
- *    - ESP_OK: Success
- *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - MESHX_SUCCESS: Success
+ *    - MESHX_INVALID_ARG: Invalid argument
  *    - ESP_FAIL: Sending message failed
  */
-esp_err_t meshx_light_ctl_temperature_send_msg(light_ctl_send_args_t * params);
+meshx_err_t meshx_light_ctl_temperature_send_msg(light_ctl_send_args_t * params);
 
 #endif /*__LIGHT_CTL_CLIENT_H__*/

@@ -18,6 +18,7 @@
 #include "esp_console.h"
 #include "argtable3/argtable3.h"
 #include "module_id.h"
+#include "meshx_err.h"
 
 /**
  * @brief Macro to extract an argument from the argument list.
@@ -35,11 +36,11 @@
  * @param argv The array of arguments.
  *
  * @return
- *     - ESP_OK: Success
- *     - ESP_ERR_INVALID_ARG: Invalid arguments
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_INVALID_ARG: Invalid arguments
  *     - Other error codes depending on the implementation
  */
-typedef esp_err_t (*module_callback_t)(int cmd_id, int argc, char **argv);
+typedef meshx_err_t (*module_callback_t)(int cmd_id, int argc, char **argv);
 
 /**
  * @brief Structure to hold the unit test callback function.
@@ -55,10 +56,10 @@ typedef struct callback_node {
  * The command is registered with the ESP console using the esp_console_cmd_register function.
  *
  * @return
- *     - ESP_OK: Success
+ *     - MESHX_SUCCESS: Success
  *     - Other error codes: Failure
  */
-esp_err_t register_ut_command();
+meshx_err_t register_ut_command();
 
 /**
  * @brief Initialize the production console.
@@ -66,10 +67,10 @@ esp_err_t register_ut_command();
  * This function initializes the production console for the application.
  *
  * @return
- *    - ESP_OK: Success
+ *    - MESHX_SUCCESS: Success
  *    - ESP_FAIL: Initialization failed
  */
-esp_err_t init_unit_test_console(void);
+meshx_err_t init_unit_test_console(void);
 
 /**
  * @brief Register a unit test for a specific module.
@@ -80,10 +81,10 @@ esp_err_t init_unit_test_console(void);
  * @param[in] callback      The callback function to be called for the unit test.
  *
  * @return
- *     - ESP_OK: Success
- *     - ESP_ERR_INVALID_ARG: Invalid arguments
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_INVALID_ARG: Invalid arguments
  *     - ESP_FAIL: Failed to register the unit test
  */
-esp_err_t register_unit_test(module_id_t module_id, module_callback_t callback) ;
+meshx_err_t register_unit_test(module_id_t module_id, module_callback_t callback) ;
 
 #endif /* __MESHX_UNIT_TEST_H__ */

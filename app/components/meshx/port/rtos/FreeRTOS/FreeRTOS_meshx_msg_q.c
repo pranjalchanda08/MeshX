@@ -85,7 +85,7 @@ meshx_err_t meshx_msg_q_send(meshx_msg_q_t *msg_q_handle, void const *msg, size_
     BaseType_t pxHigherPriorityTaskWoken = pdFALSE;
 
     BaseType_t ret =  xPortInIsrContext() ? xQueueSendFromISR(msg_q_handle->__msg_q_handle, msg, &pxHigherPriorityTaskWoken)
-        : xQueueSend(msg_q_handle->__msg_q_handle, msg, delay_ms);
+        : xQueueSend(msg_q_handle->__msg_q_handle, msg, pdMS_TO_TICKS(delay_ms));
 
     if (ret!= pdPASS)
     {
@@ -100,23 +100,22 @@ meshx_err_t meshx_msg_q_send(meshx_msg_q_t *msg_q_handle, void const *msg, size_
  *
  * This function receives a message from a MeshX Message Queue.
  *
- * @param[in] msg_q_handle Message Queue Handle
- * @param[in] msg Message
- * @param[in] msg_len Message Length
- * @param[in] delay_ms Delay in milliseconds
+ * @param[in] msg_q_handle  Message Queue Handle
+ * @param[in] msg           Message
+ * @param[in] delay_ms      Delay in milliseconds
  *
  * @return Message Queue Handle
  */
-meshx_err_t meshx_msg_q_recv(meshx_msg_q_t *msg_q_handle, void *msg, size_t msg_len, uint32_t delay_ms)
+meshx_err_t meshx_msg_q_recv(meshx_msg_q_t *msg_q_handle, void *msg, uint32_t delay_ms)
 {
-    if (msg_q_handle == NULL || msg == NULL || msg_len == 0)
+    if (msg_q_handle == NULL || msg == NULL)
     {
         return MESHX_INVALID_ARG;
     }
     BaseType_t pxHigherPriorityTaskWoken = pdFALSE;
 
     BaseType_t ret =  xPortInIsrContext() ? xQueueReceiveFromISR(msg_q_handle->__msg_q_handle, msg, &pxHigherPriorityTaskWoken)
-        : xQueueReceive(msg_q_handle->__msg_q_handle, msg, delay_ms);
+        : xQueueReceive(msg_q_handle->__msg_q_handle, msg, pdMS_TO_TICKS(delay_ms));
 
     if (ret!= pdPASS)
     {

@@ -85,7 +85,7 @@ static void cwww_client_generic_client_cb(const esp_ble_mesh_generic_client_cb_p
     cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl->cwww_cli_ctx[rel_el_id];
     cwww_client_msg_t msg = {0};
     meshx_el_light_cwww_client_evt_t app_notify;
-    esp_err_t err;
+    meshx_err_t err;
 
     switch (evt)
     {
@@ -103,7 +103,7 @@ static void cwww_client_generic_client_cb(const esp_ble_mesh_generic_client_cb_p
                                         MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_ONN_OFF,
                                         sizeof(meshx_el_light_cwww_client_evt_t),
                                         &app_notify);
-            if (err != ESP_OK)
+            if (err != MESHX_SUCCESS)
             {
                 ESP_LOGE(TAG, "Failed to send CWWW state change message: (%d)", err);
             }
@@ -132,7 +132,7 @@ static void cwww_client_generic_client_cb(const esp_ble_mesh_generic_client_cb_p
                                     MESHX_ELEMENT_FUNC_ID_RELAY_SERVER_ONN_OFF,
                                     sizeof(meshx_el_relay_client_evt_t),
                                     &app_notify);
-        if (err != ESP_OK)
+        if (err != MESHX_SUCCESS)
         {
             ESP_LOGE(TAG, "Failed to send relay state change message: (%d)", err);
         }
@@ -161,7 +161,7 @@ static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
     cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl->cwww_cli_ctx[rel_el_id];
     cwww_client_msg_t msg = {0};
     meshx_el_light_cwww_client_evt_t app_notify;
-    esp_err_t err;
+    meshx_err_t err;
     bool state_change = false;
 
     if (param->params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_STATUS)
@@ -185,7 +185,7 @@ static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
             state_change = true;
         }
     }
-    else if ((param->params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS) && (param->status_cb.ctl_temperature_range_status.status_code == ESP_OK))
+    else if ((param->params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS) && (param->status_cb.ctl_temperature_range_status.status_code == MESHX_SUCCESS))
     {
         if (el_ctx->prev_ctl_state.temp_range_max != param->status_cb.ctl_temperature_range_status.range_max
         ||  el_ctx->prev_ctl_state.temp_range_min != param->status_cb.ctl_temperature_range_status.range_min)
@@ -236,7 +236,7 @@ static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
                                         MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_CLIENT_CTL,
                                         sizeof(meshx_el_light_cwww_client_evt_t),
                                         &app_notify);
-            if (err != ESP_OK)
+            if (err != MESHX_SUCCESS)
             {
                 ESP_LOGE(TAG, "Failed to send CWWW state change message: (%d)", err);
             }
@@ -261,7 +261,7 @@ static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t
                                     MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_CLIENT_CTL,
                                     sizeof(meshx_el_light_cwww_client_evt_t),
                                     &app_notify);
-        if (err != ESP_OK)
+        if (err != MESHX_SUCCESS)
         {
             ESP_LOGE(TAG, "Failed to send relay state change message: (%d)", err);
         }
@@ -318,8 +318,8 @@ static void cwww_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
     }
     if (nvs_save)
     {
-        esp_err_t err = meshx_nvs_elemnt_ctx_set(element_id, el_ctx, sizeof(cwww_cli_ctx_t));
-        if (err != ESP_OK)
+        meshx_err_t err = meshx_nvs_elemnt_ctx_set(element_id, el_ctx, sizeof(cwww_cli_ctx_t));
+        if (err != MESHX_SUCCESS)
         {
             ESP_LOGE(TAG, "Failed to set cwww client element context: (%d)", err);
         }
@@ -337,12 +337,12 @@ static void cwww_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
  * @param[in] pdev   Pointer to the device structure.
  * @param[in] evt    Event type of the control task message.
  * @param[in] params Pointer to the parameters of the control task message.
- * @return esp_err_t
+ * @return meshx_err_t
  */
-static esp_err_t cwww_cli_freshboot_control_task_msg_handle(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+static meshx_err_t cwww_cli_freshboot_control_task_msg_handle(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
 {
     if(!pdev)
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
 
     ESP_UNUSED(params);
     ESP_UNUSED(evt);
@@ -366,7 +366,7 @@ static esp_err_t cwww_cli_freshboot_control_task_msg_handle(const dev_struct_t *
             }
         }
     }
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 /**
  * @brief CWWW Client Control Task Message Handler
@@ -376,11 +376,11 @@ static esp_err_t cwww_cli_freshboot_control_task_msg_handle(const dev_struct_t *
  * @param[in] pdev   Pointer to the device structure.
  * @param[in] evt    Event type of the control task message.
  * @param[in] params Pointer to the parameters of the control task message.
- * @return esp_err_t
+ * @return meshx_err_t
  */
-static esp_err_t cwww_cli_control_task_msg_handle(dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+static meshx_err_t cwww_cli_control_task_msg_handle(dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
 {
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
     const cwww_client_msg_t *msg = (const cwww_client_msg_t *)params;
     cwww_cli_sig_id_t model_id = evt == CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF ? CWWW_CLI_SIG_ONOFF_MODEL_ID : CWWW_CLI_SIG_L_CTL_MODEL_ID;
 
@@ -391,7 +391,7 @@ static esp_err_t cwww_cli_control_task_msg_handle(dev_struct_t *pdev, control_ta
 
     if (!IS_EL_IN_RANGE(element_id))
     {
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
     }
 
     if (model_id == CWWW_CLI_SIG_L_CTL_MODEL_ID)
@@ -456,13 +456,13 @@ typedef enum cwww_cli_cmd
  * @param[in] argv The array of arguments.
  *
  * @return
- *     - ESP_OK: Success
- *     - ESP_ERR_INVALID_ARG: Invalid arguments
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_INVALID_ARG: Invalid arguments
  *     - Other error codes depending on the implementation
  */
-static esp_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv)
+static meshx_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv)
 {
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
     cwww_client_msg_t msg = {0};
     msg.element_id = UT_GET_ARG(0, uint16_t, argv);
     cwww_cli_cmd_t cmd = (cwww_cli_cmd_t)cmd_id;
@@ -471,7 +471,7 @@ static esp_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv
     if (argc < 1 || cmd_id >= CWWW_CLI_MAX_CMD)
     {
         ESP_LOGE(TAG, "CWW Client Unit Test: Invalid number of arguments");
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
     }
 
     control_task_msg_evt_to_ble_t msg_evt = CONTROL_TASK_MSG_EVT_TO_BLE_MAX;
@@ -561,7 +561,7 @@ static esp_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv
         break;
     default:
         ESP_LOGE(TAG, "CWWW Client Unit Test: Invalid command");
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
     }
 
     err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE, msg_evt, &msg, sizeof(msg));
@@ -585,18 +585,18 @@ static esp_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv
  * @param[in] n_max Maximum number of elements that can be created in the model space.
  *
  * @return
- *     - ESP_OK: Success
- *     - ESP_ERR_NO_MEM: Memory allocation failure
- *     - ESP_ERR_INVALID_ARG: Invalid arguments
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_NO_MEM: Memory allocation failure
+ *     - MESHX_INVALID_ARG: Invalid arguments
  */
-static esp_err_t meshx_element_struct_init(uint16_t n_max)
+static meshx_err_t meshx_element_struct_init(uint16_t n_max)
 {
 
     cwww_client_element_init_ctrl = (cwww_client_elements_t *)calloc(1, sizeof(cwww_client_elements_t));
     if (!cwww_client_element_init_ctrl)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww client element control");
-        return ESP_ERR_NO_MEM;
+        return MESHX_NO_MEM;
     }
     cwww_client_element_init_ctrl->element_cnt = n_max;
     cwww_client_element_init_ctrl->element_id_end = 0;
@@ -606,13 +606,13 @@ static esp_err_t meshx_element_struct_init(uint16_t n_max)
     if (!cwww_client_element_init_ctrl->cwww_cli_ctx)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww client context");
-        return ESP_ERR_NO_MEM;
+        return MESHX_NO_MEM;
     }
     cwww_client_element_init_ctrl->cwww_cli_list = (esp_ble_mesh_client_t **)calloc(n_max, sizeof(esp_ble_mesh_client_t *));
     if (!cwww_client_element_init_ctrl->cwww_cli_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww client list");
-        return ESP_ERR_NO_MEM;
+        return MESHX_NO_MEM;
     }
     else
     {
@@ -622,7 +622,7 @@ static esp_err_t meshx_element_struct_init(uint16_t n_max)
             if (!cwww_client_element_init_ctrl->cwww_cli_list[i])
             {
                 ESP_LOGE(TAG, "Failed to allocate memory for cwww client list");
-                return ESP_ERR_NO_MEM;
+                return MESHX_NO_MEM;
             }
         }
     }
@@ -630,7 +630,7 @@ static esp_err_t meshx_element_struct_init(uint16_t n_max)
     if (!cwww_client_element_init_ctrl->cwww_cli_pub_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww client pub list");
-        return ESP_ERR_NO_MEM;
+        return MESHX_NO_MEM;
     }
     else
     {
@@ -640,7 +640,7 @@ static esp_err_t meshx_element_struct_init(uint16_t n_max)
             if (!cwww_client_element_init_ctrl->cwww_cli_pub_list[i])
             {
                 ESP_LOGE(TAG, "Failed to allocate memory for cwww client pub list");
-                return ESP_ERR_NO_MEM;
+                return MESHX_NO_MEM;
             }
         }
     }
@@ -648,7 +648,7 @@ static esp_err_t meshx_element_struct_init(uint16_t n_max)
     if (!cwww_client_element_init_ctrl->cwww_cli_sig_model_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww client sig model list");
-        return ESP_ERR_NO_MEM;
+        return MESHX_NO_MEM;
     }
     else
     {
@@ -658,12 +658,12 @@ static esp_err_t meshx_element_struct_init(uint16_t n_max)
             if (!cwww_client_element_init_ctrl->cwww_cli_sig_model_list[i])
             {
                 ESP_LOGE(TAG, "Failed to allocate memory for cwww client sig model list");
-                return ESP_ERR_NO_MEM;
+                return MESHX_NO_MEM;
             }
         }
     }
 
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -738,18 +738,18 @@ static void meshx_element_struct_deinit(uint16_t n_max)
  * @param[in] n_max Maximum number of elements that can be created in the model space.
  *
  * @return
- *     - ESP_OK: Success
- *     - ESP_ERR_NO_MEM: Memory allocation failure
- *     - ESP_ERR_INVALID_ARG: Invalid arguments
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_NO_MEM: Memory allocation failure
+ *     - MESHX_INVALID_ARG: Invalid arguments
  */
-static esp_err_t meshx_dev_create_cwww_model_space(dev_struct_t const *pdev, uint16_t n_max)
+static meshx_err_t meshx_dev_create_cwww_model_space(dev_struct_t const *pdev, uint16_t n_max)
 {
     if (!pdev)
-        return ESP_ERR_INVALID_STATE;
+        return MESHX_INVALID_STATE;
 
     /* Assign Spaces for Model List, Publish List and onoff gen list */
     void **temp = NULL;
-    esp_err_t err = meshx_element_struct_init(n_max);
+    meshx_err_t err = meshx_element_struct_init(n_max);
     if (err)
     {
         ESP_LOGE(TAG, "Failed to initialize cwww element structures: (%d)", err);
@@ -780,7 +780,7 @@ static esp_err_t meshx_dev_create_cwww_model_space(dev_struct_t const *pdev, uin
             &cwww_client_element_init_ctrl->cwww_cli_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID];
 #endif /* CONFIG_LIGHT_CTL_CLIENT_COUNT */
     }
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -793,24 +793,24 @@ static esp_err_t meshx_dev_create_cwww_model_space(dev_struct_t const *pdev, uin
  * @param[in] n_max     Maximum number of elements that can be created in the model space.
  *
  * @return
- *     - ESP_OK: Success
- *     - ESP_ERR_NO_MEM: Memory allocation failure
- *     - ESP_ERR_INVALID_ARG: Invalid arguments
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_NO_MEM: Memory allocation failure
+ *     - MESHX_INVALID_ARG: Invalid arguments
  */
-static esp_err_t meshx_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, uint16_t *start_idx, uint16_t n_max)
+static meshx_err_t meshx_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, uint16_t *start_idx, uint16_t n_max)
 {
     if (!pdev || !start_idx)
     {
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
     }
 
     if ((n_max + *start_idx) > CONFIG_MAX_ELEMENT_COUNT)
     {
         ESP_LOGE(TAG, "No of elements limit reached namx|start_idx|config_max: %d|%d|%d", n_max, *start_idx, CONFIG_MAX_ELEMENT_COUNT);
-        return ESP_ERR_NO_MEM;
+        return MESHX_NO_MEM;
     }
     uint8_t *ref_ptr = NULL;
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
     esp_ble_mesh_elem_t *elements = pdev->elements;
 
     cwww_client_element_init_ctrl->element_id_start = *start_idx;
@@ -837,14 +837,14 @@ static esp_err_t meshx_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, ui
             *ref_ptr = CWWW_CLI_MODEL_VEN_CNT;
         }
         err = meshx_nvs_elemnt_ctx_get(i, &(cwww_client_element_init_ctrl->cwww_cli_ctx[i - *start_idx]), sizeof(cwww_cli_ctx_t));
-        if (err != ESP_OK)
+        if (err != MESHX_SUCCESS)
         {
             ESP_LOGW(TAG, "Failed to get cwww cli element context: (0x%x)", err);
         }
     }
     /* Increment the index for further registrations */
     cwww_client_element_init_ctrl->element_id_end = *start_idx += n_max;
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -853,11 +853,11 @@ static esp_err_t meshx_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, ui
  * @param[in] pdev          Pointer to device structure
  * @param[in] element_cnt   Maximum number of relay models
  *
- * @return esp_err_t
+ * @return meshx_err_t
  */
-esp_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
+meshx_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
 {
-    esp_err_t err;
+    meshx_err_t err;
 
     err = meshx_dev_create_cwww_model_space(pdev, element_cnt);
     if (err)
@@ -933,7 +933,7 @@ esp_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
 #endif /* CONFIG_ENABLE_UNIT_TEST */
 #endif /* CWWW_CLI_MESHX_ONOFF_ENABLE_CB */
 
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 REG_MESHX_ELEMENT_FN(cwww_cli_el, MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT, create_cwww_client_elements);
@@ -949,27 +949,27 @@ REG_MESHX_ELEMENT_FN(cwww_cli_el, MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT, create_c
  * @param[in] ack           Flag indicating whether the message requires an acknowledgment (1) or not (0).
  *
  * @return
- *     - ESP_OK: Success
- *     - ESP_ERR_INVALID_ARG: Invalid argument
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_INVALID_ARG: Invalid argument
  *     - ESP_FAIL: Sending message failed
  */
-esp_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id, uint16_t element_id, uint8_t set_get, uint8_t is_range, uint8_t ack)
+meshx_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id, uint16_t element_id, uint8_t set_get, uint8_t is_range, uint8_t ack)
 {
     if (!pdev)
     {
         ESP_LOGE(TAG, "Invalid device structure");
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
     }
 
     size_t rel_el_id = element_id - cwww_client_element_init_ctrl->element_id_start;
     if (rel_el_id >= CONFIG_LIGHT_CWWW_CLIENT_COUNT)
     {
         ESP_LOGE(TAG, "Invalid element id: %d", element_id);
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
     }
 
     uint16_t opcode = 0;
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
     esp_ble_mesh_elem_t *element = &pdev->elements[element_id];
     esp_ble_mesh_model_t *model = &element->sig_models[model_id];
     cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl->cwww_cli_ctx[rel_el_id];
@@ -1040,7 +1040,7 @@ esp_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id,
 
     default:
         ESP_LOGE(TAG, "Invalid model id: %d", model_id);
-        err = ESP_ERR_INVALID_ARG;
+        err = MESHX_INVALID_ARG;
         break;
     }
 

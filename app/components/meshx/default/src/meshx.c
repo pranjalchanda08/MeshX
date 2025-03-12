@@ -59,7 +59,7 @@ static os_timer_t *g_boot_timer;
 
 extern size_t get_root_sig_models_count(void);
 extern esp_ble_mesh_model_t * get_root_sig_models(void);
-extern esp_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_config_t const *config);
+extern meshx_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_config_t const *config);
 
 /**
  * @brief Initializes BLE Mesh elements.
@@ -67,14 +67,14 @@ extern esp_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_
  * @param[in] p_dev Pointer to the device structure.
  * @param[in] config Pointer to the meshX configuration.
  *
- * @return ESP_OK on success, error code otherwise.
+ * @return MESHX_SUCCESS on success, error code otherwise.
  */
-static esp_err_t ble_mesh_element_init(dev_struct_t *p_dev, meshx_config_t const *config)
+static meshx_err_t ble_mesh_element_init(dev_struct_t *p_dev, meshx_config_t const *config)
 {
     if (!p_dev)
-        return ESP_ERR_INVALID_STATE;
+        return MESHX_INVALID_STATE;
 
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
     /* Initialize root model */
     p_dev->elements[0].sig_models = get_root_sig_models();
     p_dev->elements[0].vnd_models = ESP_BLE_MESH_MODEL_NONE;
@@ -96,7 +96,7 @@ static esp_err_t ble_mesh_element_init(dev_struct_t *p_dev, meshx_config_t const
     p_dev->composition.element_count = p_dev->element_idx;
     p_dev->composition.elements = p_dev->elements;
 
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -104,11 +104,11 @@ static esp_err_t ble_mesh_element_init(dev_struct_t *p_dev, meshx_config_t const
  *
  * @param[in] pdev Pointer to the device structure.
  *
- * @return ESP_OK on success, error code otherwise.
+ * @return MESHX_SUCCESS on success, error code otherwise.
  */
-static esp_err_t meshx_tasks_init(dev_struct_t * pdev)
+static meshx_err_t meshx_tasks_init(dev_struct_t * pdev)
 {
-    esp_err_t err;
+    meshx_err_t err;
 
     err = create_control_task(pdev);
     ESP_ERR_PRINT_RET("Failed to create control task", err);
@@ -121,13 +121,13 @@ static esp_err_t meshx_tasks_init(dev_struct_t * pdev)
  *
  * @param[in] pdev Pointer to the device structure.
  * @param[in] config Pointer to the meshX configuration.
- * 
- * @return ESP_OK on success, error code otherwise.
+ *
+ * @return MESHX_SUCCESS on success, error code otherwise.
  *
  */
-static esp_err_t meshx_dev_restore(dev_struct_t *pdev, meshx_config_t const *config)
+static meshx_err_t meshx_dev_restore(dev_struct_t *pdev, meshx_config_t const *config)
 {
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
 
     err = meshx_nvs_open(config->cid, config->pid, config->meshx_nvs_save_period);
     ESP_ERR_PRINT_RET("MeshX NVS Open failed", err);
@@ -143,14 +143,14 @@ static esp_err_t meshx_dev_restore(dev_struct_t *pdev, meshx_config_t const *con
  *
  * This function sets up provisioning, configuration servers, and BLE Mesh stack initialization.
  *
- * @return ESP_OK on success, error code otherwise.
+ * @return MESHX_SUCCESS on success, error code otherwise.
  */
-static esp_err_t ble_mesh_init(meshx_config_t const *config)
+static meshx_err_t ble_mesh_init(meshx_config_t const *config)
 {
     if(config == NULL || config->product_name == NULL || strlen(config->product_name) > ESP_BLE_MESH_DEVICE_NAME_MAX_LEN)
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
 
-    esp_err_t err;
+    meshx_err_t err;
 
     meshx_dev_restore(&g_dev, config);
 
@@ -168,7 +168,7 @@ static esp_err_t ble_mesh_init(meshx_config_t const *config)
 
     ESP_LOGI(TAG, "BLE Mesh Node initialized");
 
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -182,7 +182,7 @@ static void meshx_init_boot_timer_arm_cb(const os_timer_t* p_timer)
 {
     ESP_LOGD(TAG, "Fresh Boot Timer Expired");
 
-    esp_err_t err = control_task_msg_publish(
+    meshx_err_t err = control_task_msg_publish(
         CONTROL_TASK_MSG_CODE_SYSTEM,
         CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT,
         p_timer,
@@ -197,11 +197,11 @@ static void meshx_init_boot_timer_arm_cb(const os_timer_t* p_timer)
 /**
  * @brief Initializes the boot timer.
  *
- * @return ESP_OK on success, error code otherwise.
+ * @return MESHX_SUCCESS on success, error code otherwise.
  */
-static esp_err_t meshx_init_boot_timer(void)
+static meshx_err_t meshx_init_boot_timer(void)
 {
-    esp_err_t err = os_timer_create("boot_timer",
+    meshx_err_t err = os_timer_create("boot_timer",
         FRESHBOOT_TIMEOUT_MS,
         false,
         meshx_init_boot_timer_arm_cb,
@@ -222,24 +222,15 @@ static esp_err_t meshx_init_boot_timer(void)
  *
  * @param[in] config Pointer to the configuration structure
  *
- * @return ESP_OK, Success
+ * @return MESHX_SUCCESS, Success
  */
-esp_err_t meshx_init(meshx_config_t const *config)
+meshx_err_t meshx_init(meshx_config_t const *config)
 {
     /* Check if the configuration is valid */
     if(!config)
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
 
-    esp_err_t err = ESP_OK;
-
-    /* Initialize NVS flash */
-    err = nvs_flash_init();
-    if (err == ESP_ERR_NVS_NO_FREE_PAGES)
-    {
-        ESP_ERROR_CHECK(nvs_flash_erase());
-        err = nvs_flash_init();
-    }
-    ESP_ERROR_CHECK(err);
+    meshx_err_t err = MESHX_SUCCESS;
 
     /* Copy the configuration to the global config structure */
     memcpy(&g_config, config, sizeof(meshx_config_t));
@@ -267,13 +258,6 @@ esp_err_t meshx_init(meshx_config_t const *config)
     /* Register application control callback */
     err = meshx_app_reg_system_events_callback(g_config.app_ctrl_cb);
     ESP_ERR_PRINT_RET("Failed to register app control callback", err);
-
-    /* Initialize Bluetooth */
-    err = bluetooth_init();
-    ESP_ERR_PRINT_RET("esp32_bluetooth_init failed", err);
-
-    /* Set log level for BLE Mesh */
-    esp_log_level_set("BLE_MESH", ESP_LOG_ERROR);
 
     /* Initialize the Bluetooth Mesh Subsystem */
     err = ble_mesh_init(&g_config);

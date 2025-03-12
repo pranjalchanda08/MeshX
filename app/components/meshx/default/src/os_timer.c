@@ -78,13 +78,13 @@ static void os_timer_ut_cb_handler(const os_timer_t *p_timer)
  * @param[in] argv      The array of arguments.
  *
  * @return
- *     - ESP_OK: Success
- *     - ESP_ERR_INVALID_ARG: Invalid arguments
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_INVALID_ARG: Invalid arguments
  *     - Other error codes depending on the implementation
  */
-static esp_err_t os_timer_unit_test_cb_handler(int cmd_id, int argc, char **argv)
+static meshx_err_t os_timer_unit_test_cb_handler(int cmd_id, int argc, char **argv)
 {
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
     os_timer_cli_cmd_t cmd = (os_timer_cli_cmd_t)cmd_id;
 
     uint32_t ut_period = 0;
@@ -95,7 +95,7 @@ static esp_err_t os_timer_unit_test_cb_handler(int cmd_id, int argc, char **argv
     if (cmd_id >= OS_TIMER_CLI_CMD_MAX)
     {
         ESP_LOGE(TAG, "Invalid number of arguments");
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
     }
 
     switch (cmd)
@@ -170,9 +170,9 @@ static void os_timer_fire_cb(const os_timer_handle_t timer_handle)
  * @param pdev      Pointer to the device structure.
  * @param evt       Event code.
  * @param params    Pointer to the event parameters.
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static esp_err_t os_timer_control_task_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)
+static meshx_err_t os_timer_control_task_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)
 {
     os_timer_t *msg_params = (os_timer_t *)params;
 
@@ -218,7 +218,7 @@ static esp_err_t os_timer_control_task_cb(const dev_struct_t *pdev, control_task
 
     ESP_UNUSED(pdev);
 
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -226,11 +226,11 @@ static esp_err_t os_timer_control_task_cb(const dev_struct_t *pdev, control_task
  *
  * This function initializes the OS timer module.
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t os_timer_init(void)
+meshx_err_t os_timer_init(void)
 {
-    esp_err_t err;
+    meshx_err_t err;
 #if CONFIG_ENABLE_UNIT_TEST
     err = register_unit_test(MODULE_ID_COMPONENT_OS_TIMER, &os_timer_unit_test_cb_handler);
     if (err)
@@ -261,11 +261,11 @@ esp_err_t os_timer_init(void)
  * Example:
  * ```c
  *  os_timer_t * os_timer_inst;
- *  esp_err_t err = os_timer_create("Example_Timer", 1000, 1, &example_os_timer_cb, &os_timer_inst);
+ *  meshx_err_t err = os_timer_create("Example_Timer", 1000, 1, &example_os_timer_cb, &os_timer_inst);
  * ```
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t os_timer_create(
+meshx_err_t os_timer_create(
     const char *name,
     uint32_t period,
     bool reload,
@@ -274,17 +274,17 @@ esp_err_t os_timer_create(
 {
     if (timer_handle == NULL)
     {
-        return ESP_ERR_INVALID_STATE;
+        return MESHX_INVALID_STATE;
     }
 
     if ((*timer_handle) != NULL && (*timer_handle)->init == OS_TIMER_INIT_MAGIC)
-        return ESP_ERR_INVALID_STATE;
+        return MESHX_INVALID_STATE;
 
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
 
     *timer_handle = (os_timer_t *)malloc(OS_TIMER_SIZE);
     if (*timer_handle == NULL)
-        return ESP_ERR_NO_MEM;
+        return MESHX_NO_MEM;
 
     (*timer_handle)->cb = cb;
     (*timer_handle)->name = name;
@@ -300,7 +300,7 @@ esp_err_t os_timer_create(
     if (NULL == (*timer_handle)->timer_handle)
     {
         free(*timer_handle);
-        return ESP_ERR_NO_MEM;
+        return MESHX_NO_MEM;
     }
 
     SLIST_INSERT_HEAD(&os_timer_reg_table_head, (*timer_handle), next);
@@ -316,16 +316,16 @@ esp_err_t os_timer_create(
  *
  * @param timer_handle The timer handle.
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t os_timer_start(const os_timer_t *timer_handle)
+meshx_err_t os_timer_start(const os_timer_t *timer_handle)
 {
     if (timer_handle == NULL)
     {
-        return ESP_ERR_INVALID_STATE;
+        return MESHX_INVALID_STATE;
     }
     if (timer_handle->init != OS_TIMER_INIT_MAGIC)
-        return ESP_ERR_INVALID_STATE;
+        return MESHX_INVALID_STATE;
 
     return control_task_msg_publish(
         CONTROL_TASK_MSG_CODE_SYSTEM,
@@ -341,16 +341,16 @@ esp_err_t os_timer_start(const os_timer_t *timer_handle)
  *
  * @param timer_handle The timer handle.
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t os_timer_restart(const os_timer_t *timer_handle)
+meshx_err_t os_timer_restart(const os_timer_t *timer_handle)
 {
     if (timer_handle == NULL)
     {
-        return ESP_ERR_INVALID_STATE;
+        return MESHX_INVALID_STATE;
     }
     if (timer_handle->init != OS_TIMER_INIT_MAGIC)
-        return ESP_ERR_INVALID_STATE;
+        return MESHX_INVALID_STATE;
 
     return control_task_msg_publish(
         CONTROL_TASK_MSG_CODE_SYSTEM,
@@ -367,16 +367,16 @@ esp_err_t os_timer_restart(const os_timer_t *timer_handle)
  * @param timer_handle  The timer handle.
  * @param period_ms     New period in ms
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t os_timer_set_period(os_timer_t *timer_handle, const uint32_t period_ms)
+meshx_err_t os_timer_set_period(os_timer_t *timer_handle, const uint32_t period_ms)
 {
     if (timer_handle == NULL)
     {
-        return ESP_ERR_INVALID_STATE;
+        return MESHX_INVALID_STATE;
     }
     if (timer_handle->init != OS_TIMER_INIT_MAGIC)
-        return ESP_ERR_INVALID_STATE;
+        return MESHX_INVALID_STATE;
 
     timer_handle->period = period_ms;
 
@@ -394,16 +394,16 @@ esp_err_t os_timer_set_period(os_timer_t *timer_handle, const uint32_t period_ms
  *
  * @param timer_handle The timer handle.
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t os_timer_stop(const os_timer_t *timer_handle)
+meshx_err_t os_timer_stop(const os_timer_t *timer_handle)
 {
     if (timer_handle == NULL)
     {
-        return ESP_ERR_INVALID_STATE;
+        return MESHX_INVALID_STATE;
     }
     if (timer_handle->init != OS_TIMER_INIT_MAGIC)
-        return ESP_ERR_INVALID_STATE;
+        return MESHX_INVALID_STATE;
 
     return control_task_msg_publish(
         CONTROL_TASK_MSG_CODE_SYSTEM,
@@ -419,18 +419,18 @@ esp_err_t os_timer_stop(const os_timer_t *timer_handle)
  *
  * @param timer_handle The timer handle.
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
 
-esp_err_t os_timer_delete(os_timer_t **timer_handle)
+meshx_err_t os_timer_delete(os_timer_t **timer_handle)
 {
     if (timer_handle == NULL)
     {
-        return ESP_ERR_INVALID_STATE;
+        return MESHX_INVALID_STATE;
     }
 
     if (*timer_handle == NULL || (*timer_handle)->init != OS_TIMER_INIT_MAGIC)
-        return ESP_ERR_INVALID_STATE;
+        return MESHX_INVALID_STATE;
 
     ESP_LOGI(TAG, "Deleting timer %s", OS_TMER_GET_TIMER_NAME((*timer_handle)));
     if (xTimerDelete((*timer_handle)->timer_handle, 0) != pdPASS)
@@ -442,5 +442,5 @@ esp_err_t os_timer_delete(os_timer_t **timer_handle)
     SLIST_REMOVE(&os_timer_reg_table_head, *timer_handle, os_timer, next);
     free(*timer_handle);
 
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }

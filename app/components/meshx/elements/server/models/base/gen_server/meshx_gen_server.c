@@ -62,7 +62,7 @@ static void meshx_ble_mesh_generic_server_cb(esp_ble_mesh_generic_server_cb_even
     }
     xSemaphoreGive(meshx_server_mutex);
 #else
-    esp_err_t err = control_task_msg_publish(
+    meshx_err_t err = control_task_msg_publish(
         CONTROL_TASK_MSG_CODE_FRM_BLE,
         param->model->model_id,
         param,
@@ -84,13 +84,13 @@ static void meshx_ble_mesh_generic_server_cb(esp_ble_mesh_generic_server_cb_even
  * @param[in] cb        The callback function to be registered.
  *
  * @return
- *     - ESP_OK: Callback registered successfully.
- *     - ESP_ERR_INVALID_ARG: Invalid arguments.
+ *     - MESHX_SUCCESS: Callback registered successfully.
+ *     - MESHX_INVALID_ARG: Invalid arguments.
  *     - ESP_FAIL: Failed to register the callback.
  */
-esp_err_t meshx_gen_srv_reg_cb(uint32_t model_id, meshx_server_cb cb)
+meshx_err_t meshx_gen_srv_reg_cb(uint32_t model_id, meshx_server_cb cb)
 {
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
 #if !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
     xSemaphoreTake(meshx_server_mutex, portMAX_DELAY);
     struct meshx_server_cb_reg *item;
@@ -101,7 +101,7 @@ esp_err_t meshx_gen_srv_reg_cb(uint32_t model_id, meshx_server_cb cb)
             /* If already registered over-write */
             item->cb = cb;
             xSemaphoreGive(meshx_server_mutex);
-            return ESP_OK;
+            return MESHX_SUCCESS;
         }
     }
 
@@ -109,7 +109,7 @@ esp_err_t meshx_gen_srv_reg_cb(uint32_t model_id, meshx_server_cb cb)
     if (item == NULL)
     {
         xSemaphoreGive(meshx_server_mutex);
-        return ESP_ERR_NO_MEM;
+        return MESHX_NO_MEM;
     }
 
     item->model_id = model_id;
@@ -136,11 +136,11 @@ esp_err_t meshx_gen_srv_reg_cb(uint32_t model_id, meshx_server_cb cb)
  * @param[in] cb        The callback function to be deregistered.
  *
  * @return
- *     - ESP_OK: Success
- *     - ESP_ERR_INVALID_ARG: Invalid argument
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_INVALID_ARG: Invalid argument
  *     - ESP_FAIL: Other failures
  */
-esp_err_t meshx_gen_srv_dereg_cb(uint32_t model_id, meshx_server_cb cb)
+meshx_err_t meshx_gen_srv_dereg_cb(uint32_t model_id, meshx_server_cb cb)
 {
 #if !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
     xSemaphoreTake(meshx_server_mutex, portMAX_DELAY);
@@ -153,17 +153,17 @@ esp_err_t meshx_gen_srv_dereg_cb(uint32_t model_id, meshx_server_cb cb)
             SLIST_REMOVE(&meshx_server_cb_reg_list, item, meshx_server_cb_reg, next);
             free(item);
             xSemaphoreGive(meshx_server_mutex);
-            return ESP_OK;
+            return MESHX_SUCCESS;
         }
     }
     xSemaphoreGive(meshx_server_mutex);
-    return ESP_ERR_NOT_FOUND;
+    return MESHX_NOT_FOUND;
 #else
     return control_task_msg_unsubscribe(
         CONTROL_TASK_MSG_CODE_FRM_BLE,
         model_id,
         (control_task_msg_handle_t)cb);
-    return ESP_OK;
+    return MESHX_SUCCESS;
 #endif /* CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
 }
 
@@ -174,19 +174,19 @@ esp_err_t meshx_gen_srv_dereg_cb(uint32_t model_id, meshx_server_cb cb)
  * meshxuction generic server for the BLE mesh node.
  *
  * @return
- *     - ESP_OK: Success
+ *     - MESHX_SUCCESS: Success
  *     - ESP_FAIL: Failed to initialize the server
  */
-esp_err_t meshx_gen_srv_init(void)
+meshx_err_t meshx_gen_srv_init(void)
 {
     if (meshx_server_init == MESHX_SERVER_INIT_MAGIC_NO)
-        return ESP_OK;
+        return MESHX_SUCCESS;
     meshx_server_init = MESHX_SERVER_INIT_MAGIC_NO;
 #if !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
     meshx_server_mutex = xSemaphoreCreateMutex();
     if (meshx_server_mutex == NULL)
     {
-        return ESP_ERR_NO_MEM;
+        return MESHX_NO_MEM;
     }
 #endif /* CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
     return esp_ble_mesh_register_generic_server_callback((esp_ble_mesh_generic_server_cb_t)&meshx_ble_mesh_generic_server_cb);

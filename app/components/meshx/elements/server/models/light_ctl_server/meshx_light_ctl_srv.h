@@ -24,10 +24,10 @@
  * within the BLE mesh network.
  *
  * @return
- *    - ESP_OK: Success
+ *    - MESHX_SUCCESS: Success
  *    - ESP_FAIL: Initialization failed
  */
-esp_err_t meshx_light_ctl_server_init(void);
+meshx_err_t meshx_light_ctl_server_init(void);
 /**
  * @brief Send the Light CTL Status message to the client.
  *
@@ -40,9 +40,9 @@ esp_err_t meshx_light_ctl_server_init(void);
  * @param temperature Temperature value to send.
  *
  * @return
- *     - ESP_OK: Success
+ *     - MESHX_SUCCESS: Success
  *     - ESP_FAIL: Failure
  */
-esp_err_t meshx_send_ctl_status(esp_ble_mesh_model_t *model, esp_ble_mesh_msg_ctx_t* ctx, uint16_t lightness, uint16_t temperature);
+meshx_err_t meshx_send_ctl_status(esp_ble_mesh_model_t *model, esp_ble_mesh_msg_ctx_t* ctx, uint16_t lightness, uint16_t temperature);
 
 #endif /*__MESHX_LIGHT_CTL_SRV_H__*/

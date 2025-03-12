@@ -77,7 +77,7 @@ static void meshx_generic_client_cb(esp_ble_mesh_generic_client_cb_event_t event
 {
     ESP_LOGD(TAG, "%s, err|op|src|dst: %d|%04" PRIx32 "|%04x|%04x",
             client_state_str[event], param->error_code, param->params->ctx.recv_op, param->params->ctx.addr, param->params->ctx.recv_dst);
-    if(param->error_code == ESP_OK)
+    if(param->error_code == MESHX_SUCCESS)
     {
         meshx_onoff_reg_cb_dispatch(param, (meshx_onoff_cli_evt_t) BIT(event));
     }
@@ -91,19 +91,19 @@ static void meshx_generic_client_cb(esp_ble_mesh_generic_client_cb_event_t event
  *
  * @param[in] cb              Pointer to the callback function to register.
  * @param[in] config_evt_bmap Bitmap of events to register for.
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t meshx_onoff_reg_cb(meshx_onoff_cli_cb cb, uint32_t config_evt_bmap)
+meshx_err_t meshx_onoff_reg_cb(meshx_onoff_cli_cb cb, uint32_t config_evt_bmap)
 {
     if (cb == NULL || config_evt_bmap == 0)
     {
-        return ESP_ERR_INVALID_ARG; // Invalid arguments
+        return MESHX_INVALID_ARG; // Invalid arguments
     }
 
     meshx_onoff_cli_cb_reg_t *new_entry = (meshx_onoff_cli_cb_reg_t *) malloc(sizeof(meshx_onoff_cli_cb_reg_t));
     if (new_entry == NULL)
     {
-        return ESP_ERR_NO_MEM; // Memory allocation failed
+        return MESHX_NO_MEM; // Memory allocation failed
     }
 
     new_entry->cb = cb;
@@ -115,7 +115,7 @@ esp_err_t meshx_onoff_reg_cb(meshx_onoff_cli_cb cb, uint32_t config_evt_bmap)
         xSemaphoreGive(meshx_onoff_cli_mutex);
     }
 
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -124,19 +124,19 @@ esp_err_t meshx_onoff_reg_cb(meshx_onoff_cli_cb cb, uint32_t config_evt_bmap)
  * This function initializes the OnOff Client by registering the BLE Mesh
  * generic client callback.
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t meshx_onoff_client_init(void)
+meshx_err_t meshx_onoff_client_init(void)
 {
     if (meshx_client_init_flag == MESHX_CLIENT_INIT_MAGIC)
     {
-        return ESP_OK;
+        return MESHX_SUCCESS;
     }
 
     meshx_onoff_cli_mutex = xSemaphoreCreateMutex();
     if (meshx_onoff_cli_mutex == NULL)
     {
-        return ESP_ERR_NO_MEM; // Mutex creation failed
+        return MESHX_NO_MEM; // Mutex creation failed
     }
 
     return esp_ble_mesh_register_generic_client_callback((esp_ble_mesh_generic_client_cb_t)&meshx_generic_client_cb);
@@ -156,12 +156,12 @@ esp_err_t meshx_onoff_client_init(void)
  * @param[in] tid     The transaction ID to be used for the message.
  *
  * @return
- *    - ESP_OK: Success
- *    - ESP_ERR_INVALID_ARG: Invalid argument
- *    - ESP_ERR_NO_MEM: Out of memory
+ *    - MESHX_SUCCESS: Success
+ *    - MESHX_INVALID_ARG: Invalid argument
+ *    - MESHX_NO_MEM: Out of memory
  *    - ESP_FAIL: Sending message failed
  */
-esp_err_t meshx_onoff_client_send_msg(
+meshx_err_t meshx_onoff_client_send_msg(
         esp_ble_mesh_model_t *model,
         uint16_t opcode,
         uint16_t addr,
@@ -171,7 +171,7 @@ esp_err_t meshx_onoff_client_send_msg(
         uint8_t tid
 )
 {
-    esp_err_t err;
+    meshx_err_t err;
     esp_ble_mesh_client_common_param_t common = {0};
     esp_ble_mesh_generic_client_set_state_t set = {0};
 

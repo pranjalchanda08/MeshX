@@ -142,7 +142,7 @@ esp_err_t bluetooth_init(void)
     }
 
     ret = nimble_port_init();
-    if (ret != ESP_OK) {
+    if (ret != MESHX_SUCCESS) {
         ESP_LOGE(TAG, "Failed to init nimble %d ", ret);
         return ret;
     }
@@ -159,6 +159,6 @@ esp_err_t bluetooth_init(void)
 
     xSemaphoreTake(mesh_sem, portMAX_DELAY);
 
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 #endif /* CONFIG_BT_NIMBLE_ENABLED */

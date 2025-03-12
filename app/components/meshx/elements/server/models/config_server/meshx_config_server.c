@@ -131,18 +131,18 @@ static void meshx_ble_mesh_config_server_cb(esp_ble_mesh_cfg_server_cb_event_t e
  *
  * Registers the BLE Mesh Configuration Server callback function and prepares the server for use.
  *
- * @return ESP_OK on success, an error code otherwise.
+ * @return MESHX_SUCCESS on success, an error code otherwise.
  */
-esp_err_t meshx_init_config_server()
+meshx_err_t meshx_init_config_server()
 {
     config_server_mutex = xSemaphoreCreateMutex();
     if (config_server_mutex == NULL)
     {
-        return ESP_ERR_NO_MEM; // Mutex creation failed
+        return MESHX_NO_MEM; // Mutex creation failed
     }
 
     esp_ble_mesh_register_config_server_callback((esp_ble_mesh_cfg_server_cb_t)&meshx_ble_mesh_config_server_cb);
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -153,13 +153,13 @@ esp_err_t meshx_init_config_server()
  * @param[in] cb Callback function to register.
  * @param[in] config_evt_bmap Bitmap of events the callback is interested in.
  *
- * @return ESP_OK on success, an error code otherwise.
+ * @return MESHX_SUCCESS on success, an error code otherwise.
  */
-esp_err_t meshx_config_server_cb_reg(config_srv_cb cb, uint32_t config_evt_bmap)
+meshx_err_t meshx_config_server_cb_reg(config_srv_cb cb, uint32_t config_evt_bmap)
 {
     if (cb == NULL || config_evt_bmap == 0)
     {
-        return ESP_ERR_INVALID_ARG; // Invalid arguments
+        return MESHX_INVALID_ARG; // Invalid arguments
     }
 
     if (xSemaphoreTake(config_server_mutex, portMAX_DELAY) == pdTRUE)
@@ -168,7 +168,7 @@ esp_err_t meshx_config_server_cb_reg(config_srv_cb cb, uint32_t config_evt_bmap)
         if (new_node == NULL)
         {
             xSemaphoreGive(config_server_mutex);
-            return ESP_ERR_NO_MEM; // Memory allocation failed
+            return MESHX_NO_MEM; // Memory allocation failed
         }
 
         new_node->cb = cb;
@@ -178,5 +178,5 @@ esp_err_t meshx_config_server_cb_reg(config_srv_cb cb, uint32_t config_evt_bmap)
         xSemaphoreGive(config_server_mutex);
     }
 
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }

@@ -26,9 +26,9 @@
  * @brief Callback function type for the generic server model.
  *
  * @param param Pointer to the callback parameter structure.
- * @return ESP_OK on success, or an appropriate error code on failure.
+ * @return MESHX_SUCCESS on success, or an appropriate error code on failure.
  */
-typedef esp_err_t (* meshx_server_cb) (esp_ble_mesh_generic_server_cb_param_t *param);
+typedef meshx_err_t (* meshx_server_cb) (esp_ble_mesh_generic_server_cb_param_t *param);
 #else
 
 typedef control_task_msg_handle_t meshx_server_cb;
@@ -61,11 +61,11 @@ SLIST_HEAD(meshx_server_cb_reg_head, meshx_server_cb_reg);
  * @param[in] cb        The callback function to be registered.
  *
  * @return
- *     - ESP_OK: Callback registered successfully.
- *     - ESP_ERR_INVALID_ARG: Invalid arguments.
+ *     - MESHX_SUCCESS: Callback registered successfully.
+ *     - MESHX_INVALID_ARG: Invalid arguments.
  *     - ESP_FAIL: Failed to register the callback.
  */
-esp_err_t meshx_gen_srv_reg_cb(uint32_t model_id, meshx_server_cb cb);
+meshx_err_t meshx_gen_srv_reg_cb(uint32_t model_id, meshx_server_cb cb);
 
 /**
  * @brief Callback function to deregister a generic server model.
@@ -76,17 +76,17 @@ esp_err_t meshx_gen_srv_reg_cb(uint32_t model_id, meshx_server_cb cb);
  * @param[in] cb        The callback function to be deregistered.
  *
  * @return
- *     - ESP_OK: Success
- *     - ESP_ERR_INVALID_ARG: Invalid argument
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_INVALID_ARG: Invalid argument
  *     - ESP_FAIL: Other failures
  */
-esp_err_t meshx_gen_srv_dereg_cb(uint32_t model_id, meshx_server_cb cb);
+meshx_err_t meshx_gen_srv_dereg_cb(uint32_t model_id, meshx_server_cb cb);
 
 /**
  * @brief Initialize the generic server model.
  *
- * @return ESP_OK on success, or an appropriate error code on failure.
+ * @return MESHX_SUCCESS on success, or an appropriate error code on failure.
  */
-esp_err_t meshx_gen_srv_init(void);
+meshx_err_t meshx_gen_srv_init(void);
 
 #endif /* __MESHX_GEN_SERVER_H__ */

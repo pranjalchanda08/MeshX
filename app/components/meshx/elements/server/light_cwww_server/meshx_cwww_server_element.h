@@ -101,8 +101,8 @@ typedef struct cwww_element
  * @param[in] pdev          Pointer to device structure
  * @param[in] element_cnt   Maximum number of CWWW server models
  *
- * @return esp_err_t Returns ESP_OK on success or an error code on failure
+ * @return meshx_err_t Returns MESHX_SUCCESS on success or an error code on failure
  */
-esp_err_t create_cwww_elements(dev_struct_t *pdev, uint16_t element_cnt);
+meshx_err_t create_cwww_elements(dev_struct_t *pdev, uint16_t element_cnt);
 
 #endif /*__CWWW_SERVER_ELEMENT_H__*/
