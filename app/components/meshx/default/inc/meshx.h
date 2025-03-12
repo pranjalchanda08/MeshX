@@ -30,11 +30,11 @@
  * @param _err   Error code to return
  * @return       Error code
  */
-#define ESP_ERR_PRINT_RET(_e_str, _err)            \
-    if (_err != MESHX_SUCCESS)                            \
-    {                                              \
-        ESP_LOGE(TAG, _e_str " (err 0x%x)", _err); \
-        return _err;                               \
+#define MESHX_ERR_PRINT_RET(_e_str, _err)                         \
+    if (_err != MESHX_SUCCESS)                                    \
+    {                                                             \
+        MESHX_LOGE(MODULE_ID_COMMON, _e_str " (err 0x%x)", _err); \
+        return _err;                                              \
     }
 
 #define CID_ESP CONFIG_CID_ID
@@ -63,6 +63,7 @@ typedef struct meshx_config
     element_comp_t *element_comp_arr;   /**< Element composition array */
     meshx_app_data_cb_t app_element_cb; /**< Application element callback */
     meshx_app_ctrl_cb_t app_ctrl_cb;    /**< Application control callback */
+    unsigned meshx_log_level;           /**< MeshX log level */
 }meshx_config_t;
 
 /**

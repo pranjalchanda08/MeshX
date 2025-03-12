@@ -100,11 +100,11 @@ meshx_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, ui
 
     err = meshx_prepare_data_message(element_id, element_type, func_id, msg_len,msg);
     if(err)
-        ESP_LOGE(TAG, "Failed to create message: (0x%x)", err);
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to create message: (0x%x)", err);
 
     err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_APP, CONTROL_TASK_MSG_EVT_DATA, &meshx_api_ctrl.msg_buff, sizeof(meshx_app_api_msg_t));
     if(err)
-        ESP_LOGE(TAG, "Failed to send message to app: (0x%x)", err);
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to send message to app: (0x%x)", err);
 
     return err;
 }
@@ -128,11 +128,11 @@ meshx_err_t meshx_send_msg_to_element(uint16_t element_id, uint16_t element_type
 
     err = meshx_prepare_data_message(element_id, element_type, func_id, msg_len,msg);
     if(err)
-        ESP_LOGE(TAG, "Failed to create message: (0x%x)", err);
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to create message: (0x%x)", err);
 
     err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_MESHX, CONTROL_TASK_MSG_EVT_DATA, &meshx_api_ctrl.msg_buff, sizeof(meshx_app_api_msg_t));
     if(err)
-        ESP_LOGE(TAG, "Failed to send message to app: (0x%x)", err);
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to send message to app: (0x%x)", err);
 
     return err;
 }
@@ -156,7 +156,7 @@ meshx_err_t meshx_app_reg_element_callback(meshx_app_data_cb_t cb)
         (control_task_msg_handle_t)&meshx_el_control_task_handler);
     if (err)
     {
-        ESP_LOGE(TAG, "Failed to register control task callback: (%d)", err);
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to register control task callback: (%d)", err);
         return err;
     }
 
@@ -184,7 +184,7 @@ meshx_err_t meshx_app_reg_system_events_callback(meshx_app_ctrl_cb_t cb)
         (control_task_msg_handle_t)&meshx_el_control_task_handler);
     if (err)
     {
-        ESP_LOGE(TAG, "Failed to register control task callback: (%d)", err);
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to register control task callback: (%d)", err);
         return err;
     }
 

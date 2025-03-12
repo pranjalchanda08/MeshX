@@ -19,8 +19,8 @@
 #include <sdkconfig.h>
 #include <meshx_config.h>
 #include <esp_log.h>
-#include <nvs_flash.h>
 #include <esp_ble_mesh_defs.h>
+#include <meshx_log.h>
 #include <meshx_err.h>
 
 #if CONFIG_ENABLE_UNIT_TEST

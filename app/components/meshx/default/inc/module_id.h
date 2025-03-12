@@ -29,6 +29,7 @@ typedef enum {
     MODULE_ID_ELEMENT_LIGHT_CWWW_SERVER     = 0x05,
     MODULE_ID_MODEL_SERVER                  = 0x06,
     MODULE_ID_MODEL_CLIENT                  = 0x07,
+    MODULE_ID_COMMON                        = 0x08,
     MODULE_ID_MAX
 } module_id_t;
 

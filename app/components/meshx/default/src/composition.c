@@ -34,16 +34,6 @@
 #endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */
 
 /**
- * @brief Prints error message and returns if an error occurs.
- */
-#define ESP_ERR_PRINT_RET(_e_str, _err)            \
-    if (_err != MESHX_SUCCESS)                            \
-    {                                              \
-        ESP_LOGE(TAG, _e_str " (err 0x%x)", _err); \
-        return _err;                               \
-    }
-
-/**
  * @brief Mask for control task provisioning events.
  *
  * This macro defines a mask that combines multiple control task message events
@@ -136,7 +126,7 @@ static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_t
             meshx_nvs_set(MESHX_NVS_STORE, &pdev->meshx_store, sizeof(pdev->meshx_store), MESHX_NVS_AUTO_COMMIT);
             break;
         case CONTROL_TASK_MSG_EVT_IDENTIFY_START:
-            ESP_LOGI(TAG, "Identify Start");
+            MESHX_LOGI(MODULE_ID_COMMON, "Identify Start");
             break;
         default:
             break;
@@ -188,16 +178,16 @@ meshx_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_confi
     // ble_mesh_get_dev_uuid(meshx_prov_cfg.uuid);
 
     err = meshx_init_prov(&meshx_prov_cfg);
-    ESP_ERR_PRINT_RET("Failed to initialize Prov server", err);
+    MESHX_ERR_PRINT_RET("Failed to initialize Prov server", err);
 
     err = control_task_msg_subscribe(
             CONTROL_TASK_MSG_CODE_PROVISION,
             CONTROL_TASK_PROV_EVT_MASK,
             &meshx_prov_control_task_handler);
-    ESP_ERR_PRINT_RET("Failed to register control task callback", err);
+    MESHX_ERR_PRINT_RET("Failed to register control task callback", err);
 
     err = meshx_init_config_server();
-    ESP_ERR_PRINT_RET("Failed to initialize config server", err);
+    MESHX_ERR_PRINT_RET("Failed to initialize config server", err);
     for(uint16_t element_id = 0; element_id < config->element_comp_arr_len; element_id++)
     {
 #if !CONFIG_SECTION_ENABLE_ELEMENT_TABLE
@@ -206,7 +196,7 @@ meshx_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_confi
             err = element_comp_fn[config->element_comp_arr[element_id].type](p_dev, config->element_comp_arr[element_id].element_cnt);
             if(err)
             {
-                ESP_LOGE(TAG, "Element composition failed: (%d)", err);
+                MESHX_LOGE(MODULE_ID_COMMON, "Element composition failed: (%d)", err);
                 return err;
             }
         }
@@ -219,7 +209,7 @@ meshx_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_confi
                 err = element_comp_table->element_comp_fn(p_dev, config->element_comp_arr[element_id].element_cnt);
                 if(err)
                 {
-                    ESP_LOGE(TAG, "Element composition failed: (%d)", err);
+                    MESHX_LOGE(MODULE_ID_COMMON, "Element composition failed: (%d)", err);
                     return err;
                 }
             }

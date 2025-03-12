@@ -32,19 +32,21 @@
 
 #include "meshx_log.h"
 #include "module_id.h"
+#include "meshx_rtos_utils.h"
 #include <stdio.h>
 #include <stdarg.h>
 
 static meshx_log_level_t module_log_level[MODULE_ID_MAX] =
 {
-    [MODULE_ID_MODEL_SERVER] = MESHX_LOG_INFO,
-    [MODULE_ID_MODEL_CLIENT] = MESHX_LOG_INFO,
-    [MODULE_ID_COMPONENT_OS_TIMER] = MESHX_LOG_INFO,
-    [MODULE_ID_COMPONENT_MESHX_NVS] = MESHX_LOG_INFO,
-    [MODULE_ID_ELEMENT_LIGHT_CWWW_SERVER] = MESHX_LOG_INFO,
-    [MODULE_ID_ELEMENT_LIGHT_CWWWW_CLIENT] = MESHX_LOG_INFO,
-    [MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER] = MESHX_LOG_INFO,
-    [MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT] = MESHX_LOG_INFO,
+    [MODULE_ID_COMMON] = MESHX_LOG_DEBUG,
+    [MODULE_ID_MODEL_SERVER] = MESHX_LOG_DEBUG,
+    [MODULE_ID_MODEL_CLIENT] = MESHX_LOG_DEBUG,
+    [MODULE_ID_COMPONENT_OS_TIMER] = MESHX_LOG_DEBUG,
+    [MODULE_ID_COMPONENT_MESHX_NVS] = MESHX_LOG_DEBUG,
+    [MODULE_ID_ELEMENT_LIGHT_CWWW_SERVER] = MESHX_LOG_DEBUG,
+    [MODULE_ID_ELEMENT_LIGHT_CWWWW_CLIENT] = MESHX_LOG_DEBUG,
+    [MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER] = MESHX_LOG_DEBUG,
+    [MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT] = MESHX_LOG_DEBUG,
 };
 
 static const char * log_lvl_str [MESHX_LOG_MAX] =
@@ -67,13 +69,12 @@ static meshx_logging_t meshx_logging_ctrl;
  * @return MESHX_SUCCESS on successful initialization, MESHX_INVALID_ARG if
  *         the configuration is invalid.
  */
-meshx_err_t meshx_logging_init(meshx_logging_t *config)
+meshx_err_t meshx_logging_init(const meshx_logging_t *config)
 {
-    if (!config || config->get_millis_cb != NULL)
+    if (!config)
         return MESHX_INVALID_ARG;
 
     meshx_logging_ctrl.def_log_level = config->def_log_level;
-    meshx_logging_ctrl.get_millis_cb = config->get_millis_cb;
 
     return MESHX_SUCCESS;
 }
@@ -96,6 +97,8 @@ void meshx_module_set_log_level(module_id_t module_id, meshx_log_level_t log_lev
 /**
  * @brief Logs a formatted message for a specified module and log level.
  *
+ * @note This is a weak function, can be redefined to override in app layer
+ *
  * This function checks if the provided module ID and log level are valid
  * and above the current global and module-specific log levels. If valid,
  * it processes the variable arguments to format and log the message.
@@ -103,59 +106,36 @@ void meshx_module_set_log_level(module_id_t module_id, meshx_log_level_t log_lev
  * @note This is a weak function defination and can be overriden by any other version
  *       of defination required as per platform
  *
- * @param[in] module_id The ID of the module for which the log is generated.
- * @param[in] log_level The log level of the message.
- * @param[in] func The name of the function where the log is called.
- * @param[in] line_no The line number in the source code where the log is called.
- * @param[in] fmt The format string for the log message.
- * @param[in] ... Additional arguments for the format string.
+ * @param[in] module_id     The ID of the module for which the log is generated.
+ * @param[in] log_level     The log level of the message.
+ * @param[in] func          The name of the function where the log is called.
+ * @param[in] line_no       The line number in the source code where the log is called.
+ * @param[in] fmt           The format string for the log message.
+ * @param[in] ...           Additional arguments for the format string.
  */
 __attribute__((weak)) void meshx_log_printf(module_id_t module_id, meshx_log_level_t log_level,
-                      const char *func, const char *line_no, const char *fmt, ...)
+                      const char *func, int line_no, const char *fmt, ...)
 {
-    // Validate module ID
+    /* Validate module ID */
     if (module_id > MODULE_ID_MAX || log_level < meshx_logging_ctrl.def_log_level || module_log_level[module_id] < meshx_logging_ctrl.def_log_level)
-    {
         return;
-    }
 
-    // Ensure timestamp callback is available
-    if (meshx_logging_ctrl.get_millis_cb == NULL)
-    {
-        return;
-    }
+    /* Get timestamp */
+    unsigned int millis;
 
-    // Get timestamp
-    unsigned int millis = meshx_logging_ctrl.get_millis_cb();
+    meshx_rtos_get_sys_time(&millis);
 
-    // Get log level color
-    const char *color = MESHX_LOG_COLOR_RESET;
-    switch (log_level)
-    {
-    case MESHX_LOG_ERROR:
-        color = MESHX_LOG_COLOR_RED;
-        break;
-    case MESHX_LOG_WARN:
-        color = MESHX_LOG_COLOR_YELLOW;
-        break;
-    case MESHX_LOG_INFO:
-        color = MESHX_LOG_COLOR_GREEN;
-        break;
-    case MESHX_LOG_DEBUG:
-        color = MESHX_LOG_COLOR_BLUE;
-        break;
-    default:
-        break;
-    }
+    /* Get log level color */
+    const char *color = MESHX_LOG_LEVEL_COLOR(log_level);
 
-    // Print timestamp and location
-    CONFIG_MESHX_LOG_PRINTF("%s[%s] [%u][%s:%s] ", color, log_lvl_str[log_level], millis, func, line_no);
+    /* Print timestamp and log */
+    CONFIG_MESHX_LOG_PRINTF("%s[%s] [%08u][%-20s:%04d] ", color, log_lvl_str[log_level], millis, func, line_no);
 
-    // Process variable arguments
+    /* Process variable arguments */
     va_list args;
     va_start(args, fmt);
     vprintf(fmt, args);
     va_end(args);
-    // Reset color and add newline
+    /* Reset color and add newline */
     CONFIG_MESHX_LOG_PRINTF("%s\n", MESHX_LOG_COLOR_RESET);
 }
