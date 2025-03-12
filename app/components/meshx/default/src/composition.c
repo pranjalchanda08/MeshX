@@ -16,7 +16,6 @@
 
 #include "app_common.h"
 #include "meshx.h"
-#include "ble_mesh_example_init.h"
 
 #if CONFIG_RELAY_SERVER_COUNT
 #include "meshx_relay_server_element.h"
@@ -38,7 +37,7 @@
  * @brief Prints error message and returns if an error occurs.
  */
 #define ESP_ERR_PRINT_RET(_e_str, _err)            \
-    if (_err != ESP_OK)                            \
+    if (_err != MESHX_SUCCESS)                            \
     {                                              \
         ESP_LOGE(TAG, _e_str " (err 0x%x)", _err); \
         return _err;                               \
@@ -123,9 +122,9 @@ static esp_ble_mesh_model_t meshx_root_model_arr[] = {
  * @param[in] evt The control task message event type.
  * @param[in] params Pointer to the event parameters.
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static esp_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)
+static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)
 {
     const esp_ble_mesh_prov_cb_param_t *param = (esp_ble_mesh_prov_cb_param_t*) params;
 
@@ -142,7 +141,7 @@ static esp_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_tas
         default:
             break;
     }
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -174,19 +173,19 @@ size_t get_root_sig_models_count(void)
  * @param[in] p_dev Pointer to the device structure containing element information.
  * @param[in] config Pointer to the meshx configuration.
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_config_t const *config)
+meshx_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_config_t const *config)
 {
 #if CONFIG_MAX_ELEMENT_COUNT > 0
-    esp_err_t err;
+    meshx_err_t err;
 #if CONFIG_SECTION_ENABLE_ELEMENT_TABLE
     element_comp_table_t *element_comp_table;
 #endif /* CONFIG_SECTION_ENABLE_ELEMENT_TABLE */
     if(!p_dev || !config || !config->element_comp_arr_len || !config->element_comp_arr)
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
 
-    ble_mesh_get_dev_uuid(meshx_prov_cfg.uuid);
+    // ble_mesh_get_dev_uuid(meshx_prov_cfg.uuid);
 
     err = meshx_init_prov(&meshx_prov_cfg);
     ESP_ERR_PRINT_RET("Failed to initialize Prov server", err);

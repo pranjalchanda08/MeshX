@@ -49,17 +49,17 @@ static const esp_ble_mesh_model_t relay_sig_template = ESP_BLE_MESH_SIG_MODEL(
  * @param n_max The maximum number of elements to initialize.
  *
  * @return
- *     - ESP_OK: Success
- *     - ESP_ERR_NO_MEM: Memory allocation failure
- *     - ESP_ERR_INVALID_ARG: Invalid argument
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_NO_MEM: Memory allocation failure
+ *     - MESHX_INVALID_ARG: Invalid argument
  */
-static esp_err_t meshx_element_struct_init(uint16_t n_max)
+static meshx_err_t meshx_element_struct_init(uint16_t n_max)
 {
     relay_element_init_ctrl = (relay_client_elements_t *)calloc(1, sizeof(relay_client_elements_t));
     if (!relay_element_init_ctrl)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for relay element structure");
-        return ESP_ERR_NO_MEM;
+        return MESHX_NO_MEM;
     }
     relay_element_init_ctrl->element_cnt = n_max;
     relay_element_init_ctrl->element_id_end = 0;
@@ -69,25 +69,25 @@ static esp_err_t meshx_element_struct_init(uint16_t n_max)
     if (!relay_element_init_ctrl->rel_cli_ctx)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for relay client context");
-        return ESP_ERR_NO_MEM;
+        return MESHX_NO_MEM;
     }
     relay_element_init_ctrl->relay_cli_pub_list = (esp_ble_mesh_model_pub_t *)calloc(n_max, sizeof(esp_ble_mesh_model_pub_t));
     if (!relay_element_init_ctrl->relay_cli_pub_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for relay client pub list");
-        return ESP_ERR_NO_MEM;
+        return MESHX_NO_MEM;
     }
     relay_element_init_ctrl->relay_cli_onoff_gen_list = (esp_ble_mesh_client_t *)calloc(n_max, sizeof(esp_ble_mesh_client_t));
     if (!relay_element_init_ctrl->relay_cli_onoff_gen_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for relay client onoff gen list");
-        return ESP_ERR_NO_MEM;
+        return MESHX_NO_MEM;
     }
     relay_element_init_ctrl->relay_cli_sig_model_list = (esp_ble_mesh_model_t **)calloc(n_max, sizeof(esp_ble_mesh_model_t *));
     if (!relay_element_init_ctrl->relay_cli_sig_model_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for relay client sig model list");
-        return ESP_ERR_NO_MEM;
+        return MESHX_NO_MEM;
     }
     else
     {
@@ -97,11 +97,11 @@ static esp_err_t meshx_element_struct_init(uint16_t n_max)
             if (!relay_element_init_ctrl->relay_cli_sig_model_list[i])
             {
                 ESP_LOGE(TAG, "Failed to allocate memory for relay client sig model list");
-                return ESP_ERR_NO_MEM;
+                return MESHX_NO_MEM;
             }
         }
     }
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -154,15 +154,15 @@ static void meshx_element_struct_deinit(uint16_t n_max)
  * @param[in] pdev  Pointer to device structure
  * @param[in] n_max Maximum number of relay models
  *
- * @return esp_err_t
+ * @return meshx_err_t
  */
-static esp_err_t meshx_dev_create_relay_model_space(dev_struct_t const *pdev, uint16_t n_max)
+static meshx_err_t meshx_dev_create_relay_model_space(dev_struct_t const *pdev, uint16_t n_max)
 {
     if (!pdev)
-        return ESP_ERR_INVALID_STATE;
+        return MESHX_INVALID_STATE;
 
     /* Assign Spaces for Model List, Publish List and onoff gen list */
-    esp_err_t err = meshx_element_struct_init(n_max);
+    meshx_err_t err = meshx_element_struct_init(n_max);
     if (err)
     {
         ESP_LOGE(TAG, "Failed to initialize relay element structures: (%d)", err);
@@ -183,7 +183,7 @@ static esp_err_t meshx_dev_create_relay_model_space(dev_struct_t const *pdev, ui
             relay_element_init_ctrl->relay_cli_onoff_gen_list + relay_model_id;
     }
 #endif /* CONFIG_GEN_ONOFF_CLIENT_COUNT */
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -195,23 +195,23 @@ static esp_err_t meshx_dev_create_relay_model_space(dev_struct_t const *pdev, ui
  * @param[inout]    start_idx   Pointer to the start index of elements.
  * @param[in]       n_max       Maximum number of elements to add.
  *
- * @return ESP_OK on success, error code otherwise.
+ * @return MESHX_SUCCESS on success, error code otherwise.
  */
-static esp_err_t meshx_add_relay_cli_model_to_element_list(dev_struct_t *pdev, uint16_t *start_idx, uint16_t n_max)
+static meshx_err_t meshx_add_relay_cli_model_to_element_list(dev_struct_t *pdev, uint16_t *start_idx, uint16_t n_max)
 {
     if (!pdev)
-        return ESP_ERR_INVALID_STATE;
+        return MESHX_INVALID_STATE;
 
     if (!start_idx)
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
 
     if ((n_max + *start_idx) > CONFIG_MAX_ELEMENT_COUNT)
     {
         ESP_LOGE(TAG, "No of elements limit reached namx|start_idx|config_max: %d|%d|%d", n_max, *start_idx, CONFIG_MAX_ELEMENT_COUNT);
-        return ESP_ERR_NO_MEM;
+        return MESHX_NO_MEM;
     }
 
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
     esp_ble_mesh_elem_t *elements = pdev->elements;
     relay_element_init_ctrl->element_id_start = *start_idx;
 
@@ -237,14 +237,14 @@ static esp_err_t meshx_add_relay_cli_model_to_element_list(dev_struct_t *pdev, u
             *ref_ptr = RELAY_CLI_MODEL_VEN_CNT;
         }
         err = meshx_nvs_elemnt_ctx_get(i, &(relay_element_init_ctrl->rel_cli_ctx[i - *start_idx]), sizeof(rel_cli_ctx_t));
-        if (err != ESP_OK)
+        if (err != MESHX_SUCCESS)
         {
             ESP_LOGW(TAG, "Failed to get cwww cli element context: (0x%x)", err);
         }
     }
     /* Increment the index for further registrations */
     relay_element_init_ctrl->element_id_end = *start_idx += n_max;
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 #if RELAY_CLI_MESHX_ONOFF_ENABLE_CB
@@ -269,7 +269,7 @@ void meshx_relay_cli_generic_client_cb(const esp_ble_mesh_generic_client_cb_para
     rel_cli_ctx_t *el_ctx = &relay_element_init_ctrl->rel_cli_ctx[rel_el_id];
     relay_client_msg_t msg = {0};
     meshx_el_relay_client_evt_t app_notify;
-    esp_err_t err;
+    meshx_err_t err;
 
     switch (evt)
     {
@@ -287,7 +287,7 @@ void meshx_relay_cli_generic_client_cb(const esp_ble_mesh_generic_client_cb_para
                                         MESHX_ELEMENT_FUNC_ID_RELAY_SERVER_ONN_OFF,
                                         sizeof(meshx_el_relay_client_evt_t),
                                         &app_notify);
-            if (err != ESP_OK)
+            if (err != MESHX_SUCCESS)
             {
                 ESP_LOGE(TAG, "Failed to send relay state change message: (%d)", err);
             }
@@ -316,7 +316,7 @@ void meshx_relay_cli_generic_client_cb(const esp_ble_mesh_generic_client_cb_para
                                     MESHX_ELEMENT_FUNC_ID_RELAY_SERVER_ONN_OFF,
                                     sizeof(meshx_el_relay_client_evt_t),
                                     &app_notify);
-        if (err != ESP_OK)
+        if (err != MESHX_SUCCESS)
         {
             ESP_LOGE(TAG, "Failed to send relay state change message: (%d)", err);
         }
@@ -376,8 +376,8 @@ static void relay_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
     }
     if (nvs_save)
     {
-        esp_err_t err = meshx_nvs_elemnt_ctx_set(element_id, el_ctx, sizeof(rel_cli_ctx_t));
-        if (err != ESP_OK)
+        meshx_err_t err = meshx_nvs_elemnt_ctx_set(element_id, el_ctx, sizeof(rel_cli_ctx_t));
+        if (err != MESHX_SUCCESS)
         {
             ESP_LOGE(TAG, "Failed to set relay element context: (%d)", err);
         }
@@ -395,12 +395,12 @@ static void relay_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
  * @param[in] pdev   Pointer to the device structure.
  * @param[in] evt    Event type of the control task message.
  * @param[in] params Pointer to the parameters of the control task message.
- * @return esp_err_t
+ * @return meshx_err_t
  */
-static esp_err_t relay_cli_freshboot_control_task_msg_handle(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+static meshx_err_t relay_cli_freshboot_control_task_msg_handle(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
 {
     if(!pdev)
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
 
     ESP_UNUSED(params);
     ESP_UNUSED(evt);
@@ -414,7 +414,7 @@ static esp_err_t relay_cli_freshboot_control_task_msg_handle(const dev_struct_t 
         msg.element_id = (uint16_t)relay_element_init_ctrl->element_id_start;
         control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF, &msg, sizeof(msg));
     }
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -425,15 +425,15 @@ static esp_err_t relay_cli_freshboot_control_task_msg_handle(const dev_struct_t 
  * @param[in] pdev   Pointer to the device structure.
  * @param[in] evt    Event type of the control task message.
  * @param[in] params Pointer to the parameters of the control task message.
- * @return esp_err_t
+ * @return meshx_err_t
  */
-static esp_err_t relay_cli_control_task_msg_handle(dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+static meshx_err_t relay_cli_control_task_msg_handle(dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
 {
     const relay_client_msg_t *msg = (const relay_client_msg_t *)params;
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
 
     if (!pdev || !IS_EL_IN_RANGE(msg->element_id))
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
 
     if (evt == CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF)
     {
@@ -469,19 +469,19 @@ typedef enum
  * @param[in] argv The array of arguments.
  *
  * @return
- *     - ESP_OK: Success
- *     - ESP_ERR_INVALID_ARG: Invalid arguments
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_INVALID_ARG: Invalid arguments
  *   >  - Other error codes depending on the implementation
  */
-static esp_err_t relay_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv)
+static meshx_err_t relay_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv)
 {
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
     relay_client_msg_t msg = {0};
     ESP_LOGD(TAG, "argc|cmd_id: %d|%d", argc, cmd_id);
     if (argc < 1 || cmd_id >= RELAY_CLI_MAX_CMD)
     {
         ESP_LOGE(TAG, "Relay Client Unit Test: Invalid number of arguments");
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
     }
     relay_cli_cmd_t cmd = (relay_cli_cmd_t)cmd_id;
     msg.element_id = UT_GET_ARG(0, uint16_t, argv);
@@ -508,16 +508,16 @@ static esp_err_t relay_cli_unit_test_cb_handler(int cmd_id, int argc, char **arg
  * @param[in] ack Indicates whether an acknowledgment is required (1) or not (0).
  *
  * @return
- *     - ESP_OK: Success
- *     - ESP_ERR_INVALID_ARG: Invalid argument
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_INVALID_ARG: Invalid argument
  *     - ESP_FAIL: Sending message failed
  */
-esp_err_t ble_mesh_send_relay_msg(dev_struct_t *pdev, uint16_t element_id, uint8_t set_get, uint8_t ack)
+meshx_err_t ble_mesh_send_relay_msg(dev_struct_t *pdev, uint16_t element_id, uint8_t set_get, uint8_t ack)
 {
     if (!pdev || !IS_EL_IN_RANGE(element_id))
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
 
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
     esp_ble_mesh_elem_t *element = &pdev->elements[element_id];
     esp_ble_mesh_model_t *model = &element->sig_models[0];
 
@@ -563,11 +563,11 @@ esp_err_t ble_mesh_send_relay_msg(dev_struct_t *pdev, uint16_t element_id, uint8
  * @param[in]       pdev            Pointer to device structure
  * @param[in]       element_cnt     Maximum number of relay models
  *
- * @return esp_err_t
+ * @return meshx_err_t
  */
-esp_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
+meshx_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
 {
-    esp_err_t err;
+    meshx_err_t err;
 
     err = meshx_dev_create_relay_model_space(pdev, element_cnt);
     if (err)
@@ -636,7 +636,7 @@ esp_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cnt)
 #endif /* CONFIG_ENABLE_UNIT_TEST */
 #endif /* RELAY_CLI_MESHX_ONOFF_ENABLE_CB */
 
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 REG_MESHX_ELEMENT_FN(relay_cli_el, MESHX_ELEMENT_TYPE_RELAY_CLIENT, create_relay_client_elements);

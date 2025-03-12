@@ -14,8 +14,8 @@
 
 #define CONFIG_MESHX_NVS_SAVE_PERIOD_MS 1000
 
-static esp_err_t meshx_app_data_cb(const meshx_app_element_msg_header_t *msg_hdr, const meshx_data_payload_t *data_payload_u);
-static esp_err_t meshx_app_ctrl_cb(const meshx_ctrl_msg_header_t *msg_hdr, const meshx_ctrl_payload_t *msg);
+static meshx_err_t meshx_app_data_cb(const meshx_app_element_msg_header_t *msg_hdr, const meshx_data_payload_t *data_payload_u);
+static meshx_err_t meshx_app_ctrl_cb(const meshx_ctrl_msg_header_t *msg_hdr, const meshx_ctrl_payload_t *msg);
 /**
  * @brief Array of element components with their respective types and counts.
  *
@@ -52,7 +52,7 @@ static const meshx_config_t meshx_config = {
  */
 void app_main(void)
 {
-    esp_err_t err;
+    meshx_err_t err;
 
     err = meshx_init(&meshx_config);
     if (err)
@@ -62,7 +62,7 @@ void app_main(void)
     }
 }
 
-static esp_err_t meshx_app_data_cb(const meshx_app_element_msg_header_t *msg_hdr, const meshx_data_payload_t *data_payload_u)
+static meshx_err_t meshx_app_data_cb(const meshx_app_element_msg_header_t *msg_hdr, const meshx_data_payload_t *data_payload_u)
 {
     if (!msg_hdr || !data_payload_u)
         return ESP_ERR_INVALID_ARG;
@@ -113,10 +113,10 @@ static esp_err_t meshx_app_data_cb(const meshx_app_element_msg_header_t *msg_hdr
         ESP_LOGW(TAG, "Unhandled element type: %d", msg_hdr->element_type);
         break;
     }
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
-static esp_err_t meshx_app_ctrl_cb(const meshx_ctrl_msg_header_t *msg_hdr, const meshx_ctrl_payload_t *msg)
+static meshx_err_t meshx_app_ctrl_cb(const meshx_ctrl_msg_header_t *msg_hdr, const meshx_ctrl_payload_t *msg)
 {
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }

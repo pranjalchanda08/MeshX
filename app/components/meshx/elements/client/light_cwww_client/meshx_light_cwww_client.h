@@ -178,9 +178,9 @@ typedef struct cwww_client_element
  * @param[in] pdev          Pointer to device structure
  * @param[in] element_cnt   Maximum number of relay models
  *
- * @return esp_err_t
+ * @return meshx_err_t
  */
-esp_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt);
+meshx_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt);
 
 /**
  * @brief Send a CW/WW (Cool White/Warm White) message over BLE Mesh.
@@ -193,8 +193,8 @@ esp_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt);
  * @param[in] ack           Flag indicating whether the message requires an acknowledgment (1) or not (0).
  *
  * @return
- *     - ESP_OK: Success
- *     - ESP_ERR_INVALID_ARG: Invalid argument
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_INVALID_ARG: Invalid argument
  *     - ESP_FAIL: Sending message failed
  */
-esp_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id, uint16_t element_id, uint8_t set_get, uint8_t is_range, uint8_t ack);
+meshx_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id, uint16_t element_id, uint8_t set_get, uint8_t is_range, uint8_t ack);

@@ -29,24 +29,24 @@ static struct{
  * @param[in] evt       Event type.
  * @param[in] params    Pointer to the message parameters.
  *
- * @return ESP_OK on success, error code otherwise.
+ * @return MESHX_SUCCESS on success, error code otherwise.
  */
-static esp_err_t meshx_el_control_task_handler(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+static meshx_err_t meshx_el_control_task_handler(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
 {
     const meshx_app_api_msg_t *msg = (const meshx_app_api_msg_t *)params;
 
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
 
     if (!pdev)
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
 
     if(evt == CONTROL_TASK_MSG_EVT_DATA)
         err = meshx_api_ctrl.app_data_cb ? meshx_api_ctrl.app_data_cb(&msg->msg_type_u.element_msg,
-                (const meshx_data_payload_t*) msg->data) : ESP_OK;
+                (const meshx_data_payload_t*) msg->data) : MESHX_SUCCESS;
 
     else
         err = meshx_api_ctrl.app_ctrl_cb ? meshx_api_ctrl.app_ctrl_cb(&msg->msg_type_u.ctrl_msg,
-                (const meshx_ctrl_payload_t*) msg->data) : ESP_OK;
+                (const meshx_ctrl_payload_t*) msg->data) : MESHX_SUCCESS;
 
     return err;
 }
@@ -62,12 +62,12 @@ static esp_err_t meshx_el_control_task_handler(const dev_struct_t *pdev, control
  * @param[in] msg_len       The message length.
  * @param[in] msg           Pointer to the message.
  *
- * @return ESP_OK on success, error code otherwise.
+ * @return MESHX_SUCCESS on success, error code otherwise.
  */
-static esp_err_t meshx_prepare_data_message(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg)
+static meshx_err_t meshx_prepare_data_message(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg)
 {
     if (!msg || msg_len > MESHX_APP_API_MSG_MAX_SIZE)
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
 
     MESSAGE_BUFF_CLEAR(meshx_api_ctrl.msg_buff);
 
@@ -78,7 +78,7 @@ static esp_err_t meshx_prepare_data_message(uint16_t element_id, uint16_t elemen
 
     memcpy(meshx_api_ctrl.msg_buff.data, msg, msg_len);
 
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -92,11 +92,11 @@ static esp_err_t meshx_prepare_data_message(uint16_t element_id, uint16_t elemen
  * @param[in] msg_len       The message length.
  * @param[in] msg           Pointer to the message.
  *
- * @return ESP_OK on success, error code otherwise.
+ * @return MESHX_SUCCESS on success, error code otherwise.
  */
-esp_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg)
+meshx_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg)
 {
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
 
     err = meshx_prepare_data_message(element_id, element_type, func_id, msg_len,msg);
     if(err)
@@ -120,11 +120,11 @@ esp_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, uint
  * @param[in] msg_len       The message length.
  * @param[in] msg           Pointer to the message.
  *
- * @return ESP_OK on success, error code otherwise.
+ * @return MESHX_SUCCESS on success, error code otherwise.
  */
-esp_err_t meshx_send_msg_to_element(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg)
+meshx_err_t meshx_send_msg_to_element(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg)
 {
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
 
     err = meshx_prepare_data_message(element_id, element_type, func_id, msg_len,msg);
     if(err)
@@ -144,11 +144,11 @@ esp_err_t meshx_send_msg_to_element(uint16_t element_id, uint16_t element_type, 
  *
  * @param[in] cb Pointer to the application callback.
  *
- * @return ESP_OK on success, error code otherwise.
+ * @return MESHX_SUCCESS on success, error code otherwise.
  */
-esp_err_t meshx_app_reg_element_callback(meshx_app_data_cb_t cb)
+meshx_err_t meshx_app_reg_element_callback(meshx_app_data_cb_t cb)
 {
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
 
     err = control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_TO_APP,
@@ -172,11 +172,11 @@ esp_err_t meshx_app_reg_element_callback(meshx_app_data_cb_t cb)
  *
  * @param[in] cb Pointer to the control callback.
  *
- * @return ESP_OK on success, error code otherwise.
+ * @return MESHX_SUCCESS on success, error code otherwise.
  */
-esp_err_t meshx_app_reg_system_events_callback(meshx_app_ctrl_cb_t cb)
+meshx_err_t meshx_app_reg_system_events_callback(meshx_app_ctrl_cb_t cb)
 {
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
 
     err = control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_TO_APP,

@@ -3,25 +3,38 @@
 # Filter only directories
 
 set(INTERFACE_DIRS
+    "interface"
     "interface/logging"
-    "interface/rtos")
+    "interface/rtos"
+)
 
 set(LOGGING_SRC
     "interface/logging/meshx_log.c")
 
+set(PLAT_DIRS
+    "port/esp32_idf/platform"
+)
+
 file(GLOB FREERTOS_SRC
-    "port/rtos/FreeRTOS/*.c")
+    "port/rtos/FreeRTOS/*.c"
+)
+
+file(GLOB PLAT_SRC
+    "port/esp32_idf/platform/*.c"
+)
 
 set(INC_DIRS
     ${DEP_INC}
     ${INTERFACE_DIRS}
-    )
+    ${PLAT_DIRS}
+)
 
 set(SRCSX
     ${DEP_SRC}
     ${LOGGING_SRC}
     ${FREERTOS_SRC}
-    )
+    ${PLAT_SRC}
+)
 
 message("       >> Include Dir: ${INC_DIRS}")
 message("       >> libmeshx.a : ${SRCSX}")
@@ -31,4 +44,5 @@ idf_component_register( SRCS ${SRCSX}
                         LDFRAGMENTS "meshx.lf"
                         REQUIRES bt
                                 nvs_flash
-                                unit_test)
+                                unit_test
+                    )

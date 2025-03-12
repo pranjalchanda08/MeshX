@@ -8,6 +8,8 @@
  */
 
 #pragma once
+
+#include "meshx_err.h"
 #include <esp_ble_mesh_defs.h>
 #include <esp_ble_mesh_common_api.h>
 #include <esp_ble_mesh_networking_api.h>
@@ -48,9 +50,9 @@ typedef struct meshx_onoff_cli_cb_reg {
 /**
  * @brief Initialize the On/Off client model.
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t meshx_onoff_client_init(void);
+meshx_err_t meshx_onoff_client_init(void);
 
 /**
  * @brief Register a callback for OnOff Client events.
@@ -60,9 +62,9 @@ esp_err_t meshx_onoff_client_init(void);
  *
  * @param[in] cb              Pointer to the callback function to register.
  * @param[in] config_evt_bmap Bitmap of events to register for.
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t meshx_onoff_reg_cb(meshx_onoff_cli_cb cb, uint32_t config_evt_bmap);
+meshx_err_t meshx_onoff_reg_cb(meshx_onoff_cli_cb cb, uint32_t config_evt_bmap);
 
 
 /**
@@ -79,12 +81,12 @@ esp_err_t meshx_onoff_reg_cb(meshx_onoff_cli_cb cb, uint32_t config_evt_bmap);
  * @param[in] tid     The transaction ID to be used for the message.
  *
  * @return
- *    - ESP_OK: Success
- *    - ESP_ERR_INVALID_ARG: Invalid argument
- *    - ESP_ERR_NO_MEM: Out of memory
+ *    - MESHX_SUCCESS: Success
+ *    - MESHX_INVALID_ARG: Invalid argument
+ *    - MESHX_NO_MEM: Out of memory
  *    - ESP_FAIL: Sending message failed
  */
-esp_err_t meshx_onoff_client_send_msg(esp_ble_mesh_model_t *model,
+meshx_err_t meshx_onoff_client_send_msg(esp_ble_mesh_model_t *model,
         uint16_t opcode,
         uint16_t addr,
         uint16_t net_idx,

@@ -21,7 +21,6 @@
 typedef struct meshx_msg_q
 {
     /* Public */
-    const char *msg_q_name; /**< Message Queue Name */
     int max_msg_len;        /**< Maximum Message Length */
     int max_msg_count;      /**< Maximum Message Count */
     /* Private */
@@ -69,11 +68,10 @@ meshx_err_t meshx_msg_q_send(meshx_msg_q_t *msg_q_handle, void const *msg, size_
  *
  * @param[in] msg_q_handle Message Queue Handle
  * @param[in] msg Message
- * @param[in] msg_len Message Length
  * @param[in] delay_ms Delay in milliseconds
  *
  * @return Message Queue Handle
  */
-meshx_err_t meshx_msg_q_recv(meshx_msg_q_t *msg_q_handle, void *msg, size_t msg_len, uint32_t delay_ms);
+meshx_err_t meshx_msg_q_recv(meshx_msg_q_t *msg_q_handle, void *msg, uint32_t delay_ms);
 
 #endif /* __MESHX_MSG_Q_H */

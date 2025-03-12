@@ -65,7 +65,7 @@ void meshx_light_client_cb(esp_ble_mesh_light_client_cb_event_t event,
 {
     ESP_LOGD(TAG, "evt|err|op|src|dst: %02x|%d|%04x|%04x|%04x",
             event, param->error_code, (unsigned)param->params->ctx.recv_op, param->params->ctx.addr, param->params->ctx.recv_dst);
-    if(param->error_code == ESP_OK)
+    if(param->error_code == MESHX_SUCCESS)
     {
         light_ctl_cli_reg_cb_dispatch(param, (light_ctl_cli_evt_t)BIT(event));
     }
@@ -81,18 +81,18 @@ void meshx_light_client_cb(esp_ble_mesh_light_client_cb_event_t event,
  * @param[in] config_evt_bmap   A bitmap representing the configuration events to register for.
  *
  * @return
- *    - ESP_OK: Success
- *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - MESHX_SUCCESS: Success
+ *    - MESHX_INVALID_ARG: Invalid argument
  *    - ESP_FAIL: Other failures
  */
-esp_err_t meshx_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap)
+meshx_err_t meshx_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap)
 {
     if (cb == NULL || config_evt_bmap == 0)
-        return ESP_ERR_INVALID_ARG; // Invalid arguments
+        return MESHX_INVALID_ARG; // Invalid arguments
 
     struct light_ctl_cli_cb_reg *new_entry = (struct light_ctl_cli_cb_reg *) malloc(sizeof(struct light_ctl_cli_cb_reg));
     if (new_entry == NULL)
-        return ESP_ERR_NO_MEM; // Memory allocation failed
+        return MESHX_NO_MEM; // Memory allocation failed
 
     new_entry->cb = cb;
     new_entry->evt_bmap = config_evt_bmap;
@@ -103,7 +103,7 @@ esp_err_t meshx_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap)
         xSemaphoreGive(light_ctl_cli_cb_reg_mutex);
     }
 
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -112,25 +112,25 @@ esp_err_t meshx_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap)
  * This function initializes the Light CTL Client model by registering the
  * Light Client callback with the BLE Mesh stack.
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t meshx_light_ctl_client_init()
+meshx_err_t meshx_light_ctl_client_init()
 {
     if (light_ctl_client_init_flag == LIGHT_CTL_CLIENT_INIT_MAGIC)
-        return ESP_OK;
+        return MESHX_SUCCESS;
 
     light_ctl_cli_cb_reg_mutex = xSemaphoreCreateMutex();
     if (light_ctl_cli_cb_reg_mutex == NULL)
-        return ESP_ERR_NO_MEM; // Failed to create mutex
+        return MESHX_NO_MEM; // Failed to create mutex
 
-    esp_err_t err = esp_ble_mesh_register_light_client_callback((esp_ble_mesh_light_client_cb_t)&meshx_light_client_cb);
-    if (err == ESP_OK)
+    meshx_err_t err = esp_ble_mesh_register_light_client_callback((esp_ble_mesh_light_client_cb_t)&meshx_light_client_cb);
+    if (err == MESHX_SUCCESS)
     {
         light_ctl_client_init_flag = LIGHT_CTL_CLIENT_INIT_MAGIC;
     }
     return err;
 }
- 
+
 /**
  * @brief Send a Light CTL message.
  *
@@ -139,18 +139,18 @@ esp_err_t meshx_light_ctl_client_init()
  * @param[in] params Pointer to the structure containing the message parameters.
  *
  * @return
- *    - ESP_OK: Success
+ *    - MESHX_SUCCESS: Success
  *    - Appropriate error code on failure
  */
-esp_err_t meshx_light_ctl_send_msg(light_ctl_send_args_t * params)
+meshx_err_t meshx_light_ctl_send_msg(light_ctl_send_args_t * params)
 {
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
     bool send_msg = false;
     esp_ble_mesh_client_common_param_t common = {0};
     esp_ble_mesh_light_client_set_state_t set = {0};
 
     if(params == NULL)
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
 
     common.model        = params->model;
     common.opcode       = params->opcode;
@@ -207,18 +207,18 @@ esp_err_t meshx_light_ctl_send_msg(light_ctl_send_args_t * params)
  * @param[in] params Pointer to a structure containing the parameters for the light temperature control message.
  *
  * @return
- *    - ESP_OK: Success
- *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - MESHX_SUCCESS: Success
+ *    - MESHX_INVALID_ARG: Invalid argument
  *    - ESP_FAIL: Sending message failed
  */
-esp_err_t meshx_light_ctl_temperature_send_msg(light_ctl_send_args_t * params)
+meshx_err_t meshx_light_ctl_temperature_send_msg(light_ctl_send_args_t * params)
 {
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
     esp_ble_mesh_client_common_param_t common = {0};
     esp_ble_mesh_light_client_set_state_t set = {0};
 
     if(params == NULL)
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
 
     common.model        = params->model;
     common.opcode       = params->opcode;

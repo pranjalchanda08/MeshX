@@ -29,9 +29,9 @@
  *
  * @param param Pointer to the callback parameter structure.
  *
- * @return ESP_OK on success, or an appropriate error code on failure.
+ * @return MESHX_SUCCESS on success, or an appropriate error code on failure.
  */
-typedef esp_err_t (* meshx_lighting_server_cb) (esp_ble_mesh_lighting_server_cb_param_t *param);
+typedef meshx_err_t (* meshx_lighting_server_cb) (esp_ble_mesh_lighting_server_cb_param_t *param);
 #else
 typedef control_task_msg_handle_t meshx_lighting_server_cb;
 #endif /* !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
@@ -60,17 +60,17 @@ SLIST_HEAD(meshx_lighting_server_cb_list, meshx_lighting_server_cb_reg);
  * @param[in] cb        The callback function to register.
  *
  * @return
- *    - ESP_OK: Success
- *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - MESHX_SUCCESS: Success
+ *    - MESHX_INVALID_ARG: Invalid argument
  *    - ESP_FAIL: Other failures
  */
-esp_err_t meshx_lighting_reg_cb(uint32_t model_id, meshx_lighting_server_cb cb);
+meshx_err_t meshx_lighting_reg_cb(uint32_t model_id, meshx_lighting_server_cb cb);
 
 /**
  * @brief Initialize the production lighting server.
  *
- * @return ESP_OK on success, or an appropriate error code on failure.
+ * @return MESHX_SUCCESS on success, or an appropriate error code on failure.
  */
-esp_err_t meshx_lighting_srv_init(void);
+meshx_err_t meshx_lighting_srv_init(void);
 
 #endif /* __MESHX_LIGHT_SERVER_H__ */

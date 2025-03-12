@@ -20,10 +20,10 @@
  * @param param Pointer to the BLE Mesh generic server callback parameter structure.
  *
  * @return
- *     - ESP_OK: Success
+ *     - MESHX_SUCCESS: Success
  *     - ESP_FAIL: Failure
  */
-static esp_err_t meshx_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *param)
+static meshx_err_t meshx_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *param)
 {
     esp_ble_mesh_gen_onoff_srv_t const *srv = (esp_ble_mesh_gen_onoff_srv_t *)param->model->user_data;
 
@@ -31,14 +31,14 @@ static esp_err_t meshx_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t 
     || (ESP_BLE_MESH_ADDR_BROADCAST(param->ctx.recv_dst))
     || (ESP_BLE_MESH_ADDR_IS_GROUP(param->ctx.recv_dst) && (esp_ble_mesh_is_model_subscribed_to_group(param->model, param->ctx.recv_dst))))
     {
-        esp_err_t err = control_task_msg_publish(
+        meshx_err_t err = control_task_msg_publish(
             CONTROL_TASK_MSG_CODE_EL_STATE_CH,
             CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF,
             srv,
             sizeof(esp_ble_mesh_gen_onoff_srv_t));
-        return err ? err : ESP_OK;
+        return err ? err : MESHX_SUCCESS;
     }
-    return ESP_ERR_NOT_ALLOWED;
+    return MESHX_NOT_SUPPORTED;
 }
 
 #if !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
@@ -52,11 +52,11 @@ static esp_err_t meshx_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t 
  *              details of the received message.
  *
  * @return
- *    - ESP_OK: Success
- *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - MESHX_SUCCESS: Success
+ *    - MESHX_INVALID_ARG: Invalid argument
  *    - ESP_FAIL: Other failures
  */
-static esp_err_t meshx_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param_t *param)
+static meshx_err_t meshx_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param_t *param)
 {
     esp_ble_mesh_gen_onoff_srv_t *srv = (esp_ble_mesh_gen_onoff_srv_t *)param->model->user_data;
     bool send_reply = (param->ctx.recv_op != ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK);
@@ -85,7 +85,7 @@ static esp_err_t meshx_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param
                                            sizeof(srv->state.onoff),
                                            &srv->state.onoff);
     }
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 #else
@@ -99,18 +99,18 @@ static esp_err_t meshx_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param
  *              details of the received message.
  *
  * @return
- *    - ESP_OK: Success
- *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - MESHX_SUCCESS: Success
+ *    - MESHX_INVALID_ARG: Invalid argument
  *    - ESP_FAIL: Other failures
  */
-static esp_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_task_msg_evt_t model_id, esp_ble_mesh_generic_server_cb_param_t *param)
+static meshx_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_task_msg_evt_t model_id, esp_ble_mesh_generic_server_cb_param_t *param)
 {
     ESP_UNUSED(pdev);
     ESP_LOGD(TAG, "op|src|dst:%04" PRIx32 "|%04x|%04x",
              param->ctx.recv_op, param->ctx.addr, param->ctx.recv_dst);
     if(model_id != ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV)
     {
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
     }
     esp_ble_mesh_gen_onoff_srv_t *srv = (esp_ble_mesh_gen_onoff_srv_t *)param->model->user_data;
     bool send_reply = (param->ctx.recv_op != ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK);
@@ -139,7 +139,7 @@ static esp_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_ta
                                            sizeof(srv->state.onoff),
                                            &srv->state.onoff);
     }
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 #endif /* !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
 /**
@@ -148,17 +148,17 @@ static esp_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_ta
  * This function initializes the On/Off server model for the BLE mesh node.
  *
  * @return
- *     - ESP_OK: Success
+ *     - MESHX_SUCCESS: Success
  *     - ESP_FAIL: Failure
  */
-esp_err_t meshx_on_off_server_init()
+meshx_err_t meshx_on_off_server_init()
 {
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
 #if CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
     /* Protect only one registration*/
     static uint8_t init_cnt = 0;
     if (init_cnt)
-        return ESP_OK;
+        return MESHX_SUCCESS;
     init_cnt++;
 #endif
 #if CONFIG_ENABLE_SERVER_COMMON

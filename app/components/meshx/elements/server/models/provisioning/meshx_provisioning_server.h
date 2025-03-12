@@ -38,9 +38,9 @@ extern esp_ble_mesh_prov_t g_meshx_prov;
  * @param[in] svr_cfg Pointer to the provisioning parameters structure containing the UUID.
  *
  * @return
- *    - ESP_OK: Success
+ *    - MESHX_SUCCESS: Success
  *    - ESP_FAIL: Failed to register provisioning callback
  */
-esp_err_t meshx_init_prov(const prov_params_t * svr_cfg);
+meshx_err_t meshx_init_prov(const prov_params_t * svr_cfg);
 
 #endif /* __MESHX_PROV__ */

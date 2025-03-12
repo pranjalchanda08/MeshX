@@ -64,11 +64,11 @@ static void meshx_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_
  * @param[in] cb        The callback function to register.
  *
  * @return
- *    - ESP_OK: Success
- *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - MESHX_SUCCESS: Success
+ *    - MESHX_INVALID_ARG: Invalid argument
  *    - ESP_FAIL: Other failures
  */
-esp_err_t meshx_lighting_reg_cb(uint32_t model_id, meshx_lighting_server_cb cb)
+meshx_err_t meshx_lighting_reg_cb(uint32_t model_id, meshx_lighting_server_cb cb)
 {
 #if !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
     if (xSemaphoreTake(meshx_lighting_server_mutex, portMAX_DELAY) == pdTRUE) {
@@ -78,7 +78,7 @@ esp_err_t meshx_lighting_reg_cb(uint32_t model_id, meshx_lighting_server_cb cb)
                 /* If already registered, overwrite */
                 entry->cb = cb;
                 xSemaphoreGive(meshx_lighting_server_mutex);
-                return ESP_OK;
+                return MESHX_SUCCESS;
             }
         }
 
@@ -86,7 +86,7 @@ esp_err_t meshx_lighting_reg_cb(uint32_t model_id, meshx_lighting_server_cb cb)
         if (!entry) {
             ESP_LOGE(TAG, "No Memory left for meshx_lighting_server_cb_reg_table");
             xSemaphoreGive(meshx_lighting_server_mutex);
-            return ESP_ERR_NO_MEM;
+            return MESHX_NO_MEM;
         }
 
         entry->model_id = model_id;
@@ -97,7 +97,7 @@ esp_err_t meshx_lighting_reg_cb(uint32_t model_id, meshx_lighting_server_cb cb)
 #else
     return control_task_msg_subscribe(CONTROL_TASK_MSG_CODE_FRM_BLE, model_id, (control_task_msg_handle_t)cb);
 #endif /* !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -107,13 +107,13 @@ esp_err_t meshx_lighting_reg_cb(uint32_t model_id, meshx_lighting_server_cb cb)
  * meshxuction lighting server for the BLE mesh node.
  *
  * @return
- *     - ESP_OK: Success
+ *     - MESHX_SUCCESS: Success
  *     - ESP_FAIL: Failed to initialize the lighting server
  */
-esp_err_t meshx_lighting_srv_init(void)
+meshx_err_t meshx_lighting_srv_init(void)
 {
     if (meshx_lighting_server_init == MESHX_SERVER_INIT_MAGIC_NO)
-        return ESP_OK;
+        return MESHX_SUCCESS;
 #if !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
     meshx_lighting_server_mutex = xSemaphoreCreateMutex();
     if (meshx_lighting_server_mutex == NULL) {

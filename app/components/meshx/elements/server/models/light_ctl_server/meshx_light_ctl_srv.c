@@ -47,10 +47,10 @@ typedef union ctl_status_pack{
  * @param param Pointer to the BLE Mesh lighting server callback parameters.
  *
  * @return
- *     - ESP_OK: Success
+ *     - MESHX_SUCCESS: Success
  *     - ESP_FAIL: Failure
  */
-static esp_err_t meshx_perform_hw_change(esp_ble_mesh_lighting_server_cb_param_t *param)
+static meshx_err_t meshx_perform_hw_change(esp_ble_mesh_lighting_server_cb_param_t *param)
 {
     const esp_ble_mesh_light_ctl_srv_t *srv = (esp_ble_mesh_light_ctl_srv_t*) param->model->user_data;
 
@@ -64,14 +64,14 @@ static esp_err_t meshx_perform_hw_change(esp_ble_mesh_lighting_server_cb_param_t
         ESP_LOGD(TAG, "HW change requested, Element_id: 0x%x",
                     param->model->element_idx);
 
-        esp_err_t err = control_task_msg_publish(
+        meshx_err_t err = control_task_msg_publish(
                             CONTROL_TASK_MSG_CODE_EL_STATE_CH,
                             CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL,
                             srv,
                             sizeof(esp_ble_mesh_light_ctl_srv_t));
         return err;
     }
-    return ESP_ERR_NOT_ALLOWED;
+    return MESHX_NOT_SUPPORTED;
 }
 
 #if !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
@@ -84,11 +84,11 @@ static esp_err_t meshx_perform_hw_change(esp_ble_mesh_lighting_server_cb_param_t
  * @param param Pointer to the BLE Mesh lighting server callback parameter structure.
  *
  * @return
- *    - ESP_OK: Success
- *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - MESHX_SUCCESS: Success
+ *    - MESHX_INVALID_ARG: Invalid argument
  *    - ESP_FAIL: Other failures
  */
-static esp_err_t meshx_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param_t *param)
+static meshx_err_t meshx_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param_t *param)
 {
 #else
 /**
@@ -102,16 +102,16 @@ static esp_err_t meshx_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_para
  * @param param Pointer to the BLE Mesh lighting server callback parameter structure.
  *
  * @return
- *    - ESP_OK: Success
- *    - ESP_ERR_INVALID_ARG: Invalid argument
+ *    - MESHX_SUCCESS: Success
+ *    - MESHX_INVALID_ARG: Invalid argument
  *    - ESP_FAIL: Other failures
  */
-static esp_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
+static meshx_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
     const control_task_msg_evt_t evt,
     esp_ble_mesh_lighting_server_cb_param_t *param)
 {
     if(!pdev || (evt != ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV && evt != ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SETUP_SRV))
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
 #endif /* !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
     esp_ble_mesh_light_ctl_srv_t *srv = (esp_ble_mesh_light_ctl_srv_t*) param->model->user_data;
 
@@ -119,7 +119,7 @@ static esp_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
     bool send_reply_to_src = false;
     uint8_t ctl_status_pack_len = 0;
     uint32_t op_code = param->ctx.recv_op;
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
 
     ctl_status_t ctl_status_union;
 
@@ -212,7 +212,7 @@ static esp_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
                 send_reply_to_src = true;
             }
 
-            ctl_status_union.ctl_temp_range.status_code = ESP_OK;
+            ctl_status_union.ctl_temp_range.status_code = MESHX_SUCCESS;
             ctl_status_union.ctl_temp_range.range_min = srv->state->temperature_range_min;
             ctl_status_union.ctl_temp_range.range_max = srv->state->temperature_range_max;
             ctl_status_pack_len = sizeof(ctl_status_union.ctl_temp_range);
@@ -254,10 +254,10 @@ static esp_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
  * @param temperature Temperature value to send.
  *
  * @return
- *     - ESP_OK: Success
+ *     - MESHX_SUCCESS: Success
  *     - ESP_FAIL: Failure
  */
-esp_err_t meshx_send_ctl_status(esp_ble_mesh_model_t *model, esp_ble_mesh_msg_ctx_t* ctx, uint16_t lightness, uint16_t temperature)
+meshx_err_t meshx_send_ctl_status(esp_ble_mesh_model_t *model, esp_ble_mesh_msg_ctx_t* ctx, uint16_t lightness, uint16_t temperature)
 {
     ctl_status_t ctl_status_pack;
 
@@ -274,17 +274,17 @@ esp_err_t meshx_send_ctl_status(esp_ble_mesh_model_t *model, esp_ble_mesh_msg_ct
  * the Light CTL Server to operate correctly.
  *
  * @return
- *     - ESP_OK: Success
+ *     - MESHX_SUCCESS: Success
  *     - ESP_FAIL: Failure
  */
-esp_err_t meshx_light_ctl_server_init(void)
+meshx_err_t meshx_light_ctl_server_init(void)
 {
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
 #if CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
     /* Protect only one registration */
     static uint8_t init_cntr = 0;
     if (init_cntr)
-        return ESP_OK;
+        return MESHX_SUCCESS;
     init_cntr++;
 #endif /* CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
 

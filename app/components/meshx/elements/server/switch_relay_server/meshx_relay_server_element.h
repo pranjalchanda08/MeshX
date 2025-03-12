@@ -61,8 +61,8 @@ typedef struct relay_element
  * @param[in] pdev          Pointer to device structure
  * @param[in] element_cnt   Maximum number of relay models
  *
- * @return esp_err_t
+ * @return meshx_err_t
  */
-esp_err_t create_relay_elements(dev_struct_t *pdev, uint16_t element_cnt);
+meshx_err_t create_relay_elements(dev_struct_t *pdev, uint16_t element_cnt);
 
 #endif /*__RELAY_SERVER_MODEL_H__*/

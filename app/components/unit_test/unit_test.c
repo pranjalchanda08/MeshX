@@ -27,14 +27,14 @@ static unit_test_callback_t callback_list[MODULE_ID_MAX];
  * @param argv An array of strings representing the arguments.
  *
  * @return
- *      - ESP_OK: If the unit test callback was successfully invoked.
- *      - ESP_ERR_INVALID_ARG: If the number of arguments is insufficient.
- *      - ESP_ERR_NOT_FOUND: If no unit test is registered for the specified module ID.
+ *      - MESHX_SUCCESS: If the unit test callback was successfully invoked.
+ *      - MESHX_INVALID_ARG: If the number of arguments is insufficient.
+ *      - MESHX_NOT_FOUND: If no unit test is registered for the specified module ID.
  */
-static esp_err_t ut_command_handler(int argc, char **argv) {
+static meshx_err_t ut_command_handler(int argc, char **argv) {
     if (argc < UT_CMD_MIN_ARGS) {
         ESP_LOGE(TAG, "Insufficient arguments");
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
     }
 
     int cmd_id = UT_GET_ARG(2, uint16_t, argv);
@@ -44,7 +44,7 @@ static esp_err_t ut_command_handler(int argc, char **argv) {
     if (parsed_argc > (argc - UT_CMD_MIN_ARGS))
     {
         ESP_LOGE(TAG, "Insufficient module arguments");
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
     }
 
     for (size_t i = 0; i < parsed_argc; i++)
@@ -54,7 +54,7 @@ static esp_err_t ut_command_handler(int argc, char **argv) {
 
     if (module_id >= MODULE_ID_MAX) {
         ESP_LOGE(TAG, "Module ID %d unknown", module_id);
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
     }
 
     if(NULL != callback_list[module_id].callback)
@@ -63,7 +63,7 @@ static esp_err_t ut_command_handler(int argc, char **argv) {
     }
 
     ESP_LOGE(TAG, "No unit test registered for module ID %d", module_id);
-    return ESP_ERR_NOT_FOUND;
+    return MESHX_NOT_FOUND;
 }
 
 /**
@@ -73,15 +73,15 @@ static esp_err_t ut_command_handler(int argc, char **argv) {
  * The command is registered with the ESP console using the esp_console_cmd_register function.
  *
  * @return
- *     - ESP_OK: Success
+ *     - MESHX_SUCCESS: Success
  *     - Other error codes: Failure
  */
-esp_err_t register_ut_command() {
+meshx_err_t register_ut_command() {
     const esp_console_cmd_t cmd = {
         .command = "ut",
         .help = "Run unit tests",
         .hint = NULL,
-        .func = &ut_command_handler,
+        .func = (esp_console_cmd_func_t)&ut_command_handler,
     };
     return esp_console_cmd_register(&cmd);
 }
@@ -92,12 +92,12 @@ esp_err_t register_ut_command() {
  * The command is registered with the ESP console using the esp_console_cmd_register function.
  *
  * @return
- *     - ESP_OK: Success
+ *     - MESHX_SUCCESS: Success
  *     - Other error codes: Failure
  */
-esp_err_t init_unit_test_console() {
+meshx_err_t init_unit_test_console() {
     // Initialize the console
-    esp_err_t err = ESP_OK;
+    meshx_err_t err = MESHX_SUCCESS;
     esp_console_repl_t *repl = NULL;
     esp_console_repl_config_t repl_config = ESP_CONSOLE_REPL_CONFIG_DEFAULT();
 
@@ -119,16 +119,16 @@ esp_err_t init_unit_test_console() {
 
     // Register the unit test command
     err = register_ut_command();
-    if (err != ESP_OK) {
+    if (err != MESHX_SUCCESS) {
         return err;
     }
 
     err = esp_console_start_repl(repl);
-    if (err != ESP_OK) {
+    if (err != MESHX_SUCCESS) {
         return err;
     }
 
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -140,14 +140,14 @@ esp_err_t init_unit_test_console() {
  * @param[in] callback      The callback function to be called for the unit test.
  *
  * @return
- *     - ESP_OK: Success
- *     - ESP_ERR_INVALID_ARG: Invalid arguments
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_INVALID_ARG: Invalid arguments
  *     - ESP_FAIL: Failed to register the unit test
  */
-esp_err_t register_unit_test(module_id_t module_id, module_callback_t callback) {
+meshx_err_t register_unit_test(module_id_t module_id, module_callback_t callback) {
     if(module_id >= MODULE_ID_MAX)
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
 
     callback_list[module_id].callback = callback;
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }

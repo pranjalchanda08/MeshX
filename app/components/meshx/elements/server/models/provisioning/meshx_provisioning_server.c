@@ -65,10 +65,10 @@ esp_ble_mesh_prov_t g_meshx_prov;
  * @param[in] param Pointer to the provisioning callback parameters.
  * @param[in] evt The event type to send to the control task.
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
 
-static esp_err_t send_control_msg(const esp_ble_mesh_prov_cb_param_t *param, control_task_msg_evt_provision_t evt)
+static meshx_err_t send_control_msg(const esp_ble_mesh_prov_cb_param_t *param, control_task_msg_evt_provision_t evt)
 {
     return control_task_msg_publish(CONTROL_TASK_MSG_CODE_PROVISION, evt, param, sizeof(esp_ble_mesh_prov_cb_param_t));
 }
@@ -91,7 +91,7 @@ static void meshx_provisioning_cb(esp_ble_mesh_prov_cb_event_t event,
     {
         /* Entry available in prov_cb_evt_ctrl_task_evt_table */
         ESP_LOGD(TAG, "%s", prov_cb_evt_ctrl_task_evt_table[event].evt_str);
-        if(send_control_msg(param,  prov_cb_evt_ctrl_task_evt_table[event].ctrl_task_evt) != ESP_OK)
+        if(send_control_msg(param,  prov_cb_evt_ctrl_task_evt_table[event].ctrl_task_evt) != MESHX_SUCCESS)
         {
             ESP_LOGE(TAG, "Failed to send control message");
         }
@@ -116,15 +116,15 @@ static void meshx_provisioning_cb(esp_ble_mesh_prov_cb_event_t event,
  * @param[in] svr_cfg Pointer to the provisioning parameters structure containing the UUID.
  *
  * @return
- *    - ESP_OK: Success
+ *    - MESHX_SUCCESS: Success
  *    - ESP_FAIL: Failed to register provisioning callback
  */
-esp_err_t meshx_init_prov(const prov_params_t * svr_cfg)
+meshx_err_t meshx_init_prov(const prov_params_t * svr_cfg)
 {
     if (!svr_cfg)
     {
         ESP_LOGE(TAG, "Invalid server configuration");
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
     }
     memcpy(&prov_params.uuid, svr_cfg->uuid, sizeof(prov_params.uuid));
 

@@ -15,7 +15,7 @@
 #include <meshx_nvs.h>
 #include <meshx_api.h>
 #include <meshx_elements.h>
-#include <ble_mesh_example_init.h>
+#include <meshx_err.h>
 
 #if CONFIG_ENABLE_UNIT_TEST
 #include <unit_test.h>
@@ -31,7 +31,7 @@
  * @return       Error code
  */
 #define ESP_ERR_PRINT_RET(_e_str, _err)            \
-    if (_err != ESP_OK)                            \
+    if (_err != MESHX_SUCCESS)                            \
     {                                              \
         ESP_LOGE(TAG, _e_str " (err 0x%x)", _err); \
         return _err;                               \
@@ -72,8 +72,8 @@ typedef struct meshx_config
  *
  * @param[in] config Pointer to the configuration structure
  *
- * @return ESP_OK, Success
+ * @return MESHX_SUCCESS, Success
  */
-esp_err_t meshx_init(meshx_config_t const *config);
+meshx_err_t meshx_init(meshx_config_t const *config);
 
 #endif /* __MESHX_H__ */

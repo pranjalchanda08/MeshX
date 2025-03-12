@@ -23,6 +23,8 @@
 #include "freertos/semphr.h"
 #include "sys/queue.h"
 
+#include "meshx_err.h"
+
 #define MESHX_CONFIG_SERVER_INSTANCE g_meshx_config_server
 
 /**
@@ -56,9 +58,9 @@ extern esp_ble_mesh_cfg_srv_t g_meshx_config_server;
 /**
  * @brief Initialize the meshxuction configuration server.
  *
- * @return ESP_OK on success, or an error code on failure.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-esp_err_t meshx_init_config_server();
+meshx_err_t meshx_init_config_server();
 
 /**
  * @brief Registers a configuration server callback for specific events.
@@ -68,8 +70,8 @@ esp_err_t meshx_init_config_server();
  * @param[in] cb Callback function to register.
  * @param[in] config_evt_bmap Bitmap of events the callback is interested in.
  *
- * @return ESP_OK on success, an error code otherwise.
+ * @return MESHX_SUCCESS on success, an error code otherwise.
  */
-esp_err_t meshx_config_server_cb_reg(config_srv_cb cb, uint32_t config_evt_bmap);
+meshx_err_t meshx_config_server_cb_reg(config_srv_cb cb, uint32_t config_evt_bmap);
 
 #endif /* __MESHX_CONFIG_SERVER__ */

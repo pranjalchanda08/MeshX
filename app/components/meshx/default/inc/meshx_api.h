@@ -182,9 +182,9 @@ typedef struct meshx_app_api_msg
  * @param[in] msg_hdr   Pointer to the BLE Mesh application message header.
  * @param[in] msg       Pointer to the message.
  *
- * @return ESP_OK on success, error code otherwise.
+ * @return MESHX_SUCCESS on success, error code otherwise.
  */
-typedef esp_err_t (*meshx_app_data_cb_t)(const meshx_app_element_msg_header_t *msg_hdr, const meshx_data_payload_t *msg);
+typedef meshx_err_t (*meshx_app_data_cb_t)(const meshx_app_element_msg_header_t *msg_hdr, const meshx_data_payload_t *msg);
 
 /**
  * @brief BLE Mesh application control callback function.
@@ -194,9 +194,9 @@ typedef esp_err_t (*meshx_app_data_cb_t)(const meshx_app_element_msg_header_t *m
  * @param[in] msg_hdr   Pointer to the BLE Mesh application control message header.
  * @param[in] msg       Pointer to the message.
  *
- * @return ESP_OK on success, error code otherwise.
+ * @return MESHX_SUCCESS on success, error code otherwise.
  */
-typedef esp_err_t (*meshx_app_ctrl_cb_t)(const meshx_ctrl_msg_header_t *msg_hdr, const meshx_ctrl_payload_t *msg);
+typedef meshx_err_t (*meshx_app_ctrl_cb_t)(const meshx_ctrl_msg_header_t *msg_hdr, const meshx_ctrl_payload_t *msg);
 
 /**
  * @brief Sends a message to the BLE Mesh application.
@@ -209,9 +209,9 @@ typedef esp_err_t (*meshx_app_ctrl_cb_t)(const meshx_ctrl_msg_header_t *msg_hdr,
  * @param[in] msg_len       The message length.
  * @param[in] msg           Pointer to the message.
  *
- * @return ESP_OK on success, error code otherwise.
+ * @return MESHX_SUCCESS on success, error code otherwise.
  */
-esp_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg);
+meshx_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg);
 
 /**
  * @brief Sends a message to the element
@@ -224,9 +224,9 @@ esp_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, uint
  * @param[in] msg_len       The message length.
  * @param[in] msg           Pointer to the message.
  *
- * @return ESP_OK on success, error code otherwise.
+ * @return MESHX_SUCCESS on success, error code otherwise.
  */
-esp_err_t meshx_send_msg_to_element(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg);
+meshx_err_t meshx_send_msg_to_element(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg);
 
 /**
  * @brief Registers the BLE Mesh application callback.
@@ -235,9 +235,9 @@ esp_err_t meshx_send_msg_to_element(uint16_t element_id, uint16_t element_type, 
  *
  * @param[in] cb Pointer to the application callback.
  *
- * @return ESP_OK on success, error code otherwise.
+ * @return MESHX_SUCCESS on success, error code otherwise.
  */
-esp_err_t meshx_app_reg_element_callback(meshx_app_data_cb_t cb);
+meshx_err_t meshx_app_reg_element_callback(meshx_app_data_cb_t cb);
 
 /**
  * @brief Registers the BLE Mesh application control callback.
@@ -246,8 +246,8 @@ esp_err_t meshx_app_reg_element_callback(meshx_app_data_cb_t cb);
  *
  * @param[in] cb Pointer to the control callback.
  *
- * @return ESP_OK on success, error code otherwise.
+ * @return MESHX_SUCCESS on success, error code otherwise.
  */
-esp_err_t meshx_app_reg_system_events_callback(meshx_app_ctrl_cb_t cb);
+meshx_err_t meshx_app_reg_system_events_callback(meshx_app_ctrl_cb_t cb);
 
 #endif /* __MESHX_API_H__ */
