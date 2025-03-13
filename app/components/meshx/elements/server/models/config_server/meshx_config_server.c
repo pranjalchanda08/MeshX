@@ -53,7 +53,7 @@ static const config_server_model_evt_map_t config_server_model_evt_map_table[] =
 static SemaphoreHandle_t config_server_mutex;
 
 /* Global variable for Configuration Server parameters */
-esp_ble_mesh_cfg_srv_t g_meshx_config_server = {
+MESHX_CFG_SRV g_meshx_config_server = {
     /* 3 transmissions with 20ms interval */
     .net_transmit = ESP_BLE_MESH_TRANSMIT(2, 20),
     .relay = ESP_BLE_MESH_RELAY_ENABLED,

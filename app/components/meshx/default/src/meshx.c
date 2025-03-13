@@ -58,7 +58,7 @@ static meshx_config_t g_config;
 static meshx_os_timer_t *g_boot_timer;
 
 extern size_t get_root_sig_models_count(void);
-extern esp_ble_mesh_model_t * get_root_sig_models(void);
+extern MESHX_MODEL * get_root_sig_models(void);
 extern meshx_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_config_t const *config);
 
 /**

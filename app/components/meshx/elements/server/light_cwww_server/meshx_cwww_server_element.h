@@ -86,11 +86,11 @@ typedef struct cwww_element
     size_t element_id_end;
     size_t element_id_start;
     cwww_server_ctx_t *cwww_server_ctx;
-    esp_ble_mesh_model_t **cwww_server_sig_model_list;
-    esp_ble_mesh_model_pub_t **cwww_server_pub_list;
-    esp_ble_mesh_gen_onoff_srv_t *cwww_server_onoff_gen_list;
-    esp_ble_mesh_light_ctl_srv_t *cwww_server_light_ctl_list;
-    esp_ble_mesh_light_ctl_state_t *cwww_light_ctl_state;
+    MESHX_MODEL **cwww_server_sig_model_list;
+    MESHX_MODEL_PUB **cwww_server_pub_list;
+    MESHX_GEN_ONOFF_SRV *cwww_server_onoff_gen_list;
+    MESHX_LIGHT_CTL_SRV *cwww_server_light_ctl_list;
+    MESHX_LIGHT_CTL_STATE *cwww_light_ctl_state;
 } cwww_elements_t;
 
 /**

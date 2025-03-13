@@ -50,9 +50,9 @@ typedef struct relay_element
     size_t element_id_end;                                     /**< Ending ID of the element */
     size_t element_id_start;                                   /**< Starting ID of the element */
     relay_srv_model_ctx_t *meshx_gen_ctx;                      /**< Context of the relay server */
-    esp_ble_mesh_model_t **relay_server_sig_model_list;        /**< List of relay server SIG model structures */
-    esp_ble_mesh_model_pub_t *relay_server_pub_list;           /**< List of relay server publication structures */
-    esp_ble_mesh_gen_onoff_srv_t *relay_server_onoff_gen_list; /**< List of relay server on/off generic structures */
+    MESHX_MODEL **relay_server_sig_model_list;        /**< List of relay server SIG model structures */
+    MESHX_MODEL_PUB *relay_server_pub_list;           /**< List of relay server publication structures */
+    MESHX_GEN_ONOFF_SRV *relay_server_onoff_gen_list; /**< List of relay server on/off generic structures */
 } relay_elements_t;
 
 /**

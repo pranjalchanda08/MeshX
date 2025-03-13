@@ -116,9 +116,9 @@ typedef struct relay_client_element
     size_t element_id_start;                         /**< Starting ID of the element */
     size_t element_model_init;                       /**< Initialization status of the element model */
     rel_cli_ctx_t *rel_cli_ctx;                      /**< Pointer to the relay client context */
-    esp_ble_mesh_model_pub_t *relay_cli_pub_list;    /**< Pointer to the list of relay client publication structures */
+    MESHX_MODEL_PUB *relay_cli_pub_list;    /**< Pointer to the list of relay client publication structures */
     esp_ble_mesh_client_t *relay_cli_onoff_gen_list; /**< Pointer to the list of relay client on/off generic structures */
-    esp_ble_mesh_model_t **relay_cli_sig_model_list; /**< Pointer to the list of relay client SIG model structures */
+    MESHX_MODEL **relay_cli_sig_model_list; /**< Pointer to the list of relay client SIG model structures */
 } relay_client_elements_t;
 
 /**

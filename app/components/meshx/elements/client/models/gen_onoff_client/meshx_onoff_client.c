@@ -162,7 +162,7 @@ meshx_err_t meshx_onoff_client_init(void)
  *    - MESHX_FAIL: Sending message failed
  */
 meshx_err_t meshx_onoff_client_send_msg(
-        esp_ble_mesh_model_t *model,
+        MESHX_MODEL *model,
         uint16_t opcode,
         uint16_t addr,
         uint16_t net_idx,

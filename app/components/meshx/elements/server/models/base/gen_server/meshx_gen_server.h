@@ -28,7 +28,7 @@
  * @param param Pointer to the callback parameter structure.
  * @return MESHX_SUCCESS on success, or an appropriate error code on failure.
  */
-typedef meshx_err_t (* meshx_server_cb) (esp_ble_mesh_generic_server_cb_param_t *param);
+typedef meshx_err_t (* meshx_server_cb) (MESHX_GEN_SRV_CB_PARAM *param);
 #else
 
 typedef control_task_msg_handle_t meshx_server_cb;

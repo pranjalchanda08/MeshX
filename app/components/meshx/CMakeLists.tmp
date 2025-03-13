@@ -12,6 +12,9 @@ set(LOGGING_SRC
     "interface/logging/meshx_log.c")
 
 set(PLAT_DIRS
+    "port"
+    "port/esp32_idf"
+    "port/esp32_idf/ble_mesh/common"
     "port/esp32_idf/platform"
 )
 

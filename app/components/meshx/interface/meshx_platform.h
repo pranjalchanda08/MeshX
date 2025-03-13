@@ -10,6 +10,7 @@
 #define __MESHX_PLATFORM_H_
 
 #include "meshx_err.h"
+#include "meshx_platform_ble_mesh.h"
 
 /**
  * @brief Initializes the MeshX platform.
