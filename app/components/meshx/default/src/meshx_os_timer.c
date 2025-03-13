@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file os_timer.c
+ * @file meshx_os_timer.c
  * @brief Implementation of OS timer functionalities for BLE mesh node.
  *
  * This file contains the implementation of the OS timer functionalities used in the BLE mesh node application.
@@ -10,7 +10,7 @@
  * @author Pranjal Chanda
  */
 
-#include "os_timer.h"
+#include "meshx_os_timer.h"
 
 #define OS_TIMER_INIT_MAGIC 0x3892
 /**
@@ -29,18 +29,18 @@
                                         CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE)
 
 /**
- * @struct os_timer_reg_head
+ * @struct meshx_os_timer_reg_head
  * @brief Head of the singly linked list for OS timer control task message parameters.
  */
-SLIST_HEAD(os_timer_reg_head, os_timer);
+SLIST_HEAD(meshx_os_timer_reg_head, meshx_os_timer);
 
 /**
- * @var os_timer_reg_table_head
+ * @var meshx_os_timer_reg_table_head
  * @brief Head of the OS timer registration table.
  *
  * This is initialized using the SLIST_HEAD_INITIALIZER macro.
  */
-static struct os_timer_reg_head os_timer_reg_table_head = SLIST_HEAD_INITIALIZER(os_timer_reg_table_head);
+static struct meshx_os_timer_reg_head meshx_os_timer_reg_table_head = SLIST_HEAD_INITIALIZER(os_timer_reg_table_head);
 
 #if CONFIG_ENABLE_UNIT_TEST
 
@@ -56,13 +56,13 @@ typedef enum
     OS_TIMER_CLI_CMD_DELETE,
     OS_TIMER_CLI_CMD_PERIOD_SET,
     OS_TIMER_CLI_CMD_MAX
-} os_timer_cli_cmd_t;
+} meshx_os_timer_cli_cmd_t;
 
 /**
  * @brief OS Timer Unit Test Callback handler
  * @param[in] p_timer   Callback params
  */
-static void os_timer_ut_cb_handler(const os_timer_t *p_timer)
+static void meshx_os_timer_ut_cb_handler(const meshx_os_timer_t *p_timer)
 {
     MESHX_LOGI(MODULE_ID_COMPONENT_OS_TIMER, "%s|%ld", OS_TMER_GET_TIMER_NAME(p_timer), p_timer->period);
 }
@@ -82,14 +82,14 @@ static void os_timer_ut_cb_handler(const os_timer_t *p_timer)
  *     - MESHX_INVALID_ARG: Invalid arguments
  *     - Other error codes depending on the implementation
  */
-static meshx_err_t os_timer_unit_test_cb_handler(int cmd_id, int argc, char **argv)
+static meshx_err_t meshx_os_timer_unit_test_cb_handler(int cmd_id, int argc, char **argv)
 {
     meshx_err_t err = MESHX_SUCCESS;
-    os_timer_cli_cmd_t cmd = (os_timer_cli_cmd_t)cmd_id;
+    meshx_os_timer_cli_cmd_t cmd = (meshx_os_timer_cli_cmd_t)cmd_id;
 
     uint32_t ut_period = 0;
     bool ut_reload = false;
-    static os_timer_t *ut_os_timer;
+    static meshx_os_timer_t *ut_os_timer;
 
     MESHX_LOGD(MODULE_ID_COMPONENT_OS_TIMER, "argc|cmd_id: %d|%d", argc, cmd_id);
     if (cmd_id >= OS_TIMER_CLI_CMD_MAX)
@@ -104,28 +104,28 @@ static meshx_err_t os_timer_unit_test_cb_handler(int cmd_id, int argc, char **ar
         /* ut 2 0 2 [period_ms] [reload]*/
         ut_period = UT_GET_ARG(0, uint32_t, argv);
         ut_reload = UT_GET_ARG(1, uint32_t, argv) == 0 ? false : true;
-        err = os_timer_create("OS_TIMER_UT", ut_period, ut_reload, os_timer_ut_cb_handler, &ut_os_timer);
+        err = meshx_os_timer_create("OS_TIMER_UT", ut_period, ut_reload, meshx_os_timer_ut_cb_handler, &ut_os_timer);
         break;
     case OS_TIMER_CLI_CMD_ARM:
         /* ut 2 1 0 */
-        err = os_timer_start(ut_os_timer);
+        err = meshx_os_timer_start(ut_os_timer);
         break;
     case OS_TIMER_CLI_CMD_REARM:
         /* ut 2 2 0 */
-        err = os_timer_restart(ut_os_timer);
+        err = meshx_os_timer_restart(ut_os_timer);
         break;
     case OS_TIMER_CLI_CMD_DISARM:
         /* ut 2 3 0 */
-        err = os_timer_stop(ut_os_timer);
+        err = meshx_os_timer_stop(ut_os_timer);
         break;
     case OS_TIMER_CLI_CMD_DELETE:
         /* ut 2 4 0 */
-        err = os_timer_delete(&ut_os_timer);
+        err = meshx_os_timer_delete(&ut_os_timer);
         break;
     case OS_TIMER_CLI_CMD_PERIOD_SET:
         /* ut 2 5 1 [new period ms] */
         ut_period = UT_GET_ARG(0, uint32_t, argv);
-        err = os_timer_set_period(ut_os_timer, ut_period);
+        err = meshx_os_timer_set_period(ut_os_timer, ut_period);
         break;
     default:
         break;
@@ -145,10 +145,10 @@ static meshx_err_t os_timer_unit_test_cb_handler(int cmd_id, int argc, char **ar
  *
  * @param timer_handle  Timer haandle callback param
  */
-static void os_timer_fire_cb(const void* timer_handle)
+static void meshx_os_timer_fire_cb(const void* timer_handle)
 {
-    os_timer_t *msg_params;
-    SLIST_FOREACH(msg_params, &os_timer_reg_table_head, next)
+    meshx_os_timer_t *msg_params;
+    SLIST_FOREACH(msg_params, &meshx_os_timer_reg_table_head, next)
     {
         if (msg_params == timer_handle)
         {
@@ -172,9 +172,9 @@ static void os_timer_fire_cb(const void* timer_handle)
  * @param params    Pointer to the event parameters.
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static meshx_err_t os_timer_control_task_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)
+static meshx_err_t meshx_os_timer_control_task_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)
 {
-    os_timer_t *msg_params = (os_timer_t *)params;
+    meshx_os_timer_t *msg_params = (meshx_os_timer_t *)params;
     meshx_err_t err = MESHX_SUCCESS;
 
     switch (evt)
@@ -223,11 +223,11 @@ static meshx_err_t os_timer_control_task_cb(const dev_struct_t *pdev, control_ta
  *
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-meshx_err_t os_timer_init(void)
+meshx_err_t meshx_os_timer_init(void)
 {
     meshx_err_t err;
 #if CONFIG_ENABLE_UNIT_TEST
-    err = register_unit_test(MODULE_ID_COMPONENT_OS_TIMER, &os_timer_unit_test_cb_handler);
+    err = register_unit_test(MODULE_ID_COMPONENT_OS_TIMER, &meshx_os_timer_unit_test_cb_handler);
     if (err)
     {
         MESHX_LOGE(MODULE_ID_COMPONENT_OS_TIMER, "unit_test reg failed: (%d)", err);
@@ -237,7 +237,7 @@ meshx_err_t os_timer_init(void)
     err = control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_SYSTEM,
         OS_TIMER_CONTROL_TASK_EVT_MASK,
-        (control_task_msg_handle_t)&os_timer_control_task_cb);
+        (control_task_msg_handle_t)&meshx_os_timer_control_task_cb);
 
     return err;
 }
@@ -255,17 +255,17 @@ meshx_err_t os_timer_init(void)
  *
  * Example:
  * ```c
- *  os_timer_t * os_timer_inst;
- *  meshx_err_t err = os_timer_create("Example_Timer", 1000, 1, &example_os_timer_cb, &os_timer_inst);
+ *  meshx_os_timer_t * meshx_os_timer_inst;
+ *  meshx_err_t err = meshx_os_timer_create("Example_Timer", 1000, 1, &example_os_timer_cb, &os_timer_inst);
  * ```
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-meshx_err_t os_timer_create(
+meshx_err_t meshx_os_timer_create(
     const char *name,
     uint32_t period,
     bool reload,
-    os_timer_cb_t cb,
-    os_timer_t **timer_handle)
+    meshx_os_timer_cb_t cb,
+    meshx_os_timer_t **timer_handle)
 {
     if (timer_handle == NULL)
     {
@@ -277,7 +277,7 @@ meshx_err_t os_timer_create(
 
     meshx_err_t err = MESHX_SUCCESS;
 
-    *timer_handle = (os_timer_t *)malloc(OS_TIMER_SIZE);
+    *timer_handle = (meshx_os_timer_t *)malloc(OS_TIMER_SIZE);
     if (*timer_handle == NULL)
         return MESHX_NO_MEM;
 
@@ -286,7 +286,7 @@ meshx_err_t os_timer_create(
 
     err = meshx_rtos_timer_create(&(*timer_handle)->timer_handle,
         name,
-        (meshx_rtos_timer_callback_t)&os_timer_fire_cb,
+        (meshx_rtos_timer_callback_t)&meshx_os_timer_fire_cb,
         *timer_handle,
         period,
         reload);
@@ -296,7 +296,7 @@ meshx_err_t os_timer_create(
         return err;
     }
 
-    SLIST_INSERT_HEAD(&os_timer_reg_table_head, (*timer_handle), next);
+    SLIST_INSERT_HEAD(&meshx_os_timer_reg_table_head, (*timer_handle), next);
     (*timer_handle)->init = OS_TIMER_INIT_MAGIC;
 
     return err;
@@ -311,7 +311,7 @@ meshx_err_t os_timer_create(
  *
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-meshx_err_t os_timer_start(const os_timer_t *timer_handle)
+meshx_err_t meshx_os_timer_start(const meshx_os_timer_t *timer_handle)
 {
     if (timer_handle == NULL)
     {
@@ -336,7 +336,7 @@ meshx_err_t os_timer_start(const os_timer_t *timer_handle)
  *
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-meshx_err_t os_timer_restart(const os_timer_t *timer_handle)
+meshx_err_t meshx_os_timer_restart(const meshx_os_timer_t *timer_handle)
 {
     if (timer_handle == NULL)
     {
@@ -362,7 +362,7 @@ meshx_err_t os_timer_restart(const os_timer_t *timer_handle)
  *
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-meshx_err_t os_timer_set_period(os_timer_t *timer_handle, const uint32_t period_ms)
+meshx_err_t meshx_os_timer_set_period(meshx_os_timer_t *timer_handle, const uint32_t period_ms)
 {
     if (timer_handle == NULL)
     {
@@ -389,7 +389,7 @@ meshx_err_t os_timer_set_period(os_timer_t *timer_handle, const uint32_t period_
  *
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-meshx_err_t os_timer_stop(const os_timer_t *timer_handle)
+meshx_err_t meshx_os_timer_stop(const meshx_os_timer_t *timer_handle)
 {
     if (timer_handle == NULL)
     {
@@ -415,7 +415,7 @@ meshx_err_t os_timer_stop(const os_timer_t *timer_handle)
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
 
-meshx_err_t os_timer_delete(os_timer_t **timer_handle)
+meshx_err_t meshx_os_timer_delete(meshx_os_timer_t **timer_handle)
 {
     meshx_err_t err;
 
@@ -435,7 +435,7 @@ meshx_err_t os_timer_delete(os_timer_t **timer_handle)
 
     (*timer_handle)->init = 0;
 
-    SLIST_REMOVE(&os_timer_reg_table_head, *timer_handle, os_timer, next);
+    SLIST_REMOVE(&meshx_os_timer_reg_table_head, *timer_handle, meshx_os_timer, next);
     free(*timer_handle);
 
     return MESHX_SUCCESS;

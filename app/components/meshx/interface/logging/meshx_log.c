@@ -36,18 +36,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-static meshx_log_level_t module_log_level[MODULE_ID_MAX] =
-{
-    [MODULE_ID_COMMON] = MESHX_LOG_DEBUG,
-    [MODULE_ID_MODEL_SERVER] = MESHX_LOG_DEBUG,
-    [MODULE_ID_MODEL_CLIENT] = MESHX_LOG_DEBUG,
-    [MODULE_ID_COMPONENT_OS_TIMER] = MESHX_LOG_DEBUG,
-    [MODULE_ID_COMPONENT_MESHX_NVS] = MESHX_LOG_DEBUG,
-    [MODULE_ID_ELEMENT_LIGHT_CWWW_SERVER] = MESHX_LOG_DEBUG,
-    [MODULE_ID_ELEMENT_LIGHT_CWWWW_CLIENT] = MESHX_LOG_DEBUG,
-    [MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER] = MESHX_LOG_DEBUG,
-    [MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT] = MESHX_LOG_DEBUG,
-};
+static meshx_log_level_t module_log_level[MODULE_ID_MAX];
 
 static const char * log_lvl_str [MESHX_LOG_MAX] =
 {
@@ -75,6 +64,10 @@ meshx_err_t meshx_logging_init(const meshx_logging_t *config)
         return MESHX_INVALID_ARG;
 
     meshx_logging_ctrl.def_log_level = config->def_log_level;
+    for (size_t i = 0; i < MODULE_ID_MAX; i++)
+    {
+        module_log_level[i] = CONFIG_MESHX_DEFAULT_LOG_LEVEL;
+    }
 
     return MESHX_SUCCESS;
 }
