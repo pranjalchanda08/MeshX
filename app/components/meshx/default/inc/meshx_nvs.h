@@ -14,7 +14,7 @@
 
 #include <stdint.h>
 #include "meshx_control_task.h"
-#include "os_timer.h"
+#include "meshx_os_timer.h"
 #include "nvs.h"
 
 #define MESHX_NVS_TIMER_PERIOD_DEF  1000
@@ -36,7 +36,7 @@ typedef struct meshx_nvs {
     uint16_t pid;                           /**< Product ID */
     nvs_handle_t meshx_nvs_handle;          /**< NVS handle */
 #ifdef MESHX_NVS_TIMER_PERIOD
-    os_timer_t *meshx_nvs_stability_timer;  /**< NVS stability timer */
+    meshx_os_timer_t *meshx_nvs_stability_timer;  /**< NVS stability timer */
 #endif /* MESHX_NVS_TIMER_PERIOD */
 }meshx_nvs_t;
 

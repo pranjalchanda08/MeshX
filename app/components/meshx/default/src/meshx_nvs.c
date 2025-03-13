@@ -23,7 +23,7 @@
 #define MESHX_NVS_NAMESPACE_CID     "MESHX_CID"
 #define MESHX_NVS_TIMER_NAME        "MESHX_COMMIT_TIMER"
 #define MESHX_NVS_ELEMENT_CTX       "MESHX_EL_%04x"
-#define MESHX_NVS_RELOAD_ONE_SHOT   pdFALSE
+#define MESHX_NVS_RELOAD_ONE_SHOT   0
 
 #if CONFIG_ENABLE_UNIT_TEST
 #define MESHX_NVS_UNIT_TEST_KEY     "MESHX_UT"
@@ -41,18 +41,18 @@ static meshx_nvs_t meshx_nvs_inst;
  * @brief MeshX NVS Timer callback.
  * @note This is responsible for performing the commit after stability timeout
  *
- * @param[in]   p_timer     os_timer param pointer
+ * @param[in]   p_timer     meshx_os_timer param pointer
  * @return None
  *
  */
-static void meshx_nvs_os_timer_cb(const os_timer_t *p_timer)
+static void meshx_nvs_os_timer_cb(const meshx_os_timer_t *p_timer)
 {
     meshx_err_t err = MESHX_SUCCESS;
-    ESP_LOGD(TAG, "%s fire", OS_TMER_GET_TIMER_NAME(p_timer));
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_NVS, "%s fire", OS_TMER_GET_TIMER_NAME(p_timer));
 
     err = meshx_nvs_commit();
     if (err)
-        ESP_LOGE(TAG, "meshx_nvs_commit %p", (void *)err);
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "meshx_nvs_commit %p", (void *)err);
 }
 #endif /* MESHX_NVS_TIMER_PERIOD */
 
@@ -73,7 +73,7 @@ static meshx_err_t meshx_nvs_erase_prod_init(uint16_t cid, uint16_t pid)
     err = meshx_nvs_erase();
     if (err)
     {
-        ESP_LOGE(TAG, "meshx_nvs_erase %p", (void *)err);
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "meshx_nvs_erase %p", (void *)err);
         return err;
     }
 
@@ -88,7 +88,7 @@ static meshx_err_t meshx_nvs_erase_prod_init(uint16_t cid, uint16_t pid)
 
     if (err)
     {
-        ESP_LOGE(TAG, "meshx_nvs_set %p", (void *)err);
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "meshx_nvs_set %p", (void *)err);
         return err;
     }
 
@@ -100,7 +100,7 @@ static meshx_err_t meshx_nvs_erase_prod_init(uint16_t cid, uint16_t pid)
 
     if (err)
     {
-        ESP_LOGE(TAG, "meshx_nvs_set %p", (void *)err);
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "meshx_nvs_set %p", (void *)err);
         return err;
     }
 
@@ -120,7 +120,7 @@ meshx_err_t meshx_nvs_init(void)
     err = register_unit_test(MODULE_ID_COMPONENT_MESHX_NVS, &meshx_nvs_unit_test_cb_handler);
     if (err)
     {
-        ESP_LOGE(TAG, "unit_test reg failed: (%d)", err);
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "unit_test reg failed: (%d)", err);
         return err;
     }
 #endif /* CONFIG_ENABLE_UNIT_TEST */
@@ -166,7 +166,7 @@ meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_m
 #endif /* CONFIG_BLE_MESH_SPECIFIC_PARTITION */
     if (err)
     {
-        ESP_LOGE(TAG, "nvs_open %p", (void *)err);
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "nvs_open %p", (void *)err);
         return err;
     }
 
@@ -175,7 +175,7 @@ meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_m
     {
         commit_timeout_ms = MESHX_NVS_TIMER_PERIOD;
     }
-    err = os_timer_create(
+    err = meshx_os_timer_create(
         MESHX_NVS_TIMER_NAME,
         commit_timeout_ms,
         MESHX_NVS_RELOAD_ONE_SHOT,
@@ -183,7 +183,7 @@ meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_m
         &(meshx_nvs_inst.meshx_nvs_stability_timer));
     if (err)
     {
-        ESP_LOGE(TAG, "os_timer_create %p", (void *)err);
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "os_timer_create %p", (void *)err);
         return err;
     }
 #else
@@ -204,7 +204,7 @@ meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_m
 
     if(err != MESHX_SUCCESS)
     {
-        ESP_LOGW(TAG, "Product ID not found in NVS reinitializing MeshX NVS");
+        MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_NVS, "Product ID not found in NVS reinitializing MeshX NVS");
         err = meshx_nvs_erase_prod_init(cid, pid);
     }
 
@@ -212,11 +212,11 @@ meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_m
     {
         if (meshx_nvs_inst.cid == cid && meshx_nvs_inst.pid == pid)
         {
-            ESP_LOGI(TAG, "Product ID match: %x|%x", meshx_nvs_inst.pid, meshx_nvs_inst.cid);
+            MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "Product ID match: %x|%x", meshx_nvs_inst.pid, meshx_nvs_inst.cid);
         }
         else
         {
-            ESP_LOGW(TAG, "Product ID mismatch: %x|%x", meshx_nvs_inst.pid, meshx_nvs_inst.cid);
+            MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_NVS, "Product ID mismatch: %x|%x", meshx_nvs_inst.pid, meshx_nvs_inst.cid);
             err = meshx_nvs_erase_prod_init(cid, pid);
         }
     }
@@ -273,7 +273,7 @@ meshx_err_t meshx_nvs_close(void)
     nvs_close(meshx_nvs_inst.meshx_nvs_handle);
 
 #if MESHX_NVS_TIMER_PERIOD
-    err = os_timer_delete(&(meshx_nvs_inst.meshx_nvs_stability_timer));
+    err = meshx_os_timer_delete(&(meshx_nvs_inst.meshx_nvs_stability_timer));
 #endif /* MESHX_NVS_TIMER_PERIOD */
     meshx_nvs_inst.init = 0;
     return err;
@@ -338,9 +338,9 @@ meshx_err_t meshx_nvs_set(char const* key, void const* blob, size_t blob_size, b
     if(arm_timer)
     {
         /* Trigger the stability timer to commit the changes */
-        meshx_err_t err = os_timer_restart(meshx_nvs_inst.meshx_nvs_stability_timer);
+        meshx_err_t err = meshx_os_timer_restart(meshx_nvs_inst.meshx_nvs_stability_timer);
         if(err)
-            ESP_LOGE(TAG, "os_timer_restart err:  %p", (void*) err);
+            MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "os_timer_restart err:  %p", (void*) err);
     }
 
     return nvs_set_blob(meshx_nvs_inst.meshx_nvs_handle, key, blob, blob_size);
@@ -424,10 +424,10 @@ static meshx_err_t meshx_nvs_unit_test_cb_handler(int cmd_id, int argc, char **a
     uint32_t ut_blob_get = 0x00;
     bool arm_timer;
 
-    ESP_LOGD(TAG, "argc|cmd_id: %d|%d", argc, cmd_id);
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_NVS, "argc|cmd_id: %d|%d", argc, cmd_id);
     if (cmd_id >= MESHX_NVS_CLI_MAX)
     {
-        ESP_LOGE(TAG, "Invalid number of arguments");
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "Invalid number of arguments");
         return MESHX_INVALID_ARG;
     }
 
@@ -444,7 +444,7 @@ static meshx_err_t meshx_nvs_unit_test_cb_handler(int cmd_id, int argc, char **a
         case MESHX_NVS_CLI_CMD_GET:
             err = meshx_nvs_get(MESHX_NVS_UNIT_TEST_KEY, &ut_blob_get, sizeof(ut_blob_get));
             if(err == MESHX_SUCCESS && ut_blob != ut_blob_get)
-                ESP_LOGE(TAG, "MESHX NVS Integrety Test Failed");
+                MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "MESHX NVS Integrety Test Failed");
             break;
         case MESHX_NVS_CLI_CMD_COMMIT:
             err = meshx_nvs_commit();

@@ -55,7 +55,7 @@ static const char meshX_banner[] = {
 static dev_struct_t g_dev;
 
 static meshx_config_t g_config;
-static os_timer_t *g_boot_timer;
+static meshx_os_timer_t *g_boot_timer;
 
 extern size_t get_root_sig_models_count(void);
 extern esp_ble_mesh_model_t * get_root_sig_models(void);
@@ -152,6 +152,9 @@ static meshx_err_t ble_mesh_init(meshx_config_t const *config)
 
     meshx_err_t err;
 
+    err = meshx_platform_bt_init();
+    MESHX_ERR_PRINT_RET("Platform BT init failed", err);
+
     meshx_dev_restore(&g_dev, config);
 
     err = ble_mesh_element_init(&g_dev, config);
@@ -178,7 +181,7 @@ static meshx_err_t ble_mesh_init(meshx_config_t const *config)
  *
  * @param[in] p_timer Pointer to the timer structure.
  */
-static void meshx_init_boot_timer_arm_cb(const os_timer_t* p_timer)
+static void meshx_init_boot_timer_arm_cb(const meshx_os_timer_t* p_timer)
 {
     MESHX_LOGD(MODULE_ID_COMMON, "Fresh Boot Timer Expired");
 
@@ -201,7 +204,7 @@ static void meshx_init_boot_timer_arm_cb(const os_timer_t* p_timer)
  */
 static meshx_err_t meshx_init_boot_timer(void)
 {
-    meshx_err_t err = os_timer_create("boot_timer",
+    meshx_err_t err = meshx_os_timer_create("boot_timer",
         FRESHBOOT_TIMEOUT_MS,
         false,
         meshx_init_boot_timer_arm_cb,
@@ -209,7 +212,7 @@ static meshx_err_t meshx_init_boot_timer(void)
     );
     MESHX_ERR_PRINT_RET("Failed to create boot timer", err);
 
-    err = os_timer_start(g_boot_timer);
+    err = meshx_os_timer_start(g_boot_timer);
     MESHX_ERR_PRINT_RET("Failed to start boot timer", err);
 
     return err;
@@ -243,8 +246,12 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     err = meshx_logging_init(&logging_cfg);
     MESHX_ERR_PRINT_RET("Logging init failed", err);
 
+    /* Initialise Platform deps */
+    err = meshx_platform_init();
+    MESHX_ERR_PRINT_RET("Platform init failed", err);
+
     /* Initialize OS timer */
-    err = os_timer_init();
+    err = meshx_os_timer_init();
     MESHX_ERR_PRINT_RET("OS Timer Init failed", err);
 
     /* Initialize MeshX NVS */
