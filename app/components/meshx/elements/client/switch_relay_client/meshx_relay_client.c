@@ -402,8 +402,8 @@ static meshx_err_t relay_cli_freshboot_control_task_msg_handle(const dev_struct_
     if(!pdev)
         return MESHX_INVALID_ARG;
 
-    ESP_UNUSED(params);
-    ESP_UNUSED(evt);
+    MESHX_UNUSED(params);
+    MESHX_UNUSED(evt);
     relay_client_msg_t msg = {0};
 
     if(false == (relay_element_init_ctrl->element_model_init & BIT(RELAY_SIG_ONOFF_MODEL_ID)))

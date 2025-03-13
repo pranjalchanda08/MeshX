@@ -344,8 +344,8 @@ static meshx_err_t cwww_cli_freshboot_control_task_msg_handle(const dev_struct_t
     if(!pdev)
         return MESHX_INVALID_ARG;
 
-    ESP_UNUSED(params);
-    ESP_UNUSED(evt);
+    MESHX_UNUSED(params);
+    MESHX_UNUSED(evt);
     cwww_client_msg_t msg = {0};
 
     for(uint8_t i = CWWW_CLI_SIG_ONOFF_MODEL_ID; i < CWWW_CLI_SIG_ID_MAX; i++)

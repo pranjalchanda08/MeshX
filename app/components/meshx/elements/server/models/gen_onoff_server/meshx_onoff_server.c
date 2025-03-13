@@ -23,19 +23,21 @@
  *     - MESHX_SUCCESS: Success
  *     - MESHX_FAIL: Failure
  */
-static meshx_err_t meshx_perform_hw_change(MESHX_GEN_SRV_CB_PARAM *param)
+static meshx_err_t meshx_perform_hw_change(meshx_gen_srv_model_param_t *param)
 {
-    MESHX_GEN_ONOFF_SRV const *srv = (MESHX_GEN_ONOFF_SRV *)param->model->user_data;
+    if (!param)
+        return MESHX_INVALID_ARG;
 
-    if (ESP_BLE_MESH_ADDR_IS_UNICAST(param->ctx.recv_dst)
-    || (ESP_BLE_MESH_ADDR_BROADCAST(param->ctx.recv_dst))
-    || (ESP_BLE_MESH_ADDR_IS_GROUP(param->ctx.recv_dst) && (esp_ble_mesh_is_model_subscribed_to_group(param->model, param->ctx.recv_dst))))
+    if (MESHX_ADDR_IS_UNICAST(param->ctx.dst_addr)
+    || (MESHX_ADDR_BROADCAST(param->ctx.dst_addr))
+    || (MESHX_ADDR_IS_GROUP(param->ctx.dst_addr)
+        && (MESHX_SUCCESS == meshx_is_group_subscribed(param->model.p_model, param->ctx.dst_addr))))
     {
         meshx_err_t err = control_task_msg_publish(
             CONTROL_TASK_MSG_CODE_EL_STATE_CH,
             CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF,
-            srv,
-            sizeof(MESHX_GEN_ONOFF_SRV));
+            &param->state_change.onoff_set,
+            sizeof(meshx_state_change_gen_onoff_set_t));
         return err ? err : MESHX_SUCCESS;
     }
     return MESHX_NOT_SUPPORTED;
@@ -59,31 +61,31 @@ static meshx_err_t meshx_perform_hw_change(MESHX_GEN_SRV_CB_PARAM *param)
 static meshx_err_t meshx_handle_gen_onoff_msg(MESHX_GEN_SRV_CB_PARAM *param)
 {
     MESHX_GEN_ONOFF_SRV *srv = (MESHX_GEN_ONOFF_SRV *)param->model->user_data;
-    bool send_reply = (param->ctx.recv_op != ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK);
+    bool send_reply = (param->ctx.opcode != MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK);
     switch (param->ctx.recv_op)
     {
-    case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_GET:
+    case MESHX_MODEL_OP_GEN_ONOFF_GET:
         break;
-    case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET:
-    case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK:
-        srv->state.onoff = param->value.state_change.onoff_set.onoff;
-        ESP_ERROR_CHECK(meshx_perform_hw_change(param));
+    case MESHX_MODEL_OP_GEN_ONOFF_SET:
+    case MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK:
+        meshx_perform_hw_change(param);
         break;
     default:
         break;
     }
     if (send_reply
-    /* This is meant to notify the respective publish client */
-    || param->ctx.addr != param->model->pub->publish_addr)
+        /* This is meant to notify the respective publish client */
+        || param->ctx.dst_addr != param->model.pub_addr)
     {
         /* Here the message was received from unregistered source and mention the state to the respective client */
-        ESP_LOGD(TAG, "PUB: src|pub %x|%x", param->ctx.addr, param->model->pub->publish_addr);
-        param->ctx.addr = param->model->pub->publish_addr;
-        esp_ble_mesh_server_model_send_msg(param->model,
-                                           &param->ctx,
-                                           ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_STATUS,
-                                           sizeof(srv->state.onoff),
-                                           &srv->state.onoff);
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "PUB: src|pub %x|%x", param->ctx.dst_addr, param->model.pub_addr);
+        param->ctx.dst_addr = param->model.pub_addr;
+
+        control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE,
+                CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV,
+                param,
+                sizeof(meshx_gen_srv_model_param_t)
+        );
     }
     return MESHX_SUCCESS;
 }
@@ -103,41 +105,39 @@ static meshx_err_t meshx_handle_gen_onoff_msg(MESHX_GEN_SRV_CB_PARAM *param)
  *    - MESHX_INVALID_ARG: Invalid argument
  *    - MESHX_FAIL: Other failures
  */
-static meshx_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_task_msg_evt_t model_id, MESHX_GEN_SRV_CB_PARAM *param)
+static meshx_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_task_msg_evt_t model_id, meshx_gen_srv_model_param_t *param)
 {
-    ESP_UNUSED(pdev);
-    ESP_LOGD(TAG, "op|src|dst:%04" PRIx32 "|%04x|%04x",
-             param->ctx.recv_op, param->ctx.addr, param->ctx.recv_dst);
-    if(model_id != ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV)
-    {
+    MESHX_UNUSED(pdev);
+    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "op|src|dst:%04" PRIx32 "|%04x|%04x",
+             param->ctx.opcode, param->ctx.src_addr, param->ctx.dst_addr);
+    if(model_id != MESHX_MODEL_ID_GEN_ONOFF_SRV)
         return MESHX_INVALID_ARG;
-    }
-    MESHX_GEN_ONOFF_SRV *srv = (MESHX_GEN_ONOFF_SRV *)param->model->user_data;
-    bool send_reply = (param->ctx.recv_op != ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK);
-    switch (param->ctx.recv_op)
+
+    bool send_reply = (param->ctx.opcode != MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK);
+    switch (param->ctx.opcode)
     {
-    case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_GET:
-        break;
-    case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET:
-    case ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK:
-        srv->state.onoff = param->value.state_change.onoff_set.onoff;
-        ESP_ERROR_CHECK(meshx_perform_hw_change(param));
-        break;
-    default:
-        break;
+        case MESHX_MODEL_OP_GEN_ONOFF_GET:
+            break;
+        case MESHX_MODEL_OP_GEN_ONOFF_SET:
+        case MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK:
+            meshx_perform_hw_change(param);
+            break;
+        default:
+            break;
     }
     if (send_reply
     /* This is meant to notify the respective publish client */
-    || param->ctx.addr != param->model->pub->publish_addr)
+    || param->ctx.dst_addr != param->model.pub_addr)
     {
         /* Here the message was received from unregistered source and mention the state to the respective client */
-        ESP_LOGD(TAG, "PUB: src|pub %x|%x", param->ctx.addr, param->model->pub->publish_addr);
-        param->ctx.addr = param->model->pub->publish_addr;
-        esp_ble_mesh_server_model_send_msg(param->model,
-                                           &param->ctx,
-                                           ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_STATUS,
-                                           sizeof(srv->state.onoff),
-                                           &srv->state.onoff);
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "PUB: src|pub %x|%x", param->ctx.dst_addr, param->model.pub_addr);
+        param->ctx.dst_addr = param->model.pub_addr;
+
+        control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE,
+                CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV,
+                param,
+                sizeof(meshx_gen_srv_model_param_t)
+        );
     }
     return MESHX_SUCCESS;
 }
@@ -151,7 +151,7 @@ static meshx_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_
  *     - MESHX_SUCCESS: Success
  *     - MESHX_FAIL: Failure
  */
-meshx_err_t meshx_on_off_server_init()
+meshx_err_t meshx_on_off_server_init(void)
 {
     meshx_err_t err = MESHX_SUCCESS;
 #if CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
@@ -164,12 +164,12 @@ meshx_err_t meshx_on_off_server_init()
 #if CONFIG_ENABLE_SERVER_COMMON
     err = meshx_gen_srv_init();
     if (err){
-        ESP_LOGE(TAG, "Failed to initialize meshx server");
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize meshx server");
     }
 #endif /* CONFIG_ENABLE_SERVER_COMMON */
-    err = meshx_gen_srv_reg_cb(ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV, (meshx_server_cb) &meshx_handle_gen_onoff_msg);
+    err = meshx_gen_srv_reg_cb(MESHX_MODEL_ID_GEN_ONOFF_SRV, (meshx_server_cb) &meshx_handle_gen_onoff_msg);
     if (err){
-        ESP_LOGE(TAG, "Failed to initialize meshx_gen_srv_reg_cb (Err: %d)", err);
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize meshx_gen_srv_reg_cb (Err: %d)", err);
     }
 
     return err;

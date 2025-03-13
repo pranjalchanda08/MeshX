@@ -29,4 +29,6 @@ typedef enum
     MESHX_ERR_MAX        /**< Maximum Error */
 } meshx_err_t;
 
+#define MESHX_UNUSED(x) ((void)(x))
+
 #endif /* __MESHX_ERR_H */
