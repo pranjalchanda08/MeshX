@@ -187,7 +187,7 @@ meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_m
         return err;
     }
 #else
-    ESP_UNUSED(commit_timeout_ms);
+    MESHX_UNUSED(commit_timeout_ms);
 #endif /* MESHX_NVS_TIMER_PERIOD */
 
     meshx_nvs_inst.init = MESHX_NVS_INIT_MAGIC;

@@ -93,9 +93,14 @@ typedef enum control_task_msg_evt_el_state_ch
  */
 typedef enum control_task_msg_evt_to_ble
 {
+    /* To Client related events */
     CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF      = BIT0, /**< Event to set on/off state. */
     CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL         = BIT1, /**< Event to set CTL state. */
     CONTROL_TASK_MSG_EVT_TO_BLE_SET_LIGHTNESS   = BIT2, /**< Event to set lightness state. */
+
+    /* To server events */
+    CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV  = BIT16,/**< Event to send out on/off status */
+    CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV     = BIT17,/**< Event to send out CTL status */
     CONTROL_TASK_MSG_EVT_TO_BLE_MAX                     /**< Maximum BLE event value. */
 } control_task_msg_evt_to_ble_t;
 

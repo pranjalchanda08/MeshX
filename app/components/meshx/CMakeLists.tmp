@@ -4,6 +4,7 @@
 
 set(INTERFACE_DIRS
     "interface"
+    "interface/ble_mesh"
     "interface/logging"
     "interface/rtos"
 )
@@ -26,6 +27,9 @@ file(GLOB PLAT_SRC
     "port/esp32_idf/platform/*.c"
 )
 
+file(GLOB_RECURSE PLAT_BLE_MESH_SRC
+    "port/esp32_idf/ble_mesh/*.c")
+
 set(INC_DIRS
     ${DEP_INC}
     ${INTERFACE_DIRS}
@@ -37,6 +41,7 @@ set(SRCSX
     ${LOGGING_SRC}
     ${FREERTOS_SRC}
     ${PLAT_SRC}
+    ${PLAT_BLE_MESH_SRC}
 )
 
 message("       >> Include Dir: ${INC_DIRS}")

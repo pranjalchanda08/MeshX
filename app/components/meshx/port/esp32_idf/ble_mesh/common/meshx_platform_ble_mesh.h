@@ -13,9 +13,9 @@
 #include "esp_ble_mesh_generic_model_api.h"
 #include "esp_ble_mesh_lighting_model_api.h"
 
-#define MESHX_MODEL_PUB         esp_ble_mesh_model_pub_t
-#define MESHX_CLIENT            esp_ble_mesh_client_t
 #define MESHX_MODEL             esp_ble_mesh_model_t
+#define MESHX_CLIENT            esp_ble_mesh_client_t
+#define MESHX_MODEL_PUB         esp_ble_mesh_model_pub_t
 
 #define MESHX_PROV              esp_ble_mesh_prov_t
 

@@ -13,8 +13,6 @@
 #ifndef __MESHX_LIGHT_SERVER_H__
 #define __MESHX_LIGHT_SERVER_H__
 
-#include "server_common.h"
-#include "esp_ble_mesh_lighting_model_api.h"
 #include "sys/queue.h"
 #include "meshx_control_task.h"
 
@@ -32,10 +30,6 @@
  * @return MESHX_SUCCESS on success, or an appropriate error code on failure.
  */
 typedef meshx_err_t (* meshx_lighting_server_cb) (esp_ble_mesh_lighting_server_cb_param_t *param);
-#else
-typedef control_task_msg_handle_t meshx_lighting_server_cb;
-#endif /* !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
-
 /**
  * @brief Structure to register a production lighting server callback.
  */
@@ -49,6 +43,10 @@ typedef struct meshx_lighting_server_cb_reg
  * @brief Head for the singly linked list of production lighting server callbacks.
  */
 SLIST_HEAD(meshx_lighting_server_cb_list, meshx_lighting_server_cb_reg);
+
+#else
+typedef control_task_msg_handle_t meshx_lighting_server_cb;
+#endif /* !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
 
 /**
  * @brief Register a callback function for the lighting server model.

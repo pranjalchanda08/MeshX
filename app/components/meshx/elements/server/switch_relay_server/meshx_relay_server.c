@@ -334,8 +334,8 @@ static meshx_err_t meshx_add_relay_srv_model_to_element_list(dev_struct_t *pdev,
  */
 static meshx_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, control_task_msg_evt_t evt, void *params)
 {
-    ESP_UNUSED(pdev);
-    ESP_UNUSED(evt);
+    MESHX_UNUSED(pdev);
+    MESHX_UNUSED(evt);
     size_t rel_el_id = 0;
     meshx_err_t err = MESHX_SUCCESS;
     relay_srv_model_ctx_t *el_ctx = NULL;
@@ -375,9 +375,9 @@ static meshx_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, contr
  */
 static meshx_err_t relay_prov_control_task_handler(dev_struct_t const *pdev, control_task_msg_evt_t evt, void const *params)
 {
-    ESP_UNUSED(pdev);
-    ESP_UNUSED(evt);
-    ESP_UNUSED(params);
+    MESHX_UNUSED(pdev);
+    MESHX_UNUSED(evt);
+    MESHX_UNUSED(params);
 
     size_t rel_el_id = 0;
     esp_ble_mesh_msg_ctx_t ctx;

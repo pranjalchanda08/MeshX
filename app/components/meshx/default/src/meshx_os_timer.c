@@ -211,7 +211,7 @@ static meshx_err_t meshx_os_timer_control_task_cb(const dev_struct_t *pdev, cont
         break;
     }
 
-    ESP_UNUSED(pdev);
+    MESHX_UNUSED(pdev);
 
     return err;
 }
