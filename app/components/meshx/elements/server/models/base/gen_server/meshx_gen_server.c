@@ -40,8 +40,8 @@ static SemaphoreHandle_t meshx_server_mutex;
  * @param event The event type for the BLE Mesh Generic Server.
  * @param param Parameters associated with the event.
  */
-static void meshx_ble_mesh_generic_server_cb(esp_ble_mesh_generic_server_cb_event_t event,
-                                            const esp_ble_mesh_generic_server_cb_param_t *param)
+static void meshx_ble_mesh_generic_server_cb(MESHX_GEN_SRV_CB_EVT event,
+                                            const MESHX_GEN_SRV_CB_PARAM *param)
 {
     ESP_LOGD(TAG, "%s, op|src|dst:%04" PRIx32 "|%04x|%04x",
              server_state_str[event], param->ctx.recv_op, param->ctx.addr, param->ctx.recv_dst);
@@ -66,7 +66,7 @@ static void meshx_ble_mesh_generic_server_cb(esp_ble_mesh_generic_server_cb_even
         CONTROL_TASK_MSG_CODE_FRM_BLE,
         param->model->model_id,
         param,
-        sizeof(esp_ble_mesh_generic_server_cb_param_t));
+        sizeof(MESHX_GEN_SRV_CB_PARAM));
     if (err)
     {
         ESP_LOGE(TAG, "Failed to publish to control task");
@@ -189,5 +189,5 @@ meshx_err_t meshx_gen_srv_init(void)
         return MESHX_NO_MEM;
     }
 #endif /* CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
-    return esp_ble_mesh_register_generic_server_callback((esp_ble_mesh_generic_server_cb_t)&meshx_ble_mesh_generic_server_cb);
+    return esp_ble_mesh_register_generic_server_callback((MESHX_GEN_SRV_CB)&meshx_ble_mesh_generic_server_cb);
 }

@@ -13,12 +13,7 @@
 #ifndef __MESHX_CONFIG_SERVER__
 #define __MESHX_CONFIG_SERVER__
 
-#include "esp_ble_mesh_defs.h"
-#include "esp_ble_mesh_common_api.h"
-#include "esp_ble_mesh_networking_api.h"
-#include "esp_ble_mesh_generic_model_api.h"
-#include "esp_ble_mesh_local_data_operation_api.h"
-#include "esp_ble_mesh_config_model_api.h"
+#include "meshx_platform.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
 #include "sys/queue.h"
@@ -53,7 +48,7 @@ typedef enum
  */
 typedef void (*config_srv_cb)(const esp_ble_mesh_cfg_server_cb_param_t *param, config_evt_t evt);
 
-extern esp_ble_mesh_cfg_srv_t g_meshx_config_server;
+extern MESHX_CFG_SRV g_meshx_config_server;
 
 /**
  * @brief Initialize the meshxuction configuration server.

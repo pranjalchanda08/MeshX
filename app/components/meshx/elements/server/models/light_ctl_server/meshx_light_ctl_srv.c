@@ -52,7 +52,7 @@ typedef union ctl_status_pack{
  */
 static meshx_err_t meshx_perform_hw_change(esp_ble_mesh_lighting_server_cb_param_t *param)
 {
-    const esp_ble_mesh_light_ctl_srv_t *srv = (esp_ble_mesh_light_ctl_srv_t*) param->model->user_data;
+    const MESHX_LIGHT_CTL_SRV *srv = (MESHX_LIGHT_CTL_SRV*) param->model->user_data;
 
     if (ESP_BLE_MESH_ADDR_IS_UNICAST(param->ctx.recv_dst)
     || (ESP_BLE_MESH_ADDR_BROADCAST(param->ctx.recv_dst))
@@ -68,7 +68,7 @@ static meshx_err_t meshx_perform_hw_change(esp_ble_mesh_lighting_server_cb_param
                             CONTROL_TASK_MSG_CODE_EL_STATE_CH,
                             CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL,
                             srv,
-                            sizeof(esp_ble_mesh_light_ctl_srv_t));
+                            sizeof(MESHX_LIGHT_CTL_SRV));
         return err;
     }
     return MESHX_NOT_SUPPORTED;
@@ -113,7 +113,7 @@ static meshx_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
     if(!pdev || (evt != ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV && evt != ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SETUP_SRV))
         return MESHX_INVALID_ARG;
 #endif /* !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
-    esp_ble_mesh_light_ctl_srv_t *srv = (esp_ble_mesh_light_ctl_srv_t*) param->model->user_data;
+    MESHX_LIGHT_CTL_SRV *srv = (MESHX_LIGHT_CTL_SRV*) param->model->user_data;
 
     uint16_t status_op = 0;
     bool send_reply_to_src = false;
@@ -257,7 +257,7 @@ static meshx_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
  *     - MESHX_SUCCESS: Success
  *     - MESHX_FAIL: Failure
  */
-meshx_err_t meshx_send_ctl_status(esp_ble_mesh_model_t *model, esp_ble_mesh_msg_ctx_t* ctx, uint16_t lightness, uint16_t temperature)
+meshx_err_t meshx_send_ctl_status(MESHX_MODEL *model, esp_ble_mesh_msg_ctx_t* ctx, uint16_t lightness, uint16_t temperature)
 {
     ctl_status_t ctl_status_pack;
 

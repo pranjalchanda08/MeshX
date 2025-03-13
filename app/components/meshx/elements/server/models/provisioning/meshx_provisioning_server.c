@@ -55,7 +55,7 @@ static prov_params_t prov_params;
  *
  * This structure holds the global provisioning configuration.
  */
-esp_ble_mesh_prov_t g_meshx_prov;
+MESHX_PROV g_meshx_prov;
 
 /**
  * @brief Send a control message to the control task.

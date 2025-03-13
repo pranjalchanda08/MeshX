@@ -1,8 +1,7 @@
-#include "meshx_platform.h"
 #include "esp_err.h"
 #include "esp_log.h"
-#include "nvs.h"
 #include "nvs_flash.h"
+#include "meshx_platform.h"
 #include "ble_mesh_example_init.h"
 
 meshx_err_t meshx_platform_init(void)
@@ -16,9 +15,7 @@ meshx_err_t meshx_platform_init(void)
         err = nvs_flash_init();
     }
     if(err)
-    {
         return MESHX_ERR_PLAT;
-    }
 
     /* Set log level for BLE Mesh */
     esp_log_level_set("BLE_MESH", ESP_LOG_ERROR);

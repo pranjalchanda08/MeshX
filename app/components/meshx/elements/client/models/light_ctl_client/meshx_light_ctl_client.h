@@ -17,11 +17,7 @@
 #define __LIGHT_CTL_CLIENT_H__
 
 #include "meshx_err.h"
-#include "esp_ble_mesh_defs.h"
-#include "esp_ble_mesh_common_api.h"
-#include "esp_ble_mesh_networking_api.h"
-#include "esp_ble_mesh_lighting_model_api.h"
-#include "esp_ble_mesh_local_data_operation_api.h"
+#include "meshx_platform.h"
 #include "sys/queue.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
@@ -52,7 +48,7 @@ typedef struct light_ctl_cli_cb_reg
  */
 typedef struct light_ctl_send_args
 {
-    esp_ble_mesh_model_t *model; /**< Pointer to the BLE Mesh model. */
+    MESHX_MODEL *model;          /**< Pointer to the BLE Mesh model. */
     uint16_t opcode;             /**< Opcode of the message to be sent. */
     uint16_t addr;               /**< Destination address of the message. */
     uint16_t net_idx;            /**< Network index to be used for sending the message. */

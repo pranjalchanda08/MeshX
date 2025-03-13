@@ -23,9 +23,9 @@
  *     - MESHX_SUCCESS: Success
  *     - MESHX_FAIL: Failure
  */
-static meshx_err_t meshx_perform_hw_change(esp_ble_mesh_generic_server_cb_param_t *param)
+static meshx_err_t meshx_perform_hw_change(MESHX_GEN_SRV_CB_PARAM *param)
 {
-    esp_ble_mesh_gen_onoff_srv_t const *srv = (esp_ble_mesh_gen_onoff_srv_t *)param->model->user_data;
+    MESHX_GEN_ONOFF_SRV const *srv = (MESHX_GEN_ONOFF_SRV *)param->model->user_data;
 
     if (ESP_BLE_MESH_ADDR_IS_UNICAST(param->ctx.recv_dst)
     || (ESP_BLE_MESH_ADDR_BROADCAST(param->ctx.recv_dst))
@@ -35,7 +35,7 @@ static meshx_err_t meshx_perform_hw_change(esp_ble_mesh_generic_server_cb_param_
             CONTROL_TASK_MSG_CODE_EL_STATE_CH,
             CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF,
             srv,
-            sizeof(esp_ble_mesh_gen_onoff_srv_t));
+            sizeof(MESHX_GEN_ONOFF_SRV));
         return err ? err : MESHX_SUCCESS;
     }
     return MESHX_NOT_SUPPORTED;
@@ -56,9 +56,9 @@ static meshx_err_t meshx_perform_hw_change(esp_ble_mesh_generic_server_cb_param_
  *    - MESHX_INVALID_ARG: Invalid argument
  *    - MESHX_FAIL: Other failures
  */
-static meshx_err_t meshx_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_param_t *param)
+static meshx_err_t meshx_handle_gen_onoff_msg(MESHX_GEN_SRV_CB_PARAM *param)
 {
-    esp_ble_mesh_gen_onoff_srv_t *srv = (esp_ble_mesh_gen_onoff_srv_t *)param->model->user_data;
+    MESHX_GEN_ONOFF_SRV *srv = (MESHX_GEN_ONOFF_SRV *)param->model->user_data;
     bool send_reply = (param->ctx.recv_op != ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK);
     switch (param->ctx.recv_op)
     {
@@ -103,7 +103,7 @@ static meshx_err_t meshx_handle_gen_onoff_msg(esp_ble_mesh_generic_server_cb_par
  *    - MESHX_INVALID_ARG: Invalid argument
  *    - MESHX_FAIL: Other failures
  */
-static meshx_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_task_msg_evt_t model_id, esp_ble_mesh_generic_server_cb_param_t *param)
+static meshx_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_task_msg_evt_t model_id, MESHX_GEN_SRV_CB_PARAM *param)
 {
     ESP_UNUSED(pdev);
     ESP_LOGD(TAG, "op|src|dst:%04" PRIx32 "|%04x|%04x",
@@ -112,7 +112,7 @@ static meshx_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_
     {
         return MESHX_INVALID_ARG;
     }
-    esp_ble_mesh_gen_onoff_srv_t *srv = (esp_ble_mesh_gen_onoff_srv_t *)param->model->user_data;
+    MESHX_GEN_ONOFF_SRV *srv = (MESHX_GEN_ONOFF_SRV *)param->model->user_data;
     bool send_reply = (param->ctx.recv_op != ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_SET_UNACK);
     switch (param->ctx.recv_op)
     {

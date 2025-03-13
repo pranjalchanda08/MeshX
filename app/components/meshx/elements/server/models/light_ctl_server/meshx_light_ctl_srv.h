@@ -43,6 +43,6 @@ meshx_err_t meshx_light_ctl_server_init(void);
  *     - MESHX_SUCCESS: Success
  *     - MESHX_FAIL: Failure
  */
-meshx_err_t meshx_send_ctl_status(esp_ble_mesh_model_t *model, esp_ble_mesh_msg_ctx_t* ctx, uint16_t lightness, uint16_t temperature);
+meshx_err_t meshx_send_ctl_status(MESHX_MODEL *model, esp_ble_mesh_msg_ctx_t* ctx, uint16_t lightness, uint16_t temperature);
 
 #endif /*__MESHX_LIGHT_CTL_SRV_H__*/

@@ -78,7 +78,7 @@ element_comp_fn_t element_comp_fn [MESHX_ELEMENT_TYPE_MAX] = {
 
 #if CONFIG_ENABLE_LIGHT_CTL_SERVER
 /** Light CTL state. */
-esp_ble_mesh_light_ctl_state_t ctl_state;
+MESHX_LIGHT_CTL_STATE ctl_state;
 ESP_BLE_MESH_MODEL_PUB_DEFINE(ctl_setup_pub, 16, ROLE_NODE);
 
 /** Light CTL setup server model. */
@@ -92,7 +92,7 @@ static esp_ble_mesh_light_ctl_setup_srv_t ctl_setup_server = {
 #endif
 
 /** Root models for BLE Mesh elements. */
-static esp_ble_mesh_model_t meshx_root_model_arr[] = {
+static MESHX_MODEL meshx_root_model_arr[] = {
 #if CONFIG_ENABLE_CONFIG_SERVER
     ESP_BLE_MESH_MODEL_CFG_SRV(&MESHX_CONFIG_SERVER_INSTANCE),
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
@@ -139,7 +139,7 @@ static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_t
  *
  * @return Pointer to the root models.
  */
-esp_ble_mesh_model_t * get_root_sig_models(void)
+MESHX_MODEL * get_root_sig_models(void)
 {
     return meshx_root_model_arr;
 }

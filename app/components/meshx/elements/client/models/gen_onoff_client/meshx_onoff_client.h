@@ -10,11 +10,7 @@
 #pragma once
 
 #include "meshx_err.h"
-#include <esp_ble_mesh_defs.h>
-#include <esp_ble_mesh_common_api.h>
-#include <esp_ble_mesh_networking_api.h>
-#include <esp_ble_mesh_generic_model_api.h>
-#include <esp_ble_mesh_local_data_operation_api.h>
+#include "meshx_platform.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
 #include <sys/queue.h>
@@ -86,7 +82,7 @@ meshx_err_t meshx_onoff_reg_cb(meshx_onoff_cli_cb cb, uint32_t config_evt_bmap);
  *    - MESHX_NO_MEM: Out of memory
  *    - MESHX_FAIL: Sending message failed
  */
-meshx_err_t meshx_onoff_client_send_msg(esp_ble_mesh_model_t *model,
+meshx_err_t meshx_onoff_client_send_msg(MESHX_MODEL *model,
         uint16_t opcode,
         uint16_t addr,
         uint16_t net_idx,

@@ -57,7 +57,7 @@
  * @var cwww_cli_sig_template
  * @brief CW-WW client SIG model template.
  */
-static const esp_ble_mesh_model_t cwww_cli_sig_template[CWWW_CLI_MODEL_SIG_CNT] = {
+static const MESHX_MODEL cwww_cli_sig_template[CWWW_CLI_MODEL_SIG_CNT] = {
     ESP_BLE_MESH_SIG_MODEL(ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_CLI, NULL, NULL, NULL),
     ESP_BLE_MESH_SIG_MODEL(ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_CLI, NULL, NULL, NULL),
 };
@@ -626,7 +626,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
             }
         }
     }
-    cwww_client_element_init_ctrl->cwww_cli_pub_list = (esp_ble_mesh_model_pub_t **)calloc(n_max, sizeof(esp_ble_mesh_model_pub_t *));
+    cwww_client_element_init_ctrl->cwww_cli_pub_list = (MESHX_MODEL_PUB **)calloc(n_max, sizeof(MESHX_MODEL_PUB *));
     if (!cwww_client_element_init_ctrl->cwww_cli_pub_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww client pub list");
@@ -636,7 +636,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
     {
         for (size_t i = 0; i < n_max; i++)
         {
-            cwww_client_element_init_ctrl->cwww_cli_pub_list[i] = (esp_ble_mesh_model_pub_t *)calloc(CWWW_CLI_MODEL_SIG_CNT, sizeof(esp_ble_mesh_model_pub_t));
+            cwww_client_element_init_ctrl->cwww_cli_pub_list[i] = (MESHX_MODEL_PUB *)calloc(CWWW_CLI_MODEL_SIG_CNT, sizeof(MESHX_MODEL_PUB));
             if (!cwww_client_element_init_ctrl->cwww_cli_pub_list[i])
             {
                 ESP_LOGE(TAG, "Failed to allocate memory for cwww client pub list");
@@ -644,7 +644,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
             }
         }
     }
-    cwww_client_element_init_ctrl->cwww_cli_sig_model_list = (esp_ble_mesh_model_t **)calloc(n_max, sizeof(esp_ble_mesh_model_t *));
+    cwww_client_element_init_ctrl->cwww_cli_sig_model_list = (MESHX_MODEL **)calloc(n_max, sizeof(MESHX_MODEL *));
     if (!cwww_client_element_init_ctrl->cwww_cli_sig_model_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww client sig model list");
@@ -654,7 +654,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
     {
         for (size_t i = 0; i < n_max; i++)
         {
-            cwww_client_element_init_ctrl->cwww_cli_sig_model_list[i] = (esp_ble_mesh_model_t *)calloc(CWWW_CLI_MODEL_SIG_CNT, sizeof(esp_ble_mesh_model_t));
+            cwww_client_element_init_ctrl->cwww_cli_sig_model_list[i] = (MESHX_MODEL *)calloc(CWWW_CLI_MODEL_SIG_CNT, sizeof(MESHX_MODEL));
             if (!cwww_client_element_init_ctrl->cwww_cli_sig_model_list[i])
             {
                 ESP_LOGE(TAG, "Failed to allocate memory for cwww client sig model list");
@@ -762,7 +762,7 @@ static meshx_err_t meshx_dev_create_cwww_model_space(dev_struct_t const *pdev, u
         /* Perform memcpy to setup the constants */
         memcpy(&cwww_client_element_init_ctrl->cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_ONOFF_MODEL_ID],
                &cwww_cli_sig_template[CWWW_CLI_SIG_ONOFF_MODEL_ID],
-               sizeof(esp_ble_mesh_model_t));
+               sizeof(MESHX_MODEL));
         /* Set the dynamic spaces for the model */
         temp = (void **)&cwww_client_element_init_ctrl->cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_ONOFF_MODEL_ID].pub;
         *temp = &cwww_client_element_init_ctrl->cwww_cli_pub_list[cwww_model_id][CWWW_CLI_SIG_ONOFF_MODEL_ID];
@@ -773,7 +773,7 @@ static meshx_err_t meshx_dev_create_cwww_model_space(dev_struct_t const *pdev, u
 #if CONFIG_LIGHT_CTL_CLIENT_COUNT
         memcpy(&cwww_client_element_init_ctrl->cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID],
                &cwww_cli_sig_template[CWWW_CLI_SIG_L_CTL_MODEL_ID],
-               sizeof(esp_ble_mesh_model_t));
+               sizeof(MESHX_MODEL));
         temp = (void **)&cwww_client_element_init_ctrl->cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID].pub;
         *temp = &cwww_client_element_init_ctrl->cwww_cli_pub_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID];
         cwww_client_element_init_ctrl->cwww_cli_sig_model_list[cwww_model_id][CWWW_CLI_SIG_L_CTL_MODEL_ID].user_data =
@@ -822,7 +822,7 @@ static meshx_err_t meshx_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, 
             /* Insert the first SIG model in root model to save element virtual addr space */
             memcpy(&elements[i].sig_models[1],
                    cwww_client_element_init_ctrl->cwww_cli_sig_model_list[i - *start_idx],
-                   sizeof(esp_ble_mesh_model_t));
+                   sizeof(MESHX_MODEL));
             ref_ptr = (uint8_t *)&elements[i].sig_model_count;
             (*ref_ptr)++;
         }
@@ -971,7 +971,7 @@ meshx_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_i
     uint16_t opcode = 0;
     meshx_err_t err = MESHX_SUCCESS;
     esp_ble_mesh_elem_t *element = &pdev->elements[element_id];
-    esp_ble_mesh_model_t *model = &element->sig_models[model_id];
+    MESHX_MODEL *model = &element->sig_models[model_id];
     cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl->cwww_cli_ctx[rel_el_id];
     light_ctl_send_args_t ctl_params = {0};
 

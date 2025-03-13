@@ -37,7 +37,7 @@
 
 static cwww_elements_t cwww_element_init_ctrl;
 
-static const esp_ble_mesh_model_t cwww_sig_template[CWWW_SRV_MODEL_SIG_CNT] =
+static const MESHX_MODEL cwww_sig_template[CWWW_SRV_MODEL_SIG_CNT] =
 {
     ESP_BLE_MESH_SIG_MODEL(ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV, NULL, NULL, NULL),
     ESP_BLE_MESH_SIG_MODEL(ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV, NULL, NULL, NULL),
@@ -127,7 +127,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
         ESP_LOGE(TAG, "Failed to allocate memory for cwww server context");
         return MESHX_NO_MEM;
     }
-    cwww_element_init_ctrl.cwww_server_sig_model_list = (esp_ble_mesh_model_t **)calloc(n_max, sizeof(esp_ble_mesh_model_t *));
+    cwww_element_init_ctrl.cwww_server_sig_model_list = (MESHX_MODEL **)calloc(n_max, sizeof(MESHX_MODEL *));
     if (!cwww_element_init_ctrl.cwww_server_sig_model_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww server sig model list");
@@ -137,7 +137,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
     {
         for (size_t i = 0; i < n_max; i++)
         {
-            cwww_element_init_ctrl.cwww_server_sig_model_list[i] = (esp_ble_mesh_model_t *)calloc(CWWW_SRV_MODEL_SIG_CNT, sizeof(esp_ble_mesh_model_t));
+            cwww_element_init_ctrl.cwww_server_sig_model_list[i] = (MESHX_MODEL *)calloc(CWWW_SRV_MODEL_SIG_CNT, sizeof(MESHX_MODEL));
             if (!cwww_element_init_ctrl.cwww_server_sig_model_list[i])
             {
                 ESP_LOGE(TAG, "Failed to allocate memory for cwww server sig model list");
@@ -145,7 +145,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
             }
         }
     }
-    cwww_element_init_ctrl.cwww_server_pub_list = (esp_ble_mesh_model_pub_t **)calloc(n_max, sizeof(esp_ble_mesh_model_pub_t *));
+    cwww_element_init_ctrl.cwww_server_pub_list = (MESHX_MODEL_PUB **)calloc(n_max, sizeof(MESHX_MODEL_PUB *));
     if (!cwww_element_init_ctrl.cwww_server_pub_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww server pub list");
@@ -155,7 +155,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
     {
         for (size_t i = 0; i < n_max; i++)
         {
-            cwww_element_init_ctrl.cwww_server_pub_list[i] = (esp_ble_mesh_model_pub_t *)calloc(CWWW_SRV_MODEL_SIG_CNT, sizeof(esp_ble_mesh_model_pub_t));
+            cwww_element_init_ctrl.cwww_server_pub_list[i] = (MESHX_MODEL_PUB *)calloc(CWWW_SRV_MODEL_SIG_CNT, sizeof(MESHX_MODEL_PUB));
             if (!cwww_element_init_ctrl.cwww_server_pub_list[i])
             {
                 ESP_LOGE(TAG, "Failed to allocate memory for cwww server pub list");
@@ -163,19 +163,19 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
             }
         }
     }
-    cwww_element_init_ctrl.cwww_server_onoff_gen_list = (esp_ble_mesh_gen_onoff_srv_t *)calloc(n_max, sizeof(esp_ble_mesh_gen_onoff_srv_t));
+    cwww_element_init_ctrl.cwww_server_onoff_gen_list = (MESHX_GEN_ONOFF_SRV *)calloc(n_max, sizeof(MESHX_GEN_ONOFF_SRV));
     if (!cwww_element_init_ctrl.cwww_server_onoff_gen_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww server onoff gen list");
         return MESHX_NO_MEM;
     }
-    cwww_element_init_ctrl.cwww_server_light_ctl_list = (esp_ble_mesh_light_ctl_srv_t *)calloc(n_max, sizeof(esp_ble_mesh_light_ctl_srv_t));
+    cwww_element_init_ctrl.cwww_server_light_ctl_list = (MESHX_LIGHT_CTL_SRV *)calloc(n_max, sizeof(MESHX_LIGHT_CTL_SRV));
     if (!cwww_element_init_ctrl.cwww_server_light_ctl_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww server light ctl list");
         return MESHX_NO_MEM;
     }
-    cwww_element_init_ctrl.cwww_light_ctl_state = (esp_ble_mesh_light_ctl_state_t *)calloc(n_max, sizeof(esp_ble_mesh_light_ctl_state_t));
+    cwww_element_init_ctrl.cwww_light_ctl_state = (MESHX_LIGHT_CTL_STATE *)calloc(n_max, sizeof(MESHX_LIGHT_CTL_STATE));
     if (!cwww_element_init_ctrl.cwww_light_ctl_state)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww light ctl state");
@@ -278,7 +278,7 @@ static meshx_err_t meshx_dev_create_cwww_model_space(uint16_t n_max)
         /* Perform memcpy to setup the constants */
         memcpy( &cwww_element_init_ctrl.cwww_server_sig_model_list[cwww_rel_el_id][CWWW_SIG_ONOFF_MODEL_ID],
                 &cwww_sig_template[CWWW_SIG_ONOFF_MODEL_ID],
-                sizeof(esp_ble_mesh_model_t)
+                sizeof(MESHX_MODEL)
             );
         /* Set the dynamic spaces for the model */
         temp = (void**) &cwww_element_init_ctrl.cwww_server_sig_model_list[cwww_rel_el_id][CWWW_SIG_ONOFF_MODEL_ID].pub;
@@ -294,7 +294,7 @@ static meshx_err_t meshx_dev_create_cwww_model_space(uint16_t n_max)
 
         memcpy( &cwww_element_init_ctrl.cwww_server_sig_model_list[cwww_rel_el_id][CWWW_SIG_L_CTL_MODEL_ID],
                 &cwww_sig_template[CWWW_SIG_L_CTL_MODEL_ID],
-                sizeof(esp_ble_mesh_model_t)
+                sizeof(MESHX_MODEL)
             );
         temp = (void**) &cwww_element_init_ctrl.cwww_server_sig_model_list[cwww_rel_el_id][CWWW_SIG_L_CTL_MODEL_ID].pub;
         *temp = &cwww_element_init_ctrl.cwww_server_pub_list[cwww_rel_el_id][CWWW_SIG_L_CTL_MODEL_ID];
@@ -322,12 +322,12 @@ static meshx_err_t meshx_restore_model_states(uint16_t element_id)
     {
         if (cwww_element_init_ctrl.cwww_server_sig_model_list[element_id][i].model_id == ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV)
         {
-            esp_ble_mesh_gen_onoff_srv_t *srv = (esp_ble_mesh_gen_onoff_srv_t *)cwww_element_init_ctrl.cwww_server_sig_model_list[element_id][i].user_data;
+            MESHX_GEN_ONOFF_SRV *srv = (MESHX_GEN_ONOFF_SRV *)cwww_element_init_ctrl.cwww_server_sig_model_list[element_id][i].user_data;
             srv->state.onoff = el_ctx->prev_state.on_off;
         }
         else if (cwww_element_init_ctrl.cwww_server_sig_model_list[element_id][i].model_id == ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV)
         {
-            esp_ble_mesh_light_ctl_srv_t *srv = (esp_ble_mesh_light_ctl_srv_t *)cwww_element_init_ctrl.cwww_server_sig_model_list[element_id][i].user_data;
+            MESHX_LIGHT_CTL_SRV *srv = (MESHX_LIGHT_CTL_SRV *)cwww_element_init_ctrl.cwww_server_sig_model_list[element_id][i].user_data;
             srv->state->delta_uv = el_ctx->prev_ctl_state.delta_uv;
             srv->state->lightness = el_ctx->prev_ctl_state.lightness;
             srv->state->temperature = el_ctx->prev_ctl_state.temperature;
@@ -369,7 +369,7 @@ static meshx_err_t meshx_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, 
             /* Insert the first SIG model in root model to save element virtual addr space */
             memcpy(&elements[i].sig_models[1],
                    cwww_element_init_ctrl.cwww_server_sig_model_list[i - *start_idx],
-                   sizeof(esp_ble_mesh_model_t));
+                   sizeof(MESHX_MODEL));
             ref_ptr = (uint8_t *)&elements[i].sig_model_count;
             (*ref_ptr)++;
         }
@@ -409,11 +409,11 @@ static meshx_err_t meshx_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, 
  *
  * Event Types:
  * - CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF: Handles on/off state changes.
- *   - params: Pointer to esp_ble_mesh_gen_onoff_srv_t containing the new on/off state.
+ *   - params: Pointer to MESHX_GEN_ONOFF_SRV containing the new on/off state.
  *   - Updates the on/off state of the corresponding element context.
  *
  * - CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL: Handles CTL (Color Temperature Lightness) state changes.
- *   - params: Pointer to esp_ble_mesh_light_ctl_srv_t containing the new CTL state.
+ *   - params: Pointer to MESHX_LIGHT_CTL_SRV containing the new CTL state.
  *   - Updates the delta UV, lightness, temperature, and temperature range of the corresponding element context.
  *
  * If the element ID is out of range, the function exits without making any changes.
@@ -435,7 +435,7 @@ static meshx_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, contr
     switch (evt) {
         case CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF:
         {
-            const esp_ble_mesh_gen_onoff_srv_t *p_onoff_srv = (const esp_ble_mesh_gen_onoff_srv_t *)params;
+            const MESHX_GEN_ONOFF_SRV *p_onoff_srv = (const MESHX_GEN_ONOFF_SRV *)params;
             element_id = p_onoff_srv->model->element_idx;
             if (!IS_EL_IN_RANGE(element_id))
                 goto el_ctrl_task_hndlr_exit;
@@ -452,7 +452,7 @@ static meshx_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, contr
         }
         case CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL:
         {
-            const esp_ble_mesh_light_ctl_srv_t *p_ctl_srv = (const esp_ble_mesh_light_ctl_srv_t *)params;
+            const MESHX_LIGHT_CTL_SRV *p_ctl_srv = (const MESHX_LIGHT_CTL_SRV *)params;
             element_id = p_ctl_srv->model->element_idx;
             if (!IS_EL_IN_RANGE(element_id)) goto el_ctrl_task_hndlr_exit;
             rel_el_id = GET_RELATIVE_EL_IDX(element_id);

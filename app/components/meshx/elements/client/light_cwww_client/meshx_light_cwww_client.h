@@ -168,8 +168,8 @@ typedef struct cwww_client_element
     size_t element_model_init;                      /**< Initialization status of the element model */
     cwww_cli_ctx_t *cwww_cli_ctx;                   /**< Context of the cwww client */
     esp_ble_mesh_client_t **cwww_cli_list;          /**< List of cwww client structures */
-    esp_ble_mesh_model_pub_t **cwww_cli_pub_list;   /**< List of cwww client publication structures */
-    esp_ble_mesh_model_t **cwww_cli_sig_model_list; /**< List of cwww client SIG model structures */
+    MESHX_MODEL_PUB **cwww_cli_pub_list;   /**< List of cwww client publication structures */
+    MESHX_MODEL **cwww_cli_sig_model_list; /**< List of cwww client SIG model structures */
 } cwww_client_elements_t;
 
 /**
