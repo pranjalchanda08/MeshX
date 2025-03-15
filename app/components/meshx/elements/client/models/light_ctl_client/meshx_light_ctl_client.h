@@ -17,7 +17,7 @@
 #define __LIGHT_CTL_CLIENT_H__
 
 #include "meshx_err.h"
-#include "meshx_platform.h"
+#include "interface/meshx_platform.h"
 #include "sys/queue.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"

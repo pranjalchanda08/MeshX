@@ -7,7 +7,7 @@
  * @author Pranjal Chanda
  */
 
-#include "meshx_sem.h"
+#include "interface/rtos/meshx_sem.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
 #include "esp_system.h"

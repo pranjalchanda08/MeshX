@@ -7,7 +7,7 @@
  * @author Pranjal Chanda
  */
 
-#include "meshx_msg_q.h"
+#include "interface/rtos/meshx_msg_q.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
 #include "esp_system.h"

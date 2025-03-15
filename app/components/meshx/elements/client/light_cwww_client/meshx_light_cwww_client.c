@@ -318,7 +318,7 @@ static void cwww_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
     }
     if (nvs_save)
     {
-        meshx_err_t err = meshx_nvs_elemnt_ctx_set(element_id, el_ctx, sizeof(cwww_cli_ctx_t));
+        meshx_err_t err = meshx_nvs_element_ctx_set(element_id, el_ctx, sizeof(cwww_cli_ctx_t));
         if (err != MESHX_SUCCESS)
         {
             ESP_LOGE(TAG, "Failed to set cwww client element context: (%d)", err);
@@ -836,7 +836,7 @@ static meshx_err_t meshx_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, 
             ref_ptr = (uint8_t *)&elements[i].vnd_model_count;
             *ref_ptr = CWWW_CLI_MODEL_VEN_CNT;
         }
-        err = meshx_nvs_elemnt_ctx_get(i, &(cwww_client_element_init_ctrl->cwww_cli_ctx[i - *start_idx]), sizeof(cwww_cli_ctx_t));
+        err = meshx_nvs_element_ctx_get(i, &(cwww_client_element_init_ctrl->cwww_cli_ctx[i - *start_idx]), sizeof(cwww_cli_ctx_t));
         if (err != MESHX_SUCCESS)
         {
             ESP_LOGW(TAG, "Failed to get cwww cli element context: (0x%x)", err);

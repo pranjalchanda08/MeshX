@@ -19,9 +19,9 @@
 #include <sdkconfig.h>
 #include <meshx_config.h>
 #include <esp_log.h>
-#include <meshx_log.h>
 #include <meshx_err.h>
-#include <meshx_platform.h>
+#include <interface/logging/meshx_log.h>
+#include "interface/meshx_platform.h"
 
 #if CONFIG_ENABLE_UNIT_TEST
 #include <unit_test.h>

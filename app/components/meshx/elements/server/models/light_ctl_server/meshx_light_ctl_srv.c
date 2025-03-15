@@ -12,32 +12,9 @@
 
 #include <meshx_light_ctl_srv.h>
 
-#define TAG __func__
+#define MESHX_SERVER_INIT_MAGIC_NO 0x2483
 
-/**
- * @brief Light CTL status packet.
- */
-typedef union ctl_status_pack{
-    struct{
-        uint16_t lightness;         /**< Lightness level */
-        uint16_t temperature;       /**< Color temperature */
-    }ctl_status;
-    struct{
-        uint16_t temperature;       /**< Color temperature */
-        uint16_t delta_uv;          /**< Delta UV value */
-    }ctl_temp_status;
-    struct{
-        uint16_t lightness_def;     /**< Default lightness */
-        uint16_t temperature_def;   /**< Default temperature */
-        uint16_t delta_uv_def;      /**< Default delta UV */
-    }ctl_default;
-    struct{
-        uint8_t status_code;        /**< Status code */
-        uint16_t range_min;         /**< Minimum temperature range */
-        uint16_t range_max;         /**< Maximum temperature range */
-    }ctl_temp_range;
-}ctl_status_t;
-
+static uint16_t meshx_lighting_server_init = 0;
 /**
  * @brief Perform hardware change for the light control server model.
  *
@@ -50,25 +27,42 @@ typedef union ctl_status_pack{
  *     - MESHX_SUCCESS: Success
  *     - MESHX_FAIL: Failure
  */
-static meshx_err_t meshx_perform_hw_change(esp_ble_mesh_lighting_server_cb_param_t *param)
+static meshx_err_t meshx_state_change_notify(meshx_lighting_server_cb_param_t *param)
 {
-    const MESHX_LIGHT_CTL_SRV *srv = (MESHX_LIGHT_CTL_SRV*) param->model->user_data;
+    meshx_light_ctl_srv_t ctl_srv_params = {
+        .model = param->model
+    };
 
-    if (ESP_BLE_MESH_ADDR_IS_UNICAST(param->ctx.recv_dst)
-    || (ESP_BLE_MESH_ADDR_BROADCAST(param->ctx.recv_dst))
-    || (ESP_BLE_MESH_ADDR_IS_GROUP(param->ctx.recv_dst)
-        && (esp_ble_mesh_is_model_subscribed_to_group(param->model, param->ctx.recv_dst)))
-    )
+    if (MESHX_ADDR_IS_UNICAST(param->ctx.dst_addr)
+    || (MESHX_ADDR_BROADCAST(param->ctx.dst_addr))
+    || (MESHX_ADDR_IS_GROUP(param->ctx.dst_addr)
+       && (MESHX_SUCCESS == meshx_is_group_subscribed(param->model.p_model, param->ctx.dst_addr))))
     {
+        switch (param->ctx.opcode)
+        {
+            case MESHX_MODEL_OP_LIGHT_CTL_SET:
+            case MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK:
+                ctl_srv_params.state.delta_uv = param->state_change.ctl_set.delta_uv;
+                ctl_srv_params.state.lightness = param->state_change.ctl_set.lightness;
+                ctl_srv_params.state.temperature = param->state_change.ctl_set.temperature;
+                break;
+            case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET:
+            case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET:
+                ctl_srv_params.state.delta_uv = param->state_change.ctl_temp_set.delta_uv;
+                ctl_srv_params.state.temperature = param->state_change.ctl_temp_set.temperature;
+                break;
+            default:
+                return MESHX_NOT_SUPPORTED;
+        }
         /* Send msg for hw manipulation */
-        ESP_LOGD(TAG, "HW change requested, Element_id: 0x%x",
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "HW change requested, Element_id: 0x%x",
                     param->model->element_idx);
 
         meshx_err_t err = control_task_msg_publish(
-                            CONTROL_TASK_MSG_CODE_EL_STATE_CH,
-                            CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL,
-                            srv,
-                            sizeof(MESHX_LIGHT_CTL_SRV));
+            CONTROL_TASK_MSG_CODE_EL_STATE_CH,
+            CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL,
+            &ctl_srv_params,
+            sizeof(meshx_light_ctl_srv_t));
         return err;
     }
     return MESHX_NOT_SUPPORTED;
@@ -107,165 +101,93 @@ static meshx_err_t meshx_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_pa
  *    - MESHX_FAIL: Other failures
  */
 static meshx_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
-    const control_task_msg_evt_t evt,
-    esp_ble_mesh_lighting_server_cb_param_t *param)
+                                              const control_task_msg_evt_t evt,
+                                              meshx_lighting_server_cb_param_t *param)
 {
-    if(!pdev || (evt != ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV && evt != ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SETUP_SRV))
+    if (!pdev || (evt != MESHX_MODEL_ID_LIGHT_CTL_SRV && evt != MESHX_MODEL_ID_LIGHT_CTL_SETUP_SRV))
         return MESHX_INVALID_ARG;
 #endif /* !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
-    MESHX_LIGHT_CTL_SRV *srv = (MESHX_LIGHT_CTL_SRV*) param->model->user_data;
-
-    uint16_t status_op = 0;
-    bool send_reply_to_src = false;
-    uint8_t ctl_status_pack_len = 0;
-    uint32_t op_code = param->ctx.recv_op;
     meshx_err_t err = MESHX_SUCCESS;
 
-    ctl_status_t ctl_status_union;
-
+    bool send_reply_to_src = false;
+    bool state_change_notify = false;
+    uint32_t op_code = param->ctx.opcode;
+    uint32_t status_op = 0;
     switch (op_code)
     {
-        /*!< Light CTL Message Opcode */
-        case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_GET:
-        case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET:
-        case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET_UNACK:
-            status_op = ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_STATUS;
-            if(op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_GET){
-                srv->state->temperature = param->value.state_change.ctl_set.temperature;
-                srv->state->lightness = param->value.state_change.ctl_set.lightness;
-                srv->state->delta_uv = param->value.state_change.ctl_set.delta_uv;
-                ESP_LOGD(TAG, "lightness|temp|del_uv:%d|%d|%d",
-                     srv->state->lightness,
-                     srv->state->temperature,
-                     srv->state->delta_uv);
-                err = meshx_perform_hw_change(param);
-                if(err)
-                    return err;
-            }
-            if(op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET_UNACK)
-                send_reply_to_src = true;
+    /*!< Light CTL Message Opcode */
+    case MESHX_MODEL_OP_LIGHT_CTL_GET:
+    case MESHX_MODEL_OP_LIGHT_CTL_SET:
+    case MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK:
+        status_op = MESHX_MODEL_OP_LIGHT_CTL_STATUS;
+        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_GET)
+            state_change_notify = true;
 
-            ctl_status_union.ctl_status.temperature = srv->state->temperature;
-            ctl_status_union.ctl_status.lightness = srv->state->lightness;
-            ctl_status_pack_len = sizeof(ctl_status_union.ctl_status);
+        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK)
+            send_reply_to_src = true;
 
-            break;
-        case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET:
-        case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET:
-        case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK:
-            status_op = ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS;
-            if(op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET){
-                srv->state->temperature = param->value.state_change.ctl_temp_set.temperature;
-                srv->state->delta_uv = param->value.state_change.ctl_temp_set.delta_uv;
-                ESP_LOGI(TAG, "lightness|del_uv:%d|%d",
-                        srv->state->temperature,
-                        srv->state->delta_uv);
-                err = meshx_perform_hw_change(param);
-                if(err)
-                    return err;
-            }
-            if(op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK)
-                send_reply_to_src = true;
+        break;
+    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET:
+    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET:
+    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK:
+        status_op = MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS;
+        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET)
+            state_change_notify = true;
 
-            ctl_status_union.ctl_temp_status.temperature = srv->state->temperature;
-            ctl_status_union.ctl_temp_status.delta_uv = srv->state->delta_uv;
-            ctl_status_pack_len = sizeof(ctl_status_union.ctl_temp_status);
+        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK)
+            send_reply_to_src = true;
+        break;
+    /*!< Light CTL Setup Message Opcode */
+    case MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_SET:
+    case MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_GET:
+    case MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_SET_UNACK:
+        status_op = MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS;
+        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_GET)
+            MESHX_DO_NOTHING;
 
-            break;
-        /*!< Light CTL Setup Message Opcode */
-        case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_SET:
-        case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_GET:
-        case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_SET_UNACK:
-            if(op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_GET)
-            {
-                ESP_LOGI(TAG, "lightness|temp|del_uv:%d|%d|%d",
-                        param->value.state_change.ctl_default_set.lightness,
-                        param->value.state_change.ctl_default_set.temperature,
-                        param->value.state_change.ctl_default_set.delta_uv);
-                srv->state->temperature_default = param->value.state_change.ctl_default_set.temperature;
-                srv->state->lightness_default = param->value.state_change.ctl_default_set.lightness;
-                srv->state->delta_uv_default = param->value.state_change.ctl_default_set.delta_uv;
-            }
-            if(op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_SET_UNACK)
-                send_reply_to_src = true;
+        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_SET_UNACK)
+            send_reply_to_src = true;
 
-            ctl_status_union.ctl_default.delta_uv_def = srv->state->delta_uv_default;
-            ctl_status_union.ctl_default.lightness_def = srv->state->lightness_default;
-            ctl_status_union.ctl_default.temperature_def = srv->state->temperature_default;
-            ctl_status_pack_len = sizeof(ctl_status_union.ctl_default);
+        break;
+    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET:
+    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET:
+    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK:
+        status_op = MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS;
+        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET)
+            MESHX_DO_NOTHING;
 
-            status_op = ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS;
-            break;
-        case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET:
-        case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET:
-        case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK:
-            if(op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET)
-            {
-                ESP_LOGI(TAG, "temp min|max: %dK|%dK",
-                        param->value.state_change.ctl_temp_range_set.range_min,
-                        param->value.state_change.ctl_temp_range_set.range_max);
-                srv->state->temperature_range_min = param->value.state_change.ctl_temp_range_set.range_min;
-                srv->state->temperature_range_max = param->value.state_change.ctl_temp_range_set.range_max;
-            }
-            if(op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK)
-            {
-                send_reply_to_src = true;
-            }
+        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK)
+            send_reply_to_src = true;
 
-            ctl_status_union.ctl_temp_range.status_code = MESHX_SUCCESS;
-            ctl_status_union.ctl_temp_range.range_min = srv->state->temperature_range_min;
-            ctl_status_union.ctl_temp_range.range_max = srv->state->temperature_range_max;
-            ctl_status_pack_len = sizeof(ctl_status_union.ctl_temp_range);
-
-            status_op = ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS;
-            break;
-        default:
-            ESP_LOGW(TAG, "CTL Unhandled Event %p", (void*)param->ctx.recv_op);
-            break;
+        break;
+    default:
+        MESHX_LOGW(MODULE_ID_MODEL_SERVER, "CTL Unhandled Event %p", (void *)param->ctx.opcode);
+        break;
+    }
+    if (state_change_notify)
+    {
+        err = meshx_state_change_notify(param);
+        if (err)
+            return err;
     }
     if (send_reply_to_src
-    /* This is meant to notify the respective publish client */
-    || param->ctx.addr != param->model->pub->publish_addr)
+        /* This is meant to notify the respective publish client */
+        || param->ctx.dst_addr != param->model.pub_addr)
     {
         /* Here the message was received from unregistered source and mention the state to the respective client */
-        ESP_LOGD(TAG, "PUB: src|pub %x|%x", param->ctx.addr, param->model->pub->publish_addr);
-        /* ACK to Source */
-        err = esp_ble_mesh_server_model_send_msg(param->model,
-                                &param->ctx,
-                                status_op,
-                                ctl_status_pack_len,
-                                (uint8_t*)&ctl_status_union);
-        if(err)
-            ESP_LOGE(TAG, "Failed to send CTL status message (Err: %x)", err);
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "PUB: src|pub %x|%x", param->ctx.dst_addr, param->model.pub_addr);
+        param->ctx.opcode = (uint16_t)status_op;
+        param->ctx.dst_addr = param->model.pub_addr;
+
+        return control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE,
+                                        CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV,
+                                        param,
+                                        sizeof(meshx_lighting_server_cb_param_t));
     }
 
     return err;
 }
 
-/**
- * @brief Send the Light CTL Status message to the client.
- *
- * This function sends the Light CTL Status message to the client with the
- * specified lightness and temperature values.
- *
- * @param model Pointer to the Light CTL Server model.
- * @param ctx Pointer to the BLE Mesh message context.
- * @param lightness Lightness value to send.
- * @param temperature Temperature value to send.
- *
- * @return
- *     - MESHX_SUCCESS: Success
- *     - MESHX_FAIL: Failure
- */
-meshx_err_t meshx_send_ctl_status(MESHX_MODEL *model, esp_ble_mesh_msg_ctx_t* ctx, uint16_t lightness, uint16_t temperature)
-{
-    ctl_status_t ctl_status_pack;
-
-    ctl_status_pack.ctl_status.lightness = lightness;
-    ctl_status_pack.ctl_status.temperature = temperature;
-
-    return esp_ble_mesh_server_model_send_msg(model, ctx, ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_STATUS, sizeof(ctl_status_pack.ctl_status), (uint8_t*)&ctl_status_pack);
-}
 /**
  * @brief Initialize the Light CTL Server model.
  *
@@ -287,18 +209,22 @@ meshx_err_t meshx_light_ctl_server_init(void)
         return MESHX_SUCCESS;
     init_cntr++;
 #endif /* CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
+    if (meshx_lighting_server_init == MESHX_SERVER_INIT_MAGIC_NO)
+        return MESHX_SUCCESS;
+
+    meshx_lighting_server_init = MESHX_SERVER_INIT_MAGIC_NO;
 
     err = meshx_lighting_srv_init();
-    if(err)
-        ESP_LOGE(TAG, "Failed to initialize prod server");
+    if (err)
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize prod server");
 
-    err = meshx_lighting_reg_cb(ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV, (meshx_lighting_server_cb)&meshx_handle_light_ctl_msg);
-    if(err)
-        ESP_LOGE(TAG, "Failed to initialize meshx_gen_srv_reg_cb (Err: %d)", err);
+    err = meshx_lighting_reg_cb(MESHX_MODEL_ID_LIGHT_CTL_SRV, (meshx_lighting_server_cb)&meshx_handle_light_ctl_msg);
+    if (err)
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize meshx_gen_srv_reg_cb (Err: %d)", err);
 
-    err = meshx_lighting_reg_cb(ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SETUP_SRV, (meshx_lighting_server_cb)&meshx_handle_light_ctl_msg);
-    if(err)
-        ESP_LOGE(TAG, "Failed to initialize meshx_gen_srv_reg_cb (Err: %d)", err);
+    err = meshx_lighting_reg_cb(MESHX_MODEL_ID_LIGHT_CTL_SETUP_SRV, (meshx_lighting_server_cb)&meshx_handle_light_ctl_msg);
+    if (err)
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize meshx_gen_srv_reg_cb (Err: %d)", err);
 
     return err;
 }

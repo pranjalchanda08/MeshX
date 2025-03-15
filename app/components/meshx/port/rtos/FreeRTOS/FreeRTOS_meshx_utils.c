@@ -1,4 +1,4 @@
-#include "meshx_rtos_utils.h"
+#include "interface/rtos/meshx_rtos_utils.h"
 #include "freertos/FreeRTOS.h"
 
 meshx_err_t meshx_rtos_get_sys_time(unsigned int *millis)

@@ -1,7 +1,7 @@
 #include "esp_err.h"
 #include "esp_log.h"
 #include "nvs_flash.h"
-#include "meshx_platform.h"
+#include "interface/meshx_platform.h"
 #include "ble_mesh_example_init.h"
 
 meshx_err_t meshx_platform_init(void)

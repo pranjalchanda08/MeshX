@@ -31,4 +31,6 @@ typedef enum
 
 #define MESHX_UNUSED(x) ((void)(x))
 
+#define MESHX_DO_NOTHING    do {} while(0)
+
 #endif /* __MESHX_ERR_H */

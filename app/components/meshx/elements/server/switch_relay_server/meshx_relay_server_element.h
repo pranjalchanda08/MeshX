@@ -13,7 +13,7 @@
 #define __RELAY_SERVER_MODEL_H__
 
 #include "app_common.h"
-#include <meshx_onoff_server.h>
+#include "meshx_onoff_server.h"
 
 #define RELAY_SERVER_ELEMENT_NOS_DEF 1
 

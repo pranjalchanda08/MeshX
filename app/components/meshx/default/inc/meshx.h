@@ -11,12 +11,12 @@
 #define __MESHX_H__
 
 #include <app_common.h>
-#include <meshx_os_timer.h>
 #include <meshx_nvs.h>
 #include <meshx_api.h>
-#include <meshx_elements.h>
 #include <meshx_err.h>
-#include <meshx_platform.h>
+#include <meshx_os_timer.h>
+#include <meshx_elements.h>
+#include <interface/meshx_platform.h>
 
 #if CONFIG_ENABLE_UNIT_TEST
 #include <unit_test.h>

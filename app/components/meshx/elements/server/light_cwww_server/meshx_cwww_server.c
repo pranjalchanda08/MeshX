@@ -25,22 +25,22 @@
     | CONFIG_EVT_MODEL_SUB_ADD | CONFIG_EVT_MODEL_APP_KEY_BIND
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
-#define CONTROL_TASK_EVT_MASK   CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF \
-                              | CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL
+#define CONTROL_TASK_EVT_MASK                   \
+    CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF \
+    | CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL
 
-#define GET_RELATIVE_EL_IDX(_element_id)    _element_id - cwww_element_init_ctrl.element_id_start
-#define IS_EL_IN_RANGE(_element_id)         (_element_id >= cwww_element_init_ctrl.element_id_start \
-                                            && _element_id < cwww_element_init_ctrl.element_id_end)
+#define GET_RELATIVE_EL_IDX(_element_id) _element_id - cwww_element_init_ctrl.element_id_start
+#define IS_EL_IN_RANGE(_element_id) (_element_id >= cwww_element_init_ctrl.element_id_start && _element_id < cwww_element_init_ctrl.element_id_end)
 
-#define CWWW_TEMP_MIN   2700
-#define CWWW_TEMP_MAX   6500
+#define CWWW_TEMP_MIN 2700
+#define CWWW_TEMP_MAX 6500
 
 static cwww_elements_t cwww_element_init_ctrl;
 
 static const MESHX_MODEL cwww_sig_template[CWWW_SRV_MODEL_SIG_CNT] =
-{
-    ESP_BLE_MESH_SIG_MODEL(ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV, NULL, NULL, NULL),
-    ESP_BLE_MESH_SIG_MODEL(ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV, NULL, NULL, NULL),
+    {
+        ESP_BLE_MESH_SIG_MODEL(MESHX_MODEL_ID_GEN_ONOFF_SRV, NULL, NULL, NULL),
+        ESP_BLE_MESH_SIG_MODEL(MESHX_MODEL_ID_LIGHT_CTL_SRV, NULL, NULL, NULL),
 };
 
 #if CONFIG_ENABLE_CONFIG_SERVER
@@ -89,9 +89,9 @@ static void cwww_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
     default:
         break;
     }
-    if(nvs_save)
+    if (nvs_save)
     {
-        meshx_err_t err = meshx_nvs_elemnt_ctx_set(element_id, el_ctx, sizeof(cwww_server_ctx_t));
+        meshx_err_t err = meshx_nvs_element_ctx_set(element_id, el_ctx, sizeof(cwww_server_ctx_t));
         if (err != MESHX_SUCCESS)
         {
             ESP_LOGE(TAG, "Failed to set cwww server element context: (%d)", err);
@@ -261,7 +261,7 @@ static meshx_err_t meshx_element_struct_deinit(uint16_t n_max)
 static meshx_err_t meshx_dev_create_cwww_model_space(uint16_t n_max)
 {
     /* Assign Spaces for Model List, Publish List and onoff gen list */
-    void ** temp;
+    void **temp;
     meshx_err_t err = meshx_element_struct_init(n_max);
     if (err)
     {
@@ -276,12 +276,11 @@ static meshx_err_t meshx_dev_create_cwww_model_space(uint16_t n_max)
         cwww_element_init_ctrl.cwww_server_onoff_gen_list[cwww_rel_el_id].rsp_ctrl.set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
 
         /* Perform memcpy to setup the constants */
-        memcpy( &cwww_element_init_ctrl.cwww_server_sig_model_list[cwww_rel_el_id][CWWW_SIG_ONOFF_MODEL_ID],
-                &cwww_sig_template[CWWW_SIG_ONOFF_MODEL_ID],
-                sizeof(MESHX_MODEL)
-            );
+        memcpy(&cwww_element_init_ctrl.cwww_server_sig_model_list[cwww_rel_el_id][CWWW_SIG_ONOFF_MODEL_ID],
+               &cwww_sig_template[CWWW_SIG_ONOFF_MODEL_ID],
+               sizeof(MESHX_MODEL));
         /* Set the dynamic spaces for the model */
-        temp = (void**) &cwww_element_init_ctrl.cwww_server_sig_model_list[cwww_rel_el_id][CWWW_SIG_ONOFF_MODEL_ID].pub;
+        temp = (void **)&cwww_element_init_ctrl.cwww_server_sig_model_list[cwww_rel_el_id][CWWW_SIG_ONOFF_MODEL_ID].pub;
         *temp = &cwww_element_init_ctrl.cwww_server_pub_list[cwww_rel_el_id][CWWW_SIG_ONOFF_MODEL_ID];
         cwww_element_init_ctrl.cwww_server_sig_model_list[cwww_rel_el_id][CWWW_SIG_ONOFF_MODEL_ID].user_data =
             cwww_element_init_ctrl.cwww_server_onoff_gen_list + cwww_rel_el_id;
@@ -292,11 +291,10 @@ static meshx_err_t meshx_dev_create_cwww_model_space(uint16_t n_max)
         cwww_element_init_ctrl.cwww_server_light_ctl_list[cwww_rel_el_id].rsp_ctrl.set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
         cwww_element_init_ctrl.cwww_server_light_ctl_list[cwww_rel_el_id].state = &cwww_element_init_ctrl.cwww_light_ctl_state[cwww_rel_el_id];
 
-        memcpy( &cwww_element_init_ctrl.cwww_server_sig_model_list[cwww_rel_el_id][CWWW_SIG_L_CTL_MODEL_ID],
-                &cwww_sig_template[CWWW_SIG_L_CTL_MODEL_ID],
-                sizeof(MESHX_MODEL)
-            );
-        temp = (void**) &cwww_element_init_ctrl.cwww_server_sig_model_list[cwww_rel_el_id][CWWW_SIG_L_CTL_MODEL_ID].pub;
+        memcpy(&cwww_element_init_ctrl.cwww_server_sig_model_list[cwww_rel_el_id][CWWW_SIG_L_CTL_MODEL_ID],
+               &cwww_sig_template[CWWW_SIG_L_CTL_MODEL_ID],
+               sizeof(MESHX_MODEL));
+        temp = (void **)&cwww_element_init_ctrl.cwww_server_sig_model_list[cwww_rel_el_id][CWWW_SIG_L_CTL_MODEL_ID].pub;
         *temp = &cwww_element_init_ctrl.cwww_server_pub_list[cwww_rel_el_id][CWWW_SIG_L_CTL_MODEL_ID];
         cwww_element_init_ctrl.cwww_server_sig_model_list[cwww_rel_el_id][CWWW_SIG_L_CTL_MODEL_ID].user_data =
             cwww_element_init_ctrl.cwww_server_light_ctl_list + cwww_rel_el_id;
@@ -320,12 +318,12 @@ static meshx_err_t meshx_restore_model_states(uint16_t element_id)
 
     for (size_t i = 0; i < CWWW_SRV_MODEL_SIG_CNT; i++)
     {
-        if (cwww_element_init_ctrl.cwww_server_sig_model_list[element_id][i].model_id == ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV)
+        if (cwww_element_init_ctrl.cwww_server_sig_model_list[element_id][i].model_id == MESHX_MODEL_ID_GEN_ONOFF_SRV)
         {
             MESHX_GEN_ONOFF_SRV *srv = (MESHX_GEN_ONOFF_SRV *)cwww_element_init_ctrl.cwww_server_sig_model_list[element_id][i].user_data;
             srv->state.onoff = el_ctx->prev_state.on_off;
         }
-        else if (cwww_element_init_ctrl.cwww_server_sig_model_list[element_id][i].model_id == ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV)
+        else if (cwww_element_init_ctrl.cwww_server_sig_model_list[element_id][i].model_id == MESHX_MODEL_ID_LIGHT_CTL_SRV)
         {
             MESHX_LIGHT_CTL_SRV *srv = (MESHX_LIGHT_CTL_SRV *)cwww_element_init_ctrl.cwww_server_sig_model_list[element_id][i].user_data;
             srv->state->delta_uv = el_ctx->prev_ctl_state.delta_uv;
@@ -376,14 +374,14 @@ static meshx_err_t meshx_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, 
         else
         {
             elements[i].sig_models = cwww_element_init_ctrl.cwww_server_sig_model_list[i - *start_idx];
-            elements[i].vnd_models = ESP_BLE_MESH_MODEL_NONE;
+            elements[i].vnd_models = 0;
             ref_ptr = (uint8_t *)&elements[i].sig_model_count;
             *ref_ptr = CWWW_SRV_MODEL_SIG_CNT;
             ref_ptr = (uint8_t *)&elements[i].vnd_model_count;
             *ref_ptr = CWWW_SRV_MODEL_VEN_CNT;
         }
 
-        err = meshx_nvs_elemnt_ctx_get(i, &(cwww_element_init_ctrl.cwww_server_ctx[i - *start_idx]), sizeof(cwww_server_ctx_t));
+        err = meshx_nvs_element_ctx_get(i, &(cwww_element_init_ctrl.cwww_server_ctx[i - *start_idx]), sizeof(cwww_server_ctx_t));
         if (err != MESHX_SUCCESS)
         {
             ESP_LOGW(TAG, "Failed to get cwww element context: (0x%x)", err);
@@ -432,49 +430,53 @@ static meshx_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, contr
     meshx_el_light_cwww_server_evt_t app_msg;
     cwww_sig_id_t sig_func = CWWW_SIG_ONOFF_MODEL_ID;
 
-    switch (evt) {
+    switch (evt)
+    {
         case CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF:
         {
-            const MESHX_GEN_ONOFF_SRV *p_onoff_srv = (const MESHX_GEN_ONOFF_SRV *)params;
-            element_id = p_onoff_srv->model->element_idx;
+            const meshx_on_off_srv_t *p_onoff_srv = (const meshx_on_off_srv_t *)params;
+            element_id = p_onoff_srv->model.el_id;
             if (!IS_EL_IN_RANGE(element_id))
                 goto el_ctrl_task_hndlr_exit;
 
             rel_el_id = GET_RELATIVE_EL_IDX(element_id);
             el_ctx = &cwww_element_init_ctrl.cwww_server_ctx[rel_el_id];
-            if(el_ctx->prev_state.on_off == p_onoff_srv->state.onoff)
+            if (el_ctx->prev_state.on_off == p_onoff_srv->on_off_state)
                 goto el_ctrl_task_hndlr_exit;
 
-            el_ctx->prev_state.on_off = p_onoff_srv->state.onoff;
             sig_func = CWWW_SIG_ONOFF_MODEL_ID;
+            el_ctx->prev_state.on_off = p_onoff_srv->on_off_state;
             app_msg.state_change.on_off.state = el_ctx->prev_state.on_off;
             break;
         }
+
         case CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL:
         {
-            const MESHX_LIGHT_CTL_SRV *p_ctl_srv = (const MESHX_LIGHT_CTL_SRV *)params;
-            element_id = p_ctl_srv->model->element_idx;
-            if (!IS_EL_IN_RANGE(element_id)) goto el_ctrl_task_hndlr_exit;
+            const meshx_light_ctl_srv_t *p_ctl_srv = (const meshx_light_ctl_srv_t *)params;
+            element_id = p_ctl_srv->model.el_id;
+            if (!IS_EL_IN_RANGE(element_id))
+                goto el_ctrl_task_hndlr_exit;
+
             rel_el_id = GET_RELATIVE_EL_IDX(element_id);
             el_ctx = &cwww_element_init_ctrl.cwww_server_ctx[rel_el_id];
 
-            if(el_ctx->prev_ctl_state.delta_uv == p_ctl_srv->state->delta_uv &&
-               el_ctx->prev_ctl_state.lightness == p_ctl_srv->state->lightness &&
-               el_ctx->prev_ctl_state.temperature == p_ctl_srv->state->temperature &&
-               el_ctx->prev_ctl_state.temp_range_min == p_ctl_srv->state->temperature_range_min &&
-               el_ctx->prev_ctl_state.temp_range_max == p_ctl_srv->state->temperature_range_max)
+            if (el_ctx->prev_ctl_state.delta_uv       == p_ctl_srv->state.delta_uv &&
+                el_ctx->prev_ctl_state.lightness      == p_ctl_srv->state.lightness &&
+                el_ctx->prev_ctl_state.temperature    == p_ctl_srv->state.temperature &&
+                el_ctx->prev_ctl_state.temp_range_min == p_ctl_srv->state.temperature_range_min &&
+                el_ctx->prev_ctl_state.temp_range_max == p_ctl_srv->state.temperature_range_max)
                 goto el_ctrl_task_hndlr_exit;
 
-            el_ctx->prev_ctl_state.delta_uv = p_ctl_srv->state->delta_uv;
-            el_ctx->prev_ctl_state.lightness = p_ctl_srv->state->lightness;
-            el_ctx->prev_ctl_state.temperature = p_ctl_srv->state->temperature;
-            el_ctx->prev_ctl_state.temp_range_min = p_ctl_srv->state->temperature_range_min;
-            el_ctx->prev_ctl_state.temp_range_max = p_ctl_srv->state->temperature_range_max;
+            el_ctx->prev_ctl_state.delta_uv       = p_ctl_srv->state.delta_uv;
+            el_ctx->prev_ctl_state.lightness      = p_ctl_srv->state.lightness;
+            el_ctx->prev_ctl_state.temperature    = p_ctl_srv->state.temperature;
+            el_ctx->prev_ctl_state.temp_range_min = p_ctl_srv->state.temperature_range_min;
+            el_ctx->prev_ctl_state.temp_range_max = p_ctl_srv->state.temperature_range_max;
 
             sig_func = CWWW_SIG_L_CTL_MODEL_ID;
-            app_msg.state_change.ctl.delta_uv = el_ctx->prev_ctl_state.delta_uv;
-            app_msg.state_change.ctl.lightness = el_ctx->prev_ctl_state.lightness;
-            app_msg.state_change.ctl.temperature = el_ctx->prev_ctl_state.temperature;
+            app_msg.state_change.ctl.delta_uv       = el_ctx->prev_ctl_state.delta_uv;
+            app_msg.state_change.ctl.lightness      = el_ctx->prev_ctl_state.lightness;
+            app_msg.state_change.ctl.temperature    = el_ctx->prev_ctl_state.temperature;
             app_msg.state_change.ctl.temp_range_min = el_ctx->prev_ctl_state.temp_range_min;
             app_msg.state_change.ctl.temp_range_max = el_ctx->prev_ctl_state.temp_range_max;
             break;
@@ -483,11 +485,16 @@ static meshx_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, contr
             break;
     }
 
-    err = meshx_nvs_elemnt_ctx_set(element_id, el_ctx, sizeof(cwww_server_ctx_t));
+    err = meshx_nvs_element_ctx_set(element_id, el_ctx, sizeof(cwww_server_ctx_t));
     if (err != MESHX_SUCCESS)
         ESP_LOGE(TAG, "Failed to set relay element context: (%d)", err);
 
-    err = meshx_send_msg_to_app(element_id, MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER, (uint16_t) sig_func, sizeof(meshx_el_light_cwww_server_evt_t), &app_msg);
+    err = meshx_send_msg_to_app(element_id,
+        MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER,
+        (uint16_t)sig_func,
+        sizeof(meshx_el_light_cwww_server_evt_t),
+        &app_msg);
+
     if (err != MESHX_SUCCESS)
         ESP_LOGE(TAG, "Failed to send relay state change message: (%d)", err);
 
@@ -505,42 +512,53 @@ el_ctrl_task_hndlr_exit:
  */
 static meshx_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, control_task_msg_evt_t evt, void const *params)
 {
-    MESHX_UNUSED(pdev);
     MESHX_UNUSED(evt);
     MESHX_UNUSED(params);
 
     size_t rel_el_id = 0;
-    esp_ble_mesh_msg_ctx_t ctx;
     meshx_err_t err = MESHX_SUCCESS;
+    meshx_gen_srv_cb_param_t gen_srv_send;
+    meshx_lighting_server_cb_param_t light_srv_send;
 
-    for(size_t el_id = cwww_element_init_ctrl.element_id_start; el_id < cwww_element_init_ctrl.element_id_end; el_id++)
+    for (size_t el_id = cwww_element_init_ctrl.element_id_start; el_id < cwww_element_init_ctrl.element_id_end; el_id++)
     {
-        rel_el_id   = GET_RELATIVE_EL_IDX(el_id);
-        ctx.net_idx = pdev->meshx_store.net_key_id;
-        ctx.app_idx = cwww_element_init_ctrl.cwww_server_ctx[rel_el_id].app_id;
-        ctx.addr    = cwww_element_init_ctrl.cwww_server_ctx[rel_el_id].pub_addr;
-        ctx.send_ttl = ESP_BLE_MESH_TTL_DEFAULT;
-        ctx.send_cred = 0;
-        ctx.send_tag = BIT(1);
+        rel_el_id = GET_RELATIVE_EL_IDX(el_id);
 
-        if(ctx.addr == ESP_BLE_MESH_ADDR_UNASSIGNED || ctx.app_idx == ESP_BLE_MESH_KEY_UNUSED)
+        gen_srv_send.ctx.net_idx    = pdev->meshx_store.net_key_id;
+        gen_srv_send.ctx.app_idx    = cwww_element_init_ctrl.cwww_server_ctx[rel_el_id].app_id;
+        gen_srv_send.ctx.dst_addr   = cwww_element_init_ctrl.cwww_server_ctx[rel_el_id].pub_addr;
+        gen_srv_send.ctx.opcode     = MESHX_MODEL_OP_GEN_ONOFF_STATUS;
+        gen_srv_send.ctx.p_ctx      = NULL;
+
+        gen_srv_send.model.el_id    = (uint16_t)el_id;
+        gen_srv_send.model.p_model  = &cwww_element_init_ctrl.cwww_server_sig_model_list[rel_el_id][CWWW_SIG_ONOFF_MODEL_ID];
+
+        if (gen_srv_send.ctx.dst_addr == ESP_BLE_MESH_ADDR_UNASSIGNED || gen_srv_send.ctx.app_idx == ESP_BLE_MESH_KEY_UNUSED)
             continue;
 
-        err = esp_ble_mesh_server_model_send_msg(&cwww_element_init_ctrl.cwww_server_sig_model_list[rel_el_id][CWWW_SIG_ONOFF_MODEL_ID],
-                                                 &ctx,
-                                                 ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_STATUS,
-                                                 sizeof(cwww_element_init_ctrl.cwww_server_ctx[rel_el_id].state.on_off),
-                                                 &cwww_element_init_ctrl.cwww_server_ctx[rel_el_id].state.on_off);
+        err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE,
+                                       CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV,
+                                       &gen_srv_send,
+                                       sizeof(meshx_gen_srv_cb_param_t));
         if (err)
         {
             ESP_LOGE(TAG, "Failed to send ONOFF status message (Err: %x)", err);
             return err;
         }
 
-        err = meshx_send_ctl_status(&cwww_element_init_ctrl.cwww_server_sig_model_list[rel_el_id][CWWW_SIG_L_CTL_MODEL_ID],
-                                   &ctx,
-                                   cwww_element_init_ctrl.cwww_server_ctx[rel_el_id].prev_ctl_state.lightness,
-                                   cwww_element_init_ctrl.cwww_server_ctx[rel_el_id].prev_ctl_state.temperature);
+        light_srv_send.ctx.net_idx  = pdev->meshx_store.net_key_id;
+        light_srv_send.ctx.app_idx  = cwww_element_init_ctrl.cwww_server_ctx[rel_el_id].app_id;
+        light_srv_send.ctx.dst_addr = cwww_element_init_ctrl.cwww_server_ctx[rel_el_id].pub_addr;
+        light_srv_send.ctx.opcode   = MESHX_MODEL_OP_LIGHT_CTL_STATUS;
+        light_srv_send.ctx.p_ctx    = NULL;
+
+        light_srv_send.model.el_id  = (uint16_t)el_id;
+        light_srv_send.model.p_model = &cwww_element_init_ctrl.cwww_server_sig_model_list[rel_el_id][CWWW_SIG_L_CTL_MODEL_ID];
+
+        err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE,
+                                       CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV,
+                                       &light_srv_send,
+                                       sizeof(meshx_lighting_server_cb_param_t));
         if (err)
         {
             ESP_LOGE(TAG, "Failed to send CTL status message (Err: %x)", err);
@@ -586,20 +604,19 @@ meshx_err_t create_cwww_elements(dev_struct_t *pdev, uint16_t element_cnt)
     }
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
     err = control_task_msg_subscribe(
-            CONTROL_TASK_MSG_CODE_EL_STATE_CH,
-            CONTROL_TASK_EVT_MASK,
-            (control_task_msg_handle_t)&meshx_el_control_task_handler);
+        CONTROL_TASK_MSG_CODE_EL_STATE_CH,
+        CONTROL_TASK_EVT_MASK,
+        (control_task_msg_handle_t)&meshx_el_control_task_handler);
     if (err)
     {
         ESP_LOGE(TAG, "Failed to register control task callback: (%d)", err);
         return err;
     }
 
-
     err = control_task_msg_subscribe(
-            CONTROL_TASK_MSG_CODE_PROVISION,
-            CONTROL_TASK_MSG_EVT_EN_NODE_PROV,
-            (control_task_msg_handle_t)&cwww_prov_control_task_handler);
+        CONTROL_TASK_MSG_CODE_PROVISION,
+        CONTROL_TASK_MSG_EVT_EN_NODE_PROV,
+        (control_task_msg_handle_t)&cwww_prov_control_task_handler);
     if (err)
     {
         ESP_LOGE(TAG, "Failed to register control task callback: (%d)", err);

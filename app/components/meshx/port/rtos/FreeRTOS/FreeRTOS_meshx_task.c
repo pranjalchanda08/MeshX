@@ -7,7 +7,7 @@
  * @author Pranjal Chanda
  */
 
-#include "meshx_task.h"
+#include "interface/rtos/meshx_task.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/portmacro.h"
 #include "freertos/task.h"

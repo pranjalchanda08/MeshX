@@ -150,7 +150,7 @@ meshx_err_t meshx_nvs_set(char const* key, void const* blob, size_t blob_size, b
  * @return
  *     - MESHX_SUCCESS: Successfully retrieved the context.
  */
-meshx_err_t meshx_nvs_elemnt_ctx_get(uint16_t element_id, void *blob, size_t blob_size);
+meshx_err_t meshx_nvs_element_ctx_get(uint16_t element_id, void *blob, size_t blob_size);
 
 /**
  * @brief Store the context of a specific element to NVS.
@@ -165,7 +165,7 @@ meshx_err_t meshx_nvs_elemnt_ctx_get(uint16_t element_id, void *blob, size_t blo
  * @return
  *     - MESHX_SUCCESS: Successfully stored the context.
  */
-meshx_err_t meshx_nvs_elemnt_ctx_set(uint16_t element_id, const void *blob, size_t blob_size);
+meshx_err_t meshx_nvs_element_ctx_set(uint16_t element_id, const void *blob, size_t blob_size);
 
 #endif /* __MESHX_NVS_H__ */
 

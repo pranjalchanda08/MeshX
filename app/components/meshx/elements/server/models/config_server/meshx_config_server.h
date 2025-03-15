@@ -13,7 +13,7 @@
 #ifndef __MESHX_CONFIG_SERVER__
 #define __MESHX_CONFIG_SERVER__
 
-#include "meshx_platform.h"
+#include "interface/meshx_platform.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
 #include "sys/queue.h"

@@ -10,7 +10,7 @@
 #pragma once
 
 #include "meshx_err.h"
-#include "meshx_platform.h"
+#include "interface/meshx_platform.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
 #include <sys/queue.h>

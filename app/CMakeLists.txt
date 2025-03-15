@@ -16,4 +16,3 @@ if("$ENV{IDF_VERSION}" VERSION_LESS "${REQUIRED_IDF_VERSION}")
 endif()
 
 project(${TARGET})
-
