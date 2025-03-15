@@ -17,10 +17,9 @@
 #include "string.h"
 #include "esp_log.h"
 #include "app_common.h"
-#include "meshx_log.h"
-#include "meshx_task.h"
-#include "meshx_msg_q.h"
-#include "meshx_rtos_utils.h"
+#include "interface/rtos/meshx_task.h"
+#include "interface/rtos/meshx_msg_q.h"
+#include "interface/rtos/meshx_rtos_utils.h"
 
 /**
  * @brief Control task name configuration.

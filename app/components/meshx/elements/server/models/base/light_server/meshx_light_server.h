@@ -15,38 +15,9 @@
 
 #include "sys/queue.h"
 #include "meshx_control_task.h"
+#include "interface/ble_mesh/meshx_ble_mesh_light_server.h"
 
-#ifndef CONFIG_MAX_MESHX_LIGHTING_SRV_CB
-#define CONFIG_MAX_MESHX_LIGHTING_SRV_CB   3
-#endif
-
-#if !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
-
-/**
- * @brief Type definition for the production lighting server callback function.
- *
- * @param param Pointer to the callback parameter structure.
- *
- * @return MESHX_SUCCESS on success, or an appropriate error code on failure.
- */
-typedef meshx_err_t (* meshx_lighting_server_cb) (esp_ble_mesh_lighting_server_cb_param_t *param);
-/**
- * @brief Structure to register a production lighting server callback.
- */
-typedef struct meshx_lighting_server_cb_reg
-{
-    uint32_t model_id; /**< Model ID for the lighting server. */
-    meshx_lighting_server_cb cb; /**< Callback function for the lighting server. */
-    SLIST_ENTRY(meshx_lighting_server_cb_reg) entries; /**< Singly linked list entry. */
-} meshx_lighting_server_cb_reg_t;
-/**
- * @brief Head for the singly linked list of production lighting server callbacks.
- */
-SLIST_HEAD(meshx_lighting_server_cb_list, meshx_lighting_server_cb_reg);
-
-#else
 typedef control_task_msg_handle_t meshx_lighting_server_cb;
-#endif /* !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
 
 /**
  * @brief Register a callback function for the lighting server model.
@@ -64,6 +35,20 @@ typedef control_task_msg_handle_t meshx_lighting_server_cb;
  */
 meshx_err_t meshx_lighting_reg_cb(uint32_t model_id, meshx_lighting_server_cb cb);
 
+/**
+ * @brief Callback function to deregister a lighting server model.
+ *
+ * This function is called to deregister a lighting server model identified by the given model ID.
+ *
+ * @param[in] model_id  The ID of the model to be deregistered.
+ * @param[in] cb        The callback function to be deregistered.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_INVALID_ARG: Invalid argument
+ *     - MESHX_FAIL: Other failures
+ */
+meshx_err_t meshx_lighting_srv_dereg_cb(uint32_t model_id, meshx_lighting_server_cb cb);
 /**
  * @brief Initialize the production lighting server.
  *

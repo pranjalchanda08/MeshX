@@ -32,7 +32,7 @@
 
 #include "meshx_log.h"
 #include "module_id.h"
-#include "meshx_rtos_utils.h"
+#include "interface/rtos/meshx_rtos_utils.h"
 #include <stdio.h>
 #include <stdarg.h>
 

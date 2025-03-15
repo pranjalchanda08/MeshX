@@ -1,7 +1,6 @@
 #ifndef __MESHX_PLAT_GEN_SRV_H__
 #define __MESHX_PLAT_GEN_SRV_H__
 
-#include "sys/queue.h"
 #include "meshx_ble_mesh_cmn.h"
 #include "meshx_control_task.h"
 
@@ -121,51 +120,50 @@ typedef union
     meshx_state_change_gen_manu_property_set_t manu_property_set;   /*!< Generic Manufacturer Property Set */
 } meshx_gen_srv_state_change_t;
 
-typedef struct meshx_gen_srv_model_param
+typedef struct meshx_gen_srv_cb_param
 {
     meshx_ctx_t ctx;
     meshx_model_t model;
     meshx_gen_srv_state_change_t state_change;
-} meshx_gen_srv_model_param_t;
+} meshx_gen_srv_cb_param_t;
+
+typedef struct meshx_on_off_srv
+{
+    meshx_model_t model;
+    uint8_t on_off_state;
+}meshx_on_off_srv_t;
 
 typedef control_task_msg_handle_t meshx_server_cb;
 
 /**
- * @brief Register a callback function for the meshxuction server model.
+ * @brief Retrieve the model ID of a generic server model.
  *
- * This function registers a callback function that will be called when
- * specific events related to the meshxuction server model occur.
+ * This function obtains the model ID associated with a specified generic server model.
  *
- * @param[in] model_id  The ID of the model for which the callback is being registered.
- * @param[in] cb        The callback function to be registered.
- *
- * @return
- *     - MESHX_SUCCESS: Callback registered successfully.
- *     - MESHX_INVALID_ARG: Invalid arguments.
- *     - MESHX_FAIL: Failed to register the callback.
- */
-meshx_err_t meshx_gen_srv_reg_cb(uint32_t model_id, meshx_server_cb cb);
-
-/**
- * @brief Callback function to deregister a generic server model.
- *
- * This function is called to deregister a generic server model identified by the given model ID.
- *
- * @param[in] model_id  The ID of the model to be deregistered.
- * @param[in] cb        The callback function to be deregistered.
- *
- * @return
- *     - MESHX_SUCCESS: Success
- *     - MESHX_INVALID_ARG: Invalid argument
- *     - MESHX_FAIL: Other failures
- */
-meshx_err_t meshx_gen_srv_dereg_cb(uint32_t model_id, meshx_server_cb cb);
-
-/**
- * @brief Initialize the generic server model.
+ * @param[in]  p_model   Pointer to the model whose ID is to be retrieved.
+ * @param[out] model_id  Pointer to a variable where the retrieved model ID will be stored.
  *
  * @return MESHX_SUCCESS on success, or an appropriate error code on failure.
  */
-meshx_err_t meshx_gen_srv_init(void);
+meshx_err_t meshx_plat_get_gen_srv_model_id(void* p_model, uint16_t *model_id);
+
+/**
+ * @brief Set the state of a generic server model.
+ *
+ * This function updates the on/off state of a specified generic server model.
+ *
+ * @param[in] p_model       Pointer to the model whose state is to be set.
+ * @param[in] on_off_state  The desired on/off state to set for the model.
+ *
+ * @return MESHX_SUCCESS on success, or an appropriate error code on failure.
+ */
+meshx_err_t meshx_plat_set_gen_srv_state(void * p_model, uint8_t on_off_state);
+
+/**
+ * @brief Initialize the generic server model platform.
+ *
+ * @return MESHX_SUCCESS on success, or an appropriate error code on failure.
+ */
+meshx_err_t meshx_plat_gen_srv_init(void);
 
 #endif /* __MESHX_PLAT_GEN_SRV_H__ */

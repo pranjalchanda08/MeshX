@@ -304,7 +304,7 @@ static meshx_err_t meshx_add_relay_srv_model_to_element_list(dev_struct_t *pdev,
             ref_ptr = (uint8_t *)&elements[i].vnd_model_count;
             *ref_ptr = RELAY_SRV_MODEL_VEN_CNT;
         }
-        err = meshx_nvs_elemnt_ctx_get(i, &(relay_element_init_ctrl.meshx_gen_ctx[i - *start_idx]), sizeof(relay_element_init_ctrl.meshx_gen_ctx[i]));
+        err = meshx_nvs_element_ctx_get(i, &(relay_element_init_ctrl.meshx_gen_ctx[i - *start_idx]), sizeof(relay_element_init_ctrl.meshx_gen_ctx[i]));
         if (err != MESHX_SUCCESS)
         {
             ESP_LOGW(TAG, "Failed to get relay element context: (0x%x)", err);
@@ -352,7 +352,7 @@ static meshx_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, contr
     p_onoff_srv = (MESHX_GEN_ONOFF_SRV const *) params;
     el_ctx->state = p_onoff_srv->state.onoff;
 
-    err = meshx_nvs_elemnt_ctx_set(element_id, el_ctx, sizeof(relay_srv_model_ctx_t));
+    err = meshx_nvs_element_ctx_set(element_id, el_ctx, sizeof(relay_srv_model_ctx_t));
     if (err != MESHX_SUCCESS)
         ESP_LOGE(TAG, "Failed to set relay element context: (%d)", err);
 

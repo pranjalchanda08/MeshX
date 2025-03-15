@@ -11,7 +11,7 @@
 #ifndef __MESHX_PROV__
 #define __MESHX_PROV__
 
-#include "meshx_platform.h"
+#include "interface/meshx_platform.h"
 
 #define MESHX_PROV_INSTANCE g_meshx_prov
 

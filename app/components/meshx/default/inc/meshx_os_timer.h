@@ -16,7 +16,7 @@
 #include <stdint.h>
 #include "sys/queue.h"
 #include "meshx_control_task.h"
-#include "meshx_rtos_timer.h"
+#include "interface/rtos/meshx_rtos_timer.h"
 
 /**
  * @brief return meshx_os_timer_t size

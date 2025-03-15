@@ -1,20 +1,8 @@
-/**
- * Copyright © 2024 - 2025 MeshX
- *
- * @file meshx_gen_server.h
- * @brief Header file for the generic server model in the BLE mesh node application.
- *
- * This file contains the function declarations and data structures for registering,
- * deregistering, and initializing the generic server model callbacks in the BLE mesh node application.
- *
- *
- */
+#include "stdlib.h"
+#include "meshx_gen_server.h"
 
-#ifndef __MESHX_GEN_SERVER_H__
-#define __MESHX_GEN_SERVER_H__
-
-#include "interface/ble_mesh/meshx_ble_mesh_light_server.h"
-#include "interface/ble_mesh/meshx_ble_mesh_gen_srv.h"
+#define MESHX_SERVER_INIT_MAGIC_NO 0x1121
+static uint16_t meshx_server_init = 0;
 
 /**
  * @brief Register a callback function for the meshxuction server model.
@@ -30,7 +18,13 @@
  *     - MESHX_INVALID_ARG: Invalid arguments.
  *     - MESHX_FAIL: Failed to register the callback.
  */
-meshx_err_t meshx_gen_srv_reg_cb(uint32_t model_id, meshx_server_cb cb);
+meshx_err_t meshx_gen_srv_reg_cb(uint32_t model_id, meshx_server_cb cb)
+{
+    return control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_FRM_BLE,
+        model_id,
+        (control_task_msg_handle_t)cb);
+}
 
 /**
  * @brief Callback function to deregister a generic server model.
@@ -45,7 +39,13 @@ meshx_err_t meshx_gen_srv_reg_cb(uint32_t model_id, meshx_server_cb cb);
  *     - MESHX_INVALID_ARG: Invalid argument
  *     - MESHX_FAIL: Other failures
  */
-meshx_err_t meshx_gen_srv_dereg_cb(uint32_t model_id, meshx_server_cb cb);
+meshx_err_t meshx_gen_srv_dereg_cb(uint32_t model_id, meshx_server_cb cb)
+{
+    return control_task_msg_unsubscribe(
+        CONTROL_TASK_MSG_CODE_FRM_BLE,
+        model_id,
+        (control_task_msg_handle_t)cb);
+}
 
 /**
  * @brief Initialize the meshxuction generic server.
@@ -57,6 +57,11 @@ meshx_err_t meshx_gen_srv_dereg_cb(uint32_t model_id, meshx_server_cb cb);
  *     - MESHX_SUCCESS: Success
  *     - MESHX_FAIL: Failed to initialize the server
  */
-meshx_err_t meshx_gen_srv_init(void);
-
-#endif /* __MESHX_GEN_SERVER_H__ */
+meshx_err_t meshx_gen_srv_init(void)
+{
+    if (meshx_server_init == MESHX_SERVER_INIT_MAGIC_NO)
+        return MESHX_SUCCESS;
+    meshx_server_init = MESHX_SERVER_INIT_MAGIC_NO;
+    
+    return meshx_plat_gen_srv_init();
+}
