@@ -7,10 +7,28 @@
  * @author Pranjal Chanda
  */
 
-#ifndef __MESHX_ERR_H
-#define __MESHX_ERR_H
+#ifndef __MESHX_ERR_H__
+#define __MESHX_ERR_H__
 
 #include <stdint.h>
+
+#define MESHX_UNUSED(x) ((void)(x))
+
+#define MESHX_DO_NOTHING    do {} while(0)
+
+/* Compiler based definations */
+
+#ifndef MESHX_MALLOC
+#define MESHX_MALLOC    malloc
+#endif
+
+#ifndef MESHX_CALOC
+#define MESHX_CALOC     calloc
+#endif
+
+#ifndef MESHX_FREE
+#define MESHX_FREE      free
+#endif
 
 /**
  * @brief MeshX Error Codes
@@ -29,8 +47,4 @@ typedef enum
     MESHX_ERR_MAX        /**< Maximum Error */
 } meshx_err_t;
 
-#define MESHX_UNUSED(x) ((void)(x))
-
-#define MESHX_DO_NOTHING    do {} while(0)
-
-#endif /* __MESHX_ERR_H */
+#endif /* __MESHX_ERR_H__ */

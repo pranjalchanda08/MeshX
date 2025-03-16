@@ -25,7 +25,7 @@
     | CONFIG_EVT_MODEL_SUB_ADD | CONFIG_EVT_MODEL_APP_KEY_BIND
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
-#define CONTROL_TASK_EVT_MASK   CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF
+#define CONTROL_TASK_EVT_MASK CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF
 /**
  * @brief Get the relative index of an element ID.
  * @param _element_id The element ID.
@@ -43,13 +43,7 @@
 /**
  * @brief Structure to manage relay element initialization.
  */
-static relay_elements_t relay_element_init_ctrl;
-
-/**
- * @brief Template for SIG model initialization.
- */
-static const MESHX_MODEL relay_sig_template = ESP_BLE_MESH_SIG_MODEL(
-    ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV, NULL, NULL, NULL);
+static meshx_relay_element_ctrl_t relay_element_init_ctrl;
 
 #if CONFIG_ENABLE_CONFIG_SERVER
 
@@ -64,11 +58,11 @@ static const MESHX_MODEL relay_sig_template = ESP_BLE_MESH_SIG_MODEL(
  */
 static void relay_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *param, config_evt_t evt)
 {
-    relay_srv_model_ctx_t *el_ctx = NULL;
+    meshx_relay_srv_model_ctx_t *el_ctx = NULL;
     size_t rel_el_id = 0;
     uint16_t element_id = 0;
 
-    ESP_LOGD(TAG, "EVT: %p", (void *)evt);
+    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "EVT: %p", (void *)evt);
     switch (evt)
     {
     case CONFIG_EVT_MODEL_APP_KEY_BIND:
@@ -76,7 +70,7 @@ static void relay_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-        el_ctx = &relay_element_init_ctrl.meshx_gen_ctx[rel_el_id];
+        el_ctx = relay_element_init_ctrl.meshx_relay_element_lst[rel_el_id].meshx_rel_srv_ctx;
         el_ctx->app_id = param->value.state_change.appkey_add.app_idx;
         break;
     case CONFIG_EVT_MODEL_PUB_ADD:
@@ -85,11 +79,11 @@ static void relay_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-        el_ctx = &relay_element_init_ctrl.meshx_gen_ctx[rel_el_id];
+        el_ctx = relay_element_init_ctrl.meshx_relay_element_lst[rel_el_id].meshx_rel_srv_ctx;
         el_ctx->pub_addr = evt == CONFIG_EVT_MODEL_PUB_ADD ? param->value.state_change.mod_pub_set.pub_addr
                                                            : ESP_BLE_MESH_ADDR_UNASSIGNED;
         el_ctx->app_id = param->value.state_change.mod_pub_set.app_idx;
-        ESP_LOGI(TAG, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
+        MESHX_LOGI(MODULE_ID_MODEL_SERVER, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
         break;
     default:
         break;
@@ -113,48 +107,35 @@ static void relay_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
  */
 static meshx_err_t meshx_element_struct_init(uint16_t n_max)
 {
+    if(!n_max)
+        return MESHX_INVALID_ARG;
+
+    if (relay_element_init_ctrl.meshx_relay_element_lst)
+    {
+        MESHX_LOGW(MODULE_ID_MODEL_SERVER, "Relay element list already initialized");
+        return MESHX_INVALID_STATE;
+    }
+
+    meshx_err_t err = MESHX_SUCCESS;
 
     relay_element_init_ctrl.element_cnt = n_max;
     relay_element_init_ctrl.element_id_end = 0;
     relay_element_init_ctrl.element_id_start = 0;
 
-    relay_element_init_ctrl.meshx_gen_ctx = (relay_srv_model_ctx_t *) calloc(n_max, sizeof(relay_srv_model_ctx_t));
-    if (!relay_element_init_ctrl.meshx_gen_ctx)
-    {
-        ESP_LOGE(TAG, "Failed to allocate memory for relay server context");
+    relay_element_init_ctrl.meshx_relay_element_lst =
+        (meshx_relay_element_t *)MESHX_CALOC(relay_element_init_ctrl.element_cnt, sizeof(meshx_relay_element_t));
+
+    if (!relay_element_init_ctrl.meshx_relay_element_lst)
         return MESHX_NO_MEM;
-    }
-    relay_element_init_ctrl.relay_server_sig_model_list = (MESHX_MODEL **)calloc(n_max, sizeof(MESHX_MODEL *));
-    if (!relay_element_init_ctrl.relay_server_sig_model_list)
+
+    for (size_t i = 0; i < relay_element_init_ctrl.element_cnt; i++)
     {
-        ESP_LOGE(TAG, "Failed to allocate memory for relay server SIG model list");
-        return MESHX_NO_MEM;
+        err = meshx_on_off_server_create(&relay_element_init_ctrl.meshx_relay_element_lst[i].onoff_srv_model);
+        if (err)
+            MESHX_LOGE(MODULE_ID_COMMON, "Meshx On Off Server create failed (Err : 0x%x)", err);
     }
-    else
-    {
-        for (size_t i = 0; i < n_max; i++)
-        {
-            relay_element_init_ctrl.relay_server_sig_model_list[i] = (MESHX_MODEL *)calloc(RELAY_SRV_MODEL_SIG_CNT, sizeof(MESHX_MODEL));
-            if (!relay_element_init_ctrl.relay_server_sig_model_list[i])
-            {
-                ESP_LOGE(TAG, "Failed to allocate memory for relay server SIG model list");
-                return MESHX_NO_MEM;
-            }
-        }
-    }
-    relay_element_init_ctrl.relay_server_pub_list = (MESHX_MODEL_PUB *)calloc(n_max, sizeof(MESHX_MODEL_PUB));
-    if (!relay_element_init_ctrl.relay_server_pub_list)
-    {
-        ESP_LOGE(TAG, "Failed to allocate memory for relay server publication list");
-        return MESHX_NO_MEM;
-    }
-    relay_element_init_ctrl.relay_server_onoff_gen_list = (MESHX_GEN_ONOFF_SRV *)calloc(n_max, sizeof(MESHX_GEN_ONOFF_SRV));
-    if (!relay_element_init_ctrl.relay_server_onoff_gen_list)
-    {
-        ESP_LOGE(TAG, "Failed to allocate memory for relay server onoff generic list");
-        return MESHX_NO_MEM;
-    }
-    return MESHX_SUCCESS;
+
+    return err;
 }
 
 /**
@@ -174,34 +155,27 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
  */
 static meshx_err_t meshx_element_struct_deinit(uint16_t n_max)
 {
-    if (relay_element_init_ctrl.meshx_gen_ctx)
+    if (!n_max || !relay_element_init_ctrl.meshx_relay_element_lst)
     {
-        free(relay_element_init_ctrl.meshx_gen_ctx);
-        relay_element_init_ctrl.meshx_gen_ctx = NULL;
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Relay element list not initialized");
+        return MESHX_INVALID_STATE;
     }
-    if (relay_element_init_ctrl.relay_server_sig_model_list)
+
+    meshx_err_t err;
+
+    for (size_t i = 0; i < n_max; i++)
     {
-        for (size_t i = 0; i < n_max; i++)
-        {
-            if (relay_element_init_ctrl.relay_server_sig_model_list[i])
-            {
-                free(relay_element_init_ctrl.relay_server_sig_model_list[i]);
-                relay_element_init_ctrl.relay_server_sig_model_list[i] = NULL;
-            }
-        }
-        free(relay_element_init_ctrl.relay_server_sig_model_list);
-        relay_element_init_ctrl.relay_server_sig_model_list = NULL;
+        err = meshx_on_off_server_delete(&relay_element_init_ctrl.meshx_relay_element_lst[i].onoff_srv_model);
+        if (err)
+            MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Meshx On Off Server create failed (Err : 0x%x)", err);
     }
-    if (relay_element_init_ctrl.relay_server_pub_list)
+
+    if (relay_element_init_ctrl.meshx_relay_element_lst)
     {
-        free(relay_element_init_ctrl.relay_server_pub_list);
-        relay_element_init_ctrl.relay_server_pub_list = NULL;
+        MESHX_FREE(relay_element_init_ctrl.meshx_relay_element_lst);
+        relay_element_init_ctrl.meshx_relay_element_lst = NULL;
     }
-    if (relay_element_init_ctrl.relay_server_onoff_gen_list)
-    {
-        free(relay_element_init_ctrl.relay_server_onoff_gen_list);
-        relay_element_init_ctrl.relay_server_onoff_gen_list = NULL;
-    }
+
     return MESHX_SUCCESS;
 }
 
@@ -218,23 +192,9 @@ static meshx_err_t meshx_dev_create_relay_model_space(uint16_t n_max)
     meshx_err_t err = meshx_element_struct_init(n_max);
     if (err)
     {
-        ESP_LOGE(TAG, "Relay Model space create failed: (%d)", err);
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Relay Model space create failed: (%d)", err);
         meshx_element_struct_deinit(n_max);
         return err;
-    }
-    for (size_t relay_model_id = 0; relay_model_id < n_max; relay_model_id++)
-    {
-#if CONFIG_GEN_ONOFF_SERVER_COUNT
-        relay_element_init_ctrl.relay_server_onoff_gen_list[relay_model_id].rsp_ctrl.get_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
-        relay_element_init_ctrl.relay_server_onoff_gen_list[relay_model_id].rsp_ctrl.set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
-        memcpy(&relay_element_init_ctrl.relay_server_sig_model_list[relay_model_id][RELAY_SIG_ONOFF_MODEL_ID],
-               &relay_sig_template,
-               sizeof(MESHX_MODEL));
-        void **temp = (void **)&relay_element_init_ctrl.relay_server_sig_model_list[relay_model_id][RELAY_SIG_ONOFF_MODEL_ID].pub;
-        *temp = relay_element_init_ctrl.relay_server_pub_list + relay_model_id;
-        relay_element_init_ctrl.relay_server_sig_model_list[relay_model_id][RELAY_SIG_ONOFF_MODEL_ID].user_data =
-            relay_element_init_ctrl.relay_server_onoff_gen_list + relay_model_id;
-#endif /* CONFIG_GEN_ONOFF_SERVER_COUNT */
     }
     return MESHX_SUCCESS;
 }
@@ -249,13 +209,29 @@ static meshx_err_t meshx_dev_create_relay_model_space(uint16_t n_max)
  */
 static meshx_err_t meshx_restore_model_states(uint16_t element_id)
 {
+    uint16_t model_id = 0;
     meshx_err_t err = MESHX_SUCCESS;
-    relay_srv_model_ctx_t const *el_ctx = &relay_element_init_ctrl.meshx_gen_ctx[element_id];
-    MESHX_GEN_ONOFF_SRV *srv = NULL;
+    meshx_relay_srv_model_ctx_t const *el_ctx = relay_element_init_ctrl.meshx_relay_element_lst[element_id].meshx_rel_srv_ctx;
     for (size_t i = 0; i < RELAY_SRV_MODEL_SIG_CNT; i++)
     {
-        srv = (MESHX_GEN_ONOFF_SRV *)relay_element_init_ctrl.relay_server_sig_model_list[element_id][i].user_data;
-        srv->state.onoff = el_ctx->state;
+        err = meshx_get_model_id(relay_element_init_ctrl.meshx_relay_element_lst[element_id].onoff_srv_model->meshx_server_sig_model,
+                                 &model_id);
+        if (err)
+        {
+            MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to get model ID (err: 0x%x)", err);
+            return err;
+        }
+
+        if (model_id == MESHX_MODEL_ID_GEN_ONOFF_SRV)
+        {
+            err = meshx_on_off_gen_srv_state_restore(relay_element_init_ctrl.meshx_relay_element_lst[element_id].onoff_srv_model,
+                                                     el_ctx->state);
+            if (err)
+            {
+                MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to restore on-off server state (err: 0x%x)", err);
+                return err;
+            }
+        }
     }
     return err;
 }
@@ -276,45 +252,44 @@ static meshx_err_t meshx_add_relay_srv_model_to_element_list(dev_struct_t *pdev,
 
     if ((n_max + *start_idx) > CONFIG_MAX_ELEMENT_COUNT)
     {
-        ESP_LOGE(TAG, "No of elements limit reached");
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "No of elements limit reached");
         return MESHX_NO_MEM;
     }
 
     meshx_err_t err = MESHX_SUCCESS;
-    esp_ble_mesh_elem_t *elements = pdev->elements;
     relay_element_init_ctrl.element_id_start = *start_idx;
 
     for (uint16_t i = *start_idx; i < (n_max + *start_idx); i++)
     {
+
         if (i == 0)
+            continue;
+        err = meshx_plat_add_element_to_composition(
+            i,
+            pdev->elements,
+            relay_element_init_ctrl.meshx_relay_element_lst[i - *start_idx].onoff_srv_model->meshx_server_sig_model,
+            NULL,
+            RELAY_SRV_MODEL_SIG_CNT,
+            RELAY_SRV_MODEL_VEN_CNT);
+        if (err)
         {
-            memcpy(&elements[i].sig_models[1],
-                   relay_element_init_ctrl.relay_server_sig_model_list[i],
-                   sizeof(MESHX_MODEL));
-            uint8_t *ref_ptr = (uint8_t *)&elements[i].sig_model_count;
-            (*ref_ptr)++;
+            MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to add element to composition: (%d)", err);
+            return err;
         }
-        else
-        {
-            elements[i].sig_models = relay_element_init_ctrl.relay_server_sig_model_list[i - *start_idx];
-            elements[i].vnd_models = ESP_BLE_MESH_MODEL_NONE; // No vendor models are assigned to this element
-            uint8_t *ref_ptr = (uint8_t *)&elements[i].sig_model_count;
-            // Set the number of SIG models for the relay server element
-            *ref_ptr = RELAY_SRV_MODEL_SIG_CNT;
-            ref_ptr = (uint8_t *)&elements[i].vnd_model_count;
-            *ref_ptr = RELAY_SRV_MODEL_VEN_CNT;
-        }
-        err = meshx_nvs_element_ctx_get(i, &(relay_element_init_ctrl.meshx_gen_ctx[i - *start_idx]), sizeof(relay_element_init_ctrl.meshx_gen_ctx[i]));
+        err = meshx_nvs_element_ctx_get(
+            i,
+            &(relay_element_init_ctrl.meshx_relay_element_lst[i - *start_idx].meshx_rel_srv_ctx),
+            sizeof(relay_element_init_ctrl.meshx_relay_element_lst[i - *start_idx].meshx_rel_srv_ctx));
         if (err != MESHX_SUCCESS)
         {
-            ESP_LOGW(TAG, "Failed to get relay element context: (0x%x)", err);
+            MESHX_LOGW(MODULE_ID_MODEL_SERVER, "Failed to get relay element context: (0x%x)", err);
         }
         else
         {
             err = meshx_restore_model_states(i - *start_idx);
             if (err != MESHX_SUCCESS)
             {
-                ESP_LOGW(TAG, "Failed to restore relay model states: (0x%x)", err);
+                MESHX_LOGW(MODULE_ID_MODEL_SERVER, "Failed to restore relay model states: (0x%x)", err);
             }
         }
     }
@@ -338,28 +313,32 @@ static meshx_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, contr
     MESHX_UNUSED(evt);
     size_t rel_el_id = 0;
     meshx_err_t err = MESHX_SUCCESS;
-    relay_srv_model_ctx_t *el_ctx = NULL;
-    MESHX_GEN_ONOFF_SRV const *p_onoff_srv = (MESHX_GEN_ONOFF_SRV*) params;
+    meshx_relay_srv_model_ctx_t *el_ctx = NULL;
+    const meshx_on_off_srv_t *p_onoff_srv = (meshx_on_off_srv_t *)params;
     meshx_el_relay_server_evt_t state;
-    uint16_t element_id = p_onoff_srv->model->element_idx;
+    uint16_t element_id = p_onoff_srv->model.el_id;
 
     if (!IS_EL_IN_RANGE(element_id))
         return MESHX_SUCCESS;
 
     rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-    el_ctx = &relay_element_init_ctrl.meshx_gen_ctx[rel_el_id];
+    el_ctx = relay_element_init_ctrl.meshx_relay_element_lst[rel_el_id].meshx_rel_srv_ctx;
 
-    p_onoff_srv = (MESHX_GEN_ONOFF_SRV const *) params;
-    el_ctx->state = p_onoff_srv->state.onoff;
+    el_ctx->state = p_onoff_srv->on_off_state;
 
-    err = meshx_nvs_element_ctx_set(element_id, el_ctx, sizeof(relay_srv_model_ctx_t));
+    err = meshx_nvs_element_ctx_set(element_id, el_ctx, sizeof(meshx_relay_srv_model_ctx_t));
     if (err != MESHX_SUCCESS)
-        ESP_LOGE(TAG, "Failed to set relay element context: (%d)", err);
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to set relay element context: (%d)", err);
 
     state.on_off = el_ctx->state;
-    err = meshx_send_msg_to_app(element_id, MESHX_ELEMENT_TYPE_RELAY_SERVER, RELAY_SIG_ONOFF_MODEL_ID, sizeof(meshx_el_relay_server_evt_t), &state);
+    err = meshx_send_msg_to_app(
+        element_id,
+        MESHX_ELEMENT_TYPE_RELAY_SERVER,
+        RELAY_SIG_ONOFF_MODEL_ID,
+        sizeof(meshx_el_relay_server_evt_t),
+        &state);
     if (err != MESHX_SUCCESS)
-        ESP_LOGE(TAG, "Failed to send relay state change message: (%d)", err);
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to send relay state change message: (%d)", err);
 
     return MESHX_SUCCESS;
 }
@@ -375,34 +354,36 @@ static meshx_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, contr
  */
 static meshx_err_t relay_prov_control_task_handler(dev_struct_t const *pdev, control_task_msg_evt_t evt, void const *params)
 {
-    MESHX_UNUSED(pdev);
     MESHX_UNUSED(evt);
     MESHX_UNUSED(params);
 
     size_t rel_el_id = 0;
-    esp_ble_mesh_msg_ctx_t ctx;
+    meshx_gen_srv_cb_param_t gen_srv_send;
     meshx_err_t err = MESHX_SUCCESS;
 
-    for(size_t el_id = relay_element_init_ctrl.element_id_start; el_id < relay_element_init_ctrl.element_id_end; el_id++)
+    for (size_t el_id = relay_element_init_ctrl.element_id_start; el_id < relay_element_init_ctrl.element_id_end; el_id++)
     {
-        rel_el_id   = GET_RELATIVE_EL_IDX(el_id);
-        ctx.net_idx = pdev->meshx_store.net_key_id;
-        ctx.app_idx = relay_element_init_ctrl.meshx_gen_ctx[rel_el_id].app_id;
-        ctx.addr    = relay_element_init_ctrl.meshx_gen_ctx[rel_el_id].pub_addr;
-        ctx.send_ttl = ESP_BLE_MESH_TTL_DEFAULT;
-        ctx.send_cred = 0;
-        ctx.send_tag = BIT(1);
+        rel_el_id = GET_RELATIVE_EL_IDX(el_id);
 
-        if(ctx.addr == ESP_BLE_MESH_ADDR_UNASSIGNED || ctx.app_idx == ESP_BLE_MESH_KEY_UNUSED)
+        gen_srv_send.ctx.net_idx = pdev->meshx_store.net_key_id;
+        gen_srv_send.ctx.app_idx = relay_element_init_ctrl.meshx_relay_element_lst[rel_el_id].meshx_rel_srv_ctx->app_id;
+        gen_srv_send.ctx.dst_addr = relay_element_init_ctrl.meshx_relay_element_lst[rel_el_id].meshx_rel_srv_ctx->pub_addr;
+        gen_srv_send.ctx.opcode = MESHX_MODEL_OP_GEN_ONOFF_STATUS;
+        gen_srv_send.ctx.p_ctx = NULL;
+
+        gen_srv_send.model.el_id = (uint16_t)el_id;
+        gen_srv_send.model.p_model = &relay_element_init_ctrl.meshx_relay_element_lst[rel_el_id].onoff_srv_model->meshx_server_sig_model;
+
+        if (gen_srv_send.ctx.dst_addr == ESP_BLE_MESH_ADDR_UNASSIGNED || gen_srv_send.ctx.app_idx == ESP_BLE_MESH_KEY_UNUSED)
             continue;
-        err = esp_ble_mesh_server_model_send_msg(&relay_element_init_ctrl.relay_server_sig_model_list[rel_el_id][RELAY_SIG_ONOFF_MODEL_ID],
-                                           &ctx,
-                                           ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_STATUS,
-                                           sizeof(relay_element_init_ctrl.meshx_gen_ctx[rel_el_id].state),
-                                           &relay_element_init_ctrl.meshx_gen_ctx[rel_el_id].state);
+
+        err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE,
+                                       CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV,
+                                       &gen_srv_send,
+                                       sizeof(meshx_gen_srv_cb_param_t));
         if (err)
         {
-            ESP_LOGE(TAG, "Failed to send ONOFF status message (Err: %x)", err);
+            MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to send ONOFF status message (Err: %x)", err);
             return err;
         }
     }
@@ -424,46 +405,46 @@ meshx_err_t create_relay_elements(dev_struct_t *pdev, uint16_t element_cnt)
     err = meshx_dev_create_relay_model_space(element_cnt);
     if (err)
     {
-        ESP_LOGE(TAG, "Relay Model create failed: (%d)", err);
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Relay Model create failed: (%d)", err);
         return err;
     }
     err = meshx_add_relay_srv_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, element_cnt);
     if (err)
     {
-        ESP_LOGE(TAG, "Relay Model create failed: (%d)", err);
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Relay Model create failed: (%d)", err);
         return err;
     }
 #if CONFIG_ENABLE_CONFIG_SERVER
     err = meshx_config_server_cb_reg(&relay_server_config_srv_cb, CONFIG_SERVER_CB_MASK);
     if (err)
     {
-        ESP_LOGE(TAG, "Relay Model configserver callback reg failed: (%d)", err);
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Relay Model configserver callback reg failed: (%d)", err);
         return err;
     }
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
     err = control_task_msg_subscribe(
-            CONTROL_TASK_MSG_CODE_EL_STATE_CH,
-            CONTROL_TASK_EVT_MASK,
-            (control_task_msg_handle_t)&meshx_el_control_task_handler);
+        CONTROL_TASK_MSG_CODE_EL_STATE_CH,
+        CONTROL_TASK_EVT_MASK,
+        (control_task_msg_handle_t)&meshx_el_control_task_handler);
     if (err)
     {
-        ESP_LOGE(TAG, "Failed to register control task callback: (%d)", err);
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to register control task callback: (%d)", err);
         return err;
     }
 
     err = control_task_msg_subscribe(
-            CONTROL_TASK_MSG_CODE_PROVISION,
-            CONTROL_TASK_MSG_EVT_EN_NODE_PROV,
-            (control_task_msg_handle_t)&relay_prov_control_task_handler);
+        CONTROL_TASK_MSG_CODE_PROVISION,
+        CONTROL_TASK_MSG_EVT_EN_NODE_PROV,
+        (control_task_msg_handle_t)&relay_prov_control_task_handler);
     if (err)
     {
-        ESP_LOGE(TAG, "Failed to register control task callback: (%d)", err);
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to register control task callback: (%d)", err);
         return err;
     }
     err = meshx_on_off_server_init();
     if (err)
     {
-        ESP_LOGE(TAG, "meshx_on_off_server_init failed: (%d)", err);
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "meshx_on_off_server_init failed: (%d)", err);
         return err;
     }
     return MESHX_SUCCESS;

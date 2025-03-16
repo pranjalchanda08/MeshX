@@ -64,8 +64,8 @@ extern meshx_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, mesh
 /**
  * @brief Initializes BLE Mesh elements.
  *
- * @param[in] p_dev Pointer to the device structure.
- * @param[in] config Pointer to the meshX configuration.
+ * @param[in] p_dev     Pointer to the device structure.
+ * @param[in] config    Pointer to the meshX configuration.
  *
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
@@ -75,15 +75,29 @@ static meshx_err_t ble_mesh_element_init(dev_struct_t *p_dev, meshx_config_t con
         return MESHX_INVALID_STATE;
 
     meshx_err_t err = MESHX_SUCCESS;
-    /* Initialize root model */
-    p_dev->elements[0].sig_models = get_root_sig_models();
-    p_dev->elements[0].vnd_models = ESP_BLE_MESH_MODEL_NONE;
-    memset((void *)&p_dev->elements[0].sig_model_count, get_root_sig_models_count(), sizeof(p_dev->elements[0].sig_model_count));
-    memset((void *)&p_dev->elements[0].vnd_model_count, ROOT_MODEL_VEN_CNT, sizeof(p_dev->elements[0].vnd_model_count));
+    err = meshx_create_plat_composition(&p_dev->composition);
+    if (err)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to create platform composition: (%d)", err);
+        return err;
+    }
 
-    MESHX_LOGI(MODULE_ID_COMMON, "Root: SIG : %d, VEN: %d", p_dev->elements[0].sig_model_count, p_dev->elements[0].vnd_model_count);
-    /* Root to be used with fixed format */
+    /* Initialize root model */
+    err = meshx_plat_add_element_to_composition(
+        0,
+        p_dev->elements,
+        get_root_sig_models(),
+        NULL,
+        (uint8_t) get_root_sig_models_count(),
+        (uint8_t) ROOT_MODEL_VEN_CNT
+    );
+    if(err)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to add element to composition: (%d)", err);
+        return err;
+    }
     p_dev->element_idx++;
+    /* Root to be used with fixed format */
 
     err = create_ble_mesh_element_composition(p_dev, config);
     if(err)
@@ -91,10 +105,18 @@ static meshx_err_t ble_mesh_element_init(dev_struct_t *p_dev, meshx_config_t con
         MESHX_LOGE(MODULE_ID_COMMON, "Failed to create BLE Mesh Element Composition: (%d)", err);
         return err;
     }
-    p_dev->composition.cid = config->cid;
-    p_dev->composition.pid = config->pid;
-    p_dev->composition.element_count = p_dev->element_idx;
-    p_dev->composition.elements = p_dev->elements;
+    err = meshx_plat_composition_init(
+        p_dev->composition,
+        p_dev->elements,
+        config->cid,
+        config->pid,
+        (uint16_t)p_dev->element_idx
+    );
+    if(err)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to initialise MeshX Composition: (%d)", err);
+        return err;
+    }
 
     return MESHX_SUCCESS;
 }
@@ -160,7 +182,7 @@ static meshx_err_t ble_mesh_init(meshx_config_t const *config)
     err = ble_mesh_element_init(&g_dev, config);
     MESHX_ERR_PRINT_RET("Failed to initialize BLE Elements", err);
 
-    err = esp_ble_mesh_init(&MESHX_PROV_INSTANCE, &g_dev.composition);
+    err = esp_ble_mesh_init(&MESHX_PROV_INSTANCE, g_dev.composition);
     MESHX_ERR_PRINT_RET("Failed to initialize mesh stack", err);
 
     err = esp_ble_mesh_set_unprovisioned_device_name(config->product_name);

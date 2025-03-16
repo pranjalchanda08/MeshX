@@ -592,7 +592,7 @@ static meshx_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **ar
 static meshx_err_t meshx_element_struct_init(uint16_t n_max)
 {
 
-    cwww_client_element_init_ctrl = (cwww_client_elements_t *)calloc(1, sizeof(cwww_client_elements_t));
+    cwww_client_element_init_ctrl = (cwww_client_elements_t *)MESHX_CALOC(1, sizeof(cwww_client_elements_t));
     if (!cwww_client_element_init_ctrl)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww client element control");
@@ -602,13 +602,13 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
     cwww_client_element_init_ctrl->element_id_end = 0;
     cwww_client_element_init_ctrl->element_id_start = 0;
 
-    cwww_client_element_init_ctrl->cwww_cli_ctx = (cwww_cli_ctx_t *)calloc(n_max, sizeof(cwww_cli_ctx_t));
+    cwww_client_element_init_ctrl->cwww_cli_ctx = (cwww_cli_ctx_t *)MESHX_CALOC(n_max, sizeof(cwww_cli_ctx_t));
     if (!cwww_client_element_init_ctrl->cwww_cli_ctx)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww client context");
         return MESHX_NO_MEM;
     }
-    cwww_client_element_init_ctrl->cwww_cli_list = (esp_ble_mesh_client_t **)calloc(n_max, sizeof(esp_ble_mesh_client_t *));
+    cwww_client_element_init_ctrl->cwww_cli_list = (esp_ble_mesh_client_t **)MESHX_CALOC(n_max, sizeof(esp_ble_mesh_client_t *));
     if (!cwww_client_element_init_ctrl->cwww_cli_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww client list");
@@ -618,7 +618,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
     {
         for (size_t i = 0; i < n_max; i++)
         {
-            cwww_client_element_init_ctrl->cwww_cli_list[i] = (esp_ble_mesh_client_t *)calloc(CWWW_CLI_MODEL_SIG_CNT, sizeof(esp_ble_mesh_client_t));
+            cwww_client_element_init_ctrl->cwww_cli_list[i] = (esp_ble_mesh_client_t *)MESHX_CALOC(CWWW_CLI_MODEL_SIG_CNT, sizeof(esp_ble_mesh_client_t));
             if (!cwww_client_element_init_ctrl->cwww_cli_list[i])
             {
                 ESP_LOGE(TAG, "Failed to allocate memory for cwww client list");
@@ -626,7 +626,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
             }
         }
     }
-    cwww_client_element_init_ctrl->cwww_cli_pub_list = (MESHX_MODEL_PUB **)calloc(n_max, sizeof(MESHX_MODEL_PUB *));
+    cwww_client_element_init_ctrl->cwww_cli_pub_list = (MESHX_MODEL_PUB **)MESHX_CALOC(n_max, sizeof(MESHX_MODEL_PUB *));
     if (!cwww_client_element_init_ctrl->cwww_cli_pub_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww client pub list");
@@ -636,7 +636,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
     {
         for (size_t i = 0; i < n_max; i++)
         {
-            cwww_client_element_init_ctrl->cwww_cli_pub_list[i] = (MESHX_MODEL_PUB *)calloc(CWWW_CLI_MODEL_SIG_CNT, sizeof(MESHX_MODEL_PUB));
+            cwww_client_element_init_ctrl->cwww_cli_pub_list[i] = (MESHX_MODEL_PUB *)MESHX_CALOC(CWWW_CLI_MODEL_SIG_CNT, sizeof(MESHX_MODEL_PUB));
             if (!cwww_client_element_init_ctrl->cwww_cli_pub_list[i])
             {
                 ESP_LOGE(TAG, "Failed to allocate memory for cwww client pub list");
@@ -644,7 +644,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
             }
         }
     }
-    cwww_client_element_init_ctrl->cwww_cli_sig_model_list = (MESHX_MODEL **)calloc(n_max, sizeof(MESHX_MODEL *));
+    cwww_client_element_init_ctrl->cwww_cli_sig_model_list = (MESHX_MODEL **)MESHX_CALOC(n_max, sizeof(MESHX_MODEL *));
     if (!cwww_client_element_init_ctrl->cwww_cli_sig_model_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww client sig model list");
@@ -654,7 +654,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
     {
         for (size_t i = 0; i < n_max; i++)
         {
-            cwww_client_element_init_ctrl->cwww_cli_sig_model_list[i] = (MESHX_MODEL *)calloc(CWWW_CLI_MODEL_SIG_CNT, sizeof(MESHX_MODEL));
+            cwww_client_element_init_ctrl->cwww_cli_sig_model_list[i] = (MESHX_MODEL *)MESHX_CALOC(CWWW_CLI_MODEL_SIG_CNT, sizeof(MESHX_MODEL));
             if (!cwww_client_element_init_ctrl->cwww_cli_sig_model_list[i])
             {
                 ESP_LOGE(TAG, "Failed to allocate memory for cwww client sig model list");
@@ -678,7 +678,7 @@ static void meshx_element_struct_deinit(uint16_t n_max)
 {
     if (cwww_client_element_init_ctrl->cwww_cli_ctx)
     {
-        free(cwww_client_element_init_ctrl->cwww_cli_ctx);
+        MESHX_FREE(cwww_client_element_init_ctrl->cwww_cli_ctx);
         cwww_client_element_init_ctrl->cwww_cli_ctx = NULL;
     }
     if (cwww_client_element_init_ctrl->cwww_cli_list)
@@ -687,11 +687,11 @@ static void meshx_element_struct_deinit(uint16_t n_max)
         {
             if (cwww_client_element_init_ctrl->cwww_cli_list[i])
             {
-                free(cwww_client_element_init_ctrl->cwww_cli_list[i]);
+                MESHX_FREE(cwww_client_element_init_ctrl->cwww_cli_list[i]);
                 cwww_client_element_init_ctrl->cwww_cli_list[i] = NULL;
             }
         }
-        free(cwww_client_element_init_ctrl->cwww_cli_list);
+        MESHX_FREE(cwww_client_element_init_ctrl->cwww_cli_list);
         cwww_client_element_init_ctrl->cwww_cli_list = NULL;
     }
     if (cwww_client_element_init_ctrl->cwww_cli_pub_list)
@@ -700,11 +700,11 @@ static void meshx_element_struct_deinit(uint16_t n_max)
         {
             if (cwww_client_element_init_ctrl->cwww_cli_pub_list[i])
             {
-                free(cwww_client_element_init_ctrl->cwww_cli_pub_list[i]);
+                MESHX_FREE(cwww_client_element_init_ctrl->cwww_cli_pub_list[i]);
                 cwww_client_element_init_ctrl->cwww_cli_pub_list[i] = NULL;
             }
         }
-        free(cwww_client_element_init_ctrl->cwww_cli_pub_list);
+        MESHX_FREE(cwww_client_element_init_ctrl->cwww_cli_pub_list);
         cwww_client_element_init_ctrl->cwww_cli_pub_list = NULL;
     }
     if (cwww_client_element_init_ctrl->cwww_cli_sig_model_list)
@@ -713,16 +713,16 @@ static void meshx_element_struct_deinit(uint16_t n_max)
         {
             if (cwww_client_element_init_ctrl->cwww_cli_sig_model_list[i])
             {
-                free(cwww_client_element_init_ctrl->cwww_cli_sig_model_list[i]);
+                MESHX_FREE(cwww_client_element_init_ctrl->cwww_cli_sig_model_list[i]);
                 cwww_client_element_init_ctrl->cwww_cli_sig_model_list[i] = NULL;
             }
         }
-        free(cwww_client_element_init_ctrl->cwww_cli_sig_model_list);
+        MESHX_FREE(cwww_client_element_init_ctrl->cwww_cli_sig_model_list);
         cwww_client_element_init_ctrl->cwww_cli_sig_model_list = NULL;
     }
     if(cwww_client_element_init_ctrl)
     {
-        free(cwww_client_element_init_ctrl);
+        MESHX_FREE(cwww_client_element_init_ctrl);
         cwww_client_element_init_ctrl = NULL;
     }
 }

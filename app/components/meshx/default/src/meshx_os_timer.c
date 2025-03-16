@@ -277,7 +277,7 @@ meshx_err_t meshx_os_timer_create(
 
     meshx_err_t err = MESHX_SUCCESS;
 
-    *timer_handle = (meshx_os_timer_t *)malloc(OS_TIMER_SIZE);
+    *timer_handle = (meshx_os_timer_t *)MESHX_MALLOC(OS_TIMER_SIZE);
     if (*timer_handle == NULL)
         return MESHX_NO_MEM;
 
@@ -292,7 +292,7 @@ meshx_err_t meshx_os_timer_create(
         reload);
     if (err)
     {
-        free(*timer_handle);
+        MESHX_FREE(*timer_handle);
         return err;
     }
 
@@ -436,7 +436,7 @@ meshx_err_t meshx_os_timer_delete(meshx_os_timer_t **timer_handle)
     (*timer_handle)->init = 0;
 
     SLIST_REMOVE(&meshx_os_timer_reg_table_head, *timer_handle, meshx_os_timer, next);
-    free(*timer_handle);
+    MESHX_FREE(*timer_handle);
 
     return MESHX_SUCCESS;
 }

@@ -100,7 +100,7 @@ meshx_err_t meshx_onoff_reg_cb(meshx_onoff_cli_cb cb, uint32_t config_evt_bmap)
         return MESHX_INVALID_ARG; // Invalid arguments
     }
 
-    meshx_onoff_cli_cb_reg_t *new_entry = (meshx_onoff_cli_cb_reg_t *) malloc(sizeof(meshx_onoff_cli_cb_reg_t));
+    meshx_onoff_cli_cb_reg_t *new_entry = (meshx_onoff_cli_cb_reg_t *) MESHX_MALLOC(sizeof(meshx_onoff_cli_cb_reg_t));
     if (new_entry == NULL)
     {
         return MESHX_NO_MEM; // Memory allocation failed

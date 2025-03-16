@@ -55,7 +55,7 @@ static const MESHX_MODEL relay_sig_template = ESP_BLE_MESH_SIG_MODEL(
  */
 static meshx_err_t meshx_element_struct_init(uint16_t n_max)
 {
-    relay_element_init_ctrl = (relay_client_elements_t *)calloc(1, sizeof(relay_client_elements_t));
+    relay_element_init_ctrl = (relay_client_elements_t *)MESHX_CALOC(1, sizeof(relay_client_elements_t));
     if (!relay_element_init_ctrl)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for relay element structure");
@@ -65,25 +65,25 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
     relay_element_init_ctrl->element_id_end = 0;
     relay_element_init_ctrl->element_id_start = 0;
 
-    relay_element_init_ctrl->rel_cli_ctx = (rel_cli_ctx_t *)calloc(n_max, sizeof(rel_cli_ctx_t));
+    relay_element_init_ctrl->rel_cli_ctx = (rel_cli_ctx_t *)MESHX_CALOC(n_max, sizeof(rel_cli_ctx_t));
     if (!relay_element_init_ctrl->rel_cli_ctx)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for relay client context");
         return MESHX_NO_MEM;
     }
-    relay_element_init_ctrl->relay_cli_pub_list = (MESHX_MODEL_PUB *)calloc(n_max, sizeof(MESHX_MODEL_PUB));
+    relay_element_init_ctrl->relay_cli_pub_list = (MESHX_MODEL_PUB *)MESHX_CALOC(n_max, sizeof(MESHX_MODEL_PUB));
     if (!relay_element_init_ctrl->relay_cli_pub_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for relay client pub list");
         return MESHX_NO_MEM;
     }
-    relay_element_init_ctrl->relay_cli_onoff_gen_list = (esp_ble_mesh_client_t *)calloc(n_max, sizeof(esp_ble_mesh_client_t));
+    relay_element_init_ctrl->relay_cli_onoff_gen_list = (esp_ble_mesh_client_t *)MESHX_CALOC(n_max, sizeof(esp_ble_mesh_client_t));
     if (!relay_element_init_ctrl->relay_cli_onoff_gen_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for relay client onoff gen list");
         return MESHX_NO_MEM;
     }
-    relay_element_init_ctrl->relay_cli_sig_model_list = (MESHX_MODEL **)calloc(n_max, sizeof(MESHX_MODEL *));
+    relay_element_init_ctrl->relay_cli_sig_model_list = (MESHX_MODEL **)MESHX_CALOC(n_max, sizeof(MESHX_MODEL *));
     if (!relay_element_init_ctrl->relay_cli_sig_model_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for relay client sig model list");
@@ -93,7 +93,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
     {
         for (size_t i = 0; i < n_max; i++)
         {
-            relay_element_init_ctrl->relay_cli_sig_model_list[i] = (MESHX_MODEL *)calloc(RELAY_CLI_MODEL_SIG_CNT, sizeof(MESHX_MODEL));
+            relay_element_init_ctrl->relay_cli_sig_model_list[i] = (MESHX_MODEL *)MESHX_CALOC(RELAY_CLI_MODEL_SIG_CNT, sizeof(MESHX_MODEL));
             if (!relay_element_init_ctrl->relay_cli_sig_model_list[i])
             {
                 ESP_LOGE(TAG, "Failed to allocate memory for relay client sig model list");
@@ -115,17 +115,17 @@ static void meshx_element_struct_deinit(uint16_t n_max)
 {
     if (relay_element_init_ctrl->rel_cli_ctx)
     {
-        free(relay_element_init_ctrl->rel_cli_ctx);
+        MESHX_FREE(relay_element_init_ctrl->rel_cli_ctx);
         relay_element_init_ctrl->rel_cli_ctx = NULL;
     }
     if (relay_element_init_ctrl->relay_cli_pub_list)
     {
-        free(relay_element_init_ctrl->relay_cli_pub_list);
+        MESHX_FREE(relay_element_init_ctrl->relay_cli_pub_list);
         relay_element_init_ctrl->relay_cli_pub_list = NULL;
     }
     if (relay_element_init_ctrl->relay_cli_onoff_gen_list)
     {
-        free(relay_element_init_ctrl->relay_cli_onoff_gen_list);
+        MESHX_FREE(relay_element_init_ctrl->relay_cli_onoff_gen_list);
         relay_element_init_ctrl->relay_cli_onoff_gen_list = NULL;
     }
     if (relay_element_init_ctrl->relay_cli_sig_model_list)
@@ -134,16 +134,16 @@ static void meshx_element_struct_deinit(uint16_t n_max)
         {
             if (relay_element_init_ctrl->relay_cli_sig_model_list[i])
             {
-                free(relay_element_init_ctrl->relay_cli_sig_model_list[i]);
+                MESHX_FREE(relay_element_init_ctrl->relay_cli_sig_model_list[i]);
                 relay_element_init_ctrl->relay_cli_sig_model_list[i] = NULL;
             }
         }
-        free(relay_element_init_ctrl->relay_cli_sig_model_list);
+        MESHX_FREE(relay_element_init_ctrl->relay_cli_sig_model_list);
         relay_element_init_ctrl->relay_cli_sig_model_list = NULL;
     }
     if(relay_element_init_ctrl)
     {
-        free(relay_element_init_ctrl);
+        MESHX_FREE(relay_element_init_ctrl);
         relay_element_init_ctrl = NULL;
     }
 }

@@ -90,7 +90,7 @@ meshx_err_t meshx_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap
     if (cb == NULL || config_evt_bmap == 0)
         return MESHX_INVALID_ARG; // Invalid arguments
 
-    struct light_ctl_cli_cb_reg *new_entry = (struct light_ctl_cli_cb_reg *) malloc(sizeof(struct light_ctl_cli_cb_reg));
+    struct light_ctl_cli_cb_reg *new_entry = (struct light_ctl_cli_cb_reg *) MESHX_MALLOC(sizeof(struct light_ctl_cli_cb_reg));
     if (new_entry == NULL)
         return MESHX_NO_MEM; // Memory allocation failed
 

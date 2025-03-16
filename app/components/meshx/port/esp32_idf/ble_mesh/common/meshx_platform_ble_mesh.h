@@ -13,6 +13,8 @@
 #include "esp_ble_mesh_generic_model_api.h"
 #include "esp_ble_mesh_lighting_model_api.h"
 
+#define MESHX_COMPOSITION       esp_ble_mesh_comp_t
+#define MESHX_ELEMENT           esp_ble_mesh_elem_t
 #define MESHX_MODEL             esp_ble_mesh_model_t
 #define MESHX_CLIENT            esp_ble_mesh_client_t
 #define MESHX_MODEL_PUB         esp_ble_mesh_model_pub_t

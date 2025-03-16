@@ -136,16 +136,39 @@ typedef struct meshx_on_off_srv
 typedef control_task_msg_handle_t meshx_server_cb;
 
 /**
- * @brief Retrieve the model ID of a generic server model.
+ * @brief Creates a Generic OnOff Server model and its publication context.
  *
- * This function obtains the model ID associated with a specified generic server model.
+ * This function initializes the Generic OnOff Server model, its publication
+ * context, and allocates memory for the server instance. It checks for
+ * invalid arguments and handles memory allocation failures.
  *
- * @param[in]  p_model   Pointer to the model whose ID is to be retrieved.
- * @param[out] model_id  Pointer to a variable where the retrieved model ID will be stored.
+ * @param[out] p_model Pointer to the model structure to be created.
+ * @param[out] p_pub Pointer to the publication context to be created.
+ * @param[out] p_onoff_srv Pointer to the OnOff server instance to be allocated.
  *
- * @return MESHX_SUCCESS on success, or an appropriate error code on failure.
+ * @return
+ *     - MESHX_SUCCESS: Successfully created the model and publication context.
+ *     - MESHX_INVALID_ARG: One or more arguments are invalid.
+ *     - MESHX_NO_MEM: Memory allocation failed.
  */
-meshx_err_t meshx_plat_get_gen_srv_model_id(void* p_model, uint16_t *model_id);
+meshx_err_t meshx_plat_on_off_gen_srv_create(void** p_model, void** p_pub, void** p_onoff_srv);
+
+/**
+ * @brief Deletes the Generic OnOff Server model and its associated resources.
+ *
+ * This function frees the memory allocated for the Generic OnOff Server
+ * and sets the pointer to NULL. It also deletes the model publication
+ * resources associated with the server.
+ *
+ * @param[in,out] p_model Pointer to the model structure to be deleted.
+ * @param[in,out] p_pub Pointer to the publication structure to be deleted.
+ * @param[in,out] p_onoff_srv Pointer to the OnOff Server structure to be freed.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Model and publication deleted successfully.
+ *     - MESHX_FAIL: Failed to delete the model or publication.
+ */
+meshx_err_t meshx_plat_on_off_gen_srv_delete(void** p_model, void** p_pub, void** p_onoff_srv);
 
 /**
  * @brief Set the state of a generic server model.
@@ -165,5 +188,20 @@ meshx_err_t meshx_plat_set_gen_srv_state(void * p_model, uint8_t on_off_state);
  * @return MESHX_SUCCESS on success, or an appropriate error code on failure.
  */
 meshx_err_t meshx_plat_gen_srv_init(void);
+
+/**
+ * @brief Restores the state of the Generic OnOff Server model.
+ *
+ * This function sets the user data of the specified model to the given state.
+ * It checks if the model pointer is valid before proceeding with the operation.
+ *
+ * @param[in] p_model Pointer to the model structure.
+ * @param[in] state The state to be restored in the model.
+ *
+ * @return
+ *     - MESHX_SUCCESS: State restored successfully.
+ *     - MESHX_INVALID_ARG: Invalid model pointer.
+ */
+meshx_err_t meshx_plat_on_off_gen_srv_restore(void* p_model, uint8_t state);
 
 #endif /* __MESHX_PLAT_GEN_SRV_H__ */
