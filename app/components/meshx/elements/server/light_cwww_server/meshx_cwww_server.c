@@ -121,13 +121,13 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
     cwww_element_init_ctrl.element_id_end = 0;
     cwww_element_init_ctrl.element_id_start = 0;
 
-    cwww_element_init_ctrl.cwww_server_ctx = (cwww_server_ctx_t *)calloc(n_max, sizeof(cwww_server_ctx_t));
+    cwww_element_init_ctrl.cwww_server_ctx = (cwww_server_ctx_t *)MESHX_CALOC(n_max, sizeof(cwww_server_ctx_t));
     if (!cwww_element_init_ctrl.cwww_server_ctx)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww server context");
         return MESHX_NO_MEM;
     }
-    cwww_element_init_ctrl.cwww_server_sig_model_list = (MESHX_MODEL **)calloc(n_max, sizeof(MESHX_MODEL *));
+    cwww_element_init_ctrl.cwww_server_sig_model_list = (MESHX_MODEL **)MESHX_CALOC(n_max, sizeof(MESHX_MODEL *));
     if (!cwww_element_init_ctrl.cwww_server_sig_model_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww server sig model list");
@@ -137,7 +137,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
     {
         for (size_t i = 0; i < n_max; i++)
         {
-            cwww_element_init_ctrl.cwww_server_sig_model_list[i] = (MESHX_MODEL *)calloc(CWWW_SRV_MODEL_SIG_CNT, sizeof(MESHX_MODEL));
+            cwww_element_init_ctrl.cwww_server_sig_model_list[i] = (MESHX_MODEL *)MESHX_CALOC(CWWW_SRV_MODEL_SIG_CNT, sizeof(MESHX_MODEL));
             if (!cwww_element_init_ctrl.cwww_server_sig_model_list[i])
             {
                 ESP_LOGE(TAG, "Failed to allocate memory for cwww server sig model list");
@@ -145,7 +145,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
             }
         }
     }
-    cwww_element_init_ctrl.cwww_server_pub_list = (MESHX_MODEL_PUB **)calloc(n_max, sizeof(MESHX_MODEL_PUB *));
+    cwww_element_init_ctrl.cwww_server_pub_list = (MESHX_MODEL_PUB **)MESHX_CALOC(n_max, sizeof(MESHX_MODEL_PUB *));
     if (!cwww_element_init_ctrl.cwww_server_pub_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww server pub list");
@@ -155,7 +155,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
     {
         for (size_t i = 0; i < n_max; i++)
         {
-            cwww_element_init_ctrl.cwww_server_pub_list[i] = (MESHX_MODEL_PUB *)calloc(CWWW_SRV_MODEL_SIG_CNT, sizeof(MESHX_MODEL_PUB));
+            cwww_element_init_ctrl.cwww_server_pub_list[i] = (MESHX_MODEL_PUB *)MESHX_CALOC(CWWW_SRV_MODEL_SIG_CNT, sizeof(MESHX_MODEL_PUB));
             if (!cwww_element_init_ctrl.cwww_server_pub_list[i])
             {
                 ESP_LOGE(TAG, "Failed to allocate memory for cwww server pub list");
@@ -163,19 +163,19 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
             }
         }
     }
-    cwww_element_init_ctrl.cwww_server_onoff_gen_list = (MESHX_GEN_ONOFF_SRV *)calloc(n_max, sizeof(MESHX_GEN_ONOFF_SRV));
+    cwww_element_init_ctrl.cwww_server_onoff_gen_list = (MESHX_GEN_ONOFF_SRV *)MESHX_CALOC(n_max, sizeof(MESHX_GEN_ONOFF_SRV));
     if (!cwww_element_init_ctrl.cwww_server_onoff_gen_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww server onoff gen list");
         return MESHX_NO_MEM;
     }
-    cwww_element_init_ctrl.cwww_server_light_ctl_list = (MESHX_LIGHT_CTL_SRV *)calloc(n_max, sizeof(MESHX_LIGHT_CTL_SRV));
+    cwww_element_init_ctrl.cwww_server_light_ctl_list = (MESHX_LIGHT_CTL_SRV *)MESHX_CALOC(n_max, sizeof(MESHX_LIGHT_CTL_SRV));
     if (!cwww_element_init_ctrl.cwww_server_light_ctl_list)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww server light ctl list");
         return MESHX_NO_MEM;
     }
-    cwww_element_init_ctrl.cwww_light_ctl_state = (MESHX_LIGHT_CTL_STATE *)calloc(n_max, sizeof(MESHX_LIGHT_CTL_STATE));
+    cwww_element_init_ctrl.cwww_light_ctl_state = (MESHX_LIGHT_CTL_STATE *)MESHX_CALOC(n_max, sizeof(MESHX_LIGHT_CTL_STATE));
     if (!cwww_element_init_ctrl.cwww_light_ctl_state)
     {
         ESP_LOGE(TAG, "Failed to allocate memory for cwww light ctl state");
@@ -204,7 +204,7 @@ static meshx_err_t meshx_element_struct_deinit(uint16_t n_max)
 {
     if (cwww_element_init_ctrl.cwww_server_ctx)
     {
-        free(cwww_element_init_ctrl.cwww_server_ctx);
+        MESHX_FREE(cwww_element_init_ctrl.cwww_server_ctx);
         cwww_element_init_ctrl.cwww_server_ctx = NULL;
     }
     if (cwww_element_init_ctrl.cwww_server_sig_model_list)
@@ -213,11 +213,11 @@ static meshx_err_t meshx_element_struct_deinit(uint16_t n_max)
         {
             if (cwww_element_init_ctrl.cwww_server_sig_model_list[i])
             {
-                free(cwww_element_init_ctrl.cwww_server_sig_model_list[i]);
+                MESHX_FREE(cwww_element_init_ctrl.cwww_server_sig_model_list[i]);
                 cwww_element_init_ctrl.cwww_server_sig_model_list[i] = NULL;
             }
         }
-        free(cwww_element_init_ctrl.cwww_server_sig_model_list);
+        MESHX_FREE(cwww_element_init_ctrl.cwww_server_sig_model_list);
         cwww_element_init_ctrl.cwww_server_sig_model_list = NULL;
     }
     if (cwww_element_init_ctrl.cwww_server_pub_list)
@@ -226,26 +226,26 @@ static meshx_err_t meshx_element_struct_deinit(uint16_t n_max)
         {
             if (cwww_element_init_ctrl.cwww_server_pub_list[i])
             {
-                free(cwww_element_init_ctrl.cwww_server_pub_list[i]);
+                MESHX_FREE(cwww_element_init_ctrl.cwww_server_pub_list[i]);
                 cwww_element_init_ctrl.cwww_server_pub_list[i] = NULL;
             }
         }
-        free(cwww_element_init_ctrl.cwww_server_pub_list);
+        MESHX_FREE(cwww_element_init_ctrl.cwww_server_pub_list);
         cwww_element_init_ctrl.cwww_server_pub_list = NULL;
     }
     if (cwww_element_init_ctrl.cwww_server_onoff_gen_list)
     {
-        free(cwww_element_init_ctrl.cwww_server_onoff_gen_list);
+        MESHX_FREE(cwww_element_init_ctrl.cwww_server_onoff_gen_list);
         cwww_element_init_ctrl.cwww_server_onoff_gen_list = NULL;
     }
     if (cwww_element_init_ctrl.cwww_server_light_ctl_list)
     {
-        free(cwww_element_init_ctrl.cwww_server_light_ctl_list);
+        MESHX_FREE(cwww_element_init_ctrl.cwww_server_light_ctl_list);
         cwww_element_init_ctrl.cwww_server_light_ctl_list = NULL;
     }
     if (cwww_element_init_ctrl.cwww_light_ctl_state)
     {
-        free(cwww_element_init_ctrl.cwww_light_ctl_state);
+        MESHX_FREE(cwww_element_init_ctrl.cwww_light_ctl_state);
         cwww_element_init_ctrl.cwww_light_ctl_state = NULL;
     }
     return MESHX_SUCCESS;

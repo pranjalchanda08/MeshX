@@ -20,6 +20,12 @@
 #endif
 
 /**
+ * @brief Template for SIG model initialization.
+ */
+static const MESHX_MODEL onoff_relay_sig_template = ESP_BLE_MESH_SIG_MODEL(
+    ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_SRV, NULL, NULL, NULL);
+
+/**
  * @brief String representation of the server state change events.
  */
 static const char *server_state_str[] = {
@@ -60,7 +66,7 @@ static meshx_err_t ble_send_msg_handle_t(
 
     if(ctx == NULL)
     {
-        ctx = (esp_ble_mesh_msg_ctx_t *) malloc(sizeof(esp_ble_mesh_msg_ctx_t));
+        ctx = (esp_ble_mesh_msg_ctx_t *) MESHX_MALLOC(sizeof(esp_ble_mesh_msg_ctx_t));
         if(ctx == NULL)
             return MESHX_NO_MEM;
 
@@ -91,7 +97,7 @@ static meshx_err_t ble_send_msg_handle_t(
 
     if(malloc_flag)
     {
-        free(ctx);
+        MESHX_FREE(ctx);
     }
 
     ESP_UNUSED(pdev);
@@ -152,17 +158,6 @@ static void esp_ble_mesh_generic_server_cb(MESHX_GEN_SRV_CB_EVT event,
     }
 }
 
-meshx_err_t meshx_plat_get_gen_srv_model_id(void* p_model, uint16_t *model_id)
-{
-    if(!p_model)
-        return MESHX_INVALID_ARG;
-
-    MESHX_MODEL * model = (MESHX_MODEL *)p_model;
-    *model_id = model->model_id;
-
-    return MESHX_SUCCESS;
-}
-
 meshx_err_t meshx_plat_set_gen_srv_state(void * p_model, uint8_t on_off_state)
 {
     if(!p_model)
@@ -202,4 +197,49 @@ meshx_err_t meshx_plat_gen_srv_init(void)
         err = MESHX_FAIL;
 
     return err;
+}
+
+meshx_err_t meshx_plat_on_off_gen_srv_create(void** p_model, void** p_pub, void** p_onoff_srv)
+{
+    if(!p_model || !p_pub || !p_onoff_srv)
+        return MESHX_INVALID_ARG;
+
+    meshx_err_t err = MESHX_SUCCESS;
+
+    err = meshx_plat_create_model_pub(p_model, p_pub, 1);
+    if (err)
+        return meshx_plat_del_model_pub(p_model, p_pub);
+
+    *p_onoff_srv = (MESHX_GEN_ONOFF_SRV *) MESHX_CALOC(1, sizeof(MESHX_GEN_ONOFF_SRV));
+    if(!*p_onoff_srv)
+        return MESHX_NO_MEM;
+
+    /* SIG ON OFF initialisation */
+
+    memcpy(*p_model, &onoff_relay_sig_template, sizeof(MESHX_MODEL));
+
+    ((MESHX_GEN_ONOFF_SRV*)*p_onoff_srv)->rsp_ctrl.get_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
+    ((MESHX_GEN_ONOFF_SRV*)*p_onoff_srv)->rsp_ctrl.set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
+
+    void **temp = (void**) &((MESHX_MODEL*)*p_model)->pub;
+
+    *temp = *p_pub;
+
+    return err;
+}
+
+meshx_err_t meshx_plat_on_off_gen_srv_delete(void** p_model, void** p_pub, void** p_onoff_srv)
+{
+    if(p_onoff_srv)
+    {
+        MESHX_FREE(*p_onoff_srv);
+        *p_onoff_srv = NULL;
+    }
+
+    return meshx_plat_del_model_pub(p_model, p_pub);
+}
+
+meshx_err_t meshx_plat_on_off_gen_srv_restore(void* p_model, uint8_t state)
+{
+    return meshx_plat_set_gen_srv_state (p_model, state);
 }

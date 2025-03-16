@@ -164,7 +164,7 @@ meshx_err_t meshx_config_server_cb_reg(config_srv_cb cb, uint32_t config_evt_bma
 
     if (xSemaphoreTake(config_server_mutex, portMAX_DELAY) == pdTRUE)
     {
-        config_server_cb_reg_t *new_node = (config_server_cb_reg_t *)malloc(sizeof(config_server_cb_reg_t));
+        config_server_cb_reg_t *new_node = (config_server_cb_reg_t *)MESHX_MALLOC(sizeof(config_server_cb_reg_t));
         if (new_node == NULL)
         {
             xSemaphoreGive(config_server_mutex);

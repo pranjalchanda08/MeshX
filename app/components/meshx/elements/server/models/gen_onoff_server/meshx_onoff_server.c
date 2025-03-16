@@ -30,13 +30,9 @@ static meshx_err_t meshx_state_change_notify(meshx_gen_srv_cb_param_t *param)
 
     meshx_on_off_srv_t srv_onoff_param = {
         .model = param->model,
-        .on_off_state = param->state_change.onoff_set.onoff
-    };
+        .on_off_state = param->state_change.onoff_set.onoff};
 
-    if (MESHX_ADDR_IS_UNICAST(param->ctx.dst_addr)
-    || (MESHX_ADDR_BROADCAST(param->ctx.dst_addr))
-    || (MESHX_ADDR_IS_GROUP(param->ctx.dst_addr)
-        && (MESHX_SUCCESS == meshx_is_group_subscribed(param->model.p_model, param->ctx.dst_addr))))
+    if (MESHX_ADDR_IS_UNICAST(param->ctx.dst_addr) || (MESHX_ADDR_BROADCAST(param->ctx.dst_addr)) || (MESHX_ADDR_IS_GROUP(param->ctx.dst_addr) && (MESHX_SUCCESS == meshx_is_group_subscribed(param->model.p_model, param->ctx.dst_addr))))
     {
         meshx_err_t err = control_task_msg_publish(
             CONTROL_TASK_MSG_CODE_EL_STATE_CH,
@@ -87,10 +83,9 @@ static meshx_err_t meshx_handle_gen_onoff_msg(MESHX_GEN_SRV_CB_PARAM *param)
         param->ctx.dst_addr = param->model.pub_addr;
 
         control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE,
-                CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV,
-                param,
-                sizeof(meshx_gen_srv_cb_param_t)
-        );
+                                 CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV,
+                                 param,
+                                 sizeof(meshx_gen_srv_cb_param_t));
     }
     return MESHX_SUCCESS;
 }
@@ -114,25 +109,25 @@ static meshx_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_
 {
     MESHX_UNUSED(pdev);
     MESHX_LOGD(MODULE_ID_MODEL_SERVER, "op|src|dst:%04" PRIx32 "|%04x|%04x",
-             param->ctx.opcode, param->ctx.src_addr, param->ctx.dst_addr);
-    if(model_id != MESHX_MODEL_ID_GEN_ONOFF_SRV)
+               param->ctx.opcode, param->ctx.src_addr, param->ctx.dst_addr);
+    if (model_id != MESHX_MODEL_ID_GEN_ONOFF_SRV)
         return MESHX_INVALID_ARG;
 
     bool send_reply = (param->ctx.opcode != MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK);
     switch (param->ctx.opcode)
     {
-        case MESHX_MODEL_OP_GEN_ONOFF_GET:
-            break;
-        case MESHX_MODEL_OP_GEN_ONOFF_SET:
-        case MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK:
-            meshx_state_change_notify(param);
-            break;
-        default:
-            break;
+    case MESHX_MODEL_OP_GEN_ONOFF_GET:
+        break;
+    case MESHX_MODEL_OP_GEN_ONOFF_SET:
+    case MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK:
+        meshx_state_change_notify(param);
+        break;
+    default:
+        break;
     }
     if (send_reply
-    /* This is meant to notify the respective publish client */
-    || param->ctx.dst_addr != param->model.pub_addr)
+        /* This is meant to notify the respective publish client */
+        || param->ctx.dst_addr != param->model.pub_addr)
     {
         /* Here the message was received from unregistered source and mention the state to the respective client */
         MESHX_LOGD(MODULE_ID_MODEL_SERVER, "PUB: src|pub %x|%x", param->ctx.dst_addr, param->model.pub_addr);
@@ -140,14 +135,14 @@ static meshx_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_
         param->ctx.dst_addr = param->model.pub_addr;
 
         return control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE,
-                CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV,
-                param,
-                sizeof(meshx_gen_srv_cb_param_t)
-        );
+                                        CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV,
+                                        param,
+                                        sizeof(meshx_gen_srv_cb_param_t));
     }
     return MESHX_SUCCESS;
 }
 #endif /* !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
+
 /**
  * @brief Initialize the On/Off server model.
  *
@@ -169,14 +164,62 @@ meshx_err_t meshx_on_off_server_init(void)
 #endif
 #if CONFIG_ENABLE_SERVER_COMMON
     err = meshx_gen_srv_init();
-    if (err){
+    if (err)
+    {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize meshx server");
     }
 #endif /* CONFIG_ENABLE_SERVER_COMMON */
-    err = meshx_gen_srv_reg_cb(MESHX_MODEL_ID_GEN_ONOFF_SRV, (meshx_server_cb) &meshx_handle_gen_onoff_msg);
-    if (err){
+    err = meshx_gen_srv_reg_cb(MESHX_MODEL_ID_GEN_ONOFF_SRV, (meshx_server_cb)&meshx_handle_gen_onoff_msg);
+    if (err)
+    {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize meshx_gen_srv_reg_cb (Err: %d)", err);
     }
 
     return err;
+}
+
+meshx_err_t meshx_on_off_server_create(meshx_onoff_server_model_t **p_model)
+{
+    if (!p_model)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    *p_model = (meshx_onoff_server_model_t *)MESHX_CALOC(1, sizeof(meshx_onoff_server_model_t));
+    if (!*p_model)
+    {
+        return MESHX_NO_MEM;
+    }
+
+    return meshx_plat_on_off_gen_srv_create(
+        &((*p_model)->meshx_server_sig_model),
+        &((*p_model)->meshx_server_pub),
+        &((*p_model)->meshx_server_onoff_gen_srv));
+}
+
+meshx_err_t meshx_on_off_server_delete(meshx_onoff_server_model_t **p_model)
+{
+    if (p_model == NULL || *p_model == NULL)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    meshx_plat_on_off_gen_srv_delete(
+        &((*p_model)->meshx_server_sig_model),
+        &((*p_model)->meshx_server_pub),
+        &((*p_model)->meshx_server_onoff_gen_srv)
+    );
+
+    MESHX_FREE(*p_model);
+    *p_model = NULL;
+
+    return MESHX_SUCCESS; // Assuming MESHX_SUCCESS is a valid success code
+}
+
+meshx_err_t meshx_on_off_gen_srv_state_restore(meshx_onoff_server_model_t *p_model, uint8_t onoff_state)
+{
+    if(!p_model)
+        return MESHX_INVALID_STATE;
+
+    return meshx_plat_on_off_gen_srv_restore(p_model->meshx_server_sig_model, onoff_state);
 }

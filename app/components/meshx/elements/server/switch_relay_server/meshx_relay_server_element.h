@@ -33,27 +33,33 @@ typedef enum
 /**
  * @brief Structure to hold the relay server save restore context
  */
-typedef struct meshx_gen_ctx
+typedef struct meshx_relay_srv_model_ctx
 {
     uint8_t state;     /**< On/Off state */
     uint8_t tid;       /**< Transaction ID */
     uint16_t pub_addr; /**< Publish address */
     uint16_t app_id;   /**< Application ID */
-} relay_srv_model_ctx_t;
+} meshx_relay_srv_model_ctx_t;
+
+/**
+ * @brief Structure to manage relay element models
+ */
+typedef struct meshx_relay_element
+{
+    meshx_onoff_server_model_t *onoff_srv_model;
+    meshx_relay_srv_model_ctx_t *meshx_rel_srv_ctx; /**< Context of the relay server */
+} meshx_relay_element_t;
 
 /**
  * @brief Structure to manage relay element initialization.
  */
-typedef struct relay_element
+typedef struct meshx_relay_element_ctrl
 {
-    size_t element_cnt;                                        /**< Number of relay elements */
-    size_t element_id_end;                                     /**< Ending ID of the element */
-    size_t element_id_start;                                   /**< Starting ID of the element */
-    relay_srv_model_ctx_t *meshx_gen_ctx;                      /**< Context of the relay server */
-    MESHX_MODEL **relay_server_sig_model_list;        /**< List of relay server SIG model structures */
-    MESHX_MODEL_PUB *relay_server_pub_list;           /**< List of relay server publication structures */
-    MESHX_GEN_ONOFF_SRV *relay_server_onoff_gen_list; /**< List of relay server on/off generic structures */
-} relay_elements_t;
+    size_t element_cnt;                             /**< Number of relay elements */
+    size_t element_id_end;                          /**< Ending ID of the element */
+    size_t element_id_start;                        /**< Starting ID of the element */
+    meshx_relay_element_t *meshx_relay_element_lst; /**< Pointer to element list */
+} meshx_relay_element_ctrl_t;
 
 /**
  * @brief Create Dynamic Relay Model Elements

@@ -68,7 +68,7 @@ typedef struct dev_struct
     uint8_t uuid[16];                          /**< Device UUID */
     size_t element_idx;                        /**< Index of the current element */
     meshx_app_store_t meshx_store;             /**< Mesh application store */
-    esp_ble_mesh_comp_t composition;           /**< Device composition */
+    void *composition;                         /**< Device composition */
     esp_ble_mesh_elem_t elements[MAX_ELE_CNT]; /**< Array of elements */
 } dev_struct_t;
 
