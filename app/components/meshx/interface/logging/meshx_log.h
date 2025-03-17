@@ -7,7 +7,7 @@
 #define MESHX_LOG_H
 
 #include <stdio.h>
-#include "meshx_config.h"
+#include "meshx_config_internal.h"
 #include "module_id.h"
 #include "meshx_err.h"
 
