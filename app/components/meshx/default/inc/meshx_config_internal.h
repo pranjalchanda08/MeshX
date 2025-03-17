@@ -1,10 +1,17 @@
-/****************************************************************************
- * @file meshx_config.h
+/**
+ * @file meshx_config_internal.h
+ * @brief Internal configuration settings for MeshX.
  *
- ****************************************************************************/
-#ifndef __MESHX_AUTO_GEN__
-#define __MESHX_AUTO_GEN__
+ * This header file defines default configuration macros for MeshX, including
+ * mandatory fixed configurations, element counts, server and client counts,
+ * and enabling various features such as unit testing and light servers.
+ * It also includes error checks to ensure valid configuration settings.
+ *
+ */
+#ifndef __MESHX_CONFIG_INTERNAL_H__
+#define __MESHX_CONFIG_INTERNAL_H__
 
+#include "meshx_config.h"
 /**
  * @brief Mandatory Fixed Configs
  */
@@ -125,7 +132,7 @@
   */
 
 #if CONFIG_MAX_ELEMENT_COUNT < 1
-    #error "Element Count must be atleast 1
+    #error "Element Count must be atleast 1"
 #endif
 
 #if CONFIG_RELAY_SERVER_COUNT
@@ -168,4 +175,4 @@
     #endif
 #endif /* CONFIG_ENABLE_LIGHT_CTL_SERVER */
 
-#endif /* __MESHX_AUTO_GEN__ */
+#endif /* __MESHX_CONFIG_INTERNAL_H__ */
