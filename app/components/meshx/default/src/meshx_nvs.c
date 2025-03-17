@@ -41,12 +41,11 @@ static meshx_nvs_t meshx_nvs_inst;
  * @brief MeshX NVS Timer callback.
  * @note This is responsible for performing the commit after stability timeout
  *
- * @param[in]   p_timer     meshx_os_timer param pointer
- * @return None
- *
+ * @param[in]   p_timer     meshx_os_timer param pointer *
  */
 static void meshx_nvs_os_timer_cb(const meshx_os_timer_t *p_timer)
 {
+    MESHX_UNUSED(p_timer);
     meshx_err_t err = MESHX_SUCCESS;
     MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_NVS, "%s fire", OS_TMER_GET_TIMER_NAME(p_timer));
 

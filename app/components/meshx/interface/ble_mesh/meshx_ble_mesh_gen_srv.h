@@ -202,6 +202,6 @@ meshx_err_t meshx_plat_gen_srv_init(void);
  *     - MESHX_SUCCESS: State restored successfully.
  *     - MESHX_INVALID_ARG: Invalid model pointer.
  */
-meshx_err_t meshx_plat_on_off_gen_srv_restore(void* p_model, uint8_t state);
+meshx_err_t meshx_plat_gen_on_off_srv_restore(void* p_model, uint8_t state);
 
 #endif /* __MESHX_PLAT_GEN_SRV_H__ */

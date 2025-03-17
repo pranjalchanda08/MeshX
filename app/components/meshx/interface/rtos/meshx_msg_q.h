@@ -4,7 +4,7 @@
  *
  * This file contains the MeshX Message Queue Interface.
  *
- * @auther  Pranjal Chanda
+ * @author  Pranjal Chanda
  * @version 1.0
  */
 

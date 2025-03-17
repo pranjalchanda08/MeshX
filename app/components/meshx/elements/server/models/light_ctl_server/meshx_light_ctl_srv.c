@@ -30,33 +30,29 @@ static uint16_t meshx_lighting_server_init = 0;
 static meshx_err_t meshx_state_change_notify(meshx_lighting_server_cb_param_t *param)
 {
     meshx_light_ctl_srv_t ctl_srv_params = {
-        .model = param->model
-    };
+        .model = param->model};
 
-    if (MESHX_ADDR_IS_UNICAST(param->ctx.dst_addr)
-    || (MESHX_ADDR_BROADCAST(param->ctx.dst_addr))
-    || (MESHX_ADDR_IS_GROUP(param->ctx.dst_addr)
-       && (MESHX_SUCCESS == meshx_is_group_subscribed(param->model.p_model, param->ctx.dst_addr))))
+    if (MESHX_ADDR_IS_UNICAST(param->ctx.dst_addr) || (MESHX_ADDR_BROADCAST(param->ctx.dst_addr)) || (MESHX_ADDR_IS_GROUP(param->ctx.dst_addr) && (MESHX_SUCCESS == meshx_is_group_subscribed(param->model.p_model, param->ctx.dst_addr))))
     {
         switch (param->ctx.opcode)
         {
-            case MESHX_MODEL_OP_LIGHT_CTL_SET:
-            case MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK:
-                ctl_srv_params.state.delta_uv = param->state_change.ctl_set.delta_uv;
-                ctl_srv_params.state.lightness = param->state_change.ctl_set.lightness;
-                ctl_srv_params.state.temperature = param->state_change.ctl_set.temperature;
-                break;
-            case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET:
-            case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET:
-                ctl_srv_params.state.delta_uv = param->state_change.ctl_temp_set.delta_uv;
-                ctl_srv_params.state.temperature = param->state_change.ctl_temp_set.temperature;
-                break;
-            default:
-                return MESHX_NOT_SUPPORTED;
+        case MESHX_MODEL_OP_LIGHT_CTL_SET:
+        case MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK:
+            ctl_srv_params.state.delta_uv = param->state_change.ctl_set.delta_uv;
+            ctl_srv_params.state.lightness = param->state_change.ctl_set.lightness;
+            ctl_srv_params.state.temperature = param->state_change.ctl_set.temperature;
+            break;
+        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET:
+        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET:
+            ctl_srv_params.state.delta_uv = param->state_change.ctl_temp_set.delta_uv;
+            ctl_srv_params.state.temperature = param->state_change.ctl_temp_set.temperature;
+            break;
+        default:
+            return MESHX_NOT_SUPPORTED;
         }
         /* Send msg for hw manipulation */
         MESHX_LOGD(MODULE_ID_MODEL_SERVER, "HW change requested, Element_id: 0x%x",
-                    param->model->element_idx);
+                   param->model->element_idx);
 
         meshx_err_t err = control_task_msg_publish(
             CONTROL_TASK_MSG_CODE_EL_STATE_CH,
@@ -227,4 +223,95 @@ meshx_err_t meshx_light_ctl_server_init(void)
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize meshx_gen_srv_reg_cb (Err: %d)", err);
 
     return err;
+}
+
+/**
+ * @brief Create and initialize a new CTL server model instance.
+ *
+ * This function allocates memory for a new CTL server model and initializes
+ * it using the platform-specific creation function. It ensures that the model
+ * is properly set up for handling Generic OnOff messages in a BLE Mesh network.
+ *
+ * @param[in,out] p_model Pointer to a pointer where the newly created CTL server model
+ *                instance will be stored.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully created and initialized the model.
+ *     - MESHX_INVALID_ARG: The provided pointer is NULL.
+ *     - MESHX_NO_MEM: Memory allocation failed.
+ */
+meshx_err_t meshx_light_ctl_server_create(meshx_ctl_server_model_t **p_model)
+{
+    if (!p_model)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    *p_model = (meshx_ctl_server_model_t *)MESHX_CALOC(1, sizeof(meshx_ctl_server_model_t));
+    if (!*p_model)
+    {
+        return MESHX_NO_MEM;
+    }
+
+    return meshx_plat_light_ctl_srv_create(
+        &((*p_model)->meshx_server_sig_model),
+        &((*p_model)->meshx_server_pub),
+        &((*p_model)->meshx_server_ctl_gen_srv));
+}
+
+/**
+ * @brief Delete the CTL server model instance.
+ *
+ * This function deletes an instance of the CTL server model, freeing
+ * associated resources and setting the model pointer to NULL.
+ *
+ * @param[in,out] p_model Double pointer to the CTL server model instance to be deleted.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully deleted the model.
+ *     - MESHX_INVALID_ARG: Invalid argument provided.
+ */
+meshx_err_t meshx_light_ctl_server_delete(meshx_ctl_server_model_t **p_model)
+{
+    if (p_model == NULL || *p_model == NULL)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    meshx_plat_light_ctl_srv_delete(
+        &((*p_model)->meshx_server_sig_model),
+        &((*p_model)->meshx_server_pub),
+        &((*p_model)->meshx_server_ctl_gen_srv));
+
+    MESHX_FREE(*p_model);
+    *p_model = NULL;
+
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Restore the CTL state for the generic server model.
+ *
+ * This function restores the CTL state of the specified server model
+ * using the provided state value. It checks for a valid model pointer
+ * before proceeding with the restoration.
+ *
+ * @param p_model Pointer to the CTL server model structure.
+ * @param ctl_state The CTL state to be restored.
+ *
+ * @return
+ *     - MESHX_INVALID_STATE: If the model pointer is NULL.
+ *     - Result of the platform-specific restoration function.
+ */
+meshx_err_t meshx_light_ctl_srv_state_restore(meshx_ctl_server_model_t *p_model, meshx_light_ctl_srv_state_t ctl_state)
+{
+    if (!p_model)
+        return MESHX_INVALID_STATE;
+
+    return meshx_plat_light_ctl_srv_restore(p_model->meshx_server_sig_model,
+                                            ctl_state.delta_uv,
+                                            ctl_state.lightness,
+                                            ctl_state.temperature,
+                                            ctl_state.temperature_range_max,
+                                            ctl_state.temperature_range_min);
 }

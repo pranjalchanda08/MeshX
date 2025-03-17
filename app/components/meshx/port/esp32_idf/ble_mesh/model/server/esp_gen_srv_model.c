@@ -239,7 +239,7 @@ meshx_err_t meshx_plat_on_off_gen_srv_delete(void** p_model, void** p_pub, void*
     return meshx_plat_del_model_pub(p_model, p_pub);
 }
 
-meshx_err_t meshx_plat_on_off_gen_srv_restore(void* p_model, uint8_t state)
+meshx_err_t meshx_plat_gen_on_off_srv_restore(void* p_model, uint8_t state)
 {
     return meshx_plat_set_gen_srv_state (p_model, state);
 }
