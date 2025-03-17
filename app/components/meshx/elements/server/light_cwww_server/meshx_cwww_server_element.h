@@ -38,41 +38,28 @@ typedef enum
 } cwww_sig_id_t;
 
 /**
- * @brief Structure to hold the CW-WW server on/off state.
- */
-typedef struct cwww_srv_on_off_state
-{
-    uint8_t on_off; /**< On/Off state */
-} cwww_srv_on_off_state_t;
-
-/**
- * @brief Structure to hold the CW-WW server control state.
- */
-typedef struct cwww_srv_ctl_state
-{
-    uint16_t delta_uv;       /**< Delta UV value */
-    uint16_t lightness;      /**< Lightness level */
-    uint16_t temperature;    /**< Color temperature */
-    uint16_t temp_range_max; /**< Maximum Temperature range */
-    uint16_t temp_range_min; /**< Minimum Temperature range */
-    uint16_t temp_def;       /**< Default temperature */
-    uint16_t lightness_def;  /**< Default lightness */
-    uint16_t delta_uv_def;   /**< Default delta UV */
-} cwww_srv_ctl_state_t;
-
-/**
  * @brief Structure to hold the context of the cwww client.
  */
 typedef struct cwww_srv_ctx
 {
-    uint8_t tid;                         /**< Transaction ID */
-    cwww_srv_on_off_state_t state;       /**< State of the cwww client */
-    cwww_srv_on_off_state_t prev_state;  /**< State of the cwww client */
-    cwww_srv_ctl_state_t ctl_state;      /**< State of the cwww client */
-    cwww_srv_ctl_state_t prev_ctl_state; /**< State of the cwww client */
-    uint16_t app_id;                     /**< Application ID */
-    uint16_t pub_addr;                   /**< Publish address */
-} cwww_server_ctx_t;
+    uint8_t tid;                                /**< Transaction ID */
+    uint16_t app_id;                            /**< Application ID */
+    uint16_t pub_addr;                          /**< Publish address */
+    meshx_on_off_srv_state_t state;             /**< State of the cwww client */
+    meshx_on_off_srv_state_t prev_state;        /**< State of the cwww client */
+    meshx_light_ctl_srv_state_t ctl_state;      /**< State of the cwww client */
+    meshx_light_ctl_srv_state_t prev_ctl_state; /**< State of the cwww client */
+} meshx_cwww_server_ctx_t;
+
+/**
+ * @brief Structure to manage CWWW element initialization.
+ */
+typedef struct meshx_cwww_element
+{
+    meshx_cwww_server_ctx_t *srv_ctx;            /**< Context of the relay server */
+    meshx_ctl_server_model_t *ctl_srv_model;     /**< CTL Server model */
+    meshx_onoff_server_model_t *onoff_srv_model; /**< On Off Server model */
+} meshx_cwww_element_t;
 
 /**
  * @brief Structure representing a CW-WW element in the BLE mesh network.
@@ -82,16 +69,11 @@ typedef struct cwww_srv_ctx
  */
 typedef struct cwww_element
 {
-    size_t element_cnt;
-    size_t element_id_end;
-    size_t element_id_start;
-    cwww_server_ctx_t *cwww_server_ctx;
-    MESHX_MODEL **cwww_server_sig_model_list;
-    MESHX_MODEL_PUB **cwww_server_pub_list;
-    MESHX_GEN_ONOFF_SRV *cwww_server_onoff_gen_list;
-    MESHX_LIGHT_CTL_SRV *cwww_server_light_ctl_list;
-    MESHX_LIGHT_CTL_STATE *cwww_light_ctl_state;
-} cwww_elements_t;
+    size_t element_cnt;            /**< Number of relay elements */
+    size_t element_id_end;         /**< Ending ID of the element */
+    size_t element_id_start;       /**< Starting ID of the element */
+    meshx_cwww_element_t *el_list; /**< Pointer to element list */
+} meshx_cwww_elements_ctrl_t;
 
 /**
  * @brief Create Dynamic CWWW Server Model Elements
@@ -103,6 +85,6 @@ typedef struct cwww_element
  *
  * @return meshx_err_t Returns MESHX_SUCCESS on success or an error code on failure
  */
-meshx_err_t create_cwww_elements(dev_struct_t *pdev, uint16_t element_cnt);
+meshx_err_t meshx_create_cwww_elements(dev_struct_t *pdev, uint16_t element_cnt);
 
 #endif /*__CWWW_SERVER_ELEMENT_H__*/

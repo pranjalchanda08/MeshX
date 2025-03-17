@@ -46,6 +46,12 @@ typedef union ctl_status_pack
 } ctl_status_t;
 
 /**
+ * @brief Template for SIG model initialization.
+ */
+static const MESHX_MODEL light_ctl_sig_template = ESP_BLE_MESH_SIG_MODEL(
+    ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV, NULL, NULL, NULL);
+
+/**
  * @brief Handles the BLE message sending for the Generic OnOff Server model.
  *
  * This function processes the event to send a BLE Mesh message for the
@@ -77,30 +83,30 @@ static meshx_err_t ble_send_msg_handle_t(
 
     switch (params->ctx.opcode)
     {
-        case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_STATUS:
-            ctl_status_union.ctl_status.temperature = params->state_change.ctl_set.temperature;
-            ctl_status_union.ctl_status.lightness = params->state_change.ctl_set.lightness;
-            ctl_status_pack_len = sizeof(ctl_status_union.ctl_status);
-            break;
-        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS:
-            ctl_status_union.ctl_temp_status.temperature = params->state_change.ctl_temp_set.temperature;
-            ctl_status_union.ctl_temp_status.delta_uv = params->state_change.ctl_temp_set.delta_uv;
-            ctl_status_pack_len = sizeof(ctl_status_union.ctl_temp_status);
-            break;
-        case MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS:
-            ctl_status_union.ctl_default.delta_uv_def = params->state_change.ctl_default_set.delta_uv;
-            ctl_status_union.ctl_default.lightness_def = params->state_change.ctl_default_set.lightness;
-            ctl_status_union.ctl_default.temperature_def = params->state_change.ctl_default_set.temperature;
-            ctl_status_pack_len = sizeof(ctl_status_union.ctl_default);
-            break;
-        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS:
-            ctl_status_union.ctl_temp_range.status_code = MESHX_SUCCESS;
-            ctl_status_union.ctl_temp_range.range_min = params->state_change.ctl_temp_range_set.range_min;
-            ctl_status_union.ctl_temp_range.range_max = params->state_change.ctl_temp_range_set.range_max;
-            ctl_status_pack_len = sizeof(ctl_status_union.ctl_temp_range);
-            break;
-        default:
-            return MESHX_INVALID_ARG;
+    case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_STATUS:
+        ctl_status_union.ctl_status.temperature = params->state_change.ctl_set.temperature;
+        ctl_status_union.ctl_status.lightness = params->state_change.ctl_set.lightness;
+        ctl_status_pack_len = sizeof(ctl_status_union.ctl_status);
+        break;
+    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS:
+        ctl_status_union.ctl_temp_status.temperature = params->state_change.ctl_temp_set.temperature;
+        ctl_status_union.ctl_temp_status.delta_uv = params->state_change.ctl_temp_set.delta_uv;
+        ctl_status_pack_len = sizeof(ctl_status_union.ctl_temp_status);
+        break;
+    case MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS:
+        ctl_status_union.ctl_default.delta_uv_def = params->state_change.ctl_default_set.delta_uv;
+        ctl_status_union.ctl_default.lightness_def = params->state_change.ctl_default_set.lightness;
+        ctl_status_union.ctl_default.temperature_def = params->state_change.ctl_default_set.temperature;
+        ctl_status_pack_len = sizeof(ctl_status_union.ctl_default);
+        break;
+    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS:
+        ctl_status_union.ctl_temp_range.status_code = MESHX_SUCCESS;
+        ctl_status_union.ctl_temp_range.range_min = params->state_change.ctl_temp_range_set.range_min;
+        ctl_status_union.ctl_temp_range.range_max = params->state_change.ctl_temp_range_set.range_max;
+        ctl_status_pack_len = sizeof(ctl_status_union.ctl_temp_range);
+        break;
+    default:
+        return MESHX_INVALID_ARG;
     }
 
     esp_err_t err = esp_ble_mesh_server_model_send_msg(params->model.p_model,
@@ -144,15 +150,8 @@ static void meshx_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_
             .dst_addr = param->ctx.recv_dst,
             .src_addr = param->ctx.addr,
             .opcode = param->ctx.recv_op,
-            .p_ctx = &param->ctx
-        },
-        .model = {
-            .pub_addr = param->model->pub->publish_addr,
-            .model_id = param->model->model_id,
-            .el_id = param->model->element_idx,
-            .p_model = param->model
-        }
-    };
+            .p_ctx = &param->ctx},
+        .model = {.pub_addr = param->model->pub->publish_addr, .model_id = param->model->model_id, .el_id = param->model->element_idx, .p_model = param->model}};
 
     switch (op_code)
     {
@@ -236,11 +235,11 @@ static void meshx_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_
         ESP_LOGW(TAG, "CTL Unhandled Event %p", (void *)param->ctx.recv_op);
         break;
     }
-    if(publish_flag)
+    if (publish_flag)
         control_task_msg_publish(CONTROL_TASK_MSG_CODE_FRM_BLE,
-            pub_param.model.model_id,
-            &pub_param,
-            sizeof(meshx_lighting_server_cb_param_t));
+                                 pub_param.model.model_id,
+                                 &pub_param,
+                                 sizeof(meshx_lighting_server_cb_param_t));
 }
 
 meshx_err_t meshx_plat_light_srv_init(void)
@@ -258,4 +257,82 @@ meshx_err_t meshx_plat_light_srv_init(void)
         err = MESHX_FAIL;
 
     return err;
+}
+
+meshx_err_t meshx_plat_light_ctl_srv_create(void **p_model, void **p_pub, void **p_ctl_srv)
+{
+    if (!p_model || !p_pub || !p_ctl_srv)
+        return MESHX_INVALID_ARG;
+
+    meshx_err_t err = MESHX_SUCCESS;
+
+    err = meshx_plat_create_model_pub(p_model, p_pub, 1);
+    if (err)
+        return meshx_plat_del_model_pub(p_model, p_pub);
+
+    *p_ctl_srv = (MESHX_GEN_ONOFF_SRV *)MESHX_CALOC(1, sizeof(MESHX_GEN_ONOFF_SRV));
+    if (!*p_ctl_srv)
+        return MESHX_NO_MEM;
+
+    /* SIG ON OFF initialisation */
+
+    memcpy(*p_model, &light_ctl_sig_template, sizeof(MESHX_MODEL));
+
+    ((MESHX_GEN_ONOFF_SRV *)*p_ctl_srv)->rsp_ctrl.get_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
+    ((MESHX_GEN_ONOFF_SRV *)*p_ctl_srv)->rsp_ctrl.set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
+
+    void **temp = (void **)&((MESHX_MODEL *)*p_model)->pub;
+
+    *temp = *p_pub;
+
+    return err;
+}
+
+meshx_err_t meshx_plat_light_ctl_srv_delete(void **p_model, void **p_pub, void **p_ctl_srv)
+{
+    if (p_ctl_srv)
+    {
+        MESHX_FREE(*p_ctl_srv);
+        *p_ctl_srv = NULL;
+    }
+
+    return meshx_plat_del_model_pub(p_model, p_pub);
+}
+
+meshx_err_t meshx_plat_set_light_ctl_srv_state(void *p_model,
+                                               uint16_t delta_uv,
+                                               uint16_t lightness,
+                                               uint16_t temperature,
+                                               uint16_t temp_range_max,
+                                               uint16_t temp_range_min
+                                            )
+{
+    if (!p_model)
+        return MESHX_INVALID_ARG;
+
+    MESHX_MODEL *model = (MESHX_MODEL *)p_model;
+    MESHX_LIGHT_CTL_SRV *srv = (MESHX_LIGHT_CTL_SRV *)model->user_data;
+    srv->state->delta_uv = delta_uv;
+    srv->state->lightness = lightness;
+    srv->state->temperature = temperature;
+    srv->state->temperature_range_min = temp_range_min;
+    srv->state->temperature_range_max = temp_range_max;
+
+    return MESHX_SUCCESS;
+}
+meshx_err_t meshx_plat_light_ctl_srv_restore(void *p_model,
+                                             uint16_t delta_uv,
+                                             uint16_t lightness,
+                                             uint16_t temperature,
+                                             uint16_t temp_range_max,
+                                             uint16_t temp_range_min)
+{
+    return meshx_plat_set_light_ctl_srv_state(
+        p_model,
+        delta_uv,
+        lightness,
+        temperature,
+        temp_range_max,
+        temp_range_min
+    );
 }

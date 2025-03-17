@@ -213,13 +213,13 @@ meshx_err_t meshx_on_off_server_delete(meshx_onoff_server_model_t **p_model)
     MESHX_FREE(*p_model);
     *p_model = NULL;
 
-    return MESHX_SUCCESS; // Assuming MESHX_SUCCESS is a valid success code
+    return MESHX_SUCCESS;
 }
 
-meshx_err_t meshx_on_off_gen_srv_state_restore(meshx_onoff_server_model_t *p_model, uint8_t onoff_state)
+meshx_err_t meshx_gen_on_off_srv_state_restore(meshx_onoff_server_model_t *p_model, meshx_on_off_srv_state_t onoff_state)
 {
     if(!p_model)
         return MESHX_INVALID_STATE;
 
-    return meshx_plat_on_off_gen_srv_restore(p_model->meshx_server_sig_model, onoff_state);
+    return meshx_plat_gen_on_off_srv_restore(p_model->meshx_server_sig_model, onoff_state.on_off);
 }

@@ -35,10 +35,10 @@ typedef enum
  */
 typedef struct meshx_relay_srv_model_ctx
 {
-    uint8_t state;     /**< On/Off state */
-    uint8_t tid;       /**< Transaction ID */
-    uint16_t pub_addr; /**< Publish address */
-    uint16_t app_id;   /**< Application ID */
+    meshx_on_off_srv_state_t state; /**< On/Off state */
+    uint8_t tid;                    /**< Transaction ID */
+    uint16_t pub_addr;              /**< Publish address */
+    uint16_t app_id;                /**< Application ID */
 } meshx_relay_srv_model_ctx_t;
 
 /**
@@ -46,8 +46,8 @@ typedef struct meshx_relay_srv_model_ctx
  */
 typedef struct meshx_relay_element
 {
-    meshx_onoff_server_model_t *onoff_srv_model;
-    meshx_relay_srv_model_ctx_t *meshx_rel_srv_ctx; /**< Context of the relay server */
+    meshx_relay_srv_model_ctx_t *srv_ctx;        /**< Context of the relay server */
+    meshx_onoff_server_model_t *onoff_srv_model; /**< On Off Server model */
 } meshx_relay_element_t;
 
 /**
@@ -55,10 +55,10 @@ typedef struct meshx_relay_element
  */
 typedef struct meshx_relay_element_ctrl
 {
-    size_t element_cnt;                             /**< Number of relay elements */
-    size_t element_id_end;                          /**< Ending ID of the element */
-    size_t element_id_start;                        /**< Starting ID of the element */
-    meshx_relay_element_t *meshx_relay_element_lst; /**< Pointer to element list */
+    size_t element_cnt;             /**< Number of relay elements */
+    size_t element_id_end;          /**< Ending ID of the element */
+    size_t element_id_start;        /**< Starting ID of the element */
+    meshx_relay_element_t *el_list; /**< Pointer to element list */
 } meshx_relay_element_ctrl_t;
 
 /**
@@ -69,6 +69,6 @@ typedef struct meshx_relay_element_ctrl
  *
  * @return meshx_err_t
  */
-meshx_err_t create_relay_elements(dev_struct_t *pdev, uint16_t element_cnt);
+meshx_err_t meshx_create_relay_elements(dev_struct_t *pdev, uint16_t element_cnt);
 
 #endif /*__RELAY_SERVER_MODEL_H__*/

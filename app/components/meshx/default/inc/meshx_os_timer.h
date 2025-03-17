@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file meshx_ meshx_os_timer.h
+ * @file meshx_os_timer.h
  * @brief Header file for OS timer utilities.
  *
  * This file contains the definitions and includes necessary for

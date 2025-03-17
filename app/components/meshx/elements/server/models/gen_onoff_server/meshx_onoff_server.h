@@ -17,6 +17,14 @@
 #include "meshx_control_task.h"
 
 /**
+ * @brief Structure to hold the CW-WW server on/off state.
+ */
+typedef struct meshx_on_off_srv_state
+{
+    uint8_t on_off; /**< On/Off state */
+} meshx_on_off_srv_state_t;
+
+/**
  * @brief Initialize the On/Off Server model.
  *
  * This function initializes the On/Off Server model, setting up necessary
@@ -26,7 +34,6 @@
  *    - MESHX_SUCCESS: Success
  *    - MESHX_FAIL: Failure
  */
-
 typedef struct meshx_onoff_server_model
 {
     void *meshx_server_sig_model;     /**< List of relay server SIG model structures */
@@ -90,6 +97,6 @@ meshx_err_t meshx_on_off_server_init(void);
  *     - MESHX_INVALID_STATE: If the model pointer is NULL.
  *     - Result of the platform-specific restoration function.
  */
-meshx_err_t meshx_on_off_gen_srv_state_restore(meshx_onoff_server_model_t *p_model, uint8_t onoff_state);
+meshx_err_t meshx_gen_on_off_srv_state_restore(meshx_onoff_server_model_t *p_model, meshx_on_off_srv_state_t onoff_state);
 
 #endif /* __MESHX_ONOFF_SERVER__ */

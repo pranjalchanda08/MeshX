@@ -27,7 +27,7 @@
  * The file also defines macros for logging messages at different levels,
  * such as error, warning, info, and debug.
  *
- * @auther Pranjal Chanda
+ * @author Pranjal Chanda
  */
 
 #include "meshx_log.h"
@@ -87,25 +87,6 @@ void meshx_module_set_log_level(module_id_t module_id, meshx_log_level_t log_lev
     module_log_level[module_id] = log_level;
 }
 
-/**
- * @brief Logs a formatted message for a specified module and log level.
- *
- * @note This is a weak function, can be redefined to override in app layer
- *
- * This function checks if the provided module ID and log level are valid
- * and above the current global and module-specific log levels. If valid,
- * it processes the variable arguments to format and log the message.
- *
- * @note This is a weak function defination and can be overriden by any other version
- *       of defination required as per platform
- *
- * @param[in] module_id     The ID of the module for which the log is generated.
- * @param[in] log_level     The log level of the message.
- * @param[in] func          The name of the function where the log is called.
- * @param[in] line_no       The line number in the source code where the log is called.
- * @param[in] fmt           The format string for the log message.
- * @param[in] ...           Additional arguments for the format string.
- */
 __attribute__((weak)) void meshx_log_printf(module_id_t module_id, meshx_log_level_t log_level,
                       const char *func, int line_no, const char *fmt, ...)
 {
