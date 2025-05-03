@@ -7,6 +7,7 @@
  * This file contains the function declarations and necessary includes for the
  * On/Off Server model used in the BLE Mesh Node application.
  *
+ * @author Pranjal Chanda
  */
 
 #ifndef __MESHX_ONOFF_SERVER__

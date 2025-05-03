@@ -7,55 +7,44 @@
  * This file contains the definitions and function declarations for the
  * meshxuction configuration server model used in the ESP32 BLE Mesh Node.
  *
- *
+ * @author Pranjal Chanda
  */
 
 #ifndef __MESHX_CONFIG_SERVER__
 #define __MESHX_CONFIG_SERVER__
 
-#include "interface/meshx_platform.h"
+#include "sys/queue.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
-#include "sys/queue.h"
+#include "interface/meshx_platform.h"
+#include "interface/ble_mesh/meshx_ble_mesh_config_srv.h"
 
 #include "meshx_err.h"
 
-#define MESHX_CONFIG_SERVER_INSTANCE g_meshx_config_server
-
 /**
- * @brief Enumeration of configuration events.
- */
-typedef enum
-{
-    CONFIG_EVT_MODEL_APP_KEY_ADD        = BIT0, /**< Event for adding an application key. */
-    CONFIG_EVT_MODEL_APP_KEY_DEL        = BIT1, /**< Event for deleting an application key. */
-    CONFIG_EVT_MODEL_APP_KEY_BIND       = BIT2, /**< Event for binding an application key. */
-    CONFIG_EVT_MODEL_APP_KEY_UNBIND     = BIT3, /**< Event for unbinding an application key. */
-    CONFIG_EVT_MODEL_SUB_ADD            = BIT4, /**< Event for adding a subscription. */
-    CONFIG_EVT_MODEL_SUB_DEL            = BIT5, /**< Event for deleting a subscription. */
-    CONFIG_EVT_MODEL_PUB_ADD            = BIT6, /**< Event for adding a publication. */
-    CONFIG_EVT_MODEL_PUB_DEL            = BIT7, /**< Event for deleting a publication. */
-    CONFIG_EVT_MODEL_NET_KEY_ADD        = BIT8, /**< Event for adding a network key. */
-    CONFIG_EVT_MODEL_NET_KEY_DEL        = BIT9, /**< Event for deleting a network key. */
-    CONFIG_EVT_ALL                      = 0xFFFFFFFF, /**< Event for all configuration events. */
-} config_evt_t;
-
-/**
- * @brief Callback function type for configuration server events.
+ * @brief Configuration server callback function type.
  *
- * @param param Pointer to the callback parameter structure.
- * @param evt The configuration event that occurred.
+ * @param[out] pdev Pointer to the device structure.
+ *
+ * @return MESHX_SUCCESS on success, an error code otherwise.
  */
-typedef void (*config_srv_cb)(const esp_ble_mesh_cfg_server_cb_param_t *param, config_evt_t evt);
+meshx_err_t meshx_get_config_srv_instance(void** p_conf_srv);
 
-extern MESHX_CFG_SRV g_meshx_config_server;
+/**
+ * @brief Get the configuration server model instance.
+ *
+ * @param[out] p_model Pointer to the model instance.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
+ */
+meshx_err_t meshx_get_config_srv_model(void** p_model);
 
 /**
  * @brief Initialize the meshxuction configuration server.
  *
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-meshx_err_t meshx_init_config_server();
+meshx_err_t meshx_init_config_server(void);
 
 /**
  * @brief Registers a configuration server callback for specific events.
@@ -67,6 +56,40 @@ meshx_err_t meshx_init_config_server();
  *
  * @return MESHX_SUCCESS on success, an error code otherwise.
  */
-meshx_err_t meshx_config_server_cb_reg(config_srv_cb cb, uint32_t config_evt_bmap);
+meshx_err_t meshx_config_server_cb_reg(config_srv_cb_t cb, uint32_t config_evt_bmap);
+
+/**
+ * @brief Retrieves the instance of the MeshX configuration server.
+ *
+ * This function provides access to the configuration server instance
+ * used in the MeshX framework. The configuration server is responsible
+ * for managing and storing configuration settings for the mesh network.
+ *
+ * @param[out] p_conf_srv Pointer to a variable where the configuration
+ *                        server instance will be stored. The pointer
+ *                        must be of type `void**`.
+ *
+ * @return
+ * - `MESHX_SUCCESS` on successful retrieval of the configuration server instance.
+ * - An appropriate error code of type `meshx_err_t` on failure.
+ */
+meshx_err_t meshx_get_config_srv_instance(void** p_conf_srv);
+
+/**
+ * @brief Retrieves the configuration server model for the MeshX framework.
+ *
+ * This function provides access to the configuration server model used in the
+ * MeshX implementation. The retrieved model can be used for configuring and
+ * managing the mesh network.
+ *
+ * @param[out] p_model Pointer to a variable where the address of the
+ *                     configuration server model will be stored. The caller
+ *                     must ensure that the pointer is valid.
+ *
+ * @return
+ * - `MESHX_SUCCESS` on success.
+ * - An appropriate error code of type `meshx_err_t` on failure.
+ */
+meshx_err_t meshx_get_config_srv_model(void** p_model);
 
 #endif /* __MESHX_CONFIG_SERVER__ */

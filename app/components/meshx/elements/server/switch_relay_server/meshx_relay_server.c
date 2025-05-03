@@ -6,6 +6,8 @@
  *
  * This file contains the implementation of the relay server model for BLE Mesh.
  * It includes functions to initialize, configure, and manage relay server elements.
+ *
+ * @author Pranjal Chanda
  */
 
 #include "meshx_relay_server_element.h"
@@ -21,8 +23,8 @@
  * @brief Configuration server callback event mask for relay server.
  */
 #define CONFIG_SERVER_CB_MASK \
-    CONFIG_EVT_MODEL_PUB_ADD  \
-    | CONFIG_EVT_MODEL_SUB_ADD | CONFIG_EVT_MODEL_APP_KEY_BIND
+    CONTROL_TASK_MSG_EVT_PUB_ADD  \
+    | CONTROL_TASK_MSG_EVT_SUB_ADD | CONTROL_TASK_MSG_EVT_APP_KEY_BIND
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
 #define CONTROL_TASK_EVT_MASK CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF
@@ -53,11 +55,18 @@ static meshx_relay_element_ctrl_t relay_element_init_ctrl;
  * This function handles events from the configuration server, such as model publication
  * and application binding events.
  *
- * @param param Pointer to the callback parameter structure.
- * @param evt Configuration event type.
+ * @param[in] pdev   Pointer to device struct
+ * @param[in] evt    Configuration event type.
+ * @param[in] params Pointer to the callback parameter structure.
+ *
+ * @return MESHX_SUCCESS on success, an error code otherwise.
  */
-static void relay_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *param, config_evt_t evt)
+static meshx_err_t relay_server_config_srv_cb (
+    const dev_struct_t *pdev,
+    control_task_msg_evt_t evt,
+    const meshx_config_srv_cb_param_t *params)
 {
+    MESHX_UNUSED(pdev);
     meshx_relay_srv_model_ctx_t *el_ctx = NULL;
     size_t rel_el_id = 0;
     uint16_t element_id = 0;
@@ -65,29 +74,30 @@ static void relay_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
     MESHX_LOGD(MODULE_ID_MODEL_SERVER, "EVT: %p", (void *)evt);
     switch (evt)
     {
-    case CONFIG_EVT_MODEL_APP_KEY_BIND:
-        element_id = (param->value.state_change.mod_app_bind.element_addr - esp_ble_mesh_get_primary_element_address());
+    case CONTROL_TASK_MSG_EVT_APP_KEY_BIND:
+        element_id = params->model.el_id;
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
         el_ctx = relay_element_init_ctrl.el_list[rel_el_id].srv_ctx;
-        el_ctx->app_id = param->value.state_change.appkey_add.app_idx;
+        el_ctx->app_id = params->state_change.appkey_add.app_idx;
         break;
-    case CONFIG_EVT_MODEL_PUB_ADD:
-    case CONFIG_EVT_MODEL_PUB_DEL:
-        element_id = (param->value.state_change.mod_pub_set.element_addr - esp_ble_mesh_get_primary_element_address());
+    case CONTROL_TASK_MSG_EVT_PUB_ADD:
+    case CONTROL_TASK_MSG_EVT_PUB_DEL:
+        element_id = params->model.el_id;
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
         el_ctx = relay_element_init_ctrl.el_list[rel_el_id].srv_ctx;
-        el_ctx->pub_addr = evt == CONFIG_EVT_MODEL_PUB_ADD ? param->value.state_change.mod_pub_set.pub_addr
+        el_ctx->pub_addr = evt == CONTROL_TASK_MSG_EVT_PUB_ADD ? params->state_change.mod_pub_set.pub_addr
                                                            : MESHX_ADDR_UNASSIGNED;
-        el_ctx->app_id = param->value.state_change.mod_pub_set.app_idx;
+        el_ctx->app_id = params->state_change.mod_pub_set.app_idx;
         MESHX_LOGI(MODULE_ID_MODEL_SERVER, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
         break;
     default:
         break;
     }
+    return MESHX_SUCCESS;
 }
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
@@ -430,7 +440,9 @@ meshx_err_t meshx_create_relay_elements(dev_struct_t *pdev, uint16_t element_cnt
         return err;
     }
 #if CONFIG_ENABLE_CONFIG_SERVER
-    err = meshx_config_server_cb_reg(&relay_server_config_srv_cb, CONFIG_SERVER_CB_MASK);
+    err = meshx_config_server_cb_reg(
+        (config_srv_cb_t)&relay_server_config_srv_cb,
+        CONFIG_SERVER_CB_MASK);
     if (err)
     {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Relay Model configserver callback reg failed: (%d)", err);

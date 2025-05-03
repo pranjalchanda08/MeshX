@@ -16,6 +16,7 @@
  * - Data structures for relay client context, messages, and elements.
  * - Function prototypes for creating relay client elements and sending messages.
  *
+ * @author Pranjal Chanda
  */
 #pragma once
 

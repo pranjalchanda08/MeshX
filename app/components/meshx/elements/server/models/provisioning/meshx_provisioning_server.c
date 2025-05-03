@@ -7,6 +7,7 @@
  * The provisioning process is responsible for setting up the BLE mesh node, including
  * initializing necessary components and handling communication with other nodes.
  *
+ * @author Pranjal Chanda
  */
 
 #include "string.h"

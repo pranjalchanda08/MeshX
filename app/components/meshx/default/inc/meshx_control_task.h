@@ -56,6 +56,7 @@ typedef enum control_task_msg_code
     CONTROL_TASK_MSG_CODE_SYSTEM,       /**< Message code for system events. */
     CONTROL_TASK_MSG_CODE_TO_BLE,       /**< Message code to BLE layer. */
     CONTROL_TASK_MSG_CODE_FRM_BLE,      /**< Message code from BLE layer. */
+    CONTROL_TASK_MSG_CODE_CONFIG,       /**< Message code for Config Server events */
     CONTROL_TASK_MSG_CODE_PROVISION,    /**< Message code for provisioning events. */
     CONTROL_TASK_MSG_CODE_TO_APP,       /**< Message code for application events. */
     CONTROL_TASK_MSG_CODE_TO_MESHX,     /**< Message code for meshX events from app */
@@ -117,6 +118,24 @@ typedef enum control_task_msg_evt_system
     CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT   = BIT6,    /**< Event to indicate fresh boot */
     CONTROL_TASK_MSG_EVT_SYSTEM_MAX,                    /**< Maximum system event value. */
 } control_task_msg_evt_system_t;
+
+/**
+ * @brief Enumeration for control task config srv events
+ */
+typedef enum control_task_msg_evt_config
+{
+    CONTROL_TASK_MSG_EVT_APP_KEY_ADD        = BIT0, /**< Event for adding an application key. */
+    CONTROL_TASK_MSG_EVT_APP_KEY_DEL        = BIT1, /**< Event for deleting an application key. */
+    CONTROL_TASK_MSG_EVT_APP_KEY_BIND       = BIT2, /**< Event for binding an application key. */
+    CONTROL_TASK_MSG_EVT_APP_KEY_UNBIND     = BIT3, /**< Event for unbinding an application key. */
+    CONTROL_TASK_MSG_EVT_SUB_ADD            = BIT4, /**< Event for adding a subscription. */
+    CONTROL_TASK_MSG_EVT_SUB_DEL            = BIT5, /**< Event for deleting a subscription. */
+    CONTROL_TASK_MSG_EVT_PUB_ADD            = BIT6, /**< Event for adding a publication. */
+    CONTROL_TASK_MSG_EVT_PUB_DEL            = BIT7, /**< Event for deleting a publication. */
+    CONTROL_TASK_MSG_EVT_NET_KEY_ADD        = BIT8, /**< Event for adding a network key. */
+    CONTROL_TASK_MSG_EVT_NET_KEY_DEL        = BIT9, /**< Event for deleting a network key. */
+    CONTROL_TASK_MSG_EVT_ALL                = 0xFFFFFFFF, /**< Event for all configuration events. */
+} control_task_msg_evt_config_t;
 
 /**
  * @brief Enumeration for control task provisioning events.
@@ -189,7 +208,7 @@ meshx_err_t create_control_task(dev_struct_t * pdev);
  *     - MESHX_INVALID_ARG: Invalid argument
  *     - MESHX_FAIL: Other failures
  */
-meshx_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code, control_task_msg_evt_t evt_bmap, control_task_msg_handle_t cbcallback);
+meshx_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code, control_task_msg_evt_t evt_bmap, control_task_msg_handle_t callback);
 
 /**
  * @brief Deregister a callback for a specific message code and event bitmap.

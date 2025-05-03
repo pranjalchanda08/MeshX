@@ -7,7 +7,7 @@
  * This file contains the definitions and function prototypes for the CWWW Server Model.
  * It includes the necessary includes, macros, and data structures required for the model.
  *
- *
+ * @author Pranjal Chanda
  */
 
 #ifndef __CWWW_SERVER_ELEMENT_H__

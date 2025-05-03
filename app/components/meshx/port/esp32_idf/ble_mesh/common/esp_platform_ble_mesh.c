@@ -77,17 +77,6 @@ meshx_err_t meshx_plat_add_element_to_composition(
         return MESHX_INVALID_ARG;
     }
 
-
-    // if (p_sig_models == NULL)
-    // {
-    //     p_sig_models = ESP_BLE_MESH_MODEL_NONE;
-    // }
-
-    // if (p_ven_models == NULL)
-    // {
-    //     p_ven_models = ESP_BLE_MESH_MODEL_NONE;
-    // }
-
     MESHX_ELEMENT* element = (MESHX_ELEMENT*)(p_element_list + index);
     element->sig_models = p_sig_models;
     element->vnd_models = p_ven_models;
