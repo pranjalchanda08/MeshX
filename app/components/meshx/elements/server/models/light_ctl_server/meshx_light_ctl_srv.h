@@ -7,6 +7,7 @@
  * This file contains the function declarations and necessary includes for
  * initializing and managing the Light CTL Server in the BLE mesh network.
  *
+ * @author Pranjal Chanda
  */
 
 #ifndef __MESHX_LIGHT_CTL_SRV_H__

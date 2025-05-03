@@ -76,6 +76,7 @@ element_comp_fn_t element_comp_fn [MESHX_ELEMENT_TYPE_MAX] = {
 #endif /* CONFIG_SECTION_ENABLE_ELEMENT_TABLE */
 
 
+#if 0
 #if CONFIG_ENABLE_LIGHT_CTL_SERVER
 /** Light CTL state. */
 MESHX_LIGHT_CTL_STATE ctl_state;
@@ -100,7 +101,21 @@ static MESHX_MODEL meshx_root_model_arr[] = {
     ESP_BLE_MESH_MODEL_LIGHT_CTL_SETUP_SRV(&ctl_setup_pub, &ctl_setup_server),
 #endif
 };
+#else
 
+/** Root models for BLE Mesh elements. */
+static MESHX_MODEL *meshx_root_model_arr = NULL;
+
+typedef meshx_err_t (*root_model_getfn_t)(void** p_model);
+
+static root_model_getfn_t root_model_getfn[] = {
+#if CONFIG_ENABLE_CONFIG_SERVER
+    meshx_get_config_srv_model,
+#endif /* CONFIG_ENABLE_CONFIG_SERVER */
+};
+
+static uint16_t meshx_root_model_arr_len = sizeof(root_model_getfn) / sizeof(root_model_getfn[0]);
+#endif /* #if 0 */
 /**
  * @brief Handles provisioning control task events.
  *
@@ -141,6 +156,21 @@ static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_t
  */
 MESHX_MODEL * get_root_sig_models(void)
 {
+    if(meshx_root_model_arr == NULL)
+    {
+        meshx_root_model_arr = (MESHX_MODEL *) MESHX_MALLOC(sizeof(MESHX_MODEL) * meshx_root_model_arr_len);
+        if(meshx_root_model_arr == NULL)
+        {
+            MESHX_LOGE(MODULE_ID_COMMON, "Failed to allocate memory for root models");
+            return NULL;
+        }
+        memset(meshx_root_model_arr, 0, sizeof(MESHX_MODEL) * meshx_root_model_arr_len);
+
+        for(uint16_t i = 0; i < meshx_root_model_arr_len; i++)
+        {
+            root_model_getfn[i]((void**)&meshx_root_model_arr[i]);
+        }
+    }
     return meshx_root_model_arr;
 }
 
@@ -151,7 +181,7 @@ MESHX_MODEL * get_root_sig_models(void)
  */
 size_t get_root_sig_models_count(void)
 {
-    return ARRAY_SIZE(meshx_root_model_arr);
+    return meshx_root_model_arr_len;
 }
 
 /**

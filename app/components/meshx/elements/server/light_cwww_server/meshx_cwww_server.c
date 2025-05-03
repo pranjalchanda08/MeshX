@@ -6,6 +6,8 @@
  *
  * This file contains the implementation of the CW-WW server model for BLE Mesh,
  * including initialization, configuration, and event handling.
+ *
+ * @author Pranjal Chanda
  */
 
 #include <meshx_cwww_server_element.h>
@@ -21,8 +23,8 @@
  * @brief Configuration server callback event mask for relay server.
  */
 #define CONFIG_SERVER_CB_MASK \
-    CONFIG_EVT_MODEL_PUB_ADD  \
-    | CONFIG_EVT_MODEL_SUB_ADD | CONFIG_EVT_MODEL_APP_KEY_BIND
+    CONTROL_TASK_MSG_EVT_PUB_ADD  \
+    | CONTROL_TASK_MSG_EVT_SUB_ADD | CONTROL_TASK_MSG_EVT_APP_KEY_BIND
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
 #define CONTROL_TASK_EVT_MASK                   \
@@ -44,41 +46,46 @@ static meshx_cwww_elements_ctrl_t cwww_element_init_ctrl;
  * This function handles events from the configuration server, such as model publication
  * and application binding events.
  *
- * @param[in] param Pointer to the callback parameter structure.
- * @param[in] evt Configuration event type.
+ * @param[in] pdev   Pointer to device struct
+ * @param[in] evt    Configuration event type.
+ * @param[in] params Pointer to the callback parameter structure.
  */
-static void cwww_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *param, config_evt_t evt)
+static meshx_err_t cwww_server_config_srv_cb (
+    const dev_struct_t *pdev,
+    control_task_msg_evt_t evt,
+    const meshx_config_srv_cb_param_t *params)
 {
+    MESHX_UNUSED(pdev);
     meshx_cwww_server_ctx_t *el_ctx = NULL;
     size_t rel_el_id = 0;
     uint16_t element_id = 0;
     bool nvs_save = false;
 
-    ESP_LOGD(TAG, "EVT: %p", (void *)evt);
+    MESHX_LOGD(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "EVT: %p", (void *)evt);
     switch (evt)
     {
-    case CONFIG_EVT_MODEL_APP_KEY_BIND:
-        element_id = param->value.state_change.mod_app_bind.element_addr - esp_ble_mesh_get_primary_element_address();
+    case CONTROL_TASK_MSG_EVT_APP_KEY_BIND:
+        element_id = params->model.el_id;
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
         el_ctx = cwww_element_init_ctrl.el_list[rel_el_id].srv_ctx;
-        el_ctx->app_id = param->value.state_change.appkey_add.app_idx;
+        el_ctx->app_id = params->state_change.appkey_add.app_idx;
         nvs_save = true;
 
         break;
-    case CONFIG_EVT_MODEL_PUB_ADD:
-    case CONFIG_EVT_MODEL_PUB_DEL:
-        element_id = param->value.state_change.mod_pub_set.element_addr - esp_ble_mesh_get_primary_element_address();
+    case CONTROL_TASK_MSG_EVT_PUB_ADD:
+    case CONTROL_TASK_MSG_EVT_PUB_DEL:
+        element_id = params->model.el_id;
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
         el_ctx = cwww_element_init_ctrl.el_list[rel_el_id].srv_ctx;
-        el_ctx->pub_addr = evt == CONFIG_EVT_MODEL_PUB_ADD ? param->value.state_change.mod_pub_set.pub_addr
+        el_ctx->pub_addr = evt == CONTROL_TASK_MSG_EVT_PUB_ADD ? params->state_change.mod_pub_set.pub_addr
                                                            : MESHX_ADDR_UNASSIGNED;
-        el_ctx->app_id = param->value.state_change.mod_pub_set.app_idx;
+        el_ctx->app_id = params->state_change.mod_pub_set.app_idx;
         nvs_save = true;
-        ESP_LOGI(TAG, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
+        MESHX_LOGI(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
         break;
     default:
         break;
@@ -88,9 +95,10 @@ static void cwww_server_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *
         meshx_err_t err = meshx_nvs_element_ctx_set(element_id, el_ctx, sizeof(meshx_cwww_server_ctx_t));
         if (err != MESHX_SUCCESS)
         {
-            ESP_LOGE(TAG, "Failed to set cwww server element context: (%d)", err);
+            MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to set cwww server element context: (%d)", err);
         }
     }
+    return MESHX_SUCCESS;
 }
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
@@ -142,14 +150,14 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
         err = meshx_on_off_server_create(&cwww_element_init_ctrl.el_list[i].onoff_srv_model);
         if (err)
         {
-            MESHX_LOGE(MODULE_ID_COMMON, "Meshx On Off Server create failed (Err : 0x%x)", err);
+            MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Meshx On Off Server create failed (Err : 0x%x)", err);
             return err;
         }
 
         err = meshx_light_ctl_server_create(&cwww_element_init_ctrl.el_list[i].ctl_srv_model);
         if (err)
         {
-            MESHX_LOGE(MODULE_ID_COMMON, "Meshx CTL Server create failed (Err : 0x%x)", err);
+            MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Meshx CTL Server create failed (Err : 0x%x)", err);
             return err;
         }
     }
@@ -190,14 +198,14 @@ static meshx_err_t meshx_element_struct_deinit()
         err = meshx_on_off_server_delete(&cwww_element_init_ctrl.el_list[i].onoff_srv_model);
         if (err)
         {
-            MESHX_LOGE(MODULE_ID_COMMON, "Meshx On Off Server create failed (Err : 0x%x)", err);
+            MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Meshx On Off Server create failed (Err : 0x%x)", err);
             return err;
         }
 
         err = meshx_light_ctl_server_delete(&cwww_element_init_ctrl.el_list[i].ctl_srv_model);
         if (err)
         {
-            MESHX_LOGE(MODULE_ID_COMMON, "Meshx CTL Server create failed (Err : 0x%x)", err);
+            MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Meshx CTL Server create failed (Err : 0x%x)", err);
             return err;
         }
     }
@@ -220,7 +228,7 @@ static meshx_err_t meshx_dev_create_cwww_model_space(uint16_t n_max)
     meshx_err_t err = meshx_element_struct_init(n_max);
     if (err)
     {
-        ESP_LOGE(TAG, "Failed to initialize cwww element structures: (%d)", err);
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to initialize cwww element structures: (%d)", err);
         meshx_element_struct_deinit();
         return err;
     }
@@ -290,7 +298,7 @@ static meshx_err_t meshx_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, 
 
     if (!start_idx || (n_max + *start_idx) > CONFIG_MAX_ELEMENT_COUNT)
     {
-        ESP_LOGE(TAG, "No of elements limit reached");
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "No of elements limit reached");
         return MESHX_NO_MEM;
     }
     meshx_err_t err = MESHX_SUCCESS;
@@ -320,14 +328,14 @@ static meshx_err_t meshx_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, 
             sizeof(cwww_element_init_ctrl.el_list[i - *start_idx].srv_ctx));
         if (err != MESHX_SUCCESS)
         {
-            ESP_LOGW(TAG, "Failed to get cwww element context: (0x%x)", err);
+            MESHX_LOGW(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to get cwww element context: (0x%x)", err);
         }
         else
         {
             err = meshx_restore_model_states(i - *start_idx);
             if (err != MESHX_SUCCESS)
             {
-                ESP_LOGW(TAG, "Failed to restore cwww model states: (0x%x)", err);
+                MESHX_LOGW(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to restore cwww model states: (0x%x)", err);
             }
         }
     }
@@ -423,7 +431,7 @@ static meshx_err_t meshx_el_control_task_handler(const dev_struct_t *pdev, const
 
     err = meshx_nvs_element_ctx_set(element_id, el_ctx, sizeof(meshx_cwww_server_ctx_t));
     if (err != MESHX_SUCCESS)
-        ESP_LOGE(TAG, "Failed to set relay element context: (%d)", err);
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to set relay element context: (%d)", err);
 
     err = meshx_send_msg_to_app(element_id,
                                 MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER,
@@ -432,7 +440,7 @@ static meshx_err_t meshx_el_control_task_handler(const dev_struct_t *pdev, const
                                 &app_msg);
 
     if (err != MESHX_SUCCESS)
-        ESP_LOGE(TAG, "Failed to send relay state change message: (%d)", err);
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to send relay state change message: (%d)", err);
 
 el_ctrl_task_hndlr_exit:
     return MESHX_SUCCESS;
@@ -478,7 +486,7 @@ static meshx_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, cont
                                        sizeof(meshx_gen_srv_cb_param_t));
         if (err)
         {
-            ESP_LOGE(TAG, "Failed to send ONOFF status message (Err: %x)", err);
+            MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to send ONOFF status message (Err: %x)", err);
             return err;
         }
 
@@ -497,7 +505,7 @@ static meshx_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, cont
                                        sizeof(meshx_lighting_server_cb_param_t));
         if (err)
         {
-            ESP_LOGE(TAG, "Failed to send CTL status message (Err: %x)", err);
+            MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to send CTL status message (Err: %x)", err);
             return err;
         }
     }
@@ -521,21 +529,22 @@ meshx_err_t meshx_create_cwww_elements(dev_struct_t *pdev, uint16_t element_cnt)
     err = meshx_dev_create_cwww_model_space(element_cnt);
     if (err)
     {
-        ESP_LOGE(TAG, "CWWW Model create failed: (%d)", err);
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "CWWW Model create failed: (%d)", err);
         return err;
     }
     err = meshx_add_cwww_srv_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, element_cnt);
     if (err)
     {
-        ESP_LOGE(TAG, "CWWW Model create failed: (%d)", err);
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "CWWW Model create failed: (%d)", err);
 
         return err;
     }
 #if CONFIG_ENABLE_CONFIG_SERVER
-    err = meshx_config_server_cb_reg(&cwww_server_config_srv_cb, CONFIG_SERVER_CB_MASK);
+    err = meshx_config_server_cb_reg(
+        (config_srv_cb_t)&cwww_server_config_srv_cb, CONFIG_SERVER_CB_MASK);
     if (err)
     {
-        ESP_LOGE(TAG, "Relay Model configserver callback reg failed: (%d)", err);
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Relay Model configserver callback reg failed: (%d)", err);
         return err;
     }
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
@@ -545,7 +554,7 @@ meshx_err_t meshx_create_cwww_elements(dev_struct_t *pdev, uint16_t element_cnt)
         (control_task_msg_handle_t)&meshx_el_control_task_handler);
     if (err)
     {
-        ESP_LOGE(TAG, "Failed to register control task callback: (%d)", err);
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to register control task callback: (%d)", err);
         return err;
     }
 
@@ -555,21 +564,21 @@ meshx_err_t meshx_create_cwww_elements(dev_struct_t *pdev, uint16_t element_cnt)
         (control_task_msg_handle_t)&cwww_prov_control_task_handler);
     if (err)
     {
-        ESP_LOGE(TAG, "Failed to register control task callback: (%d)", err);
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to register control task callback: (%d)", err);
         return err;
     }
 
     err = meshx_on_off_server_init();
     if (err)
     {
-        ESP_LOGE(TAG, "meshx_on_off_server_init failed: (%d)", err);
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "meshx_on_off_server_init failed: (%d)", err);
 
         return err;
     }
     err = meshx_light_ctl_server_init();
     if (err)
     {
-        ESP_LOGE(TAG, "meshx_light_ctl_server_init failed: (%d)", err);
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "meshx_light_ctl_server_init failed: (%d)", err);
 
         return err;
     }

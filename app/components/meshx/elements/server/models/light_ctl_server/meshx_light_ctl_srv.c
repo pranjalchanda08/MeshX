@@ -8,6 +8,7 @@
  * for the BLE Mesh Node. The Light CTL Server model is responsible for controlling the color
  * temperature and lightness of a light.
  *
+ * @author Pranjal Chanda
  */
 
 #include <meshx_light_ctl_srv.h>
