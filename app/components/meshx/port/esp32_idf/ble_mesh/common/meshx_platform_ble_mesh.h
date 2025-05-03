@@ -4,6 +4,7 @@
 #include "stdio.h"
 #include "stdint.h"
 
+#include "sdkconfig.h"
 #include "esp_ble_mesh_defs.h"
 #include "esp_ble_mesh_common_api.h"
 #include "esp_ble_mesh_networking_api.h"

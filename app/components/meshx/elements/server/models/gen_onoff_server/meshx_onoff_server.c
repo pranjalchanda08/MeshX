@@ -7,7 +7,7 @@
  * This file contains the function defination for the
  * On/Off Server model used in the BLE Mesh Node application.
  *
- *
+ * @author Pranjal Chanda
  */
 #include "meshx_onoff_server.h"
 

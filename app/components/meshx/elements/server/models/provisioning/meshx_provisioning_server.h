@@ -6,6 +6,8 @@
  *
  * This file contains the definitions and function declarations for provisioning
  * in the BLE mesh node application.
+ *
+ * @author Pranjal Chanda
  */
 
 #ifndef __MESHX_PROV__

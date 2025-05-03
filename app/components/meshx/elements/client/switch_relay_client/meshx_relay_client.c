@@ -21,7 +21,7 @@
 
 #if CONFIG_ENABLE_CONFIG_SERVER
 #include "meshx_config_server.h"
-#define CONFIG_SERVER_CB_MASK CONFIG_EVT_MODEL_PUB_ADD | CONFIG_EVT_MODEL_SUB_ADD | CONFIG_EVT_MODEL_APP_KEY_BIND
+#define CONFIG_SERVER_CB_MASK CONTROL_TASK_MSG_EVT_PUB_ADD | CONTROL_TASK_MSG_EVT_SUB_ADD | CONTROL_TASK_MSG_EVT_APP_KEY_BIND
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
 #if defined(__MESHX_CONTROL_TASK__)
@@ -337,37 +337,41 @@ void meshx_relay_cli_generic_client_cb(const esp_ble_mesh_generic_client_cb_para
  *
  * @param[in] param Pointer to the callback parameter structure.
  * @param[in] evt Configuration event type.
- * @return void
+ * @return meshx_err_t
  */
-static void relay_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t *param, config_evt_t evt)
+static meshx_err_t relay_client_config_srv_cb(
+    const dev_struct_t *pdev,
+    control_task_msg_evt_t evt,
+    const meshx_config_srv_cb_param_t *params)
 {
+    MESHX_UNUSED(pdev);
     rel_cli_ctx_t *el_ctx = NULL;
     size_t rel_el_id = 0;
     uint16_t element_id = 0;
     bool nvs_save = false;
 
-    ESP_LOGD(TAG, "EVT: %p", (void *)evt);
+    MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "EVT: %p", (void *)evt);
     switch (evt)
     {
-    case CONFIG_EVT_MODEL_APP_KEY_BIND:
-        element_id = param->value.state_change.mod_app_bind.element_addr - esp_ble_mesh_get_primary_element_address();
+    case CONTROL_TASK_MSG_EVT_APP_KEY_BIND:
+        element_id = params->model.el_id;
         if (!IS_EL_IN_RANGE(element_id))
-            return;
+            break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
         el_ctx = &relay_element_init_ctrl->rel_cli_ctx[rel_el_id];
-        el_ctx->app_id = param->value.state_change.mod_app_bind.app_idx;
+        el_ctx->app_id = params->state_change.mod_app_bind.app_idx;
         nvs_save = true;
         break;
-    case CONFIG_EVT_MODEL_PUB_ADD:
-    case CONFIG_EVT_MODEL_PUB_DEL:
-        element_id = param->value.state_change.mod_pub_set.element_addr - esp_ble_mesh_get_primary_element_address();
+    case CONTROL_TASK_MSG_EVT_PUB_ADD:
+    case CONTROL_TASK_MSG_EVT_PUB_DEL:
+        element_id = params->model.el_id;
         if (!IS_EL_IN_RANGE(element_id))
-            return;
+            break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
         el_ctx = &relay_element_init_ctrl->rel_cli_ctx[rel_el_id];
-        el_ctx->pub_addr = evt == CONFIG_EVT_MODEL_PUB_ADD ? param->value.state_change.mod_pub_set.pub_addr
+        el_ctx->pub_addr = evt == CONTROL_TASK_MSG_EVT_PUB_ADD ? params->state_change.mod_pub_set.pub_addr
                                                            : ESP_BLE_MESH_ADDR_UNASSIGNED;
-        el_ctx->app_id = param->value.state_change.mod_pub_set.app_idx;
+        el_ctx->app_id = params->state_change.mod_pub_set.app_idx;
         nvs_save = true;
         ESP_LOGI(TAG, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
         break;
@@ -382,6 +386,7 @@ static void relay_client_config_srv_cb(const esp_ble_mesh_cfg_server_cb_param_t 
             ESP_LOGE(TAG, "Failed to set relay element context: (%d)", err);
         }
     }
+    return MESHX_SUCCESS;
 }
 #endif /* #if CONFIG_ENABLE_CONFIG_SERVER */
 
@@ -599,7 +604,7 @@ meshx_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cn
     }
 
 #if CONFIG_ENABLE_CONFIG_SERVER
-    err = meshx_config_server_cb_reg(&relay_client_config_srv_cb, CONFIG_SERVER_CB_MASK);
+    err = meshx_config_server_cb_reg((config_srv_cb_t)&relay_client_config_srv_cb, CONFIG_SERVER_CB_MASK);
     if (err)
     {
         ESP_LOGE(TAG, "Relay Model config server callback reg failed: (%d)", err);

@@ -11,6 +11,7 @@
  * The file includes necessary BLE Mesh headers and defines the event types, callback function
  * types, and structures used for registering and handling Light CTL Client events.
  *
+ * @author Pranjal Chanda
  */
 
 #ifndef __LIGHT_CTL_CLIENT_H__

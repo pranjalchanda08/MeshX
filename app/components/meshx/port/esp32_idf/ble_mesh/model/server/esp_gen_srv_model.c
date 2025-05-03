@@ -11,8 +11,8 @@
  */
 
 #include "esp_log.h"
-#include "meshx_gen_server.h"
 #include "meshx_control_task.h"
+#include "interface/ble_mesh/meshx_ble_mesh_gen_srv.h"
 
 #ifdef TAG
 #undef TAG
