@@ -23,6 +23,8 @@ static MESHX_CFG_SRV meshx_config_server_instance = {
 static MESHX_MODEL meshx_config_server_model = {
     .model_id = ESP_BLE_MESH_MODEL_ID_CONFIG_SRV,
     .user_data = &meshx_config_server_instance,
+    .keys = ESP_BLE_MESH_MODEL_KEYS_UNUSED,
+    .groups = ESP_BLE_MESH_MODEL_GROUPS_UNASSIGNED,
 };
 
 /**
@@ -53,7 +55,6 @@ static void meshx_ble_mesh_config_server_cb(esp_ble_mesh_cfg_server_cb_event_t e
                 },
             .model =
                 {
-                    .pub_addr = param->model->pub->publish_addr,
                     .model_id = param->model->model_id,
                     .el_id = param->model->element_idx,
                     .p_model = param->model
@@ -158,14 +159,13 @@ meshx_err_t meshx_plat_get_config_srv_instance(void** p_conf_srv)
     return MESHX_SUCCESS;
 }
 
-meshx_err_t meshx_plat_get_config_srv_model(void** p_model)
+meshx_err_t meshx_plat_get_config_srv_model(void* p_model)
 {
     if (p_model == NULL)
     {
         return MESHX_INVALID_ARG;
     }
     /* Return the pointer to the configuration server model */
-    *p_model = &meshx_config_server_model;
-
+    memcpy(p_model, &meshx_config_server_model, sizeof(meshx_config_server_model));
     return MESHX_SUCCESS;
 }

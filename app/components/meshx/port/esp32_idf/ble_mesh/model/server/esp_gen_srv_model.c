@@ -61,7 +61,7 @@ static meshx_err_t ble_send_msg_handle_t(
     if(params->model.model_id != ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_STATUS)
         return MESHX_INVALID_ARG;
 
-    esp_ble_mesh_msg_ctx_t *ctx = params->ctx.p_ctx;
+    esp_ble_mesh_msg_ctx_t *ctx = (esp_ble_mesh_msg_ctx_t *)params->ctx.p_ctx;
     bool malloc_flag = false;
 
     if(ctx == NULL)
@@ -71,18 +71,14 @@ static meshx_err_t ble_send_msg_handle_t(
             return MESHX_NO_MEM;
 
         malloc_flag = true;
+    }
 
-        ctx->net_idx    =   params->ctx.net_idx;
-        ctx->app_idx    =   params->ctx.app_idx;
-        ctx->addr       =   params->ctx.dst_addr;
-        ctx->send_ttl   =   ESP_BLE_MESH_TTL_DEFAULT;
-        ctx->send_cred  =   0;
-        ctx->send_tag   =   BIT1;
-    }
-    else
-    {
-        ctx->addr = params->ctx.dst_addr;
-    }
+    ctx->net_idx    =   params->ctx.net_idx;
+    ctx->app_idx    =   params->ctx.app_idx;
+    ctx->addr       =   params->ctx.dst_addr;
+    ctx->send_ttl   =   ESP_BLE_MESH_TTL_DEFAULT;
+    ctx->send_cred  =   0;
+    ctx->send_tag   =   BIT1;
 
     esp_err_t err = esp_ble_mesh_server_model_send_msg(params->model.p_model,
         ctx,
@@ -96,9 +92,7 @@ static meshx_err_t ble_send_msg_handle_t(
     }
 
     if(malloc_flag)
-    {
         MESHX_FREE(ctx);
-    }
 
     ESP_UNUSED(pdev);
     return MESHX_SUCCESS;
@@ -123,18 +117,18 @@ static void esp_ble_mesh_generic_server_cb(MESHX_GEN_SRV_CB_EVT event,
 
     meshx_gen_srv_cb_param_t pub_param = {
         .ctx = {
-            .net_idx = param->ctx.net_idx,
-            .app_idx = param->ctx.app_idx,
-            .dst_addr = param->ctx.recv_dst,
-            .src_addr = param->ctx.addr,
-            .opcode = param->ctx.recv_op,
-            .p_ctx = &param->ctx
+            .net_idx    = param->ctx.net_idx,
+            .app_idx    = param->ctx.app_idx,
+            .dst_addr   = param->ctx.recv_dst,
+            .src_addr   = param->ctx.addr,
+            .opcode     = param->ctx.recv_op,
+            .p_ctx      = &param->ctx
         },
         .model = {
-            .pub_addr = param->model->pub->publish_addr,
-            .model_id = param->model->model_id,
-            .el_id = param->model->element_idx,
-            .p_model = param->model
+            .pub_addr   = param->model->pub->publish_addr,
+            .model_id   = param->model->model_id,
+            .el_id      = param->model->element_idx,
+            .p_model    = param->model
         },
         .state_change = {
             .onoff_set.onoff = param->value.state_change.onoff_set.onoff
@@ -220,6 +214,7 @@ meshx_err_t meshx_plat_on_off_gen_srv_create(void** p_model, void** p_pub, void*
 
     ((MESHX_GEN_ONOFF_SRV*)*p_onoff_srv)->rsp_ctrl.get_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
     ((MESHX_GEN_ONOFF_SRV*)*p_onoff_srv)->rsp_ctrl.set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
+    ((MESHX_MODEL*)*p_model)->user_data = *p_onoff_srv;
 
     void **temp = (void**) &((MESHX_MODEL*)*p_model)->pub;
 

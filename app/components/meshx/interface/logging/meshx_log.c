@@ -40,7 +40,7 @@ static meshx_log_level_t module_log_level[MODULE_ID_MAX];
 
 static const char * log_lvl_str [MESHX_LOG_MAX] =
 {
-    "", " DEB", "INFO", "WARN", " ERR"
+    "", "D", "I", "W", "E"
 };
 
 static meshx_logging_t meshx_logging_ctrl;
@@ -103,10 +103,10 @@ __attribute__((weak)) void meshx_log_printf(module_id_t module_id, meshx_log_lev
     const char *color = MESHX_LOG_LEVEL_COLOR(log_level);
 
     /* Print timestamp and log */
-    CONFIG_MESHX_LOG_PRINTF("%s[%s] [%08u][%-20s:%04d] ", color, log_lvl_str[log_level], millis, func, line_no);
+    CONFIG_MESHX_LOG_PRINTF("%s[%s] [%08u][%20s:%04d]\t", color, log_lvl_str[log_level], millis, func, line_no);
 
     /* Process variable arguments */
-    va_list args;
+        va_list args;
     va_start(args, fmt);
     vprintf(fmt, args);
     va_end(args);

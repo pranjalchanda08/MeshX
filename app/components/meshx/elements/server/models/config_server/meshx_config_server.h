@@ -37,7 +37,7 @@ meshx_err_t meshx_get_config_srv_instance(void** p_conf_srv);
  *
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-meshx_err_t meshx_get_config_srv_model(void** p_model);
+meshx_err_t meshx_get_config_srv_model(void* p_model);
 
 /**
  * @brief Initialize the meshxuction configuration server.
@@ -74,22 +74,5 @@ meshx_err_t meshx_config_server_cb_reg(config_srv_cb_t cb, uint32_t config_evt_b
  * - An appropriate error code of type `meshx_err_t` on failure.
  */
 meshx_err_t meshx_get_config_srv_instance(void** p_conf_srv);
-
-/**
- * @brief Retrieves the configuration server model for the MeshX framework.
- *
- * This function provides access to the configuration server model used in the
- * MeshX implementation. The retrieved model can be used for configuring and
- * managing the mesh network.
- *
- * @param[out] p_model Pointer to a variable where the address of the
- *                     configuration server model will be stored. The caller
- *                     must ensure that the pointer is valid.
- *
- * @return
- * - `MESHX_SUCCESS` on success.
- * - An appropriate error code of type `meshx_err_t` on failure.
- */
-meshx_err_t meshx_get_config_srv_model(void** p_model);
 
 #endif /* __MESHX_CONFIG_SERVER__ */
