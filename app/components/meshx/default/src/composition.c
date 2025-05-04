@@ -63,13 +63,13 @@ element_comp_fn_t element_comp_fn [MESHX_ELEMENT_TYPE_MAX] = {
     [MESHX_ELEMENT_TYPE_RELAY_SERVER]       = &meshx_create_relay_elements,
 #endif /* CONFIG_RELAY_SERVER_COUNT */
 #if CONFIG_RELAY_CLIENT_COUNT
-    [MESHX_ELEMENT_TYPE_RELAY_CLIENT]       = &create_relay_client_elements,
+    [MESHX_ELEMENT_TYPE_RELAY_CLIENT]       = NULL,//&create_relay_client_elements,
 #endif /* CONFIG_RELAY_CLIENT_COUNT */
 #if CONFIG_LIGHT_CWWW_SRV_COUNT
-    [MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER]  = &meshx_create_cwww_elements,
+    [MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER]  = NULL,//&meshx_create_cwww_elements,
 #endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */
 #if CONFIG_LIGHT_CWWW_CLIENT_COUNT
-    [MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT]  = &create_cwww_client_elements,
+    [MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT]  = NULL,//&create_cwww_client_elements,
 #endif /* CONFIG_LIGHT_CWWW_SRV_COUNT */
 };
 
@@ -106,7 +106,7 @@ static MESHX_MODEL meshx_root_model_arr[] = {
 /** Root models for BLE Mesh elements. */
 static MESHX_MODEL *meshx_root_model_arr = NULL;
 
-typedef meshx_err_t (*root_model_getfn_t)(void** p_model);
+typedef meshx_err_t (*root_model_getfn_t)(void* p_model);
 
 static root_model_getfn_t root_model_getfn[] = {
 #if CONFIG_ENABLE_CONFIG_SERVER
@@ -156,6 +156,7 @@ static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_t
  */
 MESHX_MODEL * get_root_sig_models(void)
 {
+    static MESHX_MODEL temp_model;
     if(meshx_root_model_arr == NULL)
     {
         meshx_root_model_arr = (MESHX_MODEL *) MESHX_MALLOC(sizeof(MESHX_MODEL) * meshx_root_model_arr_len);
@@ -168,7 +169,8 @@ MESHX_MODEL * get_root_sig_models(void)
 
         for(uint16_t i = 0; i < meshx_root_model_arr_len; i++)
         {
-            root_model_getfn[i]((void**)&meshx_root_model_arr[i]);
+            root_model_getfn[i]((void**)&temp_model);
+            memcpy(&meshx_root_model_arr[i], &temp_model, sizeof(MESHX_MODEL));
         }
     }
     return meshx_root_model_arr;
@@ -221,7 +223,8 @@ meshx_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_confi
     for(uint16_t element_id = 0; element_id < config->element_comp_arr_len; element_id++)
     {
 #if !CONFIG_SECTION_ENABLE_ELEMENT_TABLE
-        if(config->element_comp_arr[element_id].element_cnt != 0)
+        if(config->element_comp_arr[element_id].element_cnt != 0
+        && element_comp_fn[config->element_comp_arr[element_id].type] != NULL)
         {
             err = element_comp_fn[config->element_comp_arr[element_id].type](p_dev, config->element_comp_arr[element_id].element_cnt);
             if(err)

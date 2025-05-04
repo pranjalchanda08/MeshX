@@ -92,7 +92,7 @@ meshx_err_t meshx_get_config_srv_instance(void** p_conf_srv)
  * - `MESHX_SUCCESS` on success.
  * - An appropriate error code of type `meshx_err_t` on failure.
  */
-meshx_err_t meshx_get_config_srv_model(void** p_model)
+meshx_err_t meshx_get_config_srv_model(void* p_model)
 {
     return meshx_plat_get_config_srv_model(p_model);
 }

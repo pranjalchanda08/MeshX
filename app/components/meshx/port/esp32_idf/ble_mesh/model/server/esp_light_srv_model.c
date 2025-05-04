@@ -280,6 +280,7 @@ meshx_err_t meshx_plat_light_ctl_srv_create(void **p_model, void **p_pub, void *
 
     ((MESHX_GEN_ONOFF_SRV *)*p_ctl_srv)->rsp_ctrl.get_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
     ((MESHX_GEN_ONOFF_SRV *)*p_ctl_srv)->rsp_ctrl.set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
+    ((MESHX_MODEL *)*p_model)->user_data = *p_ctl_srv;
 
     void **temp = (void **)&((MESHX_MODEL *)*p_model)->pub;
 
