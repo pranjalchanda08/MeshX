@@ -53,7 +53,7 @@ static meshx_err_t meshx_state_change_notify(meshx_lighting_server_cb_param_t *p
         }
         /* Send msg for hw manipulation */
         MESHX_LOGD(MODULE_ID_MODEL_SERVER, "HW change requested, Element_id: 0x%x",
-                   param->model->element_idx);
+                   param->model.el_id);
 
         meshx_err_t err = control_task_msg_publish(
             CONTROL_TASK_MSG_CODE_EL_STATE_CH,

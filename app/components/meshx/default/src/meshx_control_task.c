@@ -246,7 +246,6 @@ static void control_task_handler(void *args)
             {
                 /* If Params were passed Free the allocated memory */
                 meshx_rtos_free(&recv_msg.msg_evt_params);
-                MESHX_LOGD(MODULE_ID_COMMON, "ESP Heap available: %d", meshx_rtos_get_free_heap());
             }
         }
     }

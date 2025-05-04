@@ -1,10 +1,15 @@
 #include "interface/rtos/meshx_rtos_timer.h"
+#include "interface/logging/meshx_log.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/timers.h"
 
 static void timer_callback(TimerHandle_t xTimer)
 {
     meshx_rtos_timer_t *timer = (meshx_rtos_timer_t *)pvTimerGetTimerID(xTimer);
+    if(timer == NULL) {
+        MESHX_LOGE(MODULE_ID_COMMON, "Timer callback: Invalid timer handle");
+        return;
+    }
     if (timer->timer_cb != NULL) {
         timer->timer_cb(timer->timer_arg);
     }

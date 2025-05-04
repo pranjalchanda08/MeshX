@@ -10,8 +10,6 @@
 
 #include "meshx.h"
 
-#define TAG __func__
-
 #define CONFIG_MESHX_NVS_SAVE_PERIOD_MS 1000
 
 static meshx_err_t meshx_app_data_cb(const meshx_app_element_msg_header_t *msg_hdr, const meshx_data_payload_t *data_payload_u);
@@ -57,7 +55,7 @@ void app_main(void)
     err = meshx_init(&meshx_config);
     if (err)
     {
-        ESP_LOGE(TAG, "MeshX Init failed (err: 0x%x)", err);
+        MESHX_LOGE(MODULE_ID_COMMON, "MeshX Init failed (err: 0x%x)", err);
         return;
     }
 }
@@ -65,30 +63,30 @@ void app_main(void)
 static meshx_err_t meshx_app_data_cb(const meshx_app_element_msg_header_t *msg_hdr, const meshx_data_payload_t *data_payload_u)
 {
     if (!msg_hdr || !data_payload_u)
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
 
     switch (msg_hdr->element_type)
     {
     case MESHX_ELEMENT_TYPE_RELAY_SERVER:
-        ESP_LOGI(TAG, "Relay Server Element ID: %d, Func ID: %d, Data: %d", msg_hdr->element_id, msg_hdr->func_id, data_payload_u->relay_server_evt.on_off);
+        MESHX_LOGI(MODULE_ID_COMMON, "Relay Server Element ID: %d, Func ID: %d, Data: %d", msg_hdr->element_id, msg_hdr->func_id, data_payload_u->relay_server_evt.on_off);
         break;
     case MESHX_ELEMENT_TYPE_RELAY_CLIENT:
-        ESP_LOGI(TAG, "Relay Client Element ID: %d, Func ID: %d, Data: %d", msg_hdr->element_id, msg_hdr->func_id, data_payload_u->relay_client_evt.on_off);
+        MESHX_LOGI(MODULE_ID_COMMON, "Relay Client Element ID: %d, Func ID: %d, Data: %d", msg_hdr->element_id, msg_hdr->func_id, data_payload_u->relay_client_evt.on_off);
         break;
     case MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER:
         switch (msg_hdr->func_id)
         {
         case MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_ONN_OFF:
-            ESP_LOGI(TAG, "Light CW-WW Server Element ID: %d, Func ID: %d, Data: %d", msg_hdr->element_id, msg_hdr->func_id,
+            MESHX_LOGI(MODULE_ID_COMMON, "Light CW-WW Server Element ID: %d, Func ID: %d, Data: %d", msg_hdr->element_id, msg_hdr->func_id,
                      data_payload_u->light_cwww_server_evt.state_change.on_off.state);
             break;
         case MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_CTL:
-            ESP_LOGI(TAG, "Light CW-WW Server Element ID: %d, Func ID: %d, Data: %d|%d", msg_hdr->element_id, msg_hdr->func_id,
+            MESHX_LOGI(MODULE_ID_COMMON, "Light CW-WW Server Element ID: %d, Func ID: %d, Data: %d|%d", msg_hdr->element_id, msg_hdr->func_id,
                      data_payload_u->light_cwww_server_evt.state_change.ctl.lightness,
                      data_payload_u->light_cwww_server_evt.state_change.ctl.temperature);
             break;
         default:
-            ESP_LOGW(TAG, "Unhandled function ID: %d", msg_hdr->func_id);
+            MESHX_LOGW(MODULE_ID_COMMON, "Unhandled function ID: %d", msg_hdr->func_id);
             break;
         }
         break;
@@ -96,21 +94,21 @@ static meshx_err_t meshx_app_data_cb(const meshx_app_element_msg_header_t *msg_h
         switch (msg_hdr->func_id)
         {
         case MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_ONN_OFF:
-            ESP_LOGI(TAG, "Light CW-WW Client Element ID: %d, Func ID: %d, Data: %d", msg_hdr->element_id, msg_hdr->func_id,
+            MESHX_LOGI(MODULE_ID_COMMON, "Light CW-WW Client Element ID: %d, Func ID: %d, Data: %d", msg_hdr->element_id, msg_hdr->func_id,
                      data_payload_u->light_cwww_server_evt.state_change.on_off.state);
             break;
         case MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_CTL:
-            ESP_LOGI(TAG, "Light CW-WW Client Element ID: %d, Func ID: %d, Data: %d|%d", msg_hdr->element_id, msg_hdr->func_id,
+            MESHX_LOGI(MODULE_ID_COMMON, "Light CW-WW Client Element ID: %d, Func ID: %d, Data: %d|%d", msg_hdr->element_id, msg_hdr->func_id,
                      data_payload_u->light_cwww_client_evt.state_change.ctl.lightness,
                      data_payload_u->light_cwww_client_evt.state_change.ctl.temperature);
             break;
         default:
-            ESP_LOGW(TAG, "Unhandled function ID: %d", msg_hdr->func_id);
+            MESHX_LOGW(MODULE_ID_COMMON, "Unhandled function ID: %d", msg_hdr->func_id);
             break;
         }
         break;
     default:
-        ESP_LOGW(TAG, "Unhandled element type: %d", msg_hdr->element_type);
+        MESHX_LOGW(MODULE_ID_COMMON, "Unhandled element type: %d", msg_hdr->element_type);
         break;
     }
     return MESHX_SUCCESS;
