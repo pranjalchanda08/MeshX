@@ -30,7 +30,7 @@
  */
 typedef struct meshx_ctl_server_model
 {
-    void *meshx_server_sig_model;   /**< List of ctl server SIG model structures */
+    void *meshx_server_sig_model;   /**< CTL server SIG model pointer */
     void *meshx_server_pub;         /**< List of ctl server publication structures */
     void *meshx_server_ctl_gen_srv; /**< List of ctl server CTL generic structures */
 } meshx_ctl_server_model_t;
@@ -44,13 +44,14 @@ typedef struct meshx_ctl_server_model
  *
  * @param[in,out] p_model Pointer to a pointer where the newly created CTL server model
  *                instance will be stored.
+ * @param[in,out] p_sig_model Pointer to a pointer where the offset of the model will be stored.
  *
  * @return
  *     - MESHX_SUCCESS: Successfully created and initialized the model.
  *     - MESHX_INVALID_ARG: The provided pointer is NULL.
  *     - MESHX_NO_MEM: Memory allocation failed.
  */
-meshx_err_t meshx_light_ctl_server_create(meshx_ctl_server_model_t **p_model);
+meshx_err_t meshx_light_ctl_server_create(meshx_ctl_server_model_t **p_model, void *p_sig_model);
 
 /**
  * @brief Delete the CTL server model instance.

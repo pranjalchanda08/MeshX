@@ -46,8 +46,9 @@ typedef struct meshx_relay_srv_model_ctx
  */
 typedef struct meshx_relay_element
 {
-    meshx_relay_srv_model_ctx_t *srv_ctx;        /**< Context of the relay server */
-    meshx_onoff_server_model_t *onoff_srv_model; /**< On Off Server model */
+    meshx_relay_srv_model_ctx_t *srv_ctx;                      /**< Context of the relay server */
+    MESHX_MODEL relay_srv_model_list[RELAY_SRV_MODEL_SIG_CNT]; /**< List of Relay Server SIG Models */
+    meshx_onoff_server_model_t *onoff_srv_model;               /**< On Off Server model */
 } meshx_relay_element_t;
 
 /**

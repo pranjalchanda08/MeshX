@@ -8,14 +8,10 @@ meshx_err_t meshx_is_group_subscribed(meshx_model_t *p_model, uint16_t addr)
 
     return MESHX_FAIL;
 }
-meshx_err_t meshx_plat_create_model_pub(void ** p_model, void ** p_pub, uint16_t nmax)
+meshx_err_t meshx_plat_create_model_pub(void ** p_pub, uint16_t nmax)
 {
-    if(!p_model || !p_pub)
+    if(!p_pub)
         return MESHX_INVALID_ARG;
-
-    *p_model = (MESHX_MODEL*) MESHX_CALOC(nmax, sizeof(MESHX_MODEL));
-    if(!*p_model)
-        return MESHX_NO_MEM;
 
     *p_pub   = (MESHX_MODEL_PUB *) MESHX_CALOC(nmax, sizeof(MESHX_MODEL_PUB));
     if(!*p_pub)
@@ -24,15 +20,10 @@ meshx_err_t meshx_plat_create_model_pub(void ** p_model, void ** p_pub, uint16_t
     return MESHX_SUCCESS;
 }
 
-meshx_err_t meshx_plat_del_model_pub(void ** p_model, void ** p_pub)
+meshx_err_t meshx_plat_del_model_pub(void ** p_pub)
 {
-    if (!p_model || !p_pub)
+    if (!p_pub)
         return MESHX_INVALID_ARG;
-
-    if (*p_model) {
-        MESHX_FREE(*p_model);
-        *p_model = NULL;
-    }
 
     if (*p_pub) {
         MESHX_FREE(*p_pub);

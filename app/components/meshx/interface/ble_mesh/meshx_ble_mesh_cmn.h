@@ -60,7 +60,6 @@ meshx_err_t meshx_is_group_subscribed(meshx_model_t *p_model, uint16_t addr);
  * based on the specified maximum number of elements. It initializes
  * the provided pointers to point to the newly allocated memory.
  *
- * @param[out] p_model Pointer to the model structure to be created.
  * @param[out] p_pub Pointer to the publication structure to be created.
  * @param[in] nmax Maximum number of elements for the model and publication.
  *
@@ -68,7 +67,7 @@ meshx_err_t meshx_is_group_subscribed(meshx_model_t *p_model, uint16_t addr);
  *         MESHX_INVALID_ARG if any input pointer is NULL,
  *         MESHX_NO_MEM if memory allocation fails.
  */
-meshx_err_t meshx_plat_create_model_pub(void ** p_model, void ** p_pub, uint16_t nmax);
+meshx_err_t meshx_plat_create_model_pub(void ** p_pub, uint16_t nmax);
 
 /**
  * @brief Deletes the model and publication objects.
@@ -76,13 +75,12 @@ meshx_err_t meshx_plat_create_model_pub(void ** p_model, void ** p_pub, uint16_t
  * This function frees the memory allocated for the model and publication
  * objects pointed to by the provided pointers and sets them to NULL.
  *
- * @param[in,out] p_model Pointer to the model object to be deleted.
  * @param[in,out] p_pub Pointer to the publication object to be deleted.
  *
  * @return MESHX_SUCCESS on successful deletion, MESHX_INVALID_ARG if
  *         either pointer is NULL.
  */
-meshx_err_t meshx_plat_del_model_pub(void ** p_model, void ** p_pub);
+meshx_err_t meshx_plat_del_model_pub(void ** p_pub);
 
 /**
  * @brief Retrieve the model ID of a generic server model.

@@ -241,9 +241,9 @@ meshx_err_t meshx_light_ctl_server_init(void)
  *     - MESHX_INVALID_ARG: The provided pointer is NULL.
  *     - MESHX_NO_MEM: Memory allocation failed.
  */
-meshx_err_t meshx_light_ctl_server_create(meshx_ctl_server_model_t **p_model)
+meshx_err_t meshx_light_ctl_server_create(meshx_ctl_server_model_t **p_model, void *p_sig_model)
 {
-    if (!p_model)
+    if (!p_model || !p_sig_model)
     {
         return MESHX_INVALID_ARG;
     }
@@ -255,7 +255,7 @@ meshx_err_t meshx_light_ctl_server_create(meshx_ctl_server_model_t **p_model)
     }
 
     return meshx_plat_light_ctl_srv_create(
-        &((*p_model)->meshx_server_sig_model),
+        p_sig_model,
         &((*p_model)->meshx_server_pub),
         &((*p_model)->meshx_server_ctl_gen_srv));
 }
@@ -280,7 +280,6 @@ meshx_err_t meshx_light_ctl_server_delete(meshx_ctl_server_model_t **p_model)
     }
 
     meshx_plat_light_ctl_srv_delete(
-        &((*p_model)->meshx_server_sig_model),
         &((*p_model)->meshx_server_pub),
         &((*p_model)->meshx_server_ctl_gen_srv));
 

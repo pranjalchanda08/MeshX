@@ -37,7 +37,7 @@ typedef struct meshx_on_off_srv_state
  */
 typedef struct meshx_onoff_server_model
 {
-    void *meshx_server_sig_model;     /**< List of relay server SIG model structures */
+    void *meshx_server_sig_model;     /**< On/Off server SIG model pointer */
     void *meshx_server_pub;           /**< List of relay server publication structures */
     void *meshx_server_onoff_gen_srv; /**< List of relay server on/off generic structures */
 } meshx_onoff_server_model_t;
@@ -51,13 +51,14 @@ typedef struct meshx_onoff_server_model
  *
  * @param[in,out] p_model Pointer to a pointer where the newly created On/Off server model
  *                instance will be stored.
+ * @param[in,out] p_sig_model Pointer to a pointer where the offset of the model will be stored.
  *
  * @return
  *     - MESHX_SUCCESS: Successfully created and initialized the model.
  *     - MESHX_INVALID_ARG: The provided pointer is NULL.
  *     - MESHX_NO_MEM: Memory allocation failed.
  */
-meshx_err_t meshx_on_off_server_create(meshx_onoff_server_model_t **p_model);
+meshx_err_t meshx_on_off_server_create(meshx_onoff_server_model_t **p_model, void *p_sig_model);
 
 /**
  * @brief Delete the On/Off server model instance.
@@ -98,6 +99,6 @@ meshx_err_t meshx_on_off_server_init(void);
  *     - MESHX_INVALID_STATE: If the model pointer is NULL.
  *     - Result of the platform-specific restoration function.
  */
-meshx_err_t meshx_gen_on_off_srv_state_restore(meshx_onoff_server_model_t *p_model, meshx_on_off_srv_state_t onoff_state);
+meshx_err_t meshx_gen_on_off_srv_state_restore(MESHX_MODEL *p_model, meshx_on_off_srv_state_t onoff_state);
 
 #endif /* __MESHX_ONOFF_SERVER__ */
