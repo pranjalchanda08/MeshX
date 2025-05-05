@@ -97,4 +97,14 @@ meshx_err_t meshx_rtos_timer_change_period(meshx_rtos_timer_t *timer, uint32_t n
  */
 meshx_err_t meshx_rtos_timer_reset(meshx_rtos_timer_t *timer);
 
+/*
+ * @brief Callback function for the OS timer to control task.
+ * @note This function is called internally not to be called by user.
+ *
+ * This function is called whenever a OS timer timeout occurs.
+ *
+ * @param timer_handle  Timer haandle callback param
+ */
+void meshx_os_timer_fire_cb(const void* timer_handle);
+
 #endif /* __MESHX_RTOS_TIMER_H */

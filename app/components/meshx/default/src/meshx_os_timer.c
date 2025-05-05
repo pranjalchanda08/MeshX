@@ -145,12 +145,12 @@ static meshx_err_t meshx_os_timer_unit_test_cb_handler(int cmd_id, int argc, cha
  *
  * @param timer_handle  Timer haandle callback param
  */
-static void meshx_os_timer_fire_cb(const void* timer_handle)
+void meshx_os_timer_fire_cb(const void* timer_handle)
 {
     meshx_os_timer_t *msg_params;
     SLIST_FOREACH(msg_params, &meshx_os_timer_reg_table_head, next)
     {
-        if (msg_params == timer_handle)
+        if (msg_params->timer_handle.__timer_handle == timer_handle)
         {
             control_task_msg_publish(
                 CONTROL_TASK_MSG_CODE_SYSTEM,
