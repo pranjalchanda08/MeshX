@@ -154,7 +154,6 @@ meshx_err_t meshx_os_timer_stop(const meshx_os_timer_t *timer_handle);
  *
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-
 meshx_err_t meshx_os_timer_delete(meshx_os_timer_t **timer_handle);
 
 #endif /* __OS_TIMER_H__ */
