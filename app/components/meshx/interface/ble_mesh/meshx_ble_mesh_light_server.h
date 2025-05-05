@@ -218,18 +218,73 @@ typedef struct meshx_light_ctl_srv_state
     int16_t delta_uv_default;     /*!< The value of Light CTL Delta UV Default state */
 } meshx_light_ctl_srv_state_t;
 
+/**
+ * @brief Structure representing the Light CTL Server model.
+ *
+ * This structure contains the model and state information for the Light CTL Server.
+ */
 typedef struct meshx_light_ctl_srv
 {
     meshx_model_t model;
     meshx_light_ctl_srv_state_t state;
 } meshx_light_ctl_srv_t;
 
+/**
+ * @brief Initialize the platform-specific Light Server.
+ *
+ * This function sets up the necessary resources for the Light Server.
+ *
+ * @return
+ *      - MESHX_SUCCESS on success.
+ *      - Appropriate error code on failure.
+ */
 meshx_err_t meshx_plat_light_srv_init(void);
 
-meshx_err_t meshx_plat_light_ctl_srv_create(void **p_model, void **p_pub, void **p_ctl_srv);
+/**
+ * @brief Create a Light CTL Server instance.
+ *
+ * This function initializes and allocates resources for a Light CTL Server model.
+ *
+ * @param[in]  p_model  Pointer to the model instance.
+ * @param[out] p_pub    Pointer to the publication context.
+ * @param[out] p_ctl_srv Pointer to the Light CTL Server instance.
+ *
+ * @return
+ *      - MESHX_SUCCESS on success.
+ *      - Appropriate error code on failure.
+ */
+meshx_err_t meshx_plat_light_ctl_srv_create(void *p_model, void **p_pub, void **p_ctl_srv);
 
-meshx_err_t meshx_plat_light_ctl_srv_delete(void **p_model, void **p_pub, void **p_ctl_srv);
+/**
+ * @brief Delete a Light CTL Server instance.
+ *
+ * This function releases resources associated with a Light CTL Server model.
+ *
+ * @param[in,out] p_pub    Pointer to the publication context to be deleted.
+ * @param[in,out] p_ctl_srv Pointer to the Light CTL Server instance to be deleted.
+ *
+ * @return
+ *      - MESHX_SUCCESS on success.
+ *      - Appropriate error code on failure.
+ */
+meshx_err_t meshx_plat_light_ctl_srv_delete(void **p_pub, void **p_ctl_srv);
 
+/**
+ * @brief Set the state of the Light CTL Server.
+ *
+ * This function updates the state of the Light CTL Server with the provided parameters.
+ *
+ * @param[in] p_model         Pointer to the model instance.
+ * @param[in] delta_uv        Delta UV value.
+ * @param[in] lightness       Lightness value.
+ * @param[in] temperature     Temperature value.
+ * @param[in] temp_range_max  Maximum temperature range.
+ * @param[in] temp_range_min  Minimum temperature range.
+ *
+ * @return
+ *      - MESHX_SUCCESS on success.
+ *      - Appropriate error code on failure.
+ */
 meshx_err_t meshx_plat_set_light_ctl_srv_state(void *p_model,
                                                uint16_t delta_uv,
                                                uint16_t lightness,
@@ -237,6 +292,22 @@ meshx_err_t meshx_plat_set_light_ctl_srv_state(void *p_model,
                                                uint16_t temp_range_max,
                                                uint16_t temp_range_min);
 
+/**
+ * @brief Restore the state of the Light CTL Server.
+ *
+ * This function restores the state of the Light CTL Server with the provided parameters.
+ *
+ * @param[in] p_model         Pointer to the model instance.
+ * @param[in] delta_uv        Delta UV value.
+ * @param[in] lightness       Lightness value.
+ * @param[in] temperature     Temperature value.
+ * @param[in] temp_range_max  Maximum temperature range.
+ * @param[in] temp_range_min  Minimum temperature range.
+ *
+ * @return
+ *      - MESHX_SUCCESS on success.
+ *      - Appropriate error code on failure.
+ */
 meshx_err_t meshx_plat_light_ctl_srv_restore(void *p_model,
                                              uint16_t delta_uv,
                                              uint16_t lightness,

@@ -178,9 +178,9 @@ meshx_err_t meshx_on_off_server_init(void)
     return err;
 }
 
-meshx_err_t meshx_on_off_server_create(meshx_onoff_server_model_t **p_model)
+meshx_err_t meshx_on_off_server_create(meshx_onoff_server_model_t **p_model, void *p_sig_model)
 {
-    if (!p_model)
+    if (!p_model || !p_sig_model)
     {
         return MESHX_INVALID_ARG;
     }
@@ -192,7 +192,7 @@ meshx_err_t meshx_on_off_server_create(meshx_onoff_server_model_t **p_model)
     }
 
     return meshx_plat_on_off_gen_srv_create(
-        &((*p_model)->meshx_server_sig_model),
+        p_sig_model,
         &((*p_model)->meshx_server_pub),
         &((*p_model)->meshx_server_onoff_gen_srv));
 }
@@ -205,7 +205,6 @@ meshx_err_t meshx_on_off_server_delete(meshx_onoff_server_model_t **p_model)
     }
 
     meshx_plat_on_off_gen_srv_delete(
-        &((*p_model)->meshx_server_sig_model),
         &((*p_model)->meshx_server_pub),
         &((*p_model)->meshx_server_onoff_gen_srv)
     );
@@ -216,10 +215,10 @@ meshx_err_t meshx_on_off_server_delete(meshx_onoff_server_model_t **p_model)
     return MESHX_SUCCESS;
 }
 
-meshx_err_t meshx_gen_on_off_srv_state_restore(meshx_onoff_server_model_t *p_model, meshx_on_off_srv_state_t onoff_state)
+meshx_err_t meshx_gen_on_off_srv_state_restore(MESHX_MODEL *p_model, meshx_on_off_srv_state_t onoff_state)
 {
     if(!p_model)
         return MESHX_INVALID_STATE;
 
-    return meshx_plat_gen_on_off_srv_restore(p_model->meshx_server_sig_model, onoff_state.on_off);
+    return meshx_plat_gen_on_off_srv_restore(p_model, onoff_state.on_off);
 }
