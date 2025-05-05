@@ -22,8 +22,8 @@
 /**
  * @brief Configuration server callback event mask for relay server.
  */
-#define CONFIG_SERVER_CB_MASK \
-    CONTROL_TASK_MSG_EVT_PUB_ADD  \
+#define CONFIG_SERVER_CB_MASK    \
+    CONTROL_TASK_MSG_EVT_PUB_ADD \
     | CONTROL_TASK_MSG_EVT_SUB_ADD | CONTROL_TASK_MSG_EVT_APP_KEY_BIND
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
@@ -61,7 +61,7 @@ static meshx_relay_element_ctrl_t relay_element_init_ctrl;
  *
  * @return MESHX_SUCCESS on success, an error code otherwise.
  */
-static meshx_err_t relay_server_config_srv_cb (
+static meshx_err_t relay_server_config_srv_cb(
     const dev_struct_t *pdev,
     control_task_msg_evt_t evt,
     const meshx_config_srv_cb_param_t *params)
@@ -90,7 +90,7 @@ static meshx_err_t relay_server_config_srv_cb (
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
         el_ctx = relay_element_init_ctrl.el_list[rel_el_id].srv_ctx;
         el_ctx->pub_addr = evt == CONTROL_TASK_MSG_EVT_PUB_ADD ? params->state_change.mod_pub_set.pub_addr
-                                                           : MESHX_ADDR_UNASSIGNED;
+                                                               : MESHX_ADDR_UNASSIGNED;
         el_ctx->app_id = params->state_change.mod_pub_set.app_idx;
         MESHX_LOGI(MODULE_ID_MODEL_SERVER, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
         break;
@@ -117,7 +117,7 @@ static meshx_err_t relay_server_config_srv_cb (
  */
 static meshx_err_t meshx_element_struct_init(uint16_t n_max)
 {
-    if(!n_max)
+    if (!n_max)
         return MESHX_INVALID_ARG;
 
     if (relay_element_init_ctrl.el_list)
@@ -141,19 +141,20 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
     for (size_t i = 0; i < relay_element_init_ctrl.element_cnt; i++)
     {
         relay_element_init_ctrl.el_list[i].srv_ctx =
-            (meshx_relay_srv_model_ctx_t *)MESHX_CALOC(relay_element_init_ctrl.element_cnt, sizeof(meshx_relay_srv_model_ctx_t));
+            (meshx_relay_srv_model_ctx_t *)MESHX_CALOC(1, sizeof(meshx_relay_srv_model_ctx_t));
 
         if (!relay_element_init_ctrl.el_list[i].srv_ctx)
             return MESHX_NO_MEM;
 
-        err = meshx_on_off_server_create(&relay_element_init_ctrl.el_list[i].onoff_srv_model);
+        err = meshx_on_off_server_create(&relay_element_init_ctrl.el_list[i].onoff_srv_model,
+                                         &relay_element_init_ctrl.el_list[i].relay_srv_model_list[RELAY_SIG_ONOFF_MODEL_ID]);
         if (err)
         {
             MESHX_LOGE(MODULE_ID_COMMON, "Meshx On Off Server create failed (Err : 0x%x)", err);
             return err;
         }
+        relay_element_init_ctrl.el_list[i].onoff_srv_model->meshx_server_sig_model = &relay_element_init_ctrl.el_list[i].relay_srv_model_list[RELAY_SIG_ONOFF_MODEL_ID];
     }
-
 
     return err;
 }
@@ -185,7 +186,7 @@ static meshx_err_t meshx_element_struct_deinit(void)
 
     for (size_t i = 0; i < relay_element_init_ctrl.element_cnt; i++)
     {
-        if(relay_element_init_ctrl.el_list[i].srv_ctx)
+        if (relay_element_init_ctrl.el_list[i].srv_ctx)
         {
             MESHX_FREE(relay_element_init_ctrl.el_list[i].srv_ctx);
             relay_element_init_ctrl.el_list[i].srv_ctx = NULL;
@@ -249,7 +250,7 @@ static meshx_err_t meshx_restore_model_states(uint16_t element_id)
 
         if (model_id == MESHX_MODEL_ID_GEN_ONOFF_SRV)
         {
-            err = meshx_gen_on_off_srv_state_restore(relay_element_init_ctrl.el_list[element_id].onoff_srv_model,
+            err = meshx_gen_on_off_srv_state_restore(relay_element_init_ctrl.el_list[element_id].onoff_srv_model->meshx_server_sig_model,
                                                      el_ctx->state);
             if (err)
             {
@@ -292,7 +293,7 @@ static meshx_err_t meshx_add_relay_srv_model_to_element_list(dev_struct_t *pdev,
         err = meshx_plat_add_element_to_composition(
             i,
             pdev->elements,
-            relay_element_init_ctrl.el_list[i - *start_idx].onoff_srv_model->meshx_server_sig_model,
+            relay_element_init_ctrl.el_list[i - *start_idx].relay_srv_model_list,
             NULL,
             RELAY_SRV_MODEL_SIG_CNT,
             RELAY_SRV_MODEL_VEN_CNT);

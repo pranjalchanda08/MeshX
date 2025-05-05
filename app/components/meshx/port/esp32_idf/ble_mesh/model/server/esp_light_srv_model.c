@@ -259,37 +259,51 @@ meshx_err_t meshx_plat_light_srv_init(void)
     return err;
 }
 
-meshx_err_t meshx_plat_light_ctl_srv_create(void **p_model, void **p_pub, void **p_ctl_srv)
+meshx_err_t meshx_plat_light_ctl_srv_create(void *p_model, void **p_pub, void **p_ctl_srv)
 {
     if (!p_model || !p_pub || !p_ctl_srv)
         return MESHX_INVALID_ARG;
 
     meshx_err_t err = MESHX_SUCCESS;
 
-    err = meshx_plat_create_model_pub(p_model, p_pub, 1);
+    err = meshx_plat_create_model_pub(p_pub, 1);
     if (err)
-        return meshx_plat_del_model_pub(p_model, p_pub);
+        return meshx_plat_del_model_pub(p_pub);
 
-    *p_ctl_srv = (MESHX_GEN_ONOFF_SRV *)MESHX_CALOC(1, sizeof(MESHX_GEN_ONOFF_SRV));
+    *p_ctl_srv = (MESHX_LIGHT_CTL_SRV *)MESHX_CALOC(1, sizeof(MESHX_LIGHT_CTL_SRV));
     if (!*p_ctl_srv)
         return MESHX_NO_MEM;
 
     /* SIG ON OFF initialisation */
 
-    memcpy(*p_model, &light_ctl_sig_template, sizeof(MESHX_MODEL));
+    memcpy(p_model, &light_ctl_sig_template, sizeof(MESHX_MODEL));
 
-    ((MESHX_GEN_ONOFF_SRV *)*p_ctl_srv)->rsp_ctrl.get_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
-    ((MESHX_GEN_ONOFF_SRV *)*p_ctl_srv)->rsp_ctrl.set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
-    ((MESHX_MODEL *)*p_model)->user_data = *p_ctl_srv;
+    ((MESHX_LIGHT_CTL_SRV *)*p_ctl_srv)->rsp_ctrl.get_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
+    ((MESHX_LIGHT_CTL_SRV *)*p_ctl_srv)->rsp_ctrl.set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
 
-    void **temp = (void **)&((MESHX_MODEL *)*p_model)->pub;
+    ((MESHX_LIGHT_CTL_SRV *)*p_ctl_srv)->state = (MESHX_LIGHT_CTL_STATE *)MESHX_CALOC(1, sizeof(MESHX_LIGHT_CTL_STATE));
+    if (!((MESHX_LIGHT_CTL_SRV *)*p_ctl_srv)->state)
+    {
+        MESHX_FREE(*p_ctl_srv);
+        return MESHX_NO_MEM;
+    }
+
+    ((MESHX_LIGHT_CTL_SRV *)*p_ctl_srv)->state->temperature = 0;
+    ((MESHX_LIGHT_CTL_SRV *)*p_ctl_srv)->state->lightness = 0;
+    ((MESHX_LIGHT_CTL_SRV *)*p_ctl_srv)->state->delta_uv = 0;
+    ((MESHX_LIGHT_CTL_SRV *)*p_ctl_srv)->state->temperature_range_min = 0;
+    ((MESHX_LIGHT_CTL_SRV *)*p_ctl_srv)->state->temperature_range_max = 0;
+
+    ((MESHX_MODEL *)p_model)->user_data = *p_ctl_srv;
+
+    void **temp = (void **)&((MESHX_MODEL *)p_model)->pub;
 
     *temp = *p_pub;
 
     return err;
 }
 
-meshx_err_t meshx_plat_light_ctl_srv_delete(void **p_model, void **p_pub, void **p_ctl_srv)
+meshx_err_t meshx_plat_light_ctl_srv_delete(void **p_pub, void **p_ctl_srv)
 {
     if (p_ctl_srv)
     {
@@ -297,7 +311,7 @@ meshx_err_t meshx_plat_light_ctl_srv_delete(void **p_model, void **p_pub, void *
         *p_ctl_srv = NULL;
     }
 
-    return meshx_plat_del_model_pub(p_model, p_pub);
+    return meshx_plat_del_model_pub(p_pub);
 }
 
 meshx_err_t meshx_plat_set_light_ctl_srv_state(void *p_model,

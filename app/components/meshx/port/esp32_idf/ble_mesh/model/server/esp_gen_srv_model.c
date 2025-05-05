@@ -193,16 +193,16 @@ meshx_err_t meshx_plat_gen_srv_init(void)
     return err;
 }
 
-meshx_err_t meshx_plat_on_off_gen_srv_create(void** p_model, void** p_pub, void** p_onoff_srv)
+meshx_err_t meshx_plat_on_off_gen_srv_create(void* p_model, void** p_pub, void** p_onoff_srv)
 {
     if(!p_model || !p_pub || !p_onoff_srv)
         return MESHX_INVALID_ARG;
 
     meshx_err_t err = MESHX_SUCCESS;
 
-    err = meshx_plat_create_model_pub(p_model, p_pub, 1);
+    err = meshx_plat_create_model_pub(p_pub, 1);
     if (err)
-        return meshx_plat_del_model_pub(p_model, p_pub);
+        return meshx_plat_del_model_pub(p_pub);
 
     *p_onoff_srv = (MESHX_GEN_ONOFF_SRV *) MESHX_CALOC(1, sizeof(MESHX_GEN_ONOFF_SRV));
     if(!*p_onoff_srv)
@@ -210,20 +210,20 @@ meshx_err_t meshx_plat_on_off_gen_srv_create(void** p_model, void** p_pub, void*
 
     /* SIG ON OFF initialisation */
 
-    memcpy(*p_model, &onoff_relay_sig_template, sizeof(MESHX_MODEL));
+    memcpy(p_model, &onoff_relay_sig_template, sizeof(MESHX_MODEL));
 
     ((MESHX_GEN_ONOFF_SRV*)*p_onoff_srv)->rsp_ctrl.get_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
     ((MESHX_GEN_ONOFF_SRV*)*p_onoff_srv)->rsp_ctrl.set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
-    ((MESHX_MODEL*)*p_model)->user_data = *p_onoff_srv;
+    ((MESHX_MODEL*)p_model)->user_data = *p_onoff_srv;
 
-    void **temp = (void**) &((MESHX_MODEL*)*p_model)->pub;
+    void **temp = (void**) &((MESHX_MODEL*)p_model)->pub;
 
     *temp = *p_pub;
 
     return err;
 }
 
-meshx_err_t meshx_plat_on_off_gen_srv_delete(void** p_model, void** p_pub, void** p_onoff_srv)
+meshx_err_t meshx_plat_on_off_gen_srv_delete(void** p_pub, void** p_onoff_srv)
 {
     if(p_onoff_srv)
     {
@@ -231,7 +231,7 @@ meshx_err_t meshx_plat_on_off_gen_srv_delete(void** p_model, void** p_pub, void*
         *p_onoff_srv = NULL;
     }
 
-    return meshx_plat_del_model_pub(p_model, p_pub);
+    return meshx_plat_del_model_pub(p_pub);
 }
 
 meshx_err_t meshx_plat_gen_on_off_srv_restore(void* p_model, uint8_t state)

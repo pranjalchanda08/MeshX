@@ -56,9 +56,10 @@ typedef struct cwww_srv_ctx
  */
 typedef struct meshx_cwww_element
 {
-    meshx_cwww_server_ctx_t *srv_ctx;            /**< Context of the relay server */
-    meshx_ctl_server_model_t *ctl_srv_model;     /**< CTL Server model */
-    meshx_onoff_server_model_t *onoff_srv_model; /**< On Off Server model */
+    meshx_cwww_server_ctx_t *srv_ctx;                        /**< Context of the relay server */
+    MESHX_MODEL cwww_srv_model_list[CWWW_SRV_MODEL_SIG_CNT]; /**< List of CWWW Server SIG Models */
+    meshx_ctl_server_model_t *ctl_srv_model;                 /**< CTL Server model */
+    meshx_onoff_server_model_t *onoff_srv_model;             /**< On Off Server model */
 } meshx_cwww_element_t;
 
 /**

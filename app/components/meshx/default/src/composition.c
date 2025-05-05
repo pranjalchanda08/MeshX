@@ -63,10 +63,10 @@ element_comp_fn_t element_comp_fn [MESHX_ELEMENT_TYPE_MAX] = {
     [MESHX_ELEMENT_TYPE_RELAY_SERVER]       = &meshx_create_relay_elements,
 #endif /* CONFIG_RELAY_SERVER_COUNT */
 #if CONFIG_RELAY_CLIENT_COUNT
-    [MESHX_ELEMENT_TYPE_RELAY_CLIENT]       = NULL,//&create_relay_client_elements,
+    [MESHX_ELEMENT_TYPE_RELAY_CLIENT]       = &create_relay_client_elements,
 #endif /* CONFIG_RELAY_CLIENT_COUNT */
 #if CONFIG_LIGHT_CWWW_SRV_COUNT
-    [MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER]  = NULL,//&meshx_create_cwww_elements,
+    [MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER]  = &meshx_create_cwww_elements,
 #endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */
 #if CONFIG_LIGHT_CWWW_CLIENT_COUNT
     [MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT]  = NULL,//&create_cwww_client_elements,
