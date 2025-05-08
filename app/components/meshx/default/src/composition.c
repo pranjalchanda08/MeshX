@@ -16,6 +16,7 @@
 
 #include "app_common.h"
 #include "meshx.h"
+#include "interface/ble_mesh/meshx_ble_mesh_prov_srv.h"
 
 #if CONFIG_RELAY_SERVER_COUNT
 #include "meshx_relay_server_element.h"
@@ -43,11 +44,6 @@
                                  | CONTROL_TASK_MSG_EVT_PROVISION_STOP \
                                  | CONTROL_TASK_MSG_EVT_IDENTIFY_STOP \
                                  | CONTROL_TASK_MSG_EVT_NODE_RESET
-
-#if CONFIG_ENABLE_PROVISIONING
-/** Provisioning parameters for BLE Mesh. */
-static prov_params_t meshx_prov_cfg;
-#endif
 
 #if CONFIG_SECTION_ENABLE_ELEMENT_TABLE
 #define MESHX_ELEMENT_COMP_TABLE_START  _element_table_start
@@ -93,7 +89,7 @@ static esp_ble_mesh_light_ctl_setup_srv_t ctl_setup_server = {
 #endif
 
 /** Root models for BLE Mesh elements. */
-static MESHX_MODEL meshx_root_model_arr[] = {
+static MESHX_MODEL meshx_sig_root_model_arr[] = {
 #if CONFIG_ENABLE_CONFIG_SERVER
     ESP_BLE_MESH_MODEL_CFG_SRV(&MESHX_CONFIG_SERVER_INSTANCE),
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
@@ -104,17 +100,21 @@ static MESHX_MODEL meshx_root_model_arr[] = {
 #else
 
 /** Root models for BLE Mesh elements. */
-static MESHX_MODEL *meshx_root_model_arr = NULL;
+static MESHX_MODEL *meshx_sig_root_model_arr = NULL;
+static MESHX_MODEL *meshx_ven_root_model_arr = NULL;
 
 typedef meshx_err_t (*root_model_getfn_t)(void* p_model);
 
-static root_model_getfn_t root_model_getfn[] = {
+static root_model_getfn_t meshx_sig_root_model_getfn[] = {
 #if CONFIG_ENABLE_CONFIG_SERVER
     meshx_get_config_srv_model,
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 };
+static root_model_getfn_t meshx_ven_root_model_getfn[] = {};
 
-static uint16_t meshx_root_model_arr_len = sizeof(root_model_getfn) / sizeof(root_model_getfn[0]);
+static uint16_t meshx_sig_root_model_arr_len = MESHX_ARRAY_SIZE(meshx_sig_root_model_getfn);
+static uint16_t meshx_ven_root_model_arr_len = MESHX_ARRAY_SIZE(meshx_ven_root_model_getfn);
+
 #endif /* #if 0 */
 /**
  * @brief Handles provisioning control task events.
@@ -131,7 +131,7 @@ static uint16_t meshx_root_model_arr_len = sizeof(root_model_getfn) / sizeof(roo
  */
 static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)
 {
-    const esp_ble_mesh_prov_cb_param_t *param = (esp_ble_mesh_prov_cb_param_t*) params;
+    const meshx_prov_cb_param_t *param = (meshx_prov_cb_param_t*) params;
 
     switch (evt)
     {
@@ -157,25 +157,59 @@ static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_t
 MESHX_MODEL * get_root_sig_models(void)
 {
     static MESHX_MODEL temp_model;
-    if(meshx_root_model_arr == NULL)
+    if(meshx_sig_root_model_arr == NULL && meshx_sig_root_model_arr_len)
     {
-        meshx_root_model_arr = (MESHX_MODEL *) MESHX_MALLOC(sizeof(MESHX_MODEL) * meshx_root_model_arr_len);
-        if(meshx_root_model_arr == NULL)
+        meshx_sig_root_model_arr = (MESHX_MODEL *) MESHX_MALLOC(sizeof(MESHX_MODEL) * meshx_sig_root_model_arr_len);
+        if(meshx_sig_root_model_arr == NULL)
         {
             MESHX_LOGE(MODULE_ID_COMMON, "Failed to allocate memory for root models");
             return NULL;
         }
-        memset(meshx_root_model_arr, 0, sizeof(MESHX_MODEL) * meshx_root_model_arr_len);
+        memset(meshx_sig_root_model_arr, 0, sizeof(MESHX_MODEL) * meshx_sig_root_model_arr_len);
 
-        for(uint16_t i = 0; i < meshx_root_model_arr_len; i++)
+        for(uint16_t i = 0; i < meshx_sig_root_model_arr_len; i++)
         {
-            root_model_getfn[i]((void**)&temp_model);
-            memcpy(&meshx_root_model_arr[i], &temp_model, sizeof(MESHX_MODEL));
+            if(meshx_sig_root_model_getfn[i] == NULL)
+            {
+                continue;
+            }
+            meshx_sig_root_model_getfn[i]((void**)&temp_model);
+            memcpy(&meshx_sig_root_model_arr[i], &temp_model, sizeof(MESHX_MODEL));
         }
     }
-    return meshx_root_model_arr;
+    return meshx_sig_root_model_arr;
 }
 
+/**
+ * @brief Returns the root models for BLE Mesh elements.
+ *
+ * @return Pointer to the root models.
+ */
+MESHX_MODEL * get_root_ven_models(void)
+{
+    static MESHX_MODEL temp_model;
+    if(meshx_ven_root_model_arr == NULL && meshx_ven_root_model_arr_len)
+    {
+        meshx_ven_root_model_arr = (MESHX_MODEL *) MESHX_MALLOC(sizeof(MESHX_MODEL) * meshx_ven_root_model_arr_len);
+        if(meshx_ven_root_model_arr == NULL)
+        {
+            MESHX_LOGE(MODULE_ID_COMMON, "Failed to allocate memory for root models");
+            return NULL;
+        }
+        memset(meshx_ven_root_model_arr, 0, sizeof(MESHX_MODEL) * meshx_ven_root_model_arr_len);
+
+        for(uint16_t i = 0; i < meshx_ven_root_model_arr_len; i++)
+        {
+            if(meshx_ven_root_model_getfn[i] == NULL)
+            {
+                continue;
+            }
+            meshx_ven_root_model_getfn[i]((void**)&temp_model);
+            memcpy(&meshx_ven_root_model_arr[i], &temp_model, sizeof(MESHX_MODEL));
+        }
+    }
+    return meshx_ven_root_model_arr;
+}
 /**
  * @brief Returns the count of the root models.
  *
@@ -183,7 +217,17 @@ MESHX_MODEL * get_root_sig_models(void)
  */
 size_t get_root_sig_models_count(void)
 {
-    return meshx_root_model_arr_len;
+    return meshx_sig_root_model_arr_len;
+}
+
+/**
+ * @brief Returns the count of the vendor root models.
+ *
+ * @return Size of the vendor root models.
+ */
+size_t get_root_ven_models_count(void)
+{
+    return meshx_ven_root_model_arr_len;
 }
 
 /**
@@ -197,7 +241,7 @@ size_t get_root_sig_models_count(void)
  *
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-meshx_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_config_t const *config)
+meshx_err_t meshx_create_element_composition(dev_struct_t *p_dev, meshx_config_t const *config)
 {
 #if CONFIG_MAX_ELEMENT_COUNT > 0
     meshx_err_t err;
@@ -206,11 +250,6 @@ meshx_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_confi
 #endif /* CONFIG_SECTION_ENABLE_ELEMENT_TABLE */
     if(!p_dev || !config || !config->element_comp_arr_len || !config->element_comp_arr)
         return MESHX_INVALID_ARG;
-
-    // ble_mesh_get_dev_uuid(meshx_prov_cfg.uuid);
-
-    err = meshx_init_prov(&meshx_prov_cfg);
-    MESHX_ERR_PRINT_RET("Failed to initialize Prov server", err);
 
     err = control_task_msg_subscribe(
             CONTROL_TASK_MSG_CODE_PROVISION,

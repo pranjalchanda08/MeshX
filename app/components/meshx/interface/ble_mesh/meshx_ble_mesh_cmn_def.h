@@ -1,4 +1,24 @@
+/**
+ * @file meshx_ble_mesh_cmn_def.h
+ * @brief Common definitions for BLE Mesh models and opcodes in the MeshX framework.
+ *
+ * This header file contains macros and definitions for BLE Mesh models, opcodes,
+ * and related constants used in the MeshX framework. It includes:
+ * - Address type checks and constants.
+ * - Model ID definitions for foundation and specification models.
+ * - Opcode definitions for various BLE Mesh operations.
+ * - Configuration status codes.
+ *
+ * These definitions are used to facilitate the implementation and interaction
+ * with BLE Mesh models and their associated operations.
+ *
+ * @note Ensure that this file is included only once in a compilation unit by using `#pragma once`.
+ */
+
 #pragma once
+
+#define MESHX_BIT(nr)                 (1UL << (nr))
+#define MESHX_ARRAY_SIZE(_arr)        (sizeof(_arr) / sizeof((_arr)[0]))
 
 #define MESHX_ADDR_IS_UNICAST(_addr)   ((_addr) && (_addr) < 0x8000)
 #define MESHX_ADDR_BROADCAST(_addr)    (_addr == 0xFFFF)
@@ -465,3 +485,56 @@
 #define MESHX_MODEL_OP_LIGHT_LC_PROPERTY_SET                 MESHX_MODEL_OP_1(0x62)
 #define MESHX_MODEL_OP_LIGHT_LC_PROPERTY_SET_UNACK           MESHX_MODEL_OP_1(0x63)
 #define MESHX_MODEL_OP_LIGHT_LC_PROPERTY_STATUS              MESHX_MODEL_OP_1(0x64)
+
+#define MESHX_SETTINGS_UID_SIZE 20
+
+typedef enum {
+    MESHX_TYPE_PROV_CB,
+    MESHX_TYPE_OUTPUT_NUM_CB,
+    MESHX_TYPE_OUTPUT_STR_CB,
+    MESHX_TYPE_INTPUT_CB,
+    MESHX_TYPE_LINK_OPEN_CB,
+    MESHX_TYPE_LINK_CLOSE_CB,
+    MESHX_TYPE_COMPLETE_CB,
+    MESHX_TYPE_RESET_CB,
+} meshx_cb_type_t;
+
+/*!< This enum value is provisioning authentication oob method */
+typedef enum {
+    MESHX_NO_OOB,
+    MESHX_STATIC_OOB,
+    MESHX_OUTPUT_OOB,
+    MESHX_INPUT_OOB,
+} meshx_oob_method_t;
+
+/*!< This enum value is associated with bt_mesh_output_action_t in mesh_main.h */
+typedef enum {
+    MESHX_NO_OUTPUT       = 0,
+    MESHX_BLINK           = MESHX_BIT(0),
+    MESHX_BEEP            = MESHX_BIT(1),
+    MESHX_VIBRATE         = MESHX_BIT(2),
+    MESHX_DISPLAY_NUMBER  = MESHX_BIT(3),
+    MESHX_DISPLAY_STRING  = MESHX_BIT(4),
+} meshx_output_action_t;
+
+/*!< This enum value is associated with bt_mesh_input_action_t in mesh_main.h */
+typedef enum {
+    MESHX_NO_INPUT      = 0,
+    MESHX_PUSH          = MESHX_BIT(0),
+    MESHX_TWIST         = MESHX_BIT(1),
+    MESHX_ENTER_NUMBER  = MESHX_BIT(2),
+    MESHX_ENTER_STRING  = MESHX_BIT(3),
+} meshx_input_action_t;
+
+typedef unsigned char meshx_addr_type_t;
+
+#ifndef MESHX_BD_ADDR_LEN
+#define MESHX_BD_ADDR_LEN     6
+#endif
+
+#ifndef MESHX_UUID_ADDR_LEN
+#define MESHX_UUID_ADDR_LEN     16
+#endif
+
+typedef uint8_t meshx_bd_addr_t[MESHX_BD_ADDR_LEN];
+typedef uint8_t meshx_uuid_addr_t[MESHX_UUID_ADDR_LEN];
