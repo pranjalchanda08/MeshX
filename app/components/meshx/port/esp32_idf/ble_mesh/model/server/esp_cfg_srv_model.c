@@ -21,7 +21,7 @@ static MESHX_CFG_SRV meshx_config_server_instance = {
 };
 
 static MESHX_MODEL meshx_config_server_model = {
-    .model_id = ESP_BLE_MESH_MODEL_ID_CONFIG_SRV,
+    .model_id = MESHX_MODEL_ID_CONFIG_SRV,
     .user_data = &meshx_config_server_instance,
     .keys = ESP_BLE_MESH_MODEL_KEYS_UNUSED,
     .groups = ESP_BLE_MESH_MODEL_GROUPS_UNASSIGNED,

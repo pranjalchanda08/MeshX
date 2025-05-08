@@ -14,18 +14,7 @@
 #define __MESHX_PROV__
 
 #include "interface/meshx_platform.h"
-
-#define MESHX_PROV_INSTANCE g_meshx_prov
-
-/**
- * @brief Structure to hold provisioning parameters.
- */
-typedef struct prov_params
-{
-    uint8_t uuid[16]; /**< UUID for the provisioning device */
-} prov_params_t;
-
-extern MESHX_PROV g_meshx_prov;
+#include "interface/ble_mesh/meshx_ble_mesh_prov_srv.h"
 
 /**
  * @brief Initialize provisioning parameters.
@@ -33,12 +22,21 @@ extern MESHX_PROV g_meshx_prov;
  * This function initializes the provisioning parameters by copying the UUID from the provided
  * server configuration and registering the provisioning callback.
  *
- * @param[in] svr_cfg Pointer to the provisioning parameters structure containing the UUID.
+ * @param[in] prov_cfg Pointer to the provisioning parameters structure containing the UUID.
  *
  * @return
  *    - MESHX_SUCCESS: Success
  *    - MESHX_FAIL: Failed to register provisioning callback
  */
-meshx_err_t meshx_init_prov(const prov_params_t * svr_cfg);
+meshx_err_t meshx_init_prov(const meshx_prov_params_t * prov_cfg);
+
+/**
+ * @brief Get the provisioning parameters.
+ *
+ * This function returns a pointer to the global provisioning parameters.
+ *
+ * @return Pointer to the global provisioning parameters.
+ */
+MESHX_PROV *meshx_get_prov(void);
 
 #endif /* __MESHX_PROV__ */

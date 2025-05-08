@@ -58,8 +58,10 @@ static meshx_config_t g_config;
 static meshx_os_timer_t *g_boot_timer;
 
 extern size_t get_root_sig_models_count(void);
+extern size_t get_root_ven_models_count(void);
 extern MESHX_MODEL * get_root_sig_models(void);
-extern meshx_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, meshx_config_t const *config);
+extern MESHX_MODEL * get_root_ven_models(void);
+extern meshx_err_t meshx_create_element_composition(dev_struct_t *p_dev, meshx_config_t const *config);
 
 /**
  * @brief Initializes BLE Mesh elements.
@@ -69,7 +71,7 @@ extern meshx_err_t create_ble_mesh_element_composition(dev_struct_t *p_dev, mesh
  *
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
-static meshx_err_t ble_mesh_element_init(dev_struct_t *p_dev, meshx_config_t const *config)
+static meshx_err_t meshx_element_init(dev_struct_t *p_dev, meshx_config_t const *config)
 {
     if (!p_dev)
         return MESHX_INVALID_STATE;
@@ -99,7 +101,7 @@ static meshx_err_t ble_mesh_element_init(dev_struct_t *p_dev, meshx_config_t con
     p_dev->element_idx++;
     /* Root to be used with fixed format */
 
-    err = create_ble_mesh_element_composition(p_dev, config);
+    err = meshx_create_element_composition(p_dev, config);
     if(err)
     {
         MESHX_LOGE(MODULE_ID_COMMON, "Failed to create BLE Mesh Element Composition: (%d)", err);
@@ -167,31 +169,26 @@ static meshx_err_t meshx_dev_restore(dev_struct_t *pdev, meshx_config_t const *c
  *
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
-static meshx_err_t ble_mesh_init(meshx_config_t const *config)
+static meshx_err_t meshx_ble_mesh_init(meshx_config_t const *config)
 {
     if(config == NULL || config->product_name == NULL || strlen(config->product_name) > ESP_BLE_MESH_DEVICE_NAME_MAX_LEN)
         return MESHX_INVALID_ARG;
 
     meshx_err_t err;
+    meshx_prov_params_t prov_cfg = {
+        .node_name = (uint8_t *)config->product_name,
+    };
 
     err = meshx_platform_bt_init();
     MESHX_ERR_PRINT_RET("Platform BT init failed", err);
 
     meshx_dev_restore(&g_dev, config);
 
-    err = ble_mesh_element_init(&g_dev, config);
+    err = meshx_element_init(&g_dev, config);
     MESHX_ERR_PRINT_RET("Failed to initialize BLE Elements", err);
 
-    err = esp_ble_mesh_init(&MESHX_PROV_INSTANCE, g_dev.composition);
-    MESHX_ERR_PRINT_RET("Failed to initialize mesh stack", err);
-
-    err = esp_ble_mesh_set_unprovisioned_device_name(config->product_name);
-    MESHX_ERR_PRINT_RET("Name Set Error", err);
-
-    err = esp_ble_mesh_node_prov_enable((esp_ble_mesh_prov_bearer_t)(ESP_BLE_MESH_PROV_ADV | ESP_BLE_MESH_PROV_GATT));
-    MESHX_ERR_PRINT_RET("Failed to enable mesh node", err);
-
-    MESHX_LOGI(MODULE_ID_COMMON, "BLE Mesh Node initialized");
+    err = meshx_plat_ble_mesh_init(&prov_cfg, g_dev.composition);
+    MESHX_ERR_PRINT_RET("Failed to initialize BLE Mesh stack", err);
 
     return MESHX_SUCCESS;
 }
@@ -297,7 +294,7 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     MESHX_ERR_PRINT_RET("Failed to register app control callback", err);
 
     /* Initialize the Bluetooth Mesh Subsystem */
-    err = ble_mesh_init(&g_config);
+    err = meshx_ble_mesh_init(&g_config);
     MESHX_ERR_PRINT_RET("Bluetooth mesh init failed", err);
 
     /* Print the MeshX banner */
