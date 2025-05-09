@@ -1,3 +1,16 @@
+/**
+ * Copyright (c) 2024 - 2025 MeshX
+ *
+ * @file meshx_ble_mesh_config_srv.h
+ * @brief Header file for MeshX BLE Mesh Configuration Server.
+ *
+ * This file contains the definitions, data structures, and function declarations
+ * for the MeshX BLE Mesh Configuration Server. It provides the necessary APIs
+ * and context for managing the configuration server model in a BLE Mesh network.
+ *
+ * @author Pranjal Chanda
+ */
+
 #ifndef __MESHX_BLE_MESH_CONFIG_SRV_H__
 #define __MESHX_BLE_MESH_CONFIG_SRV_H__
 

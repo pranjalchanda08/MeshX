@@ -1,3 +1,16 @@
+/**
+ * Copyright (c) 2024 - 2025 MeshX
+ *
+ * @file esp_prov_srv_model.c
+ * @brief Implementation of BLE Mesh provisioning server model for ESP32.
+ *        This file contains the provisioning callback handling, control task
+ *        message mapping, and provisioning parameter initialization.
+ *        It facilitates the provisioning process and event handling for BLE Mesh.
+ *
+ * @author Pranjal Chanda
+ *
+ */
+
 #include "interface/ble_mesh/meshx_ble_mesh_prov_srv.h"
 
 /**
@@ -97,7 +110,7 @@ static void meshx_provisioning_cb(esp_ble_mesh_prov_cb_event_t event,
  * This function initializes the provisioning parameters by copying the UUID from the provided
  * server configuration and registering the provisioning callback.
  *
- * @param[in]   prov_cfg Pointer to the provisioning parameters structure containing the UUID.
+ * @param uuid Pointer to the UUID of the device.
  *
  * @return
  *    - MESHX_SUCCESS: Success

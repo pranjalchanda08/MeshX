@@ -1,3 +1,19 @@
+/**
+ * Copyright (c) 2024 - 2025 MeshX
+ *
+ * @file meshx_ble_mesh_prov_srv.h
+ * @brief This header file defines the provisioning server interface for the MeshX BLE Mesh stack.
+ *        It includes data structures, enumerations, and function declarations for managing BLE Mesh
+ *        provisioning operations, including node and provisioner functionalities.
+ *
+ *        The file provides definitions for provisioning events, callback parameters, and provisioning
+ *        bearer and OOB information types. It also includes APIs for initializing and retrieving
+ *        provisioning parameters.
+ *
+ * @author Pranjal Chanda
+ *
+ */
+
 #ifndef __MESHX_BLE_MESH_PROV_SRV_H__
 #define __MESHX_BLE_MESH_PROV_SRV_H__
 
@@ -841,7 +857,7 @@ typedef union
  * This function initializes the provisioning parameters by copying the UUID from the provided
  * server configuration and registering the provisioning callback.
  *
- * @param[in]   prov_cfg Pointer to the provisioning parameters structure containing the UUID.
+ * @param uuid Pointer to the UUID of the device.
  *
  * @return
  *    - MESHX_SUCCESS: Success

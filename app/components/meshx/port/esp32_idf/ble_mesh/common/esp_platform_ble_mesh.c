@@ -1,4 +1,23 @@
+/**
+ * Copyright (c) 2024 - 2025 MeshX
+ *
+ * @file esp_platform_ble_mesh.c
+ * @brief This file contains platform-specific implementations for BLE Mesh functionality
+ *        on the ESP32 using the MeshX framework. It provides APIs for managing BLE Mesh
+ *        models, compositions, provisioning, and initialization.
+ *
+ *        The functions in this file handle tasks such as checking group subscriptions,
+ *        creating and deleting model publications, managing model IDs, initializing
+ *        compositions, and setting up BLE Mesh provisioning and node configurations.
+ *
+ * @author Pranjal Chanda
+ *
+ */
+#include "ble_mesh_plat_init.h"
+#include "interface/meshx_platform.h"
+#include "interface/logging/meshx_log.h"
 #include "interface/ble_mesh/meshx_ble_mesh_cmn.h"
+#include "interface/ble_mesh/meshx_ble_mesh_prov_srv.h"
 
 meshx_err_t meshx_is_group_subscribed(meshx_model_t *p_model, uint16_t addr)
 {
@@ -95,5 +114,61 @@ meshx_err_t meshx_plat_composition_init(
     composition->element_count = element_idx;
     composition->elements = p_elements;
 
+    return MESHX_SUCCESS;
+}
+
+meshx_err_t meshx_platform_bt_init(void)
+{
+    esp_err_t err = ESP_OK;
+    /* Initialize Bluetooth */
+    err = bluetooth_init();
+    if(err)
+    {
+        return MESHX_ERR_PLAT;
+    }
+
+    return MESHX_SUCCESS;
+}
+
+meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, void* comp)
+{
+    if(comp == NULL || prov_cfg == NULL)
+        return MESHX_INVALID_ARG;
+
+    meshx_err_t err = MESHX_SUCCESS;
+
+    /* Initialize BLE Mesh Provisioner */
+    MESHX_PROV *p_prov = NULL;
+    err = meshx_plat_init_prov(prov_cfg->uuid);
+    if(err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize provisioning");
+        return err;
+    }
+    p_prov = meshx_plat_get_prov();
+    if(p_prov == NULL)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to get provisioning instance");
+        return MESHX_ERR_PLAT;
+    }
+    err = esp_ble_mesh_init(p_prov, comp);
+    if(err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize mesh stack");
+        return err;
+    }
+    err = esp_ble_mesh_set_unprovisioned_device_name((char*)prov_cfg->node_name);
+    if(err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to set device name");
+        return err;
+    }
+    err = esp_ble_mesh_node_prov_enable((esp_ble_mesh_prov_bearer_t)(ESP_BLE_MESH_PROV_ADV | ESP_BLE_MESH_PROV_GATT));
+    if(err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to enable mesh node");
+        return err;
+    }
+    MESHX_LOGI(MODULE_ID_MODEL_SERVER, "BLE Mesh Node initialized");
     return MESHX_SUCCESS;
 }

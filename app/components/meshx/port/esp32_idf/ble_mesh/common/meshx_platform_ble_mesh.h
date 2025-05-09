@@ -1,3 +1,15 @@
+/**
+ * Copyright (c) 2024 - 2025 MeshX
+ *
+ * @file meshx_platform_ble_mesh.h
+ * @brief Header file for MeshX BLE Mesh platform abstraction layer.
+ *        This file provides type definitions and macros to map MeshX
+ *        BLE Mesh components to ESP-IDF BLE Mesh APIs.
+ *
+ * @author Pranjal Chanda
+ *
+ */
+
 #ifndef __MESHX_BLE_MESH__
 #define __MESHX_BLE_MESH__
 

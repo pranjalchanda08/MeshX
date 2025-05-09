@@ -22,20 +22,19 @@
 #include "meshx_err.h"
 
 /**
- * @brief Configuration server callback function type.
+ * @brief Retrieves the configuration server model for the MeshX framework.
  *
- * @param[out] pdev Pointer to the device structure.
+ * This function provides access to the configuration server model used in the
+ * MeshX implementation. The retrieved model can be used for configuring and
+ * managing the mesh network.
  *
- * @return MESHX_SUCCESS on success, an error code otherwise.
- */
-meshx_err_t meshx_get_config_srv_instance(void** p_conf_srv);
-
-/**
- * @brief Get the configuration server model instance.
+ * @param[out] p_model Pointer to a variable where the address of the
+ *                     configuration server model will be stored. The caller
+ *                     must ensure that the pointer is valid.
  *
- * @param[out] p_model Pointer to the model instance.
- *
- * @return MESHX_SUCCESS on success, or an error code on failure.
+ * @return
+ * - `MESHX_SUCCESS` on success.
+ * - An appropriate error code of type `meshx_err_t` on failure.
  */
 meshx_err_t meshx_get_config_srv_model(void* p_model);
 
