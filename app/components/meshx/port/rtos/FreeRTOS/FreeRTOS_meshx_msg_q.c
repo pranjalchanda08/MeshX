@@ -1,10 +1,13 @@
 /**
- * @file FreeRTOS_meshx_msg_q.c
- * @brief MeshX Message Queue Implementation
+ * Copyright (c) 2024 - 2025 MeshX
  *
- * This file implements the MeshX Message Queue.
+ * @file FreeRTOS_meshx_msg_q.c
+ * @brief Implementation of MeshX Message Queue using FreeRTOS queues.
+ *        This file provides functions to create, delete, send, and receive
+ *        messages using a message queue abstraction for the MeshX framework.
  *
  * @author Pranjal Chanda
+ *
  */
 
 #include "interface/rtos/meshx_msg_q.h"

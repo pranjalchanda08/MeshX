@@ -1,10 +1,13 @@
 /**
- * @file FreeRTOS_meshx_sem.c
- * @brief MeshX Semaphore Implementation
+ * Copyright (c) 2024 - 2025 MeshX
  *
- * This file implements the MeshX Semaphore.
+ * @file FreeRTOS_meshx_sem.c
+ * @brief Implementation of MeshX Semaphore APIs using FreeRTOS.
+ *        This file provides functions to create, delete, take, and give semaphores
+ *        for synchronization in the MeshX framework.
  *
  * @author Pranjal Chanda
+ *
  */
 
 #include "interface/rtos/meshx_sem.h"

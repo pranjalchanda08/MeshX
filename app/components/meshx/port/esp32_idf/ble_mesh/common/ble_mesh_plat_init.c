@@ -1,8 +1,14 @@
-/*
- * SPDX-FileCopyrightText: 2017 Intel Corporation
- * SPDX-FileCopyrightText: 2021-2022 Espressif Systems (Shanghai) CO LTD
+/**
+ * Copyright (c) 2024 - 2025 MeshX
  *
- * SPDX-License-Identifier: Apache-2.0
+ * @file ble_mesh_plat_init.c
+ * @brief This file contains the initialization code for BLE Mesh functionality
+ *        on the ESP32 platform. It supports both Bluedroid and NimBLE BLE stacks.
+ *        The file includes functions to initialize the Bluetooth controller,
+ *        configure the BLE stack, and retrieve the device UUID for provisioning.
+ *
+ * @author Pranjal Chanda
+ *
  */
 
 #include <stdio.h>

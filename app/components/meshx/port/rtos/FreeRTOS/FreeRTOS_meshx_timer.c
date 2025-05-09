@@ -1,8 +1,28 @@
+/**
+ * Copyright (c) 2024 - 2025 MeshX
+ *
+ * @file FreeRTOS_meshx_timer.c
+ * @brief Implementation of RTOS timer abstraction for MeshX using FreeRTOS.
+ *        This file provides functions to create, start, stop, delete, reset,
+ *        and modify RTOS timers in the MeshX framework.
+ *
+ * @author Pranjal Chanda
+ *
+ */
+
 #include "interface/rtos/meshx_rtos_timer.h"
 #include "interface/logging/meshx_log.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/timers.h"
 
+/**
+ * @brief Callback function for FreeRTOS timer events.
+ *
+ * This function is triggered when the associated FreeRTOS timer expires.
+ * It invokes the `meshx_os_timer_fire_cb` function to handle the timer event.
+ *
+ * @param xTimer Handle to the FreeRTOS timer that triggered the callback.
+ */
 static void timer_callback(TimerHandle_t xTimer)
 {
     meshx_os_timer_fire_cb(xTimer);

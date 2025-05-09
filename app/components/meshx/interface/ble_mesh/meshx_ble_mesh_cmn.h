@@ -1,4 +1,6 @@
 /**
+ * Copyright (c) 2024 - 2025 MeshX
+ *
  * @file meshx_ble_mesh_cmn.h
  * @brief Common BLE Mesh interface definitions and utility functions.
  *
@@ -10,6 +12,8 @@
  * The functions defined here facilitate the initialization, manipulation, and
  * cleanup of BLE Mesh components, ensuring efficient memory management and
  * error handling.
+ *
+ * @author Pranjal Chanda
  */
 #ifndef __MESHX_PLAT_SRV_CMN_H__
 #define __MESHX_PLAT_SRV_CMN_H__
@@ -20,23 +24,38 @@
 #include "interface/meshx_platform.h"
 #include "interface/ble_mesh/meshx_ble_mesh_cmn_def.h"
 
+/*
+ * @brief Structure to hold UUID and address information.
+ */
 typedef struct meshx_model
 {
-    uint16_t el_id;
-    uint16_t model_id;
-    uint16_t pub_addr;
-    void* p_model;
+    uint16_t el_id;    /**< Element ID */
+    uint16_t model_id; /**< Model ID */
+    uint16_t pub_addr; /**< Publication address */
+    void *p_model;     /**< Pointer to the model structure */
 } meshx_model_t;
 
+/**
+ * @brief Structure to hold context information for BLE Mesh operations.
+ */
 typedef struct meshx_ctx
 {
-    uint16_t app_idx;
-    uint16_t net_idx;
-    uint16_t src_addr;
-    uint16_t dst_addr;
-    uint32_t opcode;
-    void * p_ctx;
+    uint16_t app_idx;  /** AppKey Index */
+    uint16_t net_idx;  /** NetKey Index */
+    uint16_t src_addr; /** Source address */
+    uint16_t dst_addr; /** Destination address */
+    uint32_t opcode;   /** Opcode */
+    void *p_ctx;       /** Pointer to the context structure */
 } meshx_ctx_t;
+
+/**
+ * @brief Structure to hold provisioning parameters.
+ */
+typedef struct meshx_prov_params
+{
+    meshx_uuid_addr_t uuid; /**< UUID for the provisioning device */
+    uint8_t *node_name;     /**< Node name for the provisioning device */
+} meshx_prov_params_t;
 
 /**
  * @brief Checks if a model is subscribed to a specific group address.
@@ -67,7 +86,7 @@ meshx_err_t meshx_is_group_subscribed(meshx_model_t *p_model, uint16_t addr);
  *         MESHX_INVALID_ARG if any input pointer is NULL,
  *         MESHX_NO_MEM if memory allocation fails.
  */
-meshx_err_t meshx_plat_create_model_pub(void ** p_pub, uint16_t nmax);
+meshx_err_t meshx_plat_create_model_pub(void **p_pub, uint16_t nmax);
 
 /**
  * @brief Deletes the model and publication objects.
@@ -80,7 +99,7 @@ meshx_err_t meshx_plat_create_model_pub(void ** p_pub, uint16_t nmax);
  * @return MESHX_SUCCESS on successful deletion, MESHX_INVALID_ARG if
  *         either pointer is NULL.
  */
-meshx_err_t meshx_plat_del_model_pub(void ** p_pub);
+meshx_err_t meshx_plat_del_model_pub(void **p_pub);
 
 /**
  * @brief Retrieve the model ID of a generic server model.
@@ -92,7 +111,7 @@ meshx_err_t meshx_plat_del_model_pub(void ** p_pub);
  *
  * @return MESHX_SUCCESS on success, or an appropriate error code on failure.
  */
-meshx_err_t meshx_get_model_id(void* p_model, uint16_t *model_id);
+meshx_err_t meshx_get_model_id(void *p_model, uint16_t *model_id);
 
 /**
  * @brief Creates a platform-specific BLE Mesh composition object.
@@ -107,7 +126,7 @@ meshx_err_t meshx_get_model_id(void* p_model, uint16_t *model_id);
  * @return MESHX_SUCCESS on successful creation, MESHX_INVALID_ARG if the
  *         provided pointer is NULL, or MESHX_NO_MEM if memory allocation fails.
  */
-meshx_err_t meshx_create_plat_composition(void** p_comp);
+meshx_err_t meshx_create_plat_composition(void **p_comp);
 
 /**
  * @brief Adds an element to the BLE Mesh composition.
@@ -128,12 +147,11 @@ meshx_err_t meshx_create_plat_composition(void** p_comp);
  */
 meshx_err_t meshx_plat_add_element_to_composition(
     uint16_t index,
-    void* p_element_list,
-    void* p_sig_models,
-    void* p_ven_models,
+    void *p_element_list,
+    void *p_sig_models,
+    void *p_ven_models,
     uint8_t sig_cnt,
-    uint8_t ven_cnt
-);
+    uint8_t ven_cnt);
 
 /**
  * @brief Initializes a platform-specific BLE Mesh composition.
@@ -151,11 +169,33 @@ meshx_err_t meshx_plat_add_element_to_composition(
  * @return MESHX_SUCCESS on successful initialization, or an appropriate error code on failure.
  */
 meshx_err_t meshx_plat_composition_init(
-    void* p_composition,
-    void* p_elements,
+    void *p_composition,
+    void *p_elements,
     uint16_t cid,
     uint16_t pid,
-    uint16_t element_idx
-);
+    uint16_t element_idx);
+
+/**
+ * @brief Initializes the Bluetooth subsystem of the MeshX platform.
+ *
+ * This function sets up the Bluetooth-related components necessary for
+ * MeshX operation, such as BLE Mesh provisioning and communication.
+ *
+ * @return meshx_err_t Returns MESHX_OK on success, or an appropriate error code.
+ */
+meshx_err_t meshx_platform_bt_init(void);
+
+/**
+ * @brief Initializes the BLE Mesh stack with the given provisioning parameters.
+ *
+ * This function sets up the BLE Mesh stack and initializes it with the
+ * provided provisioning parameters.
+ *
+ * @param[in] prov_cfg   Pointer to the provisioning parameters structure.
+ * @param[in] comp       Pointer to the composition data.
+ *
+ * @return meshx_err_t Returns MESHX_OK on success, or an appropriate error code.
+ */
+meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, void *comp);
 
 #endif /* __MESHX_PLAT_SRV_CMN_H__ */

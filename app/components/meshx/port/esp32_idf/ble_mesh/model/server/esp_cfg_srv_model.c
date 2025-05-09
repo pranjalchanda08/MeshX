@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2024 - 2025 MeshX
+ *
+ * @file esp_cfg_srv_model.c
+ * @brief Implementation of the BLE Mesh Configuration Server for the MeshX platform.
+ *        This file contains the initialization, callback handling, and utility functions
+ *        for managing the BLE Mesh Configuration Server model.
+ *
+ * The Configuration Server is responsible for handling configuration messages
+ * such as adding keys, setting publication parameters, and managing subscriptions.
+ * It provides an interface for the application to interact with the BLE Mesh stack.
+ *
+ * @author Pranjal Chanda
+ */
+
 #include "interface/ble_mesh/meshx_ble_mesh_config_srv.h"
 
 /* Global variable for Configuration Server parameters */

@@ -1,3 +1,17 @@
+/**
+ * Copyright (c) 2024 - 2025 MeshX
+ *
+ * @file meshx_gen_server.c
+ * @brief Implementation of the MeshX generic server model for BLE mesh nodes.
+ *        This file contains functions for registering, deregistering, and
+ *        initializing the generic server model.
+ *
+ * The MeshX generic server model provides an interface for handling BLE mesh
+ * server operations, including callback registration and initialization.
+ *
+ * @author Pranjal Chanda
+ *
+ */
 #include "stdlib.h"
 #include "meshx_gen_server.h"
 
@@ -62,6 +76,6 @@ meshx_err_t meshx_gen_srv_init(void)
     if (meshx_server_init == MESHX_SERVER_INIT_MAGIC_NO)
         return MESHX_SUCCESS;
     meshx_server_init = MESHX_SERVER_INIT_MAGIC_NO;
-    
+
     return meshx_plat_gen_srv_init();
 }
