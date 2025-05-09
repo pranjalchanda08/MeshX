@@ -1,4 +1,6 @@
 /**
+ * Copyright (c) 2024 - 2025 MeshX
+ * 
  * @file meshx_ble_mesh_cmn_def.h
  * @brief Common definitions for BLE Mesh models and opcodes in the MeshX framework.
  *

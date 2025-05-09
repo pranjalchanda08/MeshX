@@ -1,3 +1,22 @@
+/**
+ * Copyright (c) 2024 - 2025 MeshX
+ *
+ * @file meshx_ble_mesh_light_server.h
+ * @brief Header file for the MeshX BLE Mesh Light Server module.
+ *        This file defines the data structures, function prototypes, and
+ *        callback parameters for managing the Light Server models in a BLE Mesh network.
+ *        It includes support for various lighting models such as Light CTL, HSL, xyL, and LC.
+ *
+ * @details
+ * - Defines state change event structures for different lighting models.
+ * - Provides APIs for initializing, creating, deleting, and managing Light Server instances.
+ * - Supports Light CTL Server state management, including setting and restoring states.
+ * - Includes callback parameters for handling received lighting messages.
+ *
+ * @author Pranjal Chanda
+ *
+ */
+
 #ifndef __MESHX_BLE_MESH_LIGHT_SRV_H__
 #define __MESHX_BLE_MESH_LIGHT_SRV_H__
 

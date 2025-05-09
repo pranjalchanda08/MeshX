@@ -1,10 +1,13 @@
 /**
- * @file FreeRTOS_meshx_task.c
- * @brief MeshX Task Implementation
+ * Copyright (c) 2024 - 2025 MeshX
  *
- * This file implements the MeshX Task.
+ * @file FreeRTOS_meshx_task.c
+ * @brief Implementation of MeshX task management functions using FreeRTOS.
+ *        This file provides APIs to create, delete, suspend, resume, and delay tasks
+ *        in the MeshX framework.
  *
  * @author Pranjal Chanda
+ *
  */
 
 #include "interface/rtos/meshx_task.h"

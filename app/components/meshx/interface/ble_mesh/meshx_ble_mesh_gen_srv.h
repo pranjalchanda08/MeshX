@@ -1,3 +1,19 @@
+/**
+ * Copyright (c) 2024 - 2025 MeshX
+ *
+ * @file meshx_ble_mesh_gen_srv.h
+ * @brief Header file for Generic Server Models in MeshX BLE Mesh.
+ *
+ * This file defines the structures, types, and APIs for implementing
+ * Generic Server Models in the MeshX BLE Mesh stack. It includes
+ * definitions for various state change events, server callbacks, and
+ * functions to create, delete, and manage the state of Generic Server Models.
+ *
+ * @author Pranjal Chanda
+ *
+ */
+
+
 #ifndef __MESHX_PLAT_GEN_SRV_H__
 #define __MESHX_PLAT_GEN_SRV_H__
 

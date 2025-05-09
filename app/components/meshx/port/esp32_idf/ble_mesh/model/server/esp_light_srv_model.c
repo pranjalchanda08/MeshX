@@ -1,13 +1,20 @@
 /**
- * Copyright © 2024 - 2025 MeshX
+ * Copyright (c) 2024 - 2025 MeshX
  *
- * @file meshx_light_server.c
- * @brief Implementation of the BLE Mesh Lighting Server for the ESP32.
+ * @file esp_light_srv_model.c
+ * @brief Implementation of the BLE Mesh Light CTL Server Model for ESP32.
+ *        This file contains the initialization, message handling, and state
+ *        management for the Light CTL Server Model, including support for
+ *        Lightness, Temperature, and Delta UV operations.
  *
- * This file contains the implementation of the BLE Mesh Lighting Server,
- * including initialization, event handling, and callback registration.
+ *        The implementation includes:
+ *        - BLE Mesh message handling for Light CTL Server.
+ *        - State management for Lightness, Temperature, and Delta UV.
+ *        - Callback functions for BLE Mesh Lightness Server events.
+ *        - Initialization and cleanup routines for the Light CTL Server.
  *
  * @author Pranjal Chanda
+ *
  */
 
 #include "meshx_platform_ble_mesh.h"

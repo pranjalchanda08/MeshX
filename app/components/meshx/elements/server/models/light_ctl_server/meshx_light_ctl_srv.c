@@ -235,6 +235,7 @@ meshx_err_t meshx_light_ctl_server_init(void)
  *
  * @param[in,out] p_model Pointer to a pointer where the newly created CTL server model
  *                instance will be stored.
+ * @param[in,out] p_sig_model Pointer to a pointer where the offset of the model will be stored.
  *
  * @return
  *     - MESHX_SUCCESS: Successfully created and initialized the model.

@@ -1,15 +1,20 @@
 /**
- * Copyright © 2024 - 2025 MeshX
+ * Copyright (c) 2024 - 2025 MeshX
  *
- * @file meshx_gen_server.c
- * @brief Implementation of the BLE Mesh Generic Server for the meshxuct.
+ * @file esp_gen_srv_model.c
+ * @brief Implementation of the Generic OnOff Server model for BLE Mesh.
+ *        This file contains the initialization, state management, and
+ *        message handling logic for the Generic OnOff Server model in
+ *        the MeshX platform.
  *
- * This file contains the implementation of the BLE Mesh Generic Server
- * for handling various server events and registering callbacks.
+ *        The Generic OnOff Server model is responsible for managing the
+ *        on/off state of a device in a BLE Mesh network. It handles
+ *        incoming messages, updates the state, and publishes the state
+ *        changes to the network.
  *
  * @author Pranjal Chanda
+ *
  */
-
 #include "esp_log.h"
 #include "meshx_control_task.h"
 #include "interface/ble_mesh/meshx_ble_mesh_gen_srv.h"

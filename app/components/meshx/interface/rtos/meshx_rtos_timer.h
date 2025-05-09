@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2024 - 2025 MeshX
+ *
+ * @file meshx_rtos_timer.h
+ * @brief Header file for MeshX RTOS Timer interface.
+ *        Provides APIs for creating, starting, stopping, deleting,
+ *        and managing RTOS timers in the MeshX framework.
+ *
+ * This module abstracts the RTOS timer functionalities and provides
+ * a unified interface for timer management, including support for
+ * auto-reload timers, callback functions, and dynamic period changes.
+ *
+ * @author Pranjal Chanda
+ *
+ */
 
 #ifndef __MESHX_RTOS_TIMER_H
 #define __MESHX_RTOS_TIMER_H
