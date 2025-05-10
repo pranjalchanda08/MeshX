@@ -15,14 +15,8 @@
  * @author Pranjal Chanda
  *
  */
-#include "esp_log.h"
 #include "meshx_control_task.h"
 #include "interface/ble_mesh/meshx_ble_mesh_gen_srv.h"
-
-#ifdef TAG
-#undef TAG
-#define TAG "ESP_GEN_SRV"
-#endif
 
 /**
  * @brief Template for SIG model initialization.
@@ -92,8 +86,8 @@ static meshx_err_t ble_send_msg_handle_t(
         &params->state_change.onoff_set.onoff);
     if(err)
     {
-        ESP_LOGE(TAG, "Mesh Model msg send failed (err: 0x%x)", err);
-        return MESHX_FAIL;
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Mesh Model msg send failed (err: 0x%x)", err);
+        return MESHX_ERR_PLAT;
     }
 
     if(malloc_flag)
@@ -114,8 +108,9 @@ static meshx_err_t ble_send_msg_handle_t(
 static void esp_ble_mesh_generic_server_cb(MESHX_GEN_SRV_CB_EVT event,
                                            MESHX_GEN_SRV_CB_PARAM *param)
 {
-    ESP_LOGD(TAG, "%s, op|src|dst:%04" PRIx32 "|%04x|%04x",
-             server_state_str[event], param->ctx.recv_op, param->ctx.addr, param->ctx.recv_dst);
+    ESP_UNUSED(server_state_str);
+    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "%s, op|src|dst:%04" PRIx32 "|%04x|%04x",
+            server_state_str[event], param->ctx.recv_op, param->ctx.addr, param->ctx.recv_dst);
 
     if (event != ESP_BLE_MESH_GENERIC_SERVER_STATE_CHANGE_EVT)
         return;
@@ -153,7 +148,7 @@ static void esp_ble_mesh_generic_server_cb(MESHX_GEN_SRV_CB_EVT event,
         sizeof(meshx_gen_srv_cb_param_t));
     if (err)
     {
-        ESP_LOGE(TAG, "Failed to publish to control task");
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to publish to control task");
     }
 }
 
@@ -193,7 +188,7 @@ meshx_err_t meshx_plat_gen_srv_init(void)
     esp_err_t esp_err = esp_ble_mesh_register_generic_server_callback(
             (MESHX_GEN_SRV_CB)&esp_ble_mesh_generic_server_cb);
     if(esp_err != ESP_OK)
-        err = MESHX_FAIL;
+        err = MESHX_ERR_PLAT;
 
     return err;
 }
