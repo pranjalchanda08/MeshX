@@ -11,9 +11,9 @@ set(LOGGING_SRC
 
 set(PLAT_DIRS
     "port"
-    "port/esp32_idf"
-    "port/esp32_idf/ble_mesh/common"
-    "port/esp32_idf/platform"
+    "port/esp_idf"
+    "port/esp_idf/ble_mesh/common"
+    "port/esp_idf/platform"
 )
 
 file(GLOB FREERTOS_SRC
@@ -21,11 +21,11 @@ file(GLOB FREERTOS_SRC
 )
 
 file(GLOB PLAT_SRC
-    "port/esp32_idf/platform/*.c"
+    "port/esp_idf/platform/*.c"
 )
 
 file(GLOB_RECURSE PLAT_BLE_MESH_SRC
-    "port/esp32_idf/ble_mesh/*.c")
+    "port/esp_idf/ble_mesh/*.c")
 
 set(INC_DIRS
     ${DEP_INC}
