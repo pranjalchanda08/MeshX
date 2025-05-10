@@ -146,7 +146,7 @@ static void meshx_ble_mesh_config_server_cb(esp_ble_mesh_cfg_server_cb_event_t e
         sizeof(pub_param));
     if (err)
     {
-        ESP_LOGE(TAG, "Error publishing control task msg (Err: 0x%x)", err);
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Error publishing control task msg (Err: 0x%x)", err);
     }
 }
 
@@ -156,8 +156,8 @@ meshx_err_t meshx_plat_config_srv_init(void)
         (esp_ble_mesh_cfg_server_cb_t)&meshx_ble_mesh_config_server_cb);
     if (err)
     {
-        ESP_LOGE(TAG, "Error plat registering config server (Err: 0x%x)", err);
-        return err;
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Error plat registering config server (Err: 0x%x)", err);
+        return MESHX_ERR_PLAT;
     }
     return MESHX_SUCCESS;
 }

@@ -72,7 +72,7 @@ static const MESHX_MODEL light_ctl_sig_template = ESP_BLE_MESH_SIG_MODEL(
  *
  * @return
  *     - MESHX_SUCCESS: Message sent successfully or event type not matched.
- *     - MESHX_FAIL: Failed to send the message.
+ *     - MESHX_ERR_PLAT: Failed to send the message.
  */
 static meshx_err_t ble_send_msg_handle_t(
     const dev_struct_t *pdev,
@@ -123,8 +123,8 @@ static meshx_err_t ble_send_msg_handle_t(
                                                        (uint8_t *)&ctl_status_union);
     if (err)
     {
-        ESP_LOGE(TAG, "Mesh Model msg send failed (err: 0x%x)", err);
-        return MESHX_FAIL;
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Mesh Model msg send failed (err: 0x%x)", err);
+        return MESHX_ERR_PLAT;
     }
 
     ESP_UNUSED(pdev);
@@ -142,7 +142,7 @@ static meshx_err_t ble_send_msg_handle_t(
 static void meshx_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_t event,
                                           esp_ble_mesh_lighting_server_cb_param_t *param)
 {
-    ESP_LOGD(TAG, "evt|op|src|dst: %02x|%04x|%04x|%04x|%04x",
+    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "evt|op|src|dst: %02x|%04x|%04x|%04x|%04x",
              event, (unsigned)param->ctx.recv_op, param->ctx.addr, param->ctx.recv_dst,
              param->model->model_id);
 
@@ -171,7 +171,7 @@ static void meshx_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_
             srv->state->temperature = param->value.state_change.ctl_set.temperature;
             srv->state->lightness = param->value.state_change.ctl_set.lightness;
             srv->state->delta_uv = param->value.state_change.ctl_set.delta_uv;
-            ESP_LOGD(TAG, "lightness|temp|del_uv:%d|%d|%d",
+            MESHX_LOGD(MODULE_ID_MODEL_SERVER, "lightness|temp|del_uv:%d|%d|%d",
                      srv->state->lightness,
                      srv->state->temperature,
                      srv->state->delta_uv);
@@ -190,7 +190,7 @@ static void meshx_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_
         {
             srv->state->temperature = param->value.state_change.ctl_temp_set.temperature;
             srv->state->delta_uv = param->value.state_change.ctl_temp_set.delta_uv;
-            ESP_LOGI(TAG, "lightness|del_uv:%d|%d",
+            MESHX_LOGI(MODULE_ID_MODEL_SERVER, "lightness|del_uv:%d|%d",
                      srv->state->temperature,
                      srv->state->delta_uv);
 
@@ -206,7 +206,7 @@ static void meshx_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_
     case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_SET_UNACK:
         if (op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_GET)
         {
-            ESP_LOGI(TAG, "lightness|temp|del_uv:%d|%d|%d",
+            MESHX_LOGI(MODULE_ID_MODEL_SERVER, "lightness|temp|del_uv:%d|%d|%d",
                      param->value.state_change.ctl_default_set.lightness,
                      param->value.state_change.ctl_default_set.temperature,
                      param->value.state_change.ctl_default_set.delta_uv);
@@ -226,7 +226,7 @@ static void meshx_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_
     case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK:
         if (op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET)
         {
-            ESP_LOGI(TAG, "temp min|max: %dK|%dK",
+            MESHX_LOGI(MODULE_ID_MODEL_SERVER, "temp min|max: %dK|%dK",
                      param->value.state_change.ctl_temp_range_set.range_min,
                      param->value.state_change.ctl_temp_range_set.range_max);
             srv->state->temperature_range_min = param->value.state_change.ctl_temp_range_set.range_min;
@@ -261,7 +261,7 @@ meshx_err_t meshx_plat_light_srv_init(void)
 
     esp_err_t esp_err = esp_ble_mesh_register_lighting_server_callback((esp_ble_mesh_lighting_server_cb_t)&meshx_ble_lightness_server_cb);
     if (esp_err != ESP_OK)
-        err = MESHX_FAIL;
+        err = MESHX_ERR_PLAT;
 
     return err;
 }

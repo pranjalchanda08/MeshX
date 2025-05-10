@@ -90,7 +90,7 @@ static void meshx_provisioning_cb(esp_ble_mesh_prov_cb_event_t event,
         MESHX_LOGD(MODULE_ID_MODEL_SERVER, "%s", prov_cb_evt_ctrl_task_evt_table[event].evt_str);
         if (send_control_msg(param, prov_cb_evt_ctrl_task_evt_table[event].ctrl_task_evt) != MESHX_SUCCESS)
         {
-            ESP_LOGE(TAG, "Failed to send control message");
+            MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to send control message");
         }
     }
     else
@@ -120,7 +120,7 @@ meshx_err_t meshx_plat_init_prov(const uint8_t *uuid)
 {
     if (!uuid)
     {
-        ESP_LOGE(TAG, "Invalid server configuration");
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid server configuration");
         return MESHX_INVALID_ARG;
     }
     memcpy(&prov_params.uuid, uuid, sizeof(prov_params.uuid));
