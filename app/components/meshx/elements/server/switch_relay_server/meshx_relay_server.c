@@ -150,7 +150,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
                                          &relay_element_init_ctrl.el_list[i].relay_srv_model_list[RELAY_SIG_ONOFF_MODEL_ID]);
         if (err)
         {
-            MESHX_LOGE(MODULE_ID_COMMON, "Meshx On Off Server create failed (Err : 0x%x)", err);
+            MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Meshx On Off Server create failed (Err : 0x%x)", err);
             return err;
         }
         relay_element_init_ctrl.el_list[i].onoff_srv_model->meshx_server_sig_model = &relay_element_init_ctrl.el_list[i].relay_srv_model_list[RELAY_SIG_ONOFF_MODEL_ID];
