@@ -13,7 +13,7 @@
 #ifndef __MESHX_GEN_SERVER_H__
 #define __MESHX_GEN_SERVER_H__
 
-#include "interface/ble_mesh/meshx_ble_mesh_gen_srv.h"
+#include "interface/ble_mesh/server/meshx_ble_mesh_gen_srv.h"
 
 /**
  * @brief Register a callback function for the meshxuction server model.

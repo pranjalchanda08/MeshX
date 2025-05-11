@@ -13,7 +13,7 @@
  * @author Pranjal Chanda
  */
 
-#include "interface/ble_mesh/meshx_ble_mesh_config_srv.h"
+#include "interface/ble_mesh/server/meshx_ble_mesh_config_srv.h"
 
 /* Global variable for Configuration Server parameters */
 static MESHX_CFG_SRV meshx_config_server_instance = {

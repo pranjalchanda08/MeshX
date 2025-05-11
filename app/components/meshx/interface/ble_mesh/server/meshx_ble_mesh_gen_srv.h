@@ -17,7 +17,7 @@
 #ifndef __MESHX_PLAT_GEN_SRV_H__
 #define __MESHX_PLAT_GEN_SRV_H__
 
-#include "meshx_ble_mesh_cmn.h"
+#include "../meshx_ble_mesh_cmn.h"
 #include "meshx_control_task.h"
 
 /** Parameter of Generic OnOff Set state change event */

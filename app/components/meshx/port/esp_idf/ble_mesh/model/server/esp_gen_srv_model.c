@@ -16,7 +16,7 @@
  *
  */
 #include "meshx_control_task.h"
-#include "interface/ble_mesh/meshx_ble_mesh_gen_srv.h"
+#include "interface/ble_mesh/server/meshx_ble_mesh_gen_srv.h"
 
 /**
  * @brief Template for SIG model initialization.

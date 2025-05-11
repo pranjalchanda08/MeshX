@@ -14,7 +14,7 @@
 #define __MESHX_PROV__
 
 #include "interface/meshx_platform.h"
-#include "interface/ble_mesh/meshx_ble_mesh_prov_srv.h"
+#include "interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h"
 
 /**
  * @brief Initialize provisioning parameters.

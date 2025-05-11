@@ -21,8 +21,8 @@
 #include "stdlib.h"
 #include "string.h"
 #include "meshx_err.h"
+#include "meshx_ble_mesh_cmn_def.h"
 #include "interface/meshx_platform.h"
-#include "interface/ble_mesh/meshx_ble_mesh_cmn_def.h"
 
 /*
  * @brief Structure to hold UUID and address information.
