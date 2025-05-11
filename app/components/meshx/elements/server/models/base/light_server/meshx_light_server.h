@@ -15,7 +15,7 @@
 
 #include "sys/queue.h"
 #include "meshx_control_task.h"
-#include "interface/ble_mesh/meshx_ble_mesh_light_server.h"
+#include "interface/ble_mesh/server/meshx_ble_mesh_light_srv.h"
 
 typedef control_task_msg_handle_t meshx_lighting_server_cb;
 

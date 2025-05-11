@@ -14,7 +14,7 @@
 #include "esp_log.h"
 #include "nvs_flash.h"
 #include "interface/meshx_platform.h"
-#include "interface/ble_mesh/meshx_ble_mesh_prov_srv.h"
+#include "interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h"
 
 /**
  * @brief Initializes the MeshX platform for the ESP32.

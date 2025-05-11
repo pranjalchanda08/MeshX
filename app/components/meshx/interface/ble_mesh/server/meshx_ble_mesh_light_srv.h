@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2024 - 2025 MeshX
  *
- * @file meshx_ble_mesh_light_server.h
+ * @file meshx_ble_mesh_light_srv.h
  * @brief Header file for the MeshX BLE Mesh Light Server module.
  *        This file defines the data structures, function prototypes, and
  *        callback parameters for managing the Light Server models in a BLE Mesh network.
@@ -20,7 +20,7 @@
 #ifndef __MESHX_BLE_MESH_LIGHT_SRV_H__
 #define __MESHX_BLE_MESH_LIGHT_SRV_H__
 
-#include "meshx_ble_mesh_cmn.h"
+#include "../meshx_ble_mesh_cmn.h"
 #include "meshx_control_task.h"
 
 /** Parameter of Light Lightness Actual state change event */

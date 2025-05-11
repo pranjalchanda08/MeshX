@@ -14,7 +14,6 @@
  *        - Initialization and cleanup routines for the Light CTL Server.
  *
  * @author Pranjal Chanda
- *
  */
 
 #include "meshx_platform_ble_mesh.h"
@@ -90,7 +89,7 @@ static meshx_err_t ble_send_msg_handle_t(
 
     switch (params->ctx.opcode)
     {
-    case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_STATUS:
+    case MESHX_MODEL_OP_LIGHT_CTL_STATUS:
         ctl_status_union.ctl_status.temperature = params->state_change.ctl_set.temperature;
         ctl_status_union.ctl_status.lightness = params->state_change.ctl_set.lightness;
         ctl_status_pack_len = sizeof(ctl_status_union.ctl_status);
@@ -127,7 +126,7 @@ static meshx_err_t ble_send_msg_handle_t(
         return MESHX_ERR_PLAT;
     }
 
-    ESP_UNUSED(pdev);
+    MESHX_UNUSED(pdev);
     return MESHX_SUCCESS;
 }
 
@@ -163,10 +162,10 @@ static void meshx_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_
     switch (op_code)
     {
     /*!< Light CTL Message Opcode */
-    case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_GET:
-    case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET:
-    case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET_UNACK:
-        if (op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_GET)
+    case MESHX_MODEL_OP_LIGHT_CTL_GET:
+    case MESHX_MODEL_OP_LIGHT_CTL_SET:
+    case MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK:
+        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_GET)
         {
             srv->state->temperature = param->value.state_change.ctl_set.temperature;
             srv->state->lightness = param->value.state_change.ctl_set.lightness;
@@ -183,10 +182,10 @@ static void meshx_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_
             publish_flag = true;
         }
         break;
-    case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET:
-    case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET:
-    case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK:
-        if (op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET)
+    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET:
+    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET:
+    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK:
+        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET)
         {
             srv->state->temperature = param->value.state_change.ctl_temp_set.temperature;
             srv->state->delta_uv = param->value.state_change.ctl_temp_set.delta_uv;
@@ -201,10 +200,10 @@ static void meshx_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_
         }
         break;
     /*!< Light CTL Setup Message Opcode */
-    case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_SET:
-    case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_GET:
-    case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_SET_UNACK:
-        if (op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_DEFAULT_GET)
+    case MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_SET:
+    case MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_GET:
+    case MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_SET_UNACK:
+        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_GET)
         {
             MESHX_LOGI(MODULE_ID_MODEL_SERVER, "lightness|temp|del_uv:%d|%d|%d",
                      param->value.state_change.ctl_default_set.lightness,
@@ -221,10 +220,10 @@ static void meshx_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_
             publish_flag = true;
         }
         break;
-    case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET:
-    case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET:
-    case ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK:
-        if (op_code != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET)
+    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET:
+    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET:
+    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK:
+        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET)
         {
             MESHX_LOGI(MODULE_ID_MODEL_SERVER, "temp min|max: %dK|%dK",
                      param->value.state_change.ctl_temp_range_set.range_min,

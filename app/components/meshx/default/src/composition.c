@@ -16,7 +16,7 @@
 
 #include "app_common.h"
 #include "meshx.h"
-#include "interface/ble_mesh/meshx_ble_mesh_prov_srv.h"
+#include "interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h"
 
 #if CONFIG_RELAY_SERVER_COUNT
 #include "meshx_relay_server_element.h"

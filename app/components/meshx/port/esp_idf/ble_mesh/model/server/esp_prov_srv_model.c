@@ -11,7 +11,7 @@
  *
  */
 
-#include "interface/ble_mesh/meshx_ble_mesh_prov_srv.h"
+#include "interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h"
 
 /**
  * @brief Structure to map provisioning callback events to control task events.

@@ -17,7 +17,7 @@
 #include "interface/meshx_platform.h"
 #include "interface/logging/meshx_log.h"
 #include "interface/ble_mesh/meshx_ble_mesh_cmn.h"
-#include "interface/ble_mesh/meshx_ble_mesh_prov_srv.h"
+#include "interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h"
 
 meshx_err_t meshx_is_group_subscribed(meshx_model_t *p_model, uint16_t addr)
 {
