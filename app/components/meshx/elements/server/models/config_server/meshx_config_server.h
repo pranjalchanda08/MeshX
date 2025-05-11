@@ -17,7 +17,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
 #include "interface/meshx_platform.h"
-#include "interface/ble_mesh/meshx_ble_mesh_config_srv.h"
+#include "interface/ble_mesh/server/meshx_ble_mesh_config_srv.h"
 
 #include "meshx_err.h"
 

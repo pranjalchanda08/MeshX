@@ -14,7 +14,7 @@
 #ifndef __MESHX_BLE_MESH_CONFIG_SRV_H__
 #define __MESHX_BLE_MESH_CONFIG_SRV_H__
 
-#include "meshx_ble_mesh_cmn.h"
+#include "../meshx_ble_mesh_cmn.h"
 #include "meshx_control_task.h"
 
 typedef control_task_msg_handle_t config_srv_cb_t;
