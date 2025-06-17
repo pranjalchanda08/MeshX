@@ -17,10 +17,8 @@
  */
 
 #include "meshx_platform_ble_mesh.h"
-#include "meshx_light_server.h"
-#include "meshx_gen_server.h"
-
-#define TAG __func__
+#include "interface/ble_mesh/server/meshx_ble_mesh_light_srv.h"
+#include "interface/ble_mesh/server/meshx_ble_mesh_gen_srv.h"
 
 /**
  * @brief Light CTL status packet.
@@ -73,7 +71,7 @@ static const MESHX_MODEL light_ctl_sig_template = ESP_BLE_MESH_SIG_MODEL(
  *     - MESHX_SUCCESS: Message sent successfully or event type not matched.
  *     - MESHX_ERR_PLAT: Failed to send the message.
  */
-static meshx_err_t ble_send_msg_handle_t(
+static meshx_err_t esp_ble_mesh_gen_light_srv_msg_send(
     const dev_struct_t *pdev,
     control_task_msg_evt_to_ble_t evt,
     meshx_lighting_server_cb_param_t *params)
@@ -117,7 +115,7 @@ static meshx_err_t ble_send_msg_handle_t(
 
     esp_err_t err = esp_ble_mesh_server_model_send_msg(params->model.p_model,
                                                        ctx,
-                                                       params->model.model_id,
+                                                       params->ctx.opcode,
                                                        ctl_status_pack_len,
                                                        (uint8_t *)&ctl_status_union);
     if (err)
@@ -138,9 +136,10 @@ static meshx_err_t ble_send_msg_handle_t(
  * @param[in] event The event type for the BLE Mesh Lightness Server.
  * @param[in] param Parameters associated with the event.
  */
-static void meshx_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_t event,
-                                          esp_ble_mesh_lighting_server_cb_param_t *param)
+static void meshx_ble_lightness_server_cb(MESHX_LIGHT_SRV_CB_EVT event,
+                                          MESHX_LIGHT_SRV_CB_PARAM *param)
 {
+    MESHX_UNUSED(event);
     MESHX_LOGD(MODULE_ID_MODEL_SERVER, "evt|op|src|dst: %02x|%04x|%04x|%04x|%04x",
              event, (unsigned)param->ctx.recv_op, param->ctx.addr, param->ctx.recv_dst,
              param->model->model_id);
@@ -238,7 +237,7 @@ static void meshx_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_
         }
         break;
     default:
-        ESP_LOGW(TAG, "CTL Unhandled Event %p", (void *)param->ctx.recv_op);
+        ESP_LOGW(TAG, "CTL Unhandled Event %p", (meshx_ptr_t )param->ctx.recv_op);
         break;
     }
     if (publish_flag)
@@ -250,22 +249,25 @@ static void meshx_ble_lightness_server_cb(esp_ble_mesh_lighting_server_cb_event_
 
 meshx_err_t meshx_plat_light_srv_init(void)
 {
-
+    /* Register callback for enabling Sending of Model Msg From MeshX to BLE Layer */
     meshx_err_t err = control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_TO_BLE,
         CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV,
-        (control_task_msg_handle_t)&ble_send_msg_handle_t);
+        (control_task_msg_handle_t)&esp_ble_mesh_gen_light_srv_msg_send);
     if (err)
         return err;
 
-    esp_err_t esp_err = esp_ble_mesh_register_lighting_server_callback((esp_ble_mesh_lighting_server_cb_t)&meshx_ble_lightness_server_cb);
+    /* Register the ESP Generic Server callback */
+    esp_err_t esp_err = esp_ble_mesh_register_lighting_server_callback(
+        (MESHX_LIGHT_SRV_CB)&meshx_ble_lightness_server_cb
+    );
     if (esp_err != ESP_OK)
         err = MESHX_ERR_PLAT;
 
     return err;
 }
 
-meshx_err_t meshx_plat_light_ctl_srv_create(void *p_model, void **p_pub, void **p_ctl_srv)
+meshx_err_t meshx_plat_light_ctl_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_srv)
 {
     if (!p_model || !p_pub || !p_ctl_srv)
         return MESHX_INVALID_ARG;
@@ -302,14 +304,14 @@ meshx_err_t meshx_plat_light_ctl_srv_create(void *p_model, void **p_pub, void **
 
     ((MESHX_MODEL *)p_model)->user_data = *p_ctl_srv;
 
-    void **temp = (void **)&((MESHX_MODEL *)p_model)->pub;
+    meshx_ptr_t *temp = (meshx_ptr_t *)&((MESHX_MODEL *)p_model)->pub;
 
     *temp = *p_pub;
 
     return err;
 }
 
-meshx_err_t meshx_plat_light_ctl_srv_delete(void **p_pub, void **p_ctl_srv)
+meshx_err_t meshx_plat_light_ctl_srv_delete(meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_srv)
 {
     if (p_ctl_srv)
     {
@@ -320,7 +322,7 @@ meshx_err_t meshx_plat_light_ctl_srv_delete(void **p_pub, void **p_ctl_srv)
     return meshx_plat_del_model_pub(p_pub);
 }
 
-meshx_err_t meshx_plat_set_light_ctl_srv_state(void *p_model,
+meshx_err_t meshx_plat_set_light_ctl_srv_state(meshx_ptr_t p_model,
                                                uint16_t delta_uv,
                                                uint16_t lightness,
                                                uint16_t temperature,
@@ -341,7 +343,7 @@ meshx_err_t meshx_plat_set_light_ctl_srv_state(void *p_model,
 
     return MESHX_SUCCESS;
 }
-meshx_err_t meshx_plat_light_ctl_srv_restore(void *p_model,
+meshx_err_t meshx_plat_light_ctl_srv_restore(meshx_ptr_t p_model,
                                              uint16_t delta_uv,
                                              uint16_t lightness,
                                              uint16_t temperature,

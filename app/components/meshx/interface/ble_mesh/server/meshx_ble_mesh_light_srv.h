@@ -244,8 +244,8 @@ typedef struct meshx_light_ctl_srv_state
  */
 typedef struct meshx_light_ctl_srv
 {
-    meshx_model_t model;
-    meshx_light_ctl_srv_state_t state;
+    meshx_model_t model;                /**< Light CTL Server model */
+    meshx_light_ctl_srv_state_t state;  /**< State of the Light CTL Server */
 } meshx_light_ctl_srv_t;
 
 /**
@@ -272,7 +272,7 @@ meshx_err_t meshx_plat_light_srv_init(void);
  *      - MESHX_SUCCESS on success.
  *      - Appropriate error code on failure.
  */
-meshx_err_t meshx_plat_light_ctl_srv_create(void *p_model, void **p_pub, void **p_ctl_srv);
+meshx_err_t meshx_plat_light_ctl_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_srv);
 
 /**
  * @brief Delete a Light CTL Server instance.
@@ -286,7 +286,7 @@ meshx_err_t meshx_plat_light_ctl_srv_create(void *p_model, void **p_pub, void **
  *      - MESHX_SUCCESS on success.
  *      - Appropriate error code on failure.
  */
-meshx_err_t meshx_plat_light_ctl_srv_delete(void **p_pub, void **p_ctl_srv);
+meshx_err_t meshx_plat_light_ctl_srv_delete(meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_srv);
 
 /**
  * @brief Set the state of the Light CTL Server.
@@ -304,7 +304,7 @@ meshx_err_t meshx_plat_light_ctl_srv_delete(void **p_pub, void **p_ctl_srv);
  *      - MESHX_SUCCESS on success.
  *      - Appropriate error code on failure.
  */
-meshx_err_t meshx_plat_set_light_ctl_srv_state(void *p_model,
+meshx_err_t meshx_plat_set_light_ctl_srv_state(meshx_ptr_t p_model,
                                                uint16_t delta_uv,
                                                uint16_t lightness,
                                                uint16_t temperature,
@@ -327,7 +327,7 @@ meshx_err_t meshx_plat_set_light_ctl_srv_state(void *p_model,
  *      - MESHX_SUCCESS on success.
  *      - Appropriate error code on failure.
  */
-meshx_err_t meshx_plat_light_ctl_srv_restore(void *p_model,
+meshx_err_t meshx_plat_light_ctl_srv_restore(meshx_ptr_t p_model,
                                              uint16_t delta_uv,
                                              uint16_t lightness,
                                              uint16_t temperature,

@@ -20,26 +20,31 @@
 /**
  * @brief Structure to hold the CW-WW server on/off state.
  */
-typedef struct meshx_on_off_srv_state
+typedef struct meshx_on_off_srv_el_state
 {
     uint8_t on_off; /**< On/Off state */
-} meshx_on_off_srv_state_t;
+} meshx_on_off_srv_el_state_t;
 
 /**
- * @brief Initialize the On/Off Server model.
+ * @brief Structure to hold the On/Off Server to element message.
+ */
+typedef struct meshx_on_off_srv_el_msg
+{
+    meshx_model_t model;        /**< Generic OnOff Server model */
+    uint8_t on_off_state;       /**< The present value of Generic OnOff state */
+}meshx_on_off_srv_el_msg_t;
+
+/**
+ * @brief Structure representing the MeshX On/Off Server Model.
  *
- * This function initializes the On/Off Server model, setting up necessary
- * configurations and state variables.
- *
- * @return
- *    - MESHX_SUCCESS: Success
- *    - MESHX_FAIL: Failure
+ * This structure is used to define the On/Off server model in the MeshX framework.
+ * It contains pointers to various components required for the On/Off server functionality.
  */
 typedef struct meshx_onoff_server_model
 {
-    void *meshx_server_sig_model;     /**< On/Off server SIG model pointer */
-    void *meshx_server_pub;           /**< List of relay server publication structures */
-    void *meshx_server_onoff_gen_srv; /**< List of relay server on/off generic structures */
+    meshx_ptr_t meshx_server_sig_model;     /**< Pointer to the On/Off server SIG model. */
+    meshx_ptr_t meshx_server_pub;           /**< Pointer to the list of relay server publication structures. */
+    meshx_ptr_t meshx_server_onoff_gen_srv; /**< Pointer to the list of relay server On/Off generic structures. */
 } meshx_onoff_server_model_t;
 
 /**
@@ -58,7 +63,7 @@ typedef struct meshx_onoff_server_model
  *     - MESHX_INVALID_ARG: The provided pointer is NULL.
  *     - MESHX_NO_MEM: Memory allocation failed.
  */
-meshx_err_t meshx_on_off_server_create(meshx_onoff_server_model_t **p_model, void *p_sig_model);
+meshx_err_t meshx_on_off_server_create(meshx_onoff_server_model_t **p_model, meshx_ptr_t p_sig_model);
 
 /**
  * @brief Delete the On/Off server model instance.
@@ -92,13 +97,13 @@ meshx_err_t meshx_on_off_server_init(void);
  * using the provided state value. It checks for a valid model pointer
  * before proceeding with the restoration.
  *
- * @param p_model Pointer to the On/Off server model structure.
- * @param onoff_state The On/Off state to be restored.
+ * @param[in] p_model       Pointer to the On/Off server model structure.
+ * @param[in] onoff_state   The On/Off state to be restored.
  *
  * @return
  *     - MESHX_INVALID_STATE: If the model pointer is NULL.
  *     - Result of the platform-specific restoration function.
  */
-meshx_err_t meshx_gen_on_off_srv_state_restore(MESHX_MODEL *p_model, meshx_on_off_srv_state_t onoff_state);
+meshx_err_t meshx_gen_on_off_srv_state_restore(meshx_ptr_t p_model, meshx_on_off_srv_el_state_t onoff_state);
 
 #endif /* __MESHX_ONOFF_SERVER__ */

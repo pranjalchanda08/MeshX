@@ -52,7 +52,7 @@ meshx_err_t meshx_plat_del_model_pub(void ** p_pub)
     return MESHX_SUCCESS;
 }
 
-meshx_err_t meshx_get_model_id(void* p_model, uint16_t *model_id)
+meshx_err_t meshx_get_model_id(meshx_ptr_t p_model, uint16_t *model_id)
 {
     if(!p_model)
         return MESHX_INVALID_ARG;
@@ -63,7 +63,7 @@ meshx_err_t meshx_get_model_id(void* p_model, uint16_t *model_id)
     return MESHX_SUCCESS;
 }
 
-meshx_err_t meshx_create_plat_composition(void** p_comp)
+meshx_err_t meshx_create_plat_composition(meshx_ptr_t* p_comp)
 {
     if(!p_comp)
         return MESHX_INVALID_ARG;
@@ -77,9 +77,9 @@ meshx_err_t meshx_create_plat_composition(void** p_comp)
 
 meshx_err_t meshx_plat_add_element_to_composition(
     uint16_t index,
-    void* p_element_list,
-    void* p_sig_models,
-    void* p_ven_models,
+    meshx_ptr_t p_element_list,
+    meshx_ptr_t p_sig_models,
+    meshx_ptr_t p_ven_models,
     uint8_t sig_cnt,
     uint8_t ven_cnt
 ) {
@@ -91,15 +91,15 @@ meshx_err_t meshx_plat_add_element_to_composition(
     element->sig_models = p_sig_models;
     element->vnd_models = p_ven_models;
 
-    memcpy((void*)&(element->sig_model_count), &sig_cnt, sizeof(uint8_t));
-    memcpy((void*)&(element->vnd_model_count), &ven_cnt, sizeof(uint8_t));
+    memcpy((meshx_ptr_t)&(element->sig_model_count), &sig_cnt, sizeof(uint8_t));
+    memcpy((meshx_ptr_t)&(element->vnd_model_count), &ven_cnt, sizeof(uint8_t));
 
     return MESHX_SUCCESS;
 }
 
 meshx_err_t meshx_plat_composition_init(
-    void* p_composition,
-    void* p_elements,
+    meshx_ptr_t p_composition,
+    meshx_ptr_t p_elements,
     uint16_t cid,
     uint16_t pid,
     uint16_t element_idx
@@ -130,7 +130,7 @@ meshx_err_t meshx_platform_bt_init(void)
     return MESHX_SUCCESS;
 }
 
-meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, void* comp)
+meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, meshx_ptr_t comp)
 {
     if(comp == NULL || prov_cfg == NULL)
         return MESHX_INVALID_ARG;

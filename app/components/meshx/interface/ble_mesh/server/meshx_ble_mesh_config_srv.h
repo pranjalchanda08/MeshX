@@ -180,7 +180,7 @@ meshx_err_t meshx_plat_config_srv_init(void);
  *     - MESHX_SUCCESS on success.
  *     - Appropriate error code from `meshx_err_t` on failure.
  */
-meshx_err_t meshx_plat_get_config_srv_instance(void** p_conf_srv);
+meshx_err_t meshx_plat_get_config_srv_instance(meshx_ptr_t* p_conf_srv);
 
 /**
  * @brief Retrieves the configuration server model for the BLE Mesh.
@@ -195,6 +195,6 @@ meshx_err_t meshx_plat_get_config_srv_instance(void** p_conf_srv);
  *     - MESHX_SUCCESS on success.
  *     - Appropriate error code from `meshx_err_t` on failure.
  */
-meshx_err_t meshx_plat_get_config_srv_model(void* p_model);
+meshx_err_t meshx_plat_get_config_srv_model(meshx_ptr_t p_model);
 
 #endif /* __MESHX_BLE_MESH_CONFIG_SRV_H__ */
