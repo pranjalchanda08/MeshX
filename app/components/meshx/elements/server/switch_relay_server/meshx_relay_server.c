@@ -71,7 +71,7 @@ static meshx_err_t relay_server_config_srv_cb(
     size_t rel_el_id = 0;
     uint16_t element_id = 0;
 
-    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "EVT: %p", (void *)evt);
+    MESHX_LOGD(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "EVT: %p", (void *)evt);
     switch (evt)
     {
     case CONTROL_TASK_MSG_EVT_APP_KEY_BIND:
@@ -92,7 +92,7 @@ static meshx_err_t relay_server_config_srv_cb(
         el_ctx->pub_addr = evt == CONTROL_TASK_MSG_EVT_PUB_ADD ? params->state_change.mod_pub_set.pub_addr
                                                                : MESHX_ADDR_UNASSIGNED;
         el_ctx->app_id = params->state_change.mod_pub_set.app_idx;
-        MESHX_LOGI(MODULE_ID_MODEL_SERVER, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
+        MESHX_LOGI(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
         break;
     default:
         break;
@@ -122,7 +122,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
 
     if (relay_element_init_ctrl.el_list)
     {
-        MESHX_LOGW(MODULE_ID_MODEL_SERVER, "Relay element list already initialized");
+        MESHX_LOGW(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Relay element list already initialized");
         return MESHX_INVALID_STATE;
     }
 
@@ -150,10 +150,11 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
                                          &relay_element_init_ctrl.el_list[i].relay_srv_model_list[RELAY_SIG_ONOFF_MODEL_ID]);
         if (err)
         {
-            MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Meshx On Off Server create failed (Err : 0x%x)", err);
+            MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Meshx On Off Server create failed (Err : 0x%x)", err);
             return err;
         }
-        relay_element_init_ctrl.el_list[i].onoff_srv_model->meshx_server_sig_model = &relay_element_init_ctrl.el_list[i].relay_srv_model_list[RELAY_SIG_ONOFF_MODEL_ID];
+        relay_element_init_ctrl.el_list[i].onoff_srv_model->meshx_server_sig_model
+            = &relay_element_init_ctrl.el_list[i].relay_srv_model_list[RELAY_SIG_ONOFF_MODEL_ID];
     }
 
     return err;
@@ -178,7 +179,7 @@ static meshx_err_t meshx_element_struct_deinit(void)
 {
     if (!relay_element_init_ctrl.element_cnt || !relay_element_init_ctrl.el_list)
     {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Relay element list not initialized");
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Relay element list not initialized");
         return MESHX_INVALID_STATE;
     }
 
@@ -193,7 +194,7 @@ static meshx_err_t meshx_element_struct_deinit(void)
         }
         err = meshx_on_off_server_delete(&relay_element_init_ctrl.el_list[i].onoff_srv_model);
         if (err)
-            MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Meshx On Off Server delete failed (Err : 0x%x)", err);
+            MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Meshx On Off Server delete failed (Err : 0x%x)", err);
     }
 
     if (relay_element_init_ctrl.el_list)
@@ -218,7 +219,7 @@ static meshx_err_t meshx_dev_create_relay_model_space(uint16_t n_max)
     meshx_err_t err = meshx_element_struct_init(n_max);
     if (err)
     {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Relay Model space create failed: (%d)", err);
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Relay Model space create failed: (%d)", err);
         meshx_element_struct_deinit();
         return err;
     }
@@ -244,7 +245,7 @@ static meshx_err_t meshx_restore_model_states(uint16_t element_id)
                                  &model_id);
         if (err)
         {
-            MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to get model ID (err: 0x%x)", err);
+            MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to get model ID (err: 0x%x)", err);
             return err;
         }
 
@@ -254,7 +255,7 @@ static meshx_err_t meshx_restore_model_states(uint16_t element_id)
                                                      el_ctx->state);
             if (err)
             {
-                MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to restore on-off server state (err: 0x%x)", err);
+                MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to restore on-off server state (err: 0x%x)", err);
                 return err;
             }
         }
@@ -278,7 +279,7 @@ static meshx_err_t meshx_add_relay_srv_model_to_element_list(dev_struct_t *pdev,
 
     if ((n_max + *start_idx) > CONFIG_MAX_ELEMENT_COUNT)
     {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "No of elements limit reached");
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "No of elements limit reached");
         return MESHX_NO_MEM;
     }
 
@@ -299,7 +300,7 @@ static meshx_err_t meshx_add_relay_srv_model_to_element_list(dev_struct_t *pdev,
             RELAY_SRV_MODEL_VEN_CNT);
         if (err)
         {
-            MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to add element to composition: (%d)", err);
+            MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to add element to composition: (%d)", err);
             return err;
         }
         err = meshx_nvs_element_ctx_get(
@@ -308,14 +309,14 @@ static meshx_err_t meshx_add_relay_srv_model_to_element_list(dev_struct_t *pdev,
             sizeof(relay_element_init_ctrl.el_list[i - *start_idx].srv_ctx));
         if (err != MESHX_SUCCESS)
         {
-            MESHX_LOGW(MODULE_ID_MODEL_SERVER, "Failed to get relay element context: (0x%x)", err);
+            MESHX_LOGW(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to get relay element context: (0x%x)", err);
         }
         else
         {
             err = meshx_restore_model_states(i - *start_idx);
             if (err != MESHX_SUCCESS)
             {
-                MESHX_LOGW(MODULE_ID_MODEL_SERVER, "Failed to restore relay model states: (0x%x)", err);
+                MESHX_LOGW(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to restore relay model states: (0x%x)", err);
             }
         }
     }
@@ -340,7 +341,7 @@ static meshx_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, contr
     size_t rel_el_id = 0;
     meshx_err_t err = MESHX_SUCCESS;
     meshx_relay_srv_model_ctx_t *el_ctx = NULL;
-    const meshx_on_off_srv_t *p_onoff_srv = (meshx_on_off_srv_t *)params;
+    const meshx_on_off_srv_el_msg_t *p_onoff_srv = (meshx_on_off_srv_el_msg_t *)params;
     meshx_el_relay_server_evt_t state;
     uint16_t element_id = p_onoff_srv->model.el_id;
 
@@ -354,7 +355,7 @@ static meshx_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, contr
 
     err = meshx_nvs_element_ctx_set(element_id, el_ctx, sizeof(meshx_relay_srv_model_ctx_t));
     if (err != MESHX_SUCCESS)
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to set relay element context: (%d)", err);
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to set relay element context: (%d)", err);
 
     state.on_off = el_ctx->state.on_off;
     err = meshx_send_msg_to_app(
@@ -364,7 +365,7 @@ static meshx_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, contr
         sizeof(meshx_el_relay_server_evt_t),
         &state);
     if (err != MESHX_SUCCESS)
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to send relay state change message: (%d)", err);
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to send relay state change message: (%d)", err);
 
     return MESHX_SUCCESS;
 }
@@ -403,13 +404,13 @@ static meshx_err_t relay_prov_control_task_handler(dev_struct_t const *pdev, con
         if (gen_srv_send.ctx.dst_addr == ESP_BLE_MESH_ADDR_UNASSIGNED || gen_srv_send.ctx.app_idx == ESP_BLE_MESH_KEY_UNUSED)
             continue;
 
-        err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE,
-                                       CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV,
-                                       &gen_srv_send,
-                                       sizeof(meshx_gen_srv_cb_param_t));
+        err = meshx_gen_srv_send_msg_to_ble(
+            CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV,
+            &gen_srv_send
+        );
         if (err)
         {
-            MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to send ONOFF status message (Err: %x)", err);
+            MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to send ONOFF status message (Err: %x)", err);
             return err;
         }
     }
@@ -431,13 +432,13 @@ meshx_err_t meshx_create_relay_elements(dev_struct_t *pdev, uint16_t element_cnt
     err = meshx_dev_create_relay_model_space(element_cnt);
     if (err)
     {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Relay Model create failed: (%d)", err);
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Relay Model create failed: (%d)", err);
         return err;
     }
     err = meshx_add_relay_srv_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, element_cnt);
     if (err)
     {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Relay Model create failed: (%d)", err);
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Relay Model create failed: (%d)", err);
         return err;
     }
 #if CONFIG_ENABLE_CONFIG_SERVER
@@ -446,7 +447,7 @@ meshx_err_t meshx_create_relay_elements(dev_struct_t *pdev, uint16_t element_cnt
         CONFIG_SERVER_CB_MASK);
     if (err)
     {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Relay Model configserver callback reg failed: (%d)", err);
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Relay Model configserver callback reg failed: (%d)", err);
         return err;
     }
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
@@ -456,7 +457,7 @@ meshx_err_t meshx_create_relay_elements(dev_struct_t *pdev, uint16_t element_cnt
         (control_task_msg_handle_t)&meshx_el_control_task_handler);
     if (err)
     {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to register control task callback: (%d)", err);
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to register control task callback: (%d)", err);
         return err;
     }
 
@@ -466,13 +467,13 @@ meshx_err_t meshx_create_relay_elements(dev_struct_t *pdev, uint16_t element_cnt
         (control_task_msg_handle_t)&relay_prov_control_task_handler);
     if (err)
     {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to register control task callback: (%d)", err);
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to register control task callback: (%d)", err);
         return err;
     }
     err = meshx_on_off_server_init();
     if (err)
     {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "meshx_on_off_server_init failed: (%d)", err);
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "meshx_on_off_server_init failed: (%d)", err);
         return err;
     }
     return MESHX_SUCCESS;

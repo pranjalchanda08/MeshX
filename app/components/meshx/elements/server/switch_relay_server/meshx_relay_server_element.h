@@ -35,10 +35,10 @@ typedef enum
  */
 typedef struct meshx_relay_srv_model_ctx
 {
-    meshx_on_off_srv_state_t state; /**< On/Off state */
     uint8_t tid;                    /**< Transaction ID */
-    uint16_t pub_addr;              /**< Publish address */
     uint16_t app_id;                /**< Application ID */
+    uint16_t pub_addr;              /**< Publish address */
+    meshx_on_off_srv_el_state_t state; /**< On/Off state */
 } meshx_relay_srv_model_ctx_t;
 
 /**
@@ -47,8 +47,8 @@ typedef struct meshx_relay_srv_model_ctx
 typedef struct meshx_relay_element
 {
     meshx_relay_srv_model_ctx_t *srv_ctx;                      /**< Context of the relay server */
-    MESHX_MODEL relay_srv_model_list[RELAY_SRV_MODEL_SIG_CNT]; /**< List of Relay Server SIG Models */
     meshx_onoff_server_model_t *onoff_srv_model;               /**< On Off Server model */
+    MESHX_MODEL relay_srv_model_list[RELAY_SRV_MODEL_SIG_CNT]; /**< List of Relay Server SIG Models */
 } meshx_relay_element_t;
 
 /**

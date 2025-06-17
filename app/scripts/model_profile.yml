@@ -69,7 +69,7 @@ models:
         macros:
             - def: "CONFIG_GEN_ONOFF_CLIENT_COUNT"
               value: 0
-        base_model: null
+        base_model: "gen_client"
 
     gen_onoff_server:
         path: "elements/server/models/gen_onoff_server"
@@ -105,10 +105,22 @@ models:
         macros:
             - def: "CONFIG_LIGHT_CTL_CLIENT_COUNT"
               value: 0
-        base_model: null
+        base_model: "light_client"
 
 # Base model build registration
 base_models:
+    gen_client:
+        path: "elements/client/base/gen_client"
+        macros:
+            - def: "CONFIG_ENABLE_GEN_CLIENT"
+              value: false
+
+    light_client:
+        path: "elements/client/base/light_client"
+        macros:
+            - def: "CONFIG_ENABLE_LIGHT_CLIENT"
+              value: false
+
     gen_server:
         path: "elements/server/models/base/gen_server"
         macros:

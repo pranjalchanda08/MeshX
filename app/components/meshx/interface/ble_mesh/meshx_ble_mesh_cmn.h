@@ -29,10 +29,10 @@
  */
 typedef struct meshx_model
 {
-    uint16_t el_id;    /**< Element ID */
-    uint16_t model_id; /**< Model ID */
-    uint16_t pub_addr; /**< Publication address */
-    void *p_model;     /**< Pointer to the model structure */
+    uint16_t el_id;         /**< Element ID */
+    uint16_t model_id;      /**< Model ID */
+    uint16_t pub_addr;      /**< Publication address */
+    meshx_ptr_t p_model;    /**< Pointer to the model structure */
 } meshx_model_t;
 
 /**
@@ -45,7 +45,7 @@ typedef struct meshx_ctx
     uint16_t src_addr; /** Source address */
     uint16_t dst_addr; /** Destination address */
     uint32_t opcode;   /** Opcode */
-    void *p_ctx;       /** Pointer to the context structure */
+    meshx_ptr_t p_ctx; /** Pointer to the context structure */
 } meshx_ctx_t;
 
 /**
@@ -86,7 +86,7 @@ meshx_err_t meshx_is_group_subscribed(meshx_model_t *p_model, uint16_t addr);
  *         MESHX_INVALID_ARG if any input pointer is NULL,
  *         MESHX_NO_MEM if memory allocation fails.
  */
-meshx_err_t meshx_plat_create_model_pub(void **p_pub, uint16_t nmax);
+meshx_err_t meshx_plat_create_model_pub(meshx_ptr_t* p_pub, uint16_t nmax);
 
 /**
  * @brief Deletes the model and publication objects.
@@ -99,7 +99,7 @@ meshx_err_t meshx_plat_create_model_pub(void **p_pub, uint16_t nmax);
  * @return MESHX_SUCCESS on successful deletion, MESHX_INVALID_ARG if
  *         either pointer is NULL.
  */
-meshx_err_t meshx_plat_del_model_pub(void **p_pub);
+meshx_err_t meshx_plat_del_model_pub(meshx_ptr_t* p_pub);
 
 /**
  * @brief Retrieve the model ID of a generic server model.
@@ -111,7 +111,7 @@ meshx_err_t meshx_plat_del_model_pub(void **p_pub);
  *
  * @return MESHX_SUCCESS on success, or an appropriate error code on failure.
  */
-meshx_err_t meshx_get_model_id(void *p_model, uint16_t *model_id);
+meshx_err_t meshx_get_model_id(meshx_ptr_t p_model, uint16_t *model_id);
 
 /**
  * @brief Creates a platform-specific BLE Mesh composition object.
@@ -126,7 +126,7 @@ meshx_err_t meshx_get_model_id(void *p_model, uint16_t *model_id);
  * @return MESHX_SUCCESS on successful creation, MESHX_INVALID_ARG if the
  *         provided pointer is NULL, or MESHX_NO_MEM if memory allocation fails.
  */
-meshx_err_t meshx_create_plat_composition(void **p_comp);
+meshx_err_t meshx_create_plat_composition(meshx_ptr_t* p_comp);
 
 /**
  * @brief Adds an element to the BLE Mesh composition.
@@ -147,9 +147,9 @@ meshx_err_t meshx_create_plat_composition(void **p_comp);
  */
 meshx_err_t meshx_plat_add_element_to_composition(
     uint16_t index,
-    void *p_element_list,
-    void *p_sig_models,
-    void *p_ven_models,
+    meshx_ptr_t p_element_list,
+    meshx_ptr_t p_sig_models,
+    meshx_ptr_t p_ven_models,
     uint8_t sig_cnt,
     uint8_t ven_cnt);
 
@@ -169,8 +169,8 @@ meshx_err_t meshx_plat_add_element_to_composition(
  * @return MESHX_SUCCESS on successful initialization, or an appropriate error code on failure.
  */
 meshx_err_t meshx_plat_composition_init(
-    void *p_composition,
-    void *p_elements,
+    meshx_ptr_t p_composition,
+    meshx_ptr_t p_elements,
     uint16_t cid,
     uint16_t pid,
     uint16_t element_idx);
@@ -196,6 +196,6 @@ meshx_err_t meshx_platform_bt_init(void);
  *
  * @return meshx_err_t Returns MESHX_OK on success, or an appropriate error code.
  */
-meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, void *comp);
+meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, meshx_ptr_t comp);
 
 #endif /* __MESHX_PLAT_SRV_CMN_H__ */
