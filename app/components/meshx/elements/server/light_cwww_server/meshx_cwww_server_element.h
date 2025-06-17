@@ -45,8 +45,8 @@ typedef struct cwww_srv_ctx
     uint8_t tid;                                /**< Transaction ID */
     uint16_t app_id;                            /**< Application ID */
     uint16_t pub_addr;                          /**< Publish address */
-    meshx_on_off_srv_state_t state;             /**< State of the cwww client */
-    meshx_on_off_srv_state_t prev_state;        /**< State of the cwww client */
+    meshx_on_off_srv_el_state_t state;          /**< State of the cwww client */
+    meshx_on_off_srv_el_state_t prev_state;     /**< State of the cwww client */
     meshx_light_ctl_srv_state_t ctl_state;      /**< State of the cwww client */
     meshx_light_ctl_srv_state_t prev_ctl_state; /**< State of the cwww client */
 } meshx_cwww_server_ctx_t;

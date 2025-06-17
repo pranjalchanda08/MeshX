@@ -176,10 +176,10 @@ static meshx_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
         param->ctx.opcode = (uint16_t)status_op;
         param->ctx.dst_addr = param->model.pub_addr;
 
-        return control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE,
-                                        CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV,
-                                        param,
-                                        sizeof(meshx_lighting_server_cb_param_t));
+        err = meshx_gen_light_srv_send_msg_to_ble(
+            CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV,
+            param
+        );
     }
 
     return err;
@@ -215,11 +215,17 @@ meshx_err_t meshx_light_ctl_server_init(void)
     if (err)
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize prod server");
 
-    err = meshx_lighting_reg_cb(MESHX_MODEL_ID_LIGHT_CTL_SRV, (meshx_lighting_server_cb)&meshx_handle_light_ctl_msg);
+    err = meshx_lighting_reg_cb(
+        MESHX_MODEL_ID_LIGHT_CTL_SRV,
+        (meshx_lighting_server_cb)&meshx_handle_light_ctl_msg
+    );
     if (err)
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize meshx_gen_srv_reg_cb (Err: %d)", err);
 
-    err = meshx_lighting_reg_cb(MESHX_MODEL_ID_LIGHT_CTL_SETUP_SRV, (meshx_lighting_server_cb)&meshx_handle_light_ctl_msg);
+    err = meshx_lighting_reg_cb(
+        MESHX_MODEL_ID_LIGHT_CTL_SETUP_SRV,
+        (meshx_lighting_server_cb)&meshx_handle_light_ctl_msg
+    );
     if (err)
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize meshx_gen_srv_reg_cb (Err: %d)", err);
 

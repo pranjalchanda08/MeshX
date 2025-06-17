@@ -170,6 +170,7 @@ class CodeGen(CodeGenException):
         Resolve base model dependencies and their dependencies.
         """
         res_base_model = self.prod_profile['base_models'][base_model]
+        print(res_base_model)
         self.__get_src_from_path(res_base_model['path'])
         for macro in res_base_model['macros']:
             macro['value'] = True

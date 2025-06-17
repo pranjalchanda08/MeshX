@@ -1,6 +1,6 @@
 /**
  * Copyright (c) 2024 - 2025 MeshX
- * 
+ *
  * @file meshx_ble_mesh_cmn_def.h
  * @brief Common definitions for BLE Mesh models and opcodes in the MeshX framework.
  *
@@ -528,6 +528,7 @@ typedef enum {
     MESHX_ENTER_STRING  = MESHX_BIT(3),
 } meshx_input_action_t;
 
+typedef void* meshx_ptr_t;
 typedef unsigned char meshx_addr_type_t;
 
 #ifndef MESHX_BD_ADDR_LEN

@@ -66,7 +66,7 @@ static void meshx_ble_mesh_config_server_cb(esp_ble_mesh_cfg_server_cb_event_t e
                     .dst_addr = param->ctx.recv_dst,
                     .src_addr = param->ctx.addr,
                     .opcode = param->ctx.recv_op,
-                    .p_ctx = (void*) &param->ctx
+                    .p_ctx = (meshx_ptr_t) &param->ctx
                 },
             .model =
                 {
@@ -77,65 +77,11 @@ static void meshx_ble_mesh_config_server_cb(esp_ble_mesh_cfg_server_cb_event_t e
         };
 
     config_evt_t pub_evt = CONTROL_TASK_MSG_EVT_ALL;
-    switch (param->model->model_id)
-    {
-    case ESP_BLE_MESH_MODEL_OP_APP_KEY_ADD:
-        memcpy(&pub_param.state_change.appkey_add,
-               &param->value.state_change.appkey_add,
-               sizeof(pub_param.state_change.appkey_add));
-        pub_evt = CONTROL_TASK_MSG_EVT_APP_KEY_ADD;
-        break;
-    case ESP_BLE_MESH_MODEL_OP_NET_KEY_ADD:
-        memcpy(&pub_param.state_change.netkey_add,
-               &param->value.state_change.netkey_add,
-               sizeof(pub_param.state_change.netkey_add));
-        pub_evt = CONTROL_TASK_MSG_EVT_NET_KEY_ADD;
-        break;
-    case ESP_BLE_MESH_MODEL_OP_MODEL_SUB_ADD:
-        memcpy(&pub_param.state_change.mod_sub_add,
-               &param->value.state_change.mod_sub_add,
-               sizeof(pub_param.state_change.mod_sub_add));
-        pub_evt = CONTROL_TASK_MSG_EVT_SUB_ADD;
-        break;
-    case ESP_BLE_MESH_MODEL_OP_MODEL_PUB_SET:
-        memcpy(&pub_param.state_change.mod_pub_set,
-               &param->value.state_change.mod_pub_set,
-               sizeof(pub_param.state_change.mod_pub_set));
-        pub_evt = CONTROL_TASK_MSG_EVT_PUB_ADD;
-        break;
-    case ESP_BLE_MESH_MODEL_OP_MODEL_APP_BIND:
-        memcpy(&pub_param.state_change.mod_app_bind,
-               &param->value.state_change.mod_app_bind,
-               sizeof(pub_param.state_change.mod_app_bind));
-        pub_evt = CONTROL_TASK_MSG_EVT_APP_KEY_BIND;
-        break;
-    case ESP_BLE_MESH_MODEL_OP_NET_KEY_DELETE:
-        memcpy(&pub_param.state_change.netkey_delete,
-               &param->value.state_change.netkey_delete,
-               sizeof(pub_param.state_change.netkey_delete));
-        pub_evt = CONTROL_TASK_MSG_EVT_NET_KEY_DEL;
-        break;
-    case ESP_BLE_MESH_MODEL_OP_APP_KEY_DELETE:
-        memcpy(&pub_param.state_change.appkey_delete,
-               &param->value.state_change.appkey_delete,
-               sizeof(pub_param.state_change.appkey_delete));
-        pub_evt = CONTROL_TASK_MSG_EVT_APP_KEY_DEL;
-        break;
-    case ESP_BLE_MESH_MODEL_OP_MODEL_SUB_DELETE:
-        memcpy(&pub_param.state_change.mod_sub_delete,
-               &param->value.state_change.mod_sub_delete,
-               sizeof(pub_param.state_change.mod_sub_delete));
-        pub_evt = CONTROL_TASK_MSG_EVT_SUB_DEL;
-        break;
-    case ESP_BLE_MESH_MODEL_OP_MODEL_APP_UNBIND:
-        memcpy(&pub_param.state_change.mod_app_unbind,
-               &param->value.state_change.mod_app_unbind,
-               sizeof(pub_param.state_change.mod_app_unbind));
-        pub_evt = CONTROL_TASK_MSG_EVT_APP_KEY_UNBIND;
-        break;
-    default:
-        break;
-    }
+    /* Copy all the status msg from the BLE layer */
+    memcpy(&pub_param.state_change,
+           &param->value.state_change,
+           sizeof(meshx_cfg_srv_state_change_t));
+
     if (pub_evt == CONTROL_TASK_MSG_EVT_ALL)
         return;
 
@@ -162,7 +108,7 @@ meshx_err_t meshx_plat_config_srv_init(void)
     return MESHX_SUCCESS;
 }
 
-meshx_err_t meshx_plat_get_config_srv_instance(void** p_conf_srv)
+meshx_err_t meshx_plat_get_config_srv_instance(meshx_ptr_t* p_conf_srv)
 {
     if (p_conf_srv == NULL)
     {
@@ -174,7 +120,7 @@ meshx_err_t meshx_plat_get_config_srv_instance(void** p_conf_srv)
     return MESHX_SUCCESS;
 }
 
-meshx_err_t meshx_plat_get_config_srv_model(void* p_model)
+meshx_err_t meshx_plat_get_config_srv_model(meshx_ptr_t p_model)
 {
     if (p_model == NULL)
     {

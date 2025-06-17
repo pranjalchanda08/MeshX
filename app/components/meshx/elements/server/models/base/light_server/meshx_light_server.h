@@ -20,6 +20,22 @@
 typedef control_task_msg_handle_t meshx_lighting_server_cb;
 
 /**
+ * @brief Sends a message to the BLE subsystem via the control task.
+ *
+ * This function publishes a message to the BLE layer with the specified event and parameters.
+ *
+ * @param[in] evt          The event to be sent to the BLE layer.
+ * @param[in] params       Pointer to the parameters associated with the event.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Message sent successfully.
+ *     - MESHX_FAIL: Failed to send the message.
+ */
+meshx_err_t meshx_gen_light_srv_send_msg_to_ble(
+    control_task_msg_evt_to_ble_t evt,
+    const meshx_lighting_server_cb_param_t *params);
+
+/**
  * @brief Register a callback function for the lighting server model.
  *
  * This function registers a callback function that will be called when

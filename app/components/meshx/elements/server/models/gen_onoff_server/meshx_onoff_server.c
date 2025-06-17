@@ -28,7 +28,7 @@ static meshx_err_t meshx_state_change_notify(meshx_gen_srv_cb_param_t *param)
     if (!param)
         return MESHX_INVALID_ARG;
 
-    meshx_on_off_srv_t srv_onoff_param = {
+    meshx_on_off_srv_el_msg_t srv_onoff_param = {
         .model = param->model,
         .on_off_state = param->state_change.onoff_set.onoff};
 
@@ -38,7 +38,7 @@ static meshx_err_t meshx_state_change_notify(meshx_gen_srv_cb_param_t *param)
             CONTROL_TASK_MSG_CODE_EL_STATE_CH,
             CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF,
             &srv_onoff_param,
-            sizeof(meshx_on_off_srv_t));
+            sizeof(meshx_on_off_srv_el_msg_t));
         return err ? err : MESHX_SUCCESS;
     }
     return MESHX_NOT_SUPPORTED;
@@ -131,13 +131,12 @@ static meshx_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_
     {
         /* Here the message was received from unregistered source and mention the state to the respective client */
         MESHX_LOGD(MODULE_ID_MODEL_SERVER, "PUB: src|pub %x|%x", param->ctx.dst_addr, param->model.pub_addr);
-        param->model.model_id = ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_STATUS;
+        param->ctx.opcode = MESHX_MODEL_OP_GEN_ONOFF_STATUS;
         param->ctx.dst_addr = param->model.pub_addr;
 
-        return control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE,
-                                        CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV,
-                                        param,
-                                        sizeof(meshx_gen_srv_cb_param_t));
+        return meshx_gen_srv_send_msg_to_ble(
+            CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV,
+            param);
     }
     return MESHX_SUCCESS;
 }
@@ -169,7 +168,10 @@ meshx_err_t meshx_on_off_server_init(void)
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize meshx server");
     }
 #endif /* CONFIG_ENABLE_SERVER_COMMON */
-    err = meshx_gen_srv_reg_cb(MESHX_MODEL_ID_GEN_ONOFF_SRV, (meshx_server_cb)&meshx_handle_gen_onoff_msg);
+    err = meshx_gen_srv_reg_cb(
+            MESHX_MODEL_ID_GEN_ONOFF_SRV,
+            (meshx_server_cb)&meshx_handle_gen_onoff_msg
+        );
     if (err)
     {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize meshx_gen_srv_reg_cb (Err: %d)", err);
@@ -204,7 +206,7 @@ meshx_err_t meshx_on_off_server_delete(meshx_onoff_server_model_t **p_model)
         return MESHX_INVALID_ARG;
     }
 
-    meshx_plat_on_off_gen_srv_delete(
+    meshx_plat_gen_srv_delete(
         &((*p_model)->meshx_server_pub),
         &((*p_model)->meshx_server_onoff_gen_srv)
     );
@@ -215,7 +217,7 @@ meshx_err_t meshx_on_off_server_delete(meshx_onoff_server_model_t **p_model)
     return MESHX_SUCCESS;
 }
 
-meshx_err_t meshx_gen_on_off_srv_state_restore(MESHX_MODEL *p_model, meshx_on_off_srv_state_t onoff_state)
+meshx_err_t meshx_gen_on_off_srv_state_restore(meshx_ptr_t p_model, meshx_on_off_srv_el_state_t onoff_state)
 {
     if(!p_model)
         return MESHX_INVALID_STATE;

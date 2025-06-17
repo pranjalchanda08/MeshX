@@ -138,16 +138,10 @@ typedef union
 
 typedef struct meshx_gen_srv_cb_param
 {
-    meshx_ctx_t ctx;
-    meshx_model_t model;
-    meshx_gen_srv_state_change_t state_change;
+    meshx_ctx_t ctx;                            /**< Context of the received messages */
+    meshx_model_t model;                        /**< Pointer to Generic Server Models */
+    meshx_gen_srv_state_change_t state_change;  /**< Value of the received Generic Messages */
 } meshx_gen_srv_cb_param_t;
-
-typedef struct meshx_on_off_srv
-{
-    meshx_model_t model;
-    uint8_t on_off_state;
-}meshx_on_off_srv_t;
 
 typedef control_task_msg_handle_t meshx_server_cb;
 
@@ -177,13 +171,13 @@ meshx_err_t meshx_plat_on_off_gen_srv_create(void* p_model, void** p_pub, void**
  * resources associated with the server.
  *
  * @param[in,out] p_pub Pointer to the publication structure to be deleted.
- * @param[in,out] p_onoff_srv Pointer to the OnOff Server structure to be freed.
+ * @param[in,out] p_srv Pointer to the Generic Server structure to be freed.
  *
  * @return
  *     - MESHX_SUCCESS: Model and publication deleted successfully.
  *     - MESHX_FAIL: Failed to delete the model or publication.
  */
-meshx_err_t meshx_plat_on_off_gen_srv_delete(void** p_pub, void** p_onoff_srv);
+meshx_err_t meshx_plat_gen_srv_delete(void** p_pub, void** p_srv);
 
 /**
  * @brief Set the state of a generic server model.

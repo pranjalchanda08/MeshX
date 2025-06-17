@@ -381,7 +381,7 @@ static meshx_err_t meshx_el_control_task_handler(const dev_struct_t *pdev, const
     {
     case CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF:
     {
-        const meshx_on_off_srv_t *p_onoff_srv = (const meshx_on_off_srv_t *)params;
+        const meshx_on_off_srv_el_msg_t *p_onoff_srv = (const meshx_on_off_srv_el_msg_t *)params;
         element_id = p_onoff_srv->model.el_id;
         if (!IS_EL_IN_RANGE(element_id))
             goto el_ctrl_task_hndlr_exit;
@@ -483,10 +483,11 @@ static meshx_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, cont
         if (gen_srv_send.ctx.dst_addr == MESHX_ADDR_UNASSIGNED || gen_srv_send.ctx.app_idx == MESHX_KEY_UNUSED)
             continue;
 
-        err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE,
-                                       CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV,
-                                       &gen_srv_send,
-                                       sizeof(meshx_gen_srv_cb_param_t));
+        err = meshx_gen_srv_send_msg_to_ble(
+            CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV,
+            &gen_srv_send
+        );
+
         if (err)
         {
             MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to send ONOFF status message (Err: %x)", err);
@@ -502,10 +503,10 @@ static meshx_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, cont
         light_srv_send.model.el_id = (uint16_t)el_id;
         light_srv_send.model.p_model = cwww_element_init_ctrl.el_list[rel_el_id].ctl_srv_model->meshx_server_sig_model;
 
-        err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE,
-                                       CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV,
-                                       &light_srv_send,
-                                       sizeof(meshx_lighting_server_cb_param_t));
+        err = meshx_gen_light_srv_send_msg_to_ble(
+            CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV,
+            &light_srv_send
+        );
         if (err)
         {
             MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to send CTL status message (Err: %x)", err);
