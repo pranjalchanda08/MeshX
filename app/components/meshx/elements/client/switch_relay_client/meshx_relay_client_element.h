@@ -23,6 +23,7 @@
 #include "app_common.h"
 #include "meshx_onoff_client.h"
 
+#define RELAY_CLIENT_ELEMENT_NOS_DEF 3
 /**
  * @def CONFIG_RELAY_CLIENT_COUNT
  * @brief Number of relay client elements, configurable via build configuration.
@@ -36,92 +37,75 @@
  * @def RELAY_CLI_MODEL_SIG_CNT
  * @brief Number of SIG models in a relay model element.
  */
-
-#define RELAY_CLI_MODEL_SIG_CNT 1 // No of SIG models in a relay model element
-
+#define RELAY_CLI_MODEL_SIG_CNT RELAY_CLI_SIG_MAX_ID // No of SIG models in a relay model element
 /**
  * @def RELAY_CLI_MODEL_VEN_CNT
  * @brief Number of Vendor models in a relay model element.
  */
 #define RELAY_CLI_MODEL_VEN_CNT 0 // No of VEN models in a relay model element
 
-/**
- * @def RELAY_CLI_MSG_SET
- * @brief Message type for setting relay client state.
- */
-#define RELAY_CLI_MSG_SET 0
-
-/**
- * @def RELAY_CLI_MSG_GET
- * @brief Message type for getting relay client state.
- */
-#define RELAY_CLI_MSG_GET 1
-
-/**
- * @def RELAY_CLI_MSG_ACK
- * @brief Acknowledgment message type.
- */
-#define RELAY_CLI_MSG_ACK 1
-
-/**
- * @def RELAY_CLI_MSG_NO_ACK
- * @brief Non-acknowledgment message type.
- */
-#define RELAY_CLI_MSG_NO_ACK 0
-
-/**
- * @def RELAY_CLIENT_ELEMENT_NOS_DEF
- * @brief Defines the number of relay client elements.
- *
- * This macro defines the number of relay client elements used in the MeshX application.
- */
-#define RELAY_CLIENT_ELEMENT_NOS_DEF 3
-
-/**
- * @brief Structure to hold the state of the relay client.
- */
-typedef struct relay_client_state
+typedef enum
 {
-    uint8_t on_off;      /**< Current On/Off state */
-    uint8_t prev_on_off; /**< Previous On/Off state */
-} relay_client_state_t;
+    RELAY_CLI_SIG_ONOFF_MODEL_ID,
+    RELAY_CLI_SIG_MAX_ID,
+} relay_cli_sig_id_t;
 
 /**
  * @brief Structure to hold the context of the relay client.
  */
-typedef struct rel_cli_ctx
+typedef struct meshx_relay_client_model_ctx
 {
     uint8_t tid;                /**< Transaction ID */
     uint16_t app_id;            /**< Application ID */
     uint16_t pub_addr;          /**< Publish address */
-    relay_client_state_t state; /**< State of the relay client */
-} rel_cli_ctx_t;
-
-/**
- * @brief Structure to hold the relay client message.
- */
-typedef struct relay_client_msg
-{
-    uint8_t ack;         /**< Acknowledgment flag */
-    uint8_t set_get;     /**< Set/Get flag */
-    uint16_t element_id; /**< Element ID */
-} relay_client_msg_t;
+    meshx_on_off_cli_state_t state; /**< State of the relay client */
+} meshx_relay_client_model_ctx_t;
 
 /**
  * @brief Structure to hold the context and configuration for the relay client element.
  */
 typedef struct relay_client_element
 {
-    size_t element_cnt;                              /**< Number of elements */
-    size_t element_id_end;                           /**< Ending ID of the element */
-    size_t element_id_start;                         /**< Starting ID of the element */
-    size_t element_model_init;                       /**< Initialization status of the element model */
-    rel_cli_ctx_t *rel_cli_ctx;                      /**< Pointer to the relay client context */
-    MESHX_MODEL_PUB *relay_cli_pub_list;    /**< Pointer to the list of relay client publication structures */
-    esp_ble_mesh_client_t *relay_cli_onoff_gen_list; /**< Pointer to the list of relay client on/off generic structures */
-    MESHX_MODEL **relay_cli_sig_model_list; /**< Pointer to the list of relay client SIG model structures */
+    size_t element_model_init;                                     /**< Initialization status of the element model */
+    meshx_relay_client_model_ctx_t *cli_ctx;                       /**< Pointer to the relay client context */
+    MESHX_MODEL relay_cli_sig_model_list[RELAY_CLI_MODEL_SIG_CNT]; /**< Pointer to the list of relay client SIG model structures */
+    meshx_onoff_client_model_t *onoff_cli_model;                   /**< Pointer to the list of relay client on/off generic structures */
 } relay_client_elements_t;
 
+typedef struct relay_client_element_ctrl
+{
+    size_t element_cnt;               /**< Number of elements */
+    size_t element_id_end;            /**< Ending ID of the element */
+    size_t element_id_start;          /**< Starting ID of the element */
+    relay_client_elements_t *el_list; /**< Pointer to the list of relay client elements */
+} relay_client_element_ctrl_t;
+
+/**
+ * @brief Retrieves the current state of the relay element.
+ *
+ * This function constructs a generic On/Off client message to request the current
+ * state of a relay element identified by the given element ID. It then publishes
+ * this message to the control task for BLE communication.
+ *
+ * @param[in] el_id The element ID of the relay whose state is to be retrieved.
+ * @return meshx_err_t Returns the result of the message publish operation.
+ */
+meshx_err_t meshx_relay_el_get_state(uint16_t el_id);
+
+/**
+ * @brief Set the On/Off state for a specific element in the BLE mesh network.
+ *
+ * This function sets the On/Off state of the specified element, optionally waiting for an acknowledgment.
+ *
+ * @param[in] el_id The ID of the element for which to set the On/Off state.
+ * @param[in] ack   Whether to wait for an acknowledgment (true) or not (false).
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully set the state.
+ *     - MESHX_INVALID_ARG: Invalid element ID or parameters.
+ *     - MESHX_FAIL: Failed to set the state.
+ */
+meshx_err_t meshx_relay_el_set_state(uint16_t el_id, bool ack);
 /**
  * @brief Create Dynamic Relay Model Elements
  *
@@ -131,20 +115,3 @@ typedef struct relay_client_element
  * @return meshx_err_t
  */
 meshx_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cnt);
-
-/**
- * @brief Sends a relay message over BLE mesh.
- *
- * This function sends a relay message to a specified element in the BLE mesh network.
- *
- * @param[in] pdev Pointer to the device structure.
- * @param[in] element_id The ID of the element to which the message is sent.
- * @param[in] set_get Indicates whether the message is a set (0) or get (1) operation.
- * @param[in] ack Indicates whether an acknowledgment is required (1) or not (0).
- *
- * @return
- *     - MESHX_SUCCESS: Success
- *     - MESHX_INVALID_ARG: Invalid argument
- *     - MESHX_FAIL: Sending message failed
- */
-meshx_err_t ble_mesh_send_relay_msg(dev_struct_t *pdev, uint16_t element_id, uint8_t set_get, uint8_t ack);

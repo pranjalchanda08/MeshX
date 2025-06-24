@@ -9,59 +9,97 @@
 
 #pragma once
 
-#include "meshx_err.h"
-#include "interface/meshx_platform.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/semphr.h"
-#include <sys/queue.h>
+#include "app_common.h"
+#include "meshx_gen_client.h"
+#include "meshx_control_task.h"
+
+#define MESHX_GEN_ON_OFF_CLI_MSG_SET 0
+#define MESHX_GEN_ON_OFF_CLI_MSG_GET 1
+#define MESHX_GEN_ON_OFF_CLI_MSG_ACK 1
+#define MESHX_GEN_ON_OFF_CLI_MSG_NO_ACK 0
+#define RELAY_CLI_MSG_NO_ACK 0
+
 /**
- * @brief Enumeration of On/Off client events.
+ * @brief Structure to hold the relay client message.
  */
-typedef enum
+typedef struct meshx_gen_on_off_cli_msg
 {
-    MESHX_ONOFF_CLI_EVT_GET = BIT(ESP_BLE_MESH_GENERIC_CLIENT_GET_STATE_EVT),
-    MESHX_ONOFF_CLI_EVT_SET = BIT(ESP_BLE_MESH_GENERIC_CLIENT_SET_STATE_EVT),
-    MESHX_ONOFF_CLI_PUBLISH = BIT(ESP_BLE_MESH_GENERIC_CLIENT_PUBLISH_EVT),
-    MESHX_ONOFF_CLI_TIMEOUT = BIT(ESP_BLE_MESH_GENERIC_CLIENT_TIMEOUT_EVT),
-    MESHX_ONOFF_CLI_EVT_ALL = (MESHX_ONOFF_CLI_EVT_GET | MESHX_ONOFF_CLI_EVT_SET | MESHX_ONOFF_CLI_PUBLISH | MESHX_ONOFF_CLI_TIMEOUT)
-} meshx_onoff_cli_evt_t;
+    uint8_t ack;         /**< Acknowledgment flag */
+    uint8_t set_get;     /**< Set/Get flag */
+    uint16_t element_id; /**< Element ID */
+} meshx_gen_on_off_cli_msg_t;
 
 /**
- * @brief Callback function type for On/Off client events.
+ * @brief Structure to hold the state of the relay client.
+ */
+typedef struct relay_client_state
+{
+    uint8_t on_off;      /**< Current On/Off state */
+    uint8_t prev_on_off; /**< Previous On/Off state */
+} meshx_on_off_cli_state_t;
+
+/**
+ * @brief Structure representing the MeshX On/Off Client Model.
  *
- * @param param Pointer to the callback parameter structure.
- * @param evt Event type.
+ * This structure is used to define the On/Off client model in the MeshX framework.
+ * It contains pointers to various components required for the On/Off client functionality.
  */
-typedef void (*meshx_onoff_cli_cb)(const esp_ble_mesh_generic_client_cb_param_t *param, meshx_onoff_cli_evt_t evt);
+typedef struct meshx_onoff_client_model
+{
+    meshx_ptr_t meshx_onoff_client_sig_model;     /**< Pointer to the On/Off client SIG model. */
+    meshx_ptr_t meshx_onoff_client_pub;           /**< Pointer to the list of relay client publication structures. */
+    meshx_ptr_t meshx_onoff_client_gen_cli;       /**< Pointer to the list of relay client On/Off generic structures. */
+} meshx_onoff_client_model_t;
 
 /**
- * @brief Structure for On/Off client callback registration.
+ * @brief Structure to hold the On/Off Server to element message.
  */
-typedef struct meshx_onoff_cli_cb_reg {
-    meshx_onoff_cli_cb cb;
-    uint32_t evt_bmap;
-    SLIST_ENTRY(meshx_onoff_cli_cb_reg) entries;
-} meshx_onoff_cli_cb_reg_t;
+typedef struct meshx_on_off_cli_el_msg
+{
+    uint8_t err_code;           /**< Error code */
+    uint8_t on_off_state;       /**< The present value of Generic OnOff state */
+    meshx_model_t model;        /**< Generic OnOff Server model */
+}meshx_on_off_cli_el_msg_t;
+
+/**
+ * @brief Creates and initializes a Generic OnOff Client model instance.
+ *
+ * This function allocates and sets up a Generic OnOff Client model, associating it with the provided
+ * SIG model context.
+ *
+ * @param[out] p_model      Pointer to a pointer where the created model instance will be stored.
+ * @param[in]  p_sig_model  Pointer to the SIG model context to associate with the client model.
+ *
+ * @return meshx_err_t      Returns an error code indicating the result of the operation.
+ *                         - MESHX_OK on success
+ *                         - Appropriate error code otherwise
+ */
+meshx_err_t meshx_on_off_client_create(meshx_onoff_client_model_t **p_model, void *p_sig_model);
+
+/**
+ * @brief Delete the On/Off client model instance.
+ *
+ * This function deletes an instance of the On/Off client model, freeing
+ * associated resources and setting the model pointer to NULL.
+ *
+ * @param[in,out] p_model Double pointer to the On/Off client model instance to be deleted.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully deleted the model.
+ *     - MESHX_INVALID_ARG: Invalid argument provided.
+ */
+meshx_err_t meshx_on_off_client_delete(meshx_onoff_client_model_t **p_model);
 
 /**
  * @brief Initialize the On/Off client model.
  *
- * @return MESHX_SUCCESS on success, or an error code on failure.
- */
-meshx_err_t meshx_onoff_client_init(void);
-
-/**
- * @brief Register a callback for OnOff Client events.
+ * This function initializes the On/Off client model for the BLE mesh node.
  *
- * This function allows users to register a callback for handling specific
- * OnOff Client events based on a provided event bitmap.
- *
- * @param[in] cb              Pointer to the callback function to register.
- * @param[in] config_evt_bmap Bitmap of events to register for.
- * @return MESHX_SUCCESS on success, or an error code on failure.
+ * @return
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_FAIL: Failure
  */
-meshx_err_t meshx_onoff_reg_cb(meshx_onoff_cli_cb cb, uint32_t config_evt_bmap);
-
+meshx_err_t meshx_on_off_client_init(void);
 
 /**
  * @brief Send a generic on/off client message.
@@ -82,11 +120,9 @@ meshx_err_t meshx_onoff_reg_cb(meshx_onoff_cli_cb cb, uint32_t config_evt_bmap);
  *    - MESHX_NO_MEM: Out of memory
  *    - MESHX_FAIL: Sending message failed
  */
-meshx_err_t meshx_onoff_client_send_msg(MESHX_MODEL *model,
-        uint16_t opcode,
-        uint16_t addr,
-        uint16_t net_idx,
-        uint16_t app_idx,
-        uint8_t state,
-        uint8_t tid
+meshx_err_t meshx_onoff_client_send_msg(
+        meshx_onoff_client_model_t *model,
+        uint16_t opcode, uint16_t addr,
+        uint16_t net_idx, uint16_t app_idx,
+        uint8_t state, uint8_t tid
 );

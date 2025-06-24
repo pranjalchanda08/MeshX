@@ -9,113 +9,122 @@
  * register callbacks, and handle BLE Mesh events related to the OnOff Client.
  */
 
+#include "meshx_err.h"
 #include "meshx_onoff_client.h"
-
-#define TAG __func__
 
 #define MESHX_CLIENT_INIT_MAGIC 0x2378
 
 static uint16_t meshx_client_init_flag = 0;
-static SemaphoreHandle_t meshx_onoff_cli_mutex;
 
 /**
- * @brief Mapping of BLE Mesh client state events to string representations.
- */
-static const char *client_state_str[] =
-{
-    [ESP_BLE_MESH_GENERIC_CLIENT_PUBLISH_EVT]   = "PUBLISH_EVT",
-    [ESP_BLE_MESH_GENERIC_CLIENT_TIMEOUT_EVT]   = "TIMEOUT_EVT",
-    [ESP_BLE_MESH_GENERIC_CLIENT_GET_STATE_EVT] = "GET_STATE_EVT",
-    [ESP_BLE_MESH_GENERIC_CLIENT_SET_STATE_EVT] = "SET_STATE_EVT",
-};
-
-SLIST_HEAD(meshx_onoff_cli_cb_reg_head, meshx_onoff_cli_cb_reg);
-static struct meshx_onoff_cli_cb_reg_head meshx_onoff_cli_cb_reg_table = SLIST_HEAD_INITIALIZER(meshx_onoff_cli_cb_reg_table);
-
-/**
- * @brief Dispatch registered callbacks for a given OnOff Client event.
+ * @brief Registers a callback function for a specific generic server model.
  *
- * This function iterates through the callback registration table and invokes
- * the callbacks that match the provided event bitmap.
+ * This function associates a callback with the given model ID, allowing the server
+ * to handle events or messages related to that model.
  *
- * @param[in] param Pointer to the BLE Mesh generic client callback parameter structure.
- * @param[in] evt   OnOff Client event type.
+ * @param[in] model_id The unique identifier of the generic server model.
+ * @param[in] cb       The callback function to be registered for the model.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the registration.
+ *                     Possible values include success or specific error codes.
  */
-static void meshx_onoff_reg_cb_dispatch(const esp_ble_mesh_generic_client_cb_param_t *param, meshx_onoff_cli_evt_t evt)
+meshx_err_t meshx_gen_on_off_cli_reg_cb(uint32_t model_id, meshx_gen_cli_cb_t cb)
 {
-    if (SLIST_EMPTY(&meshx_onoff_cli_cb_reg_table))
+    if (!cb || model_id != MESHX_MODEL_ID_GEN_ONOFF_CLI)
     {
-        ESP_LOGW(TAG, "No onoff client callback registered for event: %p", (void *)evt);
-        return;
+        return MESHX_INVALID_ARG;
     }
-
-    if (xSemaphoreTake(meshx_onoff_cli_mutex, portMAX_DELAY) == pdTRUE)
-    {
-        meshx_onoff_cli_cb_reg_t *ptr;
-        SLIST_FOREACH(ptr, &meshx_onoff_cli_cb_reg_table, entries)
-        {
-            if ((evt & ptr->evt_bmap) && ptr->cb != NULL)
-            {
-                ptr->cb(param, evt); // Call the registered callback
-            }
-        }
-        xSemaphoreGive(meshx_onoff_cli_mutex);
-    }
+    return control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_FRM_BLE,
+        model_id,
+        (control_task_msg_handle_t)cb);
 }
 
 /**
- * @brief BLE Mesh Generic Client callback handler.
+ * @brief Perform hardware change based on the BLE Mesh generic server callback parameter.
  *
- * This function processes generic client events and invokes the appropriate
- * registered callbacks.
+ * This function is responsible for executing the necessary hardware changes
+ * when a BLE Mesh generic server event occurs.
  *
- * @param[in] event Event type received from the BLE Mesh stack.
- * @param[in] param Pointer to the BLE Mesh generic client callback parameter structure.
+ * @param param Pointer to the BLE Mesh generic server callback parameter structure.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_FAIL: Failure
  */
-static void meshx_generic_client_cb(esp_ble_mesh_generic_client_cb_event_t event,
-                                           const esp_ble_mesh_generic_client_cb_param_t *param)
+static meshx_err_t meshx_state_change_notify(meshx_gen_cli_cb_param_t *param)
 {
-    ESP_LOGD(TAG, "%s, err|op|src|dst: %d|%04" PRIx32 "|%04x|%04x",
-            client_state_str[event], param->error_code, param->params->ctx.recv_op, param->params->ctx.addr, param->params->ctx.recv_dst);
-    if(param->error_code == MESHX_SUCCESS)
+    if (!param)
+        return MESHX_INVALID_ARG;
+
+    meshx_on_off_cli_el_msg_t srv_onoff_param = {
+        .model = param->model,
+        .on_off_state = param->status.onoff_status.present_onoff
+    };
+    if(param->evt == MESHX_GEN_CLI_TIMEOUT)
     {
-        meshx_onoff_reg_cb_dispatch(param, (meshx_onoff_cli_evt_t) BIT(event));
+        srv_onoff_param.err_code = MESHX_TIMEOUT;
     }
+    else
+    {
+        srv_onoff_param.err_code = MESHX_SUCCESS;
+    }
+
+    if (MESHX_ADDR_IS_UNICAST(param->ctx.dst_addr)
+    || (MESHX_ADDR_BROADCAST(param->ctx.dst_addr))
+    || (MESHX_ADDR_IS_GROUP(param->ctx.dst_addr)
+    && (MESHX_SUCCESS == meshx_is_group_subscribed(param->model.p_model, param->ctx.dst_addr))))
+    {
+        meshx_err_t err = control_task_msg_publish(
+            CONTROL_TASK_MSG_CODE_EL_STATE_CH,
+            CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF,
+            &srv_onoff_param,
+            sizeof(meshx_on_off_cli_el_msg_t));
+        return err ? err : MESHX_SUCCESS;
+    }
+    return MESHX_NOT_SUPPORTED;
 }
 
 /**
- * @brief Register a callback for OnOff Client events.
+ * @brief Relay Client Generic Client Callback
  *
- * This function allows users to register a callback for handling specific
- * OnOff Client events based on a provided event bitmap.
+ * This function handles the relay client generic client callback events.
  *
- * @param[in] cb              Pointer to the callback function to register.
- * @param[in] config_evt_bmap Bitmap of events to register for.
- * @return MESHX_SUCCESS on success, or an error code on failure.
+ * @param[in] param Pointer to the BLE Mesh generic client callback parameter structure.
+ * @param[in] evt   Event type of the callback.
+ * @return void
  */
-meshx_err_t meshx_onoff_reg_cb(meshx_onoff_cli_cb cb, uint32_t config_evt_bmap)
+static meshx_err_t meshx_handle_gen_onoff_msg(
+    const dev_struct_t *pdev,
+    control_task_msg_evt_t model_id,
+    meshx_gen_cli_cb_param_t *param
+)
 {
-    if (cb == NULL || config_evt_bmap == 0)
+    if(model_id != MESHX_MODEL_ID_GEN_ONOFF_CLI || !param || !pdev)
     {
-        return MESHX_INVALID_ARG; // Invalid arguments
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid parameters");
+        return MESHX_INVALID_ARG;
     }
+    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "op|src|dst:%04" PRIx32 "|%04x|%04x",
+               param->ctx.opcode, param->ctx.src_addr, param->ctx.dst_addr);
 
-    meshx_onoff_cli_cb_reg_t *new_entry = (meshx_onoff_cli_cb_reg_t *) MESHX_MALLOC(sizeof(meshx_onoff_cli_cb_reg_t));
-    if (new_entry == NULL)
+    meshx_err_t err = MESHX_SUCCESS;
+
+    switch (param->evt)
     {
-        return MESHX_NO_MEM; // Memory allocation failed
+    case MESHX_GEN_CLI_EVT_SET:
+    case MESHX_GEN_CLI_PUBLISH:
+        err = meshx_state_change_notify(param);
+        break;
+    case MESHX_GEN_CLI_TIMEOUT:
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "Timeout");
+        err = meshx_state_change_notify(param);
+        break;
+    default:
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Unhandled event: %d", param->evt);
+        break;
     }
-
-    new_entry->cb = cb;
-    new_entry->evt_bmap = config_evt_bmap;
-
-    if (xSemaphoreTake(meshx_onoff_cli_mutex, portMAX_DELAY) == pdTRUE)
-    {
-        SLIST_INSERT_HEAD(&meshx_onoff_cli_cb_reg_table, new_entry, entries);
-        xSemaphoreGive(meshx_onoff_cli_mutex);
-    }
-
-    return MESHX_SUCCESS;
+    return err;
 }
 
 /**
@@ -126,20 +135,94 @@ meshx_err_t meshx_onoff_reg_cb(meshx_onoff_cli_cb cb, uint32_t config_evt_bmap)
  *
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-meshx_err_t meshx_onoff_client_init(void)
+meshx_err_t meshx_on_off_client_init(void)
 {
+    meshx_err_t err = MESHX_SUCCESS;
+
     if (meshx_client_init_flag == MESHX_CLIENT_INIT_MAGIC)
     {
         return MESHX_SUCCESS;
     }
 
-    meshx_onoff_cli_mutex = xSemaphoreCreateMutex();
-    if (meshx_onoff_cli_mutex == NULL)
+#if CONFIG_ENABLE_SERVER_COMMON
+    err = meshx_gen_cli_init();
+    if (err)
     {
-        return MESHX_NO_MEM; // Mutex creation failed
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Failed to initialize meshx client");
+    }
+#endif /* CONFIG_ENABLE_SERVER_COMMON */
+    err = meshx_gen_on_off_cli_reg_cb(
+            MESHX_MODEL_ID_GEN_ONOFF_SRV,
+            (meshx_gen_cli_cb_t)&meshx_handle_gen_onoff_msg
+        );
+    if (err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize meshx_gen_srv_reg_cb (Err: %d)", err);
     }
 
-    return esp_ble_mesh_register_generic_client_callback((esp_ble_mesh_generic_client_cb_t)&meshx_generic_client_cb);
+    return err;
+}
+
+/**
+ * @brief Creates and initializes a Generic OnOff Client model instance.
+ *
+ * This function allocates and sets up a Generic OnOff Client model, associating it with the provided
+ * SIG model context.
+ *
+ * @param[out] p_model      Pointer to a pointer where the created model instance will be stored.
+ * @param[in]  p_sig_model  Pointer to the SIG model context to associate with the client model.
+ *
+ * @return meshx_err_t      Returns an error code indicating the result of the operation.
+ *                         - MESHX_OK on success
+ *                         - Appropriate error code otherwise
+ */
+meshx_err_t meshx_on_off_client_create(meshx_onoff_client_model_t **p_model, void *p_sig_model)
+{
+    if (!p_model || !p_sig_model)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    *p_model = (meshx_onoff_client_model_t *)MESHX_CALOC(1, sizeof(meshx_onoff_client_model_t));
+    if (!*p_model)
+    {
+        return MESHX_NO_MEM;
+    }
+
+    return meshx_plat_on_off_gen_cli_create(
+        p_sig_model,
+        &((*p_model)->meshx_onoff_client_pub),
+        &((*p_model)->meshx_onoff_client_gen_cli));
+}
+
+/**
+ * @brief Delete the On/Off client model instance.
+ *
+ * This function deletes an instance of the On/Off client model, freeing
+ * associated resources and setting the model pointer to NULL.
+ *
+ * @param[in,out] p_model Double pointer to the On/Off client model instance to be deleted.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully deleted the model.
+ *     - MESHX_INVALID_ARG: Invalid argument provided.
+ */
+meshx_err_t meshx_on_off_client_delete(meshx_onoff_client_model_t **p_model)
+{
+    if (p_model == NULL || *p_model == NULL)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    meshx_plat_gen_cli_delete(
+        &((*p_model)->meshx_onoff_client_pub),
+        &((*p_model)->meshx_onoff_client_gen_cli)
+    );
+
+    MESHX_FREE(*p_model);
+    *p_model = NULL;
+
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -162,48 +245,32 @@ meshx_err_t meshx_onoff_client_init(void)
  *    - MESHX_FAIL: Sending message failed
  */
 meshx_err_t meshx_onoff_client_send_msg(
-        MESHX_MODEL *model,
-        uint16_t opcode,
-        uint16_t addr,
-        uint16_t net_idx,
-        uint16_t app_idx,
-        uint8_t state,
-        uint8_t tid
+        meshx_onoff_client_model_t *model,
+        uint16_t opcode,  uint16_t addr,
+        uint16_t net_idx, uint16_t app_idx,
+        uint8_t  state,   uint8_t tid
 )
 {
     meshx_err_t err;
-    esp_ble_mesh_client_common_param_t common = {0};
-    esp_ble_mesh_generic_client_set_state_t set = {0};
+    meshx_gen_cli_set_t set = {0};
 
-    common.model        = model;
-    common.opcode       = opcode;
-    common.ctx.addr     = addr;
-    common.ctx.net_idx  = net_idx;
-    common.ctx.app_idx  = app_idx;
-    common.msg_timeout  = 0; /* 0 indicates that timeout value from menuconfig will be used */
-    common.ctx.send_ttl = 3;
-#if ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 2, 0)
-    common.msg_role = ROLE_NODE;
-#endif
-    if (common.opcode != ESP_BLE_MESH_MODEL_OP_GEN_ONOFF_GET)
+    if (opcode == MESHX_MODEL_OP_GEN_ONOFF_SET ||
+        opcode == MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK)
     {
         set.onoff_set.tid   = tid;
         set.onoff_set.onoff = state;
         set.onoff_set.op_en = false;
-        err = esp_ble_mesh_generic_client_set_state(&common, &set);
-        if (err)
-        {
-            ESP_LOGE(TAG, "Send Generic OnOff failed");
-            return err;
-        }
+
+        err = meshx_gen_cli_send_msg(
+            model->meshx_onoff_client_gen_cli,
+            &set, opcode,
+            addr, net_idx,
+            app_idx
+        );
     }
     else{
-        err = esp_ble_mesh_client_model_send_msg(common.model, &common.ctx, common.opcode, 0, NULL, 0, true, ROLE_NODE);
-        if (err)
-        {
-            ESP_LOGE(TAG, "Send Generic OnOff failed");
-            return err;
-        }
+        err = MESHX_INVALID_ARG; // Invalid opcode
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid opcode for Generic OnOff Client: %04x", opcode);
     }
     return err;
 }
