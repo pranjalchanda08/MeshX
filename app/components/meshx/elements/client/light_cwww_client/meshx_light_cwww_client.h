@@ -172,7 +172,7 @@ typedef struct cwww_client_element
     MESHX_MODEL **cwww_cli_sig_model_list; /**< List of cwww client SIG model structures */
 } cwww_client_elements_t;
 
-/**
+/** 
  * @brief Create Dynamic Relay Model Elements
  *
  * @param[in] pdev          Pointer to device structure

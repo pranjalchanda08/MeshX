@@ -6,6 +6,13 @@ prod:
           elements:
               - switch_relay_server: 4
 
+        - name: 4_relay_sw
+          pid: 0x0006
+          elements:
+              - switch_relay_client: 4
+          components:
+              - unit_test : true
+
         - name: 4x4_Relay_Switch_Pannel
           pid: 0x0002
           elements:

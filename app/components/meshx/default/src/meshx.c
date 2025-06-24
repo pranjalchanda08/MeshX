@@ -200,7 +200,7 @@ static meshx_err_t meshx_ble_mesh_init(meshx_config_t const *config)
  *
  * @param[in] p_timer Pointer to the timer structure.
  */
-static void meshx_init_boot_timer_arm_cb(const meshx_os_timer_t* p_timer)
+static void meshx_init_boot_timer_trigger_cb(const meshx_os_timer_t* p_timer)
 {
     MESHX_LOGD(MODULE_ID_COMMON, "Fresh Boot Timer Expired");
 
@@ -226,7 +226,7 @@ static meshx_err_t meshx_init_boot_timer(void)
     meshx_err_t err = meshx_os_timer_create("boot_timer",
         FRESHBOOT_TIMEOUT_MS,
         false,
-        meshx_init_boot_timer_arm_cb,
+        meshx_init_boot_timer_trigger_cb,
         &g_boot_timer
     );
     MESHX_ERR_PRINT_RET("Failed to create boot timer", err);
