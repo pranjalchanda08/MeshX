@@ -48,6 +48,27 @@ typedef struct meshx_onoff_server_model
 } meshx_onoff_server_model_t;
 
 /**
+ * @brief Send the On/Off status message to the client.
+ *
+ * This function sends the On/Off status message to the client in response to a
+ * Generic OnOff Set or Get request. It uses the provided model and context to
+ * construct and send the message.
+ *
+ * @param[in] model         The model instance that is sending the status.
+ * @param[in] ctx           The context containing information about the message.
+ * @param[in] on_off_state  The current On/Off state to be sent in the status message.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully sent the status message.
+ *     - MESHX_INVALID_ARG: Invalid argument provided.
+ *     - MESHX_ERR_PLAT: Platform-specific error occurred.
+ */
+meshx_err_t meshx_gen_on_off_srv_status_send(
+    meshx_model_t *model,
+    meshx_ctx_t *ctx,
+    uint8_t on_off_state
+);
+/**
  * @brief Create and initialize a new On/Off server model instance.
  *
  * This function allocates memory for a new On/Off server model and initializes

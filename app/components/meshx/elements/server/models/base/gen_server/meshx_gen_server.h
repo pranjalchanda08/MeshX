@@ -70,4 +70,25 @@ meshx_err_t meshx_gen_srv_dereg_cb(uint32_t model_id, meshx_server_cb cb);
  */
 meshx_err_t meshx_gen_srv_init(void);
 
+/**
+ * @brief Sends a status message for the Generic Server model.
+ *
+ * This function sends a status message for the Generic Server model to the BLE Mesh network.
+ * It checks if the provided model and context are valid, and if the opcode is within the
+ * range of supported Generic Server opcodes.
+ *
+ * @param[in] p_model       Pointer to the Generic Server model structure.
+ * @param[in] p_ctx         Pointer to the context containing message information.
+ * @param[in] state_change  The state change data to be sent in the status message.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully sent the status message.
+ *     - MESHX_INVALID_ARG: Invalid argument provided.
+ *     - MESHX_ERR_PLAT: Platform-specific error occurred.
+ */
+meshx_err_t meshx_gen_srv_status_send(
+    meshx_model_t *p_model,
+    meshx_ctx_t *p_ctx,
+    meshx_gen_srv_state_change_t state_change);
+
 #endif /* __MESHX_GEN_SERVER_H__ */

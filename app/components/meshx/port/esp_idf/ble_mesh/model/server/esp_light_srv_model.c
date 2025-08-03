@@ -55,6 +55,7 @@ typedef union ctl_status_pack
 static const MESHX_MODEL light_ctl_sig_template = ESP_BLE_MESH_SIG_MODEL(
     ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV, NULL, NULL, NULL);
 
+#if 0
 /**
  * @brief Handles the BLE message sending for the Generic OnOff Server model.
  *
@@ -127,7 +128,7 @@ static meshx_err_t esp_ble_mesh_gen_light_srv_msg_send(
     MESHX_UNUSED(pdev);
     return MESHX_SUCCESS;
 }
-
+#endif
 /**
  * @brief Callback function for BLE Mesh Lightness Server events.
  *
@@ -247,16 +248,96 @@ static void meshx_ble_lightness_server_cb(MESHX_LIGHT_SRV_CB_EVT event,
                                  sizeof(meshx_lighting_server_cb_param_t));
 }
 
+meshx_err_t meshx_plat_gen_light_srv_send_status(
+    const meshx_model_t *p_model,
+    const meshx_ctx_t *p_ctx,
+    const meshx_lighting_server_state_change_t *state_change)
+{
+    if (!p_model || !p_ctx || !state_change)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    meshx_err_t err = MESHX_SUCCESS;
+    esp_ble_mesh_msg_ctx_t *ctx = p_ctx->p_ctx;
+    bool malloc_flag = false;
+    if (ctx == NULL)
+    {
+        ctx = (esp_ble_mesh_msg_ctx_t *)MESHX_MALLOC(sizeof(esp_ble_mesh_msg_ctx_t));
+        if (ctx == NULL)
+        {
+            return MESHX_NO_MEM;
+        }
+        malloc_flag = true;
+    }
+    ctl_status_t ctl_status_union;
+    uint8_t ctl_status_pack_len = 0;
+
+    switch (p_ctx->opcode)
+    {
+    case MESHX_MODEL_OP_LIGHT_CTL_STATUS:
+        ctl_status_union.ctl_status.temperature = state_change->ctl_set.temperature;
+        ctl_status_union.ctl_status.lightness = state_change->ctl_set.lightness;
+        ctl_status_pack_len = sizeof(ctl_status_union.ctl_status);
+        break;
+    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS:
+        ctl_status_union.ctl_temp_status.temperature = state_change->ctl_temp_set.temperature;
+        ctl_status_union.ctl_temp_status.delta_uv = state_change->ctl_temp_set.delta_uv;
+        ctl_status_pack_len = sizeof(ctl_status_union.ctl_temp_status);
+        break;
+    case MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS:
+        ctl_status_union.ctl_default.delta_uv_def = state_change->ctl_default_set.delta_uv;
+        ctl_status_union.ctl_default.lightness_def = state_change->ctl_default_set.lightness;
+        ctl_status_union.ctl_default.temperature_def = state_change->ctl_default_set.temperature;
+        ctl_status_pack_len = sizeof(ctl_status_union.ctl_default);
+        break;
+    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS:
+        ctl_status_union.ctl_temp_range.status_code = MESHX_SUCCESS;
+        ctl_status_union.ctl_temp_range.range_min = state_change->ctl_temp_range_set.range_min;
+        ctl_status_union.ctl_temp_range.range_max = state_change->ctl_temp_range_set.range_max;
+        ctl_status_pack_len = sizeof(ctl_status_union.ctl_temp_range);
+        break;
+    default:
+        err = MESHX_INVALID_ARG;
+    }
+
+    ctx->net_idx    =   p_ctx->net_idx;
+    ctx->app_idx    =   p_ctx->app_idx;
+    ctx->addr       =   p_ctx->dst_addr;
+    ctx->send_ttl   =   ESP_BLE_MESH_TTL_DEFAULT;
+    ctx->send_cred  =   0;
+    ctx->send_tag   =   BIT1;
+
+    esp_err_t esp_err = esp_ble_mesh_server_model_send_msg(p_model->p_model,
+                                                       ctx,
+                                                       p_ctx->opcode,
+                                                       ctl_status_pack_len,
+                                                       (uint8_t *)&ctl_status_union);
+    if (esp_err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Mesh Model msg send failed (err: 0x%x)", esp_err);
+        return MESHX_ERR_PLAT;
+    }
+    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Mesh Model msg sent (opcode: 0x%04x, len: %d)", p_ctx->opcode, ctl_status_pack_len);
+    if (malloc_flag)
+    {
+        MESHX_FREE(ctx);
+    }
+    return err;
+}
+
 meshx_err_t meshx_plat_light_srv_init(void)
 {
     /* Register callback for enabling Sending of Model Msg From MeshX to BLE Layer */
+#if 0
     meshx_err_t err = control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_TO_BLE,
         CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV,
         (control_task_msg_handle_t)&esp_ble_mesh_gen_light_srv_msg_send);
     if (err)
         return err;
-
+#else
+    meshx_err_t err = MESHX_SUCCESS;
+#endif
     /* Register the ESP Generic Server callback */
     esp_err_t esp_err = esp_ble_mesh_register_lighting_server_callback(
         (MESHX_LIGHT_SRV_CB)&meshx_ble_lightness_server_cb

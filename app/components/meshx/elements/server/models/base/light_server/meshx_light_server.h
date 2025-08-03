@@ -72,4 +72,20 @@ meshx_err_t meshx_lighting_srv_dereg_cb(uint32_t model_id, meshx_lighting_server
  */
 meshx_err_t meshx_lighting_srv_init(void);
 
+/**
+ * @brief Sends a status message for the Lighting Server model.
+ *
+ * This function sends a status message for the Lighting Server model with the specified parameters.
+ *
+ * @param[in] p_model       Pointer to the Lighting Server model.
+ * @param[in] ctx           Pointer to the context of the received messages.
+ * @param[in] state_change  Pointer to the state change data for the Lighting Server.
+ *
+ * @return MESHX_SUCCESS on success, or an appropriate error code on failure.
+ */
+meshx_err_t meshx_gen_light_srv_status_send(
+    meshx_model_t *p_model,
+    meshx_ctx_t *ctx,
+    meshx_lighting_server_state_change_t *state_change);
+
 #endif /* __MESHX_LIGHT_SERVER_H__ */

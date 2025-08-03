@@ -68,6 +68,7 @@ static const char *server_state_str[] = {
     [ESP_BLE_MESH_GENERIC_SERVER_RECV_SET_MSG_EVT] = "SRV_RECV_SET"
 };
 
+#if 0
 /**
  * @brief Handles the BLE message sending for the Generic OnOff Server model.
  *
@@ -126,6 +127,25 @@ static meshx_err_t esp_ble_mesh_gen_srv_msg_send(
     ESP_UNUSED(pdev);
     return MESHX_SUCCESS;
 }
+/**
+ * @brief Register Callback function to handle messages sent to the BLE layer From Apps layer.
+ *
+ * @param cb Callback function to handle messages.
+ */
+static meshx_err_t meshx_plat_reg_gen_srv_msg_handler(control_task_msg_handle_t cb)
+{
+    if(!cb)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid callback function");
+        return MESHX_INVALID_ARG;
+    }
+    return control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_TO_BLE,
+        CONTROL_TASK_MSG_EVT_TO_BLE_GEN_SRV_MASK,
+        cb
+    );
+}
+#endif
 
 /**
  * @brief Callback function for BLE Mesh Generic Server events.
@@ -183,24 +203,73 @@ static void esp_ble_mesh_generic_server_cb(MESHX_GEN_SRV_CB_EVT event,
 }
 
 /**
- * @brief Register Callback function to handle messages sent to the BLE layer From Apps layer.
+ * @brief Send a status message from the Generic Server model.
  *
- * @param cb Callback function to handle messages.
+ * This function sends a status message to the specified context with the provided data.
+ *
+ * @param[in] p_model Pointer to the model instance.
+ * @param[in] p_ctx Pointer to the context structure containing destination address and other parameters.
+ * @param[in] p_data Pointer to the data to be sent.
+ * @param[in] data_len Length of the data to be sent.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Message sent successfully.
+ *     - MESHX_NO_MEM: Memory allocation failed.
+ *     - MESHX_ERR_PLAT: Platform error occurred while sending the message.
  */
-static meshx_err_t meshx_plat_reg_gen_srv_msg_handler(control_task_msg_handle_t cb)
+meshx_err_t meshx_plat_gen_srv_send_status(
+        meshx_model_t *p_model,
+        meshx_ctx_t *p_ctx,
+        meshx_ptr_t p_data,
+        uint32_t data_len
+    )
 {
-    if(!cb)
+    esp_ble_mesh_msg_ctx_t *ctx = (esp_ble_mesh_msg_ctx_t *)p_ctx->p_ctx;
+    bool malloc_flag = false;
+
+    if(ctx == NULL)
     {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid callback function");
-        return MESHX_INVALID_ARG;
+        ctx = (esp_ble_mesh_msg_ctx_t *) MESHX_MALLOC(sizeof(esp_ble_mesh_msg_ctx_t));
+        if(ctx == NULL)
+            return MESHX_NO_MEM;
+
+        malloc_flag = true;
     }
-    return control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_TO_BLE,
-        CONTROL_TASK_MSG_EVT_TO_BLE_GEN_SRV_MASK,
-        cb
-    );
+
+    ctx->net_idx    =   p_ctx->net_idx;
+    ctx->app_idx    =   p_ctx->app_idx;
+    ctx->addr       =   p_ctx->dst_addr;
+    ctx->send_ttl   =   ESP_BLE_MESH_TTL_DEFAULT;
+    ctx->send_cred  =   0;
+    ctx->send_tag   =   BIT1;
+
+    esp_err_t err = esp_ble_mesh_server_model_send_msg(p_model->p_model,
+        ctx,
+        p_ctx->opcode,
+        (uint16_t)data_len,
+        (uint8_t*)p_data);
+    if(err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Mesh Model msg send failed (err: 0x%x)", err);
+        return MESHX_ERR_PLAT;
+    }
+
+    if(malloc_flag)
+        MESHX_FREE(ctx);
+
+    return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Set the state of a generic server model.
+ *
+ * This function updates the on/off state of a specified generic server model.
+ *
+ * @param[in] p_model       Pointer to the model whose state is to be set.
+ * @param[in] on_off_state  The desired on/off state to set for the model.
+ *
+ * @return MESHX_SUCCESS on success, or an appropriate error code on failure.
+ */
 meshx_err_t meshx_plat_set_gen_srv_state(void * p_model, uint8_t on_off_state)
 {
     if(!p_model)
@@ -226,12 +295,15 @@ meshx_err_t meshx_plat_set_gen_srv_state(void * p_model, uint8_t on_off_state)
  */
 meshx_err_t meshx_plat_gen_srv_init(void)
 {
+    meshx_err_t err = MESHX_SUCCESS;
+#if 0
     /* Register callback for enabling Sending of Model Msg From MeshX to BLE Layer */
-    meshx_err_t err = meshx_plat_reg_gen_srv_msg_handler(
+    err = meshx_plat_reg_gen_srv_msg_handler(
         (control_task_msg_handle_t)&esp_ble_mesh_gen_srv_msg_send
     );
     if (err)
         return err;
+#endif
     /* Register the ESP Generic Server callback */
     esp_err_t esp_err = esp_ble_mesh_register_generic_server_callback(
             (MESHX_GEN_SRV_CB)&esp_ble_mesh_generic_server_cb

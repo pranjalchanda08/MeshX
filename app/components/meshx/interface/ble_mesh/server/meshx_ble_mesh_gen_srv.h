@@ -213,4 +213,26 @@ meshx_err_t meshx_plat_gen_srv_init(void);
  */
 meshx_err_t meshx_plat_gen_on_off_srv_restore(void* p_model, uint8_t state);
 
+/**
+ * @brief Send a status message from the Generic Server model.
+ *
+ * This function sends a status message to the specified context with the provided data.
+ *
+ * @param[in] p_model   Pointer to the model instance.
+ * @param[in] p_ctx     Pointer to the context structure containing destination address and other parameters.
+ * @param[in] p_data    Pointer to the data to be sent.
+ * @param[in] data_len  Length of the data to be sent.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Message sent successfully.
+ *     - MESHX_NO_MEM: Memory allocation failed.
+ *     - MESHX_ERR_PLAT: Platform error occurred while sending the message.
+ */
+meshx_err_t meshx_plat_gen_srv_send_status(
+    meshx_model_t *p_model,
+    meshx_ctx_t *p_ctx,
+    meshx_ptr_t p_data,
+    uint32_t data_len
+);
+
 #endif /* __MESHX_PLAT_GEN_SRV_H__ */
