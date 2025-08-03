@@ -58,6 +58,7 @@ typedef struct meshx_on_off_cli_el_msg
 {
     uint8_t err_code;           /**< Error code */
     uint8_t on_off_state;       /**< The present value of Generic OnOff state */
+    meshx_ctx_t ctx;            /**< Context of the message */
     meshx_model_t model;        /**< Generic OnOff Server model */
 }meshx_on_off_cli_el_msg_t;
 
@@ -126,3 +127,17 @@ meshx_err_t meshx_onoff_client_send_msg(
         uint16_t net_idx, uint16_t app_idx,
         uint8_t state, uint8_t tid
 );
+
+/**
+ * @brief Registers a callback function for a specific generic server model.
+ *
+ * This function associates a callback with the given model ID, allowing the server
+ * to handle events or messages related to that model.
+ *
+ * @param[in] model_id The unique identifier of the generic server model.
+ * @param[in] cb       The callback function to be registered for the model.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the registration.
+ *                     Possible values include success or specific error codes.
+ */
+meshx_err_t meshx_gen_on_off_cli_reg_cb(uint32_t model_id, meshx_gen_cli_cb_t cb);

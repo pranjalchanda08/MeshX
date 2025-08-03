@@ -17,30 +17,6 @@
 static uint16_t meshx_client_init_flag = 0;
 
 /**
- * @brief Registers a callback function for a specific generic server model.
- *
- * This function associates a callback with the given model ID, allowing the server
- * to handle events or messages related to that model.
- *
- * @param[in] model_id The unique identifier of the generic server model.
- * @param[in] cb       The callback function to be registered for the model.
- *
- * @return meshx_err_t Returns an error code indicating the result of the registration.
- *                     Possible values include success or specific error codes.
- */
-meshx_err_t meshx_gen_on_off_cli_reg_cb(uint32_t model_id, meshx_gen_cli_cb_t cb)
-{
-    if (!cb || model_id != MESHX_MODEL_ID_GEN_ONOFF_CLI)
-    {
-        return MESHX_INVALID_ARG;
-    }
-    return control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_FRM_BLE,
-        model_id,
-        (control_task_msg_handle_t)cb);
-}
-
-/**
  * @brief Perform hardware change based on the BLE Mesh generic server callback parameter.
  *
  * This function is responsible for executing the necessary hardware changes
@@ -58,16 +34,14 @@ static meshx_err_t meshx_state_change_notify(meshx_gen_cli_cb_param_t *param)
         return MESHX_INVALID_ARG;
 
     meshx_on_off_cli_el_msg_t srv_onoff_param = {
+        .err_code = MESHX_SUCCESS,
+        .ctx = param->ctx,
         .model = param->model,
         .on_off_state = param->status.onoff_status.present_onoff
     };
     if(param->evt == MESHX_GEN_CLI_TIMEOUT)
     {
         srv_onoff_param.err_code = MESHX_TIMEOUT;
-    }
-    else
-    {
-        srv_onoff_param.err_code = MESHX_SUCCESS;
     }
 
     if (MESHX_ADDR_IS_UNICAST(param->ctx.dst_addr)
@@ -117,7 +91,7 @@ static meshx_err_t meshx_handle_gen_onoff_msg(
         err = meshx_state_change_notify(param);
         break;
     case MESHX_GEN_CLI_TIMEOUT:
-        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "Timeout");
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Timeout");
         err = meshx_state_change_notify(param);
         break;
     default:
@@ -144,15 +118,14 @@ meshx_err_t meshx_on_off_client_init(void)
         return MESHX_SUCCESS;
     }
 
-#if CONFIG_ENABLE_SERVER_COMMON
     err = meshx_gen_cli_init();
     if (err)
     {
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Failed to initialize meshx client");
     }
-#endif /* CONFIG_ENABLE_SERVER_COMMON */
+
     err = meshx_gen_on_off_cli_reg_cb(
-            MESHX_MODEL_ID_GEN_ONOFF_SRV,
+            MESHX_MODEL_ID_GEN_ONOFF_CLI,
             (meshx_gen_cli_cb_t)&meshx_handle_gen_onoff_msg
         );
     if (err)
@@ -163,6 +136,29 @@ meshx_err_t meshx_on_off_client_init(void)
     return err;
 }
 
+/**
+ * @brief Registers a callback function for a specific generic server model.
+ *
+ * This function associates a callback with the given model ID, allowing the server
+ * to handle events or messages related to that model.
+ *
+ * @param[in] model_id The unique identifier of the generic server model.
+ * @param[in] cb       The callback function to be registered for the model.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the registration.
+ *                     Possible values include success or specific error codes.
+ */
+meshx_err_t meshx_gen_on_off_cli_reg_cb(uint32_t model_id, meshx_gen_cli_cb_t cb)
+{
+    if (!cb || model_id != MESHX_MODEL_ID_GEN_ONOFF_CLI)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    return control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_FRM_BLE,
+        model_id,
+        cb);
+}
 /**
  * @brief Creates and initializes a Generic OnOff Client model instance.
  *

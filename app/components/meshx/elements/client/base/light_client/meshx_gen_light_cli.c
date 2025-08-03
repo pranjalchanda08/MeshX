@@ -13,16 +13,16 @@
  *
  */
 #include "stdlib.h"
-#include "meshx_gen_client.h"
+#include "meshx_gen_light_cli.h"
 
-#define MESHX_CLIENT_INIT_MAGIC_NO 0x1121
+#define MESHX_CLIENT_INIT_MAGIC_NO 0x4309
 static uint16_t meshx_client_init = 0;
 
 /**
  * @brief Register a callback function for the meshxuction client model.
  *
  * This function registers a callback function that will be called when
- * specific events related to the meshxuction client model occur.
+ * specific events related to the meshx function client model occur.
  *
  * @param[in] model_id  The ID of the model for which the callback is being registered.
  * @param[in] cb        The callback function to be registered.
@@ -32,7 +32,7 @@ static uint16_t meshx_client_init = 0;
  *     - MESHX_INVALID_ARG: Invalid arguments.
  *     - MESHX_FAIL: Failed to register the callback.
  */
-meshx_err_t meshx_gen_cli_reg_cb(uint32_t model_id, meshx_gen_cli_cb_t cb)
+meshx_err_t meshx_gen_light_cli_reg_cb(uint32_t model_id, meshx_gen_light_cli_cb_t cb)
 {
     return control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_TO_BLE,
@@ -53,7 +53,7 @@ meshx_err_t meshx_gen_cli_reg_cb(uint32_t model_id, meshx_gen_cli_cb_t cb)
  *     - MESHX_INVALID_ARG: Invalid argument
  *     - MESHX_FAIL: Other failures
  */
-meshx_err_t meshx_gen_cli_dereg_cb(uint32_t model_id, meshx_gen_cli_cb_t cb)
+meshx_err_t meshx_gen_light_cli_dereg_cb(uint32_t model_id, meshx_gen_light_cli_cb_t cb)
 {
     return control_task_msg_unsubscribe(
         CONTROL_TASK_MSG_CODE_TO_BLE,
@@ -71,46 +71,11 @@ meshx_err_t meshx_gen_cli_dereg_cb(uint32_t model_id, meshx_gen_cli_cb_t cb)
  *     - MESHX_SUCCESS: Success
  *     - MESHX_FAIL: Failed to initialize the client
  */
-meshx_err_t meshx_gen_cli_init(void)
+meshx_err_t meshx_gen_light_cli_init(void)
 {
     if (meshx_client_init == MESHX_CLIENT_INIT_MAGIC_NO)
         return MESHX_SUCCESS;
     meshx_client_init = MESHX_CLIENT_INIT_MAGIC_NO;
 
-    return meshx_plat_gen_cli_init();
-}
-
-/**
- * @brief Sends a generic client message in the MeshX framework.
- *
- * This function constructs and sends a message from a generic client model to a specified address
- * within the mesh network. It uses the provided model context, state parameters, opcode, and addressing
- * information to format the message appropriately.
- *
- * @param[in] model     The model context or memory handle associated with the client.
- * @param[in] state     Pointer to the structure containing the state to be set or queried.
- * @param[in] opcode    The opcode representing the type of generic client message to send.
- * @param[in] addr      The destination address within the mesh network.
- * @param[in] net_idx   The network index identifying the subnet to use for sending the message.
- * @param[in] app_idx   The application key index used for encrypting the message.
- *
- * @return meshx_err_t Returns an error code indicating the result of the operation.
- */
-meshx_err_t meshx_gen_cli_send_msg(
-    meshx_ptr_t model,
-    meshx_gen_cli_set_t *state,
-    uint16_t opcode,
-    uint16_t addr,
-    uint16_t net_idx,
-    uint16_t app_idx
-)
-{
-    if (!model || !state)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    return meshx_plat_gen_cli_send_msg(
-        model, state, opcode, addr, net_idx, app_idx
-    );
+    return meshx_plat_gen_light_cli_init();
 }

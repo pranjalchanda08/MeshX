@@ -272,13 +272,23 @@ typedef union {
     meshx_gen_client_properties_status_cb_t       client_properties_status;       /*!< MESHX_MODEL_OP_GEN_CLIENT_PROPERTIES_STATUS */
 } meshx_gen_client_status_cb_t;
 
+/**
+ * @brief Callback parameters for Generic Client Model events.
+ *        This structure is used to pass information about the received
+ *        messages and their context to the application.
+ *        It includes the context, model pointer, event type, and status values.
+ *        The status values are encapsulated in a union to handle different
+ *        types of status messages that the Generic Client Model can receive.
+ *        Each status type corresponds to a specific operation code (opcode) defined in the BLE Mesh
+ *        specification, allowing the application to handle them appropriately.
+ */
 typedef struct meshx_gen_cli_cb_param
 {
     meshx_ctx_t ctx;                            /**< Context of the received messages */
-    meshx_model_t model;                        /**< Pointer to Generic Server Models */
+    meshx_model_t model;                        /**< Pointer to Generic Client Models */
+    meshx_ptr_t gen_cli_msg;                    /**< Pointer to the Generic Client message */
     meshx_gen_cli_evt_t evt;                    /**< Event type of the received message */
     meshx_gen_client_status_cb_t status;        /**< Value of the received Generic Messages */
-    meshx_ptr_t gen_cli_msg;                    /**< Pointer to the Generic Client message */
 } meshx_gen_cli_cb_param_t;
 
 /**
@@ -316,14 +326,14 @@ meshx_err_t meshx_plat_on_off_gen_cli_create(meshx_ptr_t p_model, meshx_ptr_t* p
 meshx_err_t meshx_plat_gen_cli_delete(meshx_ptr_t* p_pub, meshx_ptr_t* p_onoff_cli);
 
 /**
- * @brief Initialize the meshxuction generic server.
+ * @brief Initialize the meshxuction generic client.
  *
  * This function sets up the necessary configurations and initializes the
- * meshxuction generic server for the BLE mesh node.
+ * meshxuction generic client for the BLE mesh node.
  *
  * @return
  *     - MESHX_SUCCESS: Success
- *     - MESHX_FAIL: Failed to initialize the server
+ *     - MESHX_FAIL: Failed to initialize the client
  */
 meshx_err_t meshx_plat_gen_cli_init(void);
 
