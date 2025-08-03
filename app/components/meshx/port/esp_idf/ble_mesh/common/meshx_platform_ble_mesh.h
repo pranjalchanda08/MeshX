@@ -62,8 +62,10 @@
 #define MESHX_GEN_CLI_CB_EVT    esp_ble_mesh_generic_client_cb_event_t
 #define MESHX_GEN_CLI_CB_PARAM  esp_ble_mesh_generic_client_cb_param_t
 
-#define MESHX_GEN_ONOFF_CLI     esp_ble_mesh_gen_onoff_cli_t
-#define MESHX_LIGHT_CTL_CLI     esp_ble_mesh_light_ctl_cli_t
-#define MESHX_LIGHT_CTL_STATE_CLI esp_ble_mesh_light_ctl_state_cli_t
-
+#define MESHX_GEN_ONOFF_CLI             esp_ble_mesh_gen_onoff_cli_t
+#define MESHX_GEN_LIGHT_CTL_CLI         esp_ble_mesh_light_ctl_cli_t
+#define MESHX_GEN_LIGHT_CTL_STATE_CLI   esp_ble_mesh_light_ctl_state_cli_t
+#define MESHX_GEN_LIGHT_CLI_CB          esp_ble_mesh_light_client_cb_t
+#define MESHX_GEN_LIGHT_CLI_CB_EVT      esp_ble_mesh_light_client_cb_event_t
+#define MESHX_GEN_LIGHT_CLI_CB_PARAM    esp_ble_mesh_light_client_cb_param_t
 #endif /* __MESHX_BLE_MESH__ */

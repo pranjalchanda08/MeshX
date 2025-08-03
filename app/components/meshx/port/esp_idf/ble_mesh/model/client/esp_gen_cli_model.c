@@ -24,10 +24,7 @@
 /*****************************************************************************************************************
  * DEFINES
  ****************************************************************************************************************/
-#define MESHX_SERVER_INIT_MAGIC_NO 0x1121 // Magic number to indicate initialization state
-
-#define CONTROL_TASK_MSG_EVT_TO_BLE_GEN_CLI_MASK \
-    CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF
+#define MESHX_CLIENT_INIT_MAGIC_NO 0x8709 // Magic number to indicate initialization state
 
 /*****************************************************************************************************************
  * STATIC VARIABLES
@@ -99,7 +96,7 @@ static void esp_ble_mesh_generic_client_cb(MESHX_GEN_CLI_CB_EVT event,
     };
 
     /* Copy the msg data from BLE Layer to MeshX Layer */
-    memcpy(&pub_param.status, &param->status_cb, sizeof(meshx_gen_onoff_status_cb_t));
+    memcpy(&pub_param.status, &param->status_cb, sizeof(meshx_gen_client_status_cb_t));
 
     meshx_err_t err = control_task_msg_publish(
         CONTROL_TASK_MSG_CODE_FRM_BLE,
@@ -108,7 +105,7 @@ static void esp_ble_mesh_generic_client_cb(MESHX_GEN_CLI_CB_EVT event,
         sizeof(meshx_gen_cli_cb_param_t));
     if (err)
     {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to publish to control task");
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Failed to publish to control task");
     }
 }
 
@@ -140,14 +137,14 @@ static meshx_err_t meshx_plat_gen_cli_create(meshx_ptr_t p_model, meshx_ptr_t* p
         return meshx_plat_del_model_pub(p_pub); // Clean up on error
     }
 
-    // Allocate memory for the OnOff client model
+    // Allocate memory for the generic client model
     *p_cli = (MESHX_GEN_CLI *)MESHX_CALOC(1, sizeof(MESHX_GEN_CLI));
     if (!*p_cli)
     {
         return MESHX_NO_MEM; // Memory allocation failed
     }
 
-    // Initialize the OnOff client model
+    // Initialize the generic client model
     ((MESHX_MODEL *)p_model)->user_data = *p_cli;
 
     meshx_ptr_t*temp = (meshx_ptr_t*)&((MESHX_MODEL *)p_model)->pub;
@@ -161,24 +158,24 @@ static meshx_err_t meshx_plat_gen_cli_create(meshx_ptr_t p_model, meshx_ptr_t* p
  * INTERFACE FUNCTION DEFINITIONS
  ****************************************************************************************************************/
 /**
- * @brief Initialize the meshxuction generic server.
+ * @brief Initialize the meshxuction generic client.
  *
  * This function sets up the necessary configurations and initializes the
- * meshxuction generic server for the BLE mesh node.
+ * meshxuction generic client for the BLE mesh node.
  *
  * @return
  *     - MESHX_SUCCESS: Success
- *     - MESHX_FAIL: Failed to initialize the server
+ *     - MESHX_FAIL: Failed to initialize the client
  */
 meshx_err_t meshx_plat_gen_cli_init(void)
 {
 
     meshx_err_t err = MESHX_SUCCESS;
-    if (meshx_client_init == MESHX_SERVER_INIT_MAGIC_NO)
+    if (meshx_client_init == MESHX_CLIENT_INIT_MAGIC_NO)
     {
         return MESHX_SUCCESS; // Already initialized
     }
-    meshx_client_init = MESHX_SERVER_INIT_MAGIC_NO;
+    meshx_client_init = MESHX_CLIENT_INIT_MAGIC_NO;
 
     // Register the callback for handling messages sent to the BLE layer
     esp_err_t esp_err = esp_ble_mesh_register_generic_client_callback(
