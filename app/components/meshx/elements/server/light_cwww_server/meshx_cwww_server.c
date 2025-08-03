@@ -31,6 +31,10 @@
     CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF \
     | CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL
 
+#define CONTROL_TASK_MSG_EVT_TO_BLE_GEN_SRV_MASK \
+    CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV   \
+    | CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV
+
 #define GET_RELATIVE_EL_IDX(_element_id) _element_id - cwww_element_init_ctrl.element_id_start
 #define IS_EL_IN_RANGE(_element_id) (_element_id >= cwww_element_init_ctrl.element_id_start && _element_id < cwww_element_init_ctrl.element_id_end)
 
@@ -518,6 +522,67 @@ static meshx_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, cont
 }
 
 /**
+ * @brief Handler for sending messages from the CW-WW server model to BLE.
+ *
+ * This function handles the sending of messages from the CW-WW server model to BLE.
+ * It processes different events and sends the appropriate status messages based on the event type.
+ *
+ * @param[in] pdev Pointer to the device structure.
+ * @param[in] evt Event type to handle.
+ * @param[in] params Pointer to the parameters for the event.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
+ */
+static meshx_err_t meshx_cwww_srv_msg_send_handler(
+                    const dev_struct_t *pdev,
+                    control_task_msg_evt_to_ble_t evt,
+                    void *params)
+{
+    MESHX_UNUSED(pdev);
+    if((evt & (CONTROL_TASK_MSG_EVT_TO_BLE_GEN_SRV_MASK)) == 0)
+        return MESHX_SUCCESS;
+
+    switch (evt)
+    {
+        case CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV:
+        {
+            meshx_gen_srv_cb_param_t *gen_srv_send = (meshx_gen_srv_cb_param_t *)params;
+            meshx_err_t err = meshx_gen_on_off_srv_status_send(
+                &gen_srv_send->model,
+                &gen_srv_send->ctx,
+                gen_srv_send->state_change.onoff_set.onoff
+            );
+            if (err)
+            {
+                MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to send ONOFF status message (Err: %x)", err);
+                return err;
+            }
+        }
+        break;
+        case CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV:
+        {
+            meshx_lighting_server_cb_param_t *light_srv_send = (meshx_lighting_server_cb_param_t *)params;
+            meshx_err_t err = meshx_light_ctl_srv_status_send(
+                &light_srv_send->model,
+                &light_srv_send->ctx,
+                light_srv_send->state_change.ctl_set.delta_uv,
+                light_srv_send->state_change.ctl_set.lightness,
+                light_srv_send->state_change.ctl_set.temperature
+            );
+            if (err)
+            {
+                MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to send CTL status message (Err: %x)", err);
+                return err;
+            }
+        }
+        break;
+        default:
+            MESHX_LOGW(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Unhandled event: %d", evt);
+            return MESHX_INVALID_STATE;
+        }
+    return MESHX_SUCCESS;
+}
+
+/**
  * @brief Create Dynamic CWWW Server Model Elements
  *
  * This function creates dynamic CWWW server model elements for the given device structure.
@@ -570,7 +635,15 @@ meshx_err_t meshx_create_cwww_elements(dev_struct_t *pdev, uint16_t element_cnt)
         MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to register control task callback: (%d)", err);
         return err;
     }
-
+    err = control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_TO_BLE,
+        CONTROL_TASK_MSG_EVT_TO_BLE_GEN_SRV_MASK,
+        (control_task_msg_handle_t)&meshx_cwww_srv_msg_send_handler);
+    if (err)
+    {
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to register control task callback: (%d)", err);
+        return err;
+    }
     err = meshx_on_off_server_init();
     if (err)
     {

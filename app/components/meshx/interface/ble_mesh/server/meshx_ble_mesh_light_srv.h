@@ -334,4 +334,20 @@ meshx_err_t meshx_plat_light_ctl_srv_restore(meshx_ptr_t p_model,
                                              uint16_t temp_range_max,
                                              uint16_t temp_range_min);
 
+                                             /**
+ * @brief Initializes the Light CTL Server Model.
+ * This function sets up the Light CTL Server Model with the provided parameters,
+ *        including element ID, model ID, and publication address.
+ * @param[in] el_id     Element ID to which the model belongs.
+ * @param[in] model_id  Model ID for the Light CTL Server.
+ * @param[in] pub_addr  Publication address for the model.
+ * @return
+ *      - MESHX_SUCCESS on success.
+ *      - MESHX_INVALID_ARG if any argument is invalid.
+ *      - MESHX_NO_MEM if memory allocation fails.
+ */
+meshx_err_t meshx_plat_gen_light_srv_send_status(const meshx_model_t *p_model,
+                                                 const meshx_ctx_t *p_ctx,
+                                                 const meshx_lighting_server_state_change_t *state_change);
+
 #endif /* __MESHX_BLE_MESH_LIGHT_SRV_H__ */
