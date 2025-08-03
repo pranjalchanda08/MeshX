@@ -158,25 +158,33 @@ typedef struct cwww_client_msg
 } cwww_client_msg_t;
 
 /**
- * @brief Structure to hold the cwww client elements.
+ * @brief Structure to hold the cwww client element.
  */
 typedef struct cwww_client_element
+{
+    size_t element_model_init;                                     /**< Initialization status of the element model */
+    cwww_cli_ctx_t *cwww_cli_ctx;                                  /**< Pointer to the cwww client context */
+    MESHX_MODEL cwww_cli_sig_model_list[CWWW_CLI_MODEL_SIG_CNT];   /**< Pointer to the list of cwww client SIG model structures */
+    meshx_onoff_client_model_t *onoff_cli_model;                   /**< Pointer to the list of cwww client on/off generic structures */
+    meshx_light_ctl_client_model_t *ctl_cli_model;                 /**< Pointer to the list of cwww client light CTL structures */
+} cwww_client_elements_t;
+
+/**
+ * @brief Structure to hold the cwww client elements.
+ */
+typedef struct cwww_client_element_ctrl
 {
     size_t element_cnt;                             /**< Number of elements */
     size_t element_id_end;                          /**< Ending ID of the element */
     size_t element_id_start;                        /**< Starting ID of the element */
-    size_t element_model_init;                      /**< Initialization status of the element model */
-    cwww_cli_ctx_t *cwww_cli_ctx;                   /**< Context of the cwww client */
-    esp_ble_mesh_client_t **cwww_cli_list;          /**< List of cwww client structures */
-    MESHX_MODEL_PUB **cwww_cli_pub_list;   /**< List of cwww client publication structures */
-    MESHX_MODEL **cwww_cli_sig_model_list; /**< List of cwww client SIG model structures */
-} cwww_client_elements_t;
+    cwww_client_elements_t *el_list;               /**< Pointer to the list of cwww client elements */
+} cwww_client_elements_ctrl_t;
 
-/** 
- * @brief Create Dynamic Relay Model Elements
+/**
+ * @brief Create Dynamic CW-WW Model Elements
  *
  * @param[in] pdev          Pointer to device structure
- * @param[in] element_cnt   Maximum number of relay models
+ * @param[in] element_cnt   Maximum number of CW-WW models
  *
  * @return meshx_err_t
  */

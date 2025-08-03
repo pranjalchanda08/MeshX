@@ -17,67 +17,43 @@
 #ifndef __LIGHT_CTL_CLIENT_H__
 #define __LIGHT_CTL_CLIENT_H__
 
-#include "meshx_err.h"
-#include "interface/meshx_platform.h"
-#include "sys/queue.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/semphr.h"
-
-typedef enum
-{
-    LIGHT_CTL_CLI_EVT_GET = BIT(ESP_BLE_MESH_LIGHT_CLIENT_GET_STATE_EVT),
-    LIGHT_CTL_CLI_EVT_SET = BIT(ESP_BLE_MESH_LIGHT_CLIENT_SET_STATE_EVT),
-    LIGHT_CTL_CLI_PUBLISH = BIT(ESP_BLE_MESH_LIGHT_CLIENT_PUBLISH_EVT),
-    LIGHT_CTL_CLI_TIMEOUT = BIT(ESP_BLE_MESH_LIGHT_CLIENT_TIMEOUT_EVT),
-    LIGHT_CTL_CLI_EVT_ALL = (LIGHT_CTL_CLI_EVT_GET | LIGHT_CTL_CLI_EVT_SET | LIGHT_CTL_CLI_PUBLISH | LIGHT_CTL_CLI_TIMEOUT)
-} light_ctl_cli_evt_t;
-
-typedef bool (*light_cli_cb)(const esp_ble_mesh_light_client_cb_param_t *param, light_ctl_cli_evt_t evt);
-
-/**
- * @brief Structure to hold the Light CTL Client context.
- */
-typedef struct light_ctl_cli_cb_reg
-{
-    light_cli_cb cb;                        /**< Registered callback function */
-    uint32_t evt_bmap;                      /**< Bitmap of events the callback is registered for */
-    SLIST_ENTRY(light_ctl_cli_cb_reg) next; /**< SLIST entry for the next callback registration */
-} light_ctl_cli_cb_reg_t;
+#include "app_common.h"
+#include "meshx_control_task.h"
+#include "meshx_gen_light_cli.h"
 
 /**
  * @brief Structure to hold arguments for sending Light CTL messages.
  */
-typedef struct light_ctl_send_args
+typedef struct meshx_ctl_el_state
 {
-    MESHX_MODEL *model;          /**< Pointer to the BLE Mesh model. */
-    uint16_t opcode;             /**< Opcode of the message to be sent. */
-    uint16_t addr;               /**< Destination address of the message. */
-    uint16_t net_idx;            /**< Network index to be used for sending the message. */
-    uint16_t app_idx;            /**< Application index to be used for sending the message. */
     uint16_t lightness;          /**< Lightness value to be sent. */
     uint16_t temperature;        /**< Temperature value to be sent. */
     uint16_t delta_uv;           /**< Delta UV value to be sent. */
-    uint16_t temp_range_min;     /**< Minimum temperature value in the range. */
-    uint16_t temp_range_max;     /**< Maximum temperature value in the range. */
-    uint8_t temp_range_flag;     /**< Flag to indicate if the temperature range is sent. */
-    uint8_t tid;                 /**< Transaction ID to identify the message. */
-} light_ctl_send_args_t;
+} meshx_ctl_el_state_t;
 
 /**
- * @brief Register a callback function for the Light CTL Client.
- *
- * This function registers a callback function that will be called when specific
- * events occur in the Light CTL Client model.
- *
- * @param[in] cb                The callback function to register.
- * @param[in] config_evt_bmap   A bitmap representing the configuration events to register for.
- *
- * @return
- *    - MESHX_SUCCESS: Success
- *    - MESHX_INVALID_ARG: Invalid argument
- *    - MESHX_FAIL: Other failures
+ * @brief Structure to hold the On/Off Server to element message.
  */
-meshx_err_t meshx_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap);
+typedef struct meshx_ctl_cli_el_msg
+{
+    uint8_t err_code;               /**< Error code */
+    meshx_ctx_t ctx;                /**< Context of the message */
+    meshx_model_t model;            /**< Generic OnOff Server model */
+    meshx_ctl_el_state_t ctl_state; /**< The present value of Generic OnOff state */
+}meshx_ctl_cli_el_msg_t;
+
+/**
+ * @brief Structure representing the Light CTL (Color Temperature Lightness) client model in MeshX.
+ *
+ * This structure holds pointers to the SIG model, publication structures, and generic structures
+ * associated with the Light CTL client functionality.
+ */
+typedef struct meshx_light_ctl_client_model
+{
+    meshx_ptr_t meshx_light_ctl_client_sig_model;     /**< Pointer to the Light CTL client SIG model. */
+    meshx_ptr_t meshx_light_ctl_client_pub;           /**< Pointer to the list of Light CTL client publication structures. */
+    meshx_ptr_t meshx_light_ctl_client_gen_cli;       /**< Pointer to the list of Light CTL client generic structures. */
+} meshx_light_ctl_client_model_t;
 
 /**
  * @brief Initialize the Light CTL Client model.
@@ -93,30 +69,46 @@ meshx_err_t meshx_light_ctl_cli_reg_cb(light_cli_cb cb, uint32_t config_evt_bmap
 meshx_err_t meshx_light_ctl_client_init();
 
 /**
- * @brief Send a Light CTL message.
+ * @brief Registers a callback function for the Light CTL (Color Temperature Lightness) client model.
  *
- * This function sends a Light CTL message with the specified parameters.
+ * This function associates a user-defined callback with a specific Light CTL client model,
+ * allowing the application to handle events or responses related to the model.
  *
- * @param[in] params Pointer to the structure containing the message parameters.
+ * @param[in] model_id The unique identifier of the Light CTL client model instance.
+ * @param[in] cb       The callback function to be registered. This function will be called
+ *                     when relevant events occur for the specified model.
  *
- * @return
- *    - MESHX_SUCCESS: Success
- *    - Appropriate error code on failure
+ * @return meshx_err_t Returns MESHX_OK on success, or an appropriate error code on failure.
  */
-meshx_err_t meshx_light_ctl_send_msg(light_ctl_send_args_t * params);
+meshx_err_t meshx_light_ctl_cli_reg_cb(uint32_t model_id, meshx_gen_light_cli_cb_t cb);
 
 /**
- * @brief Sends a message to control the light temperature.
+ * @brief Creates and initializes a Generic Light Client model instance.
  *
- * This function sends a message to adjust the light temperature using the provided parameters.
+ * This function allocates and sets up a Generic Light Client model, associating it with the provided
+ * SIG model context.
  *
- * @param[in] params Pointer to a structure containing the parameters for the light temperature control message.
+ * @param[out] p_model      Pointer to a pointer where the created model instance will be stored.
+ * @param[in]  p_sig_model  Pointer to the SIG model context to associate with the client model.
+ *
+ * @return meshx_err_t      Returns an error code indicating the result of the operation.
+ *                         - MESHX_OK on success
+ *                         - Appropriate error code otherwise
+ */
+meshx_err_t meshx_light_ctl_client_create(meshx_light_ctl_client_model_t **p_model, void *p_sig_model);
+
+/**
+ * @brief Delete the Light client model instance.
+ *
+ * This function deletes an instance of the Light client model, freeing
+ * associated resources and setting the model pointer to NULL.
+ *
+ * @param[in,out] p_model Double pointer to the Light client model instance to be deleted.
  *
  * @return
- *    - MESHX_SUCCESS: Success
- *    - MESHX_INVALID_ARG: Invalid argument
- *    - MESHX_FAIL: Sending message failed
+ *     - MESHX_SUCCESS: Successfully deleted the model.
+ *     - MESHX_INVALID_ARG: Invalid argument provided.
  */
-meshx_err_t meshx_light_ctl_temperature_send_msg(light_ctl_send_args_t * params);
+meshx_err_t meshx_light_ctl_client_delete(meshx_light_ctl_client_model_t **p_model);
 
 #endif /*__LIGHT_CTL_CLIENT_H__*/

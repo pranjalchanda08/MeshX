@@ -90,6 +90,18 @@ static meshx_err_t meshx_relay_cli_reg_freshboot_cb(control_task_msg_handle_t ca
     );
 }
 
+/**
+ * @brief Registers a callback for relay element state change events.
+ *
+ * This function subscribes the provided callback to control task messages
+ * related to relay element state changes. It ensures the callback is valid before subscribing.
+ *
+ * @param[in] callback  The callback function to handle relay element state change messages.
+ *
+ * @return
+ *     - MESHX_INVALID_ARG if the callback is NULL.
+ *     - Result of control_task_msg_subscribe() otherwise.
+ */
 static meshx_err_t meshx_relay_cli_el_state_change_reg_cb(control_task_msg_handle_t callback)
 {
     if (callback == NULL)
@@ -235,7 +247,7 @@ static meshx_err_t meshx_dev_create_relay_model_space(dev_struct_t const *pdev, 
 static meshx_err_t meshx_add_relay_cli_model_to_element_list(
     dev_struct_t *pdev, uint16_t *start_idx, uint16_t n_max)
 {
-    if (!pdev)
+    if (!pdev || !start_idx || !n_max)
         return MESHX_INVALID_STATE;
 
     if ((n_max + *start_idx) > CONFIG_MAX_ELEMENT_COUNT)
