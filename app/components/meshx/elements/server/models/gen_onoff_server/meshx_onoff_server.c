@@ -143,6 +143,44 @@ static meshx_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_
 #endif /* !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
 
 /**
+ * @brief Send the On/Off status message to the client.
+ *
+ * This function sends the On/Off status message to the client in response to a
+ * Generic OnOff Set or Get request. It uses the provided model and context to
+ * construct and send the message.
+ *
+ * @param[in] model         The model instance that is sending the status.
+ * @param[in] ctx           The context containing information about the message.
+ * @param[in] on_off_state  The current On/Off state to be sent in the status message.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully sent the status message.
+ *     - MESHX_INVALID_ARG: Invalid argument provided.
+ *     - MESHX_ERR_PLAT: Platform-specific error occurred.
+ */
+meshx_err_t meshx_gen_on_off_srv_status_send(
+    meshx_model_t *model,
+    meshx_ctx_t *ctx,
+    uint8_t on_off_state
+)
+{
+    if (!model || !ctx)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    ctx->opcode = MESHX_MODEL_OP_GEN_ONOFF_STATUS;
+    meshx_gen_srv_state_change_t state_change = {
+        .onoff_set = {
+            .onoff = on_off_state
+        }
+    };
+    return meshx_gen_srv_status_send(
+            model,
+            ctx,
+            state_change
+    );
+}
+/**
  * @brief Initialize the On/Off server model.
  *
  * This function initializes the On/Off server model for the BLE mesh node.

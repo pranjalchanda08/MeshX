@@ -28,6 +28,9 @@
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
 #define CONTROL_TASK_EVT_MASK CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF
+
+#define CONTROL_TASK_MSG_EVT_TO_BLE_GEN_SRV_MASK CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV
+
 /**
  * @brief Get the relative index of an element ID.
  * @param _element_id The element ID.
@@ -419,6 +422,43 @@ static meshx_err_t relay_prov_control_task_handler(dev_struct_t const *pdev, con
 }
 
 /**
+ * @brief Handles the BLE message sending for the Generic OnOff Server model.
+ *
+ * This function processes the event to send a BLE Mesh message for the
+ * Generic Server model.
+ *
+ * @param[in] pdev Pointer to the device structure.
+ * @param[in] evt Event type for the control task message to BLE.
+ * @param[in] params Parameters for the BLE Mesh Generic Server model.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Message sent successfully or event type not matched.
+ *     - MESHX_FAIL: Failed to send the message.
+ */
+static meshx_err_t meshx_relay_srv_msg_send_handler(
+                    const dev_struct_t *pdev,
+                    control_task_msg_evt_to_ble_t evt,
+                    meshx_gen_srv_cb_param_t *params)
+{
+    if((evt & CONTROL_TASK_MSG_EVT_TO_BLE_GEN_SRV_MASK) == 0)
+        return MESHX_SUCCESS;
+
+    meshx_err_t err = meshx_gen_on_off_srv_status_send(
+        &params->model,
+        &params->ctx,
+        params->state_change.onoff_set.onoff
+    );
+    if(err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Mesh Model msg send failed (err: 0x%x)", err);
+        return MESHX_ERR_PLAT;
+    }
+
+    ESP_UNUSED(pdev);
+    return MESHX_SUCCESS;
+}
+
+/**
  * @brief Create Dynamic Relay Model Elements
  *
  * @param[in] pdev          Pointer to device structure
@@ -465,6 +505,15 @@ meshx_err_t meshx_create_relay_elements(dev_struct_t *pdev, uint16_t element_cnt
         CONTROL_TASK_MSG_CODE_PROVISION,
         CONTROL_TASK_MSG_EVT_EN_NODE_PROV,
         (control_task_msg_handle_t)&relay_prov_control_task_handler);
+    if (err)
+    {
+        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to register control task callback: (%d)", err);
+        return err;
+    }
+    err = control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_TO_BLE,
+        CONTROL_TASK_MSG_EVT_TO_BLE_GEN_SRV_MASK,
+        (control_task_msg_handle_t)&meshx_relay_srv_msg_send_handler);
     if (err)
     {
         MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to register control task callback: (%d)", err);

@@ -94,4 +94,24 @@ meshx_err_t meshx_light_ctl_srv_state_restore(meshx_ctl_server_model_t *p_model,
  */
 meshx_err_t meshx_light_ctl_server_init(void);
 
+/**
+ * @brief Send the Light CTL status message.
+ *
+ * This function sends the Light CTL status message to the specified context.
+ *
+ * @param[in] p_model       Pointer to the MeshX model structure.
+ * @param[in] ctx           Context structure containing the necessary parameters for sending the message.
+ * @param[in] delta_uv      The Delta UV value to be included in the status message.
+ * @param[in] lightness     The Lightness value to be included in the status message.
+ * @param[in] temperature   The Temperature value to be included in the status message.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully sent the status message.
+ *     - Appropriate error code on failure.
+ */
+meshx_err_t meshx_light_ctl_srv_status_send( meshx_model_t *p_model,
+                                             meshx_ctx_t *ctx,
+                                             int16_t delta_uv,
+                                             uint16_t lightness,
+                                             uint16_t temperature);
 #endif /*__MESHX_LIGHT_CTL_SRV_H__*/
