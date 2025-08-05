@@ -143,7 +143,7 @@ static meshx_err_t meshx_handle_gen_light_msg(
  *
  * @return meshx_err_t Returns MESHX_OK on success, or an appropriate error code on failure.
  */
-meshx_err_t meshx_light_ctl_cli_reg_cb(uint32_t model_id, meshx_gen_light_cli_cb_t cb)
+static meshx_err_t meshx_light_ctl_cli_reg_cb(uint32_t model_id, meshx_gen_light_cli_cb_t cb)
 {
     if (cb == NULL || model_id != MESHX_MODEL_ID_LIGHT_CTL_CLI)
         return MESHX_INVALID_ARG; // Invalid arguments
@@ -169,10 +169,21 @@ meshx_err_t meshx_light_ctl_client_init()
     if (light_ctl_client_init_flag == LIGHT_CTL_CLIENT_INIT_MAGIC)
         return MESHX_SUCCESS;
 
+    light_ctl_client_init_flag = LIGHT_CTL_CLIENT_INIT_MAGIC;
+
     err = meshx_gen_light_cli_init();
     if (err)
     {
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Failed to initialize meshx client");
+    }
+
+    err = meshx_light_ctl_cli_reg_cb(
+        MESHX_MODEL_ID_LIGHT_CTL_CLI,
+        (meshx_gen_light_cli_cb_t)&meshx_handle_gen_light_msg
+    );
+    if (err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Failed to register Light CTL Client callback: %d", err);
     }
 
     return err;
@@ -204,7 +215,7 @@ meshx_err_t meshx_light_ctl_client_create(meshx_light_ctl_client_model_t **p_mod
         return MESHX_NO_MEM;
     }
 
-    return meshx_plat_on_off_gen_cli_create(
+    return meshx_plat_light_ctl_client_create(
         p_sig_model,
         &((*p_model)->meshx_light_ctl_client_pub),
         &((*p_model)->meshx_light_ctl_client_gen_cli));
@@ -229,7 +240,7 @@ meshx_err_t meshx_light_ctl_client_delete(meshx_light_ctl_client_model_t **p_mod
         return MESHX_INVALID_ARG;
     }
 
-    meshx_plat_gen_cli_delete(
+    meshx_plat_light_client_delete(
         &((*p_model)->meshx_light_ctl_client_pub),
         &((*p_model)->meshx_light_ctl_client_gen_cli)
     );
@@ -239,126 +250,106 @@ meshx_err_t meshx_light_ctl_client_delete(meshx_light_ctl_client_model_t **p_mod
 
     return MESHX_SUCCESS;
 }
+
 /**
- * @brief Send a Light CTL message.
+ * @brief Sends a Light CTL (Color Temperature Lightness) message from the Light CTL Client model.
  *
- * This function sends a Light CTL message with the specified parameters.
+ * This function constructs and sends a Light CTL message to a specified destination address
+ * using the provided network and application indices. The message contains the desired lightness,
+ * temperature, and a transaction identifier (TID).
  *
- * @param[in] params Pointer to the structure containing the message parameters.
+ * @param[in] model        Pointer to the Light CTL Client model instance.
+ * @param[in] opcode       Opcode of the Light CTL message to be sent.
+ * @param[in] addr         Destination address for the message.
+ * @param[in] net_idx      Network index to be used for sending the message.
+ * @param[in] app_idx      Application index to be used for sending the message.
+ * @param[in] lightness    Desired lightness value to be set.
+ * @param[in] temperature  Desired color temperature value to be set.
+ * @param[in] delta_uv     Desired delta UV value to be set.
+ * @param[in] tid          Transaction Identifier for the message.
  *
- * @return
- *    - MESHX_SUCCESS: Success
- *    - Appropriate error code on failure
+ * @return meshx_err_t     Returns the result of the message send operation.
  */
-meshx_err_t meshx_light_ctl_send_msg(light_ctl_send_args_t * params)
+meshx_err_t meshx_light_ctl_client_send_msg(
+        meshx_light_ctl_client_model_t *model,
+        uint16_t opcode,  uint16_t addr,
+        uint16_t net_idx, uint16_t app_idx,
+        uint16_t lightness, uint16_t temperature,
+        uint16_t delta_uv, uint8_t tid
+)
 {
-    meshx_err_t err = MESHX_SUCCESS;
-    bool send_msg = false;
-    esp_ble_mesh_client_common_param_t common = {0};
-    esp_ble_mesh_light_client_set_state_t set = {0};
+    meshx_err_t err;
+    meshx_light_client_set_state_t set = {0};
 
-    if(params == NULL)
-        return MESHX_INVALID_ARG;
-
-    common.model        = params->model;
-    common.opcode       = params->opcode;
-    common.ctx.addr     = params->addr;
-    common.ctx.net_idx  = params->net_idx;
-    common.ctx.app_idx  = params->app_idx;
-    common.msg_timeout  = 0; /* 0 indicates that timeout value from menuconfig will be used */
-    common.ctx.send_ttl = 3;
-#if ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 2, 0)
-    common.msg_role = ROLE_NODE;
-#endif
-
-    if(params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET ||
-       params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_SET_UNACK)
+    if (opcode == MESHX_MODEL_OP_LIGHT_CTL_SET ||
+        opcode == MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK)
     {
-        set.ctl_set.op_en           = false;
-        set.ctl_set.tid             = params->tid;
-        set.ctl_set.ctl_delta_uv    = params->delta_uv;
-        set.ctl_set.ctl_lightness   = params->lightness;
-        set.ctl_set.ctl_temperature = params->temperature;
-        send_msg = true;
-    }
-    else if(params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET ||
-            params->opcode == ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK)
-    {
-        set.ctl_temperature_range_set.range_min = params->temp_range_min;
-        set.ctl_temperature_range_set.range_max = params->temp_range_max;
-        send_msg = true;
+        set.ctl_set.tid   = tid;
+        set.ctl_set.op_en = false;
+        set.ctl_set.ctl_delta_uv    = delta_uv;
+        set.ctl_set.ctl_lightness   = lightness;
+        set.ctl_set.ctl_temperature = temperature;
+
+        err = meshx_gen_light_send_msg(
+            model->meshx_light_ctl_client_sig_model,
+            &set, opcode,
+            addr, net_idx,
+            app_idx
+        );
     }
     else{
-        err = esp_ble_mesh_client_model_send_msg(common.model, &common.ctx, common.opcode, 0, NULL, 0, true, ROLE_NODE);
-        if (err)
-        {
-            ESP_LOGE(TAG, "Send Generic Light failed");
-            return err;
-        }
-    }
-    if(send_msg)
-    {
-        err = esp_ble_mesh_light_client_set_state(&common, &set);
-        if (err)
-        {
-            ESP_LOGE(TAG, "Light CTL Client Send Message failed: (%d)", err);
-        }
+        err = MESHX_INVALID_ARG; // Invalid opcode
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid opcode for Light CTL Client: %04x", opcode);
     }
     return err;
 }
 
 /**
- * @brief Sends a message to control the light temperature.
+ * @brief Sends a Light CTL Temperature message from the client model.
  *
- * This function sends a message to adjust the light temperature using the provided parameters.
+ * This function constructs and sends a Light CTL Temperature message to a specified address
+ * using the provided network and application indices. It allows the client to control the
+ * color temperature and delta UV of a lighting element in a mesh network.
  *
- * @param[in] params Pointer to a structure containing the parameters for the light temperature control message.
+ * @param[in] model        Pointer to the Light CTL client model instance.
+ * @param[in] opcode       Opcode of the message to be sent.
+ * @param[in] addr         Destination address of the message.
+ * @param[in] net_idx      Network index to be used for sending the message.
+ * @param[in] app_idx      Application index to be used for sending the message.
+ * @param[in] temperature  Desired color temperature value to be set.
+ * @param[in] delta_uv     Delta UV value to be set.
+ * @param[in] tid          Transaction Identifier for the message.
  *
- * @return
- *    - MESHX_SUCCESS: Success
- *    - MESHX_INVALID_ARG: Invalid argument
- *    - MESHX_FAIL: Sending message failed
+ * @return meshx_err_t     Result of the message send operation.
  */
-meshx_err_t meshx_light_ctl_temperature_send_msg(light_ctl_send_args_t * params)
+meshx_err_t meshx_light_ctl_temperature_client_send_msg(
+        meshx_light_ctl_client_model_t *model,
+        uint16_t opcode,  uint16_t addr,
+        uint16_t net_idx, uint16_t app_idx,
+        uint16_t temperature, uint16_t delta_uv, uint8_t tid
+)
 {
-    meshx_err_t err = MESHX_SUCCESS;
-    esp_ble_mesh_client_common_param_t common = {0};
-    esp_ble_mesh_light_client_set_state_t set = {0};
+    meshx_err_t err;
+    meshx_light_client_set_state_t set = {0};
 
-    if(params == NULL)
-        return MESHX_INVALID_ARG;
-
-    common.model        = params->model;
-    common.opcode       = params->opcode;
-    common.ctx.addr     = params->addr;
-    common.ctx.net_idx  = params->net_idx;
-    common.ctx.app_idx  = params->app_idx;
-    common.msg_timeout  = 0; /* 0 indicates that timeout value from menuconfig will be used */
-    common.ctx.send_ttl = 3;
-#if ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 2, 0)
-    common.msg_role = ROLE_NODE;
-#endif
-
-    if(params->opcode != ESP_BLE_MESH_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET)
+    if (opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET ||
+        opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK)
     {
-        set.ctl_temperature_set.op_en           = false;
-        set.ctl_temperature_set.tid             = params->tid;
-        set.ctl_temperature_set.ctl_delta_uv    = params->delta_uv;
-        set.ctl_temperature_set.ctl_temperature = params->temperature;
+        set.ctl_set.tid   = tid;
+        set.ctl_set.op_en = false;
+        set.ctl_set.ctl_delta_uv    = delta_uv;
+        set.ctl_set.ctl_temperature = temperature;
 
-        err = esp_ble_mesh_light_client_set_state(&common, &set);
-        if (err)
-        {
-            ESP_LOGE(TAG, "Light CTL Client Send Message failed: (%d)", err);
-        }
+        err = meshx_gen_light_send_msg(
+            model->meshx_light_ctl_client_sig_model,
+            &set, opcode,
+            addr, net_idx,
+            app_idx
+        );
     }
     else{
-        err = esp_ble_mesh_client_model_send_msg(common.model, &common.ctx, common.opcode, 0, NULL, 0, true, ROLE_NODE);
-        if (err)
-        {
-            ESP_LOGE(TAG, "Send Generic Light failed");
-            return err;
-        }
+        err = MESHX_INVALID_ARG; // Invalid opcode
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid opcode for Light CTL Client: %04x", opcode);
     }
     return err;
 }

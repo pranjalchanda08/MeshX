@@ -52,6 +52,38 @@ meshx_err_t meshx_plat_del_model_pub(void ** p_pub)
     return MESHX_SUCCESS;
 }
 
+meshx_err_t meshx_plat_client_create(meshx_ptr_t p_model, meshx_ptr_t* p_pub, meshx_ptr_t* p_cli)
+{
+    if (!p_model || !p_pub || !p_cli)
+    {
+        return MESHX_INVALID_ARG; // Invalid arguments
+    }
+    meshx_err_t err = MESHX_SUCCESS;
+
+    // Create the publication context for the model
+    err = meshx_plat_create_model_pub(p_pub, 1);
+    if (err)
+    {
+        return meshx_plat_del_model_pub(p_pub); // Clean up on error
+    }
+
+    // Allocate memory for the generic client model
+    *p_cli = (MESHX_CLI *)MESHX_CALOC(1, sizeof(MESHX_CLI));
+    if (!*p_cli)
+    {
+        return MESHX_NO_MEM; // Memory allocation failed
+    }
+
+    // Initialize the generic client model
+    ((MESHX_MODEL *)p_model)->user_data = *p_cli;
+
+    meshx_ptr_t*temp = (meshx_ptr_t*)&((MESHX_MODEL *)p_model)->pub;
+
+    *temp = *p_pub;
+
+    return MESHX_SUCCESS; // Successfully created the model and publication context
+}
+
 meshx_err_t meshx_get_model_id(meshx_ptr_t p_model, uint16_t *model_id)
 {
     if(!p_model)

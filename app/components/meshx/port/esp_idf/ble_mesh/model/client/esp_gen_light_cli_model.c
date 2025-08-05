@@ -101,7 +101,7 @@ static void esp_ble_mesh_light_client_cb(MESHX_GEN_LIGHT_CLI_CB_EVT event,
  * @return meshx_err_t Returns MESHX_SUCCESS on successful initialization,
  *                     or an appropriate error code on failure.
  */
-meshx_err_t meshx_plat_gen_light_cli_init(void)
+meshx_err_t meshx_plat_gen_light_client_init(void)
 {
     meshx_err_t err = MESHX_SUCCESS;
     if (meshx_client_init == MESHX_CLIENT_INIT_MAGIC_NO)
@@ -116,4 +116,100 @@ meshx_err_t meshx_plat_gen_light_cli_init(void)
     if (esp_err != ESP_OK)
         err = MESHX_ERR_PLAT;
     return err;
+}
+
+/**
+ * @brief Creates and initializes a Light CTL (Color Temperature Light) client model instance.
+ *
+ * This function sets up the Light CTL client model for use in the BLE Mesh network.
+ * It associates the client model with the provided model pointer and optionally sets up
+ * publication and client context pointers.
+ *
+ * @param[in]  p_model         Pointer to the mesh model structure to associate with the Light CTL client.
+ * @param[out] p_pub           Pointer to a publication context pointer to be initialized (can be NULL if not used).
+ * @param[out] p_light_ctl_cli Pointer to a Light CTL client context pointer to be initialized.
+ *
+ * @return meshx_err_t         Returns MESHX_OK on success, or an appropriate error code on failure.
+ */
+meshx_err_t meshx_plat_light_ctl_client_create(meshx_ptr_t p_model, meshx_ptr_t* p_pub, meshx_ptr_t* p_light_ctl_cli)
+{
+    if (!p_model || !p_pub || !p_light_ctl_cli)
+    {
+        return MESHX_INVALID_ARG; // Invalid arguments
+    }
+    /* SIG Light CTL Init */
+    uint16_t model_id = ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_CLI;
+    memcpy((meshx_ptr_t)&(((MESHX_MODEL *)p_model)->model_id), &model_id, sizeof(model_id));
+
+    return meshx_plat_client_create(p_model, p_pub, p_light_ctl_cli);
+}
+
+/**
+ * @brief Deletes the Light client instance and its associated publication context.
+ *
+ * This function is responsible for cleaning up and freeing resources associated with the Light client model,
+ * including its publication context.
+ *
+ * @param[in] p_pub Pointer to the publication context to be deleted.
+ * @param[in] p_cli Pointer to the client instance to be deleted.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the delete operation.
+ */
+meshx_err_t meshx_plat_light_client_delete(meshx_ptr_t* p_pub, meshx_ptr_t* p_cli)
+{
+    if (p_cli)
+    {
+        MESHX_FREE(*p_cli);
+        *p_cli = NULL;
+    }
+
+    return meshx_plat_del_model_pub(p_pub);
+}
+
+/**
+ * @brief Sends a Light Client message over BLE Mesh.
+ *
+ * This function constructs and sends a Light Client message using the specified model,
+ * set state parameters, opcode, destination address, network index, and application index.
+ *
+ * @param[in] p_model   Pointer to the BLE Mesh model instance.
+ * @param[in] p_set     Pointer to the structure containing the light client set state parameters.
+ * @param[in] opcode    Opcode of the message to be sent.
+ * @param[in] addr      Destination address for the message.
+ * @param[in] net_idx   Network index to be used for sending the message.
+ * @param[in] app_idx   Application index to be used for sending the message.
+ *
+ * @return meshx_err_t  Result of the message send operation.
+ */
+meshx_err_t meshx_plat_light_client_send_msg(
+    meshx_ptr_t p_model, meshx_light_client_set_state_t *p_set,
+    uint16_t opcode, uint16_t addr,
+    uint16_t net_idx, uint16_t app_idx
+)
+{
+    if (!p_model || !p_set)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    esp_ble_mesh_client_common_param_t common = {0};
+    common.model        = p_model;
+    common.opcode       = opcode;
+    common.ctx.addr     = addr;
+    common.ctx.net_idx  = net_idx;
+    common.ctx.app_idx  = app_idx;
+    common.ctx.send_ttl = 3;
+    common.msg_timeout  = 0; /* 0 indicates that timeout value from menuconfig will be used */
+
+    // Send the message using the appropriate BLE Mesh API
+    esp_err_t esp_err = esp_ble_mesh_light_client_set_state(
+        &common,
+        (esp_ble_mesh_light_client_set_state_t *)&p_set
+    );
+    if (esp_err != ESP_OK)
+    {
+        return MESHX_ERR_PLAT;
+    }
+
+    return MESHX_SUCCESS;
 }

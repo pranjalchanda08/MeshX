@@ -45,8 +45,6 @@ static const char *client_state_str[] =
 /*****************************************************************************************************************
  * STATIC FUNCTION PROTOTYPES
  ****************************************************************************************************************/
-static meshx_err_t meshx_plat_gen_cli_create(meshx_ptr_t p_model, meshx_ptr_t* p_pub, meshx_ptr_t*p_cli);
-
 static void esp_ble_mesh_generic_client_cb(MESHX_GEN_CLI_CB_EVT event, MESHX_GEN_CLI_CB_PARAM *param);
 /*****************************************************************************************************************
  * STATIC FUNCTION DEFINITIONS
@@ -109,51 +107,6 @@ static void esp_ble_mesh_generic_client_cb(MESHX_GEN_CLI_CB_EVT event,
     }
 }
 
-/**
- * @brief Creates and initializes a generic client model for BLE Mesh.
- *
- * This function sets up the necessary structures and resources for a generic client model
- * in the BLE Mesh stack. It initializes the model, publication context, and the on/off client instance.
- *
- * @param[in]  p_model      Pointer to the model structure to be initialized.
- * @param[out] p_pub        Pointer to a location where the address of the publication context will be stored.
- * @param[out] p_cli  Pointer to a location where the address of the on/off client instance will be stored.
- *
- * @return meshx_err_t      Returns an error code indicating the result of the operation.
- *                          Typically, MESHX_OK on success or an appropriate error code on failure.
- */
-static meshx_err_t meshx_plat_gen_cli_create(meshx_ptr_t p_model, meshx_ptr_t* p_pub, meshx_ptr_t* p_cli)
-{
-    if (!p_model || !p_pub || !p_cli)
-    {
-        return MESHX_INVALID_ARG; // Invalid arguments
-    }
-    meshx_err_t err = MESHX_SUCCESS;
-
-    // Create the publication context for the model
-    err = meshx_plat_create_model_pub(p_pub, 1);
-    if (err)
-    {
-        return meshx_plat_del_model_pub(p_pub); // Clean up on error
-    }
-
-    // Allocate memory for the generic client model
-    *p_cli = (MESHX_GEN_CLI *)MESHX_CALOC(1, sizeof(MESHX_GEN_CLI));
-    if (!*p_cli)
-    {
-        return MESHX_NO_MEM; // Memory allocation failed
-    }
-
-    // Initialize the generic client model
-    ((MESHX_MODEL *)p_model)->user_data = *p_cli;
-
-    meshx_ptr_t*temp = (meshx_ptr_t*)&((MESHX_MODEL *)p_model)->pub;
-
-    *temp = *p_pub;
-
-    return MESHX_SUCCESS; // Successfully created the model and publication context
-}
-
 /*****************************************************************************************************************
  * INTERFACE FUNCTION DEFINITIONS
  ****************************************************************************************************************/
@@ -212,7 +165,7 @@ meshx_err_t meshx_plat_on_off_gen_cli_create(meshx_ptr_t p_model, meshx_ptr_t* p
     uint16_t model_id = ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_CLI;
     memcpy((meshx_ptr_t)&(((MESHX_MODEL *)p_model)->model_id), &model_id, sizeof(model_id));
 
-    return meshx_plat_gen_cli_create(p_model, p_pub, p_onoff_cli);
+    return meshx_plat_client_create(p_model, p_pub, p_onoff_cli);
 }
 
 /**

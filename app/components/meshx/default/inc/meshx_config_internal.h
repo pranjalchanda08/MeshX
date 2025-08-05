@@ -136,7 +136,7 @@
 #endif
 
 #if CONFIG_RELAY_SERVER_COUNT
-    #if !CONFIG_ENABLE_GEN_SERVER
+    #if !CONFIG_GEN_ONOFF_SERVER_COUNT
     #error "Enable this to use Relay Server Element"
     #endif
 #endif /* CONFIG_RELAY_SERVER_COUNT */
@@ -148,13 +148,13 @@
 #endif /* CONFIG_RELAY_SERVER_COUNT */
 
 #if CONFIG_LIGHT_CWWW_SRV_COUNT
-    #if !CONFIG_ENABLE_GEN_SERVER && !CONFIG_ENABLE_LIGHT_CTL_SERVER
+    #if !CONFIG_ENABLE_GEN_SERVER || !CONFIG_ENABLE_LIGHT_CTL_SERVER
     #error "Enable this to use CWWW Server Element"
     #endif
 #endif /* CONFIG_LIGHT_CWWW_SRV_COUNT */
 
 #if CONFIG_LIGHT_CWWW_CLIENT_COUNT
-    #if !CONFIG_ENABLE_GEN_CLIENT && !CONFIG_ENABLE_LIGHT_CLIENT
+    #if !CONFIG_ENABLE_GEN_CLIENT || !CONFIG_ENABLE_LIGHT_CLIENT
     #error "Enable this to use CWWW Client Element"
     #endif
 #endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */

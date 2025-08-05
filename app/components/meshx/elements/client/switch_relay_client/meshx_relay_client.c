@@ -39,83 +39,6 @@
 static relay_client_element_ctrl_t relay_element_init_ctrl;
 
 /**
- * @brief Registers a callback handler for relay application requests.
- *
- * This function subscribes the provided callback to control task messages
- * related to BLE events. It ensures the callback is valid before subscribing.
- *
- * @param[in] callback  The callback function to handle control task messages.
- *
- * @return
- *     - MESHX_INVALID_ARG if the callback is NULL.
- *     - Result of control_task_msg_subscribe() otherwise.
- */
-static meshx_err_t meshx_relay_cli_reg_app_req_cb(control_task_msg_handle_t callback)
-{
-    if (callback == NULL)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    return control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_TO_BLE,
-        CONTROL_TASK_MSG_CODE_EVT_MASK,
-        callback
-    );
-}
-
-/**
- * @brief Registers a callback handler for fresh boot events.
- *
- * This function subscribes the provided callback to control task messages
- * related to element state changes. It ensures the callback is valid before subscribing.
- *
- * @param[in] callback  The callback function to handle element state change messages.
- *
- * @return
- *     - MESHX_INVALID_ARG if the callback is NULL.
- *     - Result of control_task_msg_subscribe() otherwise.
- */
-static meshx_err_t meshx_relay_cli_reg_freshboot_cb(control_task_msg_handle_t callback)
-{
-    if (callback == NULL)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    return control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_SYSTEM,
-        CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT,
-        callback
-    );
-}
-
-/**
- * @brief Registers a callback for relay element state change events.
- *
- * This function subscribes the provided callback to control task messages
- * related to relay element state changes. It ensures the callback is valid before subscribing.
- *
- * @param[in] callback  The callback function to handle relay element state change messages.
- *
- * @return
- *     - MESHX_INVALID_ARG if the callback is NULL.
- *     - Result of control_task_msg_subscribe() otherwise.
- */
-static meshx_err_t meshx_relay_cli_el_state_change_reg_cb(control_task_msg_handle_t callback)
-{
-    if (callback == NULL)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    return control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_EL_STATE_CH,
-        RELAY_CLI_EL_STATE_CH_EVT_MASK,
-        callback
-    );
-}
-/**
  * @brief Initializes the mesh element structure.
  *
  * This function initializes the mesh element structure with the specified maximum number of elements.
@@ -611,6 +534,61 @@ static meshx_err_t relay_cli_unit_test_cb_handler(int cmd_id, int argc, char **a
 }
 #endif /* CONFIG_ENABLE_UNIT_TEST */
 
+
+/**
+ * @brief Registers a callback handler for relay application requests.
+ *
+ * This function subscribes the provided callback to control task messages
+ * related to BLE events. It ensures the callback is valid before subscribing.
+ *
+ * @return
+ *     - Result of control_task_msg_subscribe() otherwise.
+ */
+static meshx_err_t meshx_relay_cli_reg_app_req_cb()
+{
+    return control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_TO_BLE,
+        CONTROL_TASK_MSG_CODE_EVT_MASK,
+        (control_task_msg_handle_t)&meshx_relay_cli_el_app_req_handler
+    );
+}
+
+/**
+ * @brief Registers a callback handler for fresh boot events.
+ *
+ * This function subscribes the provided callback to control task messages
+ * related to element state changes. It ensures the callback is valid before subscribing.
+ *
+ * @return
+ *     - Result of control_task_msg_subscribe() otherwise.
+ */
+static meshx_err_t meshx_relay_cli_reg_freshboot_cb()
+{
+    return control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_SYSTEM,
+        CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT,
+        (control_task_msg_handle_t)&relay_cli_freshboot_msg_handle
+    );
+}
+
+/**
+ * @brief Registers a callback for relay element state change events.
+ *
+ * This function subscribes the provided callback to control task messages
+ * related to relay element state changes. It ensures the callback is valid before subscribing.
+ *
+ * @return
+ *     - Result of control_task_msg_subscribe() otherwise.
+ */
+static meshx_err_t meshx_relay_cli_el_state_change_reg_cb()
+{
+    return control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_EL_STATE_CH,
+        RELAY_CLI_EL_STATE_CH_EVT_MASK,
+        (control_task_msg_handle_t)&meshx_handle_rel_el_msg
+    );
+}
+
 /**
  * @brief Sets the state of the relay element.
  *
@@ -696,22 +674,19 @@ meshx_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cn
         return err;
     }
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
-    err = meshx_relay_cli_reg_app_req_cb(
-            (control_task_msg_handle_t)&meshx_relay_cli_el_app_req_handler);
+    err = meshx_relay_cli_reg_app_req_cb();
     if (err)
     {
         MESHX_LOGE(MOD_SRC, "Relay Client app req callback reg failed: (%d)", err);
         return err;
     }
-    err = meshx_relay_cli_reg_freshboot_cb(
-            (control_task_msg_handle_t)&relay_cli_freshboot_msg_handle);
+    err = meshx_relay_cli_reg_freshboot_cb();
     if (err)
     {
         MESHX_LOGE(MOD_SRC, "Relay Client freshboot callback reg failed: (%d)", err);
         return err;
     }
-    err = meshx_relay_cli_el_state_change_reg_cb(
-            (control_task_msg_handle_t)&meshx_handle_rel_el_msg);
+    err = meshx_relay_cli_el_state_change_reg_cb();
     if (err)
     {
         MESHX_LOGE(MOD_SRC, "Relay Client element state change callback reg failed: (%d)", err);
