@@ -450,7 +450,6 @@ typedef struct meshx_gen_light_cli_cb_param
 {
     meshx_ctx_t ctx;                            /**< Context of the received messages */
     meshx_model_t model;                        /**< Pointer to Generic Light Client Models */
-    meshx_ptr_t gen_cli_msg;                    /**< Pointer to the Generic Client message */
     meshx_gen_light_cli_evt_t evt;              /**< Event type of the received message */
     meshx_gen_light_client_status_cb_t status;  /**< Value of the received Generic Messages */
 } meshx_gen_light_cli_cb_param_t;
@@ -463,6 +462,55 @@ typedef struct meshx_gen_light_cli_cb_param
  * @return meshx_err_t Returns MESHX_SUCCESS on successful initialization,
  *                     or an appropriate error code on failure.
  */
-meshx_err_t meshx_plat_gen_light_cli_init(void);
+meshx_err_t meshx_plat_gen_light_client_init(void);
+
+/**
+ * @brief Creates and initializes a Light CTL (Color Temperature Light) client model instance.
+ *
+ * This function sets up the Light CTL client model for use in the BLE Mesh network.
+ * It associates the client model with the provided model pointer and optionally sets up
+ * publication and client context pointers.
+ *
+ * @param[in]  p_model         Pointer to the mesh model structure to associate with the Light CTL client.
+ * @param[out] p_pub           Pointer to a publication context pointer to be initialized (can be NULL if not used).
+ * @param[out] p_light_ctl_cli Pointer to a Light CTL client context pointer to be initialized.
+ *
+ * @return meshx_err_t         Returns MESHX_OK on success, or an appropriate error code on failure.
+ */
+meshx_err_t meshx_plat_light_ctl_client_create(meshx_ptr_t p_model, meshx_ptr_t* p_pub, meshx_ptr_t* p_light_ctl_cli);
+
+/**
+ * @brief Deletes the Light client instance and its associated publication context.
+ *
+ * This function is responsible for cleaning up and freeing resources associated with the Light client model,
+ * including its publication context.
+ *
+ * @param[in] p_pub Pointer to the publication context to be deleted.
+ * @param[in] p_cli Pointer to the client instance to be deleted.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the delete operation.
+ */
+meshx_err_t meshx_plat_light_client_delete(meshx_ptr_t* p_pub, meshx_ptr_t* p_cli);
+
+/**
+ * @brief Sends a Light Client message over BLE Mesh.
+ *
+ * This function constructs and sends a Light Client message using the specified model,
+ * set state parameters, opcode, destination address, network index, and application index.
+ *
+ * @param[in] p_model   Pointer to the BLE Mesh model instance.
+ * @param[in] p_set     Pointer to the structure containing the light client set state parameters.
+ * @param[in] opcode    Opcode of the message to be sent.
+ * @param[in] addr      Destination address for the message.
+ * @param[in] net_idx   Network index to be used for sending the message.
+ * @param[in] app_idx   Application index to be used for sending the message.
+ *
+ * @return meshx_err_t  Result of the message send operation.
+ */
+meshx_err_t meshx_plat_light_client_send_msg(
+    meshx_ptr_t p_model, meshx_light_client_set_state_t *p_set,
+    uint16_t opcode, uint16_t addr,
+    uint16_t net_idx, uint16_t app_idx
+);
 
 #endif /* MESHX_BLE_MESH_LIGHT_CLI_H */

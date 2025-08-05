@@ -68,8 +68,8 @@ typedef struct relay_client_element
 {
     size_t element_model_init;                                     /**< Initialization status of the element model */
     meshx_relay_client_model_ctx_t *cli_ctx;                       /**< Pointer to the relay client context */
-    MESHX_MODEL relay_cli_sig_model_list[RELAY_CLI_MODEL_SIG_CNT]; /**< Pointer to the list of relay client SIG model structures */
     meshx_onoff_client_model_t *onoff_cli_model;                   /**< Pointer to the list of relay client on/off generic structures */
+    MESHX_MODEL relay_cli_sig_model_list[RELAY_CLI_MODEL_SIG_CNT]; /**< Pointer to the list of relay client SIG model structures */
 } relay_client_elements_t;
 
 typedef struct relay_client_element_ctrl

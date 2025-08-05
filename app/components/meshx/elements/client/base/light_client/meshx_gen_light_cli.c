@@ -77,5 +77,42 @@ meshx_err_t meshx_gen_light_cli_init(void)
         return MESHX_SUCCESS;
     meshx_client_init = MESHX_CLIENT_INIT_MAGIC_NO;
 
-    return meshx_plat_gen_light_cli_init();
+    return meshx_plat_gen_light_client_init();
 }
+
+/**
+ * @brief Send a message using the generic client model.
+ *
+ * This function sends a message using the generic client model, allowing
+ * interaction with the BLE mesh network.
+ *
+ * @param[in] model     Pointer to the model instance.
+ * @param[in] state     Pointer to the state to be set.
+ * @param[in] opcode    The operation code for the message.
+ * @param[in] addr      The address to which the message is sent.
+ * @param[in] net_idx   The network index for routing the message.
+ * @param[in] app_idx   The application index for the message.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Message sent successfully.
+ *     - Appropriate error code on failure.
+ */
+meshx_err_t meshx_gen_light_send_msg(
+    meshx_ptr_t model,
+    meshx_light_client_set_state_t *state,
+    uint16_t opcode,
+    uint16_t addr,
+    uint16_t net_idx,
+    uint16_t app_idx
+)
+{
+    if (!model || !state)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    return meshx_plat_light_client_send_msg(
+        model, state, opcode, addr, net_idx, app_idx
+    );
+}
+

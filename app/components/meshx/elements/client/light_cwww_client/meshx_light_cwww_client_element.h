@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file meshx_light_cwww_client.h
+ * @file meshx_light_cwww_client_element.h
  * @brief Implementation of the CW-WW (Cool White - Warm White) client model for BLE Mesh.
  *
  * @author Pranjal Chanda
@@ -164,9 +164,9 @@ typedef struct cwww_client_element
 {
     size_t element_model_init;                                     /**< Initialization status of the element model */
     cwww_cli_ctx_t *cwww_cli_ctx;                                  /**< Pointer to the cwww client context */
-    MESHX_MODEL cwww_cli_sig_model_list[CWWW_CLI_MODEL_SIG_CNT];   /**< Pointer to the list of cwww client SIG model structures */
     meshx_onoff_client_model_t *onoff_cli_model;                   /**< Pointer to the list of cwww client on/off generic structures */
     meshx_light_ctl_client_model_t *ctl_cli_model;                 /**< Pointer to the list of cwww client light CTL structures */
+    MESHX_MODEL cwww_cli_sig_model_list[CWWW_CLI_MODEL_SIG_CNT];   /**< Pointer to the list of cwww client SIG model structures */
 } cwww_client_elements_t;
 
 /**

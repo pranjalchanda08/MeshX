@@ -69,20 +69,6 @@ typedef struct meshx_light_ctl_client_model
 meshx_err_t meshx_light_ctl_client_init();
 
 /**
- * @brief Registers a callback function for the Light CTL (Color Temperature Lightness) client model.
- *
- * This function associates a user-defined callback with a specific Light CTL client model,
- * allowing the application to handle events or responses related to the model.
- *
- * @param[in] model_id The unique identifier of the Light CTL client model instance.
- * @param[in] cb       The callback function to be registered. This function will be called
- *                     when relevant events occur for the specified model.
- *
- * @return meshx_err_t Returns MESHX_OK on success, or an appropriate error code on failure.
- */
-meshx_err_t meshx_light_ctl_cli_reg_cb(uint32_t model_id, meshx_gen_light_cli_cb_t cb);
-
-/**
  * @brief Creates and initializes a Generic Light Client model instance.
  *
  * This function allocates and sets up a Generic Light Client model, associating it with the provided
@@ -110,5 +96,57 @@ meshx_err_t meshx_light_ctl_client_create(meshx_light_ctl_client_model_t **p_mod
  *     - MESHX_INVALID_ARG: Invalid argument provided.
  */
 meshx_err_t meshx_light_ctl_client_delete(meshx_light_ctl_client_model_t **p_model);
+
+/**
+ * @brief Sends a Light CTL (Color Temperature Lightness) message from the Light CTL Client model.
+ *
+ * This function constructs and sends a Light CTL message to a specified destination address
+ * using the provided network and application indices. The message contains the desired lightness,
+ * temperature, and a transaction identifier (TID).
+ *
+ * @param[in] model        Pointer to the Light CTL Client model instance.
+ * @param[in] opcode       Opcode of the Light CTL message to be sent.
+ * @param[in] addr         Destination address for the message.
+ * @param[in] net_idx      Network index to be used for sending the message.
+ * @param[in] app_idx      Application index to be used for sending the message.
+ * @param[in] lightness    Desired lightness value to be set.
+ * @param[in] temperature  Desired color temperature value to be set.
+ * @param[in] delta_uv     Desired delta UV value to be set.
+ * @param[in] tid          Transaction Identifier for the message.
+ *
+ * @return meshx_err_t     Returns the result of the message send operation.
+ */
+meshx_err_t meshx_light_ctl_client_send_msg(
+        meshx_light_ctl_client_model_t *model,
+        uint16_t opcode,  uint16_t addr,
+        uint16_t net_idx, uint16_t app_idx,
+        uint16_t lightness, uint16_t temperature,
+        uint16_t delta_uv, uint8_t tid
+);
+
+/**
+ * @brief Sends a Light CTL Temperature message from the client model.
+ *
+ * This function constructs and sends a Light CTL Temperature message to a specified address
+ * using the provided network and application indices. It allows the client to control the
+ * color temperature and delta UV of a lighting element in a mesh network.
+ *
+ * @param[in] model        Pointer to the Light CTL client model instance.
+ * @param[in] opcode       Opcode of the message to be sent.
+ * @param[in] addr         Destination address of the message.
+ * @param[in] net_idx      Network index to be used for sending the message.
+ * @param[in] app_idx      Application index to be used for sending the message.
+ * @param[in] temperature  Desired color temperature value to be set.
+ * @param[in] delta_uv     Delta UV value to be set.
+ * @param[in] tid          Transaction Identifier for the message.
+ *
+ * @return meshx_err_t     Result of the message send operation.
+ */
+meshx_err_t meshx_light_ctl_temperature_client_send_msg(
+        meshx_light_ctl_client_model_t *model,
+        uint16_t opcode,  uint16_t addr,
+        uint16_t net_idx, uint16_t app_idx,
+        uint16_t temperature, uint16_t delta_uv, uint8_t tid
+);
 
 #endif /*__LIGHT_CTL_CLIENT_H__*/
