@@ -286,7 +286,6 @@ typedef struct meshx_gen_cli_cb_param
 {
     meshx_ctx_t ctx;                            /**< Context of the received messages */
     meshx_model_t model;                        /**< Pointer to Generic Client Models */
-    meshx_ptr_t gen_cli_msg;                    /**< Pointer to the Generic Client message */
     meshx_gen_cli_evt_t evt;                    /**< Event type of the received message */
     meshx_gen_client_status_cb_t status;        /**< Value of the received Generic Messages */
 } meshx_gen_cli_cb_param_t;

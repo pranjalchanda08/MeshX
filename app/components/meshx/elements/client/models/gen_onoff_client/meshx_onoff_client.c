@@ -102,6 +102,30 @@ static meshx_err_t meshx_handle_gen_onoff_msg(
 }
 
 /**
+ * @brief Registers a callback function for a specific generic server model.
+ *
+ * This function associates a callback with the given model ID, allowing the server
+ * to handle events or messages related to that model.
+ *
+ * @param[in] model_id The unique identifier of the generic server model.
+ * @param[in] cb       The callback function to be registered for the model.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the registration.
+ *                     Possible values include success or specific error codes.
+ */
+static meshx_err_t meshx_gen_on_off_cli_reg_cb(uint32_t model_id, meshx_gen_cli_cb_t cb)
+{
+    if (!cb || model_id != MESHX_MODEL_ID_GEN_ONOFF_CLI)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    return control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_FRM_BLE,
+        model_id,
+        cb);
+}
+
+/**
  * @brief Initialize the Generic OnOff Client.
  *
  * This function initializes the OnOff Client by registering the BLE Mesh
@@ -117,6 +141,7 @@ meshx_err_t meshx_on_off_client_init(void)
     {
         return MESHX_SUCCESS;
     }
+    meshx_client_init_flag = MESHX_CLIENT_INIT_MAGIC;
 
     err = meshx_gen_cli_init();
     if (err)
@@ -136,29 +161,6 @@ meshx_err_t meshx_on_off_client_init(void)
     return err;
 }
 
-/**
- * @brief Registers a callback function for a specific generic server model.
- *
- * This function associates a callback with the given model ID, allowing the server
- * to handle events or messages related to that model.
- *
- * @param[in] model_id The unique identifier of the generic server model.
- * @param[in] cb       The callback function to be registered for the model.
- *
- * @return meshx_err_t Returns an error code indicating the result of the registration.
- *                     Possible values include success or specific error codes.
- */
-meshx_err_t meshx_gen_on_off_cli_reg_cb(uint32_t model_id, meshx_gen_cli_cb_t cb)
-{
-    if (!cb || model_id != MESHX_MODEL_ID_GEN_ONOFF_CLI)
-    {
-        return MESHX_INVALID_ARG;
-    }
-    return control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_FRM_BLE,
-        model_id,
-        cb);
-}
 /**
  * @brief Creates and initializes a Generic OnOff Client model instance.
  *

@@ -21,48 +21,41 @@
  * @author Pranjal Chanda
  *
  */
-#include "meshx_light_cwww_client.h"
+#include "app_common.h"
+#include "meshx_control_task.h"
 #include "meshx_nvs.h"
 #include "meshx_api.h"
 
 #if CONFIG_LIGHT_CWWW_CLIENT_COUNT > 0
+#include "meshx_light_cwww_client_element.h"
 
 #if CONFIG_ENABLE_CONFIG_SERVER
 #include "meshx_config_server.h"
-#include "meshx_api.h"
 
 /**
  * @brief Configuration server callback event mask for cwww server.
  */
-#define CONFIG_SERVER_CB_MASK \
-    CONTROL_TASK_MSG_EVT_PUB_ADD  \
-    | CONTROL_TASK_MSG_EVT_SUB_ADD | CONTROL_TASK_MSG_EVT_APP_KEY_BIND
+#define CONFIG_SERVER_CB_MASK        \
+        CONTROL_TASK_MSG_EVT_PUB_ADD \
+    |   CONTROL_TASK_MSG_EVT_SUB_ADD \
+    |   CONTROL_TASK_MSG_EVT_APP_KEY_BIND
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
 /**
  * @defgroup CONTROL_TASK configs
  */
 #if defined(__MESHX_CONTROL_TASK__)
-#define CONTROL_TASK_MSG_CODE_EVT_MASK CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF | CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL
+#define CONTROL_TASK_MSG_CODE_EVT_MASK          \
+        CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF  \
+    |   CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL
 #endif /* __MESHX_CONTROL_TASK__ */
 
-#define CWWW_CLI_MESHX_ONOFF_ENABLE_CB true
-#define IS_EL_IN_RANGE(_element_id) ((_element_id) >= cwww_client_element_init_ctrl.element_id_start && (_element_id) < cwww_client_element_init_ctrl.element_id_end)
-#define GET_RELATIVE_EL_IDX(_element_id) ((_element_id) - cwww_client_element_init_ctrl.element_id_start)
-#define CWWW_CLI_EL(_el_id) cwww_client_element_init_ctrl.el_list[_el_id]
-#define MOD_LCC MODULE_ID_ELEMENT_LIGHT_CWWWW_CLIENT
+#define MOD_LCC                             MODULE_ID_ELEMENT_LIGHT_CWWWW_CLIENT
+#define CWWW_CLI_MESHX_ONOFF_ENABLE_CB      true
 
-#define CWWW_CLI_MESHX_ONOFF_CLI_CB_EVT_BMAP MESHX_ONOFF_CLI_EVT_ALL
-#define CWWW_CLI_MESHX_CTL_CLI_CB_EVT_BMAP LIGHT_CTL_CLI_EVT_ALL
-
-/**
- * @var cwww_cli_sig_template
- * @brief CW-WW client SIG model template.
- */
-static const MESHX_MODEL cwww_cli_sig_template[CWWW_CLI_MODEL_SIG_CNT] = {
-    ESP_BLE_MESH_SIG_MODEL(ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_CLI, NULL, NULL, NULL),
-    ESP_BLE_MESH_SIG_MODEL(ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_CLI, NULL, NULL, NULL),
-};
+#define IS_EL_IN_RANGE(_element_id)         ((_element_id) >= cwww_client_element_init_ctrl.element_id_start && (_element_id) < cwww_client_element_init_ctrl.element_id_end)
+#define GET_RELATIVE_EL_IDX(_element_id)    ((_element_id) - cwww_client_element_init_ctrl.element_id_start)
+#define CWWW_CLI_EL(_el_id)                 cwww_client_element_init_ctrl.el_list[_el_id]
 
 static cwww_client_elements_ctrl_t cwww_client_element_init_ctrl;
 

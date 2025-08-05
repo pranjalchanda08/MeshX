@@ -57,7 +57,7 @@
  * MESHX_CLIENT_MODELS
  */
 
-#define MESHX_GEN_CLI           esp_ble_mesh_client_t
+#define MESHX_CLI               esp_ble_mesh_client_t
 #define MESHX_GEN_CLI_CB        esp_ble_mesh_generic_client_cb_t
 #define MESHX_GEN_CLI_CB_EVT    esp_ble_mesh_generic_client_cb_event_t
 #define MESHX_GEN_CLI_CB_PARAM  esp_ble_mesh_generic_client_cb_param_t
