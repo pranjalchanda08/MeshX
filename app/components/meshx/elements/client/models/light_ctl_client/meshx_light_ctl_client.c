@@ -143,7 +143,7 @@ static meshx_err_t meshx_handle_gen_light_msg(
  *
  * @return meshx_err_t Returns MESHX_OK on success, or an appropriate error code on failure.
  */
-static meshx_err_t meshx_light_ctl_cli_reg_cb(uint32_t model_id, meshx_gen_light_cli_cb_t cb)
+static meshx_err_t meshx_light_ctl_cli_reg_cb(uint32_t model_id, meshx_gen_light_client_cb_t cb)
 {
     if (cb == NULL || model_id != MESHX_MODEL_ID_LIGHT_CTL_CLI)
         return MESHX_INVALID_ARG; // Invalid arguments
@@ -179,7 +179,7 @@ meshx_err_t meshx_light_ctl_client_init()
 
     err = meshx_light_ctl_cli_reg_cb(
         MESHX_MODEL_ID_LIGHT_CTL_CLI,
-        (meshx_gen_light_cli_cb_t)&meshx_handle_gen_light_msg
+        (meshx_gen_light_client_cb_t)&meshx_handle_gen_light_msg
     );
     if (err)
     {

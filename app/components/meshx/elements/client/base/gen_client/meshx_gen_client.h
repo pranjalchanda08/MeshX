@@ -20,35 +20,18 @@
 #include "interface/ble_mesh/client/meshx_ble_mesh_gen_cli.h"
 
 /**
- * @brief Register a callback function for the meshxuction client model.
+ * @brief Registers a callback function for a specific generic server model.
  *
- * This function registers a callback function that will be called when
- * specific events related to the meshxuction client model occur.
+ * This function associates a callback with the given model ID, allowing the server
+ * to handle events or messages related to that model.
  *
- * @param[in] model_id  The ID of the model for which the callback is being registered.
- * @param[in] cb        The callback function to be registered.
+ * @param[in] model_id The unique identifier of the generic server model.
+ * @param[in] cb       The callback function to be registered for the model.
  *
- * @return
- *     - MESHX_SUCCESS: Callback registered successfully.
- *     - MESHX_INVALID_ARG: Invalid arguments.
- *     - MESHX_FAIL: Failed to register the callback.
+ * @return meshx_err_t Returns an error code indicating the result of the registration.
+ *                     Possible values include success or specific error codes.
  */
-meshx_err_t meshx_gen_cli_reg_cb(uint32_t model_id, meshx_gen_cli_cb_t cb);
-
-/**
- * @brief Callback function to deregister a generic client model.
- *
- * This function is called to deregister a generic client model identified by the given model ID.
- *
- * @param[in] model_id  The ID of the model to be deregistered.
- * @param[in] cb        The callback function to be deregistered.
- *
- * @return
- *     - MESHX_SUCCESS: Success
- *     - MESHX_INVALID_ARG: Invalid argument
- *     - MESHX_FAIL: Other failures
- */
-meshx_err_t meshx_gen_cli_dereg_cb(uint32_t model_id, meshx_gen_cli_cb_t cb);
+meshx_err_t meshx_gen_client_from_ble_reg_cb(uint32_t model_id, meshx_gen_client_cb_t cb);
 
 /**
  * @brief Initialize the meshxuction generic client.
@@ -60,7 +43,7 @@ meshx_err_t meshx_gen_cli_dereg_cb(uint32_t model_id, meshx_gen_cli_cb_t cb);
  *     - MESHX_SUCCESS: Success
  *     - MESHX_FAIL: Failed to initialize the client
  */
-meshx_err_t meshx_gen_cli_init(void);
+meshx_err_t meshx_gen_client_init(void);
 
 /**
  * @brief Sends a generic client message in the MeshX framework.

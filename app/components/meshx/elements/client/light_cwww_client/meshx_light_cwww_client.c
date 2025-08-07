@@ -52,270 +52,253 @@
 
 #define MOD_LCC                             MODULE_ID_ELEMENT_LIGHT_CWWWW_CLIENT
 #define CWWW_CLI_MESHX_ONOFF_ENABLE_CB      true
+#define CWWW_CLI_EL_STATE_CH_EVT_MASK       CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF | CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL
 
 #define IS_EL_IN_RANGE(_element_id)         ((_element_id) >= cwww_client_element_init_ctrl.element_id_start && (_element_id) < cwww_client_element_init_ctrl.element_id_end)
 #define GET_RELATIVE_EL_IDX(_element_id)    ((_element_id) - cwww_client_element_init_ctrl.element_id_start)
 #define CWWW_CLI_EL(_el_id)                 cwww_client_element_init_ctrl.el_list[_el_id]
 
-static cwww_client_elements_ctrl_t cwww_client_element_init_ctrl;
+static meshx_cwww_client_elements_ctrl_t cwww_client_element_init_ctrl;
 
 #if CWWW_CLI_MESHX_ONOFF_ENABLE_CB
 
+static meshx_err_t meshx_cwww_cli_send_onoff_msg( const dev_struct_t *pdev, uint16_t element_id, uint8_t set_get, uint8_t ack);
+static meshx_err_t meshx_cwww_cli_send_ctl_msg( const dev_struct_t *pdev, uint16_t element_id, uint8_t set_get, uint8_t ack);
 /**
- * @brief Registers a callback handler for fresh boot events.
+ * @brief Handler for On/Off state change events in the CW/WW light client.
  *
- * This function subscribes the provided callback to control task messages
- * related to element state changes. It ensures the callback is valid before subscribing.
+ * This function processes state change messages received by the CW/WW (Cool White/Warm White)
+ * light client element. It is typically called when the On/Off state of the light changes,
+ * allowing the client to update its internal state or perform necessary actions.
  *
- * @param[in] callback  The callback function to handle element state change messages.
+ * @param pdev Pointer to the device structure representing the client device.
+ * @param param Pointer to the message structure containing On/Off state change information.
  *
- * @return
- *     - MESHX_INVALID_ARG if the callback is NULL.
- *     - Result of control_task_msg_subscribe() otherwise.
+ * @return meshx_err_t Error code indicating the result of the handler execution.
  */
-static meshx_err_t meshx_cwww_cli_reg_freshboot_cb(control_task_msg_handle_t callback)
+static meshx_err_t cwww_client_on_off_state_change_handler(
+    dev_struct_t const *pdev,
+    const meshx_on_off_cli_el_msg_t *param)
 {
-    if (callback == NULL)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    return control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_SYSTEM,
-        CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT,
-        callback
-    );
-}
-
-/**
- * @brief Registers a callback handler for CW-WW application requests.
- *
- * This function subscribes the provided callback to control task messages
- * related to BLE events. It ensures the callback is valid before subscribing.
- *
- * @param[in] callback  The callback function to handle control task messages.
- */
-static meshx_err_t meshx_cwww_cli_reg_app_req_cb(control_task_msg_handle_t callback)
-{
-    if (callback == NULL)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    return control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_TO_BLE,
-        CONTROL_TASK_MSG_CODE_EVT_MASK,
-        callback
-    );
-}
-
-/**
- * @brief CW-WW Client Generic Client Callback
- *
- * This function handles the CW-WW client generic client callback events.
- *
- * @param[in] param Pointer to the BLE Mesh generic client callback parameter structure.
- * @param[in] evt Event type of the callback.
- */
-static void cwww_client_generic_client_cb(const esp_ble_mesh_generic_client_cb_param_t *param, meshx_onoff_cli_evt_t evt)
-{
-    uint8_t element_id = param->params->model->element_idx;
+    uint16_t element_id = param->model.el_id;
     if (!IS_EL_IN_RANGE(element_id))
     {
-        return;
+        return MESHX_SUCCESS;
     }
 
     size_t rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-    cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl->cwww_cli_ctx[rel_el_id];
-    cwww_client_msg_t msg = {0};
-    meshx_el_light_cwww_client_evt_t app_notify;
+    meshx_cwww_client_model_ctx_t *el_ctx = CWWW_CLI_EL(rel_el_id).cwww_cli_ctx;
+    meshx_api_light_cwww_client_evt_t app_notify;
     meshx_err_t err;
-
-    switch (evt)
+    if(param->err_code == MESHX_SUCCESS)
     {
-    case MESHX_ONOFF_CLI_EVT_SET:
-    case MESHX_ONOFF_CLI_PUBLISH:
-        cwww_client_element_init_ctrl->element_model_init |= BIT(CWWW_CLI_SIG_ONOFF_MODEL_ID);
-        if (el_ctx->prev_state.on_off != param->status_cb.onoff_status.present_onoff)
+        CWWW_CLI_EL(rel_el_id).element_model_init |= MESHX_BIT(CWWW_CLI_SIG_ONOFF_MODEL_ID);
+        if (el_ctx->prev_state.on_off != param->on_off_state)
         {
-            el_ctx->prev_state.on_off = param->status_cb.onoff_status.present_onoff;
-            app_notify.err_code = 0;
-            app_notify.state_change.on_off.state = el_ctx->prev_state.on_off;
-
-            err = meshx_send_msg_to_app(element_id,
-                                        MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT,
-                                        MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_ONN_OFF,
-                                        sizeof(meshx_el_light_cwww_client_evt_t),
-                                        &app_notify);
-            if (err != MESHX_SUCCESS)
-            {
-                ESP_LOGE(TAG, "Failed to send CWWW state change message: (%d)", err);
-            }
-
-            el_ctx->state.on_off = !param->status_cb.onoff_status.present_onoff;
-            MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "SET|PUBLISH: %d", param->status_cb.onoff_status.present_onoff);
-            MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "Next state: %d", el_ctx->state.on_off);
+            el_ctx->prev_state.on_off = param->on_off_state;
         }
-        break;
-    case MESHX_ONOFF_CLI_TIMEOUT:
-        MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "Timeout");
-        msg.element_id = param->params->model->element_idx;
-        msg.set_get = MESHX_GEN_ON_OFF_CLI_MSG_SET;
-        msg.ack = MESHX_GEN_ON_OFF_CLI_MSG_ACK;
-        /*
-         * @warning: Possible loop case:
-         * 1. Cwww Client sends a message to the server
-         * 2. Timeout occurs
-         * 3. #1 and #2 are repeated with no break in stetes.
-         */
-        control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF, &msg, sizeof(msg));
+        app_notify.err_code = 0;
+        app_notify.state_change.on_off.state = el_ctx->prev_state.on_off;
 
-        app_notify.err_code = 1;
         err = meshx_send_msg_to_app(element_id,
                                     MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT,
-                                    MESHX_ELEMENT_FUNC_ID_CWWW_SERVER_ONN_OFF,
-                                    sizeof(meshx_el_cwww_client_evt_t),
+                                    MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_ONN_OFF,
+                                    sizeof(meshx_api_light_cwww_client_evt_t),
                                     &app_notify);
         if (err != MESHX_SUCCESS)
         {
-            ESP_LOGE(TAG, "Failed to send cwww state change message: (%d)", err);
+            MESHX_LOGE(MOD_LCC, "Failed to send CWWW state change message: (%d)", err);
         }
-        break;
-    default:
-        ESP_LOGW(TAG, "Unhandled event: %d", evt);
-        break;
-    }
-}
 
-/**
- * @brief Callback function for handling Light CTL Client events.
- *
- * This function is called whenever a Light CTL Client event occurs.
- *
- * @param[in] param Pointer to the structure containing the event parameters.
- * @param[in] evt The specific Light CTL Client event that occurred.
- */
-static bool cwww_client_ctl_client_cb(const esp_ble_mesh_light_client_cb_param_t *param, light_ctl_cli_evt_t evt)
-{
-    uint8_t element_id = param->params->model->element_idx;
-    if (!IS_EL_IN_RANGE(element_id))
-        return false;
-
-    size_t rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-    cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl->cwww_cli_ctx[rel_el_id];
-    cwww_client_msg_t msg = {0};
-    meshx_el_light_cwww_client_evt_t app_notify;
-    meshx_err_t err;
-    bool state_change = false;
-
-    if (param->params->opcode == MESHX_MODEL_OP_LIGHT_CTL_STATUS)
-    {
-        if (el_ctx->prev_ctl_state.lightness != param->status_cb.ctl_status.present_ctl_lightness
-        || el_ctx->prev_ctl_state.temperature != param->status_cb.ctl_status.present_ctl_temperature
-        )
-        {
-            el_ctx->prev_ctl_state.lightness = param->status_cb.ctl_status.present_ctl_lightness;
-            el_ctx->prev_ctl_state.temperature = param->status_cb.ctl_status.present_ctl_temperature;
-            state_change = true;
-        }
-    }
-    else if (param->params->opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS)
-    {
-        if(el_ctx->prev_ctl_state.delta_uv != param->status_cb.ctl_temperature_status.present_ctl_delta_uv
-        || el_ctx->prev_ctl_state.temperature != param->status_cb.ctl_temperature_status.present_ctl_temperature)
-        {
-            el_ctx->prev_ctl_state.delta_uv = param->status_cb.ctl_temperature_status.present_ctl_delta_uv;
-            el_ctx->prev_ctl_state.temperature = param->status_cb.ctl_temperature_status.present_ctl_temperature;
-            state_change = true;
-        }
-    }
-    else if ((param->params->opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS) && (param->status_cb.ctl_temperature_range_status.status_code == MESHX_SUCCESS))
-    {
-        if (el_ctx->prev_ctl_state.temp_range_max != param->status_cb.ctl_temperature_range_status.range_max
-        ||  el_ctx->prev_ctl_state.temp_range_min != param->status_cb.ctl_temperature_range_status.range_min)
-        {
-            el_ctx->prev_ctl_state.temp_range_max = param->status_cb.ctl_temperature_range_status.range_max;
-            el_ctx->prev_ctl_state.temp_range_min = param->status_cb.ctl_temperature_range_status.range_min;
-            state_change = true;
-        }
-    }
-    else if (MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS == param->params->opcode)
-    {
-        if( el_ctx->prev_ctl_state.temp_def != param->status_cb.ctl_default_status.temperature
-        ||  el_ctx->prev_ctl_state.delta_uv_def != param->status_cb.ctl_default_status.delta_uv
-        ||  el_ctx->prev_ctl_state.lightness_def != param->status_cb.ctl_default_status.lightness)
-        {
-            el_ctx->prev_ctl_state.temp_def = param->status_cb.ctl_default_status.temperature;
-            el_ctx->prev_ctl_state.delta_uv_def = param->status_cb.ctl_default_status.delta_uv;
-            el_ctx->prev_ctl_state.lightness_def = param->status_cb.ctl_default_status.lightness;
-            state_change = true;
-        }
+        el_ctx->state.on_off = !param->on_off_state;
+        el_ctx->tid++;
+        MESHX_LOGD(MOD_LCC, "SET|PUBLISH: %d", param->on_off_state);
+        MESHX_LOGD(MOD_LCC, "Next state: %d", el_ctx->state.on_off);
     }
     else
     {
-        /* Return as No CTL related OPCode were received */
-        return false;
+        MESHX_LOGE(MOD_LCC, "CWWW Client Element Message: Error (%d)", param->err_code);
+        /* Retry sending the failed packet. Do not notify App */
+        /* Please note that the failed packets gets sent endlessly. Hence, a loop condition */
+        el_ctx->tid++;
+        err = meshx_cwww_cli_send_onoff_msg(pdev,
+                                            element_id,
+                                            MESHX_GEN_ON_OFF_CLI_MSG_SET,
+                                            MESHX_GEN_ON_OFF_CLI_MSG_ACK);
+        if (err)
+        {
+            MESHX_LOGE(MOD_LCC, "CWWW Client Element Message: Retry failed (%d)", err);
+        }
+    }
+    return err;
+}
+
+/**
+ * @brief Handles state changes for the CW/WW light control client element.
+ *
+ * This function processes state change events for the CW/WW (Cool White/Warm White) light control client.
+ * It is typically called when the on/off state of the light changes, and is responsible for updating
+ * the device state or triggering further actions based on the received parameters.
+ *
+ * @param pdev Pointer to the device structure representing the light client element.
+ * @param param Pointer to the message structure containing the on/off state change parameters.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the handler execution.
+ */
+
+static meshx_err_t cwww_light_ctl_state_change_handler(
+    dev_struct_t const *pdev,
+    const meshx_ctl_cli_el_msg_t *param)
+{
+    uint16_t element_id = param->model.el_id;
+    if (!IS_EL_IN_RANGE(element_id))
+    {
+        return MESHX_SUCCESS;
     }
 
-    switch (evt)
+    size_t rel_el_id = GET_RELATIVE_EL_IDX(element_id);
+    meshx_cwww_client_model_ctx_t *el_ctx = CWWW_CLI_EL(rel_el_id).cwww_cli_ctx;
+    meshx_api_light_cwww_client_evt_t app_notify;
+    meshx_err_t err = MESHX_SUCCESS;
+    bool state_change = false;
+
+    if(param->err_code == MESHX_SUCCESS)
     {
-    case LIGHT_CTL_CLI_EVT_SET:
-    case LIGHT_CTL_CLI_PUBLISH:
-        cwww_client_element_init_ctrl->element_model_init |= BIT(CWWW_CLI_SIG_L_CTL_MODEL_ID);
+        CWWW_CLI_EL(rel_el_id).element_model_init |= MESHX_BIT(CWWW_CLI_SIG_L_CTL_MODEL_ID);
+
+        if (param->ctx.opcode == MESHX_MODEL_OP_LIGHT_CTL_STATUS)
+        {
+            if (el_ctx->prev_ctl_state.lightness != param->ctl_state.lightness
+            || el_ctx->prev_ctl_state.temperature != param->ctl_state.temperature
+            )
+            {
+                el_ctx->prev_ctl_state.lightness = param->ctl_state.lightness;
+                el_ctx->prev_ctl_state.temperature = param->ctl_state.temperature;
+                state_change = true;
+            }
+        }
+        else if (param->ctx.opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS)
+        {
+            if(el_ctx->prev_ctl_state.delta_uv != param->ctl_state.delta_uv
+            || el_ctx->prev_ctl_state.temperature != param->ctl_state.temperature)
+            {
+                el_ctx->prev_ctl_state.delta_uv = param->ctl_state.delta_uv;
+                el_ctx->prev_ctl_state.temperature = param->ctl_state.temperature;
+                state_change = true;
+            }
+        }
+        else if (param->ctx.opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS)
+        {
+            if (el_ctx->prev_ctl_state.temp_range_max != param->ctl_state.temp_range_max
+            ||  el_ctx->prev_ctl_state.temp_range_min != param->ctl_state.temp_range_min)
+            {
+                el_ctx->prev_ctl_state.temp_range_max = param->ctl_state.temp_range_max;
+                el_ctx->prev_ctl_state.temp_range_min = param->ctl_state.temp_range_min;
+                state_change = true;
+            }
+        }
+        else if (param->ctx.opcode == MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS)
+        {
+            if( el_ctx->prev_ctl_state.temp_def != param->ctl_state.temp_def
+            ||  el_ctx->prev_ctl_state.delta_uv_def != param->ctl_state.delta_uv_def
+            ||  el_ctx->prev_ctl_state.lightness_def != param->ctl_state.lightness_def)
+            {
+                el_ctx->prev_ctl_state.temp_def = param->ctl_state.temp_def;
+                el_ctx->prev_ctl_state.delta_uv_def = param->ctl_state.delta_uv_def;
+                el_ctx->prev_ctl_state.lightness_def = param->ctl_state.lightness_def;
+                state_change = true;
+            }
+        }
+        else
+        {
+            /* Return as No CTL related OPCode were received */
+            return false;
+        }
+
         if (state_change)
         {
-            MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "PUBLISH: light|temp : %d|%d",
+            MESHX_LOGD(MOD_LCC, "PUBLISH: light|temp : %d|%d",
                      el_ctx->prev_ctl_state.lightness,
                      el_ctx->prev_ctl_state.temperature);
 
-            app_notify.err_code = 0;
-            app_notify.state_change.ctl.delta_uv = el_ctx->prev_ctl_state.delta_uv;
-            app_notify.state_change.ctl.lightness = el_ctx->prev_ctl_state.lightness;
-            app_notify.state_change.ctl.temperature = el_ctx->prev_ctl_state.temperature;
-            app_notify.state_change.ctl.temp_range_max = el_ctx->prev_ctl_state.temp_range_max;
-            app_notify.state_change.ctl.temp_range_min = el_ctx->prev_ctl_state.temp_range_min;
+            app_notify.err_code = MESHX_SUCCESS;
+            app_notify.state_change.ctl.delta_uv        = el_ctx->prev_ctl_state.delta_uv;
+            app_notify.state_change.ctl.lightness       = el_ctx->prev_ctl_state.lightness;
+            app_notify.state_change.ctl.temperature     = el_ctx->prev_ctl_state.temperature;
+            app_notify.state_change.ctl.temp_range_max  = el_ctx->prev_ctl_state.temp_range_max;
+            app_notify.state_change.ctl.temp_range_min  = el_ctx->prev_ctl_state.temp_range_min;
 
             err = meshx_send_msg_to_app(element_id,
                                         MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT,
                                         MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_CLIENT_CTL,
-                                        sizeof(meshx_el_light_cwww_client_evt_t),
+                                        sizeof(meshx_api_light_cwww_client_evt_t),
                                         &app_notify);
             if (err != MESHX_SUCCESS)
             {
-                ESP_LOGE(TAG, "Failed to send CWWW state change message: (%d)", err);
+                MESHX_LOGE(MOD_LCC, "Failed to send CWWW state change message: (%d)", err);
             }
         }
-        break;
-    case LIGHT_CTL_CLI_TIMEOUT:
-        MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "Timeout");
-        msg.ack = CWWW_CLI_MSG_ACK;
-        msg.set_get = CWWW_CLI_MSG_SET;
-        msg.element_id = param->params->model->element_idx;
-        /*
-         * @warning: Possible loop case:
-         * 1. CWWW Client sends a message to the server
-         * 2. Timeout occurs
-         * 3. #1 and #2 are repeated with no break in stetes.
-         */
-        control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL, &msg, sizeof(msg));
-
-        app_notify.err_code = 1;
-        err = meshx_send_msg_to_app(element_id,
-                                    MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT,
-                                    MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_CLIENT_CTL,
-                                    sizeof(meshx_el_light_cwww_client_evt_t),
-                                    &app_notify);
-        if (err != MESHX_SUCCESS)
-        {
-            ESP_LOGE(TAG, "Failed to send cwww state change message: (%d)", err);
-        }
-        break;
-    default:
-        ESP_LOGW(TAG, "Unhandled event: %d", evt);
-        break;
+        el_ctx->tid++;
     }
-    return true;
+    else
+    {
+        MESHX_LOGE(MOD_LCC, "CWWW Client Element Message: Error (%d)", param->err_code);
+        /* Retry sending the failed packet. Do not notify App */
+        /* Please note that the failed packets gets sent endlessly. Hence, a loop condition */
+        el_ctx->tid++;
+        err = meshx_cwww_cli_send_ctl_msg(  pdev,
+                                            element_id,
+                                            MESHX_LIGHT_CTL_CLI_MSG_GET,
+                                            MESHX_LIGHT_CTL_CLI_MSG_ACK);
+        if (err)
+        {
+            MESHX_LOGE(MOD_LCC, "CWWW Client Element Message: Retry failed (%d)", err);
+        }
+    }
+    return err;
 }
+/**
+ * @brief Handles state changes for the CW/WW light client element.
+ *
+ * This function is called when the state of the CW/WW (Cool White/Warm White) light client element changes.
+ * It processes the event and parameters associated with the state change.
+ *
+ * @param pdev Pointer to the device structure representing the client element.
+ * @param evt Event type indicating the nature of the state change.
+ * @param params Pointer to additional parameters relevant to the event.
+ * @return meshx_err_t Error code indicating success or failure of the handler.
+ */
+
+static meshx_err_t meshx_cwww_client_element_state_change_handler(
+    const dev_struct_t *pdev,
+    control_task_msg_evt_t evt,
+    const meshx_ptr_t params
+)
+{
+    if (!pdev || !params)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    meshx_err_t err = MESHX_SUCCESS;
+    switch (evt)
+    {
+        case CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF:
+            err = cwww_client_on_off_state_change_handler(
+                pdev,
+                (const meshx_on_off_cli_el_msg_t *)params);
+            break;
+        case CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL:
+            err = cwww_light_ctl_state_change_handler(
+                pdev,
+                (const meshx_ctl_cli_el_msg_t *)params);
+            break;
+        default:
+            err = MESHX_FAIL;
+    }
+
+    return err;
+}
+
 #if CONFIG_ENABLE_CONFIG_SERVER
 /**
  * @brief Callback function for configuration server events.
@@ -333,11 +316,11 @@ static meshx_err_t cwww_client_config_srv_cb (
     const meshx_config_srv_cb_param_t *params)
 {
     MESHX_UNUSED(pdev);
-    cwww_cli_ctx_t *el_ctx = NULL;
+    meshx_cwww_client_model_ctx_t *el_ctx = NULL;
     size_t rel_el_id = 0;
     uint16_t element_id = 0;
     bool nvs_save = false;
-    MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "EVT: %p", (void *)evt);
+    MESHX_LOGD(MOD_LCC, "EVT: %p", (void *)evt);
     switch (evt)
     {
     case CONTROL_TASK_MSG_EVT_APP_KEY_BIND:
@@ -345,7 +328,7 @@ static meshx_err_t cwww_client_config_srv_cb (
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-        el_ctx = &cwww_client_element_init_ctrl->cwww_cli_ctx[rel_el_id];
+        el_ctx = CWWW_CLI_EL(rel_el_id).cwww_cli_ctx;
         el_ctx->app_id = params->state_change.appkey_add.app_idx;
         nvs_save = true;
         break;
@@ -355,22 +338,22 @@ static meshx_err_t cwww_client_config_srv_cb (
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-        el_ctx = &cwww_client_element_init_ctrl->cwww_cli_ctx[rel_el_id];
+        el_ctx = CWWW_CLI_EL(rel_el_id).cwww_cli_ctx;
         el_ctx->pub_addr = evt == CONTROL_TASK_MSG_EVT_PUB_ADD ? params->state_change.mod_pub_set.pub_addr
                                                            : MESHX_ADDR_UNASSIGNED;
         el_ctx->app_id = params->state_change.mod_pub_set.app_idx;
         nvs_save = true;
-        MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
+        MESHX_LOGD(MOD_LCC, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
         break;
     default:
         break;
     }
     if (nvs_save)
     {
-        meshx_err_t err = meshx_nvs_element_ctx_set(element_id, el_ctx, sizeof(cwww_cli_ctx_t));
+        meshx_err_t err = meshx_nvs_element_ctx_set(element_id, el_ctx, sizeof(meshx_cwww_client_model_ctx_t));
         if (err != MESHX_SUCCESS)
         {
-            ESP_LOGE(TAG, "Failed to set cwww client element context: (%d)", err);
+            MESHX_LOGE(MOD_LCC, "Failed to set cwww client element context: (%d)", err);
         }
     }
     return MESHX_SUCCESS;
@@ -396,28 +379,152 @@ static meshx_err_t cwww_cli_freshboot_control_task_msg_handle(const dev_struct_t
 
     MESHX_UNUSED(params);
     MESHX_UNUSED(evt);
-    cwww_client_msg_t msg = {0};
+    uint16_t rel_el_id = 0;
+    meshx_err_t err = MESHX_SUCCESS;
 
-    for(uint8_t i = CWWW_CLI_SIG_ONOFF_MODEL_ID; i < CWWW_CLI_SIG_ID_MAX; i++)
+    for(size_t i = cwww_client_element_init_ctrl.element_id_start; i < cwww_client_element_init_ctrl.element_id_end; i++)
     {
-        if(false == (cwww_client_element_init_ctrl->element_model_init & BIT(i)))
+        rel_el_id = (uint16_t) GET_RELATIVE_EL_IDX(i);
+        for(cwww_cli_sig_id_t model_id = CWWW_CLI_SIG_ONOFF_MODEL_ID; model_id < CWWW_CLI_SIG_ID_MAX; model_id++)
         {
-            MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "Sending GET for model: %d", i);
-            msg.ack = CWWW_CLI_MSG_ACK;
-            msg.set_get = CWWW_CLI_MSG_GET;
-            msg.element_id = (uint16_t)cwww_client_element_init_ctrl->element_id_start;
-            if(i == CWWW_CLI_SIG_L_CTL_MODEL_ID)
+            if(false == (CWWW_CLI_EL(rel_el_id).element_model_init
+                        & MESHX_BIT(CWWW_CLI_SIG_ONOFF_MODEL_ID)))
             {
-                control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL, &msg, sizeof(msg));
-            }
-            else
-            {
-                control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE, CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF, &msg, sizeof(msg));
+                err = meshx_cwww_el_get_state(rel_el_id, model_id);
             }
         }
     }
-    return MESHX_SUCCESS;
+    return err;
 }
+
+/**
+ * @brief Sends a cwww message over BLE mesh.
+ *
+ * This function sends a cwww message to a specified element in the BLE mesh network.
+ *
+ * @param[in] pdev          Pointer to the device structure.
+ * @param[in] element_id    The ID of the element to which the message is sent.
+ * @param[in] set_get       Indicates whether the message is a set (0) or get (1) operation.
+ * @param[in] ack           Indicates whether an acknowledgment is required (1) or not (0).
+ *
+ * @return
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_INVALID_ARG: Invalid argument
+ *     - MESHX_FAIL: Sending message failed
+ */
+static meshx_err_t meshx_cwww_cli_send_onoff_msg(
+    const dev_struct_t *pdev,
+    uint16_t element_id,
+    uint8_t set_get,
+    uint8_t ack)
+{
+    if (!pdev || !IS_EL_IN_RANGE(element_id))
+        return MESHX_INVALID_ARG;
+
+    meshx_err_t err = MESHX_SUCCESS;
+    size_t rel_el_id = GET_RELATIVE_EL_IDX(element_id);
+    meshx_onoff_client_model_t *model = CWWW_CLI_EL(rel_el_id).onoff_cli_model;
+
+    meshx_cwww_client_model_ctx_t *el_ctx = CWWW_CLI_EL(rel_el_id).cwww_cli_ctx;
+    uint16_t opcode = MESHX_MODEL_OP_GEN_ONOFF_GET;
+
+    if (MESHX_GEN_ON_OFF_CLI_MSG_SET == set_get)
+    {
+        opcode = ack ? MESHX_MODEL_OP_GEN_ONOFF_SET : MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK;
+    }
+
+    MESHX_LOGE(MOD_LCC, "OPCODE: %p", (void *)(uint32_t)opcode);
+
+    /* Send message to the cwww client */
+    err = meshx_onoff_client_send_msg(
+            model,
+            opcode,
+            el_ctx->pub_addr,
+            pdev->meshx_store.net_key_id,
+            el_ctx->app_id,
+            el_ctx->state.on_off,
+            el_ctx->tid
+    );
+
+    if (err)
+    {
+        MESHX_LOGE(MOD_LCC, "Cwww Client Send Message failed: (%d)", err);
+    }
+    else
+    {
+        el_ctx->tid++;
+        if(opcode == MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK)
+        {
+            el_ctx->prev_state.on_off = el_ctx->state.on_off;
+            el_ctx->state.on_off = !el_ctx->state.on_off;
+        }
+    }
+    return err;
+}
+
+/**
+ * @brief Sends a CTL (Color Temperature and White/Warm) control message from the client.
+ *
+ * This function constructs and sends a CTL message to control the color temperature and white/warm settings
+ * of a lighting device element. It can be used for both set and get operations, and supports acknowledgment.
+ *
+ * @param pdev        Pointer to the device structure containing device-specific information.
+ * @param element_id  Identifier for the target element within the device.
+ * @param set_get     Operation type: 0 for 'get', 1 for 'set'.
+ * @param ack         Acknowledgment flag: 0 for no acknowledgment, 1 to request acknowledgment.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the operation.
+ */
+static meshx_err_t meshx_cwww_cli_send_ctl_msg(
+    const dev_struct_t *pdev,
+    uint16_t element_id,
+    uint8_t set_get,
+    uint8_t ack)
+{
+    if (!pdev || !IS_EL_IN_RANGE(element_id))
+        return MESHX_INVALID_ARG;
+
+    meshx_err_t err = MESHX_SUCCESS;
+    size_t rel_el_id = GET_RELATIVE_EL_IDX(element_id);
+    meshx_cwww_client_model_ctx_t *el_ctx = CWWW_CLI_EL(rel_el_id).cwww_cli_ctx;
+    meshx_light_ctl_client_model_t *model = CWWW_CLI_EL(rel_el_id).ctl_cli_model;
+
+    uint16_t opcode = MESHX_MODEL_OP_LIGHT_CTL_GET;
+
+    if( MESHX_LIGHT_CTL_CLI_MSG_SET == set_get)
+        opcode = ack ? MESHX_MODEL_OP_LIGHT_CTL_SET : MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK;
+
+    MESHX_LOGE(MOD_LCC, "OPCODE: %p", (void *)(uint32_t)opcode);
+
+    /* Send message to the cwww client */
+    err = meshx_light_ctl_client_send_msg(
+            model,
+            opcode,
+            el_ctx->pub_addr,
+            pdev->meshx_store.net_key_id,
+            el_ctx->app_id,
+            el_ctx->ctl_state.lightness,
+            el_ctx->ctl_state.temperature,
+            el_ctx->ctl_state.delta_uv,
+            el_ctx->tid
+    );
+    if (err)
+    {
+        MESHX_LOGE(MOD_LCC, "Cwww Client Send Message failed: (%d)", err);
+    }
+    else
+    {
+        el_ctx->tid++;
+        if(opcode == MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK)
+        {
+            el_ctx->prev_ctl_state.delta_uv = el_ctx->ctl_state.delta_uv;
+            el_ctx->prev_ctl_state.lightness = el_ctx->ctl_state.lightness;
+            el_ctx->prev_ctl_state.temperature = el_ctx->ctl_state.temperature;
+        }
+    }
+    return err;
+}
+
 /**
  * @brief CWWW Client Control Task Message Handler
  *
@@ -428,42 +535,52 @@ static meshx_err_t cwww_cli_freshboot_control_task_msg_handle(const dev_struct_t
  * @param[in] params Pointer to the parameters of the control task message.
  * @return meshx_err_t
  */
-static meshx_err_t cwww_cli_control_task_msg_handle(dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+static meshx_err_t meshx_cwww_client_element_to_ble_handler(
+    const dev_struct_t *pdev,
+    control_task_msg_evt_t evt,
+    const void *params)
 {
-    meshx_err_t err = MESHX_SUCCESS;
-    const cwww_client_msg_t *msg = (const cwww_client_msg_t *)params;
-    cwww_cli_sig_id_t model_id = evt == CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF ? CWWW_CLI_SIG_ONOFF_MODEL_ID : CWWW_CLI_SIG_L_CTL_MODEL_ID;
-
-    bool is_temp_range = false;
-    uint16_t element_id = msg->element_id;
-    size_t rel_el_id = element_id - cwww_client_element_init_ctrl->element_id_start;
-    cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl->cwww_cli_ctx[rel_el_id];
-
-    if (!IS_EL_IN_RANGE(element_id))
-    {
+    if (!pdev || !params)
         return MESHX_INVALID_ARG;
-    }
+    MESHX_UNUSED(pdev);
+    meshx_err_t err = MESHX_SUCCESS;
+    const meshx_cwww_client_msg_t *msg = (const meshx_cwww_client_msg_t *)params;
 
-    if (model_id == CWWW_CLI_SIG_L_CTL_MODEL_ID)
+    if(evt == CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF)
     {
+        err = meshx_cwww_cli_send_onoff_msg(
+                pdev,
+                msg->element_id,
+                msg->set_get,
+                msg->ack
+            );
+        if (err != MESHX_SUCCESS)
+        {
+            MESHX_LOGE(MOD_LCC, "CWWW Client Control Task: Set OnOff failed (%p)", (void *)err);
+            return err;
+        }
+    }
+    else if(evt == CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL)
+    {
+        size_t rel_el_id = msg->element_id - cwww_client_element_init_ctrl.element_id_start;
+        meshx_cwww_client_model_ctx_t *el_ctx = CWWW_CLI_EL(rel_el_id).cwww_cli_ctx;
         /* Set new context value as per msg sent */
         el_ctx->ctl_state.delta_uv = (msg->arg_bmap & CWWW_ARG_BMAP_DELTA_UV_SET) ? msg->delta_uv : el_ctx->ctl_state.delta_uv;
         el_ctx->ctl_state.lightness = (msg->arg_bmap & CWWW_ARG_BMAP_LIGHTNESS_SET) ? msg->lightness : el_ctx->ctl_state.lightness;
         el_ctx->ctl_state.temperature = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_SET) ? msg->temperature : el_ctx->ctl_state.temperature;
         el_ctx->ctl_state.temp_range_max = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MAX) ? msg->temp_range_max : el_ctx->ctl_state.temp_range_max;
         el_ctx->ctl_state.temp_range_min = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MIN) ? msg->temp_range_min : el_ctx->ctl_state.temp_range_min;
-        is_temp_range = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MAX) || (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MIN);
-    }
-    /* Send message to the cwww client */
-    err = ble_mesh_send_cwww_msg(pdev,
-                                 model_id,
-                                 msg->element_id,
-                                 msg->set_get,
-                                 is_temp_range,
-                                 msg->ack);
-    if (err)
-    {
-        ESP_LOGE(TAG, "CWWW Client Control Task: Set OnOff failed (%p)", (void *)err);
+        err = meshx_cwww_cli_send_ctl_msg(
+                pdev,
+                msg->element_id,
+                msg->set_get,
+                msg->ack
+            );
+        if (err != MESHX_SUCCESS)
+        {
+            MESHX_LOGE(MOD_LCC, "CWWW Client Control Task: Set CTL failed (%p)", (void *)err);
+            return err;
+        }
     }
     return err;
 }
@@ -513,14 +630,14 @@ typedef enum cwww_cli_cmd
 static meshx_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv)
 {
     meshx_err_t err = MESHX_SUCCESS;
-    cwww_client_msg_t msg = {0};
+    meshx_cwww_client_msg_t msg = {0};
     msg.element_id = UT_GET_ARG(0, uint16_t, argv);
     cwww_cli_cmd_t cmd = (cwww_cli_cmd_t)cmd_id;
 
-    MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "argc|cmd_id: %d|%d", argc, cmd_id);
+    MESHX_LOGD(MOD_LCC, "argc|cmd_id: %d|%d", argc, cmd_id);
     if (argc < 1 || cmd_id >= CWWW_CLI_MAX_CMD)
     {
-        ESP_LOGE(TAG, "CWW Client Unit Test: Invalid number of arguments");
+        MESHX_LOGE(MOD_LCC, "CWW Client Unit Test: Invalid number of arguments");
         return MESHX_INVALID_ARG;
     }
 
@@ -610,14 +727,14 @@ static meshx_err_t cwww_cli_unit_test_cb_handler(int cmd_id, int argc, char **ar
         msg.ack = cmd == CWWW_CLI_UT_CMD_TEMPERATURE_RANGE_SET ? CWWW_CLI_MSG_ACK : CWWW_CLI_MSG_NO_ACK;
         break;
     default:
-        ESP_LOGE(TAG, "CWWW Client Unit Test: Invalid command");
+        MESHX_LOGE(MOD_LCC, "CWWW Client Unit Test: Invalid command");
         return MESHX_INVALID_ARG;
     }
 
     err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE, msg_evt, &msg, sizeof(msg));
     if (err)
     {
-        ESP_LOGE(TAG, "CWWW Client Unit Test: Command %d failed", cmd);
+        MESHX_LOGE(MOD_LCC, "CWWW Client Unit Test: Command %d failed", cmd);
     }
     return err;
 }
@@ -651,19 +768,19 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
     cwww_client_element_init_ctrl.element_id_start = 0;
 
     cwww_client_element_init_ctrl.el_list =
-        (cwww_client_elements_t *)MESHX_CALOC(cwww_client_element_init_ctrl.element_cnt, sizeof(cwww_client_elements_t));
+        (meshx_cwww_client_elements_t *)MESHX_CALOC(cwww_client_element_init_ctrl.element_cnt, sizeof(meshx_cwww_client_elements_t));
     if (!cwww_client_element_init_ctrl.el_list)
     {
-        ESP_LOGE(TAG, "Failed to allocate memory for cwww client elements");
+        MESHX_LOGE(MOD_LCC, "Failed to allocate memory for cwww client elements");
         return MESHX_NO_MEM;
     }
 
     for (size_t i = 0; i < cwww_client_element_init_ctrl.element_cnt; i++)
     {
-        CWWW_CLI_EL(i).cwww_cli_ctx = (cwww_cli_ctx_t *)MESHX_CALOC(n_max, sizeof(cwww_cli_ctx_t));
+        CWWW_CLI_EL(i).cwww_cli_ctx = (meshx_cwww_client_model_ctx_t *)MESHX_CALOC(n_max, sizeof(meshx_cwww_client_model_ctx_t));
         if (!CWWW_CLI_EL(i).cwww_cli_ctx)
         {
-            ESP_LOGE(TAG, "Failed to allocate memory for cwww client context");
+            MESHX_LOGE(MOD_LCC, "Failed to allocate memory for cwww client context");
             return MESHX_NO_MEM;
         }
         err = meshx_on_off_client_create(&CWWW_CLI_EL(i).onoff_cli_model,
@@ -676,8 +793,8 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
         CWWW_CLI_EL(i).onoff_cli_model->meshx_onoff_client_sig_model
             = &CWWW_CLI_EL(i).cwww_cli_sig_model_list[CWWW_CLI_SIG_ONOFF_MODEL_ID];
 
-        err = meshx_ctl_client_create(&CWWW_CLI_EL(i).ctl_cli_model,
-                                      &CWWW_CLI_EL(i).cwww_cli_sig_model_list[CWWW_CLI_SIG_L_CTL_MODEL_ID]);
+        err = meshx_light_ctl_client_create(&CWWW_CLI_EL(i).ctl_cli_model,
+                                            &CWWW_CLI_EL(i).cwww_cli_sig_model_list[CWWW_CLI_SIG_L_CTL_MODEL_ID]);
         if (err)
         {
             MESHX_LOGE(MOD_LCC, "Meshx CTL Client create failed (Err : 0x%x)", err);
@@ -748,7 +865,7 @@ static meshx_err_t meshx_dev_create_cwww_model_space(dev_struct_t const *pdev, u
     meshx_err_t err = meshx_element_struct_init(n_max);
     if (err)
     {
-        ESP_LOGE(TAG, "Failed to initialize cwww element structures: (%d)", err);
+        MESHX_LOGE(MOD_LCC, "Failed to initialize cwww element structures: (%d)", err);
         meshx_element_struct_deinit(n_max);
         return err;
     }
@@ -799,7 +916,7 @@ static meshx_err_t meshx_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, 
             MESHX_LOGE(MOD_LCC, "Failed to add element to composition: (%d)", err);
             return err;
         }
-        err = meshx_nvs_element_ctx_get(i, &(CWWW_CLI_EL(i - *start_idx).cwww_cli_ctx), sizeof(cwww_cli_ctx_t));
+        err = meshx_nvs_element_ctx_get(i, &(CWWW_CLI_EL(i - *start_idx).cwww_cli_ctx), sizeof(meshx_cwww_client_model_ctx_t));
         if (err != MESHX_SUCCESS)
         {
             ESP_LOGW(TAG, "Failed to get cwww cli element context: (0x%x)", err);
@@ -810,6 +927,124 @@ static meshx_err_t meshx_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, 
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Registers a callback handler for fresh boot events.
+ *
+ * This function subscribes the provided callback to control task messages
+ * related to element state changes. It ensures the callback is valid before subscribing.
+ *
+ * @param[in] callback  The callback function to handle element state change messages.
+ *
+ * @return
+ *     - MESHX_INVALID_ARG if the callback is NULL.
+ *     - Result of control_task_msg_subscribe() otherwise.
+ */
+static meshx_err_t meshx_cwww_cli_reg_freshboot_cb(control_task_msg_handle_t callback)
+{
+    if (callback == NULL)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    return control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_SYSTEM,
+        CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT,
+        callback
+    );
+}
+
+/**
+ * @brief Registers a callback handler for CW-WW application requests.
+ *
+ * This function subscribes the provided callback to control task messages
+ * related to BLE events. It ensures the callback is valid before subscribing.
+ *
+ */
+static meshx_err_t meshx_cwww_cli_reg_app_req_cb()
+{
+    return control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_TO_BLE,
+        CONTROL_TASK_MSG_CODE_EVT_MASK,
+        (control_task_msg_handle_t)&meshx_cwww_client_element_to_ble_handler
+    );
+}
+
+static meshx_err_t meshx_cwww_cli_el_state_change_reg_cb()
+{
+    return control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_EL_STATE_CH,
+        CWWW_CLI_EL_STATE_CH_EVT_MASK,
+        (control_task_msg_handle_t)&meshx_cwww_client_element_state_change_handler
+    );
+}
+
+/**
+ * @brief Retrieves the current state of the CW/WW (Cool White/Warm White) light element for the specified element ID.
+ *
+ * This function queries the state of a light element identified by the given element_id.
+ *
+ * @param[in] element_id The unique identifier of the light element whose state is to be retrieved.
+ * @param[in] model_id The model ID to specify which model's state to retrieve. If set to CWWW_CLI_SIG_ID_MAX, it retrieves the state for all models.
+ * @return meshx_err_t Returns MESHX_OK on success, or an appropriate error code on failure.
+ */
+meshx_err_t meshx_cwww_el_get_state(uint16_t element_id, cwww_cli_sig_id_t model_id)
+{
+    if (!IS_EL_IN_RANGE(element_id))
+    {
+        MESHX_LOGE(MOD_LCC, "Invalid element id: %d", element_id);
+        return MESHX_INVALID_ARG;
+    }
+    meshx_cwww_client_msg_t msg = {0};
+    msg.ack = CWWW_CLI_MSG_ACK;
+    msg.set_get = CWWW_CLI_MSG_GET;
+    msg.element_id = element_id;
+
+    if (model_id != CWWW_CLI_SIG_ID_MAX)
+    {
+        MESHX_LOGD(MOD_LCC, "Sending GET for model: %d", model_id);
+        if(model_id == CWWW_CLI_SIG_L_CTL_MODEL_ID)
+        {
+            control_task_msg_publish(
+                CONTROL_TASK_MSG_CODE_TO_BLE,
+                CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL,
+                &msg,
+                sizeof(msg));
+        }
+        else
+        {
+            control_task_msg_publish(
+                CONTROL_TASK_MSG_CODE_TO_BLE,
+                CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF,
+                &msg,
+                sizeof(msg));
+        }
+    }
+    else
+    {
+        for(model_id = CWWW_CLI_SIG_ONOFF_MODEL_ID; model_id < CWWW_CLI_SIG_ID_MAX; model_id++)
+        {
+
+            MESHX_LOGD(MOD_LCC, "Sending GET for model: %d", model_id);
+            if(model_id == CWWW_CLI_SIG_L_CTL_MODEL_ID)
+            {
+                control_task_msg_publish(
+                    CONTROL_TASK_MSG_CODE_TO_BLE,
+                    CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL,
+                    &msg,
+                    sizeof(msg));
+            }
+            else
+            {
+                control_task_msg_publish(
+                    CONTROL_TASK_MSG_CODE_TO_BLE,
+                    CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF,
+                    &msg,
+                    sizeof(msg));
+            }
+        }
+    }
+    return MESHX_SUCCESS;
+}
 /**
  * @brief Create Dynamic Cwww Model Elements
  *
@@ -825,21 +1060,28 @@ meshx_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt
     err = meshx_dev_create_cwww_model_space(pdev, element_cnt);
     if (err)
     {
-        ESP_LOGE(TAG, "CWWW Model space create failed: (%d)", err);
+        MESHX_LOGE(MOD_LCC, "CWWW Model space create failed: (%d)", err);
         return err;
     }
 
     err = meshx_add_cwww_cli_model_to_element_list(pdev, (uint16_t *)&pdev->element_idx, element_cnt);
     if (err)
     {
-        ESP_LOGE(TAG, "CWWW Model add to element create failed: (%d)", err);
+        MESHX_LOGE(MOD_LCC, "CWWW Model add to element create failed: (%d)", err);
+        return err;
+    }
+
+    err = meshx_on_off_client_init();
+    if (err)
+    {
+        MESHX_LOGE(MOD_LCC, "meshx_onoff_client_init failed: (%d)", err);
         return err;
     }
 
     err = meshx_light_ctl_client_init();
     if (err)
     {
-        ESP_LOGE(TAG, "meshx_light_ctl_client_init failed: (%d)", err);
+        MESHX_LOGE(MOD_LCC, "meshx_light_ctl_client_init failed: (%d)", err);
         return err;
     }
 
@@ -850,36 +1092,32 @@ meshx_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt
         CONFIG_SERVER_CB_MASK);
     if (err)
     {
-        ESP_LOGE(TAG, "Light CWWW config server callback reg failed: (%d)", err);
+        MESHX_LOGE(MOD_LCC, "Light CWWW config server callback reg failed: (%d)", err);
         return err;
     }
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
-    err = meshx_onoff_reg_cb(&cwww_client_generic_client_cb, CWWW_CLI_MESHX_ONOFF_CLI_CB_EVT_BMAP);
-    if (err)
-    {
-        ESP_LOGE(TAG, "Light CWWW ONOFF callback reg failed: (%d)", err);
-        return err;
-    }
-    err = meshx_light_ctl_cli_reg_cb(&cwww_client_ctl_client_cb, CWWW_CLI_MESHX_CTL_CLI_CB_EVT_BMAP);
-    if (err)
-    {
-        ESP_LOGE(TAG, "Light CWWW CTL Model callback reg failed: (%d)", err);
-        return err;
-    }
 #if defined(__MESHX_CONTROL_TASK__)
-    err = meshx_cwww_cli_reg_app_req_cb(
-        (control_task_msg_handle_t)&cwww_cli_control_task_msg_handle);
+    /* Register control task callback */
+    err = meshx_cwww_cli_reg_app_req_cb();
     if (err)
     {
-        ESP_LOGE(TAG, "control task callback reg failed: (%d)", err);
+        MESHX_LOGE(MOD_LCC, "control task callback reg failed: (%d)", err);
         return err;
     }
+    /* Register element state change callback */
+    err = meshx_cwww_cli_el_state_change_reg_cb();
+    if (err)
+    {
+        MESHX_LOGE(MOD_LCC, "element state change callback reg failed: (%d)", err);
+        return err;
+    }
+    /* Register freshboot control task callback */
     err = meshx_cwww_cli_reg_freshboot_cb(
         (control_task_msg_handle_t)&cwww_cli_freshboot_control_task_msg_handle);
     if (err)
     {
-        ESP_LOGE(TAG, "control task callback reg failed: (%d)", err);
+        MESHX_LOGE(MOD_LCC, "control task callback reg failed: (%d)", err);
         return err;
     }
 
@@ -888,7 +1126,7 @@ meshx_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt
     err = register_unit_test(MODULE_ID_ELEMENT_LIGHT_CWWWW_CLIENT, &cwww_cli_unit_test_cb_handler);
     if (err)
     {
-        ESP_LOGE(TAG, "unit_test reg failed: (%d)", err);
+        MESHX_LOGE(MOD_LCC, "unit_test reg failed: (%d)", err);
         return err;
     }
 #endif /* CONFIG_ENABLE_UNIT_TEST */
@@ -898,124 +1136,5 @@ meshx_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt
 }
 
 REG_MESHX_ELEMENT_FN(cwww_cli_el, MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT, create_cwww_client_elements);
-
-/**
- * @brief Send a CW/WW (Cool White/Warm White) message over BLE Mesh.
- *
- * @param[in] pdev          Pointer to the device structure.
- * @param[in] model_id      Model ID of the CW/WW client.
- * @param[in] element_id    Element ID to which the message is addressed.
- * @param[in] set_get       Flag indicating whether the message is a set (1) or get (0) operation.
- * @param[in] is_range      Flag indicating whether the message is a temperature range set (1) or not (0).
- * @param[in] ack           Flag indicating whether the message requires an acknowledgment (1) or not (0).
- *
- * @return
- *     - MESHX_SUCCESS: Success
- *     - MESHX_INVALID_ARG: Invalid argument
- *     - MESHX_FAIL: Sending message failed
- */
-meshx_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id, uint16_t element_id, uint8_t set_get, uint8_t is_range, uint8_t ack)
-{
-    if (!pdev)
-    {
-        ESP_LOGE(TAG, "Invalid device structure");
-        return MESHX_INVALID_ARG;
-    }
-
-    size_t rel_el_id = element_id - cwww_client_element_init_ctrl->element_id_start;
-    if (rel_el_id >= CONFIG_LIGHT_CWWW_CLIENT_COUNT)
-    {
-        ESP_LOGE(TAG, "Invalid element id: %d", element_id);
-        return MESHX_INVALID_ARG;
-    }
-
-    uint16_t opcode = 0;
-    meshx_err_t err = MESHX_SUCCESS;
-    esp_ble_mesh_elem_t *element = &pdev->elements[element_id];
-    MESHX_MODEL *model = &element->sig_models[model_id];
-    cwww_cli_ctx_t *el_ctx = &cwww_client_element_init_ctrl->cwww_cli_ctx[rel_el_id];
-    light_ctl_send_args_t ctl_params = {0};
-
-    switch (model_id)
-    {
-    case CWWW_CLI_SIG_ONOFF_MODEL_ID:
-        if (set_get == CWWW_CLI_MSG_SET)
-        {
-            opcode = ack ? MESHX_MODEL_OP_GEN_ONOFF_SET : MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK;
-        }
-        else
-        {
-            opcode = MESHX_MODEL_OP_GEN_ONOFF_GET;
-        }
-        MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "OPCODE: %p", (void *)(uint32_t)opcode);
-        err = meshx_gen_cli_send_msg(
-            model,
-            opcode,
-            el_ctx->pub_addr,
-            pdev->meshx_store.net_key_id,
-            el_ctx->app_id, el_ctx->state.on_off, el_ctx->tid);
-        if (!err)
-        {
-            el_ctx->tid++;
-            if (opcode == MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK)
-            {
-                el_ctx->prev_state.on_off = el_ctx->state.on_off;
-                el_ctx->state.on_off = !el_ctx->state.on_off;
-            }
-        }
-        break;
-
-    case CWWW_CLI_SIG_L_CTL_MODEL_ID:
-        if (set_get == CWWW_CLI_MSG_SET)
-        {
-            if (is_range)
-            {
-                opcode = ack ? MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET : MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK;
-                ctl_params.temp_range_flag = true;
-                ctl_params.temp_range_max = el_ctx->ctl_state.temp_range_max;
-                ctl_params.temp_range_min = el_ctx->ctl_state.temp_range_min;
-            }
-            else
-            {
-                opcode = ack ? MESHX_MODEL_OP_LIGHT_CTL_SET : MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK;
-                ctl_params.temp_range_flag = false;
-                ctl_params.delta_uv = el_ctx->ctl_state.delta_uv;
-                ctl_params.lightness = el_ctx->ctl_state.lightness;
-                ctl_params.temperature = el_ctx->ctl_state.temperature;
-            }
-        }
-        else
-        {
-            opcode = MESHX_MODEL_OP_LIGHT_CTL_GET;
-        }
-
-        ctl_params.model = model;
-        ctl_params.opcode = opcode;
-        ctl_params.tid = el_ctx->tid;
-        ctl_params.addr = el_ctx->pub_addr;
-        ctl_params.app_idx = el_ctx->app_id;
-        ctl_params.net_idx = pdev->meshx_store.net_key_id;
-
-        MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "OPCODE: %p", (void *)(uint32_t)opcode);
-        err = meshx_light_ctl_send_msg(&ctl_params);
-        if (!err)
-        {
-            el_ctx->tid++;
-        }
-        break;
-
-    default:
-        ESP_LOGE(TAG, "Invalid model id: %d", model_id);
-        err = MESHX_INVALID_ARG;
-        break;
-    }
-
-    if (err)
-    {
-        ESP_LOGE(TAG, "CWWW Client Send Message failed: (%d)", err);
-    }
-
-    return err;
-}
 
 #endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */

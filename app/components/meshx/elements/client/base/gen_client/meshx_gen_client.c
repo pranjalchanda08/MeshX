@@ -19,46 +19,28 @@
 static uint16_t meshx_client_init = 0;
 
 /**
- * @brief Register a callback function for the meshxuction client model.
+ * @brief Checks if the given model ID corresponds to a Generic Client model.
  *
- * This function registers a callback function that will be called when
- * specific events related to the meshxuction client model occur.
+ * This function determines whether the specified model ID is associated with a
+ * Generic Client model in the MeshX framework.
  *
- * @param[in] model_id  The ID of the model for which the callback is being registered.
- * @param[in] cb        The callback function to be registered.
- *
- * @return
- *     - MESHX_SUCCESS: Callback registered successfully.
- *     - MESHX_INVALID_ARG: Invalid arguments.
- *     - MESHX_FAIL: Failed to register the callback.
+ * @param[in] model_id The model ID to be checked.
+ * @return meshx_err_t Returns an error code indicating whether the model ID is a Generic Client model.
  */
-meshx_err_t meshx_gen_cli_reg_cb(uint32_t model_id, meshx_gen_cli_cb_t cb)
+static meshx_err_t meshx_is_gen_cli_model(uint32_t model_id)
 {
-    return control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_TO_BLE,
-        model_id,
-        (control_task_msg_handle_t)cb);
-}
-
-/**
- * @brief Callback function to deregister a generic client model.
- *
- * This function is called to deregister a generic client model identified by the given model ID.
- *
- * @param[in] model_id  The ID of the model to be deregistered.
- * @param[in] cb        The callback function to be deregistered.
- *
- * @return
- *     - MESHX_SUCCESS: Success
- *     - MESHX_INVALID_ARG: Invalid argument
- *     - MESHX_FAIL: Other failures
- */
-meshx_err_t meshx_gen_cli_dereg_cb(uint32_t model_id, meshx_gen_cli_cb_t cb)
-{
-    return control_task_msg_unsubscribe(
-        CONTROL_TASK_MSG_CODE_TO_BLE,
-        model_id,
-        (control_task_msg_handle_t)cb);
+    switch (model_id)
+    {
+        case MESHX_MODEL_ID_GEN_ONOFF_CLI:
+        case MESHX_MODEL_ID_GEN_LEVEL_CLI:
+        case MESHX_MODEL_ID_GEN_POWER_ONOFF_CLI:
+        case MESHX_MODEL_ID_GEN_POWER_LEVEL_CLI:
+        case MESHX_MODEL_ID_GEN_BATTERY_CLI:
+        case MESHX_MODEL_ID_GEN_LOCATION_CLI:
+            return MESHX_SUCCESS;
+        default:
+            return MESHX_FAIL;
+    }
 }
 
 /**
@@ -71,7 +53,7 @@ meshx_err_t meshx_gen_cli_dereg_cb(uint32_t model_id, meshx_gen_cli_cb_t cb)
  *     - MESHX_SUCCESS: Success
  *     - MESHX_FAIL: Failed to initialize the client
  */
-meshx_err_t meshx_gen_cli_init(void)
+meshx_err_t meshx_gen_client_init(void)
 {
     if (meshx_client_init == MESHX_CLIENT_INIT_MAGIC_NO)
         return MESHX_SUCCESS;
@@ -113,4 +95,28 @@ meshx_err_t meshx_gen_cli_send_msg(
     return meshx_plat_gen_cli_send_msg(
         model, state, opcode, addr, net_idx, app_idx
     );
+}
+
+/**
+ * @brief Registers a callback function for a specific generic server model.
+ *
+ * This function associates a callback with the given model ID, allowing the server
+ * to handle events or messages related to that model.
+ *
+ * @param[in] model_id The unique identifier of the generic server model.
+ * @param[in] cb       The callback function to be registered for the model.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the registration.
+ *                     Possible values include success or specific error codes.
+ */
+meshx_err_t meshx_gen_client_from_ble_reg_cb(uint32_t model_id, meshx_gen_client_cb_t cb)
+{
+    if (!cb || meshx_is_gen_cli_model(model_id) != MESHX_SUCCESS)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    return control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_FRM_BLE,
+        model_id,
+        cb);
 }
