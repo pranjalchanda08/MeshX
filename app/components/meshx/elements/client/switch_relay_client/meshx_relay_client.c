@@ -29,7 +29,6 @@
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
 #define MOD_SRC                             MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT
-#define CONFIG_RELAY_MESHX_ONOFF_SET_ACK    true
 #define RELAY_CLI_EL_STATE_CH_EVT_MASK      CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF
 
 #define GET_RELATIVE_EL_IDX(_element_id)    _element_id - relay_element_init_ctrl.element_id_start
@@ -333,8 +332,7 @@ static meshx_err_t meshx_relay_cli_send_onoff_msg(
 
     meshx_err_t err = MESHX_SUCCESS;
     size_t rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-    meshx_ptr_t model = RELAY_CLI_EL(rel_el_id).\
-        onoff_cli_model[RELAY_CLI_SIG_ONOFF_MODEL_ID].meshx_onoff_client_sig_model;
+    meshx_onoff_client_model_t *model = RELAY_CLI_EL(rel_el_id).onoff_cli_model;
 
     meshx_relay_client_model_ctx_t *el_ctx = RELAY_CLI_EL(rel_el_id).cli_ctx;
     uint16_t opcode = MESHX_MODEL_OP_GEN_ONOFF_GET;
@@ -384,7 +382,7 @@ static meshx_err_t meshx_relay_cli_send_onoff_msg(
  * @param[in] param Pointer to the parameters of the control task message.
  * @return meshx_err_t
  */
-static meshx_err_t meshx_handle_rel_el_msg(
+static meshx_err_t meshx_relay_client_element_state_change_handler(
     const dev_struct_t *pdev,
     control_task_msg_evt_t evt,
     const meshx_on_off_cli_el_msg_t *param
@@ -400,7 +398,7 @@ static meshx_err_t meshx_handle_rel_el_msg(
 
     size_t rel_el_id = GET_RELATIVE_EL_IDX(element_id);
     meshx_relay_client_model_ctx_t *el_ctx = RELAY_CLI_EL(rel_el_id).cli_ctx;
-    meshx_el_relay_client_evt_t app_notify;
+    meshx_api_relay_client_evt_t app_notify;
     meshx_err_t err;
     if(param->err_code == MESHX_SUCCESS)
     {
@@ -415,7 +413,7 @@ static meshx_err_t meshx_handle_rel_el_msg(
             err = meshx_send_msg_to_app(element_id,
                                         MESHX_ELEMENT_TYPE_RELAY_CLIENT,
                                         MESHX_ELEMENT_FUNC_ID_RELAY_SERVER_ONN_OFF,
-                                        sizeof(meshx_el_relay_client_evt_t),
+                                        sizeof(meshx_api_relay_client_evt_t),
                                         &app_notify);
             if (err != MESHX_SUCCESS)
             {
@@ -437,7 +435,7 @@ static meshx_err_t meshx_handle_rel_el_msg(
         err = meshx_relay_cli_send_onoff_msg(pdev,
                                              element_id,
                                              MESHX_GEN_ON_OFF_CLI_MSG_SET,
-                                             CONFIG_RELAY_MESHX_ONOFF_SET_ACK);
+                                             MESHX_GEN_ON_OFF_CLI_MSG_ACK);
         if (err)
         {
             MESHX_LOGE(MOD_SRC, "Relay Client Element Message: Retry failed (%d)", err);
@@ -460,13 +458,12 @@ static meshx_err_t meshx_handle_rel_el_msg(
 static meshx_err_t meshx_relay_cli_el_app_req_handler(
     const dev_struct_t *pdev,
     control_task_msg_evt_t evt,
-    const void *params
+    const meshx_gen_on_off_cli_msg_t *msg
 )
 {
-    const meshx_gen_on_off_cli_msg_t *msg = (const meshx_gen_on_off_cli_msg_t *)params;
     meshx_err_t err = MESHX_SUCCESS;
 
-    if (!pdev || !IS_EL_IN_RANGE(msg->element_id))
+    if (!pdev || !msg || !IS_EL_IN_RANGE(msg->element_id))
         return MESHX_INVALID_ARG;
 
     if (evt == CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF)
@@ -585,7 +582,7 @@ static meshx_err_t meshx_relay_cli_el_state_change_reg_cb()
     return control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_EL_STATE_CH,
         RELAY_CLI_EL_STATE_CH_EVT_MASK,
-        (control_task_msg_handle_t)&meshx_handle_rel_el_msg
+        (control_task_msg_handle_t)&meshx_relay_client_element_state_change_handler
     );
 }
 

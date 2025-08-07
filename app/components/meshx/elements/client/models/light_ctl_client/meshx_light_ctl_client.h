@@ -21,6 +21,11 @@
 #include "meshx_control_task.h"
 #include "meshx_gen_light_cli.h"
 
+#define MESHX_LIGHT_CTL_CLI_MSG_SET 0
+#define MESHX_LIGHT_CTL_CLI_MSG_GET 1
+#define MESHX_LIGHT_CTL_CLI_MSG_ACK 1
+#define MESHX_LIGHT_CTL_CLI_MSG_NO_ACK 0
+
 /**
  * @brief Structure to hold arguments for sending Light CTL messages.
  */
@@ -29,6 +34,11 @@ typedef struct meshx_ctl_el_state
     uint16_t lightness;          /**< Lightness value to be sent. */
     uint16_t temperature;        /**< Temperature value to be sent. */
     uint16_t delta_uv;           /**< Delta UV value to be sent. */
+    uint16_t temp_range_max;     /**< Maximum temperature range. */
+    uint16_t temp_range_min;     /**< Minimum temperature range. */
+    uint16_t temp_def;           /**< Default temperature value. */
+    uint16_t lightness_def;      /**< Default lightness value. */
+    uint16_t delta_uv_def;       /**< Default delta UV value. */
 } meshx_ctl_el_state_t;
 
 /**

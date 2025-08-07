@@ -51,6 +51,15 @@ static void esp_ble_mesh_light_client_cb(MESHX_GEN_LIGHT_CLI_CB_EVT event,
  * STATIC FUNCTION DEFINITIONS
 ****************************************************************************************************************/
 
+/**
+ * @brief Callback function for BLE Mesh Light Client events.
+ *
+ * This function is invoked to handle events related to the Generic Light Client model
+ * in the BLE Mesh stack. It processes various client events and their associated parameters.
+ *
+ * @param event The event type received by the Light Client.
+ * @param param Pointer to the structure containing event-specific parameters.
+ */
 static void esp_ble_mesh_light_client_cb(MESHX_GEN_LIGHT_CLI_CB_EVT event,
                                          MESHX_GEN_LIGHT_CLI_CB_PARAM *param)
 {

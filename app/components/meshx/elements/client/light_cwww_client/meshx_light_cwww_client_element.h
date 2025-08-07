@@ -139,10 +139,10 @@ typedef struct cwww_cli_ctx
     cwww_cli_ctl_state_t prev_ctl_state; /**< State of the cwww client */
     uint16_t app_id;                     /**< Application ID */
     uint16_t pub_addr;                   /**< Publish address */
-} cwww_cli_ctx_t;
+} meshx_cwww_client_model_ctx_t;
 
 /**
- * @brief Structure to hold the cwww client message.
+ * @brief Structure to hold the cwww client message sent from APP layer
  */
 typedef struct cwww_client_msg
 {
@@ -155,7 +155,7 @@ typedef struct cwww_client_msg
     uint16_t delta_uv;       /**< Delta UV */
     uint16_t temp_range_max; /**< Maximum lightness range */
     uint16_t temp_range_min; /**< Minimum lightness range */
-} cwww_client_msg_t;
+} meshx_cwww_client_msg_t;
 
 /**
  * @brief Structure to hold the cwww client element.
@@ -163,11 +163,11 @@ typedef struct cwww_client_msg
 typedef struct cwww_client_element
 {
     size_t element_model_init;                                     /**< Initialization status of the element model */
-    cwww_cli_ctx_t *cwww_cli_ctx;                                  /**< Pointer to the cwww client context */
+    meshx_cwww_client_model_ctx_t *cwww_cli_ctx;                                  /**< Pointer to the cwww client context */
     meshx_onoff_client_model_t *onoff_cli_model;                   /**< Pointer to the list of cwww client on/off generic structures */
     meshx_light_ctl_client_model_t *ctl_cli_model;                 /**< Pointer to the list of cwww client light CTL structures */
     MESHX_MODEL cwww_cli_sig_model_list[CWWW_CLI_MODEL_SIG_CNT];   /**< Pointer to the list of cwww client SIG model structures */
-} cwww_client_elements_t;
+} meshx_cwww_client_elements_t;
 
 /**
  * @brief Structure to hold the cwww client elements.
@@ -177,9 +177,19 @@ typedef struct cwww_client_element_ctrl
     size_t element_cnt;                             /**< Number of elements */
     size_t element_id_end;                          /**< Ending ID of the element */
     size_t element_id_start;                        /**< Starting ID of the element */
-    cwww_client_elements_t *el_list;               /**< Pointer to the list of cwww client elements */
-} cwww_client_elements_ctrl_t;
+    meshx_cwww_client_elements_t *el_list;               /**< Pointer to the list of cwww client elements */
+} meshx_cwww_client_elements_ctrl_t;
 
+/**
+ * @brief Retrieves the current state of the CW/WW (Cool White/Warm White) light element for the specified element ID.
+ *
+ * This function queries the state of a light element identified by the given element_id.
+ *
+ * @param[in] element_id The unique identifier of the light element whose state is to be retrieved.
+ * @param[in] model_id The model ID to specify which model's state to retrieve. If set to CWWW_CLI_SIG_ID_MAX, it retrieves the state for all models.
+ * @return meshx_err_t Returns MESHX_OK on success, or an appropriate error code on failure.
+ */
+meshx_err_t meshx_cwww_el_get_state(uint16_t element_id, cwww_cli_sig_id_t model_id);
 /**
  * @brief Create Dynamic CW-WW Model Elements
  *

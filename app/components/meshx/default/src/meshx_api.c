@@ -31,7 +31,7 @@ static struct{
  *
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
-static meshx_err_t meshx_el_control_task_handler(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+static meshx_err_t meshx_api_control_task_handler(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
 {
     const meshx_app_api_msg_t *msg = (const meshx_app_api_msg_t *)params;
 
@@ -153,7 +153,7 @@ meshx_err_t meshx_app_reg_element_callback(meshx_app_data_cb_t cb)
     err = control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_TO_APP,
         CONTROL_TASK_MSG_EVT_DATA,
-        (control_task_msg_handle_t)&meshx_el_control_task_handler);
+        (control_task_msg_handle_t)&meshx_api_control_task_handler);
     if (err)
     {
         MESHX_LOGE(MODULE_ID_COMMON, "Failed to register control task callback: (%d)", err);
@@ -181,7 +181,7 @@ meshx_err_t meshx_app_reg_system_events_callback(meshx_app_ctrl_cb_t cb)
     err = control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_TO_APP,
         CONTROL_TASK_MSG_EVT_CTRL,
-        (control_task_msg_handle_t)&meshx_el_control_task_handler);
+        (control_task_msg_handle_t)&meshx_api_control_task_handler);
     if (err)
     {
         MESHX_LOGE(MODULE_ID_COMMON, "Failed to register control task callback: (%d)", err);

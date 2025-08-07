@@ -18,49 +18,30 @@
 #define MESHX_CLIENT_INIT_MAGIC_NO 0x4309
 static uint16_t meshx_client_init = 0;
 
-/**
- * @brief Register a callback function for the meshxuction client model.
- *
- * This function registers a callback function that will be called when
- * specific events related to the meshx function client model occur.
- *
- * @param[in] model_id  The ID of the model for which the callback is being registered.
- * @param[in] cb        The callback function to be registered.
- *
- * @return
- *     - MESHX_SUCCESS: Callback registered successfully.
- *     - MESHX_INVALID_ARG: Invalid arguments.
- *     - MESHX_FAIL: Failed to register the callback.
- */
-meshx_err_t meshx_gen_light_cli_reg_cb(uint32_t model_id, meshx_gen_light_cli_cb_t cb)
-{
-    return control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_TO_BLE,
-        model_id,
-        (control_task_msg_handle_t)cb);
-}
 
 /**
- * @brief Callback function to deregister a generic client model.
+ * @brief Checks if the given model ID corresponds to a Generic Light Client model.
  *
- * This function is called to deregister a generic client model identified by the given model ID.
+ * This function determines whether the specified model ID matches the
+ * Generic Light Client model supported by MeshX.
  *
- * @param[in] model_id  The ID of the model to be deregistered.
- * @param[in] cb        The callback function to be deregistered.
- *
- * @return
- *     - MESHX_SUCCESS: Success
- *     - MESHX_INVALID_ARG: Invalid argument
- *     - MESHX_FAIL: Other failures
+ * @param model_id The model ID to check.
+ * @return meshx_err_t Returns an error code indicating whether the model ID is a Generic Light Client model.
  */
-meshx_err_t meshx_gen_light_cli_dereg_cb(uint32_t model_id, meshx_gen_light_cli_cb_t cb)
+static meshx_err_t meshx_is_gen_light_cli_model(uint32_t model_id)
 {
-    return control_task_msg_unsubscribe(
-        CONTROL_TASK_MSG_CODE_TO_BLE,
-        model_id,
-        (control_task_msg_handle_t)cb);
+    switch (model_id)
+    {
+        case MESHX_MODEL_ID_LIGHT_LIGHTNESS_CLI:
+        case MESHX_MODEL_ID_LIGHT_CTL_CLI:
+        case MESHX_MODEL_ID_LIGHT_HSL_CLI:
+        case MESHX_MODEL_ID_LIGHT_XYL_CLI:
+        case MESHX_MODEL_ID_LIGHT_LC_CLI:
+            return MESHX_SUCCESS;
+        default:
+            return MESHX_FAIL;
+    }
 }
-
 /**
  * @brief Initialize the meshxuction generic client.
  *
@@ -116,3 +97,26 @@ meshx_err_t meshx_gen_light_send_msg(
     );
 }
 
+/**
+ * @brief Registers a callback function for getting Generic Light Client messages from BLE.
+ *
+ * This function associates a callback with the given model ID, allowing the server
+ * to handle events or messages related to that model.
+ *
+ * @param[in] model_id The unique identifier of the generic server model.
+ * @param[in] cb       The callback function to be registered for the model.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the registration.
+ *                     Possible values include success or specific error codes.
+ */
+meshx_err_t meshx_gen_light_client_from_ble_reg_cb(uint32_t model_id, meshx_gen_light_client_cb_t cb)
+{
+    if (!cb || meshx_is_gen_light_cli_model(model_id) != MESHX_SUCCESS)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    return control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_FRM_BLE,
+        model_id,
+        cb);
+}

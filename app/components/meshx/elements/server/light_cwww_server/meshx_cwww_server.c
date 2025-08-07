@@ -371,14 +371,14 @@ static meshx_err_t meshx_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, 
  * @param[in] params Pointer to the event parameters.
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static meshx_err_t meshx_el_control_task_handler(const dev_struct_t *pdev, const control_task_msg_evt_t evt, const void *params)
+static meshx_err_t meshx_api_control_task_handler(const dev_struct_t *pdev, const control_task_msg_evt_t evt, const void *params)
 {
     MESHX_UNUSED(pdev);
     meshx_err_t err = MESHX_SUCCESS;
     uint16_t element_id = 0;
     size_t rel_el_id;
     meshx_cwww_server_ctx_t *el_ctx = NULL;
-    meshx_el_light_cwww_server_evt_t app_msg;
+    meshx_api_light_cwww_server_evt_t app_msg;
     cwww_sig_id_t sig_func = CWWW_SIG_ONOFF_MODEL_ID;
 
     switch (evt)
@@ -443,7 +443,7 @@ static meshx_err_t meshx_el_control_task_handler(const dev_struct_t *pdev, const
     err = meshx_send_msg_to_app(element_id,
                                 MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER,
                                 (uint16_t)sig_func,
-                                sizeof(meshx_el_light_cwww_server_evt_t),
+                                sizeof(meshx_api_light_cwww_server_evt_t),
                                 &app_msg);
 
     if (err != MESHX_SUCCESS)
@@ -619,7 +619,7 @@ meshx_err_t meshx_create_cwww_elements(dev_struct_t *pdev, uint16_t element_cnt)
     err = control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_EL_STATE_CH,
         CONTROL_TASK_EVT_MASK,
-        (control_task_msg_handle_t)&meshx_el_control_task_handler);
+        (control_task_msg_handle_t)&meshx_api_control_task_handler);
     if (err)
     {
         MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to register control task callback: (%d)", err);
