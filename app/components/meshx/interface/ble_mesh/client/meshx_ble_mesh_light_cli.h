@@ -15,7 +15,7 @@
 #include "../meshx_ble_mesh_cmn.h"
 #include "meshx_control_task.h"
 
-typedef control_task_msg_handle_t meshx_gen_light_cli_cb_t;
+typedef control_task_msg_handle_t meshx_gen_light_client_cb_t;
 
 typedef enum
 {

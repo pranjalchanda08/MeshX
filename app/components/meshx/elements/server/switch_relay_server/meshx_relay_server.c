@@ -337,7 +337,7 @@ static meshx_err_t meshx_add_relay_srv_model_to_element_list(dev_struct_t *pdev,
  * @param[in] params    Pointer to the parameters for the event.
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
-static meshx_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, control_task_msg_evt_t evt, void *params)
+static meshx_err_t meshx_api_control_task_handler(dev_struct_t const *pdev, control_task_msg_evt_t evt, void *params)
 {
     MESHX_UNUSED(pdev);
     MESHX_UNUSED(evt);
@@ -345,7 +345,7 @@ static meshx_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, contr
     meshx_err_t err = MESHX_SUCCESS;
     meshx_relay_srv_model_ctx_t *el_ctx = NULL;
     const meshx_on_off_srv_el_msg_t *p_onoff_srv = (meshx_on_off_srv_el_msg_t *)params;
-    meshx_el_relay_server_evt_t state;
+    meshx_api_relay_server_evt_t state;
     uint16_t element_id = p_onoff_srv->model.el_id;
 
     if (!IS_EL_IN_RANGE(element_id))
@@ -365,7 +365,7 @@ static meshx_err_t meshx_el_control_task_handler(dev_struct_t const *pdev, contr
         element_id,
         MESHX_ELEMENT_TYPE_RELAY_SERVER,
         RELAY_SIG_ONOFF_MODEL_ID,
-        sizeof(meshx_el_relay_server_evt_t),
+        sizeof(meshx_api_relay_server_evt_t),
         &state);
     if (err != MESHX_SUCCESS)
         MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to send relay state change message: (%d)", err);
@@ -494,7 +494,7 @@ meshx_err_t meshx_create_relay_elements(dev_struct_t *pdev, uint16_t element_cnt
     err = control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_EL_STATE_CH,
         CONTROL_TASK_EVT_MASK,
-        (control_task_msg_handle_t)&meshx_el_control_task_handler);
+        (control_task_msg_handle_t)&meshx_api_control_task_handler);
     if (err)
     {
         MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to register control task callback: (%d)", err);

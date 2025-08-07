@@ -15,8 +15,6 @@
 #include "../meshx_ble_mesh_cmn.h"
 #include "meshx_control_task.h"
 
-typedef control_task_msg_handle_t meshx_gen_cli_cb_t;
-
 typedef enum
 {
     MESHX_GEN_CLI_EVT_GET = MESHX_BIT(0),
@@ -289,6 +287,8 @@ typedef struct meshx_gen_cli_cb_param
     meshx_gen_cli_evt_t evt;                    /**< Event type of the received message */
     meshx_gen_client_status_cb_t status;        /**< Value of the received Generic Messages */
 } meshx_gen_cli_cb_param_t;
+
+typedef control_task_msg_handle_t meshx_gen_client_cb_t;
 
 /**
  * @brief Creates a Generic OnOff client model and its publication context.

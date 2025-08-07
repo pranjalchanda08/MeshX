@@ -17,7 +17,6 @@
 #define MESHX_GEN_ON_OFF_CLI_MSG_GET 1
 #define MESHX_GEN_ON_OFF_CLI_MSG_ACK 1
 #define MESHX_GEN_ON_OFF_CLI_MSG_NO_ACK 0
-#define RELAY_CLI_MSG_NO_ACK 0
 
 /**
  * @brief Structure to hold the relay client message.

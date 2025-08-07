@@ -102,30 +102,6 @@ static meshx_err_t meshx_handle_gen_onoff_msg(
 }
 
 /**
- * @brief Registers a callback function for a specific generic server model.
- *
- * This function associates a callback with the given model ID, allowing the server
- * to handle events or messages related to that model.
- *
- * @param[in] model_id The unique identifier of the generic server model.
- * @param[in] cb       The callback function to be registered for the model.
- *
- * @return meshx_err_t Returns an error code indicating the result of the registration.
- *                     Possible values include success or specific error codes.
- */
-static meshx_err_t meshx_gen_on_off_cli_reg_cb(uint32_t model_id, meshx_gen_cli_cb_t cb)
-{
-    if (!cb || model_id != MESHX_MODEL_ID_GEN_ONOFF_CLI)
-    {
-        return MESHX_INVALID_ARG;
-    }
-    return control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_FRM_BLE,
-        model_id,
-        cb);
-}
-
-/**
  * @brief Initialize the Generic OnOff Client.
  *
  * This function initializes the OnOff Client by registering the BLE Mesh
@@ -143,15 +119,15 @@ meshx_err_t meshx_on_off_client_init(void)
     }
     meshx_client_init_flag = MESHX_CLIENT_INIT_MAGIC;
 
-    err = meshx_gen_cli_init();
+    err = meshx_gen_client_init();
     if (err)
     {
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Failed to initialize meshx client");
     }
 
-    err = meshx_gen_on_off_cli_reg_cb(
+    err = meshx_gen_client_from_ble_reg_cb(
             MESHX_MODEL_ID_GEN_ONOFF_CLI,
-            (meshx_gen_cli_cb_t)&meshx_handle_gen_onoff_msg
+            (meshx_gen_client_cb_t)&meshx_handle_gen_onoff_msg
         );
     if (err)
     {
@@ -252,7 +228,17 @@ meshx_err_t meshx_onoff_client_send_msg(
     meshx_err_t err;
     meshx_gen_cli_set_t set = {0};
 
-    if (opcode == MESHX_MODEL_OP_GEN_ONOFF_SET ||
+    if(opcode == MESHX_MODEL_OP_GEN_ONOFF_GET)
+    {
+        err = meshx_gen_cli_send_msg(
+            model->meshx_onoff_client_gen_cli,
+            &set, opcode,
+            addr, net_idx,
+            app_idx
+        );
+    }
+
+    else if (opcode == MESHX_MODEL_OP_GEN_ONOFF_SET ||
         opcode == MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK)
     {
         set.onoff_set.tid   = tid;

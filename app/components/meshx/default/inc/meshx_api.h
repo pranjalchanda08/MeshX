@@ -51,15 +51,15 @@ typedef enum meshx_element_type
 /**
  * @brief Structure defines the payload for MESHX_ELEMENT_TYPE_RELAY_SERVER
  */
-typedef struct meshx_el_relay_server_evt
+typedef struct meshx_api_relay_server_evt
 {
    uint8_t on_off;
-}meshx_el_relay_server_evt_t;
+}meshx_api_relay_server_evt_t;
 
 /**
  * @brief Structure defines the payload for MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER
  */
-typedef struct meshx_el_light_cwww_server_evt
+typedef struct meshx_api_light_cwww_server_evt
 {
     union
     {
@@ -76,21 +76,21 @@ typedef struct meshx_el_light_cwww_server_evt
             uint16_t temp_range_max;
         }ctl;
     }state_change;
-}meshx_el_light_cwww_server_evt_t;
+}meshx_api_light_cwww_server_evt_t;
 
 /**
  * @brief Structure defines the payload for MESHX_ELEMENT_TYPE_RELAY_CLIENT
  */
-typedef struct meshx_el_relay_client_state
+typedef struct meshx_api_relay_client_state
 {
    uint8_t err_code;
    uint8_t on_off;
-}meshx_el_relay_client_evt_t;
+}meshx_api_relay_client_evt_t;
 
 /**
  * @brief Structure defines the payload for MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT
  */
-typedef struct meshx_el_light_cwww_client_evt
+typedef struct meshx_api_light_cwww_client_evt
 {
    uint8_t err_code;
    union
@@ -108,7 +108,7 @@ typedef struct meshx_el_light_cwww_client_evt
             uint16_t temp_range_max;
         }ctl;
     }state_change;
-}meshx_el_light_cwww_client_evt_t;
+}meshx_api_light_cwww_client_evt_t;
 /**
  * @brief Structure for the BLE Mesh application control message.
  *
@@ -117,10 +117,10 @@ typedef struct meshx_el_light_cwww_client_evt
  */
 typedef union meshx_data_payload
 {
-    meshx_el_relay_client_evt_t relay_client_evt;
-    meshx_el_relay_server_evt_t relay_server_evt;
-    meshx_el_light_cwww_client_evt_t light_cwww_client_evt;
-    meshx_el_light_cwww_server_evt_t light_cwww_server_evt;
+    meshx_api_relay_client_evt_t relay_client_evt;
+    meshx_api_relay_server_evt_t relay_server_evt;
+    meshx_api_light_cwww_client_evt_t light_cwww_client_evt;
+    meshx_api_light_cwww_server_evt_t light_cwww_server_evt;
 } meshx_data_payload_t;
 
 /**
