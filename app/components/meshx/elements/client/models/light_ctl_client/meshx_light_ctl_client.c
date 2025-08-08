@@ -280,8 +280,21 @@ meshx_err_t meshx_light_ctl_client_send_msg(
 {
     meshx_err_t err;
     meshx_light_client_set_state_t set = {0};
-
-    if (opcode == MESHX_MODEL_OP_LIGHT_CTL_SET ||
+    if (!model || !model->meshx_light_ctl_client_sig_model)
+    {
+        return MESHX_INVALID_ARG; // Invalid model pointer
+    }
+    
+    if (opcode == MESHX_MODEL_OP_LIGHT_CTL_GET)
+    {
+        err = meshx_gen_light_send_msg(
+            model->meshx_light_ctl_client_sig_model,
+            &set, opcode,
+            addr, net_idx,
+            app_idx
+        );
+    }
+    else if (opcode == MESHX_MODEL_OP_LIGHT_CTL_SET ||
         opcode == MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK)
     {
         set.ctl_set.tid   = tid;

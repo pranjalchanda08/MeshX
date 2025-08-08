@@ -233,7 +233,7 @@ meshx_err_t meshx_plat_gen_cli_send_msg(
         (esp_ble_mesh_generic_client_set_state_t*) p_set);
     if (err)
     {
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Send Generic OnOff failed");
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Send Generic OnOff failed: %d", err);
         return MESHX_FAIL;
     }
 

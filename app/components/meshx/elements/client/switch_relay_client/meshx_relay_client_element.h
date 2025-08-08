@@ -51,6 +51,17 @@ typedef enum
 } relay_cli_sig_id_t;
 
 /**
+ * @brief Structure to hold the relay client message.
+ */
+typedef struct meshx_gen_on_off_cli_msg
+{
+    uint8_t ack;         /**< Acknowledgment flag */
+    uint8_t set_get;     /**< Set/Get flag */
+    uint8_t reserved;    /**< Reserved for future use */
+    uint16_t element_id; /**< Element ID */
+} meshx_gen_on_off_cli_msg_t;
+
+/**
  * @brief Structure to hold the context of the relay client.
  */
 typedef struct meshx_relay_client_model_ctx

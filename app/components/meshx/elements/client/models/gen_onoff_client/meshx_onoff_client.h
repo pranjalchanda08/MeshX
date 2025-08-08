@@ -19,16 +19,6 @@
 #define MESHX_GEN_ON_OFF_CLI_MSG_NO_ACK 0
 
 /**
- * @brief Structure to hold the relay client message.
- */
-typedef struct meshx_gen_on_off_cli_msg
-{
-    uint8_t ack;         /**< Acknowledgment flag */
-    uint8_t set_get;     /**< Set/Get flag */
-    uint16_t element_id; /**< Element ID */
-} meshx_gen_on_off_cli_msg_t;
-
-/**
  * @brief Structure to hold the state of the relay client.
  */
 typedef struct relay_client_state

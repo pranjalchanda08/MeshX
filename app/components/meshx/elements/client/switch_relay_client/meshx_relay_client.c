@@ -203,7 +203,7 @@ static meshx_err_t meshx_add_relay_cli_model_to_element_list(
             sizeof(RELAY_CLI_EL(i - *start_idx).cli_ctx));
         if (err != MESHX_SUCCESS)
         {
-            MESHX_LOGW(MOD_SRC, "Failed to add element to composition: (%d)", err);
+            MESHX_LOGW(MOD_SRC, "Failed to get relay cli element context: (0x%x)", err);
         }
     }
     /* Increment the index for further registrations */
@@ -298,7 +298,7 @@ static meshx_err_t relay_cli_freshboot_msg_handle(const dev_struct_t *pdev, cont
         if(false == (RELAY_CLI_EL(rel_el_id).element_model_init
                     & MESHX_BIT(RELAY_CLI_SIG_ONOFF_MODEL_ID)))
         {
-            MESHX_LOGE(MOD_SRC, "Sending GET for model: 0");
+            MESHX_LOGD(MOD_SRC, "Sending GET for model: 0");
             return meshx_relay_el_get_state((uint16_t) i);
         }
     }
@@ -455,7 +455,7 @@ static meshx_err_t meshx_relay_client_element_state_change_handler(
  * @param[in] params Pointer to the parameters of the control task message.
  * @return meshx_err_t
  */
-static meshx_err_t meshx_relay_cli_el_app_req_handler(
+static meshx_err_t meshx_relay_client_to_ble_handler(
     const dev_struct_t *pdev,
     control_task_msg_evt_t evt,
     const meshx_gen_on_off_cli_msg_t *msg
@@ -466,6 +466,11 @@ static meshx_err_t meshx_relay_cli_el_app_req_handler(
     if (!pdev || !msg || !IS_EL_IN_RANGE(msg->element_id))
         return MESHX_INVALID_ARG;
 
+    if (RELAY_CLI_EL(GET_RELATIVE_EL_IDX(msg->element_id)).cli_ctx->pub_addr == MESHX_ADDR_UNASSIGNED)
+    {
+        MESHX_LOGW(MOD_SRC, "No publication address set for element: %d", msg->element_id);
+        return MESHX_INVALID_STATE;
+    }
     if (evt == CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF)
     {
         err = meshx_relay_cli_send_onoff_msg(pdev,
@@ -546,7 +551,7 @@ static meshx_err_t meshx_relay_cli_reg_app_req_cb()
     return control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_TO_BLE,
         CONTROL_TASK_MSG_CODE_EVT_MASK,
-        (control_task_msg_handle_t)&meshx_relay_cli_el_app_req_handler
+        (control_task_msg_handle_t)&meshx_relay_client_to_ble_handler
     );
 }
 
