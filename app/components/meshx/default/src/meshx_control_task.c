@@ -69,6 +69,15 @@ meshx_err_t control_task_msg_publish(control_task_msg_code_t msg_code,
                                    size_t sizeof_msg_evt_params)
 {
     control_task_msg_t send_msg;
+    if (msg_code >= CONTROL_TASK_MSG_CODE_MAX)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "Invalid message code or event");
+        return MESHX_INVALID_ARG;
+    }
+#if CONFIG_MESHX_DEFAULT_LOG_LEVEL <= MESHX_LOG_DEBUG
+    void *caller_addr0 = __builtin_return_address(0);
+#endif /* CONFIG_MESHX_DEFAULT_LOG_LEVEL <= MESHX_LOG_DEBUG */
+    MESHX_LOGD(MODULE_ID_COMMON, "fn_address|msg|evt: %p|%p|%p", caller_addr0, (void *)msg_code, (void *)msg_evt);
 
     if (sizeof_msg_evt_params != 0)
     {

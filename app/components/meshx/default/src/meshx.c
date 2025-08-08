@@ -202,7 +202,7 @@ static meshx_err_t meshx_ble_mesh_init(meshx_config_t const *config)
  */
 static void meshx_init_boot_timer_trigger_cb(const meshx_os_timer_t* p_timer)
 {
-    MESHX_LOGD(MODULE_ID_COMMON, "Fresh Boot Timer Expired");
+    MESHX_LOGI(MODULE_ID_COMMON, "Fresh Boot Timer Expired");
 
     meshx_err_t err = control_task_msg_publish(
         CONTROL_TASK_MSG_CODE_SYSTEM,
@@ -223,6 +223,11 @@ static void meshx_init_boot_timer_trigger_cb(const meshx_os_timer_t* p_timer)
  */
 static meshx_err_t meshx_init_boot_timer(void)
 {
+    if(g_dev.meshx_store.node_addr == MESHX_ADDR_UNASSIGNED)
+    {
+        MESHX_LOGI(MODULE_ID_COMMON, "Device not provisioned, starting boot timer");
+        return MESHX_SUCCESS;
+    }
     meshx_err_t err = meshx_os_timer_create("boot_timer",
         FRESHBOOT_TIMEOUT_MS,
         false,
@@ -281,10 +286,6 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     err = meshx_tasks_init(&g_dev);
     MESHX_ERR_PRINT_RET("Tasks initialization failed", err);
 
-    /* Initialize boot timer */
-    err = meshx_init_boot_timer();
-    MESHX_ERR_PRINT_RET("Boot Timer Init failed", err);
-
     /* Register application element callback */
     err = meshx_app_reg_element_callback(g_config.app_element_cb);
     MESHX_ERR_PRINT_RET("Failed to register app element callback", err);
@@ -297,6 +298,9 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     err = meshx_ble_mesh_init(&g_config);
     MESHX_ERR_PRINT_RET("Bluetooth mesh init failed", err);
 
+    /* Initialize boot timer */
+    err = meshx_init_boot_timer();
+    MESHX_ERR_PRINT_RET("Boot Timer Init failed", err);
     /* Print the MeshX banner */
     printf(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_CYAN) "%s" LOG_ANSI_COLOR_RESET, meshX_banner);
 

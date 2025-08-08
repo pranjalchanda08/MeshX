@@ -382,7 +382,7 @@ static meshx_err_t cwww_cli_freshboot_control_task_msg_handle(const dev_struct_t
     uint16_t rel_el_id = 0;
     meshx_err_t err = MESHX_SUCCESS;
 
-    for(size_t i = cwww_client_element_init_ctrl.element_id_start; i < cwww_client_element_init_ctrl.element_id_end; i++)
+    for(uint16_t i = cwww_client_element_init_ctrl.element_id_start; i < cwww_client_element_init_ctrl.element_id_end; i++)
     {
         rel_el_id = (uint16_t) GET_RELATIVE_EL_IDX(i);
         for(cwww_cli_sig_id_t model_id = CWWW_CLI_SIG_ONOFF_MODEL_ID; model_id < CWWW_CLI_SIG_ID_MAX; model_id++)
@@ -390,7 +390,7 @@ static meshx_err_t cwww_cli_freshboot_control_task_msg_handle(const dev_struct_t
             if(false == (CWWW_CLI_EL(rel_el_id).element_model_init
                         & MESHX_BIT(CWWW_CLI_SIG_ONOFF_MODEL_ID)))
             {
-                err = meshx_cwww_el_get_state(rel_el_id, model_id);
+                err = meshx_cwww_el_get_state(i, model_id);
             }
         }
     }
@@ -545,7 +545,18 @@ static meshx_err_t meshx_cwww_client_element_to_ble_handler(
     MESHX_UNUSED(pdev);
     meshx_err_t err = MESHX_SUCCESS;
     const meshx_cwww_client_msg_t *msg = (const meshx_cwww_client_msg_t *)params;
+    MESHX_LOGD(MOD_LCC, "EVT: %p, el_id: %d, set_get: %d, ack: %d",
+               (void *)evt, msg->element_id, msg->set_get, msg->ack);
 
+    if (!IS_EL_IN_RANGE(msg->element_id))
+    {
+        return MESHX_INVALID_ARG;
+    }
+    if (CWWW_CLI_EL(GET_RELATIVE_EL_IDX(msg->element_id)).cwww_cli_ctx->pub_addr == MESHX_ADDR_UNASSIGNED)
+    {
+        MESHX_LOGW(MOD_LCC, "No publication address set for element: %d", msg->element_id);
+        return MESHX_INVALID_STATE;
+    }
     if(evt == CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF)
     {
         err = meshx_cwww_cli_send_onoff_msg(
@@ -919,7 +930,7 @@ static meshx_err_t meshx_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, 
         err = meshx_nvs_element_ctx_get(i, &(CWWW_CLI_EL(i - *start_idx).cwww_cli_ctx), sizeof(meshx_cwww_client_model_ctx_t));
         if (err != MESHX_SUCCESS)
         {
-            ESP_LOGW(TAG, "Failed to get cwww cli element context: (0x%x)", err);
+            MESHX_LOGW(MOD_LCC, "Failed to get cwww cli element context: (0x%x)", err);
         }
     }
     /* Increment the index for further registrations */
