@@ -147,8 +147,8 @@ typedef struct cwww_cli_ctx
 typedef struct cwww_client_msg
 {
     uint8_t ack;             /**< Acknowledgment flag */
-    uint8_t arg_bmap;        /**< Argument bitmap */
     uint8_t set_get;         /**< Set/Get flag */
+    uint8_t arg_bmap;        /**< Argument bitmap */
     uint16_t element_id;     /**< Element ID */
     uint16_t temperature;    /**< Temperature */
     uint16_t lightness;      /**< Lightness */
@@ -174,10 +174,10 @@ typedef struct cwww_client_element
  */
 typedef struct cwww_client_element_ctrl
 {
-    size_t element_cnt;                             /**< Number of elements */
-    size_t element_id_end;                          /**< Ending ID of the element */
-    size_t element_id_start;                        /**< Starting ID of the element */
-    meshx_cwww_client_elements_t *el_list;               /**< Pointer to the list of cwww client elements */
+    uint16_t element_cnt;                             /**< Number of elements */
+    uint16_t element_id_end;                          /**< Ending ID of the element */
+    uint16_t element_id_start;                        /**< Starting ID of the element */
+    meshx_cwww_client_elements_t *el_list;          /**< Pointer to the list of cwww client elements */
 } meshx_cwww_client_elements_ctrl_t;
 
 /**

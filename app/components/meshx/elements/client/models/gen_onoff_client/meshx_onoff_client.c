@@ -227,7 +227,11 @@ meshx_err_t meshx_onoff_client_send_msg(
 {
     meshx_err_t err;
     meshx_gen_cli_set_t set = {0};
-
+    if (!model || !model->meshx_onoff_client_gen_cli)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    
     if(opcode == MESHX_MODEL_OP_GEN_ONOFF_GET)
     {
         err = meshx_gen_cli_send_msg(

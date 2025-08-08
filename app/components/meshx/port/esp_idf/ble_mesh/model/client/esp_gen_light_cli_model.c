@@ -217,6 +217,7 @@ meshx_err_t meshx_plat_light_client_send_msg(
     );
     if (esp_err != ESP_OK)
     {
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Failed to send Light Client message: %d", esp_err);
         return MESHX_ERR_PLAT;
     }
 
