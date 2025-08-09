@@ -149,6 +149,18 @@ meshx_err_t meshx_plat_composition_init(
     return MESHX_SUCCESS;
 }
 
+meshx_err_t meshx_get_base_element_id(uint16_t *base_el_id)
+{
+    if (!base_el_id)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    *base_el_id = esp_ble_mesh_get_primary_element_address();
+
+    return MESHX_SUCCESS;
+}
+
 meshx_err_t meshx_platform_bt_init(void)
 {
     esp_err_t err = ESP_OK;

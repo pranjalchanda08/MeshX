@@ -75,19 +75,15 @@ static void meshx_ble_mesh_config_server_cb(esp_ble_mesh_cfg_server_cb_event_t e
                     .p_model = param->model
                 }
         };
-
-    config_evt_t pub_evt = CONTROL_TASK_MSG_EVT_ALL;
+    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "ele: %d", pub_param.model.el_id);
     /* Copy all the status msg from the BLE layer */
     memcpy(&pub_param.state_change,
            &param->value.state_change,
            sizeof(meshx_cfg_srv_state_change_t));
 
-    if (pub_evt == CONTROL_TASK_MSG_EVT_ALL)
-        return;
-
     meshx_err_t err = control_task_msg_publish(
-        CONTROL_TASK_MSG_CODE_CONFIG,
-        pub_evt,
+        CONTROL_TASK_MSG_CODE_FRM_BLE,
+        CONTROL_TASK_MSG_EVT_CONFIG_ALL,
         &pub_param,
         sizeof(pub_param));
     if (err)

@@ -73,8 +73,8 @@ typedef uint32_t control_task_msg_evt_t;
  */
 typedef enum control_task_msg_evt_to_app_meshx
 {
-    CONTROL_TASK_MSG_EVT_DATA = BIT0,   /**< Data message */
-    CONTROL_TASK_MSG_EVT_CTRL = BIT1,   /**< Control message */
+    CONTROL_TASK_MSG_EVT_DATA = MESHX_BIT(0),   /**< Data message */
+    CONTROL_TASK_MSG_EVT_CTRL = MESHX_BIT(1),   /**< Control message */
     CONTROL_TASK_MSG_EVT_MAX,           /**< Maximum event value */
 } control_task_msg_evt_to_app_meshx_t;
 
@@ -83,8 +83,8 @@ typedef enum control_task_msg_evt_to_app_meshx
  */
 typedef enum control_task_msg_evt_el_state_ch
 {
-    CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF      = BIT0, /**< Event to set on/off state. */
-    CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL         = BIT1, /**< Event to set CTL state. */
+    CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF      = MESHX_BIT(0), /**< Event to set on/off state. */
+    CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL         = MESHX_BIT(1), /**< Event to set CTL state. */
     CONTROL_TASK_MSG_EVT_EL_STATE_CH_MAX,                    /**< Maximum HAL event value. */
 } control_task_msg_evt_el_state_ch_t;
 
@@ -94,13 +94,13 @@ typedef enum control_task_msg_evt_el_state_ch
 typedef enum control_task_msg_evt_to_ble
 {
     /* To Client related events */
-    CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF      = BIT0, /**< Event to set on/off state. */
-    CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL         = BIT1, /**< Event to set CTL state. */
-    CONTROL_TASK_MSG_EVT_TO_BLE_SET_LIGHTNESS   = BIT2, /**< Event to set lightness state. */
+    CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF      = MESHX_BIT(0), /**< Event to set on/off state. */
+    CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL         = MESHX_BIT(1), /**< Event to set CTL state. */
+    CONTROL_TASK_MSG_EVT_TO_BLE_SET_LIGHTNESS   = MESHX_BIT(2), /**< Event to set lightness state. */
 
     /* To server events */
-    CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV  = BIT16,/**< Event to send out on/off status */
-    CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV     = BIT17,/**< Event to send out CTL status */
+    CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV  = MESHX_BIT(16),/**< Event to send out on/off status */
+    CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV     = MESHX_BIT(17),/**< Event to send out CTL status */
     CONTROL_TASK_MSG_EVT_TO_BLE_MAX                     /**< Maximum BLE event value. */
 } control_task_msg_evt_to_ble_t;
 
@@ -109,13 +109,13 @@ typedef enum control_task_msg_evt_to_ble
  */
 typedef enum control_task_msg_evt_system
 {
-    CONTROL_TASK_MSG_EVT_SYSTEM_RESTART      = BIT0,    /**< Event to restart the system. */
-    CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_ARM    = BIT1,    /**< Event to arm an OS Timer */
-    CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_REARM  = BIT2,    /**< Event to re-arm an OS Timer */
-    CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_DISARM = BIT3,    /**< Event to stop an OS Timer */
-    CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE   = BIT4,    /**< Event to fire timedout OS Timer */
-    CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD = BIT5,    /**< Event to set timedout OS Timer */
-    CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT   = BIT6,    /**< Event to indicate fresh boot */
+    CONTROL_TASK_MSG_EVT_SYSTEM_RESTART      = MESHX_BIT(0),    /**< Event to restart the system. */
+    CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_ARM    = MESHX_BIT(1),    /**< Event to arm an OS Timer */
+    CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_REARM  = MESHX_BIT(2),    /**< Event to re-arm an OS Timer */
+    CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_DISARM = MESHX_BIT(3),    /**< Event to stop an OS Timer */
+    CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE   = MESHX_BIT(4),    /**< Event to fire timedout OS Timer */
+    CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD = MESHX_BIT(5),    /**< Event to set timedout OS Timer */
+    CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT   = MESHX_BIT(6),    /**< Event to indicate fresh boot */
     CONTROL_TASK_MSG_EVT_SYSTEM_MAX,                    /**< Maximum system event value. */
 } control_task_msg_evt_system_t;
 
@@ -124,17 +124,17 @@ typedef enum control_task_msg_evt_system
  */
 typedef enum control_task_msg_evt_config
 {
-    CONTROL_TASK_MSG_EVT_APP_KEY_ADD        = BIT0, /**< Event for adding an application key. */
-    CONTROL_TASK_MSG_EVT_APP_KEY_DEL        = BIT1, /**< Event for deleting an application key. */
-    CONTROL_TASK_MSG_EVT_APP_KEY_BIND       = BIT2, /**< Event for binding an application key. */
-    CONTROL_TASK_MSG_EVT_APP_KEY_UNBIND     = BIT3, /**< Event for unbinding an application key. */
-    CONTROL_TASK_MSG_EVT_SUB_ADD            = BIT4, /**< Event for adding a subscription. */
-    CONTROL_TASK_MSG_EVT_SUB_DEL            = BIT5, /**< Event for deleting a subscription. */
-    CONTROL_TASK_MSG_EVT_PUB_ADD            = BIT6, /**< Event for adding a publication. */
-    CONTROL_TASK_MSG_EVT_PUB_DEL            = BIT7, /**< Event for deleting a publication. */
-    CONTROL_TASK_MSG_EVT_NET_KEY_ADD        = BIT8, /**< Event for adding a network key. */
-    CONTROL_TASK_MSG_EVT_NET_KEY_DEL        = BIT9, /**< Event for deleting a network key. */
-    CONTROL_TASK_MSG_EVT_ALL                = 0xFFFFFFFF, /**< Event for all configuration events. */
+    CONTROL_TASK_MSG_EVT_APP_KEY_ADD        = MESHX_BIT(0), /**< Event for adding an application key. */
+    CONTROL_TASK_MSG_EVT_APP_KEY_DEL        = MESHX_BIT(1), /**< Event for deleting an application key. */
+    CONTROL_TASK_MSG_EVT_APP_KEY_BIND       = MESHX_BIT(2), /**< Event for binding an application key. */
+    CONTROL_TASK_MSG_EVT_APP_KEY_UNBIND     = MESHX_BIT(3), /**< Event for unbinding an application key. */
+    CONTROL_TASK_MSG_EVT_SUB_ADD            = MESHX_BIT(4), /**< Event for adding a subscription. */
+    CONTROL_TASK_MSG_EVT_SUB_DEL            = MESHX_BIT(5), /**< Event for deleting a subscription. */
+    CONTROL_TASK_MSG_EVT_PUB_ADD            = MESHX_BIT(6), /**< Event for adding a publication. */
+    CONTROL_TASK_MSG_EVT_PUB_DEL            = MESHX_BIT(7), /**< Event for deleting a publication. */
+    CONTROL_TASK_MSG_EVT_NET_KEY_ADD        = MESHX_BIT(8), /**< Event for adding a network key. */
+    CONTROL_TASK_MSG_EVT_NET_KEY_DEL        = MESHX_BIT(9), /**< Event for deleting a network key. */
+    CONTROL_TASK_MSG_EVT_CONFIG_ALL         = 0xFFFFFFFF, /**< Event for all configuration events. */
 } control_task_msg_evt_config_t;
 
 /**
@@ -142,13 +142,13 @@ typedef enum control_task_msg_evt_config
  */
 typedef enum control_task_msg_evt_provision
 {
-    CONTROL_TASK_MSG_EVT_PROVISION_STOP         = BIT1, /**< ESP_BLE_MESH_NODE_PROV_COMPLETE_EVT */
-    CONTROL_TASK_MSG_EVT_IDENTIFY_START         = BIT2, /**< EESP_BLE_MESH_NODE_PROV_LINK_OPEN_EVT */
-    CONTROL_TASK_MSG_EVT_IDENTIFY_STOP          = BIT3, /**< ESP_BLE_MESH_NODE_PROV_LINK_CLOSE_EVT */
-    CONTROL_TASK_MSG_EVT_NODE_RESET             = BIT4, /**< CONTROL_TASK_MSG_EVT_NODE_RESET */
-    CONTROL_TASK_MSG_EVT_PROXY_CONNECT          = BIT5, /**< ESP_BLE_MESH_PROXY_SERVER_CONNECTED_EVT */
-    CONTROL_TASK_MSG_EVT_PROXY_DISCONN          = BIT6, /**< ESP_BLE_MESH_PROXY_SERVER_DISCONNECTED_EVT */
-    CONTROL_TASK_MSG_EVT_EN_NODE_PROV           = BIT7, /**< ESP_BLE_MESH_NODE_PROV_ENABLE_COMP_EVT */
+    CONTROL_TASK_MSG_EVT_PROVISION_STOP         = MESHX_BIT(1), /**< ESP_BLE_MESH_NODE_PROV_COMPLETE_EVT */
+    CONTROL_TASK_MSG_EVT_IDENTIFY_START         = MESHX_BIT(2), /**< EESP_BLE_MESH_NODE_PROV_LINK_OPEN_EVT */
+    CONTROL_TASK_MSG_EVT_IDENTIFY_STOP          = MESHX_BIT(3), /**< ESP_BLE_MESH_NODE_PROV_LINK_CLOSE_EVT */
+    CONTROL_TASK_MSG_EVT_NODE_RESET             = MESHX_BIT(4), /**< CONTROL_TASK_MSG_EVT_NODE_RESET */
+    CONTROL_TASK_MSG_EVT_PROXY_CONNECT          = MESHX_BIT(5), /**< ESP_BLE_MESH_PROXY_SERVER_CONNECTED_EVT */
+    CONTROL_TASK_MSG_EVT_PROXY_DISCONN          = MESHX_BIT(6), /**< ESP_BLE_MESH_PROXY_SERVER_DISCONNECTED_EVT */
+    CONTROL_TASK_MSG_EVT_EN_NODE_PROV           = MESHX_BIT(7), /**< ESP_BLE_MESH_NODE_PROV_ENABLE_COMP_EVT */
     CONTROL_TASK_MSG_EVT_PROVISION_ALL          = 0xFF, /**< Maximum provisioning event value. */
 } control_task_msg_evt_provision_t;
 

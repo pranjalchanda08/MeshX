@@ -73,21 +73,26 @@ static meshx_err_t relay_server_config_srv_cb(
     meshx_relay_srv_model_ctx_t *el_ctx = NULL;
     size_t rel_el_id = 0;
     uint16_t element_id = 0;
-
-    MESHX_LOGD(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "EVT: %p", (void *)evt);
+    uint16_t base_el_id = 0;
+    bool nvs_save = false;
+    meshx_get_base_element_id(&base_el_id);
+    MESHX_LOGD(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "EVT: %d", evt);
     switch (evt)
     {
     case CONTROL_TASK_MSG_EVT_APP_KEY_BIND:
-        element_id = params->model.el_id;
+        element_id = params->state_change.mod_app_bind.element_addr - base_el_id;
+        MESHX_LOGD(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "ele: %d", element_id);
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
         el_ctx = relay_element_init_ctrl.el_list[rel_el_id].srv_ctx;
         el_ctx->app_id = params->state_change.appkey_add.app_idx;
+        nvs_save = true;
         break;
     case CONTROL_TASK_MSG_EVT_PUB_ADD:
     case CONTROL_TASK_MSG_EVT_PUB_DEL:
-        element_id = params->model.el_id;
+        element_id = params->state_change.mod_pub_set.element_addr - base_el_id;
+        MESHX_LOGD(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "ele: %d", element_id);
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
@@ -96,9 +101,18 @@ static meshx_err_t relay_server_config_srv_cb(
                                                                : MESHX_ADDR_UNASSIGNED;
         el_ctx->app_id = params->state_change.mod_pub_set.app_idx;
         MESHX_LOGI(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
+        nvs_save = true;
         break;
     default:
         break;
+    }
+    if (nvs_save)
+    {
+        meshx_err_t err = meshx_nvs_element_ctx_set(element_id, el_ctx, sizeof(meshx_relay_srv_model_ctx_t));
+        if (err != MESHX_SUCCESS)
+        {
+            MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to set relay server element context: (%d)", err);
+        }
     }
     return MESHX_SUCCESS;
 }

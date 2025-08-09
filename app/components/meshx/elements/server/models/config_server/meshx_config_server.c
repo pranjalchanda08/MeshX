@@ -16,6 +16,73 @@
 
 static uint16_t config_srv_init_flag = 0;
 
+typedef struct config_server_model_evt_map
+{
+    uint16_t model_op_code;
+    const char *op_str;
+    config_evt_t config_evt;
+} config_server_model_evt_map_t;
+
+static const config_server_model_evt_map_t config_server_model_evt_map_table[] = {
+    {MESHX_MODEL_OP_APP_KEY_ADD, "OP_APP_KEY_ADD", CONTROL_TASK_MSG_EVT_APP_KEY_ADD},
+    {MESHX_MODEL_OP_NET_KEY_ADD, "OP_NET_KEY_ADD", CONTROL_TASK_MSG_EVT_NET_KEY_ADD},
+    {MESHX_MODEL_OP_MODEL_SUB_ADD, "OP_MODEL_SUB_ADD", CONTROL_TASK_MSG_EVT_SUB_ADD},
+    {MESHX_MODEL_OP_MODEL_PUB_SET, "OP_MODEL_PUB_SET", CONTROL_TASK_MSG_EVT_PUB_ADD},
+    {MESHX_MODEL_OP_MODEL_APP_BIND, "OP_MODEL_APP_BIND", CONTROL_TASK_MSG_EVT_APP_KEY_BIND},
+    {MESHX_MODEL_OP_NET_KEY_DELETE, "OP_NET_KEY_DELETE", CONTROL_TASK_MSG_EVT_NET_KEY_DEL},
+    {MESHX_MODEL_OP_APP_KEY_DELETE, "OP_APP_KEY_DELETE", CONTROL_TASK_MSG_EVT_APP_KEY_DEL},
+    {MESHX_MODEL_OP_MODEL_SUB_DELETE, "OP_MODEL_SUB_DELETE", CONTROL_TASK_MSG_EVT_SUB_DEL},
+    {MESHX_MODEL_OP_MODEL_APP_UNBIND, "OP_MODEL_APP_UNBIND", CONTROL_TASK_MSG_EVT_APP_KEY_UNBIND},
+};
+uint16_t config_srv_evt_map_count = sizeof(config_server_model_evt_map_table) / sizeof(config_server_model_evt_map_t);
+
+/**
+ * @brief Handles the configuration server events from the control task.
+ *
+ * This function processes the events received from the control task and publishes them
+ * to the registered callbacks for the configuration server.
+ *
+ * @param[in] pdev Pointer to the device structure.
+ * @param[in] evt Event type from the control task.
+ * @param[in] params Pointer to the parameters associated with the event.
+ *
+ * @return MESHX_SUCCESS on success, an error code otherwise.
+ */
+static meshx_err_t meshx_config_server_control_task_handler(
+    const dev_struct_t *pdev,
+    control_task_msg_evt_t evt,
+    const void *params
+)
+{
+    if(!pdev || !params)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    const meshx_config_srv_cb_param_t *pub_param = (const meshx_config_srv_cb_param_t *)params;
+
+    /* Map event to config event */
+    config_evt_t config_evt = CONTROL_TASK_MSG_EVT_CONFIG_ALL;
+    for (uint16_t i = 0; i < config_srv_evt_map_count; i++)
+    {
+        if (config_server_model_evt_map_table[i].model_op_code == pub_param->ctx.opcode)
+        {
+            config_evt = config_server_model_evt_map_table[i].config_evt;
+            break;
+        }
+    }
+    if (config_evt == CONTROL_TASK_MSG_EVT_CONFIG_ALL)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "Unknown event: %d", evt);
+        return MESHX_INVALID_ARG;
+    }
+    /* Publish the event */
+    return control_task_msg_publish(
+        CONTROL_TASK_MSG_CODE_CONFIG,
+        config_evt,
+        pub_param,
+        sizeof(meshx_config_srv_cb_param_t));
+}
+
 /**
  * @brief Initializes the Configuration Server.
  *
@@ -29,6 +96,11 @@ meshx_err_t meshx_init_config_server()
         return MESHX_INVALID_ARG;
 
     config_srv_init_flag = CONFIG_SRV_INIT_MAGIC;
+
+    control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_FRM_BLE,
+        CONTROL_TASK_MSG_EVT_CONFIG_ALL,
+        (control_task_msg_handle_t)meshx_config_server_control_task_handler);
 
     return meshx_plat_config_srv_init();
 }
