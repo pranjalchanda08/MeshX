@@ -319,12 +319,14 @@ static meshx_err_t cwww_client_config_srv_cb (
     meshx_cwww_client_model_ctx_t *el_ctx = NULL;
     size_t rel_el_id = 0;
     uint16_t element_id = 0;
+    uint16_t base_el_id = 0;
     bool nvs_save = false;
-    MESHX_LOGD(MOD_LCC, "EVT: %p", (void *)evt);
+    meshx_get_base_element_id(&base_el_id);
+
     switch (evt)
     {
     case CONTROL_TASK_MSG_EVT_APP_KEY_BIND:
-        element_id = params->model.el_id;
+        element_id = params->state_change.mod_app_bind.element_addr - base_el_id;
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
@@ -334,7 +336,7 @@ static meshx_err_t cwww_client_config_srv_cb (
         break;
     case CONTROL_TASK_MSG_EVT_PUB_ADD:
     case CONTROL_TASK_MSG_EVT_PUB_DEL:
-        element_id = params->model.el_id;
+        element_id = params->state_change.mod_pub_set.element_addr - base_el_id;
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);

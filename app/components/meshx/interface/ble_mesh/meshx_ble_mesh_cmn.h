@@ -213,4 +213,16 @@ meshx_err_t meshx_platform_bt_init(void);
  */
 meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, meshx_ptr_t comp);
 
+/**
+ * @brief Retrieves the base element ID for the BLE Mesh platform.
+ *
+ * This function fetches the base element ID, which is used as a reference point
+ * for other elements in the BLE Mesh composition.
+ *
+ * @param[out] base_el_id Pointer to a variable where the base element ID will be stored.
+ *
+ * @return meshx_err_t Returns MESHX_SUCCESS on success, or an appropriate error code on failure.
+ */
+meshx_err_t meshx_get_base_element_id(uint16_t *base_el_id);
+
 #endif /* __MESHX_PLAT_SRV_CMN_H__ */
