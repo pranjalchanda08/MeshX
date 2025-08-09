@@ -74,10 +74,14 @@ static meshx_err_t meshx_handle_gen_onoff_msg(
     meshx_gen_cli_cb_param_t *param
 )
 {
-    if(model_id != MESHX_MODEL_ID_GEN_ONOFF_CLI || !param || !pdev)
+    if(!param || !pdev)
     {
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid parameters");
         return MESHX_INVALID_ARG;
+    }
+    if(model_id != MESHX_MODEL_ID_GEN_ONOFF_CLI)
+    {
+        return MESHX_SUCCESS;
     }
     MESHX_LOGD(MODULE_ID_MODEL_SERVER, "op|src|dst:%04" PRIx32 "|%04x|%04x",
                param->ctx.opcode, param->ctx.src_addr, param->ctx.dst_addr);
@@ -231,7 +235,7 @@ meshx_err_t meshx_onoff_client_send_msg(
     {
         return MESHX_INVALID_ARG;
     }
-    
+
     if(opcode == MESHX_MODEL_OP_GEN_ONOFF_GET)
     {
         err = meshx_gen_cli_send_msg(
