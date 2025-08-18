@@ -89,6 +89,7 @@ meshx_err_t meshx_gen_srv_init(void);
 meshx_err_t meshx_gen_srv_status_send(
     meshx_model_t *p_model,
     meshx_ctx_t *p_ctx,
-    meshx_gen_srv_state_change_t state_change);
+    meshx_gen_srv_state_change_t state_change,
+    size_t data_len);
 
 #endif /* __MESHX_GEN_SERVER_H__ */

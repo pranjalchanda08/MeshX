@@ -219,18 +219,16 @@ meshx_err_t meshx_plat_gen_cli_send_msg(
         return MESHX_INVALID_ARG; // Invalid arguments
     }
 
-    esp_ble_mesh_client_common_param_t common = {0};
-    common.model        = p_model;
-    common.opcode       = opcode;
-    common.ctx.addr     = addr;
-    common.ctx.net_idx  = net_idx;
-    common.ctx.app_idx  = app_idx;
-    common.ctx.send_ttl = 3;
-    common.msg_timeout  = 0; /* 0 indicates that timeout value from menuconfig will be used */
-
-    esp_err_t err = esp_ble_mesh_generic_client_set_state(
-        &common,
-        (esp_ble_mesh_generic_client_set_state_t*) p_set);
+    esp_err_t err = esp_ble_mesh_client_model_send_msg(
+        (esp_ble_mesh_model_t *)p_model,
+        &(esp_ble_mesh_msg_ctx_t){
+            .addr     = addr,
+            .net_idx  = net_idx,
+            .app_idx  = app_idx,
+            .send_ttl = ESP_BLE_MESH_TTL_DEFAULT
+        },
+        opcode, sizeof(meshx_gen_cli_set_t), (uint8_t *)p_set, 0, true, ROLE_NODE
+    );
     if (err)
     {
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Send Generic OnOff failed: %d", err);

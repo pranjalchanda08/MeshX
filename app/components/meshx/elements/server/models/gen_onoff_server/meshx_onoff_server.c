@@ -177,7 +177,8 @@ meshx_err_t meshx_gen_on_off_srv_status_send(
     return meshx_gen_srv_status_send(
             model,
             ctx,
-            state_change
+            state_change,
+            sizeof(meshx_state_change_gen_onoff_set_t)
     );
 }
 /**

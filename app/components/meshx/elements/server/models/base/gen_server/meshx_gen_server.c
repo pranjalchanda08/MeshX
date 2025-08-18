@@ -69,7 +69,8 @@ meshx_err_t meshx_is_status_in_gen_srv_grp(uint16_t opcode)
 meshx_err_t meshx_gen_srv_status_send(
     meshx_model_t *p_model,
     meshx_ctx_t *p_ctx,
-    meshx_gen_srv_state_change_t state_change)
+    meshx_gen_srv_state_change_t state_change,
+    size_t data_len)
 {
     if (!p_model || !p_ctx)
         return MESHX_INVALID_ARG;
@@ -80,7 +81,7 @@ meshx_err_t meshx_gen_srv_status_send(
         p_model,
         p_ctx,
         &state_change,
-        sizeof(meshx_gen_srv_state_change_t)
+        data_len
     );
 }
 /**

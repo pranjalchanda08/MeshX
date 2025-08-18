@@ -4,10 +4,6 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${workspaceFolder}/elements/server/server_common/**",
-                "${workspaceFolder}/elements/server/switch_relay_server/**",
-                "${workspaceFolder}/elements/client/client_common/**",
-                "${workspaceFolder}/elements/client/switch_relay_client",
                 "~/esp/esp-idf/",
                 "~/esp/esp-idf/**",
                 "~/esp/esp-idf/components/xtensa/",
