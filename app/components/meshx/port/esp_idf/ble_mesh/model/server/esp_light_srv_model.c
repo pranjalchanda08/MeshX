@@ -238,7 +238,7 @@ static void meshx_ble_lightness_server_cb(MESHX_LIGHT_SRV_CB_EVT event,
         }
         break;
     default:
-        ESP_LOGW(TAG, "CTL Unhandled Event %p", (meshx_ptr_t )param->ctx.recv_op);
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "CTL Unhandled Event %p", (meshx_ptr_t )param->ctx.recv_op);
         break;
     }
     if (publish_flag)

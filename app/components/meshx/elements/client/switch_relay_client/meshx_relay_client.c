@@ -199,8 +199,8 @@ static meshx_err_t meshx_add_relay_cli_model_to_element_list(
         }
         err = meshx_nvs_element_ctx_get(
             i,
-            &(RELAY_CLI_EL(i - *start_idx).cli_ctx),
-            sizeof(RELAY_CLI_EL(i - *start_idx).cli_ctx));
+            RELAY_CLI_EL(i - *start_idx).cli_ctx,
+            sizeof(meshx_relay_client_model_ctx_t));
         if (err != MESHX_SUCCESS)
         {
             MESHX_LOGW(MOD_SRC, "Failed to get relay cli element context: (0x%x)", err);
@@ -344,7 +344,7 @@ static meshx_err_t meshx_relay_cli_send_onoff_msg(
         opcode = ack ? MESHX_MODEL_OP_GEN_ONOFF_SET : MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK;
     }
 
-    MESHX_LOGE(MOD_SRC, "OPCODE: %p", (void *)(uint32_t)opcode);
+    MESHX_LOGD(MOD_SRC, "OPCODE: %p", (void *)(uint32_t)opcode);
 
     /* Send message to the relay client */
     err = meshx_onoff_client_send_msg(

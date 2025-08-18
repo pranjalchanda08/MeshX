@@ -68,84 +68,6 @@ static const char *server_state_str[] = {
     [ESP_BLE_MESH_GENERIC_SERVER_RECV_SET_MSG_EVT] = "SRV_RECV_SET"
 };
 
-#if 0
-/**
- * @brief Handles the BLE message sending for the Generic OnOff Server model.
- *
- * This function processes the event to send a BLE Mesh message for the
- * Generic Server model.
- *
- * @param[in] pdev Pointer to the device structure.
- * @param[in] evt Event type for the control task message to BLE.
- * @param[in] params Parameters for the BLE Mesh Generic Server model.
- *
- * @return
- *     - MESHX_SUCCESS: Message sent successfully or event type not matched.
- *     - MESHX_FAIL: Failed to send the message.
- */
-static meshx_err_t esp_ble_mesh_gen_srv_msg_send(
-                            const dev_struct_t *pdev,
-                            control_task_msg_evt_to_ble_t evt,
-                            meshx_gen_srv_cb_param_t *params)
-{
-    if((evt & CONTROL_TASK_MSG_EVT_TO_BLE_GEN_SRV_MASK) == 0)
-        return MESHX_SUCCESS;
-
-    esp_ble_mesh_msg_ctx_t *ctx = (esp_ble_mesh_msg_ctx_t *)params->ctx.p_ctx;
-    bool malloc_flag = false;
-
-    if(ctx == NULL)
-    {
-        ctx = (esp_ble_mesh_msg_ctx_t *) MESHX_MALLOC(sizeof(esp_ble_mesh_msg_ctx_t));
-        if(ctx == NULL)
-            return MESHX_NO_MEM;
-
-        malloc_flag = true;
-    }
-
-    ctx->net_idx    =   params->ctx.net_idx;
-    ctx->app_idx    =   params->ctx.app_idx;
-    ctx->addr       =   params->ctx.dst_addr;
-    ctx->send_ttl   =   ESP_BLE_MESH_TTL_DEFAULT;
-    ctx->send_cred  =   0;
-    ctx->send_tag   =   BIT1;
-
-    esp_err_t err = esp_ble_mesh_server_model_send_msg(params->model.p_model,
-        ctx,
-        params->ctx.opcode,
-        sizeof(params->state_change.onoff_set.onoff),
-        &params->state_change.onoff_set.onoff);
-    if(err)
-    {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Mesh Model msg send failed (err: 0x%x)", err);
-        return MESHX_ERR_PLAT;
-    }
-
-    if(malloc_flag)
-        MESHX_FREE(ctx);
-
-    ESP_UNUSED(pdev);
-    return MESHX_SUCCESS;
-}
-/**
- * @brief Register Callback function to handle messages sent to the BLE layer From Apps layer.
- *
- * @param cb Callback function to handle messages.
- */
-static meshx_err_t meshx_plat_reg_gen_srv_msg_handler(control_task_msg_handle_t cb)
-{
-    if(!cb)
-    {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid callback function");
-        return MESHX_INVALID_ARG;
-    }
-    return control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_TO_BLE,
-        CONTROL_TASK_MSG_EVT_TO_BLE_GEN_SRV_MASK,
-        cb
-    );
-}
-#endif
 
 /**
  * @brief Callback function for BLE Mesh Generic Server events.
@@ -224,27 +146,22 @@ meshx_err_t meshx_plat_gen_srv_send_status(
         uint32_t data_len
     )
 {
-    esp_ble_mesh_msg_ctx_t *ctx = (esp_ble_mesh_msg_ctx_t *)p_ctx->p_ctx;
-    bool malloc_flag = false;
-
-    if(ctx == NULL)
+    static esp_ble_mesh_msg_ctx_t ctx;
+    const esp_ble_mesh_msg_ctx_t *pctx = (esp_ble_mesh_msg_ctx_t *)p_ctx->p_ctx;
+    if(pctx != NULL)
     {
-        ctx = (esp_ble_mesh_msg_ctx_t *) MESHX_MALLOC(sizeof(esp_ble_mesh_msg_ctx_t));
-        if(ctx == NULL)
-            return MESHX_NO_MEM;
-
-        malloc_flag = true;
+        memcpy(&ctx, pctx, sizeof(esp_ble_mesh_msg_ctx_t));
     }
 
-    ctx->net_idx    =   p_ctx->net_idx;
-    ctx->app_idx    =   p_ctx->app_idx;
-    ctx->addr       =   p_ctx->dst_addr;
-    ctx->send_ttl   =   ESP_BLE_MESH_TTL_DEFAULT;
-    ctx->send_cred  =   0;
-    ctx->send_tag   =   BIT1;
+    ctx.net_idx    =   p_ctx->net_idx;
+    ctx.app_idx    =   p_ctx->app_idx;
+    ctx.addr       =   p_ctx->dst_addr;
+    ctx.send_ttl   =   ESP_BLE_MESH_TTL_DEFAULT;
+    ctx.send_cred  =   0;
+    ctx.send_tag   =   BIT1;
 
     esp_err_t err = esp_ble_mesh_server_model_send_msg(p_model->p_model,
-        ctx,
+        &ctx,
         p_ctx->opcode,
         (uint16_t)data_len,
         (uint8_t*)p_data);
@@ -253,9 +170,6 @@ meshx_err_t meshx_plat_gen_srv_send_status(
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Mesh Model msg send failed (err: 0x%x)", err);
         return MESHX_ERR_PLAT;
     }
-
-    if(malloc_flag)
-        MESHX_FREE(ctx);
 
     return MESHX_SUCCESS;
 }

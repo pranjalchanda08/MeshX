@@ -72,7 +72,6 @@ static meshx_err_t meshx_config_server_control_task_handler(
     }
     if (config_evt == CONTROL_TASK_MSG_EVT_CONFIG_ALL)
     {
-        MESHX_LOGE(MODULE_ID_COMMON, "Unknown event: %d", evt);
         return MESHX_INVALID_ARG;
     }
     /* Publish the event */

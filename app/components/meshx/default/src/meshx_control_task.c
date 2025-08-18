@@ -87,11 +87,20 @@ meshx_err_t control_task_msg_publish(control_task_msg_code_t msg_code,
         /* Copy the params to allocated space */
         memcpy(send_msg.msg_evt_params, msg_evt_params, sizeof_msg_evt_params);
     }
+    else
+    {
+        send_msg.msg_evt_params = NULL;
+    }
 
     send_msg.msg_code = msg_code;
     send_msg.msg_evt = msg_evt;
 
-    return meshx_msg_q_send(&control_task_queue, &send_msg, sizeof(send_msg), UINT32_MAX);
+    meshx_err_t send_err = meshx_msg_q_send(&control_task_queue, &send_msg, sizeof(send_msg), UINT32_MAX);
+    if (send_err != MESHX_SUCCESS && send_msg.msg_evt_params)
+    {
+        meshx_rtos_free(&send_msg.msg_evt_params);
+    }
+    return send_err;
 }
 
 /**
@@ -238,7 +247,7 @@ static meshx_err_t create_control_task_msg_q(void)
 static void control_task_handler(void *args)
 {
     meshx_err_t err;
-    control_task_msg_t recv_msg;
+    static control_task_msg_t recv_msg;
     dev_struct_t *pdev = (dev_struct_t *)args;
     err = create_control_task_msg_q();
     if (err)
