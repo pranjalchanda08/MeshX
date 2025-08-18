@@ -46,8 +46,6 @@
 #define CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE 1
 #endif /* CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
 
-#define TAG __func__
-
 #define MAX_ELE_CNT CONFIG_MAX_ELEMENT_COUNT
 #define MESHX_NVS_STORE "meshx_store"
 
@@ -67,9 +65,9 @@ typedef struct dev_struct
 {
     uint8_t uuid[16];                          /**< Device UUID */
     size_t element_idx;                        /**< Index of the current element */
-    meshx_app_store_t meshx_store;             /**< Mesh application store */
     void *composition;                         /**< Device composition */
-    esp_ble_mesh_elem_t elements[MAX_ELE_CNT]; /**< Array of elements */
+    MESHX_ELEMENT elements[MAX_ELE_CNT];       /**< Array of elements */
+    meshx_app_store_t meshx_store;             /**< Mesh application store */
 } dev_struct_t;
 
 /**

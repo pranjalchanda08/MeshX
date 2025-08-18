@@ -332,8 +332,8 @@ static meshx_err_t meshx_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, 
 
         err = meshx_nvs_element_ctx_get(
             i,
-            &(cwww_element_init_ctrl.el_list[i - *start_idx].srv_ctx),
-            sizeof(cwww_element_init_ctrl.el_list[i - *start_idx].srv_ctx));
+            cwww_element_init_ctrl.el_list[i - *start_idx].srv_ctx,
+            sizeof(meshx_cwww_server_ctx_t));
         if (err != MESHX_SUCCESS)
         {
             MESHX_LOGW(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to get cwww element context: (0x%x)", err);
@@ -541,13 +541,19 @@ static meshx_err_t meshx_cwww_srv_msg_send_handler(
     MESHX_UNUSED(pdev);
     if((evt & (CONTROL_TASK_MSG_EVT_TO_BLE_GEN_SRV_MASK)) == 0)
         return MESHX_SUCCESS;
-
+    uint16_t element_id = 0;
+    meshx_err_t err = MESHX_SUCCESS;
+    static meshx_gen_srv_cb_param_t *gen_srv_send = NULL;
+    static meshx_lighting_server_cb_param_t *light_srv_send = NULL;
     switch (evt)
     {
         case CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV:
         {
-            meshx_gen_srv_cb_param_t *gen_srv_send = (meshx_gen_srv_cb_param_t *)params;
-            meshx_err_t err = meshx_gen_on_off_srv_status_send(
+            gen_srv_send = (meshx_gen_srv_cb_param_t *)params;
+            element_id = gen_srv_send->model.el_id;
+            if (!IS_EL_IN_RANGE(element_id))
+                goto cwww_srv_msg_handler_exit;
+            err = meshx_gen_on_off_srv_status_send(
                 &gen_srv_send->model,
                 &gen_srv_send->ctx,
                 gen_srv_send->state_change.onoff_set.onoff
@@ -561,8 +567,11 @@ static meshx_err_t meshx_cwww_srv_msg_send_handler(
         break;
         case CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV:
         {
-            meshx_lighting_server_cb_param_t *light_srv_send = (meshx_lighting_server_cb_param_t *)params;
-            meshx_err_t err = meshx_light_ctl_srv_status_send(
+            light_srv_send = (meshx_lighting_server_cb_param_t *)params;
+            element_id = light_srv_send->model.el_id;
+            if (!IS_EL_IN_RANGE(element_id))
+                goto cwww_srv_msg_handler_exit;
+            err = meshx_light_ctl_srv_status_send(
                 &light_srv_send->model,
                 &light_srv_send->ctx,
                 light_srv_send->state_change.ctl_set.delta_uv,
@@ -578,9 +587,10 @@ static meshx_err_t meshx_cwww_srv_msg_send_handler(
         break;
         default:
             MESHX_LOGW(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Unhandled event: %d", evt);
-            return MESHX_INVALID_STATE;
+            err = MESHX_INVALID_STATE;
         }
-    return MESHX_SUCCESS;
+cwww_srv_msg_handler_exit:
+    return err;
 }
 
 /**

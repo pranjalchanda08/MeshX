@@ -423,6 +423,7 @@ static meshx_err_t meshx_nvs_unit_test_cb_handler(int cmd_id, int argc, char **a
     uint32_t ut_blob_get = 0x00;
     bool arm_timer;
 
+    MESHX_UNUSED(argc);
     MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_NVS, "argc|cmd_id: %d|%d", argc, cmd_id);
     if (cmd_id >= MESHX_NVS_CLI_MAX)
     {

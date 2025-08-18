@@ -929,7 +929,9 @@ static meshx_err_t meshx_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, 
             MESHX_LOGE(MOD_LCC, "Failed to add element to composition: (%d)", err);
             return err;
         }
-        err = meshx_nvs_element_ctx_get(i, &(CWWW_CLI_EL(i - *start_idx).cwww_cli_ctx), sizeof(meshx_cwww_client_model_ctx_t));
+        err = meshx_nvs_element_ctx_get(i,
+                                        CWWW_CLI_EL(i - *start_idx).cwww_cli_ctx,
+                                        sizeof(meshx_cwww_client_model_ctx_t));
         if (err != MESHX_SUCCESS)
         {
             MESHX_LOGW(MOD_LCC, "Failed to get cwww cli element context: (0x%x)", err);

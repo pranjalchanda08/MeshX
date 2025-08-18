@@ -322,8 +322,8 @@ static meshx_err_t meshx_add_relay_srv_model_to_element_list(dev_struct_t *pdev,
         }
         err = meshx_nvs_element_ctx_get(
             i,
-            &(relay_element_init_ctrl.el_list[i - *start_idx].srv_ctx),
-            sizeof(relay_element_init_ctrl.el_list[i - *start_idx].srv_ctx));
+            relay_element_init_ctrl.el_list[i - *start_idx].srv_ctx,
+            sizeof(meshx_relay_srv_model_ctx_t));
         if (err != MESHX_SUCCESS)
         {
             MESHX_LOGW(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to get relay element context: (0x%x)", err);
@@ -455,6 +455,11 @@ static meshx_err_t meshx_relay_srv_msg_send_handler(
                     meshx_gen_srv_cb_param_t *params)
 {
     if((evt & CONTROL_TASK_MSG_EVT_TO_BLE_GEN_SRV_MASK) == 0)
+        return MESHX_SUCCESS;
+
+    uint16_t element_id = params->model.el_id;
+
+    if (!IS_EL_IN_RANGE(element_id))
         return MESHX_SUCCESS;
 
     meshx_err_t err = meshx_gen_on_off_srv_status_send(
