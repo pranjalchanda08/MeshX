@@ -348,15 +348,14 @@ meshx_err_t meshx_plat_gen_cli_init(void);
  * @param[in] addr      Destination address within the BLE Mesh network.
  * @param[in] net_idx   Network index identifying the subnet to use.
  * @param[in] app_idx   Application key index to encrypt the message.
+ * @param[in] is_get_opcode   Flag indicating if the opcode is a GET request.
  *
  * @return meshx_err_t  Result of the operation. Returns MESHX_OK on success or an error code on failure.
  */
 meshx_err_t meshx_plat_gen_cli_send_msg(
-    meshx_ptr_t p_model,
-    meshx_gen_cli_set_t *p_set,
-    uint16_t opcode,
-    uint16_t addr,
-    uint16_t net_idx,
-    uint16_t app_idx
+    meshx_ptr_t p_model, meshx_gen_cli_set_t *p_set,
+    uint16_t opcode, uint16_t addr,
+    uint16_t net_idx, uint16_t app_idx,
+    bool is_get_opcode
 );
 #endif /* __MESHX_BLE_MESH_GEN_CLI_H__ */

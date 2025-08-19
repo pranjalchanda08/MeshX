@@ -213,6 +213,6 @@ meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, meshx_
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to enable mesh node");
         return err;
     }
-    MESHX_LOGI(MODULE_ID_MODEL_SERVER, "BLE Mesh Node initialized");
+    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "BLE Mesh Node initialized");
     return MESHX_SUCCESS;
 }

@@ -71,7 +71,8 @@ static void esp_ble_mesh_generic_client_cb(MESHX_GEN_CLI_CB_EVT event, MESHX_GEN
 static void esp_ble_mesh_generic_client_cb(MESHX_GEN_CLI_CB_EVT event,
                                            MESHX_GEN_CLI_CB_PARAM *param)
 {
-    MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "%s, err|op|src|dst: %d|%04" PRIx32 "|%04x|%04x",
+    MESHX_UNUSED(client_state_str);
+    MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "%s, err|op|src|dst: %d|%04" PRIx32 "|%04x|%04x",
                client_state_str[event], param->error_code,
                param->params->ctx.recv_op, param->params->ctx.addr, param->params->ctx.recv_dst);
 
@@ -205,13 +206,15 @@ meshx_err_t meshx_plat_gen_cli_delete(meshx_ptr_t* p_pub, meshx_ptr_t* p_cli)
  * @param[in] addr      Destination address within the BLE Mesh network.
  * @param[in] net_idx   Network index identifying the subnet to use.
  * @param[in] app_idx   Application key index to encrypt the message.
+ * @param[in] is_get_opcode   Flag indicating if the opcode is a GET request.
  *
  * @return meshx_err_t  Result of the operation. Returns MESHX_OK on success or an error code on failure.
  */
 meshx_err_t meshx_plat_gen_cli_send_msg(
     meshx_ptr_t p_model, meshx_gen_cli_set_t *p_set,
     uint16_t opcode, uint16_t addr,
-    uint16_t net_idx, uint16_t app_idx
+    uint16_t net_idx, uint16_t app_idx,
+    bool is_get_opcode
 )
 {
     if (!p_model || !p_set)
@@ -219,16 +222,40 @@ meshx_err_t meshx_plat_gen_cli_send_msg(
         return MESHX_INVALID_ARG; // Invalid arguments
     }
 
-    esp_err_t err = esp_ble_mesh_client_model_send_msg(
-        (esp_ble_mesh_model_t *)p_model,
-        &(esp_ble_mesh_msg_ctx_t){
-            .addr     = addr,
-            .net_idx  = net_idx,
-            .app_idx  = app_idx,
-            .send_ttl = ESP_BLE_MESH_TTL_DEFAULT
-        },
-        opcode, sizeof(meshx_gen_cli_set_t), (uint8_t *)p_set, 0, true, ROLE_NODE
-    );
+    esp_ble_mesh_client_common_param_t common = {0};
+    common.model        = p_model;
+    common.opcode       = opcode;
+    common.ctx.addr     = addr;
+    common.ctx.net_idx  = net_idx;
+    common.ctx.app_idx  = app_idx;
+    common.ctx.send_ttl = BLE_MESH_TTL_DEFAULT;
+    common.msg_timeout  = 0; /* 0 indicates that timeout value from menuconfig will be used */
+
+    esp_err_t err = ESP_OK;
+    if(!is_get_opcode)
+    {
+        err = esp_ble_mesh_generic_client_set_state(
+            &common,
+            (esp_ble_mesh_generic_client_set_state_t *)&p_set
+        );
+        if (err != ESP_OK)
+        {
+            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Send Generic OnOff failed: %d", err);
+            return MESHX_FAIL;
+        }
+    }
+    else
+    {
+        err = esp_ble_mesh_generic_client_get_state(
+            &common,
+            (esp_ble_mesh_generic_client_get_state_t *)&p_set
+        );
+        if (err != ESP_OK)
+        {
+            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Send Generic OnOff Get failed: %d", err);
+            return MESHX_FAIL;
+        }
+    }
     if (err)
     {
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Send Generic OnOff failed: %d", err);

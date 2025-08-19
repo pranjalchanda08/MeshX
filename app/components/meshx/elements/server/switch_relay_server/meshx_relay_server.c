@@ -416,7 +416,9 @@ static meshx_err_t relay_prov_control_task_handler(dev_struct_t const *pdev, con
         gen_srv_send.ctx.p_ctx = NULL;
 
         gen_srv_send.model.el_id = (uint16_t)el_id;
-        gen_srv_send.model.p_model = &relay_element_init_ctrl.el_list[rel_el_id].onoff_srv_model->meshx_server_sig_model;
+        gen_srv_send.model.p_model = relay_element_init_ctrl.el_list[rel_el_id].onoff_srv_model->meshx_server_sig_model;
+
+        gen_srv_send.state_change.onoff_set.onoff = relay_element_init_ctrl.el_list[rel_el_id].srv_ctx->state.on_off;
 
         if (gen_srv_send.ctx.dst_addr == ESP_BLE_MESH_ADDR_UNASSIGNED || gen_srv_send.ctx.app_idx == ESP_BLE_MESH_KEY_UNUSED)
             continue;

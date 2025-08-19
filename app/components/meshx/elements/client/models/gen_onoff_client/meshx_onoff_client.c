@@ -231,7 +231,7 @@ meshx_err_t meshx_onoff_client_send_msg(
 {
     meshx_err_t err;
     meshx_gen_cli_set_t set = {0};
-    if (!model || !model->meshx_onoff_client_gen_cli)
+    if (!model || !model->meshx_onoff_client_sig_model)
     {
         return MESHX_INVALID_ARG;
     }
@@ -239,7 +239,7 @@ meshx_err_t meshx_onoff_client_send_msg(
     if(opcode == MESHX_MODEL_OP_GEN_ONOFF_GET)
     {
         err = meshx_gen_cli_send_msg(
-            model->meshx_onoff_client_gen_cli,
+            model->meshx_onoff_client_sig_model,
             &set, opcode,
             addr, net_idx,
             app_idx
@@ -254,7 +254,7 @@ meshx_err_t meshx_onoff_client_send_msg(
         set.onoff_set.op_en = false;
 
         err = meshx_gen_cli_send_msg(
-            model->meshx_onoff_client_gen_cli,
+            model->meshx_onoff_client_sig_model,
             &set, opcode,
             addr, net_idx,
             app_idx

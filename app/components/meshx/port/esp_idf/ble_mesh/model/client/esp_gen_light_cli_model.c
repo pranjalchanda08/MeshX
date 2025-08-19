@@ -63,7 +63,8 @@ static void esp_ble_mesh_light_client_cb(MESHX_GEN_LIGHT_CLI_CB_EVT event,
 static void esp_ble_mesh_light_client_cb(MESHX_GEN_LIGHT_CLI_CB_EVT event,
                                          MESHX_GEN_LIGHT_CLI_CB_PARAM *param)
 {
-    MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "%s, err|op|src|dst: %d|%04" PRIx32 "|%04x|%04x",
+    MESHX_UNUSED(client_state_str);
+    MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "%s, err|op|src|dst: %d|%04" PRIx32 "|%04x|%04x",
             client_state_str[event], param->error_code,
             param->params->ctx.recv_op, param->params->ctx.addr, param->params->ctx.recv_dst);
 
@@ -187,13 +188,15 @@ meshx_err_t meshx_plat_light_client_delete(meshx_ptr_t* p_pub, meshx_ptr_t* p_cl
  * @param[in] addr      Destination address for the message.
  * @param[in] net_idx   Network index to be used for sending the message.
  * @param[in] app_idx   Application index to be used for sending the message.
+ * @param[in] is_get_opcode Indicates whether the opcode is a GET type (true) or SET type (false).
  *
  * @return meshx_err_t  Result of the message send operation.
  */
 meshx_err_t meshx_plat_light_client_send_msg(
     meshx_ptr_t p_model, meshx_light_client_set_state_t *p_set,
     uint16_t opcode, uint16_t addr,
-    uint16_t net_idx, uint16_t app_idx
+    uint16_t net_idx, uint16_t app_idx,
+    bool is_get_opcode
 )
 {
     if (!p_model || !p_set)
@@ -207,19 +210,33 @@ meshx_err_t meshx_plat_light_client_send_msg(
     common.ctx.addr     = addr;
     common.ctx.net_idx  = net_idx;
     common.ctx.app_idx  = app_idx;
-    common.ctx.send_ttl = 3;
+    common.ctx.send_ttl = BLE_MESH_TTL_DEFAULT;
     common.msg_timeout  = 0; /* 0 indicates that timeout value from menuconfig will be used */
 
     // Send the message using the appropriate BLE Mesh API
-    esp_err_t esp_err = esp_ble_mesh_light_client_set_state(
-        &common,
-        (esp_ble_mesh_light_client_set_state_t *)&p_set
-    );
-    if (esp_err != ESP_OK)
+    if (!is_get_opcode)
     {
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Failed to send Light Client message: %d", esp_err);
-        return MESHX_ERR_PLAT;
+        esp_err_t esp_err = esp_ble_mesh_light_client_set_state(
+            &common,
+            (esp_ble_mesh_light_client_set_state_t *)&p_set
+        );
+        if (esp_err != ESP_OK)
+        {
+            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Failed to send Light Client message: %d", esp_err);
+            return MESHX_ERR_PLAT;
+        }
     }
-
+    else
+    {
+        esp_err_t esp_err = esp_ble_mesh_light_client_get_state(
+            &common,
+            (esp_ble_mesh_light_client_get_state_t *)&p_set
+        );
+        if (esp_err != ESP_OK)
+        {
+            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Failed to send Light Client GET message: %d", esp_err);
+            return MESHX_ERR_PLAT;
+        }
+    }
     return MESHX_SUCCESS;
 }
