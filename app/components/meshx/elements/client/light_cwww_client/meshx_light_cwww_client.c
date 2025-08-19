@@ -435,7 +435,7 @@ static meshx_err_t meshx_cwww_cli_send_onoff_msg(
         opcode = ack ? MESHX_MODEL_OP_GEN_ONOFF_SET : MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK;
     }
 
-    MESHX_LOGE(MOD_LCC, "OPCODE: %p", (void *)(uint32_t)opcode);
+    MESHX_LOGD(MOD_LCC, "OPCODE: %p", (void *)(uint32_t)opcode);
 
     /* Send message to the cwww client */
     err = meshx_onoff_client_send_msg(
@@ -496,7 +496,7 @@ static meshx_err_t meshx_cwww_cli_send_ctl_msg(
     if( MESHX_LIGHT_CTL_CLI_MSG_SET == set_get)
         opcode = ack ? MESHX_MODEL_OP_LIGHT_CTL_SET : MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK;
 
-    MESHX_LOGE(MOD_LCC, "OPCODE: %p", (void *)(uint32_t)opcode);
+    MESHX_LOGD(MOD_LCC, "OPCODE: %p", (void *)(uint32_t)opcode);
 
     /* Send message to the cwww client */
     err = meshx_light_ctl_client_send_msg(

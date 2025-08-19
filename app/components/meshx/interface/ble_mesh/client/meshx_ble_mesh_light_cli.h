@@ -504,13 +504,15 @@ meshx_err_t meshx_plat_light_client_delete(meshx_ptr_t* p_pub, meshx_ptr_t* p_cl
  * @param[in] addr      Destination address for the message.
  * @param[in] net_idx   Network index to be used for sending the message.
  * @param[in] app_idx   Application index to be used for sending the message.
+ * @param[in] is_get_opcode Indicates whether the opcode is a GET type (true) or SET type (false).
  *
  * @return meshx_err_t  Result of the message send operation.
  */
 meshx_err_t meshx_plat_light_client_send_msg(
     meshx_ptr_t p_model, meshx_light_client_set_state_t *p_set,
     uint16_t opcode, uint16_t addr,
-    uint16_t net_idx, uint16_t app_idx
+    uint16_t net_idx, uint16_t app_idx,
+    bool is_get_opcode
 );
 
 #endif /* MESHX_BLE_MESH_LIGHT_CLI_H */

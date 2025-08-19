@@ -1,28 +1,57 @@
 {
     "version": "0.2.0",
     "configurations": [
-      {
-        "name": "GDB",
-        "type": "cppdbg",
-        "request": "launch",
-        "MIMode": "gdb",
-        "miDebuggerPath": "/home/pranjal/.espressif/tools/riscv32-esp-elf-gdb/14.2_20240403/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb",
-        "program": "${workspaceFolder}/build/${command:espIdf.getProjectName}.elf",
-        "windows": {
-          "program": "${workspaceFolder}\\build\\switch_relay.elf"
+        {
+            "type": "gdb",
+            "request": "attach",
+            "name": "Native GDB",
+            "executable": "${workspaceFolder}/build/${command:espIdf.getProjectName}.elf",
+            "gdbpath": "/home/pranjal/.espressif/tools/riscv32-esp-elf-gdb/14.2_20240403/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb",
+            "target": ":3333",
+            "remote": true,
+            "cwd": "${workspaceRoot}",
+            "valuesFormatting": "parseText",
+            "autorun": [
+                "mon reset halt",
+                "maintenance flush register-cache",
+                "thb model_send"
+            ]
         },
-        "cwd": "${workspaceFolder}",
-        "environment": [{ "name": "PATH", "value": "${config:idf.customExtraPaths}" }],
-        "setupCommands": [
-          {"text": "target remote :3333" },
-          {"text": "b app_main"},
-          {"text": "monitor reset halt"},
-          {"text": "flushregs" }
-        ],
-        "externalConsole": false,
-        "logging": {
-          "engineLogging": true
+        {
+            "name": "GDB",
+            "type": "cppdbg",
+            "request": "launch",
+            "MIMode": "gdb",
+            "miDebuggerPath": "/home/pranjal/.espressif/tools/riscv32-esp-elf-gdb/14.2_20240403/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb",
+            "program": "${workspaceFolder}/build/${command:espIdf.getProjectName}.elf",
+            "windows": {
+                "program": "${workspaceFolder}\\build\\switch_relay.elf"
+            },
+            "cwd": "${workspaceFolder}",
+            "environment": [
+                {
+                    "name": "PATH",
+                    "value": "${config:idf.customExtraPaths}"
+                }
+            ],
+            "setupCommands": [
+                {
+                    "text": "target remote :3333"
+                },
+                {
+                    "text": "monitor reset halt"
+                },
+                {
+                    "text": "flushregs"
+                },
+                {
+                    "text": "b app_main"
+                },
+            ],
+            "externalConsole": false,
+            "logging": {
+                "engineLogging": true
+            }
         }
-      }
     ]
-  }
+}

@@ -18,6 +18,32 @@
 #define MESHX_CLIENT_INIT_MAGIC_NO 0x4309
 static uint16_t meshx_client_init = 0;
 
+/**
+ * @brief Checks if the given model ID corresponds to a Generic Light Client GET opcode.
+ *
+ * This function determines whether the specified opcode is part of the set of GET
+ *
+ * @param opcode The opcode to check.
+ * @return meshx_err_t Returns an error code indicating whether the opcode is a GET opcode
+ *                     for the Generic Light Client model.
+ */
+static meshx_err_t meshx_is_gen_light_cli_get_opcode(uint32_t opcode)
+{
+    switch (opcode)
+    {
+        case MESHX_MODEL_OP_LIGHT_LIGHTNESS_GET:
+        case MESHX_MODEL_OP_LIGHT_CTL_GET:
+        case MESHX_MODEL_OP_LIGHT_HSL_GET:
+        case MESHX_MODEL_OP_LIGHT_XYL_GET:
+        case MESHX_MODEL_OP_LIGHT_LC_MODE_GET:
+        case MESHX_MODEL_OP_LIGHT_LC_OM_GET:
+        case MESHX_MODEL_OP_LIGHT_LC_LIGHT_ONOFF_GET:
+        case MESHX_MODEL_OP_LIGHT_LC_PROPERTY_GET:
+            return MESHX_SUCCESS;
+        default:
+            return MESHX_FAIL;
+    }
+}
 
 /**
  * @brief Checks if the given model ID corresponds to a Generic Light Client model.
@@ -92,8 +118,10 @@ meshx_err_t meshx_gen_light_send_msg(
         return MESHX_INVALID_ARG;
     }
 
+    bool is_get_opcode = (meshx_is_gen_light_cli_get_opcode(opcode) == MESHX_SUCCESS);
+
     return meshx_plat_light_client_send_msg(
-        model, state, opcode, addr, net_idx, app_idx
+        model, state, opcode, addr, net_idx, app_idx, is_get_opcode
     );
 }
 
