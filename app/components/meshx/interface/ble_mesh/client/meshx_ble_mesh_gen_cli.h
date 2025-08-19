@@ -316,13 +316,13 @@ meshx_err_t meshx_plat_on_off_gen_cli_create(meshx_ptr_t p_model, meshx_ptr_t* p
  * resources associated with the client.
  *
  * @param[in,out] p_pub Pointer to the publication structure to be deleted.
- * @param[in,out] p_onoff_cli Pointer to the OnOff Client structure to be freed.
+ * @param[in,out] p_cli Pointer to the OnOff Client structure to be freed.
  *
  * @return
  *     - MESHX_SUCCESS: Model and publication deleted successfully.
  *     - MESHX_FAIL: Failed to delete the model or publication.
  */
-meshx_err_t meshx_plat_gen_cli_delete(meshx_ptr_t* p_pub, meshx_ptr_t* p_onoff_cli);
+meshx_err_t meshx_plat_gen_cli_delete(meshx_ptr_t* p_pub, meshx_ptr_t* p_cli);
 
 /**
  * @brief Initialize the meshxuction generic client.

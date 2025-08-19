@@ -1060,11 +1060,12 @@ meshx_err_t meshx_cwww_el_get_state(uint16_t element_id, cwww_cli_sig_id_t model
     }
     return MESHX_SUCCESS;
 }
+
 /**
- * @brief Create Dynamic Cwww Model Elements
+ * @brief Create Dynamic CW-WW Model Elements
  *
  * @param[in] pdev          Pointer to device structure
- * @param[in] element_cnt   Maximum number of cwww models
+ * @param[in] element_cnt   Maximum number of CW-WW models
  *
  * @return meshx_err_t
  */

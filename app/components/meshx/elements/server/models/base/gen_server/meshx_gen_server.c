@@ -60,6 +60,7 @@ meshx_err_t meshx_is_status_in_gen_srv_grp(uint16_t opcode)
  * @param[in] p_model       Pointer to the Generic Server model structure.
  * @param[in] p_ctx         Pointer to the context containing message information.
  * @param[in] state_change  The state change data to be sent in the status message.
+ * @param[in] data_len      The length of the data to be sent in the status message.
  *
  * @return
  *     - MESHX_SUCCESS: Successfully sent the status message.
