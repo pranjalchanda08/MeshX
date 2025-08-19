@@ -35,5 +35,3 @@
 #if CONFIG_LIGHT_CWWW_CLIENT_COUNT
 #include <meshx_light_cwww_client_element.h>
 #endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */
-
-#include "esp_err.h"

@@ -60,13 +60,16 @@ static meshx_err_t meshx_state_change_notify(meshx_gen_cli_cb_param_t *param)
 }
 
 /**
- * @brief Relay Client Generic Client Callback
+ * @brief Handle the Generic OnOff Client messages.
  *
- * This function handles the relay client generic client callback events.
+ * This function processes the incoming messages for the Generic OnOff Client
+ * and performs the necessary actions based on the message event and parameters.
  *
- * @param[in] param Pointer to the BLE Mesh generic client callback parameter structure.
- * @param[in] evt   Event type of the callback.
- * @return void
+ * @param[in] pdev      Pointer to the device structure containing device-specific information.
+ * @param[in] model_id  The model ID of the received message.
+ * @param[in] param     Pointer to the Generic Client callback parameter structure.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
 static meshx_err_t meshx_handle_gen_onoff_msg(
     const dev_struct_t *pdev,

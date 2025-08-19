@@ -110,13 +110,13 @@ models:
 # Base model build registration
 base_models:
     gen_client:
-        path: "elements/client/base/gen_client"
+        path: "elements/client/models/base/gen_client"
         macros:
             - def: "CONFIG_ENABLE_GEN_CLIENT"
               value: false
 
     light_client:
-        path: "elements/client/base/light_client"
+        path: "elements/client/models/base/light_client"
         macros:
             - def: "CONFIG_ENABLE_LIGHT_CLIENT"
               value: false

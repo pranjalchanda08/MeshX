@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2024 - 2025 MeshX
  *
- * @file meshx_ble_mesh_gen_light_cli.h
+ * @file meshx_ble_mesh_light_cli.h
  * @brief Header file for BLE Mesh Light Client functionality in the MeshX framework.
  *        This file contains declarations and includes required for implementing
  *        BLE Mesh Light Client operations.
