@@ -170,7 +170,7 @@ meshx_err_t meshx_plat_gen_srv_send_status(
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Mesh Model msg send failed (err: 0x%x)", err);
         return MESHX_ERR_PLAT;
     }
-
+    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Mesh Model msg sent (opcode: 0x%04x)", p_ctx->opcode);
     return MESHX_SUCCESS;
 }
 
@@ -210,14 +210,7 @@ meshx_err_t meshx_plat_set_gen_srv_state(void * p_model, uint8_t on_off_state)
 meshx_err_t meshx_plat_gen_srv_init(void)
 {
     meshx_err_t err = MESHX_SUCCESS;
-#if 0
-    /* Register callback for enabling Sending of Model Msg From MeshX to BLE Layer */
-    err = meshx_plat_reg_gen_srv_msg_handler(
-        (control_task_msg_handle_t)&esp_ble_mesh_gen_srv_msg_send
-    );
-    if (err)
-        return err;
-#endif
+
     /* Register the ESP Generic Server callback */
     esp_err_t esp_err = esp_ble_mesh_register_generic_server_callback(
             (MESHX_GEN_SRV_CB)&esp_ble_mesh_generic_server_cb

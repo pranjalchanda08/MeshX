@@ -485,6 +485,7 @@ static meshx_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, cont
         gen_srv_send.model.el_id = (uint16_t)el_id;
         gen_srv_send.model.p_model = cwww_element_init_ctrl.el_list[rel_el_id].onoff_srv_model->meshx_server_sig_model;
 
+        gen_srv_send.state_change.onoff_set.onoff = cwww_element_init_ctrl.el_list[rel_el_id].srv_ctx->prev_state.on_off;
         if (gen_srv_send.ctx.dst_addr == MESHX_ADDR_UNASSIGNED || gen_srv_send.ctx.app_idx == MESHX_KEY_UNUSED)
             continue;
 
@@ -507,7 +508,9 @@ static meshx_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, cont
 
         light_srv_send.model.el_id = (uint16_t)el_id;
         light_srv_send.model.p_model = cwww_element_init_ctrl.el_list[rel_el_id].ctl_srv_model->meshx_server_sig_model;
-
+        light_srv_send.state_change.ctl_set.delta_uv = cwww_element_init_ctrl.el_list[rel_el_id].srv_ctx->prev_ctl_state.delta_uv;
+        light_srv_send.state_change.ctl_set.lightness = cwww_element_init_ctrl.el_list[rel_el_id].srv_ctx->prev_ctl_state.lightness;
+        light_srv_send.state_change.ctl_set.temperature = cwww_element_init_ctrl.el_list[rel_el_id].srv_ctx->prev_ctl_state.temperature;
         err = meshx_gen_light_srv_send_msg_to_ble(
             CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV,
             &light_srv_send

@@ -19,6 +19,38 @@
 static uint16_t meshx_client_init = 0;
 
 /**
+ * @brief Checks if the given opcode corresponds to a GET request in the Generic Client group.
+ *
+ * This function determines whether the provided opcode is part of the set of GET requests
+ * defined for the Generic Client group in the MeshX protocol.
+ *
+ * @param[in] opcode The opcode to check.
+ * @return meshx_err_t Returns an error code indicating whether the opcode is a GET request in the Generic Client group.
+ */
+static meshx_err_t meshx_is_gen_cli_get_opcode(uint16_t opcode)
+{
+    switch(opcode)
+    {
+        case MESHX_MODEL_OP_GEN_ONOFF_GET:
+        case MESHX_MODEL_OP_GEN_LEVEL_GET:
+        case MESHX_MODEL_OP_GEN_ONPOWERUP_GET:
+        case MESHX_MODEL_OP_GEN_POWER_LEVEL_GET:
+        case MESHX_MODEL_OP_GEN_BATTERY_GET:
+        case MESHX_MODEL_OP_GEN_LOC_GLOBAL_GET:
+        case MESHX_MODEL_OP_GEN_LOC_LOCAL_GET:
+        case MESHX_MODEL_OP_GEN_MANUFACTURER_PROPERTIES_GET:
+        case MESHX_MODEL_OP_GEN_MANUFACTURER_PROPERTY_GET:
+        case MESHX_MODEL_OP_GEN_ADMIN_PROPERTIES_GET:
+        case MESHX_MODEL_OP_GEN_ADMIN_PROPERTY_GET:
+        case MESHX_MODEL_OP_GEN_USER_PROPERTIES_GET:
+        case MESHX_MODEL_OP_GEN_USER_PROPERTY_GET:
+        case MESHX_MODEL_OP_GEN_CLIENT_PROPERTIES_GET:
+            return MESHX_SUCCESS;
+        default:
+            return MESHX_FAIL;
+    }
+}
+/**
  * @brief Checks if the given model ID corresponds to a Generic Client model.
  *
  * This function determines whether the specified model ID is associated with a
@@ -93,7 +125,7 @@ meshx_err_t meshx_gen_cli_send_msg(
     }
 
     return meshx_plat_gen_cli_send_msg(
-        model, state, opcode, addr, net_idx, app_idx
+        model, state, opcode, addr, net_idx, app_idx, (meshx_is_gen_cli_get_opcode(opcode) == MESHX_SUCCESS)
     );
 }
 

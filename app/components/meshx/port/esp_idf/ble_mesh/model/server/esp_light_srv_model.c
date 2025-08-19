@@ -55,80 +55,6 @@ typedef union ctl_status_pack
 static const MESHX_MODEL light_ctl_sig_template = ESP_BLE_MESH_SIG_MODEL(
     ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV, NULL, NULL, NULL);
 
-#if 0
-/**
- * @brief Handles the BLE message sending for the Generic OnOff Server model.
- *
- * This function processes the event to send a BLE Mesh message for the
- * Generic OnOff Server model. It checks if the event type is
- * CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV and sends the OnOff status
- * message using the provided parameters.
- *
- * @param[in] pdev Pointer to the device structure.
- * @param[in] evt Event type for the control task message to BLE.
- * @param[in] params Parameters for the BLE Mesh Generic Server model.
- *
- * @return
- *     - MESHX_SUCCESS: Message sent successfully or event type not matched.
- *     - MESHX_ERR_PLAT: Failed to send the message.
- */
-static meshx_err_t esp_ble_mesh_gen_light_srv_msg_send(
-    const dev_struct_t *pdev,
-    control_task_msg_evt_to_ble_t evt,
-    meshx_lighting_server_cb_param_t *params)
-{
-    if (evt != CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV)
-        return MESHX_SUCCESS;
-
-    esp_ble_mesh_msg_ctx_t *ctx = params->ctx.p_ctx;
-    ctx->addr = params->ctx.dst_addr;
-
-    ctl_status_t ctl_status_union;
-    uint8_t ctl_status_pack_len = 0;
-
-    switch (params->ctx.opcode)
-    {
-    case MESHX_MODEL_OP_LIGHT_CTL_STATUS:
-        ctl_status_union.ctl_status.temperature = params->state_change.ctl_set.temperature;
-        ctl_status_union.ctl_status.lightness = params->state_change.ctl_set.lightness;
-        ctl_status_pack_len = sizeof(ctl_status_union.ctl_status);
-        break;
-    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS:
-        ctl_status_union.ctl_temp_status.temperature = params->state_change.ctl_temp_set.temperature;
-        ctl_status_union.ctl_temp_status.delta_uv = params->state_change.ctl_temp_set.delta_uv;
-        ctl_status_pack_len = sizeof(ctl_status_union.ctl_temp_status);
-        break;
-    case MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS:
-        ctl_status_union.ctl_default.delta_uv_def = params->state_change.ctl_default_set.delta_uv;
-        ctl_status_union.ctl_default.lightness_def = params->state_change.ctl_default_set.lightness;
-        ctl_status_union.ctl_default.temperature_def = params->state_change.ctl_default_set.temperature;
-        ctl_status_pack_len = sizeof(ctl_status_union.ctl_default);
-        break;
-    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS:
-        ctl_status_union.ctl_temp_range.status_code = MESHX_SUCCESS;
-        ctl_status_union.ctl_temp_range.range_min = params->state_change.ctl_temp_range_set.range_min;
-        ctl_status_union.ctl_temp_range.range_max = params->state_change.ctl_temp_range_set.range_max;
-        ctl_status_pack_len = sizeof(ctl_status_union.ctl_temp_range);
-        break;
-    default:
-        return MESHX_INVALID_ARG;
-    }
-
-    esp_err_t err = esp_ble_mesh_server_model_send_msg(params->model.p_model,
-                                                       ctx,
-                                                       params->ctx.opcode,
-                                                       ctl_status_pack_len,
-                                                       (uint8_t *)&ctl_status_union);
-    if (err)
-    {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Mesh Model msg send failed (err: 0x%x)", err);
-        return MESHX_ERR_PLAT;
-    }
-
-    MESHX_UNUSED(pdev);
-    return MESHX_SUCCESS;
-}
-#endif
 /**
  * @brief Callback function for BLE Mesh Lightness Server events.
  *
@@ -151,13 +77,20 @@ static void meshx_ble_lightness_server_cb(MESHX_LIGHT_SRV_CB_EVT event,
     uint32_t op_code = param->ctx.recv_op;
     meshx_lighting_server_cb_param_t pub_param = {
         .ctx = {
-            .net_idx = param->ctx.net_idx,
-            .app_idx = param->ctx.app_idx,
-            .dst_addr = param->ctx.recv_dst,
-            .src_addr = param->ctx.addr,
-            .opcode = param->ctx.recv_op,
-            .p_ctx = &param->ctx},
-        .model = {.pub_addr = param->model->pub->publish_addr, .model_id = param->model->model_id, .el_id = param->model->element_idx, .p_model = param->model}};
+            .net_idx    = param->ctx.net_idx,
+            .app_idx    = param->ctx.app_idx,
+            .dst_addr   = param->ctx.recv_dst,
+            .src_addr   = param->ctx.addr,
+            .opcode     = param->ctx.recv_op,
+            .p_ctx      = &param->ctx
+        },
+        .model = {
+            .el_id     = param->model->element_idx,
+            .pub_addr  = param->model->pub->publish_addr,
+            .model_id  = param->model->model_id,
+            .p_model   = param->model
+        }
+    };
 
     switch (op_code)
     {
@@ -328,16 +261,7 @@ meshx_err_t meshx_plat_gen_light_srv_send_status(
 meshx_err_t meshx_plat_light_srv_init(void)
 {
     /* Register callback for enabling Sending of Model Msg From MeshX to BLE Layer */
-#if 0
-    meshx_err_t err = control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_TO_BLE,
-        CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV,
-        (control_task_msg_handle_t)&esp_ble_mesh_gen_light_srv_msg_send);
-    if (err)
-        return err;
-#else
     meshx_err_t err = MESHX_SUCCESS;
-#endif
     /* Register the ESP Generic Server callback */
     esp_err_t esp_err = esp_ble_mesh_register_lighting_server_callback(
         (MESHX_LIGHT_SRV_CB)&meshx_ble_lightness_server_cb

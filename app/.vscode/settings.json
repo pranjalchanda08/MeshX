@@ -9,5 +9,8 @@
     "files.associations": {
         "*.h": "c",
         "*.c": "c"
-    }
+    },
+    "idf.openOcdConfigs": [
+        "board/esp32c3-builtin.cfg"
+    ]
 }

@@ -302,7 +302,7 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     err = meshx_init_boot_timer();
     MESHX_ERR_PRINT_RET("Boot Timer Init failed", err);
     /* Print the MeshX banner */
-    printf(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_CYAN) "%s" LOG_ANSI_COLOR_RESET, meshX_banner);
+    CONFIG_MESHX_LOG_PRINTF(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_CYAN) "%s" LOG_ANSI_COLOR_RESET, meshX_banner);
 
 #if CONFIG_ENABLE_UNIT_TEST
     /* Register unit test command */
