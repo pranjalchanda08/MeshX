@@ -65,6 +65,7 @@ typedef struct meshx_config
     meshx_app_data_cb_t app_element_cb; /**< Application element callback */
     meshx_app_ctrl_cb_t app_ctrl_cb;    /**< Application control callback */
     unsigned meshx_log_level;           /**< MeshX log level */
+    meshx_uuid_addr_t meshx_uuid_addr;  /**< MeshX UUID address */
 }meshx_config_t;
 
 /**

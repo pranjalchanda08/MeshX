@@ -541,3 +541,5 @@ typedef unsigned char meshx_addr_type_t;
 
 typedef uint8_t meshx_bd_addr_t[MESHX_BD_ADDR_LEN];
 typedef uint8_t meshx_uuid_addr_t[MESHX_UUID_ADDR_LEN];
+
+#define MESHX_UUID_EMPTY (meshx_uuid_addr_t){0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
