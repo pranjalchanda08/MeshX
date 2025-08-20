@@ -14,6 +14,7 @@
  *
  */
 #include "ble_mesh_plat_init.h"
+#include "esp_bt_device.h"
 #include "interface/meshx_platform.h"
 #include "interface/logging/meshx_log.h"
 #include "interface/ble_mesh/meshx_ble_mesh_cmn.h"
@@ -161,7 +162,7 @@ meshx_err_t meshx_get_base_element_id(uint16_t *base_el_id)
     return MESHX_SUCCESS;
 }
 
-meshx_err_t meshx_platform_bt_init(void)
+meshx_err_t meshx_platform_bt_init(meshx_uuid_addr_t uuid)
 {
     esp_err_t err = ESP_OK;
     /* Initialize Bluetooth */
@@ -171,6 +172,21 @@ meshx_err_t meshx_platform_bt_init(void)
         return MESHX_ERR_PLAT;
     }
 
+    if(uuid == NULL)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "Invalid configuration for Bluetooth initialization");
+        return MESHX_INVALID_ARG;
+    }
+    /* Set the device UUID */
+    if(memcmp(uuid, MESHX_UUID_EMPTY, sizeof(meshx_uuid_addr_t)) == 0)
+    {
+        const uint8_t *mac_addr = esp_bt_dev_get_address();
+        if (mac_addr == NULL) {
+            MESHX_LOGE(MODULE_ID_COMMON, "Failed to get device address");
+            return MESHX_ERR_PLAT;
+        }
+        memcpy(uuid + 2, mac_addr, MESHX_BD_ADDR_LEN);
+    }
     return MESHX_SUCCESS;
 }
 

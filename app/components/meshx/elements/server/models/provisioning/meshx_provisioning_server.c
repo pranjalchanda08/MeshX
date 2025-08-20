@@ -28,9 +28,9 @@
  */
 meshx_err_t meshx_init_prov(const meshx_prov_params_t *prov_cfg)
 {
-    if (!prov_cfg)
+    if (!prov_cfg || memcmp(prov_cfg->uuid, MESHX_UUID_EMPTY, sizeof(meshx_uuid_addr_t)) == 0)
     {
-        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Invalid server configuration");
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid server configuration");
         return MESHX_INVALID_ARG;
     }
     return meshx_plat_init_prov(prov_cfg->uuid);

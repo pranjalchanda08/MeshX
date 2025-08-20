@@ -53,8 +53,8 @@ typedef struct meshx_ctx
  */
 typedef struct meshx_prov_params
 {
-    meshx_uuid_addr_t uuid; /**< UUID for the provisioning device */
-    uint8_t *node_name;     /**< Node name for the provisioning device */
+    uint8_t *uuid;           /**< UUID for the provisioning device */
+    uint8_t *node_name;      /**< Node name for the provisioning device */
 } meshx_prov_params_t;
 
 /**
@@ -196,9 +196,11 @@ meshx_err_t meshx_plat_composition_init(
  * This function sets up the Bluetooth-related components necessary for
  * MeshX operation, such as BLE Mesh provisioning and communication.
  *
+ * @param[in] uuid Pointer to the UUID address to be used for the Bluetooth initialization.
+ *
  * @return meshx_err_t Returns MESHX_OK on success, or an appropriate error code.
  */
-meshx_err_t meshx_platform_bt_init(void);
+meshx_err_t meshx_platform_bt_init(meshx_uuid_addr_t uuid);
 
 /**
  * @brief Initializes the BLE Mesh stack with the given provisioning parameters.

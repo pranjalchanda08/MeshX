@@ -42,13 +42,6 @@ static prov_cb_evt_ctrl_task_evt_table_t prov_cb_evt_ctrl_task_evt_table[ESP_BLE
 };
 
 /**
- * @brief Provisioning parameters.
- *
- * This structure holds the provisioning parameters used in the provisioning process.
- */
-static meshx_prov_params_t prov_params;
-
-/**
  * @brief Global provisioning structure.
  *
  * This structure holds the global provisioning configuration.
@@ -123,9 +116,7 @@ meshx_err_t meshx_plat_init_prov(const uint8_t *uuid)
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid server configuration");
         return MESHX_INVALID_ARG;
     }
-    memcpy(&prov_params.uuid, uuid, sizeof(prov_params.uuid));
-
-    g_meshx_prov.uuid = prov_params.uuid;
+    g_meshx_prov.uuid = uuid;
 
     return esp_ble_mesh_register_prov_callback((esp_ble_mesh_prov_cb_t)meshx_provisioning_cb);
 }
