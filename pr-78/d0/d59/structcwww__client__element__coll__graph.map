@@ -1,0 +1,13 @@
+<map id="cwww_client_element" name="cwww_client_element">
+<area shape="rect" id="Node000001" title="Structure to hold the cwww client element." alt="" coords="223,507,394,594"/>
+<area shape="rect" id="Node000002" href="$d2/dd1/structcwww__cli__ctx.html" title="Structure to hold the context of the cwww client." alt="" coords="111,314,203,422"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,420,193,452,214,481,227,495,223,498,209,485,189,455,173,423"/>
+<area shape="rect" id="Node000003" href="$d0/d1d/structcwww__cli__on__off__state.html" title="Structure to hold the CW&#45;WW client on/off state." alt="" coords="5,76,151,143"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="90,142,138,297,133,299,85,143"/>
+<area shape="rect" id="Node000004" href="$d6/dd3/structcwww__cli__ctl__state.html" title="Structure to hold the CW&#45;WW client control state." alt="" coords="174,5,299,214"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="220,214,205,269,193,300,188,298,200,267,215,213"/>
+<area shape="rect" id="Node000005" href="$dc/d0e/structmeshx__onoff__client__model.html" title="Structure representing the MeshX On/Off Client Model." alt="" coords="227,292,390,444"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="312,444,312,490,306,490,306,444"/>
+<area shape="rect" id="Node000006" href="$d4/d6b/structmeshx__light__ctl__client__model.html" title="Structure representing the Light CTL (Color Temperature Lightness) client model in MeshX." alt="" coords="415,292,595,444"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="455,445,417,485,400,499,396,495,414,481,451,442"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="meshx_init_config_server" name="meshx_init_config_server">
+<area shape="rect" id="Node000001" title="Initializes the Configuration Server." alt="" coords="844,13,1011,38"/>
+<area shape="rect" id="Node000002" href="$d2/d6b/composition_8c.html#af14ef1213779043f3932d29054340c33" title="Creates the BLE Mesh element composition." alt="" coords="641,5,796,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="828,28,797,28,797,23,828,23"/>
+<area shape="rect" id="Node000003" href="$d9/d05/meshx_8c.html#a9a6dcac8b5368ca6d77be9caf99cddaa" title="Initializes BLE Mesh elements." alt="" coords="456,13,593,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="625,28,593,28,593,23,625,23"/>
+<area shape="rect" id="Node000004" href="$d9/d05/meshx_8c.html#ae1efa7e2017c2acc93c81100da9dd0c9" title="Initializes the BLE Mesh subsystem." alt="" coords="262,13,408,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="441,28,409,28,409,23,441,23"/>
+<area shape="rect" id="Node000005" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="131,13,214,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="246,28,214,28,214,23,246,23"/>
+<area shape="rect" id="Node000006" href="$d0/d29/main_8c.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title="Main application entry point." alt="" coords="5,13,83,38"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="115,28,83,28,83,23,115,23"/>
+</map>

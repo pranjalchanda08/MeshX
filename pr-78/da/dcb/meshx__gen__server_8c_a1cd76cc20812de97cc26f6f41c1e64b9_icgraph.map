@@ -1,0 +1,5 @@
+<map id="meshx_gen_srv_init" name="meshx_gen_srv_init">
+<area shape="rect" id="Node000001" title="Initialize the meshxuction generic server." alt="" coords="222,5,358,31"/>
+<area shape="rect" id="Node000002" href="$db/d7b/meshx__onoff__server_8c.html#af7c77a6b0adf5008740aad007f0c174e" title="Initialize the On/Off server model." alt="" coords="5,5,174,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="206,21,174,21,174,16,206,16"/>
+</map>

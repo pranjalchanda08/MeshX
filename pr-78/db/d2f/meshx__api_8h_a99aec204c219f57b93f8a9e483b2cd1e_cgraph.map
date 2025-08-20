@@ -1,0 +1,9 @@
+<map id="meshx_app_reg_element_callback" name="meshx_app_reg_element_callback">
+<area shape="rect" id="Node000001" title="Registers the BLE Mesh application callback." alt="" coords="5,27,171,68"/>
+<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="219,5,406,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="171,34,203,30,203,35,172,39"/>
+<area shape="rect" id="Node000004" href="$dc/d93/meshx__api_8c.html#a1c0af24af9f5e3835fdc2869ce31b109" title="Control task handler for BLE Mesh application messages." alt="" coords="232,55,393,96"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="172,55,217,61,216,66,171,60"/>
+<area shape="rect" id="Node000003" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="454,5,587,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="406,16,438,16,438,21,406,21"/>
+</map>

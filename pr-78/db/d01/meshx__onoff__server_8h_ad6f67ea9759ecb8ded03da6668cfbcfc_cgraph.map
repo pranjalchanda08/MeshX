@@ -1,0 +1,7 @@
+<map id="meshx_on_off_server_delete" name="meshx_on_off_server_delete">
+<area shape="rect" id="Node000001" title="Delete the On/Off server model instance." alt="" coords="5,5,150,46"/>
+<area shape="rect" id="Node000002" href="$d7/d7a/esp__gen__srv__model_8c.html#a0a110b2d2002ed7cf43664ff5088a633" title="Deletes the Generic OnOff Server model and its associated resources." alt="" coords="198,5,338,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="150,23,182,23,182,28,150,28"/>
+<area shape="rect" id="Node000003" href="$dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="386,13,567,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="338,23,370,23,370,28,338,28"/>
+</map>

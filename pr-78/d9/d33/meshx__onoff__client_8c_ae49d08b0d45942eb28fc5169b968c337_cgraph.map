@@ -1,0 +1,9 @@
+<map id="meshx_onoff_client_send_msg" name="meshx_onoff_client_send_msg">
+<area shape="rect" id="Node000001" title="Send a generic on/off client message." alt="" coords="5,39,138,79"/>
+<area shape="rect" id="Node000002" href="$d0/dbc/meshx__gen__client_8c.html#adda618e510a15feed131d17bd3e57084" title="Sends a generic client message in the MeshX framework." alt="" coords="186,46,360,72"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,56,170,56,170,62,138,62"/>
+<area shape="rect" id="Node000003" href="$d0/dbc/meshx__gen__client_8c.html#ad10690ea7ebf40a033b3353726f01345" title="Checks if the given opcode corresponds to a GET request in the Generic Client group." alt="" coords="408,5,557,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="357,43,392,37,393,43,358,48"/>
+<area shape="rect" id="Node000004" href="$d0/de1/esp__gen__cli__model_8c.html#a9a7f82b22f4472ddaca488e202f5bad5" title="Sends a Generic Client message over BLE Mesh." alt="" coords="415,71,550,111"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="361,70,400,76,399,81,360,75"/>
+</map>

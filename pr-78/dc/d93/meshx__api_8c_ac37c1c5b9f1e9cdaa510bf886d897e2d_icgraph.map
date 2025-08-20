@@ -1,0 +1,7 @@
+<map id="meshx_prepare_data_message" name="meshx_prepare_data_message">
+<area shape="rect" id="Node000001" title="Prepares a message to be sent to the BLE Mesh application." alt="" coords="251,23,392,64"/>
+<area shape="rect" id="Node000002" href="$dc/d93/meshx__api_8c.html#a5b8d1eddceb8ab76e5fdc7fea5545496" title="Sends a message to the BLE Mesh application." alt="" coords="18,5,190,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="235,36,191,31,191,26,236,31"/>
+<area shape="rect" id="Node000003" href="$dc/d93/meshx__api_8c.html#a8c55b18a6ea8b0f0cde41c0e7dbadf75" title="Sends a message to the element." alt="" coords="5,55,203,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="235,56,203,59,203,54,235,50"/>
+</map>
