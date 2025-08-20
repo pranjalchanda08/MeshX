@@ -1,9 +1,0 @@
-<map id="meshx_is_gen_light_cli_get_opcode" name="meshx_is_gen_light_cli_get_opcode">
-<area shape="rect" id="Node000001" title="Checks if the given model ID corresponds to a Generic Light Client GET opcode." alt="" coords="474,39,609,79"/>
-<area shape="rect" id="Node000002" href="$d0/dc1/meshx__gen__light__cli_8c.html#af56474ec614f7769336a5a9f401d1223" title="Send a message using the generic client model." alt="" coords="241,46,426,72"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="458,62,427,62,427,56,458,56"/>
-<area shape="rect" id="Node000003" href="$d8/d93/meshx__light__ctl__client_8c.html#a0b0bfb546a17cedd810469b795e91948" title="Sends a Light CTL (Color Temperature Lightness) message from the Light CTL Client model." alt="" coords="24,5,174,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="225,46,174,39,175,34,226,41"/>
-<area shape="rect" id="Node000004" href="$d8/d93/meshx__light__ctl__client_8c.html#a6ed820c28aabb44dc82110f0bf2fc992" title="Sends a Light CTL Temperature message from the client model." alt="" coords="5,71,193,111"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="226,76,193,81,193,76,225,71"/>
-</map>

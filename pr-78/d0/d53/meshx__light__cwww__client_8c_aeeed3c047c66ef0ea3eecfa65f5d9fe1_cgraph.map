@@ -1,9 +1,0 @@
-<map id="meshx_add_cwww_cli_model_to_element_list" name="meshx_add_cwww_cli_model_to_element_list">
-<area shape="rect" id="Node000001" title="This function adds the CW&#45;WW client models to the element list of the specified device...." alt="" coords="5,27,164,68"/>
-<area shape="rect" id="Node000002" href="$d5/d8f/meshx__nvs_8c.html#a3773373d74bd4e2c0415a89f7652ebe8" title="Retrieve the context of a specific element from NVS." alt="" coords="212,5,401,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,34,196,30,197,35,164,40"/>
-<area shape="rect" id="Node000004" href="$dc/d96/esp__platform__ble__mesh_8c.html#a2bdab205d68a408e7ec03e58b2fa8a0b" title="Adds an element to the BLE Mesh composition." alt="" coords="222,55,390,96"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="164,55,207,60,207,66,163,60"/>
-<area shape="rect" id="Node000003" href="$d5/d8f/meshx__nvs_8c.html#a66b5694246aa0f0a9be3c228de543200" title="Get a value from the NVS." alt="" coords="449,5,561,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="401,16,433,16,433,21,401,21"/>
-</map>

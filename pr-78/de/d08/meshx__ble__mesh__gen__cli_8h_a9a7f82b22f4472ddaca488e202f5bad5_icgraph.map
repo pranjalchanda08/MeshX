@@ -1,7 +1,0 @@
-<map id="meshx_plat_gen_cli_send_msg" name="meshx_plat_gen_cli_send_msg">
-<area shape="rect" id="Node000001" title="Sends a Generic Client message over BLE Mesh." alt="" coords="408,5,543,46"/>
-<area shape="rect" id="Node000002" href="$d0/dbc/meshx__gen__client_8c.html#adda618e510a15feed131d17bd3e57084" title="Sends a generic client message in the MeshX framework." alt="" coords="186,13,360,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="392,28,360,28,360,23,392,23"/>
-<area shape="rect" id="Node000003" href="$d9/d33/meshx__onoff__client_8c.html#ae49d08b0d45942eb28fc5169b968c337" title="Send a generic on/off client message." alt="" coords="5,5,138,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="170,28,138,28,138,23,170,23"/>
-</map>

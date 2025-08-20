@@ -1,9 +1,0 @@
-<map id="meshx_is_status_in_gen_srv_grp" name="meshx_is_status_in_gen_srv_grp">
-<area shape="rect" id="Node000001" title="Checks if the given opcode corresponds to a status message in the Generic Server group." alt="" coords="446,35,582,75"/>
-<area shape="rect" id="Node000002" href="$da/dcb/meshx__gen__server_8c.html#a0a25ca2d0f109691c37c60eb95331b36" title="Sends a message to the BLE subsystem via the control task." alt="" coords="229,5,376,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="431,46,377,39,377,33,431,41"/>
-<area shape="rect" id="Node000003" href="$da/dcb/meshx__gen__server_8c.html#a76fc44a0d846fe5ac1a0c49912a14716" title="Sends a status message for the Generic Server model." alt="" coords="208,70,398,96"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="431,69,399,73,398,68,430,63"/>
-<area shape="rect" id="Node000004" href="$db/d7b/meshx__onoff__server_8c.html#adb2b8bf0c13f01cdffdcc09208c00ea6" title="Send the On/Off status message to the client." alt="" coords="5,63,160,103"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="192,86,160,86,160,80,192,80"/>
-</map>

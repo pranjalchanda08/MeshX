@@ -1,7 +1,0 @@
-<map id="meshx_gen_srv_status_send" name="meshx_gen_srv_status_send">
-<area shape="rect" id="Node000001" title="Sends a status message for the Generic Server model." alt="" coords="5,46,196,72"/>
-<area shape="rect" id="Node000002" href="$da/dcb/meshx__gen__server_8c.html#a2de59535b6980e3872c49ed575711338" title="Checks if the given opcode corresponds to a status message in the Generic Server group." alt="" coords="246,5,382,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="186,43,230,36,231,41,187,48"/>
-<area shape="rect" id="Node000003" href="$d7/d7a/esp__gen__srv__model_8c.html#abe7ad1ca0a3b7fa08c7bc2c23230dcee" title="Send a status message from the Generic Server model." alt="" coords="244,71,384,111"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="191,70,229,76,228,81,190,75"/>
-</map>

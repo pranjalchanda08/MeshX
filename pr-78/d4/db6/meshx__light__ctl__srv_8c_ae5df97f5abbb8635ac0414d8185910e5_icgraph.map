@@ -1,6 +1,0 @@
-<map id="meshx_handle_light_ctl_msg" name="meshx_handle_light_ctl_msg">
-<area shape="rect" id="Node000001" title="Handle Light CTL messages for the lighting server model." alt="" coords="232,29,367,70"/>
-<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="333,16,320,10,299,8,280,10,268,15,264,20,266,28,260,29,259,19,265,10,279,5,299,3,322,5,335,11"/>
-<area shape="rect" id="Node000002" href="$d4/db6/meshx__light__ctl__srv_8c.html#adc1d0d7fc5b8e44bebce9c905547780f" title="Initialize the Light CTL Server model." alt="" coords="5,37,184,62"/>
-<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="216,52,184,52,184,47,216,47"/>
-</map>
