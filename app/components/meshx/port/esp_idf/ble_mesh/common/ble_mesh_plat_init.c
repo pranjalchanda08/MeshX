@@ -49,6 +49,16 @@ void ble_mesh_get_dev_uuid(uint8_t *dev_uuid)
     memcpy(dev_uuid + 2, esp_bt_dev_get_address(), BD_ADDR_LEN);
 }
 
+/**
+ * @brief Initializes the Bluetooth controller for the ESP32 platform.
+ *
+ * This function initializes the Bluetooth controller and enables BLE mode.
+ * It is used to set up the Bluetooth stack for BLE Mesh functionality.
+ *
+ * @return
+ *     - ESP_OK on success.
+ *     - Error code on failure.
+ */
 esp_err_t bluetooth_init(void)
 {
     esp_err_t ret;
@@ -89,6 +99,14 @@ static uint8_t own_addr_type;
 void ble_store_config_init(void);
 static uint8_t addr_val[6] = {0};
 
+/**
+ * @brief Retrieves the device UUID for BLE Mesh provisioning.
+ *
+ * This function copies the device address into the provided UUID buffer,
+ * which is used for matching by the Provisioner during the provisioning process.
+ *
+ * @param dev_uuid Pointer to the buffer where the device UUID will be stored.
+ */
 void ble_mesh_get_dev_uuid(uint8_t *dev_uuid)
 {
     if (dev_uuid == NULL) {
@@ -104,11 +122,25 @@ void ble_mesh_get_dev_uuid(uint8_t *dev_uuid)
     memcpy(dev_uuid + 2, addr_val, BD_ADDR_LEN);
 }
 
+/**
+ * @brief Callback function for BLE host reset event.
+ *
+ * This function is called when the BLE host is reset. It can be used to handle
+ * any necessary cleanup or state reset operations.
+ *
+ * @param reason The reason for the reset.
+ */
 static void mesh_on_reset(int reason)
 {
     ESP_LOGI(TAG, "Resetting state; reason=%d", reason);
 }
 
+/**
+ * @brief Callback function for BLE host synchronization event.
+ *
+ * This function is called when the BLE host is synchronized. It ensures that
+ * the BLE address is set and gives a semaphore to indicate that the host is ready.
+ */
 static void mesh_on_sync(void)
 {
     int rc;
@@ -128,6 +160,14 @@ static void mesh_on_sync(void)
     xSemaphoreGive(mesh_sem);
 }
 
+/**
+ * @brief Task to run the NimBLE host.
+ *
+ * This function runs the NimBLE host in a FreeRTOS task. It will block until
+ * nimble_port_stop() is called, at which point it will exit.
+ *
+ * @param param Pointer to task parameters (not used).
+ */
 void mesh_host_task(void *param)
 {
     ESP_LOGI(TAG, "BLE Host Task Started");
@@ -137,6 +177,16 @@ void mesh_host_task(void *param)
     nimble_port_freertos_deinit();
 }
 
+/**
+ * @brief Initializes the NimBLE Bluetooth stack.
+ *
+ * This function initializes the NimBLE Bluetooth stack and starts the host task.
+ * It also creates a semaphore to synchronize the initialization process.
+ *
+ * @return
+ *     - MESHX_SUCCESS on success.
+ *     - Error code on failure.
+ */
 esp_err_t bluetooth_init(void)
 {
     esp_err_t ret;
