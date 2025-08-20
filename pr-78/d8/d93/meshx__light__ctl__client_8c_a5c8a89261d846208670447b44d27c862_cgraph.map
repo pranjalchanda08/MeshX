@@ -1,0 +1,7 @@
+<map id="meshx_light_ctl_cli_reg_cb" name="meshx_light_ctl_cli_reg_cb">
+<area shape="rect" id="Node000001" title="Registers a callback function for the Light CTL (Color Temperature Lightness) client model." alt="" coords="5,5,137,46"/>
+<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="185,13,372,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="137,23,169,23,169,28,137,28"/>
+<area shape="rect" id="Node000003" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="420,13,553,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="372,23,404,23,404,28,372,28"/>
+</map>

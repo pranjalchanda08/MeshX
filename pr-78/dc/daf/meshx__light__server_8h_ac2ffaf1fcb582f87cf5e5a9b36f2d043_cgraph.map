@@ -1,0 +1,7 @@
+<map id="meshx_lighting_reg_cb" name="meshx_lighting_reg_cb">
+<area shape="rect" id="Node000001" title="Register a callback function for the lighting server model." alt="" coords="5,5,159,31"/>
+<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="207,5,394,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="159,16,191,16,191,21,159,21"/>
+<area shape="rect" id="Node000003" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="442,5,575,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="394,16,426,16,426,21,394,21"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="meshx_gen_cli_send_msg" name="meshx_gen_cli_send_msg">
+<area shape="rect" id="Node000001" title="Sends a generic client message in the MeshX framework." alt="" coords="186,13,360,38"/>
+<area shape="rect" id="Node000002" href="$d9/d33/meshx__onoff__client_8c.html#ae49d08b0d45942eb28fc5169b968c337" title="Send a generic on/off client message." alt="" coords="5,5,138,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="170,28,138,28,138,23,170,23"/>
+</map>

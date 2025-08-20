@@ -1,0 +1,7 @@
+<map id="meshx_on_off_client_delete" name="meshx_on_off_client_delete">
+<area shape="rect" id="Node000001" title="Delete the On/Off client model instance." alt="" coords="5,5,145,46"/>
+<area shape="rect" id="Node000002" href="$d0/de1/esp__gen__cli__model_8c.html#a8fe8e5eb7ef98d6f828de07f97ead59d" title="Deletes the Generic OnOff Client model and its associated resources." alt="" coords="193,5,328,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="145,23,177,23,177,28,145,28"/>
+<area shape="rect" id="Node000003" href="$dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="376,13,557,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="328,23,360,23,360,28,328,28"/>
+</map>
