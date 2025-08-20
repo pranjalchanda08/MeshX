@@ -57,6 +57,11 @@ static dev_struct_t g_dev;
 static meshx_config_t g_config;
 static meshx_os_timer_t *g_boot_timer;
 
+meshx_prov_params_t g_prov_cfg = {
+    .uuid = MESHX_UUID_EMPTY,  /**< UUID for the provisioning device */
+    .node_name = NULL           /**< Node name for the provisioning device */
+};
+
 extern size_t get_root_sig_models_count(void);
 extern size_t get_root_ven_models_count(void);
 extern MESHX_MODEL * get_root_sig_models(void);
@@ -169,25 +174,24 @@ static meshx_err_t meshx_dev_restore(dev_struct_t *pdev, meshx_config_t const *c
  *
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
-static meshx_err_t meshx_ble_mesh_init(meshx_config_t const *config)
+static meshx_err_t meshx_ble_mesh_init(meshx_config_t *config)
 {
-    if(config == NULL || config->product_name == NULL || strlen(config->product_name) > ESP_BLE_MESH_DEVICE_NAME_MAX_LEN)
+    if(config == NULL || config->product_name == NULL)
         return MESHX_INVALID_ARG;
 
     meshx_err_t err;
-    meshx_prov_params_t prov_cfg = {
-        .node_name = (uint8_t *)config->product_name,
-    };
+    g_prov_cfg.node_name = (uint8_t *)config->product_name;
 
-    err = meshx_platform_bt_init();
+    err = meshx_platform_bt_init(config->meshx_uuid_addr);
     MESHX_ERR_PRINT_RET("Platform BT init failed", err);
 
+    g_prov_cfg.uuid = config->meshx_uuid_addr;
     meshx_dev_restore(&g_dev, config);
 
     err = meshx_element_init(&g_dev, config);
     MESHX_ERR_PRINT_RET("Failed to initialize BLE Elements", err);
 
-    err = meshx_plat_ble_mesh_init(&prov_cfg, g_dev.composition);
+    err = meshx_plat_ble_mesh_init(&g_prov_cfg, g_dev.composition);
     MESHX_ERR_PRINT_RET("Failed to initialize BLE Mesh stack", err);
 
     return MESHX_SUCCESS;
