@@ -477,6 +477,7 @@ var searchData=
   ['meshx_5fsettings_5fuid_5fsize_474',['MESHX_SETTINGS_UID_SIZE',['../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a037d6e1748af9d043ec08b75c73db599',1,'meshx_ble_mesh_cmn_def.h']]],
   ['meshx_5funused_475',['MESHX_UNUSED',['../da/d68/meshx__err_8h.html#a2aa59bde3a822db7e022cc4b70429d4f',1,'meshx_err.h']]],
   ['meshx_5fuuid_5faddr_5flen_476',['MESHX_UUID_ADDR_LEN',['../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a9fd1f2398bbd5fe9b2756f75e5e4f17e',1,'meshx_ble_mesh_cmn_def.h']]],
-  ['message_5fbuff_5fclear_477',['MESSAGE_BUFF_CLEAR',['../dc/d93/meshx__api_8c.html#a4859bf68641bed24cb3d958103375a48',1,'meshx_api.c']]],
-  ['mod_5flcc_478',['MOD_LCC',['../d0/d53/meshx__light__cwww__client_8c.html#aa0ad1e47aa701098a8202979c5f1937d',1,'meshx_light_cwww_client.c']]]
+  ['meshx_5fuuid_5fempty_477',['MESHX_UUID_EMPTY',['../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a68d787e416fd8e536da0e7382d130587',1,'meshx_ble_mesh_cmn_def.h']]],
+  ['message_5fbuff_5fclear_478',['MESSAGE_BUFF_CLEAR',['../dc/d93/meshx__api_8c.html#a4859bf68641bed24cb3d958103375a48',1,'meshx_api.c']]],
+  ['mod_5flcc_479',['MOD_LCC',['../d0/d53/meshx__light__cwww__client_8c.html#aa0ad1e47aa701098a8202979c5f1937d',1,'meshx_light_cwww_client.c']]]
 ];

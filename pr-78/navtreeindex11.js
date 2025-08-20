@@ -1,5 +1,7 @@
 var NAVTREEINDEX11 =
 {
+"functions_func.html":[9,2,1],
+"functions_g.html":[9,2,0,7],
 "functions_h.html":[9,2,0,8],
 "functions_i.html":[9,2,0,9],
 "functions_k.html":[9,2,0,10],
@@ -86,15 +88,15 @@ var NAVTREEINDEX11 =
 "globals_u.html":[10,1,0,16],
 "globals_vars.html":[10,1,2],
 "index.html":[],
-"index.html#autotoc_md10":[6],
-"index.html#autotoc_md2":[0],
-"index.html#autotoc_md3":[1],
-"index.html#autotoc_md4":[1,0],
-"index.html#autotoc_md5":[1,1],
-"index.html#autotoc_md6":[2],
-"index.html#autotoc_md7":[3],
-"index.html#autotoc_md8":[4],
-"index.html#autotoc_md9":[5],
+"index.html#autotoc_md12":[2],
+"index.html#autotoc_md14":[3],
+"index.html#autotoc_md15":[4],
+"index.html#autotoc_md17":[5],
+"index.html#autotoc_md18":[6],
+"index.html#autotoc_md3":[0],
+"index.html#autotoc_md5":[1],
+"index.html#autotoc_md6":[1,0],
+"index.html#autotoc_md8":[1,1],
 "pages.html":[],
 "topics.html":[8]
 };

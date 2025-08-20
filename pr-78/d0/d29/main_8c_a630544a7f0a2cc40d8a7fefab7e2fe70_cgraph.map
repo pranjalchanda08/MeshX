@@ -10,7 +10,7 @@
 <area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="171,737,175,627,188,454,199,363,215,278,235,207,246,179,260,158,262,155,266,159,264,161,251,182,240,209,220,279,205,363,194,455,181,627,177,737"/>
 <area shape="rect" id="Node000010" href="$dc/d93/meshx__api_8c.html#ae788eb4aed0ebe9513f85726a84a0c04" title="Registers the BLE Mesh application control callback." alt="" coords="264,171,425,212"/>
 <area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="175,736,330,226,335,227,180,738"/>
-<area shape="rect" id="Node000011" href="$d9/d05/meshx_8c.html#ae1efa7e2017c2acc93c81100da9dd0c9" title="Initializes the BLE Mesh subsystem." alt="" coords="272,612,418,638"/>
+<area shape="rect" id="Node000011" href="$d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="272,612,418,638"/>
 <area shape="poly" id="edge12_Node000002_Node000011" title=" " alt="" coords="190,735,311,645,315,649,193,739"/>
 <area shape="rect" id="Node000046" href="$d9/d05/meshx_8c.html#a9b48e199b9dca0ba00cc6a1ee0b673f2" title="Initializes the boot timer." alt="" coords="726,799,877,824"/>
 <area shape="poly" id="edge57_Node000002_Node000046" title=" " alt="" coords="215,751,711,800,710,805,214,757"/>
@@ -41,7 +41,7 @@
 <area shape="poly" id="edge32_Node000011_Node000027" title=" " alt="" coords="356,610,473,478,537,406,541,410,477,481,360,613"/>
 <area shape="rect" id="Node000039" href="$dc/d96/esp__platform__ble__mesh_8c.html#afb1dfab0e0872cf301f64153754e2a15" title="Initializes the BLE Mesh stack with the given provisioning parameters." alt="" coords="475,687,650,712"/>
 <area shape="poly" id="edge49_Node000011_Node000039" title=" " alt="" coords="385,636,509,679,507,684,384,641"/>
-<area shape="rect" id="Node000044" href="$dc/d96/esp__platform__ble__mesh_8c.html#a37d7e4875ef00bac34b19c42116c9f29" title="Initializes the Bluetooth subsystem of the MeshX platform." alt="" coords="485,271,640,296"/>
+<area shape="rect" id="Node000044" href="$dc/d96/esp__platform__ble__mesh_8c.html#a63a879267392250798cb2ee7caabf1a9" title="Initializes the Bluetooth subsystem of the MeshX platform." alt="" coords="485,271,640,296"/>
 <area shape="poly" id="edge55_Node000011_Node000044" title=" " alt="" coords="348,611,391,501,427,427,473,357,500,328,528,304,531,308,504,331,477,360,432,430,395,503,353,613"/>
 <area shape="rect" id="Node000013" href="$d5/d8f/meshx__nvs_8c.html#a66b5694246aa0f0a9be3c228de543200" title="Get a value from the NVS." alt="" coords="988,600,1100,626"/>
 <area shape="poly" id="edge14_Node000012_Node000013" title=" " alt="" coords="630,621,972,612,972,617,630,626"/>

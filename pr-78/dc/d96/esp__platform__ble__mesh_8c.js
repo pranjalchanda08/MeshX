@@ -10,5 +10,5 @@ var esp__platform__ble__mesh_8c =
     [ "meshx_plat_composition_init", "dc/d96/esp__platform__ble__mesh_8c.html#a9136f58e68ca58a169038fb9e5fd5c66", null ],
     [ "meshx_plat_create_model_pub", "dc/d96/esp__platform__ble__mesh_8c.html#a12b595bcf51021fcaa675e488fe24308", null ],
     [ "meshx_plat_del_model_pub", "dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57", null ],
-    [ "meshx_platform_bt_init", "dc/d96/esp__platform__ble__mesh_8c.html#a37d7e4875ef00bac34b19c42116c9f29", null ]
+    [ "meshx_platform_bt_init", "dc/d96/esp__platform__ble__mesh_8c.html#a63a879267392250798cb2ee7caabf1a9", null ]
 ];

@@ -1,5 +1,7 @@
 var NAVTREEINDEX8 =
 {
+"da/dc6/unionctl__status__pack.html#ae47354dbd041586f96ba226985b99b89":[9,0,4,10],
+"da/dc6/unionctl__status__pack.html#ae4eed187cca57e2eeac3452204be344a":[9,0,4,6],
 "da/dc6/unionctl__status__pack.html#af59675fa0947146c4eff5fbf0213bd2b":[9,0,4,4],
 "da/dcb/meshx__gen__server_8c.html":[10,0,0,0,0,1,1,1,0,0,0],
 "da/dcb/meshx__gen__server_8c.html#a021667336ce41ccb249c2648fe325393":[10,0,0,0,0,1,1,1,0,0,0,1],
@@ -18,7 +20,7 @@ var NAVTREEINDEX8 =
 "da/dd1/esp__platform_8c_source.html":[10,0,0,0,0,3,0,1,0],
 "da/dd1/structmeshx__prov__params.html":[9,0,134],
 "da/dd1/structmeshx__prov__params.html#a9b7bfe860b26138dfb10ce985ba58e60":[9,0,134,0],
-"da/dd1/structmeshx__prov__params.html#ad760cfe1b68d8888f0bbfc7bab9a3168":[9,0,134,1],
+"da/dd1/structmeshx__prov__params.html#aa79e3ce335aba0230a1e22cb503fa3d6":[9,0,134,1],
 "da/dd5/unit__test_8c.html":[10,0,0,0,1,0],
 "da/dd5/unit__test_8c.html#a07a836ad567a565fe2ff8648d168742d":[10,0,0,0,1,0,5],
 "da/dd5/unit__test_8c.html#a0a94d2d1ac1c4f3f4744437b65cca426":[10,0,0,0,1,0,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX8 =
 "dc/d93/meshx__api_8c.html#a5b8d1eddceb8ab76e5fdc7fea5545496":[10,0,0,0,0,0,1,2,5],
 "dc/d93/meshx__api_8c.html#a5bf953dbf23563a53565103f90bc55bf":[10,0,0,0,0,0,1,2,8],
 "dc/d93/meshx__api_8c.html#a841f316f7fff59d36a6cac57fa4b3c3c":[10,0,0,0,0,0,1,2,10],
-"dc/d93/meshx__api_8c.html#a8a52a1500b3a0e6e5865775d12ac2004":[10,0,0,0,0,0,1,2,9],
-"dc/d93/meshx__api_8c.html#a8c55b18a6ea8b0f0cde41c0e7dbadf75":[10,0,0,0,0,0,1,2,6],
-"dc/d93/meshx__api_8c.html#a99aec204c219f57b93f8a9e483b2cd1e":[10,0,0,0,0,0,1,2,2]
+"dc/d93/meshx__api_8c.html#a8a52a1500b3a0e6e5865775d12ac2004":[10,0,0,0,0,0,1,2,9]
 };

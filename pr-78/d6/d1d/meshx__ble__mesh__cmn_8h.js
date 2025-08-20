@@ -16,5 +16,5 @@ var meshx__ble__mesh__cmn_8h =
     [ "meshx_plat_composition_init", "d6/d1d/meshx__ble__mesh__cmn_8h.html#a9136f58e68ca58a169038fb9e5fd5c66", null ],
     [ "meshx_plat_create_model_pub", "d6/d1d/meshx__ble__mesh__cmn_8h.html#a2909ce98f334a82b0b72836c8c7dc319", null ],
     [ "meshx_plat_del_model_pub", "d6/d1d/meshx__ble__mesh__cmn_8h.html#a0634d1057de49d8105c29776f09fbce9", null ],
-    [ "meshx_platform_bt_init", "d6/d1d/meshx__ble__mesh__cmn_8h.html#a37d7e4875ef00bac34b19c42116c9f29", null ]
+    [ "meshx_platform_bt_init", "d6/d1d/meshx__ble__mesh__cmn_8h.html#a63a879267392250798cb2ee7caabf1a9", null ]
 ];

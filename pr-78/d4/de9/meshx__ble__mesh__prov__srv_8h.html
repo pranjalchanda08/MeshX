@@ -719,11 +719,11 @@ Functions</h2></td></tr>
 <p>This function returns a pointer to the global provisioning parameters.</p>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to the global provisioning parameters. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d9/d31/esp__prov__srv__model_8c_source.html#l00140">140</a> of file <a class="el" href="../../d9/d31/esp__prov__srv__model_8c_source.html">esp_prov_srv_model.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  141</span>{</div>
-<div class="line"><span class="lineno">  142</span>    <span class="keywordflow">return</span> &amp;<a class="code hl_variable" href="../../d9/d31/esp__prov__srv__model_8c.html#af36662545da084062fa83a483622de15">g_meshx_prov</a>;</div>
-<div class="line"><span class="lineno">  143</span>}</div>
-<div class="ttc" id="aesp__prov__srv__model_8c_html_af36662545da084062fa83a483622de15"><div class="ttname"><a href="../../d9/d31/esp__prov__srv__model_8c.html#af36662545da084062fa83a483622de15">g_meshx_prov</a></div><div class="ttdeci">static MESHX_PROV g_meshx_prov</div><div class="ttdoc">Global provisioning structure.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d31/esp__prov__srv__model_8c_source.html#l00056">esp_prov_srv_model.c:56</a></div></div>
+<p class="definition">Definition at line <a class="el" href="../../d9/d31/esp__prov__srv__model_8c_source.html#l00131">131</a> of file <a class="el" href="../../d9/d31/esp__prov__srv__model_8c_source.html">esp_prov_srv_model.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  132</span>{</div>
+<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">return</span> &amp;<a class="code hl_variable" href="../../d9/d31/esp__prov__srv__model_8c.html#af36662545da084062fa83a483622de15">g_meshx_prov</a>;</div>
+<div class="line"><span class="lineno">  134</span>}</div>
+<div class="ttc" id="aesp__prov__srv__model_8c_html_af36662545da084062fa83a483622de15"><div class="ttname"><a href="../../d9/d31/esp__prov__srv__model_8c.html#af36662545da084062fa83a483622de15">g_meshx_prov</a></div><div class="ttdeci">static MESHX_PROV g_meshx_prov</div><div class="ttdoc">Global provisioning structure.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d31/esp__prov__srv__model_8c_source.html#l00049">esp_prov_srv_model.c:49</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -734,7 +734,7 @@ Here is the caller graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="663,36,602,28,603,23,664,30"/>
 <area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#afb1dfab0e0872cf301f64153754e2a15" title="Initializes the BLE Mesh stack with the given provisioning parameters." alt="" coords="456,55,631,80"/>
 <area shape="poly" title=" " alt="" coords="664,56,632,60,631,55,663,51"/>
-<area shape="rect" href="../../d9/d05/meshx_8c.html#ae1efa7e2017c2acc93c81100da9dd0c9" title="Initializes the BLE Mesh subsystem." alt="" coords="262,55,408,80"/>
+<area shape="rect" href="../../d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="262,55,408,80"/>
 <area shape="poly" title=" " alt="" coords="441,70,409,70,409,65,441,65"/>
 <area shape="rect" href="../../d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="131,55,214,80"/>
 <area shape="poly" title=" " alt="" coords="246,70,214,70,214,65,246,65"/>
@@ -774,21 +774,18 @@ Here is the caller graph for this function:</div>
 </ul>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d9/d31/esp__prov__srv__model_8c_source.html#l00119">119</a> of file <a class="el" href="../../d9/d31/esp__prov__srv__model_8c_source.html">esp_prov_srv_model.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  120</span>{</div>
-<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">if</span> (!uuid)</div>
-<div class="line"><span class="lineno">  122</span>    {</div>
-<div class="line"><span class="lineno">  123</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Invalid server configuration&quot;</span>);</div>
-<div class="line"><span class="lineno">  124</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
-<div class="line"><span class="lineno">  125</span>    }</div>
-<div class="line"><span class="lineno">  126</span>    memcpy(&amp;<a class="code hl_variable" href="../../d9/d31/esp__prov__srv__model_8c.html#a66227d3609c3ac264abc6a4dbb438cfb">prov_params</a>.uuid, uuid, <span class="keyword">sizeof</span>(<a class="code hl_variable" href="../../d9/d31/esp__prov__srv__model_8c.html#a66227d3609c3ac264abc6a4dbb438cfb">prov_params</a>.uuid));</div>
-<div class="line"><span class="lineno">  127</span> </div>
-<div class="line"><span class="lineno">  128</span>    <a class="code hl_variable" href="../../d9/d31/esp__prov__srv__model_8c.html#af36662545da084062fa83a483622de15">g_meshx_prov</a>.uuid = <a class="code hl_variable" href="../../d9/d31/esp__prov__srv__model_8c.html#a66227d3609c3ac264abc6a4dbb438cfb">prov_params</a>.uuid;</div>
-<div class="line"><span class="lineno">  129</span> </div>
-<div class="line"><span class="lineno">  130</span>    <span class="keywordflow">return</span> esp_ble_mesh_register_prov_callback((esp_ble_mesh_prov_cb_t)<a class="code hl_function" href="../../d9/d31/esp__prov__srv__model_8c.html#af75f7ca043cf3736878a95f263de1ebe">meshx_provisioning_cb</a>);</div>
-<div class="line"><span class="lineno">  131</span>}</div>
-<div class="ttc" id="aesp__prov__srv__model_8c_html_a66227d3609c3ac264abc6a4dbb438cfb"><div class="ttname"><a href="../../d9/d31/esp__prov__srv__model_8c.html#a66227d3609c3ac264abc6a4dbb438cfb">prov_params</a></div><div class="ttdeci">static meshx_prov_params_t prov_params</div><div class="ttdoc">Provisioning parameters.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d31/esp__prov__srv__model_8c_source.html#l00049">esp_prov_srv_model.c:49</a></div></div>
-<div class="ttc" id="aesp__prov__srv__model_8c_html_af75f7ca043cf3736878a95f263de1ebe"><div class="ttname"><a href="../../d9/d31/esp__prov__srv__model_8c.html#af75f7ca043cf3736878a95f263de1ebe">meshx_provisioning_cb</a></div><div class="ttdeci">static void meshx_provisioning_cb(esp_ble_mesh_prov_cb_event_t event, const esp_ble_mesh_prov_cb_param_t *param)</div><div class="ttdoc">Callback function for BLE Mesh provisioning events.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d31/esp__prov__srv__model_8c_source.html#l00082">esp_prov_srv_model.c:82</a></div></div>
+<p class="definition">Definition at line <a class="el" href="../../d9/d31/esp__prov__srv__model_8c_source.html#l00112">112</a> of file <a class="el" href="../../d9/d31/esp__prov__srv__model_8c_source.html">esp_prov_srv_model.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  113</span>{</div>
+<div class="line"><span class="lineno">  114</span>    <span class="keywordflow">if</span> (!uuid)</div>
+<div class="line"><span class="lineno">  115</span>    {</div>
+<div class="line"><span class="lineno">  116</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Invalid server configuration&quot;</span>);</div>
+<div class="line"><span class="lineno">  117</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<div class="line"><span class="lineno">  118</span>    }</div>
+<div class="line"><span class="lineno">  119</span>    <a class="code hl_variable" href="../../d9/d31/esp__prov__srv__model_8c.html#af36662545da084062fa83a483622de15">g_meshx_prov</a>.uuid = uuid;</div>
+<div class="line"><span class="lineno">  120</span> </div>
+<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">return</span> esp_ble_mesh_register_prov_callback((esp_ble_mesh_prov_cb_t)<a class="code hl_function" href="../../d9/d31/esp__prov__srv__model_8c.html#af75f7ca043cf3736878a95f263de1ebe">meshx_provisioning_cb</a>);</div>
+<div class="line"><span class="lineno">  122</span>}</div>
+<div class="ttc" id="aesp__prov__srv__model_8c_html_af75f7ca043cf3736878a95f263de1ebe"><div class="ttname"><a href="../../d9/d31/esp__prov__srv__model_8c.html#af75f7ca043cf3736878a95f263de1ebe">meshx_provisioning_cb</a></div><div class="ttdeci">static void meshx_provisioning_cb(esp_ble_mesh_prov_cb_event_t event, const esp_ble_mesh_prov_cb_param_t *param)</div><div class="ttdoc">Callback function for BLE Mesh provisioning events.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d31/esp__prov__srv__model_8c_source.html#l00075">esp_prov_srv_model.c:75</a></div></div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a></div><div class="ttdeci">@ MESHX_INVALID_ARG</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00040">meshx_err.h:40</a></div></div>
 <div class="ttc" id="ameshx__log_8h_html_a56673888067cbe14c7a33b0856f46eb8"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a></div><div class="ttdeci">#define MESHX_LOGE(module_id, format,...)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dcb/meshx__log_8h_source.html#l00067">meshx_log.h:67</a></div></div>
 <div class="ttc" id="amodule__id_8h_html_ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689"><div class="ttname"><a href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a></div><div class="ttdeci">@ MODULE_ID_MODEL_SERVER</div><div class="ttdef"><b>Definition</b> <a href="../../d3/da1/module__id_8h_source.html#l00030">module_id.h:30</a></div></div>
@@ -824,7 +821,7 @@ Here is the caller graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="663,35,601,28,602,23,664,30"/>
 <area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#afb1dfab0e0872cf301f64153754e2a15" title="Initializes the BLE Mesh stack with the given provisioning parameters." alt="" coords="456,55,631,80"/>
 <area shape="poly" title=" " alt="" coords="663,56,631,60,631,55,663,51"/>
-<area shape="rect" href="../../d9/d05/meshx_8c.html#ae1efa7e2017c2acc93c81100da9dd0c9" title="Initializes the BLE Mesh subsystem." alt="" coords="262,55,408,80"/>
+<area shape="rect" href="../../d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="262,55,408,80"/>
 <area shape="poly" title=" " alt="" coords="441,70,409,70,409,65,441,65"/>
 <area shape="rect" href="../../d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="131,55,214,80"/>
 <area shape="poly" title=" " alt="" coords="246,70,214,70,214,65,246,65"/>
@@ -841,7 +838,7 @@ Here is the caller graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d422163b96683743ed3963d4aac17747.html">app</a></li><li class="navelem"><a class="el" href="../../dir_c65bd19e757d26cf4d732c1ae0727ae8.html">components</a></li><li class="navelem"><a class="el" href="../../dir_f203b345362cbfbb0face6aabfa16576.html">meshx</a></li><li class="navelem"><a class="el" href="../../dir_f6e53b675de7f1c33a1fee693a910fa8.html">interface</a></li><li class="navelem"><a class="el" href="../../dir_133b60f0010f167ed4953beaf967229e.html">ble_mesh</a></li><li class="navelem"><a class="el" href="../../dir_8666311974bec36387c295d8f909554d.html">server</a></li><li class="navelem"><a class="el" href="../../d4/de9/meshx__ble__mesh__prov__srv_8h.html">meshx_ble_mesh_prov_srv.h</a></li>
-    <li class="footer">Generated on Wed Aug 20 2025 05:44:04 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Wed Aug 20 2025 19:49:49 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

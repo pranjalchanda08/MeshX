@@ -6,7 +6,7 @@
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="999,67,925,86,924,81,998,62"/>
 <area shape="rect" id="Node000010" href="$d5/d8f/meshx__nvs_8c.html#ab4e5c250438e810358991fbe0e6cd277" title="Open the NVS with a timeout." alt="" coords="808,35,930,60"/>
 <area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="996,50,931,50,931,45,996,45"/>
-<area shape="rect" id="Node000003" href="$d9/d05/meshx_8c.html#ae1efa7e2017c2acc93c81100da9dd0c9" title="Initializes the BLE Mesh subsystem." alt="" coords="374,5,520,31"/>
+<area shape="rect" id="Node000003" href="$d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="374,5,520,31"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="565,21,521,21,521,16,565,16"/>
 <area shape="rect" id="Node000004" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="187,5,270,31"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="359,21,270,21,270,16,359,16"/>

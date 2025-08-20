@@ -7,6 +7,7 @@ var structmeshx__config =
     [ "element_comp_arr_len", "d5/d3e/structmeshx__config.html#a872b02c605c71fc953ebdb98723c687c", null ],
     [ "meshx_log_level", "d5/d3e/structmeshx__config.html#a5e96b750d364b5cc4ec7a393d1344be0", null ],
     [ "meshx_nvs_save_period", "d5/d3e/structmeshx__config.html#a382576d6d01b808c4509dcfc8b5712dc", null ],
+    [ "meshx_uuid_addr", "d5/d3e/structmeshx__config.html#ae5a68f23fcbadc7c8f43e0f7c2f1f26b", null ],
     [ "pid", "d5/d3e/structmeshx__config.html#a85f17a1f8218e9f6724209f002b21493", null ],
     [ "product_name", "d5/d3e/structmeshx__config.html#afd96e3f78981d34997812032bb8c4ff2", null ]
 ];

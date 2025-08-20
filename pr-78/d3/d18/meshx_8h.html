@@ -501,76 +501,76 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>MESHX_SUCCESS, Success </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d9/d05/meshx_8c_source.html#l00254">254</a> of file <a class="el" href="../../d9/d05/meshx_8c_source.html">meshx.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  255</span>{</div>
-<div class="line"><span class="lineno">  256</span>    <span class="comment">/* Check if the configuration is valid */</span></div>
-<div class="line"><span class="lineno">  257</span>    <span class="keywordflow">if</span>(!config)</div>
-<div class="line"><span class="lineno">  258</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
-<div class="line"><span class="lineno">  259</span> </div>
-<div class="line"><span class="lineno">  260</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  261</span> </div>
-<div class="line"><span class="lineno">  262</span>    <span class="comment">/* Copy the configuration to the global config structure */</span></div>
-<div class="line"><span class="lineno">  263</span>    memcpy(&amp;<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a74ef270513d2b83c6db30d9c2de6001d">g_config</a>, config, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="#aa50e2294627a29e154267e14fb3d8584">meshx_config_t</a>));</div>
-<div class="line"><span class="lineno">  264</span> </div>
-<div class="line"><span class="lineno">  265</span>    <a class="code hl_typedef" href="../../d7/dcb/meshx__log_8h.html#a7e75f09650fd33bcd03ea92acd58408f">meshx_logging_t</a> logging_cfg;</div>
-<div class="line"><span class="lineno">  266</span> </div>
-<div class="line"><span class="lineno">  267</span>    logging_cfg.<a class="code hl_variable" href="../../db/d0b/structmeshx__logging.html#a140b99328b305503577b5333d5504873">def_log_level</a> = config-&gt;meshx_log_level == <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a4d2cb7b27cc324414a98b0aaa88fd2cf">MESHX_LOG_VERBOSE</a> ?</div>
-<div class="line"><span class="lineno">  268</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a736ad74c6ead5d4e1c683216f0898781">CONFIG_MESHX_DEFAULT_LOG_LEVEL</a> : config-&gt;meshx_log_level;</div>
-<div class="line"><span class="lineno">  269</span> </div>
-<div class="line"><span class="lineno">  270</span>    err = <a class="code hl_function" href="../../d0/dc9/meshx__log_8c.html#a2943545097e48060e29c8be20f92677f">meshx_logging_init</a>(&amp;logging_cfg);</div>
-<div class="line"><span class="lineno">  271</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Logging init failed&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  272</span> </div>
-<div class="line"><span class="lineno">  273</span>    <span class="comment">/* Initialise Platform deps */</span></div>
-<div class="line"><span class="lineno">  274</span>    err = <a class="code hl_function" href="../../df/d96/meshx__platform_8h.html#ad7788a59fd2329ff4d38c18c9cbe16cd">meshx_platform_init</a>();</div>
-<div class="line"><span class="lineno">  275</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Platform init failed&quot;</span>, err);</div>
+<p class="definition">Definition at line <a class="el" href="../../d9/d05/meshx_8c_source.html#l00258">258</a> of file <a class="el" href="../../d9/d05/meshx_8c_source.html">meshx.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  259</span>{</div>
+<div class="line"><span class="lineno">  260</span>    <span class="comment">/* Check if the configuration is valid */</span></div>
+<div class="line"><span class="lineno">  261</span>    <span class="keywordflow">if</span>(!config)</div>
+<div class="line"><span class="lineno">  262</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<div class="line"><span class="lineno">  263</span> </div>
+<div class="line"><span class="lineno">  264</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  265</span> </div>
+<div class="line"><span class="lineno">  266</span>    <span class="comment">/* Copy the configuration to the global config structure */</span></div>
+<div class="line"><span class="lineno">  267</span>    memcpy(&amp;<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a74ef270513d2b83c6db30d9c2de6001d">g_config</a>, config, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="#aa50e2294627a29e154267e14fb3d8584">meshx_config_t</a>));</div>
+<div class="line"><span class="lineno">  268</span> </div>
+<div class="line"><span class="lineno">  269</span>    <a class="code hl_typedef" href="../../d7/dcb/meshx__log_8h.html#a7e75f09650fd33bcd03ea92acd58408f">meshx_logging_t</a> logging_cfg;</div>
+<div class="line"><span class="lineno">  270</span> </div>
+<div class="line"><span class="lineno">  271</span>    logging_cfg.<a class="code hl_variable" href="../../db/d0b/structmeshx__logging.html#a140b99328b305503577b5333d5504873">def_log_level</a> = config-&gt;meshx_log_level == <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a4d2cb7b27cc324414a98b0aaa88fd2cf">MESHX_LOG_VERBOSE</a> ?</div>
+<div class="line"><span class="lineno">  272</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a736ad74c6ead5d4e1c683216f0898781">CONFIG_MESHX_DEFAULT_LOG_LEVEL</a> : config-&gt;meshx_log_level;</div>
+<div class="line"><span class="lineno">  273</span> </div>
+<div class="line"><span class="lineno">  274</span>    err = <a class="code hl_function" href="../../d0/dc9/meshx__log_8c.html#a2943545097e48060e29c8be20f92677f">meshx_logging_init</a>(&amp;logging_cfg);</div>
+<div class="line"><span class="lineno">  275</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Logging init failed&quot;</span>, err);</div>
 <div class="line"><span class="lineno">  276</span> </div>
-<div class="line"><span class="lineno">  277</span>    <span class="comment">/* Initialize OS timer */</span></div>
-<div class="line"><span class="lineno">  278</span>    err = <a class="code hl_function" href="../../d8/d03/meshx__os__timer_8h.html#a2ae8e7e3e3019501c5a5dc68608f829a">meshx_os_timer_init</a>();</div>
-<div class="line"><span class="lineno">  279</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;OS Timer Init failed&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  277</span>    <span class="comment">/* Initialise Platform deps */</span></div>
+<div class="line"><span class="lineno">  278</span>    err = <a class="code hl_function" href="../../df/d96/meshx__platform_8h.html#ad7788a59fd2329ff4d38c18c9cbe16cd">meshx_platform_init</a>();</div>
+<div class="line"><span class="lineno">  279</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Platform init failed&quot;</span>, err);</div>
 <div class="line"><span class="lineno">  280</span> </div>
-<div class="line"><span class="lineno">  281</span>    <span class="comment">/* Initialize MeshX NVS */</span></div>
-<div class="line"><span class="lineno">  282</span>    err = <a class="code hl_function" href="../../d3/d7d/meshx__nvs_8h.html#a0fbc3ba9cfa339d3e1b30d101d424685">meshx_nvs_init</a>();</div>
-<div class="line"><span class="lineno">  283</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;MeshX NVS Init failed&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  281</span>    <span class="comment">/* Initialize OS timer */</span></div>
+<div class="line"><span class="lineno">  282</span>    err = <a class="code hl_function" href="../../d8/d03/meshx__os__timer_8h.html#a2ae8e7e3e3019501c5a5dc68608f829a">meshx_os_timer_init</a>();</div>
+<div class="line"><span class="lineno">  283</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;OS Timer Init failed&quot;</span>, err);</div>
 <div class="line"><span class="lineno">  284</span> </div>
-<div class="line"><span class="lineno">  285</span>    <span class="comment">/* Initialize application tasks */</span></div>
-<div class="line"><span class="lineno">  286</span>    err = <a class="code hl_function" href="../../d9/d05/meshx_8c.html#ad0709b44ba612dc9bccad286fa9c8a85">meshx_tasks_init</a>(&amp;<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#af31ccf3df00a77efab6715c8eb050ebe">g_dev</a>);</div>
-<div class="line"><span class="lineno">  287</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Tasks initialization failed&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  285</span>    <span class="comment">/* Initialize MeshX NVS */</span></div>
+<div class="line"><span class="lineno">  286</span>    err = <a class="code hl_function" href="../../d3/d7d/meshx__nvs_8h.html#a0fbc3ba9cfa339d3e1b30d101d424685">meshx_nvs_init</a>();</div>
+<div class="line"><span class="lineno">  287</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;MeshX NVS Init failed&quot;</span>, err);</div>
 <div class="line"><span class="lineno">  288</span> </div>
-<div class="line"><span class="lineno">  289</span>    <span class="comment">/* Register application element callback */</span></div>
-<div class="line"><span class="lineno">  290</span>    err = <a class="code hl_function" href="../../db/d2f/meshx__api_8h.html#a99aec204c219f57b93f8a9e483b2cd1e">meshx_app_reg_element_callback</a>(<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a74ef270513d2b83c6db30d9c2de6001d">g_config</a>.app_element_cb);</div>
-<div class="line"><span class="lineno">  291</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Failed to register app element callback&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  289</span>    <span class="comment">/* Initialize application tasks */</span></div>
+<div class="line"><span class="lineno">  290</span>    err = <a class="code hl_function" href="../../d9/d05/meshx_8c.html#ad0709b44ba612dc9bccad286fa9c8a85">meshx_tasks_init</a>(&amp;<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#af31ccf3df00a77efab6715c8eb050ebe">g_dev</a>);</div>
+<div class="line"><span class="lineno">  291</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Tasks initialization failed&quot;</span>, err);</div>
 <div class="line"><span class="lineno">  292</span> </div>
-<div class="line"><span class="lineno">  293</span>    <span class="comment">/* Register application control callback */</span></div>
-<div class="line"><span class="lineno">  294</span>    err = <a class="code hl_function" href="../../db/d2f/meshx__api_8h.html#ae788eb4aed0ebe9513f85726a84a0c04">meshx_app_reg_system_events_callback</a>(<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a74ef270513d2b83c6db30d9c2de6001d">g_config</a>.app_ctrl_cb);</div>
-<div class="line"><span class="lineno">  295</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Failed to register app control callback&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  293</span>    <span class="comment">/* Register application element callback */</span></div>
+<div class="line"><span class="lineno">  294</span>    err = <a class="code hl_function" href="../../db/d2f/meshx__api_8h.html#a99aec204c219f57b93f8a9e483b2cd1e">meshx_app_reg_element_callback</a>(<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a74ef270513d2b83c6db30d9c2de6001d">g_config</a>.app_element_cb);</div>
+<div class="line"><span class="lineno">  295</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Failed to register app element callback&quot;</span>, err);</div>
 <div class="line"><span class="lineno">  296</span> </div>
-<div class="line"><span class="lineno">  297</span>    <span class="comment">/* Initialize the Bluetooth Mesh Subsystem */</span></div>
-<div class="line"><span class="lineno">  298</span>    err = <a class="code hl_function" href="../../d9/d05/meshx_8c.html#ae1efa7e2017c2acc93c81100da9dd0c9">meshx_ble_mesh_init</a>(&amp;<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a74ef270513d2b83c6db30d9c2de6001d">g_config</a>);</div>
-<div class="line"><span class="lineno">  299</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Bluetooth mesh init failed&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  297</span>    <span class="comment">/* Register application control callback */</span></div>
+<div class="line"><span class="lineno">  298</span>    err = <a class="code hl_function" href="../../db/d2f/meshx__api_8h.html#ae788eb4aed0ebe9513f85726a84a0c04">meshx_app_reg_system_events_callback</a>(<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a74ef270513d2b83c6db30d9c2de6001d">g_config</a>.app_ctrl_cb);</div>
+<div class="line"><span class="lineno">  299</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Failed to register app control callback&quot;</span>, err);</div>
 <div class="line"><span class="lineno">  300</span> </div>
-<div class="line"><span class="lineno">  301</span>    <span class="comment">/* Initialize boot timer */</span></div>
-<div class="line"><span class="lineno">  302</span>    err = <a class="code hl_function" href="../../d9/d05/meshx_8c.html#a9b48e199b9dca0ba00cc6a1ee0b673f2">meshx_init_boot_timer</a>();</div>
-<div class="line"><span class="lineno">  303</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Boot Timer Init failed&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  304</span>    <span class="comment">/* Print the MeshX banner */</span></div>
-<div class="line"><span class="lineno">  305</span>    <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#aab871af326d6c21d6210c588f4a85dd1">CONFIG_MESHX_LOG_PRINTF</a>(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_CYAN) <span class="stringliteral">&quot;%s&quot;</span> LOG_ANSI_COLOR_RESET, <a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a8d8608f53903cb8ea6495daafd61fdf3">meshX_banner</a>);</div>
-<div class="line"><span class="lineno">  306</span> </div>
-<div class="line"><span class="lineno">  307</span><span class="preprocessor">#if CONFIG_ENABLE_UNIT_TEST</span></div>
-<div class="line"><span class="lineno">  308</span>    <span class="comment">/* Register unit test command */</span></div>
-<div class="line"><span class="lineno">  309</span>    err = <a class="code hl_function" href="../../da/dd5/unit__test_8c.html#a0a94d2d1ac1c4f3f4744437b65cca426">register_ut_command</a>();</div>
-<div class="line"><span class="lineno">  310</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Failed to register unit test command&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  311</span> </div>
-<div class="line"><span class="lineno">  312</span>    <span class="comment">/* Initialize unit test console */</span></div>
-<div class="line"><span class="lineno">  313</span>    err = <a class="code hl_function" href="../../da/dd5/unit__test_8c.html#a3e1a1ae5e20371a64ddd11c70b046ccf">init_unit_test_console</a>();</div>
-<div class="line"><span class="lineno">  314</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Failed to initialize production console&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  315</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_ENABLE_UNIT_TEST */</span><span class="preprocessor"></span></div>
-<div class="line"><span class="lineno">  316</span> </div>
-<div class="line"><span class="lineno">  317</span>    <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  318</span>}</div>
+<div class="line"><span class="lineno">  301</span>    <span class="comment">/* Initialize the Bluetooth Mesh Subsystem */</span></div>
+<div class="line"><span class="lineno">  302</span>    err = <a class="code hl_function" href="../../d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1">meshx_ble_mesh_init</a>(&amp;<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a74ef270513d2b83c6db30d9c2de6001d">g_config</a>);</div>
+<div class="line"><span class="lineno">  303</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Bluetooth mesh init failed&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  304</span> </div>
+<div class="line"><span class="lineno">  305</span>    <span class="comment">/* Initialize boot timer */</span></div>
+<div class="line"><span class="lineno">  306</span>    err = <a class="code hl_function" href="../../d9/d05/meshx_8c.html#a9b48e199b9dca0ba00cc6a1ee0b673f2">meshx_init_boot_timer</a>();</div>
+<div class="line"><span class="lineno">  307</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Boot Timer Init failed&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  308</span>    <span class="comment">/* Print the MeshX banner */</span></div>
+<div class="line"><span class="lineno">  309</span>    <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#aab871af326d6c21d6210c588f4a85dd1">CONFIG_MESHX_LOG_PRINTF</a>(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_CYAN) <span class="stringliteral">&quot;%s&quot;</span> LOG_ANSI_COLOR_RESET, <a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a8d8608f53903cb8ea6495daafd61fdf3">meshX_banner</a>);</div>
+<div class="line"><span class="lineno">  310</span> </div>
+<div class="line"><span class="lineno">  311</span><span class="preprocessor">#if CONFIG_ENABLE_UNIT_TEST</span></div>
+<div class="line"><span class="lineno">  312</span>    <span class="comment">/* Register unit test command */</span></div>
+<div class="line"><span class="lineno">  313</span>    err = <a class="code hl_function" href="../../da/dd5/unit__test_8c.html#a0a94d2d1ac1c4f3f4744437b65cca426">register_ut_command</a>();</div>
+<div class="line"><span class="lineno">  314</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Failed to register unit test command&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  315</span> </div>
+<div class="line"><span class="lineno">  316</span>    <span class="comment">/* Initialize unit test console */</span></div>
+<div class="line"><span class="lineno">  317</span>    err = <a class="code hl_function" href="../../da/dd5/unit__test_8c.html#a3e1a1ae5e20371a64ddd11c70b046ccf">init_unit_test_console</a>();</div>
+<div class="line"><span class="lineno">  318</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Failed to initialize production console&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  319</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_ENABLE_UNIT_TEST */</span><span class="preprocessor"></span></div>
+<div class="line"><span class="lineno">  320</span> </div>
+<div class="line"><span class="lineno">  321</span>    <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  322</span>}</div>
 <div class="ttc" id="ameshx_8c_html_a74ef270513d2b83c6db30d9c2de6001d"><div class="ttname"><a href="../../d9/d05/meshx_8c.html#a74ef270513d2b83c6db30d9c2de6001d">g_config</a></div><div class="ttdeci">static meshx_config_t g_config</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d05/meshx_8c_source.html#l00057">meshx.c:57</a></div></div>
 <div class="ttc" id="ameshx_8c_html_a8d8608f53903cb8ea6495daafd61fdf3"><div class="ttname"><a href="../../d9/d05/meshx_8c.html#a8d8608f53903cb8ea6495daafd61fdf3">meshX_banner</a></div><div class="ttdeci">static const char meshX_banner[]</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d05/meshx_8c_source.html#l00034">meshx.c:34</a></div></div>
-<div class="ttc" id="ameshx_8c_html_a9b48e199b9dca0ba00cc6a1ee0b673f2"><div class="ttname"><a href="../../d9/d05/meshx_8c.html#a9b48e199b9dca0ba00cc6a1ee0b673f2">meshx_init_boot_timer</a></div><div class="ttdeci">static meshx_err_t meshx_init_boot_timer(void)</div><div class="ttdoc">Initializes the boot timer.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d05/meshx_8c_source.html#l00224">meshx.c:224</a></div></div>
-<div class="ttc" id="ameshx_8c_html_ad0709b44ba612dc9bccad286fa9c8a85"><div class="ttname"><a href="../../d9/d05/meshx_8c.html#ad0709b44ba612dc9bccad286fa9c8a85">meshx_tasks_init</a></div><div class="ttdeci">static meshx_err_t meshx_tasks_init(dev_struct_t *pdev)</div><div class="ttdoc">Initializes application tasks.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d05/meshx_8c_source.html#l00133">meshx.c:133</a></div></div>
-<div class="ttc" id="ameshx_8c_html_ae1efa7e2017c2acc93c81100da9dd0c9"><div class="ttname"><a href="../../d9/d05/meshx_8c.html#ae1efa7e2017c2acc93c81100da9dd0c9">meshx_ble_mesh_init</a></div><div class="ttdeci">static meshx_err_t meshx_ble_mesh_init(meshx_config_t const *config)</div><div class="ttdoc">Initializes the BLE Mesh subsystem.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d05/meshx_8c_source.html#l00172">meshx.c:172</a></div></div>
+<div class="ttc" id="ameshx_8c_html_a9b48e199b9dca0ba00cc6a1ee0b673f2"><div class="ttname"><a href="../../d9/d05/meshx_8c.html#a9b48e199b9dca0ba00cc6a1ee0b673f2">meshx_init_boot_timer</a></div><div class="ttdeci">static meshx_err_t meshx_init_boot_timer(void)</div><div class="ttdoc">Initializes the boot timer.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d05/meshx_8c_source.html#l00228">meshx.c:228</a></div></div>
+<div class="ttc" id="ameshx_8c_html_ad0709b44ba612dc9bccad286fa9c8a85"><div class="ttname"><a href="../../d9/d05/meshx_8c.html#ad0709b44ba612dc9bccad286fa9c8a85">meshx_tasks_init</a></div><div class="ttdeci">static meshx_err_t meshx_tasks_init(dev_struct_t *pdev)</div><div class="ttdoc">Initializes application tasks.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d05/meshx_8c_source.html#l00138">meshx.c:138</a></div></div>
+<div class="ttc" id="ameshx_8c_html_ae488bc4a1d8eb698d2e2e60ec90bbad1"><div class="ttname"><a href="../../d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1">meshx_ble_mesh_init</a></div><div class="ttdeci">static meshx_err_t meshx_ble_mesh_init(meshx_config_t *config)</div><div class="ttdoc">Initializes the BLE Mesh subsystem.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d05/meshx_8c_source.html#l00177">meshx.c:177</a></div></div>
 <div class="ttc" id="ameshx_8c_html_af31ccf3df00a77efab6715c8eb050ebe"><div class="ttname"><a href="../../d9/d05/meshx_8c.html#af31ccf3df00a77efab6715c8eb050ebe">g_dev</a></div><div class="ttdeci">static dev_struct_t g_dev</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d05/meshx_8c_source.html#l00055">meshx.c:55</a></div></div>
 <div class="ttc" id="ameshx_8h_html_aa50e2294627a29e154267e14fb3d8584"><div class="ttname"><a href="#aa50e2294627a29e154267e14fb3d8584">meshx_config_t</a></div><div class="ttdeci">struct meshx_config meshx_config_t</div></div>
 <div class="ttc" id="ameshx_8h_html_aec5ace063c988d69d85b1f5de673b480"><div class="ttname"><a href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a></div><div class="ttdeci">#define MESHX_ERR_PRINT_RET(_e_str, _err)</div><div class="ttdoc">Print and return error message if an error occurs.</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d18/meshx_8h_source.html#l00034">meshx.h:34</a></div></div>
@@ -603,7 +603,7 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="46,737,50,627,63,454,74,363,89,278,109,207,121,179,135,158,137,155,141,159,139,161,126,182,114,209,95,279,79,363,68,455,55,627,51,737"/>
 <area shape="rect" href="../../dc/d93/meshx__api_8c.html#ae788eb4aed0ebe9513f85726a84a0c04" title="Registers the BLE Mesh application control callback." alt="" coords="139,171,300,212"/>
 <area shape="poly" title=" " alt="" coords="50,736,205,226,210,227,55,738"/>
-<area shape="rect" href="../../d9/d05/meshx_8c.html#ae1efa7e2017c2acc93c81100da9dd0c9" title="Initializes the BLE Mesh subsystem." alt="" coords="146,612,292,638"/>
+<area shape="rect" href="../../d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="146,612,292,638"/>
 <area shape="poly" title=" " alt="" coords="65,735,186,645,189,649,68,739"/>
 <area shape="rect" href="../../d9/d05/meshx_8c.html#a9b48e199b9dca0ba00cc6a1ee0b673f2" title="Initializes the boot timer." alt="" coords="600,799,752,824"/>
 <area shape="poly" title=" " alt="" coords="89,751,585,800,585,805,89,757"/>
@@ -634,7 +634,7 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="230,610,348,478,412,406,416,410,352,481,234,613"/>
 <area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#afb1dfab0e0872cf301f64153754e2a15" title="Initializes the BLE Mesh stack with the given provisioning parameters." alt="" coords="350,687,524,712"/>
 <area shape="poly" title=" " alt="" coords="260,636,384,679,382,684,258,641"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a37d7e4875ef00bac34b19c42116c9f29" title="Initializes the Bluetooth subsystem of the MeshX platform." alt="" coords="360,271,515,296"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a63a879267392250798cb2ee7caabf1a9" title="Initializes the Bluetooth subsystem of the MeshX platform." alt="" coords="360,271,515,296"/>
 <area shape="poly" title=" " alt="" coords="222,611,265,501,302,427,348,357,375,328,403,304,406,308,378,331,352,360,307,430,270,503,227,613"/>
 <area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#a66b5694246aa0f0a9be3c228de543200" title="Get a value from the NVS." alt="" coords="863,600,975,626"/>
 <area shape="poly" title=" " alt="" coords="505,621,847,612,847,617,505,626"/>
@@ -763,7 +763,7 @@ Here is the caller graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d422163b96683743ed3963d4aac17747.html">app</a></li><li class="navelem"><a class="el" href="../../dir_c65bd19e757d26cf4d732c1ae0727ae8.html">components</a></li><li class="navelem"><a class="el" href="../../dir_f203b345362cbfbb0face6aabfa16576.html">meshx</a></li><li class="navelem"><a class="el" href="../../dir_7f50d07922f3bc2176b4eed9193df5ce.html">default</a></li><li class="navelem"><a class="el" href="../../dir_d8fc81364c4d58707be67557187dcf83.html">inc</a></li><li class="navelem"><a class="el" href="../../d3/d18/meshx_8h.html">meshx.h</a></li>
-    <li class="footer">Generated on Wed Aug 20 2025 05:44:03 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Wed Aug 20 2025 19:49:48 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

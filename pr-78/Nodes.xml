@@ -8,49 +8,49 @@
        <Node>
         <Name>Features</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md2</Anchor>
+        <Anchor>autotoc_md3</Anchor>
        </Node>
        <Node>
         <Name>Capabilities</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md3</Anchor>
+        <Anchor>autotoc_md5</Anchor>
       <Subnodes>
          <Node>
           <Name>Server</Name>
           <Path>index.html</Path>
-          <Anchor>autotoc_md4</Anchor>
+          <Anchor>autotoc_md6</Anchor>
          </Node>
          <Node>
           <Name>Client</Name>
           <Path>index.html</Path>
-          <Anchor>autotoc_md5</Anchor>
+          <Anchor>autotoc_md8</Anchor>
          </Node>
         </Subnodes>
        </Node>
        <Node>
         <Name>Prerequisites</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md6</Anchor>
+        <Anchor>autotoc_md12</Anchor>
        </Node>
        <Node>
         <Name>Build</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md7</Anchor>
+        <Anchor>autotoc_md14</Anchor>
        </Node>
        <Node>
         <Name>Adding a Product to build</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md8</Anchor>
+        <Anchor>autotoc_md15</Anchor>
        </Node>
        <Node>
         <Name>Adding Element, model to build:</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md9</Anchor>
+        <Anchor>autotoc_md17</Anchor>
        </Node>
        <Node>
         <Name>Flashing and monitoring</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md10</Anchor>
+        <Anchor>autotoc_md18</Anchor>
        </Node>
        <Node>
         <Name>MeshX Proprietary License (MPL) v1.0</Name>
@@ -60,22 +60,22 @@
            <Node>
             <Name>0. Preamble</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md12</Anchor>
+            <Anchor>autotoc_md4</Anchor>
            </Node>
            <Node>
             <Name>1. Grant of License</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md14</Anchor>
+            <Anchor>autotoc_md9</Anchor>
            </Node>
            <Node>
             <Name>2. Ownership</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md16</Anchor>
+            <Anchor>autotoc_md11</Anchor>
            </Node>
            <Node>
             <Name>3. Contributions</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md18</Anchor>
+            <Anchor>autotoc_md16</Anchor>
            </Node>
            <Node>
             <Name>4. Restrictions</Name>
@@ -917,6 +917,11 @@
               <Name>meshx_nvs_save_period</Name>
               <Path>d5/d3e/structmeshx__config.html</Path>
               <Anchor>a382576d6d01b808c4509dcfc8b5712dc</Anchor>
+             </Node>
+             <Node>
+              <Name>meshx_uuid_addr</Name>
+              <Path>d5/d3e/structmeshx__config.html</Path>
+              <Anchor>ae5a68f23fcbadc7c8f43e0f7c2f1f26b</Anchor>
              </Node>
              <Node>
               <Name>pid</Name>
@@ -5824,7 +5829,7 @@
              <Node>
               <Name>uuid</Name>
               <Path>da/dd1/structmeshx__prov__params.html</Path>
-              <Anchor>ad760cfe1b68d8888f0bbfc7bab9a3168</Anchor>
+              <Anchor>aa79e3ce335aba0230a1e22cb503fa3d6</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -7422,6 +7427,11 @@
                           <Anchor>a382576d6d01b808c4509dcfc8b5712dc</Anchor>
                          </Node>
                          <Node>
+                          <Name>meshx_uuid_addr</Name>
+                          <Path>d5/d3e/structmeshx__config.html</Path>
+                          <Anchor>ae5a68f23fcbadc7c8f43e0f7c2f1f26b</Anchor>
+                         </Node>
+                         <Node>
                           <Name>pid</Name>
                           <Path>d5/d3e/structmeshx__config.html</Path>
                           <Anchor>a85f17a1f8218e9f6724209f002b21493</Anchor>
@@ -8890,7 +8900,7 @@
                        <Node>
                         <Name>meshx_ble_mesh_init</Name>
                         <Path>d9/d05/meshx_8c.html</Path>
-                        <Anchor>ae1efa7e2017c2acc93c81100da9dd0c9</Anchor>
+                        <Anchor>ae488bc4a1d8eb698d2e2e60ec90bbad1</Anchor>
                        </Node>
                        <Node>
                         <Name>meshx_create_element_composition</Name>
@@ -8941,6 +8951,11 @@
                         <Name>g_dev</Name>
                         <Path>d9/d05/meshx_8c.html</Path>
                         <Anchor>af31ccf3df00a77efab6715c8eb050ebe</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>g_prov_cfg</Name>
+                        <Path>d9/d05/meshx_8c.html</Path>
+                        <Anchor>ac51a3a297381ec8163ffa2ad4c74da57</Anchor>
                        </Node>
                        <Node>
                         <Name>meshX_banner</Name>
@@ -18619,7 +18634,7 @@
                          <Node>
                           <Name>uuid</Name>
                           <Path>da/dd1/structmeshx__prov__params.html</Path>
-                          <Anchor>ad760cfe1b68d8888f0bbfc7bab9a3168</Anchor>
+                          <Anchor>aa79e3ce335aba0230a1e22cb503fa3d6</Anchor>
                          </Node>
                         </Subnodes>
                        </Node>
@@ -18691,7 +18706,7 @@
                        <Node>
                         <Name>meshx_platform_bt_init</Name>
                         <Path>d6/d1d/meshx__ble__mesh__cmn_8h.html</Path>
-                        <Anchor>a37d7e4875ef00bac34b19c42116c9f29</Anchor>
+                        <Anchor>a63a879267392250798cb2ee7caabf1a9</Anchor>
                        </Node>
                       </Subnodes>
                      </Node>
@@ -20665,6 +20680,11 @@
                         <Anchor>a9fd1f2398bbd5fe9b2756f75e5e4f17e</Anchor>
                        </Node>
                        <Node>
+                        <Name>MESHX_UUID_EMPTY</Name>
+                        <Path>d4/de0/meshx__ble__mesh__cmn__def_8h.html</Path>
+                        <Anchor>a68d787e416fd8e536da0e7382d130587</Anchor>
+                       </Node>
+                       <Node>
                         <Name>meshx_addr_type_t</Name>
                         <Path>d4/de0/meshx__ble__mesh__cmn__def_8h.html</Path>
                         <Anchor>a7550411e52b43b79dc91f9f3a4c78341</Anchor>
@@ -21463,7 +21483,7 @@
                            <Node>
                             <Name>meshx_platform_bt_init</Name>
                             <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
-                            <Anchor>a37d7e4875ef00bac34b19c42116c9f29</Anchor>
+                            <Anchor>a63a879267392250798cb2ee7caabf1a9</Anchor>
                            </Node>
                           </Subnodes>
                          </Node>
@@ -21979,11 +21999,6 @@
                               <Name>prov_cb_evt_ctrl_task_evt_table</Name>
                               <Path>d9/d31/esp__prov__srv__model_8c.html</Path>
                               <Anchor>a2417b60798c1f397f4d79a469112b3f9</Anchor>
-                             </Node>
-                             <Node>
-                              <Name>prov_params</Name>
-                              <Path>d9/d31/esp__prov__srv__model_8c.html</Path>
-                              <Anchor>a66227d3609c3ac264abc6a4dbb438cfb</Anchor>
                              </Node>
                             </Subnodes>
                            </Node>

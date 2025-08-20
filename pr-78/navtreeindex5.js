@@ -1,8 +1,10 @@
 var NAVTREEINDEX5 =
 {
+"d5/d3e/structmeshx__config.html#a85f17a1f8218e9f6724209f002b21493":[9,0,24,8],
 "d5/d3e/structmeshx__config.html#a872b02c605c71fc953ebdb98723c687c":[9,0,24,4],
 "d5/d3e/structmeshx__config.html#ad5f06f72cc0aa9dae8cc31c47811d550":[9,0,24,3],
-"d5/d3e/structmeshx__config.html#afd96e3f78981d34997812032bb8c4ff2":[9,0,24,8],
+"d5/d3e/structmeshx__config.html#ae5a68f23fcbadc7c8f43e0f7c2f1f26b":[9,0,24,7],
+"d5/d3e/structmeshx__config.html#afd96e3f78981d34997812032bb8c4ff2":[9,0,24,9],
 "d5/d50/structmeshx__gen__level__status__cb__t.html":[9,0,45],
 "d5/d50/structmeshx__gen__level__status__cb__t.html#a03ad7f815b558fa3d5268075a043ff1f":[9,0,45,3],
 "d5/d50/structmeshx__gen__level__status__cb__t.html#a1215071a0bb82b3e6d268fdbfb1a2933":[9,0,45,0],
@@ -114,7 +116,7 @@ var NAVTREEINDEX5 =
 "d6/d1d/meshx__ble__mesh__cmn_8h.html#a2909ce98f334a82b0b72836c8c7dc319":[10,0,0,0,0,2,0,2,14],
 "d6/d1d/meshx__ble__mesh__cmn_8h.html#a2bdab205d68a408e7ec03e58b2fa8a0b":[10,0,0,0,0,2,0,2,10],
 "d6/d1d/meshx__ble__mesh__cmn_8h.html#a36e3c206ee82075d0b1ec6729d186f71":[10,0,0,0,0,2,0,2,6],
-"d6/d1d/meshx__ble__mesh__cmn_8h.html#a37d7e4875ef00bac34b19c42116c9f29":[10,0,0,0,0,2,0,2,16],
+"d6/d1d/meshx__ble__mesh__cmn_8h.html#a63a879267392250798cb2ee7caabf1a9":[10,0,0,0,0,2,0,2,16],
 "d6/d1d/meshx__ble__mesh__cmn_8h.html#a9136f58e68ca58a169038fb9e5fd5c66":[10,0,0,0,0,2,0,2,13],
 "d6/d1d/meshx__ble__mesh__cmn_8h.html#ab0b270ac4d086a2e566985d2aabd5be5":[10,0,0,0,0,2,0,2,8],
 "d6/d1d/meshx__ble__mesh__cmn_8h.html#ab2af046bc4c0e850d01643ba048e5194":[10,0,0,0,0,2,0,2,12],
@@ -247,7 +249,5 @@ var NAVTREEINDEX5 =
 "d7/d79/structmeshx__api__light__cwww__client__evt.html#a775d56e00f3b99df00df6e4eec1483a8":[9,0,16,9],
 "d7/d79/structmeshx__api__light__cwww__client__evt.html#a83d333cc7fd9b84ccec2e1972b06b61b":[9,0,16,6],
 "d7/d79/structmeshx__api__light__cwww__client__evt.html#a85d0142f1a1a3c7f1884da32ea4e977f":[9,0,16,8],
-"d7/d79/structmeshx__api__light__cwww__client__evt.html#aa6661dcf68c26e30b436c5adc7ae7597":[9,0,16,7],
-"d7/d79/structmeshx__api__light__cwww__client__evt.html#ac66e28ce35c86a073ffa5debe4b5148b":[9,0,16,3],
-"d7/d79/structmeshx__api__light__cwww__client__evt.html#ad19f10b42bab782c32878bf4faf222e2":[9,0,16,4]
+"d7/d79/structmeshx__api__light__cwww__client__evt.html#aa6661dcf68c26e30b436c5adc7ae7597":[9,0,16,7]
 };

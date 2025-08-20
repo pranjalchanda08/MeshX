@@ -1,5 +1,7 @@
 var NAVTREEINDEX9 =
 {
+"dc/d93/meshx__api_8c.html#a8c55b18a6ea8b0f0cde41c0e7dbadf75":[10,0,0,0,0,0,1,2,6],
+"dc/d93/meshx__api_8c.html#a99aec204c219f57b93f8a9e483b2cd1e":[10,0,0,0,0,0,1,2,2],
 "dc/d93/meshx__api_8c.html#ac37c1c5b9f1e9cdaa510bf886d897e2d":[10,0,0,0,0,0,1,2,4],
 "dc/d93/meshx__api_8c.html#ae788eb4aed0ebe9513f85726a84a0c04":[10,0,0,0,0,0,1,2,3],
 "dc/d93/meshx__api_8c_source.html":[10,0,0,0,0,0,1,2],
@@ -7,7 +9,7 @@ var NAVTREEINDEX9 =
 "dc/d96/esp__platform__ble__mesh_8c.html#a12b595bcf51021fcaa675e488fe24308":[10,0,0,0,0,3,0,0,0,2,8],
 "dc/d96/esp__platform__ble__mesh_8c.html#a2bdab205d68a408e7ec03e58b2fa8a0b":[10,0,0,0,0,3,0,0,0,2,4],
 "dc/d96/esp__platform__ble__mesh_8c.html#a36e3c206ee82075d0b1ec6729d186f71":[10,0,0,0,0,3,0,0,0,2,0],
-"dc/d96/esp__platform__ble__mesh_8c.html#a37d7e4875ef00bac34b19c42116c9f29":[10,0,0,0,0,3,0,0,0,2,10],
+"dc/d96/esp__platform__ble__mesh_8c.html#a63a879267392250798cb2ee7caabf1a9":[10,0,0,0,0,3,0,0,0,2,10],
 "dc/d96/esp__platform__ble__mesh_8c.html#a9136f58e68ca58a169038fb9e5fd5c66":[10,0,0,0,0,3,0,0,0,2,7],
 "dc/d96/esp__platform__ble__mesh_8c.html#ab0b270ac4d086a2e566985d2aabd5be5":[10,0,0,0,0,3,0,0,0,2,2],
 "dc/d96/esp__platform__ble__mesh_8c.html#ab2af046bc4c0e850d01643ba048e5194":[10,0,0,0,0,3,0,0,0,2,6],
@@ -247,7 +249,5 @@ var NAVTREEINDEX9 =
 "de/da0/unionmeshx__cfg__srv__state__change__t.html#a9d5f94bd4f6cf534a40dcc1d83900cea":[9,0,23,7],
 "de/da0/unionmeshx__cfg__srv__state__change__t.html#abb45efb3e5d7ee789922bb6c90f02835":[9,0,23,10],
 "de/da0/unionmeshx__cfg__srv__state__change__t.html#ad7b7ace5618de81384d675e13629c3e3":[9,0,23,3],
-"de/da0/unionmeshx__cfg__srv__state__change__t.html#aee45eace16a7bc4e1dea940f64c44bff":[9,0,23,2],
-"de/da0/unionmeshx__cfg__srv__state__change__t.html#afca02c68a19d206841e9fbe7ef6ad805":[9,0,23,0],
-"de/dab/structmeshx__state__change__cfg__appkey__update__t.html":[9,0,143]
+"de/da0/unionmeshx__cfg__srv__state__change__t.html#aee45eace16a7bc4e1dea940f64c44bff":[9,0,23,2]
 };

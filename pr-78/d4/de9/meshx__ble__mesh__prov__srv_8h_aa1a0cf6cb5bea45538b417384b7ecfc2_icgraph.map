@@ -4,7 +4,7 @@
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="663,36,602,28,603,23,664,30"/>
 <area shape="rect" id="Node000003" href="$dc/d96/esp__platform__ble__mesh_8c.html#afb1dfab0e0872cf301f64153754e2a15" title="Initializes the BLE Mesh stack with the given provisioning parameters." alt="" coords="456,55,631,80"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="664,56,632,60,631,55,663,51"/>
-<area shape="rect" id="Node000004" href="$d9/d05/meshx_8c.html#ae1efa7e2017c2acc93c81100da9dd0c9" title="Initializes the BLE Mesh subsystem." alt="" coords="262,55,408,80"/>
+<area shape="rect" id="Node000004" href="$d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="262,55,408,80"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="441,70,409,70,409,65,441,65"/>
 <area shape="rect" id="Node000005" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="131,55,214,80"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="246,70,214,70,214,65,246,65"/>

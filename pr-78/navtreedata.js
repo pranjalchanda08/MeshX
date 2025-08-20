@@ -25,16 +25,16 @@
 var NAVTREE =
 [
   [ "MeshX", "index.html", [
-    [ "Features", "index.html#autotoc_md2", null ],
-    [ "Capabilities", "index.html#autotoc_md3", [
-      [ "Server", "index.html#autotoc_md4", null ],
-      [ "Client", "index.html#autotoc_md5", null ]
+    [ "Features", "index.html#autotoc_md3", null ],
+    [ "Capabilities", "index.html#autotoc_md5", [
+      [ "Server", "index.html#autotoc_md6", null ],
+      [ "Client", "index.html#autotoc_md8", null ]
     ] ],
-    [ "Prerequisites", "index.html#autotoc_md6", null ],
-    [ "Build", "index.html#autotoc_md7", null ],
-    [ "Adding a Product to build", "index.html#autotoc_md8", null ],
-    [ "Adding Element, model to build:", "index.html#autotoc_md9", null ],
-    [ "Flashing and monitoring", "index.html#autotoc_md10", null ],
+    [ "Prerequisites", "index.html#autotoc_md12", null ],
+    [ "Build", "index.html#autotoc_md14", null ],
+    [ "Adding a Product to build", "index.html#autotoc_md15", null ],
+    [ "Adding Element, model to build:", "index.html#autotoc_md17", null ],
+    [ "Flashing and monitoring", "index.html#autotoc_md18", null ],
     [ "MeshX Proprietary License (MPL) v1.0", "da/d19/md_LICENSE.html", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [
@@ -68,14 +68,14 @@ var NAVTREEINDEX =
 "d1/db1/unionmeshx__prov__cb__param__t.html#a52b43443ebadd13281d8a1f685f2ac81",
 "d3/d2b/meshx__platform__ble__mesh_8h.html#ae8272f86afe3a74d8de48473ecefaf5e",
 "d4/de0/meshx__ble__mesh__cmn__def_8h.html#a089c92bca2ebe3941bb181eafa670695",
-"d4/de0/meshx__ble__mesh__cmn__def_8h.html#aa185b0906a87e1b1ba39098b0bf409de",
-"d5/d3e/structmeshx__config.html#a872b02c605c71fc953ebdb98723c687c",
-"d7/d79/structmeshx__api__light__cwww__client__evt.html#ae1cd27e8f135bc376cd2449830bba018",
-"d9/d16/structmeshx__light__hsl__range__status__cb__t.html#aed924eaf9be98fe21962c48b8b3ec2bd",
-"da/dc6/unionctl__status__pack.html#af59675fa0947146c4eff5fbf0213bd2b",
-"dc/d93/meshx__api_8c.html#ac37c1c5b9f1e9cdaa510bf886d897e2d",
-"de/dab/structmeshx__state__change__cfg__appkey__update__t.html#a71fba8873bc98b59faae3a8d6581765e",
-"functions_h.html"
+"d4/de0/meshx__ble__mesh__cmn__def_8h.html#aa0eb714d553ffb8847f12716ef920f60",
+"d5/d3e/structmeshx__config.html#a85f17a1f8218e9f6724209f002b21493",
+"d7/d79/structmeshx__api__light__cwww__client__evt.html#ac66e28ce35c86a073ffa5debe4b5148b",
+"d9/d16/structmeshx__light__hsl__range__status__cb__t.html#adcc955f725889129aa504412b74d10e0",
+"da/dc6/unionctl__status__pack.html#ae47354dbd041586f96ba226985b99b89",
+"dc/d93/meshx__api_8c.html#a8c55b18a6ea8b0f0cde41c0e7dbadf75",
+"de/da0/unionmeshx__cfg__srv__state__change__t.html#afca02c68a19d206841e9fbe7ef6ad805",
+"functions_func.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

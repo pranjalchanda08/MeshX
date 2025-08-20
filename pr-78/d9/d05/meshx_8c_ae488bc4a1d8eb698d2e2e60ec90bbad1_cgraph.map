@@ -6,7 +6,7 @@
 <area shape="poly" id="edge20_Node000001_Node000018" title=" " alt="" coords="153,297,411,326,410,332,152,302"/>
 <area shape="rect" id="Node000031" href="$dc/d96/esp__platform__ble__mesh_8c.html#afb1dfab0e0872cf301f64153754e2a15" title="Initializes the BLE Mesh stack with the given provisioning parameters." alt="" coords="200,244,374,270"/>
 <area shape="poly" id="edge38_Node000001_Node000031" title=" " alt="" coords="151,277,190,270,191,275,152,282"/>
-<area shape="rect" id="Node000036" href="$dc/d96/esp__platform__ble__mesh_8c.html#a37d7e4875ef00bac34b19c42116c9f29" title="Initializes the Bluetooth subsystem of the MeshX platform." alt="" coords="209,372,364,398"/>
+<area shape="rect" id="Node000036" href="$dc/d96/esp__platform__ble__mesh_8c.html#a63a879267392250798cb2ee7caabf1a9" title="Initializes the Bluetooth subsystem of the MeshX platform." alt="" coords="209,372,364,398"/>
 <area shape="poly" id="edge44_Node000001_Node000036" title=" " alt="" coords="110,302,243,363,241,367,108,307"/>
 <area shape="rect" id="Node000003" href="$d5/d8f/meshx__nvs_8c.html#a66b5694246aa0f0a9be3c228de543200" title="Get a value from the NVS." alt="" coords="662,5,774,31"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="351,53,422,41,540,28,646,20,647,25,541,33,422,46,352,58"/>

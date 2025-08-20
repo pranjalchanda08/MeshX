@@ -7689,6 +7689,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_uuid_addr</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_config</Scope>
+    </TokenIdentifier>
+    <Path>d5/d3e/structmeshx__config.html</Path>
+    <Anchor>ae5a68f23fcbadc7c8f43e0f7c2f1f26b</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>method</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -12886,7 +12896,7 @@
       <Scope>meshx_prov_params</Scope>
     </TokenIdentifier>
     <Path>da/dd1/structmeshx__prov__params.html</Path>
-    <Anchor>ad760cfe1b68d8888f0bbfc7bab9a3168</Anchor>
+    <Anchor>aa79e3ce335aba0230a1e22cb503fa3d6</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -15650,6 +15660,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>g_prov_cfg</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d9/d05/meshx_8c.html</Path>
+    <Anchor>ac51a3a297381ec8163ffa2ad4c74da57</Anchor>
+    <DeclaredIn>meshx.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>GET_RELATIVE_EL_IDX</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
@@ -16205,7 +16225,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>d9/d05/meshx_8c.html</Path>
-    <Anchor>ae1efa7e2017c2acc93c81100da9dd0c9</Anchor>
+    <Anchor>ae488bc4a1d8eb698d2e2e60ec90bbad1</Anchor>
     <DeclaredIn>meshx.c</DeclaredIn>
   </Token>
   <Token>
@@ -24645,7 +24665,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>d6/d1d/meshx__ble__mesh__cmn_8h.html</Path>
-    <Anchor>a37d7e4875ef00bac34b19c42116c9f29</Anchor>
+    <Anchor>a63a879267392250798cb2ee7caabf1a9</Anchor>
     <DeclaredIn>meshx_ble_mesh_cmn.h</DeclaredIn>
   </Token>
   <Token>
@@ -24655,7 +24675,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
-    <Anchor>a37d7e4875ef00bac34b19c42116c9f29</Anchor>
+    <Anchor>a63a879267392250798cb2ee7caabf1a9</Anchor>
     <DeclaredIn>esp_platform_ble_mesh.c</DeclaredIn>
   </Token>
   <Token>
@@ -25940,6 +25960,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>MESHX_UUID_EMPTY</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d4/de0/meshx__ble__mesh__cmn__def_8h.html</Path>
+    <Anchor>a68d787e416fd8e536da0e7382d130587</Anchor>
+    <DeclaredIn>meshx_ble_mesh_cmn_def.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_ven_root_model_arr</Name>
       <APILanguage>c</APILanguage>
       <Type>data</Type>
@@ -26317,16 +26347,6 @@
     <Path>d4/de9/meshx__ble__mesh__prov__srv_8h.html</Path>
     <Anchor>a50d4579bf974371aab5f0b855c43b12e</Anchor>
     <DeclaredIn>meshx_ble_mesh_prov_srv.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>prov_params</Name>
-      <APILanguage>c</APILanguage>
-      <Type>data</Type>
-    </TokenIdentifier>
-    <Path>d9/d31/esp__prov__srv__model_8c.html</Path>
-    <Anchor>a66227d3609c3ac264abc6a4dbb438cfb</Anchor>
-    <DeclaredIn>esp_prov_srv_model.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>

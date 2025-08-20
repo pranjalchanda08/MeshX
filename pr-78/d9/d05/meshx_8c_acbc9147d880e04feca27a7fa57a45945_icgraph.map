@@ -1,6 +1,6 @@
 <map id="meshx_dev_restore" name="meshx_dev_restore">
 <area shape="rect" id="Node000001" title="Restore the device state from the NVS." alt="" coords="456,5,591,31"/>
-<area shape="rect" id="Node000002" href="$d9/d05/meshx_8c.html#ae1efa7e2017c2acc93c81100da9dd0c9" title="Initializes the BLE Mesh subsystem." alt="" coords="262,5,408,31"/>
+<area shape="rect" id="Node000002" href="$d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="262,5,408,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="441,21,409,21,409,16,441,16"/>
 <area shape="rect" id="Node000003" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="131,5,214,31"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="246,21,214,21,214,16,246,16"/>

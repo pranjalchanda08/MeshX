@@ -393,6 +393,7 @@ var meshx__ble__mesh__cmn__def_8h =
     [ "MESHX_MODEL_OP_VENDOR_MODEL_SUB_LIST", "d4/de0/meshx__ble__mesh__cmn__def_8h.html#a00e3058b4b5ef53519e1c171294aedcf", null ],
     [ "MESHX_SETTINGS_UID_SIZE", "d4/de0/meshx__ble__mesh__cmn__def_8h.html#a037d6e1748af9d043ec08b75c73db599", null ],
     [ "MESHX_UUID_ADDR_LEN", "d4/de0/meshx__ble__mesh__cmn__def_8h.html#a9fd1f2398bbd5fe9b2756f75e5e4f17e", null ],
+    [ "MESHX_UUID_EMPTY", "d4/de0/meshx__ble__mesh__cmn__def_8h.html#a68d787e416fd8e536da0e7382d130587", null ],
     [ "meshx_addr_type_t", "d4/de0/meshx__ble__mesh__cmn__def_8h.html#a7550411e52b43b79dc91f9f3a4c78341", null ],
     [ "meshx_bd_addr_t", "d4/de0/meshx__ble__mesh__cmn__def_8h.html#aff1c12f21927bbb5569b48198db7d4ef", null ],
     [ "meshx_ptr_t", "d4/de0/meshx__ble__mesh__cmn__def_8h.html#a3bae9ce6d9b944b93bb8a0b64e758d19", null ],
