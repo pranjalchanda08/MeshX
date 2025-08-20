@@ -16,10 +16,13 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+      with:
+        submodules: false
+        fetch-depth: 0
 
-    - name: Update submodules
-      run: git submodule update --init --recursive docs/doxygen-awesome-css
+    - name: Update submodule (only doxygen-awesome-css)
+      run: git submodule update --init docs/doxygen-awesome-css
 
     - name: Doxygen Action
       uses: mattnotmitt/doxygen-action@v1.1.0
@@ -28,3 +31,54 @@ jobs:
         doxyfile-path: ".vscode/.doxygen/meshx.doxyconfig.ini" # default is ./Doxyfile
         # Working directory
         working-directory: "." # default is .
+
+    - name: Generate Doxygen Docs
+      uses: mattnotmitt/doxygen-action@v1.1.0
+      with:
+        doxyfile-path: ".vscode/.doxygen/meshx.doxyconfig.ini"
+        working-directory: "."
+
+    - name: Verify index.html exists
+      run: test -f ./docs/doxygen/html/index.html
+
+    - name: Upload generated docs
+      uses: actions/upload-artifact@v4
+      with:
+        name: docs-html
+        path: ./docs/doxygen/html
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Download generated docs
+      uses: actions/download-artifact@v4
+      with:
+        name: docs-html
+        path: public
+    - name: Verify Downloaded docs
+      run: test -f ./public/index.html
+
+    - name: Set deployment folder
+      id: vars
+      run: |
+        if [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+          echo "dir=pr-${{ github.event.number }}" >> $GITHUB_OUTPUT
+        elif [[ "${GITHUB_REF_NAME}" == "main" ]]; then
+          echo "dir=main" >> $GITHUB_OUTPUT
+        elif [[ "${GITHUB_REF_NAME}" == "dev" ]]; then
+          echo "dir=dev" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: ./public
+        destination_dir: ${{ steps.vars.outputs.dir }}

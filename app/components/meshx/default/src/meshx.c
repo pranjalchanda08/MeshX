@@ -225,7 +225,7 @@ static meshx_err_t meshx_init_boot_timer(void)
 {
     if(g_dev.meshx_store.node_addr == MESHX_ADDR_UNASSIGNED)
     {
-        MESHX_LOGI(MODULE_ID_COMMON, "Device not provisioned, starting boot timer");
+        MESHX_LOGI(MODULE_ID_COMMON, "Device not provisioned, not starting boot timer");
         return MESHX_SUCCESS;
     }
     meshx_err_t err = meshx_os_timer_create("boot_timer",
