@@ -5582,6 +5582,16 @@
       <Name>evt</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
+      <Scope>meshx_on_off_cli_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d8/dbd/structmeshx__on__off__cli__el__msg.html</Path>
+    <Anchor>a230106fc8452da05e69170a7c8f13fa8</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>evt</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
       <Scope>meshx_gen_cli_cb_param</Scope>
     </TokenIdentifier>
     <Path>da/d21/structmeshx__gen__cli__cb__param.html</Path>
@@ -25635,7 +25645,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>d9/d33/meshx__onoff__client_8c.html</Path>
-    <Anchor>a5d8aadf9ef20eb93a9bd93c273faa924</Anchor>
+    <Anchor>a494723c456ba89f2c9b8c95953b3910a</Anchor>
     <DeclaredIn>meshx_onoff_client.c</DeclaredIn>
   </Token>
   <Token>

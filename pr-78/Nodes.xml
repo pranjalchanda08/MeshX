@@ -8,49 +8,49 @@
        <Node>
         <Name>Features</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md3</Anchor>
+        <Anchor>autotoc_md5</Anchor>
        </Node>
        <Node>
         <Name>Capabilities</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md5</Anchor>
+        <Anchor>autotoc_md8</Anchor>
       <Subnodes>
          <Node>
           <Name>Server</Name>
           <Path>index.html</Path>
-          <Anchor>autotoc_md6</Anchor>
+          <Anchor>autotoc_md9</Anchor>
          </Node>
          <Node>
           <Name>Client</Name>
           <Path>index.html</Path>
-          <Anchor>autotoc_md8</Anchor>
+          <Anchor>autotoc_md23</Anchor>
          </Node>
         </Subnodes>
        </Node>
        <Node>
         <Name>Prerequisites</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md12</Anchor>
+        <Anchor>autotoc_md24</Anchor>
        </Node>
        <Node>
         <Name>Build</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md14</Anchor>
+        <Anchor>autotoc_md25</Anchor>
        </Node>
        <Node>
         <Name>Adding a Product to build</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md15</Anchor>
+        <Anchor>autotoc_md26</Anchor>
        </Node>
        <Node>
         <Name>Adding Element, model to build:</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md17</Anchor>
+        <Anchor>autotoc_md27</Anchor>
        </Node>
        <Node>
         <Name>Flashing and monitoring</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md18</Anchor>
+        <Anchor>autotoc_md28</Anchor>
        </Node>
        <Node>
         <Name>MeshX Proprietary License (MPL) v1.0</Name>
@@ -60,47 +60,47 @@
            <Node>
             <Name>0. Preamble</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md4</Anchor>
+            <Anchor>autotoc_md3</Anchor>
            </Node>
            <Node>
             <Name>1. Grant of License</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md9</Anchor>
+            <Anchor>autotoc_md6</Anchor>
            </Node>
            <Node>
             <Name>2. Ownership</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md11</Anchor>
+            <Anchor>autotoc_md10</Anchor>
            </Node>
            <Node>
             <Name>3. Contributions</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md16</Anchor>
+            <Anchor>autotoc_md12</Anchor>
            </Node>
            <Node>
             <Name>4. Restrictions</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md20</Anchor>
+            <Anchor>autotoc_md14</Anchor>
            </Node>
            <Node>
             <Name>5. Confidentiality</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md22</Anchor>
+            <Anchor>autotoc_md16</Anchor>
            </Node>
            <Node>
             <Name>6. No Warranty</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md24</Anchor>
+            <Anchor>autotoc_md18</Anchor>
            </Node>
            <Node>
             <Name>7. Termination</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md26</Anchor>
+            <Anchor>autotoc_md20</Anchor>
            </Node>
            <Node>
             <Name>9. Contact Information</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md28</Anchor>
+            <Anchor>autotoc_md22</Anchor>
            </Node>
           </Subnodes>
         </Subnodes>
@@ -3744,6 +3744,11 @@
               <Name>err_code</Name>
               <Path>d8/dbd/structmeshx__on__off__cli__el__msg.html</Path>
               <Anchor>ac50018bc5d134b8b1eaf788fb7a46c99</Anchor>
+             </Node>
+             <Node>
+              <Name>evt</Name>
+              <Path>d8/dbd/structmeshx__on__off__cli__el__msg.html</Path>
+              <Anchor>a230106fc8452da05e69170a7c8f13fa8</Anchor>
              </Node>
              <Node>
               <Name>model</Name>
@@ -9908,7 +9913,7 @@
                            <Node>
                             <Name>meshx_state_change_notify</Name>
                             <Path>d9/d33/meshx__onoff__client_8c.html</Path>
-                            <Anchor>a5d8aadf9ef20eb93a9bd93c273faa924</Anchor>
+                            <Anchor>a494723c456ba89f2c9b8c95953b3910a</Anchor>
                            </Node>
                            <Node>
                             <Name>meshx_client_init_flag</Name>
@@ -9971,6 +9976,11 @@
                               <Name>err_code</Name>
                               <Path>d8/dbd/structmeshx__on__off__cli__el__msg.html</Path>
                               <Anchor>ac50018bc5d134b8b1eaf788fb7a46c99</Anchor>
+                             </Node>
+                             <Node>
+                              <Name>evt</Name>
+                              <Path>d8/dbd/structmeshx__on__off__cli__el__msg.html</Path>
+                              <Anchor>a230106fc8452da05e69170a7c8f13fa8</Anchor>
                              </Node>
                              <Node>
                               <Name>model</Name>

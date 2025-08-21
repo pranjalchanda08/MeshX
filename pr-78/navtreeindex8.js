@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"da/dc6/unionctl__status__pack.html#ace902686ad17db4642ddc41901f767ea":[9,0,4,1],
 "da/dc6/unionctl__status__pack.html#ae47354dbd041586f96ba226985b99b89":[9,0,4,10],
 "da/dc6/unionctl__status__pack.html#ae4eed187cca57e2eeac3452204be344a":[9,0,4,6],
 "da/dc6/unionctl__status__pack.html#af59675fa0947146c4eff5fbf0213bd2b":[9,0,4,4],
@@ -248,6 +249,5 @@ var NAVTREEINDEX8 =
 "dc/d93/meshx__api_8c.html#a4859bf68641bed24cb3d958103375a48":[10,0,0,0,0,0,1,2,0],
 "dc/d93/meshx__api_8c.html#a5b8d1eddceb8ab76e5fdc7fea5545496":[10,0,0,0,0,0,1,2,5],
 "dc/d93/meshx__api_8c.html#a5bf953dbf23563a53565103f90bc55bf":[10,0,0,0,0,0,1,2,8],
-"dc/d93/meshx__api_8c.html#a841f316f7fff59d36a6cac57fa4b3c3c":[10,0,0,0,0,0,1,2,10],
-"dc/d93/meshx__api_8c.html#a8a52a1500b3a0e6e5865775d12ac2004":[10,0,0,0,0,0,1,2,9]
+"dc/d93/meshx__api_8c.html#a841f316f7fff59d36a6cac57fa4b3c3c":[10,0,0,0,0,0,1,2,10]
 };

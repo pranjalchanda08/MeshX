@@ -16,7 +16,7 @@ var searchData=
   ['level_5fset_13',['level_set',['../d8/df2/unionmeshx__gen__cli__set__t.html#ad20b771067a0faeee925c9b26a1ee29a',1,'meshx_gen_cli_set_t::level_set'],['../d3/dbf/unionmeshx__gen__srv__state__change__t.html#aac33806f56612734e07a606b2954195c',1,'meshx_gen_srv_state_change_t::level_set']]],
   ['level_5fstatus_14',['level_status',['../d0/d91/unionmeshx__gen__client__status__cb__t.html#a68c4aa94f15962096dcca4c6181850e9',1,'meshx_gen_client_status_cb_t']]],
   ['license_20mpl_20v1_200_15',['MeshX Proprietary License (MPL) v1.0',['../da/d19/md_LICENSE.html',1,'']]],
-  ['license_20strong_16',['&lt;strong&gt;1. Grant of License&lt;/strong&gt;',['../da/d19/md_LICENSE.html#autotoc_md9',1,'']]],
+  ['license_20strong_16',['&lt;strong&gt;1. Grant of License&lt;/strong&gt;',['../da/d19/md_LICENSE.html#autotoc_md6',1,'']]],
   ['license_2emd_17',['LICENSE.md',['../d7/dd2/LICENSE_8md.html',1,'']]],
   ['light_5fctl_5fclient_5finit_5fflag_18',['light_ctl_client_init_flag',['../d8/d93/meshx__light__ctl__client_8c.html#af3a96594a4e83e3c43bb05213bb64d7b',1,'meshx_light_ctl_client.c']]],
   ['light_5fctl_5fclient_5finit_5fmagic_19',['LIGHT_CTL_CLIENT_INIT_MAGIC',['../d8/d93/meshx__light__ctl__client_8c.html#ae118802347c494804896163a052a53e9',1,'meshx_light_ctl_client.c']]],

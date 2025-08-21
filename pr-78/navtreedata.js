@@ -25,16 +25,16 @@
 var NAVTREE =
 [
   [ "MeshX", "index.html", [
-    [ "Features", "index.html#autotoc_md3", null ],
-    [ "Capabilities", "index.html#autotoc_md5", [
-      [ "Server", "index.html#autotoc_md6", null ],
-      [ "Client", "index.html#autotoc_md8", null ]
+    [ "Features", "index.html#autotoc_md5", null ],
+    [ "Capabilities", "index.html#autotoc_md8", [
+      [ "Server", "index.html#autotoc_md9", null ],
+      [ "Client", "index.html#autotoc_md23", null ]
     ] ],
-    [ "Prerequisites", "index.html#autotoc_md12", null ],
-    [ "Build", "index.html#autotoc_md14", null ],
-    [ "Adding a Product to build", "index.html#autotoc_md15", null ],
-    [ "Adding Element, model to build:", "index.html#autotoc_md17", null ],
-    [ "Flashing and monitoring", "index.html#autotoc_md18", null ],
+    [ "Prerequisites", "index.html#autotoc_md24", null ],
+    [ "Build", "index.html#autotoc_md25", null ],
+    [ "Adding a Product to build", "index.html#autotoc_md26", null ],
+    [ "Adding Element, model to build:", "index.html#autotoc_md27", null ],
+    [ "Flashing and monitoring", "index.html#autotoc_md28", null ],
     [ "MeshX Proprietary License (MPL) v1.0", "da/d19/md_LICENSE.html", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [
@@ -71,11 +71,11 @@ var NAVTREEINDEX =
 "d4/de0/meshx__ble__mesh__cmn__def_8h.html#aa0eb714d553ffb8847f12716ef920f60",
 "d5/d3e/structmeshx__config.html#a85f17a1f8218e9f6724209f002b21493",
 "d7/d79/structmeshx__api__light__cwww__client__evt.html#ac66e28ce35c86a073ffa5debe4b5148b",
-"d9/d16/structmeshx__light__hsl__range__status__cb__t.html#adcc955f725889129aa504412b74d10e0",
-"da/dc6/unionctl__status__pack.html#ae47354dbd041586f96ba226985b99b89",
-"dc/d93/meshx__api_8c.html#a8c55b18a6ea8b0f0cde41c0e7dbadf75",
-"de/da0/unionmeshx__cfg__srv__state__change__t.html#afca02c68a19d206841e9fbe7ef6ad805",
-"functions_func.html"
+"d9/d16/structmeshx__light__hsl__range__status__cb__t.html#aacfe703652926daa5c6b4259909b7129",
+"da/dc6/unionctl__status__pack.html#ace902686ad17db4642ddc41901f767ea",
+"dc/d93/meshx__api_8c.html#a8a52a1500b3a0e6e5865775d12ac2004",
+"de/da0/unionmeshx__cfg__srv__state__change__t.html#aee45eace16a7bc4e1dea940f64c44bff",
+"functions_f.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';
