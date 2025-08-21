@@ -424,8 +424,8 @@ static meshx_err_t meshx_relay_client_element_state_change_handler(
 
             el_ctx->state.on_off = !param->on_off_state;
             el_ctx->tid++;
-            MESHX_LOGE(MOD_SRC, "SET|PUBLISH: %d", param->on_off_state);
-            MESHX_LOGE(MOD_SRC, "Next state: %d", el_ctx->state.on_off);
+            MESHX_LOGD(MOD_SRC, "SET|PUBLISH: %d", param->on_off_state);
+            MESHX_LOGD(MOD_SRC, "Next state: %d", el_ctx->state.on_off);
         }
     }
     else
@@ -528,7 +528,7 @@ static meshx_err_t relay_cli_unit_test_cb_handler(int cmd_id, int argc, char **a
     uint8_t set_get = (cmd == RELAY_CLI_CMD_GET) ? MESHX_GEN_ON_OFF_CLI_MSG_GET : MESHX_GEN_ON_OFF_CLI_MSG_SET;
     uint16_t el_id  = UT_GET_ARG(0, uint16_t, argv);
 
-    err = set_get ? meshx_relay_el_set_state(el_id, (cmd == RELAY_CLI_CMD_SET_UNACK)) :
+    err = !set_get ? meshx_relay_el_set_state(el_id, (cmd == RELAY_CLI_CMD_SET)) :
                     meshx_relay_el_get_state(el_id);
     if (err)
     {
