@@ -22,41 +22,32 @@ static uint16_t meshx_client_init_flag = 0;
  * This function is responsible for executing the necessary hardware changes
  * when a BLE Mesh generic server event occurs.
  *
- * @param param Pointer to the BLE Mesh generic server callback parameter structure.
+ * @param[in] param Pointer to the BLE Mesh generic server callback parameter structure.
+ * @param[in] status Status of the operation (success or timeout).
  *
  * @return
  *     - MESHX_SUCCESS: Success
  *     - MESHX_FAIL: Failure
  */
-static meshx_err_t meshx_state_change_notify(meshx_gen_cli_cb_param_t *param)
+static meshx_err_t meshx_state_change_notify(meshx_gen_cli_cb_param_t *param, uint8_t status)
 {
     if (!param)
         return MESHX_INVALID_ARG;
 
-    meshx_on_off_cli_el_msg_t srv_onoff_param = {
-        .err_code = MESHX_SUCCESS,
+    meshx_on_off_cli_el_msg_t cli_onoff_param = {
+        .err_code = status,
+        .evt = param->evt,
         .ctx = param->ctx,
         .model = param->model,
         .on_off_state = param->status.onoff_status.present_onoff
     };
-    if(param->evt == MESHX_GEN_CLI_TIMEOUT)
-    {
-        srv_onoff_param.err_code = MESHX_TIMEOUT;
-    }
 
-    if (MESHX_ADDR_IS_UNICAST(param->ctx.dst_addr)
-    || (MESHX_ADDR_BROADCAST(param->ctx.dst_addr))
-    || (MESHX_ADDR_IS_GROUP(param->ctx.dst_addr)
-    && (MESHX_SUCCESS == meshx_is_group_subscribed(param->model.p_model, param->ctx.dst_addr))))
-    {
-        meshx_err_t err = control_task_msg_publish(
+    return control_task_msg_publish(
             CONTROL_TASK_MSG_CODE_EL_STATE_CH,
             CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF,
-            &srv_onoff_param,
+            &cli_onoff_param,
             sizeof(meshx_on_off_cli_el_msg_t));
-        return err ? err : MESHX_SUCCESS;
-    }
-    return MESHX_NOT_SUPPORTED;
+
 }
 
 /**
@@ -86,20 +77,21 @@ static meshx_err_t meshx_handle_gen_onoff_msg(
     {
         return MESHX_SUCCESS;
     }
-    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "op|src|dst:%04" PRIx32 "|%04x|%04x",
+    MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "op|src|dst:%04" PRIx32 "|%04x|%04x",
                param->ctx.opcode, param->ctx.src_addr, param->ctx.dst_addr);
 
     meshx_err_t err = MESHX_SUCCESS;
 
     switch (param->evt)
     {
+    case MESHX_GEN_CLI_EVT_GET:
     case MESHX_GEN_CLI_EVT_SET:
     case MESHX_GEN_CLI_PUBLISH:
-        err = meshx_state_change_notify(param);
+        err = meshx_state_change_notify(param, MESHX_SUCCESS);
         break;
     case MESHX_GEN_CLI_TIMEOUT:
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Timeout");
-        err = meshx_state_change_notify(param);
+        err = meshx_state_change_notify(param, MESHX_TIMEOUT);
         break;
     default:
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Unhandled event: %d", param->evt);

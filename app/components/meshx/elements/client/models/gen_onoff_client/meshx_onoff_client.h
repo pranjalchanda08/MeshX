@@ -47,6 +47,7 @@ typedef struct meshx_on_off_cli_el_msg
 {
     uint8_t err_code;           /**< Error code */
     uint8_t on_off_state;       /**< The present value of Generic OnOff state */
+    meshx_gen_cli_evt_t evt;    /**< Event type of the received message */
     meshx_ctx_t ctx;            /**< Context of the message */
     meshx_model_t model;        /**< Generic OnOff Server model */
 }meshx_on_off_cli_el_msg_t;
