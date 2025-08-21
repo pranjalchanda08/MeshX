@@ -421,12 +421,17 @@ static meshx_err_t meshx_relay_client_element_state_change_handler(
             {
                 MESHX_LOGE(MOD_SRC, "Failed to send relay state change message: (%d)", err);
             }
-
-            el_ctx->state.on_off = !param->on_off_state;
-            el_ctx->tid++;
-            MESHX_LOGD(MOD_SRC, "SET|PUBLISH: %d", param->on_off_state);
-            MESHX_LOGD(MOD_SRC, "Next state: %d", el_ctx->state.on_off);
         }
+
+        else
+        {
+            MESHX_LOGD(MOD_SRC, "No change in state: %d", param->on_off_state);
+        }
+
+        el_ctx->state.on_off = !param->on_off_state;
+        el_ctx->tid++;
+        MESHX_LOGD(MOD_SRC, "SET|PUBLISH: %d", param->on_off_state);
+        MESHX_LOGD(MOD_SRC, "Next state: %d", el_ctx->state.on_off);
     }
     else
     {
@@ -436,7 +441,7 @@ static meshx_err_t meshx_relay_client_element_state_change_handler(
         el_ctx->tid++;
         err = meshx_relay_cli_send_onoff_msg(pdev,
                                              element_id,
-                                             MESHX_GEN_ON_OFF_CLI_MSG_SET,
+                                             param->evt == MESHX_GEN_CLI_EVT_GET ? MESHX_GEN_ON_OFF_CLI_MSG_GET : MESHX_GEN_ON_OFF_CLI_MSG_SET,
                                              MESHX_GEN_ON_OFF_CLI_MSG_ACK);
         if (err)
         {
@@ -470,7 +475,7 @@ static meshx_err_t meshx_relay_client_to_ble_handler(
 
     if (RELAY_CLI_EL(GET_RELATIVE_EL_IDX(msg->element_id)).cli_ctx->pub_addr == MESHX_ADDR_UNASSIGNED)
     {
-        MESHX_LOGW(MOD_SRC, "No publication address set for element: %d", msg->element_id);
+        MESHX_LOGW(MOD_SRC, "No publish address set for element: %d", msg->element_id);
         return MESHX_INVALID_STATE;
     }
     if (evt == CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF)
@@ -516,7 +521,7 @@ typedef enum
 static meshx_err_t relay_cli_unit_test_cb_handler(int cmd_id, int argc, char **argv)
 {
     meshx_err_t err = MESHX_SUCCESS;
-    MESHX_LOGE(MOD_SRC, "argc|cmd_id: %d|%d", argc, cmd_id);
+    MESHX_LOGD(MOD_SRC, "argc|cmd_id: %d|%d", argc, cmd_id);
     if (argc < 1 || cmd_id >= RELAY_CLI_MAX_CMD)
     {
         MESHX_LOGE(

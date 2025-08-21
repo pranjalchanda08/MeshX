@@ -556,7 +556,7 @@ static meshx_err_t meshx_cwww_client_element_to_ble_handler(
     }
     if (CWWW_CLI_EL(GET_RELATIVE_EL_IDX(msg->element_id)).cwww_cli_ctx->pub_addr == MESHX_ADDR_UNASSIGNED)
     {
-        MESHX_LOGW(MOD_LCC, "No publication address set for element: %d", msg->element_id);
+        MESHX_LOGW(MOD_LCC, "No publish address set for element: %d", msg->element_id);
         return MESHX_INVALID_STATE;
     }
     if(evt == CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF)
