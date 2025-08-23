@@ -73,7 +73,7 @@ meshx_err_t meshx_gen_srv_status_send(
     meshx_gen_srv_state_change_t state_change,
     size_t data_len)
 {
-    if (!p_model || !p_ctx)
+    if (!p_model || !p_ctx || p_ctx->dst_addr == MESHX_ADDR_UNASSIGNED)
         return MESHX_INVALID_ARG;
     if (meshx_is_status_in_gen_srv_grp((uint16_t)p_ctx->opcode) != MESHX_SUCCESS)
         return MESHX_INVALID_ARG;

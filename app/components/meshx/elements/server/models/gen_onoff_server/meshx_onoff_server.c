@@ -127,10 +127,10 @@ static meshx_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_
     }
     if (send_reply
         /* This is meant to notify the respective publish client */
-        || param->ctx.dst_addr != param->model.pub_addr)
+        || param->ctx.src_addr != param->model.pub_addr)
     {
         /* Here the message was received from unregistered source and mention the state to the respective client */
-        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "PUB: src|pub %x|%x", param->ctx.dst_addr, param->model.pub_addr);
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "PUB: src|pub %x|%x", param->ctx.src_addr, param->model.pub_addr);
         param->ctx.opcode = MESHX_MODEL_OP_GEN_ONOFF_STATUS;
         param->ctx.dst_addr = param->model.pub_addr;
 

@@ -236,7 +236,7 @@ static meshx_err_t relay_client_config_cli_cb(
     bool nvs_save = false;
     meshx_get_base_element_id(&base_el_id);
 
-    MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "EVT: %p", (void *)evt);
+    MESHX_LOGD(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "EVT: %p", (void *)evt);
     switch (evt)
     {
     case CONTROL_TASK_MSG_EVT_APP_KEY_BIND:
