@@ -429,24 +429,12 @@ static meshx_err_t meshx_relay_client_element_state_change_handler(
         }
 
         el_ctx->state.on_off = !param->on_off_state;
-        el_ctx->tid++;
         MESHX_LOGD(MOD_SRC, "SET|PUBLISH: %d", param->on_off_state);
         MESHX_LOGD(MOD_SRC, "Next state: %d", el_ctx->state.on_off);
     }
     else
     {
         MESHX_LOGE(MOD_SRC, "Relay Client Element Message: Error (%d)", param->err_code);
-        /* Retry sending the failed packet. Do not notify App */
-        /* Please note that the failed packets gets sent endlessly. Hence, a loop condition */
-        el_ctx->tid++;
-        err = meshx_relay_cli_send_onoff_msg(pdev,
-                                             element_id,
-                                             param->evt == MESHX_GEN_CLI_EVT_GET ? MESHX_GEN_ON_OFF_CLI_MSG_GET : MESHX_GEN_ON_OFF_CLI_MSG_SET,
-                                             MESHX_GEN_ON_OFF_CLI_MSG_ACK);
-        if (err)
-        {
-            MESHX_LOGE(MOD_SRC, "Relay Client Element Message: Retry failed (%d)", err);
-        }
     }
     return MESHX_SUCCESS;
 }

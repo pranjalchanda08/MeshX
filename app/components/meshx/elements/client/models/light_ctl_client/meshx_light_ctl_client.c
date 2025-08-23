@@ -17,6 +17,15 @@
 
 static uint16_t light_ctl_client_init_flag = 0;
 
+static struct{
+    uint16_t addr;
+    uint16_t opcode;
+    uint16_t net_idx;
+    uint16_t app_idx;
+    meshx_ptr_t p_model;
+    meshx_light_client_set_state_t state;
+} light_ctl_client_last_msg_ctx;
+
 /**
  * @brief Notifies about a change in the CTL (Color Temperature Lightness) state.
  *
@@ -44,17 +53,17 @@ static meshx_err_t meshx_ctl_state_change_notify(meshx_gen_light_cli_cb_param_t 
         el_light_ctl_param.ctl_state.temperature = param->status.ctl_status.present_ctl_temperature;
         break;
     case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS:
-        el_light_ctl_param.ctl_state.temperature = param->status.ctl_temperature_status.present_ctl_temperature;
         el_light_ctl_param.ctl_state.delta_uv = param->status.ctl_temperature_status.present_ctl_delta_uv;
+        el_light_ctl_param.ctl_state.temperature = param->status.ctl_temperature_status.present_ctl_temperature;
         break;
     case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS:
-        el_light_ctl_param.ctl_state.temperature = param->status.ctl_temperature_range_status.range_min;
         el_light_ctl_param.ctl_state.delta_uv = param->status.ctl_temperature_range_status.range_max;
+        el_light_ctl_param.ctl_state.temperature = param->status.ctl_temperature_range_status.range_min;
         break;
     case MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS:
+        el_light_ctl_param.ctl_state.delta_uv = param->status.ctl_default_status.delta_uv;
         el_light_ctl_param.ctl_state.lightness = param->status.ctl_default_status.lightness;
         el_light_ctl_param.ctl_state.temperature = param->status.ctl_default_status.temperature;
-        el_light_ctl_param.ctl_state.delta_uv = param->status.ctl_default_status.delta_uv;
         break;
 
     default:
@@ -65,18 +74,62 @@ static meshx_err_t meshx_ctl_state_change_notify(meshx_gen_light_cli_cb_param_t 
         el_light_ctl_param.err_code = MESHX_TIMEOUT;
     }
 
-    if (MESHX_ADDR_IS_UNICAST(param->ctx.dst_addr)
-    || (MESHX_ADDR_BROADCAST(param->ctx.dst_addr))
-    || (MESHX_ADDR_IS_GROUP(param->ctx.dst_addr)
-    && (MESHX_SUCCESS == meshx_is_group_subscribed(param->model.p_model, param->ctx.dst_addr))))
+    return control_task_msg_publish(
+        CONTROL_TASK_MSG_CODE_EL_STATE_CH,
+        CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL,
+        &el_light_ctl_param,
+        sizeof(meshx_ctl_cli_el_msg_t));
+
+}
+
+/**
+ * @brief Handle timeout for relaying the last Light CTL message.
+ *
+ * This function is called when a timeout occurs while waiting for an acknowledgment
+ * for the last sent Light CTL message. It attempts to resend the message using the
+ * stored context information.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
+ */
+static meshx_err_t meshx_light_ctl_client_timeout_handler(void)
+{
+    if(!light_ctl_client_last_msg_ctx.p_model)
+        return MESHX_INVALID_STATE;
+
+    MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Timeout");
+
+    switch (light_ctl_client_last_msg_ctx.opcode)
     {
-        return control_task_msg_publish(
-            CONTROL_TASK_MSG_CODE_EL_STATE_CH,
-            CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL,
-            &el_light_ctl_param,
-            sizeof(meshx_ctl_cli_el_msg_t));
+        case MESHX_MODEL_OP_LIGHT_CTL_GET:
+        case MESHX_MODEL_OP_LIGHT_CTL_SET:
+        case MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK:
+            return meshx_light_ctl_client_send_msg(
+                light_ctl_client_last_msg_ctx.p_model,
+                light_ctl_client_last_msg_ctx.opcode,
+                light_ctl_client_last_msg_ctx.addr,
+                light_ctl_client_last_msg_ctx.net_idx,
+                light_ctl_client_last_msg_ctx.app_idx,
+                light_ctl_client_last_msg_ctx.state.ctl_set.ctl_lightness,
+                light_ctl_client_last_msg_ctx.state.ctl_set.ctl_temperature,
+                light_ctl_client_last_msg_ctx.state.ctl_set.ctl_delta_uv,
+                light_ctl_client_last_msg_ctx.state.ctl_set.tid
+            );
+        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET:
+        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET:
+        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK:
+            return meshx_light_ctl_temperature_client_send_msg(
+                light_ctl_client_last_msg_ctx.p_model,
+                light_ctl_client_last_msg_ctx.opcode,
+                light_ctl_client_last_msg_ctx.addr,
+                light_ctl_client_last_msg_ctx.net_idx,
+                light_ctl_client_last_msg_ctx.app_idx,
+                light_ctl_client_last_msg_ctx.state.ctl_set.ctl_temperature,
+                light_ctl_client_last_msg_ctx.state.ctl_set.ctl_delta_uv,
+                light_ctl_client_last_msg_ctx.state.ctl_set.tid
+            );
+        default:
+            return MESHX_INVALID_STATE;
     }
-    return MESHX_NOT_SUPPORTED;
 }
 
 /**
@@ -115,12 +168,12 @@ static meshx_err_t meshx_handle_gen_light_msg(
         }
         break;
     case MESHX_GEN_LIGHT_CLI_TIMEOUT:
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Timeout");
-        err = meshx_ctl_state_change_notify(param);
-        if (err)
-        {
-            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Failed to notify state change: %d", err);
-        }
+        err = meshx_light_ctl_client_timeout_handler();
+        if(err != MESHX_SUCCESS)
+            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Resend failed: %d", err);
+
+        else
+            err = meshx_ctl_state_change_notify(param);
         break;
     default:
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Unknown event: %d", param->evt);
@@ -284,7 +337,13 @@ meshx_err_t meshx_light_ctl_client_send_msg(
     {
         return MESHX_INVALID_ARG; // Invalid model pointer
     }
-    
+
+    light_ctl_client_last_msg_ctx.addr = addr;
+    light_ctl_client_last_msg_ctx.opcode = opcode;
+    light_ctl_client_last_msg_ctx.net_idx = net_idx;
+    light_ctl_client_last_msg_ctx.app_idx = app_idx;
+    light_ctl_client_last_msg_ctx.p_model = model;
+
     if (opcode == MESHX_MODEL_OP_LIGHT_CTL_GET)
     {
         err = meshx_gen_light_send_msg(
@@ -302,6 +361,8 @@ meshx_err_t meshx_light_ctl_client_send_msg(
         set.ctl_set.ctl_delta_uv    = delta_uv;
         set.ctl_set.ctl_lightness   = lightness;
         set.ctl_set.ctl_temperature = temperature;
+
+        memcpy(&light_ctl_client_last_msg_ctx.state, &set, sizeof(meshx_light_client_set_state_t));
 
         err = meshx_gen_light_send_msg(
             model->meshx_light_ctl_client_sig_model,
@@ -345,13 +406,35 @@ meshx_err_t meshx_light_ctl_temperature_client_send_msg(
     meshx_err_t err;
     meshx_light_client_set_state_t set = {0};
 
-    if (opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET ||
+    if (!model || !model->meshx_light_ctl_client_sig_model)
+    {
+        return MESHX_INVALID_ARG; // Invalid model pointer
+    }
+
+    light_ctl_client_last_msg_ctx.addr = addr;
+    light_ctl_client_last_msg_ctx.opcode = opcode;
+    light_ctl_client_last_msg_ctx.net_idx = net_idx;
+    light_ctl_client_last_msg_ctx.app_idx = app_idx;
+    light_ctl_client_last_msg_ctx.p_model = model;
+
+    if (opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET)
+    {
+        err = meshx_gen_light_send_msg(
+            model->meshx_light_ctl_client_sig_model,
+            &set, opcode,
+            addr, net_idx,
+            app_idx
+        );
+    }
+    else if (opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET ||
         opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK)
     {
         set.ctl_set.tid   = tid;
         set.ctl_set.op_en = false;
         set.ctl_set.ctl_delta_uv    = delta_uv;
         set.ctl_set.ctl_temperature = temperature;
+
+        memcpy(&light_ctl_client_last_msg_ctx.state, &set, sizeof(meshx_light_client_set_state_t));
 
         err = meshx_gen_light_send_msg(
             model->meshx_light_ctl_client_sig_model,

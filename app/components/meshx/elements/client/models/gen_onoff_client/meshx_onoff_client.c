@@ -16,6 +16,15 @@
 
 static uint16_t meshx_client_init_flag = 0;
 
+static struct{
+    uint16_t addr;
+    uint16_t opcode;
+    uint16_t net_idx;
+    uint16_t app_idx;
+    meshx_ptr_t p_model;
+    meshx_gen_cli_set_t state;
+}onoff_client_last_msg_ctx;
+
 /**
  * @brief Perform hardware change based on the BLE Mesh generic server callback parameter.
  *
@@ -36,7 +45,6 @@ static meshx_err_t meshx_state_change_notify(meshx_gen_cli_cb_param_t *param, ui
 
     meshx_on_off_cli_el_msg_t cli_onoff_param = {
         .err_code = status,
-        .evt = param->evt,
         .ctx = param->ctx,
         .model = param->model,
         .on_off_state = param->status.onoff_status.present_onoff
@@ -48,6 +56,33 @@ static meshx_err_t meshx_state_change_notify(meshx_gen_cli_cb_param_t *param, ui
             &cli_onoff_param,
             sizeof(meshx_on_off_cli_el_msg_t));
 
+}
+
+/**
+ * @brief Handle timeout for relaying the last OnOff message.
+ *
+ * This function is called when a timeout occurs while waiting for an acknowledgment
+ * for the last sent OnOff message. It attempts to resend the message using the
+ * stored context information.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
+ */
+static meshx_err_t meshx_relay_client_timeout_handler(void)
+{
+    if(!onoff_client_last_msg_ctx.p_model)
+        return MESHX_INVALID_STATE;
+
+    MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Timeout");
+
+    return meshx_onoff_client_send_msg(
+        onoff_client_last_msg_ctx.p_model,
+        onoff_client_last_msg_ctx.opcode,
+        onoff_client_last_msg_ctx.addr,
+        onoff_client_last_msg_ctx.net_idx,
+        onoff_client_last_msg_ctx.app_idx,
+        onoff_client_last_msg_ctx.state.onoff_set.onoff,
+        onoff_client_last_msg_ctx.state.onoff_set.tid
+    );
 }
 
 /**
@@ -90,8 +125,11 @@ static meshx_err_t meshx_handle_gen_onoff_msg(
         err = meshx_state_change_notify(param, MESHX_SUCCESS);
         break;
     case MESHX_GEN_CLI_TIMEOUT:
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Timeout");
-        err = meshx_state_change_notify(param, MESHX_TIMEOUT);
+        err = meshx_relay_client_timeout_handler();
+        if(err != MESHX_SUCCESS)
+            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Resend failed: %d", err);
+        else
+            err = meshx_state_change_notify(param, MESHX_TIMEOUT);
         break;
     default:
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Unhandled event: %d", param->evt);
@@ -231,6 +269,12 @@ meshx_err_t meshx_onoff_client_send_msg(
         return MESHX_INVALID_ARG;
     }
 
+    onoff_client_last_msg_ctx.addr = addr;
+    onoff_client_last_msg_ctx.opcode = opcode;
+    onoff_client_last_msg_ctx.p_model = model;
+    onoff_client_last_msg_ctx.net_idx = net_idx;
+    onoff_client_last_msg_ctx.app_idx = app_idx;
+
     if(opcode == MESHX_MODEL_OP_GEN_ONOFF_GET)
     {
         err = meshx_gen_cli_send_msg(
@@ -247,6 +291,8 @@ meshx_err_t meshx_onoff_client_send_msg(
         set.onoff_set.tid   = tid;
         set.onoff_set.onoff = state;
         set.onoff_set.op_en = false;
+
+        memcpy(&onoff_client_last_msg_ctx.state, &set, sizeof(meshx_gen_cli_set_t));
 
         err = meshx_gen_cli_send_msg(
             model->meshx_onoff_client_sig_model,
