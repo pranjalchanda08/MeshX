@@ -595,55 +595,53 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno"> 1101</span>        <span class="keywordflow">return</span> err;</div>
 <div class="line"><span class="lineno"> 1102</span>    }</div>
 <div class="line"><span class="lineno"> 1103</span> </div>
-<div class="line"><span class="lineno"> 1104</span><span class="preprocessor">#if CWWW_CLI_MESHX_ONOFF_ENABLE_CB</span></div>
-<div class="line"><span class="lineno"> 1105</span><span class="preprocessor">#if CONFIG_ENABLE_CONFIG_SERVER</span></div>
-<div class="line"><span class="lineno"> 1106</span>    err = <a class="code hl_function" href="../../dd/d79/meshx__config__server_8c.html#aea136e2f0520f4f57129778288f17ec9">meshx_config_server_cb_reg</a>(</div>
-<div class="line"><span class="lineno"> 1107</span>        (<a class="code hl_typedef" href="../../db/d5f/meshx__ble__mesh__config__srv_8h.html#af61081fb702cca463595724960ae6410">config_srv_cb_t</a>) &amp;cwww_client_config_srv_cb,</div>
-<div class="line"><span class="lineno"> 1108</span>        <a class="code hl_define" href="#a0983d7745dcb50ce2c0639619ac08442">CONFIG_SERVER_CB_MASK</a>);</div>
-<div class="line"><span class="lineno"> 1109</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno"> 1110</span>    {</div>
-<div class="line"><span class="lineno"> 1111</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Light CWWW config server callback reg failed: (%d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno"> 1112</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno"> 1113</span>    }</div>
-<div class="line"><span class="lineno"> 1114</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_ENABLE_CONFIG_SERVER */</span><span class="preprocessor"></span></div>
-<div class="line"><span class="lineno"> 1115</span> </div>
-<div class="line"><span class="lineno"> 1116</span><span class="preprocessor">#if defined(__MESHX_CONTROL_TASK__)</span></div>
-<div class="line"><span class="lineno"> 1117</span>    <span class="comment">/* Register control task callback */</span></div>
-<div class="line"><span class="lineno"> 1118</span>    err = <a class="code hl_function" href="#aa09d5950f3239006aea437cebe41c6b9">meshx_cwww_cli_reg_app_req_cb</a>();</div>
-<div class="line"><span class="lineno"> 1119</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno"> 1120</span>    {</div>
-<div class="line"><span class="lineno"> 1121</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;control task callback reg failed: (%d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno"> 1122</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno"> 1123</span>    }</div>
-<div class="line"><span class="lineno"> 1124</span>    <span class="comment">/* Register element state change callback */</span></div>
-<div class="line"><span class="lineno"> 1125</span>    err = <a class="code hl_function" href="#a0f44c18340482bed497e5c388fcb6748">meshx_cwww_cli_el_state_change_reg_cb</a>();</div>
-<div class="line"><span class="lineno"> 1126</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno"> 1127</span>    {</div>
-<div class="line"><span class="lineno"> 1128</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;element state change callback reg failed: (%d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno"> 1129</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno"> 1130</span>    }</div>
-<div class="line"><span class="lineno"> 1131</span>    <span class="comment">/* Register freshboot control task callback */</span></div>
-<div class="line"><span class="lineno"> 1132</span>    err = <a class="code hl_function" href="#ad44d27c2b9e797342e27cc923638eec2">meshx_cwww_cli_reg_freshboot_cb</a>(</div>
-<div class="line"><span class="lineno"> 1133</span>        (<a class="code hl_typedef" href="../../da/db3/meshx__control__task_8h.html#a579fb3e74e48372bcc0489cd86c56614">control_task_msg_handle_t</a>)&amp;cwww_cli_freshboot_control_task_msg_handle);</div>
-<div class="line"><span class="lineno"> 1134</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno"> 1135</span>    {</div>
-<div class="line"><span class="lineno"> 1136</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;control task callback reg failed: (%d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno"> 1137</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno"> 1138</span>    }</div>
-<div class="line"><span class="lineno"> 1139</span> </div>
-<div class="line"><span class="lineno"> 1140</span><span class="preprocessor">#endif </span><span class="comment">/* __MESHX_CONTROL_TASK__ */</span><span class="preprocessor"></span></div>
-<div class="line"><span class="lineno"> 1141</span><span class="preprocessor">#if CONFIG_ENABLE_UNIT_TEST</span></div>
-<div class="line"><span class="lineno"> 1142</span>    err = <a class="code hl_function" href="../../da/dd5/unit__test_8c.html#a763886d5c865bfc15d5693604c5f5923">register_unit_test</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcadbe48da89935bb0f28e9a42b4d27fd1c">MODULE_ID_ELEMENT_LIGHT_CWWWW_CLIENT</a>, &amp;cwww_cli_unit_test_cb_handler);</div>
-<div class="line"><span class="lineno"> 1143</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno"> 1144</span>    {</div>
-<div class="line"><span class="lineno"> 1145</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;unit_test reg failed: (%d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno"> 1146</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno"> 1147</span>    }</div>
-<div class="line"><span class="lineno"> 1148</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_ENABLE_UNIT_TEST */</span><span class="preprocessor"></span></div>
-<div class="line"><span class="lineno"> 1149</span><span class="preprocessor">#endif </span><span class="comment">/* CWWW_CLI_MESHX_ONOFF_ENABLE_CB */</span><span class="preprocessor"></span></div>
-<div class="line"><span class="lineno"> 1150</span> </div>
-<div class="line"><span class="lineno"> 1151</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno"> 1152</span>}</div>
+<div class="line"><span class="lineno"> 1104</span><span class="preprocessor">#if CONFIG_ENABLE_CONFIG_SERVER</span></div>
+<div class="line"><span class="lineno"> 1105</span>    err = <a class="code hl_function" href="../../dd/d79/meshx__config__server_8c.html#aea136e2f0520f4f57129778288f17ec9">meshx_config_server_cb_reg</a>(</div>
+<div class="line"><span class="lineno"> 1106</span>        (<a class="code hl_typedef" href="../../db/d5f/meshx__ble__mesh__config__srv_8h.html#af61081fb702cca463595724960ae6410">config_srv_cb_t</a>) &amp;cwww_client_config_srv_cb,</div>
+<div class="line"><span class="lineno"> 1107</span>        <a class="code hl_define" href="#a0983d7745dcb50ce2c0639619ac08442">CONFIG_SERVER_CB_MASK</a>);</div>
+<div class="line"><span class="lineno"> 1108</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno"> 1109</span>    {</div>
+<div class="line"><span class="lineno"> 1110</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Light CWWW config server callback reg failed: (%d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno"> 1111</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno"> 1112</span>    }</div>
+<div class="line"><span class="lineno"> 1113</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_ENABLE_CONFIG_SERVER */</span><span class="preprocessor"></span></div>
+<div class="line"><span class="lineno"> 1114</span> </div>
+<div class="line"><span class="lineno"> 1115</span><span class="preprocessor">#if defined(__MESHX_CONTROL_TASK__)</span></div>
+<div class="line"><span class="lineno"> 1116</span>    <span class="comment">/* Register control task callback */</span></div>
+<div class="line"><span class="lineno"> 1117</span>    err = <a class="code hl_function" href="#aa09d5950f3239006aea437cebe41c6b9">meshx_cwww_cli_reg_app_req_cb</a>();</div>
+<div class="line"><span class="lineno"> 1118</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno"> 1119</span>    {</div>
+<div class="line"><span class="lineno"> 1120</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;control task callback reg failed: (%d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno"> 1121</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno"> 1122</span>    }</div>
+<div class="line"><span class="lineno"> 1123</span>    <span class="comment">/* Register element state change callback */</span></div>
+<div class="line"><span class="lineno"> 1124</span>    err = <a class="code hl_function" href="#a0f44c18340482bed497e5c388fcb6748">meshx_cwww_cli_el_state_change_reg_cb</a>();</div>
+<div class="line"><span class="lineno"> 1125</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno"> 1126</span>    {</div>
+<div class="line"><span class="lineno"> 1127</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;element state change callback reg failed: (%d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno"> 1128</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno"> 1129</span>    }</div>
+<div class="line"><span class="lineno"> 1130</span>    <span class="comment">/* Register freshboot control task callback */</span></div>
+<div class="line"><span class="lineno"> 1131</span>    err = <a class="code hl_function" href="#ad44d27c2b9e797342e27cc923638eec2">meshx_cwww_cli_reg_freshboot_cb</a>(</div>
+<div class="line"><span class="lineno"> 1132</span>        (<a class="code hl_typedef" href="../../da/db3/meshx__control__task_8h.html#a579fb3e74e48372bcc0489cd86c56614">control_task_msg_handle_t</a>)&amp;cwww_cli_freshboot_control_task_msg_handle);</div>
+<div class="line"><span class="lineno"> 1133</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno"> 1134</span>    {</div>
+<div class="line"><span class="lineno"> 1135</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;control task callback reg failed: (%d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno"> 1136</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno"> 1137</span>    }</div>
+<div class="line"><span class="lineno"> 1138</span> </div>
+<div class="line"><span class="lineno"> 1139</span><span class="preprocessor">#endif </span><span class="comment">/* __MESHX_CONTROL_TASK__ */</span><span class="preprocessor"></span></div>
+<div class="line"><span class="lineno"> 1140</span><span class="preprocessor">#if CONFIG_ENABLE_UNIT_TEST</span></div>
+<div class="line"><span class="lineno"> 1141</span>    err = <a class="code hl_function" href="../../da/dd5/unit__test_8c.html#a763886d5c865bfc15d5693604c5f5923">register_unit_test</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcadbe48da89935bb0f28e9a42b4d27fd1c">MODULE_ID_ELEMENT_LIGHT_CWWWW_CLIENT</a>, &amp;cwww_cli_unit_test_cb_handler);</div>
+<div class="line"><span class="lineno"> 1142</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno"> 1143</span>    {</div>
+<div class="line"><span class="lineno"> 1144</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;unit_test reg failed: (%d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno"> 1145</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno"> 1146</span>    }</div>
+<div class="line"><span class="lineno"> 1147</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_ENABLE_UNIT_TEST */</span><span class="preprocessor"></span></div>
+<div class="line"><span class="lineno"> 1148</span> </div>
+<div class="line"><span class="lineno"> 1149</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno"> 1150</span>}</div>
 <div class="ttc" id="ameshx__ble__mesh__config__srv_8h_html_af61081fb702cca463595724960ae6410"><div class="ttname"><a href="../../db/d5f/meshx__ble__mesh__config__srv_8h.html#af61081fb702cca463595724960ae6410">config_srv_cb_t</a></div><div class="ttdeci">control_task_msg_handle_t config_srv_cb_t</div><div class="ttdef"><b>Definition</b> <a href="../../db/d5f/meshx__ble__mesh__config__srv_8h_source.html#l00020">meshx_ble_mesh_config_srv.h:20</a></div></div>
 <div class="ttc" id="ameshx__config__server_8c_html_aea136e2f0520f4f57129778288f17ec9"><div class="ttname"><a href="../../dd/d79/meshx__config__server_8c.html#aea136e2f0520f4f57129778288f17ec9">meshx_config_server_cb_reg</a></div><div class="ttdeci">meshx_err_t meshx_config_server_cb_reg(config_srv_cb_t cb, uint32_t config_evt_bmap)</div><div class="ttdoc">Registers a configuration server callback for specific events.</div><div class="ttdef"><b>Definition</b> <a href="../../dd/d79/meshx__config__server_8c_source.html#l00117">meshx_config_server.c:117</a></div></div>
 <div class="ttc" id="ameshx__control__task_8h_html_a579fb3e74e48372bcc0489cd86c56614"><div class="ttname"><a href="../../da/db3/meshx__control__task_8h.html#a579fb3e74e48372bcc0489cd86c56614">control_task_msg_handle_t</a></div><div class="ttdeci">meshx_err_t(* control_task_msg_handle_t)(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)</div><div class="ttdoc">Function pointer type for control task message handler.</div><div class="ttdef"><b>Definition</b> <a href="../../da/db3/meshx__control__task_8h_source.html#l00163">meshx_control_task.h:163</a></div></div>
@@ -1742,7 +1740,7 @@ Here is the call graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d422163b96683743ed3963d4aac17747.html">app</a></li><li class="navelem"><a class="el" href="../../dir_c65bd19e757d26cf4d732c1ae0727ae8.html">components</a></li><li class="navelem"><a class="el" href="../../dir_f203b345362cbfbb0face6aabfa16576.html">meshx</a></li><li class="navelem"><a class="el" href="../../dir_c2430d1846e6737dc28beab6505d1845.html">elements</a></li><li class="navelem"><a class="el" href="../../dir_c209dcfeb944a2f94c0266369fc78d3a.html">client</a></li><li class="navelem"><a class="el" href="../../dir_1d3f863ec080f51b4cd359f0bbe5268f.html">light_cwww_client</a></li><li class="navelem"><a class="el" href="../../d0/d53/meshx__light__cwww__client_8c.html">meshx_light_cwww_client.c</a></li>
-    <li class="footer">Generated on Sat Aug 23 2025 20:32:16 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Sat Aug 23 2025 21:55:50 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

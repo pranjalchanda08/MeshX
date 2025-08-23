@@ -663,14 +663,13 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  256</span>            <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a4d423ab700ffdf5440a1f0579beba8af">MESHX_FAIL</a>;</div>
 <div class="line"><span class="lineno">  257</span>        }</div>
 <div class="line"><span class="lineno">  258</span>    }</div>
-<div class="line"><span class="lineno">  259</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno">  259</span>    <span class="keywordflow">if</span> (!err)</div>
 <div class="line"><span class="lineno">  260</span>    {</div>
-<div class="line"><span class="lineno">  261</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca5628249bd2455f73adf12f54e7aed50b">MODULE_ID_MODEL_CLIENT</a>, <span class="stringliteral">&quot;Send Generic OnOff failed: %d&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  262</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a4d423ab700ffdf5440a1f0579beba8af">MESHX_FAIL</a>;</div>
-<div class="line"><span class="lineno">  263</span>    }</div>
-<div class="line"><span class="lineno">  264</span> </div>
-<div class="line"><span class="lineno">  265</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  266</span>}</div>
+<div class="line"><span class="lineno">  261</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca5628249bd2455f73adf12f54e7aed50b">MODULE_ID_MODEL_CLIENT</a>, <span class="stringliteral">&quot;Client Send Success&quot;</span>);</div>
+<div class="line"><span class="lineno">  262</span>    }</div>
+<div class="line"><span class="lineno">  263</span> </div>
+<div class="line"><span class="lineno">  264</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  265</span>}</div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a></div><div class="ttdeci">@ MESHX_INVALID_ARG</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00040">meshx_err.h:40</a></div></div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6a4d423ab700ffdf5440a1f0579beba8af"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a4d423ab700ffdf5440a1f0579beba8af">MESHX_FAIL</a></div><div class="ttdeci">@ MESHX_FAIL</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00039">meshx_err.h:39</a></div></div>
 <div class="ttc" id="ameshx__onoff__client_8c_html_a05e6095e82931bbbb1cdbc4fad94e164"><div class="ttname"><a href="../../d9/d33/meshx__onoff__client_8c.html#a05e6095e82931bbbb1cdbc4fad94e164">p_model</a></div><div class="ttdeci">meshx_ptr_t p_model</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d33/meshx__onoff__client_8c_source.html#l00024">meshx_onoff_client.c:24</a></div></div>
@@ -866,7 +865,7 @@ Here is the caller graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d422163b96683743ed3963d4aac17747.html">app</a></li><li class="navelem"><a class="el" href="../../dir_c65bd19e757d26cf4d732c1ae0727ae8.html">components</a></li><li class="navelem"><a class="el" href="../../dir_f203b345362cbfbb0face6aabfa16576.html">meshx</a></li><li class="navelem"><a class="el" href="../../dir_d24ad6c4a192a3ba4b1a0e363bfe1d8a.html">port</a></li><li class="navelem"><a class="el" href="../../dir_0834675ef321cf6fd4931c016094b252.html">esp_idf</a></li><li class="navelem"><a class="el" href="../../dir_bd1c37b6f623a44dd229a05224e4a7c0.html">ble_mesh</a></li><li class="navelem"><a class="el" href="../../dir_38cc9c580476fc04f9784cea7a36e2d9.html">model</a></li><li class="navelem"><a class="el" href="../../dir_e42598467eda3182c15c89983f12567f.html">client</a></li><li class="navelem"><a class="el" href="../../d0/de1/esp__gen__cli__model_8c.html">esp_gen_cli_model.c</a></li>
-    <li class="footer">Generated on Sat Aug 23 2025 20:32:16 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Sat Aug 23 2025 21:55:50 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>
