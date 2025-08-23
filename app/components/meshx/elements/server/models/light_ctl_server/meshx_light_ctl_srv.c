@@ -169,10 +169,10 @@ static meshx_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
     }
     if (send_reply_to_src
         /* This is meant to notify the respective publish client */
-        || param->ctx.dst_addr != param->model.pub_addr)
+        || param->ctx.src_addr != param->model.pub_addr)
     {
         /* Here the message was received from unregistered source and mention the state to the respective client */
-        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "PUB: src|pub %x|%x", param->ctx.dst_addr, param->model.pub_addr);
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "PUB: src|pub %x|%x", param->ctx.src_addr, param->model.pub_addr);
         param->ctx.opcode = (uint16_t)status_op;
         param->ctx.dst_addr = param->model.pub_addr;
 

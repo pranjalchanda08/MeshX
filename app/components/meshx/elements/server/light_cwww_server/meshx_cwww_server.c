@@ -66,7 +66,7 @@ static meshx_err_t cwww_server_config_srv_cb(
     bool nvs_save = false;
     uint16_t base_el_id = 0;
     meshx_get_base_element_id(&base_el_id);
-    MESHX_LOGD(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "EVT: %p", (void *)evt);
+
     switch (evt)
     {
     case CONTROL_TASK_MSG_EVT_APP_KEY_BIND:
