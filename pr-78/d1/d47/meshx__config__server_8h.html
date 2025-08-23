@@ -261,7 +261,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a05303b3102bbe45472c410971abbb4b8" id="r_a05303b3102bbe45472c410971abbb4b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05303b3102bbe45472c410971abbb4b8">meshx_get_config_srv_model</a> (void *p_model)</td></tr>
+<tr class="memitem:a05303b3102bbe45472c410971abbb4b8" id="r_a05303b3102bbe45472c410971abbb4b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05303b3102bbe45472c410971abbb4b8">meshx_get_config_srv_model</a> (void *<a class="el" href="../../d9/d33/meshx__onoff__client_8c.html#a05e6095e82931bbbb1cdbc4fad94e164">p_model</a>)</td></tr>
 <tr class="memdesc:a05303b3102bbe45472c410971abbb4b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the configuration server model for the MeshX framework.  <br /></td></tr>
 <tr class="separator:a05303b3102bbe45472c410971abbb4b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5db6e39fb553745391aeb81d43374a46" id="r_a5db6e39fb553745391aeb81d43374a46"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5db6e39fb553745391aeb81d43374a46">meshx_init_config_server</a> (void)</td></tr>
@@ -434,9 +434,10 @@ Here is the call graph for this function:</div>
 
 <p class="definition">Definition at line <a class="el" href="../../dd/d79/meshx__config__server_8c_source.html#l00166">166</a> of file <a class="el" href="../../dd/d79/meshx__config__server_8c_source.html">meshx_config_server.c</a>.</p>
 <div class="fragment"><div class="line"><span class="lineno">  167</span>{</div>
-<div class="line"><span class="lineno">  168</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../db/d5f/meshx__ble__mesh__config__srv_8h.html#adea412cba99b217b17654a0ac0749634">meshx_plat_get_config_srv_model</a>(p_model);</div>
+<div class="line"><span class="lineno">  168</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../db/d5f/meshx__ble__mesh__config__srv_8h.html#adea412cba99b217b17654a0ac0749634">meshx_plat_get_config_srv_model</a>(<a class="code hl_variable" href="../../d9/d33/meshx__onoff__client_8c.html#a05e6095e82931bbbb1cdbc4fad94e164">p_model</a>);</div>
 <div class="line"><span class="lineno">  169</span>}</div>
 <div class="ttc" id="ameshx__ble__mesh__config__srv_8h_html_adea412cba99b217b17654a0ac0749634"><div class="ttname"><a href="../../db/d5f/meshx__ble__mesh__config__srv_8h.html#adea412cba99b217b17654a0ac0749634">meshx_plat_get_config_srv_model</a></div><div class="ttdeci">meshx_err_t meshx_plat_get_config_srv_model(meshx_ptr_t p_model)</div><div class="ttdoc">Retrieves the configuration server model for the BLE Mesh.</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d28/esp__cfg__srv__model_8c_source.html#l00119">esp_cfg_srv_model.c:119</a></div></div>
+<div class="ttc" id="ameshx__onoff__client_8c_html_a05e6095e82931bbbb1cdbc4fad94e164"><div class="ttname"><a href="../../d9/d33/meshx__onoff__client_8c.html#a05e6095e82931bbbb1cdbc4fad94e164">p_model</a></div><div class="ttdeci">meshx_ptr_t p_model</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d33/meshx__onoff__client_8c_source.html#l00024">meshx_onoff_client.c:24</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -546,7 +547,7 @@ Here is the caller graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d422163b96683743ed3963d4aac17747.html">app</a></li><li class="navelem"><a class="el" href="../../dir_c65bd19e757d26cf4d732c1ae0727ae8.html">components</a></li><li class="navelem"><a class="el" href="../../dir_f203b345362cbfbb0face6aabfa16576.html">meshx</a></li><li class="navelem"><a class="el" href="../../dir_c2430d1846e6737dc28beab6505d1845.html">elements</a></li><li class="navelem"><a class="el" href="../../dir_f70d4cb5ff268b8be3bc8afcf2a860df.html">server</a></li><li class="navelem"><a class="el" href="../../dir_52fa0432d7de8f815bb07a3ff7339bba.html">models</a></li><li class="navelem"><a class="el" href="../../dir_6e79503361fca7a4cf6a24450c66f328.html">config_server</a></li><li class="navelem"><a class="el" href="../../d1/d47/meshx__config__server_8h.html">meshx_config_server.h</a></li>
-    <li class="footer">Generated on Thu Aug 21 2025 21:24:54 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Sat Aug 23 2025 20:32:16 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

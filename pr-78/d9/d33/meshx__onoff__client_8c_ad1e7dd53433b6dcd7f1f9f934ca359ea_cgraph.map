@@ -1,0 +1,11 @@
+<map id="meshx_relay_client_timeout_handler" name="meshx_relay_client_timeout_handler">
+<area shape="rect" id="Node000001" title="Handle timeout for relaying the last OnOff message." alt="" coords="5,39,137,79"/>
+<area shape="rect" id="Node000002" href="$d9/d33/meshx__onoff__client_8c.html#ae49d08b0d45942eb28fc5169b968c337" title="Send a generic on/off client message." alt="" coords="185,39,317,79"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="137,56,169,56,169,62,137,62"/>
+<area shape="rect" id="Node000003" href="$d0/dbc/meshx__gen__client_8c.html#adda618e510a15feed131d17bd3e57084" title="Sends a generic client message in the MeshX framework." alt="" coords="365,46,539,72"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="317,56,350,56,350,62,317,62"/>
+<area shape="rect" id="Node000004" href="$d0/dbc/meshx__gen__client_8c.html#ad10690ea7ebf40a033b3353726f01345" title="Checks if the given opcode corresponds to a GET request in the Generic Client group." alt="" coords="587,5,737,46"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="537,43,571,37,572,43,538,48"/>
+<area shape="rect" id="Node000005" href="$d0/de1/esp__gen__cli__model_8c.html#a9a7f82b22f4472ddaca488e202f5bad5" title="Sends a Generic Client message over BLE Mesh." alt="" coords="594,71,730,111"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="540,70,580,76,579,81,539,75"/>
+</map>

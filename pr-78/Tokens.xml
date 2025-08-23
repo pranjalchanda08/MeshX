@@ -5582,16 +5582,6 @@
       <Name>evt</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
-      <Scope>meshx_on_off_cli_el_msg</Scope>
-    </TokenIdentifier>
-    <Path>d8/dbd/structmeshx__on__off__cli__el__msg.html</Path>
-    <Anchor>a230106fc8452da05e69170a7c8f13fa8</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>evt</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
       <Scope>meshx_gen_cli_cb_param</Scope>
     </TokenIdentifier>
     <Path>da/d21/structmeshx__gen__cli__cb__param.html</Path>
@@ -13310,6 +13300,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>addr</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d9/d33/meshx__onoff__client_8c.html</Path>
+    <Anchor>a41a6aad09727eb120338c35535a652a6</Anchor>
+    <DeclaredIn>meshx_onoff_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>addr</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
+    <Anchor>a41a6aad09727eb120338c35535a652a6</Anchor>
+    <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>app_ctrl_cb</Name>
       <APILanguage>c</APILanguage>
       <Type>data</Type>
@@ -13327,6 +13337,26 @@
     <Path>dc/d93/meshx__api_8c.html</Path>
     <Anchor>a5bf953dbf23563a53565103f90bc55bf</Anchor>
     <DeclaredIn>meshx_api.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>app_idx</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d9/d33/meshx__onoff__client_8c.html</Path>
+    <Anchor>a1ab74b1231b1c9f0e416a06f8805a4b0</Anchor>
+    <DeclaredIn>meshx_onoff_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>app_idx</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
+    <Anchor>a1ab74b1231b1c9f0e416a06f8805a4b0</Anchor>
+    <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -15816,6 +15846,16 @@
     </TokenIdentifier>
     <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
     <Anchor>ae118802347c494804896163a052a53e9</Anchor>
+    <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>light_ctl_client_last_msg_ctx</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
+    <Anchor>a0826a63795ad983b1e3f44794749ba05</Anchor>
     <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
   </Token>
   <Token>
@@ -18767,6 +18807,16 @@
     <Path>da/dfd/meshx__light__ctl__client_8h.html</Path>
     <Anchor>a0b0bfb546a17cedd810469b795e91948</Anchor>
     <DeclaredIn>meshx_light_ctl_client.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_light_ctl_client_timeout_handler</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
+    <Anchor>af662d33c9ac9569608d2ad1749e8d7dc</Anchor>
+    <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -25130,6 +25180,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_relay_client_timeout_handler</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d9/d33/meshx__onoff__client_8c.html</Path>
+    <Anchor>ad1e7dd53433b6dcd7f1f9f934ca359ea</Anchor>
+    <DeclaredIn>meshx_onoff_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_relay_el_get_state</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -26290,6 +26350,56 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>net_idx</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d9/d33/meshx__onoff__client_8c.html</Path>
+    <Anchor>a3fda4da936f9418597f7caf664a46b45</Anchor>
+    <DeclaredIn>meshx_onoff_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>net_idx</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
+    <Anchor>a3fda4da936f9418597f7caf664a46b45</Anchor>
+    <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>onoff_client_last_msg_ctx</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d9/d33/meshx__onoff__client_8c.html</Path>
+    <Anchor>abf532ee7e8f53575ffeefefab2c0cb0a</Anchor>
+    <DeclaredIn>meshx_onoff_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>opcode</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d9/d33/meshx__onoff__client_8c.html</Path>
+    <Anchor>aeb39438c0aa5ad494c96060b00351545</Anchor>
+    <DeclaredIn>meshx_onoff_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>opcode</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
+    <Anchor>aeb39438c0aa5ad494c96060b00351545</Anchor>
+    <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>OS_TIMER_CONTROL_TASK_EVT_MASK</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
@@ -26327,6 +26437,26 @@
     <Path>d8/d03/meshx__os__timer_8h.html</Path>
     <Anchor>adb0ba77bc857e8f6bfec9be2081d5370</Anchor>
     <DeclaredIn>meshx_os_timer.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_model</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d9/d33/meshx__onoff__client_8c.html</Path>
+    <Anchor>a05e6095e82931bbbb1cdbc4fad94e164</Anchor>
+    <DeclaredIn>meshx_onoff_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_model</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
+    <Anchor>a05e6095e82931bbbb1cdbc4fad94e164</Anchor>
+    <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -26657,6 +26787,26 @@
     <Path>dd/da1/meshx__os__timer_8c.html</Path>
     <Anchor>afbf0880723201cd89df2f3de140f4731</Anchor>
     <DeclaredIn>meshx_os_timer.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>state</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d9/d33/meshx__onoff__client_8c.html</Path>
+    <Anchor>aa2e6eab593444cccc142abfa482aa7c8</Anchor>
+    <DeclaredIn>meshx_onoff_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>state</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
+    <Anchor>abad56f71302ad7631cfc21d4a1e3987b</Anchor>
+    <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>

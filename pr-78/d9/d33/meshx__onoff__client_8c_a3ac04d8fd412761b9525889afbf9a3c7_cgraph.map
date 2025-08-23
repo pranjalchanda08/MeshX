@@ -1,15 +1,25 @@
 <map id="meshx_handle_gen_onoff_msg" name="meshx_handle_gen_onoff_msg">
-<area shape="rect" id="Node000001" title="Handle the Generic OnOff Client messages." alt="" coords="5,55,205,80"/>
-<area shape="rect" id="Node000002" href="$d9/d33/meshx__onoff__client_8c.html#a494723c456ba89f2c9b8c95953b3910a" title="Perform hardware change based on the BLE Mesh generic server callback parameter." alt="" coords="253,47,397,88"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,65,237,65,237,70,205,70"/>
-<area shape="rect" id="Node000003" href="$df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="445,55,617,80"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="397,65,429,65,429,70,397,70"/>
-<area shape="rect" id="Node000004" href="$d2/d6a/FreeRTOS__meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue." alt="" coords="665,5,806,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="587,51,664,33,665,38,588,57"/>
-<area shape="rect" id="Node000005" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="677,55,794,80"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="617,65,661,65,661,70,617,70"/>
-<area shape="rect" id="Node000007" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="669,104,802,130"/>
-<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="588,78,665,97,664,102,587,84"/>
-<area shape="rect" id="Node000006" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="854,55,1031,80"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="795,65,838,65,838,70,795,70"/>
+<area shape="rect" id="Node000001" title="Handle the Generic OnOff Client messages." alt="" coords="5,104,205,129"/>
+<area shape="rect" id="Node000002" href="$d9/d33/meshx__onoff__client_8c.html#ad1e7dd53433b6dcd7f1f9f934ca359ea" title="Handle timeout for relaying the last OnOff message." alt="" coords="259,55,390,95"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,100,243,88,244,93,177,106"/>
+<area shape="rect" id="Node000007" href="$d9/d33/meshx__onoff__client_8c.html#a494723c456ba89f2c9b8c95953b3910a" title="Perform hardware change based on the BLE Mesh generic server callback parameter." alt="" coords="253,128,397,169"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="198,127,238,133,237,138,197,132"/>
+<area shape="rect" id="Node000003" href="$d9/d33/meshx__onoff__client_8c.html#ae49d08b0d45942eb28fc5169b968c337" title="Send a generic on/off client message." alt="" coords="465,52,597,93"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="391,71,449,71,449,76,391,77"/>
+<area shape="rect" id="Node000004" href="$d0/dbc/meshx__gen__client_8c.html#adda618e510a15feed131d17bd3e57084" title="Sends a generic client message in the MeshX framework." alt="" coords="665,57,840,82"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="597,69,650,68,650,74,598,74"/>
+<area shape="rect" id="Node000005" href="$d0/dbc/meshx__gen__client_8c.html#ad10690ea7ebf40a033b3353726f01345" title="Checks if the given opcode corresponds to a GET request in the Generic Client group." alt="" coords="902,5,1051,46"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="821,54,886,41,887,46,822,59"/>
+<area shape="rect" id="Node000006" href="$d0/de1/esp__gen__cli__model_8c.html#a9a7f82b22f4472ddaca488e202f5bad5" title="Sends a Generic Client message over BLE Mesh." alt="" coords="909,71,1044,111"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="840,75,894,80,893,86,840,81"/>
+<area shape="rect" id="Node000008" href="$df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="445,152,617,177"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="398,151,430,154,429,159,397,157"/>
+<area shape="rect" id="Node000009" href="$d2/d6a/FreeRTOS__meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue." alt="" coords="682,106,823,132"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="597,148,671,133,672,138,598,153"/>
+<area shape="rect" id="Node000010" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="694,156,811,181"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="618,163,678,164,678,170,618,169"/>
+<area shape="rect" id="Node000012" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="686,205,819,230"/>
+<area shape="poly" id="edge11_Node000008_Node000012" title=" " alt="" coords="588,175,682,198,680,203,587,180"/>
+<area shape="rect" id="Node000011" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="888,156,1065,181"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="811,166,872,166,872,171,811,171"/>
 </map>
