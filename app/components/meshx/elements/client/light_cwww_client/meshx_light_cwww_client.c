@@ -81,15 +81,11 @@ static meshx_err_t cwww_client_on_off_state_change_handler(
     const meshx_on_off_cli_el_msg_t *param)
 {
     uint16_t element_id = param->model.el_id;
-    if (!IS_EL_IN_RANGE(element_id))
-    {
-        return MESHX_SUCCESS;
-    }
 
     size_t rel_el_id = GET_RELATIVE_EL_IDX(element_id);
     meshx_cwww_client_model_ctx_t *el_ctx = CWWW_CLI_EL(rel_el_id).cwww_cli_ctx;
     meshx_api_light_cwww_client_evt_t app_notify;
-    meshx_err_t err;
+    meshx_err_t err = MESHX_SUCCESS;
     if(param->err_code == MESHX_SUCCESS)
     {
         CWWW_CLI_EL(rel_el_id).element_model_init |= MESHX_BIT(CWWW_CLI_SIG_ONOFF_MODEL_ID);
@@ -97,7 +93,7 @@ static meshx_err_t cwww_client_on_off_state_change_handler(
         {
             el_ctx->prev_state.on_off = param->on_off_state;
         }
-        app_notify.err_code = 0;
+        app_notify.err_code = MESHX_SUCCESS;
         app_notify.state_change.on_off.state = el_ctx->prev_state.on_off;
 
         err = meshx_send_msg_to_app(element_id,
@@ -111,24 +107,14 @@ static meshx_err_t cwww_client_on_off_state_change_handler(
         }
 
         el_ctx->state.on_off = !param->on_off_state;
-        el_ctx->tid++;
         MESHX_LOGD(MOD_LCC, "SET|PUBLISH: %d", param->on_off_state);
         MESHX_LOGD(MOD_LCC, "Next state: %d", el_ctx->state.on_off);
     }
     else
     {
         MESHX_LOGE(MOD_LCC, "CWWW Client Element Message: Error (%d)", param->err_code);
-        /* Retry sending the failed packet. Do not notify App */
-        /* Please note that the failed packets gets sent endlessly. Hence, a loop condition */
-        el_ctx->tid++;
-        err = meshx_cwww_cli_send_onoff_msg(pdev,
-                                            element_id,
-                                            MESHX_GEN_ON_OFF_CLI_MSG_SET,
-                                            MESHX_GEN_ON_OFF_CLI_MSG_ACK);
-        if (err)
-        {
-            MESHX_LOGE(MOD_LCC, "CWWW Client Element Message: Retry failed (%d)", err);
-        }
+        /* Retry sending the failed packet by MeshX Gen On Off Layer. Do not notify App */
+        err = MESHX_TIMEOUT;
     }
     return err;
 }
@@ -151,10 +137,6 @@ static meshx_err_t cwww_light_ctl_state_change_handler(
     const meshx_ctl_cli_el_msg_t *param)
 {
     uint16_t element_id = param->model.el_id;
-    if (!IS_EL_IN_RANGE(element_id))
-    {
-        return MESHX_SUCCESS;
-    }
 
     size_t rel_el_id = GET_RELATIVE_EL_IDX(element_id);
     meshx_cwww_client_model_ctx_t *el_ctx = CWWW_CLI_EL(rel_el_id).cwww_cli_ctx;
@@ -238,22 +220,12 @@ static meshx_err_t cwww_light_ctl_state_change_handler(
                 MESHX_LOGE(MOD_LCC, "Failed to send CWWW state change message: (%d)", err);
             }
         }
-        el_ctx->tid++;
     }
     else
     {
         MESHX_LOGE(MOD_LCC, "CWWW Client Element Message: Error (%d)", param->err_code);
-        /* Retry sending the failed packet. Do not notify App */
-        /* Please note that the failed packets gets sent endlessly. Hence, a loop condition */
-        el_ctx->tid++;
-        err = meshx_cwww_cli_send_ctl_msg(  pdev,
-                                            element_id,
-                                            MESHX_LIGHT_CTL_CLI_MSG_GET,
-                                            MESHX_LIGHT_CTL_CLI_MSG_ACK);
-        if (err)
-        {
-            MESHX_LOGE(MOD_LCC, "CWWW Client Element Message: Retry failed (%d)", err);
-        }
+        /* Retry sending the failed packet done by MeshX Light CTL Layer. Do not notify App */
+        err = MESHX_TIMEOUT;
     }
     return err;
 }
@@ -280,8 +252,13 @@ static meshx_err_t meshx_cwww_client_element_state_change_handler(
         return MESHX_INVALID_ARG;
     }
     meshx_err_t err = MESHX_SUCCESS;
-    switch (evt)
+    uint16_t element_id = ((const meshx_on_off_cli_el_msg_t *)params)->model.el_id;
+    if (!IS_EL_IN_RANGE(element_id))
     {
+        return MESHX_SUCCESS;
+    }
+    switch (evt)
+            {
         case CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF:
             err = cwww_client_on_off_state_change_handler(
                 pdev,
@@ -295,7 +272,14 @@ static meshx_err_t meshx_cwww_client_element_state_change_handler(
         default:
             err = MESHX_FAIL;
     }
-
+    if(err == MESHX_SUCCESS)
+    {
+        err = meshx_nvs_element_ctx_set(element_id, CWWW_CLI_EL(GET_RELATIVE_EL_IDX(element_id)).cwww_cli_ctx, sizeof(meshx_cwww_client_model_ctx_t));
+        if (err != MESHX_SUCCESS)
+        {
+            MESHX_LOGE(MOD_LCC, "Failed to set cwww client element context: (%d)", err);
+        }
+    }
     return err;
 }
 
@@ -381,20 +365,11 @@ static meshx_err_t cwww_cli_freshboot_control_task_msg_handle(const dev_struct_t
 
     MESHX_UNUSED(params);
     MESHX_UNUSED(evt);
-    uint16_t rel_el_id = 0;
     meshx_err_t err = MESHX_SUCCESS;
 
     for(uint16_t i = cwww_client_element_init_ctrl.element_id_start; i < cwww_client_element_init_ctrl.element_id_end; i++)
     {
-        rel_el_id = (uint16_t) GET_RELATIVE_EL_IDX(i);
-        for(cwww_cli_sig_id_t model_id = CWWW_CLI_SIG_ONOFF_MODEL_ID; model_id < CWWW_CLI_SIG_ID_MAX; model_id++)
-        {
-            if(false == (CWWW_CLI_EL(rel_el_id).element_model_init
-                        & MESHX_BIT(CWWW_CLI_SIG_ONOFF_MODEL_ID)))
-            {
-                err = meshx_cwww_el_get_state(i, model_id);
-            }
-        }
+        err = meshx_cwww_el_get_state(i, CWWW_CLI_SIG_ID_MAX);
     }
     return err;
 }

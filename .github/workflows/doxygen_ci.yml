@@ -48,6 +48,11 @@ jobs:
         path: ./docs/doxygen/html
 
   deploy:
+    permissions:
+      contents: write
+      pull-requests: write
+      pages: write
+
     needs: build
     runs-on: ubuntu-latest
     if: github.event_name == 'push' || github.event_name == 'pull_request'
