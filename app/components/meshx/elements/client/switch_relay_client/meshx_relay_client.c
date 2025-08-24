@@ -401,7 +401,8 @@ static meshx_err_t meshx_relay_client_element_state_change_handler(
     size_t rel_el_id = GET_RELATIVE_EL_IDX(element_id);
     meshx_relay_client_model_ctx_t *el_ctx = RELAY_CLI_EL(rel_el_id).cli_ctx;
     meshx_api_relay_client_evt_t app_notify;
-    meshx_err_t err;
+    meshx_err_t err = MESHX_SUCCESS;
+    bool nvs_save = false;
     if(param->err_code == MESHX_SUCCESS)
     {
 
@@ -431,10 +432,19 @@ static meshx_err_t meshx_relay_client_element_state_change_handler(
         el_ctx->state.on_off = !param->on_off_state;
         MESHX_LOGD(MOD_SRC, "SET|PUBLISH: %d", param->on_off_state);
         MESHX_LOGD(MOD_SRC, "Next state: %d", el_ctx->state.on_off);
+        nvs_save = true;
     }
     else
     {
         MESHX_LOGE(MOD_SRC, "Relay Client Element Message: Error (%d)", param->err_code);
+    }
+    if (nvs_save)
+    {
+        err = meshx_nvs_element_ctx_set(element_id, el_ctx, sizeof(meshx_relay_client_model_ctx_t));
+        if (err != MESHX_SUCCESS)
+        {
+            MESHX_LOGE(MOD_SRC, "Failed to set relay element context: (%d)", err);
+        }
     }
     return MESHX_SUCCESS;
 }

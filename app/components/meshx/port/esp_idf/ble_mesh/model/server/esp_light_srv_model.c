@@ -71,6 +71,10 @@ static void meshx_ble_lightness_server_cb(MESHX_LIGHT_SRV_CB_EVT event,
              event, (unsigned)param->ctx.recv_op, param->ctx.addr, param->ctx.recv_dst,
              param->model->model_id);
 
+    if(event != ESP_BLE_MESH_LIGHTING_SERVER_STATE_CHANGE_EVT)
+    {
+        return;
+    }
     MESHX_LIGHT_CTL_SRV *srv = (MESHX_LIGHT_CTL_SRV *)param->model->user_data;
 
     bool publish_flag = false;
@@ -191,16 +195,11 @@ meshx_err_t meshx_plat_gen_light_srv_send_status(
         return MESHX_INVALID_ARG;
     }
     meshx_err_t err = MESHX_SUCCESS;
-    esp_ble_mesh_msg_ctx_t *ctx = p_ctx->p_ctx;
-    bool malloc_flag = false;
-    if (ctx == NULL)
+    static esp_ble_mesh_msg_ctx_t ctx;
+    const esp_ble_mesh_msg_ctx_t *pctx = (esp_ble_mesh_msg_ctx_t *)p_ctx->p_ctx;
+    if(pctx != NULL)
     {
-        ctx = (esp_ble_mesh_msg_ctx_t *)MESHX_MALLOC(sizeof(esp_ble_mesh_msg_ctx_t));
-        if (ctx == NULL)
-        {
-            return MESHX_NO_MEM;
-        }
-        malloc_flag = true;
+        memcpy(&ctx, pctx, sizeof(esp_ble_mesh_msg_ctx_t));
     }
     ctl_status_t ctl_status_union;
     uint8_t ctl_status_pack_len = 0;
@@ -233,15 +232,15 @@ meshx_err_t meshx_plat_gen_light_srv_send_status(
         err = MESHX_INVALID_ARG;
     }
 
-    ctx->net_idx    =   p_ctx->net_idx;
-    ctx->app_idx    =   p_ctx->app_idx;
-    ctx->addr       =   p_ctx->dst_addr;
-    ctx->send_ttl   =   ESP_BLE_MESH_TTL_DEFAULT;
-    ctx->send_cred  =   0;
-    ctx->send_tag   =   BIT1;
+    ctx.net_idx    =   p_ctx->net_idx;
+    ctx.app_idx    =   p_ctx->app_idx;
+    ctx.addr       =   p_ctx->dst_addr;
+    ctx.send_ttl   =   ESP_BLE_MESH_TTL_DEFAULT;
+    ctx.send_cred  =   0;
+    ctx.send_tag   =   BIT1;
 
     esp_err_t esp_err = esp_ble_mesh_server_model_send_msg(p_model->p_model,
-                                                       ctx,
+                                                       &ctx,
                                                        p_ctx->opcode,
                                                        ctl_status_pack_len,
                                                        (uint8_t *)&ctl_status_union);
@@ -251,10 +250,7 @@ meshx_err_t meshx_plat_gen_light_srv_send_status(
         return MESHX_ERR_PLAT;
     }
     MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Mesh Model msg sent (opcode: 0x%04x, len: %d)", p_ctx->opcode, ctl_status_pack_len);
-    if (malloc_flag)
-    {
-        MESHX_FREE(ctx);
-    }
+
     return err;
 }
 

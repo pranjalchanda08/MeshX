@@ -218,7 +218,7 @@ meshx_err_t meshx_plat_light_client_send_msg(
     {
         esp_err_t esp_err = esp_ble_mesh_light_client_set_state(
             &common,
-            (esp_ble_mesh_light_client_set_state_t *)&p_set
+            (esp_ble_mesh_light_client_set_state_t *)p_set
         );
         if (esp_err != ESP_OK)
         {
@@ -230,7 +230,7 @@ meshx_err_t meshx_plat_light_client_send_msg(
     {
         esp_err_t esp_err = esp_ble_mesh_light_client_get_state(
             &common,
-            (esp_ble_mesh_light_client_get_state_t *)&p_set
+            (esp_ble_mesh_light_client_get_state_t *)p_set
         );
         if (esp_err != ESP_OK)
         {

@@ -159,6 +159,7 @@ static meshx_err_t meshx_handle_gen_light_msg(
 
     switch (param->evt)
     {
+    case MESHX_GEN_LIGHT_CLI_EVT_GET:
     case MESHX_GEN_LIGHT_CLI_EVT_SET:
     case MESHX_GEN_LIGHT_CLI_PUBLISH:
         err = meshx_ctl_state_change_notify(param);

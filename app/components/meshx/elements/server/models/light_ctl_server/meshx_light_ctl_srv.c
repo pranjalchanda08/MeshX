@@ -112,54 +112,60 @@ static meshx_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
     uint32_t status_op = 0;
     switch (op_code)
     {
-    /*!< Light CTL Message Opcode */
-    case MESHX_MODEL_OP_LIGHT_CTL_GET:
-    case MESHX_MODEL_OP_LIGHT_CTL_SET:
-    case MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK:
-        status_op = MESHX_MODEL_OP_LIGHT_CTL_STATUS;
-        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_GET)
-            state_change_notify = true;
+        case MESHX_MODEL_OP_LIGHT_CTL_STATUS:
+        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS:
+        case MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS:
+        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS:
+            /* Ignore, as these are status messages */
+            break;
+        /*!< Light CTL Message Opcode */
+        case MESHX_MODEL_OP_LIGHT_CTL_GET:
+        case MESHX_MODEL_OP_LIGHT_CTL_SET:
+        case MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK:
+            status_op = MESHX_MODEL_OP_LIGHT_CTL_STATUS;
+            if (op_code != MESHX_MODEL_OP_LIGHT_CTL_GET)
+                state_change_notify = true;
 
-        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK)
-            send_reply_to_src = true;
+            if (op_code != MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK)
+                send_reply_to_src = true;
 
-        break;
-    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET:
-    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET:
-    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK:
-        status_op = MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS;
-        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET)
-            state_change_notify = true;
+            break;
+        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET:
+        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET:
+        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK:
+            status_op = MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS;
+            if (op_code != MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET)
+                state_change_notify = true;
 
-        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK)
-            send_reply_to_src = true;
-        break;
-    /*!< Light CTL Setup Message Opcode */
-    case MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_SET:
-    case MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_GET:
-    case MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_SET_UNACK:
-        status_op = MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS;
-        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_GET)
-            MESHX_DO_NOTHING;
+            if (op_code != MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK)
+                send_reply_to_src = true;
+            break;
+        /*!< Light CTL Setup Message Opcode */
+        case MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_SET:
+        case MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_GET:
+        case MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_SET_UNACK:
+            status_op = MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS;
+            if (op_code != MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_GET)
+                MESHX_DO_NOTHING;
 
-        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_SET_UNACK)
-            send_reply_to_src = true;
+            if (op_code != MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_SET_UNACK)
+                send_reply_to_src = true;
 
-        break;
-    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET:
-    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET:
-    case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK:
-        status_op = MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS;
-        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET)
-            MESHX_DO_NOTHING;
+            break;
+        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET:
+        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET:
+        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK:
+            status_op = MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS;
+            if (op_code != MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET)
+                MESHX_DO_NOTHING;
 
-        if (op_code != MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK)
-            send_reply_to_src = true;
+            if (op_code != MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK)
+                send_reply_to_src = true;
 
-        break;
-    default:
-        MESHX_LOGW(MODULE_ID_MODEL_SERVER, "CTL Unhandled Event %p", (void *)param->ctx.opcode);
-        break;
+            break;
+        default:
+            MESHX_LOGW(MODULE_ID_MODEL_SERVER, "CTL Unhandled Event %p", (void *)param->ctx.opcode);
+            break;
     }
     if (state_change_notify)
     {

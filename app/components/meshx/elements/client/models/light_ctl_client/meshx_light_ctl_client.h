@@ -47,8 +47,8 @@ typedef struct meshx_ctl_el_state
 typedef struct meshx_ctl_cli_el_msg
 {
     uint8_t err_code;               /**< Error code */
-    meshx_ctx_t ctx;                /**< Context of the message */
     meshx_model_t model;            /**< Generic OnOff Server model */
+    meshx_ctx_t ctx;                /**< Context of the message */
     meshx_ctl_el_state_t ctl_state; /**< The present value of Generic OnOff state */
 }meshx_ctl_cli_el_msg_t;
 
