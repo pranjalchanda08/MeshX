@@ -8,49 +8,49 @@
        <Node>
         <Name>Features</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md1</Anchor>
+        <Anchor>autotoc_md7</Anchor>
        </Node>
        <Node>
         <Name>Capabilities</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md2</Anchor>
+        <Anchor>autotoc_md9</Anchor>
       <Subnodes>
          <Node>
           <Name>Server</Name>
           <Path>index.html</Path>
-          <Anchor>autotoc_md3</Anchor>
+          <Anchor>autotoc_md11</Anchor>
          </Node>
          <Node>
           <Name>Client</Name>
           <Path>index.html</Path>
-          <Anchor>autotoc_md4</Anchor>
+          <Anchor>autotoc_md13</Anchor>
          </Node>
         </Subnodes>
        </Node>
        <Node>
         <Name>Prerequisites</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md5</Anchor>
+        <Anchor>autotoc_md14</Anchor>
        </Node>
        <Node>
         <Name>Build</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md6</Anchor>
+        <Anchor>autotoc_md17</Anchor>
        </Node>
        <Node>
         <Name>Adding a Product to build</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md7</Anchor>
+        <Anchor>autotoc_md18</Anchor>
        </Node>
        <Node>
         <Name>Adding Element, model to build:</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md8</Anchor>
+        <Anchor>autotoc_md19</Anchor>
        </Node>
        <Node>
         <Name>Flashing and monitoring</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md9</Anchor>
+        <Anchor>autotoc_md20</Anchor>
        </Node>
        <Node>
         <Name>MeshX Proprietary License (MPL) v1.0</Name>
@@ -60,27 +60,27 @@
            <Node>
             <Name>0. Preamble</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md12</Anchor>
+            <Anchor>autotoc_md3</Anchor>
            </Node>
            <Node>
             <Name>1. Grant of License</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md14</Anchor>
+            <Anchor>autotoc_md5</Anchor>
            </Node>
            <Node>
             <Name>2. Ownership</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md16</Anchor>
+            <Anchor>autotoc_md8</Anchor>
            </Node>
            <Node>
             <Name>3. Contributions</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md18</Anchor>
+            <Anchor>autotoc_md12</Anchor>
            </Node>
            <Node>
             <Name>4. Restrictions</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md20</Anchor>
+            <Anchor>autotoc_md16</Anchor>
            </Node>
            <Node>
             <Name>5. Confidentiality</Name>

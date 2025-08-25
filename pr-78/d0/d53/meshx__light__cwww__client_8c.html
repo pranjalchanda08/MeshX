@@ -563,98 +563,98 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6" title="MeshX Error Codes.">meshx_err_t</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l01072">1072</a> of file <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html">meshx_light_cwww_client.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1073</span>{</div>
-<div class="line"><span class="lineno"> 1074</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err;</div>
-<div class="line"><span class="lineno"> 1075</span> </div>
-<div class="line"><span class="lineno"> 1076</span>    err = <a class="code hl_function" href="#adac9c4dc1fe85bc6716af5f4db19950a">meshx_dev_create_cwww_model_space</a>(pdev, element_cnt);</div>
-<div class="line"><span class="lineno"> 1077</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno"> 1078</span>    {</div>
-<div class="line"><span class="lineno"> 1079</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;CWWW Model space create failed: (%d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno"> 1080</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno"> 1081</span>    }</div>
-<div class="line"><span class="lineno"> 1082</span> </div>
-<div class="line"><span class="lineno"> 1083</span>    err = <a class="code hl_function" href="#aeeed3c047c66ef0ea3eecfa65f5d9fe1">meshx_add_cwww_cli_model_to_element_list</a>(pdev, (uint16_t *)&amp;pdev-&gt;<a class="code hl_variable" href="../../d7/d41/structdev__struct.html#a273d14f95989fcb253c16ff172c6d87c">element_idx</a>, element_cnt);</div>
-<div class="line"><span class="lineno"> 1084</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno"> 1085</span>    {</div>
-<div class="line"><span class="lineno"> 1086</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;CWWW Model add to element create failed: (%d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno"> 1087</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno"> 1088</span>    }</div>
+<p class="definition">Definition at line <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l01047">1047</a> of file <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html">meshx_light_cwww_client.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno"> 1048</span>{</div>
+<div class="line"><span class="lineno"> 1049</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err;</div>
+<div class="line"><span class="lineno"> 1050</span> </div>
+<div class="line"><span class="lineno"> 1051</span>    err = <a class="code hl_function" href="#adac9c4dc1fe85bc6716af5f4db19950a">meshx_dev_create_cwww_model_space</a>(pdev, element_cnt);</div>
+<div class="line"><span class="lineno"> 1052</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno"> 1053</span>    {</div>
+<div class="line"><span class="lineno"> 1054</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;CWWW Model space create failed: (%d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno"> 1055</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno"> 1056</span>    }</div>
+<div class="line"><span class="lineno"> 1057</span> </div>
+<div class="line"><span class="lineno"> 1058</span>    err = <a class="code hl_function" href="#aeeed3c047c66ef0ea3eecfa65f5d9fe1">meshx_add_cwww_cli_model_to_element_list</a>(pdev, (uint16_t *)&amp;pdev-&gt;<a class="code hl_variable" href="../../d7/d41/structdev__struct.html#a273d14f95989fcb253c16ff172c6d87c">element_idx</a>, element_cnt);</div>
+<div class="line"><span class="lineno"> 1059</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno"> 1060</span>    {</div>
+<div class="line"><span class="lineno"> 1061</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;CWWW Model add to element create failed: (%d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno"> 1062</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno"> 1063</span>    }</div>
+<div class="line"><span class="lineno"> 1064</span> </div>
+<div class="line"><span class="lineno"> 1065</span>    err = <a class="code hl_function" href="../../d9/d33/meshx__onoff__client_8c.html#ae641de803120d164e4927a8cf19aeaaf">meshx_on_off_client_init</a>();</div>
+<div class="line"><span class="lineno"> 1066</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno"> 1067</span>    {</div>
+<div class="line"><span class="lineno"> 1068</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;meshx_onoff_client_init failed: (%d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno"> 1069</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno"> 1070</span>    }</div>
+<div class="line"><span class="lineno"> 1071</span> </div>
+<div class="line"><span class="lineno"> 1072</span>    err = <a class="code hl_function" href="../../d8/d93/meshx__light__ctl__client_8c.html#ac113a964dc509d47b87de8066d3574e0">meshx_light_ctl_client_init</a>();</div>
+<div class="line"><span class="lineno"> 1073</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno"> 1074</span>    {</div>
+<div class="line"><span class="lineno"> 1075</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;meshx_light_ctl_client_init failed: (%d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno"> 1076</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno"> 1077</span>    }</div>
+<div class="line"><span class="lineno"> 1078</span> </div>
+<div class="line"><span class="lineno"> 1079</span><span class="preprocessor">#if CONFIG_ENABLE_CONFIG_SERVER</span></div>
+<div class="line"><span class="lineno"> 1080</span>    err = <a class="code hl_function" href="../../dd/d79/meshx__config__server_8c.html#aea136e2f0520f4f57129778288f17ec9">meshx_config_server_cb_reg</a>(</div>
+<div class="line"><span class="lineno"> 1081</span>        (<a class="code hl_typedef" href="../../db/d5f/meshx__ble__mesh__config__srv_8h.html#af61081fb702cca463595724960ae6410">config_srv_cb_t</a>) &amp;cwww_client_config_srv_cb,</div>
+<div class="line"><span class="lineno"> 1082</span>        <a class="code hl_define" href="#a0983d7745dcb50ce2c0639619ac08442">CONFIG_SERVER_CB_MASK</a>);</div>
+<div class="line"><span class="lineno"> 1083</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno"> 1084</span>    {</div>
+<div class="line"><span class="lineno"> 1085</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Light CWWW config server callback reg failed: (%d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno"> 1086</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno"> 1087</span>    }</div>
+<div class="line"><span class="lineno"> 1088</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_ENABLE_CONFIG_SERVER */</span><span class="preprocessor"></span></div>
 <div class="line"><span class="lineno"> 1089</span> </div>
-<div class="line"><span class="lineno"> 1090</span>    err = <a class="code hl_function" href="../../d9/d33/meshx__onoff__client_8c.html#ae641de803120d164e4927a8cf19aeaaf">meshx_on_off_client_init</a>();</div>
-<div class="line"><span class="lineno"> 1091</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno"> 1092</span>    {</div>
-<div class="line"><span class="lineno"> 1093</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;meshx_onoff_client_init failed: (%d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno"> 1094</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno"> 1095</span>    }</div>
-<div class="line"><span class="lineno"> 1096</span> </div>
-<div class="line"><span class="lineno"> 1097</span>    err = <a class="code hl_function" href="../../d8/d93/meshx__light__ctl__client_8c.html#ac113a964dc509d47b87de8066d3574e0">meshx_light_ctl_client_init</a>();</div>
-<div class="line"><span class="lineno"> 1098</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno"> 1099</span>    {</div>
-<div class="line"><span class="lineno"> 1100</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;meshx_light_ctl_client_init failed: (%d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno"> 1101</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno"> 1102</span>    }</div>
-<div class="line"><span class="lineno"> 1103</span> </div>
-<div class="line"><span class="lineno"> 1104</span><span class="preprocessor">#if CONFIG_ENABLE_CONFIG_SERVER</span></div>
-<div class="line"><span class="lineno"> 1105</span>    err = <a class="code hl_function" href="../../dd/d79/meshx__config__server_8c.html#aea136e2f0520f4f57129778288f17ec9">meshx_config_server_cb_reg</a>(</div>
-<div class="line"><span class="lineno"> 1106</span>        (<a class="code hl_typedef" href="../../db/d5f/meshx__ble__mesh__config__srv_8h.html#af61081fb702cca463595724960ae6410">config_srv_cb_t</a>) &amp;cwww_client_config_srv_cb,</div>
-<div class="line"><span class="lineno"> 1107</span>        <a class="code hl_define" href="#a0983d7745dcb50ce2c0639619ac08442">CONFIG_SERVER_CB_MASK</a>);</div>
+<div class="line"><span class="lineno"> 1090</span><span class="preprocessor">#if defined(__MESHX_CONTROL_TASK__)</span></div>
+<div class="line"><span class="lineno"> 1091</span>    <span class="comment">/* Register control task callback */</span></div>
+<div class="line"><span class="lineno"> 1092</span>    err = <a class="code hl_function" href="#aa09d5950f3239006aea437cebe41c6b9">meshx_cwww_cli_reg_app_req_cb</a>();</div>
+<div class="line"><span class="lineno"> 1093</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno"> 1094</span>    {</div>
+<div class="line"><span class="lineno"> 1095</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;control task callback reg failed: (%d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno"> 1096</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno"> 1097</span>    }</div>
+<div class="line"><span class="lineno"> 1098</span>    <span class="comment">/* Register element state change callback */</span></div>
+<div class="line"><span class="lineno"> 1099</span>    err = <a class="code hl_function" href="#a0f44c18340482bed497e5c388fcb6748">meshx_cwww_cli_el_state_change_reg_cb</a>();</div>
+<div class="line"><span class="lineno"> 1100</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno"> 1101</span>    {</div>
+<div class="line"><span class="lineno"> 1102</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;element state change callback reg failed: (%d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno"> 1103</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno"> 1104</span>    }</div>
+<div class="line"><span class="lineno"> 1105</span>    <span class="comment">/* Register freshboot control task callback */</span></div>
+<div class="line"><span class="lineno"> 1106</span>    err = <a class="code hl_function" href="#ad44d27c2b9e797342e27cc923638eec2">meshx_cwww_cli_reg_freshboot_cb</a>(</div>
+<div class="line"><span class="lineno"> 1107</span>        (<a class="code hl_typedef" href="../../da/db3/meshx__control__task_8h.html#a579fb3e74e48372bcc0489cd86c56614">control_task_msg_handle_t</a>)&amp;cwww_cli_freshboot_control_task_msg_handle);</div>
 <div class="line"><span class="lineno"> 1108</span>    <span class="keywordflow">if</span> (err)</div>
 <div class="line"><span class="lineno"> 1109</span>    {</div>
-<div class="line"><span class="lineno"> 1110</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Light CWWW config server callback reg failed: (%d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno"> 1110</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;control task callback reg failed: (%d)&quot;</span>, err);</div>
 <div class="line"><span class="lineno"> 1111</span>        <span class="keywordflow">return</span> err;</div>
 <div class="line"><span class="lineno"> 1112</span>    }</div>
-<div class="line"><span class="lineno"> 1113</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_ENABLE_CONFIG_SERVER */</span><span class="preprocessor"></span></div>
-<div class="line"><span class="lineno"> 1114</span> </div>
-<div class="line"><span class="lineno"> 1115</span><span class="preprocessor">#if defined(__MESHX_CONTROL_TASK__)</span></div>
-<div class="line"><span class="lineno"> 1116</span>    <span class="comment">/* Register control task callback */</span></div>
-<div class="line"><span class="lineno"> 1117</span>    err = <a class="code hl_function" href="#aa09d5950f3239006aea437cebe41c6b9">meshx_cwww_cli_reg_app_req_cb</a>();</div>
-<div class="line"><span class="lineno"> 1118</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno"> 1119</span>    {</div>
-<div class="line"><span class="lineno"> 1120</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;control task callback reg failed: (%d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno"> 1121</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno"> 1122</span>    }</div>
-<div class="line"><span class="lineno"> 1123</span>    <span class="comment">/* Register element state change callback */</span></div>
-<div class="line"><span class="lineno"> 1124</span>    err = <a class="code hl_function" href="#a0f44c18340482bed497e5c388fcb6748">meshx_cwww_cli_el_state_change_reg_cb</a>();</div>
-<div class="line"><span class="lineno"> 1125</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno"> 1126</span>    {</div>
-<div class="line"><span class="lineno"> 1127</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;element state change callback reg failed: (%d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno"> 1128</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno"> 1129</span>    }</div>
-<div class="line"><span class="lineno"> 1130</span>    <span class="comment">/* Register freshboot control task callback */</span></div>
-<div class="line"><span class="lineno"> 1131</span>    err = <a class="code hl_function" href="#ad44d27c2b9e797342e27cc923638eec2">meshx_cwww_cli_reg_freshboot_cb</a>(</div>
-<div class="line"><span class="lineno"> 1132</span>        (<a class="code hl_typedef" href="../../da/db3/meshx__control__task_8h.html#a579fb3e74e48372bcc0489cd86c56614">control_task_msg_handle_t</a>)&amp;cwww_cli_freshboot_control_task_msg_handle);</div>
-<div class="line"><span class="lineno"> 1133</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno"> 1134</span>    {</div>
-<div class="line"><span class="lineno"> 1135</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;control task callback reg failed: (%d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno"> 1136</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno"> 1137</span>    }</div>
-<div class="line"><span class="lineno"> 1138</span> </div>
-<div class="line"><span class="lineno"> 1139</span><span class="preprocessor">#endif </span><span class="comment">/* __MESHX_CONTROL_TASK__ */</span><span class="preprocessor"></span></div>
-<div class="line"><span class="lineno"> 1140</span><span class="preprocessor">#if CONFIG_ENABLE_UNIT_TEST</span></div>
-<div class="line"><span class="lineno"> 1141</span>    err = <a class="code hl_function" href="../../da/dd5/unit__test_8c.html#a763886d5c865bfc15d5693604c5f5923">register_unit_test</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcadbe48da89935bb0f28e9a42b4d27fd1c">MODULE_ID_ELEMENT_LIGHT_CWWWW_CLIENT</a>, &amp;cwww_cli_unit_test_cb_handler);</div>
-<div class="line"><span class="lineno"> 1142</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno"> 1143</span>    {</div>
-<div class="line"><span class="lineno"> 1144</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;unit_test reg failed: (%d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno"> 1145</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno"> 1146</span>    }</div>
-<div class="line"><span class="lineno"> 1147</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_ENABLE_UNIT_TEST */</span><span class="preprocessor"></span></div>
-<div class="line"><span class="lineno"> 1148</span> </div>
-<div class="line"><span class="lineno"> 1149</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno"> 1150</span>}</div>
+<div class="line"><span class="lineno"> 1113</span> </div>
+<div class="line"><span class="lineno"> 1114</span><span class="preprocessor">#endif </span><span class="comment">/* __MESHX_CONTROL_TASK__ */</span><span class="preprocessor"></span></div>
+<div class="line"><span class="lineno"> 1115</span><span class="preprocessor">#if CONFIG_ENABLE_UNIT_TEST</span></div>
+<div class="line"><span class="lineno"> 1116</span>    err = <a class="code hl_function" href="../../da/dd5/unit__test_8c.html#a763886d5c865bfc15d5693604c5f5923">register_unit_test</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcadbe48da89935bb0f28e9a42b4d27fd1c">MODULE_ID_ELEMENT_LIGHT_CWWWW_CLIENT</a>, &amp;cwww_cli_unit_test_cb_handler);</div>
+<div class="line"><span class="lineno"> 1117</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno"> 1118</span>    {</div>
+<div class="line"><span class="lineno"> 1119</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;unit_test reg failed: (%d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno"> 1120</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno"> 1121</span>    }</div>
+<div class="line"><span class="lineno"> 1122</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_ENABLE_UNIT_TEST */</span><span class="preprocessor"></span></div>
+<div class="line"><span class="lineno"> 1123</span> </div>
+<div class="line"><span class="lineno"> 1124</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno"> 1125</span>}</div>
 <div class="ttc" id="ameshx__ble__mesh__config__srv_8h_html_af61081fb702cca463595724960ae6410"><div class="ttname"><a href="../../db/d5f/meshx__ble__mesh__config__srv_8h.html#af61081fb702cca463595724960ae6410">config_srv_cb_t</a></div><div class="ttdeci">control_task_msg_handle_t config_srv_cb_t</div><div class="ttdef"><b>Definition</b> <a href="../../db/d5f/meshx__ble__mesh__config__srv_8h_source.html#l00020">meshx_ble_mesh_config_srv.h:20</a></div></div>
 <div class="ttc" id="ameshx__config__server_8c_html_aea136e2f0520f4f57129778288f17ec9"><div class="ttname"><a href="../../dd/d79/meshx__config__server_8c.html#aea136e2f0520f4f57129778288f17ec9">meshx_config_server_cb_reg</a></div><div class="ttdeci">meshx_err_t meshx_config_server_cb_reg(config_srv_cb_t cb, uint32_t config_evt_bmap)</div><div class="ttdoc">Registers a configuration server callback for specific events.</div><div class="ttdef"><b>Definition</b> <a href="../../dd/d79/meshx__config__server_8c_source.html#l00117">meshx_config_server.c:117</a></div></div>
 <div class="ttc" id="ameshx__control__task_8h_html_a579fb3e74e48372bcc0489cd86c56614"><div class="ttname"><a href="../../da/db3/meshx__control__task_8h.html#a579fb3e74e48372bcc0489cd86c56614">control_task_msg_handle_t</a></div><div class="ttdeci">meshx_err_t(* control_task_msg_handle_t)(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)</div><div class="ttdoc">Function pointer type for control task message handler.</div><div class="ttdef"><b>Definition</b> <a href="../../da/db3/meshx__control__task_8h_source.html#l00163">meshx_control_task.h:163</a></div></div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a></div><div class="ttdeci">meshx_err_t</div><div class="ttdoc">MeshX Error Codes.</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00036">meshx_err.h:37</a></div></div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a></div><div class="ttdeci">@ MESHX_SUCCESS</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00038">meshx_err.h:38</a></div></div>
-<div class="ttc" id="ameshx__light__ctl__client_8c_html_ac113a964dc509d47b87de8066d3574e0"><div class="ttname"><a href="../../d8/d93/meshx__light__ctl__client_8c.html#ac113a964dc509d47b87de8066d3574e0">meshx_light_ctl_client_init</a></div><div class="ttdeci">meshx_err_t meshx_light_ctl_client_init()</div><div class="ttdoc">Initialize the Light CTL Client model.</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d93/meshx__light__ctl__client_8c_source.html#l00218">meshx_light_ctl_client.c:218</a></div></div>
+<div class="ttc" id="ameshx__light__ctl__client_8c_html_ac113a964dc509d47b87de8066d3574e0"><div class="ttname"><a href="../../d8/d93/meshx__light__ctl__client_8c.html#ac113a964dc509d47b87de8066d3574e0">meshx_light_ctl_client_init</a></div><div class="ttdeci">meshx_err_t meshx_light_ctl_client_init()</div><div class="ttdoc">Initialize the Light CTL Client model.</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d93/meshx__light__ctl__client_8c_source.html#l00219">meshx_light_ctl_client.c:219</a></div></div>
 <div class="ttc" id="ameshx__light__cwww__client_8c_html_a0983d7745dcb50ce2c0639619ac08442"><div class="ttname"><a href="#a0983d7745dcb50ce2c0639619ac08442">CONFIG_SERVER_CB_MASK</a></div><div class="ttdeci">#define CONFIG_SERVER_CB_MASK</div><div class="ttdoc">Configuration server callback event mask for cwww server.</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00038">meshx_light_cwww_client.c:38</a></div></div>
-<div class="ttc" id="ameshx__light__cwww__client_8c_html_a0f44c18340482bed497e5c388fcb6748"><div class="ttname"><a href="#a0f44c18340482bed497e5c388fcb6748">meshx_cwww_cli_el_state_change_reg_cb</a></div><div class="ttdeci">static meshx_err_t meshx_cwww_cli_el_state_change_reg_cb()</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00987">meshx_light_cwww_client.c:987</a></div></div>
-<div class="ttc" id="ameshx__light__cwww__client_8c_html_aa09d5950f3239006aea437cebe41c6b9"><div class="ttname"><a href="#aa09d5950f3239006aea437cebe41c6b9">meshx_cwww_cli_reg_app_req_cb</a></div><div class="ttdeci">static meshx_err_t meshx_cwww_cli_reg_app_req_cb()</div><div class="ttdoc">Registers a callback handler for CW-WW application requests.</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00978">meshx_light_cwww_client.c:978</a></div></div>
+<div class="ttc" id="ameshx__light__cwww__client_8c_html_a0f44c18340482bed497e5c388fcb6748"><div class="ttname"><a href="#a0f44c18340482bed497e5c388fcb6748">meshx_cwww_cli_el_state_change_reg_cb</a></div><div class="ttdeci">static meshx_err_t meshx_cwww_cli_el_state_change_reg_cb()</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00962">meshx_light_cwww_client.c:962</a></div></div>
+<div class="ttc" id="ameshx__light__cwww__client_8c_html_aa09d5950f3239006aea437cebe41c6b9"><div class="ttname"><a href="#aa09d5950f3239006aea437cebe41c6b9">meshx_cwww_cli_reg_app_req_cb</a></div><div class="ttdeci">static meshx_err_t meshx_cwww_cli_reg_app_req_cb()</div><div class="ttdoc">Registers a callback handler for CW-WW application requests.</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00953">meshx_light_cwww_client.c:953</a></div></div>
 <div class="ttc" id="ameshx__light__cwww__client_8c_html_aa0ad1e47aa701098a8202979c5f1937d"><div class="ttname"><a href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a></div><div class="ttdeci">#define MOD_LCC</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00053">meshx_light_cwww_client.c:53</a></div></div>
-<div class="ttc" id="ameshx__light__cwww__client_8c_html_ad44d27c2b9e797342e27cc923638eec2"><div class="ttname"><a href="#ad44d27c2b9e797342e27cc923638eec2">meshx_cwww_cli_reg_freshboot_cb</a></div><div class="ttdeci">static meshx_err_t meshx_cwww_cli_reg_freshboot_cb(control_task_msg_handle_t callback)</div><div class="ttdoc">Registers a callback handler for fresh boot events.</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00957">meshx_light_cwww_client.c:957</a></div></div>
-<div class="ttc" id="ameshx__light__cwww__client_8c_html_adac9c4dc1fe85bc6716af5f4db19950a"><div class="ttname"><a href="#adac9c4dc1fe85bc6716af5f4db19950a">meshx_dev_create_cwww_model_space</a></div><div class="ttdeci">static meshx_err_t meshx_dev_create_cwww_model_space(dev_struct_t const *pdev, uint16_t n_max)</div><div class="ttdoc">Creates a CW-WW model space for the given device.</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00873">meshx_light_cwww_client.c:873</a></div></div>
-<div class="ttc" id="ameshx__light__cwww__client_8c_html_aeeed3c047c66ef0ea3eecfa65f5d9fe1"><div class="ttname"><a href="#aeeed3c047c66ef0ea3eecfa65f5d9fe1">meshx_add_cwww_cli_model_to_element_list</a></div><div class="ttdeci">static meshx_err_t meshx_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, uint16_t *start_idx, uint16_t n_max)</div><div class="ttdoc">This function adds the CW-WW client models to the element list of the specified device....</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00902">meshx_light_cwww_client.c:902</a></div></div>
+<div class="ttc" id="ameshx__light__cwww__client_8c_html_ad44d27c2b9e797342e27cc923638eec2"><div class="ttname"><a href="#ad44d27c2b9e797342e27cc923638eec2">meshx_cwww_cli_reg_freshboot_cb</a></div><div class="ttdeci">static meshx_err_t meshx_cwww_cli_reg_freshboot_cb(control_task_msg_handle_t callback)</div><div class="ttdoc">Registers a callback handler for fresh boot events.</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00932">meshx_light_cwww_client.c:932</a></div></div>
+<div class="ttc" id="ameshx__light__cwww__client_8c_html_adac9c4dc1fe85bc6716af5f4db19950a"><div class="ttname"><a href="#adac9c4dc1fe85bc6716af5f4db19950a">meshx_dev_create_cwww_model_space</a></div><div class="ttdeci">static meshx_err_t meshx_dev_create_cwww_model_space(dev_struct_t const *pdev, uint16_t n_max)</div><div class="ttdoc">Creates a CW-WW model space for the given device.</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00848">meshx_light_cwww_client.c:848</a></div></div>
+<div class="ttc" id="ameshx__light__cwww__client_8c_html_aeeed3c047c66ef0ea3eecfa65f5d9fe1"><div class="ttname"><a href="#aeeed3c047c66ef0ea3eecfa65f5d9fe1">meshx_add_cwww_cli_model_to_element_list</a></div><div class="ttdeci">static meshx_err_t meshx_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, uint16_t *start_idx, uint16_t n_max)</div><div class="ttdoc">This function adds the CW-WW client models to the element list of the specified device....</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00877">meshx_light_cwww_client.c:877</a></div></div>
 <div class="ttc" id="ameshx__log_8h_html_a56673888067cbe14c7a33b0856f46eb8"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a></div><div class="ttdeci">#define MESHX_LOGE(module_id, format,...)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dcb/meshx__log_8h_source.html#l00067">meshx_log.h:67</a></div></div>
 <div class="ttc" id="ameshx__onoff__client_8c_html_ae641de803120d164e4927a8cf19aeaaf"><div class="ttname"><a href="../../d9/d33/meshx__onoff__client_8c.html#ae641de803120d164e4927a8cf19aeaaf">meshx_on_off_client_init</a></div><div class="ttdeci">meshx_err_t meshx_on_off_client_init(void)</div><div class="ttdoc">Initialize the Generic OnOff Client.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d33/meshx__onoff__client_8c_source.html#l00149">meshx_onoff_client.c:149</a></div></div>
 <div class="ttc" id="amodule__id_8h_html_ac6141ce7b2d1d07b28553017c6a3aedcadbe48da89935bb0f28e9a42b4d27fd1c"><div class="ttname"><a href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcadbe48da89935bb0f28e9a42b4d27fd1c">MODULE_ID_ELEMENT_LIGHT_CWWWW_CLIENT</a></div><div class="ttdeci">@ MODULE_ID_ELEMENT_LIGHT_CWWWW_CLIENT</div><div class="ttdef"><b>Definition</b> <a href="../../d3/da1/module__id_8h_source.html#l00025">module_id.h:25</a></div></div>
@@ -842,48 +842,48 @@ Here is the caller graph for this function:</div>
 </ul>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00902">902</a> of file <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html">meshx_light_cwww_client.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  903</span>{</div>
-<div class="line"><span class="lineno">  904</span>    <span class="keywordflow">if</span> (!pdev || !start_idx || !n_max)</div>
-<div class="line"><span class="lineno">  905</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
-<div class="line"><span class="lineno">  906</span> </div>
-<div class="line"><span class="lineno">  907</span>    <span class="keywordflow">if</span> ((n_max + *start_idx) &gt; <a class="code hl_define" href="../../df/d01/meshx__config__internal_8h.html#a91f3543ef224ff0ee338179fca4a1ad8">CONFIG_MAX_ELEMENT_COUNT</a>)</div>
-<div class="line"><span class="lineno">  908</span>    {</div>
-<div class="line"><span class="lineno">  909</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;No of elements limit reached&quot;</span>);</div>
-<div class="line"><span class="lineno">  910</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ad805de8202860d5657dc396e4b00aefe">MESHX_NO_MEM</a>;</div>
-<div class="line"><span class="lineno">  911</span>    }</div>
-<div class="line"><span class="lineno">  912</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  913</span> </div>
-<div class="line"><span class="lineno">  914</span>    <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_id_start = *start_idx;</div>
-<div class="line"><span class="lineno">  915</span> </div>
-<div class="line"><span class="lineno">  916</span>    <span class="keywordflow">for</span> (uint16_t i = *start_idx; i &lt; (n_max + *start_idx) &amp;&amp; (i - *start_idx) &lt; <a class="code hl_define" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab4b855b1c13c63367d1c1310c103a796">CWWW_CLI_MODEL_SIG_CNT</a>; i++)</div>
-<div class="line"><span class="lineno">  917</span>    {</div>
-<div class="line"><span class="lineno">  918</span>        <span class="keywordflow">if</span> (i == 0)</div>
-<div class="line"><span class="lineno">  919</span>            <span class="keywordflow">continue</span>;</div>
-<div class="line"><span class="lineno">  920</span>        err = <a class="code hl_function" href="../../d6/d1d/meshx__ble__mesh__cmn_8h.html#a2bdab205d68a408e7ec03e58b2fa8a0b">meshx_plat_add_element_to_composition</a>(</div>
-<div class="line"><span class="lineno">  921</span>            i,</div>
-<div class="line"><span class="lineno">  922</span>            pdev-&gt;<a class="code hl_variable" href="../../d7/d41/structdev__struct.html#a8fa309f58ef7baf0a3da7891c74ed434">elements</a>,</div>
-<div class="line"><span class="lineno">  923</span>            <a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i - *start_idx).cwww_cli_sig_model_list,</div>
-<div class="line"><span class="lineno">  924</span>            NULL,</div>
-<div class="line"><span class="lineno">  925</span>            <a class="code hl_define" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab4b855b1c13c63367d1c1310c103a796">CWWW_CLI_MODEL_SIG_CNT</a>,</div>
-<div class="line"><span class="lineno">  926</span>            <a class="code hl_define" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#a5a731ac86d6f7af21c5721dbc9d5d358">CWWW_CLI_MODEL_VEN_CNT</a>);</div>
-<div class="line"><span class="lineno">  927</span>        <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno">  928</span>        {</div>
-<div class="line"><span class="lineno">  929</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Failed to add element to composition: (%d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  930</span>            <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  931</span>        }</div>
-<div class="line"><span class="lineno">  932</span>        err = <a class="code hl_function" href="../../d3/d7d/meshx__nvs_8h.html#a3773373d74bd4e2c0415a89f7652ebe8">meshx_nvs_element_ctx_get</a>(i,</div>
-<div class="line"><span class="lineno">  933</span>                                        <a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i - *start_idx).<a class="code hl_struct" href="../../d2/dd1/structcwww__cli__ctx.html">cwww_cli_ctx</a>,</div>
-<div class="line"><span class="lineno">  934</span>                                        <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ae694f726031d9f8bf593f16a3516a2f5">meshx_cwww_client_model_ctx_t</a>));</div>
-<div class="line"><span class="lineno">  935</span>        <span class="keywordflow">if</span> (err != <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>)</div>
-<div class="line"><span class="lineno">  936</span>        {</div>
-<div class="line"><span class="lineno">  937</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a3df9f46a0a08969094d8eef3581409e8">MESHX_LOGW</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Failed to get cwww cli element context: (0x%x)&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  938</span>        }</div>
-<div class="line"><span class="lineno">  939</span>    }</div>
-<div class="line"><span class="lineno">  940</span>    <span class="comment">/* Increment the index for further registrations */</span></div>
-<div class="line"><span class="lineno">  941</span>    <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_id_end = *start_idx += n_max;</div>
-<div class="line"><span class="lineno">  942</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  943</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00877">877</a> of file <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html">meshx_light_cwww_client.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  878</span>{</div>
+<div class="line"><span class="lineno">  879</span>    <span class="keywordflow">if</span> (!pdev || !start_idx || !n_max)</div>
+<div class="line"><span class="lineno">  880</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<div class="line"><span class="lineno">  881</span> </div>
+<div class="line"><span class="lineno">  882</span>    <span class="keywordflow">if</span> ((n_max + *start_idx) &gt; <a class="code hl_define" href="../../df/d01/meshx__config__internal_8h.html#a91f3543ef224ff0ee338179fca4a1ad8">CONFIG_MAX_ELEMENT_COUNT</a>)</div>
+<div class="line"><span class="lineno">  883</span>    {</div>
+<div class="line"><span class="lineno">  884</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;No of elements limit reached&quot;</span>);</div>
+<div class="line"><span class="lineno">  885</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ad805de8202860d5657dc396e4b00aefe">MESHX_NO_MEM</a>;</div>
+<div class="line"><span class="lineno">  886</span>    }</div>
+<div class="line"><span class="lineno">  887</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  888</span> </div>
+<div class="line"><span class="lineno">  889</span>    <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_id_start = *start_idx;</div>
+<div class="line"><span class="lineno">  890</span> </div>
+<div class="line"><span class="lineno">  891</span>    <span class="keywordflow">for</span> (uint16_t i = *start_idx; i &lt; (n_max + *start_idx) &amp;&amp; (i - *start_idx) &lt; <a class="code hl_define" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab4b855b1c13c63367d1c1310c103a796">CWWW_CLI_MODEL_SIG_CNT</a>; i++)</div>
+<div class="line"><span class="lineno">  892</span>    {</div>
+<div class="line"><span class="lineno">  893</span>        <span class="keywordflow">if</span> (i == 0)</div>
+<div class="line"><span class="lineno">  894</span>            <span class="keywordflow">continue</span>;</div>
+<div class="line"><span class="lineno">  895</span>        err = <a class="code hl_function" href="../../d6/d1d/meshx__ble__mesh__cmn_8h.html#a2bdab205d68a408e7ec03e58b2fa8a0b">meshx_plat_add_element_to_composition</a>(</div>
+<div class="line"><span class="lineno">  896</span>            i,</div>
+<div class="line"><span class="lineno">  897</span>            pdev-&gt;<a class="code hl_variable" href="../../d7/d41/structdev__struct.html#a8fa309f58ef7baf0a3da7891c74ed434">elements</a>,</div>
+<div class="line"><span class="lineno">  898</span>            <a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i - *start_idx).cwww_cli_sig_model_list,</div>
+<div class="line"><span class="lineno">  899</span>            NULL,</div>
+<div class="line"><span class="lineno">  900</span>            <a class="code hl_define" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab4b855b1c13c63367d1c1310c103a796">CWWW_CLI_MODEL_SIG_CNT</a>,</div>
+<div class="line"><span class="lineno">  901</span>            <a class="code hl_define" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#a5a731ac86d6f7af21c5721dbc9d5d358">CWWW_CLI_MODEL_VEN_CNT</a>);</div>
+<div class="line"><span class="lineno">  902</span>        <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno">  903</span>        {</div>
+<div class="line"><span class="lineno">  904</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Failed to add element to composition: (%d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  905</span>            <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  906</span>        }</div>
+<div class="line"><span class="lineno">  907</span>        err = <a class="code hl_function" href="../../d3/d7d/meshx__nvs_8h.html#a3773373d74bd4e2c0415a89f7652ebe8">meshx_nvs_element_ctx_get</a>(i,</div>
+<div class="line"><span class="lineno">  908</span>                                        <a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i - *start_idx).<a class="code hl_struct" href="../../d2/dd1/structcwww__cli__ctx.html">cwww_cli_ctx</a>,</div>
+<div class="line"><span class="lineno">  909</span>                                        <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ae694f726031d9f8bf593f16a3516a2f5">meshx_cwww_client_model_ctx_t</a>));</div>
+<div class="line"><span class="lineno">  910</span>        <span class="keywordflow">if</span> (err != <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>)</div>
+<div class="line"><span class="lineno">  911</span>        {</div>
+<div class="line"><span class="lineno">  912</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a3df9f46a0a08969094d8eef3581409e8">MESHX_LOGW</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Failed to get cwww cli element context: (0x%x)&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  913</span>        }</div>
+<div class="line"><span class="lineno">  914</span>    }</div>
+<div class="line"><span class="lineno">  915</span>    <span class="comment">/* Increment the index for further registrations */</span></div>
+<div class="line"><span class="lineno">  916</span>    <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_id_end = *start_idx += n_max;</div>
+<div class="line"><span class="lineno">  917</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  918</span>}</div>
 <div class="ttc" id="ameshx__ble__mesh__cmn_8h_html_a2bdab205d68a408e7ec03e58b2fa8a0b"><div class="ttname"><a href="../../d6/d1d/meshx__ble__mesh__cmn_8h.html#a2bdab205d68a408e7ec03e58b2fa8a0b">meshx_plat_add_element_to_composition</a></div><div class="ttdeci">meshx_err_t meshx_plat_add_element_to_composition(uint16_t index, meshx_ptr_t p_element_list, meshx_ptr_t p_sig_models, meshx_ptr_t p_ven_models, uint8_t sig_cnt, uint8_t ven_cnt)</div><div class="ttdoc">Adds an element to the BLE Mesh composition.</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d96/esp__platform__ble__mesh_8c_source.html#l00111">esp_platform_ble_mesh.c:111</a></div></div>
 <div class="ttc" id="ameshx__config__internal_8h_html_a91f3543ef224ff0ee338179fca4a1ad8"><div class="ttname"><a href="../../df/d01/meshx__config__internal_8h.html#a91f3543ef224ff0ee338179fca4a1ad8">CONFIG_MAX_ELEMENT_COUNT</a></div><div class="ttdeci">#define CONFIG_MAX_ELEMENT_COUNT</div><div class="ttdoc">Total Element Count in the Composition.</div><div class="ttdef"><b>Definition</b> <a href="../../df/d01/meshx__config__internal_8h_source.html#l00040">meshx_config_internal.h:40</a></div></div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a></div><div class="ttdeci">@ MESHX_INVALID_ARG</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00040">meshx_err.h:40</a></div></div>
@@ -948,14 +948,14 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00987">987</a> of file <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html">meshx_light_cwww_client.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  988</span>{</div>
-<div class="line"><span class="lineno">  989</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#af31decf28c19d825be2987e5dca60b20">control_task_msg_subscribe</a>(</div>
-<div class="line"><span class="lineno">  990</span>        <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fada2e951a2072299e90d2ccf65f4cdde2">CONTROL_TASK_MSG_CODE_EL_STATE_CH</a>,</div>
-<div class="line"><span class="lineno">  991</span>        <a class="code hl_define" href="#a07763511e2cde9c4a917240bc30e1bed">CWWW_CLI_EL_STATE_CH_EVT_MASK</a>,</div>
-<div class="line"><span class="lineno">  992</span>        (<a class="code hl_typedef" href="../../da/db3/meshx__control__task_8h.html#a579fb3e74e48372bcc0489cd86c56614">control_task_msg_handle_t</a>)&amp;meshx_cwww_client_element_state_change_handler</div>
-<div class="line"><span class="lineno">  993</span>    );</div>
-<div class="line"><span class="lineno">  994</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00962">962</a> of file <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html">meshx_light_cwww_client.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  963</span>{</div>
+<div class="line"><span class="lineno">  964</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#af31decf28c19d825be2987e5dca60b20">control_task_msg_subscribe</a>(</div>
+<div class="line"><span class="lineno">  965</span>        <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fada2e951a2072299e90d2ccf65f4cdde2">CONTROL_TASK_MSG_CODE_EL_STATE_CH</a>,</div>
+<div class="line"><span class="lineno">  966</span>        <a class="code hl_define" href="#a07763511e2cde9c4a917240bc30e1bed">CWWW_CLI_EL_STATE_CH_EVT_MASK</a>,</div>
+<div class="line"><span class="lineno">  967</span>        (<a class="code hl_typedef" href="../../da/db3/meshx__control__task_8h.html#a579fb3e74e48372bcc0489cd86c56614">control_task_msg_handle_t</a>)&amp;meshx_cwww_client_element_state_change_handler</div>
+<div class="line"><span class="lineno">  968</span>    );</div>
+<div class="line"><span class="lineno">  969</span>}</div>
 <div class="ttc" id="ameshx__control__task_8h_html_a6c7510c6dd8d40d223d385ec01eb631fada2e951a2072299e90d2ccf65f4cdde2"><div class="ttname"><a href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fada2e951a2072299e90d2ccf65f4cdde2">CONTROL_TASK_MSG_CODE_EL_STATE_CH</a></div><div class="ttdeci">@ CONTROL_TASK_MSG_CODE_EL_STATE_CH</div><div class="ttdef"><b>Definition</b> <a href="../../da/db3/meshx__control__task_8h_source.html#l00055">meshx_control_task.h:55</a></div></div>
 <div class="ttc" id="ameshx__control__task_8h_html_af31decf28c19d825be2987e5dca60b20"><div class="ttname"><a href="../../da/db3/meshx__control__task_8h.html#af31decf28c19d825be2987e5dca60b20">control_task_msg_subscribe</a></div><div class="ttdeci">meshx_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code, control_task_msg_evt_t evt_bmap, control_task_msg_handle_t callback)</div><div class="ttdoc">Subscribe to a control task message.</div><div class="ttdef"><b>Definition</b> <a href="../../df/d7e/meshx__control__task_8c_source.html#l00122">meshx_control_task.c:122</a></div></div>
 <div class="ttc" id="ameshx__light__cwww__client_8c_html_a07763511e2cde9c4a917240bc30e1bed"><div class="ttname"><a href="#a07763511e2cde9c4a917240bc30e1bed">CWWW_CLI_EL_STATE_CH_EVT_MASK</a></div><div class="ttdeci">#define CWWW_CLI_EL_STATE_CH_EVT_MASK</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00055">meshx_light_cwww_client.c:55</a></div></div>
@@ -1012,14 +1012,14 @@ Here is the caller graph for this function:</div>
 <p>Registers a callback handler for CW-WW application requests. </p>
 <p>This function subscribes the provided callback to control task messages related to BLE events. It ensures the callback is valid before subscribing. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00978">978</a> of file <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html">meshx_light_cwww_client.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  979</span>{</div>
-<div class="line"><span class="lineno">  980</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#af31decf28c19d825be2987e5dca60b20">control_task_msg_subscribe</a>(</div>
-<div class="line"><span class="lineno">  981</span>        <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fadd496706492bf07b548fbeeba784a7af">CONTROL_TASK_MSG_CODE_TO_BLE</a>,</div>
-<div class="line"><span class="lineno">  982</span>        CONTROL_TASK_MSG_CODE_EVT_MASK,</div>
-<div class="line"><span class="lineno">  983</span>        (<a class="code hl_typedef" href="../../da/db3/meshx__control__task_8h.html#a579fb3e74e48372bcc0489cd86c56614">control_task_msg_handle_t</a>)&amp;meshx_cwww_client_element_to_ble_handler</div>
-<div class="line"><span class="lineno">  984</span>    );</div>
-<div class="line"><span class="lineno">  985</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00953">953</a> of file <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html">meshx_light_cwww_client.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  954</span>{</div>
+<div class="line"><span class="lineno">  955</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#af31decf28c19d825be2987e5dca60b20">control_task_msg_subscribe</a>(</div>
+<div class="line"><span class="lineno">  956</span>        <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fadd496706492bf07b548fbeeba784a7af">CONTROL_TASK_MSG_CODE_TO_BLE</a>,</div>
+<div class="line"><span class="lineno">  957</span>        CONTROL_TASK_MSG_CODE_EVT_MASK,</div>
+<div class="line"><span class="lineno">  958</span>        (<a class="code hl_typedef" href="../../da/db3/meshx__control__task_8h.html#a579fb3e74e48372bcc0489cd86c56614">control_task_msg_handle_t</a>)&amp;meshx_cwww_client_element_to_ble_handler</div>
+<div class="line"><span class="lineno">  959</span>    );</div>
+<div class="line"><span class="lineno">  960</span>}</div>
 <div class="ttc" id="ameshx__control__task_8h_html_a6c7510c6dd8d40d223d385ec01eb631fadd496706492bf07b548fbeeba784a7af"><div class="ttname"><a href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fadd496706492bf07b548fbeeba784a7af">CONTROL_TASK_MSG_CODE_TO_BLE</a></div><div class="ttdeci">@ CONTROL_TASK_MSG_CODE_TO_BLE</div><div class="ttdef"><b>Definition</b> <a href="../../da/db3/meshx__control__task_8h_source.html#l00057">meshx_control_task.h:57</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -1085,19 +1085,19 @@ Here is the caller graph for this function:</div>
 </ul>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00957">957</a> of file <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html">meshx_light_cwww_client.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  958</span>{</div>
-<div class="line"><span class="lineno">  959</span>    <span class="keywordflow">if</span> (callback == NULL)</div>
-<div class="line"><span class="lineno">  960</span>    {</div>
-<div class="line"><span class="lineno">  961</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
-<div class="line"><span class="lineno">  962</span>    }</div>
-<div class="line"><span class="lineno">  963</span> </div>
-<div class="line"><span class="lineno">  964</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#af31decf28c19d825be2987e5dca60b20">control_task_msg_subscribe</a>(</div>
-<div class="line"><span class="lineno">  965</span>        <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fa68f019e75dccd79cdddbe058a786ea12">CONTROL_TASK_MSG_CODE_SYSTEM</a>,</div>
-<div class="line"><span class="lineno">  966</span>        <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a74c26ff7cf968dce6ce580cc8249bac3a4026b04ae1ecf072c99ecbf7266dd1c1">CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT</a>,</div>
-<div class="line"><span class="lineno">  967</span>        callback</div>
-<div class="line"><span class="lineno">  968</span>    );</div>
-<div class="line"><span class="lineno">  969</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00932">932</a> of file <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html">meshx_light_cwww_client.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  933</span>{</div>
+<div class="line"><span class="lineno">  934</span>    <span class="keywordflow">if</span> (callback == NULL)</div>
+<div class="line"><span class="lineno">  935</span>    {</div>
+<div class="line"><span class="lineno">  936</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<div class="line"><span class="lineno">  937</span>    }</div>
+<div class="line"><span class="lineno">  938</span> </div>
+<div class="line"><span class="lineno">  939</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#af31decf28c19d825be2987e5dca60b20">control_task_msg_subscribe</a>(</div>
+<div class="line"><span class="lineno">  940</span>        <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fa68f019e75dccd79cdddbe058a786ea12">CONTROL_TASK_MSG_CODE_SYSTEM</a>,</div>
+<div class="line"><span class="lineno">  941</span>        <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a74c26ff7cf968dce6ce580cc8249bac3a4026b04ae1ecf072c99ecbf7266dd1c1">CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT</a>,</div>
+<div class="line"><span class="lineno">  942</span>        callback</div>
+<div class="line"><span class="lineno">  943</span>    );</div>
+<div class="line"><span class="lineno">  944</span>}</div>
 <div class="ttc" id="ameshx__control__task_8h_html_a6c7510c6dd8d40d223d385ec01eb631fa68f019e75dccd79cdddbe058a786ea12"><div class="ttname"><a href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fa68f019e75dccd79cdddbe058a786ea12">CONTROL_TASK_MSG_CODE_SYSTEM</a></div><div class="ttdeci">@ CONTROL_TASK_MSG_CODE_SYSTEM</div><div class="ttdef"><b>Definition</b> <a href="../../da/db3/meshx__control__task_8h_source.html#l00056">meshx_control_task.h:56</a></div></div>
 <div class="ttc" id="ameshx__control__task_8h_html_a74c26ff7cf968dce6ce580cc8249bac3a4026b04ae1ecf072c99ecbf7266dd1c1"><div class="ttname"><a href="../../da/db3/meshx__control__task_8h.html#a74c26ff7cf968dce6ce580cc8249bac3a4026b04ae1ecf072c99ecbf7266dd1c1">CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT</a></div><div class="ttdeci">@ CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT</div><div class="ttdef"><b>Definition</b> <a href="../../da/db3/meshx__control__task_8h_source.html#l00118">meshx_control_task.h:118</a></div></div>
 </div><!-- fragment --><div class="dynheader">
@@ -1157,64 +1157,64 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6" title="MeshX Error Codes.">meshx_err_t</a> Returns MESHX_OK on success, or an appropriate error code on failure. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l01005">1005</a> of file <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html">meshx_light_cwww_client.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno"> 1006</span>{</div>
-<div class="line"><span class="lineno"> 1007</span>    <span class="keywordflow">if</span> (!<a class="code hl_define" href="#ad548550b8b82eac5acc715ddf7e27c58">IS_EL_IN_RANGE</a>(element_id))</div>
-<div class="line"><span class="lineno"> 1008</span>    {</div>
-<div class="line"><span class="lineno"> 1009</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Invalid element id: %d&quot;</span>, element_id);</div>
-<div class="line"><span class="lineno"> 1010</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<p class="definition">Definition at line <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00980">980</a> of file <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html">meshx_light_cwww_client.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  981</span>{</div>
+<div class="line"><span class="lineno">  982</span>    <span class="keywordflow">if</span> (!<a class="code hl_define" href="#ad548550b8b82eac5acc715ddf7e27c58">IS_EL_IN_RANGE</a>(element_id))</div>
+<div class="line"><span class="lineno">  983</span>    {</div>
+<div class="line"><span class="lineno">  984</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Invalid element id: %d&quot;</span>, element_id);</div>
+<div class="line"><span class="lineno">  985</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<div class="line"><span class="lineno">  986</span>    }</div>
+<div class="line"><span class="lineno">  987</span>    <a class="code hl_typedef" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#a13264d47e9659307bea52f189565e9c3">meshx_cwww_client_msg_t</a> msg = {0};</div>
+<div class="line"><span class="lineno">  988</span>    msg.<a class="code hl_variable" href="../../d3/d96/structcwww__client__msg.html#ae4bd1bc8f53a7dd014094972b6946756">ack</a> = <a class="code hl_define" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#a0669487135f884c8f9cb70ac14a3f908">CWWW_CLI_MSG_ACK</a>;</div>
+<div class="line"><span class="lineno">  989</span>    msg.<a class="code hl_variable" href="../../d3/d96/structcwww__client__msg.html#a66c913e65a7664fb10a399bbbe59e084">set_get</a> = <a class="code hl_define" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#a27ada85d4a43670c416f7864351b7209">CWWW_CLI_MSG_GET</a>;</div>
+<div class="line"><span class="lineno">  990</span>    msg.<a class="code hl_variable" href="../../d3/d96/structcwww__client__msg.html#ade82f6ba369c73449027a76de3d4c44c">element_id</a> = element_id;</div>
+<div class="line"><span class="lineno">  991</span> </div>
+<div class="line"><span class="lineno">  992</span>    <span class="keywordflow">if</span> (model_id != <a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50a25a9de5ff6f0895c9bece1596004a5e7">CWWW_CLI_SIG_ID_MAX</a>)</div>
+<div class="line"><span class="lineno">  993</span>    {</div>
+<div class="line"><span class="lineno">  994</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Sending GET for model: %d&quot;</span>, model_id);</div>
+<div class="line"><span class="lineno">  995</span>        <span class="keywordflow">if</span>(model_id == <a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50aa02a6779f0b7c25d3ac7b9e35457098d">CWWW_CLI_SIG_L_CTL_MODEL_ID</a>)</div>
+<div class="line"><span class="lineno">  996</span>        {</div>
+<div class="line"><span class="lineno">  997</span>            <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#acc911e8c9467e5f4e224be56b1888e68">control_task_msg_publish</a>(</div>
+<div class="line"><span class="lineno">  998</span>                <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fadd496706492bf07b548fbeeba784a7af">CONTROL_TASK_MSG_CODE_TO_BLE</a>,</div>
+<div class="line"><span class="lineno">  999</span>                <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#af0f09f726bff0d760104f7b204150949a033dc3106603fc8750e9cdaab206bae5">CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL</a>,</div>
+<div class="line"><span class="lineno"> 1000</span>                &amp;msg,</div>
+<div class="line"><span class="lineno"> 1001</span>                <span class="keyword">sizeof</span>(msg));</div>
+<div class="line"><span class="lineno"> 1002</span>        }</div>
+<div class="line"><span class="lineno"> 1003</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno"> 1004</span>        {</div>
+<div class="line"><span class="lineno"> 1005</span>            <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#acc911e8c9467e5f4e224be56b1888e68">control_task_msg_publish</a>(</div>
+<div class="line"><span class="lineno"> 1006</span>                <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fadd496706492bf07b548fbeeba784a7af">CONTROL_TASK_MSG_CODE_TO_BLE</a>,</div>
+<div class="line"><span class="lineno"> 1007</span>                <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#af0f09f726bff0d760104f7b204150949a1560d7a2c32224d132514ce9fc91d4cd">CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF</a>,</div>
+<div class="line"><span class="lineno"> 1008</span>                &amp;msg,</div>
+<div class="line"><span class="lineno"> 1009</span>                <span class="keyword">sizeof</span>(msg));</div>
+<div class="line"><span class="lineno"> 1010</span>        }</div>
 <div class="line"><span class="lineno"> 1011</span>    }</div>
-<div class="line"><span class="lineno"> 1012</span>    <a class="code hl_typedef" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#a13264d47e9659307bea52f189565e9c3">meshx_cwww_client_msg_t</a> msg = {0};</div>
-<div class="line"><span class="lineno"> 1013</span>    msg.<a class="code hl_variable" href="../../d3/d96/structcwww__client__msg.html#ae4bd1bc8f53a7dd014094972b6946756">ack</a> = <a class="code hl_define" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#a0669487135f884c8f9cb70ac14a3f908">CWWW_CLI_MSG_ACK</a>;</div>
-<div class="line"><span class="lineno"> 1014</span>    msg.<a class="code hl_variable" href="../../d3/d96/structcwww__client__msg.html#a66c913e65a7664fb10a399bbbe59e084">set_get</a> = <a class="code hl_define" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#a27ada85d4a43670c416f7864351b7209">CWWW_CLI_MSG_GET</a>;</div>
-<div class="line"><span class="lineno"> 1015</span>    msg.<a class="code hl_variable" href="../../d3/d96/structcwww__client__msg.html#ade82f6ba369c73449027a76de3d4c44c">element_id</a> = element_id;</div>
+<div class="line"><span class="lineno"> 1012</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno"> 1013</span>    {</div>
+<div class="line"><span class="lineno"> 1014</span>        <span class="keywordflow">for</span>(model_id = <a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50a8cd1dac492675851c4178ac0f342f49d">CWWW_CLI_SIG_ONOFF_MODEL_ID</a>; model_id &lt; <a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50a25a9de5ff6f0895c9bece1596004a5e7">CWWW_CLI_SIG_ID_MAX</a>; model_id++)</div>
+<div class="line"><span class="lineno"> 1015</span>        {</div>
 <div class="line"><span class="lineno"> 1016</span> </div>
-<div class="line"><span class="lineno"> 1017</span>    <span class="keywordflow">if</span> (model_id != <a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50a25a9de5ff6f0895c9bece1596004a5e7">CWWW_CLI_SIG_ID_MAX</a>)</div>
-<div class="line"><span class="lineno"> 1018</span>    {</div>
-<div class="line"><span class="lineno"> 1019</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Sending GET for model: %d&quot;</span>, model_id);</div>
-<div class="line"><span class="lineno"> 1020</span>        <span class="keywordflow">if</span>(model_id == <a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50aa02a6779f0b7c25d3ac7b9e35457098d">CWWW_CLI_SIG_L_CTL_MODEL_ID</a>)</div>
-<div class="line"><span class="lineno"> 1021</span>        {</div>
-<div class="line"><span class="lineno"> 1022</span>            <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#acc911e8c9467e5f4e224be56b1888e68">control_task_msg_publish</a>(</div>
-<div class="line"><span class="lineno"> 1023</span>                <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fadd496706492bf07b548fbeeba784a7af">CONTROL_TASK_MSG_CODE_TO_BLE</a>,</div>
-<div class="line"><span class="lineno"> 1024</span>                <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#af0f09f726bff0d760104f7b204150949a033dc3106603fc8750e9cdaab206bae5">CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL</a>,</div>
-<div class="line"><span class="lineno"> 1025</span>                &amp;msg,</div>
-<div class="line"><span class="lineno"> 1026</span>                <span class="keyword">sizeof</span>(msg));</div>
-<div class="line"><span class="lineno"> 1027</span>        }</div>
-<div class="line"><span class="lineno"> 1028</span>        <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno"> 1029</span>        {</div>
-<div class="line"><span class="lineno"> 1030</span>            <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#acc911e8c9467e5f4e224be56b1888e68">control_task_msg_publish</a>(</div>
-<div class="line"><span class="lineno"> 1031</span>                <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fadd496706492bf07b548fbeeba784a7af">CONTROL_TASK_MSG_CODE_TO_BLE</a>,</div>
-<div class="line"><span class="lineno"> 1032</span>                <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#af0f09f726bff0d760104f7b204150949a1560d7a2c32224d132514ce9fc91d4cd">CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF</a>,</div>
-<div class="line"><span class="lineno"> 1033</span>                &amp;msg,</div>
-<div class="line"><span class="lineno"> 1034</span>                <span class="keyword">sizeof</span>(msg));</div>
-<div class="line"><span class="lineno"> 1035</span>        }</div>
-<div class="line"><span class="lineno"> 1036</span>    }</div>
-<div class="line"><span class="lineno"> 1037</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno"> 1038</span>    {</div>
-<div class="line"><span class="lineno"> 1039</span>        <span class="keywordflow">for</span>(model_id = <a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50a8cd1dac492675851c4178ac0f342f49d">CWWW_CLI_SIG_ONOFF_MODEL_ID</a>; model_id &lt; <a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50a25a9de5ff6f0895c9bece1596004a5e7">CWWW_CLI_SIG_ID_MAX</a>; model_id++)</div>
-<div class="line"><span class="lineno"> 1040</span>        {</div>
-<div class="line"><span class="lineno"> 1041</span> </div>
-<div class="line"><span class="lineno"> 1042</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Sending GET for model: %d&quot;</span>, model_id);</div>
-<div class="line"><span class="lineno"> 1043</span>            <span class="keywordflow">if</span>(model_id == <a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50aa02a6779f0b7c25d3ac7b9e35457098d">CWWW_CLI_SIG_L_CTL_MODEL_ID</a>)</div>
-<div class="line"><span class="lineno"> 1044</span>            {</div>
-<div class="line"><span class="lineno"> 1045</span>                <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#acc911e8c9467e5f4e224be56b1888e68">control_task_msg_publish</a>(</div>
-<div class="line"><span class="lineno"> 1046</span>                    <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fadd496706492bf07b548fbeeba784a7af">CONTROL_TASK_MSG_CODE_TO_BLE</a>,</div>
-<div class="line"><span class="lineno"> 1047</span>                    <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#af0f09f726bff0d760104f7b204150949a033dc3106603fc8750e9cdaab206bae5">CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL</a>,</div>
-<div class="line"><span class="lineno"> 1048</span>                    &amp;msg,</div>
-<div class="line"><span class="lineno"> 1049</span>                    <span class="keyword">sizeof</span>(msg));</div>
-<div class="line"><span class="lineno"> 1050</span>            }</div>
-<div class="line"><span class="lineno"> 1051</span>            <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno"> 1052</span>            {</div>
-<div class="line"><span class="lineno"> 1053</span>                <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#acc911e8c9467e5f4e224be56b1888e68">control_task_msg_publish</a>(</div>
-<div class="line"><span class="lineno"> 1054</span>                    <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fadd496706492bf07b548fbeeba784a7af">CONTROL_TASK_MSG_CODE_TO_BLE</a>,</div>
-<div class="line"><span class="lineno"> 1055</span>                    <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#af0f09f726bff0d760104f7b204150949a1560d7a2c32224d132514ce9fc91d4cd">CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF</a>,</div>
-<div class="line"><span class="lineno"> 1056</span>                    &amp;msg,</div>
-<div class="line"><span class="lineno"> 1057</span>                    <span class="keyword">sizeof</span>(msg));</div>
-<div class="line"><span class="lineno"> 1058</span>            }</div>
-<div class="line"><span class="lineno"> 1059</span>        }</div>
-<div class="line"><span class="lineno"> 1060</span>    }</div>
-<div class="line"><span class="lineno"> 1061</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno"> 1062</span>}</div>
+<div class="line"><span class="lineno"> 1017</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Sending GET for model: %d&quot;</span>, model_id);</div>
+<div class="line"><span class="lineno"> 1018</span>            <span class="keywordflow">if</span>(model_id == <a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50aa02a6779f0b7c25d3ac7b9e35457098d">CWWW_CLI_SIG_L_CTL_MODEL_ID</a>)</div>
+<div class="line"><span class="lineno"> 1019</span>            {</div>
+<div class="line"><span class="lineno"> 1020</span>                <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#acc911e8c9467e5f4e224be56b1888e68">control_task_msg_publish</a>(</div>
+<div class="line"><span class="lineno"> 1021</span>                    <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fadd496706492bf07b548fbeeba784a7af">CONTROL_TASK_MSG_CODE_TO_BLE</a>,</div>
+<div class="line"><span class="lineno"> 1022</span>                    <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#af0f09f726bff0d760104f7b204150949a033dc3106603fc8750e9cdaab206bae5">CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL</a>,</div>
+<div class="line"><span class="lineno"> 1023</span>                    &amp;msg,</div>
+<div class="line"><span class="lineno"> 1024</span>                    <span class="keyword">sizeof</span>(msg));</div>
+<div class="line"><span class="lineno"> 1025</span>            }</div>
+<div class="line"><span class="lineno"> 1026</span>            <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno"> 1027</span>            {</div>
+<div class="line"><span class="lineno"> 1028</span>                <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#acc911e8c9467e5f4e224be56b1888e68">control_task_msg_publish</a>(</div>
+<div class="line"><span class="lineno"> 1029</span>                    <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fadd496706492bf07b548fbeeba784a7af">CONTROL_TASK_MSG_CODE_TO_BLE</a>,</div>
+<div class="line"><span class="lineno"> 1030</span>                    <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#af0f09f726bff0d760104f7b204150949a1560d7a2c32224d132514ce9fc91d4cd">CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF</a>,</div>
+<div class="line"><span class="lineno"> 1031</span>                    &amp;msg,</div>
+<div class="line"><span class="lineno"> 1032</span>                    <span class="keyword">sizeof</span>(msg));</div>
+<div class="line"><span class="lineno"> 1033</span>            }</div>
+<div class="line"><span class="lineno"> 1034</span>        }</div>
+<div class="line"><span class="lineno"> 1035</span>    }</div>
+<div class="line"><span class="lineno"> 1036</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno"> 1037</span>}</div>
 <div class="ttc" id="ameshx__control__task_8h_html_acc911e8c9467e5f4e224be56b1888e68"><div class="ttname"><a href="../../da/db3/meshx__control__task_8h.html#acc911e8c9467e5f4e224be56b1888e68">control_task_msg_publish</a></div><div class="ttdeci">meshx_err_t control_task_msg_publish(control_task_msg_code_t msg_code, control_task_msg_evt_t msg_evt, const void *msg_evt_params, size_t sizeof_msg_evt_params)</div><div class="ttdoc">Publish a control task message.</div><div class="ttdef"><b>Definition</b> <a href="../../df/d7e/meshx__control__task_8c_source.html#l00066">meshx_control_task.c:66</a></div></div>
 <div class="ttc" id="ameshx__control__task_8h_html_af0f09f726bff0d760104f7b204150949a033dc3106603fc8750e9cdaab206bae5"><div class="ttname"><a href="../../da/db3/meshx__control__task_8h.html#af0f09f726bff0d760104f7b204150949a033dc3106603fc8750e9cdaab206bae5">CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL</a></div><div class="ttdeci">@ CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL</div><div class="ttdef"><b>Definition</b> <a href="../../da/db3/meshx__control__task_8h_source.html#l00098">meshx_control_task.h:98</a></div></div>
 <div class="ttc" id="ameshx__control__task_8h_html_af0f09f726bff0d760104f7b204150949a1560d7a2c32224d132514ce9fc91d4cd"><div class="ttname"><a href="../../da/db3/meshx__control__task_8h.html#af0f09f726bff0d760104f7b204150949a1560d7a2c32224d132514ce9fc91d4cd">CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF</a></div><div class="ttdeci">@ CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF</div><div class="ttdef"><b>Definition</b> <a href="../../da/db3/meshx__control__task_8h_source.html#l00097">meshx_control_task.h:97</a></div></div>
@@ -1293,23 +1293,23 @@ Here is the call graph for this function:</div>
 </ul>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00873">873</a> of file <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html">meshx_light_cwww_client.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  874</span>{</div>
-<div class="line"><span class="lineno">  875</span>    <span class="keywordflow">if</span> (!pdev)</div>
-<div class="line"><span class="lineno">  876</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno">  877</span> </div>
-<div class="line"><span class="lineno">  878</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_function" href="#acfe19244baff39d7aaaeefa052997704">meshx_element_struct_init</a>(n_max);</div>
-<div class="line"><span class="lineno">  879</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno">  880</span>    {</div>
-<div class="line"><span class="lineno">  881</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Failed to initialize cwww element structures: (%d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  882</span>        <a class="code hl_function" href="#a981929a7f7915290d07050019fef1e79">meshx_element_struct_deinit</a>(n_max);</div>
-<div class="line"><span class="lineno">  883</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  884</span>    }</div>
-<div class="line"><span class="lineno">  885</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  886</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00848">848</a> of file <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html">meshx_light_cwww_client.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  849</span>{</div>
+<div class="line"><span class="lineno">  850</span>    <span class="keywordflow">if</span> (!pdev)</div>
+<div class="line"><span class="lineno">  851</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno">  852</span> </div>
+<div class="line"><span class="lineno">  853</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_function" href="#acfe19244baff39d7aaaeefa052997704">meshx_element_struct_init</a>(n_max);</div>
+<div class="line"><span class="lineno">  854</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno">  855</span>    {</div>
+<div class="line"><span class="lineno">  856</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Failed to initialize cwww element structures: (%d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  857</span>        <a class="code hl_function" href="#a981929a7f7915290d07050019fef1e79">meshx_element_struct_deinit</a>(n_max);</div>
+<div class="line"><span class="lineno">  858</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  859</span>    }</div>
+<div class="line"><span class="lineno">  860</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  861</span>}</div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a></div><div class="ttdeci">@ MESHX_INVALID_STATE</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00043">meshx_err.h:43</a></div></div>
-<div class="ttc" id="ameshx__light__cwww__client_8c_html_a981929a7f7915290d07050019fef1e79"><div class="ttname"><a href="#a981929a7f7915290d07050019fef1e79">meshx_element_struct_deinit</a></div><div class="ttdeci">static meshx_err_t meshx_element_struct_deinit(uint16_t n_max)</div><div class="ttdoc">Deinitializes the CW-WW client model.</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00830">meshx_light_cwww_client.c:830</a></div></div>
-<div class="ttc" id="ameshx__light__cwww__client_8c_html_acfe19244baff39d7aaaeefa052997704"><div class="ttname"><a href="#acfe19244baff39d7aaaeefa052997704">meshx_element_struct_init</a></div><div class="ttdeci">static meshx_err_t meshx_element_struct_init(uint16_t n_max)</div><div class="ttdoc">Initializes the CW-WW client model.</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00772">meshx_light_cwww_client.c:772</a></div></div>
+<div class="ttc" id="ameshx__light__cwww__client_8c_html_a981929a7f7915290d07050019fef1e79"><div class="ttname"><a href="#a981929a7f7915290d07050019fef1e79">meshx_element_struct_deinit</a></div><div class="ttdeci">static meshx_err_t meshx_element_struct_deinit(uint16_t n_max)</div><div class="ttdoc">Deinitializes the CW-WW client model.</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00805">meshx_light_cwww_client.c:805</a></div></div>
+<div class="ttc" id="ameshx__light__cwww__client_8c_html_acfe19244baff39d7aaaeefa052997704"><div class="ttname"><a href="#acfe19244baff39d7aaaeefa052997704">meshx_element_struct_init</a></div><div class="ttdeci">static meshx_err_t meshx_element_struct_init(uint16_t n_max)</div><div class="ttdoc">Initializes the CW-WW client model.</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00747">meshx_light_cwww_client.c:747</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1384,33 +1384,33 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00830">830</a> of file <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html">meshx_light_cwww_client.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  831</span>{</div>
-<div class="line"><span class="lineno">  832</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_cnt || !<a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.el_list)</div>
-<div class="line"><span class="lineno">  833</span>    {</div>
-<div class="line"><span class="lineno">  834</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;CWWW element list not initialized&quot;</span>);</div>
-<div class="line"><span class="lineno">  835</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno">  836</span>    }</div>
-<div class="line"><span class="lineno">  837</span> </div>
-<div class="line"><span class="lineno">  838</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.el_list)</div>
-<div class="line"><span class="lineno">  839</span>    {</div>
-<div class="line"><span class="lineno">  840</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n_max; i++)</div>
-<div class="line"><span class="lineno">  841</span>        {</div>
-<div class="line"><span class="lineno">  842</span>            <span class="keywordflow">if</span> (<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).<a class="code hl_struct" href="../../d2/dd1/structcwww__cli__ctx.html">cwww_cli_ctx</a>)</div>
-<div class="line"><span class="lineno">  843</span>            {</div>
-<div class="line"><span class="lineno">  844</span>                <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#af8f58f6602b246397c882d9cddd9a334">MESHX_FREE</a>(<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).<a class="code hl_struct" href="../../d2/dd1/structcwww__cli__ctx.html">cwww_cli_ctx</a>);</div>
-<div class="line"><span class="lineno">  845</span>                <a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).cwww_cli_ctx = NULL;</div>
-<div class="line"><span class="lineno">  846</span>            }</div>
-<div class="line"><span class="lineno">  847</span>        }</div>
-<div class="line"><span class="lineno">  848</span>        <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#af8f58f6602b246397c882d9cddd9a334">MESHX_FREE</a>(<a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.el_list);</div>
-<div class="line"><span class="lineno">  849</span>        <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.el_list = NULL;</div>
-<div class="line"><span class="lineno">  850</span>    }</div>
-<div class="line"><span class="lineno">  851</span>    <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_cnt = 0;</div>
-<div class="line"><span class="lineno">  852</span>    <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_id_end = 0;</div>
-<div class="line"><span class="lineno">  853</span>    <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_id_start = 0;</div>
-<div class="line"><span class="lineno">  854</span> </div>
-<div class="line"><span class="lineno">  855</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  856</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00805">805</a> of file <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html">meshx_light_cwww_client.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  806</span>{</div>
+<div class="line"><span class="lineno">  807</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_cnt || !<a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.el_list)</div>
+<div class="line"><span class="lineno">  808</span>    {</div>
+<div class="line"><span class="lineno">  809</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;CWWW element list not initialized&quot;</span>);</div>
+<div class="line"><span class="lineno">  810</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno">  811</span>    }</div>
+<div class="line"><span class="lineno">  812</span> </div>
+<div class="line"><span class="lineno">  813</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.el_list)</div>
+<div class="line"><span class="lineno">  814</span>    {</div>
+<div class="line"><span class="lineno">  815</span>        <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; n_max; i++)</div>
+<div class="line"><span class="lineno">  816</span>        {</div>
+<div class="line"><span class="lineno">  817</span>            <span class="keywordflow">if</span> (<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).<a class="code hl_struct" href="../../d2/dd1/structcwww__cli__ctx.html">cwww_cli_ctx</a>)</div>
+<div class="line"><span class="lineno">  818</span>            {</div>
+<div class="line"><span class="lineno">  819</span>                <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#af8f58f6602b246397c882d9cddd9a334">MESHX_FREE</a>(<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).<a class="code hl_struct" href="../../d2/dd1/structcwww__cli__ctx.html">cwww_cli_ctx</a>);</div>
+<div class="line"><span class="lineno">  820</span>                <a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).cwww_cli_ctx = NULL;</div>
+<div class="line"><span class="lineno">  821</span>            }</div>
+<div class="line"><span class="lineno">  822</span>        }</div>
+<div class="line"><span class="lineno">  823</span>        <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#af8f58f6602b246397c882d9cddd9a334">MESHX_FREE</a>(<a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.el_list);</div>
+<div class="line"><span class="lineno">  824</span>        <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.el_list = NULL;</div>
+<div class="line"><span class="lineno">  825</span>    }</div>
+<div class="line"><span class="lineno">  826</span>    <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_cnt = 0;</div>
+<div class="line"><span class="lineno">  827</span>    <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_id_end = 0;</div>
+<div class="line"><span class="lineno">  828</span>    <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_id_start = 0;</div>
+<div class="line"><span class="lineno">  829</span> </div>
+<div class="line"><span class="lineno">  830</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  831</span>}</div>
 <div class="ttc" id="ameshx__err_8h_html_af8f58f6602b246397c882d9cddd9a334"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#af8f58f6602b246397c882d9cddd9a334">MESHX_FREE</a></div><div class="ttdeci">#define MESHX_FREE</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00030">meshx_err.h:30</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -1467,57 +1467,57 @@ Here is the caller graph for this function:</div>
 </ul>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00772">772</a> of file <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html">meshx_light_cwww_client.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  773</span>{</div>
-<div class="line"><span class="lineno">  774</span>    <span class="keywordflow">if</span>(!n_max)</div>
-<div class="line"><span class="lineno">  775</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
-<div class="line"><span class="lineno">  776</span> </div>
-<div class="line"><span class="lineno">  777</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  778</span> </div>
-<div class="line"><span class="lineno">  779</span>    <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_cnt = n_max;</div>
-<div class="line"><span class="lineno">  780</span>    <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_id_end = 0;</div>
-<div class="line"><span class="lineno">  781</span>    <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_id_start = 0;</div>
-<div class="line"><span class="lineno">  782</span> </div>
-<div class="line"><span class="lineno">  783</span>    <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.el_list =</div>
-<div class="line"><span class="lineno">  784</span>        (<a class="code hl_typedef" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#a38f7636bb2e04683e972472923d1af10">meshx_cwww_client_elements_t</a> *)<a class="code hl_define" href="../../da/d68/meshx__err_8h.html#a1d35fd42fb3bbaaa86816df7b0263b50">MESHX_CALOC</a>(<a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_cnt, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#a38f7636bb2e04683e972472923d1af10">meshx_cwww_client_elements_t</a>));</div>
-<div class="line"><span class="lineno">  785</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.el_list)</div>
-<div class="line"><span class="lineno">  786</span>    {</div>
-<div class="line"><span class="lineno">  787</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Failed to allocate memory for cwww client elements&quot;</span>);</div>
-<div class="line"><span class="lineno">  788</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ad805de8202860d5657dc396e4b00aefe">MESHX_NO_MEM</a>;</div>
-<div class="line"><span class="lineno">  789</span>    }</div>
-<div class="line"><span class="lineno">  790</span> </div>
-<div class="line"><span class="lineno">  791</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_cnt; i++)</div>
-<div class="line"><span class="lineno">  792</span>    {</div>
-<div class="line"><span class="lineno">  793</span>        <a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).cwww_cli_ctx = (<a class="code hl_typedef" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ae694f726031d9f8bf593f16a3516a2f5">meshx_cwww_client_model_ctx_t</a> *)<a class="code hl_define" href="../../da/d68/meshx__err_8h.html#a1d35fd42fb3bbaaa86816df7b0263b50">MESHX_CALOC</a>(n_max, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ae694f726031d9f8bf593f16a3516a2f5">meshx_cwww_client_model_ctx_t</a>));</div>
-<div class="line"><span class="lineno">  794</span>        <span class="keywordflow">if</span> (!<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).<a class="code hl_struct" href="../../d2/dd1/structcwww__cli__ctx.html">cwww_cli_ctx</a>)</div>
-<div class="line"><span class="lineno">  795</span>        {</div>
-<div class="line"><span class="lineno">  796</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Failed to allocate memory for cwww client context&quot;</span>);</div>
-<div class="line"><span class="lineno">  797</span>            <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ad805de8202860d5657dc396e4b00aefe">MESHX_NO_MEM</a>;</div>
-<div class="line"><span class="lineno">  798</span>        }</div>
-<div class="line"><span class="lineno">  799</span>        err = <a class="code hl_function" href="../../d9/d33/meshx__onoff__client_8c.html#aa63f2f5107e1520101259e1bb2190afc">meshx_on_off_client_create</a>(&amp;<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).onoff_cli_model,</div>
-<div class="line"><span class="lineno">  800</span>                                         &amp;<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).cwww_cli_sig_model_list[<a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50a8cd1dac492675851c4178ac0f342f49d">CWWW_CLI_SIG_ONOFF_MODEL_ID</a>]);</div>
-<div class="line"><span class="lineno">  801</span>        <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno">  802</span>        {</div>
-<div class="line"><span class="lineno">  803</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Meshx On Off Client create failed (Err : 0x%x)&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  804</span>            <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  805</span>        }</div>
-<div class="line"><span class="lineno">  806</span>        <a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).onoff_cli_model-&gt;meshx_onoff_client_sig_model</div>
-<div class="line"><span class="lineno">  807</span>            = &amp;<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).cwww_cli_sig_model_list[<a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50a8cd1dac492675851c4178ac0f342f49d">CWWW_CLI_SIG_ONOFF_MODEL_ID</a>];</div>
-<div class="line"><span class="lineno">  808</span> </div>
-<div class="line"><span class="lineno">  809</span>        err = <a class="code hl_function" href="../../d8/d93/meshx__light__ctl__client_8c.html#a7c7cc48c89c94e6d90b77aa26ce13b46">meshx_light_ctl_client_create</a>(&amp;<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).ctl_cli_model,</div>
-<div class="line"><span class="lineno">  810</span>                                            &amp;<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).cwww_cli_sig_model_list[<a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50aa02a6779f0b7c25d3ac7b9e35457098d">CWWW_CLI_SIG_L_CTL_MODEL_ID</a>]);</div>
-<div class="line"><span class="lineno">  811</span>        <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno">  812</span>        {</div>
-<div class="line"><span class="lineno">  813</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Meshx CTL Client create failed (Err : 0x%x)&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  814</span>            <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  815</span>        }</div>
-<div class="line"><span class="lineno">  816</span>        <a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).ctl_cli_model-&gt;meshx_light_ctl_client_sig_model</div>
-<div class="line"><span class="lineno">  817</span>            = &amp;<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).cwww_cli_sig_model_list[<a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50aa02a6779f0b7c25d3ac7b9e35457098d">CWWW_CLI_SIG_L_CTL_MODEL_ID</a>];</div>
-<div class="line"><span class="lineno">  818</span>    }</div>
-<div class="line"><span class="lineno">  819</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  820</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00747">747</a> of file <a class="el" href="../../d0/d53/meshx__light__cwww__client_8c_source.html">meshx_light_cwww_client.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  748</span>{</div>
+<div class="line"><span class="lineno">  749</span>    <span class="keywordflow">if</span>(!n_max)</div>
+<div class="line"><span class="lineno">  750</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<div class="line"><span class="lineno">  751</span> </div>
+<div class="line"><span class="lineno">  752</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  753</span> </div>
+<div class="line"><span class="lineno">  754</span>    <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_cnt = n_max;</div>
+<div class="line"><span class="lineno">  755</span>    <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_id_end = 0;</div>
+<div class="line"><span class="lineno">  756</span>    <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_id_start = 0;</div>
+<div class="line"><span class="lineno">  757</span> </div>
+<div class="line"><span class="lineno">  758</span>    <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.el_list =</div>
+<div class="line"><span class="lineno">  759</span>        (<a class="code hl_typedef" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#a38f7636bb2e04683e972472923d1af10">meshx_cwww_client_elements_t</a> *)<a class="code hl_define" href="../../da/d68/meshx__err_8h.html#a1d35fd42fb3bbaaa86816df7b0263b50">MESHX_CALOC</a>(<a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_cnt, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#a38f7636bb2e04683e972472923d1af10">meshx_cwww_client_elements_t</a>));</div>
+<div class="line"><span class="lineno">  760</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.el_list)</div>
+<div class="line"><span class="lineno">  761</span>    {</div>
+<div class="line"><span class="lineno">  762</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Failed to allocate memory for cwww client elements&quot;</span>);</div>
+<div class="line"><span class="lineno">  763</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ad805de8202860d5657dc396e4b00aefe">MESHX_NO_MEM</a>;</div>
+<div class="line"><span class="lineno">  764</span>    }</div>
+<div class="line"><span class="lineno">  765</span> </div>
+<div class="line"><span class="lineno">  766</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_variable" href="#afcb3f2a0a3a23a43c83ed4c9c7ec825b">cwww_client_element_init_ctrl</a>.element_cnt; i++)</div>
+<div class="line"><span class="lineno">  767</span>    {</div>
+<div class="line"><span class="lineno">  768</span>        <a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).cwww_cli_ctx = (<a class="code hl_typedef" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ae694f726031d9f8bf593f16a3516a2f5">meshx_cwww_client_model_ctx_t</a> *)<a class="code hl_define" href="../../da/d68/meshx__err_8h.html#a1d35fd42fb3bbaaa86816df7b0263b50">MESHX_CALOC</a>(n_max, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ae694f726031d9f8bf593f16a3516a2f5">meshx_cwww_client_model_ctx_t</a>));</div>
+<div class="line"><span class="lineno">  769</span>        <span class="keywordflow">if</span> (!<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).<a class="code hl_struct" href="../../d2/dd1/structcwww__cli__ctx.html">cwww_cli_ctx</a>)</div>
+<div class="line"><span class="lineno">  770</span>        {</div>
+<div class="line"><span class="lineno">  771</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Failed to allocate memory for cwww client context&quot;</span>);</div>
+<div class="line"><span class="lineno">  772</span>            <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ad805de8202860d5657dc396e4b00aefe">MESHX_NO_MEM</a>;</div>
+<div class="line"><span class="lineno">  773</span>        }</div>
+<div class="line"><span class="lineno">  774</span>        err = <a class="code hl_function" href="../../d9/d33/meshx__onoff__client_8c.html#aa63f2f5107e1520101259e1bb2190afc">meshx_on_off_client_create</a>(&amp;<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).onoff_cli_model,</div>
+<div class="line"><span class="lineno">  775</span>                                         &amp;<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).cwww_cli_sig_model_list[<a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50a8cd1dac492675851c4178ac0f342f49d">CWWW_CLI_SIG_ONOFF_MODEL_ID</a>]);</div>
+<div class="line"><span class="lineno">  776</span>        <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno">  777</span>        {</div>
+<div class="line"><span class="lineno">  778</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Meshx On Off Client create failed (Err : 0x%x)&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  779</span>            <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  780</span>        }</div>
+<div class="line"><span class="lineno">  781</span>        <a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).onoff_cli_model-&gt;meshx_onoff_client_sig_model</div>
+<div class="line"><span class="lineno">  782</span>            = &amp;<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).cwww_cli_sig_model_list[<a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50a8cd1dac492675851c4178ac0f342f49d">CWWW_CLI_SIG_ONOFF_MODEL_ID</a>];</div>
+<div class="line"><span class="lineno">  783</span> </div>
+<div class="line"><span class="lineno">  784</span>        err = <a class="code hl_function" href="../../d8/d93/meshx__light__ctl__client_8c.html#a7c7cc48c89c94e6d90b77aa26ce13b46">meshx_light_ctl_client_create</a>(&amp;<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).ctl_cli_model,</div>
+<div class="line"><span class="lineno">  785</span>                                            &amp;<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).cwww_cli_sig_model_list[<a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50aa02a6779f0b7c25d3ac7b9e35457098d">CWWW_CLI_SIG_L_CTL_MODEL_ID</a>]);</div>
+<div class="line"><span class="lineno">  786</span>        <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno">  787</span>        {</div>
+<div class="line"><span class="lineno">  788</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Meshx CTL Client create failed (Err : 0x%x)&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  789</span>            <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  790</span>        }</div>
+<div class="line"><span class="lineno">  791</span>        <a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).ctl_cli_model-&gt;meshx_light_ctl_client_sig_model</div>
+<div class="line"><span class="lineno">  792</span>            = &amp;<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).cwww_cli_sig_model_list[<a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50aa02a6779f0b7c25d3ac7b9e35457098d">CWWW_CLI_SIG_L_CTL_MODEL_ID</a>];</div>
+<div class="line"><span class="lineno">  793</span>    }</div>
+<div class="line"><span class="lineno">  794</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  795</span>}</div>
 <div class="ttc" id="ameshx__err_8h_html_a1d35fd42fb3bbaaa86816df7b0263b50"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a1d35fd42fb3bbaaa86816df7b0263b50">MESHX_CALOC</a></div><div class="ttdeci">#define MESHX_CALOC</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00026">meshx_err.h:26</a></div></div>
-<div class="ttc" id="ameshx__light__ctl__client_8c_html_a7c7cc48c89c94e6d90b77aa26ce13b46"><div class="ttname"><a href="../../d8/d93/meshx__light__ctl__client_8c.html#a7c7cc48c89c94e6d90b77aa26ce13b46">meshx_light_ctl_client_create</a></div><div class="ttdeci">meshx_err_t meshx_light_ctl_client_create(meshx_light_ctl_client_model_t **p_model, void *p_sig_model)</div><div class="ttdoc">Creates and initializes a Generic Light Client model instance.</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d93/meshx__light__ctl__client_8c_source.html#l00258">meshx_light_ctl_client.c:258</a></div></div>
+<div class="ttc" id="ameshx__light__ctl__client_8c_html_a7c7cc48c89c94e6d90b77aa26ce13b46"><div class="ttname"><a href="../../d8/d93/meshx__light__ctl__client_8c.html#a7c7cc48c89c94e6d90b77aa26ce13b46">meshx_light_ctl_client_create</a></div><div class="ttdeci">meshx_err_t meshx_light_ctl_client_create(meshx_light_ctl_client_model_t **p_model, void *p_sig_model)</div><div class="ttdoc">Creates and initializes a Generic Light Client model instance.</div><div class="ttdef"><b>Definition</b> <a href="../../d8/d93/meshx__light__ctl__client_8c_source.html#l00259">meshx_light_ctl_client.c:259</a></div></div>
 <div class="ttc" id="ameshx__light__cwww__client__element_8h_html_a38f7636bb2e04683e972472923d1af10"><div class="ttname"><a href="../../df/dc5/meshx__light__cwww__client__element_8h.html#a38f7636bb2e04683e972472923d1af10">meshx_cwww_client_elements_t</a></div><div class="ttdeci">struct cwww_client_element meshx_cwww_client_elements_t</div><div class="ttdoc">Structure to hold the cwww client element.</div></div>
 <div class="ttc" id="ameshx__onoff__client_8c_html_aa63f2f5107e1520101259e1bb2190afc"><div class="ttname"><a href="../../d9/d33/meshx__onoff__client_8c.html#aa63f2f5107e1520101259e1bb2190afc">meshx_on_off_client_create</a></div><div class="ttdeci">meshx_err_t meshx_on_off_client_create(meshx_onoff_client_model_t **p_model, void *p_sig_model)</div><div class="ttdoc">Creates and initializes a Generic OnOff Client model instance.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d33/meshx__onoff__client_8c_source.html#l00190">meshx_onoff_client.c:190</a></div></div>
 </div><!-- fragment --><div class="dynheader">
@@ -1740,7 +1740,7 @@ Here is the call graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d422163b96683743ed3963d4aac17747.html">app</a></li><li class="navelem"><a class="el" href="../../dir_c65bd19e757d26cf4d732c1ae0727ae8.html">components</a></li><li class="navelem"><a class="el" href="../../dir_f203b345362cbfbb0face6aabfa16576.html">meshx</a></li><li class="navelem"><a class="el" href="../../dir_c2430d1846e6737dc28beab6505d1845.html">elements</a></li><li class="navelem"><a class="el" href="../../dir_c209dcfeb944a2f94c0266369fc78d3a.html">client</a></li><li class="navelem"><a class="el" href="../../dir_1d3f863ec080f51b4cd359f0bbe5268f.html">light_cwww_client</a></li><li class="navelem"><a class="el" href="../../d0/d53/meshx__light__cwww__client_8c.html">meshx_light_cwww_client.c</a></li>
-    <li class="footer">Generated on Sat Aug 23 2025 21:55:50 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Mon Aug 25 2025 04:38:35 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

@@ -1,7 +1,7 @@
 var searchData=
 [
   ['occupancy_0',['occupancy',['../d9/dad/structmeshx__state__change__sensor__status__t.html#a7c764e4a368d7f120b9c4afa2cd54b25',1,'meshx_state_change_sensor_status_t']]],
-  ['of_20license_20strong_1',['&lt;strong&gt;1. Grant of License&lt;/strong&gt;',['../da/d19/md_LICENSE.html#autotoc_md14',1,'']]],
+  ['of_20license_20strong_1',['&lt;strong&gt;1. Grant of License&lt;/strong&gt;',['../da/d19/md_LICENSE.html#autotoc_md5',1,'']]],
   ['on_5foff_2',['on_off',['../d7/da3/structmeshx__api__relay__server__evt.html#a3f576032fb44a2135864009d5656f751',1,'meshx_api_relay_server_evt::on_off'],['../dc/dbf/structmeshx__api__light__cwww__server__evt.html#a0b79b8c7ff26863bd9f9f94eb84ac840',1,'meshx_api_light_cwww_server_evt::on_off'],['../d0/d8e/structmeshx__api__relay__client__state.html#aed74f3555386fcec49a77f786cb6707c',1,'meshx_api_relay_client_state::on_off'],['../d7/d79/structmeshx__api__light__cwww__client__evt.html#ad19f10b42bab782c32878bf4faf222e2',1,'meshx_api_light_cwww_client_evt::on_off'],['../d0/d1d/structcwww__cli__on__off__state.html#a1d823ede98a76a27fce1a3a40a794f35',1,'cwww_cli_on_off_state::on_off'],['../dd/dae/structrelay__client__state.html#ad5e8f6c1a66912fa5532dd75e9dab16a',1,'relay_client_state::on_off'],['../d7/d55/structmeshx__on__off__srv__el__state.html#a80e13924353c81b7f237bbdfe21aea54',1,'meshx_on_off_srv_el_state::on_off']]],
   ['on_5foff_5fstate_3',['on_off_state',['../d8/dbd/structmeshx__on__off__cli__el__msg.html#ac6a1c59fb9e024fb607e7cac83112a08',1,'meshx_on_off_cli_el_msg::on_off_state'],['../d6/ddf/structmeshx__on__off__srv__el__msg.html#aed9c7594a4f3fdce45b740d7b735b22e',1,'meshx_on_off_srv_el_msg::on_off_state']]],
   ['onoff_4',['onoff',['../d1/d7f/structmeshx__gen__onoff__set__t.html#add44f07a5b9faffe1f1131389da32038',1,'meshx_gen_onoff_set_t::onoff'],['../dd/d8e/structmeshx__state__change__gen__onoff__set__t.html#ae0c0b822f8b4f0a578db024c7f214789',1,'meshx_state_change_gen_onoff_set_t::onoff'],['../d1/d1a/structmeshx__state__change__light__lc__light__onoff__set__t.html#ae82d7c8a03667aea5f0d1b5e2f408bf3',1,'meshx_state_change_light_lc_light_onoff_set_t::onoff']]],
@@ -22,5 +22,5 @@ var searchData=
   ['os_5ftimer_5finit_5fmagic_19',['OS_TIMER_INIT_MAGIC',['../dd/da1/meshx__os__timer_8c.html#a297d2679d06ff46588ed5cc251f07ebf',1,'meshx_os_timer.c']]],
   ['os_5ftimer_5fsize_20',['OS_TIMER_SIZE',['../d8/d03/meshx__os__timer_8h.html#a5b36f76812b76b64f3b434fd4b7bc5d3',1,'meshx_os_timer.h']]],
   ['os_5ftmer_5fget_5ftimer_5fname_21',['OS_TMER_GET_TIMER_NAME',['../d8/d03/meshx__os__timer_8h.html#adb0ba77bc857e8f6bfec9be2081d5370',1,'meshx_os_timer.h']]],
-  ['ownership_20strong_22',['&lt;strong&gt;2. Ownership&lt;/strong&gt;',['../da/d19/md_LICENSE.html#autotoc_md16',1,'']]]
+  ['ownership_20strong_22',['&lt;strong&gt;2. Ownership&lt;/strong&gt;',['../da/d19/md_LICENSE.html#autotoc_md8',1,'']]]
 ];
