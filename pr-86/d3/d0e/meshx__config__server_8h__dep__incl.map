@@ -1,28 +1,29 @@
 <map id="meshx_config_server.h" name="meshx_config_server.h">
-<area shape="rect" id="Node000001" title="Header file for the meshxuction configuration server model." alt="" coords="171,5,325,31"/>
-<area shape="rect" id="Node000002" href="$dd/d79/meshx__config__server_8c.html" title="Implementation of the Configuration Server for ESP BLE Mesh." alt="" coords="89,79,242,105"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,44,181,81,177,77,221,39"/>
-<area shape="rect" id="Node000003" href="$dc/d5f/meshx__elements_8h.html" title="Header file for MeshX elements." alt="" coords="266,79,395,105"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="275,39,319,77,315,81,272,44"/>
+<area shape="rect" id="Node000001" title="Header file for the meshxuction configuration server model." alt="" coords="425,5,578,31"/>
+<area shape="rect" id="Node000002" href="$dd/d79/meshx__config__server_8c.html" title="Implementation of the Configuration Server for ESP BLE Mesh." alt="" coords="259,79,413,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="461,40,365,81,363,76,458,35"/>
+<area shape="rect" id="Node000003" href="$dc/d5f/meshx__elements_8h.html" title="Header file for MeshX elements." alt="" coords="437,79,566,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="504,46,504,79,499,79,499,46"/>
+<area shape="rect" id="Node000011" href="$d0/d53/meshx__light__cwww__client_8c.html" title="Implementation of the CW&#45;WW (Cool White &#45; Warm White) client model for BLE Mesh." alt="" coords="853,226,1035,252"/>
+<area shape="poly" id="edge14_Node000001_Node000011" title=" " alt="" coords="540,36,921,223,918,228,538,41"/>
 <area shape="rect" id="Node000004" href="$d3/d18/meshx_8h.html" title="This file contains the headers for meshx.c." alt="" coords="125,226,195,252"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="307,117,176,228,172,224,303,113"/>
-<area shape="rect" id="Node000008" href="$db/d2f/meshx__api_8h.html" title="This file contains the API definitions for the MeshX application." alt="" coords="368,153,461,178"/>
-<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="358,113,402,150,399,154,355,117"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="460,114,190,228,188,223,458,109"/>
+<area shape="rect" id="Node000008" href="$db/d2f/meshx__api_8h.html" title="This file contains the API definitions for the MeshX application." alt="" coords="455,153,548,178"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="504,120,504,152,499,152,499,120"/>
 <area shape="rect" id="Node000005" href="$d2/d6b/composition_8c.html" title="BLE Mesh Composition Initialization and Element Creation." alt="" coords="5,300,107,326"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="132,263,75,302,72,297,129,259"/>
 <area shape="rect" id="Node000006" href="$d0/d29/main_8c.html" title="Main application file for initializing MeshX on ESP32." alt="" coords="130,300,190,326"/>
 <area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="163,267,163,300,157,300,157,267"/>
 <area shape="rect" id="Node000007" href="$d9/d05/meshx_8c.html" title="meshX application file for ESP BLE Mesh node." alt="" coords="213,300,283,326"/>
 <area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="188,260,235,298,232,302,185,264"/>
-<area shape="poly" id="edge8_Node000008_Node000004" title=" " alt="" coords="357,186,196,231,194,225,356,180"/>
+<area shape="poly" id="edge8_Node000008_Node000004" title=" " alt="" coords="440,181,207,229,196,232,195,226,206,224,439,176"/>
 <area shape="rect" id="Node000009" href="$dc/d93/meshx__api_8c.html" title="Implementation of the BLE Mesh application API." alt="" coords="219,226,312,252"/>
-<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="377,188,292,228,290,223,375,183"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="448,186,306,228,305,223,446,181"/>
 <area shape="rect" id="Node000010" href="$d9/d46/meshx__cwww__server_8c.html" title="Implementation of the CW&#45;WW server model for BLE Mesh." alt="" coords="336,226,493,252"/>
-<area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="417,194,417,226,412,226,412,194"/>
-<area shape="rect" id="Node000011" href="$d0/d53/meshx__light__cwww__client_8c.html" title="Implementation of the CW&#45;WW (Cool White &#45; Warm White) client model for BLE Mesh." alt="" coords="517,226,699,252"/>
-<area shape="poly" id="edge11_Node000008_Node000011" title=" " alt="" coords="463,182,576,223,574,228,461,187"/>
-<area shape="rect" id="Node000012" href="$da/df4/meshx__relay__client_8c.html" title="Implementation of the relay client model for BLE Mesh." alt="" coords="723,226,864,252"/>
-<area shape="poly" id="edge12_Node000008_Node000012" title=" " alt="" coords="477,176,729,223,728,228,476,181"/>
-<area shape="rect" id="Node000013" href="$d1/df4/meshx__relay__server_8c.html" title="Relay server model implementation for BLE Mesh networks." alt="" coords="888,226,1034,252"/>
-<area shape="poly" id="edge13_Node000008_Node000013" title=" " alt="" coords="477,172,876,224,888,225,887,231,876,229,477,177"/>
+<area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="477,191,431,228,427,224,473,186"/>
+<area shape="poly" id="edge11_Node000008_Node000011" title=" " alt="" coords="563,174,869,223,868,228,563,179"/>
+<area shape="rect" id="Node000012" href="$da/df4/meshx__relay__client_8c.html" title="Implementation of the relay client model for BLE Mesh." alt="" coords="517,226,659,252"/>
+<area shape="poly" id="edge12_Node000008_Node000012" title=" " alt="" coords="529,186,575,224,572,228,526,191"/>
+<area shape="rect" id="Node000013" href="$d1/df4/meshx__relay__server_8c.html" title="Relay server model implementation for BLE Mesh networks." alt="" coords="683,226,829,252"/>
+<area shape="poly" id="edge13_Node000008_Node000013" title=" " alt="" coords="560,180,713,223,712,228,558,185"/>
 </map>

@@ -2758,6 +2758,13 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>CONTROL_TASK</Name>
+      <APILanguage>c</APILanguage>
+    </TokenIdentifier>
+    <Path>de/de3/group__CONTROL__TASK.html</Path>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>md_LICENSE</Name>
       <APILanguage>markdown</APILanguage>
     </TokenIdentifier>
@@ -13763,6 +13770,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>CONFIG_SERVER_CB_MASK</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
+    <Anchor>a0983d7745dcb50ce2c0639619ac08442</Anchor>
+    <DeclaredIn>meshx_light_cwww_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>config_server_model_evt_map_t</Name>
       <APILanguage>c</APILanguage>
       <Type>tdef</Type>
@@ -15117,6 +15134,16 @@
       <APILanguage>c</APILanguage>
       <Type>func</Type>
     </TokenIdentifier>
+    <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
+    <Anchor>a2b18c9b388becb88fae3b11dc91227ad</Anchor>
+    <DeclaredIn>meshx_light_cwww_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>create_cwww_client_elements</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
     <Path>df/dc5/meshx__light__cwww__client__element_8h.html</Path>
     <Anchor>a2b18c9b388becb88fae3b11dc91227ad</Anchor>
     <DeclaredIn>meshx_light_cwww_client_element.h</DeclaredIn>
@@ -15240,6 +15267,36 @@
     <Path>df/dc5/meshx__light__cwww__client__element_8h.html</Path>
     <Anchor>ad9ad96a8052e07a9a1f3c1d040e3f0a1</Anchor>
     <DeclaredIn>meshx_light_cwww_client_element.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>CWWW_CLI_EL</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
+    <Anchor>a4f8bc087bea725c9b1e91fd617c0c42b</Anchor>
+    <DeclaredIn>meshx_light_cwww_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>CWWW_CLI_EL_STATE_CH_EVT_MASK</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
+    <Anchor>a07763511e2cde9c4a917240bc30e1bed</Anchor>
+    <DeclaredIn>meshx_light_cwww_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>CWWW_CLI_MESHX_ONOFF_ENABLE_CB</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
+    <Anchor>a64a7f92df6cae50328e426d824ffff40</Anchor>
+    <DeclaredIn>meshx_light_cwww_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -15380,6 +15437,16 @@
     <Path>df/dc5/meshx__light__cwww__client__element_8h.html</Path>
     <Anchor>ab2c80e66d65aaeb5740b8a7dcd36cd50a8cd1dac492675851c4178ac0f342f49d</Anchor>
     <DeclaredIn>meshx_light_cwww_client_element.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>cwww_client_element_init_ctrl</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
+    <Anchor>afcb3f2a0a3a23a43c83ed4c9c7ec825b</Anchor>
+    <DeclaredIn>meshx_light_cwww_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -15643,6 +15710,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>GET_RELATIVE_EL_IDX</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
+    <Anchor>a58ccb2e65fb0601bcbdb84e9dafb7f06</Anchor>
+    <DeclaredIn>meshx_light_cwww_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>get_root_sig_models</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -15743,6 +15820,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>IS_EL_IN_RANGE</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
+    <Anchor>ad548550b8b82eac5acc715ddf7e27c58</Anchor>
+    <DeclaredIn>meshx_light_cwww_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>light_ctl_client_init_flag</Name>
       <APILanguage>c</APILanguage>
       <Type>data</Type>
@@ -15800,6 +15887,16 @@
     <Path>df/dd3/app__common_8h.html</Path>
     <Anchor>a5840b0755dc2a94e2f184a9b2f85db6c</Anchor>
     <DeclaredIn>app_common.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_add_cwww_cli_model_to_element_list</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
+    <Anchor>aeeed3c047c66ef0ea3eecfa65f5d9fe1</Anchor>
+    <DeclaredIn>meshx_light_cwww_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -16863,6 +16960,36 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_cwww_cli_el_state_change_reg_cb</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
+    <Anchor>a0f44c18340482bed497e5c388fcb6748</Anchor>
+    <DeclaredIn>meshx_light_cwww_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_cwww_cli_reg_app_req_cb</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
+    <Anchor>aa09d5950f3239006aea437cebe41c6b9</Anchor>
+    <DeclaredIn>meshx_light_cwww_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_cwww_cli_reg_freshboot_cb</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
+    <Anchor>ad44d27c2b9e797342e27cc923638eec2</Anchor>
+    <DeclaredIn>meshx_light_cwww_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_cwww_client_elements_ctrl_t</Name>
       <APILanguage>c</APILanguage>
       <Type>tdef</Type>
@@ -16900,6 +17027,16 @@
     <Path>df/dc5/meshx__light__cwww__client__element_8h.html</Path>
     <Anchor>a13264d47e9659307bea52f189565e9c3</Anchor>
     <DeclaredIn>meshx_light_cwww_client_element.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_cwww_el_get_state</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
+    <Anchor>ab54b12b94031fd68edb9072ca517f488</Anchor>
+    <DeclaredIn>meshx_light_cwww_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -16950,6 +17087,16 @@
     <Path>db/d2f/meshx__api_8h.html</Path>
     <Anchor>a00b4894819c8bf05a33474d25723b046</Anchor>
     <DeclaredIn>meshx_api.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_dev_create_cwww_model_space</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
+    <Anchor>adac9c4dc1fe85bc6716af5f4db19950a</Anchor>
+    <DeclaredIn>meshx_light_cwww_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -17060,6 +17207,26 @@
     <Path>d9/d05/meshx_8c.html</Path>
     <Anchor>a9a6dcac8b5368ca6d77be9caf99cddaa</Anchor>
     <DeclaredIn>meshx.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_element_struct_deinit</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
+    <Anchor>a981929a7f7915290d07050019fef1e79</Anchor>
+    <DeclaredIn>meshx_light_cwww_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_element_struct_init</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
+    <Anchor>acfe19244baff39d7aaaeefa052997704</Anchor>
+    <DeclaredIn>meshx_light_cwww_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -25933,6 +26100,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>MOD_LCC</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
+    <Anchor>aa0ad1e47aa701098a8202979c5f1937d</Anchor>
+    <DeclaredIn>meshx_light_cwww_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>module_callback_t</Name>
       <APILanguage>c</APILanguage>
       <Type>tdef</Type>
@@ -26330,6 +26507,16 @@
     <Path>df/dd3/app__common_8h.html</Path>
     <Anchor>a3ca09f7c9bba29dcb94c6fad5c0a06cb</Anchor>
     <DeclaredIn>app_common.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>REG_MESHX_ELEMENT_FN</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
+    <Anchor>a3c149e2a2474324a7ecac6168d1f9a9f</Anchor>
+    <DeclaredIn>meshx_light_cwww_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>

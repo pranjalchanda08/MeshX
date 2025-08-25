@@ -1,9 +1,13 @@
 <map id="esp_ble_mesh_light_client_cb" name="esp_ble_mesh_light_client_cb">
-<area shape="rect" id="Node000001" title="Callback function for BLE Mesh Light Client events." alt="" coords="631,5,768,46"/>
-<area shape="rect" id="Node000002" href="$d1/d1d/esp__gen__light__cli__model_8c.html#ae809409d8c4765015d8d19d6644d78ed" title="Initialize the Generic Light Client Model. This function sets up the necessary parameters and resourc..." alt="" coords="437,5,583,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="616,28,584,28,584,23,616,23"/>
-<area shape="rect" id="Node000003" href="$d0/dc1/meshx__gen__light__cli_8c.html#afa2cda29f7731b9c11d056e26b162843" title="Initialize the meshxuction generic client." alt="" coords="227,13,389,38"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="421,28,390,28,390,23,421,23"/>
-<area shape="rect" id="Node000004" href="$d8/d93/meshx__light__ctl__client_8c.html#ac113a964dc509d47b87de8066d3574e0" title="Initialize the Light CTL Client model." alt="" coords="5,13,179,38"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="211,28,179,28,179,23,211,23"/>
+<area shape="rect" id="Node000001" title="Callback function for BLE Mesh Light Client events." alt="" coords="1062,5,1198,46"/>
+<area shape="rect" id="Node000002" href="$d1/d1d/esp__gen__light__cli__model_8c.html#ae809409d8c4765015d8d19d6644d78ed" title="Initialize the Generic Light Client Model. This function sets up the necessary parameters and resourc..." alt="" coords="868,5,1014,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1046,28,1015,28,1015,23,1046,23"/>
+<area shape="rect" id="Node000003" href="$d0/dc1/meshx__gen__light__cli_8c.html#afa2cda29f7731b9c11d056e26b162843" title="Initialize the meshxuction generic client." alt="" coords="657,13,820,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="852,28,820,28,820,23,852,23"/>
+<area shape="rect" id="Node000004" href="$d8/d93/meshx__light__ctl__client_8c.html#ac113a964dc509d47b87de8066d3574e0" title="Initialize the Light CTL Client model." alt="" coords="436,13,609,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="642,28,610,28,610,23,642,23"/>
+<area shape="rect" id="Node000005" href="$d0/d53/meshx__light__cwww__client_8c.html#a2b18c9b388becb88fae3b11dc91227ad" title="Create Dynamic CW&#45;WW Model Elements." alt="" coords="249,5,388,46"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="421,28,388,28,388,23,421,23"/>
+<area shape="rect" id="Node000006" href="$d0/d53/meshx__light__cwww__client_8c.html#a3c149e2a2474324a7ecac6168d1f9a9f" title=" " alt="" coords="5,13,201,38"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="233,28,201,28,201,23,233,23"/>
 </map>

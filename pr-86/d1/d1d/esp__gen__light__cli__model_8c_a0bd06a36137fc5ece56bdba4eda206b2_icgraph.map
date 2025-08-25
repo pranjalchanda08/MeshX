@@ -1,16 +1,20 @@
 <map id="meshx_plat_light_client_send_msg" name="meshx_plat_light_client_send_msg">
-<area shape="rect" id="Node000001" title="Sends a Light Client message over BLE Mesh." alt="" coords="1136,39,1292,79"/>
-<area shape="rect" id="Node000002" href="$d0/dc1/meshx__gen__light__cli_8c.html#af56474ec614f7769336a5a9f401d1223" title="Send a message using the generic client model." alt="" coords="903,46,1088,72"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1120,62,1088,62,1088,56,1120,56"/>
-<area shape="rect" id="Node000003" href="$d8/d93/meshx__light__ctl__client_8c.html#a0b0bfb546a17cedd810469b795e91948" title="Sends a Light CTL (Color Temperature Lightness) message from the Light CTL Client model." alt="" coords="686,5,836,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="887,46,836,39,837,34,888,41"/>
-<area shape="rect" id="Node000007" href="$d8/d93/meshx__light__ctl__client_8c.html#a6ed820c28aabb44dc82110f0bf2fc992" title="Sends a Light CTL Temperature message from the client model." alt="" coords="667,71,855,111"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="888,76,855,81,855,76,887,71"/>
-<area shape="rect" id="Node000004" href="$d8/d93/meshx__light__ctl__client_8c.html#af662d33c9ac9569608d2ad1749e8d7dc" title="Handle timeout for relaying the last Light CTL message." alt="" coords="470,39,619,79"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="672,42,620,50,619,45,671,37"/>
-<area shape="rect" id="Node000005" href="$d8/d93/meshx__light__ctl__client_8c.html#a6eb391ab146454bd45a65c1e545df26b" title="Handles generic light model messages for the Light CTL client." alt="" coords="227,46,422,72"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="454,62,422,62,422,56,454,56"/>
-<area shape="rect" id="Node000006" href="$d8/d93/meshx__light__ctl__client_8c.html#ac113a964dc509d47b87de8066d3574e0" title="Initialize the Light CTL Client model." alt="" coords="5,46,179,72"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="211,62,179,62,179,56,211,56"/>
-<area shape="poly" id="edge7_Node000007_Node000004" title=" " alt="" coords="652,78,620,73,620,67,653,72"/>
+<area shape="rect" id="Node000001" title="Sends a Light Client message over BLE Mesh." alt="" coords="1567,39,1723,79"/>
+<area shape="rect" id="Node000002" href="$d0/dc1/meshx__gen__light__cli_8c.html#af56474ec614f7769336a5a9f401d1223" title="Send a message using the generic client model." alt="" coords="1333,46,1519,72"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1551,62,1519,62,1519,56,1551,56"/>
+<area shape="rect" id="Node000003" href="$d8/d93/meshx__light__ctl__client_8c.html#a0b0bfb546a17cedd810469b795e91948" title="Sends a Light CTL (Color Temperature Lightness) message from the Light CTL Client model." alt="" coords="1117,5,1266,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1318,46,1266,39,1267,34,1318,41"/>
+<area shape="rect" id="Node000009" href="$d8/d93/meshx__light__ctl__client_8c.html#a6ed820c28aabb44dc82110f0bf2fc992" title="Sends a Light CTL Temperature message from the client model." alt="" coords="1098,71,1285,111"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="1318,76,1286,81,1285,76,1318,71"/>
+<area shape="rect" id="Node000004" href="$d8/d93/meshx__light__ctl__client_8c.html#af662d33c9ac9569608d2ad1749e8d7dc" title="Handle timeout for relaying the last Light CTL message." alt="" coords="901,39,1050,79"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1102,42,1051,50,1050,45,1102,37"/>
+<area shape="rect" id="Node000005" href="$d8/d93/meshx__light__ctl__client_8c.html#a6eb391ab146454bd45a65c1e545df26b" title="Handles generic light model messages for the Light CTL client." alt="" coords="657,46,853,72"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="885,62,853,62,853,56,885,56"/>
+<area shape="rect" id="Node000006" href="$d8/d93/meshx__light__ctl__client_8c.html#ac113a964dc509d47b87de8066d3574e0" title="Initialize the Light CTL Client model." alt="" coords="436,46,609,72"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="642,62,610,62,610,56,642,56"/>
+<area shape="rect" id="Node000007" href="$d0/d53/meshx__light__cwww__client_8c.html#a2b18c9b388becb88fae3b11dc91227ad" title="Create Dynamic CW&#45;WW Model Elements." alt="" coords="249,39,388,79"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="421,62,388,62,388,56,421,56"/>
+<area shape="rect" id="Node000008" href="$d0/d53/meshx__light__cwww__client_8c.html#a3c149e2a2474324a7ecac6168d1f9a9f" title=" " alt="" coords="5,46,201,72"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="233,62,201,62,201,56,233,56"/>
+<area shape="poly" id="edge9_Node000009_Node000004" title=" " alt="" coords="1083,78,1050,73,1051,67,1083,72"/>
 </map>

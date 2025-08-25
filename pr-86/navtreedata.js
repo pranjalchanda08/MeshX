@@ -25,17 +25,18 @@
 var NAVTREE =
 [
   [ "MeshX", "index.html", [
-    [ "Features", "index.html#autotoc_md2", null ],
-    [ "Capabilities", "index.html#autotoc_md3", [
-      [ "Server", "index.html#autotoc_md4", null ],
-      [ "Client", "index.html#autotoc_md5", null ]
+    [ "Features", "index.html#autotoc_md1", null ],
+    [ "Capabilities", "index.html#autotoc_md2", [
+      [ "Server", "index.html#autotoc_md3", null ],
+      [ "Client", "index.html#autotoc_md4", null ]
     ] ],
-    [ "Prerequisites", "index.html#autotoc_md6", null ],
-    [ "Build", "index.html#autotoc_md7", null ],
-    [ "Adding a Product to build", "index.html#autotoc_md8", null ],
-    [ "Adding Element, model to build:", "index.html#autotoc_md9", null ],
-    [ "Flashing and monitoring", "index.html#autotoc_md10", null ],
+    [ "Prerequisites", "index.html#autotoc_md5", null ],
+    [ "Build", "index.html#autotoc_md6", null ],
+    [ "Adding a Product to build", "index.html#autotoc_md7", null ],
+    [ "Adding Element, model to build:", "index.html#autotoc_md8", null ],
+    [ "Flashing and monitoring", "index.html#autotoc_md9", null ],
     [ "MeshX Proprietary License (MPL) v1.0", "da/d19/md_LICENSE.html", null ],
+    [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
@@ -64,17 +65,17 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d1/db1/unionmeshx__prov__cb__param__t.html#a7b16673df6d686cba60ac94cd811a4c1",
-"d3/d46/structmeshx__state__change__light__xyl__default__set__t.html#afc3fe5408917298f6f444a4f406ab8d4",
-"d4/de0/meshx__ble__mesh__cmn__def_8h.html#a146b36e45d9faea158edf596a594c4ed",
-"d4/de0/meshx__ble__mesh__cmn__def_8h.html#aaf43609afafadc9b31d2d8e8c0fd6dec",
-"d5/d5c/structmeshx__light__hsl__saturation__status__cb__t.html#a6a6cc84f2a9238f78c082e6a1adf28df",
-"d7/da1/structmeshx__state__change__gen__move__set__t.html",
-"d9/d31/esp__prov__srv__model_8c.html#af75f7ca043cf3736878a95f263de1ebe",
-"da/dc6/unionctl__status__pack.html#af59675fa0947146c4eff5fbf0213bd2b",
-"dc/d93/meshx__api_8c.html#ac37c1c5b9f1e9cdaa510bf886d897e2d",
-"de/dab/structmeshx__state__change__cfg__appkey__update__t.html#a71fba8873bc98b59faae3a8d6581765e",
-"functions_i.html"
+"d1/db1/unionmeshx__prov__cb__param__t.html#a52b43443ebadd13281d8a1f685f2ac81",
+"d3/d2b/meshx__platform__ble__mesh_8h.html#ae8272f86afe3a74d8de48473ecefaf5e",
+"d4/de0/meshx__ble__mesh__cmn__def_8h.html#a089c92bca2ebe3941bb181eafa670695",
+"d4/de0/meshx__ble__mesh__cmn__def_8h.html#aa0eb714d553ffb8847f12716ef920f60",
+"d5/d3e/structmeshx__config.html#a85f17a1f8218e9f6724209f002b21493",
+"d7/d79/structmeshx__api__light__cwww__client__evt.html#ac66e28ce35c86a073ffa5debe4b5148b",
+"d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19",
+"da/db3/structmeshx__state__change__gen__user__property__set__t.html",
+"dc/d80/structmeshx__prov__cb__param__t_1_1meshx__proxy__client__directed__proxy__set__param.html#a25af9423d3bd12960c14a227accbb926",
+"de/d9b/structmeshx__state__change__cfg__mod__pub__va__set__t.html#a83100c6108c2cd72673c514659a47d6a",
+"dir_e1464beec2885099c7aad3fe45dcfc9e.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

@@ -123,7 +123,7 @@ $(function(){initNavTree('index.html',''); initResizable(true); });
 <div class="line">*********************************************************************************************************************</div>
 </div><!-- fragment --><p> <a href="https://github.com/pranjalchanda08/MeshX/actions/workflows/ci.yml"><img src="https://github.com/pranjalchanda08/MeshX/actions/workflows/ci.yml/badge.svg" alt="CI Pipeline:main" style="pointer-events: none;" class="inline"/></a> <img src="https://img.shields.io/badge/Release-v0.2-blue?link=https%3A%2F%2Fgithub.com%2Fpranjalchanda08%2FMeshX%2Freleases%2Ftag%2Fv0.2" alt="Static Badge" class="inline"/></p>
 <p>This repository provides an implementation for Bluetooth Low Energy (BLE) Mesh network nodes using ESP32. The project allows you to create BLE mesh nodes that can communicate with each other, enabling the development of smart home solutions or other IoT-based applications.</p>
-<h1><a class="anchor" id="autotoc_md2"></a>
+<h1><a class="anchor" id="autotoc_md1"></a>
 Features</h1>
 <ul>
 <li>BLE Mesh Communication: Implements BLE Mesh protocol on ESP32 for communication between nodes.</li>
@@ -131,9 +131,9 @@ Features</h1>
 <li>Simple Setup: Easy-to-follow steps for setting up and configuring nodes.</li>
 <li>Scalable: Supports multiple nodes in the mesh network, ideal for smart home and IoT applications.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md3"></a>
+<h1><a class="anchor" id="autotoc_md2"></a>
 Capabilities</h1>
-<h2><a class="anchor" id="autotoc_md4"></a>
+<h2><a class="anchor" id="autotoc_md3"></a>
 Server</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -145,7 +145,7 @@ Server</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">Light CTL Server   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md5"></a>
+<h2><a class="anchor" id="autotoc_md4"></a>
 Client</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -157,7 +157,7 @@ Client</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">Light CTL Client   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md6"></a>
+<h1><a class="anchor" id="autotoc_md5"></a>
 Prerequisites</h1>
 <p>Before using this project, make sure you have:</p>
 <ul>
@@ -167,7 +167,7 @@ Prerequisites</h1>
 <li>Install docker: <a href="https://docs.docker.com/engine/install/ubuntu/">docker-ubuntu</a></li>
 <li>Python: 3.12+</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md7"></a>
+<h1><a class="anchor" id="autotoc_md6"></a>
 Build</h1>
 <p>Source the terminal </p><div class="fragment"><div class="line">$ export IDF_PATH=&lt;/idf_path&gt;</div>
 <div class="line">$ source $IDF_PATH/export.sh</div>
@@ -175,17 +175,17 @@ Build</h1>
 <div class="line">$ sh scripts/build.sh &lt;product_name_string&gt;</div>
 </div><!-- fragment --><p>Windows </p><div class="fragment"><div class="line">$ cd app</div>
 <div class="line">$ .\scripts\build.bat &lt;product_name_string&gt;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md8"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md7"></a>
 Adding a Product to build</h1>
 <p>Modify <code>scripts/prod_profile.yml</code> to add another entry under the <code>products</code> object for the build.</p>
 <div class="fragment"><div class="line">- name: 4_relay_panel               # Product Name</div>
 <div class="line">    pid: 0x0001                     # Product ID</div>
 <div class="line">    elements:                       # Elements Used in Product</div>
 <div class="line">        - switch_relay_server: 4    # Element Name : No of instances of the element</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md9"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md8"></a>
 Adding Element, model to build:</h1>
 <p>Modify <code>scripts/model_profile.yml</code> to add another entry under the <code>products</code> object for the build.</p>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md9"></a>
 Flashing and monitoring</h1>
 <p>Once the above build is successful you can use the following to flash using <code>idf.py</code> tool</p>
 <div class="fragment"><div class="line">$ idf.py -p /dev/ttyACM0 flash monitor</div>
@@ -196,7 +196,7 @@ Flashing and monitoring</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Aug 25 2025 08:35:45 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Mon Aug 25 2025 08:51:57 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>
