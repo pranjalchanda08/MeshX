@@ -12,6 +12,8 @@ on:
 
 jobs:
   build:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
 
     steps:
@@ -79,6 +81,17 @@ jobs:
         elif [[ "${GITHUB_REF_NAME}" == "dev" ]]; then
           echo "dir=dev" >> $GITHUB_OUTPUT
         fi
+    - name: Pull latest gh-pages
+      run: |
+        git fetch origin gh-pages
+        git checkout gh-pages || git checkout --orphan gh-pages
+        git reset --hard origin/gh-pages
+
+    - name: Debug Git State
+      run: |
+        git status
+        git log --oneline -n 5
+        git remote -v
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
