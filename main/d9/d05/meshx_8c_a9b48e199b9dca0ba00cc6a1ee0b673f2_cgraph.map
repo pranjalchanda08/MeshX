@@ -1,0 +1,28 @@
+<map id="meshx_init_boot_timer" name="meshx_init_boot_timer">
+<area shape="rect" id="Node000001" title="Initializes the boot timer." alt="" coords="5,106,157,132"/>
+<area shape="rect" id="Node000002" href="$d9/d05/meshx_8c.html#a34510a78eab19d1ebf91d3fb2b3a77ee" title="Callback function for the boot timer." alt="" coords="420,5,571,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="141,103,404,43,405,49,142,108"/>
+<area shape="rect" id="Node000008" href="$dd/da1/meshx__os__timer_8c.html#a59d86249c9c97227b869567af3b2cade" title="Create a timer." alt="" coords="205,106,364,132"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="157,116,189,116,189,122,157,122"/>
+<area shape="rect" id="Node000012" href="$dd/da1/meshx__os__timer_8c.html#a00755275246a6415bf159ff805ab731c" title="Start a timer." alt="" coords="627,170,777,196"/>
+<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="140,130,205,142,424,165,612,177,612,182,424,170,204,147,139,135"/>
+<area shape="rect" id="Node000003" href="$df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="1034,80,1206,105"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="572,27,760,40,986,64,1041,73,1040,79,986,70,760,46,572,32"/>
+<area shape="rect" id="Node000004" href="$d2/d6a/FreeRTOS__meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue." alt="" coords="1254,30,1395,56"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1176,76,1253,57,1254,63,1177,81"/>
+<area shape="rect" id="Node000005" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="1266,80,1383,105"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="1206,90,1250,90,1250,95,1206,95"/>
+<area shape="rect" id="Node000007" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="1258,129,1391,154"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="1177,103,1254,122,1253,127,1176,108"/>
+<area shape="rect" id="Node000006" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="1443,80,1620,105"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="1384,90,1427,90,1427,95,1384,95"/>
+<area shape="rect" id="Node000009" href="$dd/da1/meshx__os__timer_8c.html#a77adef39c1cdb9692b86241af2ca75ae" title=" " alt="" coords="825,80,986,105"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="364,109,412,106,625,96,809,91,810,97,625,102,412,111,365,114"/>
+<area shape="rect" id="Node000010" href="$d3/db6/FreeRTOS__meshx__timer_8c.html#afdde188e70278d7d1b6ee57e72a39ed8" title="Creates a new RTOS timer." alt="" coords="412,121,579,146"/>
+<area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="365,122,397,124,396,129,364,127"/>
+<area shape="poly" id="edge9_Node000009_Node000003" title=" " alt="" coords="986,90,1018,90,1018,95,986,95"/>
+<area shape="rect" id="Node000011" href="$d3/db6/FreeRTOS__meshx__timer_8c.html#a0238244bfe5230d1ce6fc3614bab8318" title="Callback function for FreeRTOS timer events." alt="" coords="649,121,755,146"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="580,131,634,131,634,136,580,136"/>
+<area shape="poly" id="edge12_Node000011_Node000009" title=" " alt="" coords="754,120,823,106,824,111,756,126"/>
+<area shape="poly" id="edge14_Node000012_Node000003" title=" " alt="" coords="765,167,1042,106,1043,112,766,172"/>
+</map>

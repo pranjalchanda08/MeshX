@@ -1,0 +1,8 @@
+<map id="meshx_state_change_notify" name="meshx_state_change_notify">
+<area shape="rect" id="Node000001" title="Perform hardware change for the light control server model." alt="" coords="415,29,559,70"/>
+<area shape="rect" id="Node000002" href="$d4/db6/meshx__light__ctl__srv_8c.html#ae5df97f5abbb8635ac0414d8185910e5" title="Handle Light CTL messages for the lighting server model." alt="" coords="232,29,367,70"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="400,52,368,52,368,47,400,47"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="330,16,318,10,299,8,282,10,271,15,267,20,269,28,263,29,262,19,268,10,280,5,299,3,320,5,332,11"/>
+<area shape="rect" id="Node000003" href="$d4/db6/meshx__light__ctl__srv_8c.html#adc1d0d7fc5b8e44bebce9c905547780f" title="Initialize the Light CTL Server model." alt="" coords="5,37,184,62"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="216,52,184,52,184,47,216,47"/>
+</map>

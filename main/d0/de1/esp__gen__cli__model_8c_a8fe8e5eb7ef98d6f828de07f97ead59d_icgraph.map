@@ -1,0 +1,5 @@
+<map id="meshx_plat_gen_cli_delete" name="meshx_plat_gen_cli_delete">
+<area shape="rect" id="Node000001" title="Deletes the Generic OnOff Client model and its associated resources." alt="" coords="193,5,328,46"/>
+<area shape="rect" id="Node000002" href="$d9/d33/meshx__onoff__client_8c.html#ab1503f38d591ee380d48303ad83303ee" title="Delete the On/Off client model instance." alt="" coords="5,5,145,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,28,145,28,145,23,177,23"/>
+</map>
