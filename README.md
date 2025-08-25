@@ -39,7 +39,7 @@ This repository provides an implementation for Bluetooth Low Energy (BLE) Mesh n
 | ----------------- | --------------------- |
 | Relay Server      | Generic On Off Server |
 | Light CWWW Server | Generic On Off Server |
-| ^                 | Light CTL Server      |
+|                   | Light CTL Server      |
 
 ### Client
 
@@ -47,7 +47,7 @@ This repository provides an implementation for Bluetooth Low Energy (BLE) Mesh n
 | ----------------- | --------------------- |
 | Relay Client      | Generic On Off Client |
 | Light CWWW Client | Generic On Off Client |
-| ^                 | Light CTL Client      |
+|                   | Light CTL Client      |
 
 ## Prerequisites
 
