@@ -159,4 +159,27 @@ meshx_err_t meshx_light_ctl_temperature_client_send_msg(
         uint16_t temperature, uint16_t delta_uv, uint8_t tid
 );
 
+/**
+ * @brief Sends a Light CTL Temperature Range message from the client model.
+ *
+ * This function constructs and sends a Light CTL Temperature Range message to a specified address
+ * using the provided network and application indices. It allows the client to set or get the
+ * temperature range of a lighting element in a mesh network.
+ *
+ * @param[in] model        Pointer to the Light CTL client model instance.
+ * @param[in] opcode       Opcode of the message to be sent.
+ * @param[in] addr         Destination address of the message.
+ * @param[in] net_idx      Network index to be used for sending the message.
+ * @param[in] app_idx      Application index to be used for sending the message.
+ * @param[in] temp_min     Minimum temperature value of the range to be set.
+ * @param[in] temp_max     Maximum temperature value of the range to be set.
+ *
+ * @return meshx_err_t     Result of the message send operation.
+ */
+meshx_err_t meshx_light_ctl_temp_range_client_send_msg(
+        meshx_light_ctl_client_model_t *model,
+        uint16_t opcode,  uint16_t addr,
+        uint16_t net_idx, uint16_t app_idx,
+        uint16_t temp_min, uint16_t temp_max
+);
 #endif /*__LIGHT_CTL_CLIENT_H__*/

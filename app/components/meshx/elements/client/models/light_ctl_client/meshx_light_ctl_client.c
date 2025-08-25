@@ -127,6 +127,18 @@ static meshx_err_t meshx_light_ctl_client_timeout_handler(void)
                 light_ctl_client_last_msg_ctx.state.ctl_set.ctl_delta_uv,
                 light_ctl_client_last_msg_ctx.state.ctl_set.tid
             );
+        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET:
+        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET:
+        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK:
+            return meshx_light_ctl_temp_range_client_send_msg(
+                light_ctl_client_last_msg_ctx.p_model,
+                light_ctl_client_last_msg_ctx.opcode,
+                light_ctl_client_last_msg_ctx.addr,
+                light_ctl_client_last_msg_ctx.net_idx,
+                light_ctl_client_last_msg_ctx.app_idx,
+                light_ctl_client_last_msg_ctx.state.ctl_temperature_range_set.range_min,
+                light_ctl_client_last_msg_ctx.state.ctl_temperature_range_set.range_max
+            );
         default:
             return MESHX_INVALID_STATE;
     }
@@ -420,15 +432,10 @@ meshx_err_t meshx_light_ctl_temperature_client_send_msg(
 
     if (opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET)
     {
-        err = meshx_gen_light_send_msg(
-            model->meshx_light_ctl_client_sig_model,
-            &set, opcode,
-            addr, net_idx,
-            app_idx
-        );
+        MESHX_DO_NOTHING;
     }
     else if (opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET ||
-        opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK)
+             opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK)
     {
         set.ctl_set.tid   = tid;
         set.ctl_set.op_en = false;
@@ -436,17 +443,81 @@ meshx_err_t meshx_light_ctl_temperature_client_send_msg(
         set.ctl_set.ctl_temperature = temperature;
 
         memcpy(&light_ctl_client_last_msg_ctx.state, &set, sizeof(meshx_light_client_set_state_t));
-
-        err = meshx_gen_light_send_msg(
-            model->meshx_light_ctl_client_sig_model,
-            &set, opcode,
-            addr, net_idx,
-            app_idx
-        );
     }
     else{
         err = MESHX_INVALID_ARG; // Invalid opcode
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid opcode for Light CTL Client: %04x", opcode);
+        return err;
     }
+
+    err = meshx_gen_light_send_msg(
+        model->meshx_light_ctl_client_sig_model,
+        &set, opcode,
+        addr, net_idx,
+        app_idx
+    );
+    return err;
+}
+
+/**
+ * @brief Sends a Light CTL Temperature Range message from the client model.
+ *
+ * This function constructs and sends a Light CTL Temperature Range message to a specified address
+ * using the provided network and application indices. It allows the client to set or get the
+ * temperature range of a lighting element in a mesh network.
+ *
+ * @param[in] model        Pointer to the Light CTL client model instance.
+ * @param[in] opcode       Opcode of the message to be sent.
+ * @param[in] addr         Destination address of the message.
+ * @param[in] net_idx      Network index to be used for sending the message.
+ * @param[in] app_idx      Application index to be used for sending the message.
+ * @param[in] temp_min     Minimum temperature value of the range to be set.
+ * @param[in] temp_max     Maximum temperature value of the range to be set.
+ *
+ * @return meshx_err_t     Result of the message send operation.
+ */
+meshx_err_t meshx_light_ctl_temp_range_client_send_msg(
+        meshx_light_ctl_client_model_t *model,
+        uint16_t opcode,  uint16_t addr,
+        uint16_t net_idx, uint16_t app_idx,
+        uint16_t temp_min, uint16_t temp_max
+)
+{
+    meshx_err_t err;
+    meshx_light_client_set_state_t set = {0};
+    if (!model || !model->meshx_light_ctl_client_sig_model)
+    {
+        return MESHX_INVALID_ARG; // Invalid model pointer
+    }
+    light_ctl_client_last_msg_ctx.addr = addr;
+    light_ctl_client_last_msg_ctx.opcode = opcode;
+    light_ctl_client_last_msg_ctx.net_idx = net_idx;
+    light_ctl_client_last_msg_ctx.app_idx = app_idx;
+    light_ctl_client_last_msg_ctx.p_model = model;
+
+    if(opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET)
+    {
+        MESHX_DO_NOTHING;
+    }
+    if (opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET ||
+        opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK)
+    {
+        set.ctl_temperature_range_set.range_min = temp_min;
+        set.ctl_temperature_range_set.range_max = temp_max;
+
+        memcpy(&light_ctl_client_last_msg_ctx.state, &set, sizeof(meshx_light_client_set_state_t));
+    }
+    else{
+        err = MESHX_INVALID_ARG; // Invalid opcode
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid opcode for Light CTL Client: %04x", opcode);
+        return err;
+    }
+
+    err = meshx_gen_light_send_msg(
+        model->meshx_light_ctl_client_sig_model,
+        &set, opcode,
+        addr, net_idx,
+        app_idx
+    );
     return err;
 }
