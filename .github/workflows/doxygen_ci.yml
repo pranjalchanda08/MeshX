@@ -12,6 +12,8 @@ on:
 
 jobs:
   build:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
 
     steps:
@@ -79,6 +81,16 @@ jobs:
         elif [[ "${GITHUB_REF_NAME}" == "dev" ]]; then
           echo "dir=dev" >> $GITHUB_OUTPUT
         fi
+    - name: Pull latest gh-pages
+      run: |
+        git fetch origin gh-pages
+        git checkout gh-pages || git checkout --orphan gh-pages
+        git reset --hard origin/gh-pages
+
+    - name: Deploy index.html
+      if: steps.vars.outputs.dir == 'main'
+      run: |
+        ln -sf main/index.html public/index.html
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
@@ -87,3 +99,6 @@ jobs:
         publish_branch: gh-pages
         publish_dir: ./public
         destination_dir: ${{ steps.vars.outputs.dir }}
+        force: true
+
+
