@@ -92,23 +92,28 @@ static meshx_err_t cwww_client_on_off_state_change_handler(
         if (el_ctx->prev_state.on_off != param->on_off_state)
         {
             el_ctx->prev_state.on_off = param->on_off_state;
-        }
-        app_notify.err_code = MESHX_SUCCESS;
-        app_notify.state_change.on_off.state = el_ctx->prev_state.on_off;
+            app_notify.err_code = MESHX_SUCCESS;
+            app_notify.state_change.on_off.state = el_ctx->prev_state.on_off;
 
-        err = meshx_send_msg_to_app(element_id,
-                                    MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT,
-                                    MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_ONN_OFF,
-                                    sizeof(meshx_api_light_cwww_client_evt_t),
-                                    &app_notify);
-        if (err != MESHX_SUCCESS)
+            err = meshx_send_msg_to_app(element_id,
+                                        MESHX_ELEMENT_TYPE_RELAY_CLIENT,
+                                        MESHX_ELEMENT_FUNC_ID_RELAY_SERVER_ONN_OFF,
+                                        sizeof(meshx_api_relay_client_evt_t),
+                                        &app_notify);
+            if (err != MESHX_SUCCESS)
+            {
+                MESHX_LOGE(MOD_LCC, "Failed to send CWWW state change message: (%d)", err);
+            }
+        }
+
+        else
         {
-            MESHX_LOGE(MOD_LCC, "Failed to send CWWW state change message: (%d)", err);
+            MESHX_LOGD(MOD_SRC, "No change in state: %d", param->on_off_state);
         }
 
         el_ctx->state.on_off = !param->on_off_state;
-        MESHX_LOGD(MOD_LCC, "SET|PUBLISH: %d", param->on_off_state);
-        MESHX_LOGD(MOD_LCC, "Next state: %d", el_ctx->state.on_off);
+        MESHX_LOGD(MOD_SRC, "SET|PUBLISH: %d", param->on_off_state);
+        MESHX_LOGD(MOD_SRC, "Next state: %d", el_ctx->state.on_off);
     }
     else
     {
