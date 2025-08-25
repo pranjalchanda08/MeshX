@@ -253,20 +253,12 @@ static meshx_err_t meshx_dev_create_cwww_model_space(uint16_t n_max)
  */
 static meshx_err_t meshx_restore_model_states(uint16_t element_id)
 {
-    uint16_t model_id = 0;
     meshx_err_t err = MESHX_SUCCESS;
     meshx_cwww_server_ctx_t const *el_ctx = cwww_element_init_ctrl.el_list[element_id].srv_ctx;
 
     for (size_t i = 0; i < CWWW_SRV_MODEL_SIG_CNT; i++)
     {
-        err = meshx_get_model_id(cwww_element_init_ctrl.el_list[element_id].onoff_srv_model->meshx_server_sig_model,
-                                 &model_id);
-        if (err)
-        {
-            MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to get model ID (err: 0x%x)", err);
-            return err;
-        }
-        if (model_id == MESHX_MODEL_ID_GEN_ONOFF_SRV)
+        if (i == CWWW_SIG_ONOFF_MODEL_ID)
         {
             err = meshx_gen_on_off_srv_state_restore(cwww_element_init_ctrl.el_list[element_id].onoff_srv_model->meshx_server_sig_model,
                                                      el_ctx->prev_state);
@@ -276,7 +268,7 @@ static meshx_err_t meshx_restore_model_states(uint16_t element_id)
                 return err;
             }
         }
-        else if (model_id == MESHX_MODEL_ID_LIGHT_CTL_SRV)
+        else if (i == CWWW_SIG_L_CTL_MODEL_ID)
         {
             err = meshx_light_ctl_srv_state_restore(cwww_element_init_ctrl.el_list[element_id].ctl_srv_model,
                                                     el_ctx->prev_ctl_state);
@@ -285,6 +277,10 @@ static meshx_err_t meshx_restore_model_states(uint16_t element_id)
                 MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to restore on-off server state (err: 0x%x)", err);
                 return err;
             }
+        }
+        else
+        {
+            MESHX_DO_NOTHING;
         }
     }
     return err;
