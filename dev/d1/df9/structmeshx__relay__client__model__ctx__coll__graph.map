@@ -1,0 +1,5 @@
+<map id="meshx_relay_client_model_ctx" name="meshx_relay_client_model_ctx">
+<area shape="rect" id="Node000001" title="Structure to hold the context of the relay client." alt="" coords="5,155,126,277"/>
+<area shape="rect" id="Node000002" href="$dd/dae/structrelay__client__state.html" title="Structure to hold the state of the relay client." alt="" coords="10,5,122,92"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="68,92,68,138,63,138,63,92"/>
+</map>

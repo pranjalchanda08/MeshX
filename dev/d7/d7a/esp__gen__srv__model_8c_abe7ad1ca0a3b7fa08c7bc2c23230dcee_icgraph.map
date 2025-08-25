@@ -1,0 +1,7 @@
+<map id="meshx_plat_gen_srv_send_status" name="meshx_plat_gen_srv_send_status">
+<area shape="rect" id="Node000001" title="Send a status message from the Generic Server model." alt="" coords="446,5,586,46"/>
+<area shape="rect" id="Node000002" href="$da/dcb/meshx__gen__server_8c.html#a76fc44a0d846fe5ac1a0c49912a14716" title="Sends a status message for the Generic Server model." alt="" coords="208,13,398,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="431,28,399,28,399,23,431,23"/>
+<area shape="rect" id="Node000003" href="$db/d7b/meshx__onoff__server_8c.html#adb2b8bf0c13f01cdffdcc09208c00ea6" title="Send the On/Off status message to the client." alt="" coords="5,5,160,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="192,28,160,28,160,23,192,23"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="meshx_is_gen_light_cli_model" name="meshx_is_gen_light_cli_model">
+<area shape="rect" id="Node000001" title="Checks if the given model ID corresponds to a Generic Light Client model." alt="" coords="210,5,345,46"/>
+<area shape="rect" id="Node000002" href="$d0/dc1/meshx__gen__light__cli_8c.html#a3074b35e2bcc4a13e740bb1de662b0b8" title="Registers a callback function for getting Generic Light Client messages from BLE." alt="" coords="5,5,162,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,28,162,28,162,23,194,23"/>
+</map>

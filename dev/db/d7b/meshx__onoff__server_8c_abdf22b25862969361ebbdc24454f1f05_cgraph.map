@@ -1,0 +1,18 @@
+<map id="meshx_handle_gen_onoff_msg" name="meshx_handle_gen_onoff_msg">
+<area shape="rect" id="Node000001" title="Handle Generic OnOff messages for the server model." alt="" coords="5,80,205,106"/>
+<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="452,55,624,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,84,436,71,436,76,205,90"/>
+<area shape="rect" id="Node000007" href="$db/d7b/meshx__onoff__server_8c.html#a80490a24c41638e276364ef7e093fce1" title="Perform hardware change based on the BLE Mesh generic server callback parameter." alt="" coords="253,100,397,141"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="205,103,237,107,237,112,204,108"/>
+<area shape="rect" id="Node000003" href="$d2/d6a/FreeRTOS__meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue." alt="" coords="678,5,819,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="595,51,675,33,676,38,596,57"/>
+<area shape="rect" id="Node000004" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="690,55,807,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="624,65,675,65,675,70,624,70"/>
+<area shape="rect" id="Node000006" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="682,104,815,130"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="596,78,676,97,675,102,595,84"/>
+<area shape="rect" id="Node000005" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="867,55,1044,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="808,65,851,65,851,70,808,70"/>
+<area shape="poly" id="edge7_Node000007_Node000002" title=" " alt="" coords="397,100,468,82,469,87,398,105"/>
+<area shape="rect" id="Node000008" href="$dc/d96/esp__platform__ble__mesh_8c.html#ab3ea84732bbdc4a0b8d742aa4f66be09" title="Checks if a model is subscribed to a specific group address." alt="" coords="445,108,630,134"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="397,118,429,118,429,124,397,124"/>
+</map>

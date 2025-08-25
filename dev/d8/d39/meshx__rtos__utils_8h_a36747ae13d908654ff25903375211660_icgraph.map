@@ -1,0 +1,5 @@
+<map id="meshx_rtos_get_sys_time" name="meshx_rtos_get_sys_time">
+<area shape="rect" id="Node000001" title="Retrieves the current system time in milliseconds." alt="" coords="150,5,322,31"/>
+<area shape="rect" id="Node000002" href="$d0/dc9/meshx__log_8c.html#af9aace1b44b73111e15aa39f06f43456" title=" " alt="" coords="5,5,102,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,21,102,21,102,16,134,16"/>
+</map>

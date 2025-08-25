@@ -1,0 +1,7 @@
+<map id="meshx_cwww_cli_reg_app_req_cb" name="meshx_cwww_cli_reg_app_req_cb">
+<area shape="rect" id="Node000001" title="Registers a callback handler for CW&#45;WW application requests." alt="" coords="5,5,154,46"/>
+<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="202,13,389,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,23,186,23,186,28,154,28"/>
+<area shape="rect" id="Node000003" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="437,13,570,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="389,23,421,23,421,28,389,28"/>
+</map>

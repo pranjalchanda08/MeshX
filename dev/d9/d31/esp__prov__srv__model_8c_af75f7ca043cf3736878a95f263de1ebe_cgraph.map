@@ -1,0 +1,15 @@
+<map id="meshx_provisioning_cb" name="meshx_provisioning_cb">
+<area shape="rect" id="Node000001" title="Callback function for BLE Mesh provisioning events." alt="" coords="5,55,162,80"/>
+<area shape="rect" id="Node000002" href="$d9/d31/esp__prov__srv__model_8c.html#a042e06821182427efbcc671e352c0e07" title="Send a control message to the control task." alt="" coords="210,55,337,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="162,65,194,65,194,70,162,70"/>
+<area shape="rect" id="Node000003" href="$df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="385,55,557,80"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="337,65,369,65,369,70,337,70"/>
+<area shape="rect" id="Node000004" href="$d2/d6a/FreeRTOS__meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue." alt="" coords="605,5,746,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="527,51,604,33,605,38,528,57"/>
+<area shape="rect" id="Node000005" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="617,55,734,80"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="557,65,601,65,601,70,557,70"/>
+<area shape="rect" id="Node000007" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="609,104,742,130"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="528,78,605,97,604,102,527,84"/>
+<area shape="rect" id="Node000006" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="794,55,971,80"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="735,65,778,65,778,70,735,70"/>
+</map>
