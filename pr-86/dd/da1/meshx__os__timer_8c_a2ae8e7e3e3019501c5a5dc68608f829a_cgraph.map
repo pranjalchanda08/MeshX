@@ -1,0 +1,19 @@
+<map id="meshx_os_timer_init" name="meshx_os_timer_init">
+<area shape="rect" id="Node000001" title="Initialize the OS timer module." alt="" coords="5,120,146,146"/>
+<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="194,35,381,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,117,238,64,240,69,111,122"/>
+<area shape="rect" id="Node000004" href="$dd/da1/meshx__os__timer_8c.html#a11716d0afd56fcadf26d731a771292a2" title=" " alt="" coords="206,112,368,153"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="146,130,191,130,191,136,146,136"/>
+<area shape="rect" id="Node000009" href="$da/dd5/unit__test_8c.html#a763886d5c865bfc15d5693604c5f5923" title="Register a unit test for a specific module." alt="" coords="227,177,348,203"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="127,144,223,170,222,175,125,149"/>
+<area shape="rect" id="Node000003" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="449,5,582,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="381,33,434,26,434,31,381,38"/>
+<area shape="rect" id="Node000005" href="$d3/db6/FreeRTOS__meshx__timer_8c.html#a7d37c7f58bdbb342a0885b20f73e361c" title="Changes the period of the RTOS timer." alt="" coords="429,55,602,96"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="368,110,416,98,418,103,370,115"/>
+<area shape="rect" id="Node000006" href="$d3/db6/FreeRTOS__meshx__timer_8c.html#aa50a77c352028677b805d5dae291677c" title="Resets the RTOS timer." alt="" coords="436,120,596,146"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="369,130,420,130,420,136,369,136"/>
+<area shape="rect" id="Node000007" href="$d3/db6/FreeRTOS__meshx__timer_8c.html#a65622b75bf8b72d3a3bbc87ee4c54d69" title="Starts the RTOS timer." alt="" coords="437,169,594,195"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="369,148,438,163,437,168,368,153"/>
+<area shape="rect" id="Node000008" href="$d3/db6/FreeRTOS__meshx__timer_8c.html#a00fe9ff387444a7f806d27f1d671d4fb" title="Stops the RTOS timer." alt="" coords="438,219,594,244"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="360,151,382,163,397,174,407,185,416,195,430,205,440,210,438,215,428,210,413,199,403,188,394,178,380,167,357,156"/>
+</map>

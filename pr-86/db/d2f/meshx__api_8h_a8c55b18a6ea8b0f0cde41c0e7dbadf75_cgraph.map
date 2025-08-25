@@ -1,0 +1,15 @@
+<map id="meshx_send_msg_to_element" name="meshx_send_msg_to_element">
+<area shape="rect" id="Node000001" title="Sends a message to the element." alt="" coords="5,84,203,110"/>
+<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="251,55,423,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,82,234,78,235,83,204,87"/>
+<area shape="rect" id="Node000007" href="$dc/d93/meshx__api_8c.html#ac37c1c5b9f1e9cdaa510bf886d897e2d" title="Prepares a message to be sent to the BLE Mesh application." alt="" coords="266,104,408,145"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="204,106,251,112,250,117,203,111"/>
+<area shape="rect" id="Node000003" href="$d2/d6a/FreeRTOS__meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue." alt="" coords="471,5,611,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="393,51,469,33,471,38,394,57"/>
+<area shape="rect" id="Node000004" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="482,55,600,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="423,65,467,65,467,70,423,70"/>
+<area shape="rect" id="Node000006" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="474,104,608,130"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="394,78,471,97,469,102,393,84"/>
+<area shape="rect" id="Node000005" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="659,55,837,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="600,65,644,65,644,70,600,70"/>
+</map>

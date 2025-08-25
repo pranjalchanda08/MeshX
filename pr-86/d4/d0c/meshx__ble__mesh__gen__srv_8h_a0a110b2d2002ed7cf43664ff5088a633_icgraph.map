@@ -1,0 +1,5 @@
+<map id="meshx_plat_gen_srv_delete" name="meshx_plat_gen_srv_delete">
+<area shape="rect" id="Node000001" title="Deletes the Generic OnOff Server model and its associated resources." alt="" coords="198,5,338,46"/>
+<area shape="rect" id="Node000002" href="$db/d7b/meshx__onoff__server_8c.html#ad6f67ea9759ecb8ded03da6668cfbcfc" title="Delete the On/Off server model instance." alt="" coords="5,5,150,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="182,28,150,28,150,23,182,23"/>
+</map>
