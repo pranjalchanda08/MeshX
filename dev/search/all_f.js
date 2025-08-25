@@ -1,7 +1,7 @@
 var searchData=
 [
   ['feature_0',['feature',['../d1/db1/unionmeshx__prov__cb__param__t.html#a84f154a80e080db33176b4dd53cb0c1b',1,'meshx_prov_cb_param_t::feature'],['../db/dd1/structmeshx__prov__cb__param__t_1_1meshx__heartbeat__msg__recv__param.html#abf1e839ae06e2743946218c08e75bed4',1,'meshx_prov_cb_param_t::meshx_heartbeat_msg_recv_param::feature']]],
-  ['features_1',['Features',['../index.html#autotoc_md10',1,'']]],
+  ['features_1',['Features',['../index.html#autotoc_md11',1,'']]],
   ['filter_5ftype_2',['filter_type',['../d8/d0e/structmeshx__prov__cb__param__t_1_1meshx__proxy__client__recv__filter__status__param.html#a34fec760d29522cf4cba0c453bd42815',1,'meshx_prov_cb_param_t::meshx_proxy_client_recv_filter_status_param']]],
   ['flags_3',['flags',['../d2/d2e/structmeshx__gen__battery__status__cb__t.html#adb72a7e3658a7ab0a7741c1c27ba72e8',1,'meshx_gen_battery_status_cb_t::flags'],['../d6/db3/structmeshx__prov__cb__param__t_1_1meshx__provision__complete__evt__param.html#a228116f4e6909d57a2d64a6e2606b57d',1,'meshx_prov_cb_param_t::meshx_provision_complete_evt_param::flags']]],
   ['flashing_20and_20monitoring_4',['Flashing and monitoring',['../index.html#autotoc_md28',1,'']]],

@@ -14,7 +14,7 @@ var searchData=
   ['power_5frange_5fstatus_11',['power_range_status',['../d0/d91/unionmeshx__gen__client__status__cb__t.html#aff9a7d2d5c775b5225b6b0e9e01654b4',1,'meshx_gen_client_status_cb_t']]],
   ['power_5fset_12',['power_set',['../d8/df2/unionmeshx__gen__cli__set__t.html#a3514b67d40f7fe1fbd5e18a8c3e7d660',1,'meshx_gen_cli_set_t']]],
   ['preamble_20strong_13',['&lt;strong&gt;0. Preamble&lt;/strong&gt;',['../da/d19/md_LICENSE.html#autotoc_md3',1,'']]],
-  ['prerequisites_14',['Prerequisites',['../index.html#autotoc_md19',1,'']]],
+  ['prerequisites_14',['Prerequisites',['../index.html#autotoc_md24',1,'']]],
   ['present_5fctl_5fdelta_5fuv_15',['present_ctl_delta_uv',['../d1/d6b/structmeshx__light__ctl__temperature__status__cb__t.html#a211065cb1ae13b52edcad8f665baec72',1,'meshx_light_ctl_temperature_status_cb_t']]],
   ['present_5fctl_5flightness_16',['present_ctl_lightness',['../d8/dcd/structmeshx__light__ctl__status__cb__t.html#a5624873fd73e34be51f9c8afc22b34d7',1,'meshx_light_ctl_status_cb_t']]],
   ['present_5fctl_5ftemperature_17',['present_ctl_temperature',['../d8/dcd/structmeshx__light__ctl__status__cb__t.html#a39d409ea598f8eb2a504c9c2c081b156',1,'meshx_light_ctl_status_cb_t::present_ctl_temperature'],['../d1/d6b/structmeshx__light__ctl__temperature__status__cb__t.html#adc109bd94ffd9e88eb783937f6507cf1',1,'meshx_light_ctl_temperature_status_cb_t::present_ctl_temperature']]],

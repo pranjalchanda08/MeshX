@@ -25,12 +25,12 @@
 var NAVTREE =
 [
   [ "MeshX", "index.html", [
-    [ "Features", "index.html#autotoc_md10", null ],
-    [ "Capabilities", "index.html#autotoc_md11", [
-      [ "Server", "index.html#autotoc_md12", null ],
-      [ "Client", "index.html#autotoc_md15", null ]
+    [ "Features", "index.html#autotoc_md11", null ],
+    [ "Capabilities", "index.html#autotoc_md13", [
+      [ "Server", "index.html#autotoc_md14", null ],
+      [ "Client", "index.html#autotoc_md20", null ]
     ] ],
-    [ "Prerequisites", "index.html#autotoc_md19", null ],
+    [ "Prerequisites", "index.html#autotoc_md24", null ],
     [ "Build", "index.html#autotoc_md25", null ],
     [ "Adding a Product to build", "index.html#autotoc_md26", null ],
     [ "Adding Element, model to build:", "index.html#autotoc_md27", null ],

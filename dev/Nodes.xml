@@ -8,29 +8,29 @@
        <Node>
         <Name>Features</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md10</Anchor>
+        <Anchor>autotoc_md11</Anchor>
        </Node>
        <Node>
         <Name>Capabilities</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md11</Anchor>
+        <Anchor>autotoc_md13</Anchor>
       <Subnodes>
          <Node>
           <Name>Server</Name>
           <Path>index.html</Path>
-          <Anchor>autotoc_md12</Anchor>
+          <Anchor>autotoc_md14</Anchor>
          </Node>
          <Node>
           <Name>Client</Name>
           <Path>index.html</Path>
-          <Anchor>autotoc_md15</Anchor>
+          <Anchor>autotoc_md20</Anchor>
          </Node>
         </Subnodes>
        </Node>
        <Node>
         <Name>Prerequisites</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md19</Anchor>
+        <Anchor>autotoc_md24</Anchor>
        </Node>
        <Node>
         <Name>Build</Name>
@@ -80,27 +80,27 @@
            <Node>
             <Name>4. Restrictions</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md14</Anchor>
+            <Anchor>autotoc_md12</Anchor>
            </Node>
            <Node>
             <Name>5. Confidentiality</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md17</Anchor>
+            <Anchor>autotoc_md16</Anchor>
            </Node>
            <Node>
             <Name>6. No Warranty</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md20</Anchor>
+            <Anchor>autotoc_md18</Anchor>
            </Node>
            <Node>
             <Name>7. Termination</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md22</Anchor>
+            <Anchor>autotoc_md21</Anchor>
            </Node>
            <Node>
             <Name>9. Contact Information</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md24</Anchor>
+            <Anchor>autotoc_md23</Anchor>
            </Node>
           </Subnodes>
         </Subnodes>
