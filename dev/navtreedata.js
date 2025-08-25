@@ -28,7 +28,7 @@ var NAVTREE =
     [ "Features", "index.html#autotoc_md1", null ],
     [ "Capabilities", "index.html#autotoc_md2", [
       [ "Server", "index.html#autotoc_md3", null ],
-      [ "Client", "index.html#autotoc_md4", null ]
+      [ "Client", "index.html#autotoc_md5", null ]
     ] ],
     [ "Prerequisites", "index.html#autotoc_md6", null ],
     [ "Build", "index.html#autotoc_md7", null ],
