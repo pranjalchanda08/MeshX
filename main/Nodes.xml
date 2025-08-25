@@ -8,12 +8,12 @@
        <Node>
         <Name>Features</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md1</Anchor>
+        <Anchor>autotoc_md2</Anchor>
        </Node>
        <Node>
         <Name>Capabilities</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md2</Anchor>
+        <Anchor>autotoc_md3</Anchor>
       <Subnodes>
          <Node>
           <Name>Server</Name>
@@ -35,22 +35,22 @@
        <Node>
         <Name>Build</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md7</Anchor>
+        <Anchor>autotoc_md8</Anchor>
        </Node>
        <Node>
         <Name>Adding a Product to build</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md8</Anchor>
+        <Anchor>autotoc_md9</Anchor>
        </Node>
        <Node>
         <Name>Adding Element, model to build:</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md9</Anchor>
+        <Anchor>autotoc_md11</Anchor>
        </Node>
        <Node>
         <Name>Flashing and monitoring</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md10</Anchor>
+        <Anchor>autotoc_md12</Anchor>
        </Node>
        <Node>
         <Name>MeshX Proprietary License (MPL) v1.0</Name>
@@ -60,7 +60,7 @@
            <Node>
             <Name>0. Preamble</Name>
             <Path>da/d19/md_LICENSE.html</Path>
-            <Anchor>autotoc_md12</Anchor>
+            <Anchor>autotoc_md10</Anchor>
            </Node>
            <Node>
             <Name>1. Grant of License</Name>

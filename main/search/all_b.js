@@ -8,7 +8,7 @@ var searchData=
   ['ble_5fmesh_5fplat_5finit_2eh_5',['ble_mesh_plat_init.h',['../d9/db9/ble__mesh__plat__init_8h.html',1,'']]],
   ['ble_5fmesh_5fsend_5fcwww_5fmsg_6',['ble_mesh_send_cwww_msg',['../df/dc5/meshx__light__cwww__client__element_8h.html#ac0ea9fcc86e6d20432d9022539203404',1,'meshx_light_cwww_client_element.h']]],
   ['bluetooth_5finit_7',['bluetooth_init',['../d9/db9/ble__mesh__plat__init_8h.html#a2bae8dcbee489037789f228234a3072d',1,'ble_mesh_plat_init.h']]],
-  ['build_8',['Build',['../index.html#autotoc_md7',1,'']]],
-  ['build_9',['Adding a Product to build',['../index.html#autotoc_md8',1,'']]],
-  ['build_3a_10',['Adding Element, model to build:',['../index.html#autotoc_md9',1,'']]]
+  ['build_8',['Build',['../index.html#autotoc_md8',1,'']]],
+  ['build_9',['Adding a Product to build',['../index.html#autotoc_md9',1,'']]],
+  ['build_3a_10',['Adding Element, model to build:',['../index.html#autotoc_md11',1,'']]]
 ];
