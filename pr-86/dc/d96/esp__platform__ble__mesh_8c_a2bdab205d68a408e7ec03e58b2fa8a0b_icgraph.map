@@ -1,17 +1,11 @@
 <map id="meshx_plat_add_element_to_composition" name="meshx_plat_add_element_to_composition">
-<area shape="rect" id="Node000001" title="Adds an element to the BLE Mesh composition." alt="" coords="775,35,943,75"/>
-<area shape="rect" id="Node000002" href="$d0/d53/meshx__light__cwww__client_8c.html#aeeed3c047c66ef0ea3eecfa65f5d9fe1" title="This function adds the CW&#45;WW client models to the element list of the specified device...." alt="" coords="568,5,727,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="759,44,727,39,728,34,760,39"/>
-<area shape="rect" id="Node000005" href="$d9/d05/meshx_8c.html#a9a6dcac8b5368ca6d77be9caf99cddaa" title="Initializes BLE Mesh elements." alt="" coords="579,70,716,96"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="760,71,717,77,716,71,759,66"/>
-<area shape="rect" id="Node000003" href="$d0/d53/meshx__light__cwww__client_8c.html#a2b18c9b388becb88fae3b11dc91227ad" title="Create Dynamic CW&#45;WW Model Elements." alt="" coords="378,5,517,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="553,28,517,28,517,23,553,23"/>
-<area shape="rect" id="Node000004" href="$d0/d53/meshx__light__cwww__client_8c.html#a3c149e2a2474324a7ecac6168d1f9a9f" title=" " alt="" coords="131,13,326,38"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="362,28,326,28,326,23,362,23"/>
-<area shape="rect" id="Node000006" href="$d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="374,70,520,96"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="564,86,521,86,521,80,564,80"/>
-<area shape="rect" id="Node000007" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="187,70,270,96"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="359,86,270,86,270,80,359,80"/>
-<area shape="rect" id="Node000008" href="$d0/d29/main_8c.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title="Main application entry point." alt="" coords="5,70,83,96"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="171,86,83,86,83,80,171,80"/>
+<area shape="rect" id="Node000001" title="Adds an element to the BLE Mesh composition." alt="" coords="641,5,809,46"/>
+<area shape="rect" id="Node000002" href="$d9/d05/meshx_8c.html#a9a6dcac8b5368ca6d77be9caf99cddaa" title="Initializes BLE Mesh elements." alt="" coords="456,13,593,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="625,28,593,28,593,23,625,23"/>
+<area shape="rect" id="Node000003" href="$d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="262,13,408,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="441,28,409,28,409,23,441,23"/>
+<area shape="rect" id="Node000004" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="131,13,214,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="246,28,214,28,214,23,246,23"/>
+<area shape="rect" id="Node000005" href="$d0/d29/main_8c.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title="Main application entry point." alt="" coords="5,13,83,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="115,28,83,28,83,23,115,23"/>
 </map>

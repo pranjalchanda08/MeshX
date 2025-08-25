@@ -1,13 +1,9 @@
 <map id="meshx_relay_client_timeout_handler" name="meshx_relay_client_timeout_handler">
-<area shape="rect" id="Node000001" title="Handle timeout for relaying the last OnOff message." alt="" coords="900,31,1031,71"/>
-<area shape="rect" id="Node000002" href="$d9/d33/meshx__onoff__client_8c.html#a3ac04d8fd412761b9525889afbf9a3c7" title="Handle the Generic OnOff Client messages." alt="" coords="652,38,852,64"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="884,54,852,54,852,48,884,48"/>
-<area shape="rect" id="Node000003" href="$d9/d33/meshx__onoff__client_8c.html#ae641de803120d164e4927a8cf19aeaaf" title="Initialize the Generic OnOff Client." alt="" coords="438,13,602,38"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="637,41,602,37,603,32,638,36"/>
-<area shape="rect" id="Node000006" href="$db/d7b/meshx__onoff__server_8c.html#af7c77a6b0adf5008740aad007f0c174e" title="Initialize the On/Off server model." alt="" coords="436,62,604,88"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="637,66,605,69,605,64,637,60"/>
-<area shape="rect" id="Node000004" href="$d0/d53/meshx__light__cwww__client_8c.html#a2b18c9b388becb88fae3b11dc91227ad" title="Create Dynamic CW&#45;WW Model Elements." alt="" coords="249,5,388,46"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="423,28,388,28,388,23,423,23"/>
-<area shape="rect" id="Node000005" href="$d0/d53/meshx__light__cwww__client_8c.html#a3c149e2a2474324a7ecac6168d1f9a9f" title=" " alt="" coords="5,13,201,38"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="233,28,201,28,201,23,233,23"/>
+<area shape="rect" id="Node000001" title="Handle timeout for relaying the last OnOff message." alt="" coords="469,23,600,64"/>
+<area shape="rect" id="Node000002" href="$d9/d33/meshx__onoff__client_8c.html#a3ac04d8fd412761b9525889afbf9a3c7" title="Handle the Generic OnOff Client messages." alt="" coords="222,31,421,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="453,46,421,46,421,41,453,41"/>
+<area shape="rect" id="Node000003" href="$d9/d33/meshx__onoff__client_8c.html#ae641de803120d164e4927a8cf19aeaaf" title="Initialize the Generic OnOff Client." alt="" coords="8,5,171,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="206,34,171,30,172,24,207,28"/>
+<area shape="rect" id="Node000004" href="$db/d7b/meshx__onoff__server_8c.html#af7c77a6b0adf5008740aad007f0c174e" title="Initialize the On/Off server model." alt="" coords="5,55,174,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="207,58,174,61,174,56,206,53"/>
 </map>

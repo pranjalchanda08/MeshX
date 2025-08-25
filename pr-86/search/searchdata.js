@@ -8,9 +8,8 @@ var indexSectionsWithContent =
   5: "cdempru",
   6: "cmr",
   7: "cmr",
-  8: "cfgilmortu",
-  9: "c",
-  10: "0lmpv"
+  8: "cflmortu",
+  9: "0lmpv"
 };
 
 var indexSectionNames =
@@ -24,8 +23,7 @@ var indexSectionNames =
   6: "enums",
   7: "enumvalues",
   8: "defines",
-  9: "groups",
-  10: "pages"
+  9: "pages"
 };
 
 var indexSectionLabels =
@@ -39,7 +37,6 @@ var indexSectionLabels =
   6: "Enumerations",
   7: "Enumerator",
   8: "Macros",
-  9: "Modules",
-  10: "Pages"
+  9: "Pages"
 };
 

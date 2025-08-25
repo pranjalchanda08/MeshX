@@ -106,18 +106,6 @@
         </Subnodes>
        </Node>
        <Node>
-        <Name>Topics</Name>
-        <Path>topics.html</Path>
-      <Subnodes>
-         <Node>
-          <Name>configs</Name>
-          <Path>de/de3/group__CONTROL__TASK.html</Path>
-        <Subnodes>
-          </Subnodes>
-         </Node>
-        </Subnodes>
-       </Node>
-       <Node>
         <Name>Data Structures</Name>
         <Path>annotated.html</Path>
       <Subnodes>
@@ -9267,98 +9255,6 @@
                        <Node>
                         <Name>meshx_light_cwww_client.c</Name>
                         <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
-                      <Subnodes>
-                         <Node>
-                          <Name>CONFIG_SERVER_CB_MASK</Name>
-                          <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
-                          <Anchor>a0983d7745dcb50ce2c0639619ac08442</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>CWWW_CLI_EL</Name>
-                          <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
-                          <Anchor>a4f8bc087bea725c9b1e91fd617c0c42b</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>CWWW_CLI_EL_STATE_CH_EVT_MASK</Name>
-                          <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
-                          <Anchor>a07763511e2cde9c4a917240bc30e1bed</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>CWWW_CLI_MESHX_ONOFF_ENABLE_CB</Name>
-                          <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
-                          <Anchor>a64a7f92df6cae50328e426d824ffff40</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>GET_RELATIVE_EL_IDX</Name>
-                          <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
-                          <Anchor>a58ccb2e65fb0601bcbdb84e9dafb7f06</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>IS_EL_IN_RANGE</Name>
-                          <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
-                          <Anchor>ad548550b8b82eac5acc715ddf7e27c58</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MOD_LCC</Name>
-                          <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
-                          <Anchor>aa0ad1e47aa701098a8202979c5f1937d</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>create_cwww_client_elements</Name>
-                          <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
-                          <Anchor>a2b18c9b388becb88fae3b11dc91227ad</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_add_cwww_cli_model_to_element_list</Name>
-                          <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
-                          <Anchor>aeeed3c047c66ef0ea3eecfa65f5d9fe1</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_cwww_cli_el_state_change_reg_cb</Name>
-                          <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
-                          <Anchor>a0f44c18340482bed497e5c388fcb6748</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_cwww_cli_reg_app_req_cb</Name>
-                          <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
-                          <Anchor>aa09d5950f3239006aea437cebe41c6b9</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_cwww_cli_reg_freshboot_cb</Name>
-                          <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
-                          <Anchor>ad44d27c2b9e797342e27cc923638eec2</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_cwww_el_get_state</Name>
-                          <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
-                          <Anchor>ab54b12b94031fd68edb9072ca517f488</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_dev_create_cwww_model_space</Name>
-                          <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
-                          <Anchor>adac9c4dc1fe85bc6716af5f4db19950a</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_element_struct_deinit</Name>
-                          <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
-                          <Anchor>a981929a7f7915290d07050019fef1e79</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_element_struct_init</Name>
-                          <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
-                          <Anchor>acfe19244baff39d7aaaeefa052997704</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>REG_MESHX_ELEMENT_FN</Name>
-                          <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
-                          <Anchor>a3c149e2a2474324a7ecac6168d1f9a9f</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>cwww_client_element_init_ctrl</Name>
-                          <Path>d0/d53/meshx__light__cwww__client_8c.html</Path>
-                          <Anchor>afcb3f2a0a3a23a43c83ed4c9c7ec825b</Anchor>
-                         </Node>
-                        </Subnodes>
                        </Node>
                        <Node>
                         <Name>meshx_light_cwww_client_element.h</Name>
@@ -22594,14 +22490,6 @@
              <Node>
               <Name>f</Name>
               <Path>globals_defs_f.html</Path>
-             </Node>
-             <Node>
-              <Name>g</Name>
-              <Path>globals_defs_g.html</Path>
-             </Node>
-             <Node>
-              <Name>i</Name>
-              <Path>globals_defs_i.html</Path>
              </Node>
              <Node>
               <Name>l</Name>

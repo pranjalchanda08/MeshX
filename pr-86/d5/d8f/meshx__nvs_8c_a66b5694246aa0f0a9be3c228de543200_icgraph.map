@@ -1,22 +1,16 @@
 <map id="meshx_nvs_get" name="meshx_nvs_get">
-<area shape="rect" id="Node000001" title="Get a value from the NVS." alt="" coords="1012,35,1124,60"/>
-<area shape="rect" id="Node000002" href="$d9/d05/meshx_8c.html#acbc9147d880e04feca27a7fa57a45945" title="Restore the device state from the NVS." alt="" coords="580,5,715,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1006,33,964,25,831,16,715,17,715,12,831,11,964,20,1007,28"/>
-<area shape="rect" id="Node000006" href="$d5/d8f/meshx__nvs_8c.html#a3773373d74bd4e2c0415a89f7652ebe8" title="Retrieve the context of a specific element from NVS." alt="" coords="775,84,964,110"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="999,67,925,86,924,81,998,62"/>
-<area shape="rect" id="Node000010" href="$d5/d8f/meshx__nvs_8c.html#ab4e5c250438e810358991fbe0e6cd277" title="Open the NVS with a timeout." alt="" coords="808,35,930,60"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="996,50,931,50,931,45,996,45"/>
-<area shape="rect" id="Node000003" href="$d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="374,5,520,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="565,21,521,21,521,16,565,16"/>
-<area shape="rect" id="Node000004" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="187,5,270,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="359,21,270,21,270,16,359,16"/>
-<area shape="rect" id="Node000005" href="$d0/d29/main_8c.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title="Main application entry point." alt="" coords="5,5,83,31"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="171,21,83,21,83,16,171,16"/>
-<area shape="rect" id="Node000007" href="$d0/d53/meshx__light__cwww__client_8c.html#aeeed3c047c66ef0ea3eecfa65f5d9fe1" title="This function adds the CW&#45;WW client models to the element list of the specified device...." alt="" coords="568,76,727,117"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="759,100,727,100,727,94,759,94"/>
-<area shape="rect" id="Node000008" href="$d0/d53/meshx__light__cwww__client_8c.html#a2b18c9b388becb88fae3b11dc91227ad" title="Create Dynamic CW&#45;WW Model Elements." alt="" coords="378,76,517,117"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="553,100,517,100,517,94,553,94"/>
-<area shape="rect" id="Node000009" href="$d0/d53/meshx__light__cwww__client_8c.html#a3c149e2a2474324a7ecac6168d1f9a9f" title=" " alt="" coords="131,84,326,110"/>
-<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="362,100,326,100,326,94,362,94"/>
-<area shape="poly" id="edge10_Node000010_Node000002" title=" " alt="" coords="792,40,715,30,716,24,793,35"/>
+<area shape="rect" id="Node000001" title="Get a value from the NVS." alt="" coords="876,25,988,51"/>
+<area shape="rect" id="Node000002" href="$d9/d05/meshx_8c.html#acbc9147d880e04feca27a7fa57a45945" title="Restore the device state from the NVS." alt="" coords="456,25,591,51"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="871,23,828,15,733,8,639,15,575,27,574,22,638,10,733,3,828,10,872,18"/>
+<area shape="rect" id="Node000006" href="$d5/d8f/meshx__nvs_8c.html#a3773373d74bd4e2c0415a89f7652ebe8" title="Retrieve the context of a specific element from NVS." alt="" coords="639,25,828,51"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="860,41,828,41,828,35,860,35"/>
+<area shape="rect" id="Node000007" href="$d5/d8f/meshx__nvs_8c.html#ab4e5c250438e810358991fbe0e6cd277" title="Open the NVS with a timeout." alt="" coords="672,75,794,100"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="863,58,789,76,788,71,862,53"/>
+<area shape="rect" id="Node000003" href="$d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="262,25,408,51"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="441,41,409,41,409,35,441,35"/>
+<area shape="rect" id="Node000004" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="131,25,214,51"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="246,41,214,41,214,35,246,35"/>
+<area shape="rect" id="Node000005" href="$d0/d29/main_8c.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title="Main application entry point." alt="" coords="5,25,83,51"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="115,41,83,41,83,35,115,35"/>
+<area shape="poly" id="edge7_Node000007_Node000002" title=" " alt="" coords="660,73,581,54,582,49,661,68"/>
 </map>

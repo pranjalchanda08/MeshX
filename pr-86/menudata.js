@@ -25,7 +25,6 @@
 var menudata={children:[
 {text:"Main Page",url:"index.html"},
 {text:"Related Pages",url:"pages.html"},
-{text:"Topics",url:"topics.html"},
 {text:"Data Structures",url:"annotated.html",children:[
 {text:"Data Structures",url:"annotated.html"},
 {text:"Data Structure Index",url:"classes.html"},
@@ -142,8 +141,6 @@ var menudata={children:[
 {text:"Macros",url:"globals_defs.html",children:[
 {text:"c",url:"globals_defs.html#index_c"},
 {text:"f",url:"globals_defs_f.html#index_f"},
-{text:"g",url:"globals_defs_g.html#index_g"},
-{text:"i",url:"globals_defs_i.html#index_i"},
 {text:"l",url:"globals_defs_l.html#index_l"},
 {text:"m",url:"globals_defs_m.html#index_m"},
 {text:"o",url:"globals_defs_o.html#index_o"},
