@@ -63,7 +63,7 @@ static meshx_cwww_client_elements_ctrl_t cwww_client_element_init_ctrl;
 #if CWWW_CLI_MESHX_ONOFF_ENABLE_CB
 
 static meshx_err_t meshx_cwww_cli_send_onoff_msg( const dev_struct_t *pdev, uint16_t element_id, uint8_t set_get, uint8_t ack);
-static meshx_err_t meshx_cwww_cli_send_ctl_msg( const dev_struct_t *pdev, uint16_t element_id, uint8_t set_get, uint8_t ack);
+static meshx_err_t meshx_cwww_cli_send_ctl_msg( const dev_struct_t *pdev, uint16_t element_id, uint8_t set_get, uint8_t is_temp_range, uint8_t ack);
 /**
  * @brief Handler for On/Off state change events in the CW/WW light client.
  *
@@ -181,15 +181,7 @@ static meshx_err_t cwww_light_ctl_state_change_handler(
         }
         else if (param->ctx.opcode == MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS)
         {
-            if( el_ctx->prev_ctl_state.temp_def != param->ctl_state.temp_def
-            ||  el_ctx->prev_ctl_state.delta_uv_def != param->ctl_state.delta_uv_def
-            ||  el_ctx->prev_ctl_state.lightness_def != param->ctl_state.lightness_def)
-            {
-                el_ctx->prev_ctl_state.temp_def = param->ctl_state.temp_def;
-                el_ctx->prev_ctl_state.delta_uv_def = param->ctl_state.delta_uv_def;
-                el_ctx->prev_ctl_state.lightness_def = param->ctl_state.lightness_def;
-                state_change = true;
-            }
+            MESHX_DO_NOTHING;
         }
         else
         {
@@ -445,10 +437,11 @@ static meshx_err_t meshx_cwww_cli_send_onoff_msg(
  * This function constructs and sends a CTL message to control the color temperature and white/warm settings
  * of a lighting device element. It can be used for both set and get operations, and supports acknowledgment.
  *
- * @param pdev        Pointer to the device structure containing device-specific information.
- * @param element_id  Identifier for the target element within the device.
- * @param set_get     Operation type: 0 for 'get', 1 for 'set'.
- * @param ack         Acknowledgment flag: 0 for no acknowledgment, 1 to request acknowledgment.
+ * @param[in] pdev          Pointer to the device structure containing device-specific information.
+ * @param[in] element_id    Identifier for the target element within the device.
+ * @param[in] set_get       Operation type: 0 for 'get', 1 for 'set'.
+ * @param[in] is_temp_range Flag indicating if the operation is for temperature range: 0 for no, 1 for yes.
+ * @param[in] ack           Acknowledgment flag: 0 for no acknowledgment, 1 to request acknowledgment.
  *
  * @return meshx_err_t Returns an error code indicating the result of the operation.
  */
@@ -456,6 +449,7 @@ static meshx_err_t meshx_cwww_cli_send_ctl_msg(
     const dev_struct_t *pdev,
     uint16_t element_id,
     uint8_t set_get,
+    uint8_t is_temp_range,
     uint8_t ack)
 {
     if (!pdev || !IS_EL_IN_RANGE(element_id))
@@ -468,35 +462,74 @@ static meshx_err_t meshx_cwww_cli_send_ctl_msg(
 
     uint16_t opcode = MESHX_MODEL_OP_LIGHT_CTL_GET;
 
-    if( MESHX_LIGHT_CTL_CLI_MSG_SET == set_get)
-        opcode = ack ? MESHX_MODEL_OP_LIGHT_CTL_SET : MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK;
-
-    MESHX_LOGD(MOD_LCC, "OPCODE: %p", (void *)(uint32_t)opcode);
-
-    /* Send message to the cwww client */
-    err = meshx_light_ctl_client_send_msg(
-            model,
-            opcode,
-            el_ctx->pub_addr,
-            pdev->meshx_store.net_key_id,
-            el_ctx->app_id,
-            el_ctx->ctl_state.lightness,
-            el_ctx->ctl_state.temperature,
-            el_ctx->ctl_state.delta_uv,
-            el_ctx->tid
-    );
-    if (err)
+    if(is_temp_range == false)
     {
-        MESHX_LOGE(MOD_LCC, "Cwww Client Send Message failed: (%d)", err);
+        if( MESHX_LIGHT_CTL_CLI_MSG_SET == set_get)
+        {
+            opcode = ack ? MESHX_MODEL_OP_LIGHT_CTL_SET : MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK;
+        }
+
+        MESHX_LOGD(MOD_LCC, "OPCODE: %p", (void *)(uint32_t)opcode);
+
+        /* Send message to the cwww client */
+        err = meshx_light_ctl_client_send_msg(
+                model,
+                opcode,
+                el_ctx->pub_addr,
+                pdev->meshx_store.net_key_id,
+                el_ctx->app_id,
+                el_ctx->ctl_state.lightness,
+                el_ctx->ctl_state.temperature,
+                el_ctx->ctl_state.delta_uv,
+                el_ctx->tid
+        );
+        if (err)
+        {
+            MESHX_LOGE(MOD_LCC, "Cwww Client Send Message failed: (%d)", err);
+        }
+        else
+        {
+            el_ctx->tid++;
+            if(opcode == MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK)
+            {
+                el_ctx->prev_ctl_state.delta_uv = el_ctx->ctl_state.delta_uv;
+                el_ctx->prev_ctl_state.lightness = el_ctx->ctl_state.lightness;
+                el_ctx->prev_ctl_state.temperature = el_ctx->ctl_state.temperature;
+            }
+        }
     }
     else
     {
-        el_ctx->tid++;
-        if(opcode == MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK)
+        opcode = MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET;
+        /* If set operation, change opcode accordingly */
+        if( MESHX_LIGHT_CTL_CLI_MSG_SET == set_get)
         {
-            el_ctx->prev_ctl_state.delta_uv = el_ctx->ctl_state.delta_uv;
-            el_ctx->prev_ctl_state.lightness = el_ctx->ctl_state.lightness;
-            el_ctx->prev_ctl_state.temperature = el_ctx->ctl_state.temperature;
+            opcode = ack ? MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET : MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK;
+        }
+
+        MESHX_LOGD(MOD_LCC, "OPCODE: %p", (void *)(uint32_t)opcode);
+
+        /* Send message to the cwww client */
+        err = meshx_light_ctl_temp_range_client_send_msg(
+                model,
+                opcode,
+                el_ctx->pub_addr,
+                pdev->meshx_store.net_key_id,
+                el_ctx->app_id,
+                el_ctx->ctl_state.temp_range_min,
+                el_ctx->ctl_state.temp_range_max
+        );
+        if (err)
+        {
+            MESHX_LOGE(MOD_LCC, "Cwww Client Send Message failed: (%d)", err);
+        }
+        else
+        {
+            if(opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK)
+            {
+                el_ctx->prev_ctl_state.temp_range_max = el_ctx->ctl_state.temp_range_max;
+                el_ctx->prev_ctl_state.temp_range_min = el_ctx->ctl_state.temp_range_min;
+            }
         }
     }
     return err;
@@ -520,6 +553,7 @@ static meshx_err_t meshx_cwww_client_element_to_ble_handler(
     if (!pdev || !params)
         return MESHX_INVALID_ARG;
     MESHX_UNUSED(pdev);
+    bool is_temp_range = false;
     meshx_err_t err = MESHX_SUCCESS;
     const meshx_cwww_client_msg_t *msg = (const meshx_cwww_client_msg_t *)params;
     MESHX_LOGD(MOD_LCC, "EVT: %p, el_id: %d, set_get: %d, ack: %d",
@@ -553,15 +587,17 @@ static meshx_err_t meshx_cwww_client_element_to_ble_handler(
         size_t rel_el_id = msg->element_id - cwww_client_element_init_ctrl.element_id_start;
         meshx_cwww_client_model_ctx_t *el_ctx = CWWW_CLI_EL(rel_el_id).cwww_cli_ctx;
         /* Set new context value as per msg sent */
-        el_ctx->ctl_state.delta_uv = (msg->arg_bmap & CWWW_ARG_BMAP_DELTA_UV_SET) ? msg->delta_uv : el_ctx->ctl_state.delta_uv;
-        el_ctx->ctl_state.lightness = (msg->arg_bmap & CWWW_ARG_BMAP_LIGHTNESS_SET) ? msg->lightness : el_ctx->ctl_state.lightness;
-        el_ctx->ctl_state.temperature = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_SET) ? msg->temperature : el_ctx->ctl_state.temperature;
+        el_ctx->ctl_state.delta_uv       = (msg->arg_bmap & CWWW_ARG_BMAP_DELTA_UV_SET) ? msg->delta_uv : el_ctx->ctl_state.delta_uv;
+        el_ctx->ctl_state.lightness      = (msg->arg_bmap & CWWW_ARG_BMAP_LIGHTNESS_SET) ? msg->lightness : el_ctx->ctl_state.lightness;
+        el_ctx->ctl_state.temperature    = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_SET) ? msg->temperature : el_ctx->ctl_state.temperature;
         el_ctx->ctl_state.temp_range_max = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MAX) ? msg->temp_range_max : el_ctx->ctl_state.temp_range_max;
         el_ctx->ctl_state.temp_range_min = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MIN) ? msg->temp_range_min : el_ctx->ctl_state.temp_range_min;
+        is_temp_range                    = (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MAX) || (msg->arg_bmap & CWWW_ARG_BMAP_TEMPERATURE_RANGE_SET_MIN);
         err = meshx_cwww_cli_send_ctl_msg(
                 pdev,
                 msg->element_id,
                 msg->set_get,
+                is_temp_range,
                 msg->ack
             );
         if (err != MESHX_SUCCESS)
