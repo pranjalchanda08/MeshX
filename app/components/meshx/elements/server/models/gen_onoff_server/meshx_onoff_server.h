@@ -127,4 +127,32 @@ meshx_err_t meshx_on_off_server_init(void);
  */
 meshx_err_t meshx_gen_on_off_srv_state_restore(meshx_ptr_t p_model, meshx_on_off_srv_el_state_t onoff_state);
 
+/**
+ * @brief Create a message packet for sending On/Off status.
+ *
+ * This function prepares a message packet containing the On/Off status
+ * information to be sent to a client. It populates the provided
+ * `meshx_gen_srv_cb_param_t` structure with the necessary details.
+ *
+ * @param[in] p_model       Pointer to the model instance sending the status.
+ * @param[in] element_id    The element ID associated with the model.
+ * @param[in] key_id        The network key index to be used for sending the message.
+ * @param[in] app_id        The application key index to be used for sending the message.
+ * @param[in] addr          The destination address to which the message is sent.
+ * @param[in] state         The On/Off state value to be included in the message.
+ * @param[out] p_send_pack  Pointer to the structure where the message packet will be created.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully created the message packet.
+ *     - MESHX_INVALID_ARG: Invalid argument provided (NULL pointers).
+ */
+meshx_err_t meshx_gen_on_off_srv_send_pack_create(
+    meshx_ptr_t p_model,
+    uint16_t element_id,
+    uint8_t key_id,
+    uint8_t app_id,
+    uint16_t addr,
+    uint8_t state,
+    meshx_gen_srv_cb_param_t *p_send_pack
+);
 #endif /* __MESHX_ONOFF_SERVER__ */
