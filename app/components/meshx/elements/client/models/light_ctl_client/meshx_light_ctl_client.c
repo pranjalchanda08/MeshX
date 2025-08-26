@@ -15,6 +15,8 @@
 
 #define LIGHT_CTL_CLIENT_INIT_MAGIC 0x8932
 
+#if CONFIG_LIGHT_CTL_CLIENT_COUNT > 0
+
 static uint16_t light_ctl_client_init_flag = 0;
 
 static struct{
@@ -521,3 +523,80 @@ meshx_err_t meshx_light_ctl_temp_range_client_send_msg(
     );
     return err;
 }
+
+/**
+ * @brief Handles state changes for the Light CTL client element.
+ *
+ * This function processes state change events for the Light CTL client element.
+ *
+ * @param[in]       param Pointer to the message structure containing the state change parameters.
+ * @param[in,out]   p_ctl_prev_state Pointer to the previous state structure.
+ * @param[in,out]   p_ctl_next_state Pointer to the next state structure (currently unused).
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the handler execution.
+ */
+meshx_err_t meshx_light_ctl_state_change_handle(
+    meshx_ctl_cli_el_msg_t *param,
+    meshx_ctl_el_state_t *p_ctl_prev_state,
+    meshx_ctl_el_state_t *p_ctl_next_state
+)
+{
+    if (!p_ctl_prev_state || !param || !p_ctl_next_state)
+        return MESHX_INVALID_ARG;
+
+    /* Kept for future use */
+    MESHX_UNUSED(p_ctl_next_state);
+    bool state_change = false;
+    if(param->err_code == MESHX_SUCCESS)
+    {
+        if (param->ctx.opcode == MESHX_MODEL_OP_LIGHT_CTL_STATUS)
+        {
+            if (p_ctl_prev_state->lightness != param->ctl_state.lightness
+            || p_ctl_prev_state->temperature != param->ctl_state.temperature
+            )
+            {
+                p_ctl_prev_state->lightness = param->ctl_state.lightness;
+                p_ctl_prev_state->temperature = param->ctl_state.temperature;
+                state_change = true;
+            }
+        }
+        else if (param->ctx.opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS)
+        {
+            if(p_ctl_prev_state->delta_uv != param->ctl_state.delta_uv
+            || p_ctl_prev_state->temperature != param->ctl_state.temperature)
+            {
+                p_ctl_prev_state->delta_uv = param->ctl_state.delta_uv;
+                p_ctl_prev_state->temperature = param->ctl_state.temperature;
+                state_change = true;
+            }
+        }
+        else if (param->ctx.opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS)
+        {
+            if (p_ctl_prev_state->temp_range_max != param->ctl_state.temp_range_max
+            ||  p_ctl_prev_state->temp_range_min != param->ctl_state.temp_range_min)
+            {
+                p_ctl_prev_state->temp_range_max = param->ctl_state.temp_range_max;
+                p_ctl_prev_state->temp_range_min = param->ctl_state.temp_range_min;
+                state_change = true;
+            }
+        }
+        else if (param->ctx.opcode == MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS)
+        {
+            MESHX_DO_NOTHING;
+        }
+        else
+        {
+            /* Return as No CTL related OPCode were received */
+            MESHX_DO_NOTHING;
+        }
+    }
+    else
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "CWWW Client Element Message: Error (%d)", param->err_code);
+        /* Retry sending the failed packet done by MeshX Light CTL Layer. Do not notify App */
+        MESHX_DO_NOTHING;
+    }
+    return state_change ? MESHX_SUCCESS : MESHX_INVALID_STATE;
+}
+
+#endif /* CONFIG_LIGHT_CTL_CLIENT_COUNT > 0 */
