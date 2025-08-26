@@ -44,7 +44,7 @@
  * @return True if the element ID is within range, false otherwise.
  */
 #define IS_EL_IN_RANGE(_element_id) ((_element_id) >= relay_element_init_ctrl.element_id_start && (_element_id) < relay_element_init_ctrl.element_id_end)
-
+#define RELAY_SRV_EL(_el_id) relay_element_init_ctrl.el_list[_el_id]
 /**
  * @brief Structure to manage relay element initialization.
  */
@@ -85,7 +85,7 @@ static meshx_err_t relay_server_config_srv_cb(
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-        el_ctx = relay_element_init_ctrl.el_list[rel_el_id].srv_ctx;
+        el_ctx = RELAY_SRV_EL(rel_el_id).srv_ctx;
         el_ctx->app_id = params->state_change.appkey_add.app_idx;
         nvs_save = true;
         break;
@@ -96,7 +96,7 @@ static meshx_err_t relay_server_config_srv_cb(
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-        el_ctx = relay_element_init_ctrl.el_list[rel_el_id].srv_ctx;
+        el_ctx = RELAY_SRV_EL(rel_el_id).srv_ctx;
         el_ctx->pub_addr = evt == CONTROL_TASK_MSG_EVT_PUB_ADD ? params->state_change.mod_pub_set.pub_addr
                                                                : MESHX_ADDR_UNASSIGNED;
         el_ctx->app_id = params->state_change.mod_pub_set.app_idx;
@@ -157,21 +157,21 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
 
     for (size_t i = 0; i < relay_element_init_ctrl.element_cnt; i++)
     {
-        relay_element_init_ctrl.el_list[i].srv_ctx =
+        RELAY_SRV_EL(i).srv_ctx =
             (meshx_relay_srv_model_ctx_t *)MESHX_CALOC(1, sizeof(meshx_relay_srv_model_ctx_t));
 
-        if (!relay_element_init_ctrl.el_list[i].srv_ctx)
+        if (!RELAY_SRV_EL(i).srv_ctx)
             return MESHX_NO_MEM;
 
-        err = meshx_on_off_server_create(&relay_element_init_ctrl.el_list[i].onoff_srv_model,
-                                         &relay_element_init_ctrl.el_list[i].relay_srv_model_list[RELAY_SIG_ONOFF_MODEL_ID]);
+        err = meshx_on_off_server_create(&RELAY_SRV_EL(i).onoff_srv_model,
+                                         &RELAY_SRV_EL(i).relay_srv_model_list[RELAY_SIG_ONOFF_MODEL_ID]);
         if (err)
         {
             MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Meshx On Off Server create failed (Err : 0x%x)", err);
             return err;
         }
-        relay_element_init_ctrl.el_list[i].onoff_srv_model->meshx_server_sig_model
-            = &relay_element_init_ctrl.el_list[i].relay_srv_model_list[RELAY_SIG_ONOFF_MODEL_ID];
+        RELAY_SRV_EL(i).onoff_srv_model->meshx_server_sig_model
+            = &RELAY_SRV_EL(i).relay_srv_model_list[RELAY_SIG_ONOFF_MODEL_ID];
     }
 
     return err;
@@ -204,12 +204,12 @@ static meshx_err_t meshx_element_struct_deinit(void)
 
     for (size_t i = 0; i < relay_element_init_ctrl.element_cnt; i++)
     {
-        if (relay_element_init_ctrl.el_list[i].srv_ctx)
+        if (RELAY_SRV_EL(i).srv_ctx)
         {
-            MESHX_FREE(relay_element_init_ctrl.el_list[i].srv_ctx);
-            relay_element_init_ctrl.el_list[i].srv_ctx = NULL;
+            MESHX_FREE(RELAY_SRV_EL(i).srv_ctx);
+            RELAY_SRV_EL(i).srv_ctx = NULL;
         }
-        err = meshx_on_off_server_delete(&relay_element_init_ctrl.el_list[i].onoff_srv_model);
+        err = meshx_on_off_server_delete(&RELAY_SRV_EL(i).onoff_srv_model);
         if (err)
             MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Meshx On Off Server delete failed (Err : 0x%x)", err);
     }
@@ -255,10 +255,10 @@ static meshx_err_t meshx_restore_model_states(uint16_t element_id)
 {
     uint16_t model_id = 0;
     meshx_err_t err = MESHX_SUCCESS;
-    meshx_relay_srv_model_ctx_t const *el_ctx = relay_element_init_ctrl.el_list[element_id].srv_ctx;
+    meshx_relay_srv_model_ctx_t const *el_ctx = RELAY_SRV_EL(element_id).srv_ctx;
     for (size_t i = 0; i < RELAY_SRV_MODEL_SIG_CNT; i++)
     {
-        err = meshx_get_model_id(relay_element_init_ctrl.el_list[element_id].onoff_srv_model->meshx_server_sig_model,
+        err = meshx_get_model_id(RELAY_SRV_EL(element_id).onoff_srv_model->meshx_server_sig_model,
                                  &model_id);
         if (err)
         {
@@ -268,7 +268,7 @@ static meshx_err_t meshx_restore_model_states(uint16_t element_id)
 
         if (model_id == MESHX_MODEL_ID_GEN_ONOFF_SRV)
         {
-            err = meshx_gen_on_off_srv_state_restore(relay_element_init_ctrl.el_list[element_id].onoff_srv_model->meshx_server_sig_model,
+            err = meshx_gen_on_off_srv_state_restore(RELAY_SRV_EL(element_id).onoff_srv_model->meshx_server_sig_model,
                                                      el_ctx->state);
             if (err)
             {
@@ -311,7 +311,7 @@ static meshx_err_t meshx_add_relay_srv_model_to_element_list(dev_struct_t *pdev,
         err = meshx_plat_add_element_to_composition(
             i,
             pdev->elements,
-            relay_element_init_ctrl.el_list[i - *start_idx].relay_srv_model_list,
+            RELAY_SRV_EL(i - *start_idx).relay_srv_model_list,
             NULL,
             RELAY_SRV_MODEL_SIG_CNT,
             RELAY_SRV_MODEL_VEN_CNT);
@@ -322,7 +322,7 @@ static meshx_err_t meshx_add_relay_srv_model_to_element_list(dev_struct_t *pdev,
         }
         err = meshx_nvs_element_ctx_get(
             i,
-            relay_element_init_ctrl.el_list[i - *start_idx].srv_ctx,
+            RELAY_SRV_EL(i - *start_idx).srv_ctx,
             sizeof(meshx_relay_srv_model_ctx_t));
         if (err != MESHX_SUCCESS)
         {
@@ -366,7 +366,7 @@ static meshx_err_t meshx_api_control_task_handler(dev_struct_t const *pdev, cont
         return MESHX_SUCCESS;
 
     rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-    el_ctx = relay_element_init_ctrl.el_list[rel_el_id].srv_ctx;
+    el_ctx = RELAY_SRV_EL(rel_el_id).srv_ctx;
 
     el_ctx->state.on_off = p_onoff_srv->on_off_state;
 
@@ -409,18 +409,17 @@ static meshx_err_t relay_prov_control_task_handler(dev_struct_t const *pdev, con
     {
         rel_el_id = GET_RELATIVE_EL_IDX(el_id);
 
-        gen_srv_send.ctx.net_idx = pdev->meshx_store.net_key_id;
-        gen_srv_send.ctx.app_idx = relay_element_init_ctrl.el_list[rel_el_id].srv_ctx->app_id;
-        gen_srv_send.ctx.dst_addr = relay_element_init_ctrl.el_list[rel_el_id].srv_ctx->pub_addr;
-        gen_srv_send.ctx.opcode = MESHX_MODEL_OP_GEN_ONOFF_STATUS;
-        gen_srv_send.ctx.p_ctx = NULL;
+        err = meshx_gen_on_off_srv_send_pack_create(
+            RELAY_SRV_EL(rel_el_id).onoff_srv_model->meshx_server_sig_model,
+            (uint16_t)el_id,
+            pdev->meshx_store.net_key_id,
+            RELAY_SRV_EL(rel_el_id).srv_ctx->app_id,
+            RELAY_SRV_EL(rel_el_id).srv_ctx->pub_addr,
+            RELAY_SRV_EL(rel_el_id).srv_ctx->state.on_off,
+            &gen_srv_send
+        );
 
-        gen_srv_send.model.el_id = (uint16_t)el_id;
-        gen_srv_send.model.p_model = relay_element_init_ctrl.el_list[rel_el_id].onoff_srv_model->meshx_server_sig_model;
-
-        gen_srv_send.state_change.onoff_set.onoff = relay_element_init_ctrl.el_list[rel_el_id].srv_ctx->state.on_off;
-
-        if (gen_srv_send.ctx.dst_addr == ESP_BLE_MESH_ADDR_UNASSIGNED || gen_srv_send.ctx.app_idx == ESP_BLE_MESH_KEY_UNUSED)
+        if ((err != MESHX_SUCCESS) || (gen_srv_send.ctx.dst_addr == MESHX_ADDR_UNASSIGNED) || (gen_srv_send.ctx.app_idx == MESHX_KEY_UNUSED))
             continue;
 
         err = meshx_gen_srv_send_msg_to_ble(
