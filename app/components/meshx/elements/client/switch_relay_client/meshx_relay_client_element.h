@@ -18,7 +18,9 @@
  *
  * @author Pranjal Chanda
  */
-#pragma once
+
+#ifndef __RELAY_CLIENT_MODEL_H__
+#define __RELAY_CLIENT_MODEL_H__
 
 #include "app_common.h"
 #include "meshx_onoff_client.h"
@@ -46,8 +48,8 @@
 
 typedef enum
 {
-    RELAY_CLI_SIG_ONOFF_MODEL_ID,
-    RELAY_CLI_SIG_MAX_ID,
+    RELAY_CLI_SIG_ONOFF_MODEL_ID,   /**< On/Off model ID */
+    RELAY_CLI_SIG_MAX_ID,           /**< Maximum model ID */
 } relay_cli_sig_id_t;
 
 /**
@@ -70,6 +72,7 @@ typedef struct meshx_relay_client_model_ctx
     uint16_t app_id;            /**< Application ID */
     uint16_t pub_addr;          /**< Publish address */
     meshx_on_off_cli_state_t state; /**< State of the relay client */
+    meshx_on_off_cli_state_t prev_state; /**< Previous state of the relay client */
 } meshx_relay_client_model_ctx_t;
 
 /**
@@ -117,6 +120,7 @@ meshx_err_t meshx_relay_el_get_state(uint16_t el_id);
  *     - MESHX_FAIL: Failed to set the state.
  */
 meshx_err_t meshx_relay_el_set_state(uint16_t el_id, bool ack);
+
 /**
  * @brief Create Dynamic Relay Model Elements
  *
@@ -126,3 +130,5 @@ meshx_err_t meshx_relay_el_set_state(uint16_t el_id, bool ack);
  * @return meshx_err_t
  */
 meshx_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cnt);
+
+#endif /*__RELAY_CLIENT_MODEL_H__*/
