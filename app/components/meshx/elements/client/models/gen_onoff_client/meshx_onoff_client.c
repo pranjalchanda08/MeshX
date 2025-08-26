@@ -14,6 +14,8 @@
 
 #define MESHX_CLIENT_INIT_MAGIC 0x2378
 
+#if CONFIG_GEN_ONOFF_CLIENT_COUNT > 0
+
 static uint16_t meshx_client_init_flag = 0;
 
 static struct{
@@ -307,3 +309,51 @@ meshx_err_t meshx_onoff_client_send_msg(
     }
     return err;
 }
+
+/**
+ * @brief Handle state changes for the Generic OnOff Client.
+ *
+ * This function processes state change events for the Generic OnOff Client,
+ * updating the previous and next states based on the received message parameters.
+ *
+ * @param[in]       param           Pointer to the message structure containing the state change parameters.
+ * @param[in,out]   p_prev_state    Pointer to the previous state structure.
+ * @param[in,out]   p_next_state    Pointer to the next state structure.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the handler execution.
+ *                     - MESHX_SUCCESS if a state change occurred
+ *                     - MESHX_INVALID_STATE if no state change occurred
+ *                     - Appropriate error code otherwise
+ */
+meshx_err_t meshx_gen_on_off_state_change_handle(
+    meshx_on_off_cli_el_msg_t *param,
+    meshx_on_off_cli_state_t *p_prev_state,
+    meshx_on_off_cli_state_t *p_next_state
+)
+{
+    if (!p_prev_state || !param || !p_next_state)
+        return MESHX_INVALID_ARG;
+    bool state_change = false;
+
+    if(param->err_code == MESHX_SUCCESS)
+    {
+        if (p_prev_state->on_off != param->on_off_state)
+        {
+            p_prev_state->on_off = param->on_off_state;
+            state_change = true;
+        }
+        else
+        {
+            MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "No change in state: %d", param->on_off_state);
+        }
+        p_next_state->on_off = !param->on_off_state;
+    }
+    else
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "OnOff state change failed: %d", param->err_code);
+        /* state_change = true if want to notify app about timeout */
+    }
+
+    return state_change ? MESHX_SUCCESS : MESHX_INVALID_STATE;
+}
+#endif /* CONFIG_GEN_ONOFF_CLIENT_COUNT > 0 */

@@ -365,7 +365,7 @@ static meshx_err_t meshx_relay_cli_send_onoff_msg(
         el_ctx->tid++;
         if(opcode == MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK)
         {
-            el_ctx->state.prev_on_off = el_ctx->state.on_off;
+            el_ctx->prev_state.on_off = el_ctx->state.on_off;
             el_ctx->state.on_off = !el_ctx->state.on_off;
         }
     }
@@ -403,40 +403,21 @@ static meshx_err_t meshx_relay_client_element_state_change_handler(
     meshx_api_relay_client_evt_t app_notify;
     meshx_err_t err = MESHX_SUCCESS;
     bool nvs_save = false;
-    if(param->err_code == MESHX_SUCCESS)
+    err = meshx_gen_on_off_state_change_handle(param, &el_ctx->prev_state, &el_ctx->state);
+    if(err == MESHX_SUCCESS)
     {
+        app_notify.err_code = param->err_code;
+        app_notify.on_off = el_ctx->prev_state.on_off;
 
-        RELAY_CLI_EL(rel_el_id).element_model_init |= MESHX_BIT(RELAY_CLI_SIG_ONOFF_MODEL_ID);
-        if (el_ctx->state.prev_on_off != param->on_off_state)
+        err = meshx_send_msg_to_app(element_id,
+                                    MESHX_ELEMENT_TYPE_RELAY_CLIENT,
+                                    MESHX_ELEMENT_FUNC_ID_RELAY_SERVER_ONN_OFF,
+                                    sizeof(meshx_api_relay_client_evt_t),
+                                    &app_notify);
+        if (err != MESHX_SUCCESS)
         {
-            el_ctx->state.prev_on_off = param->on_off_state;
-            app_notify.err_code = 0;
-            app_notify.on_off = el_ctx->state.prev_on_off;
-
-            err = meshx_send_msg_to_app(element_id,
-                                        MESHX_ELEMENT_TYPE_RELAY_CLIENT,
-                                        MESHX_ELEMENT_FUNC_ID_RELAY_SERVER_ONN_OFF,
-                                        sizeof(meshx_api_relay_client_evt_t),
-                                        &app_notify);
-            if (err != MESHX_SUCCESS)
-            {
-                MESHX_LOGE(MOD_SRC, "Failed to send relay state change message: (%d)", err);
-            }
+            MESHX_LOGE(MOD_SRC, "Failed to send CWWW state change message: (%d)", err);
         }
-
-        else
-        {
-            MESHX_LOGD(MOD_SRC, "No change in state: %d", param->on_off_state);
-        }
-
-        el_ctx->state.on_off = !param->on_off_state;
-        MESHX_LOGD(MOD_SRC, "SET|PUBLISH: %d", param->on_off_state);
-        MESHX_LOGD(MOD_SRC, "Next state: %d", el_ctx->state.on_off);
-        nvs_save = true;
-    }
-    else
-    {
-        MESHX_LOGE(MOD_SRC, "Relay Client Element Message: Error (%d)", param->err_code);
     }
     if (nvs_save)
     {

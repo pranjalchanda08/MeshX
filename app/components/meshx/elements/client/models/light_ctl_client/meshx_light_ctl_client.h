@@ -21,6 +21,8 @@
 #include "meshx_control_task.h"
 #include "meshx_gen_light_cli.h"
 
+#if CONFIG_LIGHT_CTL_CLIENT_COUNT > 0
+
 #define MESHX_LIGHT_CTL_CLI_MSG_SET 0
 #define MESHX_LIGHT_CTL_CLI_MSG_GET 1
 #define MESHX_LIGHT_CTL_CLI_MSG_ACK 1
@@ -182,4 +184,23 @@ meshx_err_t meshx_light_ctl_temp_range_client_send_msg(
         uint16_t net_idx, uint16_t app_idx,
         uint16_t temp_min, uint16_t temp_max
 );
+
+/**
+ * @brief Handles state changes for the Light CTL client element.
+ *
+ * This function processes state change events for the Light CTL client element.
+ *
+ * @param[in]       param Pointer to the message structure containing the state change parameters.
+ * @param[in,out]   p_ctl_prev_state Pointer to the previous state structure.
+ * @param[in,out]   p_ctl_next_state Pointer to the next state structure (currently unused).
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the handler execution.
+ */
+meshx_err_t meshx_light_ctl_state_change_handle(
+    meshx_ctl_cli_el_msg_t *param,
+    meshx_ctl_el_state_t *p_ctl_prev_state,
+    meshx_ctl_el_state_t *p_ctl_next_state
+);
+
+#endif /* CONFIG_LIGHT_CTL_CLIENT_COUNT > 0 */
 #endif /*__LIGHT_CTL_CLIENT_H__*/

@@ -7,11 +7,14 @@
  * This file contains the definitions and function prototypes for the On/Off client model.
  */
 
-#pragma once
+#ifndef __MESHX_ONOFF_CLIENT_H__
+#define __MESHX_ONOFF_CLIENT_H__
 
 #include "app_common.h"
 #include "meshx_gen_client.h"
 #include "meshx_control_task.h"
+
+#if CONFIG_GEN_ONOFF_CLIENT_COUNT > 0
 
 #define MESHX_GEN_ON_OFF_CLI_MSG_SET 0
 #define MESHX_GEN_ON_OFF_CLI_MSG_GET 1
@@ -24,7 +27,6 @@
 typedef struct relay_client_state
 {
     uint8_t on_off;      /**< Current On/Off state */
-    uint8_t prev_on_off; /**< Previous On/Off state */
 } meshx_on_off_cli_state_t;
 
 /**
@@ -116,3 +118,27 @@ meshx_err_t meshx_onoff_client_send_msg(
         uint16_t net_idx, uint16_t app_idx,
         uint8_t state, uint8_t tid
 );
+
+/**
+ * @brief Handle state changes for the Generic OnOff Client.
+ *
+ * This function processes state change events for the Generic OnOff Client,
+ * updating the previous and next states based on the received message parameters.
+ *
+ * @param[in]       param           Pointer to the message structure containing the state change parameters.
+ * @param[in,out]   p_prev_state    Pointer to the previous state structure.
+ * @param[in,out]   p_next_state    Pointer to the next state structure.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the handler execution.
+ *                     - MESHX_SUCCESS if a state change occurred
+ *                     - MESHX_INVALID_STATE if no state change occurred
+ *                     - Appropriate error code otherwise
+ */
+meshx_err_t meshx_gen_on_off_state_change_handle(
+    meshx_on_off_cli_el_msg_t *param,
+    meshx_on_off_cli_state_t *p_prev_state,
+    meshx_on_off_cli_state_t *p_next_state
+);
+
+#endif /* CONFIG_GEN_ONOFF_CLIENT_COUNT > 0 */
+#endif /* __MESHX_ONOFF_CLIENT_H__ */

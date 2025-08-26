@@ -105,38 +105,15 @@ typedef enum
 } cwww_cli_sig_id_t;
 
 /**
- * @brief Structure to hold the CW-WW client on/off state.
- */
-typedef struct cwww_cli_on_off_state
-{
-    uint8_t on_off; /**< On/Off state */
-} cwww_cli_on_off_state_t;
-
-/**
- * @brief Structure to hold the CW-WW client control state.
- */
-typedef struct cwww_cli_ctl_state
-{
-    uint16_t delta_uv;       /**< Delta UV value */
-    uint16_t lightness;      /**< Lightness level */
-    uint16_t temperature;    /**< Color temperature */
-    uint16_t temp_range_max; /**< Maximum Temperature range */
-    uint16_t temp_range_min; /**< Minimum Temperature range */
-    uint16_t temp_def;       /**< Default temperature */
-    uint16_t lightness_def;  /**< Default lightness */
-    uint16_t delta_uv_def;   /**< Default delta UV */
-} cwww_cli_ctl_state_t;
-
-/**
  * @brief Structure to hold the context of the cwww client.
  */
 typedef struct cwww_cli_ctx
 {
     uint8_t tid;                         /**< Transaction ID */
-    cwww_cli_on_off_state_t state;       /**< State of the cwww client */
-    cwww_cli_on_off_state_t prev_state;  /**< State of the cwww client */
-    cwww_cli_ctl_state_t ctl_state;      /**< State of the cwww client */
-    cwww_cli_ctl_state_t prev_ctl_state; /**< State of the cwww client */
+    meshx_on_off_cli_state_t state;       /**< State of the cwww client */
+    meshx_on_off_cli_state_t prev_state;  /**< State of the cwww client */
+    meshx_ctl_el_state_t ctl_state;      /**< State of the cwww client */
+    meshx_ctl_el_state_t prev_ctl_state; /**< State of the cwww client */
     uint16_t app_id;                     /**< Application ID */
     uint16_t pub_addr;                   /**< Publish address */
 } meshx_cwww_client_model_ctx_t;

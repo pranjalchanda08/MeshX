@@ -78,7 +78,7 @@ static meshx_err_t meshx_cwww_cli_send_ctl_msg( const dev_struct_t *pdev, uint16
  */
 static meshx_err_t cwww_client_on_off_state_change_handler(
     dev_struct_t const *pdev,
-    const meshx_on_off_cli_el_msg_t *param)
+    meshx_on_off_cli_el_msg_t *param)
 {
     uint16_t element_id = param->model.el_id;
 
@@ -86,40 +86,21 @@ static meshx_err_t cwww_client_on_off_state_change_handler(
     meshx_cwww_client_model_ctx_t *el_ctx = CWWW_CLI_EL(rel_el_id).cwww_cli_ctx;
     meshx_api_light_cwww_client_evt_t app_notify;
     meshx_err_t err = MESHX_SUCCESS;
-    if(param->err_code == MESHX_SUCCESS)
+    err = meshx_gen_on_off_state_change_handle(param, &el_ctx->prev_state, &el_ctx->state);
+    if(err == MESHX_SUCCESS)
     {
-        CWWW_CLI_EL(rel_el_id).element_model_init |= MESHX_BIT(CWWW_CLI_SIG_ONOFF_MODEL_ID);
-        if (el_ctx->prev_state.on_off != param->on_off_state)
+        app_notify.err_code = param->err_code;
+        app_notify.state_change.on_off.state = el_ctx->prev_state.on_off;
+
+        err = meshx_send_msg_to_app(element_id,
+                                    MESHX_ELEMENT_TYPE_RELAY_CLIENT,
+                                    MESHX_ELEMENT_FUNC_ID_RELAY_SERVER_ONN_OFF,
+                                    sizeof(meshx_api_relay_client_evt_t),
+                                    &app_notify);
+        if (err != MESHX_SUCCESS)
         {
-            el_ctx->prev_state.on_off = param->on_off_state;
-            app_notify.err_code = MESHX_SUCCESS;
-            app_notify.state_change.on_off.state = el_ctx->prev_state.on_off;
-
-            err = meshx_send_msg_to_app(element_id,
-                                        MESHX_ELEMENT_TYPE_RELAY_CLIENT,
-                                        MESHX_ELEMENT_FUNC_ID_RELAY_SERVER_ONN_OFF,
-                                        sizeof(meshx_api_relay_client_evt_t),
-                                        &app_notify);
-            if (err != MESHX_SUCCESS)
-            {
-                MESHX_LOGE(MOD_LCC, "Failed to send CWWW state change message: (%d)", err);
-            }
+            MESHX_LOGE(MOD_LCC, "Failed to send CWWW state change message: (%d)", err);
         }
-
-        else
-        {
-            MESHX_LOGD(MOD_SRC, "No change in state: %d", param->on_off_state);
-        }
-
-        el_ctx->state.on_off = !param->on_off_state;
-        MESHX_LOGD(MOD_SRC, "SET|PUBLISH: %d", param->on_off_state);
-        MESHX_LOGD(MOD_SRC, "Next state: %d", el_ctx->state.on_off);
-    }
-    else
-    {
-        MESHX_LOGE(MOD_LCC, "CWWW Client Element Message: Error (%d)", param->err_code);
-        /* Retry sending the failed packet by MeshX Gen On Off Layer. Do not notify App */
-        err = MESHX_TIMEOUT;
     }
     return err;
 }
@@ -139,7 +120,7 @@ static meshx_err_t cwww_client_on_off_state_change_handler(
 
 static meshx_err_t cwww_light_ctl_state_change_handler(
     dev_struct_t const *pdev,
-    const meshx_ctl_cli_el_msg_t *param)
+    meshx_ctl_cli_el_msg_t *param)
 {
     uint16_t element_id = param->model.el_id;
 
@@ -147,65 +128,27 @@ static meshx_err_t cwww_light_ctl_state_change_handler(
     meshx_cwww_client_model_ctx_t *el_ctx = CWWW_CLI_EL(rel_el_id).cwww_cli_ctx;
     meshx_api_light_cwww_client_evt_t app_notify;
     meshx_err_t err = MESHX_SUCCESS;
-    bool state_change = false;
 
     if(param->err_code == MESHX_SUCCESS)
     {
         CWWW_CLI_EL(rel_el_id).element_model_init |= MESHX_BIT(CWWW_CLI_SIG_L_CTL_MODEL_ID);
 
-        if (param->ctx.opcode == MESHX_MODEL_OP_LIGHT_CTL_STATUS)
-        {
-            if (el_ctx->prev_ctl_state.lightness != param->ctl_state.lightness
-            || el_ctx->prev_ctl_state.temperature != param->ctl_state.temperature
-            )
-            {
-                el_ctx->prev_ctl_state.lightness = param->ctl_state.lightness;
-                el_ctx->prev_ctl_state.temperature = param->ctl_state.temperature;
-                state_change = true;
-            }
-        }
-        else if (param->ctx.opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS)
-        {
-            if(el_ctx->prev_ctl_state.delta_uv != param->ctl_state.delta_uv
-            || el_ctx->prev_ctl_state.temperature != param->ctl_state.temperature)
-            {
-                el_ctx->prev_ctl_state.delta_uv = param->ctl_state.delta_uv;
-                el_ctx->prev_ctl_state.temperature = param->ctl_state.temperature;
-                state_change = true;
-            }
-        }
-        else if (param->ctx.opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS)
-        {
-            if (el_ctx->prev_ctl_state.temp_range_max != param->ctl_state.temp_range_max
-            ||  el_ctx->prev_ctl_state.temp_range_min != param->ctl_state.temp_range_min)
-            {
-                el_ctx->prev_ctl_state.temp_range_max = param->ctl_state.temp_range_max;
-                el_ctx->prev_ctl_state.temp_range_min = param->ctl_state.temp_range_min;
-                state_change = true;
-            }
-        }
-        else if (param->ctx.opcode == MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS)
-        {
-            MESHX_DO_NOTHING;
-        }
-        else
-        {
-            /* Return as No CTL related OPCode were received */
-            return false;
-        }
-
-        if (state_change)
+        err = meshx_light_ctl_state_change_handle(param, &el_ctx->prev_ctl_state, &el_ctx->ctl_state);
+        if (err == MESHX_SUCCESS)
         {
             MESHX_LOGD(MOD_LCC, "PUBLISH: light|temp : %d|%d",
                      el_ctx->prev_ctl_state.lightness,
                      el_ctx->prev_ctl_state.temperature);
 
-            app_notify.err_code = MESHX_SUCCESS;
-            app_notify.state_change.ctl.delta_uv        = el_ctx->prev_ctl_state.delta_uv;
-            app_notify.state_change.ctl.lightness       = el_ctx->prev_ctl_state.lightness;
-            app_notify.state_change.ctl.temperature     = el_ctx->prev_ctl_state.temperature;
-            app_notify.state_change.ctl.temp_range_max  = el_ctx->prev_ctl_state.temp_range_max;
-            app_notify.state_change.ctl.temp_range_min  = el_ctx->prev_ctl_state.temp_range_min;
+            app_notify.err_code = param->err_code;
+            if(param->err_code == MESHX_SUCCESS)
+            {
+                app_notify.state_change.ctl.delta_uv        = el_ctx->prev_ctl_state.delta_uv;
+                app_notify.state_change.ctl.lightness       = el_ctx->prev_ctl_state.lightness;
+                app_notify.state_change.ctl.temperature     = el_ctx->prev_ctl_state.temperature;
+                app_notify.state_change.ctl.temp_range_max  = el_ctx->prev_ctl_state.temp_range_max;
+                app_notify.state_change.ctl.temp_range_min  = el_ctx->prev_ctl_state.temp_range_min;
+            }
 
             err = meshx_send_msg_to_app(element_id,
                                         MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT,
@@ -217,12 +160,6 @@ static meshx_err_t cwww_light_ctl_state_change_handler(
                 MESHX_LOGE(MOD_LCC, "Failed to send CWWW state change message: (%d)", err);
             }
         }
-    }
-    else
-    {
-        MESHX_LOGE(MOD_LCC, "CWWW Client Element Message: Error (%d)", param->err_code);
-        /* Retry sending the failed packet done by MeshX Light CTL Layer. Do not notify App */
-        err = MESHX_TIMEOUT;
     }
     return err;
 }
@@ -259,12 +196,12 @@ static meshx_err_t meshx_cwww_client_element_state_change_handler(
         case CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF:
             err = cwww_client_on_off_state_change_handler(
                 pdev,
-                (const meshx_on_off_cli_el_msg_t *)params);
+                (meshx_on_off_cli_el_msg_t *)params);
             break;
         case CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL:
             err = cwww_light_ctl_state_change_handler(
                 pdev,
-                (const meshx_ctl_cli_el_msg_t *)params);
+                (meshx_ctl_cli_el_msg_t *)params);
             break;
         default:
             err = MESHX_FAIL;
