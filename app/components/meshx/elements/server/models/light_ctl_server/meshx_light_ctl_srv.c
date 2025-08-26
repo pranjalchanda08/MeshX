@@ -375,3 +375,52 @@ meshx_err_t meshx_light_ctl_srv_status_send( meshx_model_t *p_model,
 
     return err;
 }
+
+/**
+ * @brief Create a Light CTL Server send message packet.
+ *
+ * This function creates a Light CTL Server send message packet with the provided parameters.
+ *
+ * @param[in]  p_model        Pointer to the MeshX model structure.
+ * @param[in]  element_id     Element ID associated with the model.
+ * @param[in]  net_idx        Network Index for the message.
+ * @param[in]  app_idx        Application Index for the message.
+ * @param[in]  pub_addr       Publication address for the message.
+ * @param[in]  ctl_state      Current state of the Light CTL Server.
+ * @param[out] light_srv_send Pointer to the structure where the created message packet will be stored.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully created the message packet.
+ *     - MESHX_INVALID_ARG: Invalid argument provided.
+ */
+meshx_err_t meshx_light_ctl_srv_send_pack_create(
+    meshx_ptr_t p_model,
+    uint16_t element_id,
+    uint16_t net_idx,
+    uint16_t app_idx,
+    uint16_t pub_addr,
+    meshx_light_ctl_srv_state_t ctl_state,
+    meshx_lighting_server_cb_param_t *light_srv_send)
+{
+    if (!p_model || !light_srv_send)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    memset(light_srv_send, 0, sizeof(meshx_lighting_server_cb_param_t));
+    light_srv_send->ctx.net_idx = net_idx;
+    light_srv_send->ctx.app_idx = app_idx;
+    light_srv_send->ctx.src_addr = element_id;
+    light_srv_send->ctx.dst_addr = pub_addr;
+    light_srv_send->ctx.opcode = MESHX_MODEL_OP_LIGHT_CTL_STATUS;
+    light_srv_send->ctx.p_ctx = NULL;
+
+    light_srv_send->model.el_id = element_id;
+    light_srv_send->model.p_model = p_model;
+
+    light_srv_send->state_change.ctl_set.delta_uv = ctl_state.delta_uv;
+    light_srv_send->state_change.ctl_set.lightness = ctl_state.lightness;
+    light_srv_send->state_change.ctl_set.temperature = ctl_state.temperature;
+
+    return MESHX_SUCCESS;
+}

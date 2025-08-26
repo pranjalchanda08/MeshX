@@ -37,6 +37,7 @@
 
 #define GET_RELATIVE_EL_IDX(_element_id) _element_id - cwww_element_init_ctrl.element_id_start
 #define IS_EL_IN_RANGE(_element_id) (_element_id >= cwww_element_init_ctrl.element_id_start && _element_id < cwww_element_init_ctrl.element_id_end)
+#define CWWW_SRV_EL(_el_id)          cwww_element_init_ctrl.el_list[_el_id]
 
 #define CWWW_TEMP_MIN 2700
 #define CWWW_TEMP_MAX 6500
@@ -74,7 +75,7 @@ static meshx_err_t cwww_server_config_srv_cb(
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-        el_ctx = cwww_element_init_ctrl.el_list[rel_el_id].srv_ctx;
+        el_ctx = CWWW_SRV_EL(rel_el_id).srv_ctx;
         el_ctx->app_id = params->state_change.appkey_add.app_idx;
         nvs_save = true;
 
@@ -85,7 +86,7 @@ static meshx_err_t cwww_server_config_srv_cb(
         if (!IS_EL_IN_RANGE(element_id))
             break;
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-        el_ctx = cwww_element_init_ctrl.el_list[rel_el_id].srv_ctx;
+        el_ctx = CWWW_SRV_EL(rel_el_id).srv_ctx;
         el_ctx->pub_addr = evt == CONTROL_TASK_MSG_EVT_PUB_ADD ? params->state_change.mod_pub_set.pub_addr
                                                                : MESHX_ADDR_UNASSIGNED;
         el_ctx->app_id = params->state_change.mod_pub_set.app_idx;
@@ -146,28 +147,28 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
 
     for (size_t i = 0; i < cwww_element_init_ctrl.element_cnt; i++)
     {
-        cwww_element_init_ctrl.el_list[i].srv_ctx =
+        CWWW_SRV_EL(i).srv_ctx =
             (meshx_cwww_server_ctx_t *)MESHX_CALOC(1, sizeof(meshx_cwww_server_ctx_t));
 
-        if (!cwww_element_init_ctrl.el_list[i].srv_ctx)
+        if (!CWWW_SRV_EL(i).srv_ctx)
             return MESHX_NO_MEM;
 
-        err = meshx_on_off_server_create(&cwww_element_init_ctrl.el_list[i].onoff_srv_model,
-                                         &cwww_element_init_ctrl.el_list[i].cwww_srv_model_list[CWWW_SIG_ONOFF_MODEL_ID]);
+        err = meshx_on_off_server_create(&CWWW_SRV_EL(i).onoff_srv_model,
+                                         &CWWW_SRV_EL(i).cwww_srv_model_list[CWWW_SIG_ONOFF_MODEL_ID]);
         if (err)
         {
             MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Meshx On Off Server create failed (Err : 0x%x)", err);
             return err;
         }
-        err = meshx_light_ctl_server_create(&cwww_element_init_ctrl.el_list[i].ctl_srv_model,
-                                            &cwww_element_init_ctrl.el_list[i].cwww_srv_model_list[CWWW_SIG_L_CTL_MODEL_ID]);
+        err = meshx_light_ctl_server_create(&CWWW_SRV_EL(i).ctl_srv_model,
+                                            &CWWW_SRV_EL(i).cwww_srv_model_list[CWWW_SIG_L_CTL_MODEL_ID]);
         if (err)
         {
             MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Meshx CTL Server create failed (Err : 0x%x)", err);
             return err;
         }
-        cwww_element_init_ctrl.el_list[i].onoff_srv_model->meshx_server_sig_model = &cwww_element_init_ctrl.el_list[i].cwww_srv_model_list[CWWW_SIG_ONOFF_MODEL_ID];
-        cwww_element_init_ctrl.el_list[i].ctl_srv_model->meshx_server_sig_model = &cwww_element_init_ctrl.el_list[i].cwww_srv_model_list[CWWW_SIG_L_CTL_MODEL_ID];
+        CWWW_SRV_EL(i).onoff_srv_model->meshx_server_sig_model = &CWWW_SRV_EL(i).cwww_srv_model_list[CWWW_SIG_ONOFF_MODEL_ID];
+        CWWW_SRV_EL(i).ctl_srv_model->meshx_server_sig_model = &CWWW_SRV_EL(i).cwww_srv_model_list[CWWW_SIG_L_CTL_MODEL_ID];
     }
     return MESHX_SUCCESS;
 }
@@ -197,20 +198,20 @@ static meshx_err_t meshx_element_struct_deinit()
 
     for (size_t i = 0; i < cwww_element_init_ctrl.element_cnt; i++)
     {
-        if (cwww_element_init_ctrl.el_list[i].srv_ctx)
+        if (CWWW_SRV_EL(i).srv_ctx)
         {
-            MESHX_FREE(cwww_element_init_ctrl.el_list[i].srv_ctx);
-            cwww_element_init_ctrl.el_list[i].srv_ctx = NULL;
+            MESHX_FREE(CWWW_SRV_EL(i).srv_ctx);
+            CWWW_SRV_EL(i).srv_ctx = NULL;
         }
 
-        err = meshx_on_off_server_delete(&cwww_element_init_ctrl.el_list[i].onoff_srv_model);
+        err = meshx_on_off_server_delete(&CWWW_SRV_EL(i).onoff_srv_model);
         if (err)
         {
             MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Meshx On Off Server create failed (Err : 0x%x)", err);
             return err;
         }
 
-        err = meshx_light_ctl_server_delete(&cwww_element_init_ctrl.el_list[i].ctl_srv_model);
+        err = meshx_light_ctl_server_delete(&CWWW_SRV_EL(i).ctl_srv_model);
         if (err)
         {
             MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Meshx CTL Server create failed (Err : 0x%x)", err);
@@ -254,13 +255,13 @@ static meshx_err_t meshx_dev_create_cwww_model_space(uint16_t n_max)
 static meshx_err_t meshx_restore_model_states(uint16_t element_id)
 {
     meshx_err_t err = MESHX_SUCCESS;
-    meshx_cwww_server_ctx_t const *el_ctx = cwww_element_init_ctrl.el_list[element_id].srv_ctx;
+    meshx_cwww_server_ctx_t const *el_ctx = CWWW_SRV_EL(element_id).srv_ctx;
 
     for (size_t i = 0; i < CWWW_SRV_MODEL_SIG_CNT; i++)
     {
         if (i == CWWW_SIG_ONOFF_MODEL_ID)
         {
-            err = meshx_gen_on_off_srv_state_restore(cwww_element_init_ctrl.el_list[element_id].onoff_srv_model->meshx_server_sig_model,
+            err = meshx_gen_on_off_srv_state_restore(CWWW_SRV_EL(element_id).onoff_srv_model->meshx_server_sig_model,
                                                      el_ctx->prev_state);
             if (err)
             {
@@ -270,7 +271,7 @@ static meshx_err_t meshx_restore_model_states(uint16_t element_id)
         }
         else if (i == CWWW_SIG_L_CTL_MODEL_ID)
         {
-            err = meshx_light_ctl_srv_state_restore(cwww_element_init_ctrl.el_list[element_id].ctl_srv_model,
+            err = meshx_light_ctl_srv_state_restore(CWWW_SRV_EL(element_id).ctl_srv_model,
                                                     el_ctx->prev_ctl_state);
             if (err)
             {
@@ -316,7 +317,7 @@ static meshx_err_t meshx_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, 
         err = meshx_plat_add_element_to_composition(
             i,
             pdev->elements,
-            cwww_element_init_ctrl.el_list[i - *start_idx].cwww_srv_model_list,
+            CWWW_SRV_EL(i - *start_idx).cwww_srv_model_list,
             NULL,
             CWWW_SRV_MODEL_SIG_CNT,
             CWWW_SRV_MODEL_VEN_CNT);
@@ -328,7 +329,7 @@ static meshx_err_t meshx_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, 
 
         err = meshx_nvs_element_ctx_get(
             i,
-            cwww_element_init_ctrl.el_list[i - *start_idx].srv_ctx,
+            CWWW_SRV_EL(i - *start_idx).srv_ctx,
             sizeof(meshx_cwww_server_ctx_t));
         if (err != MESHX_SUCCESS)
         {
@@ -388,7 +389,7 @@ static meshx_err_t meshx_api_control_task_handler(const dev_struct_t *pdev, cons
             goto el_ctrl_task_hndlr_exit;
 
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-        el_ctx = cwww_element_init_ctrl.el_list[rel_el_id].srv_ctx;
+        el_ctx = CWWW_SRV_EL(rel_el_id).srv_ctx;
         if (el_ctx->prev_state.on_off == p_onoff_srv->on_off_state)
             goto el_ctrl_task_hndlr_exit;
 
@@ -406,27 +407,23 @@ static meshx_err_t meshx_api_control_task_handler(const dev_struct_t *pdev, cons
             goto el_ctrl_task_hndlr_exit;
 
         rel_el_id = GET_RELATIVE_EL_IDX(element_id);
-        el_ctx = cwww_element_init_ctrl.el_list[rel_el_id].srv_ctx;
+        el_ctx = CWWW_SRV_EL(rel_el_id).srv_ctx;
 
-        if (el_ctx->prev_ctl_state.delta_uv == p_ctl_srv->state.delta_uv &&
-            el_ctx->prev_ctl_state.lightness == p_ctl_srv->state.lightness &&
-            el_ctx->prev_ctl_state.temperature == p_ctl_srv->state.temperature &&
-            el_ctx->prev_ctl_state.temperature_range_min == p_ctl_srv->state.temperature_range_min &&
-            el_ctx->prev_ctl_state.temperature_range_max == p_ctl_srv->state.temperature_range_max)
+        if (memcmp(&el_ctx->prev_ctl_state, &p_ctl_srv->state, sizeof(meshx_light_ctl_srv_state_t)) == 0)
             goto el_ctrl_task_hndlr_exit;
 
-        el_ctx->prev_ctl_state.delta_uv = p_ctl_srv->state.delta_uv;
-        el_ctx->prev_ctl_state.lightness = p_ctl_srv->state.lightness;
-        el_ctx->prev_ctl_state.temperature = p_ctl_srv->state.temperature;
+        el_ctx->prev_ctl_state.delta_uv              = p_ctl_srv->state.delta_uv;
+        el_ctx->prev_ctl_state.lightness             = p_ctl_srv->state.lightness;
+        el_ctx->prev_ctl_state.temperature           = p_ctl_srv->state.temperature;
         el_ctx->prev_ctl_state.temperature_range_min = p_ctl_srv->state.temperature_range_min;
         el_ctx->prev_ctl_state.temperature_range_max = p_ctl_srv->state.temperature_range_max;
 
         sig_func = CWWW_SIG_L_CTL_MODEL_ID;
-        app_msg.state_change.ctl.delta_uv = el_ctx->prev_ctl_state.delta_uv;
-        app_msg.state_change.ctl.lightness = el_ctx->prev_ctl_state.lightness;
-        app_msg.state_change.ctl.temperature = el_ctx->prev_ctl_state.temperature;
-        app_msg.state_change.ctl.temp_range_min = el_ctx->prev_ctl_state.temperature_range_min;
-        app_msg.state_change.ctl.temp_range_max = el_ctx->prev_ctl_state.temperature_range_max;
+        app_msg.state_change.ctl.delta_uv            = el_ctx->prev_ctl_state.delta_uv;
+        app_msg.state_change.ctl.lightness           = el_ctx->prev_ctl_state.lightness;
+        app_msg.state_change.ctl.temperature         = el_ctx->prev_ctl_state.temperature;
+        app_msg.state_change.ctl.temp_range_min      = el_ctx->prev_ctl_state.temperature_range_min;
+        app_msg.state_change.ctl.temp_range_max      = el_ctx->prev_ctl_state.temperature_range_max;
         break;
     }
     default:
@@ -472,17 +469,17 @@ static meshx_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, cont
     {
         rel_el_id = GET_RELATIVE_EL_IDX(el_id);
 
-        gen_srv_send.ctx.net_idx = pdev->meshx_store.net_key_id;
-        gen_srv_send.ctx.app_idx = cwww_element_init_ctrl.el_list[rel_el_id].srv_ctx->app_id;
-        gen_srv_send.ctx.dst_addr = cwww_element_init_ctrl.el_list[rel_el_id].srv_ctx->pub_addr;
-        gen_srv_send.ctx.opcode = MESHX_MODEL_OP_GEN_ONOFF_STATUS;
-        gen_srv_send.ctx.p_ctx = NULL;
+        err = meshx_gen_on_off_srv_send_pack_create(
+            CWWW_SRV_EL(rel_el_id).onoff_srv_model->meshx_server_sig_model,
+            (uint16_t)el_id,
+            pdev->meshx_store.net_key_id,
+            CWWW_SRV_EL(rel_el_id).srv_ctx->app_id,
+            CWWW_SRV_EL(rel_el_id).srv_ctx->pub_addr,
+            CWWW_SRV_EL(rel_el_id).srv_ctx->prev_state.on_off,
+            &gen_srv_send
+        );
 
-        gen_srv_send.model.el_id = (uint16_t)el_id;
-        gen_srv_send.model.p_model = cwww_element_init_ctrl.el_list[rel_el_id].onoff_srv_model->meshx_server_sig_model;
-
-        gen_srv_send.state_change.onoff_set.onoff = cwww_element_init_ctrl.el_list[rel_el_id].srv_ctx->prev_state.on_off;
-        if (gen_srv_send.ctx.dst_addr == MESHX_ADDR_UNASSIGNED || gen_srv_send.ctx.app_idx == MESHX_KEY_UNUSED)
+        if ((err != MESHX_SUCCESS) || (gen_srv_send.ctx.dst_addr == MESHX_ADDR_UNASSIGNED) || (gen_srv_send.ctx.app_idx == MESHX_KEY_UNUSED))
             continue;
 
         err = meshx_gen_srv_send_msg_to_ble(
@@ -496,17 +493,19 @@ static meshx_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, cont
             return err;
         }
 
-        light_srv_send.ctx.net_idx = pdev->meshx_store.net_key_id;
-        light_srv_send.ctx.app_idx = cwww_element_init_ctrl.el_list[rel_el_id].srv_ctx->app_id;
-        light_srv_send.ctx.dst_addr = cwww_element_init_ctrl.el_list[rel_el_id].srv_ctx->pub_addr;
-        light_srv_send.ctx.opcode = MESHX_MODEL_OP_LIGHT_CTL_STATUS;
-        light_srv_send.ctx.p_ctx = NULL;
+        err = meshx_light_ctl_srv_send_pack_create(
+            CWWW_SRV_EL(rel_el_id).ctl_srv_model->meshx_server_sig_model,
+            (uint16_t)el_id,
+            pdev->meshx_store.net_key_id,
+            CWWW_SRV_EL(rel_el_id).srv_ctx->app_id,
+            CWWW_SRV_EL(rel_el_id).srv_ctx->pub_addr,
+            CWWW_SRV_EL(rel_el_id).srv_ctx->prev_ctl_state,
+            &light_srv_send
+        );
 
-        light_srv_send.model.el_id = (uint16_t)el_id;
-        light_srv_send.model.p_model = cwww_element_init_ctrl.el_list[rel_el_id].ctl_srv_model->meshx_server_sig_model;
-        light_srv_send.state_change.ctl_set.delta_uv = cwww_element_init_ctrl.el_list[rel_el_id].srv_ctx->prev_ctl_state.delta_uv;
-        light_srv_send.state_change.ctl_set.lightness = cwww_element_init_ctrl.el_list[rel_el_id].srv_ctx->prev_ctl_state.lightness;
-        light_srv_send.state_change.ctl_set.temperature = cwww_element_init_ctrl.el_list[rel_el_id].srv_ctx->prev_ctl_state.temperature;
+        if ((err != MESHX_SUCCESS) || (light_srv_send.ctx.dst_addr == MESHX_ADDR_UNASSIGNED) || (light_srv_send.ctx.app_idx == MESHX_KEY_UNUSED))
+            continue;
+
         err = meshx_gen_light_srv_send_msg_to_ble(
             CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV,
             &light_srv_send

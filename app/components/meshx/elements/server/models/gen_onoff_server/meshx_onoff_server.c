@@ -219,6 +219,22 @@ meshx_err_t meshx_on_off_server_init(void)
     return err;
 }
 
+/**
+ * @brief Create and initialize a new On/Off server model instance.
+ *
+ * This function allocates memory for a new On/Off server model and initializes
+ * it using the platform-specific creation function. It ensures that the model
+ * is properly set up for handling Generic OnOff messages in a BLE Mesh network.
+ *
+ * @param[in,out] p_model Pointer to a pointer where the newly created On/Off server model
+ *                instance will be stored.
+ * @param[in,out] p_sig_model Pointer to a pointer where the offset of the model will be stored.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully created and initialized the model.
+ *     - MESHX_INVALID_ARG: The provided pointer is NULL.
+ *     - MESHX_NO_MEM: Memory allocation failed.
+ */
 meshx_err_t meshx_on_off_server_create(meshx_onoff_server_model_t **p_model, void *p_sig_model)
 {
     if (!p_model || !p_sig_model)
@@ -238,6 +254,18 @@ meshx_err_t meshx_on_off_server_create(meshx_onoff_server_model_t **p_model, voi
         &((*p_model)->meshx_server_onoff_gen_srv));
 }
 
+/**
+ * @brief Delete the On/Off server model instance.
+ *
+ * This function deletes an instance of the On/Off server model, freeing
+ * associated resources and setting the model pointer to NULL.
+ *
+ * @param[in,out] p_model Double pointer to the On/Off server model instance to be deleted.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully deleted the model.
+ *     - MESHX_INVALID_ARG: Invalid argument provided.
+ */
 meshx_err_t meshx_on_off_server_delete(meshx_onoff_server_model_t **p_model)
 {
     if (p_model == NULL || *p_model == NULL)
@@ -256,10 +284,72 @@ meshx_err_t meshx_on_off_server_delete(meshx_onoff_server_model_t **p_model)
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Restore the On/Off state for the generic server model.
+ *
+ * This function restores the On/Off state of the specified server model
+ * using the provided state value. It checks for a valid model pointer
+ * before proceeding with the restoration.
+ *
+ * @param[in] p_model       Pointer to the On/Off server model structure.
+ * @param[in] onoff_state   The On/Off state to be restored.
+ *
+ * @return
+ *     - MESHX_INVALID_STATE: If the model pointer is NULL.
+ *     - Result of the platform-specific restoration function.
+ */
 meshx_err_t meshx_gen_on_off_srv_state_restore(meshx_ptr_t p_model, meshx_on_off_srv_el_state_t onoff_state)
 {
     if(!p_model)
         return MESHX_INVALID_STATE;
 
     return meshx_plat_gen_on_off_srv_restore(p_model, onoff_state.on_off);
+}
+
+/**
+ * @brief Create a message packet for sending On/Off status.
+ *
+ * This function prepares a message packet containing the On/Off status
+ * information to be sent to a client. It populates the provided
+ * `meshx_gen_srv_cb_param_t` structure with the necessary details.
+ *
+ * @param[in] p_model       Pointer to the model instance sending the status.
+ * @param[in] element_id    The element ID associated with the model.
+ * @param[in] key_id        The network key index to be used for sending the message.
+ * @param[in] app_id        The application key index to be used for sending the message.
+ * @param[in] addr          The destination address to which the message is sent.
+ * @param[in] state         The On/Off state value to be included in the message.
+ * @param[out] p_send_pack  Pointer to the structure where the message packet will be created.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully created the message packet.
+ *     - MESHX_INVALID_ARG: Invalid argument provided (NULL pointers).
+ */
+meshx_err_t meshx_gen_on_off_srv_send_pack_create(
+    meshx_ptr_t p_model,
+    uint16_t element_id,
+    uint8_t key_id,
+    uint8_t app_id,
+    uint16_t addr,
+    uint8_t state,
+    meshx_gen_srv_cb_param_t *p_send_pack
+)
+{
+    if (!p_model || !p_send_pack)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    memset(p_send_pack, 0, sizeof(meshx_gen_srv_cb_param_t));
+
+    p_send_pack->ctx.net_idx    = key_id;
+    p_send_pack->ctx.app_idx    = app_id;
+    p_send_pack->ctx.dst_addr   = addr;
+    p_send_pack->ctx.opcode     = MESHX_MODEL_OP_GEN_ONOFF_STATUS;
+    p_send_pack->model.el_id    = element_id;
+    p_send_pack->model.p_model  = p_model;
+
+    p_send_pack->state_change.onoff_set.onoff = state;
+
+    return MESHX_SUCCESS;
 }
