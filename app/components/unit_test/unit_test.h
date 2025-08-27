@@ -19,7 +19,9 @@
 #include "argtable3/argtable3.h"
 #include "module_id.h"
 #include "meshx_err.h"
+#include "meshx_config_internal.h"
 
+#if CONFIG_ENABLE_UNIT_TEST
 /**
  * @brief Macro to extract an argument from the argument list.
  */
@@ -85,6 +87,7 @@ meshx_err_t init_unit_test_console(void);
  *     - MESHX_INVALID_ARG: Invalid arguments
  *     - MESHX_FAIL: Failed to register the unit test
  */
-meshx_err_t register_unit_test(module_id_t module_id, module_callback_t callback) ;
+meshx_err_t register_unit_test(module_id_t module_id, module_callback_t callback);
 
+#endif /* CONFIG_ENABLE_UNIT_TEST */
 #endif /* __MESHX_UNIT_TEST_H__ */

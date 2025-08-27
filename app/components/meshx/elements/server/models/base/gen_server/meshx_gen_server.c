@@ -15,6 +15,7 @@
 #include "stdlib.h"
 #include "meshx_gen_server.h"
 
+#if CONFIG_ENABLE_GEN_SERVER
 #define MESHX_SERVER_INIT_MAGIC_NO 0x1121
 static uint16_t meshx_server_init = 0;
 
@@ -170,3 +171,5 @@ meshx_err_t meshx_gen_srv_init(void)
 
     return meshx_plat_gen_srv_init();
 }
+
+#endif /* CONFIG_ENABLE_GEN_SERVER */

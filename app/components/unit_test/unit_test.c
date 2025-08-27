@@ -12,6 +12,8 @@
 #include "unit_test.h"
 #include "esp_log.h"
 
+#if CONFIG_ENABLE_UNIT_TEST
+
 #define TAG "unit_test"
 #define UT_CMD_MIN_ARGS 4
 
@@ -151,3 +153,5 @@ meshx_err_t register_unit_test(module_id_t module_id, module_callback_t callback
     callback_list[module_id].callback = callback;
     return MESHX_SUCCESS;
 }
+
+#endif /* CONFIG_ENABLE_UNIT_TEST */

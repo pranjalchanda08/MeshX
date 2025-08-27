@@ -15,6 +15,7 @@
 
 #define MESHX_SERVER_INIT_MAGIC_NO 0x2483
 
+#if CONFIG_ENABLE_LIGHT_CTL_SERVER
 static uint16_t meshx_lighting_server_init = 0;
 /**
  * @brief Perform hardware change for the light control server model.
@@ -400,3 +401,5 @@ meshx_err_t meshx_light_ctl_srv_send_pack_create(
 
     return MESHX_SUCCESS;
 }
+
+#endif /* CONFIG_ENABLE_LIGHT_CTL_SERVER */

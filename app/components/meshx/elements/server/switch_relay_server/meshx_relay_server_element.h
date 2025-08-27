@@ -15,19 +15,15 @@
 #include "app_common.h"
 #include "meshx_onoff_server.h"
 
-#define RELAY_SERVER_ELEMENT_NOS_DEF 1
+#if CONFIG_RELAY_SERVER_COUNT > 0
 
-#ifndef CONFIG_RELAY_SERVER_COUNT
-#define CONFIG_RELAY_SERVER_COUNT RELAY_SERVER_ELEMENT_NOS_DEF
-#endif
-
-#define RELAY_SRV_MODEL_SIG_CNT RELAY_SIG_MAX_ID // No of SIG models in a relay model element
-#define RELAY_SRV_MODEL_VEN_CNT 0                // No of VEN models in a relay model element
+#define RELAY_SRV_MODEL_SIG_CNT RELAY_SIG_MAX_ID /**< No of SIG models in a relay model element */
+#define RELAY_SRV_MODEL_VEN_CNT 0                /**< No of VEN models in a relay model element */
 
 typedef enum
 {
-    RELAY_SIG_ONOFF_MODEL_ID,
-    RELAY_SIG_MAX_ID,
+    RELAY_SIG_ONOFF_MODEL_ID,   /**< On/Off model ID */
+    RELAY_SIG_MAX_ID,           /**< Maximum model ID */
 } relay_sig_id_t;
 
 /**
@@ -72,4 +68,5 @@ typedef struct meshx_relay_element_ctrl
  */
 meshx_err_t meshx_create_relay_elements(dev_struct_t *pdev, uint16_t element_cnt);
 
+#endif /* CONFIG_RELAY_SERVER_COUNT > 0 */
 #endif /*__RELAY_SERVER_MODEL_H__*/

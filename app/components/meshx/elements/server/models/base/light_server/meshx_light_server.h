@@ -13,10 +13,10 @@
 #ifndef __MESHX_LIGHT_SERVER_H__
 #define __MESHX_LIGHT_SERVER_H__
 
-#include "sys/queue.h"
 #include "meshx_control_task.h"
 #include "interface/ble_mesh/server/meshx_ble_mesh_light_srv.h"
 
+#if CONFIG_ENABLE_LIGHT_SERVER
 typedef control_task_msg_handle_t meshx_lighting_server_cb;
 
 /**
@@ -88,4 +88,5 @@ meshx_err_t meshx_gen_light_srv_status_send(
     meshx_ctx_t *ctx,
     meshx_lighting_server_state_change_t *state_change);
 
+#endif /* CONFIG_ENABLE_LIGHT_SERVER */
 #endif /* __MESHX_LIGHT_SERVER_H__ */
