@@ -98,7 +98,10 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
  *
  * This function deinitializes the mesh element structure by freeing the allocated memory.
  *
- * @param n_max The maximum number of elements to deinitialize.
+ * @return meshx_err_t
+ *      - MESHX_SUCCESS: Success
+ *      - MESHX_INVALID_STATE: Invalid state
+ *      - MESHX_ERR: Error occurred during deinitialization
  */
 static meshx_err_t meshx_element_struct_deinit(void)
 {
@@ -219,8 +222,10 @@ static meshx_err_t meshx_add_relay_cli_model_to_element_list(
  * This function handles events from the configuration client, such as model publication
  * and application binding events.
  *
- * @param[in] param Pointer to the callback parameter structure.
- * @param[in] evt Configuration event type.
+ * @param[in] pdev   Pointer to the device structure.
+ * @param[in] evt    Event type of the control task message.
+ * @param[in] params Pointer to the parameters of the control task message.
+ *
  * @return meshx_err_t
  */
 static meshx_err_t relay_client_config_cli_cb(
@@ -438,7 +443,7 @@ static meshx_err_t meshx_relay_client_element_state_change_handler(
  *
  * @param[in] pdev   Pointer to the device structure.
  * @param[in] evt    Event type of the control task message.
- * @param[in] params Pointer to the parameters of the control task message.
+ * @param[in] msg    Pointer to the parameters of the control task message.
  * @return meshx_err_t
  */
 static meshx_err_t meshx_relay_client_to_ble_handler(
@@ -578,15 +583,17 @@ static meshx_err_t meshx_relay_cli_el_state_change_reg_cb()
 }
 
 /**
- * @brief Sets the state of the relay element.
+ * @brief Set the On/Off state for a specific element in the BLE mesh network.
  *
- * This function constructs a generic On/Off client message to set the state of a relay
- * element identified by the given element ID. It then publishes this message to the
- * control task for BLE communication.
+ * This function sets the On/Off state of the specified element, optionally waiting for an acknowledgment.
  *
- * @param[in] el_id The element ID of the relay whose state is to be set.
- * @param[in] ack Indicates whether an acknowledgment is required (true) or not (false).
- * @return meshx_err_t Returns the result of the message publish operation.
+ * @param[in] el_id The ID of the element for which to set the On/Off state.
+ * @param[in] ack   Whether to wait for an acknowledgment (true) or not (false).
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully set the state.
+ *     - MESHX_INVALID_ARG: Invalid element ID or parameters.
+ *     - MESHX_FAIL: Failed to set the state.
  */
 meshx_err_t meshx_relay_el_set_state(uint16_t el_id, bool ack)
 {
