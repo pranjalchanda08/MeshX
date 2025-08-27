@@ -25,15 +25,7 @@
 #include "app_common.h"
 #include "meshx_onoff_client.h"
 
-#define RELAY_CLIENT_ELEMENT_NOS_DEF 3
-/**
- * @def CONFIG_RELAY_CLIENT_COUNT
- * @brief Number of relay client elements, configurable via build configuration.
- * If not defined, defaults to RELAY_CLIENT_ELEMENT_NOS_DEF.
- */
-#ifndef CONFIG_RELAY_CLIENT_COUNT
-#define CONFIG_RELAY_CLIENT_COUNT RELAY_CLIENT_ELEMENT_NOS_DEF
-#endif
+#if CONFIG_RELAY_CLIENT_COUNT > 0
 
 /**
  * @def RELAY_CLI_MODEL_SIG_CNT
@@ -131,4 +123,5 @@ meshx_err_t meshx_relay_el_set_state(uint16_t el_id, bool ack);
  */
 meshx_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cnt);
 
+#endif /* CONFIG_RELAY_CLIENT_COUNT > 0 */
 #endif /*__RELAY_CLIENT_MODEL_H__*/

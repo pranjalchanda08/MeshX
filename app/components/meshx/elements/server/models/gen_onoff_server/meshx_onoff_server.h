@@ -17,6 +17,7 @@
 #include "meshx_gen_server.h"
 #include "meshx_control_task.h"
 
+#if CONFIG_ENABLE_GEN_ONOFF_SERVER
 /**
  * @brief Structure to hold the CW-WW server on/off state.
  */
@@ -155,4 +156,5 @@ meshx_err_t meshx_gen_on_off_srv_send_pack_create(
     uint8_t state,
     meshx_gen_srv_cb_param_t *p_send_pack
 );
+#endif /* CONFIG_ENABLE_GEN_ONOFF_SERVER */
 #endif /* __MESHX_ONOFF_SERVER__ */

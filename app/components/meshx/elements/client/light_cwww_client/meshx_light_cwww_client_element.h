@@ -6,33 +6,16 @@
  *
  * @author Pranjal Chanda
  */
-#pragma once
+
+#ifndef __CWWW_CLIENT_ELEMENT_H__
+#define __CWWW_CLIENT_ELEMENT_H__
 
 #include "app_common.h"
 #include "meshx_control_task.h"
 #include "meshx_onoff_client.h"
 #include "meshx_light_ctl_client.h"
 
-/**
- * @def CWWW_CLIENT_ELEMENT_NOS_DEF
- * @brief Defines the number of CW-WW client elements.
- *
- * This macro defines the number of CW-WW (Cool White - Warm White) client elements
- * used in the MeshX application.
- */
-#define CWWW_CLIENT_ELEMENT_NOS_DEF 3
-
-/**
- * @def CONFIG_LIGHT_CWWW_CLIENT_COUNT
- * @brief Number of CW-WW client elements.
- *
- * This macro defines the number of CW-WW client elements. If it is not defined,
- * it will default to CWWW_CLIENT_ELEMENT_NOS_DEF.
- */
-#ifndef CONFIG_LIGHT_CWWW_CLIENT_COUNT
-#define CONFIG_LIGHT_CWWW_CLIENT_COUNT CWWW_CLIENT_ELEMENT_NOS_DEF
-#endif
-
+#if CONFIG_LIGHT_CWWW_CLIENT_COUNT > 0
 /**
  * @def CWWW_CLI_MODEL_SIG_CNT
  * @brief Number of SIG models in a CW-WW model element.
@@ -193,3 +176,6 @@ meshx_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt
  *     - MESHX_FAIL: Sending message failed
  */
 meshx_err_t ble_mesh_send_cwww_msg(dev_struct_t *pdev, cwww_cli_sig_id_t model_id, uint16_t element_id, uint8_t set_get, uint8_t is_range, uint8_t ack);
+
+#endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT > 0 */
+#endif /* __CWWW_CLIENT_ELEMENT_H__ */

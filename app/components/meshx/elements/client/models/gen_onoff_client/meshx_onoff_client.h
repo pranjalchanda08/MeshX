@@ -14,7 +14,7 @@
 #include "meshx_gen_client.h"
 #include "meshx_control_task.h"
 
-#if CONFIG_GEN_ONOFF_CLIENT_COUNT > 0
+#if CONFIG_ENABLE_GEN_ONOFF_CLIENT
 
 #define MESHX_GEN_ON_OFF_CLI_MSG_SET 0
 #define MESHX_GEN_ON_OFF_CLI_MSG_GET 1
@@ -140,5 +140,5 @@ meshx_err_t meshx_gen_on_off_state_change_handle(
     meshx_on_off_cli_state_t *p_next_state
 );
 
-#endif /* CONFIG_GEN_ONOFF_CLIENT_COUNT > 0 */
+#endif /* CONFIG_ENABLE_GEN_ONOFF_CLIENT */
 #endif /* __MESHX_ONOFF_CLIENT_H__ */
