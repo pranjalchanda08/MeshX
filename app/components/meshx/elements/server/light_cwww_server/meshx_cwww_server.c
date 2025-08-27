@@ -180,10 +180,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
  * structure, including server context, server signature model list, server
  * publication list, server on/off generic list, server light control list, and
  * light control state. It ensures that all pointers are set to NULL after
- * freeing the memory to avoid dangling pointers.
- *
- * @param[in] n_max The maximum number of elements in the server signature model list
- *              and server publication list.
+ * freeing the memory to avoid dangling pointers..
  *
  * @return
  *     - MESHX_SUCCESS: Successfully deinitialized the mesh element structure.
