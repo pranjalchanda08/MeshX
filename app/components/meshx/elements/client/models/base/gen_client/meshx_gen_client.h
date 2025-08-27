@@ -19,6 +19,7 @@
 #include "meshx_control_task.h"
 #include "interface/ble_mesh/client/meshx_ble_mesh_gen_cli.h"
 
+#if CONFIG_ENABLE_GEN_CLIENT
 /**
  * @brief Registers a callback function for a specific generic server model.
  *
@@ -69,4 +70,6 @@ meshx_err_t meshx_gen_cli_send_msg(
     uint16_t net_idx,
     uint16_t app_idx
 );
+
+#endif /* CONFIG_ENABLE_GEN_CLIENT */
 #endif /* __MESHX_GEN_CLIENT_H_ */

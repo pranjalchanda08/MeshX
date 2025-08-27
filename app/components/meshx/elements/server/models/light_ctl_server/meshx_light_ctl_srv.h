@@ -18,6 +18,7 @@
 #include "meshx_control_task.h"
 #include "interface/ble_mesh/meshx_ble_mesh_cmn.h"
 
+#if CONFIG_ENABLE_LIGHT_CTL_SERVER
 /*
  * @brief Initialize the CTL Server model.
  *
@@ -141,4 +142,5 @@ meshx_err_t meshx_light_ctl_srv_send_pack_create(
     meshx_light_ctl_srv_state_t ctl_state,
     meshx_lighting_server_cb_param_t *light_srv_send);
 
+#endif /* CONFIG_ENABLE_LIGHT_CTL_SERVER */
 #endif /*__MESHX_LIGHT_CTL_SRV_H__*/

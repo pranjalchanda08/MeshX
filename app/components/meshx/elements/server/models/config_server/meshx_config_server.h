@@ -13,14 +13,12 @@
 #ifndef __MESHX_CONFIG_SERVER__
 #define __MESHX_CONFIG_SERVER__
 
-#include "sys/queue.h"
-#include "freertos/FreeRTOS.h"
-#include "freertos/semphr.h"
 #include "interface/meshx_platform.h"
 #include "interface/ble_mesh/server/meshx_ble_mesh_config_srv.h"
 
 #include "meshx_err.h"
 
+#if CONFIG_ENABLE_CONFIG_SERVER
 /**
  * @brief Retrieves the configuration server model for the MeshX framework.
  *
@@ -74,4 +72,5 @@ meshx_err_t meshx_config_server_cb_reg(config_srv_cb_t cb, uint32_t config_evt_b
  */
 meshx_err_t meshx_get_config_srv_instance(void** p_conf_srv);
 
+#endif /* CONFIG_ENABLE_CONFIG_SERVER */
 #endif /* __MESHX_CONFIG_SERVER__ */

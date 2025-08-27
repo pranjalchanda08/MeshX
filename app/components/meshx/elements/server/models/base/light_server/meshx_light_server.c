@@ -14,8 +14,7 @@
 #include "meshx_light_server.h"
 #include "meshx_gen_server.h"
 
-#define TAG __func__
-
+#if CONFIG_ENABLE_LIGHT_SERVER
 #define MESHX_SERVER_INIT_MAGIC_NO 0x2483
 
 static uint16_t meshx_lighting_server_init = 0;
@@ -162,3 +161,5 @@ meshx_err_t meshx_gen_light_srv_status_send(
         state_change
     );
 }
+
+#endif /* CONFIG_ENABLE_LIGHT_SERVER */

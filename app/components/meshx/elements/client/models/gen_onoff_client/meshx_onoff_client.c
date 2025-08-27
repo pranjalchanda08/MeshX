@@ -14,7 +14,7 @@
 
 #define MESHX_CLIENT_INIT_MAGIC 0x2378
 
-#if CONFIG_GEN_ONOFF_CLIENT_COUNT > 0
+#if CONFIG_ENABLE_GEN_ONOFF_CLIENT
 
 static uint16_t meshx_client_init_flag = 0;
 
@@ -356,4 +356,4 @@ meshx_err_t meshx_gen_on_off_state_change_handle(
 
     return state_change ? MESHX_SUCCESS : MESHX_INVALID_STATE;
 }
-#endif /* CONFIG_GEN_ONOFF_CLIENT_COUNT > 0 */
+#endif /* CONFIG_ENABLE_GEN_ONOFF_CLIENT*/

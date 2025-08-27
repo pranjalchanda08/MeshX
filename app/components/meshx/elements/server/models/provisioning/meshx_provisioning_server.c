@@ -14,6 +14,7 @@
 #include "meshx_control_task.h"
 #include "meshx_provisioning_server.h"
 
+#if CONFIG_ENABLE_PROVISIONING
 /**
  * @brief Initialize provisioning parameters.
  *
@@ -47,3 +48,5 @@ MESHX_PROV *meshx_get_prov(void)
 {
     return meshx_plat_get_prov();
 }
+
+#endif /* CONFIG_ENABLE_PROVISIONING */

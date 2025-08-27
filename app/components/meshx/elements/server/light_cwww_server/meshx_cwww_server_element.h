@@ -18,11 +18,7 @@
 #include <meshx_onoff_server.h>
 #include <meshx_light_ctl_srv.h>
 
-#define CWWW_SERVER_ELEMENT_NOS_DEF 1
-
-#ifndef CONFIG_LIGHT_CWWW_SRV_COUNT
-#define CONFIG_LIGHT_CWWW_SRV_COUNT CWWW_SERVER_ELEMENT_NOS_DEF
-#endif
+#if CONFIG_LIGHT_CWWW_SRV_COUNT > 0
 
 #define CWWW_SRV_MODEL_SIG_CNT CWWW_SIG_ID_MAX // No of SIG models in a cwww model element
 #define CWWW_SRV_MODEL_VEN_CNT 0               // No of VEN models in a cwww model element
@@ -88,4 +84,5 @@ typedef struct cwww_element
  */
 meshx_err_t meshx_create_cwww_elements(dev_struct_t *pdev, uint16_t element_cnt);
 
+#endif /* CONFIG_LIGHT_CWWW_SRV_COUNT > 0 */
 #endif /*__CWWW_SERVER_ELEMENT_H__*/

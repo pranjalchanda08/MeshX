@@ -20,6 +20,7 @@
 #include "meshx_control_task.h"
 #include "interface/ble_mesh/client/meshx_ble_mesh_light_cli.h"
 
+#if CONFIG_ENABLE_LIGHT_CLIENT
 /**
  * @brief Initialize the meshxuction generic client.
  *
@@ -58,4 +59,5 @@ meshx_err_t meshx_gen_light_send_msg(
     uint16_t app_idx
 );
 
+#endif /* CONFIG_ENABLE_LIGHT_CLIENT */
 #endif /* __MESHX_GEN_LIGHT_CLI_H_ */

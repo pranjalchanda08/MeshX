@@ -15,6 +15,7 @@
 #include "stdlib.h"
 #include "meshx_gen_client.h"
 
+#if CONFIG_ENABLE_GEN_CLIENT
 #define MESHX_CLIENT_INIT_MAGIC_NO 0x1121
 static uint16_t meshx_client_init = 0;
 
@@ -152,3 +153,5 @@ meshx_err_t meshx_gen_client_from_ble_reg_cb(uint32_t model_id, meshx_gen_client
         model_id,
         cb);
 }
+
+#endif /* CONFIG_ENABLE_GEN_CLIENT */

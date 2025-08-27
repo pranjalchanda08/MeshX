@@ -14,6 +14,7 @@
 
 #define CONFIG_SRV_INIT_MAGIC   0x2307
 
+#if CONFIG_ENABLE_CONFIG_SERVER
 static uint16_t config_srv_init_flag = 0;
 
 typedef struct config_server_model_evt_map
@@ -167,3 +168,5 @@ meshx_err_t meshx_get_config_srv_model(void* p_model)
 {
     return meshx_plat_get_config_srv_model(p_model);
 }
+
+#endif /* CONFIG_ENABLE_CONFIG_SERVER */

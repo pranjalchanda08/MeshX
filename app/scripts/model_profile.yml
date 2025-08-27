@@ -67,8 +67,8 @@ models:
         type: "client"
         default: false
         macros:
-            - def: "CONFIG_GEN_ONOFF_CLIENT_COUNT"
-              value: 0
+            - def: "CONFIG_ENABLE_GEN_ONOFF_CLIENT"
+              value: false
         base_model: "gen_client"
 
     gen_onoff_server:
@@ -76,8 +76,8 @@ models:
         type: "server"
         default: false
         macros:
-            - def: "CONFIG_GEN_ONOFF_SERVER_COUNT"
-              value: 0
+            - def: "CONFIG_ENABLE_GEN_ONOFF_SERVER"
+              value: false
         base_model: "gen_server"
 
     light_ctl_server:

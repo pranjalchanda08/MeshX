@@ -16,6 +16,8 @@
 #include "meshx_gen_light_cli.h"
 
 #define MESHX_CLIENT_INIT_MAGIC_NO 0x4309
+
+#if CONFIG_ENABLE_LIGHT_CLIENT
 static uint16_t meshx_client_init = 0;
 
 /**
@@ -148,3 +150,5 @@ meshx_err_t meshx_gen_light_client_from_ble_reg_cb(uint32_t model_id, meshx_gen_
         model_id,
         cb);
 }
+
+#endif /* CONFIG_ENABLE_LIGHT_CLIENT */
