@@ -16,6 +16,7 @@
 #include "interface/meshx_platform.h"
 #include "interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h"
 
+#if CONFIG_ENABLE_PROVISIONING
 /**
  * @brief Initialize provisioning parameters.
  *
@@ -39,4 +40,5 @@ meshx_err_t meshx_init_prov(const meshx_prov_params_t * prov_cfg);
  */
 MESHX_PROV *meshx_get_prov(void);
 
+#endif /* CONFIG_ENABLE_PROVISIONING */
 #endif /* __MESHX_PROV__ */

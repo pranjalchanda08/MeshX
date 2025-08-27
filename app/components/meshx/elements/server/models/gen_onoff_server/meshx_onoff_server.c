@@ -11,6 +11,7 @@
  */
 #include "meshx_onoff_server.h"
 
+#if CONFIG_ENABLE_GEN_ONOFF_SERVER
 /**
  * @brief Perform hardware change based on the BLE Mesh generic server callback parameter.
  *
@@ -300,3 +301,5 @@ meshx_err_t meshx_gen_on_off_srv_send_pack_create(
 
     return MESHX_SUCCESS;
 }
+
+#endif /* CONFIG_ENABLE_GEN_ONOFF_SERVER */

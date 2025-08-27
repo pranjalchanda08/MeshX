@@ -75,17 +75,17 @@
 /**
  * @brief Gen OnOff Server Counts
  */
-#ifndef CONFIG_GEN_ONOFF_CLIENT_COUNT
-#define CONFIG_GEN_ONOFF_CLIENT_COUNT           2
-#endif /* CONFIG_GEN_ONOFF_CLIENT_COUNT */
+#ifndef CONFIG_ENABLE_GEN_ONOFF_CLIENT
+#define CONFIG_ENABLE_GEN_ONOFF_CLIENT           1
+#endif /* CONFIG_ENABLE_GEN_ONOFF_CLIENT */
 
 
 /**
  * @brief Gen OnOff Client Counts
  */
-#ifndef CONFIG_GEN_ONOFF_SERVER_COUNT
-#define CONFIG_GEN_ONOFF_SERVER_COUNT           2
-#endif /* CONFIG_GEN_ONOFF_SERVER_COUNT */
+#ifndef CONFIG_ENABLE_GEN_ONOFF_SERVER
+#define CONFIG_ENABLE_GEN_ONOFF_SERVER           1
+#endif /* CONFIG_ENABLE_GEN_ONOFF_SERVER */
 
 
 /**
@@ -136,7 +136,7 @@
 #endif
 
 #if CONFIG_RELAY_SERVER_COUNT
-    #if !CONFIG_GEN_ONOFF_SERVER_COUNT
+    #if !CONFIG_ENABLE_GEN_ONOFF_SERVER
     #error "Enable this to use Relay Server Element"
     #endif
 #endif /* CONFIG_RELAY_SERVER_COUNT */
@@ -163,11 +163,11 @@
  * @brief Model Level Config Check
  */
 
-#if CONFIG_GEN_ONOFF_SERVER_COUNT
+#if CONFIG_ENABLE_GEN_ONOFF_SERVER
     #if !CONFIG_ENABLE_GEN_SERVER
     #error "Enable this to use OnOff Server Element"
     #endif
-#endif /* CONFIG_GEN_ONOFF_SERVER_COUNT */
+#endif /* CONFIG_ENABLE_GEN_ONOFF_SERVER */
 
 #if CONFIG_ENABLE_LIGHT_CTL_SERVER
     #if !CONFIG_ENABLE_LIGHT_SERVER

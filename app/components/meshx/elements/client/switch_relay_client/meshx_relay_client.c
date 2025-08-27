@@ -16,7 +16,7 @@
 #include "meshx_nvs.h"
 #include "meshx_api.h"
 
-#if CONFIG_RELAY_CLIENT_COUNT
+#if CONFIG_RELAY_CLIENT_COUNT > 0
 #include "meshx_relay_client_element.h"
 
 #if CONFIG_ENABLE_CONFIG_SERVER
@@ -392,7 +392,7 @@ static meshx_err_t meshx_relay_cli_send_onoff_msg(
 static meshx_err_t meshx_relay_client_element_state_change_handler(
     const dev_struct_t *pdev,
     control_task_msg_evt_t evt,
-    const meshx_on_off_cli_el_msg_t *param
+    meshx_on_off_cli_el_msg_t *param
 )
 {
     MESHX_UNUSED(pdev);
