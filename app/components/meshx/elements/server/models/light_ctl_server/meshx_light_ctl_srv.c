@@ -65,23 +65,6 @@ static meshx_err_t meshx_state_change_notify(meshx_lighting_server_cb_param_t *p
     return MESHX_NOT_SUPPORTED;
 }
 
-#if !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
-/**
- * @brief Handle Light CTL messages for the lighting server model.
- *
- * This function processes incoming Light CTL messages and performs the necessary
- * actions based on the message parameters.
- *
- * @param param Pointer to the BLE Mesh lighting server callback parameter structure.
- *
- * @return
- *    - MESHX_SUCCESS: Success
- *    - MESHX_INVALID_ARG: Invalid argument
- *    - MESHX_FAIL: Other failures
- */
-static meshx_err_t meshx_handle_light_ctl_msg(esp_ble_mesh_lighting_server_cb_param_t *param)
-{
-#else
 /**
  * @brief Handle Light CTL messages for the lighting server model.
  *
@@ -103,7 +86,6 @@ static meshx_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
 {
     if (!pdev || (evt != MESHX_MODEL_ID_LIGHT_CTL_SRV && evt != MESHX_MODEL_ID_LIGHT_CTL_SETUP_SRV))
         return MESHX_INVALID_ARG;
-#endif /* !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
     meshx_err_t err = MESHX_SUCCESS;
 
     bool send_reply_to_src = false;
@@ -205,13 +187,7 @@ static meshx_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
 meshx_err_t meshx_light_ctl_server_init(void)
 {
     meshx_err_t err = MESHX_SUCCESS;
-#if CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
-    /* Protect only one registration */
-    static uint8_t init_cntr = 0;
-    if (init_cntr)
-        return MESHX_SUCCESS;
-    init_cntr++;
-#endif /* CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
+
     if (meshx_lighting_server_init == MESHX_SERVER_INIT_MAGIC_NO)
         return MESHX_SUCCESS;
 

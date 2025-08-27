@@ -44,59 +44,14 @@ static meshx_err_t meshx_state_change_notify(meshx_gen_srv_cb_param_t *param)
     return MESHX_NOT_SUPPORTED;
 }
 
-#if !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
 /**
  * @brief Handle Generic OnOff messages for the server model.
  *
  * This function processes the received Generic OnOff messages and performs
  * the necessary actions based on the message type and content.
  *
- * @param param Pointer to the callback parameter structure containing the
- *              details of the received message.
- *
- * @return
- *    - MESHX_SUCCESS: Success
- *    - MESHX_INVALID_ARG: Invalid argument
- *    - MESHX_FAIL: Other failures
- */
-static meshx_err_t meshx_handle_gen_onoff_msg(MESHX_GEN_SRV_CB_PARAM *param)
-{
-    MESHX_GEN_ONOFF_SRV *srv = (MESHX_GEN_ONOFF_SRV *)param->model->user_data;
-    bool send_reply = (param->ctx.opcode != MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK);
-    switch (param->ctx.recv_op)
-    {
-    case MESHX_MODEL_OP_GEN_ONOFF_GET:
-        break;
-    case MESHX_MODEL_OP_GEN_ONOFF_SET:
-    case MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK:
-        meshx_state_change_notify(param);
-        break;
-    default:
-        break;
-    }
-    if (send_reply
-        /* This is meant to notify the respective publish client */
-        || param->ctx.dst_addr != param->model.pub_addr)
-    {
-        /* Here the message was received from unregistered source and mention the state to the respective client */
-        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "PUB: src|pub %x|%x", param->ctx.dst_addr, param->model.pub_addr);
-        param->ctx.dst_addr = param->model.pub_addr;
-
-        control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE,
-                                 CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV,
-                                 param,
-                                 sizeof(meshx_gen_srv_cb_param_t));
-    }
-    return MESHX_SUCCESS;
-}
-
-#else
-/**
- * @brief Handle Generic OnOff messages for the server model.
- *
- * This function processes the received Generic OnOff messages and performs
- * the necessary actions based on the message type and content.
- *
+ * @param pdev Pointer to the device structure.
+ * @param model_id The model ID of the received message.
  * @param param Pointer to the callback parameter structure containing the
  *              details of the received message.
  *
@@ -140,7 +95,6 @@ static meshx_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_
     }
     return MESHX_SUCCESS;
 }
-#endif /* !CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE */
 
 /**
  * @brief Send the On/Off status message to the client.
@@ -193,13 +147,6 @@ meshx_err_t meshx_gen_on_off_srv_status_send(
 meshx_err_t meshx_on_off_server_init(void)
 {
     meshx_err_t err = MESHX_SUCCESS;
-#if CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE
-    /* Protect only one registration*/
-    static uint8_t init_cnt = 0;
-    if (init_cnt)
-        return MESHX_SUCCESS;
-    init_cnt++;
-#endif
 #if CONFIG_ENABLE_SERVER_COMMON
     err = meshx_gen_srv_init();
     if (err)
