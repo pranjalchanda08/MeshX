@@ -115,7 +115,6 @@ typedef enum control_task_msg_evt_system
     CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_DISARM = MESHX_BIT(3),    /**< Event to stop an OS Timer */
     CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE   = MESHX_BIT(4),    /**< Event to fire timedout OS Timer */
     CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD = MESHX_BIT(5),    /**< Event to set timedout OS Timer */
-    CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT   = MESHX_BIT(6),    /**< Event to indicate fresh boot */
     CONTROL_TASK_MSG_EVT_SYSTEM_MAX,                    /**< Maximum system event value. */
 } control_task_msg_evt_system_t;
 
@@ -134,7 +133,7 @@ typedef enum control_task_msg_evt_config
     CONTROL_TASK_MSG_EVT_PUB_DEL            = MESHX_BIT(7), /**< Event for deleting a publication. */
     CONTROL_TASK_MSG_EVT_NET_KEY_ADD        = MESHX_BIT(8), /**< Event for adding a network key. */
     CONTROL_TASK_MSG_EVT_NET_KEY_DEL        = MESHX_BIT(9), /**< Event for deleting a network key. */
-    CONTROL_TASK_MSG_EVT_CONFIG_ALL         = 0xFFFFFFFF, /**< Event for all configuration events. */
+    CONTROL_TASK_MSG_EVT_CONFIG_ALL         = 0xFF, /**< Event for all configuration events. */
 } control_task_msg_evt_config_t;
 
 /**
@@ -149,7 +148,8 @@ typedef enum control_task_msg_evt_provision
     CONTROL_TASK_MSG_EVT_PROXY_CONNECT          = MESHX_BIT(5), /**< ESP_BLE_MESH_PROXY_SERVER_CONNECTED_EVT */
     CONTROL_TASK_MSG_EVT_PROXY_DISCONN          = MESHX_BIT(6), /**< ESP_BLE_MESH_PROXY_SERVER_DISCONNECTED_EVT */
     CONTROL_TASK_MSG_EVT_EN_NODE_PROV           = MESHX_BIT(7), /**< ESP_BLE_MESH_NODE_PROV_ENABLE_COMP_EVT */
-    CONTROL_TASK_MSG_EVT_PROVISION_ALL          = 0xFF, /**< Maximum provisioning event value. */
+    CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT      = MESHX_BIT(8), /**< Event to indicate fresh boot */
+    CONTROL_TASK_MSG_EVT_PROVISION_ALL          = 0xFFFF, /**< Maximum provisioning event value. */
 } control_task_msg_evt_provision_t;
 
 /**

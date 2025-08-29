@@ -283,27 +283,33 @@ static meshx_err_t cwww_client_config_srv_cb (
 #if defined(__MESHX_CONTROL_TASK__)
 
 /**
- * @brief CW-WW Client Freshboot Control Task Message Handler
+ * @brief CW-WW Client Provisioning Server Message Handler
  *
- * This function handles the CW-WW client control task messages.
+ * This function handles the CW-WW client provisioning server messages.
  *
  * @param[in] pdev   Pointer to the device structure.
  * @param[in] evt    Event type of the control task message.
  * @param[in] params Pointer to the parameters of the control task message.
  * @return meshx_err_t
  */
-static meshx_err_t cwww_cli_freshboot_control_task_msg_handle(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+static meshx_err_t cwww_cli_prov_srv_msg_handle(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
 {
     if(!pdev)
         return MESHX_INVALID_ARG;
 
     MESHX_UNUSED(params);
-    MESHX_UNUSED(evt);
     meshx_err_t err = MESHX_SUCCESS;
-
-    for(uint16_t i = cwww_client_element_init_ctrl.element_id_start; i < cwww_client_element_init_ctrl.element_id_end; i++)
+    switch (evt)
     {
-        err = meshx_cwww_el_get_state(i, CWWW_CLI_SIG_ID_MAX);
+        case CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT:
+            for(uint16_t i = cwww_client_element_init_ctrl.element_id_start; i < cwww_client_element_init_ctrl.element_id_end; i++)
+            {
+                err = meshx_cwww_el_get_state(i, CWWW_CLI_SIG_ID_MAX);
+            }
+            break;
+        default:
+            MESHX_LOGW(MOD_LCC, "Unhandled event: %d", evt);
+            break;
     }
     return err;
 }
@@ -896,32 +902,6 @@ static meshx_err_t meshx_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, 
 }
 
 /**
- * @brief Registers a callback handler for fresh boot events.
- *
- * This function subscribes the provided callback to control task messages
- * related to element state changes. It ensures the callback is valid before subscribing.
- *
- * @param[in] callback  The callback function to handle element state change messages.
- *
- * @return
- *     - MESHX_INVALID_ARG if the callback is NULL.
- *     - Result of control_task_msg_subscribe() otherwise.
- */
-static meshx_err_t meshx_cwww_cli_reg_freshboot_cb(control_task_msg_handle_t callback)
-{
-    if (callback == NULL)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    return control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_SYSTEM,
-        CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT,
-        callback
-    );
-}
-
-/**
  * @brief Registers a callback handler for CW-WW application requests.
  *
  * This function subscribes the provided callback to control task messages
@@ -1081,8 +1061,8 @@ meshx_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt
         return err;
     }
     /* Register freshboot control task callback */
-    err = meshx_cwww_cli_reg_freshboot_cb(
-        (control_task_msg_handle_t)&cwww_cli_freshboot_control_task_msg_handle);
+    err = meshx_prov_srv_reg_el_client_cb(
+        (prov_srv_cb_t)&cwww_cli_prov_srv_msg_handle);
     if (err)
     {
         MESHX_LOGE(MOD_LCC, "control task callback reg failed: (%d)", err);

@@ -490,6 +490,106 @@
 
 #define MESHX_SETTINGS_UID_SIZE 20
 
+/*!< This enum value is the event of node/provisioner/fast provisioning */
+typedef enum {
+    MESHX_PROV_REGISTER_COMP_EVT,                        /*!< Initialize BLE Mesh provisioning capabilities and internal data information completion event */
+    MESHX_NODE_SET_UNPROV_DEV_NAME_COMP_EVT,             /*!< Set the unprovisioned device name completion event */
+    MESHX_NODE_PROV_ENABLE_COMP_EVT,                     /*!< Enable node provisioning functionality completion event */
+    MESHX_NODE_PROV_DISABLE_COMP_EVT,                    /*!< Disable node provisioning functionality completion event */
+    MESHX_NODE_PROV_LINK_OPEN_EVT,                       /*!< Establish a BLE Mesh link event */
+    MESHX_NODE_PROV_LINK_CLOSE_EVT,                      /*!< Close a BLE Mesh link event */
+    MESHX_NODE_PROV_OOB_PUB_KEY_EVT,                     /*!< Generate Node input OOB public key event */
+    MESHX_NODE_PROV_OUTPUT_NUMBER_EVT,                   /*!< Generate Node Output Number event */
+    MESHX_NODE_PROV_OUTPUT_STRING_EVT,                   /*!< Generate Node Output String event */
+    MESHX_NODE_PROV_INPUT_EVT,                           /*!< Event requiring the user to input a number or string */
+    MESHX_NODE_PROV_COMPLETE_EVT,                        /*!< Provisioning done event */
+    MESHX_NODE_PROV_RESET_EVT,                           /*!< Provisioning reset event */
+    MESHX_NODE_PROV_SET_OOB_PUB_KEY_COMP_EVT,            /*!< Node set oob public key completion event */
+    MESHX_NODE_PROV_INPUT_NUMBER_COMP_EVT,               /*!< Node input number completion event */
+    MESHX_NODE_PROV_INPUT_STRING_COMP_EVT,               /*!< Node input string completion event */
+    MESHX_NODE_PROXY_IDENTITY_ENABLE_COMP_EVT,           /*!< Enable BLE Mesh Proxy Identity advertising completion event */
+    MESHX_NODE_PRIVATE_PROXY_IDENTITY_ENABLE_COMP_EVT,   /*!< Enable BLE Mesh Private Proxy Identity advertising completion event */
+    MESHX_NODE_PRIVATE_PROXY_IDENTITY_DISABLE_COMP_EVT,  /*!< Disable BLE Mesh Private Proxy Identity advertising completion event */
+    MESHX_NODE_PROXY_GATT_ENABLE_COMP_EVT,               /*!< Enable BLE Mesh GATT Proxy Service completion event */
+    MESHX_NODE_PROXY_GATT_DISABLE_COMP_EVT,              /*!< Disable BLE Mesh GATT Proxy Service completion event */
+    MESHX_NODE_ADD_LOCAL_NET_KEY_COMP_EVT,               /*!< Node add NetKey locally completion event */
+    MESHX_NODE_ADD_LOCAL_APP_KEY_COMP_EVT,               /*!< Node add AppKey locally completion event */
+    MESHX_NODE_BIND_APP_KEY_TO_MODEL_COMP_EVT,           /*!< Node bind AppKey to model locally completion event */
+    MESHX_PROVISIONER_PROV_ENABLE_COMP_EVT,              /*!< Provisioner enable provisioning functionality completion event */
+    MESHX_PROVISIONER_PROV_DISABLE_COMP_EVT,             /*!< Provisioner disable provisioning functionality completion event */
+    MESHX_PROVISIONER_RECV_UNPROV_ADV_PKT_EVT,           /*!< Provisioner receives unprovisioned device beacon event */
+    MESHX_PROVISIONER_PROV_READ_OOB_PUB_KEY_EVT,         /*!< Provisioner read unprovisioned device OOB public key event */
+    MESHX_PROVISIONER_PROV_INPUT_EVT,                    /*!< Provisioner input value for provisioning procedure event */
+    MESHX_PROVISIONER_PROV_OUTPUT_EVT,                   /*!< Provisioner output value for provisioning procedure event */
+    MESHX_PROVISIONER_PROV_LINK_OPEN_EVT,                /*!< Provisioner establish a BLE Mesh link event */
+    MESHX_PROVISIONER_PROV_LINK_CLOSE_EVT,               /*!< Provisioner close a BLE Mesh link event */
+    MESHX_PROVISIONER_PROV_COMPLETE_EVT,                 /*!< Provisioner provisioning done event */
+    MESHX_PROVISIONER_CERT_BASED_PROV_START_EVT,         /*!< Provisioner initiate a certificate based provisioning */
+    MESHX_PROVISIONER_RECV_PROV_RECORDS_LIST_EVT,        /*!< Provisioner receive provisioning records list event */
+    MESHX_PROVISIONER_PROV_RECORD_RECV_COMP_EVT,         /*!< Provisioner receive provisioning record complete event */
+    MESHX_PROVISIONER_SEND_PROV_RECORDS_GET_EVT,         /*!< Provisioner send provisioning records get to device event */
+    MESHX_PROVISIONER_SEND_PROV_RECORD_REQUEST_EVT,      /*!< Provisioner send provisioning record request to device event */
+    MESHX_PROVISIONER_SEND_PROV_INVITE_EVT,              /*!< Provisioner send provisioning invite to device event */
+    MESHX_PROVISIONER_SEND_LINK_CLOSE_EVT,               /*!< Provisioner send link close to device event */
+    MESHX_PROVISIONER_ADD_UNPROV_DEV_COMP_EVT,           /*!< Provisioner add a device to the list which contains devices that are waiting/going to be provisioned completion event */
+    MESHX_PROVISIONER_PROV_DEV_WITH_ADDR_COMP_EVT,       /*!< Provisioner start to provision an unprovisioned device completion event */
+    MESHX_PROVISIONER_DELETE_DEV_COMP_EVT,               /*!< Provisioner delete a device from the list, close provisioning link with the device completion event */
+    MESHX_PROVISIONER_SET_DEV_UUID_MATCH_COMP_EVT,       /*!< Provisioner set the value to be compared with part of the unprovisioned device UUID completion event */
+    MESHX_PROVISIONER_SET_PROV_DATA_INFO_COMP_EVT,       /*!< Provisioner set net_idx/flags/iv_index used for provisioning completion event */
+    MESHX_PROVISIONER_SET_STATIC_OOB_VALUE_COMP_EVT,     /*!< Provisioner set static oob value used for provisioning completion event */
+    MESHX_PROVISIONER_SET_PRIMARY_ELEM_ADDR_COMP_EVT,    /*!< Provisioner set unicast address of primary element completion event */
+    MESHX_PROVISIONER_PROV_READ_OOB_PUB_KEY_COMP_EVT,    /*!< Provisioner read unprovisioned device OOB public key completion event */
+    MESHX_PROVISIONER_PROV_INPUT_NUMBER_COMP_EVT,        /*!< Provisioner input number completion event */
+    MESHX_PROVISIONER_PROV_INPUT_STRING_COMP_EVT,        /*!< Provisioner input string completion event */
+    MESHX_PROVISIONER_SET_NODE_NAME_COMP_EVT,            /*!< Provisioner set node name completion event */
+    MESHX_PROVISIONER_ADD_LOCAL_APP_KEY_COMP_EVT,        /*!< Provisioner add local app key completion event */
+    MESHX_PROVISIONER_UPDATE_LOCAL_APP_KEY_COMP_EVT,     /*!< Provisioner update local app key completion event */
+    MESHX_PROVISIONER_BIND_APP_KEY_TO_MODEL_COMP_EVT,    /*!< Provisioner bind local model with local app key completion event */
+    MESHX_PROVISIONER_ADD_LOCAL_NET_KEY_COMP_EVT,        /*!< Provisioner add local network key completion event */
+    MESHX_PROVISIONER_UPDATE_LOCAL_NET_KEY_COMP_EVT,     /*!< Provisioner update local network key completion event */
+    MESHX_PROVISIONER_STORE_NODE_COMP_DATA_COMP_EVT,     /*!< Provisioner store node composition data completion event */
+    MESHX_PROVISIONER_DELETE_NODE_WITH_UUID_COMP_EVT,    /*!< Provisioner delete node with uuid completion event */
+    MESHX_PROVISIONER_DELETE_NODE_WITH_ADDR_COMP_EVT,    /*!< Provisioner delete node with unicast address completion event */
+    MESHX_PROVISIONER_ENABLE_HEARTBEAT_RECV_COMP_EVT,     /*!< Provisioner start to receive heartbeat message completion event */
+    MESHX_PROVISIONER_SET_HEARTBEAT_FILTER_TYPE_COMP_EVT, /*!< Provisioner set the heartbeat filter type completion event */
+    MESHX_PROVISIONER_SET_HEARTBEAT_FILTER_INFO_COMP_EVT, /*!< Provisioner set the heartbeat filter information completion event */
+    MESHX_PROVISIONER_RECV_HEARTBEAT_MESSAGE_EVT,         /*!< Provisioner receive heartbeat message event */
+    MESHX_PROVISIONER_DIRECT_ERASE_SETTINGS_COMP_EVT,        /*!< Provisioner directly erase settings completion event */
+    MESHX_PROVISIONER_OPEN_SETTINGS_WITH_INDEX_COMP_EVT,     /*!< Provisioner open settings with index completion event */
+    MESHX_PROVISIONER_OPEN_SETTINGS_WITH_UID_COMP_EVT,       /*!< Provisioner open settings with user id completion event */
+    MESHX_PROVISIONER_CLOSE_SETTINGS_WITH_INDEX_COMP_EVT,    /*!< Provisioner close settings with index completion event */
+    MESHX_PROVISIONER_CLOSE_SETTINGS_WITH_UID_COMP_EVT,      /*!< Provisioner close settings with user id completion event */
+    MESHX_PROVISIONER_DELETE_SETTINGS_WITH_INDEX_COMP_EVT,   /*!< Provisioner delete settings with index completion event */
+    MESHX_PROVISIONER_DELETE_SETTINGS_WITH_UID_COMP_EVT,     /*!< Provisioner delete settings with user id completion event */
+    MESHX_SET_FAST_PROV_INFO_COMP_EVT,                   /*!< Set fast provisioning information (e.g. unicast address range, net_idx, etc.) completion event */
+    MESHX_SET_FAST_PROV_ACTION_COMP_EVT,                 /*!< Set fast provisioning action completion event */
+    MESHX_HEARTBEAT_MESSAGE_RECV_EVT,                    /*!< Receive Heartbeat message event */
+    MESHX_LPN_ENABLE_COMP_EVT,                           /*!< Enable Low Power Node completion event */
+    MESHX_LPN_DISABLE_COMP_EVT,                          /*!< Disable Low Power Node completion event */
+    MESHX_LPN_POLL_COMP_EVT,                             /*!< Low Power Node send Friend Poll completion event */
+    MESHX_LPN_FRIENDSHIP_ESTABLISH_EVT,                  /*!< Low Power Node establishes friendship event */
+    MESHX_LPN_FRIENDSHIP_TERMINATE_EVT,                  /*!< Low Power Node terminates friendship event */
+    MESHX_FRIEND_FRIENDSHIP_ESTABLISH_EVT,               /*!< Friend Node establishes friendship event */
+    MESHX_FRIEND_FRIENDSHIP_TERMINATE_EVT,               /*!< Friend Node terminates friendship event */
+    MESHX_PROXY_CLIENT_RECV_ADV_PKT_EVT,                 /*!< Proxy Client receives Network ID advertising packet event */
+    MESHX_PROXY_CLIENT_CONNECTED_EVT,                    /*!< Proxy Client establishes connection successfully event */
+    MESHX_PROXY_CLIENT_DISCONNECTED_EVT,                 /*!< Proxy Client terminates connection successfully event */
+    MESHX_PROXY_CLIENT_RECV_FILTER_STATUS_EVT,           /*!< Proxy Client receives Proxy Filter Status event */
+    MESHX_PROXY_CLIENT_CONNECT_COMP_EVT,                 /*!< Proxy Client connect completion event */
+    MESHX_PROXY_CLIENT_DISCONNECT_COMP_EVT,              /*!< Proxy Client disconnect completion event */
+    MESHX_PROXY_CLIENT_SET_FILTER_TYPE_COMP_EVT,         /*!< Proxy Client set filter type completion event */
+    MESHX_PROXY_CLIENT_ADD_FILTER_ADDR_COMP_EVT,         /*!< Proxy Client add filter address completion event */
+    MESHX_PROXY_CLIENT_REMOVE_FILTER_ADDR_COMP_EVT,      /*!< Proxy Client remove filter address completion event */
+    MESHX_PROXY_CLIENT_DIRECTED_PROXY_SET_COMP_EVT,      /*!< Proxy Client directed proxy set completion event */
+    MESHX_PROXY_SERVER_CONNECTED_EVT,                    /*!< Proxy Server establishes connection successfully event */
+    MESHX_PROXY_SERVER_DISCONNECTED_EVT,                 /*!< Proxy Server terminates connection successfully event */
+    MESHX_PROXY_CLIENT_SEND_SOLIC_PDU_COMP_EVT,          /*!< Proxy Client send Solicitation PDU completion event */
+    MESHX_MODEL_SUBSCRIBE_GROUP_ADDR_COMP_EVT,           /*!< Local model subscribes group address completion event */
+    MESHX_MODEL_UNSUBSCRIBE_GROUP_ADDR_COMP_EVT,         /*!< Local model unsubscribes group address completion event */
+    MESHX_DEINIT_MESH_COMP_EVT,                          /*!< De-initialize BLE Mesh stack completion event */
+    MESHX_PROV_EVT_MAX,
+} meshx_prov_cb_event_t;
+
 typedef enum {
     MESHX_TYPE_PROV_CB,
     MESHX_TYPE_OUTPUT_NUM_CB,

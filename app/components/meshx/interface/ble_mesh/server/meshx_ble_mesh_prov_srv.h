@@ -851,6 +851,29 @@ typedef union
     } deinit_mesh_comp;  /*!< Event parameter of MESHX_DEINIT_MESH_COMP_EVT */
 } meshx_prov_cb_param_t; /*!< Event parameters of MESHX_DEINIT_MESH_COMP_EVT */
 
+typedef struct meshx_ble_mesh_prov_srv_param
+{
+    uint16_t prov_evt;
+    meshx_prov_cb_param_t param;
+}meshx_prov_srv_param_t;
+
+/**
+ * @brief Notify the model event to the application.
+ *
+ * @note This API is not to be defined in Platform Port layer and shall be called by the
+ *       respective platform event handler to notify the MeshX of a model event.
+ *
+ * This function notifies the application of a model event by invoking the registered
+ * provisioning callback with the provided event parameters.
+ *
+ * @param[in] param Pointer to the event parameters structure.
+ *
+ * @return
+ *    - MESHX_SUCCESS: Success
+ *    - MESHX_FAIL: Failed to notify model event
+ */
+meshx_err_t meshx_prov_srv_notify_plat_event(meshx_prov_srv_param_t *param);
+
 /**
  * @brief Initialize provisioning parameters.
  *
@@ -872,6 +895,6 @@ meshx_err_t meshx_plat_init_prov(const uint8_t *uuid);
  *
  * @return Pointer to the global provisioning parameters.
  */
-MESHX_PROV *meshx_plat_get_prov(void);
+meshx_ptr_t meshx_plat_get_prov(void);
 
 #endif /* __MESHX_BLE_MESH_PROV_SRV_H__ */
