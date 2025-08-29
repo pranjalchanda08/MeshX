@@ -55,7 +55,6 @@ static const char meshX_banner[] = {
 static dev_struct_t g_dev;
 
 static meshx_config_t g_config;
-static meshx_os_timer_t *g_boot_timer;
 
 meshx_prov_params_t g_prov_cfg = {
     .uuid = MESHX_UUID_EMPTY,  /**< UUID for the provisioning device */
@@ -186,64 +185,20 @@ static meshx_err_t meshx_ble_mesh_init(meshx_config_t *config)
     MESHX_ERR_PRINT_RET("Platform BT init failed", err);
 
     g_prov_cfg.uuid = config->meshx_uuid_addr;
+    g_prov_cfg.freshboot_timeout_ms = FRESHBOOT_TIMEOUT_MS;
+
     meshx_dev_restore(&g_dev, config);
 
     err = meshx_element_init(&g_dev, config);
     MESHX_ERR_PRINT_RET("Failed to initialize BLE Elements", err);
 
+    err = meshx_init_prov(&g_dev, &g_prov_cfg);
+    MESHX_ERR_PRINT_RET("Failed to initialize provisioning", err);
+
     err = meshx_plat_ble_mesh_init(&g_prov_cfg, g_dev.composition);
     MESHX_ERR_PRINT_RET("Failed to initialize BLE Mesh stack", err);
 
     return MESHX_SUCCESS;
-}
-
-/**
- * @brief Callback function for the boot timer.
- *
- * This function is called when the boot timer expires.
- *
- * @param[in] p_timer Pointer to the timer structure.
- */
-static void meshx_init_boot_timer_trigger_cb(const meshx_os_timer_t* p_timer)
-{
-    MESHX_LOGI(MODULE_ID_COMMON, "Fresh Boot Timer Expired");
-
-    meshx_err_t err = control_task_msg_publish(
-        CONTROL_TASK_MSG_CODE_SYSTEM,
-        CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT,
-        p_timer,
-        OS_TIMER_SIZE
-    );
-    if(err)
-    {
-        MESHX_LOGE(MODULE_ID_COMMON, "Failed to publish fresh boot event: (%d)", err);
-    }
-}
-
-/**
- * @brief Initializes the boot timer.
- *
- * @return MESHX_SUCCESS on success, error code otherwise.
- */
-static meshx_err_t meshx_init_boot_timer(void)
-{
-    if(g_dev.meshx_store.node_addr == MESHX_ADDR_UNASSIGNED)
-    {
-        MESHX_LOGI(MODULE_ID_COMMON, "Device not provisioned, not starting boot timer");
-        return MESHX_SUCCESS;
-    }
-    meshx_err_t err = meshx_os_timer_create("boot_timer",
-        FRESHBOOT_TIMEOUT_MS,
-        false,
-        meshx_init_boot_timer_trigger_cb,
-        &g_boot_timer
-    );
-    MESHX_ERR_PRINT_RET("Failed to create boot timer", err);
-
-    err = meshx_os_timer_start(g_boot_timer);
-    MESHX_ERR_PRINT_RET("Failed to start boot timer", err);
-
-    return err;
 }
 
 /**
@@ -302,9 +257,6 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     err = meshx_ble_mesh_init(&g_config);
     MESHX_ERR_PRINT_RET("Bluetooth mesh init failed", err);
 
-    /* Initialize boot timer */
-    err = meshx_init_boot_timer();
-    MESHX_ERR_PRINT_RET("Boot Timer Init failed", err);
     /* Print the MeshX banner */
     CONFIG_MESHX_LOG_PRINTF(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_CYAN) "%s" LOG_ANSI_COLOR_RESET, meshX_banner);
 

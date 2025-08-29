@@ -39,6 +39,9 @@
  * MESHX_SERVER_MODELS
  */
 #define MESHX_PROV              esp_ble_mesh_prov_t
+#define MESHX_PROV_CB           esp_ble_mesh_prov_cb_t
+#define MESHX_PROV_CB_EVT       esp_ble_mesh_prov_cb_event_t
+#define MESHX_PROV_CB_PARAM     esp_ble_mesh_prov_cb_param_t
 #define MESHX_CFG_SRV           esp_ble_mesh_cfg_srv_t
 
 #define MESHX_GEN_SRV_CB        esp_ble_mesh_generic_server_cb_t

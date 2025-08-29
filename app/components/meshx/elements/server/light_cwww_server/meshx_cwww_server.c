@@ -454,7 +454,6 @@ el_ctrl_task_hndlr_exit:
  */
 static meshx_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, control_task_msg_evt_t evt, void const *params)
 {
-    MESHX_UNUSED(evt);
     MESHX_UNUSED(params);
 
     size_t rel_el_id = 0;
@@ -462,56 +461,69 @@ static meshx_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, cont
     meshx_gen_srv_cb_param_t gen_srv_send;
     meshx_lighting_server_cb_param_t light_srv_send;
 
-    for (size_t el_id = cwww_element_init_ctrl.element_id_start; el_id < cwww_element_init_ctrl.element_id_end; el_id++)
+    switch(evt)
     {
-        rel_el_id = GET_RELATIVE_EL_IDX(el_id);
+        case CONTROL_TASK_MSG_EVT_EN_NODE_PROV:
+            for (size_t el_id = cwww_element_init_ctrl.element_id_start; el_id < cwww_element_init_ctrl.element_id_end; el_id++)
+            {
+                rel_el_id = GET_RELATIVE_EL_IDX(el_id);
 
-        err = meshx_gen_on_off_srv_send_pack_create(
-            CWWW_SRV_EL(rel_el_id).onoff_srv_model->meshx_server_sig_model,
-            (uint16_t)el_id,
-            pdev->meshx_store.net_key_id,
-            CWWW_SRV_EL(rel_el_id).srv_ctx->app_id,
-            CWWW_SRV_EL(rel_el_id).srv_ctx->pub_addr,
-            CWWW_SRV_EL(rel_el_id).srv_ctx->prev_state.on_off,
-            &gen_srv_send
-        );
+                err = meshx_gen_on_off_srv_send_pack_create(
+                        CWWW_SRV_EL(rel_el_id).onoff_srv_model->meshx_server_sig_model,
+                        (uint16_t)el_id,
+                        pdev->meshx_store.net_key_id,
+                        CWWW_SRV_EL(rel_el_id).srv_ctx->app_id,
+                        CWWW_SRV_EL(rel_el_id).srv_ctx->pub_addr,
+                        CWWW_SRV_EL(rel_el_id).srv_ctx->prev_state.on_off,
+                        &gen_srv_send
+                    );
 
-        if ((err != MESHX_SUCCESS) || (gen_srv_send.ctx.dst_addr == MESHX_ADDR_UNASSIGNED) || (gen_srv_send.ctx.app_idx == MESHX_KEY_UNUSED))
-            continue;
+                if ((err != MESHX_SUCCESS)
+                || (gen_srv_send.ctx.dst_addr == MESHX_ADDR_UNASSIGNED)
+                || (gen_srv_send.ctx.app_idx == MESHX_KEY_UNUSED))
+                    continue;
 
-        err = meshx_gen_srv_send_msg_to_ble(
-            CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV,
-            &gen_srv_send
-        );
+                err = meshx_gen_srv_send_msg_to_ble(
+                    CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV,
+                    &gen_srv_send
+                );
 
-        if (err)
-        {
-            MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to send ONOFF status message (Err: %x)", err);
-            return err;
-        }
+                if (err)
+                {
+                    MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to send ONOFF status message (Err: %x)", err);
+                    return err;
+                }
 
-        err = meshx_light_ctl_srv_send_pack_create(
-            CWWW_SRV_EL(rel_el_id).ctl_srv_model->meshx_server_sig_model,
-            (uint16_t)el_id,
-            pdev->meshx_store.net_key_id,
-            CWWW_SRV_EL(rel_el_id).srv_ctx->app_id,
-            CWWW_SRV_EL(rel_el_id).srv_ctx->pub_addr,
-            CWWW_SRV_EL(rel_el_id).srv_ctx->prev_ctl_state,
-            &light_srv_send
-        );
+                err = meshx_light_ctl_srv_send_pack_create(
+                        CWWW_SRV_EL(rel_el_id).ctl_srv_model->meshx_server_sig_model,
+                        (uint16_t)el_id,
+                        pdev->meshx_store.net_key_id,
+                        CWWW_SRV_EL(rel_el_id).srv_ctx->app_id,
+                        CWWW_SRV_EL(rel_el_id).srv_ctx->pub_addr,
+                        CWWW_SRV_EL(rel_el_id).srv_ctx->prev_ctl_state,
+                        &light_srv_send
+                    );
 
-        if ((err != MESHX_SUCCESS) || (light_srv_send.ctx.dst_addr == MESHX_ADDR_UNASSIGNED) || (light_srv_send.ctx.app_idx == MESHX_KEY_UNUSED))
-            continue;
+                if ((err != MESHX_SUCCESS)
+                || (light_srv_send.ctx.dst_addr == MESHX_ADDR_UNASSIGNED)
+                || (light_srv_send.ctx.app_idx == MESHX_KEY_UNUSED))
+                    continue;
 
-        err = meshx_gen_light_srv_send_msg_to_ble(
-            CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV,
-            &light_srv_send
-        );
-        if (err)
-        {
-            MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to send CTL status message (Err: %x)", err);
-            return err;
-        }
+                err = meshx_gen_light_srv_send_msg_to_ble(
+                    CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV,
+                    &light_srv_send
+                );
+                if (err)
+                {
+                    MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to send CTL status message (Err: %x)", err);
+                    return err;
+                }
+            }
+            break;
+        default:
+            MESHX_LOGW(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Unhandled event: %d", evt);
+            err = MESHX_INVALID_STATE;
+            break;
     }
 
     return err;
@@ -632,10 +644,7 @@ meshx_err_t meshx_create_cwww_elements(dev_struct_t *pdev, uint16_t element_cnt)
         return err;
     }
 
-    err = control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_PROVISION,
-        CONTROL_TASK_MSG_EVT_EN_NODE_PROV,
-        (control_task_msg_handle_t)&cwww_prov_control_task_handler);
+    err = meshx_prov_srv_reg_el_server_cb((prov_srv_cb_t)&cwww_prov_control_task_handler);
     if (err)
     {
         MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to register control task callback: (%d)", err);

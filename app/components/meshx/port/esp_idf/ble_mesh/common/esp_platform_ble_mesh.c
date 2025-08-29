@@ -199,13 +199,8 @@ meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, meshx_
 
     /* Initialize BLE Mesh Provisioner */
     MESHX_PROV *p_prov = NULL;
-    err = meshx_plat_init_prov(prov_cfg->uuid);
-    if(err)
-    {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize provisioning");
-        return err;
-    }
-    p_prov = meshx_plat_get_prov();
+
+    p_prov = (MESHX_PROV *)meshx_plat_get_prov();
     if(p_prov == NULL)
     {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to get provisioning instance");

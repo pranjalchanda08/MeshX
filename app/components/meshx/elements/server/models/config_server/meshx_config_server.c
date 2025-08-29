@@ -61,6 +61,10 @@ static meshx_err_t meshx_config_server_control_task_handler(
     }
     const meshx_config_srv_cb_param_t *pub_param = (const meshx_config_srv_cb_param_t *)params;
 
+    if(evt != MESHX_MODEL_ID_CONFIG_SRV)
+    {
+        return MESHX_INVALID_ARG;
+    }
     /* Map event to config event */
     config_evt_t config_evt = CONTROL_TASK_MSG_EVT_CONFIG_ALL;
     for (uint16_t i = 0; i < config_srv_evt_map_count; i++)
@@ -99,7 +103,7 @@ meshx_err_t meshx_init_config_server()
 
     control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_FRM_BLE,
-        CONTROL_TASK_MSG_EVT_CONFIG_ALL,
+        MESHX_MODEL_ID_CONFIG_SRV,
         (control_task_msg_handle_t)meshx_config_server_control_task_handler);
 
     return meshx_plat_config_srv_init();
