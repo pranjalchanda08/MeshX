@@ -83,7 +83,7 @@ static void meshx_ble_mesh_config_server_cb(esp_ble_mesh_cfg_server_cb_event_t e
 
     meshx_err_t err = control_task_msg_publish(
         CONTROL_TASK_MSG_CODE_FRM_BLE,
-        CONTROL_TASK_MSG_EVT_CONFIG_ALL,
+        MESHX_MODEL_ID_CONFIG_SRV,
         &pub_param,
         sizeof(pub_param));
     if (err)

@@ -282,7 +282,7 @@ static meshx_err_t relay_client_config_cli_cb(
 #endif /* #if CONFIG_ENABLE_CONFIG_SERVER */
 
 /**
- * @brief Relay Client Freshboot Control Task Message Handler
+ * @brief Relay Client Provisioning Server Control Task Message Handler
  *
  * This function handles the CW-WW client control task messages.
  *
@@ -291,23 +291,30 @@ static meshx_err_t relay_client_config_cli_cb(
  * @param[in] params Pointer to the parameters of the control task message.
  * @return meshx_err_t
  */
-static meshx_err_t relay_cli_freshboot_msg_handle(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+static meshx_err_t relay_cli_prov_srv_msg_handle(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
 {
     if(!pdev)
         return MESHX_INVALID_ARG;
 
     MESHX_UNUSED(params);
-    MESHX_UNUSED(evt);
     size_t rel_el_id = 0;
-    for (size_t i = relay_element_init_ctrl.element_id_start; i < relay_element_init_ctrl.element_id_end; i++)
+    switch (evt)
     {
-        rel_el_id = GET_RELATIVE_EL_IDX(i);
-        if(false == (RELAY_CLI_EL(rel_el_id).element_model_init
-                    & MESHX_BIT(RELAY_CLI_SIG_ONOFF_MODEL_ID)))
-        {
-            MESHX_LOGD(MOD_SRC, "Sending GET for model: 0");
-            return meshx_relay_el_get_state((uint16_t) i);
-        }
+        case CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT:
+            for (size_t i = relay_element_init_ctrl.element_id_start; i < relay_element_init_ctrl.element_id_end; i++)
+            {
+                rel_el_id = GET_RELATIVE_EL_IDX(i);
+                if(false == (RELAY_CLI_EL(rel_el_id).element_model_init
+                            & MESHX_BIT(RELAY_CLI_SIG_ONOFF_MODEL_ID)))
+                {
+                    MESHX_LOGD(MOD_SRC, "Sending GET for model: 0");
+                    return meshx_relay_el_get_state((uint16_t) i);
+                }
+            }
+            break;
+        default:
+            MESHX_LOGW(MOD_SRC, "Unhandled event: %p", (void *)evt);
+            break;
     }
 
     return MESHX_SUCCESS;
@@ -547,24 +554,6 @@ static meshx_err_t meshx_relay_cli_reg_app_req_cb()
 }
 
 /**
- * @brief Registers a callback handler for fresh boot events.
- *
- * This function subscribes the provided callback to control task messages
- * related to element state changes. It ensures the callback is valid before subscribing.
- *
- * @return
- *     - Result of control_task_msg_subscribe() otherwise.
- */
-static meshx_err_t meshx_relay_cli_reg_freshboot_cb()
-{
-    return control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_SYSTEM,
-        CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT,
-        (control_task_msg_handle_t)&relay_cli_freshboot_msg_handle
-    );
-}
-
-/**
  * @brief Registers a callback for relay element state change events.
  *
  * This function subscribes the provided callback to control task messages
@@ -675,7 +664,8 @@ meshx_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cn
         MESHX_LOGE(MOD_SRC, "Relay Client app req callback reg failed: (%d)", err);
         return err;
     }
-    err = meshx_relay_cli_reg_freshboot_cb();
+    err = meshx_prov_srv_reg_el_client_cb(
+        (prov_srv_cb_t)&relay_cli_prov_srv_msg_handle);
     if (err)
     {
         MESHX_LOGE(MOD_SRC, "Relay Client freshboot callback reg failed: (%d)", err);

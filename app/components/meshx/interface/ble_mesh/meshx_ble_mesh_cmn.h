@@ -55,6 +55,7 @@ typedef struct meshx_prov_params
 {
     uint8_t *uuid;           /**< UUID for the provisioning device */
     uint8_t *node_name;      /**< Node name for the provisioning device */
+    uint16_t freshboot_timeout_ms; /**< Fresh boot timeout in milliseconds */
 } meshx_prov_params_t;
 
 /**

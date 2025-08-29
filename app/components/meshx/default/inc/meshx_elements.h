@@ -13,7 +13,7 @@
 #include <app_common.h>
 
 #if CONFIG_ENABLE_PROVISIONING
-#include <meshx_provisioning_server.h>
+#include <meshx_prov_srv.h>
 #endif /* CONFIG_ENABLE_PROVISIONING */
 
 #if CONFIG_ENABLE_CONFIG_SERVER
