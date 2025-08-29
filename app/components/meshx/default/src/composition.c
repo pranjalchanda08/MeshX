@@ -34,17 +34,6 @@
 #include "meshx_light_cwww_client_element.h"
 #endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */
 
-/**
- * @brief Mask for control task provisioning events.
- *
- * This macro defines a mask that combines multiple control task message events
- * related to provisioning.
- */
-#define CONTROL_TASK_PROV_EVT_MASK CONTROL_TASK_MSG_EVT_IDENTIFY_START \
-                                 | CONTROL_TASK_MSG_EVT_PROVISION_STOP \
-                                 | CONTROL_TASK_MSG_EVT_IDENTIFY_STOP \
-                                 | CONTROL_TASK_MSG_EVT_NODE_RESET
-
 #if CONFIG_SECTION_ENABLE_ELEMENT_TABLE
 #define MESHX_ELEMENT_COMP_TABLE_START  _element_table_start
 #define MESHX_ELEMENT_COMP_TABLE_STOP   _element_table_end
@@ -116,38 +105,6 @@ static uint16_t meshx_sig_root_model_arr_len = MESHX_ARRAY_SIZE(meshx_sig_root_m
 static uint16_t meshx_ven_root_model_arr_len = MESHX_ARRAY_SIZE(meshx_ven_root_model_getfn);
 
 #endif /* #if 0 */
-/**
- * @brief Handles provisioning control task events.
- *
- * This function processes various provisioning-related events and updates
- * the device structure accordingly. It handles events such as provisioning
- * completion and identification start.
- *
- * @param[in] pdev Pointer to the device structure.
- * @param[in] evt The control task message event type.
- * @param[in] params Pointer to the event parameters.
- *
- * @return MESHX_SUCCESS on success, or an error code on failure.
- */
-static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)
-{
-    const meshx_prov_cb_param_t *param = (meshx_prov_cb_param_t*) params;
-
-    switch (evt)
-    {
-        case CONTROL_TASK_MSG_EVT_PROVISION_STOP:
-            pdev->meshx_store.net_key_id = param->node_prov_complete.net_idx;
-            pdev->meshx_store.node_addr  = param->node_prov_complete.addr;
-            meshx_nvs_set(MESHX_NVS_STORE, &pdev->meshx_store, sizeof(pdev->meshx_store), MESHX_NVS_AUTO_COMMIT);
-            break;
-        case CONTROL_TASK_MSG_EVT_IDENTIFY_START:
-            MESHX_LOGI(MODULE_ID_COMMON, "Identify Start");
-            break;
-        default:
-            break;
-    }
-    return MESHX_SUCCESS;
-}
 
 /**
  * @brief Returns the root models for BLE Mesh elements.
@@ -250,12 +207,6 @@ meshx_err_t meshx_create_element_composition(dev_struct_t *p_dev, meshx_config_t
 #endif /* CONFIG_SECTION_ENABLE_ELEMENT_TABLE */
     if(!p_dev || !config || !config->element_comp_arr_len || !config->element_comp_arr)
         return MESHX_INVALID_ARG;
-
-    err = control_task_msg_subscribe(
-            CONTROL_TASK_MSG_CODE_PROVISION,
-            CONTROL_TASK_PROV_EVT_MASK,
-            &meshx_prov_control_task_handler);
-    MESHX_ERR_PRINT_RET("Failed to register control task callback", err);
 
     err = meshx_init_config_server();
     MESHX_ERR_PRINT_RET("Failed to initialize config server", err);
