@@ -284,8 +284,6 @@ static meshx_err_t meshx_init_freshboot_timer(dev_struct_t *p_dev, uint16_t time
  * This function registers the BLE Mesh provisioning callback to handle
  * provisioning events.
  *
- * @param[in] cb Pointer to the provisioning callback structure.
- *
  * @return
  *    - MESHX_SUCCESS: Success
  *    - MESHX_FAIL: Failed to register provisioning callback
@@ -385,8 +383,12 @@ meshx_err_t meshx_prov_srv_reg_el_server_cb(prov_srv_cb_t cb)
         (prov_srv_cb_t)cb
     );
 }
+
 /**
  * @brief Notify the model event to the application.
+ *
+ * @note This API is not to be defined in Platform Port layer and shall be called by the
+ *       respective platform event handler to notify the MeshX of a model event.
  *
  * This function notifies the application of a model event by invoking the registered
  * provisioning callback with the provided event parameters.

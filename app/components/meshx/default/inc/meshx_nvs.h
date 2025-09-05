@@ -174,6 +174,9 @@ meshx_err_t meshx_nvs_element_ctx_set(uint16_t element_id, const void *blob, siz
  * the Non-Volatile Storage (NVS).
  *
  * @param[in] element_id The ID of the element whose context is to be removed.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully removed the context.
  */
 meshx_err_t meshx_nvs_element_ctx_remove(uint16_t element_id);
 
