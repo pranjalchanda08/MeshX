@@ -1,0 +1,7 @@
+<map id="meshx_gen_light_srv_status_send" name="meshx_gen_light_srv_status_send">
+<area shape="rect" id="Node000001" title="Sends a status message for the Lighting Server model." alt="" coords="5,39,149,79"/>
+<area shape="rect" id="Node000002" href="$d5/d98/meshx__light__server_8c.html#a93ab84b7706337c1dd550a817efca526" title="Checks if the given opcode belongs to the Generic Light group." alt="" coords="202,5,338,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,44,186,37,187,43,150,49"/>
+<area shape="rect" id="Node000003" href="$de/d42/esp__light__srv__model_8c.html#ac79c39e50439290a87cd0b7da8fa886a" title="Send a status message from the Light Server. This function constructs and sends a status message cont..." alt="" coords="197,71,343,111"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="150,68,182,74,181,79,149,74"/>
+</map>

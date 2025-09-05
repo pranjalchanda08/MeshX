@@ -1,0 +1,13 @@
+<map id="meshx_prov_control_task_handler" name="meshx_prov_control_task_handler">
+<area shape="rect" id="Node000001" title="Handles provisioning control task events." alt="" coords="829,5,966,46"/>
+<area shape="rect" id="Node000002" href="$d2/d21/meshx__prov__srv_8c.html#acb04eaca0a71bc777d56e2d49162ad58" title="Register the BLE Mesh provisioning callback for MeshX Layer Internal." alt="" coords="620,5,781,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="813,28,781,28,781,23,813,23"/>
+<area shape="rect" id="Node000003" href="$d2/d21/meshx__prov__srv_8c.html#a69e4bb9282a6aad8faa9ee42c968541b" title="Initialize provisioning parameters." alt="" coords="456,13,572,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="605,28,572,28,572,23,605,23"/>
+<area shape="rect" id="Node000004" href="$d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="262,13,408,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="441,28,409,28,409,23,441,23"/>
+<area shape="rect" id="Node000005" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="131,13,214,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="246,28,214,28,214,23,246,23"/>
+<area shape="rect" id="Node000006" href="$d0/d29/main_8c.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title="Main application entry point." alt="" coords="5,13,83,38"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="115,28,83,28,83,23,115,23"/>
+</map>

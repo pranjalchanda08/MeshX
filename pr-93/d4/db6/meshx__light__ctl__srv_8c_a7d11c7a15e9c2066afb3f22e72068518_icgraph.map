@@ -1,0 +1,9 @@
+<map id="meshx_handle_light_ctl_msg" name="meshx_handle_light_ctl_msg">
+<area shape="rect" id="Node000001" title="Handle Light CTL messages for the lighting server model." alt="" coords="729,5,865,46"/>
+<area shape="rect" id="Node000002" href="$d4/db6/meshx__light__ctl__srv_8c.html#adc1d0d7fc5b8e44bebce9c905547780f" title="Initialize the Light CTL Server model." alt="" coords="503,13,681,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="714,28,682,28,682,23,714,23"/>
+<area shape="rect" id="Node000003" href="$d9/d46/meshx__cwww__server_8c.html#ac1498e20904edfabe76c92f9da6375bd" title="Create Dynamic CWWW Server Model Elements." alt="" coords="249,13,455,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="487,28,455,28,455,23,487,23"/>
+<area shape="rect" id="Node000004" href="$d9/d46/meshx__cwww__server_8c.html#aa8082758a025ec4f2663cc48f873b7d9" title=" " alt="" coords="5,13,201,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="233,28,201,28,201,23,233,23"/>
+</map>

@@ -1,0 +1,31 @@
+<map id="meshx_handle_gen_light_msg" name="meshx_handle_gen_light_msg">
+<area shape="rect" id="Node000001" title="Handles generic light model messages for the Light CTL client." alt="" coords="5,117,201,143"/>
+<area shape="rect" id="Node000002" href="$d8/d93/meshx__light__ctl__client_8c.html#a674b0488b86759b3aebf258631325895" title="Notifies about a change in the CTL (Color Temperature Lightness) state." alt="" coords="249,62,414,102"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="167,114,233,100,234,105,168,119"/>
+<area shape="rect" id="Node000008" href="$d8/d93/meshx__light__ctl__client_8c.html#af662d33c9ac9569608d2ad1749e8d7dc" title="Handle timeout for relaying the last Light CTL message." alt="" coords="257,142,406,182"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="200,141,242,147,241,152,199,146"/>
+<area shape="rect" id="Node000003" href="$df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="470,55,642,80"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="414,74,454,71,454,77,415,79"/>
+<area shape="rect" id="Node000004" href="$d2/d6a/FreeRTOS__meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue." alt="" coords="720,5,860,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="620,51,710,32,711,37,621,57"/>
+<area shape="rect" id="Node000005" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="731,55,849,80"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="642,65,716,65,716,70,642,70"/>
+<area shape="rect" id="Node000007" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="723,104,857,130"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="621,78,711,98,710,103,620,84"/>
+<area shape="rect" id="Node000006" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="931,55,1108,80"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="849,65,915,65,915,70,849,70"/>
+<area shape="rect" id="Node000009" href="$d8/d93/meshx__light__ctl__client_8c.html#a0b0bfb546a17cedd810469b795e91948" title="Sends a Light CTL (Color Temperature Lightness) message from the Light CTL Client model." alt="" coords="481,104,630,145"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="406,147,465,137,466,142,407,152"/>
+<area shape="rect" id="Node000013" href="$d8/d93/meshx__light__ctl__client_8c.html#a4464e08bcc032c176c6ca4a91749153c" title="Sends a Light CTL Temperature Range message from the client model." alt="" coords="473,170,638,210"/>
+<area shape="poly" id="edge12_Node000008_Node000013" title=" " alt="" coords="407,169,458,175,457,181,406,174"/>
+<area shape="rect" id="Node000014" href="$d8/d93/meshx__light__ctl__client_8c.html#a6ed820c28aabb44dc82110f0bf2fc992" title="Sends a Light CTL Temperature message from the client model." alt="" coords="462,235,649,276"/>
+<area shape="poly" id="edge14_Node000008_Node000014" title=" " alt="" coords="376,181,463,220,481,227,479,232,461,225,374,186"/>
+<area shape="rect" id="Node000010" href="$d0/dc1/meshx__gen__light__cli_8c.html#af56474ec614f7769336a5a9f401d1223" title="Send a message using the generic client model." alt="" coords="697,177,883,203"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="632,143,727,170,725,175,630,148"/>
+<area shape="rect" id="Node000011" href="$d0/dc1/meshx__gen__light__cli_8c.html#a75d039d7472bc018d53f15a26a9fa2a9" title="Checks if the given model ID corresponds to a Generic Light Client GET opcode." alt="" coords="952,136,1087,177"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="882,174,936,166,937,171,883,179"/>
+<area shape="rect" id="Node000012" href="$d1/d1d/esp__gen__light__cli__model_8c.html#a0bd06a36137fc5ece56bdba4eda206b2" title="Sends a Light Client message over BLE Mesh." alt="" coords="941,202,1098,242"/>
+<area shape="poly" id="edge11_Node000010_Node000012" title=" " alt="" coords="883,200,926,206,925,212,883,206"/>
+<area shape="poly" id="edge13_Node000013_Node000010" title=" " alt="" coords="639,188,682,188,682,193,639,193"/>
+<area shape="poly" id="edge15_Node000014_Node000010" title=" " alt="" coords="630,232,725,205,727,210,632,237"/>
+</map>

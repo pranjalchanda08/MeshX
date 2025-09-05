@@ -1,0 +1,189 @@
+<map id="meshx_cwww_server.c" name="meshx_cwww_server.c">
+<area shape="rect" id="Node000001" title="Implementation of the CW&#45;WW server model for BLE Mesh." alt="" coords="515,5,671,31"/>
+<area shape="rect" id="Node000002" href="$d8/da4/meshx__cwww__server__element_8h.html" title="Header file for CWWW Server Model." alt="" coords="1291,234,1500,260"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="637,29,1339,227,1338,232,635,34"/>
+<area shape="rect" id="Node000042" href="$d3/d7d/meshx__nvs_8h.html" title="Header file for MeshX Non&#45;Volatile Storage (NVS) operations." alt="" coords="123,389,220,414"/>
+<area shape="poly" id="edge77_Node000001_Node000042" title=" " alt="" coords="515,34,458,50,404,76,381,93,363,114,352,137,347,164,347,248,344,273,335,295,321,316,303,334,262,363,220,385,218,380,259,359,299,330,317,312,330,293,339,271,342,248,342,164,347,135,359,111,378,90,401,72,456,45,514,29"/>
+<area shape="rect" id="Node000048" href="$db/d2f/meshx__api_8h.html" title="This file contains the API definitions for the MeshX application." alt="" coords="1669,79,1762,105"/>
+<area shape="poly" id="edge89_Node000001_Node000048" title=" " alt="" coords="671,22,1653,84,1653,89,671,27"/>
+<area shape="rect" id="Node000059" href="$d1/d47/meshx__config__server_8h.html" title="Header file for the meshxuction configuration server model." alt="" coords="244,389,398,414"/>
+<area shape="poly" id="edge122_Node000001_Node000059" title=" " alt="" coords="588,33,561,88,550,125,545,164,545,248,541,275,530,299,513,321,492,339,442,367,391,386,389,381,440,362,489,334,509,317,525,297,536,274,540,248,540,164,544,124,556,86,583,30"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="1426,810,1490,835"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1291,262,1106,288,999,307,890,330,787,357,696,389,623,424,596,444,576,464,568,477,566,490,568,503,576,516,617,564,659,601,702,626,746,643,791,653,838,656,935,652,1036,644,1143,642,1198,648,1254,661,1311,681,1369,711,1405,747,1443,795,1439,798,1401,750,1366,715,1309,686,1252,666,1197,653,1142,648,1037,649,935,658,838,662,790,658,744,648,699,631,656,605,613,568,572,520,563,505,560,490,563,476,572,461,593,440,620,420,694,384,785,352,889,325,998,302,1106,283,1290,257"/>
+<area shape="rect" id="Node000004" href="$df/dd3/app__common_8h.html" title="Common application definitions and includes for BLE Mesh Node." alt="" coords="2094,640,2204,665"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="1501,254,1654,270,1828,297,1911,315,1986,335,2047,359,2091,387,2113,413,2130,442,2142,475,2150,509,2156,573,2154,624,2149,624,2151,573,2145,510,2137,477,2126,445,2109,416,2087,391,2045,364,1984,340,1910,320,1827,302,1653,276,1501,259"/>
+<area shape="rect" id="Node000030" href="$db/d01/meshx__onoff__server_8h.html" title="Header file for the On/Off Server model in the BLE Mesh Node application." alt="" coords="1644,315,1792,341"/>
+<area shape="poly" id="edge42_Node000002_Node000030" title=" " alt="" coords="1446,258,1654,308,1653,313,1445,263"/>
+<area shape="rect" id="Node000039" href="$db/dde/meshx__light__ctl__srv_8h.html" title="Header file for the Light CTL Server module." alt="" coords="1240,315,1386,341"/>
+<area shape="poly" id="edge68_Node000002_Node000039" title=" " alt="" coords="1385,262,1338,306,1335,302,1381,258"/>
+<area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="2094,657,2027,662,1946,671,1859,689,1774,716,1757,725,1746,735,1734,746,1717,756,1658,777,1611,784,1562,790,1503,805,1499,806,1497,801,1501,799,1562,785,1610,779,1657,771,1714,752,1731,742,1742,731,1754,721,1772,711,1857,683,1945,666,2027,656,2094,652"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="2092,898,2152,924"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="2190,663,2264,691,2304,710,2342,732,2372,756,2393,783,2397,798,2398,813,2394,829,2384,845,2354,860,2297,876,2168,904,2167,898,2296,871,2352,855,2380,841,2389,826,2393,812,2392,799,2388,786,2369,760,2339,736,2302,715,2262,696,2188,668"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="1785,721,1862,746"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="2094,667,1995,688,1882,716,1873,718,1872,713,1880,711,1993,683,2093,662"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="1735,898,1821,924"/>
+<area shape="poly" id="edge7_Node000004_Node000007" title=" " alt="" coords="2094,665,2013,683,1969,698,1927,716,1912,726,1902,736,1891,746,1875,756,1839,768,1806,771,1745,766,1717,765,1691,768,1665,780,1640,804,1634,813,1633,822,1640,841,1653,853,1675,866,1729,890,1727,895,1672,871,1650,858,1636,844,1628,822,1629,811,1636,800,1662,776,1689,763,1717,760,1745,761,1806,766,1838,763,1873,752,1888,742,1898,732,1909,721,1925,711,1968,693,2012,678,2093,660"/>
+<area shape="rect" id="Node000008" href="$df/d01/meshx__config__internal_8h.html" title="Internal configuration settings for MeshX." alt="" coords="2210,810,2370,835"/>
+<area shape="poly" id="edge8_Node000004_Node000008" title=" " alt="" coords="2192,663,2231,682,2250,695,2266,712,2277,731,2285,753,2292,793,2287,794,2280,754,2273,734,2261,715,2246,699,2228,687,2189,668"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="1583,721,1659,746"/>
+<area shape="poly" id="edge10_Node000004_Node000010" title=" " alt="" coords="2094,660,1908,678,1793,694,1679,716,1669,718,1668,713,1678,711,1793,689,1908,672,2093,655"/>
+<area shape="rect" id="Node000011" href="$da/d68/meshx__err_8h.html" title="MeshX Error Codes." alt="" coords="812,810,904,835"/>
+<area shape="poly" id="edge11_Node000004_Node000011" title=" " alt="" coords="2094,660,1892,679,1789,695,1747,705,1717,716,1704,725,1696,736,1687,747,1673,756,1640,768,1602,776,1512,788,1408,793,1297,793,1082,793,989,796,916,805,905,807,904,802,915,799,989,791,1082,788,1297,788,1408,787,1511,782,1601,771,1639,763,1670,752,1683,743,1692,732,1700,721,1714,711,1746,700,1788,690,1891,674,2094,655"/>
+<area shape="rect" id="Node000013" href="$d7/dcb/meshx__log_8h.html" title="Logging interface for MeshX with color&#45;coded output." alt="" coords="2094,713,2252,754"/>
+<area shape="poly" id="edge13_Node000004_Node000013" title=" " alt="" coords="2155,665,2165,698,2160,699,2150,667"/>
+<area shape="rect" id="Node000015" href="$df/d96/meshx__platform_8h.html" title="Platform abstraction layer for MeshX." alt="" coords="587,721,764,746"/>
+<area shape="poly" id="edge18_Node000004_Node000015" title=" " alt="" coords="2094,657,1577,672,1207,690,828,716,778,721,778,716,827,711,1207,684,1577,667,2094,652"/>
+<area shape="rect" id="Node000026" href="$d8/d5d/unit__test_8h.html" title="Header file for the production console unit test functionality." alt="" coords="1938,721,2019,746"/>
+<area shape="poly" id="edge33_Node000004_Node000026" title=" " alt="" coords="2124,668,2019,716,2017,712,2121,664"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="2235,898,2345,924"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="2293,836,2293,882,2288,882,2288,836"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="188,898,251,924"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="813,837,772,845,695,855,629,860,516,861,404,867,340,876,264,893,259,895,257,890,263,888,339,871,404,862,516,856,628,854,694,850,771,840,812,832"/>
+<area shape="poly" id="edge14_Node000013_Node000005" title=" " alt="" coords="2170,755,2133,884,2127,882,2165,754"/>
+<area shape="poly" id="edge15_Node000013_Node000008" title=" " alt="" coords="2201,752,2263,798,2260,802,2198,757"/>
+<area shape="poly" id="edge17_Node000013_Node000011" title=" " alt="" coords="2094,750,2032,757,1862,768,1717,770,1471,763,1353,762,1226,766,1084,779,916,805,905,807,903,802,915,799,1083,773,1226,760,1353,756,1471,758,1717,765,1861,762,2031,751,2093,744"/>
+<area shape="rect" id="Node000014" href="$d3/da1/module__id_8h.html" title="Defines module IDs for different elements in the BLE mesh node application." alt="" coords="1994,810,2085,835"/>
+<area shape="poly" id="edge16_Node000013_Node000014" title=" " alt="" coords="2144,757,2072,803,2069,799,2141,752"/>
+<area shape="poly" id="edge19_Node000015_Node000011" title=" " alt="" coords="702,745,820,800,818,805,700,750"/>
+<area shape="rect" id="Node000016" href="$d3/d2b/meshx__platform__ble__mesh_8h.html" title="Header file for MeshX BLE Mesh platform abstraction layer. This file provides type definitions and ma..." alt="" coords="928,802,1066,843"/>
+<area shape="poly" id="edge20_Node000015_Node000016" title=" " alt="" coords="722,745,913,796,912,801,720,750"/>
+<area shape="rect" id="Node000025" href="$d4/de0/meshx__ble__mesh__cmn__def_8h.html" title="Common definitions for BLE Mesh models and opcodes in the MeshX framework." alt="" coords="476,802,670,843"/>
+<area shape="poly" id="edge32_Node000015_Node000025" title=" " alt="" coords="663,749,609,794,606,790,660,745"/>
+<area shape="poly" id="edge21_Node000016_Node000005" title=" " alt="" coords="1066,838,1079,840,1289,865,1455,874,1620,878,1833,888,2077,904,2077,909,1833,893,1620,884,1454,880,1289,870,1078,845,1065,843"/>
+<area shape="poly" id="edge23_Node000016_Node000007" title=" " alt="" coords="1066,838,1079,840,1176,852,1259,858,1402,858,1544,862,1627,871,1724,888,1734,890,1733,896,1723,893,1626,876,1544,867,1402,864,1259,863,1176,857,1078,845,1065,843"/>
+<area shape="poly" id="edge22_Node000016_Node000012" title=" " alt="" coords="928,843,916,845,817,857,732,862,588,860,518,859,444,863,361,873,264,893,259,895,257,890,263,888,360,868,444,857,518,854,588,854,732,856,816,852,915,840,927,838"/>
+<area shape="rect" id="Node000017" title=" " alt="" coords="802,898,949,924"/>
+<area shape="poly" id="edge24_Node000016_Node000017" title=" " alt="" coords="971,845,906,891,903,887,968,841"/>
+<area shape="rect" id="Node000018" title=" " alt="" coords="973,891,1135,931"/>
+<area shape="poly" id="edge25_Node000016_Node000018" title=" " alt="" coords="1012,842,1035,876,1031,879,1008,845"/>
+<area shape="rect" id="Node000019" title=" " alt="" coords="1160,891,1335,931"/>
+<area shape="poly" id="edge26_Node000016_Node000019" title=" " alt="" coords="1055,841,1177,883,1175,888,1053,846"/>
+<area shape="rect" id="Node000020" title=" " alt="" coords="1359,891,1506,931"/>
+<area shape="poly" id="edge27_Node000016_Node000020" title=" " alt="" coords="1067,837,1079,840,1210,864,1344,887,1344,893,1209,869,1078,845,1065,843"/>
+<area shape="rect" id="Node000021" title=" " alt="" coords="1530,891,1712,931"/>
+<area shape="poly" id="edge28_Node000016_Node000021" title=" " alt="" coords="1066,838,1079,840,1199,857,1295,866,1392,873,1515,888,1515,893,1391,878,1295,871,1199,863,1078,845,1065,843"/>
+<area shape="rect" id="Node000022" title=" " alt="" coords="276,891,422,931"/>
+<area shape="poly" id="edge29_Node000016_Node000022" title=" " alt="" coords="928,843,916,845,783,863,678,870,572,877,437,893,437,888,572,871,678,864,783,857,915,840,927,838"/>
+<area shape="rect" id="Node000023" title=" " alt="" coords="446,891,601,931"/>
+<area shape="poly" id="edge30_Node000016_Node000023" title=" " alt="" coords="928,843,916,845,767,869,616,893,616,887,766,864,915,840,927,838"/>
+<area shape="rect" id="Node000024" title=" " alt="" coords="624,891,778,931"/>
+<area shape="poly" id="edge31_Node000016_Node000024" title=" " alt="" coords="930,846,783,888,782,883,929,841"/>
+<area shape="poly" id="edge36_Node000026_Node000003" title=" " alt="" coords="1938,746,1875,757,1769,769,1687,774,1605,782,1503,805,1497,806,1496,801,1501,799,1605,777,1686,768,1769,763,1874,751,1937,740"/>
+<area shape="poly" id="edge34_Node000026_Node000005" title=" " alt="" coords="1978,747,1972,792,1975,817,1984,841,2003,862,2027,878,2079,899,2077,904,2024,883,2000,866,1980,844,1970,819,1967,792,1972,747"/>
+<area shape="poly" id="edge41_Node000026_Node000008" title=" " alt="" coords="2020,744,2232,802,2231,807,2018,749"/>
+<area shape="poly" id="edge40_Node000026_Node000011" title=" " alt="" coords="1937,746,1874,757,1729,770,1605,774,1393,770,1291,768,1183,771,1060,782,916,805,905,807,903,802,915,799,1059,777,1182,766,1291,763,1393,764,1605,769,1728,764,1874,751,1936,741"/>
+<area shape="poly" id="edge39_Node000026_Node000014" title=" " alt="" coords="1989,745,2024,795,2020,798,1985,749"/>
+<area shape="rect" id="Node000027" title=" " alt="" coords="1514,810,1576,835"/>
+<area shape="poly" id="edge35_Node000026_Node000027" title=" " alt="" coords="1938,746,1639,805,1592,814,1591,809,1638,799,1937,740"/>
+<area shape="rect" id="Node000028" title=" " alt="" coords="1815,810,1920,835"/>
+<area shape="poly" id="edge37_Node000026_Node000028" title=" " alt="" coords="1964,749,1896,802,1893,798,1961,745"/>
+<area shape="rect" id="Node000029" title=" " alt="" coords="1650,810,1792,835"/>
+<area shape="poly" id="edge38_Node000026_Node000029" title=" " alt="" coords="1943,750,1772,807,1770,802,1941,745"/>
+<area shape="poly" id="edge43_Node000030_Node000004" title=" " alt="" coords="1793,330,1868,337,1948,347,2020,364,2048,374,2068,387,2143,624,2138,625,2064,390,2045,379,2018,369,1948,353,1867,342,1792,336"/>
+<area shape="rect" id="Node000031" href="$de/ddc/meshx__gen__server_8h.html" title="Header file for the generic server model in the BLE mesh node application." alt="" coords="1328,389,1468,414"/>
+<area shape="poly" id="edge44_Node000030_Node000031" title=" " alt="" coords="1664,344,1468,387,1467,382,1663,339"/>
+<area shape="rect" id="Node000034" href="$da/db3/meshx__control__task_8h.html" title="Header file for the control task in the BLE mesh node application." alt="" coords="1312,566,1460,592"/>
+<area shape="poly" id="edge67_Node000030_Node000034" title=" " alt="" coords="1719,342,1710,377,1693,425,1667,476,1649,500,1628,520,1593,543,1554,559,1514,570,1475,576,1474,571,1513,564,1552,554,1590,538,1625,516,1645,496,1662,473,1688,423,1705,375,1713,340"/>
+<area shape="rect" id="Node000032" href="$d4/d0c/meshx__ble__mesh__gen__srv_8h.html" title="Header file for Generic Server Models in MeshX BLE Mesh." alt="" coords="1303,462,1469,518"/>
+<area shape="poly" id="edge45_Node000031_Node000032" title=" " alt="" coords="1399,415,1395,447,1389,446,1394,414"/>
+<area shape="rect" id="Node000033" href="$d6/d1d/meshx__ble__mesh__cmn_8h.html" title="Common BLE Mesh interface definitions and utility functions." alt="" coords="820,566,995,592"/>
+<area shape="poly" id="edge46_Node000032_Node000033" title=" " alt="" coords="1303,509,1241,521,991,565,990,560,1240,515,1302,504"/>
+<area shape="poly" id="edge52_Node000032_Node000034" title=" " alt="" coords="1389,518,1389,550,1384,550,1384,518"/>
+<area shape="poly" id="edge48_Node000033_Node000003" title=" " alt="" coords="995,577,1091,585,1202,606,1259,623,1314,646,1366,675,1413,711,1429,730,1441,752,1456,793,1451,795,1436,754,1425,733,1410,715,1363,680,1312,651,1257,628,1201,611,1090,590,995,583"/>
+<area shape="poly" id="edge49_Node000033_Node000011" title=" " alt="" coords="899,594,863,644,844,678,830,714,828,735,831,756,845,795,841,797,826,758,822,735,825,713,839,676,858,641,895,591"/>
+<area shape="poly" id="edge51_Node000033_Node000015" title=" " alt="" coords="878,595,833,615,785,642,738,677,700,712,696,708,735,673,782,637,830,610,876,590"/>
+<area shape="poly" id="edge50_Node000033_Node000025" title=" " alt="" coords="821,591,756,604,689,627,656,644,626,663,599,687,576,715,569,732,565,750,567,787,562,787,560,750,564,730,572,712,595,683,623,659,653,639,687,622,755,599,819,585"/>
+<area shape="poly" id="edge47_Node000033_Node000027" title=" " alt="" coords="995,577,1071,582,1159,591,1251,609,1340,637,1372,652,1401,670,1455,714,1498,758,1529,796,1525,799,1494,762,1451,717,1398,675,1369,657,1339,642,1250,614,1158,597,1070,587,995,583"/>
+<area shape="poly" id="edge54_Node000034_Node000003" title=" " alt="" coords="1413,590,1442,610,1465,638,1477,679,1479,722,1475,762,1469,795,1463,794,1470,762,1474,722,1472,680,1460,641,1438,614,1410,595"/>
+<area shape="poly" id="edge56_Node000034_Node000004" title=" " alt="" coords="1460,582,1732,603,2076,637,2079,637,2079,643,2075,642,1731,608,1460,588"/>
+<area shape="poly" id="edge53_Node000034_Node000005" title=" " alt="" coords="1461,586,1599,605,1767,633,1924,668,1987,689,2033,711,2054,728,2071,748,2097,795,2113,842,2121,882,2116,883,2108,844,2092,797,2067,751,2050,732,2030,716,1985,694,1923,673,1766,638,1599,610,1460,591"/>
+<area shape="poly" id="edge55_Node000034_Node000010" title=" " alt="" coords="1459,590,1513,608,1540,621,1565,638,1594,670,1613,705,1608,707,1590,673,1562,642,1538,626,1511,613,1457,595"/>
+<area shape="rect" id="Node000035" href="$da/d79/meshx__task_8h.html" title="MeshX Task Interface." alt="" coords="1216,713,1356,754"/>
+<area shape="poly" id="edge57_Node000034_Node000035" title=" " alt="" coords="1381,594,1309,702,1305,699,1376,591"/>
+<area shape="rect" id="Node000037" href="$d2/dc7/meshx__msg__q_8h.html" title="MeshX Message Queue Interface." alt="" coords="839,713,978,754"/>
+<area shape="poly" id="edge60_Node000034_Node000037" title=" " alt="" coords="1349,595,985,711,983,706,1348,590"/>
+<area shape="rect" id="Node000038" href="$d8/d39/meshx__rtos__utils_8h.html" title="Utility functions for RTOS operations in the MeshX framework." alt="" coords="1003,713,1142,754"/>
+<area shape="poly" id="edge64_Node000034_Node000038" title=" " alt="" coords="1363,595,1128,709,1126,704,1360,590"/>
+<area shape="poly" id="edge59_Node000035_Node000011" title=" " alt="" coords="1217,753,1199,757,1057,778,995,788,916,805,907,807,906,802,915,799,994,782,1056,773,1198,751,1216,748"/>
+<area shape="rect" id="Node000036" title=" " alt="" coords="1090,810,1157,835"/>
+<area shape="poly" id="edge58_Node000035_Node000036" title=" " alt="" coords="1251,757,1161,804,1158,800,1248,752"/>
+<area shape="poly" id="edge63_Node000037_Node000011" title=" " alt="" coords="900,756,875,798,870,795,895,753"/>
+<area shape="poly" id="edge61_Node000037_Node000012" title=" " alt="" coords="877,757,791,803,737,826,682,845,619,860,565,868,473,870,380,873,326,879,264,893,259,895,257,890,263,888,325,874,379,867,472,865,565,862,618,855,680,840,735,821,789,798,875,752"/>
+<area shape="poly" id="edge62_Node000037_Node000036" title=" " alt="" coords="959,752,1078,800,1081,801,1079,806,1076,804,957,757"/>
+<area shape="poly" id="edge65_Node000038_Node000011" title=" " alt="" coords="1025,757,903,806,901,801,1023,752"/>
+<area shape="poly" id="edge66_Node000038_Node000036" title=" " alt="" coords="1087,753,1111,795,1107,798,1082,756"/>
+<area shape="poly" id="edge69_Node000039_Node000004" title=" " alt="" coords="1387,337,1398,338,1526,342,1692,342,1776,345,1854,352,1921,366,1973,386,2006,414,2023,444,2035,478,2055,517,2103,590,2131,626,2127,629,2099,593,2051,519,2030,480,2018,446,2001,417,1970,391,1920,371,1853,358,1775,351,1691,348,1526,347,1398,343,1386,342"/>
+<area shape="poly" id="edge76_Node000039_Node000033" title=" " alt="" coords="1239,333,1075,342,976,350,874,363,776,380,690,402,621,430,595,446,576,464,567,478,563,491,563,502,567,512,588,530,620,545,662,556,709,564,805,572,805,578,708,569,661,561,619,550,585,535,563,516,558,504,557,490,562,476,572,461,592,442,618,425,688,397,775,374,873,357,975,345,1075,336,1239,328"/>
+<area shape="poly" id="edge75_Node000039_Node000034" title=" " alt="" coords="1368,339,1436,359,1465,372,1483,387,1501,421,1506,452,1500,484,1483,519,1463,544,1436,561,1433,557,1459,540,1479,517,1495,482,1501,452,1496,422,1479,390,1462,377,1434,364,1366,344"/>
+<area shape="rect" id="Node000040" href="$dc/daf/meshx__light__server_8h.html" title="Header file for the production lighting server." alt="" coords="1161,389,1304,414"/>
+<area shape="poly" id="edge70_Node000039_Node000040" title=" " alt="" coords="1301,343,1259,380,1256,376,1297,339"/>
+<area shape="poly" id="edge71_Node000040_Node000034" title=" " alt="" coords="1239,414,1258,462,1274,490,1293,516,1319,538,1347,556,1344,561,1316,543,1290,520,1269,493,1253,464,1234,416"/>
+<area shape="rect" id="Node000041" href="$d7/de0/meshx__ble__mesh__light__srv_8h.html" title="Header file for the MeshX BLE Mesh Light Server module. This file defines the data structures,..." alt="" coords="1063,462,1229,518"/>
+<area shape="poly" id="edge72_Node000040_Node000041" title=" " alt="" coords="1223,417,1186,453,1182,449,1219,413"/>
+<area shape="poly" id="edge73_Node000041_Node000033" title=" " alt="" coords="1072,521,956,563,954,558,1070,516"/>
+<area shape="poly" id="edge74_Node000041_Node000034" title=" " alt="" coords="1222,516,1339,558,1337,563,1221,521"/>
+<area shape="poly" id="edge78_Node000042_Node000012" title=" " alt="" coords="186,413,205,434,222,461,243,517,247,577,247,735,241,816,228,884,223,883,235,816,242,735,242,578,238,519,217,464,200,438,182,417"/>
+<area shape="poly" id="edge79_Node000042_Node000034" title=" " alt="" coords="206,412,363,464,468,492,575,515,776,544,977,561,1157,571,1297,574,1297,580,1157,576,976,567,775,549,574,521,466,497,362,469,204,417"/>
+<area shape="rect" id="Node000043" href="$d8/d03/meshx__os__timer_8h.html" title="Header file for OS timer utilities." alt="" coords="82,477,208,503"/>
+<area shape="poly" id="edge80_Node000042_Node000043" title=" " alt="" coords="170,416,155,463,150,462,165,414"/>
+<area shape="rect" id="Node000047" title=" " alt="" coords="5,477,58,503"/>
+<area shape="poly" id="edge88_Node000042_Node000047" title=" " alt="" coords="151,417,72,465,63,470,60,466,69,460,149,413"/>
+<area shape="poly" id="edge81_Node000043_Node000012" title=" " alt="" coords="154,502,180,565,192,607,197,651,197,735,204,816,216,883,211,884,198,816,192,735,192,651,187,608,175,566,149,505"/>
+<area shape="poly" id="edge83_Node000043_Node000034" title=" " alt="" coords="209,494,480,515,1297,569,1297,575,479,521,208,499"/>
+<area shape="rect" id="Node000044" title=" " alt="" coords="16,566,106,592"/>
+<area shape="poly" id="edge82_Node000043_Node000044" title=" " alt="" coords="135,505,85,557,81,553,131,502"/>
+<area shape="rect" id="Node000045" href="$d1/dc6/meshx__rtos__timer_8h.html" title="Header file for MeshX RTOS Timer interface. Provides APIs for creating, starting, stopping,..." alt="" coords="18,713,157,754"/>
+<area shape="poly" id="edge84_Node000043_Node000045" title=" " alt="" coords="145,504,98,699,93,698,139,502"/>
+<area shape="poly" id="edge87_Node000045_Node000011" title=" " alt="" coords="158,740,797,812,797,817,157,745"/>
+<area shape="poly" id="edge85_Node000045_Node000012" title=" " alt="" coords="104,753,204,884,199,887,100,756"/>
+<area shape="rect" id="Node000046" title=" " alt="" coords="32,810,106,835"/>
+<area shape="poly" id="edge86_Node000045_Node000046" title=" " alt="" coords="86,755,77,795,72,794,81,754"/>
+<area shape="poly" id="edge90_Node000048_Node000004" title=" " alt="" coords="1763,95,1950,113,2197,146,2314,167,2412,190,2480,215,2499,230,2506,245,2506,492,2504,514,2498,535,2476,569,2442,596,2401,617,2355,632,2308,642,2219,652,2219,647,2307,637,2354,627,2399,612,2439,592,2472,566,2493,532,2499,513,2501,491,2501,246,2495,233,2477,220,2411,195,2313,172,2196,151,1949,119,1762,100"/>
+<area shape="poly" id="edge91_Node000048_Node000034" title=" " alt="" coords="1668,99,1451,114,1158,144,1018,164,900,188,855,202,820,216,799,231,791,246,791,403,789,467,796,491,816,516,840,527,884,536,1012,552,1163,564,1297,571,1297,577,1162,569,1012,558,883,542,838,532,813,520,791,494,784,467,786,403,786,245,795,227,818,211,853,197,899,183,1017,159,1157,138,1451,109,1668,93"/>
+<area shape="rect" id="Node000049" href="$dc/d5f/meshx__elements_8h.html" title="Header file for MeshX elements." alt="" coords="1799,153,1928,178"/>
+<area shape="poly" id="edge92_Node000048_Node000049" title=" " alt="" coords="1742,103,1826,143,1823,148,1739,108"/>
+<area shape="poly" id="edge108_Node000049_Node000002" title=" " alt="" coords="1799,180,1483,233,1482,228,1798,175"/>
+<area shape="poly" id="edge93_Node000049_Node000004" title=" " alt="" coords="1929,168,2076,182,2162,194,2249,210,2328,230,2394,256,2419,271,2439,288,2451,306,2455,326,2455,492,2453,525,2443,550,2427,572,2401,594,2358,619,2311,637,2263,647,2219,652,2219,647,2262,642,2309,632,2356,615,2398,590,2423,568,2439,548,2448,524,2450,491,2450,327,2446,308,2435,291,2416,275,2391,261,2327,235,2248,215,2162,199,2075,187,1929,173"/>
+<area shape="rect" id="Node000050" href="$dc/dee/meshx__relay__server__element_8h.html" title="Header file for the Relay Server Model." alt="" coords="1885,226,2021,267"/>
+<area shape="poly" id="edge94_Node000049_Node000050" title=" " alt="" coords="1879,177,1921,214,1918,218,1875,181"/>
+<area shape="rect" id="Node000051" href="$de/dca/meshx__relay__client__element_8h.html" title="Header file for the Relay Client Model in BLE Mesh." alt="" coords="2127,226,2258,267"/>
+<area shape="poly" id="edge97_Node000049_Node000051" title=" " alt="" coords="1915,176,2112,223,2111,229,1914,182"/>
+<area shape="rect" id="Node000055" href="$df/dc5/meshx__light__cwww__client__element_8h.html" title="Implementation of the CW&#45;WW (Cool White &#45; Warm White) client model for BLE Mesh." alt="" coords="1688,226,1860,267"/>
+<area shape="poly" id="edge109_Node000049_Node000055" title=" " alt="" coords="1852,181,1809,218,1806,214,1848,177"/>
+<area shape="poly" id="edge95_Node000050_Node000004" title=" " alt="" coords="2022,254,2200,281,2278,297,2321,313,2340,332,2350,351,2354,373,2354,400,2354,492,2354,522,2350,547,2341,570,2321,594,2299,612,2273,626,2220,644,2218,639,2271,621,2296,608,2318,590,2336,567,2345,546,2348,522,2349,491,2349,400,2348,374,2345,353,2335,335,2318,317,2277,302,2199,286,2021,259"/>
+<area shape="poly" id="edge96_Node000050_Node000030" title=" " alt="" coords="1895,270,1770,312,1768,307,1893,265"/>
+<area shape="poly" id="edge98_Node000051_Node000004" title=" " alt="" coords="2260,257,2318,277,2347,293,2372,313,2389,333,2399,352,2404,374,2405,400,2405,492,2405,523,2401,548,2392,570,2372,594,2338,619,2298,636,2258,646,2219,652,2218,647,2257,641,2297,631,2335,614,2368,590,2387,568,2396,546,2399,522,2400,491,2400,400,2399,374,2394,354,2385,336,2368,317,2344,297,2316,282,2258,262"/>
+<area shape="rect" id="Node000052" href="$d8/dd5/meshx__onoff__client_8h.html" title="Header file for the On/Off client model in BLE mesh." alt="" coords="2122,315,2264,341"/>
+<area shape="poly" id="edge99_Node000051_Node000052" title=" " alt="" coords="2196,267,2196,299,2190,299,2190,267"/>
+<area shape="poly" id="edge100_Node000052_Node000004" title=" " alt="" coords="2195,341,2190,444,2182,518,2170,592,2161,625,2156,624,2165,591,2177,517,2184,444,2190,341"/>
+<area shape="poly" id="edge107_Node000052_Node000034" title=" " alt="" coords="2181,343,2138,379,2072,429,1991,479,1947,502,1902,521,1821,539,1707,555,1476,575,1475,569,1707,549,1820,534,1900,515,1944,497,1988,475,2069,424,2135,375,2178,339"/>
+<area shape="rect" id="Node000053" href="$d1/d29/meshx__gen__client_8h.html" title="Implementation of the MeshX generic client model for BLE mesh nodes. This file contains functions for..." alt="" coords="1824,389,1959,414"/>
+<area shape="poly" id="edge101_Node000052_Node000053" title=" " alt="" coords="2142,344,1958,387,1957,382,2141,339"/>
+<area shape="poly" id="edge102_Node000053_Node000011" title=" " alt="" coords="1900,414,1908,435,1914,463,1914,493,1903,519,1866,563,1829,596,1790,621,1751,638,1712,650,1671,656,1587,659,1499,657,1407,659,1359,665,1309,676,1259,692,1206,716,1191,726,1182,736,1171,746,1155,756,1091,780,1038,787,983,792,916,805,908,807,906,802,915,799,983,787,1037,782,1090,774,1153,752,1168,742,1178,732,1188,721,1204,711,1257,687,1308,671,1358,660,1407,654,1499,652,1587,654,1670,651,1710,645,1749,633,1788,616,1825,592,1862,559,1899,517,1909,492,1909,464,1903,437,1895,416"/>
+<area shape="poly" id="edge103_Node000053_Node000034" title=" " alt="" coords="1896,415,1898,437,1896,465,1889,495,1872,520,1851,530,1816,539,1712,554,1476,575,1475,570,1711,549,1815,534,1850,525,1868,516,1884,493,1891,465,1892,437,1891,415"/>
+<area shape="rect" id="Node000054" href="$de/d08/meshx__ble__mesh__gen__cli_8h.html" title="Header file for BLE Mesh Generic Client functionality in the MeshX framework. This file contains decl..." alt="" coords="1696,462,1858,518"/>
+<area shape="poly" id="edge104_Node000053_Node000054" title=" " alt="" coords="1877,417,1827,455,1824,450,1874,413"/>
+<area shape="poly" id="edge105_Node000054_Node000033" title=" " alt="" coords="1696,502,1010,570,1010,565,1696,497"/>
+<area shape="poly" id="edge106_Node000054_Node000034" title=" " alt="" coords="1696,516,1677,521,1466,565,1465,560,1676,515,1695,511"/>
+<area shape="poly" id="edge110_Node000055_Node000004" title=" " alt="" coords="1861,262,1873,264,1948,271,2023,270,2095,267,2161,268,2218,276,2242,285,2263,298,2280,315,2293,337,2301,366,2303,400,2303,492,2300,516,2292,539,2263,579,2226,611,2189,634,2186,630,2223,606,2259,575,2287,536,2295,515,2298,491,2298,400,2296,367,2288,340,2276,318,2260,302,2240,290,2217,281,2160,273,2095,273,2023,275,1948,276,1873,270,1860,268"/>
+<area shape="poly" id="edge111_Node000055_Node000034" title=" " alt="" coords="1711,270,1671,290,1635,317,1614,343,1601,368,1588,418,1575,468,1561,494,1539,520,1501,546,1460,563,1458,558,1499,541,1535,516,1557,491,1570,466,1583,417,1596,366,1609,340,1631,313,1668,285,1709,265"/>
+<area shape="poly" id="edge112_Node000055_Node000052" title=" " alt="" coords="1861,262,1873,264,2113,309,2112,314,1872,270,1860,267"/>
+<area shape="rect" id="Node000056" href="$da/dfd/meshx__light__ctl__client_8h.html" title="Header file for the Light CTL (Color Temperature Light) Client model." alt="" coords="1410,315,1570,341"/>
+<area shape="poly" id="edge113_Node000055_Node000056" title=" " alt="" coords="1704,270,1549,313,1548,308,1703,265"/>
+<area shape="poly" id="edge114_Node000056_Node000004" title=" " alt="" coords="1570,334,1840,360,1959,374,2017,386,2041,422,2072,486,2119,590,2137,625,2133,627,2114,593,2067,488,2036,425,2014,391,1958,380,1839,365,1570,339"/>
+<area shape="poly" id="edge115_Node000056_Node000034" title=" " alt="" coords="1499,340,1512,373,1525,419,1528,471,1523,496,1512,519,1488,545,1456,563,1454,558,1484,541,1508,517,1518,494,1523,470,1520,420,1507,375,1494,342"/>
+<area shape="rect" id="Node000057" href="$dd/df0/meshx__gen__light__cli_8h.html" title="Implementation of the MeshX generic light client model for BLE mesh nodes. This file contains functio..." alt="" coords="915,389,1063,414"/>
+<area shape="poly" id="edge116_Node000056_Node000057" title=" " alt="" coords="1411,343,1079,390,1078,385,1410,338"/>
+<area shape="poly" id="edge117_Node000057_Node000011" title=" " alt="" coords="914,406,823,410,723,420,633,437,599,450,576,464,556,489,550,514,551,577,551,654,552,709,559,730,576,752,591,763,613,772,670,789,797,811,796,817,669,794,611,777,588,767,572,756,554,732,547,709,546,654,546,578,544,513,552,487,572,460,597,445,632,432,722,415,823,405,914,401"/>
+<area shape="poly" id="edge118_Node000057_Node000034" title=" " alt="" coords="994,414,1013,465,1030,493,1053,516,1095,534,1157,549,1297,568,1297,573,1156,554,1093,539,1050,520,1026,496,1008,467,989,416"/>
+<area shape="rect" id="Node000058" href="$d4/def/meshx__ble__mesh__light__cli_8h.html" title="Header file for BLE Mesh Light Client functionality in the MeshX framework. This file contains declar..." alt="" coords="827,462,988,518"/>
+<area shape="poly" id="edge119_Node000057_Node000058" title=" " alt="" coords="979,417,946,452,942,449,976,413"/>
+<area shape="poly" id="edge120_Node000058_Node000033" title=" " alt="" coords="910,518,910,550,905,550,905,518"/>
+<area shape="poly" id="edge121_Node000058_Node000034" title=" " alt="" coords="989,511,1008,515,1161,543,1298,564,1297,569,1160,549,1007,521,988,516"/>
+<area shape="poly" id="edge127_Node000059_Node000011" title=" " alt="" coords="321,415,307,484,301,530,298,578,298,653,302,662,313,672,354,694,417,716,492,738,658,778,798,807,797,812,657,783,491,743,415,721,352,698,310,676,297,665,293,654,293,577,295,530,302,483,315,414"/>
+<area shape="poly" id="edge123_Node000059_Node000015" title=" " alt="" coords="336,413,654,708,650,712,332,417"/>
+<area shape="rect" id="Node000060" href="$db/d5f/meshx__ble__mesh__config__srv_8h.html" title="Header file for MeshX BLE Mesh Configuration Server." alt="" coords="586,462,752,518"/>
+<area shape="poly" id="edge124_Node000059_Node000060" title=" " alt="" coords="371,412,571,462,570,467,369,418"/>
+<area shape="poly" id="edge125_Node000060_Node000033" title=" " alt="" coords="745,516,861,558,859,563,743,521"/>
+<area shape="poly" id="edge126_Node000060_Node000034" title=" " alt="" coords="753,512,771,515,914,537,1058,553,1297,571,1297,576,1058,558,914,542,770,521,752,517"/>
+</map>

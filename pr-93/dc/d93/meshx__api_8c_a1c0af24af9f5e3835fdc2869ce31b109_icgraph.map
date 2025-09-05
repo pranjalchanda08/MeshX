@@ -1,0 +1,20 @@
+<map id="meshx_api_control_task_handler" name="meshx_api_control_task_handler">
+<area shape="rect" id="Node000001" title="Control task handler for BLE Mesh application messages." alt="" coords="628,100,790,141"/>
+<area shape="rect" id="Node000002" href="$dc/d93/meshx__api_8c.html#a99aec204c219f57b93f8a9e483b2cd1e" title="Registers the BLE Mesh application callback." alt="" coords="394,5,560,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="654,95,579,61,546,49,548,44,581,57,656,90"/>
+<area shape="rect" id="Node000005" href="$dc/d93/meshx__api_8c.html#ae788eb4aed0ebe9513f85726a84a0c04" title="Registers the BLE Mesh application control callback." alt="" coords="396,71,558,111"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="613,111,558,104,559,99,613,106"/>
+<area shape="rect" id="Node000006" href="$d9/d46/meshx__cwww__server_8c.html#ac1498e20904edfabe76c92f9da6375bd" title="Create Dynamic CWWW Server Model Elements." alt="" coords="374,136,580,161"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="614,135,581,138,581,133,613,129"/>
+<area shape="rect" id="Node000008" href="$d1/df4/meshx__relay__server_8c.html#af1332e2c64515cfa728a8b529abdc00b" title="Create Dynamic Relay Model Elements." alt="" coords="409,185,545,226"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="648,150,581,176,546,188,545,183,579,171,646,145"/>
+<area shape="rect" id="Node000003" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="187,46,270,72"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="379,41,271,56,270,51,379,36"/>
+<area shape="rect" id="Node000004" href="$d0/d29/main_8c.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title="Main application entry point." alt="" coords="5,46,83,72"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="171,62,83,62,83,56,171,56"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="381,81,270,67,271,62,381,76"/>
+<area shape="rect" id="Node000007" href="$d9/d46/meshx__cwww__server_8c.html#aa8082758a025ec4f2663cc48f873b7d9" title=" " alt="" coords="131,136,326,161"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="358,151,326,151,326,146,358,146"/>
+<area shape="rect" id="Node000009" href="$d1/df4/meshx__relay__server_8c.html#a4f078550e7f2f704da32b4d524bc266d" title=" " alt="" coords="131,193,326,218"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="393,208,326,208,326,203,393,203"/>
+</map>
