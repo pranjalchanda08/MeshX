@@ -385,6 +385,24 @@ meshx_err_t meshx_nvs_element_ctx_set(uint16_t element_id, const void *blob, siz
     return meshx_nvs_set(key, blob, blob_size, MESHX_NVS_AUTO_COMMIT);
 }
 
+/**
+ * @brief Remove the context of a specific element from NVS.
+ *
+ * This function deletes the stored context of a given element identified by its ID from
+ * the Non-Volatile Storage (NVS).
+ *
+ * @param[in] element_id The ID of the element whose context is to be removed.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully removed the context.
+ */
+meshx_err_t meshx_nvs_element_ctx_remove(uint16_t element_id)
+{
+    char key[NVS_KEY_NAME_MAX_SIZE];
+    snprintf(key, NVS_KEY_NAME_MAX_SIZE, MESHX_NVS_ELEMENT_CTX, element_id);
+    return meshx_nvs_remove(key);
+}
+
 #if CONFIG_ENABLE_UNIT_TEST
 
 /**

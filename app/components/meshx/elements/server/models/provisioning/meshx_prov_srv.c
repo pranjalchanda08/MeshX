@@ -137,6 +137,35 @@ static meshx_err_t meshx_prov_srv_control_task_handler(
 }
 
 /**
+ * @brief Handle node reset event.
+ *
+ * This function handles the node reset event by removing all element contexts
+ * from NVS and resetting the MCU.
+ *
+ * @param[in] pdev Pointer to the device structure.
+ *
+ */
+static void meshx_handle_node_reset(dev_struct_t *pdev)
+{
+    if(!pdev)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "Invalid device structure");
+        return;
+    }
+
+    for(uint16_t i = 1; i < pdev->element_idx; i++)
+    {
+        meshx_err_t err = meshx_nvs_element_ctx_remove(i);
+        if(err != MESHX_SUCCESS)
+        {
+            MESHX_LOGE(MODULE_ID_COMMON, "Failed to erase element context (%d): (%d)", i, err);
+        }
+    }
+    /* Reset the MCU */
+    meshx_platform_reset();
+}
+
+/**
  * @brief Handles provisioning control task events.
  *
  * This function processes various provisioning-related events and updates
@@ -162,6 +191,10 @@ static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_t
             break;
         case CONTROL_TASK_MSG_EVT_IDENTIFY_START:
             MESHX_LOGI(MODULE_ID_COMMON, "Identify Start");
+            break;
+        case CONTROL_TASK_MSG_EVT_NODE_RESET:
+            MESHX_LOGW(MODULE_ID_COMMON, "Node Reset Event");
+            meshx_handle_node_reset(pdev);
             break;
         default:
             break;
