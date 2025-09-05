@@ -23,4 +23,11 @@
  */
 meshx_err_t meshx_platform_init(void);
 
+/**
+ * @brief Resets the MeshX platform.
+ * This function performs a system reset, restarting the platform.
+ */
+
+__attribute__((noreturn)) void meshx_platform_reset(void);
+
 #endif /* __MESHX_PLATFORM_H__ */
