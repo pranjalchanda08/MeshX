@@ -46,3 +46,12 @@ meshx_err_t meshx_platform_init(void)
 
     return MESHX_SUCCESS;
 }
+
+/**
+ * @brief Resets the MeshX platform.
+ * This function performs a system reset, restarting the platform.
+ */
+void meshx_platform_reset(void)
+{
+    esp_restart();
+}
