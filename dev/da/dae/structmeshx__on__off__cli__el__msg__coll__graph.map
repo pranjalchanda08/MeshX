@@ -1,7 +1,0 @@
-<map id="meshx_on_off_cli_el_msg" name="meshx_on_off_cli_el_msg">
-<area shape="rect" id="Node000001" title="Structure to hold the On/Off Server to element message." alt="" coords="24,236,184,323"/>
-<area shape="rect" id="Node000002" href="$d7/df1/structmeshx__model.html" title=" " alt="" coords="5,26,96,153"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="68,152,85,212,87,219,82,221,79,213,63,153"/>
-<area shape="rect" id="Node000003" href="$db/d33/structmeshx__ctx.html" title="Structure to hold context information for BLE Mesh operations." alt="" coords="120,5,194,173"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="141,174,131,213,128,221,123,219,125,212,136,172"/>
-</map>

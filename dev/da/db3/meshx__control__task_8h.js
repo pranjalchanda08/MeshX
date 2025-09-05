@@ -54,6 +54,7 @@ var meshx__control__task_8h =
       [ "CONTROL_TASK_MSG_EVT_PROXY_CONNECT", "da/db3/meshx__control__task_8h.html#a36b08cbb6c10c75974bce6cf253a3946a795d6e9898001ebd60abd23a820d8f69", null ],
       [ "CONTROL_TASK_MSG_EVT_PROXY_DISCONN", "da/db3/meshx__control__task_8h.html#a36b08cbb6c10c75974bce6cf253a3946ac04eb116cd1db24d2f071eff8a8eacf6", null ],
       [ "CONTROL_TASK_MSG_EVT_EN_NODE_PROV", "da/db3/meshx__control__task_8h.html#a36b08cbb6c10c75974bce6cf253a3946a7060a2680eab41fbe660643436d6747d", null ],
+      [ "CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT", "da/db3/meshx__control__task_8h.html#a36b08cbb6c10c75974bce6cf253a3946a4026b04ae1ecf072c99ecbf7266dd1c1", null ],
       [ "CONTROL_TASK_MSG_EVT_PROVISION_ALL", "da/db3/meshx__control__task_8h.html#a36b08cbb6c10c75974bce6cf253a3946ae2a094efae0739d49b2e57ce69188505", null ]
     ] ],
     [ "control_task_msg_evt_system", "da/db3/meshx__control__task_8h.html#a74c26ff7cf968dce6ce580cc8249bac3", [
@@ -63,7 +64,6 @@ var meshx__control__task_8h =
       [ "CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_DISARM", "da/db3/meshx__control__task_8h.html#a74c26ff7cf968dce6ce580cc8249bac3a5faf0ba6aa9bb3728da4fa1e0366f179", null ],
       [ "CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE", "da/db3/meshx__control__task_8h.html#a74c26ff7cf968dce6ce580cc8249bac3a28b2d5b8769e78e6b180c99e7991ef13", null ],
       [ "CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD", "da/db3/meshx__control__task_8h.html#a74c26ff7cf968dce6ce580cc8249bac3ad6490bdb28535ff59224b995d753d64e", null ],
-      [ "CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT", "da/db3/meshx__control__task_8h.html#a74c26ff7cf968dce6ce580cc8249bac3a4026b04ae1ecf072c99ecbf7266dd1c1", null ],
       [ "CONTROL_TASK_MSG_EVT_SYSTEM_MAX", "da/db3/meshx__control__task_8h.html#a74c26ff7cf968dce6ce580cc8249bac3a77dccf3c58d258f109f249996a2a0537", null ]
     ] ],
     [ "control_task_msg_evt_to_app_meshx", "da/db3/meshx__control__task_8h.html#aee2041f20815564c3882960385b43046", [

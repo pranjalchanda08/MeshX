@@ -11,7 +11,6 @@ var meshx__light__cwww__client_8c =
     [ "meshx_add_cwww_cli_model_to_element_list", "d0/d53/meshx__light__cwww__client_8c.html#aeeed3c047c66ef0ea3eecfa65f5d9fe1", null ],
     [ "meshx_cwww_cli_el_state_change_reg_cb", "d0/d53/meshx__light__cwww__client_8c.html#a0f44c18340482bed497e5c388fcb6748", null ],
     [ "meshx_cwww_cli_reg_app_req_cb", "d0/d53/meshx__light__cwww__client_8c.html#aa09d5950f3239006aea437cebe41c6b9", null ],
-    [ "meshx_cwww_cli_reg_freshboot_cb", "d0/d53/meshx__light__cwww__client_8c.html#ad44d27c2b9e797342e27cc923638eec2", null ],
     [ "meshx_cwww_el_get_state", "d0/d53/meshx__light__cwww__client_8c.html#ab54b12b94031fd68edb9072ca517f488", null ],
     [ "meshx_dev_create_cwww_model_space", "d0/d53/meshx__light__cwww__client_8c.html#adac9c4dc1fe85bc6716af5f4db19950a", null ],
     [ "meshx_element_struct_deinit", "d0/d53/meshx__light__cwww__client_8c.html#a981929a7f7915290d07050019fef1e79", null ],

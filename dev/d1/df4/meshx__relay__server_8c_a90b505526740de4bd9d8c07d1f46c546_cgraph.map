@@ -1,0 +1,13 @@
+<map id="meshx_add_relay_srv_model_to_element_list" name="meshx_add_relay_srv_model_to_element_list">
+<area shape="rect" id="Node000001" title="Add relay server models to the element list." alt="" coords="5,55,164,96"/>
+<area shape="rect" id="Node000002" href="$d5/d8f/meshx__nvs_8c.html#a3773373d74bd4e2c0415a89f7652ebe8" title="Retrieve the context of a specific element from NVS." alt="" coords="212,5,401,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,53,238,33,239,38,164,58"/>
+<area shape="rect" id="Node000004" href="$dc/d96/esp__platform__ble__mesh_8c.html#a2bdab205d68a408e7ec03e58b2fa8a0b" title="Adds an element to the BLE Mesh composition." alt="" coords="222,55,390,96"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="164,73,207,73,207,78,164,78"/>
+<area shape="rect" id="Node000005" href="$d1/df4/meshx__relay__server_8c.html#a6056b1ffd8dfaff87bd0c4444be15404" title="Restore saved relay model states." alt="" coords="232,120,380,161"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="157,94,221,113,219,118,155,99"/>
+<area shape="rect" id="Node000003" href="$d5/d8f/meshx__nvs_8c.html#a66b5694246aa0f0a9be3c228de543200" title="Get a value from the NVS." alt="" coords="464,5,577,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="401,16,449,16,449,21,401,21"/>
+<area shape="rect" id="Node000006" href="$dc/d96/esp__platform__ble__mesh_8c.html#ab0b270ac4d086a2e566985d2aabd5be5" title="Retrieve the model ID of a generic server model." alt="" coords="449,128,592,154"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="381,138,433,138,433,144,381,144"/>
+</map>

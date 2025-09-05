@@ -9,6 +9,7 @@ var meshx__nvs_8h =
     [ "meshx_nvs_close", "d3/d7d/meshx__nvs_8h.html#a331ae59bfd5632726157f612d8b57b00", null ],
     [ "meshx_nvs_commit", "d3/d7d/meshx__nvs_8h.html#adbf5f3a6e63cae605581b0f23b21345c", null ],
     [ "meshx_nvs_element_ctx_get", "d3/d7d/meshx__nvs_8h.html#a3773373d74bd4e2c0415a89f7652ebe8", null ],
+    [ "meshx_nvs_element_ctx_remove", "d3/d7d/meshx__nvs_8h.html#a6dc2339887b4d2cb0faa01d799838cd1", null ],
     [ "meshx_nvs_element_ctx_set", "d3/d7d/meshx__nvs_8h.html#a091a0be186edb6d1dc740b838cf38037", null ],
     [ "meshx_nvs_erase", "d3/d7d/meshx__nvs_8h.html#adedf15ddc47ab70982fa07092112ffd1", null ],
     [ "meshx_nvs_get", "d3/d7d/meshx__nvs_8h.html#a66b5694246aa0f0a9be3c228de543200", null ],

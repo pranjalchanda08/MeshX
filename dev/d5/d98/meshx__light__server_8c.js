@@ -1,7 +1,6 @@
 var meshx__light__server_8c =
 [
     [ "MESHX_SERVER_INIT_MAGIC_NO", "d5/d98/meshx__light__server_8c.html#ad9e063fcc893a076ff956ac6020372ed", null ],
-    [ "TAG", "d5/d98/meshx__light__server_8c.html#afc3d101f633a076cc1ca84b85b6224b2", null ],
     [ "meshx_gen_light_srv_send_msg_to_ble", "d5/d98/meshx__light__server_8c.html#acfab754bb56f290741a2fc1c49c595c8", null ],
     [ "meshx_gen_light_srv_status_send", "d5/d98/meshx__light__server_8c.html#a40a91efcb35c7db08fd73143b779a31a", null ],
     [ "meshx_is_status_in_gen_light_grp", "d5/d98/meshx__light__server_8c.html#a93ab84b7706337c1dd550a817efca526", null ],

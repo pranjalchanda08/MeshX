@@ -1,26 +1,64 @@
 <map id="meshx_os_timer_restart" name="meshx_os_timer_restart">
-<area shape="rect" id="Node000001" title="Restart a timer." alt="" coords="1242,55,1402,80"/>
-<area shape="rect" id="Node000002" href="$d5/d8f/meshx__nvs_8c.html#a00bee4a5af97fa0b8d4195a827e9f5f5" title="Set a value in the NVS." alt="" coords="1081,55,1194,80"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1226,70,1194,70,1194,65,1226,65"/>
-<area shape="rect" id="Node000003" href="$d5/d8f/meshx__nvs_8c.html#a091a0be186edb6d1dc740b838cf38037" title="Store the context of a specific element to NVS." alt="" coords="844,5,1033,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1067,53,993,34,994,29,1068,48"/>
-<area shape="rect" id="Node000004" href="$d5/d8f/meshx__nvs_8c.html#ae32d182aaba6ab32994ae22debaa1d6f" title="Erase the NVS and set the product ID." alt="" coords="848,55,1030,80"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="1066,70,1030,70,1030,65,1066,65"/>
-<area shape="rect" id="Node000010" href="$d2/d6b/composition_8c.html#aac026cf4837ec52fd5cb35967ce4ad3f" title="Handles provisioning control task events." alt="" coords="870,104,1007,145"/>
-<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="1077,88,1008,108,1007,103,1075,83"/>
-<area shape="rect" id="Node000005" href="$d5/d8f/meshx__nvs_8c.html#ab4e5c250438e810358991fbe0e6cd277" title="Open the NVS with a timeout." alt="" coords="657,55,780,80"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="832,70,780,70,780,65,832,65"/>
-<area shape="rect" id="Node000006" href="$d9/d05/meshx_8c.html#acbc9147d880e04feca27a7fa57a45945" title="Restore the device state from the NVS." alt="" coords="457,57,592,83"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="641,71,592,72,592,67,641,66"/>
-<area shape="rect" id="Node000007" href="$d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="262,84,408,110"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="442,84,409,89,409,84,441,79"/>
-<area shape="rect" id="Node000008" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="131,84,214,110"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="246,100,214,100,214,94,246,94"/>
-<area shape="rect" id="Node000009" href="$d0/d29/main_8c.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title="Main application entry point." alt="" coords="5,84,83,110"/>
-<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="115,100,83,100,83,94,115,94"/>
-<area shape="rect" id="Node000011" href="$d2/d6b/composition_8c.html#af14ef1213779043f3932d29054340c33" title="Creates the BLE Mesh element composition." alt="" coords="641,104,796,145"/>
-<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="855,128,796,128,796,122,855,122"/>
-<area shape="rect" id="Node000012" href="$d9/d05/meshx_8c.html#a9a6dcac8b5368ca6d77be9caf99cddaa" title="Initializes BLE Mesh elements." alt="" coords="456,108,593,134"/>
-<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="625,126,593,125,593,120,625,120"/>
-<area shape="poly" id="edge12_Node000012_Node000007" title=" " alt="" coords="441,113,408,109,409,103,441,108"/>
+<area shape="rect" id="Node000001" title="Restart a timer." alt="" coords="1511,504,1671,530"/>
+<area shape="rect" id="Node000002" href="$d5/d8f/meshx__nvs_8c.html#a00bee4a5af97fa0b8d4195a827e9f5f5" title="Set a value in the NVS." alt="" coords="1334,447,1447,473"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1528,502,1437,476,1439,471,1529,497"/>
+<area shape="rect" id="Node000028" href="$dd/da1/meshx__os__timer_8c.html#a1722013fe588021c8f81ee4532b0b089" title="Callback handler for OS Timer unit test command." alt="" coords="1318,525,1463,566"/>
+<area shape="poly" id="edge31_Node000001_Node000028" title=" " alt="" coords="1496,533,1463,538,1462,532,1495,528"/>
+<area shape="rect" id="Node000003" href="$d5/d8f/meshx__nvs_8c.html#a091a0be186edb6d1dc740b838cf38037" title="Store the context of a specific element to NVS." alt="" coords="1081,208,1270,234"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1365,437,1187,236,1191,233,1369,434"/>
+<area shape="rect" id="Node000017" href="$d5/d8f/meshx__nvs_8c.html#ae32d182aaba6ab32994ae22debaa1d6f" title="Erase the NVS and set the product ID." alt="" coords="1084,447,1267,473"/>
+<area shape="poly" id="edge17_Node000002_Node000017" title=" " alt="" coords="1319,462,1267,462,1267,457,1319,457"/>
+<area shape="rect" id="Node000023" href="$d5/d8f/meshx__nvs_8c.html#af877bf8456b6217ae4cd642f29e85be6" title="Callback handler for MeshX NVS unit test command." alt="" coords="648,390,793,431"/>
+<area shape="poly" id="edge26_Node000002_Node000023" title=" " alt="" coords="1320,446,1270,437,1139,424,1007,417,793,413,793,407,1007,411,1139,419,1271,432,1321,441"/>
+<area shape="rect" id="Node000025" href="$d2/d21/meshx__prov__srv_8c.html#aac026cf4837ec52fd5cb35967ce4ad3f" title="Handles provisioning control task events." alt="" coords="1107,497,1244,538"/>
+<area shape="poly" id="edge27_Node000002_Node000025" title=" " alt="" coords="1325,480,1246,501,1244,496,1324,475"/>
+<area shape="rect" id="Node000004" href="$d9/d46/meshx__cwww__server_8c.html#ab8653550cf31c3c5ac29ebf5d2d4654f" title="Callback function for configuration server events." alt="" coords="881,201,1024,242"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="1065,224,1024,224,1024,218,1065,218"/>
+<area shape="rect" id="Node000007" href="$d9/d46/meshx__cwww__server_8c.html#a9929dada86201ea717d859bfd66c9ffd" title="CW&#45;WW server model event handler." alt="" coords="872,266,1033,307"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="1115,241,1025,268,1024,263,1114,236"/>
+<area shape="rect" id="Node000008" href="$d1/df4/meshx__relay__server_8c.html#a00cdd7f706b7ed6073f0a2c011ccdbb3" title="Callback function for relay server model events." alt="" coords="872,332,1033,372"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="1147,246,1096,283,1034,321,1009,333,1007,328,1032,316,1093,278,1144,241"/>
+<area shape="rect" id="Node000009" href="$da/df4/meshx__relay__client_8c.html#ac610d2be312dd0869c22868ae041963e" title="Handles the relay client element message." alt="" coords="873,5,1032,61"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="1151,198,1099,143,1031,82,1005,64,1008,59,1035,78,1103,139,1155,195"/>
+<area shape="rect" id="Node000013" href="$da/df4/meshx__relay__client_8c.html#ac7fbd86929248ee8e44906a8c8b5b687" title="Callback function for configuration client events." alt="" coords="657,78,784,119"/>
+<area shape="poly" id="edge12_Node000003_Node000013" title=" " alt="" coords="1148,200,1097,160,1065,141,1032,126,968,109,902,100,839,97,785,97,785,92,839,91,902,95,969,104,1034,121,1068,137,1100,156,1151,196"/>
+<area shape="rect" id="Node000014" href="$d1/df4/meshx__relay__server_8c.html#a929aa494709b91cee262215525593cb9" title="Callback function for configuration server events." alt="" coords="886,136,1018,176"/>
+<area shape="poly" id="edge14_Node000003_Node000014" title=" " alt="" coords="1114,206,1018,178,1020,173,1115,201"/>
+<area shape="rect" id="Node000005" href="$d9/d46/meshx__cwww__server_8c.html#ac1498e20904edfabe76c92f9da6375bd" title="Create Dynamic CWWW Server Model Elements." alt="" coords="617,208,824,234"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="866,224,824,224,824,218,866,218"/>
+<area shape="rect" id="Node000006" href="$d9/d46/meshx__cwww__server_8c.html#aa8082758a025ec4f2663cc48f873b7d9" title=" " alt="" coords="374,208,569,234"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="602,224,570,224,570,218,602,218"/>
+<area shape="rect" id="Node000010" href="$da/df4/meshx__relay__client_8c.html#ad3d68068ef603baf6bf7d01ed3c7a9e3" title="Registers a callback for relay element state change events." alt="" coords="644,13,797,54"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="857,36,797,36,797,30,857,30"/>
+<area shape="rect" id="Node000011" href="$da/df4/meshx__relay__client_8c.html#a78912dcce7e42851d05867d83e61ce9d" title="Create Dynamic Relay Model Elements." alt="" coords="407,46,536,87"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="629,48,537,60,537,55,628,43"/>
+<area shape="rect" id="Node000012" href="$da/df4/meshx__relay__client_8c.html#a6714b32ec5f1113fae863457f0cfe653" title=" " alt="" coords="131,54,326,79"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="392,69,326,69,326,64,392,64"/>
+<area shape="poly" id="edge13_Node000013_Node000011" title=" " alt="" coords="641,91,537,77,537,72,642,86"/>
+<area shape="rect" id="Node000015" href="$d1/df4/meshx__relay__server_8c.html#af1332e2c64515cfa728a8b529abdc00b" title="Create Dynamic Relay Model Elements." alt="" coords="652,144,789,184"/>
+<area shape="poly" id="edge15_Node000014_Node000015" title=" " alt="" coords="871,161,789,164,789,159,871,156"/>
+<area shape="rect" id="Node000016" href="$d1/df4/meshx__relay__server_8c.html#a4f078550e7f2f704da32b4d524bc266d" title=" " alt="" coords="374,151,569,177"/>
+<area shape="poly" id="edge16_Node000015_Node000016" title=" " alt="" coords="637,166,570,166,570,161,637,161"/>
+<area shape="rect" id="Node000018" href="$d5/d8f/meshx__nvs_8c.html#ab4e5c250438e810358991fbe0e6cd277" title="Open the NVS with a timeout." alt="" coords="891,447,1014,473"/>
+<area shape="poly" id="edge18_Node000017_Node000018" title=" " alt="" coords="1069,462,1014,462,1014,457,1069,457"/>
+<area shape="rect" id="Node000019" href="$d9/d05/meshx_8c.html#acbc9147d880e04feca27a7fa57a45945" title="Restore the device state from the NVS." alt="" coords="653,455,788,481"/>
+<area shape="poly" id="edge19_Node000018_Node000019" title=" " alt="" coords="876,465,788,468,788,463,875,460"/>
+<area shape="poly" id="edge23_Node000018_Node000023" title=" " alt="" coords="875,446,792,428,794,423,877,441"/>
+<area shape="rect" id="Node000020" href="$d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="398,490,545,515"/>
+<area shape="poly" id="edge20_Node000019_Node000020" title=" " alt="" coords="639,482,546,495,545,490,638,477"/>
+<area shape="rect" id="Node000021" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="187,490,270,515"/>
+<area shape="poly" id="edge21_Node000020_Node000021" title=" " alt="" coords="383,505,270,505,270,500,383,500"/>
+<area shape="rect" id="Node000022" href="$d0/d29/main_8c.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title="Main application entry point." alt="" coords="5,490,83,515"/>
+<area shape="poly" id="edge22_Node000021_Node000022" title=" " alt="" coords="171,505,83,505,83,500,171,500"/>
+<area shape="rect" id="Node000024" href="$d5/d8f/meshx__nvs_8c.html#a0fbc3ba9cfa339d3e1b30d101d424685" title="MeshX NVS Initialisation." alt="" coords="416,426,527,451"/>
+<area shape="poly" id="edge24_Node000023_Node000024" title=" " alt="" coords="633,423,528,435,527,430,632,418"/>
+<area shape="poly" id="edge25_Node000024_Node000021" title=" " alt="" coords="406,458,271,494,270,489,405,453"/>
+<area shape="rect" id="Node000026" href="$d2/d21/meshx__prov__srv_8c.html#acb04eaca0a71bc777d56e2d49162ad58" title="Register the BLE Mesh provisioning callback for MeshX Layer Internal." alt="" coords="872,497,1033,538"/>
+<area shape="poly" id="edge28_Node000025_Node000026" title=" " alt="" coords="1092,520,1033,520,1033,514,1092,514"/>
+<area shape="rect" id="Node000027" href="$d2/d21/meshx__prov__srv_8c.html#a69e4bb9282a6aad8faa9ee42c968541b" title="Initialize provisioning parameters." alt="" coords="663,504,778,530"/>
+<area shape="poly" id="edge29_Node000026_Node000027" title=" " alt="" coords="856,520,779,520,779,514,856,514"/>
+<area shape="poly" id="edge30_Node000027_Node000020" title=" " alt="" coords="647,516,545,509,545,504,648,510"/>
+<area shape="rect" id="Node000029" href="$dd/da1/meshx__os__timer_8c.html#a2ae8e7e3e3019501c5a5dc68608f829a" title="Initialize the OS timer module." alt="" coords="1106,562,1246,587"/>
+<area shape="poly" id="edge32_Node000028_Node000029" title=" " alt="" coords="1303,560,1247,568,1246,562,1303,554"/>
+<area shape="poly" id="edge33_Node000029_Node000021" title=" " alt="" coords="1090,575,774,563,575,550,374,530,270,514,271,508,374,525,575,545,775,558,1090,570"/>
 </map>

@@ -1,13 +1,9 @@
 <map id="meshx_cwww_element" name="meshx_cwww_element">
-<area shape="rect" id="Node000001" title="Structure to manage CWWW element initialization." alt="" coords="242,588,394,655"/>
-<area shape="rect" id="Node000002" href="$de/d08/structcwww__srv__ctx.html" title="Structure to hold the context of the cwww client." alt="" coords="109,403,205,510"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,508,219,523,272,575,268,579,215,527,201,512"/>
-<area shape="rect" id="Node000003" href="$d7/d55/structmeshx__on__off__srv__el__state.html" title="Structure to hold the CW&#45;WW server on/off state." alt="" coords="5,117,138,198"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="85,197,140,386,135,388,80,199"/>
-<area shape="rect" id="Node000004" href="$d5/d24/structmeshx__light__ctl__srv__state.html" title=" " alt="" coords="162,5,325,310"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="224,311,209,365,199,390,194,388,204,363,219,309"/>
-<area shape="rect" id="Node000005" href="$d5/db9/structmeshx__ctl__server__model.html" title=" " alt="" coords="229,403,408,510"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="321,510,321,571,316,571,316,510"/>
-<area shape="rect" id="Node000006" href="$d7/d48/structmeshx__onoff__server__model.html" title="Structure representing the MeshX On/Off Server Model." alt="" coords="432,388,602,525"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="460,527,417,566,396,582,393,577,414,562,457,523"/>
+<area shape="rect" id="Node000001" title="Structure to manage CWWW element initialization." alt="" coords="91,599,243,686"/>
+<area shape="rect" id="Node000002" href="$de/d08/structcwww__srv__ctx.html" title="Structure to hold the context of the cwww client." alt="" coords="38,388,135,536"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,535,144,583,139,585,117,537"/>
+<area shape="rect" id="Node000003" href="$d5/d24/structmeshx__light__ctl__srv__state.html" title=" " alt="" coords="5,5,168,310"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="90,310,90,371,84,371,84,310"/>
+<area shape="rect" id="Node000004" href="$d5/db9/structmeshx__ctl__server__model.html" title=" " alt="" coords="159,409,338,516"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="227,516,195,585,190,583,222,514"/>
 </map>

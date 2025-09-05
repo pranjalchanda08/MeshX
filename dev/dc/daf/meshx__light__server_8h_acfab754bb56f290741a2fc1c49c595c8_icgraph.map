@@ -1,8 +1,14 @@
 <map id="meshx_gen_light_srv_send_msg_to_ble" name="meshx_gen_light_srv_send_msg_to_ble">
-<area shape="rect" id="Node000001" title="Sends a message to the BLE subsystem via the control task." alt="" coords="415,29,558,70"/>
-<area shape="rect" id="Node000002" href="$d4/db6/meshx__light__ctl__srv_8c.html#ae5df97f5abbb8635ac0414d8185910e5" title="Handle Light CTL messages for the lighting server model." alt="" coords="232,29,367,70"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="399,52,367,52,367,47,399,47"/>
-<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="330,16,318,10,299,8,282,10,271,15,267,20,269,28,264,29,262,19,268,10,280,5,299,3,320,5,332,11"/>
-<area shape="rect" id="Node000003" href="$d4/db6/meshx__light__ctl__srv_8c.html#adc1d0d7fc5b8e44bebce9c905547780f" title="Initialize the Light CTL Server model." alt="" coords="5,37,184,62"/>
-<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="216,52,184,52,184,47,216,47"/>
+<area shape="rect" id="Node000001" title="Sends a message to the BLE subsystem via the control task." alt="" coords="913,35,1056,75"/>
+<area shape="rect" id="Node000002" href="$d9/d46/meshx__cwww__server_8c.html#af44b869dfc97f122b46ad2752ee96d48" title="Callback function for relay server model events for Provisioning events." alt="" coords="508,5,676,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="897,51,677,35,677,29,897,46"/>
+<area shape="rect" id="Node000005" href="$d4/db6/meshx__light__ctl__srv_8c.html#a7d11c7a15e9c2066afb3f22e72068518" title="Handle Light CTL messages for the lighting server model." alt="" coords="729,63,865,103"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="897,71,865,76,865,70,897,65"/>
+<area shape="rect" id="Node000003" href="$d9/d46/meshx__cwww__server_8c.html#ac1498e20904edfabe76c92f9da6375bd" title="Create Dynamic CWWW Server Model Elements." alt="" coords="249,42,455,68"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="493,40,456,45,455,40,492,35"/>
+<area shape="rect" id="Node000004" href="$d9/d46/meshx__cwww__server_8c.html#aa8082758a025ec4f2663cc48f873b7d9" title=" " alt="" coords="5,42,201,68"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="233,58,201,58,201,52,233,52"/>
+<area shape="rect" id="Node000006" href="$d4/db6/meshx__light__ctl__srv_8c.html#adc1d0d7fc5b8e44bebce9c905547780f" title="Initialize the Light CTL Server model." alt="" coords="503,70,681,96"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="714,86,682,86,682,80,714,80"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="487,73,455,70,456,64,488,68"/>
 </map>

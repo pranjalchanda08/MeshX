@@ -14,5 +14,7 @@ var meshx__light__ctl__client_8h =
     [ "meshx_light_ctl_client_delete", "da/dfd/meshx__light__ctl__client_8h.html#a3ac7674b97a0b1ca819a783677bfc974", null ],
     [ "meshx_light_ctl_client_init", "da/dfd/meshx__light__ctl__client_8h.html#ac113a964dc509d47b87de8066d3574e0", null ],
     [ "meshx_light_ctl_client_send_msg", "da/dfd/meshx__light__ctl__client_8h.html#a0b0bfb546a17cedd810469b795e91948", null ],
+    [ "meshx_light_ctl_state_change_handle", "da/dfd/meshx__light__ctl__client_8h.html#a6a0257b2e3c470ecae2f144b05bda962", null ],
+    [ "meshx_light_ctl_temp_range_client_send_msg", "da/dfd/meshx__light__ctl__client_8h.html#a4464e08bcc032c176c6ca4a91749153c", null ],
     [ "meshx_light_ctl_temperature_client_send_msg", "da/dfd/meshx__light__ctl__client_8h.html#a6ed820c28aabb44dc82110f0bf2fc992", null ]
 ];

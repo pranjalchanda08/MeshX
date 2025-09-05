@@ -9,6 +9,8 @@ var meshx__light__ctl__client_8c =
     [ "meshx_light_ctl_client_init", "d8/d93/meshx__light__ctl__client_8c.html#ac113a964dc509d47b87de8066d3574e0", null ],
     [ "meshx_light_ctl_client_send_msg", "d8/d93/meshx__light__ctl__client_8c.html#a0b0bfb546a17cedd810469b795e91948", null ],
     [ "meshx_light_ctl_client_timeout_handler", "d8/d93/meshx__light__ctl__client_8c.html#af662d33c9ac9569608d2ad1749e8d7dc", null ],
+    [ "meshx_light_ctl_state_change_handle", "d8/d93/meshx__light__ctl__client_8c.html#a6a0257b2e3c470ecae2f144b05bda962", null ],
+    [ "meshx_light_ctl_temp_range_client_send_msg", "d8/d93/meshx__light__ctl__client_8c.html#a4464e08bcc032c176c6ca4a91749153c", null ],
     [ "meshx_light_ctl_temperature_client_send_msg", "d8/d93/meshx__light__ctl__client_8c.html#a6ed820c28aabb44dc82110f0bf2fc992", null ],
     [ "addr", "d8/d93/meshx__light__ctl__client_8c.html#a41a6aad09727eb120338c35535a652a6", null ],
     [ "app_idx", "d8/d93/meshx__light__ctl__client_8c.html#a1ab74b1231b1c9f0e416a06f8805a4b0", null ],

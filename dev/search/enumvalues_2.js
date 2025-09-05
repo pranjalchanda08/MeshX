@@ -1,7 +1,10 @@
 var searchData=
 [
-  ['relay_5fcli_5fsig_5fmax_5fid_0',['RELAY_CLI_SIG_MAX_ID',['../de/dca/meshx__relay__client__element_8h.html#a1a3ef78536f7931e398f16d1b97b80d9ac7467895d90fce5cc730a085bd4fc3ad',1,'meshx_relay_client_element.h']]],
-  ['relay_5fcli_5fsig_5fonoff_5fmodel_5fid_1',['RELAY_CLI_SIG_ONOFF_MODEL_ID',['../de/dca/meshx__relay__client__element_8h.html#a1a3ef78536f7931e398f16d1b97b80d9a16e9c77bae2d72e90e57dbb98bde4d98',1,'meshx_relay_client_element.h']]],
-  ['relay_5fsig_5fmax_5fid_2',['RELAY_SIG_MAX_ID',['../dc/dee/meshx__relay__server__element_8h.html#ac91fe49073e8b7c8ea48afb5baf5c2e5ae31d812d556c803a8913f786e6c70a80',1,'meshx_relay_server_element.h']]],
-  ['relay_5fsig_5fonoff_5fmodel_5fid_3',['RELAY_SIG_ONOFF_MODEL_ID',['../dc/dee/meshx__relay__server__element_8h.html#ac91fe49073e8b7c8ea48afb5baf5c2e5a029c6bcabc81077e8a62719e3876f179',1,'meshx_relay_server_element.h']]]
+  ['os_5ftimer_5fcli_5fcmd_5farm_0',['OS_TIMER_CLI_CMD_ARM',['../dd/da1/meshx__os__timer_8c.html#ad45cee45671f323a1e59a0f24afefcbaac431e317f9c1cb15e51ed076ffed8c75',1,'meshx_os_timer.c']]],
+  ['os_5ftimer_5fcli_5fcmd_5fcreate_1',['OS_TIMER_CLI_CMD_CREATE',['../dd/da1/meshx__os__timer_8c.html#ad45cee45671f323a1e59a0f24afefcbaa2b00239156bd7db8178b9d48509f519b',1,'meshx_os_timer.c']]],
+  ['os_5ftimer_5fcli_5fcmd_5fdelete_2',['OS_TIMER_CLI_CMD_DELETE',['../dd/da1/meshx__os__timer_8c.html#ad45cee45671f323a1e59a0f24afefcbaaac0e550c42d7cf8cae8f0f947ec6541d',1,'meshx_os_timer.c']]],
+  ['os_5ftimer_5fcli_5fcmd_5fdisarm_3',['OS_TIMER_CLI_CMD_DISARM',['../dd/da1/meshx__os__timer_8c.html#ad45cee45671f323a1e59a0f24afefcbaa9b83a23737484b6c91a4383c223374f1',1,'meshx_os_timer.c']]],
+  ['os_5ftimer_5fcli_5fcmd_5fmax_4',['OS_TIMER_CLI_CMD_MAX',['../dd/da1/meshx__os__timer_8c.html#ad45cee45671f323a1e59a0f24afefcbaa73480d01b0b3c13027e57ab06dcc8f32',1,'meshx_os_timer.c']]],
+  ['os_5ftimer_5fcli_5fcmd_5fperiod_5fset_5',['OS_TIMER_CLI_CMD_PERIOD_SET',['../dd/da1/meshx__os__timer_8c.html#ad45cee45671f323a1e59a0f24afefcbaa85ba9d97ace9515185f169845e82e37d',1,'meshx_os_timer.c']]],
+  ['os_5ftimer_5fcli_5fcmd_5frearm_6',['OS_TIMER_CLI_CMD_REARM',['../dd/da1/meshx__os__timer_8c.html#ad45cee45671f323a1e59a0f24afefcbaace5959d00d44c6730f39bf6577e7a240',1,'meshx_os_timer.c']]]
 ];

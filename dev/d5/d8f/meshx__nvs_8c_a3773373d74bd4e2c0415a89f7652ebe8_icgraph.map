@@ -1,9 +1,27 @@
 <map id="meshx_nvs_element_ctx_get" name="meshx_nvs_element_ctx_get">
-<area shape="rect" id="Node000001" title="Retrieve the context of a specific element from NVS." alt="" coords="642,13,832,38"/>
-<area shape="rect" id="Node000002" href="$d0/d53/meshx__light__cwww__client_8c.html#aeeed3c047c66ef0ea3eecfa65f5d9fe1" title="This function adds the CW&#45;WW client models to the element list of the specified device...." alt="" coords="436,5,594,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="627,28,595,28,595,23,627,23"/>
-<area shape="rect" id="Node000003" href="$d0/d53/meshx__light__cwww__client_8c.html#a2b18c9b388becb88fae3b11dc91227ad" title="Create Dynamic CW&#45;WW Model Elements." alt="" coords="249,5,388,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="420,28,388,28,388,23,420,23"/>
+<area shape="rect" id="Node000001" title="Retrieve the context of a specific element from NVS." alt="" coords="709,112,899,137"/>
+<area shape="rect" id="Node000002" href="$d0/d53/meshx__light__cwww__client_8c.html#aeeed3c047c66ef0ea3eecfa65f5d9fe1" title="This function adds the CW&#45;WW client models to the element list of the specified device...." alt="" coords="503,5,661,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="760,107,660,61,632,49,634,44,662,57,762,102"/>
+<area shape="rect" id="Node000005" href="$d9/d46/meshx__cwww__server_8c.html#ade969ecdaaeafbdb83b4f4ecabcef37c" title="Add CW&#45;WW server models to the element list." alt="" coords="503,71,661,111"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="699,111,661,106,662,100,700,106"/>
+<area shape="rect" id="Node000008" href="$da/df4/meshx__relay__client_8c.html#a1f96616eb21ac54b4d5b5652b0e48d93" title="Add relay client models to the element list." alt="" coords="503,136,661,177"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="696,143,662,148,661,142,695,137"/>
+<area shape="rect" id="Node000011" href="$d1/df4/meshx__relay__server_8c.html#a90b505526740de4bd9d8c07d1f46c546" title="Add relay server models to the element list." alt="" coords="503,201,661,242"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="761,146,662,191,634,203,631,198,660,186,759,142"/>
+<area shape="rect" id="Node000003" href="$d0/d53/meshx__light__cwww__client_8c.html#a2b18c9b388becb88fae3b11dc91227ad" title="Create Dynamic CW&#45;WW Model Elements." alt="" coords="282,5,422,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="488,28,422,28,422,23,488,23"/>
 <area shape="rect" id="Node000004" href="$d0/d53/meshx__light__cwww__client_8c.html#a3c149e2a2474324a7ecac6168d1f9a9f" title=" " alt="" coords="5,13,201,38"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="233,28,201,28,201,23,233,23"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="267,28,201,28,201,23,267,23"/>
+<area shape="rect" id="Node000006" href="$d9/d46/meshx__cwww__server_8c.html#ac1498e20904edfabe76c92f9da6375bd" title="Create Dynamic CWWW Server Model Elements." alt="" coords="249,78,455,104"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="487,94,455,94,455,88,487,88"/>
+<area shape="rect" id="Node000007" href="$d9/d46/meshx__cwww__server_8c.html#aa8082758a025ec4f2663cc48f873b7d9" title=" " alt="" coords="5,78,201,104"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="233,94,201,94,201,88,233,88"/>
+<area shape="rect" id="Node000009" href="$da/df4/meshx__relay__client_8c.html#a78912dcce7e42851d05867d83e61ce9d" title="Create Dynamic Relay Model Elements." alt="" coords="287,136,416,177"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="487,159,417,159,417,154,487,154"/>
+<area shape="rect" id="Node000010" href="$da/df4/meshx__relay__client_8c.html#a6714b32ec5f1113fae863457f0cfe653" title=" " alt="" coords="5,144,201,169"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="272,159,201,159,201,154,272,154"/>
+<area shape="rect" id="Node000012" href="$d1/df4/meshx__relay__server_8c.html#af1332e2c64515cfa728a8b529abdc00b" title="Create Dynamic Relay Model Elements." alt="" coords="284,201,420,242"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="487,224,421,224,421,219,487,219"/>
+<area shape="rect" id="Node000013" href="$d1/df4/meshx__relay__server_8c.html#a4f078550e7f2f704da32b4d524bc266d" title=" " alt="" coords="5,209,201,234"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="268,224,201,224,201,219,268,219"/>
 </map>

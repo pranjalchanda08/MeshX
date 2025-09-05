@@ -1,12 +1,9 @@
 var meshx__light__cwww__client__element_8h =
 [
-    [ "cwww_cli_on_off_state", "d0/d1d/structcwww__cli__on__off__state.html", "d0/d1d/structcwww__cli__on__off__state" ],
-    [ "cwww_cli_ctl_state", "d6/dd3/structcwww__cli__ctl__state.html", "d6/dd3/structcwww__cli__ctl__state" ],
     [ "cwww_cli_ctx", "d2/dd1/structcwww__cli__ctx.html", "d2/dd1/structcwww__cli__ctx" ],
     [ "cwww_client_msg", "d3/d96/structcwww__client__msg.html", "d3/d96/structcwww__client__msg" ],
     [ "cwww_client_element", "de/d9b/structcwww__client__element.html", "de/d9b/structcwww__client__element" ],
     [ "cwww_client_element_ctrl", "d1/d44/structcwww__client__element__ctrl.html", "d1/d44/structcwww__client__element__ctrl" ],
-    [ "CONFIG_LIGHT_CWWW_CLIENT_COUNT", "df/dc5/meshx__light__cwww__client__element_8h.html#aac4292a59f2df699f3033f542b81d5f1", null ],
     [ "CWWW_ARG_BMAP_ALL", "df/dc5/meshx__light__cwww__client__element_8h.html#a94bdbfd2cb855ad3d015b8482de4ea31", null ],
     [ "CWWW_ARG_BMAP_CTL_SET", "df/dc5/meshx__light__cwww__client__element_8h.html#abc5cee5642702cdc803d772f64d31f68", null ],
     [ "CWWW_ARG_BMAP_DELTA_UV_SET", "df/dc5/meshx__light__cwww__client__element_8h.html#a2c9f4b3a249056ae6e0ef71988a60420", null ],
@@ -22,9 +19,6 @@ var meshx__light__cwww__client__element_8h =
     [ "CWWW_CLI_MSG_GET", "df/dc5/meshx__light__cwww__client__element_8h.html#a27ada85d4a43670c416f7864351b7209", null ],
     [ "CWWW_CLI_MSG_NO_ACK", "df/dc5/meshx__light__cwww__client__element_8h.html#aa79a195da5c8a3be1027c9a301561849", null ],
     [ "CWWW_CLI_MSG_SET", "df/dc5/meshx__light__cwww__client__element_8h.html#a5046dfb322206e8201e91644c631e5bc", null ],
-    [ "CWWW_CLIENT_ELEMENT_NOS_DEF", "df/dc5/meshx__light__cwww__client__element_8h.html#ae13a3a6fb4cc289080a0644931f913b2", null ],
-    [ "cwww_cli_ctl_state_t", "df/dc5/meshx__light__cwww__client__element_8h.html#ad9ad96a8052e07a9a1f3c1d040e3f0a1", null ],
-    [ "cwww_cli_on_off_state_t", "df/dc5/meshx__light__cwww__client__element_8h.html#ad0adc0ce9ce8521f8faca95fe1ee28e2", null ],
     [ "meshx_cwww_client_elements_ctrl_t", "df/dc5/meshx__light__cwww__client__element_8h.html#a2399535244f1ab900a7d6f54022f4d32", null ],
     [ "meshx_cwww_client_elements_t", "df/dc5/meshx__light__cwww__client__element_8h.html#a38f7636bb2e04683e972472923d1af10", null ],
     [ "meshx_cwww_client_model_ctx_t", "df/dc5/meshx__light__cwww__client__element_8h.html#ae694f726031d9f8bf593f16a3516a2f5", null ],

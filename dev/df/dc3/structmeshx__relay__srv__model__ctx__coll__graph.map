@@ -1,5 +1,3 @@
 <map id="meshx_relay_srv_model_ctx" name="meshx_relay_srv_model_ctx">
-<area shape="rect" id="Node000001" title="Structure to hold the relay server save restore context." alt="" coords="5,150,179,257"/>
-<area shape="rect" id="Node000002" href="$d7/d55/structmeshx__on__off__srv__el__state.html" title="Structure to hold the CW&#45;WW server on/off state." alt="" coords="26,5,158,87"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,86,95,133,90,133,90,86"/>
+<area shape="rect" id="Node000001" title="Structure to hold the relay server save restore context." alt="" coords="5,5,179,133"/>
 </map>

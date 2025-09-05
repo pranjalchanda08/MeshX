@@ -83,6 +83,8 @@ var meshx__ble__mesh__prov__srv_8h =
     [ "meshx_prov_cb_param_t::meshx_model_sub_group_addr_comp_param", "d4/de0/structmeshx__prov__cb__param__t_1_1meshx__model__sub__group__addr__comp__param.html", "d4/de0/structmeshx__prov__cb__param__t_1_1meshx__model__sub__group__addr__comp__param" ],
     [ "meshx_prov_cb_param_t::meshx_model_unsub_group_addr_comp_param", "d3/d3d/structmeshx__prov__cb__param__t_1_1meshx__model__unsub__group__addr__comp__param.html", "d3/d3d/structmeshx__prov__cb__param__t_1_1meshx__model__unsub__group__addr__comp__param" ],
     [ "meshx_prov_cb_param_t::meshx_deinit_mesh_comp_param", "db/db7/structmeshx__prov__cb__param__t_1_1meshx__deinit__mesh__comp__param.html", "db/db7/structmeshx__prov__cb__param__t_1_1meshx__deinit__mesh__comp__param" ],
+    [ "meshx_ble_mesh_prov_srv_param", "db/db2/structmeshx__ble__mesh__prov__srv__param.html", "db/db2/structmeshx__ble__mesh__prov__srv__param" ],
+    [ "meshx_prov_srv_param_t", "d4/de9/meshx__ble__mesh__prov__srv_8h.html#a556498a6580db8dda064466f8aacb462", null ],
     [ "prov_evt_t", "d4/de9/meshx__ble__mesh__prov__srv_8h.html#a50d4579bf974371aab5f0b855c43b12e", null ],
     [ "prov_srv_cb_t", "d4/de9/meshx__ble__mesh__prov__srv_8h.html#ac1ee79c21ee83f2bfa5c74f5e2d7c489", null ],
     [ "meshx_prov_bearer_t", "d4/de9/meshx__ble__mesh__prov__srv_8h.html#a911b36470cb58dcacbc3f9a73a646df7", [
@@ -105,6 +107,7 @@ var meshx__ble__mesh__prov__srv_8h =
       [ "MESHX_PROV_OOB_IN_MANUAL", "d4/de9/meshx__ble__mesh__prov__srv_8h.html#ae3fb0a8e5915a3d7c262eda3fd734b35aeadb8587eac16f5b951587a9be7e90e7", null ],
       [ "MESHX_PROV_OOB_ON_DEV", "d4/de9/meshx__ble__mesh__prov__srv_8h.html#ae3fb0a8e5915a3d7c262eda3fd734b35a79a58e8045a3cd4ef1eb6b95e46c275e", null ]
     ] ],
-    [ "meshx_plat_get_prov", "d4/de9/meshx__ble__mesh__prov__srv_8h.html#aa1a0cf6cb5bea45538b417384b7ecfc2", null ],
-    [ "meshx_plat_init_prov", "d4/de9/meshx__ble__mesh__prov__srv_8h.html#a158407471e9cdd7cb6ba7716cd6a8822", null ]
+    [ "meshx_plat_get_prov", "d4/de9/meshx__ble__mesh__prov__srv_8h.html#abae1983bb7292ae3f77ebeb5276c2344", null ],
+    [ "meshx_plat_init_prov", "d4/de9/meshx__ble__mesh__prov__srv_8h.html#a158407471e9cdd7cb6ba7716cd6a8822", null ],
+    [ "meshx_prov_srv_notify_plat_event", "d4/de9/meshx__ble__mesh__prov__srv_8h.html#aca01220ebad971e14ed4fb6650153c51", null ]
 ];

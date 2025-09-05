@@ -1,7 +1,5 @@
 <map id="cwww_cli_ctx" name="cwww_cli_ctx">
-<area shape="rect" id="Node000001" title="Structure to hold the context of the cwww client." alt="" coords="111,292,203,399"/>
-<area shape="rect" id="Node000002" href="$d0/d1d/structcwww__cli__on__off__state.html" title="Structure to hold the CW&#45;WW client on/off state." alt="" coords="5,76,151,143"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,142,136,275,131,277,86,143"/>
-<area shape="rect" id="Node000003" href="$d6/dd3/structcwww__cli__ctl__state.html" title="Structure to hold the CW&#45;WW client control state." alt="" coords="174,5,299,214"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="225,215,209,269,205,278,200,276,204,267,220,213"/>
+<area shape="rect" id="Node000001" title="Structure to hold the context of the cwww client." alt="" coords="21,292,113,440"/>
+<area shape="rect" id="Node000002" href="$d1/d7c/structmeshx__ctl__el__state.html" title="Structure to hold arguments for sending Light CTL messages." alt="" coords="5,5,128,214"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="70,214,70,275,64,275,64,214"/>
 </map>

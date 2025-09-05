@@ -25,5 +25,8 @@ var meshx__platform__ble__mesh_8h =
     [ "MESHX_LIGHT_SRV_CB_PARAM", "d3/d2b/meshx__platform__ble__mesh_8h.html#a3072c581597c9d6d79060e42d9ae5b1f", null ],
     [ "MESHX_MODEL", "d3/d2b/meshx__platform__ble__mesh_8h.html#ab8c86cf2f5e47acb374476edda8b5b7c", null ],
     [ "MESHX_MODEL_PUB", "d3/d2b/meshx__platform__ble__mesh_8h.html#ae8272f86afe3a74d8de48473ecefaf5e", null ],
-    [ "MESHX_PROV", "d3/d2b/meshx__platform__ble__mesh_8h.html#a7c53320caed399e04974f76c132f75b5", null ]
+    [ "MESHX_PROV", "d3/d2b/meshx__platform__ble__mesh_8h.html#a7c53320caed399e04974f76c132f75b5", null ],
+    [ "MESHX_PROV_CB", "d3/d2b/meshx__platform__ble__mesh_8h.html#a9c1ad310b2d547104563bbc3863913ee", null ],
+    [ "MESHX_PROV_CB_EVT", "d3/d2b/meshx__platform__ble__mesh_8h.html#ae3f1b7ed309a5b460dbfa8ded71474a1", null ],
+    [ "MESHX_PROV_CB_PARAM", "d3/d2b/meshx__platform__ble__mesh_8h.html#a99911eb52ba1efa38de0b999246b60ed", null ]
 ];

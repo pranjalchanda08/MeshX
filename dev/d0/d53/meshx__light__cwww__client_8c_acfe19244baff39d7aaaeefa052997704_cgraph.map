@@ -1,18 +1,13 @@
 <map id="meshx_element_struct_init" name="meshx_element_struct_init">
-<area shape="rect" id="Node000001" title="Initializes the CW&#45;WW client model." alt="" coords="5,46,182,72"/>
-<area shape="rect" id="Node000002" href="$d8/d93/meshx__light__ctl__client_8c.html#a7c7cc48c89c94e6d90b77aa26ce13b46" title="Creates and initializes a Generic Light Client model instance." alt="" coords="230,5,379,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,43,214,37,215,42,179,48"/>
-<area shape="rect" id="Node000007" href="$d9/d33/meshx__onoff__client_8c.html#aa63f2f5107e1520101259e1bb2190afc" title="Creates and initializes a Generic OnOff Client model instance." alt="" coords="235,71,374,111"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="182,70,220,76,219,81,182,75"/>
-<area shape="rect" id="Node000003" href="$d1/d1d/esp__gen__light__cli__model_8c.html#aec7e337b67a89fe1eea5f840e0048baf" title="Creates and initializes a Light CTL (Color Temperature Light) client model instance." alt="" coords="436,5,575,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="380,23,420,23,420,28,380,28"/>
-<area shape="rect" id="Node000004" href="$dc/d96/esp__platform__ble__mesh_8c.html#ab2af046bc4c0e850d01643ba048e5194" title="Creates and initializes a generic client model for BLE Mesh." alt="" coords="632,46,801,72"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="576,34,617,41,617,46,575,39"/>
-<area shape="rect" id="Node000005" href="$dc/d96/esp__platform__ble__mesh_8c.html#a12b595bcf51021fcaa675e488fe24308" title="Creates and initializes model and publication structures." alt="" coords="849,21,1049,46"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="800,47,833,44,834,49,801,53"/>
-<area shape="rect" id="Node000006" href="$dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="858,70,1040,96"/>
-<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="801,65,843,69,842,75,800,70"/>
-<area shape="rect" id="Node000008" href="$d0/de1/esp__gen__cli__model_8c.html#a9c0eb105e6e14237408cd53f538645da" title="Creates a Generic OnOff client model and its publication context." alt="" coords="427,71,584,111"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="375,88,411,88,411,94,375,94"/>
-<area shape="poly" id="edge8_Node000008_Node000004" title=" " alt="" coords="584,76,617,71,618,77,585,82"/>
+<area shape="rect" id="Node000001" title="Initializes the CW&#45;WW client model." alt="" coords="5,31,182,56"/>
+<area shape="rect" id="Node000002" href="$d8/d93/meshx__light__ctl__client_8c.html#a7c7cc48c89c94e6d90b77aa26ce13b46" title="Creates and initializes a Generic Light Client model instance." alt="" coords="230,23,379,64"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="182,41,214,41,214,46,182,46"/>
+<area shape="rect" id="Node000003" href="$d1/d1d/esp__gen__light__cli__model_8c.html#aec7e337b67a89fe1eea5f840e0048baf" title="Creates and initializes a Light CTL (Color Temperature Light) client model instance." alt="" coords="427,23,566,64"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="380,41,412,41,412,46,380,46"/>
+<area shape="rect" id="Node000004" href="$dc/d96/esp__platform__ble__mesh_8c.html#ab2af046bc4c0e850d01643ba048e5194" title="Creates and initializes a generic client model for BLE Mesh." alt="" coords="614,31,783,56"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="567,41,598,41,598,46,567,46"/>
+<area shape="rect" id="Node000005" href="$dc/d96/esp__platform__ble__mesh_8c.html#a12b595bcf51021fcaa675e488fe24308" title="Creates and initializes model and publication structures." alt="" coords="831,5,1031,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="782,32,815,28,816,33,783,37"/>
+<area shape="rect" id="Node000006" href="$dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="840,55,1022,80"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="783,50,825,54,824,59,782,55"/>
 </map>

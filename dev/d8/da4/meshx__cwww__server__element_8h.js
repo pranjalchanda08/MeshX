@@ -3,8 +3,6 @@ var meshx__cwww__server__element_8h =
     [ "cwww_srv_ctx", "de/d08/structcwww__srv__ctx.html", "de/d08/structcwww__srv__ctx" ],
     [ "meshx_cwww_element", "d0/de7/structmeshx__cwww__element.html", "d0/de7/structmeshx__cwww__element" ],
     [ "cwww_element", "d2/dc7/structcwww__element.html", "d2/dc7/structcwww__element" ],
-    [ "CONFIG_LIGHT_CWWW_SRV_COUNT", "d8/da4/meshx__cwww__server__element_8h.html#ab617149e98b0e10df234107ae01a7a57", null ],
-    [ "CWWW_SERVER_ELEMENT_NOS_DEF", "d8/da4/meshx__cwww__server__element_8h.html#aa4b0049a4b38270c63e6cbe8942f4af1", null ],
     [ "CWWW_SRV_MODEL_SIG_CNT", "d8/da4/meshx__cwww__server__element_8h.html#a7c0b486f598b85136254fc42aa6b29e5", null ],
     [ "CWWW_SRV_MODEL_VEN_CNT", "d8/da4/meshx__cwww__server__element_8h.html#a37adebdc5e0dc0f6300d8d5a3c956483", null ],
     [ "meshx_cwww_element_t", "d8/da4/meshx__cwww__server__element_8h.html#aeea883a240a1c953ee682f2590823c87", null ],

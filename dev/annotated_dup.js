@@ -5,9 +5,7 @@ var annotated_dup =
     [ "control_task_evt_cb_reg", "dc/db1/structcontrol__task__evt__cb__reg.html", "dc/db1/structcontrol__task__evt__cb__reg" ],
     [ "control_task_msg", "d1/daf/structcontrol__task__msg.html", "d1/daf/structcontrol__task__msg" ],
     [ "ctl_status_pack", "da/dc6/unionctl__status__pack.html", "da/dc6/unionctl__status__pack" ],
-    [ "cwww_cli_ctl_state", "d6/dd3/structcwww__cli__ctl__state.html", "d6/dd3/structcwww__cli__ctl__state" ],
     [ "cwww_cli_ctx", "d2/dd1/structcwww__cli__ctx.html", "d2/dd1/structcwww__cli__ctx" ],
-    [ "cwww_cli_on_off_state", "d0/d1d/structcwww__cli__on__off__state.html", "d0/d1d/structcwww__cli__on__off__state" ],
     [ "cwww_client_element", "de/d9b/structcwww__client__element.html", "de/d9b/structcwww__client__element" ],
     [ "cwww_client_element_ctrl", "d1/d44/structcwww__client__element__ctrl.html", "d1/d44/structcwww__client__element__ctrl" ],
     [ "cwww_client_msg", "d3/d96/structcwww__client__msg.html", "d3/d96/structcwww__client__msg" ],
@@ -23,6 +21,7 @@ var annotated_dup =
     [ "meshx_app_api_msg", "d5/dbd/structmeshx__app__api__msg.html", "d5/dbd/structmeshx__app__api__msg" ],
     [ "meshx_app_element_msg_header", "d1/d0e/structmeshx__app__element__msg__header.html", "d1/d0e/structmeshx__app__element__msg__header" ],
     [ "meshx_app_store", "dc/d59/structmeshx__app__store.html", "dc/d59/structmeshx__app__store" ],
+    [ "meshx_ble_mesh_prov_srv_param", "db/db2/structmeshx__ble__mesh__prov__srv__param.html", "db/db2/structmeshx__ble__mesh__prov__srv__param" ],
     [ "meshx_cfg_srv_state_change_t", "de/da0/unionmeshx__cfg__srv__state__change__t.html", "de/da0/unionmeshx__cfg__srv__state__change__t" ],
     [ "meshx_config", "d5/d3e/structmeshx__config.html", "d5/d3e/structmeshx__config" ],
     [ "meshx_config_srv_cb_param", "d5/dbd/structmeshx__config__srv__cb__param.html", "d5/dbd/structmeshx__config__srv__cb__param" ],
@@ -126,11 +125,6 @@ var annotated_dup =
     [ "meshx_model", "d7/df1/structmeshx__model.html", "d7/df1/structmeshx__model" ],
     [ "meshx_msg_q", "db/d59/structmeshx__msg__q.html", "db/d59/structmeshx__msg__q" ],
     [ "meshx_nvs", "dd/d16/structmeshx__nvs.html", "dd/d16/structmeshx__nvs" ],
-    [ "meshx_on_off_cli_el_msg", "d8/dbd/structmeshx__on__off__cli__el__msg.html", "d8/dbd/structmeshx__on__off__cli__el__msg" ],
-    [ "meshx_on_off_srv_el_msg", "d6/ddf/structmeshx__on__off__srv__el__msg.html", "d6/ddf/structmeshx__on__off__srv__el__msg" ],
-    [ "meshx_on_off_srv_el_state", "d7/d55/structmeshx__on__off__srv__el__state.html", "d7/d55/structmeshx__on__off__srv__el__state" ],
-    [ "meshx_onoff_client_model", "dc/d0e/structmeshx__onoff__client__model.html", "dc/d0e/structmeshx__onoff__client__model" ],
-    [ "meshx_onoff_server_model", "d7/d48/structmeshx__onoff__server__model.html", "d7/d48/structmeshx__onoff__server__model" ],
     [ "meshx_os_timer", "db/d1c/structmeshx__os__timer.html", "db/d1c/structmeshx__os__timer" ],
     [ "meshx_os_timer_reg_head", "d5/d05/structmeshx__os__timer__reg__head.html", null ],
     [ "meshx_prov_cb_param_t", "d1/db1/unionmeshx__prov__cb__param__t.html", "d1/db1/unionmeshx__prov__cb__param__t" ],
@@ -192,6 +186,5 @@ var annotated_dup =
     [ "meshx_task", "db/d8e/structmeshx__task.html", "db/d8e/structmeshx__task" ],
     [ "prov_cb_evt_ctrl_task_evt_table", "d1/d5e/structprov__cb__evt__ctrl__task__evt__table.html", "d1/d5e/structprov__cb__evt__ctrl__task__evt__table" ],
     [ "relay_client_element", "de/d7d/structrelay__client__element.html", "de/d7d/structrelay__client__element" ],
-    [ "relay_client_element_ctrl", "d5/d2f/structrelay__client__element__ctrl.html", "d5/d2f/structrelay__client__element__ctrl" ],
-    [ "relay_client_state", "dd/dae/structrelay__client__state.html", "dd/dae/structrelay__client__state" ]
+    [ "relay_client_element_ctrl", "d5/d2f/structrelay__client__element__ctrl.html", "d5/d2f/structrelay__client__element__ctrl" ]
 ];

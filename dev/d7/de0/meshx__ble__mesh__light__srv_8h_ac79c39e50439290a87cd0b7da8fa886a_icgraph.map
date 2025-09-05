@@ -1,7 +1,13 @@
 <map id="meshx_plat_gen_light_srv_send_status" name="meshx_plat_gen_light_srv_send_status">
-<area shape="rect" id="Node000001" title="Send a status message from the Light Server. This function constructs and sends a status message cont..." alt="" coords="381,5,527,46"/>
-<area shape="rect" id="Node000002" href="$d5/d98/meshx__light__server_8c.html#a40a91efcb35c7db08fd73143b779a31a" title="Sends a status message for the Lighting Server model." alt="" coords="190,5,333,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="365,28,334,28,334,23,365,23"/>
-<area shape="rect" id="Node000003" href="$d4/db6/meshx__light__ctl__srv_8c.html#a934b83618b10c26bf4d3f17e0ae1aa08" title="Send the Light CTL status message." alt="" coords="5,5,142,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="174,28,142,28,142,23,174,23"/>
+<area shape="rect" id="Node000001" title="Send a status message from the Light Server. This function constructs and sends a status message cont..." alt="" coords="1087,5,1233,46"/>
+<area shape="rect" id="Node000002" href="$d5/d98/meshx__light__server_8c.html#a40a91efcb35c7db08fd73143b779a31a" title="Sends a status message for the Lighting Server model." alt="" coords="896,5,1039,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1071,28,1040,28,1040,23,1071,23"/>
+<area shape="rect" id="Node000003" href="$d4/db6/meshx__light__ctl__srv_8c.html#a934b83618b10c26bf4d3f17e0ae1aa08" title="Send the Light CTL status message." alt="" coords="711,5,848,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="880,28,848,28,848,23,880,23"/>
+<area shape="rect" id="Node000004" href="$d9/d46/meshx__cwww__server_8c.html#a079e0e35fadd8737ea2216db7c76977c" title="Handler for sending messages from the CW&#45;WW server model to BLE." alt="" coords="503,5,663,46"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="696,28,664,28,664,23,696,23"/>
+<area shape="rect" id="Node000005" href="$d9/d46/meshx__cwww__server_8c.html#ac1498e20904edfabe76c92f9da6375bd" title="Create Dynamic CWWW Server Model Elements." alt="" coords="249,13,455,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="487,28,455,28,455,23,487,23"/>
+<area shape="rect" id="Node000006" href="$d9/d46/meshx__cwww__server_8c.html#aa8082758a025ec4f2663cc48f873b7d9" title=" " alt="" coords="5,13,201,38"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="233,28,201,28,201,23,233,23"/>
 </map>

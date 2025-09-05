@@ -1,7 +1,5 @@
 <map id="cwww_srv_ctx" name="cwww_srv_ctx">
-<area shape="rect" id="Node000001" title="Structure to hold the context of the cwww client." alt="" coords="109,388,205,495"/>
-<area shape="rect" id="Node000002" href="$d7/d55/structmeshx__on__off__srv__el__state.html" title="Structure to hold the CW&#45;WW server on/off state." alt="" coords="5,117,138,198"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="86,198,139,371,134,373,81,199"/>
-<area shape="rect" id="Node000003" href="$d5/d24/structmeshx__light__ctl__srv__state.html" title=" " alt="" coords="162,5,325,310"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="228,311,211,365,207,375,202,372,207,363,223,309"/>
+<area shape="rect" id="Node000001" title="Structure to hold the context of the cwww client." alt="" coords="38,388,135,536"/>
+<area shape="rect" id="Node000002" href="$d5/d24/structmeshx__light__ctl__srv__state.html" title=" " alt="" coords="5,5,168,310"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,310,90,371,84,371,84,310"/>
 </map>

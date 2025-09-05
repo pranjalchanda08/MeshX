@@ -1,9 +1,18 @@
 <map id="meshx_os_timer_start" name="meshx_os_timer_start">
-<area shape="rect" id="Node000001" title="Start a timer." alt="" coords="461,5,611,31"/>
-<area shape="rect" id="Node000002" href="$d9/d05/meshx_8c.html#a9b48e199b9dca0ba00cc6a1ee0b673f2" title="Initializes the boot timer." alt="" coords="262,5,413,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="445,21,414,21,414,16,445,16"/>
-<area shape="rect" id="Node000003" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="131,5,214,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="246,21,215,21,215,16,246,16"/>
-<area shape="rect" id="Node000004" href="$d0/d29/main_8c.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title="Main application entry point." alt="" coords="5,5,83,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="115,21,83,21,83,16,115,16"/>
+<area shape="rect" id="Node000001" title="Start a timer." alt="" coords="812,46,961,72"/>
+<area shape="rect" id="Node000002" href="$d2/d21/meshx__prov__srv_8c.html#a35f1927392b1941e9c0389f49fa24f1f" title="Initializes the fresh boot timer." alt="" coords="620,5,764,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="796,46,764,41,765,35,797,41"/>
+<area shape="rect" id="Node000007" href="$dd/da1/meshx__os__timer_8c.html#a1722013fe588021c8f81ee4532b0b089" title="Callback handler for OS Timer unit test command." alt="" coords="620,71,764,111"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="797,76,765,82,764,76,796,71"/>
+<area shape="rect" id="Node000003" href="$d2/d21/meshx__prov__srv_8c.html#a69e4bb9282a6aad8faa9ee42c968541b" title="Initialize provisioning parameters." alt="" coords="456,17,572,42"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="604,30,572,31,572,26,604,25"/>
+<area shape="rect" id="Node000004" href="$d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="262,22,408,48"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="441,35,409,35,408,30,441,29"/>
+<area shape="rect" id="Node000005" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="131,48,214,73"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="247,51,215,57,214,51,246,46"/>
+<area shape="rect" id="Node000006" href="$d0/d29/main_8c.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title="Main application entry point." alt="" coords="5,48,83,73"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="115,63,83,63,83,58,115,58"/>
+<area shape="rect" id="Node000008" href="$dd/da1/meshx__os__timer_8c.html#a2ae8e7e3e3019501c5a5dc68608f829a" title="Initialize the OS timer module." alt="" coords="265,72,405,97"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="604,92,406,88,406,83,604,87"/>
+<area shape="poly" id="edge8_Node000008_Node000005" title=" " alt="" coords="249,74,214,69,215,64,250,69"/>
 </map>

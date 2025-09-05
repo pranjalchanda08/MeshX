@@ -3,7 +3,6 @@ var app__common_8h =
     [ "meshx_app_store", "dc/d59/structmeshx__app__store.html", "dc/d59/structmeshx__app__store" ],
     [ "dev_struct", "d7/d41/structdev__struct.html", "d7/d41/structdev__struct" ],
     [ "element_comp_table", "d0/dc5/structelement__comp__table.html", "d0/dc5/structelement__comp__table" ],
-    [ "CONFIG_BLE_CONTROL_TASK_OFFLOAD_ENABLE", "df/dd3/app__common_8h.html#a4e472f377c019bda76d5037e7be08656", null ],
     [ "CONFIG_SECTION_ENABLE_ELEMENT_TABLE", "df/dd3/app__common_8h.html#a9e996a16641513a5731344aa6b40bc1a", null ],
     [ "MAX_ELE_CNT", "df/dd3/app__common_8h.html#a5840b0755dc2a94e2f184a9b2f85db6c", null ],
     [ "MESHX_NVS_STORE", "df/dd3/app__common_8h.html#a8066c068c9f523a5f5bd46e8876113f2", null ],
