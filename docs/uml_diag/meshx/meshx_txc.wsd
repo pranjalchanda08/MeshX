@@ -1,0 +1,67 @@
+@startuml meshx_txc
+
+title "Tx Control Send/Receive Flow"
+
+participant "Element" as EL
+participant "model client" as MC
+participant "base client" as BC
+participant "Tx Control" as TXC
+participant "TX Control Thread" as TXCT
+participant "Transport Layer" as TL
+
+== TX Path ==
+EL -> MC: Element Payload
+MC -> MC: client msg create
+MC -> BC: Send gen client msg
+BC -> TXC: TXC_send(enqueue_and_send/send_only)
+TXC -> TXC: add TXC header
+note over TXC
+    1. TXC header:
+        a) Request Type
+            1. Enqueue and Send
+            2. Send Only
+            3. Resend
+            4. ACK/NACK (flush)
+        b) Model Control Code
+        c) Sequence Number (Ref)
+    2. App Payload
+end note
+
+alt Enqueue and Send
+    TXC -> TXC: enqueue msg to queue back
+    TXC -> TXCT: signal TXC thread
+    TXCT -> TXCT: process queue front
+    TXCT -> TL: send msg to transport layer
+    TXCT -> TXCT: enqueue msg to queue front
+else Send Only
+    TXC -> TXCT: enqueue msg to queue back
+    TXCT -> TXCT: process queue front
+    TXCT -> TL: send msg to transport layer
+    TXCT -> TXCT: flush queue front
+else Resend
+    TXC -> TXCT: signal TXC thread
+    TXCT -> TXCT: process queue front
+    TXCT -> TL: send msg to transport layer
+else ACK/NACK (flush)
+    TXC -> TXC: flush queue front
+end
+
+== RX Path ==
+TL -> MC: ACK/NACK
+alt ACK
+    MC -> EL: notify element for state change
+    MC -> BC: ACK process
+    BC -> TXC: TXC_send(flush)
+else NACK
+    MC -> MC: retry count--
+    alt retry count > 0
+        MC -> BC: Retry process
+        BC -> TXC: TXC_send(resend)
+    else retry count == 0
+        MC -> EL: notify element for failure
+        MC -> BC: NACK process
+        BC -> TXC: TXC_send(flush)
+    end
+end
+
+@enduml
