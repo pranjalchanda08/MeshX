@@ -13,7 +13,6 @@
 #include "interface/rtos/meshx_msg_q.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
-#include "esp_system.h"
 
 /**
  * @brief Create a MeshX Message Queue
@@ -32,7 +31,7 @@ meshx_err_t meshx_msg_q_create(meshx_msg_q_t *msg_q_handle)
     }
 
     // Create a FreeRTOS queue
-    QueueHandle_t queue = xQueueCreate(msg_q_handle->max_msg_count, msg_q_handle->max_msg_len);
+    QueueHandle_t queue = xQueueCreate(msg_q_handle->max_msg_length, msg_q_handle->max_msg_depth);
 
     if (queue == NULL)
     {
@@ -99,6 +98,37 @@ meshx_err_t meshx_msg_q_send(meshx_msg_q_t *msg_q_handle, void const *msg, size_
 }
 
 /**
+ * @brief Send a Message to the front of a MeshX Message Queue
+ *
+ * This function sends a message to the front of a MeshX Message Queue.
+ *
+ * @param[in] msg_q_handle Message Queue Handle
+ * @param[in] msg Message
+ * @param[in] msg_len Message Length
+ * @param[in] delay_ms Delay in milliseconds
+ *
+ * @return None
+ */
+meshx_err_t meshx_msg_q_send_front(meshx_msg_q_t *msg_q_handle, void const *msg, size_t msg_len, uint32_t delay_ms)
+{
+    if (msg_q_handle == NULL || msg == NULL || msg_len == 0)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    BaseType_t pxHigherPriorityTaskWoken = pdFALSE;
+
+    BaseType_t ret =  xPortInIsrContext() ? xQueueSendToFrontFromISR(msg_q_handle->__msg_q_handle, msg, &pxHigherPriorityTaskWoken)
+        : xQueueSendToFront(msg_q_handle->__msg_q_handle, msg, pdMS_TO_TICKS(delay_ms));
+
+    if (ret!= pdPASS)
+    {
+        return MESHX_FAIL;
+    }
+
+    return MESHX_SUCCESS;
+}
+/**
  * @brief Receive a Message from a MeshX Message Queue
  *
  * This function receives a message from a MeshX Message Queue.
@@ -127,3 +157,33 @@ meshx_err_t meshx_msg_q_recv(meshx_msg_q_t *msg_q_handle, void *msg, uint32_t de
 
     return MESHX_SUCCESS;
 }
+
+/**
+ * @brief Peek a Message from a MeshX Message Queue
+ *
+ * This function peeks a message from a MeshX Message Queue.
+ *
+ * @param[in] msg_q_handle Message Queue Handle
+ * @param[in] msg Message
+ * @param[in] delay_ms Delay in milliseconds
+ *
+ * @return Message Queue Handle
+ */
+meshx_err_t meshx_msg_q_peek(meshx_msg_q_t *msg_q_handle, void *msg, uint32_t delay_ms)
+{
+    if (msg_q_handle == NULL || msg == NULL)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    BaseType_t ret =  xPortInIsrContext() ? xQueuePeekFromISR(msg_q_handle->__msg_q_handle, msg)
+        : xQueuePeek(msg_q_handle->__msg_q_handle, msg, pdMS_TO_TICKS(delay_ms));
+
+    if (ret!= pdPASS)
+    {
+        return MESHX_FAIL;
+    }
+
+    return MESHX_SUCCESS;
+}
+
