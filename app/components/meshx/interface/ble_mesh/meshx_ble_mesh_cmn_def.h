@@ -629,6 +629,7 @@ typedef enum {
 } meshx_input_action_t;
 
 typedef void* meshx_ptr_t;
+typedef const void* meshx_cptr_t;
 typedef unsigned char meshx_addr_type_t;
 
 #ifndef MESHX_BD_ADDR_LEN
