@@ -18,7 +18,6 @@
 #include <inttypes.h>
 #include <sdkconfig.h>
 #include <meshx_config_internal.h>
-#include <esp_log.h>
 #include <meshx_err.h>
 #include <interface/logging/meshx_log.h>
 #include "interface/meshx_platform.h"

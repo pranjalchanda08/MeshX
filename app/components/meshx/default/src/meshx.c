@@ -141,6 +141,10 @@ static meshx_err_t meshx_tasks_init(dev_struct_t * pdev)
     err = create_control_task(pdev);
     MESHX_ERR_PRINT_RET("Failed to create control task", err);
 
+#if CONFIG_TXCM_ENABLE
+    err = meshx_txcm_init(pdev);
+    MESHX_ERR_PRINT_RET("Failed to create Tx Control Module", err);
+#endif /* CONFIG_TXCM_ENABLE */
     return err;
 }
 

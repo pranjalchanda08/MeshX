@@ -2,12 +2,24 @@
 
 title "Tx Control Send/Receive Flow"
 
+participant "MeshX Init" as MI
 participant "Element" as EL
 participant "model client" as MC
 participant "base client" as BC
 participant "Tx Control" as TXC
 participant "TX Control Thread" as TXCT
 participant "Transport Layer" as TL
+
+== Tx Control Init ==
+MI -> TXC: TXC_init()
+note over TXC
+    1. Initialize TXC data structure
+    2. Initialize sequence number
+    3. Initialize TXC queue
+    4. Initialize TXC signal
+    5. Initialize TXC thread
+end note
+TXC -> TXCT: TXC_thread()
 
 == TX Path ==
 EL -> MC: Element Payload
@@ -22,7 +34,7 @@ note over TXC
             2. Send Only
             3. Resend
             4. ACK/NACK (flush)
-        b) Model Control Code
+        b) Model TXC function pointer
         c) Sequence Number (Ref)
     2. App Payload
 end note
@@ -30,18 +42,19 @@ end note
 alt Enqueue and Send
     TXC -> TXC: enqueue msg to queue back
     TXC -> TXCT: signal TXC thread
-    TXCT -> TXCT: process queue front
-    TXCT -> TL: send msg to transport layer
-    TXCT -> TXCT: enqueue msg to queue front
+    TXCT -> TXCT: peek queue front
+    TXCT -> BC: cb call for platform sending
+    BC -> TL: send msg to transport layer
 else Send Only
     TXC -> TXCT: enqueue msg to queue back
-    TXCT -> TXCT: process queue front
-    TXCT -> TL: send msg to transport layer
-    TXCT -> TXCT: flush queue front
+    TXCT -> TXCT: receive queue front
+    TXCT -> BC: cb call for platform sending
+    BC -> TL: send msg to transport layer
 else Resend
     TXC -> TXCT: signal TXC thread
-    TXCT -> TXCT: process queue front
-    TXCT -> TL: send msg to transport layer
+    TXCT -> TXCT: peek queue front
+    TXCT -> BC: cb call for platform sending
+    BC -> TL: send msg to transport layer
 else ACK/NACK (flush)
     TXC -> TXC: flush queue front
 end
