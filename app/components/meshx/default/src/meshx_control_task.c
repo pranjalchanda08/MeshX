@@ -20,8 +20,8 @@ static void control_task_handler(void *args);
  */
 static meshx_msg_q_t control_task_queue =
 {
-    .max_msg_count = CONFIG_CONTROL_TASK_QUEUE_LEN,
-    .max_msg_len = sizeof(control_task_msg_t)
+    .max_msg_length = CONFIG_CONTROL_TASK_QUEUE_LEN,
+    .max_msg_depth  = sizeof(control_task_msg_t)
 };
 
 /**
