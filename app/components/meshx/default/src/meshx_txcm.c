@@ -10,10 +10,7 @@
  *
  */
 #include "meshx.h"
-#include "app_common.h"
 #include "meshx_txcm.h"
-#include "interface/rtos/meshx_task.h"
-#include "sys/queue.h"
 
 #if CONFIG_TXCM_ENABLE
 /**
@@ -21,13 +18,34 @@
  */
 #define MESHX_TXCM_INIT_MAGIC       0x4455
 
+#ifndef MESHX_TXCM_MSG_RETRY_MAX
+#define MESHX_TXCM_MSG_RETRY_MAX    3
+#endif /* MESHX_TXCM_MSG_RETRY_MAX */
+
 typedef meshx_err_t (*meshx_txcm_sig_proc_t)(meshx_txcm_request_t *request);
 
 static void meshx_txcm_task_handler(const dev_struct_t *args);
 static meshx_err_t meshx_txcm_sig_ack(const meshx_txcm_request_t *request);
-static meshx_err_t meshx_txcm_sig_resend(const meshx_txcm_request_t *request);
+static meshx_err_t meshx_txcm_sig_resend(meshx_txcm_request_t *request);
 static meshx_err_t meshx_txcm_sig_enq_send(meshx_txcm_request_t *request);
 static meshx_err_t meshx_txcm_sig_direct_send(meshx_txcm_request_t *request);
+
+/**
+ * @brief Structure for queued transmission items in the Tx Control module.
+ *
+ * This structure represents an item in the transmission queue, containing the send callback
+ * and message parameters ready for transmission.
+ */
+typedef struct meshx_txcm_tx_q
+{
+    uint16_t dest_addr;                 /**< Destination address of the message */
+    meshx_ptr_t msg_param;              /**< Pointer to model specific parameter structure */
+    size_t msg_param_len;               /**< Length of the msg_param */
+    uint16_t retry_cnt;                 /**< Retry counter per msg context */
+    meshx_txcm_fn_model_send_t send_fn; /**< Function pointer to the model-specific send function */
+    meshx_txcm_msg_state_t msg_state;   /**< State of the message in the transmission queue */
+    meshx_txcm_msg_type_t msg_type;     /**< Type of message (acknowledged or unacknowledged) */
+}meshx_txcm_tx_q_t;
 
 /**
  * @brief Global structure for Tx Control module state and resources.
@@ -89,50 +107,57 @@ static meshx_err_t meshx_txcm_msg_q_front_try_send(bool resend)
 {
     meshx_err_t err = MESHX_SUCCESS;
     meshx_txcm_tx_q_t front_tx;
-    /* Peek at the Front of TX Queue and if the sequence no is equal to new_tx.seq_no then process send */
-    if (meshx_msg_q_peek(&g_txcm.txcm_tx_queue, &front_tx, 0) == MESHX_SUCCESS)
+
+    if (meshx_msg_q_peek(&g_txcm.txcm_tx_queue, &front_tx, 0) != MESHX_SUCCESS)
     {
-        if(resend || front_tx.msg_state == MESHX_TXCM_MSG_STATE_NEW)
+        return MESHX_SUCCESS;
+    }
+
+    if (!(resend || front_tx.msg_state == MESHX_TXCM_MSG_STATE_NEW))
+    {
+        return MESHX_SUCCESS;
+    }
+
+    err = meshx_msg_q_recv(&g_txcm.txcm_tx_queue, &front_tx, 0);
+    if (err)
+    {
+        MESHX_LOGE(MODULE_ID_TXCM, "Failed to receive message from Tx Control Tx Queue: %p", (void *)err);
+        return err;
+    }
+
+    if ((int16_t)front_tx.retry_cnt-- <= 0)
+    {
+        err = meshx_rtos_free(&front_tx.msg_param);
+        if (err)
         {
-            err = meshx_msg_q_recv(&g_txcm.txcm_tx_queue, &front_tx, 0);
-            if (err)
-            {
-                MESHX_LOGE(MODULE_ID_TXCM, "Failed to receive message from Tx Control Tx Queue: %p", (void *)err);
-                return err;
-            }
-            front_tx.msg_state = MESHX_TXCM_MSG_STATE_SENDING;
-            if (front_tx.send_fn != NULL)
-            {
-                front_tx.send_fn(front_tx.msg_param, front_tx.msg_param_len);
-            }
-            if(front_tx.msg_type == MESHX_TXCM_MSG_TYPE_ACKED)
-            {
-                /* Requeue to TX Front as we are waiting for Ack */
-                front_tx.msg_state = MESHX_TXCM_MSG_STATE_WAITING_ACK;
-                err = meshx_msg_q_send_front(&g_txcm.txcm_tx_queue, &front_tx, sizeof(front_tx), 0);
-                if (err)
-                {
-                    MESHX_LOGE(MODULE_ID_TXCM, "Failed to send message to Tx Control Tx Queue: %p", (void *)err);
-                    return err;
-                }
-            }
-            else
-            {
-                /* Un-Acked msg need not to be retained */
-                err = meshx_rtos_free(&front_tx.msg_param);
-            }
+            MESHX_LOGE(MODULE_ID_TXCM, "RTOS Free failed: %p", (void *)err);
         }
-        else
+        return MESHX_TIMEOUT;
+    }
+
+    front_tx.msg_state = MESHX_TXCM_MSG_STATE_SENDING;
+    if (front_tx.send_fn != NULL)
+    {
+        front_tx.send_fn(front_tx.msg_param, front_tx.msg_param_len);
+    }
+
+    if (front_tx.msg_type == MESHX_TXCM_MSG_TYPE_ACKED)
+    {
+        /* Requeue to TX Front as we are waiting for Ack */
+        front_tx.msg_state = MESHX_TXCM_MSG_STATE_WAITING_ACK;
+        err = meshx_msg_q_send_front(&g_txcm.txcm_tx_queue, &front_tx, sizeof(front_tx), 0);
+        if (err)
         {
-            /* Other states are dependent on further signals */
-            MESHX_DO_NOTHING;
+            MESHX_LOGE(MODULE_ID_TXCM, "Failed to send message to Tx Control Tx Queue: %p", (void *)err);
+            return err;
         }
     }
     else
     {
-        /* Do nothing as the front msg is waiting on its respective signal */
-        MESHX_DO_NOTHING;
+        /* Un-Acked msg need not to be retained */
+        err = meshx_rtos_free(&front_tx.msg_param);
     }
+
     return err;
 }
 
@@ -149,7 +174,9 @@ static meshx_err_t meshx_txcm_msg_q_front_try_send(bool resend)
  *
  * @return meshx_err_t
  */
-static meshx_err_t meshx_txcm_proccess_request_msg(meshx_txcm_request_t *request, meshx_txcm_msg_type_t msg_type)
+static meshx_err_t meshx_txcm_proccess_request_msg(
+    meshx_txcm_request_t *request,
+    meshx_txcm_msg_type_t msg_type)
 {
     meshx_err_t err = MESHX_SUCCESS;
 
@@ -161,11 +188,13 @@ static meshx_err_t meshx_txcm_proccess_request_msg(meshx_txcm_request_t *request
     static meshx_txcm_tx_q_t new_tx;
     memset(&new_tx, 0, sizeof(meshx_txcm_tx_q_t));
 
-    new_tx.msg_state = MESHX_TXCM_MSG_STATE_NEW;
-    new_tx.msg_type = msg_type;
-    new_tx.send_fn = request->send_fn;
-    new_tx.msg_param = request->msg_param;
+    new_tx.msg_type      = msg_type;
+    new_tx.send_fn       = request->send_fn;
+    new_tx.msg_param     = request->msg_param;
+    new_tx.dest_addr     = request->dest_addr;
     new_tx.msg_param_len = request->msg_param_len;
+    new_tx.msg_state     = MESHX_TXCM_MSG_STATE_NEW;
+    new_tx.retry_cnt     = MESHX_TXCM_MSG_RETRY_MAX;
 
     /* Queue the message to the TX Queue back*/
     err = meshx_msg_q_send(&g_txcm.txcm_tx_queue, &new_tx, sizeof(new_tx), 0);
@@ -225,10 +254,23 @@ static meshx_err_t meshx_txcm_sig_direct_send(meshx_txcm_request_t *request)
  *
  * @return meshx_err_t
  */
-static meshx_err_t meshx_txcm_sig_resend(const meshx_txcm_request_t *request)
+static meshx_err_t meshx_txcm_sig_resend(meshx_txcm_request_t *request)
 {
     MESHX_UNUSED(request);
-    return meshx_txcm_msg_q_front_try_send(true);
+    meshx_err_t err = MESHX_SUCCESS;
+
+    err = meshx_txcm_msg_q_front_try_send(true);
+    if(err == MESHX_TIMEOUT)
+    {
+        err = control_task_msg_publish(
+            CONTROL_TASK_MSG_CODE_TXCM,
+            CONTROL_TASK_MSG_EVT_TXCM_MSG_TIMEOUT,
+            request->msg_param,
+            request->msg_param_len
+        );
+    }
+    meshx_rtos_free(&request->msg_param);
+    return err;
 }
 
 /**
@@ -249,14 +291,30 @@ static meshx_err_t meshx_txcm_sig_ack(const meshx_txcm_request_t *request)
     meshx_txcm_tx_q_t front_tx;
     if(meshx_msg_q_peek(&g_txcm.txcm_tx_queue, &front_tx, 0) == MESHX_SUCCESS)
     {
-        err = meshx_msg_q_recv(&g_txcm.txcm_tx_queue, &front_tx, 0);
-        if (err)
+        if(front_tx.dest_addr == request->dest_addr)
         {
-            MESHX_LOGE(MODULE_ID_TXCM, "Failed to receive message from Tx Control Tx Queue: %p", (void *)err);
-            return err;
+            err = meshx_msg_q_recv(&g_txcm.txcm_tx_queue, &front_tx, 0);
+            if (err)
+            {
+                MESHX_LOGE(MODULE_ID_TXCM, "Failed to receive message from Tx Control Tx Queue: %p", (void *)err);
+                return err;
+            }
+        }
+        else
+        {
+            MESHX_DO_NOTHING;
+            /**
+             * @todo Need to check this state
+             */
         }
     }
+    front_tx.msg_state = MESHX_TXCM_MSG_STATE_ACK;
     err = meshx_rtos_free(&front_tx.msg_param);
+    if (err)
+    {
+        MESHX_LOGE(MODULE_ID_TXCM, "RTOS Free failed: %p", (void *)err);
+    }
+    err = meshx_rtos_free(request->msg_param);
     if (err)
     {
         MESHX_LOGE(MODULE_ID_TXCM, "RTOS Free failed: %p", (void *)err);
@@ -358,6 +416,7 @@ meshx_err_t meshx_txcm_init(dev_struct_t *pdev)
  * to the signal queue of the Tx Control module.
  *
  * @param[in] request_type  Type of the request (ACK, RESEND, ENQ_SEND, DIRECT_SEND)
+ * @param[in] dest_addr     Destination address of the message
  * @param[in] msg_param     Pointer to the message parameters
  * @param[in] msg_param_len Length of the message parameters
  * @param[in] send_fn       Function pointer to the send function to be used for the request
@@ -366,6 +425,7 @@ meshx_err_t meshx_txcm_init(dev_struct_t *pdev)
  */
 meshx_err_t meshx_txcm_request_send(
     meshx_txcm_sig_t request_type,
+    uint16_t dest_addr,
     meshx_cptr_t msg_param,
     size_t msg_param_len,
     meshx_txcm_fn_model_send_t send_fn
@@ -376,6 +436,7 @@ meshx_err_t meshx_txcm_request_send(
     memset(&new_req, 0, sizeof(meshx_txcm_request_t));
 
     /* Prepare request message */
+    new_req.dest_addr     = dest_addr;
     new_req.send_fn       = send_fn;
     new_req.request_type  = request_type;
     new_req.msg_param_len = msg_param_len;
@@ -383,7 +444,7 @@ meshx_err_t meshx_txcm_request_send(
     if(msg_param_len != 0 && msg_param != NULL)
     {
         /* Retain message context */
-        err = meshx_rtos_calloc(&new_req.msg_param, 1, msg_param_len);
+        err = meshx_rtos_malloc(&new_req.msg_param, msg_param_len);
         if (err)
         {
             MESHX_LOGE(MODULE_ID_TXCM, "Malloc Failure: %p", (void *)err);
@@ -391,13 +452,37 @@ meshx_err_t meshx_txcm_request_send(
         }
         memcpy(new_req.msg_param, msg_param, msg_param_len);
     }
+    else
+    {
+        new_req.msg_param = NULL;
+    }
     err = meshx_msg_q_send(&g_txcm.txcm_sig_queue, &new_req, sizeof(meshx_txcm_request_t), 0);
     if (err)
     {
         MESHX_LOGE(MODULE_ID_TXCM, "TXCM Signal failed: %p", (void *)err);
+        meshx_rtos_free(&new_req.msg_param);
         return err;
     }
     return err;
 }
 
+/**
+ * @brief Registers a callback function for handling Tx Control module events.
+ *
+ * This function registers a callback function to handle specific events from the Tx Control module.
+ * The callback will be invoked when the specified event occurs.
+ *
+ * @param[in] event_cb Pointer to the callback function to be registered for event handling.
+ *
+ * @return meshx_err_t
+ *      - MESHX_SUCCESS on successful registration.
+ *      - Error code (meshx_err_t) if registration fails.
+ */
+meshx_err_t meshx_txcm_event_cb_reg(meshx_txcm_cb_t event_cb)
+{
+    return control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_TXCM,
+        CONTROL_TASK_MSG_EVT_TXCM_MSG_TIMEOUT,
+        event_cb);
+}
 #endif /* CONFIG_TXCM_ENABLE */

@@ -87,6 +87,23 @@ void meshx_module_set_log_level(module_id_t module_id, meshx_log_level_t log_lev
     module_log_level[module_id] = log_level;
 }
 
+/**
+ * @brief Logs a formatted message for a specified module and log level.
+ *
+ * This weak function definition can be overridden by any other version of
+ * definition required as per platform.
+ *
+ * The function checks if the provided module ID and log level are valid
+ * and above the current global and module-specific log levels. If valid,
+ * it processes the variable arguments to format and log the message.
+ *
+ * @param[in] module_id     The ID of the module for which the log is generated.
+ * @param[in] log_level     The log level of the message.
+ * @param[in] func          The name of the function where the log is called.
+ * @param[in] line_no       The line number in the source code where the log is called.
+ * @param[in] fmt           The format string for the log message.
+ * @param[in] ...           Additional arguments for the format string.
+ */
 __attribute__((weak)) void meshx_log_printf(module_id_t module_id, meshx_log_level_t log_level,
                       const char *func, int line_no, const char *fmt, ...)
 {
@@ -95,15 +112,16 @@ __attribute__((weak)) void meshx_log_printf(module_id_t module_id, meshx_log_lev
         return;
 
     /* Get timestamp */
-    unsigned int millis;
+        unsigned int millis;
+    unsigned int task_id;
 
     meshx_rtos_get_sys_time(&millis);
-
+    meshx_rtos_get_curr_task_id_prio(&task_id);
     /* Get log level color */
     const char *color = MESHX_LOG_LEVEL_COLOR(log_level);
 
     /* Print timestamp and log */
-    CONFIG_MESHX_LOG_PRINTF("%s[%s][%08u][%22s:%04d]\t", color, log_lvl_str[log_level], millis, func, line_no);
+    CONFIG_MESHX_LOG_PRINTF("%s[%s][%08u][%03x][%25s:%04d]\t", color, log_lvl_str[log_level], millis, task_id, func, line_no);
 
     /* Process variable arguments */
     va_list args;

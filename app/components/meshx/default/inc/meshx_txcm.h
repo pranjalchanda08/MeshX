@@ -14,7 +14,11 @@
 #define __MESHX_TXCM_H__
 
 #include <stdint.h>
+#include <stddef.h>
 #include "meshx_err.h"
+#include "app_common.h"
+#include "meshx_control_task.h"
+#include "interface/ble_mesh/meshx_ble_mesh_cmn_def.h"
 
 /**
  * @brief Stack size for the Tx Control task in bytes.
@@ -43,6 +47,7 @@
  */
 #define MESHX_TXCM_TX_Q_DEPTH       sizeof(meshx_txcm_tx_q_t)
 
+typedef control_task_msg_handle_t meshx_txcm_cb_t;
 /**
  * @brief Enumeration of signal types for the Tx Control Module.
  *
@@ -84,7 +89,7 @@ typedef enum
  *
  * @param[in] param Pointer to the model specific parameter structure
  */
-typedef meshx_err_t (*meshx_txcm_fn_model_send_t)(meshx_ptr_t msg_param, size_t msg_param_len);
+typedef meshx_err_t (*meshx_txcm_fn_model_send_t)(meshx_cptr_t msg_param, size_t msg_param_len);
 
 /**
  * @brief Structure for Tx Control module requests.
@@ -95,25 +100,12 @@ typedef meshx_err_t (*meshx_txcm_fn_model_send_t)(meshx_ptr_t msg_param, size_t 
 typedef struct meshx_txcm_request
 {
     meshx_txcm_sig_t request_type;      /**< Type of transmission command request */
+    uint16_t dest_addr;                 /**< Destination address of the message */
     meshx_ptr_t msg_param;              /**< Pointer to model specific parameter structure */
     size_t msg_param_len;               /**< Length of the msg_param */
     meshx_txcm_fn_model_send_t send_fn; /**< Function pointer to the model-specific send function */
 } meshx_txcm_request_t;
 
-/**
- * @brief Structure for queued transmission items in the Tx Control module.
- *
- * This structure represents an item in the transmission queue, containing the send callback
- * and message parameters ready for transmission.
- */
-typedef struct meshx_txcm_tx_q
-{
-    meshx_ptr_t msg_param;              /**< Pointer to model specific parameter structure */
-    size_t msg_param_len;               /**< Length of the msg_param */
-    meshx_txcm_fn_model_send_t send_fn; /**< Function pointer to the model-specific send function */
-    meshx_txcm_msg_state_t msg_state;   /**< State of the message in the transmission queue */
-    meshx_txcm_msg_type_t msg_type;     /**< Type of message (acknowledged or unacknowledged) */
-}meshx_txcm_tx_q_t;
 /**
  * @brief Initializes the MeshX Tx Control Module.
  *
@@ -138,6 +130,7 @@ meshx_err_t meshx_txcm_init(dev_struct_t *pdev);
  * to the signal queue of the Tx Control module.
  *
  * @param[in] request_type  Type of the request (ACK, RESEND, ENQ_SEND, DIRECT_SEND)
+ * @param[in] dest_addr     Destination address of the message
  * @param[in] msg_param     Pointer to the message parameters
  * @param[in] msg_param_len Length of the message parameters
  * @param[in] send_fn       Function pointer to the send function to be used for the request
@@ -146,9 +139,24 @@ meshx_err_t meshx_txcm_init(dev_struct_t *pdev);
  */
 meshx_err_t meshx_txcm_request_send(
     meshx_txcm_sig_t request_type,
+    uint16_t dest_addr,
     meshx_cptr_t msg_param,
     size_t msg_param_len,
     meshx_txcm_fn_model_send_t send_fn
 );
+
+/**
+ * @brief Registers a callback function for handling Tx Control module events.
+ *
+ * This function registers a callback function to handle specific events from the Tx Control module.
+ * The callback will be invoked when the specified event occurs.
+ *
+ * @param[in] event_cb Pointer to the callback function to be registered for event handling.
+ *
+ * @return meshx_err_t
+ *      - MESHX_SUCCESS on successful registration.
+ *      - Error code (meshx_err_t) if registration fails.
+ */
+meshx_err_t meshx_txcm_event_cb_reg(meshx_txcm_cb_t event_cb);
 
 #endif /* __MESHX_TXCM_H__ */
