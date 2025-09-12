@@ -249,6 +249,8 @@ static void control_task_handler(void *args)
     meshx_err_t err;
     static control_task_msg_t recv_msg;
     dev_struct_t *pdev = (dev_struct_t *)args;
+
+    MESHX_LOGI(MODULE_ID_COMMON, "Control Task Initialised");
     err = create_control_task_msg_q();
     if (err)
         MESHX_LOGE(MODULE_ID_COMMON, "Failed to initialise Control Task Msg Q Err: 0x%x", err);
