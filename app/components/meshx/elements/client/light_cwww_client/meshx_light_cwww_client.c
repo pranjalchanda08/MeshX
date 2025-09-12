@@ -350,19 +350,20 @@ static meshx_err_t meshx_cwww_cli_send_onoff_msg(
         opcode = ack ? MESHX_MODEL_OP_GEN_ONOFF_SET : MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK;
     }
 
-    MESHX_LOGD(MOD_LCC, "OPCODE: %p", (void *)(uint32_t)opcode);
+    MESHX_LOGD(MOD_SRC, "OPCODE: %p", (void *)(uint32_t)opcode);
 
-    /* Send message to the cwww client */
-    err = meshx_onoff_client_send_msg(
-            model,
-            opcode,
-            el_ctx->pub_addr,
-            pdev->meshx_store.net_key_id,
-            el_ctx->app_id,
-            el_ctx->state.on_off,
-            el_ctx->tid
-    );
-
+    meshx_gen_onoff_send_params_t params = {
+        .element_id = element_id,
+        .model      = model,
+        .opcode     = opcode,
+        .addr       = el_ctx->pub_addr,
+        .net_idx    = pdev->meshx_store.net_key_id,
+        .app_idx    = el_ctx->app_id,
+        .state      = el_ctx->state.on_off,
+        .tid        = el_ctx->tid
+    };
+    /* Send message to the relay client */
+    err = meshx_onoff_client_send_msg(&params);
     if (err)
     {
         MESHX_LOGE(MOD_LCC, "Cwww Client Send Message failed: (%d)", err);

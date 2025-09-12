@@ -10,6 +10,7 @@
  */
 
 #include "meshx_err.h"
+#include "meshx_txcm.h"
 #include "meshx_onoff_client.h"
 
 #define MESHX_CLIENT_INIT_MAGIC 0x2378
@@ -17,15 +18,6 @@
 #if CONFIG_ENABLE_GEN_ONOFF_CLIENT
 
 static uint16_t meshx_client_init_flag = 0;
-
-static struct{
-    uint16_t addr;
-    uint16_t opcode;
-    uint16_t net_idx;
-    uint16_t app_idx;
-    meshx_ptr_t p_model;
-    meshx_gen_cli_set_t state;
-}onoff_client_last_msg_ctx;
 
 /**
  * @brief Perform hardware change based on the BLE Mesh generic server callback parameter.
@@ -40,7 +32,7 @@ static struct{
  *     - MESHX_SUCCESS: Success
  *     - MESHX_FAIL: Failure
  */
-static meshx_err_t meshx_state_change_notify(meshx_gen_cli_cb_param_t *param, uint8_t status)
+static meshx_err_t meshx_state_change_notify(const meshx_gen_cli_cb_param_t *param, uint8_t status)
 {
     if (!param)
         return MESHX_INVALID_ARG;
@@ -61,33 +53,6 @@ static meshx_err_t meshx_state_change_notify(meshx_gen_cli_cb_param_t *param, ui
 }
 
 /**
- * @brief Handle timeout for relaying the last OnOff message.
- *
- * This function is called when a timeout occurs while waiting for an acknowledgment
- * for the last sent OnOff message. It attempts to resend the message using the
- * stored context information.
- *
- * @return MESHX_SUCCESS on success, or an error code on failure.
- */
-static meshx_err_t meshx_relay_client_timeout_handler(void)
-{
-    if(!onoff_client_last_msg_ctx.p_model)
-        return MESHX_INVALID_STATE;
-
-    MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Timeout");
-
-    return meshx_onoff_client_send_msg(
-        onoff_client_last_msg_ctx.p_model,
-        onoff_client_last_msg_ctx.opcode,
-        onoff_client_last_msg_ctx.addr,
-        onoff_client_last_msg_ctx.net_idx,
-        onoff_client_last_msg_ctx.app_idx,
-        onoff_client_last_msg_ctx.state.onoff_set.onoff,
-        onoff_client_last_msg_ctx.state.onoff_set.tid
-    );
-}
-
-/**
  * @brief Handle the Generic OnOff Client messages.
  *
  * This function processes the incoming messages for the Generic OnOff Client
@@ -102,7 +67,7 @@ static meshx_err_t meshx_relay_client_timeout_handler(void)
 static meshx_err_t meshx_handle_gen_onoff_msg(
     const dev_struct_t *pdev,
     control_task_msg_evt_t model_id,
-    meshx_gen_cli_cb_param_t *param
+    const meshx_gen_cli_cb_param_t *param
 )
 {
     if(!param || !pdev)
@@ -114,29 +79,11 @@ static meshx_err_t meshx_handle_gen_onoff_msg(
     {
         return MESHX_SUCCESS;
     }
-    MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "op|src|dst:%04" PRIx32 "|%04x|%04x",
-               param->ctx.opcode, param->ctx.src_addr, param->ctx.dst_addr);
 
     meshx_err_t err = MESHX_SUCCESS;
 
-    switch (param->evt)
-    {
-    case MESHX_GEN_CLI_EVT_GET:
-    case MESHX_GEN_CLI_EVT_SET:
-    case MESHX_GEN_CLI_PUBLISH:
-        err = meshx_state_change_notify(param, MESHX_SUCCESS);
-        break;
-    case MESHX_GEN_CLI_TIMEOUT:
-        err = meshx_relay_client_timeout_handler();
-        if(err != MESHX_SUCCESS)
-            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Resend failed: %d", err);
-        else
-            err = meshx_state_change_notify(param, MESHX_TIMEOUT);
-        break;
-    default:
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Unhandled event: %d", param->evt);
-        break;
-    }
+    param->evt == MESHX_GEN_CLI_TIMEOUT ?  meshx_state_change_notify(param, MESHX_TIMEOUT) : meshx_state_change_notify(param, MESHX_SUCCESS);
+
     return err;
 }
 
@@ -239,73 +186,55 @@ meshx_err_t meshx_on_off_client_delete(meshx_onoff_client_model_t **p_model)
 }
 
 /**
- * @brief Send a generic on/off client message.
+ * @brief Send a Generic OnOff client message.
  *
- * This function sends a generic on/off client message with the specified parameters.
+ * This function sends a Generic OnOff client message with the specified parameters.
  *
- * @param[in] model   Pointer to the BLE Mesh model structure.
- * @param[in] opcode  The operation code of the message.
- * @param[in] addr    The destination address to which the message is sent.
- * @param[in] net_idx The network index to be used for sending the message.
- * @param[in] app_idx The application index to be used for sending the message.
- * @param[in] state   The state value to be sent in the message.
- * @param[in] tid     The transaction ID to be used for the message.
+ * @param[in] params   Pointer to the structure containing the message parameters to set.
  *
  * @return
- *    - MESHX_SUCCESS: Success
- *    - MESHX_INVALID_ARG: Invalid argument
- *    - MESHX_NO_MEM: Out of memory
- *    - MESHX_FAIL: Sending message failed
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_INVALID_ARG: Invalid argument
+ *     - MESHX_NO_MEM: Out of memory
+ *     - MESHX_FAIL: Sending message failed
  */
-meshx_err_t meshx_onoff_client_send_msg(
-        meshx_onoff_client_model_t *model,
-        uint16_t opcode,  uint16_t addr,
-        uint16_t net_idx, uint16_t app_idx,
-        uint8_t  state,   uint8_t tid
-)
+meshx_err_t meshx_onoff_client_send_msg(meshx_gen_onoff_send_params_t *params)
 {
     meshx_err_t err;
     meshx_gen_cli_set_t set = {0};
-    if (!model || !model->meshx_onoff_client_sig_model)
+    if (!params || !params->model || !params->model->meshx_onoff_client_sig_model)
     {
         return MESHX_INVALID_ARG;
     }
 
-    onoff_client_last_msg_ctx.addr = addr;
-    onoff_client_last_msg_ctx.opcode = opcode;
-    onoff_client_last_msg_ctx.p_model = model;
-    onoff_client_last_msg_ctx.net_idx = net_idx;
-    onoff_client_last_msg_ctx.app_idx = app_idx;
+    meshx_gen_client_send_params_t send_params = {
+        .state = &set,
+        .addr = params->addr,
+        .opcode = params->opcode,
+        .app_idx = params->app_idx,
+        .net_idx = params->net_idx,
+        .model = params->model->meshx_onoff_client_sig_model,
+    };
 
-    if(opcode == MESHX_MODEL_OP_GEN_ONOFF_GET)
+    if(params->opcode == MESHX_MODEL_OP_GEN_ONOFF_GET)
     {
-        err = meshx_gen_cli_send_msg(
-            model->meshx_onoff_client_sig_model,
-            &set, opcode,
-            addr, net_idx,
-            app_idx
-        );
+        err = meshx_gen_cli_send_msg(&send_params);
     }
 
-    else if (opcode == MESHX_MODEL_OP_GEN_ONOFF_SET ||
-        opcode == MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK)
+    else if (params->opcode == MESHX_MODEL_OP_GEN_ONOFF_SET ||
+        params->opcode == MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK)
     {
-        set.onoff_set.tid   = tid;
-        set.onoff_set.onoff = state;
+        set.onoff_set.tid   = params->tid;
+        set.onoff_set.onoff = params->state;
         set.onoff_set.op_en = false;
 
-        memcpy(&onoff_client_last_msg_ctx.state, &set, sizeof(meshx_gen_cli_set_t));
-
         err = meshx_gen_cli_send_msg(
-            model->meshx_onoff_client_sig_model,
-            &set, opcode,
-            addr, net_idx,
-            app_idx
+            &send_params
         );
     }
     else{
         err = MESHX_INVALID_ARG; // Invalid opcode
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid opcode for Generic OnOff Client: %04x", opcode);
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid opcode for Generic OnOff Client: %04x", params->opcode);
     }
     return err;
 }
