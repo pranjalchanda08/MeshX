@@ -101,5 +101,22 @@ meshx_err_t meshx_rtos_free(void** ptr);
  */
 size_t meshx_rtos_get_free_heap(void);
 
+/**
+ * @brief Retrieves the current task ID.
+ *
+ * This function retrieves the current task ID using FreeRTOS APIs.
+ * The task ID is stored in the variable pointed to by the `task_id` parameter.
+ *
+ * @param[out] task_id Pointer to an unsigned integer where the task ID will be stored.
+ *
+ * @return
+ * - MESHX_SUCCESS: If the task ID was successfully retrieved.
+ * - MESHX_ERR_INVALID_ARG: If the provided pointer is NULL or invalid.
+ *
+ * @note Ensure that the `task_id` pointer is valid and not NULL before
+ *       calling this function.
+ */
+meshx_err_t meshx_rtos_get_curr_task_id_prio(unsigned int *task_id);
+
 #endif /* __MESHX_RTOS_UTILS_H__ */
 

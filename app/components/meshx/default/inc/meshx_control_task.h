@@ -60,6 +60,7 @@ typedef enum control_task_msg_code
     CONTROL_TASK_MSG_CODE_PROVISION,    /**< Message code for provisioning events. */
     CONTROL_TASK_MSG_CODE_TO_APP,       /**< Message code for application events. */
     CONTROL_TASK_MSG_CODE_TO_MESHX,     /**< Message code for meshX events from app */
+    CONTROL_TASK_MSG_CODE_TXCM,         /**< Message code for TXCM events */
     CONTROL_TASK_MSG_CODE_MAX,          /**< Maximum message code value. */
 } control_task_msg_code_t;
 
@@ -71,7 +72,7 @@ typedef uint32_t control_task_msg_evt_t;
 /**
  * @brief Enumeration for control task message events to application.
  */
-typedef enum control_task_msg_evt_to_app_meshx
+typedef enum __packed control_task_msg_evt_to_app_meshx
 {
     CONTROL_TASK_MSG_EVT_DATA = MESHX_BIT(0),   /**< Data message */
     CONTROL_TASK_MSG_EVT_CTRL = MESHX_BIT(1),   /**< Control message */
@@ -81,7 +82,7 @@ typedef enum control_task_msg_evt_to_app_meshx
 /**
  * @brief Enumeration for control task message events to HAL.
  */
-typedef enum control_task_msg_evt_el_state_ch
+typedef enum __packed control_task_msg_evt_el_state_ch
 {
     CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF      = MESHX_BIT(0), /**< Event to set on/off state. */
     CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL         = MESHX_BIT(1), /**< Event to set CTL state. */
@@ -91,7 +92,7 @@ typedef enum control_task_msg_evt_el_state_ch
 /**
  * @brief Enumeration for control task message events to BLE.
  */
-typedef enum control_task_msg_evt_to_ble
+typedef enum __packed control_task_msg_evt_to_ble
 {
     /* To Client related events */
     CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF      = MESHX_BIT(0), /**< Event to set on/off state. */
@@ -107,7 +108,7 @@ typedef enum control_task_msg_evt_to_ble
 /**
  * @brief Enumeration for control task system events.
  */
-typedef enum control_task_msg_evt_system
+typedef enum __packed control_task_msg_evt_system
 {
     CONTROL_TASK_MSG_EVT_SYSTEM_RESTART      = MESHX_BIT(0),    /**< Event to restart the system. */
     CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_ARM    = MESHX_BIT(1),    /**< Event to arm an OS Timer */
@@ -121,7 +122,7 @@ typedef enum control_task_msg_evt_system
 /**
  * @brief Enumeration for control task config srv events
  */
-typedef enum control_task_msg_evt_config
+typedef enum __packed control_task_msg_evt_config
 {
     CONTROL_TASK_MSG_EVT_APP_KEY_ADD        = MESHX_BIT(0), /**< Event for adding an application key. */
     CONTROL_TASK_MSG_EVT_APP_KEY_DEL        = MESHX_BIT(1), /**< Event for deleting an application key. */
@@ -139,7 +140,7 @@ typedef enum control_task_msg_evt_config
 /**
  * @brief Enumeration for control task provisioning events.
  */
-typedef enum control_task_msg_evt_provision
+typedef enum __packed control_task_msg_evt_provision
 {
     CONTROL_TASK_MSG_EVT_PROVISION_STOP         = MESHX_BIT(1), /**< ESP_BLE_MESH_NODE_PROV_COMPLETE_EVT */
     CONTROL_TASK_MSG_EVT_IDENTIFY_START         = MESHX_BIT(2), /**< EESP_BLE_MESH_NODE_PROV_LINK_OPEN_EVT */
@@ -152,6 +153,14 @@ typedef enum control_task_msg_evt_provision
     CONTROL_TASK_MSG_EVT_PROVISION_ALL          = 0xFFFF, /**< Maximum provisioning event value. */
 } control_task_msg_evt_provision_t;
 
+/**
+ * @brief Enumeration for control task TXCM events.
+ */
+typedef enum __packed control_task_msg_evt_txcm
+{
+    CONTROL_TASK_MSG_EVT_TXCM_MSG_TIMEOUT   = MESHX_BIT(1), /**< Event for TXCM message timeout */
+    CONTROL_TASK_MSG_EVT_TXCM_MAX
+}control_task_msg_evt_txcm_t;
 /**
  * @brief Function pointer type for control task message handler.
  *

@@ -54,6 +54,20 @@ typedef struct meshx_on_off_cli_el_msg
 }meshx_on_off_cli_el_msg_t;
 
 /**
+ * @brief Structure to hold the parameters for sending a Generic OnOff message.
+ */
+typedef struct meshx_gen_onoff_send_params
+{
+    uint16_t element_id;                /**< The ID of the element to which the message is sent. */
+    meshx_onoff_client_model_t *model;  /**< Pointer to the On/Off client model. */
+    uint16_t opcode;                    /**< The opcode of the message. */
+    uint16_t addr;                      /**< The destination address of the message. */
+    uint16_t net_idx;                   /**< The network index of the message. */
+    uint16_t app_idx;                   /**< The application index of the message. */
+    uint8_t state;                      /**< The state of the message. */
+    uint8_t tid;                        /**< The transaction ID of the message. */
+} meshx_gen_onoff_send_params_t;
+/**
  * @brief Creates and initializes a Generic OnOff Client model instance.
  *
  * This function allocates and sets up a Generic OnOff Client model, associating it with the provided
@@ -94,30 +108,19 @@ meshx_err_t meshx_on_off_client_delete(meshx_onoff_client_model_t **p_model);
 meshx_err_t meshx_on_off_client_init(void);
 
 /**
- * @brief Send a generic on/off client message.
+ * @brief Send a Generic OnOff client message.
  *
- * This function sends a generic on/off client message with the specified parameters.
+ * This function sends a Generic OnOff client message with the specified parameters.
  *
- * @param[in] model   Pointer to the BLE Mesh model structure.
- * @param[in] opcode  The operation code of the message.
- * @param[in] addr    The destination address to which the message is sent.
- * @param[in] net_idx The network index to be used for sending the message.
- * @param[in] app_idx The application index to be used for sending the message.
- * @param[in] state   The state value to be sent in the message.
- * @param[in] tid     The transaction ID to be used for the message.
+ * @param[in] params   Pointer to the structure containing the message parameters to set.
  *
  * @return
- *    - MESHX_SUCCESS: Success
- *    - MESHX_INVALID_ARG: Invalid argument
- *    - MESHX_NO_MEM: Out of memory
- *    - MESHX_FAIL: Sending message failed
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_INVALID_ARG: Invalid argument
+ *     - MESHX_NO_MEM: Out of memory
+ *     - MESHX_FAIL: Sending message failed
  */
-meshx_err_t meshx_onoff_client_send_msg(
-        meshx_onoff_client_model_t *model,
-        uint16_t opcode, uint16_t addr,
-        uint16_t net_idx, uint16_t app_idx,
-        uint8_t state, uint8_t tid
-);
+meshx_err_t meshx_onoff_client_send_msg(meshx_gen_onoff_send_params_t *params);
 
 /**
  * @brief Handle state changes for the Generic OnOff Client.
