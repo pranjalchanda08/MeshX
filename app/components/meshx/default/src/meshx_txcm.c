@@ -117,7 +117,10 @@ static meshx_err_t meshx_txcm_msg_q_front_try_send(bool resend)
     {
         return MESHX_SUCCESS;
     }
-
+    if(resend)
+    {
+        MESHX_LOGI(MODULE_ID_TXCM, "Try to send message from Tx Control Tx Queue resend|state:%d|%d", resend,front_tx.msg_state);
+    }
     err = meshx_msg_q_recv(&g_txcm.txcm_tx_queue, &front_tx, 0);
     if (err)
     {
@@ -185,6 +188,7 @@ static meshx_err_t meshx_txcm_proccess_request_msg(
         return MESHX_INVALID_ARG;
     }
 
+    MESHX_LOGD(MODULE_ID_TXCM, "Processing a new request");
     static meshx_txcm_tx_q_t new_tx;
     memset(&new_tx, 0, sizeof(meshx_txcm_tx_q_t));
 
@@ -226,6 +230,7 @@ static meshx_err_t meshx_txcm_proccess_request_msg(
  */
 static meshx_err_t meshx_txcm_sig_enq_send(meshx_txcm_request_t *request)
 {
+    MESHX_LOGD(MODULE_ID_TXCM, "Enqueuing a new request");
     return meshx_txcm_proccess_request_msg(request, MESHX_TXCM_MSG_TYPE_ACKED);
 }
 
@@ -243,6 +248,8 @@ static meshx_err_t meshx_txcm_sig_enq_send(meshx_txcm_request_t *request)
  */
 static meshx_err_t meshx_txcm_sig_direct_send(meshx_txcm_request_t *request)
 {
+    MESHX_LOGD(MODULE_ID_TXCM, "Processing a new direct request");
+
     /* The same path can take care as the msg type  */
     return meshx_txcm_proccess_request_msg(request, MESHX_TXCM_MSG_TYPE_UNACKED);
 }
@@ -258,16 +265,22 @@ static meshx_err_t meshx_txcm_sig_resend(meshx_txcm_request_t *request)
 {
     MESHX_UNUSED(request);
     meshx_err_t err = MESHX_SUCCESS;
-
+    MESHX_LOGD(MODULE_ID_TXCM, "Processing a retry");
     err = meshx_txcm_msg_q_front_try_send(true);
     if(err == MESHX_TIMEOUT)
     {
+        MESHX_LOGI(MODULE_ID_TXCM, "Timeout");
         err = control_task_msg_publish(
             CONTROL_TASK_MSG_CODE_TXCM,
             CONTROL_TASK_MSG_EVT_TXCM_MSG_TIMEOUT,
             request->msg_param,
             request->msg_param_len
         );
+        if(err)
+        {
+            MESHX_LOGE(MODULE_ID_TXCM, "Failed to process front of Tx Control Tx Queue: %p", (void *)err);
+        }
+        err = meshx_txcm_msg_q_front_try_send(false);
     }
     meshx_rtos_free(&request->msg_param);
     return err;
@@ -288,6 +301,7 @@ static meshx_err_t meshx_txcm_sig_ack(const meshx_txcm_request_t *request)
     MESHX_UNUSED(request);
     meshx_err_t err = MESHX_SUCCESS;
 
+    MESHX_LOGD(MODULE_ID_TXCM, "Processing an ack");
     meshx_txcm_tx_q_t front_tx;
     if(meshx_msg_q_peek(&g_txcm.txcm_tx_queue, &front_tx, 0) == MESHX_SUCCESS)
     {
@@ -299,6 +313,13 @@ static meshx_err_t meshx_txcm_sig_ack(const meshx_txcm_request_t *request)
                 MESHX_LOGE(MODULE_ID_TXCM, "Failed to receive message from Tx Control Tx Queue: %p", (void *)err);
                 return err;
             }
+            MESHX_LOGD(MODULE_ID_TXCM, "Received message from Tx Control Tx Queue");
+            front_tx.msg_state = MESHX_TXCM_MSG_STATE_ACK;
+            err = meshx_rtos_free(&front_tx.msg_param);
+            if (err)
+            {
+                MESHX_LOGE(MODULE_ID_TXCM, "RTOS Free failed: %p", (void *)err);
+            }
         }
         else
         {
@@ -308,17 +329,12 @@ static meshx_err_t meshx_txcm_sig_ack(const meshx_txcm_request_t *request)
              */
         }
     }
-    front_tx.msg_state = MESHX_TXCM_MSG_STATE_ACK;
-    err = meshx_rtos_free(&front_tx.msg_param);
-    if (err)
-    {
-        MESHX_LOGE(MODULE_ID_TXCM, "RTOS Free failed: %p", (void *)err);
-    }
     err = meshx_rtos_free(request->msg_param);
     if (err)
     {
         MESHX_LOGE(MODULE_ID_TXCM, "RTOS Free failed: %p", (void *)err);
     }
+    err = meshx_txcm_msg_q_front_try_send(false);
     return err;
 }
 
@@ -349,6 +365,8 @@ static void meshx_txcm_task_handler(const dev_struct_t *args)
             MESHX_LOGE(MODULE_ID_TXCM, "Failed to receive signal from Tx Control Signal Queue");
             continue;
         }
+        MESHX_LOGI(MODULE_ID_TXCM, "Processing sig: %d", request.request_type);
+
         /* Process the signal based on the request type */
         err = g_sig_proc_table[request.request_type](&request);
         if(err)

@@ -282,6 +282,7 @@ typedef union {
  */
 typedef struct meshx_gen_cli_cb_param
 {
+    int err_code;                               /*!< Error code */
     meshx_ctx_t ctx;                            /**< Context of the received messages */
     meshx_model_t model;                        /**< Pointer to Generic Client Models */
     meshx_gen_cli_evt_t evt;                    /**< Event type of the received message */
