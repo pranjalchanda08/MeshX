@@ -21,27 +21,26 @@
 #include "interface/ble_mesh/meshx_ble_mesh_cmn_def.h"
 
 /**
- * @brief Stack size for the Tx Control task in bytes.
+ * @brief Maximum number of retries for a message.
  */
-#define MESHX_TXCM_TASK_STACK_SIZE  2048
-/**
- * @brief Priority level for the Tx Control task.
- */
-#define MESHX_TXCM_TASK_PRIO        5
+#ifndef MESHX_TXCM_MSG_RETRY_MAX
+#define MESHX_TXCM_MSG_RETRY_MAX    3
+#endif /* MESHX_TXCM_MSG_RETRY_MAX */
 
 /**
- * @brief Maximum number of signals in the Tx Control signal queue.
+ * @brief Maximum length of the message parameters in bytes.
  */
-#define MESHX_TXCM_SIG_Q_LEN        10
-/**
- * @brief Depth (size) of each signal queue entry.
- */
-#define MESHX_TXCM_SIG_Q_DEPTH      sizeof(meshx_txcm_request_t)
+#ifndef MESHX_TXCM_MSG_PARAM_MAX_LEN
+#define MESHX_TXCM_MSG_PARAM_MAX_LEN 64
+#endif /* MESHX_TXCM_MSG_PARAM_MAX_LEN */
 
 /**
  * @brief Maximum number of transmission items in the Tx queue.
  */
+#ifndef MESHX_TXCM_TX_Q_LEN
 #define MESHX_TXCM_TX_Q_LEN         10
+#endif
+
 /**
  * @brief Depth (size) of each transmission queue entry.
  */
@@ -56,10 +55,10 @@ typedef control_task_msg_handle_t meshx_txcm_cb_t;
  */
 typedef enum
 {
-    MESHX_TXCM_SIG_ENQ_SEND = 0,      /**< Signal to enqueue a transmission command */
-    MESHX_TXCM_SIG_DIRECT_SEND,       /**< Signal to directly send a transmission command without queuing */
-    MESHX_TXCM_SIG_RESEND,            /**< Signal to resend the last transmission queued message */
-    MESHX_TXCM_SIG_ACK,               /**< Signal to acknowledge the last transmission message */
+    MESHX_TXCM_SIG_ENQ_SEND     = 0,  /**< Signal to enqueue a transmission command */
+    MESHX_TXCM_SIG_DIRECT_SEND  = 1,  /**< Signal to directly send a transmission command without queuing */
+    MESHX_TXCM_SIG_RESEND       = 2,  /**< Signal to resend the last transmission queued message */
+    MESHX_TXCM_SIG_ACK          = 3,  /**< Signal to acknowledge the last transmission message */
     MESHX_TXCM_SIG_MAX,               /**< Maximum signal type value */
 } meshx_txcm_sig_t;
 
@@ -71,10 +70,12 @@ typedef enum
  */
 typedef enum
 {
-    MESHX_TXCM_MSG_STATE_NEW = 0,       /**< New message state */
-    MESHX_TXCM_MSG_STATE_SENDING,       /**< Message sending state */
-    MESHX_TXCM_MSG_STATE_WAITING_ACK,   /**< Message waiting for acknowledgment state */
-    MESHX_TXCM_MSG_STATE_ACK,           /**< Message acknowledged state */
+    MESHX_TXCM_MSG_STATE_NONE        = 0,   /**< New message state */
+    MESHX_TXCM_MSG_STATE_NEW         = 1,   /**< New message state */
+    MESHX_TXCM_MSG_STATE_SENDING     = 2,   /**< Message sending state */
+    MESHX_TXCM_MSG_STATE_WAITING_ACK = 3,   /**< Message waiting for acknowledgment state */
+    MESHX_TXCM_MSG_STATE_ACK         = 4,   /**< Message acknowledged state */
+    MESHX_TXCM_MSG_STATE_NACK        = 5,   /**< Message not acknowledged state */
     MESHX_TXCM_MSG_STATE_MAX,
 } meshx_txcm_msg_state_t;
 
@@ -99,10 +100,10 @@ typedef meshx_err_t (*meshx_txcm_fn_model_send_t)(meshx_cptr_t msg_param, size_t
  */
 typedef struct meshx_txcm_request
 {
-    meshx_txcm_sig_t request_type;      /**< Type of transmission command request */
     uint16_t dest_addr;                 /**< Destination address of the message */
-    meshx_ptr_t msg_param;              /**< Pointer to model specific parameter structure */
-    size_t msg_param_len;               /**< Length of the msg_param */
+    uint16_t msg_param_len;             /**< Length of the msg_param */
+    meshx_ptr_t  msg_param;             /**< Pointer to model specific parameter structure */
+    meshx_txcm_sig_t request_type;      /**< Type of transmission command request */
     meshx_txcm_fn_model_send_t send_fn; /**< Function pointer to the model-specific send function */
 } meshx_txcm_request_t;
 
@@ -141,7 +142,7 @@ meshx_err_t meshx_txcm_request_send(
     meshx_txcm_sig_t request_type,
     uint16_t dest_addr,
     meshx_cptr_t msg_param,
-    size_t msg_param_len,
+    uint16_t msg_param_len,
     meshx_txcm_fn_model_send_t send_fn
 );
 
