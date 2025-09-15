@@ -255,7 +255,7 @@ meshx_err_t meshx_onoff_client_send_msg(meshx_gen_onoff_send_params_t *params)
  *                     - Appropriate error code otherwise
  */
 meshx_err_t meshx_gen_on_off_state_change_handle(
-    meshx_on_off_cli_el_msg_t *param,
+    const meshx_on_off_cli_el_msg_t *param,
     meshx_on_off_cli_state_t *p_prev_state,
     meshx_on_off_cli_state_t *p_next_state
 )

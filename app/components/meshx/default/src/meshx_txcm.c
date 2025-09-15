@@ -10,6 +10,7 @@
  *
  */
 #include "meshx.h"
+#include "sys/queue.h"
 #include "meshx_txcm.h"
 
 #if CONFIG_TXCM_ENABLE
@@ -17,18 +18,30 @@
  * @brief Magic value used to check if the Tx Control module has been initialized.
  */
 #define MESHX_TXCM_INIT_MAGIC       0x4455
+/**
+ * @brief Stack size for the Tx Control task in bytes.
+ */
+#define MESHX_TXCM_TASK_STACK_SIZE  2048
+/**
+ * @brief Priority level for the Tx Control task.
+ */
+#define MESHX_TXCM_TASK_PRIO        5
+/**
+ * @brief Maximum number of signals in the Tx Control signal queue.
+ */
+#define MESHX_TXCM_SIG_Q_LEN        10
+/**
+ * @brief Depth (size) of each signal queue entry.
+ */
+#define MESHX_TXCM_SIG_Q_DEPTH      sizeof(meshx_txcm_request_t)
 
-#ifndef MESHX_TXCM_MSG_RETRY_MAX
-#define MESHX_TXCM_MSG_RETRY_MAX    3
-#endif /* MESHX_TXCM_MSG_RETRY_MAX */
-
+/**
+ * @brief Type definition for signal processing functions in the Tx Control module.
+ *
+ * A signal processing function takes a pointer to a transmission control request structure
+ * and processes the request accordingly.
+ */
 typedef meshx_err_t (*meshx_txcm_sig_proc_t)(meshx_txcm_request_t *request);
-
-static void meshx_txcm_task_handler(const dev_struct_t *args);
-static meshx_err_t meshx_txcm_sig_ack(const meshx_txcm_request_t *request);
-static meshx_err_t meshx_txcm_sig_resend(meshx_txcm_request_t *request);
-static meshx_err_t meshx_txcm_sig_enq_send(meshx_txcm_request_t *request);
-static meshx_err_t meshx_txcm_sig_direct_send(meshx_txcm_request_t *request);
 
 /**
  * @brief Structure for queued transmission items in the Tx Control module.
@@ -38,14 +51,45 @@ static meshx_err_t meshx_txcm_sig_direct_send(meshx_txcm_request_t *request);
  */
 typedef struct meshx_txcm_tx_q
 {
-    uint16_t dest_addr;                 /**< Destination address of the message */
-    meshx_ptr_t msg_param;              /**< Pointer to model specific parameter structure */
-    size_t msg_param_len;               /**< Length of the msg_param */
-    uint16_t retry_cnt;                 /**< Retry counter per msg context */
-    meshx_txcm_fn_model_send_t send_fn; /**< Function pointer to the model-specific send function */
-    meshx_txcm_msg_state_t msg_state;   /**< State of the message in the transmission queue */
-    meshx_txcm_msg_type_t msg_type;     /**< Type of message (acknowledged or unacknowledged) */
+    uint16_t dest_addr;                                 /**< Destination address of the message */
+    uint16_t retry_cnt;                                 /**< Retry counter per msg context */
+    uint16_t msg_param_len;                             /**< Length of the msg_param */
+    meshx_txcm_msg_type_t msg_type;                     /**< Type of message (acknowledged or unacknowledged) */
+    meshx_txcm_msg_state_t msg_state;                   /**< State of the message in the transmission queue */
+    meshx_txcm_fn_model_send_t send_fn;                 /**< Function pointer to the model-specific send function */
+    uint8_t msg_param[MESHX_TXCM_MSG_PARAM_MAX_LEN];    /**< Pointer to model specific parameter structure */
 }meshx_txcm_tx_q_t;
+
+/**
+ * @brief Structure for the transmission queue in the Tx Control module.
+ *
+ * This structure represents the circular buffer used to store queued transmission items.
+ */
+typedef struct {
+    int16_t head;                                      /**< Head of the transmission queue */
+    int16_t tail;                                      /**< Tail of the transmission queue */
+    uint16_t count;                                    /**< Number of items in the transmission queue */
+    meshx_txcm_tx_q_t q_param[MESHX_TXCM_TX_Q_LEN];    /**< Array of transmission queue items */
+} meshx_tx_queue_t;
+
+/****************************************************************************
+ * Private functions Ring buffer
+ ****************************************************************************/
+static meshx_err_t meshx_tx_queue_is_full(const meshx_tx_queue_t *q);
+static meshx_err_t meshx_tx_queue_is_empty(const meshx_tx_queue_t *q);
+static meshx_err_t meshx_tx_queue_dequeue(meshx_tx_queue_t *q, meshx_txcm_tx_q_t *item);
+static meshx_err_t meshx_tx_queue_peak(const meshx_tx_queue_t *q, meshx_txcm_tx_q_t *item);
+static meshx_err_t meshx_tx_queue_enqueue(meshx_tx_queue_t *q, const meshx_txcm_tx_q_t *item);
+static meshx_err_t meshx_tx_queue_enqueue_front(meshx_tx_queue_t *q, const meshx_txcm_tx_q_t *item);
+
+/****************************************************************************
+ * Private functions Tx Control
+ ****************************************************************************/
+static void meshx_txcm_task_handler(const dev_struct_t *args);
+static meshx_err_t meshx_txcm_sig_resend(meshx_txcm_request_t *request);
+static meshx_err_t meshx_txcm_sig_enq_send(meshx_txcm_request_t *request);
+static meshx_err_t meshx_txcm_sig_ack(const meshx_txcm_request_t *request);
+static meshx_err_t meshx_txcm_sig_direct_send(meshx_txcm_request_t *request);
 
 /**
  * @brief Global structure for Tx Control module state and resources.
@@ -56,13 +100,14 @@ typedef struct meshx_txcm_tx_q
 static struct{
     uint16_t init_magic;
     meshx_task_t txcm_task;
-    meshx_msg_q_t txcm_tx_queue;
     meshx_msg_q_t txcm_sig_queue;
+    meshx_tx_queue_t txcm_tx_queue;
 } g_txcm = {
     .init_magic = 0,
     .txcm_tx_queue = {
-        .max_msg_length = MESHX_TXCM_TX_Q_LEN,
-        .max_msg_depth  = MESHX_TXCM_TX_Q_DEPTH,
+        .head = 0,
+        .tail = 0,
+        .count = 0,
     },
     .txcm_sig_queue = {
         .max_msg_length = MESHX_TXCM_SIG_Q_LEN,
@@ -93,6 +138,151 @@ static meshx_txcm_sig_proc_t g_sig_proc_table[MESHX_TXCM_SIG_MAX] =
 };
 
 /**
+ * @brief Checks if the transmission queue is full.
+ *
+ * This function checks if the count of messages in the transmission queue has reached
+ * the maximum capacity.
+ *
+ * @param[in] q Pointer to the transmission queue structure to be checked.
+ *
+ * @return true if the queue is full, false otherwise.
+ */
+static meshx_err_t meshx_tx_queue_is_full(const meshx_tx_queue_t *q)
+{
+    return q->count == MESHX_TXCM_TX_Q_LEN ? MESHX_SUCCESS : MESHX_NO_MEM;
+}
+
+/**
+ * @brief Checks if the transmission queue is empty.
+ *
+ * This function checks if the count of messages in the transmission queue has reached zero.
+ *
+ * @param[in] q Pointer to the transmission queue structure to be checked.
+ *
+ * @return true if the queue is empty, false otherwise.
+ */
+static meshx_err_t meshx_tx_queue_is_empty(const meshx_tx_queue_t *q)
+{
+    return q->count == 0 ? MESHX_SUCCESS : MESHX_INVALID_STATE;
+}
+
+/**
+ * @brief Adds an item to the transmission queue.
+ *
+ * This function adds an item to the transmission queue. The item is a pointer to the
+ * meshx_txcm_tx_q_t structure to be added.
+ *
+ * @param[in] q Pointer to the transmission queue structure to add the item to.
+ * @param[in] item Pointer to the meshx_txcm_tx_q_t structure to be added.
+ *
+ * @return true if the item was successfully added, false if the queue is full.
+ */
+static meshx_err_t meshx_tx_queue_enqueue(meshx_tx_queue_t *q, const meshx_txcm_tx_q_t *item)
+{
+    meshx_err_t err = MESHX_SUCCESS;
+    err = meshx_tx_queue_is_full(q);
+    if (err == MESHX_SUCCESS)
+    {
+        return MESHX_NO_MEM;
+    }
+
+    // Copy the entire item structure into the q_param.
+    memcpy(q->q_param + q->tail, item, sizeof(meshx_txcm_tx_q_t));
+
+    q->tail = (q->tail + 1) % MESHX_TXCM_TX_Q_LEN;
+
+    // Increment count.
+    q->count++;
+
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Adds an item to the front of the transmission queue.
+ *
+ * This function adds an item to the front of the transmission queue. The item is a pointer to the
+ * meshx_txcm_tx_q_t structure to be added.
+ *
+ * @param[in] q Pointer to the transmission queue structure to add the item to.
+ * @param[in] item Pointer to the meshx_txcm_tx_q_t structure to be added.
+ *
+ * @return true if the item was successfully added, false if the queue is full.
+ */
+static meshx_err_t meshx_tx_queue_enqueue_front(meshx_tx_queue_t *q, const meshx_txcm_tx_q_t *item)
+{
+    meshx_err_t err = MESHX_SUCCESS;
+    err = meshx_tx_queue_is_full(q);
+    if (err == MESHX_SUCCESS)
+    {
+        return MESHX_NO_MEM;
+    }
+    // Increment tail and wrap around if necessary.
+    q->head = (q->head - 1 + MESHX_TXCM_TX_Q_LEN) % MESHX_TXCM_TX_Q_LEN;
+
+    // Copy the entire item structure into the q_param.
+    memcpy(q->q_param + q->head, item, sizeof(meshx_txcm_tx_q_t));
+
+    // Increment count.
+    q->count++;
+
+    return MESHX_SUCCESS;
+}
+/**
+ * @brief Returns the item at the front of the transmission queue without removing it.
+ *
+ * This function checks if the transmission queue is empty and if so, returns an error.
+ * If not empty, it copies the item at the front of the transmission queue into the provided
+ * item pointer.
+ *
+ * @param[in] q Pointer to the transmission queue structure to peek from.
+ * @param[out] item Pointer to the meshx_txcm_tx_q_t structure to store the peeked item.
+ *
+ * @return meshx_err_t
+ */
+static meshx_err_t meshx_tx_queue_peak(const meshx_tx_queue_t *q, meshx_txcm_tx_q_t *item)
+{
+    meshx_err_t err = MESHX_SUCCESS;
+    err = meshx_tx_queue_is_empty(q);
+    if (err == MESHX_SUCCESS)
+    {
+        return MESHX_INVALID_STATE;
+    }
+
+    // Copy the entire item structure from the q_param.
+    memcpy(item, q->q_param + q->head, sizeof(meshx_txcm_tx_q_t));
+
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Removes an item from the transmission queue.
+ *
+ * This function removes an item from the transmission queue. The item is a pointer to the
+ * meshx_txcm_tx_q_t structure to be removed.
+ *
+ * @param[in] q Pointer to the transmission queue structure to remove the item from.
+ * @param[out] item Pointer to the meshx_txcm_tx_q_t structure to store the removed item.
+ *
+ * @return meshx_err_t
+ */
+static meshx_err_t meshx_tx_queue_dequeue(meshx_tx_queue_t *q, meshx_txcm_tx_q_t *item)
+{
+    meshx_err_t err = meshx_tx_queue_peak(q, item);
+    if (err != MESHX_SUCCESS)
+    {
+        return err;
+    }
+
+    // Move head forward
+    q->head = (q->head + 1) % MESHX_TXCM_TX_Q_LEN;
+
+    // Decrement count
+    q->count--;
+
+    return MESHX_SUCCESS;
+}
+
+/**
  * @brief Tickles the Tx Control module to process the front of the transmission queue.
  *
  * This function checks if the front message in the transmission queue is ready to be sent.
@@ -108,7 +298,8 @@ static meshx_err_t meshx_txcm_msg_q_front_try_send(bool resend)
     meshx_err_t err = MESHX_SUCCESS;
     meshx_txcm_tx_q_t front_tx;
 
-    if (meshx_msg_q_peek(&g_txcm.txcm_tx_queue, &front_tx, 0) != MESHX_SUCCESS)
+    MESHX_LOGD(MODULE_ID_TXCM, "TXCM_Q Stat: %x|%x|%x", g_txcm.txcm_tx_queue.head, g_txcm.txcm_tx_queue.tail, g_txcm.txcm_tx_queue.count);
+    if (meshx_tx_queue_peak(&g_txcm.txcm_tx_queue, &front_tx) != MESHX_SUCCESS)
     {
         return MESHX_SUCCESS;
     }
@@ -119,9 +310,9 @@ static meshx_err_t meshx_txcm_msg_q_front_try_send(bool resend)
     }
     if(resend)
     {
-        MESHX_LOGI(MODULE_ID_TXCM, "Try to send message from Tx Control Tx Queue resend|state:%d|%d", resend,front_tx.msg_state);
+        MESHX_LOGD(MODULE_ID_TXCM, "Try to send message from Tx Control Tx Queue resend|state:%d|%d", resend,front_tx.msg_state);
     }
-    err = meshx_msg_q_recv(&g_txcm.txcm_tx_queue, &front_tx, 0);
+    err = meshx_tx_queue_dequeue(&g_txcm.txcm_tx_queue, &front_tx);
     if (err)
     {
         MESHX_LOGE(MODULE_ID_TXCM, "Failed to receive message from Tx Control Tx Queue: %p", (void *)err);
@@ -130,25 +321,26 @@ static meshx_err_t meshx_txcm_msg_q_front_try_send(bool resend)
 
     if ((int16_t)front_tx.retry_cnt-- <= 0)
     {
-        err = meshx_rtos_free(&front_tx.msg_param);
-        if (err)
-        {
-            MESHX_LOGE(MODULE_ID_TXCM, "RTOS Free failed: %p", (void *)err);
-        }
+        front_tx.msg_state = MESHX_TXCM_MSG_STATE_NACK;
         return MESHX_TIMEOUT;
     }
 
     front_tx.msg_state = MESHX_TXCM_MSG_STATE_SENDING;
     if (front_tx.send_fn != NULL)
     {
-        front_tx.send_fn(front_tx.msg_param, front_tx.msg_param_len);
+        err = front_tx.send_fn(front_tx.msg_param, front_tx.msg_param_len);
+        if(err != MESHX_SUCCESS)
+        {
+            front_tx.msg_state = MESHX_TXCM_MSG_STATE_NACK;
+            return err;
+        }
     }
 
     if (front_tx.msg_type == MESHX_TXCM_MSG_TYPE_ACKED)
     {
         /* Requeue to TX Front as we are waiting for Ack */
         front_tx.msg_state = MESHX_TXCM_MSG_STATE_WAITING_ACK;
-        err = meshx_msg_q_send_front(&g_txcm.txcm_tx_queue, &front_tx, sizeof(front_tx), 0);
+        err = meshx_tx_queue_enqueue_front(&g_txcm.txcm_tx_queue, &front_tx);
         if (err)
         {
             MESHX_LOGE(MODULE_ID_TXCM, "Failed to send message to Tx Control Tx Queue: %p", (void *)err);
@@ -158,9 +350,8 @@ static meshx_err_t meshx_txcm_msg_q_front_try_send(bool resend)
     else
     {
         /* Un-Acked msg need not to be retained */
-        err = meshx_rtos_free(&front_tx.msg_param);
+        MESHX_DO_NOTHING;
     }
-
     return err;
 }
 
@@ -182,26 +373,32 @@ static meshx_err_t meshx_txcm_proccess_request_msg(
     meshx_txcm_msg_type_t msg_type)
 {
     meshx_err_t err = MESHX_SUCCESS;
+    static meshx_txcm_tx_q_t new_tx;
 
-    if (request == NULL || msg_type >= MESHX_TXCM_MSG_TYPE_MAX || request->send_fn == NULL)
+    if (   request == NULL
+        || request->send_fn == NULL
+        || msg_type >= MESHX_TXCM_MSG_TYPE_MAX
+        || request->msg_param_len >= MESHX_TXCM_MSG_PARAM_MAX_LEN
+    )
     {
         return MESHX_INVALID_ARG;
     }
 
     MESHX_LOGD(MODULE_ID_TXCM, "Processing a new request");
-    static meshx_txcm_tx_q_t new_tx;
+
     memset(&new_tx, 0, sizeof(meshx_txcm_tx_q_t));
 
     new_tx.msg_type      = msg_type;
     new_tx.send_fn       = request->send_fn;
-    new_tx.msg_param     = request->msg_param;
     new_tx.dest_addr     = request->dest_addr;
     new_tx.msg_param_len = request->msg_param_len;
     new_tx.msg_state     = MESHX_TXCM_MSG_STATE_NEW;
     new_tx.retry_cnt     = MESHX_TXCM_MSG_RETRY_MAX;
 
+    memcpy(new_tx.msg_param, request->msg_param, request->msg_param_len);
+
     /* Queue the message to the TX Queue back*/
-    err = meshx_msg_q_send(&g_txcm.txcm_tx_queue, &new_tx, sizeof(new_tx), 0);
+    err = meshx_tx_queue_enqueue(&g_txcm.txcm_tx_queue, &new_tx);
     if (err)
     {
         MESHX_LOGE(MODULE_ID_TXCM, "Failed to send message to Tx Control Tx Queue: %p", (void *)err);
@@ -249,7 +446,6 @@ static meshx_err_t meshx_txcm_sig_enq_send(meshx_txcm_request_t *request)
 static meshx_err_t meshx_txcm_sig_direct_send(meshx_txcm_request_t *request)
 {
     MESHX_LOGD(MODULE_ID_TXCM, "Processing a new direct request");
-
     /* The same path can take care as the msg type  */
     return meshx_txcm_proccess_request_msg(request, MESHX_TXCM_MSG_TYPE_UNACKED);
 }
@@ -265,11 +461,12 @@ static meshx_err_t meshx_txcm_sig_resend(meshx_txcm_request_t *request)
 {
     MESHX_UNUSED(request);
     meshx_err_t err = MESHX_SUCCESS;
+
     MESHX_LOGD(MODULE_ID_TXCM, "Processing a retry");
     err = meshx_txcm_msg_q_front_try_send(true);
     if(err == MESHX_TIMEOUT)
     {
-        MESHX_LOGI(MODULE_ID_TXCM, "Timeout");
+        MESHX_LOGE(MODULE_ID_TXCM, "Timeout");
         err = control_task_msg_publish(
             CONTROL_TASK_MSG_CODE_TXCM,
             CONTROL_TASK_MSG_EVT_TXCM_MSG_TIMEOUT,
@@ -303,11 +500,11 @@ static meshx_err_t meshx_txcm_sig_ack(const meshx_txcm_request_t *request)
 
     MESHX_LOGD(MODULE_ID_TXCM, "Processing an ack");
     meshx_txcm_tx_q_t front_tx;
-    if(meshx_msg_q_peek(&g_txcm.txcm_tx_queue, &front_tx, 0) == MESHX_SUCCESS)
+    if(meshx_tx_queue_peak(&g_txcm.txcm_tx_queue, &front_tx) == MESHX_SUCCESS)
     {
         if(front_tx.dest_addr == request->dest_addr)
         {
-            err = meshx_msg_q_recv(&g_txcm.txcm_tx_queue, &front_tx, 0);
+            err = meshx_tx_queue_dequeue(&g_txcm.txcm_tx_queue, &front_tx);
             if (err)
             {
                 MESHX_LOGE(MODULE_ID_TXCM, "Failed to receive message from Tx Control Tx Queue: %p", (void *)err);
@@ -315,18 +512,11 @@ static meshx_err_t meshx_txcm_sig_ack(const meshx_txcm_request_t *request)
             }
             MESHX_LOGD(MODULE_ID_TXCM, "Received message from Tx Control Tx Queue");
             front_tx.msg_state = MESHX_TXCM_MSG_STATE_ACK;
-            err = meshx_rtos_free(&front_tx.msg_param);
-            if (err)
-            {
-                MESHX_LOGE(MODULE_ID_TXCM, "RTOS Free failed: %p", (void *)err);
-            }
         }
         else
         {
+            MESHX_LOGW(MODULE_ID_TXCM, "ACK received from unknown address, dropping packet: %d", front_tx.dest_addr);
             MESHX_DO_NOTHING;
-            /**
-             * @todo Need to check this state
-             */
         }
     }
     err = meshx_rtos_free(request->msg_param);
@@ -365,7 +555,7 @@ static void meshx_txcm_task_handler(const dev_struct_t *args)
             MESHX_LOGE(MODULE_ID_TXCM, "Failed to receive signal from Tx Control Signal Queue");
             continue;
         }
-        MESHX_LOGI(MODULE_ID_TXCM, "Processing sig: %d", request.request_type);
+        MESHX_LOGD(MODULE_ID_TXCM, "Processing sig: %d", request.request_type);
 
         /* Process the signal based on the request type */
         err = g_sig_proc_table[request.request_type](&request);
@@ -392,7 +582,7 @@ static void meshx_txcm_task_handler(const dev_struct_t *args)
  */
 meshx_err_t meshx_txcm_init(dev_struct_t *pdev)
 {
-    MESHX_LOGD(MODULE_ID_TXCM, "Initializing MeshX Tx Control Module");
+    MESHX_LOGI(MODULE_ID_TXCM, "Initializing MeshX Tx Control Module");
     if(g_txcm.init_magic == MESHX_TXCM_INIT_MAGIC)
     {
         return MESHX_SUCCESS;
@@ -401,13 +591,6 @@ meshx_err_t meshx_txcm_init(dev_struct_t *pdev)
     g_txcm.init_magic = MESHX_TXCM_INIT_MAGIC;
     g_txcm.txcm_task.arg = pdev;
 
-    /* Create TX Queue */
-    err = meshx_msg_q_create(&g_txcm.txcm_tx_queue);
-    if(err)
-    {
-        MESHX_LOGE(MODULE_ID_TXCM, "Failed to create Tx Control Tx Queue: %p", (void *)err);
-        return err;
-    }
     /* Create Control Signal Queue */
     err = meshx_msg_q_create(&g_txcm.txcm_sig_queue);
     if(err)
@@ -445,7 +628,7 @@ meshx_err_t meshx_txcm_request_send(
     meshx_txcm_sig_t request_type,
     uint16_t dest_addr,
     meshx_cptr_t msg_param,
-    size_t msg_param_len,
+    uint16_t msg_param_len,
     meshx_txcm_fn_model_send_t send_fn
 )
 {
