@@ -41,18 +41,12 @@
             "type": "cppdbg",
             "request": "launch",
             "MIMode": "gdb",
-            "miDebuggerPath": "/home/pranjal/.espressif/tools/riscv32-esp-elf-gdb/14.2_20240403/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb",
+            "miDebuggerPath": "/home/pranjal/.espressif/tools/riscv32-esp-elf-gdb/16.2_20250324/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb",
             "program": "${workspaceFolder}/build/${command:espIdf.getProjectName}.elf",
             "windows": {
                 "program": "${workspaceFolder}\\build\\switch_relay.elf"
             },
             "cwd": "${workspaceFolder}",
-            "environment": [
-                {
-                    "name": "PATH",
-                    "value": "${config:idf.customExtraPaths}"
-                }
-            ],
             "setupCommands": [
                 {
                     "text": "target remote :3333"
