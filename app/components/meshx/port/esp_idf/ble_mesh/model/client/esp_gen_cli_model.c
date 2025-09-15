@@ -91,7 +91,8 @@ static void esp_ble_mesh_generic_client_cb(MESHX_GEN_CLI_CB_EVT event,
             .el_id      = param->params->model->element_idx,
             .p_model    = param->params->model
         },
-        .evt = MESHX_BIT(event)
+        .evt = MESHX_BIT(event),
+        .err_code = param->error_code,
     };
 
     /* Copy the msg data from BLE Layer to MeshX Layer */
@@ -234,6 +235,12 @@ meshx_err_t meshx_plat_gen_cli_send_msg(
     esp_err_t err = ESP_OK;
     if(!is_get_opcode)
     {
+        p_set->onoff_set.trans_time = 0;
+        if(!(p_set->onoff_set.onoff == 0 || p_set->onoff_set.onoff == 1))
+        {
+            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid OnOff value %d", p_set->onoff_set.onoff);
+            return MESHX_INVALID_ARG;
+        }
         err = esp_ble_mesh_generic_client_set_state(
             &common,
             (esp_ble_mesh_generic_client_set_state_t *)p_set
