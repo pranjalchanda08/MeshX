@@ -321,8 +321,9 @@ static meshx_err_t meshx_handle_gen_onoff_msg(
             MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "op|src|dst:%04" PRIx32 "|%04x|%04x",
                        param->ctx.opcode, param->ctx.src_addr, param->ctx.dst_addr);
             reg_cb = &node->reg;
-            if (param->evt == MESHX_GEN_CLI_TIMEOUT)
+            if (param->evt == MESHX_GEN_CLI_TIMEOUT || param->err_code != MESHX_SUCCESS)
             {
+                MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Timeout");
                 err = meshx_gen_cli_handle_resend();
                 if(err != MESHX_SUCCESS)
                 {
@@ -330,7 +331,8 @@ static meshx_err_t meshx_handle_gen_onoff_msg(
                 }
                 else
                 {
-                    err = reg_cb->cb(pdev, model_id, param);
+                    /* As the retry would callback shall be triggered by the TXCM */
+                    MESHX_DO_NOTHING;
                 }
             }
             else
