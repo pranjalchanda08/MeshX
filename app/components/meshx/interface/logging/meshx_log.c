@@ -121,7 +121,7 @@ __attribute__((weak)) void meshx_log_printf(module_id_t module_id, meshx_log_lev
     const char *color = MESHX_LOG_LEVEL_COLOR(log_level);
 
     /* Print timestamp and log */
-    CONFIG_MESHX_LOG_PRINTF("%s[%s][%08u][%03x][%25s:%04d]\t", color, log_lvl_str[log_level], millis, task_id, func, line_no);
+    CONFIG_MESHX_LOG_PRINTF("\r%s[%s][%08u][%03x][%25s:%04d]\t", color, log_lvl_str[log_level], millis, task_id, func, line_no);
 
     /* Process variable arguments */
     va_list args;

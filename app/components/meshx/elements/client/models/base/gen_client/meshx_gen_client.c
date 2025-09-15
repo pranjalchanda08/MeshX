@@ -39,11 +39,11 @@ typedef struct meshx_gen_cli_cb_reg
 typedef struct meshx_gen_client_msg_ctx
 {
     meshx_ptr_t model;              /**< Model context associated with the message. */
-    meshx_gen_cli_set_t *state;     /**< State parameters associated with the message. */
     uint16_t opcode;                /**< Opcode associated with the message. */
     uint16_t addr;                  /**< Destination address associated with the message. */
     uint16_t net_idx;               /**< Network index associated with the message. */
     uint16_t app_idx;               /**< Application key index associated with the message. */
+    meshx_gen_cli_set_t state;      /**< State parameters associated with the message. */
 }meshx_gen_client_msg_ctx_t;
 
 /**
@@ -211,17 +211,17 @@ static meshx_err_t meshx_is_unack_opcode(uint32_t opcode)
  *       opcode corresponds to a GET operation (based on meshx_is_gen_cli_get_opcode).
  * @note Aligns with Bluetooth SIG Mesh Generic models (e.g., OnOff, Level, etc.).
  */
-static meshx_err_t meshx_gen_client_txcm_fn_model_send(meshx_cptr_t msg_param, size_t msg_param_len)
+static meshx_err_t meshx_gen_client_txcm_fn_model_send(meshx_ptr_t msg_param, size_t msg_param_len)
 {
     if(msg_param == NULL || msg_param_len != sizeof(meshx_gen_client_msg_ctx_t))
     {
         return MESHX_INVALID_ARG;
     }
-    const meshx_gen_client_msg_ctx_t * p_msg = (const meshx_gen_client_msg_ctx_t*) msg_param;
+    meshx_gen_client_msg_ctx_t * p_msg = (meshx_gen_client_msg_ctx_t*) msg_param;
 
     return meshx_plat_gen_cli_send_msg(
         p_msg->model,
-        p_msg->state,
+        &p_msg->state,
         p_msg->opcode,
         p_msg->addr,
         p_msg->net_idx,
@@ -231,22 +231,28 @@ static meshx_err_t meshx_gen_client_txcm_fn_model_send(meshx_cptr_t msg_param, s
 }
 
 /**
- * @brief Initialize the mesh fuction generic client.
+ * @brief Handles a control task message for a generic client model.
  *
- * This function sets up the necessary configurations and initializes the
- * meshxuction generic client for the BLE mesh node.
+ * This function processes a control task message received from the control task module
+ * for a generic client model. It is responsible for handling messages such as
+ * Tx Control Module signals, and is called by the control task module when a control
+ * task message is received.
  *
- * @return
- *     - MESHX_SUCCESS: Success
- *     - MESHX_FAIL: Failed to initialize the client
+ * @param[in] pdev    Pointer to the device structure associated with the BLE Mesh node.
+ * @param[in] model_id    Control task message event type, which represents the model ID of the generic
+ *                     client model associated with the message.
+ * @param[in] param    Pointer to a structure containing the control task message parameters. Must not be NULL.
+ *
+ * @return meshx_err_t  Error code from the control task message handling. Returns MESHX_SUCCESS on
+ *                     successful handling.
  */
-meshx_err_t meshx_gen_client_init(void)
+static meshx_err_t meshx_handle_txcm_msg(
+    dev_struct_t *pdev,
+    control_task_msg_evt_t model_id,
+    meshx_gen_client_msg_ctx_t *param
+)
 {
-    if (g_meshx_client_control.meshx_client_init == MESHX_CLIENT_INIT_MAGIC_NO)
-        return MESHX_SUCCESS;
-    g_meshx_client_control.meshx_client_init = MESHX_CLIENT_INIT_MAGIC_NO;
-
-    return meshx_plat_gen_cli_init();
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -323,7 +329,7 @@ static meshx_err_t meshx_handle_gen_onoff_msg(
             reg_cb = &node->reg;
             if (param->evt == MESHX_GEN_CLI_TIMEOUT || param->err_code != MESHX_SUCCESS)
             {
-                MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Timeout");
+                MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Retrying to send the message");
                 err = meshx_gen_cli_handle_resend();
                 if(err != MESHX_SUCCESS)
                 {
@@ -358,6 +364,28 @@ static meshx_err_t meshx_handle_gen_onoff_msg(
 }
 
 /**
+ * @brief Initialize the mesh fuction generic client.
+ *
+ * This function sets up the necessary configurations and initializes the
+ * meshxuction generic client for the BLE mesh node.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Success
+ *     - MESHX_FAIL: Failed to initialize the client
+ */
+meshx_err_t meshx_gen_client_init(void)
+{
+    if (g_meshx_client_control.meshx_client_init == MESHX_CLIENT_INIT_MAGIC_NO)
+        return MESHX_SUCCESS;
+    g_meshx_client_control.meshx_client_init = MESHX_CLIENT_INIT_MAGIC_NO;
+
+    meshx_err_t err = meshx_txcm_event_cb_reg(&meshx_handle_txcm_msg);
+    if(err != MESHX_SUCCESS)
+        return err;
+    return meshx_plat_gen_cli_init();
+}
+
+/**
  * @brief Sends a Generic Client message over BLE Mesh.
  *
  * This function sends a message from a Generic Client model to a specified address
@@ -386,8 +414,9 @@ meshx_err_t meshx_gen_cli_send_msg(meshx_gen_client_send_params_t *params)
         .app_idx = params->app_idx,
         .net_idx = params->net_idx,
         .opcode  = params->opcode,
-        .state   = params->state,
     };
+    memcpy(&send_msg.state, params->state, sizeof(send_msg.state));
+
     g_meshx_client_control.gen_client_msg_waiting_for_ack++;
     err = meshx_txcm_request_send(
         req_type,
