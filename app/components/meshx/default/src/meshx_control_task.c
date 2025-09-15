@@ -123,7 +123,7 @@ meshx_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code,
                                      control_task_msg_evt_t evt_bmap,
                                      control_task_msg_handle_t callback)
 {
-    if (callback == NULL || evt_bmap == 0 || msg_code >= CONTROL_TASK_MSG_CODE_MAX)
+    if (callback == NULL || msg_code >= CONTROL_TASK_MSG_CODE_MAX)
         return MESHX_INVALID_ARG; // Invalid arguments
 
     control_task_evt_cb_reg_t *new_node = NULL;
@@ -153,7 +153,7 @@ meshx_err_t control_task_msg_unsubscribe(control_task_msg_code_t msg_code,
                                        control_task_msg_evt_t evt_bmap,
                                        control_task_msg_handle_t callback)
 {
-    if (callback == NULL || evt_bmap == 0 || msg_code >= CONTROL_TASK_MSG_CODE_MAX)
+    if (callback == NULL || msg_code >= CONTROL_TASK_MSG_CODE_MAX)
         return MESHX_INVALID_ARG; // Invalid arguments
 
     control_task_evt_cb_reg_t *prev = NULL;
@@ -211,7 +211,7 @@ static meshx_err_t control_task_msg_dispatch(
 
     while (ptr)
     {
-        if ((evt & ptr->msg_evt_bmap) && (ptr->cb != NULL))
+        if (((evt == 0x00) || (evt & ptr->msg_evt_bmap)) && (ptr->cb != NULL))
         {
             ptr->cb(pdev, evt, params); // Call the registered callback
             evt_handled = true;

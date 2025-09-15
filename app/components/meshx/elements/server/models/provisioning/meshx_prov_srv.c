@@ -115,7 +115,7 @@ static meshx_err_t meshx_prov_srv_control_task_handler(
     }
     else
     {
-        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Unhandled event: %d", event);
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Unhandled event: %d", params->prov_evt);
     }
     if (params->prov_evt == MESHX_NODE_PROV_COMPLETE_EVT)
     {
