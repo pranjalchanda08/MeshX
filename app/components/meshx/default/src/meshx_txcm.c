@@ -11,6 +11,7 @@
  */
 #include "meshx.h"
 #include "sys/queue.h"
+#include "string.h"
 #include "meshx_txcm.h"
 
 #if CONFIG_TXCM_ENABLE
@@ -78,7 +79,7 @@ typedef struct {
 static meshx_err_t meshx_tx_queue_is_full(const meshx_tx_queue_t *q);
 static meshx_err_t meshx_tx_queue_is_empty(const meshx_tx_queue_t *q);
 static meshx_err_t meshx_tx_queue_dequeue(meshx_tx_queue_t *q, meshx_txcm_tx_q_t *item);
-static meshx_err_t meshx_tx_queue_peak(const meshx_tx_queue_t *q, meshx_txcm_tx_q_t *item);
+static meshx_err_t meshx_tx_queue_peek(const meshx_tx_queue_t *q, meshx_txcm_tx_q_t *item);
 static meshx_err_t meshx_tx_queue_enqueue(meshx_tx_queue_t *q, const meshx_txcm_tx_q_t *item);
 static meshx_err_t meshx_tx_queue_enqueue_front(meshx_tx_queue_t *q, const meshx_txcm_tx_q_t *item);
 
@@ -239,7 +240,7 @@ static meshx_err_t meshx_tx_queue_enqueue_front(meshx_tx_queue_t *q, const meshx
  *
  * @return meshx_err_t
  */
-static meshx_err_t meshx_tx_queue_peak(const meshx_tx_queue_t *q, meshx_txcm_tx_q_t *item)
+static meshx_err_t meshx_tx_queue_peek(const meshx_tx_queue_t *q, meshx_txcm_tx_q_t *item)
 {
     meshx_err_t err = MESHX_SUCCESS;
     err = meshx_tx_queue_is_empty(q);
@@ -255,6 +256,49 @@ static meshx_err_t meshx_tx_queue_peak(const meshx_tx_queue_t *q, meshx_txcm_tx_
 }
 
 /**
+ * @brief Searches for a parameter in the transmission queue.
+ *
+ * This function searches for a parameter in the transmission queue. The parameter is a pointer to
+ * a uint8_t array with a length of param_len. The function searches the queue from the tail
+ * to the head and returns MESHX_SUCCESS if the parameter is found. If not found, it returns
+ * MESHX_NOT_FOUND.
+ *
+ * @param[in] q Pointer to the transmission queue structure to search in.
+ * @param[in] param Pointer to the uint8_t array to search for.
+ *
+ * @return meshx_err_t
+ */
+static meshx_err_t meshx_tx_queue_search(
+    const meshx_tx_queue_t *q,
+    const uint8_t *param,
+    uint16_t dest_addr)
+{
+    meshx_err_t err = MESHX_SUCCESS;
+    err = meshx_tx_queue_is_empty(q);
+    if (err == MESHX_SUCCESS)
+    {
+        return MESHX_INVALID_STATE;
+    }
+
+    int16_t head = q->head;
+    int16_t tail = q->tail;
+
+    while(head != tail)
+    {
+        // Move tail back
+        tail = (tail - 1 + MESHX_TXCM_TX_Q_LEN) % MESHX_TXCM_TX_Q_LEN;
+        // compare param with q_param[tail]
+        if (strcmp((const char*)param, (const char*)q->q_param[tail].msg_param) == 0
+            && q->q_param[tail].dest_addr == dest_addr)
+        {
+            MESHX_LOGD(MODULE_ID_TXCM, "Found param in queue");
+            return MESHX_SUCCESS;
+        }
+    }
+
+    return MESHX_NOT_FOUND;
+}
+/**
  * @brief Removes an item from the transmission queue.
  *
  * This function removes an item from the transmission queue. The item is a pointer to the
@@ -267,7 +311,7 @@ static meshx_err_t meshx_tx_queue_peak(const meshx_tx_queue_t *q, meshx_txcm_tx_
  */
 static meshx_err_t meshx_tx_queue_dequeue(meshx_tx_queue_t *q, meshx_txcm_tx_q_t *item)
 {
-    meshx_err_t err = meshx_tx_queue_peak(q, item);
+    meshx_err_t err = meshx_tx_queue_peek(q, item);
     if (err != MESHX_SUCCESS)
     {
         return err;
@@ -299,7 +343,7 @@ static meshx_err_t meshx_txcm_msg_q_front_try_send(bool resend)
     meshx_txcm_tx_q_t front_tx;
 
     MESHX_LOGD(MODULE_ID_TXCM, "TXCM_Q Stat: %x|%x|%x", g_txcm.txcm_tx_queue.head, g_txcm.txcm_tx_queue.tail, g_txcm.txcm_tx_queue.count);
-    if (meshx_tx_queue_peak(&g_txcm.txcm_tx_queue, &front_tx) != MESHX_SUCCESS)
+    if (resend == false && (meshx_tx_queue_peek(&g_txcm.txcm_tx_queue, &front_tx) != MESHX_SUCCESS))
     {
         return MESHX_SUCCESS;
     }
@@ -386,6 +430,13 @@ static meshx_err_t meshx_txcm_proccess_request_msg(
 
     MESHX_LOGD(MODULE_ID_TXCM, "Processing a new request");
 
+    err = meshx_tx_queue_search(&g_txcm.txcm_tx_queue, request->msg_param, request->dest_addr);
+    if (err == MESHX_SUCCESS)
+    {
+        MESHX_LOGD(MODULE_ID_TXCM, "Message already in queue");
+        return MESHX_SUCCESS;
+    }
+
     memset(&new_tx, 0, sizeof(meshx_txcm_tx_q_t));
 
     new_tx.msg_type      = msg_type;
@@ -397,7 +448,6 @@ static meshx_err_t meshx_txcm_proccess_request_msg(
 
     memcpy(new_tx.msg_param, request->msg_param, request->msg_param_len);
 
-    /* Queue the message to the TX Queue back*/
     err = meshx_tx_queue_enqueue(&g_txcm.txcm_tx_queue, &new_tx);
     if (err)
     {
@@ -466,7 +516,7 @@ static meshx_err_t meshx_txcm_sig_resend(meshx_txcm_request_t *request)
     err = meshx_txcm_msg_q_front_try_send(true);
     if(err == MESHX_TIMEOUT)
     {
-        MESHX_LOGE(MODULE_ID_TXCM, "Timeout");
+        MESHX_LOGD(MODULE_ID_TXCM, "Timeout");
         err = control_task_msg_publish(
             CONTROL_TASK_MSG_CODE_TXCM,
             CONTROL_TASK_MSG_EVT_TXCM_MSG_TIMEOUT,
@@ -500,7 +550,7 @@ static meshx_err_t meshx_txcm_sig_ack(const meshx_txcm_request_t *request)
 
     MESHX_LOGD(MODULE_ID_TXCM, "Processing an ack");
     meshx_txcm_tx_q_t front_tx;
-    if(meshx_tx_queue_peak(&g_txcm.txcm_tx_queue, &front_tx) == MESHX_SUCCESS)
+    if(meshx_tx_queue_peek(&g_txcm.txcm_tx_queue, &front_tx) == MESHX_SUCCESS)
     {
         if(front_tx.dest_addr == request->dest_addr)
         {
