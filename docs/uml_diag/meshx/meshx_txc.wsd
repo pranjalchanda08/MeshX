@@ -3,6 +3,7 @@
 title "Tx Control Send/Receive Flow"
 
 participant "MeshX Init" as MI
+participant "Control Task" as CT
 participant "Element" as EL
 participant "model client" as MC
 participant "base client" as BC
@@ -25,8 +26,8 @@ TXC -> TXCT: TXC_thread()
 EL -> MC: Element Payload
 MC -> MC: client msg create
 MC -> BC: Send gen client msg
-BC -> TXC: TXC_send(enqueue_and_send/send_only)
-TXC -> TXC: add TXC header
+BC -> TXC: meshx_txcm_request_send()
+TXC -> TXC: create TXC process pkt
 note over TXC
     1. TXC header:
         a) Request Type
@@ -35,46 +36,58 @@ note over TXC
             3. Resend
             4. ACK/NACK (flush)
         b) Model TXC function pointer
-        c) Sequence Number (Ref)
+        c) Dest Address
     2. App Payload
+    3. Payload Len
 end note
 
+TXC -> TXCT : signal TXC Thread
+
 alt Enqueue and Send
-    TXC -> TXC: enqueue msg to queue back
-    TXC -> TXCT: signal TXC thread
+    TXCT -> TXCT: enqueue msg to queue back
     TXCT -> TXCT: peek queue front
-    TXCT -> BC: cb call for platform sending
-    BC -> TL: send msg to transport layer
+    alt msg_state == MESHX_TXCM_MSG_STATE_NEW
+        TXCT -> TXCT : TX dequeue
+        TXCT -> BC: cb call for platform sending
+        BC -> TL: send msg to transport layer
+        TXCT -> TXCT : msg.state = MESHX_TXCM_MSG_STATE_WAITING_ACK
+        TXCT -> TXCT : enqueue msg to the tx q front
+    end
 else Send Only
-    TXC -> TXCT: enqueue msg to queue back
-    TXCT -> TXCT: receive queue front
-    TXCT -> BC: cb call for platform sending
-    BC -> TL: send msg to transport layer
+    TXCT -> TXCT: enqueue msg to queue back
+    alt msg_state == MESHX_TXCM_MSG_STATE_NEW
+        TXCT -> TXCT : TX dequeue
+        TXCT -> BC: cb call for platform sending
+        BC -> TL: send msg to transport layer
+    end
 else Resend
-    TXC -> TXCT: signal TXC thread
-    TXCT -> TXCT: peek queue front
-    TXCT -> BC: cb call for platform sending
-    BC -> TL: send msg to transport layer
+    TXCT -> TXCT: TX dequeue
+    TXCT -> TXCT: msg.retry_cnt--
+    alt ms.retry_cnt > 0
+        TXCT -> BC: cb call for platform sending
+        BC -> TL: send msg to transport layer
+        TXCT -> TXCT : msg.state = MESHX_TXCM_MSG_STATE_WAITING_ACK
+        TXCT -> TXCT : enqueue msg to the tx q front
+    else
+        TXCT -> CT : CT pub (MSG_CODE_TXCM : MSG_EVT_TXCM_MSG_TIMEOUT)
+        CT -> BC : CT despatch (MSG_CODE_TXCM : MSG_EVT_TXCM_MSG_TIMEOUT)
+    end
 else ACK/NACK (flush)
-    TXC -> TXC: flush queue front
+    TXCT -> TXCT: peek front msg
+    alt msg.dest == ack.src
+        TXCT -> TXCT: dequeue msg
+    else
+        TXCT -> TXCT: Print warning and wait for next signal
+    end
+    TXCT -> TXCT: Process further msg in TX q
 end
 
 == RX Path ==
-TL -> MC: ACK/NACK
+TL -> CT: FROM BLE event
+CT -> BC: ACK/NACK
 alt ACK
-    MC -> EL: notify element for state change
-    MC -> BC: ACK process
-    BC -> TXC: TXC_send(flush)
-else NACK
-    MC -> MC: retry count--
-    alt retry count > 0
-        MC -> BC: Retry process
-        BC -> TXC: TXC_send(resend)
-    else retry count == 0
-        MC -> EL: notify element for failure
-        MC -> BC: NACK process
-        BC -> TXC: TXC_send(flush)
-    end
-end
-
+    BC -> TXCT: TXC_send(flush)
+    BC -> MC: ACK process
+    MC -> CT: notify element for state change
+CT -> EL: Process element
 @enduml
