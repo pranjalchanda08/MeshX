@@ -72,7 +72,7 @@ static meshx_err_t meshx_app_data_cb(const meshx_app_element_msg_header_t *msg_h
         MESHX_LOGI(MODULE_ID_COMMON, "Relay Server Element ID: %d, Func ID: %d, Data: %d", msg_hdr->element_id, msg_hdr->func_id, data_payload_u->relay_server_evt.on_off);
         break;
     case MESHX_ELEMENT_TYPE_RELAY_CLIENT:
-        MESHX_LOGI(MODULE_ID_COMMON, "Relay Client Element ID: %d, Func ID: %d, Data: %d", msg_hdr->element_id, msg_hdr->func_id, data_payload_u->relay_client_evt.on_off);
+        MESHX_LOGI(MODULE_ID_COMMON, "Relay Client Element ID: %d, Func ID: %d, Data: %d, Error: %d", msg_hdr->element_id, msg_hdr->func_id, data_payload_u->relay_client_evt.on_off, data_payload_u->relay_client_evt.err_code);
         break;
     case MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER:
         switch (msg_hdr->func_id)

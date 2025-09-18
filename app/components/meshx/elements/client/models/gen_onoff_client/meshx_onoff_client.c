@@ -80,9 +80,9 @@ static meshx_err_t meshx_handle_gen_onoff_msg(
         return MESHX_SUCCESS;
     }
 
-    meshx_err_t err = MESHX_SUCCESS;
-
-    param->evt == MESHX_GEN_CLI_TIMEOUT ?  meshx_state_change_notify(param, MESHX_TIMEOUT) : meshx_state_change_notify(param, MESHX_SUCCESS);
+    meshx_err_t err = param->evt == MESHX_GEN_CLI_TIMEOUT ?
+        meshx_state_change_notify(param, MESHX_TIMEOUT) :
+        meshx_state_change_notify(param, MESHX_SUCCESS);
 
     return err;
 }
@@ -280,6 +280,7 @@ meshx_err_t meshx_gen_on_off_state_change_handle(
     else
     {
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "OnOff state change failed: %d", param->err_code);
+        state_change = true;
         /* state_change = true if want to notify app about timeout */
     }
 
