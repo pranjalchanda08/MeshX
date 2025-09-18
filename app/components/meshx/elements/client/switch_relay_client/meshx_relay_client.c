@@ -401,7 +401,7 @@ static meshx_err_t meshx_relay_cli_send_onoff_msg(
 static meshx_err_t meshx_relay_client_element_state_change_handler(
     const dev_struct_t *pdev,
     control_task_msg_evt_t evt,
-    meshx_on_off_cli_el_msg_t *param
+    const meshx_on_off_cli_el_msg_t *param
 )
 {
     MESHX_UNUSED(pdev);
