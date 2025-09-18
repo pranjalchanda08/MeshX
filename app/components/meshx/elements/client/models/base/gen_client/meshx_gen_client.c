@@ -31,6 +31,17 @@ typedef struct meshx_gen_cli_cb_reg
 }meshx_gen_cli_cb_reg_t;
 
 /**
+ * @struct meshx_gen_cli_resend_ctx
+ * @brief Structure containing the model ID and parameter for generic client model message re-sending.
+ *
+ * This structure is used to store the model ID and parameter associated with a generic client model message re-sending.
+ */
+typedef struct meshx_gen_cli_resend_ctx
+{
+    uint16_t model_id;              /**< Model ID associated with the re-sending. */
+    meshx_gen_cli_cb_param_t param; /**< Parameter associated with the re-sending. */
+}meshx_gen_cli_resend_ctx;
+/**
  * @struct meshx_gen_client_msg_ctx
  * @brief Structure containing the message context for generic client model messages.
  *
@@ -54,7 +65,6 @@ typedef struct meshx_gen_client_msg_ctx
  */
 static struct{
     uint16_t meshx_client_init;                 /**< Flag indicating whether the mesh client has been initialized. */
-    uint16_t gen_client_msg_waiting_for_ack;    /**< Number of messages waiting for acknowledgement. */
 } g_meshx_client_control;
 
 /**
@@ -248,11 +258,35 @@ static meshx_err_t meshx_gen_client_txcm_fn_model_send(meshx_ptr_t msg_param, si
  */
 static meshx_err_t meshx_handle_txcm_msg(
     dev_struct_t *pdev,
-    control_task_msg_evt_t model_id,
-    meshx_gen_client_msg_ctx_t *param
+    control_task_msg_evt_t evt,
+    meshx_gen_cli_resend_ctx *param
 )
 {
-    return MESHX_SUCCESS;
+    MESHX_UNUSED(evt);
+    meshx_gen_cli_cb_reg_t const * reg_cb = NULL;
+    meshx_err_t err = MESHX_SUCCESS;
+    const meshx_gen_cli_cb_reg_node_t *node = g_meshx_gen_cli_cb_reg_head;
+
+    MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "TXCM Timeout for model 0x%x", param->model_id);
+
+    while (node)
+    {
+        if (param->model_id == node->reg.model_id)
+        {
+            reg_cb                  = &node->reg;
+            param->param.err_code   = MESHX_TIMEOUT;
+            param->param.evt        = MESHX_GEN_CLI_TIMEOUT;
+            err = reg_cb->cb(pdev, param->model_id, &param->param);
+        }
+        node = node->next;
+    }
+
+    if(reg_cb == NULL)
+    {
+        return MESHX_SUCCESS;
+    }
+
+    return err;
 }
 
 /**
@@ -268,14 +302,7 @@ static meshx_err_t meshx_handle_txcm_msg(
 static meshx_err_t meshx_gen_cli_handle_ack(uint16_t src_addr)
 {
     meshx_err_t err = MESHX_SUCCESS;
-    if(g_meshx_client_control.gen_client_msg_waiting_for_ack > 0)
-    {
-        err = meshx_txcm_request_send(MESHX_TXCM_SIG_ACK, src_addr, NULL, 0, NULL);
-        if(!err)
-        {
-            g_meshx_client_control.gen_client_msg_waiting_for_ack--;
-        }
-    }
+    err = meshx_txcm_request_send(MESHX_TXCM_SIG_ACK, src_addr, NULL, 0, NULL);
     return err;
 }
 
@@ -287,9 +314,19 @@ static meshx_err_t meshx_gen_cli_handle_ack(uint16_t src_addr)
  *
  * @return meshx_err_t Returns the error code from meshx_txcm_request_send().
  */
-static meshx_err_t meshx_gen_cli_handle_resend(void)
+static meshx_err_t meshx_gen_cli_handle_resend(uint16_t model_id, const meshx_gen_cli_cb_param_t *param)
 {
-    return meshx_txcm_request_send(MESHX_TXCM_SIG_RESEND, MESHX_ADDR_UNASSIGNED, NULL, 0, NULL);
+    meshx_gen_cli_resend_ctx ctx = {
+        .model_id = model_id
+    };
+    memcpy(&ctx.param, param, sizeof(meshx_gen_cli_cb_param_t));
+
+    return meshx_txcm_request_send(
+        MESHX_TXCM_SIG_RESEND,
+        MESHX_ADDR_UNASSIGNED,
+        &ctx,
+        sizeof(meshx_gen_cli_resend_ctx),
+        NULL);
 }
 
 /**
@@ -329,8 +366,8 @@ static meshx_err_t meshx_handle_gen_onoff_msg(
             reg_cb = &node->reg;
             if (param->evt == MESHX_GEN_CLI_TIMEOUT || param->err_code != MESHX_SUCCESS)
             {
-                MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Retrying to send the message");
-                err = meshx_gen_cli_handle_resend();
+                MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "Retrying to send the message");
+                err = meshx_gen_cli_handle_resend((uint16_t)model_id, param);
                 if(err != MESHX_SUCCESS)
                 {
                     MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Resend failed: %d", err);
@@ -379,7 +416,7 @@ meshx_err_t meshx_gen_client_init(void)
         return MESHX_SUCCESS;
     g_meshx_client_control.meshx_client_init = MESHX_CLIENT_INIT_MAGIC_NO;
 
-    meshx_err_t err = meshx_txcm_event_cb_reg(&meshx_handle_txcm_msg);
+    meshx_err_t err = meshx_txcm_event_cb_reg((meshx_txcm_cb_t) &meshx_handle_txcm_msg);
     if(err != MESHX_SUCCESS)
         return err;
     return meshx_plat_gen_cli_init();
@@ -409,15 +446,14 @@ meshx_err_t meshx_gen_cli_send_msg(meshx_gen_client_send_params_t *params)
 
     meshx_gen_client_msg_ctx_t send_msg =
     {
-        .model = params->model,
-        .addr  = params->addr,
+        .addr    = params->addr,
+        .model   = params->model,
+        .opcode  = params->opcode,
         .app_idx = params->app_idx,
         .net_idx = params->net_idx,
-        .opcode  = params->opcode,
     };
     memcpy(&send_msg.state, params->state, sizeof(send_msg.state));
 
-    g_meshx_client_control.gen_client_msg_waiting_for_ack++;
     err = meshx_txcm_request_send(
         req_type,
         send_msg.addr,
@@ -428,7 +464,6 @@ meshx_err_t meshx_gen_cli_send_msg(meshx_gen_client_send_params_t *params)
     if(err)
     {
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Failed to send message: %p", (meshx_ptr_t) err);
-        g_meshx_client_control.gen_client_msg_waiting_for_ack--;
     }
     return err;
 }
