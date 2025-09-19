@@ -19,15 +19,6 @@
 
 static uint16_t light_ctl_client_init_flag = 0;
 
-static struct{
-    uint16_t addr;
-    uint16_t opcode;
-    uint16_t net_idx;
-    uint16_t app_idx;
-    meshx_ptr_t p_model;
-    meshx_light_client_set_state_t state;
-} light_ctl_client_last_msg_ctx;
-
 /**
  * @brief Notifies about a change in the CTL (Color Temperature Lightness) state.
  *
@@ -35,16 +26,17 @@ static struct{
  * of a light device has changed. It provides the relevant parameters describing the new state.
  *
  * @param[in] param Pointer to a structure containing the CTL state change parameters.
+ * @param[in] status Status code indicating the result of the notification operation.
  *
  * @return meshx_err_t Returns an error code indicating the result of the notification operation.
  */
-static meshx_err_t meshx_ctl_state_change_notify(meshx_gen_light_cli_cb_param_t *param)
+static meshx_err_t meshx_ctl_state_change_notify(const meshx_gen_light_cli_cb_param_t *param, uint8_t status)
 {
     if (!param)
         return MESHX_INVALID_ARG;
 
     meshx_ctl_cli_el_msg_t el_light_ctl_param = {
-        .err_code = MESHX_SUCCESS,
+        .err_code = status,
         .ctx = param->ctx,
         .model = param->model
     };
@@ -85,68 +77,6 @@ static meshx_err_t meshx_ctl_state_change_notify(meshx_gen_light_cli_cb_param_t 
 }
 
 /**
- * @brief Handle timeout for relaying the last Light CTL message.
- *
- * This function is called when a timeout occurs while waiting for an acknowledgment
- * for the last sent Light CTL message. It attempts to resend the message using the
- * stored context information.
- *
- * @return MESHX_SUCCESS on success, or an error code on failure.
- */
-static meshx_err_t meshx_light_ctl_client_timeout_handler(void)
-{
-    if(!light_ctl_client_last_msg_ctx.p_model)
-        return MESHX_INVALID_STATE;
-
-    MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Timeout");
-
-    switch (light_ctl_client_last_msg_ctx.opcode)
-    {
-        case MESHX_MODEL_OP_LIGHT_CTL_GET:
-        case MESHX_MODEL_OP_LIGHT_CTL_SET:
-        case MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK:
-            return meshx_light_ctl_client_send_msg(
-                light_ctl_client_last_msg_ctx.p_model,
-                light_ctl_client_last_msg_ctx.opcode,
-                light_ctl_client_last_msg_ctx.addr,
-                light_ctl_client_last_msg_ctx.net_idx,
-                light_ctl_client_last_msg_ctx.app_idx,
-                light_ctl_client_last_msg_ctx.state.ctl_set.ctl_lightness,
-                light_ctl_client_last_msg_ctx.state.ctl_set.ctl_temperature,
-                light_ctl_client_last_msg_ctx.state.ctl_set.ctl_delta_uv,
-                light_ctl_client_last_msg_ctx.state.ctl_set.tid
-            );
-        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET:
-        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET:
-        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK:
-            return meshx_light_ctl_temperature_client_send_msg(
-                light_ctl_client_last_msg_ctx.p_model,
-                light_ctl_client_last_msg_ctx.opcode,
-                light_ctl_client_last_msg_ctx.addr,
-                light_ctl_client_last_msg_ctx.net_idx,
-                light_ctl_client_last_msg_ctx.app_idx,
-                light_ctl_client_last_msg_ctx.state.ctl_set.ctl_temperature,
-                light_ctl_client_last_msg_ctx.state.ctl_set.ctl_delta_uv,
-                light_ctl_client_last_msg_ctx.state.ctl_set.tid
-            );
-        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET:
-        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET:
-        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK:
-            return meshx_light_ctl_temp_range_client_send_msg(
-                light_ctl_client_last_msg_ctx.p_model,
-                light_ctl_client_last_msg_ctx.opcode,
-                light_ctl_client_last_msg_ctx.addr,
-                light_ctl_client_last_msg_ctx.net_idx,
-                light_ctl_client_last_msg_ctx.app_idx,
-                light_ctl_client_last_msg_ctx.state.ctl_temperature_range_set.range_min,
-                light_ctl_client_last_msg_ctx.state.ctl_temperature_range_set.range_max
-            );
-        default:
-            return MESHX_INVALID_STATE;
-    }
-}
-
-/**
  * @brief Handles generic light model messages for the Light CTL client.
  *
  * This function processes incoming messages related to the generic light model
@@ -161,7 +91,7 @@ static meshx_err_t meshx_light_ctl_client_timeout_handler(void)
 static meshx_err_t meshx_handle_gen_light_msg(
     const dev_struct_t *pdev,
     control_task_msg_evt_t model_id,
-    meshx_gen_light_cli_cb_param_t *param
+    const meshx_gen_light_cli_cb_param_t *param
 )
 {
     if (model_id != MESHX_MODEL_ID_LIGHT_CTL_CLI || !pdev || !param)
@@ -169,57 +99,11 @@ static meshx_err_t meshx_handle_gen_light_msg(
 
     MESHX_LOGD(MODULE_ID_MODEL_SERVER, "op|src|dst:%04" PRIx32 "|%04x|%04x",
                param->ctx.opcode, param->ctx.src_addr, param->ctx.dst_addr);
-    meshx_err_t err = MESHX_SUCCESS;
-
-    switch (param->evt)
-    {
-    case MESHX_GEN_LIGHT_CLI_EVT_GET:
-    case MESHX_GEN_LIGHT_CLI_EVT_SET:
-    case MESHX_GEN_LIGHT_CLI_PUBLISH:
-        err = meshx_ctl_state_change_notify(param);
-        if (err)
-        {
-            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Failed to notify state change: %d", err);
-        }
-        break;
-    case MESHX_GEN_LIGHT_CLI_TIMEOUT:
-        err = meshx_light_ctl_client_timeout_handler();
-        if(err != MESHX_SUCCESS)
-            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Resend failed: %d", err);
-
-        else
-            err = meshx_ctl_state_change_notify(param);
-        break;
-    default:
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Unknown event: %d", param->evt);
-        err = MESHX_NOT_SUPPORTED;
-        break;
-    }
+    meshx_err_t err = param->evt == MESHX_GEN_LIGHT_CLI_TIMEOUT ?
+        meshx_ctl_state_change_notify(param, MESHX_TIMEOUT):
+        meshx_ctl_state_change_notify(param, MESHX_SUCCESS);
 
     return err;
-}
-
-/**
- * @brief Registers a callback function for the Light CTL (Color Temperature Lightness) client model.
- *
- * This function associates a user-defined callback with a specific Light CTL client model,
- * allowing the application to handle events or responses related to the model.
- *
- * @param[in] model_id The unique identifier of the Light CTL client model instance.
- * @param[in] cb       The callback function to be registered. This function will be called
- *                     when relevant events occur for the specified model.
- *
- * @return meshx_err_t Returns MESHX_OK on success, or an appropriate error code on failure.
- */
-static meshx_err_t meshx_light_ctl_cli_reg_cb(uint32_t model_id, meshx_gen_light_client_cb_t cb)
-{
-    if (cb == NULL || model_id != MESHX_MODEL_ID_LIGHT_CTL_CLI)
-        return MESHX_INVALID_ARG; // Invalid arguments
-
-    return control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_FRM_BLE,
-        model_id,
-        cb);
 }
 
 /**
@@ -245,7 +129,7 @@ meshx_err_t meshx_light_ctl_client_init()
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Failed to initialize meshx client");
     }
 
-    err = meshx_light_ctl_cli_reg_cb(
+    err = meshx_gen_light_client_from_ble_reg_cb(
         MESHX_MODEL_ID_LIGHT_CTL_CLI,
         (meshx_gen_light_client_cb_t)&meshx_handle_gen_light_msg
     );
@@ -326,71 +210,44 @@ meshx_err_t meshx_light_ctl_client_delete(meshx_light_ctl_client_model_t **p_mod
  * using the provided network and application indices. The message contains the desired lightness,
  * temperature, and a transaction identifier (TID).
  *
- * @param[in] model        Pointer to the Light CTL Client model instance.
- * @param[in] opcode       Opcode of the Light CTL message to be sent.
- * @param[in] addr         Destination address for the message.
- * @param[in] net_idx      Network index to be used for sending the message.
- * @param[in] app_idx      Application index to be used for sending the message.
- * @param[in] lightness    Desired lightness value to be set.
- * @param[in] temperature  Desired color temperature value to be set.
- * @param[in] delta_uv     Desired delta UV value to be set.
- * @param[in] tid          Transaction Identifier for the message.
+ * @param[in] params Pointer to a structure containing the message parameters.
  *
  * @return meshx_err_t     Returns the result of the message send operation.
  */
-meshx_err_t meshx_light_ctl_client_send_msg(
-        meshx_light_ctl_client_model_t *model,
-        uint16_t opcode,  uint16_t addr,
-        uint16_t net_idx, uint16_t app_idx,
-        uint16_t lightness, uint16_t temperature,
-        uint16_t delta_uv, uint8_t tid
-)
+meshx_err_t meshx_light_ctl_client_send_msg(meshx_gen_ctl_send_params_t *params)
 {
-    meshx_err_t err;
     meshx_light_client_set_state_t set = {0};
-    if (!model || !model->meshx_light_ctl_client_sig_model)
+    if (!params || !params->model || !params->model->meshx_light_ctl_client_sig_model)
     {
         return MESHX_INVALID_ARG; // Invalid model pointer
     }
+    meshx_gen_light_client_send_params_t send_params = {
+        .state      = &set,
+        .addr       = params->addr,
+        .opcode     = params->opcode,
+        .app_idx    = params->app_idx,
+        .net_idx    = params->net_idx,
+        .model      = params->model->meshx_light_ctl_client_sig_model,
+    };
 
-    light_ctl_client_last_msg_ctx.addr = addr;
-    light_ctl_client_last_msg_ctx.opcode = opcode;
-    light_ctl_client_last_msg_ctx.net_idx = net_idx;
-    light_ctl_client_last_msg_ctx.app_idx = app_idx;
-    light_ctl_client_last_msg_ctx.p_model = model;
-
-    if (opcode == MESHX_MODEL_OP_LIGHT_CTL_GET)
+    if (params->opcode == MESHX_MODEL_OP_LIGHT_CTL_GET)
     {
-        err = meshx_gen_light_send_msg(
-            model->meshx_light_ctl_client_sig_model,
-            &set, opcode,
-            addr, net_idx,
-            app_idx
-        );
+        MESHX_DO_NOTHING;
     }
-    else if (opcode == MESHX_MODEL_OP_LIGHT_CTL_SET ||
-        opcode == MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK)
+    else if (params->opcode == MESHX_MODEL_OP_LIGHT_CTL_SET ||
+             params->opcode == MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK)
     {
-        set.ctl_set.tid   = tid;
-        set.ctl_set.op_en = false;
-        set.ctl_set.ctl_delta_uv    = delta_uv;
-        set.ctl_set.ctl_lightness   = lightness;
-        set.ctl_set.ctl_temperature = temperature;
-
-        memcpy(&light_ctl_client_last_msg_ctx.state, &set, sizeof(meshx_light_client_set_state_t));
-
-        err = meshx_gen_light_send_msg(
-            model->meshx_light_ctl_client_sig_model,
-            &set, opcode,
-            addr, net_idx,
-            app_idx
-        );
+        set.ctl_set.op_en           = false;
+        set.ctl_set.tid             = params->tid;
+        set.ctl_set.ctl_delta_uv    = params->delta_uv;
+        set.ctl_set.ctl_lightness   = params->lightness;
+        set.ctl_set.ctl_temperature = params->temperature;
     }
     else{
-        err = MESHX_INVALID_ARG; // Invalid opcode
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid opcode for Light CTL Client: %04x", opcode);
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid opcode for Light CTL Client: %04x", params->opcode);
+        return MESHX_INVALID_ARG;
     }
-    return err;
+    return meshx_gen_light_send_msg(&send_params);
 }
 
 /**
@@ -400,65 +257,45 @@ meshx_err_t meshx_light_ctl_client_send_msg(
  * using the provided network and application indices. It allows the client to control the
  * color temperature and delta UV of a lighting element in a mesh network.
  *
- * @param[in] model        Pointer to the Light CTL client model instance.
- * @param[in] opcode       Opcode of the message to be sent.
- * @param[in] addr         Destination address of the message.
- * @param[in] net_idx      Network index to be used for sending the message.
- * @param[in] app_idx      Application index to be used for sending the message.
- * @param[in] temperature  Desired color temperature value to be set.
- * @param[in] delta_uv     Delta UV value to be set.
- * @param[in] tid          Transaction Identifier for the message.
+ * @param[in] params Pointer to a structure containing the message parameters.
  *
  * @return meshx_err_t     Result of the message send operation.
  */
-meshx_err_t meshx_light_ctl_temperature_client_send_msg(
-        meshx_light_ctl_client_model_t *model,
-        uint16_t opcode,  uint16_t addr,
-        uint16_t net_idx, uint16_t app_idx,
-        uint16_t temperature, uint16_t delta_uv, uint8_t tid
-)
+meshx_err_t meshx_light_ctl_temperature_client_send_msg(meshx_gen_ctl_send_params_t *params)
 {
-    meshx_err_t err;
     meshx_light_client_set_state_t set = {0};
-
-    if (!model || !model->meshx_light_ctl_client_sig_model)
+    if (!params || !params->model || !params->model->meshx_light_ctl_client_sig_model)
     {
         return MESHX_INVALID_ARG; // Invalid model pointer
     }
+    meshx_gen_light_client_send_params_t send_params = {
+        .state      = &set,
+        .addr       = params->addr,
+        .opcode     = params->opcode,
+        .app_idx    = params->app_idx,
+        .net_idx    = params->net_idx,
+        .model      = params->model->meshx_light_ctl_client_sig_model,
+    };
 
-    light_ctl_client_last_msg_ctx.addr = addr;
-    light_ctl_client_last_msg_ctx.opcode = opcode;
-    light_ctl_client_last_msg_ctx.net_idx = net_idx;
-    light_ctl_client_last_msg_ctx.app_idx = app_idx;
-    light_ctl_client_last_msg_ctx.p_model = model;
-
-    if (opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET)
+    if (params->opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET)
     {
         MESHX_DO_NOTHING;
     }
-    else if (opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET ||
-             opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK)
+    else if (params->opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET ||
+             params->opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK)
     {
-        set.ctl_set.tid   = tid;
-        set.ctl_set.op_en = false;
-        set.ctl_set.ctl_delta_uv    = delta_uv;
-        set.ctl_set.ctl_temperature = temperature;
+        set.ctl_temperature_set.op_en           = false;
+        set.ctl_temperature_set.tid             = params->tid;
+        set.ctl_temperature_set.ctl_delta_uv    = params->delta_uv;
+        set.ctl_temperature_set.ctl_temperature = params->temperature;
 
-        memcpy(&light_ctl_client_last_msg_ctx.state, &set, sizeof(meshx_light_client_set_state_t));
     }
     else{
-        err = MESHX_INVALID_ARG; // Invalid opcode
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid opcode for Light CTL Client: %04x", opcode);
-        return err;
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid opcode for Light CTL Client: %04x", params->opcode);
+        return MESHX_INVALID_ARG;
     }
 
-    err = meshx_gen_light_send_msg(
-        model->meshx_light_ctl_client_sig_model,
-        &set, opcode,
-        addr, net_idx,
-        app_idx
-    );
-    return err;
+    return meshx_gen_light_send_msg(&send_params);
 }
 
 /**
@@ -468,60 +305,42 @@ meshx_err_t meshx_light_ctl_temperature_client_send_msg(
  * using the provided network and application indices. It allows the client to set or get the
  * temperature range of a lighting element in a mesh network.
  *
- * @param[in] model        Pointer to the Light CTL client model instance.
- * @param[in] opcode       Opcode of the message to be sent.
- * @param[in] addr         Destination address of the message.
- * @param[in] net_idx      Network index to be used for sending the message.
- * @param[in] app_idx      Application index to be used for sending the message.
- * @param[in] temp_min     Minimum temperature value of the range to be set.
- * @param[in] temp_max     Maximum temperature value of the range to be set.
+ * @param[in] params Pointer to a structure containing the message parameters.
  *
  * @return meshx_err_t     Result of the message send operation.
  */
-meshx_err_t meshx_light_ctl_temp_range_client_send_msg(
-        meshx_light_ctl_client_model_t *model,
-        uint16_t opcode,  uint16_t addr,
-        uint16_t net_idx, uint16_t app_idx,
-        uint16_t temp_min, uint16_t temp_max
-)
+meshx_err_t meshx_light_ctl_temp_range_client_send_msg(meshx_gen_ctl_send_params_t *params)
 {
-    meshx_err_t err;
     meshx_light_client_set_state_t set = {0};
-    if (!model || !model->meshx_light_ctl_client_sig_model)
+    if (!params || !params->model || !params->model->meshx_light_ctl_client_sig_model)
     {
         return MESHX_INVALID_ARG; // Invalid model pointer
     }
-    light_ctl_client_last_msg_ctx.addr = addr;
-    light_ctl_client_last_msg_ctx.opcode = opcode;
-    light_ctl_client_last_msg_ctx.net_idx = net_idx;
-    light_ctl_client_last_msg_ctx.app_idx = app_idx;
-    light_ctl_client_last_msg_ctx.p_model = model;
+    meshx_gen_light_client_send_params_t send_params = {
+        .state      = &set,
+        .addr       = params->addr,
+        .opcode     = params->opcode,
+        .app_idx    = params->app_idx,
+        .net_idx    = params->net_idx,
+        .model      = params->model->meshx_light_ctl_client_sig_model,
+    };
 
-    if(opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET)
+    if(params->opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET)
     {
         MESHX_DO_NOTHING;
     }
-    if (opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET ||
-        opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK)
+    if (params->opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET ||
+        params->opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK)
     {
-        set.ctl_temperature_range_set.range_min = temp_min;
-        set.ctl_temperature_range_set.range_max = temp_max;
-
-        memcpy(&light_ctl_client_last_msg_ctx.state, &set, sizeof(meshx_light_client_set_state_t));
+        set.ctl_temperature_range_set.range_min = params->temp_range_min;
+        set.ctl_temperature_range_set.range_max = params->temp_range_max;
     }
     else{
-        err = MESHX_INVALID_ARG; // Invalid opcode
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid opcode for Light CTL Client: %04x", opcode);
-        return err;
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid opcode for Light CTL Client: %04x", params->opcode);
+        return MESHX_INVALID_ARG;
     }
 
-    err = meshx_gen_light_send_msg(
-        model->meshx_light_ctl_client_sig_model,
-        &set, opcode,
-        addr, net_idx,
-        app_idx
-    );
-    return err;
+    return meshx_gen_light_send_msg(&send_params);
 }
 
 /**
@@ -536,9 +355,9 @@ meshx_err_t meshx_light_ctl_temp_range_client_send_msg(
  * @return meshx_err_t Returns an error code indicating the result of the handler execution.
  */
 meshx_err_t meshx_light_ctl_state_change_handle(
-    meshx_ctl_cli_el_msg_t *param,
+    const meshx_ctl_cli_el_msg_t *param,
     meshx_ctl_el_state_t *p_ctl_prev_state,
-    meshx_ctl_el_state_t *p_ctl_next_state
+    const meshx_ctl_el_state_t *p_ctl_next_state
 )
 {
     if (!p_ctl_prev_state || !param || !p_ctl_next_state)

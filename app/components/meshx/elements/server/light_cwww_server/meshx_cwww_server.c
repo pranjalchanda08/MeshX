@@ -91,7 +91,7 @@ static meshx_err_t cwww_server_config_srv_cb(
                                                                : MESHX_ADDR_UNASSIGNED;
         el_ctx->app_id = params->state_change.mod_pub_set.app_idx;
         nvs_save = true;
-        MESHX_LOGI(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
+        MESHX_LOGI(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "PUB_ADD: %d, %d, 0x%X, 0x%X", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
         break;
     default:
         break;

@@ -58,16 +58,6 @@ typedef struct meshx_gen_client_msg_ctx
 }meshx_gen_client_msg_ctx_t;
 
 /**
- * @struct g_meshx_client_control
- * @brief Structure containing control variables for the generic client model.
- *
- * This structure is used to store control variables for the generic client model, including the mesh client initialization flag and the number of messages waiting for acknowledgement.
- */
-static struct{
-    uint16_t meshx_client_init;                 /**< Flag indicating whether the mesh client has been initialized. */
-} g_meshx_client_control;
-
-/**
  * @struct meshx_gen_cli_cb_reg_node
  * @brief Structure containing a node in the linked list of registered callbacks.
  *
@@ -79,7 +69,16 @@ typedef struct meshx_gen_cli_cb_reg_node
     struct meshx_gen_cli_cb_reg_node *next; /**< Pointer to the next node in the linked list. */
 } meshx_gen_cli_cb_reg_node_t;
 
-static meshx_gen_cli_cb_reg_node_t *g_meshx_gen_cli_cb_reg_head = NULL;
+/**
+ * @struct g_meshx_client_control
+ * @brief Structure containing control variables for the generic client model.
+ *
+ * This structure is used to store control variables for the generic client model, including the mesh client initialization flag and the number of messages waiting for acknowledgement.
+ */
+static struct{
+    uint16_t client_init;                            /**< Flag indicating whether the mesh client has been initialized. */
+    meshx_gen_cli_cb_reg_node_t *cli_cb_reg_head;    /**< Pointer to the head of the linked list of registered callbacks. */
+} g_meshx_client_control;
 
 /**
  * @brief Adds a new callback registration to the linked list of registered callbacks.
@@ -96,8 +95,8 @@ static meshx_err_t meshx_gen_cli_cb_reg_add(meshx_gen_cli_cb_reg_t reg)
         return MESHX_NO_MEM;
 
     node->reg = reg;
-    node->next = g_meshx_gen_cli_cb_reg_head;
-    g_meshx_gen_cli_cb_reg_head = node;
+    node->next = g_meshx_client_control.cli_cb_reg_head;
+    g_meshx_client_control.cli_cb_reg_head = node;
 
     return MESHX_SUCCESS;
 }
@@ -209,34 +208,26 @@ static meshx_err_t meshx_is_unack_opcode(uint32_t opcode)
  * @param[in] msg_param_len Length of the message parameter data in bytes.
  *                          Must equal sizeof(meshx_gen_client_msg_ctx_t).
  *
- * @return MESHX_SUCCESS on successful validation and forwarding.
- * @return MESHX_INVALID_ARG if msg_param is NULL or msg_param_len is invalid.
- * @return Other error codes from meshx_plat_gen_cli_send_msg() if transmission fails.
- *
- * @note This is an internal static callback registered with the TXCM module for
- *       generic client models. Assumes the caller has initialized the
- *       meshx_gen_client_msg_ctx_t structure with valid model, state, opcode,
- *       addresses, and keys.
- * @note The last parameter to meshx_plat_gen_cli_send_msg indicates whether the
- *       opcode corresponds to a GET operation (based on meshx_is_gen_cli_get_opcode).
- * @note Aligns with Bluetooth SIG Mesh Generic models (e.g., OnOff, Level, etc.).
+ * @return
+ *     - MESHX_SUCCESS: Message sent successfully.
+ *     - MESHX_INVALID_ARG: Invalid argument.
+ *     - MESHX_FAIL: Failed to send message.
  */
-static meshx_err_t meshx_gen_client_txcm_fn_model_send(meshx_ptr_t msg_param, size_t msg_param_len)
+static meshx_err_t meshx_gen_client_txcm_fn_model_send(meshx_gen_client_msg_ctx_t *msg_param, size_t msg_param_len)
 {
     if(msg_param == NULL || msg_param_len != sizeof(meshx_gen_client_msg_ctx_t))
     {
         return MESHX_INVALID_ARG;
     }
-    meshx_gen_client_msg_ctx_t * p_msg = (meshx_gen_client_msg_ctx_t*) msg_param;
 
     return meshx_plat_gen_cli_send_msg(
-        p_msg->model,
-        &p_msg->state,
-        p_msg->opcode,
-        p_msg->addr,
-        p_msg->net_idx,
-        p_msg->app_idx,
-        (meshx_is_gen_cli_get_opcode(p_msg->opcode) == MESHX_SUCCESS)
+        msg_param->model,
+        &msg_param->state,
+        msg_param->opcode,
+        msg_param->addr,
+        msg_param->net_idx,
+        msg_param->app_idx,
+        (meshx_is_gen_cli_get_opcode(msg_param->opcode) == MESHX_SUCCESS)
     );
 }
 
@@ -263,9 +254,9 @@ static meshx_err_t meshx_handle_txcm_msg(
 )
 {
     MESHX_UNUSED(evt);
-    meshx_gen_cli_cb_reg_t const * reg_cb = NULL;
     meshx_err_t err = MESHX_SUCCESS;
-    const meshx_gen_cli_cb_reg_node_t *node = g_meshx_gen_cli_cb_reg_head;
+    meshx_gen_cli_cb_reg_t const * reg_cb = NULL;
+    const meshx_gen_cli_cb_reg_node_t *node = g_meshx_client_control.cli_cb_reg_head;
 
     MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "TXCM Timeout for model 0x%x", param->model_id);
 
@@ -355,7 +346,7 @@ static meshx_err_t meshx_handle_gen_onoff_msg(
     meshx_gen_cli_cb_reg_t const * reg_cb = NULL;
     meshx_err_t err = MESHX_SUCCESS;
 
-    meshx_gen_cli_cb_reg_node_t *node = g_meshx_gen_cli_cb_reg_head;
+    meshx_gen_cli_cb_reg_node_t *node = g_meshx_client_control.cli_cb_reg_head;
 
     while (node)
     {
@@ -412,9 +403,9 @@ static meshx_err_t meshx_handle_gen_onoff_msg(
  */
 meshx_err_t meshx_gen_client_init(void)
 {
-    if (g_meshx_client_control.meshx_client_init == MESHX_CLIENT_INIT_MAGIC_NO)
+    if (g_meshx_client_control.client_init == MESHX_CLIENT_INIT_MAGIC_NO)
         return MESHX_SUCCESS;
-    g_meshx_client_control.meshx_client_init = MESHX_CLIENT_INIT_MAGIC_NO;
+    g_meshx_client_control.client_init = MESHX_CLIENT_INIT_MAGIC_NO;
 
     meshx_err_t err = meshx_txcm_event_cb_reg((meshx_txcm_cb_t) &meshx_handle_txcm_msg);
     if(err != MESHX_SUCCESS)
@@ -442,7 +433,8 @@ meshx_err_t meshx_gen_cli_send_msg(meshx_gen_client_send_params_t *params)
     meshx_err_t err = MESHX_SUCCESS;
     bool is_unack = meshx_is_unack_opcode(params->opcode) == MESHX_SUCCESS;
     /* Broadcast / Multicast will not be sending an ACK. Hence, it is not required to queue */
-    meshx_txcm_sig_t req_type = (is_unack || (MESHX_ADDR_IS_UNICAST(params->addr) == false)) ? MESHX_TXCM_SIG_DIRECT_SEND : MESHX_TXCM_SIG_ENQ_SEND;
+    meshx_txcm_sig_t req_type = (is_unack || (MESHX_ADDR_IS_UNICAST(params->addr) == false)) ?
+                                MESHX_TXCM_SIG_DIRECT_SEND : MESHX_TXCM_SIG_ENQ_SEND;
 
     meshx_gen_client_msg_ctx_t send_msg =
     {

@@ -77,8 +77,7 @@ static meshx_err_t meshx_cwww_cli_send_ctl_msg( const dev_struct_t *pdev, uint16
  * @return meshx_err_t Error code indicating the result of the handler execution.
  */
 static meshx_err_t cwww_client_on_off_state_change_handler(
-    dev_struct_t const *pdev,
-    meshx_on_off_cli_el_msg_t *param)
+    const meshx_on_off_cli_el_msg_t *param)
 {
     uint16_t element_id = param->model.el_id;
 
@@ -93,9 +92,9 @@ static meshx_err_t cwww_client_on_off_state_change_handler(
         app_notify.state_change.on_off.state = el_ctx->prev_state.on_off;
 
         err = meshx_send_msg_to_app(element_id,
-                                    MESHX_ELEMENT_TYPE_RELAY_CLIENT,
-                                    MESHX_ELEMENT_FUNC_ID_RELAY_SERVER_ONN_OFF,
-                                    sizeof(meshx_api_relay_client_evt_t),
+                                    MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT,
+                                    MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_CLIENT_ONN_OFF,
+                                    sizeof(meshx_api_light_cwww_client_evt_t),
                                     &app_notify);
         if (err != MESHX_SUCCESS)
         {
@@ -112,15 +111,13 @@ static meshx_err_t cwww_client_on_off_state_change_handler(
  * It is typically called when the on/off state of the light changes, and is responsible for updating
  * the device state or triggering further actions based on the received parameters.
  *
- * @param pdev Pointer to the device structure representing the light client element.
  * @param param Pointer to the message structure containing the on/off state change parameters.
  *
  * @return meshx_err_t Returns an error code indicating the result of the handler execution.
  */
 
 static meshx_err_t cwww_light_ctl_state_change_handler(
-    dev_struct_t const *pdev,
-    meshx_ctl_cli_el_msg_t *param)
+    const meshx_ctl_cli_el_msg_t *param)
 {
     uint16_t element_id = param->model.el_id;
 
@@ -195,12 +192,10 @@ static meshx_err_t meshx_cwww_client_element_state_change_handler(
             {
         case CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF:
             err = cwww_client_on_off_state_change_handler(
-                pdev,
                 (meshx_on_off_cli_el_msg_t *)params);
             break;
         case CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL:
             err = cwww_light_ctl_state_change_handler(
-                pdev,
                 (meshx_ctl_cli_el_msg_t *)params);
             break;
         default:
@@ -263,7 +258,7 @@ static meshx_err_t cwww_client_config_srv_cb (
                                                            : MESHX_ADDR_UNASSIGNED;
         el_ctx->app_id = params->state_change.mod_pub_set.app_idx;
         nvs_save = true;
-        MESHX_LOGI(MOD_LCC, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
+        MESHX_LOGI(MOD_LCC, "PUB_ADD: %d, %d, 0x%X, 0x%X", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
         break;
     default:
         break;
@@ -299,17 +294,17 @@ static meshx_err_t cwww_cli_prov_srv_msg_handle(const dev_struct_t *pdev, contro
 
     MESHX_UNUSED(params);
     meshx_err_t err = MESHX_SUCCESS;
-    switch (evt)
+
+    if (evt == CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT)
     {
-        case CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT:
-            for(uint16_t i = cwww_client_element_init_ctrl.element_id_start; i < cwww_client_element_init_ctrl.element_id_end; i++)
-            {
-                err = meshx_cwww_el_get_state(i, CWWW_CLI_SIG_ID_MAX);
-            }
-            break;
-        default:
-            MESHX_LOGW(MOD_LCC, "Unhandled event: %d", evt);
-            break;
+        for(uint16_t i = cwww_client_element_init_ctrl.element_id_start; i < cwww_client_element_init_ctrl.element_id_end; i++)
+        {
+            err = meshx_cwww_el_get_state(i, CWWW_CLI_SIG_ID_MAX);
+        }
+    }
+    else
+    {
+        MESHX_LOGW(MOD_LCC, "Unhandled event: %d", evt);
     }
     return err;
 }
@@ -409,29 +404,31 @@ static meshx_err_t meshx_cwww_cli_send_ctl_msg(
     meshx_cwww_client_model_ctx_t *el_ctx = CWWW_CLI_EL(rel_el_id).cwww_cli_ctx;
     meshx_light_ctl_client_model_t *model = CWWW_CLI_EL(rel_el_id).ctl_cli_model;
 
-    uint16_t opcode = MESHX_MODEL_OP_LIGHT_CTL_GET;
+    meshx_gen_ctl_send_params_t params = {
+        .model      = model,
+        .opcode     = MESHX_MODEL_OP_LIGHT_CTL_GET,
+        .element_id = element_id,
+        .tid        = el_ctx->tid,
+        .app_idx    = el_ctx->app_id,
+        .addr       = el_ctx->pub_addr,
+        .net_idx    = pdev->meshx_store.net_key_id,
+    };
 
     if(is_temp_range == false)
     {
         if( MESHX_LIGHT_CTL_CLI_MSG_SET == set_get)
         {
-            opcode = ack ? MESHX_MODEL_OP_LIGHT_CTL_SET : MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK;
+            params.opcode = ack ? MESHX_MODEL_OP_LIGHT_CTL_SET : MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK;
         }
 
-        MESHX_LOGD(MOD_LCC, "OPCODE: %p", (void *)(uint32_t)opcode);
+        MESHX_LOGD(MOD_LCC, "OPCODE: %p", (void *)(uint32_t)params.opcode);
+
+        params.delta_uv = el_ctx->ctl_state.delta_uv;
+        params.lightness = el_ctx->ctl_state.lightness;
+        params.temperature = el_ctx->ctl_state.temperature;
 
         /* Send message to the cwww client */
-        err = meshx_light_ctl_client_send_msg(
-                model,
-                opcode,
-                el_ctx->pub_addr,
-                pdev->meshx_store.net_key_id,
-                el_ctx->app_id,
-                el_ctx->ctl_state.lightness,
-                el_ctx->ctl_state.temperature,
-                el_ctx->ctl_state.delta_uv,
-                el_ctx->tid
-        );
+        err = meshx_light_ctl_client_send_msg(&params);
         if (err)
         {
             MESHX_LOGE(MOD_LCC, "Cwww Client Send Message failed: (%d)", err);
@@ -439,7 +436,7 @@ static meshx_err_t meshx_cwww_cli_send_ctl_msg(
         else
         {
             el_ctx->tid++;
-            if(opcode == MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK)
+            if(params.opcode == MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK)
             {
                 el_ctx->prev_ctl_state.delta_uv = el_ctx->ctl_state.delta_uv;
                 el_ctx->prev_ctl_state.lightness = el_ctx->ctl_state.lightness;
@@ -449,32 +446,27 @@ static meshx_err_t meshx_cwww_cli_send_ctl_msg(
     }
     else
     {
-        opcode = MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET;
+        params.opcode = MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET;
         /* If set operation, change opcode accordingly */
         if( MESHX_LIGHT_CTL_CLI_MSG_SET == set_get)
         {
-            opcode = ack ? MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET : MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK;
+            params.opcode = ack ? MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET : MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK;
         }
 
-        MESHX_LOGD(MOD_LCC, "OPCODE: %p", (void *)(uint32_t)opcode);
+        MESHX_LOGD(MOD_LCC, "OPCODE: %p", (void *)(uint32_t)params.opcode);
+
+        params.temp_range_max = el_ctx->ctl_state.temp_range_max;
+        params.temp_range_min = el_ctx->ctl_state.temp_range_min;
 
         /* Send message to the cwww client */
-        err = meshx_light_ctl_temp_range_client_send_msg(
-                model,
-                opcode,
-                el_ctx->pub_addr,
-                pdev->meshx_store.net_key_id,
-                el_ctx->app_id,
-                el_ctx->ctl_state.temp_range_min,
-                el_ctx->ctl_state.temp_range_max
-        );
+        err = meshx_light_ctl_temp_range_client_send_msg(&params);
         if (err)
         {
             MESHX_LOGE(MOD_LCC, "Cwww Client Send Message failed: (%d)", err);
         }
         else
         {
-            if(opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK)
+            if(params.opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK)
             {
                 el_ctx->prev_ctl_state.temp_range_max = el_ctx->ctl_state.temp_range_max;
                 el_ctx->prev_ctl_state.temp_range_min = el_ctx->ctl_state.temp_range_min;
