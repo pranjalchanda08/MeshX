@@ -13,12 +13,96 @@
  *
  */
 #include "stdlib.h"
+#include "meshx_txcm.h"
 #include "meshx_gen_light_cli.h"
 
 #define MESHX_CLIENT_INIT_MAGIC_NO 0x4309
 
 #if CONFIG_ENABLE_LIGHT_CLIENT
-static uint16_t meshx_client_init = 0;
+
+/**
+ * @struct meshx_gen_light_cli_cb_reg
+ * @brief Structure containing the model ID and callback function for generic client model registrations.
+ *
+ * This structure is used to store the model ID and callback function associated with a generic client model registration.
+ */
+typedef struct meshx_gen_light_cli_cb_reg
+{
+    uint16_t model_id;                /**< Model ID associated with the registration. */
+    meshx_gen_light_client_cb_t cb;   /**< Callback function associated with the registration. */
+}meshx_gen_light_cli_cb_reg_t;
+
+/**
+ * @struct meshx_gen_light_cli_resend_ctx
+ * @brief Structure containing the model ID and parameter for generic client model message re-sending.
+ *
+ * This structure is used to store the model ID and parameter associated with a generic client model message re-sending.
+ */
+typedef struct meshx_gen_light_cli_resend_ctx
+{
+    uint16_t model_id;                    /**< Model ID associated with the re-sending. */
+    meshx_gen_light_cli_cb_param_t param; /**< Parameter associated with the re-sending. */
+}meshx_gen_light_cli_resend_ctx;
+/**
+ * @struct meshx_gen_light_client_msg_ctx
+ * @brief Structure containing the message context for generic client model messages.
+ *
+ * This structure is used to store the message context for generic client model messages, including the model context, state parameters, opcode, destination address, network index, and application key index.
+ */
+typedef struct meshx_gen_light_client_msg_ctx
+{
+    meshx_ptr_t model;                         /**< Model context associated with the message. */
+    uint16_t opcode;                           /**< Opcode associated with the message. */
+    uint16_t addr;                             /**< Destination address associated with the message. */
+    uint16_t net_idx;                          /**< Network index associated with the message. */
+    uint16_t app_idx;                          /**< Application key index associated with the message. */
+    meshx_light_client_set_state_t state;      /**< State parameters associated with the message. */
+}meshx_gen_light_client_msg_ctx_t;
+
+/**
+ * @struct meshx_gen_light_cli_cb_reg_node
+ * @brief Structure containing a node in the linked list of registered callbacks.
+ *
+ * This structure is used to store a node in the linked list of registered callbacks, including a pointer to the next node and the registration information.
+ */
+typedef struct meshx_gen_light_cli_cb_reg_node
+{
+    meshx_gen_light_cli_cb_reg_t reg;             /**< Registration information associated with the node. */
+    struct meshx_gen_light_cli_cb_reg_node *next; /**< Pointer to the next node in the linked list. */
+} meshx_gen_light_cli_cb_reg_node_t;
+
+/**
+ * @struct g_meshx_client_control
+ * @brief Structure containing control variables for the generic client model.
+ *
+ * This structure is used to store control variables for the generic client model, including the mesh client initialization flag and the number of messages waiting for acknowledgement.
+ */
+static struct
+{
+    uint16_t meshx_client_init;                           /**< Flag indicating whether the mesh client has been initialized. */
+    meshx_gen_light_cli_cb_reg_node_t *cli_cb_reg_head;   /**< Pointer to the head of the linked list of registered callbacks. */
+}g_meshx_gen_light_client_ctrl;
+
+/**
+ * @brief Adds a new callback registration to the linked list of registered callbacks.
+ *
+ * This function allocates a new node in the linked list of registered callbacks and
+ * initializes it with the provided registration information.
+ *
+ * @param[in] reg The structure containing the model ID and callback function to add to the linked list.
+ */
+static meshx_err_t meshx_gen_light_cli_cb_reg_add(meshx_gen_light_cli_cb_reg_t reg)
+{
+    meshx_gen_light_cli_cb_reg_node_t *node = (meshx_gen_light_cli_cb_reg_node_t*) MESHX_MALLOC(sizeof(meshx_gen_light_cli_cb_reg_node_t));
+    if (!node)
+        return MESHX_NO_MEM;
+
+    node->reg = reg;
+    node->next = g_meshx_gen_light_client_ctrl.cli_cb_reg_head;
+    g_meshx_gen_light_client_ctrl.cli_cb_reg_head = node;
+
+    return MESHX_SUCCESS;
+}
 
 /**
  * @brief Checks if the given model ID corresponds to a Generic Light Client GET opcode.
@@ -70,6 +154,236 @@ static meshx_err_t meshx_is_gen_light_cli_model(uint32_t model_id)
             return MESHX_FAIL;
     }
 }
+
+/**
+ * @brief Checks if the given opcode corresponds to an unacknowledged (unack) message in the Generic Light Client model.
+ *
+ * This function determines whether the provided opcode represents a SET_UNACK operation
+ * for various Generic models in the BLE Mesh specification. It returns success if the
+ * opcode matches one of the defined unacknowledged set opcodes.
+ *
+ * @param[in] opcode The mesh model opcode to check (uint32_t).
+ *
+ * @return MESHX_SUCCESS if the opcode is a recognized unacknowledged set opcode
+ *         (e.g., Generic Light Lightness Set Unack, Generic CTL Set Unack, etc.).
+ * @return MESHX_FAIL if the opcode does not match any unacknowledged set opcode.
+ *
+ * @note This utility function is used internally for handling reliable vs. non-reliable
+ *       messaging in Generic Client models. Unacknowledged messages do not expect
+ *       a response from the server.
+ * @note Aligns with Bluetooth SIG Mesh Generic models opcodes (e.g., 0x8201 for
+ *       Generic Light Lightness Set Unacknowledged).
+ */
+static meshx_err_t meshx_is_unack_opcode(uint32_t opcode)
+{
+    switch(opcode)
+    {
+        case MESHX_MODEL_OP_LIGHT_LIGHTNESS_SET_UNACK:
+        case MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK:
+        case MESHX_MODEL_OP_LIGHT_HSL_SET_UNACK:
+        case MESHX_MODEL_OP_LIGHT_XYL_SET_UNACK:
+        case MESHX_MODEL_OP_LIGHT_LC_MODE_SET_UNACK:
+        case MESHX_MODEL_OP_LIGHT_LC_OM_SET_UNACK:
+        case MESHX_MODEL_OP_LIGHT_LC_LIGHT_ONOFF_SET_UNACK:
+        case MESHX_MODEL_OP_LIGHT_LC_PROPERTY_SET_UNACK:
+            return MESHX_SUCCESS;
+        default:
+            return MESHX_FAIL;
+    }
+}
+
+/**
+ * @brief Send a message using the generic client model.
+ *
+ * This function sends a message using the generic client model, allowing
+ * interaction with the BLE mesh network.
+ *
+ * @param[in] params   Pointer to the message parameters structure.
+ * @param[in] msg_param_len Length of the parameters structure in bytes.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Message sent successfully.
+ *     - MESHX_INVALID_ARG: Invalid argument.
+ *     - MESHX_FAIL: Failed to send message.
+ */
+static meshx_err_t meshx_gen_client_txcm_fn_model_send(meshx_gen_light_client_msg_ctx_t *params, size_t msg_param_len)
+{
+    if(params == NULL || msg_param_len != sizeof(meshx_gen_light_client_msg_ctx_t))
+    {
+        return MESHX_INVALID_ARG;
+    }
+    bool is_get_opcode = (meshx_is_gen_light_cli_get_opcode(params->opcode) == MESHX_SUCCESS);
+
+    return meshx_plat_light_client_send_msg(
+        params->model,
+        &params->state,
+        params->opcode,
+        params->addr,
+        params->net_idx,
+        params->app_idx,
+        is_get_opcode
+    );
+}
+
+/**
+ * @brief Handles TXCM message for generic light client.
+ *
+ * This function is called by the TXCM module to handle a message
+ * for the generic client model. It is responsible for processing
+ * the message and taking appropriate actions. The function also
+ * handles resend requests for generic client messages.
+ *
+ * @param[in] pdev Pointer to the device structure.
+ * @param[in] evt Pointer to the control task message structure.
+ * @param[in] param Pointer to the message context structure.
+ *
+ * @return meshx_err_t Returns the error code from the message processing.
+ */
+static meshx_err_t meshx_handle_txcm_msg(
+    dev_struct_t *pdev,
+    control_task_msg_evt_t evt,
+    meshx_gen_light_cli_resend_ctx *param
+)
+{
+    MESHX_UNUSED(evt);
+    meshx_err_t err = MESHX_SUCCESS;
+    meshx_gen_light_cli_cb_reg_t const * reg_cb = NULL;
+    const meshx_gen_light_cli_cb_reg_node_t *node = g_meshx_gen_light_client_ctrl.cli_cb_reg_head;
+
+    MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "TXCM Timeout for model 0x%x", param->model_id);
+
+    while (node)
+    {
+        if (param->model_id == node->reg.model_id)
+        {
+            reg_cb                  = &node->reg;
+            param->param.err_code   = MESHX_TIMEOUT;
+            param->param.evt        = MESHX_GEN_LIGHT_CLI_TIMEOUT;
+            err = reg_cb->cb(pdev, param->model_id, &param->param);
+        }
+        node = node->next;
+    }
+
+    if(reg_cb == NULL)
+    {
+        return MESHX_SUCCESS;
+    }
+
+    return err;
+}
+
+/**
+ * @brief Handles ack request for generic light client messages.
+ *
+ * This function requests the TXCM module to clear the last message by sending a ACK signal
+ * with null parameters.
+ *
+ * @param[in] src_addr The Source address of the message.
+ *
+ * @return meshx_err_t Returns the error code from meshx_txcm_request_send().
+ */
+static meshx_err_t meshx_gen_light_cli_handle_ack(uint16_t src_addr)
+{
+    meshx_err_t err = MESHX_SUCCESS;
+    err = meshx_txcm_request_send(MESHX_TXCM_SIG_ACK, src_addr, NULL, 0, NULL);
+    return err;
+}
+
+/**
+ * @brief Handles resend request for generic light client messages.
+ *
+ * This function requests the TXCM module to resend the last message by sending a RESEND signal
+ * with null parameters.
+ *
+ * @return meshx_err_t Returns the error code from meshx_txcm_request_send().
+ */
+static meshx_err_t meshx_gen_light_cli_handle_resend(uint16_t model_id, const meshx_gen_light_cli_cb_param_t *param)
+{
+    meshx_gen_light_cli_resend_ctx ctx = {
+        .model_id = model_id
+    };
+
+    memcpy(&ctx.param, param, sizeof(meshx_gen_light_cli_cb_param_t));
+
+    return meshx_txcm_request_send(
+        MESHX_TXCM_SIG_RESEND,
+        MESHX_ADDR_UNASSIGNED,
+        &ctx,
+        sizeof(meshx_gen_light_cli_resend_ctx),
+        NULL);
+}
+
+/**
+ * @brief Handle the Generic Light Client messages.
+ *
+ * This function processes the incoming messages for the Generic Light Client
+ * and performs the necessary actions based on the message event and parameters.
+ *
+ * @param[in] pdev      Pointer to the device structure containing device-specific information.
+ * @param[in] model_id  The model ID of the received message.
+ * @param[in] param     Pointer to the Generic Client callback parameter structure.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
+ */
+static meshx_err_t meshx_handle_gen_light_msg(
+    dev_struct_t *pdev,
+    control_task_msg_evt_t model_id,
+    meshx_gen_light_cli_cb_param_t *param
+)
+{
+    if(!param || !pdev)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid parameters");
+        return MESHX_INVALID_ARG;
+    }
+    meshx_gen_light_cli_cb_reg_t const * reg_cb = NULL;
+    meshx_err_t err = MESHX_SUCCESS;
+
+    meshx_gen_light_cli_cb_reg_node_t *node = g_meshx_gen_light_client_ctrl.cli_cb_reg_head;
+
+    while (node)
+    {
+        if (model_id == node->reg.model_id)
+        {
+            MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "op|src|dst:%04" PRIx32 "|%04x|%04x",
+                       param->ctx.opcode, param->ctx.src_addr, param->ctx.dst_addr);
+            reg_cb = &node->reg;
+            if (param->evt == MESHX_GEN_LIGHT_CLI_TIMEOUT || param->err_code != MESHX_SUCCESS)
+            {
+                MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "Retrying to send the message");
+                err = meshx_gen_light_cli_handle_resend((uint16_t)model_id, param);
+                if(err != MESHX_SUCCESS)
+                {
+                    MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Resend failed: %d", err);
+                }
+                else
+                {
+                    /* As the retry would callback shall be triggered by the TXCM */
+                    MESHX_DO_NOTHING;
+                }
+            }
+            else
+            {
+                /* We need to notify if the ack is from the same source as that of dest */
+                err = meshx_gen_light_cli_handle_ack(param->ctx.src_addr);
+                if(err != MESHX_SUCCESS)
+                {
+                    MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Ack failed: %d", err);
+                }
+                err = reg_cb->cb(pdev, model_id, param);
+            }
+        }
+        node = node->next;
+    }
+
+    if(reg_cb == NULL)
+    {
+        return MESHX_SUCCESS;
+    }
+
+    return err;
+}
+
 /**
  * @brief Initialize the meshxuction generic client.
  *
@@ -82,12 +396,17 @@ static meshx_err_t meshx_is_gen_light_cli_model(uint32_t model_id)
  */
 meshx_err_t meshx_gen_light_cli_init(void)
 {
-    if (meshx_client_init == MESHX_CLIENT_INIT_MAGIC_NO)
+    if (g_meshx_gen_light_client_ctrl.meshx_client_init == MESHX_CLIENT_INIT_MAGIC_NO)
         return MESHX_SUCCESS;
-    meshx_client_init = MESHX_CLIENT_INIT_MAGIC_NO;
+    g_meshx_gen_light_client_ctrl.meshx_client_init = MESHX_CLIENT_INIT_MAGIC_NO;
+
+    meshx_err_t err = meshx_txcm_event_cb_reg((meshx_txcm_cb_t) &meshx_handle_txcm_msg);
+    if(err != MESHX_SUCCESS)
+        return err;
 
     return meshx_plat_gen_light_client_init();
 }
+
 
 /**
  * @brief Send a message using the generic client model.
@@ -95,36 +414,47 @@ meshx_err_t meshx_gen_light_cli_init(void)
  * This function sends a message using the generic client model, allowing
  * interaction with the BLE mesh network.
  *
- * @param[in] model     Pointer to the model instance.
- * @param[in] state     Pointer to the state to be set.
- * @param[in] opcode    The operation code for the message.
- * @param[in] addr      The address to which the message is sent.
- * @param[in] net_idx   The network index for routing the message.
- * @param[in] app_idx   The application index for the message.
+ * @param[in] params Pointer to the message parameters.
  *
  * @return
  *     - MESHX_SUCCESS: Message sent successfully.
  *     - Appropriate error code on failure.
  */
-meshx_err_t meshx_gen_light_send_msg(
-    meshx_ptr_t model,
-    meshx_light_client_set_state_t *state,
-    uint16_t opcode,
-    uint16_t addr,
-    uint16_t net_idx,
-    uint16_t app_idx
-)
+meshx_err_t meshx_gen_light_send_msg(const meshx_gen_light_client_send_params_t *params)
 {
-    if (!model || !state)
+    if (!params || !params->model || !params->state)
     {
         return MESHX_INVALID_ARG;
     }
 
-    bool is_get_opcode = (meshx_is_gen_light_cli_get_opcode(opcode) == MESHX_SUCCESS);
+    meshx_err_t err = MESHX_SUCCESS;
+    bool is_unack = meshx_is_unack_opcode(params->opcode) == MESHX_SUCCESS;
+    /* Broadcast / Multicast will not be sending an ACK. Hence, it is not required to queue */
+    meshx_txcm_sig_t req_type = (is_unack || (MESHX_ADDR_IS_UNICAST(params->addr) == false)) ?
+                                 MESHX_TXCM_SIG_DIRECT_SEND : MESHX_TXCM_SIG_ENQ_SEND;
 
-    return meshx_plat_light_client_send_msg(
-        model, state, opcode, addr, net_idx, app_idx, is_get_opcode
+    meshx_gen_light_client_msg_ctx_t send_msg =
+    {
+        .addr    = params->addr,
+        .model   = params->model,
+        .opcode  = params->opcode,
+        .app_idx = params->app_idx,
+        .net_idx = params->net_idx,
+    };
+    memcpy(&send_msg.state, params->state, sizeof(send_msg.state));
+
+    err = meshx_txcm_request_send(
+        req_type,
+        send_msg.addr,
+        &send_msg,
+        sizeof(send_msg),
+        (meshx_txcm_fn_model_send_t) &meshx_gen_client_txcm_fn_model_send
     );
+    if(err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Failed to send message: %p", (meshx_ptr_t) err);
+    }
+    return err;
 }
 
 /**
@@ -139,16 +469,27 @@ meshx_err_t meshx_gen_light_send_msg(
  * @return meshx_err_t Returns an error code indicating the result of the registration.
  *                     Possible values include success or specific error codes.
  */
-meshx_err_t meshx_gen_light_client_from_ble_reg_cb(uint32_t model_id, meshx_gen_light_client_cb_t cb)
+meshx_err_t meshx_gen_light_client_from_ble_reg_cb(uint16_t model_id, meshx_gen_light_client_cb_t cb)
 {
     if (!cb || meshx_is_gen_light_cli_model(model_id) != MESHX_SUCCESS)
     {
         return MESHX_INVALID_ARG;
     }
+
+    meshx_err_t err = MESHX_SUCCESS;
+    meshx_gen_light_cli_cb_reg_t reg = { .model_id = model_id, .cb = cb };
+
+    err = meshx_gen_light_cli_cb_reg_add(reg);
+    if (err != MESHX_SUCCESS)
+    {
+        return err;
+    }
+
     return control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_FRM_BLE,
         model_id,
-        cb);
+        (control_task_msg_handle_t) &meshx_handle_gen_light_msg
+    );
 }
 
 #endif /* CONFIG_ENABLE_LIGHT_CLIENT */

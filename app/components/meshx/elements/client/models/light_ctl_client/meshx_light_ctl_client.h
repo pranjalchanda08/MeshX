@@ -49,9 +49,9 @@ typedef struct meshx_ctl_el_state
 typedef struct meshx_ctl_cli_el_msg
 {
     uint8_t err_code;               /**< Error code */
-    meshx_model_t model;            /**< Generic OnOff Server model */
+    meshx_model_t model;            /**< Generic Ctl Server model */
     meshx_ctx_t ctx;                /**< Context of the message */
-    meshx_ctl_el_state_t ctl_state; /**< The present value of Generic OnOff state */
+    meshx_ctl_el_state_t ctl_state; /**< The present value of Generic Ctl state */
 }meshx_ctl_cli_el_msg_t;
 
 /**
@@ -66,6 +66,25 @@ typedef struct meshx_light_ctl_client_model
     meshx_ptr_t meshx_light_ctl_client_pub;           /**< Pointer to the list of Light CTL client publication structures. */
     meshx_ptr_t meshx_light_ctl_client_gen_cli;       /**< Pointer to the list of Light CTL client generic structures. */
 } meshx_light_ctl_client_model_t;
+
+/**
+ * @brief Structure to hold the parameters for sending a Generic Ctl message.
+ */
+typedef struct meshx_gen_ctl_send_params
+{
+    meshx_light_ctl_client_model_t *model;  /**< Pointer to the CTL client model. */
+    uint8_t  tid;                           /**< The transaction identifier for the message. */
+    uint16_t element_id;                    /**< The ID of the element to which the message is sent. */
+    uint16_t opcode;                        /**< The opcode of the message. */
+    uint16_t addr;                          /**< The destination address of the message. */
+    uint16_t net_idx;                       /**< The network index of the message. */
+    uint16_t app_idx;                       /**< The application index of the message. */
+    uint16_t lightness;                     /**< The desired lightness value. */
+    uint16_t temperature;                   /**< The desired temperature value. */
+    uint16_t delta_uv;                      /**< The desired delta UV value. */
+    uint16_t temp_range_max;                /**< The maximum temperature range. */
+    uint16_t temp_range_min;                /**< The minimum temperature range. */
+} meshx_gen_ctl_send_params_t;
 
 /**
  * @brief Initialize the Light CTL Client model.
@@ -116,25 +135,11 @@ meshx_err_t meshx_light_ctl_client_delete(meshx_light_ctl_client_model_t **p_mod
  * using the provided network and application indices. The message contains the desired lightness,
  * temperature, and a transaction identifier (TID).
  *
- * @param[in] model        Pointer to the Light CTL Client model instance.
- * @param[in] opcode       Opcode of the Light CTL message to be sent.
- * @param[in] addr         Destination address for the message.
- * @param[in] net_idx      Network index to be used for sending the message.
- * @param[in] app_idx      Application index to be used for sending the message.
- * @param[in] lightness    Desired lightness value to be set.
- * @param[in] temperature  Desired color temperature value to be set.
- * @param[in] delta_uv     Desired delta UV value to be set.
- * @param[in] tid          Transaction Identifier for the message.
+ * @param[in] params Pointer to a structure containing the message parameters.
  *
  * @return meshx_err_t     Returns the result of the message send operation.
  */
-meshx_err_t meshx_light_ctl_client_send_msg(
-        meshx_light_ctl_client_model_t *model,
-        uint16_t opcode,  uint16_t addr,
-        uint16_t net_idx, uint16_t app_idx,
-        uint16_t lightness, uint16_t temperature,
-        uint16_t delta_uv, uint8_t tid
-);
+meshx_err_t meshx_light_ctl_client_send_msg(meshx_gen_ctl_send_params_t *params);
 
 /**
  * @brief Sends a Light CTL Temperature message from the client model.
@@ -143,23 +148,11 @@ meshx_err_t meshx_light_ctl_client_send_msg(
  * using the provided network and application indices. It allows the client to control the
  * color temperature and delta UV of a lighting element in a mesh network.
  *
- * @param[in] model        Pointer to the Light CTL client model instance.
- * @param[in] opcode       Opcode of the message to be sent.
- * @param[in] addr         Destination address of the message.
- * @param[in] net_idx      Network index to be used for sending the message.
- * @param[in] app_idx      Application index to be used for sending the message.
- * @param[in] temperature  Desired color temperature value to be set.
- * @param[in] delta_uv     Delta UV value to be set.
- * @param[in] tid          Transaction Identifier for the message.
+ * @param[in] params Pointer to a structure containing the message parameters.
  *
  * @return meshx_err_t     Result of the message send operation.
  */
-meshx_err_t meshx_light_ctl_temperature_client_send_msg(
-        meshx_light_ctl_client_model_t *model,
-        uint16_t opcode,  uint16_t addr,
-        uint16_t net_idx, uint16_t app_idx,
-        uint16_t temperature, uint16_t delta_uv, uint8_t tid
-);
+meshx_err_t meshx_light_ctl_temperature_client_send_msg(meshx_gen_ctl_send_params_t *params);
 
 /**
  * @brief Sends a Light CTL Temperature Range message from the client model.
@@ -168,22 +161,11 @@ meshx_err_t meshx_light_ctl_temperature_client_send_msg(
  * using the provided network and application indices. It allows the client to set or get the
  * temperature range of a lighting element in a mesh network.
  *
- * @param[in] model        Pointer to the Light CTL client model instance.
- * @param[in] opcode       Opcode of the message to be sent.
- * @param[in] addr         Destination address of the message.
- * @param[in] net_idx      Network index to be used for sending the message.
- * @param[in] app_idx      Application index to be used for sending the message.
- * @param[in] temp_min     Minimum temperature value of the range to be set.
- * @param[in] temp_max     Maximum temperature value of the range to be set.
+ * @param[in] params Pointer to a structure containing the message parameters.
  *
  * @return meshx_err_t     Result of the message send operation.
  */
-meshx_err_t meshx_light_ctl_temp_range_client_send_msg(
-        meshx_light_ctl_client_model_t *model,
-        uint16_t opcode,  uint16_t addr,
-        uint16_t net_idx, uint16_t app_idx,
-        uint16_t temp_min, uint16_t temp_max
-);
+meshx_err_t meshx_light_ctl_temp_range_client_send_msg(meshx_gen_ctl_send_params_t *params);
 
 /**
  * @brief Handles state changes for the Light CTL client element.
@@ -197,9 +179,9 @@ meshx_err_t meshx_light_ctl_temp_range_client_send_msg(
  * @return meshx_err_t Returns an error code indicating the result of the handler execution.
  */
 meshx_err_t meshx_light_ctl_state_change_handle(
-    meshx_ctl_cli_el_msg_t *param,
+    const meshx_ctl_cli_el_msg_t *param,
     meshx_ctl_el_state_t *p_ctl_prev_state,
-    meshx_ctl_el_state_t *p_ctl_next_state
+    const meshx_ctl_el_state_t *p_ctl_next_state
 );
 
 #endif /* CONFIG_LIGHT_CTL_CLIENT_COUNT > 0 */

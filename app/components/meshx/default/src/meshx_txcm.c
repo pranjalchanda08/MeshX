@@ -340,7 +340,10 @@ static meshx_err_t meshx_tx_queue_dequeue(meshx_tx_queue_t *q, meshx_txcm_tx_q_t
 static meshx_err_t meshx_txcm_msg_q_front_try_send(bool resend)
 {
     meshx_err_t err = MESHX_SUCCESS;
-    meshx_txcm_tx_q_t front_tx;
+    meshx_txcm_tx_q_t front_tx =
+    {
+        .msg_state = MESHX_TXCM_MSG_STATE_MAX
+    };
 
     MESHX_LOGD(MODULE_ID_TXCM, "TXCM_Q Stat: %x|%x|%x", g_txcm.txcm_tx_queue.head, g_txcm.txcm_tx_queue.tail, g_txcm.txcm_tx_queue.count);
     if (resend == false && (meshx_tx_queue_peek(&g_txcm.txcm_tx_queue, &front_tx) != MESHX_SUCCESS))
@@ -565,7 +568,7 @@ static meshx_err_t meshx_txcm_sig_ack(const meshx_txcm_request_t *request)
         }
         else
         {
-            MESHX_LOGW(MODULE_ID_TXCM, "ACK received from unknown address, dropping packet: %d", front_tx.dest_addr);
+            MESHX_LOGW(MODULE_ID_TXCM, "Async status received from address 0x%X", front_tx.dest_addr);
             MESHX_DO_NOTHING;
         }
     }
@@ -602,7 +605,7 @@ static void meshx_txcm_task_handler(const dev_struct_t *args)
         /* Wait for a signal from the signal queue */
         if(meshx_msg_q_recv(&g_txcm.txcm_sig_queue, &request, UINT32_MAX) != MESHX_SUCCESS)
         {
-            MESHX_LOGE(MODULE_ID_TXCM, "Failed to receive signal from Tx Control Signal Queue");
+            MESHX_LOGD(MODULE_ID_TXCM, "Failed to receive signal from Tx Control Signal Queue");
             continue;
         }
         MESHX_LOGD(MODULE_ID_TXCM, "Processing sig: %d", request.request_type);
