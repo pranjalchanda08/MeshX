@@ -208,12 +208,12 @@ meshx_err_t meshx_onoff_client_send_msg(meshx_gen_onoff_send_params_t *params)
     }
 
     meshx_gen_client_send_params_t send_params = {
-        .state = &set,
-        .addr = params->addr,
-        .opcode = params->opcode,
+        .state   = &set,
+        .addr    = params->addr,
+        .opcode  = params->opcode,
         .app_idx = params->app_idx,
         .net_idx = params->net_idx,
-        .model = params->model->meshx_onoff_client_sig_model,
+        .model   = params->model->meshx_onoff_client_sig_model,
     };
 
     if(params->opcode == MESHX_MODEL_OP_GEN_ONOFF_GET)
