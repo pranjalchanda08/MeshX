@@ -241,7 +241,7 @@ static meshx_err_t relay_client_config_cli_cb(
     bool nvs_save = false;
     meshx_get_base_element_id(&base_el_id);
 
-    MESHX_LOGI(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "EVT: %p", (void *)evt);
+    MESHX_LOGD(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "EVT: %p", (void *)evt);
     switch (evt)
     {
     case CONTROL_TASK_MSG_EVT_APP_KEY_BIND:
@@ -264,7 +264,7 @@ static meshx_err_t relay_client_config_cli_cb(
                                                            : MESHX_ADDR_UNASSIGNED;
         el_ctx->app_id = params->state_change.mod_pub_set.app_idx;
         nvs_save = true;
-        MESHX_LOGI(MOD_SRC, "PUB_ADD: %d, %d, 0x%x, 0x%x", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
+        MESHX_LOGI(MOD_SRC, "PUB_ADD: %d, %d, 0x%X, 0x%X", element_id, rel_el_id, el_ctx->pub_addr, el_ctx->app_id);
         break;
     default:
         break;
@@ -430,7 +430,7 @@ static meshx_err_t meshx_relay_client_element_state_change_handler(
                                     &app_notify);
         if (err != MESHX_SUCCESS)
         {
-            MESHX_LOGE(MOD_SRC, "Failed to send CWWW state change message: (%d)", err);
+            MESHX_LOGE(MOD_SRC, "Failed to send Relay state change message: (%d)", err);
         }
     }
     if (nvs_save)
@@ -438,7 +438,7 @@ static meshx_err_t meshx_relay_client_element_state_change_handler(
         err = meshx_nvs_element_ctx_set(element_id, el_ctx, sizeof(meshx_relay_client_model_ctx_t));
         if (err != MESHX_SUCCESS)
         {
-            MESHX_LOGE(MOD_SRC, "Failed to set relay element context: (%d)", err);
+            MESHX_LOGE(MOD_SRC, "Failed to set Relay element context: (%d)", err);
         }
     }
     return MESHX_SUCCESS;
