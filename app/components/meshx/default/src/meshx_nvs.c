@@ -11,6 +11,7 @@
  *
  */
 #include "meshx_nvs.h"
+#include "interface/utils/meshx_nvs_interface.h"
 
 #define MESHX_NVS_INIT_MAGIC        0x5489
 
@@ -18,12 +19,31 @@
 #define MESHX_NVS_PARTITION         CONFIG_BLE_MESH_PARTITION_NAME
 #endif
 
-#define MESHX_NVS_NAMESPACE         "MESHX_NVS"
 #define MESHX_NVS_NAMESPACE_PID     "MESHX_PID"
 #define MESHX_NVS_NAMESPACE_CID     "MESHX_CID"
 #define MESHX_NVS_TIMER_NAME        "MESHX_COMMIT_TIMER"
 #define MESHX_NVS_ELEMENT_CTX       "MESHX_API_%04x"
 #define MESHX_NVS_RELOAD_ONE_SHOT   0
+#define MESHX_KEY_NAME_MAX_SIZE     16
+#define MESHX_KEY_VALUE_MAX_SIZE    256
+
+/**
+ * @struct meshx_nvs_write_list
+ * @brief Linked list structure used to store key-value pairs that need to be written to NVS.
+ */
+typedef struct meshx_nvs_write_list
+{
+    uint16_t  len;                            /**< Length of the value in bytes */
+    char      key [MESHX_KEY_NAME_MAX_SIZE];  /**< Key name. Maximum length is (MESHX_KEY_NAME_MAX_SIZE-1) characters */
+    uint8_t   data[MESHX_KEY_VALUE_MAX_SIZE]; /**< Buffer containing the value to be written to NVS */
+    struct meshx_nvs_write_list *next;        /**< Pointer to the next node in the list */
+}meshx_nvs_write_list_t;
+
+/**
+ * @var meshx_nvs_write_list_head
+ * @brief Head of the linked list used to store key-value pairs that need to be written to NVS.
+ */
+meshx_nvs_write_list_t *meshx_nvs_write_list_head = NULL;
 
 #if CONFIG_ENABLE_UNIT_TEST
 #define MESHX_NVS_UNIT_TEST_KEY     "MESHX_UT"
@@ -151,18 +171,7 @@ meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_m
 
     meshx_err_t err;
 
-#ifndef CONFIG_BLE_MESH_SPECIFIC_PARTITION
-    err = nvs_open(
-        MESHX_NVS_NAMESPACE,
-        NVS_READWRITE,
-        &(meshx_nvs_inst.meshx_nvs_handle));
-#else
-    err = nvs_open_from_partition(
-        MESHX_NVS_PARTITION,
-        MESHX_NVS_NAMESPACE,
-        NVS_READWRITE,
-        &(meshx_nvs_inst.meshx_nvs_handle));
-#endif /* CONFIG_BLE_MESH_SPECIFIC_PARTITION */
+    err = meshx_nvs_plat_open(&(meshx_nvs_inst.meshx_nvs_handle));
     if (err)
     {
         MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "nvs_open %p", (void *)err);
@@ -179,7 +188,7 @@ meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_m
         commit_timeout_ms,
         MESHX_NVS_RELOAD_ONE_SHOT,
         &meshx_nvs_os_timer_cb,
-        &(meshx_nvs_inst.meshx_nvs_stability_timer));
+        &(meshx_nvs_inst.meshx_nvs_commit_tmr));
     if (err)
     {
         MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "os_timer_create %p", (void *)err);
@@ -236,7 +245,7 @@ meshx_err_t meshx_nvs_erase(void)
     if (meshx_nvs_inst.init != MESHX_NVS_INIT_MAGIC)
         return MESHX_INVALID_STATE;
 
-    return nvs_erase_all(meshx_nvs_inst.meshx_nvs_handle);
+    return meshx_nvs_plat_erase(meshx_nvs_inst.meshx_nvs_handle);
 }
 
 /**
@@ -252,8 +261,30 @@ meshx_err_t meshx_nvs_commit(void)
     if (meshx_nvs_inst.init != MESHX_NVS_INIT_MAGIC)
         return MESHX_INVALID_STATE;
 
-    return nvs_commit(meshx_nvs_inst.meshx_nvs_handle);
+    meshx_err_t err = MESHX_SUCCESS;
+    meshx_nvs_write_list_t *cur = meshx_nvs_write_list_head;
+    meshx_nvs_write_list_t *prev;
+
+    while (cur) {
+        err = meshx_nvs_plat_write(meshx_nvs_inst.meshx_nvs_handle, cur->key, cur->data, cur->len);
+        if (err) {
+            MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "commit failed for key: %s", cur->key);
+        }
+        prev = cur;
+        cur = cur->next;
+        free(prev);
+    }
+
+    meshx_nvs_write_list_head = NULL;
+
+    if (err == MESHX_SUCCESS) {
+        // Only commit to platform once, after all writes
+        err = meshx_nvs_plat_commit(meshx_nvs_inst.meshx_nvs_handle);
+    }
+
+    return err;
 }
+
 
 /**
  * @brief Close the NVS handle.
@@ -269,10 +300,14 @@ meshx_err_t meshx_nvs_close(void)
     if (meshx_nvs_inst.init != MESHX_NVS_INIT_MAGIC)
         return MESHX_INVALID_STATE;
 
-    nvs_close(meshx_nvs_inst.meshx_nvs_handle);
+    err = meshx_nvs_plat_close(meshx_nvs_inst.meshx_nvs_handle);
+    if (err)
+    {
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "nvs_close %p", (void *)err);
+    }
 
 #if MESHX_NVS_TIMER_PERIOD
-    err = meshx_os_timer_delete(&(meshx_nvs_inst.meshx_nvs_stability_timer));
+    err = meshx_os_timer_delete(&(meshx_nvs_inst.meshx_nvs_commit_tmr));
 #endif /* MESHX_NVS_TIMER_PERIOD */
     meshx_nvs_inst.init = 0;
     return err;
@@ -293,7 +328,7 @@ meshx_err_t meshx_nvs_remove(char const *key)
     if (meshx_nvs_inst.init != MESHX_NVS_INIT_MAGIC)
         return MESHX_INVALID_STATE;
 
-    return nvs_erase_key(meshx_nvs_inst.meshx_nvs_handle, key);
+    return meshx_nvs_plat_remove(meshx_nvs_inst.meshx_nvs_handle, key);
 }
 
 /**
@@ -308,12 +343,11 @@ meshx_err_t meshx_nvs_remove(char const *key)
  * @return
  *  - MESHX_SUCCESS: Success.
  */
-meshx_err_t meshx_nvs_get(char const *key, void *blob, size_t blob_size)
+meshx_err_t meshx_nvs_get(char const *key, void *blob, uint16_t blob_size)
 {
     if (meshx_nvs_inst.init != MESHX_NVS_INIT_MAGIC)
         return MESHX_INVALID_STATE;
-    size_t b_size = blob_size;
-    return nvs_get_blob(meshx_nvs_inst.meshx_nvs_handle, key, blob, &b_size);
+    return meshx_nvs_plat_read(meshx_nvs_inst.meshx_nvs_handle, key, blob, blob_size);
 }
 
 /**
@@ -329,21 +363,50 @@ meshx_err_t meshx_nvs_get(char const *key, void *blob, size_t blob_size)
  * @return
  *  - MESHX_SUCCESS: Success.
  */
-meshx_err_t meshx_nvs_set(char const* key, void const* blob, size_t blob_size, bool arm_timer)
+meshx_err_t meshx_nvs_set(char const* key, void const* blob, uint16_t blob_size, bool arm_timer)
 {
     if (meshx_nvs_inst.init != MESHX_NVS_INIT_MAGIC)
         return MESHX_INVALID_STATE;
 
-    if(arm_timer)
-    {
-        /* Trigger the stability timer to commit the changes */
-        meshx_err_t err = meshx_os_timer_restart(meshx_nvs_inst.meshx_nvs_stability_timer);
-        if(err)
-            MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "os_timer_restart err:  %p", (void*) err);
+    if (blob_size > MESHX_KEY_VALUE_MAX_SIZE)
+        return MESHX_INVALID_ARG;
+
+    // Check if key already exists in list → overwrite instead of duplicate
+    meshx_nvs_write_list_t *cur = meshx_nvs_write_list_head;
+    while (cur) {
+        if (strncmp(cur->key, key, MESHX_KEY_NAME_MAX_SIZE-1) == 0)
+        {
+            cur->key[MESHX_KEY_NAME_MAX_SIZE - 1] = '\0';
+            memcpy(cur->data, blob, blob_size);
+            cur->len = blob_size;
+            goto restart_timer;  // skip new node alloc
+        }
+        cur = cur->next;
     }
 
-    return nvs_set_blob(meshx_nvs_inst.meshx_nvs_handle, key, blob, blob_size);
+    // Allocate new node
+    meshx_nvs_write_list_t *node = malloc(sizeof(meshx_nvs_write_list_t));
+    if (!node) return MESHX_NO_MEM;
+
+    strncpy(node->key, key, MESHX_KEY_NAME_MAX_SIZE);
+    memcpy(node->data, blob, blob_size);
+    node->len = blob_size;
+    node->next = meshx_nvs_write_list_head;
+    meshx_nvs_write_list_head = node;
+
+restart_timer:
+    if (arm_timer)
+    {
+#if MESHX_NVS_TIMER_PERIOD
+        meshx_err_t err = meshx_os_timer_restart(meshx_nvs_inst.meshx_nvs_commit_tmr);
+        if (err)
+            MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "os_timer_restart err: %p", (void*)err);
+#endif
+    }
+
+    return MESHX_SUCCESS;
 }
+
 
 /**
  * @brief Retrieve the context of a specific element from NVS.
@@ -360,8 +423,8 @@ meshx_err_t meshx_nvs_set(char const* key, void const* blob, size_t blob_size, b
  */
 meshx_err_t meshx_nvs_element_ctx_get(uint16_t element_id, void *blob, size_t blob_size)
 {
-    char key[NVS_KEY_NAME_MAX_SIZE];
-    snprintf(key, NVS_KEY_NAME_MAX_SIZE, MESHX_NVS_ELEMENT_CTX, element_id);
+    char key[MESHX_KEY_NAME_MAX_SIZE];
+    snprintf(key, MESHX_KEY_NAME_MAX_SIZE, MESHX_NVS_ELEMENT_CTX, element_id);
     return meshx_nvs_get(key, blob, blob_size);
 }
 
@@ -380,9 +443,9 @@ meshx_err_t meshx_nvs_element_ctx_get(uint16_t element_id, void *blob, size_t bl
  */
 meshx_err_t meshx_nvs_element_ctx_set(uint16_t element_id, const void *blob, size_t blob_size)
 {
-    char key[NVS_KEY_NAME_MAX_SIZE];
-    snprintf(key, NVS_KEY_NAME_MAX_SIZE, MESHX_NVS_ELEMENT_CTX, element_id);
-    return meshx_nvs_set(key, blob, blob_size, MESHX_NVS_AUTO_COMMIT);
+    char key[MESHX_KEY_NAME_MAX_SIZE];
+    snprintf(key, MESHX_KEY_NAME_MAX_SIZE, MESHX_NVS_ELEMENT_CTX, element_id);
+    return meshx_nvs_set(key, blob, (uint16_t) blob_size, MESHX_NVS_AUTO_COMMIT);
 }
 
 /**
@@ -398,8 +461,8 @@ meshx_err_t meshx_nvs_element_ctx_set(uint16_t element_id, const void *blob, siz
  */
 meshx_err_t meshx_nvs_element_ctx_remove(uint16_t element_id)
 {
-    char key[NVS_KEY_NAME_MAX_SIZE];
-    snprintf(key, NVS_KEY_NAME_MAX_SIZE, MESHX_NVS_ELEMENT_CTX, element_id);
+    char key[MESHX_KEY_NAME_MAX_SIZE];
+    snprintf(key, MESHX_KEY_NAME_MAX_SIZE, MESHX_NVS_ELEMENT_CTX, element_id);
     return meshx_nvs_remove(key);
 }
 
