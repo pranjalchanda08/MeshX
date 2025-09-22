@@ -22,6 +22,7 @@ file(GLOB FREERTOS_SRC
 
 file(GLOB PLAT_SRC
     "port/esp_idf/platform/*.c"
+    "port/esp_idf/utils/*.c"
 )
 
 file(GLOB_RECURSE PLAT_BLE_MESH_SRC
