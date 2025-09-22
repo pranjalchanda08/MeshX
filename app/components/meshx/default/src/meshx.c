@@ -165,7 +165,7 @@ static meshx_err_t meshx_dev_restore(dev_struct_t *pdev, meshx_config_t const *c
     MESHX_ERR_PRINT_RET("MeshX NVS Open failed", err);
 
     err = meshx_nvs_get(MESHX_NVS_STORE, &pdev->meshx_store, sizeof(meshx_app_store_t));
-    MESHX_ERR_PRINT_RET("Failed to restore meshx device state", err);
+        MESHX_ERR_PRINT_RET("Failed to restore meshx device state", err);
 
     return err;
 }

@@ -15,7 +15,6 @@
 #include <stdint.h>
 #include "meshx_control_task.h"
 #include "meshx_os_timer.h"
-#include "nvs.h"
 
 #define MESHX_NVS_TIMER_PERIOD_DEF  1000
 
@@ -34,9 +33,9 @@ typedef struct meshx_nvs {
     uint16_t init;                          /**< NVS initialization flag */
     uint16_t cid;                           /**< Company ID */
     uint16_t pid;                           /**< Product ID */
-    nvs_handle_t meshx_nvs_handle;          /**< NVS handle */
+    uintptr_t meshx_nvs_handle;             /**< NVS handle */
 #ifdef MESHX_NVS_TIMER_PERIOD
-    meshx_os_timer_t *meshx_nvs_stability_timer;  /**< NVS stability timer */
+    meshx_os_timer_t *meshx_nvs_commit_tmr; /**< NVS stability timer */
 #endif /* MESHX_NVS_TIMER_PERIOD */
 }meshx_nvs_t;
 
@@ -120,7 +119,7 @@ meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_m
  * @return
  *  - MESHX_SUCCESS: Success.
  */
-meshx_err_t meshx_nvs_get(char const *key, void *blob, size_t blob_size);
+meshx_err_t meshx_nvs_get(char const *key, void *blob, uint16_t blob_size);
 
 /**
  * @brief Set a value in the NVS.
@@ -135,7 +134,7 @@ meshx_err_t meshx_nvs_get(char const *key, void *blob, size_t blob_size);
  * @return
  *  - MESHX_SUCCESS: Success.
  */
-meshx_err_t meshx_nvs_set(char const* key, void const* blob, size_t blob_size, bool arm_timer);
+meshx_err_t meshx_nvs_set(char const* key, void const* blob, uint16_t blob_size, bool arm_timer);
 
 /**
  * @brief Retrieve the context of a specific element from NVS.
