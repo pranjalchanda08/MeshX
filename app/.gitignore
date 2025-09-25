@@ -1,7 +1,0 @@
-build
-sdkconfig.*
-sdkconfig
-idf_component.yml
-*.lock
-.qodo
-.output
