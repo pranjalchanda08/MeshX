@@ -1,0 +1,17 @@
+<map id="meshx_ble_mesh_config_srv.h" name="meshx_ble_mesh_config_srv.h">
+<area shape="rect" id="Node000001" title="Header file for MeshX BLE Mesh Configuration Server." alt="" coords="286,5,449,46"/>
+<area shape="rect" id="Node000002" href="$dc/d28/esp__cfg__srv__model_8c.html" title="Implementation of the BLE Mesh Configuration Server for the MeshX platform. This file contains the in..." alt="" coords="208,94,353,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="336,59,296,95,292,91,333,55"/>
+<area shape="rect" id="Node000003" href="$d1/d47/meshx__config__server_8h.html" title="Header file for the meshxuction configuration server model." alt="" coords="377,94,531,120"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="402,55,442,91,439,95,398,59"/>
+<area shape="rect" id="Node000004" href="$dd/d79/meshx__config__server_8c.html" title="Implementation of the Configuration Server for ESP BLE Mesh." alt="" coords="5,168,159,193"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="376,126,146,170,145,164,375,121"/>
+<area shape="rect" id="Node000005" href="$d9/d46/meshx__cwww__server_8c.html" title="Implementation of the CW&#45;WW server model for BLE Mesh." alt="" coords="182,168,339,193"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="408,128,295,170,293,165,406,123"/>
+<area shape="rect" id="Node000006" href="$d0/d53/meshx__light__cwww__client_8c.html" title="Implementation of the CW&#45;WW (Cool White &#45; Warm White) client model for BLE Mesh." alt="" coords="363,168,545,193"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="457,135,457,167,451,167,451,135"/>
+<area shape="rect" id="Node000007" href="$da/df4/meshx__relay__client_8c.html" title="Implementation of the relay client model for BLE Mesh." alt="" coords="569,168,710,193"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="500,123,609,165,607,170,499,128"/>
+<area shape="rect" id="Node000008" href="$d1/df4/meshx__relay__server_8c.html" title="Relay server model implementation for BLE Mesh networks." alt="" coords="734,168,880,193"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="530,121,748,164,747,170,528,126"/>
+</map>

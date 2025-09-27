@@ -1,0 +1,9 @@
+<map id="meshx_nvs_close" name="meshx_nvs_close">
+<area shape="rect" id="Node000001" title="Close the NVS handle." alt="" coords="5,31,131,56"/>
+<area shape="rect" id="Node000002" href="$dc/d28/esp__nvs_8c.html#ad5a8b76fa8a5b7105ee6cac1edb47ec3" title="Close the non&#45;volatile storage handle." alt="" coords="181,5,334,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,32,166,28,167,33,131,38"/>
+<area shape="rect" id="Node000003" href="$dd/da1/meshx__os__timer_8c.html#a934420ed4dad831b215afe128d2cbcd6" title="Delete a timer." alt="" coords="179,55,337,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="131,49,163,53,163,58,131,54"/>
+<area shape="rect" id="Node000004" href="$d3/db6/FreeRTOS__meshx__timer_8c.html#a6eb1e5296678e029069b59a546c6fecc" title="Deletes the RTOS timer." alt="" coords="385,55,551,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="337,65,369,65,369,70,337,70"/>
+</map>

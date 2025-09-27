@@ -1,0 +1,24 @@
+<map id="meshx_nvs_remove" name="meshx_nvs_remove">
+<area shape="rect" id="Node000001" title="Remove a key&#45;value pair from the NVS." alt="" coords="1450,46,1587,72"/>
+<area shape="rect" id="Node000002" href="$d5/d8f/meshx__nvs_8c.html#a6dc2339887b4d2cb0faa01d799838cd1" title="Remove the context of a specific element from NVS." alt="" coords="1238,5,1402,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1434,48,1402,42,1403,37,1435,42"/>
+<area shape="rect" id="Node000010" href="$d5/d8f/meshx__nvs_8c.html#af877bf8456b6217ae4cd642f29e85be6" title="Callback handler for MeshX NVS unit test command." alt="" coords="1248,71,1392,111"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="1435,75,1393,82,1392,77,1434,70"/>
+<area shape="rect" id="Node000003" href="$d2/d21/meshx__prov__srv_8c.html#a90d4cf320c64e69007ffa9ccbb224100" title="Handle node reset event." alt="" coords="1014,14,1190,40"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1222,29,1190,29,1190,24,1222,24"/>
+<area shape="rect" id="Node000004" href="$d2/d21/meshx__prov__srv_8c.html#aac026cf4837ec52fd5cb35967ce4ad3f" title="Handles provisioning control task events." alt="" coords="829,7,966,47"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="999,30,967,30,967,24,999,24"/>
+<area shape="rect" id="Node000005" href="$d2/d21/meshx__prov__srv_8c.html#acb04eaca0a71bc777d56e2d49162ad58" title="Register the BLE Mesh provisioning callback for MeshX Layer Internal." alt="" coords="620,7,781,47"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="813,30,781,30,781,24,813,24"/>
+<area shape="rect" id="Node000006" href="$d2/d21/meshx__prov__srv_8c.html#a69e4bb9282a6aad8faa9ee42c968541b" title="Initialize provisioning parameters." alt="" coords="456,17,572,42"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="605,31,572,32,572,26,604,26"/>
+<area shape="rect" id="Node000007" href="$d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="262,18,408,44"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="441,33,409,33,409,28,441,28"/>
+<area shape="rect" id="Node000008" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="131,46,214,72"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="247,49,215,55,214,49,246,44"/>
+<area shape="rect" id="Node000009" href="$d0/d29/main_8c.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title="Main application entry point." alt="" coords="5,46,83,72"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="115,62,83,62,83,56,115,56"/>
+<area shape="rect" id="Node000011" href="$d5/d8f/meshx__nvs_8c.html#a0fbc3ba9cfa339d3e1b30d101d424685" title="MeshX NVS Initialisation." alt="" coords="842,73,953,98"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="1232,93,954,89,954,84,1232,87"/>
+<area shape="poly" id="edge11_Node000011_Node000008" title=" " alt="" coords="826,86,214,63,215,58,826,80"/>
+</map>

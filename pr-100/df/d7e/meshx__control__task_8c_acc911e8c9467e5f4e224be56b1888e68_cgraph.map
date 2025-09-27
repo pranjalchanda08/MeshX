@@ -1,0 +1,11 @@
+<map id="control_task_msg_publish" name="control_task_msg_publish">
+<area shape="rect" id="Node000001" title="Publish a control task message." alt="" coords="5,55,178,80"/>
+<area shape="rect" id="Node000002" href="$d2/d6a/FreeRTOS__meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue Back." alt="" coords="226,5,366,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,51,224,33,225,38,149,57"/>
+<area shape="rect" id="Node000003" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="237,55,354,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="178,65,222,65,222,70,178,70"/>
+<area shape="rect" id="Node000005" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="229,104,362,130"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="149,78,225,97,224,102,147,84"/>
+<area shape="rect" id="Node000004" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="414,55,591,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="355,65,399,65,399,70,355,70"/>
+</map>

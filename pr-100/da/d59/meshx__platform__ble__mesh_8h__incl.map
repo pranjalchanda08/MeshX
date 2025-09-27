@@ -1,0 +1,25 @@
+<map id="meshx_platform_ble_mesh.h" name="meshx_platform_ble_mesh.h">
+<area shape="rect" id="Node000001" title="Header file for MeshX BLE Mesh platform abstraction layer. This file provides type definitions and ma..." alt="" coords="664,5,801,46"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,102,65,127"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="664,29,550,32,403,42,239,62,157,77,77,97,72,98,71,93,76,91,156,72,239,57,402,37,550,27,663,24"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="89,102,152,127"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="664,31,565,37,440,48,302,67,165,97,160,98,158,93,164,91,301,62,439,43,564,31,663,26"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="176,102,262,127"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="663,36,486,57,381,75,276,97,266,99,265,94,274,91,380,69,486,52,663,31"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="287,102,434,127"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="664,46,428,100,427,95,663,40"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="458,94,620,135"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="690,49,598,90,596,85,687,44"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="645,94,820,135"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="735,47,735,78,730,78,730,47"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="844,94,991,135"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="776,44,863,85,861,90,773,49"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="1015,94,1196,135"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="802,40,1006,87,1005,93,801,45"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="1220,94,1367,135"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="802,32,981,56,1206,91,1205,96,980,61,801,38"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="1391,94,1546,135"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="802,29,1051,51,1211,68,1376,91,1376,96,1211,74,1051,56,801,34"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="1569,94,1722,135"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="801,27,1123,46,1335,64,1554,91,1553,96,1335,70,1122,51,801,32"/>
+</map>

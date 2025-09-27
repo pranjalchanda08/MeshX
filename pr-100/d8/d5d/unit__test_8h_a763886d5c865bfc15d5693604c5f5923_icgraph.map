@@ -1,0 +1,20 @@
+<map id="register_unit_test" name="register_unit_test">
+<area shape="rect" id="Node000001" title="Register a unit test for a specific module." alt="" coords="562,108,684,133"/>
+<area shape="rect" id="Node000002" href="$d0/d53/meshx__light__cwww__client_8c.html#a2b18c9b388becb88fae3b11dc91227ad" title="Create Dynamic CW&#45;WW Model Elements." alt="" coords="374,5,514,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="585,102,513,61,489,49,491,44,516,57,588,97"/>
+<area shape="rect" id="Node000004" href="$da/df4/meshx__relay__client_8c.html#a78912dcce7e42851d05867d83e61ce9d" title="Create Dynamic Relay Model Elements." alt="" coords="380,71,509,111"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="547,111,509,104,510,99,547,105"/>
+<area shape="rect" id="Node000006" href="$d5/d8f/meshx__nvs_8c.html#a0fbc3ba9cfa339d3e1b30d101d424685" title="MeshX NVS Initialisation." alt="" coords="388,136,500,161"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="548,135,501,142,500,137,547,130"/>
+<area shape="rect" id="Node000009" href="$dd/da1/meshx__os__timer_8c.html#a2ae8e7e3e3019501c5a5dc68608f829a" title="Initialize the OS timer module." alt="" coords="374,185,514,210"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="585,143,515,176,488,187,486,182,513,171,583,138"/>
+<area shape="rect" id="Node000003" href="$d0/d53/meshx__light__cwww__client_8c.html#a3c149e2a2474324a7ecac6168d1f9a9f" title=" " alt="" coords="131,13,326,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="359,28,326,28,326,23,359,23"/>
+<area shape="rect" id="Node000005" href="$da/df4/meshx__relay__client_8c.html#a6714b32ec5f1113fae863457f0cfe653" title=" " alt="" coords="131,78,326,104"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="364,94,326,94,326,88,364,88"/>
+<area shape="rect" id="Node000007" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="187,160,270,185"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="373,159,271,170,270,165,373,154"/>
+<area shape="rect" id="Node000008" href="$d0/d29/main_8c.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title="Main application entry point." alt="" coords="5,160,83,185"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="171,175,83,175,83,170,171,170"/>
+<area shape="poly" id="edge9_Node000009_Node000007" title=" " alt="" coords="358,190,270,180,271,175,359,185"/>
+</map>

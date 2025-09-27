@@ -1,0 +1,17 @@
+<map id="meshx_nvs_element_ctx_set" name="meshx_nvs_element_ctx_set">
+<area shape="rect" id="Node000001" title="Store the context of a specific element to NVS." alt="" coords="5,55,195,80"/>
+<area shape="rect" id="Node000002" href="$d5/d8f/meshx__nvs_8c.html#ab9a39208cc2b067b0b5df0a85d7b4b03" title="Set a value in the NVS." alt="" coords="243,55,355,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,65,227,65,227,70,195,70"/>
+<area shape="rect" id="Node000003" href="$dd/da1/meshx__os__timer_8c.html#a63e6c1a15d1a30d41dc704c131a27062" title="Restart a timer." alt="" coords="403,55,563,80"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="356,65,387,65,387,70,356,70"/>
+<area shape="rect" id="Node000004" href="$df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="611,55,784,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="564,65,596,65,596,70,564,70"/>
+<area shape="rect" id="Node000005" href="$d2/d6a/FreeRTOS__meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue Back." alt="" coords="832,5,972,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="753,51,830,33,831,38,755,57"/>
+<area shape="rect" id="Node000006" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="843,55,960,80"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="784,65,828,65,828,70,784,70"/>
+<area shape="rect" id="Node000008" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="835,104,968,130"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="755,78,831,97,830,102,753,84"/>
+<area shape="rect" id="Node000007" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="1020,55,1197,80"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="961,65,1005,65,1005,70,961,70"/>
+</map>

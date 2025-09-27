@@ -1,0 +1,4 @@
+<map id="meshx_nvs_write_list" name="meshx_nvs_write_list">
+<area shape="rect" id="Node000001" title="Linked list structure used to store key&#45;value pairs that need to be written to NVS." alt="" coords="5,5,141,112"/>
+<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="142,37,160,44,168,59,165,68,159,75,155,71,161,65,162,59,156,48,140,42"/>
+</map>

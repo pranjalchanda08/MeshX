@@ -1,0 +1,29 @@
+<map id="meshx_relay_cli_el_state_change_reg_cb" name="meshx_relay_cli_el_state_change_reg_cb">
+<area shape="rect" id="Node000001" title="Registers a callback for relay element state change events." alt="" coords="5,31,158,72"/>
+<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="840,5,1027,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,44,206,41,544,27,824,18,824,24,544,32,206,46,158,49"/>
+<area shape="rect" id="Node000004" href="$da/df4/meshx__relay__client_8c.html#a99cebf2cc084fcecfd2c9d0968b2b7f1" title="Handles the relay client element message." alt="" coords="206,56,365,111"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="159,61,191,66,190,71,158,66"/>
+<area shape="rect" id="Node000003" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="1299,5,1432,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1027,16,1283,16,1283,21,1027,21"/>
+<area shape="rect" id="Node000005" href="$d5/d8f/meshx__nvs_8c.html#a091a0be186edb6d1dc740b838cf38037" title="Store the context of a specific element to NVS." alt="" coords="413,56,602,82"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="365,76,397,73,397,79,366,81"/>
+<area shape="rect" id="Node000012" href="$dc/d93/meshx__api_8c.html#a5b8d1eddceb8ab76e5fdc7fea5545496" title="Sends a message to the BLE Mesh application." alt="" coords="422,107,594,132"/>
+<area shape="poly" id="edge12_Node000004_Node000012" title=" " alt="" coords="366,94,409,101,409,106,365,99"/>
+<area shape="rect" id="Node000006" href="$d5/d8f/meshx__nvs_8c.html#ab9a39208cc2b067b0b5df0a85d7b4b03" title="Set a value in the NVS." alt="" coords="665,56,777,82"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="603,66,649,66,649,72,603,72"/>
+<area shape="rect" id="Node000007" href="$dd/da1/meshx__os__timer_8c.html#a63e6c1a15d1a30d41dc704c131a27062" title="Restart a timer." alt="" coords="853,56,1014,82"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="777,66,838,66,838,72,777,72"/>
+<area shape="rect" id="Node000008" href="$df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="1075,56,1247,82"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="1014,66,1060,66,1060,72,1014,72"/>
+<area shape="poly" id="edge11_Node000008_Node000003" title=" " alt="" coords="1215,53,1296,33,1297,38,1217,58"/>
+<area shape="rect" id="Node000009" href="$d2/d6a/FreeRTOS__meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue Back." alt="" coords="1295,55,1436,80"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="1247,66,1280,65,1280,71,1247,71"/>
+<area shape="rect" id="Node000010" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="1307,104,1424,130"/>
+<area shape="poly" id="edge9_Node000008_Node000010" title=" " alt="" coords="1220,80,1293,97,1292,102,1219,85"/>
+<area shape="rect" id="Node000011" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="1484,104,1661,130"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="1425,114,1468,114,1468,120,1425,120"/>
+<area shape="poly" id="edge13_Node000012_Node000008" title=" " alt="" coords="594,116,792,110,910,103,1027,92,1084,82,1085,88,1027,97,910,108,792,115,594,122"/>
+<area shape="rect" id="Node000013" href="$dc/d93/meshx__api_8c.html#ac37c1c5b9f1e9cdaa510bf886d897e2d" title="Prepares a message to be sent to the BLE Mesh application." alt="" coords="650,156,792,197"/>
+<area shape="poly" id="edge14_Node000012_Node000013" title=" " alt="" coords="559,130,636,151,634,156,558,136"/>
+</map>

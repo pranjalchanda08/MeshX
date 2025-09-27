@@ -1,0 +1,13 @@
+<map id="create_control_task_msg_q" name="create_control_task_msg_q">
+<area shape="rect" id="Node000001" title="Create the control task message queue." alt="" coords="805,5,940,46"/>
+<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#aa80e3f0cf59f4ffe90febe75f56eb478" title="Task handler function for processing control task messages." alt="" coords="616,13,757,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="789,28,757,28,757,23,789,23"/>
+<area shape="rect" id="Node000003" href="$df/d7e/meshx__control__task_8c.html#a565d729859590da7d56e69401d935eb1" title="Create the control task." alt="" coords="432,13,568,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="600,28,568,28,568,23,600,23"/>
+<area shape="rect" id="Node000004" href="$d9/d05/meshx_8c.html#ad0709b44ba612dc9bccad286fa9c8a85" title="Initializes application tasks." alt="" coords="262,13,384,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="417,28,385,28,385,23,417,23"/>
+<area shape="rect" id="Node000005" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="131,13,214,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="247,28,214,28,214,23,247,23"/>
+<area shape="rect" id="Node000006" href="$d0/d29/main_8c.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title="Main application entry point." alt="" coords="5,13,83,38"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="115,28,83,28,83,23,115,23"/>
+</map>
