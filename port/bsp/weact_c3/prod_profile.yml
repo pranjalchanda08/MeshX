@@ -10,16 +10,12 @@ prod:
           pid: 0x0006
           elements:
               - switch_relay_client: 4
-          components:
-              - unit_test : true
 
         - name: 4x4_Relay_Switch_Pannel
           pid: 0x0002
           elements:
               - switch_relay_client: 4
               - switch_relay_server: 4
-          components:
-              - unit_test : true
 
         - name: CTL_light_strip
           pid: 0x0003
@@ -33,5 +29,3 @@ prod:
               - switch_relay_server: 1
               - light_cwww_server: 1
               - light_cwww_client: 1
-          components:
-              - unit_test : true
