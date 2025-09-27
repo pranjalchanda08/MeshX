@@ -25,7 +25,8 @@
  * @note: This needs to be defined based on platform
  */
 #ifndef CONFIG_APP_MAIN
-#define CONFIG_APP_MAIN                         main
+#error "Define CONFIG_APP_MAIN to the application main function"
+// #define CONFIG_APP_MAIN                         main
 #endif /* CONFIG_APP_MAIN */
 
 #ifndef CONFIG_CID_ID
@@ -142,7 +143,7 @@
  * @brief Enable Unit Test
  */
 #ifndef CONFIG_ENABLE_UNIT_TEST
-#define CONFIG_ENABLE_UNIT_TEST                 1
+#define CONFIG_ENABLE_UNIT_TEST                 0
 #endif /* CONFIG_ENABLE_UNIT_TEST */
 
 /**************************************************************************

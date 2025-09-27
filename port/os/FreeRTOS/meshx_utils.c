@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2024 - 2025 MeshX
  *
- * @file FreeRTOS_meshx_utils.c
+ * @file meshx_utils.c
  * @brief Utility functions for integrating MeshX with FreeRTOS.
  *        This file provides implementations for memory management,
  *        system time retrieval, and heap monitoring using FreeRTOS APIs.
@@ -13,6 +13,9 @@
 #include "interface/rtos/meshx_rtos_utils.h"
 #include "interface/logging/meshx_log.h"
 #include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "freertos/portmacro.h"
+#include <string.h>
 
 /**
  * @brief Retrieves the current system time in milliseconds.
@@ -97,11 +100,13 @@ meshx_err_t meshx_rtos_calloc(void **ptr, size_t num, size_t size)
         return MESHX_INVALID_ARG; // Invalid input
     }
 
-    *ptr = pvPortCalloc(num, size);
+    *ptr = pvPortMalloc(size);
     if (*ptr == NULL)
     {
         return MESHX_NO_MEM; // Memory allocation failed
     }
+
+    memset(*ptr, 0, num * size); // Initialize allocated memory to zero
 
     return MESHX_SUCCESS;
 }

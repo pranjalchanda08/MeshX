@@ -10,7 +10,6 @@
  * @author Pranjal Chanda
  */
 
-#include "meshx_platform_ble_mesh.h"
 #include "meshx_light_server.h"
 #include "meshx_gen_server.h"
 

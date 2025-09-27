@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2024 - 2025 MeshX
  *
- * @file FreeRTOS_meshx_timer.c
+ * @file meshx_timer.c
  * @brief Implementation of RTOS timer abstraction for MeshX using FreeRTOS.
  *        This file provides functions to create, start, stop, delete, reset,
  *        and modify RTOS timers in the MeshX framework.
