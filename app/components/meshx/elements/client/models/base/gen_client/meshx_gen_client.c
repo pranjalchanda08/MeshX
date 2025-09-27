@@ -240,7 +240,7 @@ static meshx_err_t meshx_gen_client_txcm_fn_model_send(meshx_gen_client_msg_ctx_
  * task message is received.
  *
  * @param[in] pdev    Pointer to the device structure associated with the BLE Mesh node.
- * @param[in] model_id    Control task message event type, which represents the model ID of the generic
+ * @param[in] evt     Control task message event type, which represents the model ID of the generic
  *                     client model associated with the message.
  * @param[in] param    Pointer to a structure containing the control task message parameters. Must not be NULL.
  *
@@ -466,7 +466,7 @@ meshx_err_t meshx_gen_cli_send_msg(meshx_gen_client_send_params_t *params)
  * This function associates a callback with the given model ID, allowing the server
  * to handle events or messages related to that model.
  *
- * @param[in] model_id The unique identifier of voidthe generic server model.
+ * @param[in] model_id The unique identifier of the generic server model.
  * @param[in] cb       The callback function to be registered for the model.
  *
  * @return meshx_err_t Returns an error code indicating the result of the registration.
