@@ -1,52 +1,40 @@
-cmake_minimum_required(VERSION 3.30)
-
-set(TARGET meshx.elf CACHE STRING "MeshX application name")
-
-# set(LIB_LIST "" CACHE STRING "List of libraries to link")
-
-project(${TARGET}
-    VERSION 0.3
-    DESCRIPTION "MeshX"
-    LANGUAGES C
-)
+cmake_minimum_required(VERSION 3.20)
 # ------------------------------------------------------------------------------
 # Options
 # ------------------------------------------------------------------------------
-set(OS "FreeRTOS" CACHE STRING "OS abstraction layer to use (e.g. freertos, posix)")
 set(BSP "weact_c3" CACHE STRING "BSP Selection")
-
+set(ELF meshx_build CACHE STRING "Name of the final executable")
+set(PROD_PROFILE "port/bsp/${BSP}/prod_profile.yml" CACHE STRING "Path to the product profile YAML file")
 option(ENABLE_TESTS "Enable building unit tests" OFF)
 
 # ------------------------------------------------------------------------------
-# Applications
+# INTERNAL CACHE VARIABLES
 # ------------------------------------------------------------------------------
-add_subdirectory(port/bsp/${BSP})
-add_subdirectory(apps)
+
+set(OS "FreeRTOS" CACHE INTERNAL "OS abstraction layer to be set by BSP")
+set(SRC_FILES "" CACHE INTERNAL "Source files for the project")
+set(INC_FILES "" CACHE INTERNAL "Include directories for the project")
+set(PLAT_LIBS "" CACHE INTERNAL "Platform libraries to link against")
+set(PLATFORM_TEST_SUPPORTED ON CACHE INTERNAL "Testing supported in platform")
 
 # ------------------------------------------------------------------------------
 # BSP
 # ------------------------------------------------------------------------------
-# ------------------------------------------------------------------------------
-# Core
-# ------------------------------------------------------------------------------
+include(port/bsp/${BSP}/bsp.cmake)
 
 # ------------------------------------------------------------------------------
-# Porting layer
+# Remove duplicate source files
+list(REMOVE_DUPLICATES SRC_FILES)
+list(REMOVE_DUPLICATES INC_FILES)
 # ------------------------------------------------------------------------------
-# # add a condition here if the platform is esp32* then add esp in path as well like port/platform/esp/${PLATFORM}
-# if (PLATFORM MATCHES "esp*")
-#     add_subdirectory(port/platform/esp/${PLATFORM})
-# else()
-#     add_subdirectory(port/platform/${PLATFORM})
-# endif()
+include_directories(${INC_FILES})
 
-# add_subdirectory(port/os/${OS})
+message(STATUS "INC_FILES: ${INC_FILES}")
+message(STATUS "PLAT_LIBS: ${PLAT_LIBS}")
 
-# # add
-# target_link_libraries(${TARGET} PUBLIC meshx)
-# target_link_libraries(${TARGET} PUBLIC osal_${OS})
-# target_link_libraries(${TARGET} PUBLIC plat_${PLATFORM})
+project(${ELF}
+        VERSION 0.3
+        DESCRIPTION "MeshX"
+        LANGUAGES C
+    )
 
-# get_target_property(LIBS meshx.elf LINK_LIBRARIES)
-
-# message(STATUS "Linking libraries: ${LIBS}")
