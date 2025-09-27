@@ -16,6 +16,8 @@
 
 #define MESHX_DO_NOTHING    do {} while(0)
 
+#define MESHX_WEEK __attribute__((weak))
+
 /* Compiler based definations */
 
 #ifndef MESHX_MALLOC

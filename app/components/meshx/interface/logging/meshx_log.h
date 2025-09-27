@@ -150,7 +150,7 @@ meshx_err_t meshx_logging_init(const meshx_logging_t *config);
  * @param[in] fmt           The format string for the log message.
  * @param[in] ...           Additional arguments for the format string.
  */
-void meshx_log_printf(module_id_t module_id, meshx_log_level_t log_level,
+MESHX_WEEK void meshx_log_printf(module_id_t module_id, meshx_log_level_t log_level,
                       const char *func, int line_no, const char *fmt, ...);
 
 #endif /* MESHX_LOG_H */
