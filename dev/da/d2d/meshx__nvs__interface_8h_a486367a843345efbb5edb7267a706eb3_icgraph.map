@@ -1,0 +1,13 @@
+<map id="meshx_nvs_plat_write" name="meshx_nvs_plat_write">
+<area shape="rect" id="Node000001" title="Write a blob value to the non&#45;volatile storage with a given key and namespace." alt="" coords="799,13,949,38"/>
+<area shape="rect" id="Node000002" href="$d5/d8f/meshx__nvs_8c.html#adbf5f3a6e63cae605581b0f23b21345c" title="Commit changes to the NVS." alt="" coords="614,13,751,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="784,28,752,28,752,23,784,23"/>
+<area shape="rect" id="Node000003" href="$d5/d8f/meshx__nvs_8c.html#af877bf8456b6217ae4cd642f29e85be6" title="Callback handler for MeshX NVS unit test command." alt="" coords="421,5,566,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="598,28,566,28,566,23,598,23"/>
+<area shape="rect" id="Node000004" href="$d5/d8f/meshx__nvs_8c.html#a0fbc3ba9cfa339d3e1b30d101d424685" title="MeshX NVS Initialisation." alt="" coords="262,13,373,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="406,28,374,28,374,23,406,23"/>
+<area shape="rect" id="Node000005" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="131,13,214,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="246,28,214,28,214,23,246,23"/>
+<area shape="rect" id="Node000006" href="$d0/d29/main_8c.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title="Main application entry point." alt="" coords="5,13,83,38"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="115,28,83,28,83,23,115,23"/>
+</map>

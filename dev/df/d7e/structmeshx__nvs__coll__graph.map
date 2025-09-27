@@ -1,7 +1,7 @@
 <map id="meshx_nvs" name="meshx_nvs">
-<area shape="rect" id="Node000001" title="Structure to hold the MeshX NVS data." alt="" coords="5,401,140,528"/>
+<area shape="rect" id="Node000001" title="Structure to hold the MeshX NVS data." alt="" coords="5,386,140,513"/>
 <area shape="rect" id="Node000002" href="$db/d1c/structmeshx__os__timer.html" title="Structure to hold parameters for the OS timer control task message." alt="" coords="12,236,133,323"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="76,323,76,384,70,384,70,323"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="76,323,76,369,70,369,70,323"/>
 <area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="134,263,152,268,160,280,152,291,148,288,155,280,149,272,133,269"/>
 <area shape="rect" id="Node000003" href="$d5/dc1/structmeshx__rtos__timer.html" title=" " alt="" coords="16,5,130,173"/>
 <area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="76,173,76,220,70,220,70,173"/>

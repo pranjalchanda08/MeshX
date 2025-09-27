@@ -9,5 +9,6 @@ var dir_d8fc81364c4d58707be67557187dcf83 =
     [ "meshx_err.h", "da/d68/meshx__err_8h.html", "da/d68/meshx__err_8h" ],
     [ "meshx_nvs.h", "d3/d7d/meshx__nvs_8h.html", "d3/d7d/meshx__nvs_8h" ],
     [ "meshx_os_timer.h", "d8/d03/meshx__os__timer_8h.html", "d8/d03/meshx__os__timer_8h" ],
+    [ "meshx_txcm.h", "df/d06/meshx__txcm_8h.html", "df/d06/meshx__txcm_8h" ],
     [ "module_id.h", "d3/da1/module__id_8h.html", "d3/da1/module__id_8h" ]
 ];

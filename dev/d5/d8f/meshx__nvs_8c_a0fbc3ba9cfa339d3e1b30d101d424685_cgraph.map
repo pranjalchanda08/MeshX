@@ -1,52 +1,66 @@
 <map id="meshx_nvs_init" name="meshx_nvs_init">
-<area shape="rect" id="Node000001" title="MeshX NVS Initialisation." alt="" coords="5,236,117,262"/>
-<area shape="rect" id="Node000002" href="$d5/d8f/meshx__nvs_8c.html#af877bf8456b6217ae4cd642f29e85be6" title="Callback handler for MeshX NVS unit test command." alt="" coords="165,199,309,240"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,237,149,231,150,237,118,242"/>
-<area shape="rect" id="Node000023" href="$da/dd5/unit__test_8c.html#a763886d5c865bfc15d5693604c5f5923" title="Register a unit test for a specific module." alt="" coords="176,264,298,290"/>
-<area shape="poly" id="edge27_Node000001_Node000023" title=" " alt="" coords="118,255,161,262,160,267,117,260"/>
-<area shape="rect" id="Node000003" href="$d5/d8f/meshx__nvs_8c.html#a331ae59bfd5632726157f612d8b57b00" title="Close the NVS handle." alt="" coords="363,5,488,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="244,198,261,164,285,122,317,78,355,40,360,37,363,41,359,44,321,81,289,124,265,166,249,200"/>
-<area shape="rect" id="Node000006" href="$d5/d8f/meshx__nvs_8c.html#adbf5f3a6e63cae605581b0f23b21345c" title="Commit changes to the NVS." alt="" coords="357,55,494,80"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="253,197,297,148,355,97,375,85,378,90,359,102,300,152,257,200"/>
-<area shape="rect" id="Node000007" href="$d5/d8f/meshx__nvs_8c.html#adedf15ddc47ab70982fa07092112ffd1" title="Erase all key&#45;value pairs stored in the NVS." alt="" coords="793,132,920,158"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="302,196,413,165,477,151,542,141,593,137,633,137,725,141,778,141,778,147,725,146,633,142,593,142,543,146,478,156,414,170,303,201"/>
-<area shape="rect" id="Node000008" href="$d5/d8f/meshx__nvs_8c.html#a66b5694246aa0f0a9be3c228de543200" title="Get a value from the NVS." alt="" coords="577,307,690,332"/>
-<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="291,238,311,249,325,262,334,273,343,284,358,293,409,310,463,319,515,323,562,323,562,328,515,328,462,325,408,315,356,298,340,288,330,277,321,265,307,254,288,243"/>
-<area shape="rect" id="Node000009" href="$d5/d8f/meshx__nvs_8c.html#ab4e5c250438e810358991fbe0e6cd277" title="Open the NVS with a timeout." alt="" coords="364,257,487,283"/>
-<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="310,236,361,250,360,255,309,242"/>
-<area shape="rect" id="Node000011" href="$d5/d8f/meshx__nvs_8c.html#a00bee4a5af97fa0b8d4195a827e9f5f5" title="Set a value in the NVS." alt="" coords="800,181,912,207"/>
-<area shape="poly" id="edge26_Node000002_Node000011" title=" " alt="" coords="309,214,784,194,785,200,310,219"/>
-<area shape="rect" id="Node000022" href="$d5/d8f/meshx__nvs_8c.html#aa14948d7d45d83f3b6d9ca765a17cc58" title="Remove a key&#45;value pair from the NVS." alt="" coords="357,359,494,384"/>
-<area shape="poly" id="edge25_Node000002_Node000022" title=" " alt="" coords="296,238,311,250,328,272,336,295,343,316,359,338,374,349,371,353,355,341,338,318,331,296,323,275,307,253,293,243"/>
-<area shape="rect" id="Node000004" href="$dd/da1/meshx__os__timer_8c.html#a934420ed4dad831b215afe128d2cbcd6" title="Delete a timer." alt="" coords="554,5,713,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="489,16,539,16,539,21,489,21"/>
-<area shape="rect" id="Node000005" href="$d3/db6/FreeRTOS__meshx__timer_8c.html#a6eb1e5296678e029069b59a546c6fecc" title="Deletes the RTOS timer." alt="" coords="773,5,940,31"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="713,16,757,16,757,21,713,21"/>
-<area shape="poly" id="edge18_Node000009_Node000008" title=" " alt="" coords="484,281,563,300,561,305,482,286"/>
-<area shape="rect" id="Node000010" href="$d5/d8f/meshx__nvs_8c.html#ae32d182aaba6ab32994ae22debaa1d6f" title="Erase the NVS and set the product ID." alt="" coords="542,156,725,182"/>
-<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="453,254,591,186,593,191,455,259"/>
-<area shape="rect" id="Node000018" href="$dd/da1/meshx__os__timer_8c.html#a59d86249c9c97227b869567af3b2cade" title="Create a timer." alt="" coords="554,257,713,283"/>
-<area shape="poly" id="edge19_Node000009_Node000018" title=" " alt="" coords="487,268,538,268,538,273,487,273"/>
-<area shape="poly" id="edge10_Node000010_Node000007" title=" " alt="" coords="725,156,777,151,778,156,725,162"/>
-<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="725,177,785,183,785,189,725,182"/>
-<area shape="rect" id="Node000012" href="$dd/da1/meshx__os__timer_8c.html#a63e6c1a15d1a30d41dc704c131a27062" title="Restart a timer." alt="" coords="1142,183,1302,208"/>
-<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="913,192,1126,192,1126,198,913,197"/>
-<area shape="rect" id="Node000013" href="$df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="1351,208,1523,234"/>
-<area shape="poly" id="edge13_Node000012_Node000013" title=" " alt="" coords="1303,202,1335,206,1335,211,1302,208"/>
-<area shape="rect" id="Node000014" href="$d2/d6a/FreeRTOS__meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue." alt="" coords="1571,159,1711,184"/>
-<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="1493,205,1569,186,1571,191,1494,210"/>
-<area shape="rect" id="Node000015" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="1582,208,1700,234"/>
-<area shape="poly" id="edge15_Node000013_Node000015" title=" " alt="" coords="1523,218,1567,218,1567,224,1523,224"/>
-<area shape="rect" id="Node000017" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="1574,257,1708,283"/>
-<area shape="poly" id="edge17_Node000013_Node000017" title=" " alt="" coords="1494,232,1571,250,1569,256,1493,237"/>
-<area shape="rect" id="Node000016" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="1759,208,1937,234"/>
-<area shape="poly" id="edge16_Node000015_Node000016" title=" " alt="" coords="1700,218,1744,218,1744,224,1700,224"/>
-<area shape="rect" id="Node000019" href="$dd/da1/meshx__os__timer_8c.html#a77adef39c1cdb9692b86241af2ca75ae" title=" " alt="" coords="1141,232,1303,258"/>
-<area shape="poly" id="edge20_Node000018_Node000019" title=" " alt="" coords="713,264,1125,246,1126,252,713,269"/>
-<area shape="rect" id="Node000020" href="$d3/db6/FreeRTOS__meshx__timer_8c.html#afdde188e70278d7d1b6ee57e72a39ed8" title="Creates a new RTOS timer." alt="" coords="773,283,940,308"/>
-<area shape="poly" id="edge22_Node000018_Node000020" title=" " alt="" coords="714,277,758,282,757,287,713,282"/>
-<area shape="poly" id="edge21_Node000019_Node000013" title=" " alt="" coords="1303,233,1335,230,1335,235,1303,238"/>
-<area shape="rect" id="Node000021" href="$d3/db6/FreeRTOS__meshx__timer_8c.html#a0238244bfe5230d1ce6fc3614bab8318" title="Callback function for FreeRTOS timer events." alt="" coords="988,283,1093,308"/>
-<area shape="poly" id="edge23_Node000020_Node000021" title=" " alt="" coords="941,293,972,293,972,298,941,298"/>
-<area shape="poly" id="edge24_Node000021_Node000019" title=" " alt="" coords="1089,279,1158,260,1160,265,1090,285"/>
+<area shape="rect" id="Node000001" title="MeshX NVS Initialisation." alt="" coords="5,284,117,310"/>
+<area shape="rect" id="Node000002" href="$d5/d8f/meshx__nvs_8c.html#af877bf8456b6217ae4cd642f29e85be6" title="Callback handler for MeshX NVS unit test command." alt="" coords="165,247,309,288"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,285,149,279,150,285,118,290"/>
+<area shape="rect" id="Node000030" href="$da/dd5/unit__test_8c.html#a763886d5c865bfc15d5693604c5f5923" title="Register a unit test for a specific module." alt="" coords="176,312,298,338"/>
+<area shape="poly" id="edge34_Node000001_Node000030" title=" " alt="" coords="118,303,161,310,160,315,117,308"/>
+<area shape="rect" id="Node000003" href="$d5/d8f/meshx__nvs_8c.html#a331ae59bfd5632726157f612d8b57b00" title="Close the NVS handle." alt="" coords="363,55,488,80"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="255,245,400,90,404,93,259,249"/>
+<area shape="rect" id="Node000007" href="$d5/d8f/meshx__nvs_8c.html#adbf5f3a6e63cae605581b0f23b21345c" title="Commit changes to the NVS." alt="" coords="357,153,494,179"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="271,244,356,196,380,184,382,188,358,201,273,249"/>
+<area shape="rect" id="Node000010" href="$d5/d8f/meshx__nvs_8c.html#adedf15ddc47ab70982fa07092112ffd1" title="Erase all key&#45;value pairs stored in the NVS." alt="" coords="793,228,920,254"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="309,252,357,246,471,239,586,236,778,236,778,241,586,241,472,244,357,251,310,257"/>
+<area shape="rect" id="Node000012" href="$d5/d8f/meshx__nvs_8c.html#ae36588f5b4ae5e5ac771e1af86a71e5a" title="Get a value from the NVS." alt="" coords="577,453,690,479"/>
+<area shape="poly" id="edge11_Node000002_Node000012" title=" " alt="" coords="296,286,311,298,328,322,335,347,341,369,359,391,406,420,460,441,513,454,562,460,562,466,512,459,458,446,404,425,355,395,337,372,329,348,323,325,307,301,293,290"/>
+<area shape="rect" id="Node000014" href="$d5/d8f/meshx__nvs_8c.html#ab4e5c250438e810358991fbe0e6cd277" title="Open the NVS with a timeout." alt="" coords="364,355,487,380"/>
+<area shape="poly" id="edge13_Node000002_Node000014" title=" " alt="" coords="288,286,310,297,391,344,389,348,308,302,285,291"/>
+<area shape="rect" id="Node000016" href="$d5/d8f/meshx__nvs_8c.html#ab9a39208cc2b067b0b5df0a85d7b4b03" title="Set a value in the NVS." alt="" coords="800,291,912,316"/>
+<area shape="poly" id="edge33_Node000002_Node000016" title=" " alt="" coords="310,268,725,290,785,295,784,300,724,295,309,273"/>
+<area shape="rect" id="Node000028" href="$d5/d8f/meshx__nvs_8c.html#aa14948d7d45d83f3b6d9ca765a17cc58" title="Remove a key&#45;value pair from the NVS." alt="" coords="357,491,494,516"/>
+<area shape="poly" id="edge31_Node000002_Node000028" title=" " alt="" coords="298,286,311,298,325,317,333,336,338,372,342,408,348,427,359,447,374,465,391,480,388,484,370,468,355,450,343,429,337,409,333,372,328,337,320,320,307,301,294,290"/>
+<area shape="rect" id="Node000004" href="$dc/d28/esp__nvs_8c.html#ad5a8b76fa8a5b7105ee6cac1edb47ec3" title="Close the non&#45;volatile storage handle." alt="" coords="557,55,710,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="489,65,542,65,542,70,489,70"/>
+<area shape="rect" id="Node000005" href="$dd/da1/meshx__os__timer_8c.html#a934420ed4dad831b215afe128d2cbcd6" title="Delete a timer." alt="" coords="554,5,713,31"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="482,51,561,33,562,38,484,57"/>
+<area shape="rect" id="Node000006" href="$d3/db6/FreeRTOS__meshx__timer_8c.html#a6eb1e5296678e029069b59a546c6fecc" title="Deletes the RTOS timer." alt="" coords="773,5,940,31"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="713,16,757,16,757,21,713,21"/>
+<area shape="rect" id="Node000008" href="$dc/d28/esp__nvs_8c.html#a5dd0ef1876320dd92b9c102574e08435" title="Commit changes to the non&#45;volatile storage." alt="" coords="551,153,716,179"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="495,164,535,164,535,169,495,169"/>
+<area shape="rect" id="Node000009" href="$dc/d28/esp__nvs_8c.html#a486367a843345efbb5edb7267a706eb3" title="Write a blob value to the non&#45;volatile storage with a given key and namespace." alt="" coords="558,104,709,130"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="482,150,561,131,562,136,484,155"/>
+<area shape="rect" id="Node000011" href="$dc/d28/esp__nvs_8c.html#ac07e3fa684f8bd4f45c595c237b98504" title="Erase all key&#45;value pairs in the given namespace." alt="" coords="988,228,1142,254"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="920,238,972,238,972,244,920,244"/>
+<area shape="rect" id="Node000013" href="$dc/d28/esp__nvs_8c.html#a01998c5a615417f7fd4c8e3e6aa06a61" title="Read blob value for given key from non&#45;volatile storage." alt="" coords="783,453,930,479"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="690,464,767,464,767,469,690,469"/>
+<area shape="poly" id="edge23_Node000014_Node000012" title=" " alt="" coords="449,379,544,440,564,447,562,452,541,445,446,383"/>
+<area shape="rect" id="Node000015" href="$d5/d8f/meshx__nvs_8c.html#ae32d182aaba6ab32994ae22debaa1d6f" title="Erase the NVS and set the product ID." alt="" coords="542,305,725,331"/>
+<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="482,351,561,333,562,338,484,357"/>
+<area shape="rect" id="Node000023" href="$dc/d28/esp__nvs_8c.html#a15b34ee0dff883205fa21a0594fc0c7c" title="Open non&#45;volatile storage with a given namespace from the default partition." alt="" coords="558,404,709,430"/>
+<area shape="poly" id="edge24_Node000014_Node000023" title=" " alt="" coords="484,378,562,397,561,402,482,384"/>
+<area shape="rect" id="Node000024" href="$dd/da1/meshx__os__timer_8c.html#a59d86249c9c97227b869567af3b2cade" title="Create a timer." alt="" coords="554,355,713,380"/>
+<area shape="poly" id="edge25_Node000014_Node000024" title=" " alt="" coords="487,365,538,365,538,370,487,370"/>
+<area shape="poly" id="edge15_Node000015_Node000010" title=" " alt="" coords="672,302,802,257,804,262,674,307"/>
+<area shape="poly" id="edge16_Node000015_Node000016" title=" " alt="" coords="725,309,785,305,785,311,725,315"/>
+<area shape="rect" id="Node000017" href="$dd/da1/meshx__os__timer_8c.html#a63e6c1a15d1a30d41dc704c131a27062" title="Restart a timer." alt="" coords="1191,292,1351,318"/>
+<area shape="poly" id="edge17_Node000016_Node000017" title=" " alt="" coords="913,301,1175,302,1175,307,913,306"/>
+<area shape="rect" id="Node000018" href="$df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="1400,317,1572,343"/>
+<area shape="poly" id="edge18_Node000017_Node000018" title=" " alt="" coords="1352,312,1384,316,1384,321,1351,317"/>
+<area shape="rect" id="Node000019" href="$d2/d6a/FreeRTOS__meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue Back." alt="" coords="1620,268,1760,294"/>
+<area shape="poly" id="edge19_Node000018_Node000019" title=" " alt="" coords="1542,314,1618,295,1620,301,1543,319"/>
+<area shape="rect" id="Node000020" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="1632,317,1749,343"/>
+<area shape="poly" id="edge20_Node000018_Node000020" title=" " alt="" coords="1572,328,1616,328,1616,333,1572,333"/>
+<area shape="rect" id="Node000022" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="1624,367,1757,392"/>
+<area shape="poly" id="edge22_Node000018_Node000022" title=" " alt="" coords="1543,341,1620,360,1618,365,1542,346"/>
+<area shape="rect" id="Node000021" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="1808,317,1986,343"/>
+<area shape="poly" id="edge21_Node000020_Node000021" title=" " alt="" coords="1749,328,1793,328,1793,333,1749,333"/>
+<area shape="rect" id="Node000025" href="$dd/da1/meshx__os__timer_8c.html#a77adef39c1cdb9692b86241af2ca75ae" title=" " alt="" coords="1190,341,1352,367"/>
+<area shape="poly" id="edge26_Node000024_Node000025" title=" " alt="" coords="713,363,1175,353,1175,359,713,369"/>
+<area shape="rect" id="Node000026" href="$d3/db6/FreeRTOS__meshx__timer_8c.html#afdde188e70278d7d1b6ee57e72a39ed8" title="Creates a new RTOS timer." alt="" coords="773,392,940,418"/>
+<area shape="poly" id="edge28_Node000024_Node000026" title=" " alt="" coords="714,378,761,386,760,391,713,384"/>
+<area shape="poly" id="edge27_Node000025_Node000018" title=" " alt="" coords="1352,343,1384,339,1384,344,1352,348"/>
+<area shape="rect" id="Node000027" href="$d3/db6/FreeRTOS__meshx__timer_8c.html#a0238244bfe5230d1ce6fc3614bab8318" title="Callback function for FreeRTOS timer events." alt="" coords="1012,392,1118,418"/>
+<area shape="poly" id="edge29_Node000026_Node000027" title=" " alt="" coords="940,402,997,402,997,408,940,408"/>
+<area shape="poly" id="edge30_Node000027_Node000025" title=" " alt="" coords="1118,389,1201,369,1202,374,1119,395"/>
+<area shape="rect" id="Node000029" href="$dc/d28/esp__nvs_8c.html#ac4731c0a5821db05dfc78f395caf73dd" title="Remove a key&#45;value pair from the non&#45;volatile storage with a given key and namespace." alt="" coords="551,503,716,528"/>
+<area shape="poly" id="edge32_Node000028_Node000029" title=" " alt="" coords="495,505,535,507,535,512,495,510"/>
 </map>

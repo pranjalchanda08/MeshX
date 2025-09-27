@@ -1,112 +1,114 @@
 <map id="meshx_create_cwww_elements" name="meshx_create_cwww_elements">
-<area shape="rect" id="Node000001" title="Create Dynamic CWWW Server Model Elements." alt="" coords="5,381,212,406"/>
-<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="723,78,911,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,378,173,315,213,277,258,243,313,213,371,186,492,145,608,117,708,100,709,105,609,122,493,150,373,191,316,217,261,248,217,281,177,318,122,382"/>
-<area shape="rect" id="Node000004" href="$d9/d46/meshx__cwww__server_8c.html#af44b869dfc97f122b46ad2752ee96d48" title="Callback function for relay server model events for Provisioning events." alt="" coords="496,344,665,385"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="212,385,480,368,481,373,212,390"/>
-<area shape="rect" id="Node000014" href="$d9/d46/meshx__cwww__server_8c.html#ab8653550cf31c3c5ac29ebf5d2d4654f" title="Callback function for configuration server events." alt="" coords="278,467,420,507"/>
-<area shape="poly" id="edge15_Node000001_Node000014" title=" " alt="" coords="143,404,261,451,279,458,277,463,259,456,142,409"/>
-<area shape="rect" id="Node000019" href="$d9/d46/meshx__cwww__server_8c.html#ade969ecdaaeafbdb83b4f4ecabcef37c" title="Add CW&#45;WW server models to the element list." alt="" coords="270,565,428,606"/>
-<area shape="poly" id="edge21_Node000001_Node000019" title=" " alt="" coords="127,405,261,517,309,554,305,558,258,521,124,409"/>
-<area shape="rect" id="Node000027" href="$dc/d93/meshx__api_8c.html#a1c0af24af9f5e3835fdc2869ce31b109" title="Control task handler for BLE Mesh application messages." alt="" coords="268,631,430,671"/>
-<area shape="poly" id="edge29_Node000001_Node000027" title=" " alt="" coords="118,406,136,446,167,502,209,563,234,591,261,616,268,621,265,625,258,620,230,594,205,566,162,505,131,448,113,408"/>
-<area shape="rect" id="Node000028" href="$dd/d79/meshx__config__server_8c.html#aea136e2f0520f4f57129778288f17ec9" title="Registers a configuration server callback for specific events." alt="" coords="277,5,420,46"/>
-<area shape="poly" id="edge30_Node000001_Node000028" title=" " alt="" coords="109,380,122,322,149,236,168,188,193,141,223,97,258,57,263,53,266,57,262,61,227,100,197,144,173,191,154,238,127,323,115,381"/>
-<area shape="rect" id="Node000029" href="$d9/d46/meshx__cwww__server_8c.html#a079e0e35fadd8737ea2216db7c76977c" title="Handler for sending messages from the CW&#45;WW server model to BLE." alt="" coords="269,401,429,442"/>
-<area shape="poly" id="edge32_Node000001_Node000029" title=" " alt="" coords="212,403,253,408,253,413,212,408"/>
-<area shape="rect" id="Node000033" href="$d9/d46/meshx__cwww__server_8c.html#a9323b419771abef4a20d688f3f90188d" title="Create space for CW&#45;WW models." alt="" coords="262,753,436,794"/>
-<area shape="poly" id="edge37_Node000001_Node000033" title=" " alt="" coords="118,406,170,523,212,603,262,681,288,713,315,741,311,745,284,717,258,685,208,606,165,526,113,408"/>
-<area shape="rect" id="Node000042" href="$d4/db6/meshx__light__ctl__srv_8c.html#adc1d0d7fc5b8e44bebce9c905547780f" title="Initialize the Light CTL Server model." alt="" coords="260,258,438,284"/>
-<area shape="poly" id="edge47_Node000001_Node000042" title=" " alt="" coords="134,378,307,289,309,294,137,383"/>
-<area shape="rect" id="Node000050" href="$d2/d21/meshx__prov__srv_8c.html#a294c30d13de4ce41c5502ec6ccd68599" title="Register a callback function for provisioning events." alt="" coords="278,71,420,111"/>
-<area shape="poly" id="edge59_Node000001_Node000050" title=" " alt="" coords="112,379,128,333,158,266,202,193,228,159,258,128,272,117,275,122,261,132,232,162,206,196,163,268,133,335,117,381"/>
-<area shape="rect" id="Node000003" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="1444,105,1577,130"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="911,92,1428,112,1428,117,911,97"/>
-<area shape="rect" id="Node000005" href="$d5/d98/meshx__light__server_8c.html#acfab754bb56f290741a2fc1c49c595c8" title="Sends a message to the BLE subsystem via the control task." alt="" coords="745,279,889,319"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="656,341,730,320,731,325,657,346"/>
-<area shape="rect" id="Node000011" href="$da/dcb/meshx__gen__server_8c.html#a0a25ca2d0f109691c37c60eb95331b36" title="Sends a message to the BLE subsystem via the control task." alt="" coords="743,344,891,385"/>
-<area shape="poly" id="edge11_Node000004_Node000011" title=" " alt="" coords="665,362,728,362,728,367,665,367"/>
-<area shape="rect" id="Node000013" href="$d4/db6/meshx__light__ctl__srv_8c.html#aaff04640563eef2cfa526fbf99ed5319" title="Create a Light CTL Server send message packet." alt="" coords="749,409,885,450"/>
-<area shape="poly" id="edge14_Node000004_Node000013" title=" " alt="" coords="657,383,735,404,733,409,656,388"/>
-<area shape="rect" id="Node000006" href="$df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="1206,261,1378,286"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="889,293,1190,276,1190,282,889,298"/>
-<area shape="rect" id="Node000010" href="$d5/d98/meshx__light__server_8c.html#a93ab84b7706337c1dd550a817efca526" title="Checks if the given opcode belongs to the Generic Light group." alt="" coords="983,451,1120,491"/>
-<area shape="poly" id="edge10_Node000005_Node000010" title=" " alt="" coords="890,318,912,330,928,344,938,357,961,387,1016,438,1012,442,957,390,934,360,924,347,909,335,887,322"/>
-<area shape="poly" id="edge9_Node000006_Node000003" title=" " alt="" coords="1310,258,1477,138,1480,142,1313,263"/>
-<area shape="rect" id="Node000007" href="$d2/d6a/FreeRTOS__meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue." alt="" coords="1440,237,1581,262"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="1378,262,1425,256,1425,262,1379,267"/>
-<area shape="rect" id="Node000008" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="1452,286,1569,312"/>
-<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="1379,281,1437,288,1436,293,1378,286"/>
-<area shape="rect" id="Node000009" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="1629,286,1806,312"/>
-<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="1570,296,1613,296,1613,302,1570,302"/>
-<area shape="poly" id="edge12_Node000011_Node000006" title=" " alt="" coords="890,383,946,394,1010,401,1078,400,1111,395,1143,386,1180,368,1215,345,1268,296,1271,300,1218,349,1183,373,1145,391,1112,400,1078,405,1010,407,945,399,888,388"/>
-<area shape="rect" id="Node000012" href="$da/dcb/meshx__gen__server_8c.html#a2de59535b6980e3872c49ed575711338" title="Checks if the given opcode corresponds to a status message in the Generic Server group." alt="" coords="983,336,1120,377"/>
-<area shape="poly" id="edge13_Node000011_Node000012" title=" " alt="" coords="891,359,967,357,968,362,891,364"/>
-<area shape="rect" id="Node000015" href="$dc/d96/esp__platform__ble__mesh_8c.html#aed72eaf1b8f7fd7bf64c962bb028a31e" title="Retrieves the base element ID for the BLE Mesh platform." alt="" coords="486,524,675,549"/>
-<area shape="poly" id="edge16_Node000014_Node000015" title=" " alt="" coords="421,499,503,517,501,522,420,505"/>
-<area shape="rect" id="Node000016" href="$d5/d8f/meshx__nvs_8c.html#a091a0be186edb6d1dc740b838cf38037" title="Store the context of a specific element to NVS." alt="" coords="486,474,675,500"/>
-<area shape="poly" id="edge17_Node000014_Node000016" title=" " alt="" coords="420,484,471,484,471,490,420,490"/>
-<area shape="rect" id="Node000017" href="$d5/d8f/meshx__nvs_8c.html#a00bee4a5af97fa0b8d4195a827e9f5f5" title="Set a value in the NVS." alt="" coords="761,540,873,565"/>
-<area shape="poly" id="edge18_Node000016_Node000017" title=" " alt="" coords="638,498,676,508,724,524,751,532,750,537,723,530,675,514,636,503"/>
-<area shape="rect" id="Node000018" href="$dd/da1/meshx__os__timer_8c.html#a63e6c1a15d1a30d41dc704c131a27062" title="Restart a timer." alt="" coords="971,581,1132,606"/>
-<area shape="poly" id="edge19_Node000017_Node000018" title=" " alt="" coords="874,560,960,575,959,580,873,565"/>
-<area shape="poly" id="edge20_Node000018_Node000006" title=" " alt="" coords="1123,578,1142,566,1173,537,1199,503,1221,467,1240,429,1267,357,1282,301,1288,302,1272,359,1244,431,1226,469,1203,506,1176,540,1146,570,1126,582"/>
-<area shape="rect" id="Node000020" href="$d5/d8f/meshx__nvs_8c.html#a3773373d74bd4e2c0415a89f7652ebe8" title="Retrieve the context of a specific element from NVS." alt="" coords="486,573,675,598"/>
-<area shape="poly" id="edge22_Node000019_Node000020" title=" " alt="" coords="428,583,470,583,470,588,428,588"/>
-<area shape="rect" id="Node000022" href="$dc/d96/esp__platform__ble__mesh_8c.html#a2bdab205d68a408e7ec03e58b2fa8a0b" title="Adds an element to the BLE Mesh composition." alt="" coords="496,623,665,663"/>
-<area shape="poly" id="edge24_Node000019_Node000022" title=" " alt="" coords="429,603,482,616,481,621,428,608"/>
-<area shape="rect" id="Node000023" href="$d9/d46/meshx__cwww__server_8c.html#a6056b1ffd8dfaff87bd0c4444be15404" title="Restore saved CW&#45;WW model states." alt="" coords="506,688,655,729"/>
-<area shape="poly" id="edge25_Node000019_Node000023" title=" " alt="" coords="418,604,440,617,455,631,464,646,473,659,488,673,496,678,493,683,484,677,469,663,460,649,451,635,436,621,415,609"/>
-<area shape="rect" id="Node000021" href="$d5/d8f/meshx__nvs_8c.html#a66b5694246aa0f0a9be3c228de543200" title="Get a value from the NVS." alt="" coords="761,589,873,614"/>
-<area shape="poly" id="edge23_Node000020_Node000021" title=" " alt="" coords="676,589,746,594,745,600,676,595"/>
-<area shape="rect" id="Node000024" href="$d4/db6/meshx__light__ctl__srv_8c.html#a8695297933d548b07c6b2ccce8236920" title="Restore the CTL state for the generic server model." alt="" coords="749,688,885,729"/>
-<area shape="poly" id="edge26_Node000023_Node000024" title=" " alt="" coords="655,706,733,706,733,711,655,711"/>
-<area shape="rect" id="Node000025" href="$de/d42/esp__light__srv__model_8c.html#add201d93559ff4ff071950572182e204" title="Restore the state of the Light CTL Server." alt="" coords="982,688,1121,729"/>
-<area shape="poly" id="edge27_Node000024_Node000025" title=" " alt="" coords="885,706,966,706,966,711,885,711"/>
-<area shape="rect" id="Node000026" href="$de/d42/esp__light__srv__model_8c.html#a0dc534558d13a140c430ef5bb1f659f9" title="Set the state of the Light CTL Server." alt="" coords="1220,688,1364,729"/>
-<area shape="poly" id="edge28_Node000025_Node000026" title=" " alt="" coords="1122,706,1205,706,1205,711,1122,711"/>
-<area shape="poly" id="edge31_Node000028_Node000002" title=" " alt="" coords="421,33,708,73,708,79,420,38"/>
-<area shape="rect" id="Node000030" href="$d4/db6/meshx__light__ctl__srv_8c.html#a934b83618b10c26bf4d3f17e0ae1aa08" title="Send the Light CTL status message." alt="" coords="512,409,649,450"/>
-<area shape="poly" id="edge33_Node000029_Node000030" title=" " alt="" coords="429,422,497,424,497,429,429,427"/>
-<area shape="rect" id="Node000031" href="$d5/d98/meshx__light__server_8c.html#a40a91efcb35c7db08fd73143b779a31a" title="Sends a status message for the Lighting Server model." alt="" coords="745,475,889,515"/>
-<area shape="poly" id="edge34_Node000030_Node000031" title=" " alt="" coords="650,446,731,469,730,474,648,451"/>
-<area shape="poly" id="edge35_Node000031_Node000010" title=" " alt="" coords="889,485,967,477,968,482,889,490"/>
-<area shape="rect" id="Node000032" href="$de/d42/esp__light__srv__model_8c.html#ac79c39e50439290a87cd0b7da8fa886a" title="Send a status message from the Light Server. This function constructs and sends a status message cont..." alt="" coords="978,516,1124,557"/>
-<area shape="poly" id="edge36_Node000031_Node000032" title=" " alt="" coords="890,505,963,518,962,523,889,510"/>
-<area shape="rect" id="Node000034" href="$d9/d46/meshx__cwww__server_8c.html#ae58e3714c7314300269ade7cf0e09216" title="Deinitializes the mesh element structure by freeing allocated memory." alt="" coords="504,753,657,794"/>
-<area shape="poly" id="edge38_Node000033_Node000034" title=" " alt="" coords="436,771,489,771,489,776,436,776"/>
-<area shape="rect" id="Node000038" href="$d9/d46/meshx__cwww__server_8c.html#acfe19244baff39d7aaaeefa052997704" title="Initializes the mesh element structure by freeing allocated memory." alt="" coords="492,822,669,848"/>
-<area shape="poly" id="edge42_Node000033_Node000038" title=" " alt="" coords="429,792,515,815,514,820,428,797"/>
-<area shape="rect" id="Node000035" href="$d4/db6/meshx__light__ctl__srv_8c.html#aed19d572f2a8028c955328e452df507e" title="Delete the CTL server model instance." alt="" coords="740,753,894,794"/>
-<area shape="poly" id="edge39_Node000034_Node000035" title=" " alt="" coords="657,771,724,771,724,776,657,776"/>
-<area shape="rect" id="Node000036" href="$de/d42/esp__light__srv__model_8c.html#adcc92f91b94547ecd612f3a8fd93e412" title="Delete a Light CTL Server instance." alt="" coords="982,753,1121,794"/>
-<area shape="poly" id="edge40_Node000035_Node000036" title=" " alt="" coords="895,771,966,771,966,776,895,776"/>
-<area shape="rect" id="Node000037" href="$dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="1202,769,1383,794"/>
-<area shape="poly" id="edge41_Node000036_Node000037" title=" " alt="" coords="1122,773,1186,775,1186,781,1121,779"/>
-<area shape="rect" id="Node000039" href="$d4/db6/meshx__light__ctl__srv_8c.html#a28ca32dccd7b19454cf530dc3525d0a6" title="Create and initialize a new CTL server model instance." alt="" coords="740,819,894,859"/>
-<area shape="poly" id="edge43_Node000038_Node000039" title=" " alt="" coords="669,834,724,835,724,840,669,839"/>
-<area shape="rect" id="Node000040" href="$de/d42/esp__light__srv__model_8c.html#aa7384157587813da254014dfd8f13b17" title="Create a Light CTL Server instance." alt="" coords="982,819,1121,859"/>
-<area shape="poly" id="edge44_Node000039_Node000040" title=" " alt="" coords="895,836,966,836,966,842,895,842"/>
-<area shape="poly" id="edge46_Node000040_Node000037" title=" " alt="" coords="1121,820,1219,796,1221,801,1122,825"/>
-<area shape="rect" id="Node000041" href="$dc/d96/esp__platform__ble__mesh_8c.html#a12b595bcf51021fcaa675e488fe24308" title="Creates and initializes model and publication structures." alt="" coords="1192,826,1392,852"/>
-<area shape="poly" id="edge45_Node000040_Node000041" title=" " alt="" coords="1122,836,1177,836,1177,842,1122,842"/>
-<area shape="rect" id="Node000043" href="$d4/db6/meshx__light__ctl__srv_8c.html#a7d11c7a15e9c2066afb3f22e72068518" title="Handle Light CTL messages for the lighting server model." alt="" coords="513,279,648,319"/>
-<area shape="poly" id="edge48_Node000042_Node000043" title=" " alt="" coords="438,279,498,286,497,292,438,284"/>
-<area shape="rect" id="Node000046" href="$d5/d98/meshx__light__server_8c.html#ac2ffaf1fcb582f87cf5e5a9b36f2d043" title="Register a callback function for the lighting server model." alt="" coords="504,180,657,205"/>
-<area shape="poly" id="edge53_Node000042_Node000046" title=" " alt="" coords="379,255,485,214,507,207,509,212,487,219,381,260"/>
-<area shape="rect" id="Node000047" href="$d5/d98/meshx__light__server_8c.html#a12af3296e750ff638ba757ebf12d9043" title="Initialize the meshxuction lighting server." alt="" coords="502,229,659,254"/>
-<area shape="poly" id="edge55_Node000042_Node000047" title=" " alt="" coords="438,257,487,251,487,256,438,262"/>
-<area shape="poly" id="edge49_Node000043_Node000005" title=" " alt="" coords="649,296,730,296,730,302,649,302"/>
-<area shape="rect" id="Node000044" href="$d4/db6/meshx__light__ctl__srv_8c.html#a9cde80da166fd8a69dd7261a2478d1b8" title="Perform hardware change for the light control server model." alt="" coords="745,213,889,254"/>
-<area shape="poly" id="edge50_Node000043_Node000044" title=" " alt="" coords="648,278,729,255,730,260,650,283"/>
-<area shape="poly" id="edge51_Node000044_Node000006" title=" " alt="" coords="890,237,1190,262,1190,268,889,242"/>
-<area shape="rect" id="Node000045" href="$dc/d96/esp__platform__ble__mesh_8c.html#ab3ea84732bbdc4a0b8d742aa4f66be09" title="Checks if a model is subscribed to a specific group address." alt="" coords="959,185,1144,210"/>
-<area shape="poly" id="edge52_Node000044_Node000045" title=" " alt="" coords="889,220,948,211,949,216,890,225"/>
-<area shape="poly" id="edge54_Node000046_Node000002" title=" " alt="" coords="626,176,674,158,722,130,769,108,771,113,725,135,676,163,628,181"/>
-<area shape="rect" id="Node000048" href="$de/d42/esp__light__srv__model_8c.html#afd34945754064f76b2471c0f9598e785" title="Initialize the platform&#45;specific Light Server." alt="" coords="733,145,901,170"/>
-<area shape="poly" id="edge56_Node000047_Node000048" title=" " alt="" coords="639,226,674,215,773,175,775,180,676,220,641,231"/>
-<area shape="rect" id="Node000049" href="$de/d42/esp__light__srv__model_8c.html#a4ee43eae858bbcef30908dac0e2fa7f8" title="Callback function for BLE Mesh Lightness Server events." alt="" coords="980,120,1122,161"/>
-<area shape="poly" id="edge57_Node000048_Node000049" title=" " alt="" coords="901,149,965,144,965,149,902,154"/>
-<area shape="poly" id="edge58_Node000049_Node000006" title=" " alt="" coords="1120,159,1145,170,1211,209,1264,249,1261,253,1208,214,1143,175,1118,164"/>
-<area shape="poly" id="edge60_Node000050_Node000002" title=" " alt="" coords="420,88,708,88,708,94,420,94"/>
+<area shape="rect" id="Node000001" title="Create Dynamic CWWW Server Model Elements." alt="" coords="5,373,212,398"/>
+<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="723,70,911,96"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="112,372,128,328,158,268,201,205,228,177,258,153,312,123,369,101,429,85,489,74,606,65,707,68,707,73,606,71,490,79,430,90,371,106,314,128,261,157,231,181,205,208,163,271,133,330,117,373"/>
+<area shape="rect" id="Node000004" href="$d9/d46/meshx__cwww__server_8c.html#af44b869dfc97f122b46ad2752ee96d48" title="Callback function for relay server model events for Provisioning events." alt="" coords="496,336,665,377"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="212,377,480,360,481,365,212,382"/>
+<area shape="rect" id="Node000014" href="$d9/d46/meshx__cwww__server_8c.html#ab8653550cf31c3c5ac29ebf5d2d4654f" title="Callback function for configuration server events." alt="" coords="278,459,420,499"/>
+<area shape="poly" id="edge15_Node000001_Node000014" title=" " alt="" coords="143,396,261,443,279,450,277,455,259,448,142,401"/>
+<area shape="rect" id="Node000019" href="$d9/d46/meshx__cwww__server_8c.html#ade969ecdaaeafbdb83b4f4ecabcef37c" title="Add CW&#45;WW server models to the element list." alt="" coords="270,557,428,598"/>
+<area shape="poly" id="edge21_Node000001_Node000019" title=" " alt="" coords="127,397,261,509,309,546,305,550,258,513,124,401"/>
+<area shape="rect" id="Node000028" href="$dc/d93/meshx__api_8c.html#a1c0af24af9f5e3835fdc2869ce31b109" title="Control task handler for BLE Mesh application messages." alt="" coords="268,623,430,663"/>
+<area shape="poly" id="edge30_Node000001_Node000028" title=" " alt="" coords="118,398,136,438,167,494,209,555,234,583,261,608,268,613,265,617,258,612,230,586,205,558,162,497,131,440,113,400"/>
+<area shape="rect" id="Node000029" href="$dd/d79/meshx__config__server_8c.html#aea136e2f0520f4f57129778288f17ec9" title="Registers a configuration server callback for specific events." alt="" coords="277,167,420,207"/>
+<area shape="poly" id="edge31_Node000001_Node000029" title=" " alt="" coords="120,370,178,312,258,241,297,214,300,218,261,245,182,316,124,374"/>
+<area shape="rect" id="Node000030" href="$d9/d46/meshx__cwww__server_8c.html#a079e0e35fadd8737ea2216db7c76977c" title="Handler for sending messages from the CW&#45;WW server model to BLE." alt="" coords="269,393,429,434"/>
+<area shape="poly" id="edge33_Node000001_Node000030" title=" " alt="" coords="212,395,253,400,253,405,212,400"/>
+<area shape="rect" id="Node000034" href="$d9/d46/meshx__cwww__server_8c.html#a9323b419771abef4a20d688f3f90188d" title="Create space for CW&#45;WW models." alt="" coords="262,741,436,782"/>
+<area shape="poly" id="edge38_Node000001_Node000034" title=" " alt="" coords="117,398,169,515,211,595,262,673,287,703,313,729,309,733,283,706,258,677,207,598,164,517,112,400"/>
+<area shape="rect" id="Node000043" href="$d4/db6/meshx__light__ctl__srv_8c.html#adc1d0d7fc5b8e44bebce9c905547780f" title="Initialize the Light CTL Server model." alt="" coords="260,256,438,281"/>
+<area shape="poly" id="edge48_Node000001_Node000043" title=" " alt="" coords="136,370,306,286,308,291,138,375"/>
+<area shape="rect" id="Node000051" href="$d2/d21/meshx__prov__srv_8c.html#a294c30d13de4ce41c5502ec6ccd68599" title="Register a callback function for provisioning events." alt="" coords="278,5,420,46"/>
+<area shape="poly" id="edge60_Node000001_Node000051" title=" " alt="" coords="110,372,124,317,151,235,171,189,195,144,224,101,258,62,270,52,273,56,262,66,228,104,200,147,176,192,156,237,129,318,115,373"/>
+<area shape="rect" id="Node000003" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="1444,89,1577,114"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="911,83,1428,97,1428,102,911,88"/>
+<area shape="rect" id="Node000005" href="$d5/d98/meshx__light__server_8c.html#acfab754bb56f290741a2fc1c49c595c8" title="Sends a message to the BLE subsystem via the control task." alt="" coords="745,271,889,311"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="656,333,730,312,731,317,657,338"/>
+<area shape="rect" id="Node000011" href="$da/dcb/meshx__gen__server_8c.html#a0a25ca2d0f109691c37c60eb95331b36" title="Sends a message to the BLE subsystem via the control task." alt="" coords="743,336,891,377"/>
+<area shape="poly" id="edge11_Node000004_Node000011" title=" " alt="" coords="665,354,728,354,728,359,665,359"/>
+<area shape="rect" id="Node000013" href="$d4/db6/meshx__light__ctl__srv_8c.html#aaff04640563eef2cfa526fbf99ed5319" title="Create a Light CTL Server send message packet." alt="" coords="749,401,885,442"/>
+<area shape="poly" id="edge14_Node000004_Node000013" title=" " alt="" coords="657,375,735,396,733,401,656,380"/>
+<area shape="rect" id="Node000006" href="$df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="1206,245,1378,270"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="889,283,1190,262,1190,267,889,289"/>
+<area shape="rect" id="Node000010" href="$d5/d98/meshx__light__server_8c.html#a93ab84b7706337c1dd550a817efca526" title="Checks if the given opcode belongs to the Generic Light group." alt="" coords="983,436,1120,477"/>
+<area shape="poly" id="edge10_Node000005_Node000010" title=" " alt="" coords="891,308,913,322,931,348,937,373,943,397,961,421,971,429,968,434,957,425,939,400,932,374,926,350,909,326,888,312"/>
+<area shape="poly" id="edge9_Node000006_Node000003" title=" " alt="" coords="1310,242,1477,122,1480,126,1313,247"/>
+<area shape="rect" id="Node000007" href="$d2/d6a/FreeRTOS__meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue Back." alt="" coords="1440,270,1581,296"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="1379,265,1425,270,1425,276,1378,270"/>
+<area shape="rect" id="Node000008" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="1452,221,1569,246"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="1378,246,1436,239,1437,244,1379,251"/>
+<area shape="rect" id="Node000009" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="1629,221,1806,246"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="1570,231,1613,231,1613,236,1570,236"/>
+<area shape="poly" id="edge12_Node000011_Node000006" title=" " alt="" coords="891,339,1211,272,1212,277,892,344"/>
+<area shape="rect" id="Node000012" href="$da/dcb/meshx__gen__server_8c.html#a2de59535b6980e3872c49ed575711338" title="Checks if the given opcode corresponds to a status message in the Generic Server group." alt="" coords="983,371,1120,411"/>
+<area shape="poly" id="edge13_Node000011_Node000012" title=" " alt="" coords="891,365,968,376,967,381,891,370"/>
+<area shape="rect" id="Node000015" href="$dc/d96/esp__platform__ble__mesh_8c.html#aed72eaf1b8f7fd7bf64c962bb028a31e" title="Retrieves the base element ID for the BLE Mesh platform." alt="" coords="486,516,675,541"/>
+<area shape="poly" id="edge16_Node000014_Node000015" title=" " alt="" coords="421,491,503,509,501,514,420,497"/>
+<area shape="rect" id="Node000016" href="$d5/d8f/meshx__nvs_8c.html#a091a0be186edb6d1dc740b838cf38037" title="Store the context of a specific element to NVS." alt="" coords="486,466,675,492"/>
+<area shape="poly" id="edge17_Node000014_Node000016" title=" " alt="" coords="420,476,471,476,471,482,420,482"/>
+<area shape="rect" id="Node000017" href="$d5/d8f/meshx__nvs_8c.html#ab9a39208cc2b067b0b5df0a85d7b4b03" title="Set a value in the NVS." alt="" coords="761,545,873,570"/>
+<area shape="poly" id="edge18_Node000016_Node000017" title=" " alt="" coords="639,490,676,500,771,536,770,541,674,506,638,495"/>
+<area shape="rect" id="Node000018" href="$dd/da1/meshx__os__timer_8c.html#a63e6c1a15d1a30d41dc704c131a27062" title="Restart a timer." alt="" coords="971,566,1132,592"/>
+<area shape="poly" id="edge19_Node000017_Node000018" title=" " alt="" coords="874,560,956,568,955,573,874,565"/>
+<area shape="poly" id="edge20_Node000018_Node000006" title=" " alt="" coords="1123,563,1142,552,1173,522,1199,488,1221,451,1240,413,1267,341,1283,285,1288,286,1272,343,1245,415,1226,454,1203,491,1177,526,1146,556,1126,568"/>
+<area shape="rect" id="Node000020" href="$d5/d8f/meshx__nvs_8c.html#a3773373d74bd4e2c0415a89f7652ebe8" title="Retrieve the context of a specific element from NVS." alt="" coords="486,565,675,590"/>
+<area shape="poly" id="edge22_Node000019_Node000020" title=" " alt="" coords="428,575,470,575,470,580,428,580"/>
+<area shape="rect" id="Node000023" href="$dc/d96/esp__platform__ble__mesh_8c.html#a2bdab205d68a408e7ec03e58b2fa8a0b" title="Adds an element to the BLE Mesh composition." alt="" coords="496,615,665,655"/>
+<area shape="poly" id="edge25_Node000019_Node000023" title=" " alt="" coords="429,595,482,608,481,613,428,600"/>
+<area shape="rect" id="Node000024" href="$d9/d46/meshx__cwww__server_8c.html#a6056b1ffd8dfaff87bd0c4444be15404" title="Restore saved CW&#45;WW model states." alt="" coords="506,680,655,721"/>
+<area shape="poly" id="edge26_Node000019_Node000024" title=" " alt="" coords="418,596,440,609,455,623,464,638,473,651,488,665,496,670,493,675,484,669,469,655,460,641,451,627,436,613,415,601"/>
+<area shape="rect" id="Node000021" href="$d5/d8f/meshx__nvs_8c.html#ae36588f5b4ae5e5ac771e1af86a71e5a" title="Get a value from the NVS." alt="" coords="761,609,873,634"/>
+<area shape="poly" id="edge23_Node000020_Node000021" title=" " alt="" coords="654,588,746,606,745,611,653,594"/>
+<area shape="rect" id="Node000022" href="$dc/d28/esp__nvs_8c.html#a01998c5a615417f7fd4c8e3e6aa06a61" title="Read blob value for given key from non&#45;volatile storage." alt="" coords="978,616,1125,641"/>
+<area shape="poly" id="edge24_Node000021_Node000022" title=" " alt="" coords="874,621,962,623,962,628,874,626"/>
+<area shape="rect" id="Node000025" href="$d4/db6/meshx__light__ctl__srv_8c.html#a8695297933d548b07c6b2ccce8236920" title="Restore the CTL state for the generic server model." alt="" coords="749,676,885,717"/>
+<area shape="poly" id="edge27_Node000024_Node000025" title=" " alt="" coords="655,696,733,695,733,700,655,702"/>
+<area shape="rect" id="Node000026" href="$de/d42/esp__light__srv__model_8c.html#add201d93559ff4ff071950572182e204" title="Restore the state of the Light CTL Server." alt="" coords="982,676,1121,717"/>
+<area shape="poly" id="edge28_Node000025_Node000026" title=" " alt="" coords="885,694,966,694,966,699,885,699"/>
+<area shape="rect" id="Node000027" href="$de/d42/esp__light__srv__model_8c.html#a0dc534558d13a140c430ef5bb1f659f9" title="Set the state of the Light CTL Server." alt="" coords="1220,676,1364,717"/>
+<area shape="poly" id="edge29_Node000026_Node000027" title=" " alt="" coords="1122,694,1205,694,1205,699,1122,699"/>
+<area shape="poly" id="edge32_Node000029_Node000002" title=" " alt="" coords="420,169,740,97,741,102,421,174"/>
+<area shape="rect" id="Node000031" href="$d4/db6/meshx__light__ctl__srv_8c.html#a934b83618b10c26bf4d3f17e0ae1aa08" title="Send the Light CTL status message." alt="" coords="512,401,649,442"/>
+<area shape="poly" id="edge34_Node000030_Node000031" title=" " alt="" coords="429,414,497,416,497,421,429,419"/>
+<area shape="rect" id="Node000032" href="$d5/d98/meshx__light__server_8c.html#a40a91efcb35c7db08fd73143b779a31a" title="Sends a status message for the Lighting Server model." alt="" coords="745,467,889,507"/>
+<area shape="poly" id="edge35_Node000031_Node000032" title=" " alt="" coords="650,438,731,461,730,466,648,443"/>
+<area shape="poly" id="edge36_Node000032_Node000010" title=" " alt="" coords="889,475,967,465,968,470,889,480"/>
+<area shape="rect" id="Node000033" href="$de/d42/esp__light__srv__model_8c.html#ac79c39e50439290a87cd0b7da8fa886a" title="Send a status message from the Light Server. This function constructs and sends a status message cont..." alt="" coords="978,501,1124,542"/>
+<area shape="poly" id="edge37_Node000032_Node000033" title=" " alt="" coords="889,495,963,506,962,511,889,500"/>
+<area shape="rect" id="Node000035" href="$d9/d46/meshx__cwww__server_8c.html#ae58e3714c7314300269ade7cf0e09216" title="Deinitializes the mesh element structure by freeing allocated memory." alt="" coords="504,803,657,843"/>
+<area shape="poly" id="edge39_Node000034_Node000035" title=" " alt="" coords="429,780,490,796,489,802,428,785"/>
+<area shape="rect" id="Node000039" href="$d9/d46/meshx__cwww__server_8c.html#acfe19244baff39d7aaaeefa052997704" title="Initializes the mesh element structure by freeing allocated memory." alt="" coords="492,749,669,774"/>
+<area shape="poly" id="edge43_Node000034_Node000039" title=" " alt="" coords="436,759,477,759,477,764,436,764"/>
+<area shape="rect" id="Node000036" href="$d4/db6/meshx__light__ctl__srv_8c.html#aed19d572f2a8028c955328e452df507e" title="Delete the CTL server model instance." alt="" coords="740,807,894,847"/>
+<area shape="poly" id="edge40_Node000035_Node000036" title=" " alt="" coords="657,822,724,823,724,828,657,827"/>
+<area shape="rect" id="Node000037" href="$de/d42/esp__light__srv__model_8c.html#adcc92f91b94547ecd612f3a8fd93e412" title="Delete a Light CTL Server instance." alt="" coords="982,807,1121,847"/>
+<area shape="poly" id="edge41_Node000036_Node000037" title=" " alt="" coords="895,824,966,824,966,830,895,830"/>
+<area shape="rect" id="Node000038" href="$dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="1202,806,1383,832"/>
+<area shape="poly" id="edge42_Node000037_Node000038" title=" " alt="" coords="1121,822,1186,820,1186,825,1122,827"/>
+<area shape="rect" id="Node000040" href="$d4/db6/meshx__light__ctl__srv_8c.html#a28ca32dccd7b19454cf530dc3525d0a6" title="Create and initialize a new CTL server model instance." alt="" coords="740,741,894,782"/>
+<area shape="poly" id="edge44_Node000039_Node000040" title=" " alt="" coords="669,759,724,759,724,764,669,764"/>
+<area shape="rect" id="Node000041" href="$de/d42/esp__light__srv__model_8c.html#aa7384157587813da254014dfd8f13b17" title="Create a Light CTL Server instance." alt="" coords="982,741,1121,782"/>
+<area shape="poly" id="edge45_Node000040_Node000041" title=" " alt="" coords="895,759,966,759,966,764,895,764"/>
+<area shape="poly" id="edge47_Node000041_Node000038" title=" " alt="" coords="1122,776,1221,799,1219,805,1121,781"/>
+<area shape="rect" id="Node000042" href="$dc/d96/esp__platform__ble__mesh_8c.html#a12b595bcf51021fcaa675e488fe24308" title="Creates and initializes model and publication structures." alt="" coords="1192,749,1392,774"/>
+<area shape="poly" id="edge46_Node000041_Node000042" title=" " alt="" coords="1122,759,1177,759,1177,764,1122,764"/>
+<area shape="rect" id="Node000044" href="$d4/db6/meshx__light__ctl__srv_8c.html#a7d11c7a15e9c2066afb3f22e72068518" title="Handle Light CTL messages for the lighting server model." alt="" coords="513,271,648,311"/>
+<area shape="poly" id="edge49_Node000043_Node000044" title=" " alt="" coords="438,274,498,280,497,286,438,280"/>
+<area shape="rect" id="Node000047" href="$d5/d98/meshx__light__server_8c.html#ac2ffaf1fcb582f87cf5e5a9b36f2d043" title="Register a callback function for the lighting server model." alt="" coords="504,172,657,197"/>
+<area shape="poly" id="edge54_Node000043_Node000047" title=" " alt="" coords="376,253,426,229,485,206,506,199,508,204,487,211,428,234,378,257"/>
+<area shape="rect" id="Node000048" href="$d5/d98/meshx__light__server_8c.html#a12af3296e750ff638ba757ebf12d9043" title="Initialize the meshxuction lighting server." alt="" coords="502,221,659,246"/>
+<area shape="poly" id="edge56_Node000043_Node000048" title=" " alt="" coords="438,252,487,245,488,250,439,258"/>
+<area shape="poly" id="edge50_Node000044_Node000005" title=" " alt="" coords="649,288,730,288,730,294,649,294"/>
+<area shape="rect" id="Node000045" href="$d4/db6/meshx__light__ctl__srv_8c.html#a9cde80da166fd8a69dd7261a2478d1b8" title="Perform hardware change for the light control server model." alt="" coords="745,205,889,246"/>
+<area shape="poly" id="edge51_Node000044_Node000045" title=" " alt="" coords="648,270,729,247,730,252,650,275"/>
+<area shape="poly" id="edge52_Node000045_Node000006" title=" " alt="" coords="890,228,1190,248,1190,254,889,233"/>
+<area shape="rect" id="Node000046" href="$dc/d96/esp__platform__ble__mesh_8c.html#ab3ea84732bbdc4a0b8d742aa4f66be09" title="Checks if a model is subscribed to a specific group address." alt="" coords="959,169,1144,194"/>
+<area shape="poly" id="edge53_Node000045_Node000046" title=" " alt="" coords="889,209,964,195,965,201,890,215"/>
+<area shape="poly" id="edge55_Node000047_Node000002" title=" " alt="" coords="626,168,674,150,722,122,769,100,771,105,725,127,676,155,628,173"/>
+<area shape="rect" id="Node000049" href="$de/d42/esp__light__srv__model_8c.html#afd34945754064f76b2471c0f9598e785" title="Initialize the platform&#45;specific Light Server." alt="" coords="733,137,901,162"/>
+<area shape="poly" id="edge57_Node000048_Node000049" title=" " alt="" coords="639,218,674,207,773,167,775,172,676,212,641,223"/>
+<area shape="rect" id="Node000050" href="$de/d42/esp__light__srv__model_8c.html#a4ee43eae858bbcef30908dac0e2fa7f8" title="Callback function for BLE Mesh Lightness Server events." alt="" coords="980,104,1122,145"/>
+<area shape="poly" id="edge58_Node000049_Node000050" title=" " alt="" coords="901,138,965,131,965,136,902,143"/>
+<area shape="poly" id="edge59_Node000050_Node000006" title=" " alt="" coords="1120,143,1145,154,1211,193,1264,233,1261,237,1208,198,1143,159,1118,148"/>
+<area shape="poly" id="edge61_Node000051_Node000002" title=" " alt="" coords="420,31,676,62,708,66,708,71,675,67,420,36"/>
 </map>

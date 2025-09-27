@@ -140,6 +140,15 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>g_meshx_client_control</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>g_meshx_client_control</Scope>
+    </TokenIdentifier>
+    <Path>d1/d75/structg__meshx__client__control.html</Path>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_api_light_cwww_client_evt</Name>
       <APILanguage>c</APILanguage>
       <Type>cl</Type>
@@ -400,6 +409,33 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_gen_cli_cb_reg</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_gen_cli_cb_reg</Scope>
+    </TokenIdentifier>
+    <Path>d3/d56/structmeshx__gen__cli__cb__reg.html</Path>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_cli_cb_reg_node</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_gen_cli_cb_reg_node</Scope>
+    </TokenIdentifier>
+    <Path>dd/d58/structmeshx__gen__cli__cb__reg__node.html</Path>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_cli_resend_ctx</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_gen_cli_resend_ctx</Scope>
+    </TokenIdentifier>
+    <Path>d4/d52/structmeshx__gen__cli__resend__ctx.html</Path>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_gen_cli_set_t</Name>
       <APILanguage>c</APILanguage>
       <Type>cl</Type>
@@ -407,6 +443,15 @@
     </TokenIdentifier>
     <Path>d8/df2/unionmeshx__gen__cli__set__t.html</Path>
     <DeclaredIn>meshx_ble_mesh_gen_cli.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_client_msg_ctx</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_gen_client_msg_ctx</Scope>
+    </TokenIdentifier>
+    <Path>dc/d5a/structmeshx__gen__client__msg__ctx.html</Path>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -420,6 +465,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_gen_client_send_params</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_gen_client_send_params</Scope>
+    </TokenIdentifier>
+    <Path>dd/dad/structmeshx__gen__client__send__params.html</Path>
+    <DeclaredIn>meshx_gen_client.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_gen_client_status_cb_t</Name>
       <APILanguage>c</APILanguage>
       <Type>cl</Type>
@@ -427,6 +482,16 @@
     </TokenIdentifier>
     <Path>d0/d91/unionmeshx__gen__client__status__cb__t.html</Path>
     <DeclaredIn>meshx_ble_mesh_gen_cli.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_ctl_send_params</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_gen_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>df/d29/structmeshx__gen__ctl__send__params.html</Path>
+    <DeclaredIn>meshx_light_ctl_client.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -487,6 +552,52 @@
     </TokenIdentifier>
     <Path>d7/d4f/structmeshx__gen__light__cli__cb__param.html</Path>
     <DeclaredIn>meshx_ble_mesh_light_cli.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_light_cli_cb_reg</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_gen_light_cli_cb_reg</Scope>
+    </TokenIdentifier>
+    <Path>d7/d5a/structmeshx__gen__light__cli__cb__reg.html</Path>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_light_cli_cb_reg_node</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_gen_light_cli_cb_reg_node</Scope>
+    </TokenIdentifier>
+    <Path>dd/de6/structmeshx__gen__light__cli__cb__reg__node.html</Path>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_light_cli_resend_ctx</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_gen_light_cli_resend_ctx</Scope>
+    </TokenIdentifier>
+    <Path>d0/d44/structmeshx__gen__light__cli__resend__ctx.html</Path>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_light_client_msg_ctx</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_gen_light_client_msg_ctx</Scope>
+    </TokenIdentifier>
+    <Path>dc/d2b/structmeshx__gen__light__client__msg__ctx.html</Path>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_light_client_send_params</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_gen_light_client_send_params</Scope>
+    </TokenIdentifier>
+    <Path>db/d0a/structmeshx__gen__light__client__send__params.html</Path>
+    <DeclaredIn>meshx_gen_light_cli.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -1437,6 +1548,15 @@
     </TokenIdentifier>
     <Path>dd/d16/structmeshx__nvs.html</Path>
     <DeclaredIn>meshx_nvs.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_nvs_write_list</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_nvs_write_list</Scope>
+    </TokenIdentifier>
+    <Path>d1/d11/structmeshx__nvs__write__list.html</Path>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -2659,6 +2779,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_txcm_request</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_txcm_request</Scope>
+    </TokenIdentifier>
+    <Path>d0/d56/structmeshx__txcm__request.html</Path>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>prov_cb_evt_ctrl_task_evt_table</Name>
       <APILanguage>c</APILanguage>
       <Type>cl</Type>
@@ -2826,6 +2956,56 @@
     </TokenIdentifier>
     <Path>db/d16/structmeshx__prov__cb__param__t_1_1meshx__provisioner__prov__output__evt__param.html</Path>
     <Anchor>ae3998893f351279e227a9aef0e7f59a9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>addr</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_client_msg_ctx</Scope>
+    </TokenIdentifier>
+    <Path>dc/d5a/structmeshx__gen__client__msg__ctx.html</Path>
+    <Anchor>ac9cc1d6301ec8fbb545bcae585d9d89f</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>addr</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_client_send_params</Scope>
+    </TokenIdentifier>
+    <Path>dd/dad/structmeshx__gen__client__send__params.html</Path>
+    <Anchor>a14d28d3ec0aef27c1cb2081381d42e95</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>addr</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_light_client_msg_ctx</Scope>
+    </TokenIdentifier>
+    <Path>dc/d2b/structmeshx__gen__light__client__msg__ctx.html</Path>
+    <Anchor>acdf238fa9bf9155f7a232d525aaee6f7</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>addr</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_light_client_send_params</Scope>
+    </TokenIdentifier>
+    <Path>db/d0a/structmeshx__gen__light__client__send__params.html</Path>
+    <Anchor>a0acbb85aeebd81c2e7016bfa31cf15df</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>addr</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>df/d29/structmeshx__gen__ctl__send__params.html</Path>
+    <Anchor>ac4bf7313cd9cb6ed5e66c0ab176c81ce</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -3076,6 +3256,56 @@
     </TokenIdentifier>
     <Path>dc/d33/structmeshx__relay__srv__model__ctx.html</Path>
     <Anchor>aa42bc7d93d0feb0a86dd4c8c14568b8c</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>app_idx</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_client_msg_ctx</Scope>
+    </TokenIdentifier>
+    <Path>dc/d5a/structmeshx__gen__client__msg__ctx.html</Path>
+    <Anchor>aa6f8c9e978c6d96c9286fcd0a84b91b9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>app_idx</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_client_send_params</Scope>
+    </TokenIdentifier>
+    <Path>dd/dad/structmeshx__gen__client__send__params.html</Path>
+    <Anchor>ad61ea6c1757708f4d6462e69c078c820</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>app_idx</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_light_client_msg_ctx</Scope>
+    </TokenIdentifier>
+    <Path>dc/d2b/structmeshx__gen__light__client__msg__ctx.html</Path>
+    <Anchor>a954f70f58fa49fb10a55348c02177aec</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>app_idx</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_light_client_send_params</Scope>
+    </TokenIdentifier>
+    <Path>db/d0a/structmeshx__gen__light__client__send__params.html</Path>
+    <Anchor>adb88185f69e7766495f730dc29c3e845</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>app_idx</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>df/d29/structmeshx__gen__ctl__send__params.html</Path>
+    <Anchor>a62ec4c3cda9600298f8f4b5fe8a37e28</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -3386,6 +3616,26 @@
     </TokenIdentifier>
     <Path>db/d1c/structmeshx__os__timer.html</Path>
     <Anchor>a32b9ee3f2d4216be306265b45367f3da</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>cb</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_cli_cb_reg</Scope>
+    </TokenIdentifier>
+    <Path>d3/d56/structmeshx__gen__cli__cb__reg.html</Path>
+    <Anchor>a3bd9c78ab83cfcf9772c2365823e36a4</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>cb</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_light_cli_cb_reg</Scope>
+    </TokenIdentifier>
+    <Path>d7/d5a/structmeshx__gen__light__cli__cb__reg.html</Path>
+    <Anchor>aadd9fad7f403acfd6201fe607f98b313</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -4069,6 +4319,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>data</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_nvs_write_list</Scope>
+    </TokenIdentifier>
+    <Path>d1/d11/structmeshx__nvs__write__list.html</Path>
+    <Anchor>a243a9350a63b18fdc606cc1f3179b104</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>def_log_level</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -4332,6 +4592,16 @@
       <Name>delta_uv</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
+      <Scope>meshx_gen_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>df/d29/structmeshx__gen__ctl__send__params.html</Path>
+    <Anchor>aa56e666c76b933c9abcf4b8190efd0c7</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>delta_uv</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
       <Scope>meshx_light_ctl_default_set_t</Scope>
     </TokenIdentifier>
     <Path>dc/d13/structmeshx__light__ctl__default__set__t.html</Path>
@@ -4426,6 +4696,16 @@
     </TokenIdentifier>
     <Path>d5/d24/structmeshx__light__ctl__srv__state.html</Path>
     <Anchor>a35950b8b9d96bfb61427f81a6e89676b</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>dest_addr</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_txcm_request</Scope>
+    </TokenIdentifier>
+    <Path>d0/d56/structmeshx__txcm__request.html</Path>
+    <Anchor>a144856afb89193ea55cd77bb7adc2c26</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -4732,6 +5012,16 @@
       <Name>element_id</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
+      <Scope>meshx_gen_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>df/d29/structmeshx__gen__ctl__send__params.html</Path>
+    <Anchor>a3e591cb0cfb050584357c037b5c5daf0</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>element_id</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
       <Scope>meshx_gen_on_off_cli_msg</Scope>
     </TokenIdentifier>
     <Path>db/df4/structmeshx__gen__on__off__cli__msg.html</Path>
@@ -4926,6 +5216,26 @@
     </TokenIdentifier>
     <Path>d2/d4c/structmeshx__ctl__cli__el__msg.html</Path>
     <Anchor>a49f1b3b1861cccd1b3453ac46c0a4e15</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>err_code</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_cli_cb_param</Scope>
+    </TokenIdentifier>
+    <Path>da/d21/structmeshx__gen__cli__cb__param.html</Path>
+    <Anchor>a13d51b78397bd10daa5d72c30e88fb61</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>err_code</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_light_cli_cb_param</Scope>
+    </TokenIdentifier>
+    <Path>d7/d4f/structmeshx__gen__light__cli__cb__param.html</Path>
+    <Anchor>a4d2328014aae016500abd96ecda8238f</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -6249,6 +6559,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>key</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_nvs_write_list</Scope>
+    </TokenIdentifier>
+    <Path>d1/d11/structmeshx__nvs__write__list.html</Path>
+    <Anchor>ad8abfec09a9c1830f5ee84bb1c57f496</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>kr_phase</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -6422,6 +6742,16 @@
       <Name>len</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
+      <Scope>meshx_nvs_write_list</Scope>
+    </TokenIdentifier>
+    <Path>d1/d11/structmeshx__nvs__write__list.html</Path>
+    <Anchor>afaf0a745d11ed19da9dfe2d8d6b7d607</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>len</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
       <Scope>meshx_prov_cb_param_t::meshx_provisioner_recv_prov_records_list_evt_param</Scope>
     </TokenIdentifier>
     <Path>d6/da6/structmeshx__prov__cb__param__t_1_1meshx__provisioner__recv__prov__records__list__evt__param.html</Path>
@@ -6576,6 +6906,16 @@
     </TokenIdentifier>
     <Path>d1/d7c/structmeshx__ctl__el__state.html</Path>
     <Anchor>a1c73c54c4e7a28c0ea62ad1b7d86b9be</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>lightness</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>df/d29/structmeshx__gen__ctl__send__params.html</Path>
+    <Anchor>ab75297c53f91beab418753b404b8dbb4</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -7309,23 +7649,23 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>max_msg_count</Name>
+      <Name>max_msg_depth</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
       <Scope>meshx_msg_q</Scope>
     </TokenIdentifier>
     <Path>db/d59/structmeshx__msg__q.html</Path>
-    <Anchor>af589fc36df516500b8c62e2aefec5457</Anchor>
+    <Anchor>a4691fa29c267a685a6f87d4ac57291e9</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>max_msg_len</Name>
+      <Name>max_msg_length</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
       <Scope>meshx_msg_q</Scope>
     </TokenIdentifier>
     <Path>db/d59/structmeshx__msg__q.html</Path>
-    <Anchor>abec49f5d1aad7cc4b979af4a5e52c2fd</Anchor>
+    <Anchor>a39d4b84c8779afd00aab0bd13e5f515d</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -7429,13 +7769,23 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_nvs_commit_tmr</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_nvs</Scope>
+    </TokenIdentifier>
+    <Path>dd/d16/structmeshx__nvs.html</Path>
+    <Anchor>abb490f6c44aba1c835df08e4edf75153</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_nvs_handle</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
       <Scope>meshx_nvs</Scope>
     </TokenIdentifier>
     <Path>dd/d16/structmeshx__nvs.html</Path>
-    <Anchor>a34dfc1a07a082e58ddba369d2a244b85</Anchor>
+    <Anchor>a02dc0e43b47f84a68c2896951361eeb4</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -7446,16 +7796,6 @@
     </TokenIdentifier>
     <Path>d5/d3e/structmeshx__config.html</Path>
     <Anchor>a382576d6d01b808c4509dcfc8b5712dc</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_nvs_stability_timer</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_nvs</Scope>
-    </TokenIdentifier>
-    <Path>dd/d16/structmeshx__nvs.html</Path>
-    <Anchor>a24203913dbb18c066c32d074dc7afca4</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -7652,10 +7992,60 @@
       <Name>model</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
+      <Scope>meshx_gen_client_msg_ctx</Scope>
+    </TokenIdentifier>
+    <Path>dc/d5a/structmeshx__gen__client__msg__ctx.html</Path>
+    <Anchor>a098d3b5e23fd43f4c221056b2c616c79</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_client_send_params</Scope>
+    </TokenIdentifier>
+    <Path>dd/dad/structmeshx__gen__client__send__params.html</Path>
+    <Anchor>ac77aa1fa291d0fcc1fd37b137ea6eda7</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_light_client_msg_ctx</Scope>
+    </TokenIdentifier>
+    <Path>dc/d2b/structmeshx__gen__light__client__msg__ctx.html</Path>
+    <Anchor>a13de08e2ed37e91281ad6f75083cf0f8</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_light_client_send_params</Scope>
+    </TokenIdentifier>
+    <Path>db/d0a/structmeshx__gen__light__client__send__params.html</Path>
+    <Anchor>a3df7b101f8c3b48db322edc411b070b0</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
       <Scope>meshx_ctl_cli_el_msg</Scope>
     </TokenIdentifier>
     <Path>d2/d4c/structmeshx__ctl__cli__el__msg.html</Path>
     <Anchor>a0f4379fb158550b386b873b3d38e1111</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>df/d29/structmeshx__gen__ctl__send__params.html</Path>
+    <Anchor>ac4904eb4493f40d6b4e433bafda3b6c8</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -7716,6 +8106,46 @@
     </TokenIdentifier>
     <Path>d9/dd3/structmeshx__light__ctl__srv.html</Path>
     <Anchor>aad0e038f48d5655750d7835d78b17e03</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model_id</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_cli_cb_reg</Scope>
+    </TokenIdentifier>
+    <Path>d3/d56/structmeshx__gen__cli__cb__reg.html</Path>
+    <Anchor>a5a240d392a7c5f4234656bdf4bf4f7a6</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model_id</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_cli_resend_ctx</Scope>
+    </TokenIdentifier>
+    <Path>d4/d52/structmeshx__gen__cli__resend__ctx.html</Path>
+    <Anchor>a6a0b459c03564dfd0778df1cf470a43f</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model_id</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_light_cli_cb_reg</Scope>
+    </TokenIdentifier>
+    <Path>d7/d5a/structmeshx__gen__light__cli__cb__reg.html</Path>
+    <Anchor>acadaee6211db5b4c78684f420b4d65e4</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model_id</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_light_cli_resend_ctx</Scope>
+    </TokenIdentifier>
+    <Path>d0/d44/structmeshx__gen__light__cli__resend__ctx.html</Path>
+    <Anchor>af2fa63cf405275a96fd50aa735dde749</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -7939,6 +8369,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>msg_param</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_txcm_request</Scope>
+    </TokenIdentifier>
+    <Path>d0/d56/structmeshx__txcm__request.html</Path>
+    <Anchor>a1aa88aa844579806a5f8527ee1f332ea</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>msg_param_len</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_txcm_request</Scope>
+    </TokenIdentifier>
+    <Path>d0/d56/structmeshx__txcm__request.html</Path>
+    <Anchor>ab4bf673b6127db7aa80fde16ca4c2e4c</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>msg_type_u</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -7956,6 +8406,56 @@
     </TokenIdentifier>
     <Path>d1/de5/structmeshx__prov__cb__param__t_1_1meshx__proxy__client__recv__adv__pkt__param.html</Path>
     <Anchor>acdfc93e8a1463f2a7dc8a490f0badd07</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>net_idx</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_client_msg_ctx</Scope>
+    </TokenIdentifier>
+    <Path>dc/d5a/structmeshx__gen__client__msg__ctx.html</Path>
+    <Anchor>a53092c49296a0a797454b9a682aadd7e</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>net_idx</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_client_send_params</Scope>
+    </TokenIdentifier>
+    <Path>dd/dad/structmeshx__gen__client__send__params.html</Path>
+    <Anchor>a44f7845c9ec1b69cb8e4f2326d67ec03</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>net_idx</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_light_client_msg_ctx</Scope>
+    </TokenIdentifier>
+    <Path>dc/d2b/structmeshx__gen__light__client__msg__ctx.html</Path>
+    <Anchor>a99ed8f3445818155b6977a49da752250</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>net_idx</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_light_client_send_params</Scope>
+    </TokenIdentifier>
+    <Path>db/d0a/structmeshx__gen__light__client__send__params.html</Path>
+    <Anchor>a6bdf7b09b413eed48d454188d131be39</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>net_idx</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>df/d29/structmeshx__gen__ctl__send__params.html</Path>
+    <Anchor>a205248537ae743f3c20bd6d0f1e036c1</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -8296,6 +8796,36 @@
     </TokenIdentifier>
     <Path>dc/db1/structcontrol__task__evt__cb__reg.html</Path>
     <Anchor>ab04af0802be06d522ce5f7272b2e0add</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>next</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_nvs_write_list</Scope>
+    </TokenIdentifier>
+    <Path>d1/d11/structmeshx__nvs__write__list.html</Path>
+    <Anchor>a145b4b7296716b7d8912bfd603ad23b2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>next</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_cli_cb_reg_node</Scope>
+    </TokenIdentifier>
+    <Path>dd/d58/structmeshx__gen__cli__cb__reg__node.html</Path>
+    <Anchor>a07e742640e6299b80bb31aed4c4cfb57</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>next</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_light_cli_cb_reg_node</Scope>
+    </TokenIdentifier>
+    <Path>dd/de6/structmeshx__gen__light__cli__cb__reg__node.html</Path>
+    <Anchor>a18e59cb03c2884d320001bcb13967206</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -9122,6 +9652,56 @@
       <Name>opcode</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
+      <Scope>meshx_gen_client_msg_ctx</Scope>
+    </TokenIdentifier>
+    <Path>dc/d5a/structmeshx__gen__client__msg__ctx.html</Path>
+    <Anchor>af36c955735214b008e8421a94a5c8e04</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>opcode</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_client_send_params</Scope>
+    </TokenIdentifier>
+    <Path>dd/dad/structmeshx__gen__client__send__params.html</Path>
+    <Anchor>ac9befe87291d8a1ea02364a858126552</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>opcode</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_light_client_msg_ctx</Scope>
+    </TokenIdentifier>
+    <Path>dc/d2b/structmeshx__gen__light__client__msg__ctx.html</Path>
+    <Anchor>a7ed9cbb29a4ce947e01a657716611795</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>opcode</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_light_client_send_params</Scope>
+    </TokenIdentifier>
+    <Path>db/d0a/structmeshx__gen__light__client__send__params.html</Path>
+    <Anchor>ae09575157ffddd0b66fd8de2be3f0bc4</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>opcode</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>df/d29/structmeshx__gen__ctl__send__params.html</Path>
+    <Anchor>ae67774d09ce859b05c0716ff728074c5</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>opcode</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
       <Scope>meshx_ctx</Scope>
     </TokenIdentifier>
     <Path>db/d33/structmeshx__ctx.html</Path>
@@ -9146,6 +9726,26 @@
     </TokenIdentifier>
     <Path>d7/df1/structmeshx__model.html</Path>
     <Anchor>a93aa811e6fc21f6848bacf62853edab7</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>param</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_cli_resend_ctx</Scope>
+    </TokenIdentifier>
+    <Path>d4/d52/structmeshx__gen__cli__resend__ctx.html</Path>
+    <Anchor>aad2a6610dea74d094bac548721a84244</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>param</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_light_cli_resend_ctx</Scope>
+    </TokenIdentifier>
+    <Path>d0/d44/structmeshx__gen__light__cli__resend__ctx.html</Path>
+    <Anchor>a06385ee5cf35040d834b185b65b4b3a6</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -10739,6 +11339,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>reg</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_cli_cb_reg_node</Scope>
+    </TokenIdentifier>
+    <Path>dd/d58/structmeshx__gen__cli__cb__reg__node.html</Path>
+    <Anchor>a104e82e363348db0f4ef7a758c1a9a2f</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>reg</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_light_cli_cb_reg_node</Scope>
+    </TokenIdentifier>
+    <Path>dd/de6/structmeshx__gen__light__cli__cb__reg__node.html</Path>
+    <Anchor>a5b398f23b68f3caf5448ab2df4416555</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>relay_cli_sig_model_list</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -10916,6 +11536,16 @@
     </TokenIdentifier>
     <Path>d8/d42/structmeshx__light__lc__light__onoff__status__cb__t.html</Path>
     <Anchor>a7bd748a43d8e29008e2fe6b490a15d81</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>request_type</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_txcm_request</Scope>
+    </TokenIdentifier>
+    <Path>d0/d56/structmeshx__txcm__request.html</Path>
+    <Anchor>a2bbf00bbba1af44374bef5a77936e201</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -11119,6 +11749,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>send_fn</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_txcm_request</Scope>
+    </TokenIdentifier>
+    <Path>d0/d56/structmeshx__txcm__request.html</Path>
+    <Anchor>a9940f89e378e0b57c9dec2dcc70f1401</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>sensor_status</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -11307,6 +11947,46 @@
     </TokenIdentifier>
     <Path>d2/dd1/structcwww__cli__ctx.html</Path>
     <Anchor>a0fdc58706be320312949fc63f0fb8b8d</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>state</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_client_msg_ctx</Scope>
+    </TokenIdentifier>
+    <Path>dc/d5a/structmeshx__gen__client__msg__ctx.html</Path>
+    <Anchor>ad076ba04feb8239e67ed1ae72851afec</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>state</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_client_send_params</Scope>
+    </TokenIdentifier>
+    <Path>dd/dad/structmeshx__gen__client__send__params.html</Path>
+    <Anchor>a52603f35f66aed49ff540a0da00e60df</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>state</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_light_client_msg_ctx</Scope>
+    </TokenIdentifier>
+    <Path>dc/d2b/structmeshx__gen__light__client__msg__ctx.html</Path>
+    <Anchor>ab33abbed82f8126f6d5d9804ca07afff</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>state</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_light_client_send_params</Scope>
+    </TokenIdentifier>
+    <Path>db/d0a/structmeshx__gen__light__client__send__params.html</Path>
+    <Anchor>afe30eb5adf85815f350ef711b8a18938</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -11840,6 +12520,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>temp_range_max</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>df/d29/structmeshx__gen__ctl__send__params.html</Path>
+    <Anchor>ae5dff406a6426ba26fb2b14b649ee4a8</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>temp_range_min</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -11880,6 +12570,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>temp_range_min</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>df/d29/structmeshx__gen__ctl__send__params.html</Path>
+    <Anchor>a37e2cc29ec3b44cff39353684e18d2ae</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>temperature</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -11917,6 +12617,16 @@
     </TokenIdentifier>
     <Path>d1/d7c/structmeshx__ctl__el__state.html</Path>
     <Anchor>ab3af7afd387a8ee7b88f04e03ea831c6</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>temperature</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>df/d29/structmeshx__gen__ctl__send__params.html</Path>
+    <Anchor>a8e1ad0abcbee386546c93456f0c46c09</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -12037,6 +12747,16 @@
     </TokenIdentifier>
     <Path>d2/dd1/structcwww__cli__ctx.html</Path>
     <Anchor>a7a89aaf8fb38a5dc50dd4e96173660c7</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>tid</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_gen_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>df/d29/structmeshx__gen__ctl__send__params.html</Path>
+    <Anchor>a1a939c921f96d477d36adf7d1c886ff7</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -13014,29 +13734,9 @@
       <APILanguage>c</APILanguage>
       <Type>func</Type>
     </TokenIdentifier>
-    <Path>d0/dc9/meshx__log_8c.html</Path>
-    <Anchor>af9aace1b44b73111e15aa39f06f43456</Anchor>
-    <DeclaredIn>meshx_log.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>__attribute__</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
     <Path>df/d96/meshx__platform_8h.html</Path>
     <Anchor>a7d726af3e3ec11c1632ab35a115f823c</Anchor>
     <DeclaredIn>meshx_platform.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>addr</Name>
-      <APILanguage>c</APILanguage>
-      <Type>data</Type>
-    </TokenIdentifier>
-    <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
-    <Anchor>a41a6aad09727eb120338c35535a652a6</Anchor>
-    <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -13057,16 +13757,6 @@
     <Path>dc/d93/meshx__api_8c.html</Path>
     <Anchor>a5bf953dbf23563a53565103f90bc55bf</Anchor>
     <DeclaredIn>meshx_api.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>app_idx</Name>
-      <APILanguage>c</APILanguage>
-      <Type>data</Type>
-    </TokenIdentifier>
-    <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
-    <Anchor>a1ab74b1231b1c9f0e416a06f8805a4b0</Anchor>
-    <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -13127,6 +13817,36 @@
     <Path>d3/d18/meshx_8h.html</Path>
     <Anchor>abde255c5abc3ab0c35adf9e0eedaa714</Anchor>
     <DeclaredIn>meshx.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>cli_cb_reg_head</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d0/dbc/meshx__gen__client_8c.html</Path>
+    <Anchor>abbcce63646d7a5d3a76da85f8fae6630</Anchor>
+    <DeclaredIn>meshx_gen_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>cli_cb_reg_head</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d0/dc1/meshx__gen__light__cli_8c.html</Path>
+    <Anchor>ae790bc2a5b36ed3f1f461164ade48e96</Anchor>
+    <DeclaredIn>meshx_gen_light_cli.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>client_init</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d0/dbc/meshx__gen__client_8c.html</Path>
+    <Anchor>a7235d86e922307571f349e5567b3f82c</Anchor>
+    <DeclaredIn>meshx_gen_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -13440,6 +14160,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>CONFIG_TXCM_ENABLE</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>df/d01/meshx__config__internal_8h.html</Path>
+    <Anchor>a3f3353b7d39d1f2d30472356ff7aba91</Anchor>
+    <DeclaredIn>meshx_config_internal.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>control_task_evt_cb_reg_t</Name>
       <APILanguage>c</APILanguage>
       <Type>tdef</Type>
@@ -13566,6 +14296,16 @@
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
     <Anchor>a6c7510c6dd8d40d223d385ec01eb631fab42691af173776334ebc029bc900ddd1</Anchor>
+    <DeclaredIn>meshx_control_task.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>CONTROL_TASK_MSG_CODE_TXCM</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>da/db3/meshx__control__task_8h.html</Path>
+    <Anchor>a6c7510c6dd8d40d223d385ec01eb631fa41c73413e1f6d2b4a607289f537e9030</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
@@ -13700,6 +14440,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>CONTROL_TASK_MSG_CODE_TXCM</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>da/db3/meshx__control__task_8h.html</Path>
+    <Anchor>a6c7510c6dd8d40d223d385ec01eb631fa41c73413e1f6d2b4a607289f537e9030</Anchor>
+    <DeclaredIn>meshx_control_task.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>control_task_msg_dispatch</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -13712,170 +14462,60 @@
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_APP_KEY_ADD</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6fac390f948a1a8ee8892a33abd6638a08d</Anchor>
+    <Anchor>a76de067f78d59e334c16244814c58e53</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_APP_KEY_BIND</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6fae9dc319c581bf2310d0cfc1b2c913e4d</Anchor>
+    <Anchor>abcfcf62bb67d683dc431799a2d16030a</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_APP_KEY_DEL</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6fa8aa14210a38ff1234e03fb4b09fd23b0</Anchor>
+    <Anchor>a47c7e7a0763163488f5826812bafbc78</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_APP_KEY_UNBIND</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6facf1311d7330ece157befe35e32f7f79e</Anchor>
+    <Anchor>a67797fa703e298ce4259fd1e3f32c104</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>control_task_msg_evt_config</Name>
       <APILanguage>c</APILanguage>
-      <Type>enum</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6f</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_APP_KEY_ADD</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6fac390f948a1a8ee8892a33abd6638a08d</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_APP_KEY_DEL</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6fa8aa14210a38ff1234e03fb4b09fd23b0</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_APP_KEY_BIND</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6fae9dc319c581bf2310d0cfc1b2c913e4d</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_APP_KEY_UNBIND</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6facf1311d7330ece157befe35e32f7f79e</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_SUB_ADD</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6fa56dbd692dcee8c4c5dc1e9ccf3edea04</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_SUB_DEL</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6faace8f0cf057a93091776c7eb94d48f6e</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_PUB_ADD</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6fa0c0499249f00796c41880a6ab440a2d4</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_PUB_DEL</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6fa7d5dc5b31e490e2fd78a86b96b3ec424</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_NET_KEY_ADD</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6fac82b64c2c962e0fa6c3b57980fccc562</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_NET_KEY_DEL</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6fa442e69e3933221a6e891427d35e9cb39</Anchor>
+    <Anchor>a20c3b9648e6b7ad056c2b1e155fbf128</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_CONFIG_ALL</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6fa2674af785637eb08839470dc5a436877</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_CONFIG_ALL</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6fa2674af785637eb08839470dc5a436877</Anchor>
+    <Anchor>ae82dbf4e24dde45af98319933e5eac45</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
@@ -13885,97 +14525,67 @@
       <Type>tdef</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a5ea00b0e30f5891e7fb9fdaf62b5935f</Anchor>
+    <Anchor>a0a91d0a67d44c2eecb6044006ef471fa</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_CTRL</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>aee2041f20815564c3882960385b43046adb87cf9cb87e136e0a4ad3f809058ab9</Anchor>
+    <Anchor>ad2c025ecb11d83c7986a9edb584f97bb</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_DATA</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>aee2041f20815564c3882960385b43046a5b942215bde3fb8b27ac077bcd24f168</Anchor>
+    <Anchor>ada2813b1950a9d924d42bf44b508902b</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>control_task_msg_evt_el_state_ch</Name>
       <APILanguage>c</APILanguage>
-      <Type>enum</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a6b848c829d6c0792babe921e2852e667</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a6b848c829d6c0792babe921e2852e667a41576e1941c74d8f8f9aee8e22e1e772</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a6b848c829d6c0792babe921e2852e667a939ceea4f67595a29c18db1541523afe</Anchor>
+    <Anchor>a56c23e0f8f03d6f6d54cdce42469ecbd</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_EL_STATE_CH_MAX</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a6b848c829d6c0792babe921e2852e667af03e823d4e030a10f401388b2b3ec060</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_EL_STATE_CH_MAX</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a6b848c829d6c0792babe921e2852e667af03e823d4e030a10f401388b2b3ec060</Anchor>
+    <Anchor>a266309d7e66645b0d478785ee54590de</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a6b848c829d6c0792babe921e2852e667a939ceea4f67595a29c18db1541523afe</Anchor>
+    <Anchor>aa9dedac7746be2d7d4c59bd0b47e402b</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a6b848c829d6c0792babe921e2852e667a41576e1941c74d8f8f9aee8e22e1e772</Anchor>
+    <Anchor>a5a83ba04d09994db452e6b4265c23b81</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
@@ -13985,197 +14595,107 @@
       <Type>tdef</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a2de751193dd281b34ae2186e6f91877f</Anchor>
+    <Anchor>a304fb3a3a083e9ab1b1107298ea1c7d9</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_EN_NODE_PROV</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a36b08cbb6c10c75974bce6cf253a3946a7060a2680eab41fbe660643436d6747d</Anchor>
+    <Anchor>ab0858c9d7492e10f9e427a1c5c952e08</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_IDENTIFY_START</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a36b08cbb6c10c75974bce6cf253a3946ad2462066bbf29ebc222f0b376bb7ba15</Anchor>
+    <Anchor>a04a23fd3ab628f3b4cc744c91f54bfa3</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_IDENTIFY_STOP</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a36b08cbb6c10c75974bce6cf253a3946a17e6c55521e2a0daabfbd38384690d3a</Anchor>
+    <Anchor>a9e2b830f02facc18bb1511196684dbd3</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_MAX</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>aee2041f20815564c3882960385b43046a51b31f436ce8df08562471dd62d7a3fc</Anchor>
+    <Anchor>a9de0c275ee1a2bd75a94c4f71f674c9f</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_NET_KEY_ADD</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6fac82b64c2c962e0fa6c3b57980fccc562</Anchor>
+    <Anchor>af03b7b4f78c0649c050839293b272c2b</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_NET_KEY_DEL</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6fa442e69e3933221a6e891427d35e9cb39</Anchor>
+    <Anchor>a4196b36ec3be09a63657e814b3fc60c0</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_NODE_RESET</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a36b08cbb6c10c75974bce6cf253a3946adb63d538cf1bf43c0615adf624964eaa</Anchor>
+    <Anchor>aa89c98bf40f50ecddf46f8f414fb444b</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>control_task_msg_evt_provision</Name>
       <APILanguage>c</APILanguage>
-      <Type>enum</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a36b08cbb6c10c75974bce6cf253a3946</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_PROVISION_STOP</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a36b08cbb6c10c75974bce6cf253a3946a86f322436975af0b48f3cd14892123e6</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_IDENTIFY_START</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a36b08cbb6c10c75974bce6cf253a3946ad2462066bbf29ebc222f0b376bb7ba15</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_IDENTIFY_STOP</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a36b08cbb6c10c75974bce6cf253a3946a17e6c55521e2a0daabfbd38384690d3a</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_NODE_RESET</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a36b08cbb6c10c75974bce6cf253a3946adb63d538cf1bf43c0615adf624964eaa</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_PROXY_CONNECT</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a36b08cbb6c10c75974bce6cf253a3946a795d6e9898001ebd60abd23a820d8f69</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_PROXY_DISCONN</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a36b08cbb6c10c75974bce6cf253a3946ac04eb116cd1db24d2f071eff8a8eacf6</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_EN_NODE_PROV</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a36b08cbb6c10c75974bce6cf253a3946a7060a2680eab41fbe660643436d6747d</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a36b08cbb6c10c75974bce6cf253a3946a4026b04ae1ecf072c99ecbf7266dd1c1</Anchor>
+    <Anchor>add2d7afbe5d53b35aff6e9e677ebc01d</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_PROVISION_ALL</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a36b08cbb6c10c75974bce6cf253a3946ae2a094efae0739d49b2e57ce69188505</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_PROVISION_ALL</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a36b08cbb6c10c75974bce6cf253a3946ae2a094efae0739d49b2e57ce69188505</Anchor>
+    <Anchor>ad5dcb04c048df3c94f73e74731e50281</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_PROVISION_STOP</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a36b08cbb6c10c75974bce6cf253a3946a86f322436975af0b48f3cd14892123e6</Anchor>
+    <Anchor>a1564fbdac59aa9fe3981ccadc2213b0a</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
@@ -14185,177 +14705,107 @@
       <Type>tdef</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a25c7d40c299df5abbd926bbed7eada4b</Anchor>
+    <Anchor>ae617eb57b27f5c67002beb97cc50fa24</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_PROXY_CONNECT</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a36b08cbb6c10c75974bce6cf253a3946a795d6e9898001ebd60abd23a820d8f69</Anchor>
+    <Anchor>a4c1fd4645c58031b0796706b64d5477a</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_PROXY_DISCONN</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a36b08cbb6c10c75974bce6cf253a3946ac04eb116cd1db24d2f071eff8a8eacf6</Anchor>
+    <Anchor>aefddef80715eefd9b8c91cb68caa509d</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_PUB_ADD</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6fa0c0499249f00796c41880a6ab440a2d4</Anchor>
+    <Anchor>aaef314f226d509ef6652aa2319e04033</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_PUB_DEL</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6fa7d5dc5b31e490e2fd78a86b96b3ec424</Anchor>
+    <Anchor>aded2f2d31125735e1649d9d21e48299a</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_SUB_ADD</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6fa56dbd692dcee8c4c5dc1e9ccf3edea04</Anchor>
+    <Anchor>ac12097a78c2770129be293c3231beb5f</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_SUB_DEL</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a0c716533de40fd9e1e1c6f0beef5cb6faace8f0cf057a93091776c7eb94d48f6e</Anchor>
+    <Anchor>a4fc573ef2dd6ac1f1a5d4cc396e2837a</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>control_task_msg_evt_system</Name>
       <APILanguage>c</APILanguage>
-      <Type>enum</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a74c26ff7cf968dce6ce580cc8249bac3</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_SYSTEM_RESTART</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a74c26ff7cf968dce6ce580cc8249bac3a010b78bf02fd52be7ce87245a3173e31</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_ARM</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a74c26ff7cf968dce6ce580cc8249bac3ab7ae1fb80a6a79376790fcf7bacf2fec</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_REARM</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a74c26ff7cf968dce6ce580cc8249bac3a62c5996227f5d995a05b4eab9c2ad185</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_DISARM</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a74c26ff7cf968dce6ce580cc8249bac3a5faf0ba6aa9bb3728da4fa1e0366f179</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a74c26ff7cf968dce6ce580cc8249bac3a28b2d5b8769e78e6b180c99e7991ef13</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a74c26ff7cf968dce6ce580cc8249bac3ad6490bdb28535ff59224b995d753d64e</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_SYSTEM_MAX</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a74c26ff7cf968dce6ce580cc8249bac3a77dccf3c58d258f109f249996a2a0537</Anchor>
+    <Anchor>a924cf3b59e551f6b725c53b3d00b583a</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a36b08cbb6c10c75974bce6cf253a3946a4026b04ae1ecf072c99ecbf7266dd1c1</Anchor>
+    <Anchor>a00a0dfdf842c6d6aa566c1f365166796</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_SYSTEM_MAX</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a74c26ff7cf968dce6ce580cc8249bac3a77dccf3c58d258f109f249996a2a0537</Anchor>
+    <Anchor>a2566acf3b20763c6ad2cf2bd1a8d18a1</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_SYSTEM_RESTART</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a74c26ff7cf968dce6ce580cc8249bac3a010b78bf02fd52be7ce87245a3173e31</Anchor>
+    <Anchor>a5d82a3df95b24a620499d787ca2b1311</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
@@ -14365,57 +14815,57 @@
       <Type>tdef</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>aad0a212963b8648ec743dd1cf26fac2c</Anchor>
+    <Anchor>a416286ff8c93d4ef8abe02a94a335a72</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_ARM</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a74c26ff7cf968dce6ce580cc8249bac3ab7ae1fb80a6a79376790fcf7bacf2fec</Anchor>
+    <Anchor>ac794af8e290edbe2dd398a760e7160ee</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_DISARM</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a74c26ff7cf968dce6ce580cc8249bac3a5faf0ba6aa9bb3728da4fa1e0366f179</Anchor>
+    <Anchor>aab39a57511f89060463b93a463e4e40a</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a74c26ff7cf968dce6ce580cc8249bac3a28b2d5b8769e78e6b180c99e7991ef13</Anchor>
+    <Anchor>a1c6a7a97c2c84ca39bae9877f05c57e3</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a74c26ff7cf968dce6ce580cc8249bac3ad6490bdb28535ff59224b995d753d64e</Anchor>
+    <Anchor>a215073451a269fdb8cc2bc97fc3a285d</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_REARM</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a74c26ff7cf968dce6ce580cc8249bac3a62c5996227f5d995a05b4eab9c2ad185</Anchor>
+    <Anchor>ad0cd421b6a2a1340dd487478b8fb84bf</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
@@ -14432,40 +14882,10 @@
     <TokenIdentifier>
       <Name>control_task_msg_evt_to_app_meshx</Name>
       <APILanguage>c</APILanguage>
-      <Type>enum</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>aee2041f20815564c3882960385b43046</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_DATA</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>aee2041f20815564c3882960385b43046a5b942215bde3fb8b27ac077bcd24f168</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_CTRL</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>aee2041f20815564c3882960385b43046adb87cf9cb87e136e0a4ad3f809058ab9</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_MAX</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>aee2041f20815564c3882960385b43046a51b31f436ce8df08562471dd62d7a3fc</Anchor>
+    <Anchor>acee47fb602b2c6db7d0d7ea32cb1fa61</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
@@ -14475,77 +14895,17 @@
       <Type>tdef</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a33ee64248dee04d85fad2c0748e1e799</Anchor>
+    <Anchor>aa88a717aebdfd7813a2931cfb8332267</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>control_task_msg_evt_to_ble</Name>
       <APILanguage>c</APILanguage>
-      <Type>enum</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>af0f09f726bff0d760104f7b204150949</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>af0f09f726bff0d760104f7b204150949a1560d7a2c32224d132514ce9fc91d4cd</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>af0f09f726bff0d760104f7b204150949a033dc3106603fc8750e9cdaab206bae5</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_TO_BLE_SET_LIGHTNESS</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>af0f09f726bff0d760104f7b204150949a9e5617ec7445f675f47b33788a5a36d7</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>af0f09f726bff0d760104f7b204150949a425f4f6dfe1ba72c741bce7a393ad106</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>af0f09f726bff0d760104f7b204150949a42f18669857bfe8c2dad08291f4c87c7</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_TO_BLE_MAX</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>af0f09f726bff0d760104f7b204150949a1c2fc854ccc0c7e5536430de328a2d19</Anchor>
+    <Anchor>a7400e7520dd03e093a90fef2dac0c5bb</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
@@ -14580,62 +14940,52 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>CONTROL_TASK_MSG_EVT_TO_BLE_MAX</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>af0f09f726bff0d760104f7b204150949a1c2fc854ccc0c7e5536430de328a2d19</Anchor>
-    <DeclaredIn>meshx_control_task.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>af0f09f726bff0d760104f7b204150949a033dc3106603fc8750e9cdaab206bae5</Anchor>
+    <Anchor>a2a431535b131c279c61853be7cfe1a56</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>af0f09f726bff0d760104f7b204150949a42f18669857bfe8c2dad08291f4c87c7</Anchor>
+    <Anchor>a1069cba1c3d00149aaa7f7164890d3c9</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_TO_BLE_SET_LIGHTNESS</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>af0f09f726bff0d760104f7b204150949a9e5617ec7445f675f47b33788a5a36d7</Anchor>
+    <Anchor>afb06265ad48a7eeb2672c585e69f7cf8</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>af0f09f726bff0d760104f7b204150949a1560d7a2c32224d132514ce9fc91d4cd</Anchor>
+    <Anchor>ac1180222ca9e96d75017083b74d57fcc</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
       <Name>CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV</Name>
       <APILanguage>c</APILanguage>
-      <Type>econst</Type>
+      <Type>data</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>af0f09f726bff0d760104f7b204150949a425f4f6dfe1ba72c741bce7a393ad106</Anchor>
+    <Anchor>a137bedd326d90064671b245d2235abec</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
@@ -14645,7 +14995,37 @@
       <Type>tdef</Type>
     </TokenIdentifier>
     <Path>da/db3/meshx__control__task_8h.html</Path>
-    <Anchor>a4c567c2e8d4552a2f950724092857aad</Anchor>
+    <Anchor>a16032d5f4189a6d1d8ad6d4ad59145ec</Anchor>
+    <DeclaredIn>meshx_control_task.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>control_task_msg_evt_txcm</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>da/db3/meshx__control__task_8h.html</Path>
+    <Anchor>af9f0ceb6ba1a83191c6f61d3707fc952</Anchor>
+    <DeclaredIn>meshx_control_task.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>CONTROL_TASK_MSG_EVT_TXCM_MSG_TIMEOUT</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>da/db3/meshx__control__task_8h.html</Path>
+    <Anchor>a66837bc5e437d7886e82956f61d503dc</Anchor>
+    <DeclaredIn>meshx_control_task.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>control_task_msg_evt_txcm_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>da/db3/meshx__control__task_8h.html</Path>
+    <Anchor>ab05a4ea8a7bd1ce45d2b0a36a61448b6</Anchor>
     <DeclaredIn>meshx_control_task.h</DeclaredIn>
   </Token>
   <Token>
@@ -15370,6 +15750,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>g_meshx_client_control</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d0/dbc/meshx__gen__client_8c.html</Path>
+    <Anchor>a53949c989c1bceb12a75fa57259648ef</Anchor>
+    <DeclaredIn>meshx_gen_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>g_meshx_gen_light_client_ctrl</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d0/dc1/meshx__gen__light__cli_8c.html</Path>
+    <Anchor>a1bbc7a0e23cd081a14106e93adbb46d3</Anchor>
+    <DeclaredIn>meshx_gen_light_cli.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>g_meshx_prov</Name>
       <APILanguage>c</APILanguage>
       <Type>data</Type>
@@ -15586,16 +15986,6 @@
     </TokenIdentifier>
     <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
     <Anchor>ae118802347c494804896163a052a53e9</Anchor>
-    <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>light_ctl_client_last_msg_ctx</Name>
-      <APILanguage>c</APILanguage>
-      <Type>data</Type>
-    </TokenIdentifier>
-    <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
-    <Anchor>a0826a63795ad983b1e3f44794749ba05</Anchor>
     <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
   </Token>
   <Token>
@@ -16434,16 +16824,6 @@
       <APILanguage>c</APILanguage>
       <Type>data</Type>
     </TokenIdentifier>
-    <Path>d0/dbc/meshx__gen__client_8c.html</Path>
-    <Anchor>abad2001dd8ebae03bae5f305835c311f</Anchor>
-    <DeclaredIn>meshx_gen_client.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_client_init</Name>
-      <APILanguage>c</APILanguage>
-      <Type>data</Type>
-    </TokenIdentifier>
     <Path>d0/dc1/meshx__gen__light__cli_8c.html</Path>
     <Anchor>abad2001dd8ebae03bae5f305835c311f</Anchor>
     <DeclaredIn>meshx_gen_light_cli.c</DeclaredIn>
@@ -16610,6 +16990,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_cptr_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>d4/de0/meshx__ble__mesh__cmn__def_8h.html</Path>
+    <Anchor>a56d35929ab21b57e927613ba03ce75fb</Anchor>
+    <DeclaredIn>meshx_ble_mesh_cmn_def.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_create_cwww_elements</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -16725,7 +17115,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
-    <Anchor>a674b0488b86759b3aebf258631325895</Anchor>
+    <Anchor>a6a50238699d286661cee3bd881244c53</Anchor>
     <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
   </Token>
   <Token>
@@ -17490,6 +17880,36 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_gen_cli_cb_reg_add</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/dbc/meshx__gen__client_8c.html</Path>
+    <Anchor>afef934bc2c635275b7a2a04a6a3b3a58</Anchor>
+    <DeclaredIn>meshx_gen_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_cli_cb_reg_node_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>d0/dbc/meshx__gen__client_8c.html</Path>
+    <Anchor>acbdfaa345225f55bf4fc170cacf60f92</Anchor>
+    <DeclaredIn>meshx_gen_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_cli_cb_reg_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>d0/dbc/meshx__gen__client_8c.html</Path>
+    <Anchor>a02a0b7b5d67717ff75d5c4b052658246</Anchor>
+    <DeclaredIn>meshx_gen_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_GEN_CLI_EVT_ALL</Name>
       <APILanguage>c</APILanguage>
       <Type>econst</Type>
@@ -17580,6 +18000,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_gen_cli_handle_ack</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/dbc/meshx__gen__client_8c.html</Path>
+    <Anchor>a625f574078550216571a6dce2a2912b7</Anchor>
+    <DeclaredIn>meshx_gen_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_cli_handle_resend</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/dbc/meshx__gen__client_8c.html</Path>
+    <Anchor>a3c4119652ade8449f1eeb66c8d9e0c5a</Anchor>
+    <DeclaredIn>meshx_gen_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_GEN_CLI_PUBLISH</Name>
       <APILanguage>c</APILanguage>
       <Type>econst</Type>
@@ -17590,12 +18030,22 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_gen_cli_resend_ctx</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>d0/dbc/meshx__gen__client_8c.html</Path>
+    <Anchor>aaf5133ce984e403feb638718a9f7b2e9</Anchor>
+    <DeclaredIn>meshx_gen_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_gen_cli_send_msg</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
     </TokenIdentifier>
     <Path>d0/dbc/meshx__gen__client_8c.html</Path>
-    <Anchor>adda618e510a15feed131d17bd3e57084</Anchor>
+    <Anchor>a6bbf3df1e2c27b76c59774dab131ce73</Anchor>
     <DeclaredIn>meshx_gen_client.c</DeclaredIn>
   </Token>
   <Token>
@@ -17605,7 +18055,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>d1/d29/meshx__gen__client_8h.html</Path>
-    <Anchor>adda618e510a15feed131d17bd3e57084</Anchor>
+    <Anchor>a6bbf3df1e2c27b76c59774dab131ce73</Anchor>
     <DeclaredIn>meshx_gen_client.h</DeclaredIn>
   </Token>
   <Token>
@@ -17670,6 +18120,56 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_gen_client_msg_ctx_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>d0/dbc/meshx__gen__client_8c.html</Path>
+    <Anchor>a5867e9c6f9dbded1c4bd579a93af5023</Anchor>
+    <DeclaredIn>meshx_gen_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_client_send_params_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>d1/d29/meshx__gen__client_8h.html</Path>
+    <Anchor>a1d77f867cbfeed7c9bccc16b63d7b982</Anchor>
+    <DeclaredIn>meshx_gen_client.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_client_txcm_fn_model_send</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/dbc/meshx__gen__client_8c.html</Path>
+    <Anchor>aef89cd09a9ce3fa4d6d71b25f252c1d6</Anchor>
+    <DeclaredIn>meshx_gen_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_client_txcm_fn_model_send</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/dc1/meshx__gen__light__cli_8c.html</Path>
+    <Anchor>a772555371a4ab0df89dd32c9f0ead006</Anchor>
+    <DeclaredIn>meshx_gen_light_cli.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_ctl_send_params_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>da/dfd/meshx__light__ctl__client_8h.html</Path>
+    <Anchor>ae8548add7abedd6ec0eef3bed4c733dd</Anchor>
+    <DeclaredIn>meshx_light_ctl_client.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_GEN_LIGHT_CLI_CB</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
@@ -17707,6 +18207,36 @@
     <Path>d4/def/meshx__ble__mesh__light__cli_8h.html</Path>
     <Anchor>ab571ad06ed613973fe4227fe072ef05e</Anchor>
     <DeclaredIn>meshx_ble_mesh_light_cli.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_light_cli_cb_reg_add</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/dc1/meshx__gen__light__cli_8c.html</Path>
+    <Anchor>acaf59766d27b4526b5da20acbd273b30</Anchor>
+    <DeclaredIn>meshx_gen_light_cli.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_light_cli_cb_reg_node_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>d0/dc1/meshx__gen__light__cli_8c.html</Path>
+    <Anchor>a66bfb4bca2ed99790a4ab7f818626940</Anchor>
+    <DeclaredIn>meshx_gen_light_cli.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_light_cli_cb_reg_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>d0/dc1/meshx__gen__light__cli_8c.html</Path>
+    <Anchor>a55b0b699cc99910463008e07860016d5</Anchor>
+    <DeclaredIn>meshx_gen_light_cli.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -17800,6 +18330,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_gen_light_cli_handle_ack</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/dc1/meshx__gen__light__cli_8c.html</Path>
+    <Anchor>a4ee638aef0c83a1c01bc8543e36d535e</Anchor>
+    <DeclaredIn>meshx_gen_light_cli.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_light_cli_handle_resend</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/dc1/meshx__gen__light__cli_8c.html</Path>
+    <Anchor>aceb445f70b76d9043512eed32032c741</Anchor>
+    <DeclaredIn>meshx_gen_light_cli.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_gen_light_cli_init</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -17830,6 +18380,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_gen_light_cli_resend_ctx</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>d0/dc1/meshx__gen__light__cli_8c.html</Path>
+    <Anchor>a7427a6db596c3a2469cf6916ca20b562</Anchor>
+    <DeclaredIn>meshx_gen_light_cli.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_GEN_LIGHT_CLI_TIMEOUT</Name>
       <APILanguage>c</APILanguage>
       <Type>econst</Type>
@@ -17855,8 +18415,38 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>d0/dc1/meshx__gen__light__cli_8c.html</Path>
-    <Anchor>a3074b35e2bcc4a13e740bb1de662b0b8</Anchor>
+    <Anchor>a33f2c468c527173b5b22fdd6bd58e9d3</Anchor>
     <DeclaredIn>meshx_gen_light_cli.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_light_client_from_ble_reg_cb</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>dd/df0/meshx__gen__light__cli_8h.html</Path>
+    <Anchor>a33f2c468c527173b5b22fdd6bd58e9d3</Anchor>
+    <DeclaredIn>meshx_gen_light_cli.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_light_client_msg_ctx_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>d0/dc1/meshx__gen__light__cli_8c.html</Path>
+    <Anchor>af3aaffda9dc6bc5ade97a92571a6bbcc</Anchor>
+    <DeclaredIn>meshx_gen_light_cli.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_gen_light_client_send_params_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>dd/df0/meshx__gen__light__cli_8h.html</Path>
+    <Anchor>abf992c50a75bf0ec84a654410aef3597</Anchor>
+    <DeclaredIn>meshx_gen_light_cli.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -17885,7 +18475,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>d0/dc1/meshx__gen__light__cli_8c.html</Path>
-    <Anchor>af56474ec614f7769336a5a9f401d1223</Anchor>
+    <Anchor>a103a70022525769e7ed38978e196444c</Anchor>
     <DeclaredIn>meshx_gen_light_cli.c</DeclaredIn>
   </Token>
   <Token>
@@ -17895,7 +18485,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>dd/df0/meshx__gen__light__cli_8h.html</Path>
-    <Anchor>af56474ec614f7769336a5a9f401d1223</Anchor>
+    <Anchor>a103a70022525769e7ed38978e196444c</Anchor>
     <DeclaredIn>meshx_gen_light_cli.h</DeclaredIn>
   </Token>
   <Token>
@@ -18194,9 +18784,29 @@
       <APILanguage>c</APILanguage>
       <Type>func</Type>
     </TokenIdentifier>
+    <Path>d0/dc1/meshx__gen__light__cli_8c.html</Path>
+    <Anchor>ad5637a1812175572242359d045dec5fb</Anchor>
+    <DeclaredIn>meshx_gen_light_cli.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_handle_gen_light_msg</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
     <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
-    <Anchor>a6eb391ab146454bd45a65c1e545df26b</Anchor>
+    <Anchor>a6270d9d91a94934c3a9b260519c5a16b</Anchor>
     <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_handle_gen_onoff_msg</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/dbc/meshx__gen__client_8c.html</Path>
+    <Anchor>ab5677231370b0fb4f0f0f908622eced3</Anchor>
+    <DeclaredIn>meshx_gen_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -18217,6 +18827,26 @@
     <Path>d2/d21/meshx__prov__srv_8c.html</Path>
     <Anchor>a90d4cf320c64e69007ffa9ccbb224100</Anchor>
     <DeclaredIn>meshx_prov_srv.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_handle_txcm_msg</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/dbc/meshx__gen__client_8c.html</Path>
+    <Anchor>ac8e147cc44f00d040b542d881368a646</Anchor>
+    <DeclaredIn>meshx_gen_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_handle_txcm_msg</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/dc1/meshx__gen__light__cli_8c.html</Path>
+    <Anchor>a7fa5ba0a4d60e5ab1ef79f54a850c4cc</Anchor>
+    <DeclaredIn>meshx_gen_light_cli.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -18480,6 +19110,36 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_is_unack_opcode</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/dbc/meshx__gen__client_8c.html</Path>
+    <Anchor>ac5594a93316a18d474f653d4471e063e</Anchor>
+    <DeclaredIn>meshx_gen_client.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_is_unack_opcode</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/dc1/meshx__gen__light__cli_8c.html</Path>
+    <Anchor>ac5594a93316a18d474f653d4471e063e</Anchor>
+    <DeclaredIn>meshx_gen_light_cli.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_KEY_NAME_MAX_SIZE</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d5/d8f/meshx__nvs_8c.html</Path>
+    <Anchor>a5016982913764b01e071a775c6dede36</Anchor>
+    <DeclaredIn>meshx_nvs.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_KEY_UNUSED</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
@@ -18487,6 +19147,16 @@
     <Path>d4/de0/meshx__ble__mesh__cmn__def_8h.html</Path>
     <Anchor>a7353b71549419a204914b238d342e4e5</Anchor>
     <DeclaredIn>meshx_ble_mesh_cmn_def.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_KEY_VALUE_MAX_SIZE</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d5/d8f/meshx__nvs_8c.html</Path>
+    <Anchor>aa31283cdee0da47b3779356c03ff794d</Anchor>
+    <DeclaredIn>meshx_nvs.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -18527,16 +19197,6 @@
     <Path>da/dfd/meshx__light__ctl__client_8h.html</Path>
     <Anchor>ad06128c98bab44ac9ac845d1fcc5586e</Anchor>
     <DeclaredIn>meshx_light_ctl_client.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_light_ctl_cli_reg_cb</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
-    <Anchor>a5c8a89261d846208670447b44d27c862</Anchor>
-    <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -18615,7 +19275,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
-    <Anchor>a0b0bfb546a17cedd810469b795e91948</Anchor>
+    <Anchor>ae95db4bc247ab143853876d3ac375ae9</Anchor>
     <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
   </Token>
   <Token>
@@ -18625,18 +19285,8 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>da/dfd/meshx__light__ctl__client_8h.html</Path>
-    <Anchor>a0b0bfb546a17cedd810469b795e91948</Anchor>
+    <Anchor>ae95db4bc247ab143853876d3ac375ae9</Anchor>
     <DeclaredIn>meshx_light_ctl_client.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_light_ctl_client_timeout_handler</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
-    <Anchor>af662d33c9ac9569608d2ad1749e8d7dc</Anchor>
-    <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -18805,7 +19455,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
-    <Anchor>a6a0257b2e3c470ecae2f144b05bda962</Anchor>
+    <Anchor>a691207837b755bf282fdc6a0dfa5ab77</Anchor>
     <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
   </Token>
   <Token>
@@ -18815,7 +19465,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>da/dfd/meshx__light__ctl__client_8h.html</Path>
-    <Anchor>a6a0257b2e3c470ecae2f144b05bda962</Anchor>
+    <Anchor>a691207837b755bf282fdc6a0dfa5ab77</Anchor>
     <DeclaredIn>meshx_light_ctl_client.h</DeclaredIn>
   </Token>
   <Token>
@@ -18825,7 +19475,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
-    <Anchor>a4464e08bcc032c176c6ca4a91749153c</Anchor>
+    <Anchor>ae84366ab4200bbf6f39715b0705ea453</Anchor>
     <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
   </Token>
   <Token>
@@ -18835,7 +19485,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>da/dfd/meshx__light__ctl__client_8h.html</Path>
-    <Anchor>a4464e08bcc032c176c6ca4a91749153c</Anchor>
+    <Anchor>ae84366ab4200bbf6f39715b0705ea453</Anchor>
     <DeclaredIn>meshx_light_ctl_client.h</DeclaredIn>
   </Token>
   <Token>
@@ -18845,7 +19495,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
-    <Anchor>a6ed820c28aabb44dc82110f0bf2fc992</Anchor>
+    <Anchor>ab5a9d633ee4068249adf64aeb449880e</Anchor>
     <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
   </Token>
   <Token>
@@ -18855,7 +19505,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>da/dfd/meshx__light__ctl__client_8h.html</Path>
-    <Anchor>a6ed820c28aabb44dc82110f0bf2fc992</Anchor>
+    <Anchor>ab5a9d633ee4068249adf64aeb449880e</Anchor>
     <DeclaredIn>meshx_light_ctl_client.h</DeclaredIn>
   </Token>
   <Token>
@@ -19164,8 +19814,18 @@
       <APILanguage>c</APILanguage>
       <Type>func</Type>
     </TokenIdentifier>
-    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Path>d0/dc9/meshx__log_8c.html</Path>
     <Anchor>ab47e09c155a1ce6f88a355797f495c53</Anchor>
+    <DeclaredIn>meshx_log.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_log_printf</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Anchor>a9d2caafeab2f3d7bf6338e70f768747f</Anchor>
     <DeclaredIn>meshx_log.h</DeclaredIn>
   </Token>
   <Token>
@@ -23040,6 +23700,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_msg_q_peek</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d2/dc7/meshx__msg__q_8h.html</Path>
+    <Anchor>a252923c533acaa114cb26fb77c68262d</Anchor>
+    <DeclaredIn>meshx_msg_q.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_msg_q_peek</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d2/d6a/FreeRTOS__meshx__msg__q_8c.html</Path>
+    <Anchor>a252923c533acaa114cb26fb77c68262d</Anchor>
+    <DeclaredIn>FreeRTOS_meshx_msg_q.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_msg_q_recv</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -23076,6 +23756,26 @@
     </TokenIdentifier>
     <Path>d2/d6a/FreeRTOS__meshx__msg__q_8c.html</Path>
     <Anchor>a7f1cd772e91a7005b2fac769ce4257e8</Anchor>
+    <DeclaredIn>FreeRTOS_meshx_msg_q.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_msg_q_send_front</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d2/dc7/meshx__msg__q_8h.html</Path>
+    <Anchor>a4c0f3409d6df07a188385127d46891a8</Anchor>
+    <DeclaredIn>meshx_msg_q.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_msg_q_send_front</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d2/d6a/FreeRTOS__meshx__msg__q_8c.html</Path>
+    <Anchor>a4c0f3409d6df07a188385127d46891a8</Anchor>
     <DeclaredIn>FreeRTOS_meshx_msg_q.c</DeclaredIn>
   </Token>
   <Token>
@@ -23705,7 +24405,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>d3/d7d/meshx__nvs_8h.html</Path>
-    <Anchor>a66b5694246aa0f0a9be3c228de543200</Anchor>
+    <Anchor>ae36588f5b4ae5e5ac771e1af86a71e5a</Anchor>
     <DeclaredIn>meshx_nvs.h</DeclaredIn>
   </Token>
   <Token>
@@ -23715,7 +24415,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>d5/d8f/meshx__nvs_8c.html</Path>
-    <Anchor>a66b5694246aa0f0a9be3c228de543200</Anchor>
+    <Anchor>ae36588f5b4ae5e5ac771e1af86a71e5a</Anchor>
     <DeclaredIn>meshx_nvs.c</DeclaredIn>
   </Token>
   <Token>
@@ -23764,9 +24464,9 @@
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
     </TokenIdentifier>
-    <Path>d5/d8f/meshx__nvs_8c.html</Path>
+    <Path>dc/d28/esp__nvs_8c.html</Path>
     <Anchor>a0c55d54c5feb782f12273dfc2d6fe002</Anchor>
-    <DeclaredIn>meshx_nvs.c</DeclaredIn>
+    <DeclaredIn>esp_nvs.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23820,6 +24520,146 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_nvs_plat_close</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>da/d2d/meshx__nvs__interface_8h.html</Path>
+    <Anchor>ad5a8b76fa8a5b7105ee6cac1edb47ec3</Anchor>
+    <DeclaredIn>meshx_nvs_interface.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_nvs_plat_close</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>dc/d28/esp__nvs_8c.html</Path>
+    <Anchor>ad5a8b76fa8a5b7105ee6cac1edb47ec3</Anchor>
+    <DeclaredIn>esp_nvs.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_nvs_plat_commit</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>da/d2d/meshx__nvs__interface_8h.html</Path>
+    <Anchor>a5dd0ef1876320dd92b9c102574e08435</Anchor>
+    <DeclaredIn>meshx_nvs_interface.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_nvs_plat_commit</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>dc/d28/esp__nvs_8c.html</Path>
+    <Anchor>a5dd0ef1876320dd92b9c102574e08435</Anchor>
+    <DeclaredIn>esp_nvs.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_nvs_plat_erase</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>da/d2d/meshx__nvs__interface_8h.html</Path>
+    <Anchor>ac07e3fa684f8bd4f45c595c237b98504</Anchor>
+    <DeclaredIn>meshx_nvs_interface.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_nvs_plat_erase</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>dc/d28/esp__nvs_8c.html</Path>
+    <Anchor>ac07e3fa684f8bd4f45c595c237b98504</Anchor>
+    <DeclaredIn>esp_nvs.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_nvs_plat_open</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>da/d2d/meshx__nvs__interface_8h.html</Path>
+    <Anchor>a15b34ee0dff883205fa21a0594fc0c7c</Anchor>
+    <DeclaredIn>meshx_nvs_interface.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_nvs_plat_open</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>dc/d28/esp__nvs_8c.html</Path>
+    <Anchor>a15b34ee0dff883205fa21a0594fc0c7c</Anchor>
+    <DeclaredIn>esp_nvs.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_nvs_plat_read</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>da/d2d/meshx__nvs__interface_8h.html</Path>
+    <Anchor>a01998c5a615417f7fd4c8e3e6aa06a61</Anchor>
+    <DeclaredIn>meshx_nvs_interface.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_nvs_plat_read</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>dc/d28/esp__nvs_8c.html</Path>
+    <Anchor>a01998c5a615417f7fd4c8e3e6aa06a61</Anchor>
+    <DeclaredIn>esp_nvs.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_nvs_plat_remove</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>da/d2d/meshx__nvs__interface_8h.html</Path>
+    <Anchor>ac4731c0a5821db05dfc78f395caf73dd</Anchor>
+    <DeclaredIn>meshx_nvs_interface.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_nvs_plat_remove</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>dc/d28/esp__nvs_8c.html</Path>
+    <Anchor>ac4731c0a5821db05dfc78f395caf73dd</Anchor>
+    <DeclaredIn>esp_nvs.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_nvs_plat_write</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>da/d2d/meshx__nvs__interface_8h.html</Path>
+    <Anchor>a486367a843345efbb5edb7267a706eb3</Anchor>
+    <DeclaredIn>meshx_nvs_interface.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_nvs_plat_write</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>dc/d28/esp__nvs_8c.html</Path>
+    <Anchor>a486367a843345efbb5edb7267a706eb3</Anchor>
+    <DeclaredIn>esp_nvs.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_NVS_RELOAD_ONE_SHOT</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
@@ -23855,7 +24695,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>d3/d7d/meshx__nvs_8h.html</Path>
-    <Anchor>a00bee4a5af97fa0b8d4195a827e9f5f5</Anchor>
+    <Anchor>ab9a39208cc2b067b0b5df0a85d7b4b03</Anchor>
     <DeclaredIn>meshx_nvs.h</DeclaredIn>
   </Token>
   <Token>
@@ -23865,7 +24705,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>d5/d8f/meshx__nvs_8c.html</Path>
-    <Anchor>a00bee4a5af97fa0b8d4195a827e9f5f5</Anchor>
+    <Anchor>ab9a39208cc2b067b0b5df0a85d7b4b03</Anchor>
     <DeclaredIn>meshx_nvs.c</DeclaredIn>
   </Token>
   <Token>
@@ -23936,6 +24776,26 @@
     </TokenIdentifier>
     <Path>d5/d8f/meshx__nvs_8c.html</Path>
     <Anchor>a65bede97f6d999e2e685468e67479b02</Anchor>
+    <DeclaredIn>meshx_nvs.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_nvs_write_list_head</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>d5/d8f/meshx__nvs_8c.html</Path>
+    <Anchor>ac95f13ed9cb5133d51c72830a7a860ca</Anchor>
+    <DeclaredIn>meshx_nvs.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_nvs_write_list_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>d5/d8f/meshx__nvs_8c.html</Path>
+    <Anchor>ab07aa851c1eab788da9fc6594a17c8b1</Anchor>
     <DeclaredIn>meshx_nvs.c</DeclaredIn>
   </Token>
   <Token>
@@ -27235,7 +28095,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>da/df4/meshx__relay__client_8c.html</Path>
-    <Anchor>ac610d2be312dd0869c22868ae041963e</Anchor>
+    <Anchor>a99cebf2cc084fcecfd2c9d0968b2b7f1</Anchor>
     <DeclaredIn>meshx_relay_client.c</DeclaredIn>
   </Token>
   <Token>
@@ -27396,6 +28256,26 @@
     </TokenIdentifier>
     <Path>dd/d05/FreeRTOS__meshx__utils_8c.html</Path>
     <Anchor>a99d2d0830c65372a6e033a1533dec6ad</Anchor>
+    <DeclaredIn>FreeRTOS_meshx_utils.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_rtos_get_curr_task_id_prio</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d8/d39/meshx__rtos__utils_8h.html</Path>
+    <Anchor>a6816e2e6131dc78da745ce5d815043e0</Anchor>
+    <DeclaredIn>meshx_rtos_utils.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_rtos_get_curr_task_id_prio</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>dd/d05/FreeRTOS__meshx__utils_8c.html</Path>
+    <Anchor>a6816e2e6131dc78da745ce5d815043e0</Anchor>
     <DeclaredIn>FreeRTOS_meshx_utils.c</DeclaredIn>
   </Token>
   <Token>
@@ -28040,6 +28920,436 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_txcm_cb_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>a328935976976e3cda92653928171b2ae</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_txcm_event_cb_reg</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ae4c062713b2a5ca37f852c0d55fb86f1</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_txcm_fn_model_send_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>adf08759776eb69c86eb6b76618d2ac75</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_txcm_init</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>a09d9909d12a0e348e2b81289220c6396</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_PARAM_MAX_LEN</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>aa436b7325735d8c531e8e2639895b883</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_RETRY_MAX</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>acda73f95b774a2289e1944f19d17cdf5</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_STATE_ACK</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ac03ea745af711773c4abf4296db65bb3aaf2c437e598b340c198b098bf42967bd</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_STATE_MAX</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ac03ea745af711773c4abf4296db65bb3af7aa790d7eaed6cf44b0f1cf1c6f974a</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_STATE_NACK</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ac03ea745af711773c4abf4296db65bb3a1697036408d5258caee137c5ec4de088</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_STATE_NEW</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ac03ea745af711773c4abf4296db65bb3a7f96ad8ec1f9e2560989be80bd3be4ac</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_STATE_NONE</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ac03ea745af711773c4abf4296db65bb3a73399917598321b0167d6f52daba4afc</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_STATE_SENDING</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ac03ea745af711773c4abf4296db65bb3a13af548ffaf904f68e6fcdfa7864a0d9</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_txcm_msg_state_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>enum</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ac03ea745af711773c4abf4296db65bb3</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_STATE_NONE</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ac03ea745af711773c4abf4296db65bb3a73399917598321b0167d6f52daba4afc</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_STATE_NEW</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ac03ea745af711773c4abf4296db65bb3a7f96ad8ec1f9e2560989be80bd3be4ac</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_STATE_SENDING</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ac03ea745af711773c4abf4296db65bb3a13af548ffaf904f68e6fcdfa7864a0d9</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_STATE_WAITING_ACK</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ac03ea745af711773c4abf4296db65bb3ae3e37bd63161256de43aa2a25a2d891d</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_STATE_ACK</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ac03ea745af711773c4abf4296db65bb3aaf2c437e598b340c198b098bf42967bd</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_STATE_NACK</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ac03ea745af711773c4abf4296db65bb3a1697036408d5258caee137c5ec4de088</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_STATE_MAX</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ac03ea745af711773c4abf4296db65bb3af7aa790d7eaed6cf44b0f1cf1c6f974a</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_STATE_WAITING_ACK</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ac03ea745af711773c4abf4296db65bb3ae3e37bd63161256de43aa2a25a2d891d</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_TYPE_ACKED</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ad94a3e62363917024c6f9b4623035900abbb22739d69e44a213dcff3f549204b0</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_TYPE_MAX</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ad94a3e62363917024c6f9b4623035900a36d3cae18b17f099f9b77a61dcda8ba9</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_txcm_msg_type_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>enum</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ad94a3e62363917024c6f9b4623035900</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_TYPE_ACKED</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ad94a3e62363917024c6f9b4623035900abbb22739d69e44a213dcff3f549204b0</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_TYPE_UNACKED</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ad94a3e62363917024c6f9b4623035900a2d505521f9f956eadd58fa4210b5d57e</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_TYPE_MAX</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ad94a3e62363917024c6f9b4623035900a36d3cae18b17f099f9b77a61dcda8ba9</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_MSG_TYPE_UNACKED</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ad94a3e62363917024c6f9b4623035900a2d505521f9f956eadd58fa4210b5d57e</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_txcm_request_send</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>a1800870a4a78392cd7f7116d2f683a7d</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_txcm_request_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>a4e6328f333c1863378a610e5d34fac1a</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_SIG_ACK</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>a5590349ddc31ae910c6195b079e88641a516c9984269f6c30e26084ae2923b8ab</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_SIG_DIRECT_SEND</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>a5590349ddc31ae910c6195b079e88641a4a185d087b39aa51409df0ebb46a0a85</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_SIG_ENQ_SEND</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>a5590349ddc31ae910c6195b079e88641a18abf308b0c6e6ea79d6e36a27e22c55</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_SIG_MAX</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>a5590349ddc31ae910c6195b079e88641af5359ea8298e79c003bdc94ed323b0cf</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_SIG_RESEND</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>a5590349ddc31ae910c6195b079e88641ab559ce3fdd1ef194cc558fc05823a07c</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_txcm_sig_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>enum</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>a5590349ddc31ae910c6195b079e88641</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_SIG_ENQ_SEND</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>a5590349ddc31ae910c6195b079e88641a18abf308b0c6e6ea79d6e36a27e22c55</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_SIG_DIRECT_SEND</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>a5590349ddc31ae910c6195b079e88641a4a185d087b39aa51409df0ebb46a0a85</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_SIG_RESEND</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>a5590349ddc31ae910c6195b079e88641ab559ce3fdd1ef194cc558fc05823a07c</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_SIG_ACK</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>a5590349ddc31ae910c6195b079e88641a516c9984269f6c30e26084ae2923b8ab</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_SIG_MAX</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>a5590349ddc31ae910c6195b079e88641af5359ea8298e79c003bdc94ed323b0cf</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_TX_Q_DEPTH</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>ae3da9f9845886244688411b23bcd1b7a</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_TXCM_TX_Q_LEN</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>df/d06/meshx__txcm_8h.html</Path>
+    <Anchor>a74575c943fae0a78fe0a824404ccdb9b</Anchor>
+    <DeclaredIn>meshx_txcm.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_TYPE_COMPLETE_CB</Name>
       <APILanguage>c</APILanguage>
       <Type>econst</Type>
@@ -28197,6 +29507,16 @@
     <Path>d4/de0/meshx__ble__mesh__cmn__def_8h.html</Path>
     <Anchor>a9ea55cf4d5f99b720209aeba64aecb25aec43539408cee0209e62eb7fba3b6f52</Anchor>
     <DeclaredIn>meshx_ble_mesh_cmn_def.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_WEEK</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>da/d68/meshx__err_8h.html</Path>
+    <Anchor>afd06eb7b8ab3675d045204c907af34e8</Anchor>
+    <DeclaredIn>meshx_err.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -28450,12 +29770,32 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>MODULE_ID_TXCM</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>d3/da1/module__id_8h.html</Path>
+    <Anchor>ac6141ce7b2d1d07b28553017c6a3aedca3c953cfa39d9a12fdea6b6e24dddfc2d</Anchor>
+    <DeclaredIn>module_id.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MODULE_ID_MAX</Name>
       <APILanguage>c</APILanguage>
       <Type>econst</Type>
     </TokenIdentifier>
     <Path>d3/da1/module__id_8h.html</Path>
     <Anchor>ac6141ce7b2d1d07b28553017c6a3aedca0bca37d26c7c9e2acb8232315686be7d</Anchor>
+    <DeclaredIn>module_id.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MODULE_ID_TXCM</Name>
+      <APILanguage>c</APILanguage>
+      <Type>econst</Type>
+    </TokenIdentifier>
+    <Path>d3/da1/module__id_8h.html</Path>
+    <Anchor>ac6141ce7b2d1d07b28553017c6a3aedca3c953cfa39d9a12fdea6b6e24dddfc2d</Anchor>
     <DeclaredIn>module_id.h</DeclaredIn>
   </Token>
   <Token>
@@ -28477,26 +29817,6 @@
     <Path>dc/d93/meshx__api_8c.html</Path>
     <Anchor>a841f316f7fff59d36a6cac57fa4b3c3c</Anchor>
     <DeclaredIn>meshx_api.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>net_idx</Name>
-      <APILanguage>c</APILanguage>
-      <Type>data</Type>
-    </TokenIdentifier>
-    <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
-    <Anchor>a3fda4da936f9418597f7caf664a46b45</Anchor>
-    <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>opcode</Name>
-      <APILanguage>c</APILanguage>
-      <Type>data</Type>
-    </TokenIdentifier>
-    <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
-    <Anchor>aeb39438c0aa5ad494c96060b00351545</Anchor>
-    <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -28607,16 +29927,6 @@
     <Path>d8/d03/meshx__os__timer_8h.html</Path>
     <Anchor>adb0ba77bc857e8f6bfec9be2081d5370</Anchor>
     <DeclaredIn>meshx_os_timer.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>p_model</Name>
-      <APILanguage>c</APILanguage>
-      <Type>data</Type>
-    </TokenIdentifier>
-    <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
-    <Anchor>a05e6095e82931bbbb1cdbc4fad94e164</Anchor>
-    <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -29137,16 +30447,6 @@
     <Path>dd/da1/meshx__os__timer_8c.html</Path>
     <Anchor>afbf0880723201cd89df2f3de140f4731</Anchor>
     <DeclaredIn>meshx_os_timer.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>state</Name>
-      <APILanguage>c</APILanguage>
-      <Type>data</Type>
-    </TokenIdentifier>
-    <Path>d8/d93/meshx__light__ctl__client_8c.html</Path>
-    <Anchor>abad56f71302ad7631cfc21d4a1e3987b</Anchor>
-    <DeclaredIn>meshx_light_ctl_client.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>

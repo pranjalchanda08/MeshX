@@ -1,191 +1,205 @@
 <map id="module_id.h" name="module_id.h">
-<area shape="rect" id="Node000001" title="Defines module IDs for different elements in the BLE mesh node application." alt="" coords="359,5,449,31"/>
-<area shape="rect" id="Node000002" href="$d0/dc9/meshx__log_8c.html" title="Implementation of the MeshX logging system." alt="" coords="5,153,99,178"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="362,40,83,154,81,150,360,35"/>
-<area shape="rect" id="Node000003" href="$d7/dcb/meshx__log_8h.html" title="Logging interface for MeshX with color&#45;coded output." alt="" coords="357,79,451,105"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="407,46,407,79,401,79,401,46"/>
-<area shape="rect" id="Node000062" href="$d8/d5d/unit__test_8h.html" title="Header file for the production console unit test functionality." alt="" coords="2883,79,2965,105"/>
-<area shape="poly" id="edge123_Node000001_Node000062" title=" " alt="" coords="465,19,2883,87,2883,92,464,24"/>
-<area shape="poly" id="edge122_Node000003_Node000002" title=" " alt="" coords="342,108,99,157,98,152,341,103"/>
-<area shape="rect" id="Node000004" href="$d3/db6/FreeRTOS__meshx__timer_8c.html" title="Implementation of RTOS timer abstraction for MeshX using FreeRTOS. This file provides functions to cr..." alt="" coords="317,153,491,178"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="407,120,407,152,401,152,401,120"/>
-<area shape="rect" id="Node000005" href="$dd/d05/FreeRTOS__meshx__utils_8c.html" title="Utility functions for integrating MeshX with FreeRTOS. This file provides implementations for memory ..." alt="" coords="123,153,293,178"/>
-<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="357,113,242,155,241,150,355,108"/>
-<area shape="rect" id="Node000006" href="$df/dd3/app__common_8h.html" title="Common application definitions and includes for BLE Mesh Node." alt="" coords="2809,153,2919,178"/>
-<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="466,92,2809,160,2809,165,466,98"/>
-<area shape="rect" id="Node000053" href="$dc/d96/esp__platform__ble__mesh_8c.html" title="This file contains platform&#45;specific implementations for BLE Mesh functionality on the ESP32 using th..." alt="" coords="1241,713,1410,739"/>
-<area shape="poly" id="edge121_Node000003_Node000053" title=" " alt="" coords="449,109,478,127,505,151,538,197,559,242,573,284,582,325,593,365,608,405,632,445,670,486,734,537,808,574,930,622,1056,661,1170,690,1262,710,1260,715,1169,695,1054,666,929,627,806,579,731,542,666,490,628,448,603,407,588,367,577,326,568,285,554,243,534,200,501,154,475,132,446,114"/>
-<area shape="rect" id="Node000007" href="$d2/d6b/composition_8c.html" title="BLE Mesh Composition Initialization and Element Creation." alt="" coords="2925,861,3027,886"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="2935,176,3070,190,3232,212,3307,228,3369,251,3393,265,3412,280,3424,299,3428,319,3428,477,3426,537,3419,589,3407,636,3389,677,3364,715,3331,749,3289,782,3239,815,3200,831,3144,845,3027,867,3026,862,3143,840,3198,826,3236,810,3286,778,3327,745,3359,711,3384,675,3402,634,3414,588,3421,536,3423,476,3423,319,3419,301,3408,284,3390,269,3367,256,3306,234,3231,217,3069,195,2934,181"/>
-<area shape="rect" id="Node000008" href="$d3/d18/meshx_8h.html" title="This file contains the headers for meshx.c." alt="" coords="3131,787,3200,813"/>
-<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="2934,176,3214,224,3272,238,3324,250,3345,258,3362,272,3373,292,3377,319,3377,558,3371,599,3356,638,3332,673,3304,705,3242,756,3190,789,3187,784,3239,752,3300,701,3328,670,3351,635,3366,598,3372,557,3372,319,3368,293,3358,275,3343,263,3322,255,3271,244,3213,229,2934,181"/>
-<area shape="rect" id="Node000011" href="$db/d2f/meshx__api_8h.html" title="This file contains the API definitions for the MeshX application." alt="" coords="2693,713,2787,739"/>
-<area shape="poly" id="edge11_Node000006_Node000011" title=" " alt="" coords="2934,176,3073,201,3166,224,3207,241,3242,257,3256,267,3267,280,3274,297,3276,319,3276,477,3275,531,3267,554,3250,578,3217,605,3167,629,3106,650,3038,670,2899,701,2788,720,2787,715,2898,695,3037,664,3105,645,3165,624,3214,600,3246,575,3262,552,3269,530,3271,476,3271,319,3268,299,3262,283,3252,271,3239,262,3205,246,3165,229,3072,207,2933,181"/>
-<area shape="rect" id="Node000014" href="$d0/d53/meshx__light__cwww__client_8c.html" title="Implementation of the CW&#45;WW (Cool White &#45; Warm White) client model for BLE Mesh." alt="" coords="1060,787,1242,813"/>
-<area shape="poly" id="edge114_Node000006_Node000014" title=" " alt="" coords="2794,169,2316,170,1617,176,1269,184,968,194,749,209,681,218,647,229,613,253,586,278,566,303,551,330,541,360,535,393,531,474,531,646,535,665,546,682,564,697,588,711,651,736,729,755,815,770,903,781,1059,792,1059,798,903,786,815,775,728,760,650,741,585,716,561,702,542,685,530,667,525,647,525,474,529,393,536,359,546,328,561,300,582,274,609,249,644,224,680,213,749,204,968,189,1269,178,1616,171,2316,165,2794,164"/>
-<area shape="rect" id="Node000015" href="$da/df4/meshx__relay__client_8c.html" title="Implementation of the relay client model for BLE Mesh." alt="" coords="2420,787,2561,813"/>
-<area shape="poly" id="edge118_Node000006_Node000015" title=" " alt="" coords="2934,177,2991,195,3045,224,3075,244,3099,262,3114,286,3120,319,3120,403,3110,454,3088,538,3061,620,3039,667,3019,682,2992,694,2924,714,2799,742,2674,769,2562,790,2561,784,2673,764,2798,736,2923,709,2990,689,3017,677,3035,664,3056,619,3083,537,3105,453,3115,403,3115,319,3109,288,3095,266,3072,248,3043,229,2989,200,2933,182"/>
-<area shape="rect" id="Node000017" href="$da/db3/meshx__control__task_8h.html" title="Header file for the control task in the BLE mesh node application." alt="" coords="1733,226,1880,252"/>
-<area shape="poly" id="edge18_Node000006_Node000017" title=" " alt="" coords="2794,174,1881,236,1881,230,2794,169"/>
-<area shape="rect" id="Node000028" href="$d8/dd5/meshx__onoff__client_8h.html" title="Header file for the On/Off client model in BLE mesh." alt="" coords="1290,462,1432,488"/>
-<area shape="poly" id="edge116_Node000006_Node000028" title=" " alt="" coords="2794,169,2393,170,2115,175,1820,184,1535,200,1285,224,1182,240,1098,258,1036,279,1015,290,1001,302,995,314,994,330,1005,366,1022,398,1032,412,1051,423,1077,432,1144,448,1290,466,1290,471,1143,453,1075,437,1048,428,1029,416,1018,401,1000,368,989,331,989,313,997,298,1012,285,1034,274,1097,253,1181,235,1285,219,1534,195,1820,179,2115,169,2393,165,2794,164"/>
-<area shape="rect" id="Node000029" href="$df/dc5/meshx__light__cwww__client__element_8h.html" title="Implementation of the CW&#45;WW (Cool White &#45; Warm White) client model for BLE Mesh." alt="" coords="1002,536,1174,577"/>
-<area shape="poly" id="edge115_Node000006_Node000029" title=" " alt="" coords="2794,170,2438,172,1917,181,1384,199,1161,212,994,229,930,233,867,230,749,222,701,225,681,231,664,240,651,252,641,269,634,291,632,319,632,403,635,426,645,443,659,454,678,461,726,471,779,485,867,507,1002,535,1001,540,866,512,778,491,725,477,676,466,656,458,641,446,630,428,627,403,627,319,629,290,636,267,647,249,661,235,679,226,700,220,749,216,867,225,930,228,993,224,1161,207,1384,193,1917,175,2438,167,2794,164"/>
-<area shape="rect" id="Node000030" href="$dc/d5f/meshx__elements_8h.html" title="Header file for MeshX elements." alt="" coords="2895,632,3025,658"/>
-<area shape="poly" id="edge111_Node000006_Node000030" title=" " alt="" coords="2925,181,2973,201,3019,230,3039,248,3055,269,3066,293,3069,319,3069,403,3066,439,3058,475,3030,542,2998,597,2972,634,2967,630,2993,594,3025,539,3053,473,3061,438,3064,403,3064,319,3060,294,3050,272,3035,252,3016,234,2970,206,2923,186"/>
-<area shape="rect" id="Node000032" href="$de/dca/meshx__relay__client__element_8h.html" title="Header file for the Relay Client Model in BLE Mesh." alt="" coords="2217,536,2348,577"/>
-<area shape="poly" id="edge119_Node000006_Node000032" title=" " alt="" coords="2848,193,2763,296,2703,358,2638,416,2575,459,2506,490,2426,520,2350,542,2348,537,2424,515,2504,486,2573,455,2634,412,2699,354,2759,292,2844,189"/>
-<area shape="rect" id="Node000038" href="$db/d01/meshx__onoff__server_8h.html" title="Header file for the On/Off Server model in the BLE Mesh Node application." alt="" coords="2832,462,2979,488"/>
-<area shape="poly" id="edge117_Node000006_Node000038" title=" " alt="" coords="2870,194,2906,462,2901,463,2865,194"/>
-<area shape="rect" id="Node000039" href="$d8/da4/meshx__cwww__server__element_8h.html" title="Header file for CWWW Server Model." alt="" coords="2765,544,2974,569"/>
-<area shape="poly" id="edge110_Node000006_Node000039" title=" " alt="" coords="2906,183,2943,206,2979,236,3007,274,3016,295,3019,319,3019,403,3015,449,3007,469,2993,490,2974,508,2952,524,2908,545,2906,541,2949,519,2971,504,2989,486,3003,466,3010,448,3013,403,3013,319,3010,297,3003,276,2975,240,2940,210,2903,188"/>
-<area shape="rect" id="Node000041" href="$dc/dee/meshx__relay__server__element_8h.html" title="Header file for the Relay Server Model." alt="" coords="3100,536,3236,577"/>
-<area shape="poly" id="edge120_Node000006_Node000041" title=" " alt="" coords="2934,178,3062,204,3137,224,3157,245,3167,266,3170,290,3171,319,3171,403,3171,536,3165,536,3165,403,3165,319,3165,290,3162,268,3153,248,3135,229,3061,209,2933,183"/>
-<area shape="rect" id="Node000045" href="$da/dfd/meshx__light__ctl__client_8h.html" title="Header file for the Light CTL (Color Temperature Light) Client model." alt="" coords="791,462,950,488"/>
-<area shape="poly" id="edge112_Node000006_Node000045" title=" " alt="" coords="2794,170,2424,174,1898,184,1399,202,1217,214,1110,229,1009,252,928,275,893,291,861,315,830,347,800,390,796,400,796,409,807,429,827,446,848,460,846,464,824,450,803,432,791,411,791,399,795,387,826,343,857,310,890,287,926,270,1008,247,1109,224,1216,209,1399,197,1898,179,2424,169,2794,165"/>
-<area shape="rect" id="Node000049" href="$db/dde/meshx__light__ctl__srv_8h.html" title="Header file for the Light CTL Server module." alt="" coords="2662,462,2808,488"/>
-<area shape="poly" id="edge113_Node000006_Node000049" title=" " alt="" coords="2856,194,2742,463,2737,461,2851,192"/>
-<area shape="poly" id="edge8_Node000008_Node000007" title=" " alt="" coords="3120,821,3009,863,3007,858,3118,816"/>
-<area shape="rect" id="Node000009" href="$d0/d29/main_8c.html" title="Main application file for initializing MeshX on ESP32." alt="" coords="3093,861,3152,886"/>
-<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="3153,827,3132,862,3128,859,3148,824"/>
-<area shape="rect" id="Node000010" href="$d9/d05/meshx_8c.html" title="meshX application file for ESP BLE Mesh node." alt="" coords="3176,861,3245,886"/>
-<area shape="poly" id="edge10_Node000008_Node000010" title=" " alt="" coords="3183,824,3205,859,3201,862,3179,827"/>
-<area shape="poly" id="edge12_Node000011_Node000008" title=" " alt="" coords="2802,733,2947,754,3119,784,3131,787,3130,792,3118,790,2947,759,2802,738"/>
-<area shape="rect" id="Node000012" href="$dc/d93/meshx__api_8c.html" title="Implementation of the BLE Mesh application API." alt="" coords="3013,787,3107,813"/>
-<area shape="poly" id="edge13_Node000011_Node000012" title=" " alt="" coords="2803,739,3014,785,3013,791,2802,744"/>
-<area shape="rect" id="Node000013" href="$d9/d46/meshx__cwww__server_8c.html" title="Implementation of the CW&#45;WW server model for BLE Mesh." alt="" coords="2239,787,2396,813"/>
-<area shape="poly" id="edge14_Node000011_Node000013" title=" " alt="" coords="2678,741,2675,742,2392,789,2391,784,2674,736,2678,736"/>
-<area shape="poly" id="edge15_Node000011_Node000014" title=" " alt="" coords="2678,733,1242,797,1242,792,2678,728"/>
-<area shape="poly" id="edge16_Node000011_Node000015" title=" " alt="" coords="2684,746,2534,789,2532,784,2682,741"/>
-<area shape="rect" id="Node000016" href="$d1/df4/meshx__relay__server_8c.html" title="Relay server model implementation for BLE Mesh networks." alt="" coords="2586,787,2732,813"/>
-<area shape="poly" id="edge17_Node000011_Node000016" title=" " alt="" coords="2717,751,2674,789,2671,785,2713,747"/>
-<area shape="poly" id="edge23_Node000017_Node000011" title=" " alt="" coords="1896,241,2276,261,2458,277,2523,287,2561,298,2601,320,2632,346,2642,361,2647,378,2646,396,2638,416,2624,434,2607,450,2566,473,2520,488,2476,499,2437,510,2411,525,2404,533,2401,544,2404,558,2413,575,2451,597,2536,635,2712,710,2710,715,2534,640,2449,601,2409,579,2399,560,2396,544,2399,531,2407,521,2435,505,2474,494,2519,483,2564,468,2604,445,2621,431,2634,413,2641,395,2642,378,2637,363,2628,350,2598,324,2559,302,2522,292,2458,282,2276,266,1896,246"/>
-<area shape="poly" id="edge22_Node000017_Node000012" title=" " alt="" coords="1896,241,2346,260,2590,277,2690,286,2767,297,2864,308,2961,308,3055,305,3141,305,3180,308,3216,315,3247,326,3274,342,3297,364,3313,393,3323,429,3327,474,3327,558,3320,603,3300,643,3272,679,3237,710,3199,736,3161,758,3095,789,3092,784,3158,754,3196,732,3234,706,3268,675,3296,640,3314,601,3321,557,3321,474,3318,430,3308,395,3292,367,3271,346,3245,330,3214,320,3179,313,3141,310,3055,310,2961,313,2864,313,2766,303,2690,292,2589,282,2346,265,1895,246"/>
-<area shape="poly" id="edge90_Node000017_Node000014" title=" " alt="" coords="1717,245,1496,252,1224,263,978,280,890,291,839,303,798,320,764,337,751,348,741,362,735,379,733,400,733,558,736,584,742,609,753,631,767,652,804,689,850,718,902,742,956,761,1060,784,1058,790,955,766,900,747,847,723,800,693,763,656,748,634,737,611,730,585,728,558,728,400,730,378,737,359,747,345,761,333,795,315,838,297,890,285,978,275,1223,258,1496,246,1717,240"/>
-<area shape="poly" id="edge109_Node000017_Node000015" title=" " alt="" coords="1828,263,1847,289,1865,323,1880,360,1885,400,1885,476,1890,509,1902,532,1923,552,1950,575,1992,607,2031,631,2067,647,2104,658,2182,678,2227,691,2278,711,2330,737,2455,784,2453,789,2328,741,2276,716,2225,696,2180,683,2102,663,2066,652,2028,635,1989,612,1946,579,1919,556,1898,535,1885,511,1880,477,1880,400,1874,362,1861,325,1842,292,1824,266"/>
-<area shape="rect" id="Node000018" href="$d0/de1/esp__gen__cli__model_8c.html" title="Implementation of the Generic OnOff Client model for BLE Mesh. This file contains the initialization,..." alt="" coords="1501,389,1643,414"/>
-<area shape="poly" id="edge19_Node000017_Node000018" title=" " alt="" coords="1750,260,1706,278,1663,302,1637,323,1615,348,1582,390,1578,386,1611,344,1634,320,1660,298,1703,273,1748,255"/>
-<area shape="rect" id="Node000019" href="$d1/d1d/esp__gen__light__cli__model_8c.html" title="Implementation of the Generic Light Client model for BLE Mesh. This file contains the initialization,..." alt="" coords="1043,389,1216,414"/>
-<area shape="poly" id="edge20_Node000017_Node000019" title=" " alt="" coords="1718,245,1595,251,1456,261,1326,278,1274,289,1236,302,1205,321,1177,345,1140,390,1136,387,1174,342,1202,317,1234,298,1273,284,1325,273,1455,256,1595,246,1717,240"/>
-<area shape="rect" id="Node000020" href="$d7/d7a/esp__gen__srv__model_8c.html" title="Implementation of the Generic OnOff Server model for BLE Mesh. This file contains the initialization,..." alt="" coords="1970,389,2118,414"/>
-<area shape="poly" id="edge21_Node000017_Node000020" title=" " alt="" coords="1896,242,1964,248,2034,259,2093,275,2116,286,2131,298,2138,309,2139,320,2132,342,2121,358,2106,371,2075,390,2072,386,2103,367,2117,354,2127,339,2134,319,2133,311,2127,302,2113,290,2092,280,2033,264,1964,253,1896,247"/>
-<area shape="rect" id="Node000021" href="$db/d5f/meshx__ble__mesh__config__srv_8h.html" title="Header file for MeshX BLE Mesh Configuration Server." alt="" coords="1429,625,1592,665"/>
-<area shape="poly" id="edge24_Node000017_Node000021" title=" " alt="" coords="1789,266,1771,292,1753,325,1739,362,1733,400,1733,477,1729,505,1718,530,1701,553,1680,573,1630,604,1579,626,1577,622,1628,600,1677,568,1697,549,1714,528,1724,503,1728,476,1728,400,1734,360,1748,323,1766,289,1785,263"/>
-<area shape="rect" id="Node000025" href="$de/d08/meshx__ble__mesh__gen__cli_8h.html" title="Header file for BLE Mesh Generic Client functionality in the MeshX framework. This file contains decl..." alt="" coords="1442,300,1592,341"/>
-<area shape="poly" id="edge32_Node000017_Node000025" title=" " alt="" coords="1748,259,1590,302,1589,297,1747,254"/>
-<area shape="rect" id="Node000026" href="$d1/d29/meshx__gen__client_8h.html" title="Implementation of the MeshX generic client model for BLE mesh nodes. This file contains functions for..." alt="" coords="1342,389,1477,414"/>
-<area shape="poly" id="edge86_Node000017_Node000026" title=" " alt="" coords="1718,246,1637,251,1553,262,1479,278,1452,289,1433,302,1419,322,1412,345,1411,388,1405,388,1407,345,1414,319,1429,298,1449,284,1478,273,1552,257,1637,246,1717,241"/>
-<area shape="poly" id="edge101_Node000017_Node000028" title=" " alt="" coords="1718,249,1543,268,1462,283,1406,302,1378,320,1359,337,1345,359,1332,389,1330,409,1334,428,1353,460,1349,463,1329,430,1324,409,1327,388,1340,357,1355,334,1375,315,1404,298,1461,278,1542,263,1717,244"/>
-<area shape="poly" id="edge91_Node000017_Node000029" title=" " alt="" coords="1718,248,1514,267,1417,282,1378,292,1349,302,1109,538,1105,534,1347,298,1377,287,1416,277,1513,261,1717,243"/>
-<area shape="rect" id="Node000033" href="$d4/d0c/meshx__ble__mesh__gen__srv_8h.html" title="Header file for Generic Server Models in MeshX BLE Mesh." alt="" coords="2192,300,2342,341"/>
-<area shape="poly" id="edge48_Node000017_Node000033" title=" " alt="" coords="1896,251,2174,297,2192,301,2191,306,2173,303,1895,257"/>
-<area shape="poly" id="edge102_Node000017_Node000038" title=" " alt="" coords="1896,240,2358,259,2587,276,2669,286,2717,297,2749,314,2779,334,2832,381,2873,426,2899,460,2895,464,2869,430,2828,384,2776,338,2746,318,2715,303,2668,291,2586,281,2358,265,1896,246"/>
-<area shape="rect" id="Node000042" href="$d4/def/meshx__ble__mesh__light__cli_8h.html" title="Header file for BLE Mesh Light Client functionality in the MeshX framework. This file contains declar..." alt="" coords="1011,300,1165,341"/>
-<area shape="poly" id="edge64_Node000017_Node000042" title=" " alt="" coords="1718,249,1477,269,1330,284,1184,303,1165,306,1164,300,1184,297,1330,278,1476,263,1717,244"/>
-<area shape="rect" id="Node000043" href="$dd/df0/meshx__gen__light__cli_8h.html" title="Implementation of the MeshX generic light client model for BLE mesh nodes. This file contains functio..." alt="" coords="819,389,968,414"/>
-<area shape="poly" id="edge87_Node000017_Node000043" title=" " alt="" coords="1718,242,1546,244,1337,251,1234,259,1139,269,1059,284,1000,302,969,321,941,345,904,390,899,386,937,341,965,317,998,298,1058,279,1138,264,1234,253,1337,246,1546,238,1718,237"/>
-<area shape="poly" id="edge88_Node000017_Node000045" title=" " alt="" coords="1718,244,1536,247,1311,256,1096,273,1008,286,942,303,897,317,863,332,834,353,809,390,806,400,806,409,816,428,833,446,852,460,849,464,830,450,812,432,801,411,801,399,804,387,831,350,860,327,896,312,941,297,1007,281,1095,268,1311,251,1536,242,1718,238"/>
-<area shape="rect" id="Node000047" href="$d7/de0/meshx__ble__mesh__light__srv_8h.html" title="Header file for the MeshX BLE Mesh Light Server module. This file defines the data structures,..." alt="" coords="2366,300,2519,341"/>
-<area shape="poly" id="edge71_Node000017_Node000047" title=" " alt="" coords="1896,245,2105,265,2354,297,2366,300,2365,305,2353,303,2105,270,1895,250"/>
-<area shape="rect" id="Node000048" href="$dc/daf/meshx__light__server_8h.html" title="Header file for the production lighting server." alt="" coords="2480,389,2624,414"/>
-<area shape="poly" id="edge92_Node000017_Node000048" title=" " alt="" coords="1896,239,2066,244,2264,254,2438,271,2498,283,2532,298,2548,319,2555,344,2556,388,2551,388,2550,345,2543,321,2529,302,2497,288,2437,277,2264,260,2065,250,1896,245"/>
-<area shape="poly" id="edge89_Node000017_Node000049" title=" " alt="" coords="1896,239,2098,244,2342,254,2560,272,2637,283,2681,298,2700,314,2715,334,2732,381,2738,427,2738,462,2733,462,2733,428,2727,382,2710,337,2697,317,2679,302,2636,289,2559,277,2342,260,2098,249,1896,245"/>
-<area shape="rect" id="Node000051" href="$d4/de9/meshx__ble__mesh__prov__srv_8h.html" title="This header file defines the provisioning server interface for the MeshX BLE Mesh stack...." alt="" coords="1640,625,1794,665"/>
-<area shape="poly" id="edge78_Node000017_Node000051" title=" " alt="" coords="1802,268,1790,328,1784,400,1784,477,1779,520,1765,561,1733,625,1728,623,1760,559,1773,519,1779,476,1779,400,1785,327,1797,267"/>
-<area shape="rect" id="Node000056" href="$d2/d21/meshx__prov__srv_8c.html" title="This file contains the implementation of the provisioning process for the BLE mesh node." alt="" coords="1968,787,2094,813"/>
-<area shape="poly" id="edge108_Node000017_Node000056" title=" " alt="" coords="1781,264,1741,302,1702,353,1677,398,1650,442,1606,490,1565,522,1530,542,1445,579,1374,603,1295,618,1142,638,1082,651,1060,659,1045,669,1036,681,1036,696,1044,714,1062,737,1074,743,1100,748,1185,759,1446,776,1741,788,1967,794,1967,800,1741,793,1446,781,1185,764,1099,753,1072,748,1058,741,1039,717,1031,697,1031,680,1041,666,1058,655,1080,646,1141,633,1294,613,1373,597,1443,574,1528,538,1562,518,1602,486,1646,439,1672,396,1697,350,1737,298,1778,260"/>
-<area shape="rect" id="Node000057" href="$df/d7e/meshx__control__task_8c.html" title="Implementation of control task for event handling and messaging." alt="" coords="1970,308,2118,333"/>
-<area shape="poly" id="edge85_Node000017_Node000057" title=" " alt="" coords="1859,255,2008,304,2007,309,1857,260"/>
-<area shape="rect" id="Node000058" href="$d3/d7d/meshx__nvs_8h.html" title="Header file for MeshX Non&#45;Volatile Storage (NVS) operations." alt="" coords="2169,713,2266,739"/>
-<area shape="poly" id="edge93_Node000017_Node000058" title=" " alt="" coords="1816,267,1828,327,1835,400,1835,557,1838,584,1847,603,1861,616,1880,627,1928,643,1982,663,2030,682,2080,697,2169,715,2168,721,2079,702,2029,687,1980,668,1926,648,1878,632,1858,621,1843,606,1833,585,1829,558,1829,400,1823,328,1811,268"/>
-<area shape="rect" id="Node000060" href="$d8/d03/meshx__os__timer_8h.html" title="Header file for OS timer utilities." alt="" coords="2154,632,2280,658"/>
-<area shape="poly" id="edge103_Node000017_Node000060" title=" " alt="" coords="1851,257,1879,275,1903,298,1921,323,1931,346,1935,370,1936,400,1936,476,1942,511,1958,540,1983,565,2013,586,2048,602,2085,615,2154,632,2153,637,2083,620,2046,607,2011,590,1979,569,1954,543,1937,513,1931,477,1931,400,1930,370,1926,347,1916,326,1899,302,1876,279,1849,262"/>
-<area shape="rect" id="Node000022" href="$dc/d28/esp__cfg__srv__model_8c.html" title="Implementation of the BLE Mesh Configuration Server for the MeshX platform. This file contains the in..." alt="" coords="1072,713,1216,739"/>
-<area shape="poly" id="edge25_Node000021_Node000022" title=" " alt="" coords="1414,670,1201,715,1200,710,1413,664"/>
-<area shape="rect" id="Node000023" href="$d1/d47/meshx__config__server_8h.html" title="Header file for the meshxuction configuration server model." alt="" coords="1434,713,1587,739"/>
-<area shape="poly" id="edge26_Node000021_Node000023" title=" " alt="" coords="1513,681,1513,713,1508,713,1508,681"/>
-<area shape="poly" id="edge28_Node000023_Node000013" title=" " alt="" coords="1603,737,1779,752,1916,761,2053,769,2227,784,2239,786,2238,791,2226,790,2053,774,1916,766,1778,757,1603,742"/>
-<area shape="poly" id="edge29_Node000023_Node000014" title=" " alt="" coords="1435,745,1212,789,1211,784,1434,740"/>
-<area shape="poly" id="edge30_Node000023_Node000015" title=" " alt="" coords="1603,737,1830,753,2007,760,2183,767,2408,784,2420,786,2419,791,2408,790,2183,772,2007,765,1829,758,1603,742"/>
-<area shape="poly" id="edge31_Node000023_Node000016" title=" " alt="" coords="1603,737,1876,755,2089,760,2302,766,2574,784,2585,786,2585,791,2573,790,2302,771,2089,765,1876,760,1603,742"/>
-<area shape="rect" id="Node000024" href="$dd/d79/meshx__config__server_8c.html" title="Implementation of the Configuration Server for ESP BLE Mesh." alt="" coords="1434,787,1587,813"/>
-<area shape="poly" id="edge27_Node000023_Node000024" title=" " alt="" coords="1513,754,1513,787,1508,787,1508,754"/>
-<area shape="poly" id="edge33_Node000025_Node000018" title=" " alt="" coords="1542,352,1566,387,1561,390,1537,355"/>
-<area shape="poly" id="edge34_Node000025_Node000026" title=" " alt="" coords="1480,352,1428,390,1424,386,1477,348"/>
-<area shape="rect" id="Node000027" href="$d0/dbc/meshx__gen__client_8c.html" title="Implementation of the MeshX generic client model for BLE mesh nodes. This file contains functions for..." alt="" coords="1456,462,1592,488"/>
-<area shape="poly" id="edge35_Node000026_Node000027" title=" " alt="" coords="1443,421,1506,459,1503,464,1440,425"/>
-<area shape="poly" id="edge36_Node000026_Node000028" title=" " alt="" coords="1395,429,1372,463,1367,460,1391,426"/>
-<area shape="poly" id="edge37_Node000028_Node000029" title=" " alt="" coords="1305,495,1157,538,1155,533,1304,490"/>
-<area shape="rect" id="Node000031" href="$d9/d33/meshx__onoff__client_8c.html" title="Implementation of the Generic OnOff Client Model for BLE Mesh." alt="" coords="1290,544,1432,569"/>
-<area shape="poly" id="edge43_Node000028_Node000031" title=" " alt="" coords="1364,504,1364,543,1359,543,1359,504"/>
-<area shape="poly" id="edge44_Node000028_Node000032" title=" " alt="" coords="1448,486,1891,526,2217,548,2217,554,1890,531,1448,491"/>
-<area shape="poly" id="edge38_Node000029_Node000007" title=" " alt="" coords="1042,588,1024,605,1009,626,989,681,986,707,988,731,994,754,1007,775,1025,794,1049,810,1080,819,1141,826,1335,839,1600,849,1906,857,2518,866,2925,869,2925,875,2518,871,1906,862,1600,855,1335,845,1140,832,1079,824,1047,815,1022,798,1003,778,990,756,982,732,980,706,984,680,1004,623,1020,602,1039,584"/>
-<area shape="poly" id="edge42_Node000029_Node000014" title=" " alt="" coords="1061,590,1037,622,1016,660,1010,680,1008,700,1010,719,1018,738,1032,754,1049,766,1088,784,1086,789,1046,771,1028,757,1014,740,1005,721,1002,700,1005,679,1011,658,1032,619,1057,586"/>
-<area shape="poly" id="edge39_Node000029_Node000030" title=" " alt="" coords="1190,566,1279,574,1630,592,2107,612,2895,639,2895,644,2107,617,1630,598,1278,579,1190,572"/>
-<area shape="poly" id="edge40_Node000030_Node000008" title=" " alt="" coords="2990,665,3151,784,3148,789,2987,669"/>
-<area shape="poly" id="edge41_Node000030_Node000011" title=" " alt="" coords="2913,666,2775,715,2773,710,2911,661"/>
-<area shape="poly" id="edge45_Node000032_Node000007" title=" " alt="" coords="2344,581,2438,622,2682,737,2950,858,2948,863,2680,741,2436,627,2342,586"/>
-<area shape="poly" id="edge47_Node000032_Node000015" title=" " alt="" coords="2337,582,2374,605,2414,635,2451,671,2481,712,2489,731,2493,752,2494,787,2489,787,2488,753,2484,733,2476,715,2447,674,2410,639,2371,610,2334,587"/>
-<area shape="poly" id="edge46_Node000032_Node000030" title=" " alt="" coords="2364,567,2411,574,2895,634,2894,639,2410,579,2363,573"/>
-<area shape="poly" id="edge49_Node000033_Node000020" title=" " alt="" coords="2198,349,2079,391,2077,386,2196,344"/>
-<area shape="rect" id="Node000034" href="$de/d42/esp__light__srv__model_8c.html" title="Implementation of the BLE Mesh Light CTL Server Model for ESP32. This file contains the initializatio..." alt="" coords="2306,389,2456,414"/>
-<area shape="poly" id="edge50_Node000033_Node000034" title=" " alt="" coords="2309,347,2365,386,2362,390,2306,352"/>
-<area shape="rect" id="Node000035" href="$de/ddc/meshx__gen__server_8h.html" title="Header file for the generic server model in the BLE mesh node application." alt="" coords="2142,389,2282,414"/>
-<area shape="poly" id="edge51_Node000033_Node000035" title=" " alt="" coords="2247,355,2223,390,2218,387,2242,352"/>
-<area shape="rect" id="Node000036" href="$da/dcb/meshx__gen__server_8c.html" title="Implementation of the MeshX generic server model for BLE mesh nodes. This file contains functions for..." alt="" coords="2142,462,2282,488"/>
-<area shape="poly" id="edge52_Node000035_Node000036" title=" " alt="" coords="2215,430,2215,462,2209,462,2209,430"/>
-<area shape="rect" id="Node000037" href="$d5/d98/meshx__light__server_8c.html" title="Implementation of the BLE Mesh Lighting Server for the ESP32." alt="" coords="2350,462,2493,488"/>
-<area shape="poly" id="edge53_Node000035_Node000037" title=" " alt="" coords="2263,417,2387,459,2385,464,2261,422"/>
-<area shape="poly" id="edge54_Node000035_Node000038" title=" " alt="" coords="2298,412,2561,436,2820,460,2832,461,2831,466,2820,465,2560,441,2298,417"/>
-<area shape="poly" id="edge55_Node000038_Node000039" title=" " alt="" coords="2896,503,2877,544,2872,542,2891,501"/>
-<area shape="rect" id="Node000040" href="$db/d7b/meshx__onoff__server_8c.html" title="Header file for the On/Off Server model in the BLE Mesh Node application." alt="" coords="2593,544,2740,569"/>
-<area shape="poly" id="edge59_Node000038_Node000040" title=" " alt="" coords="2855,496,2704,545,2703,540,2853,491"/>
-<area shape="poly" id="edge60_Node000038_Node000041" title=" " alt="" coords="2961,490,3103,533,3102,538,2960,495"/>
-<area shape="poly" id="edge56_Node000039_Node000007" title=" " alt="" coords="2874,584,2878,623,2887,665,2907,723,2931,779,2971,859,2967,861,2926,781,2902,725,2881,666,2873,624,2868,585"/>
-<area shape="poly" id="edge57_Node000039_Node000013" title=" " alt="" coords="2833,579,2680,652,2480,741,2353,789,2351,784,2478,737,2677,648,2830,574"/>
-<area shape="poly" id="edge58_Node000039_Node000030" title=" " alt="" coords="2895,578,2949,630,2946,634,2891,582"/>
-<area shape="poly" id="edge61_Node000041_Node000007" title=" " alt="" coords="3190,589,3214,637,3233,696,3237,727,3237,758,3229,787,3214,814,3202,825,3183,835,3135,850,3028,869,3027,864,3134,845,3181,830,3199,821,3210,811,3224,785,3231,757,3232,727,3228,697,3209,639,3185,591"/>
-<area shape="poly" id="edge63_Node000041_Node000016" title=" " alt="" coords="3151,592,3122,631,3083,667,3040,694,2995,716,2900,752,2810,776,2733,791,2732,786,2809,771,2899,747,2993,711,3038,689,3080,663,3118,628,3147,588"/>
-<area shape="poly" id="edge62_Node000041_Node000030" title=" " alt="" coords="3108,585,2990,634,2988,629,3106,580"/>
-<area shape="poly" id="edge65_Node000042_Node000019" title=" " alt="" coords="1108,353,1125,387,1121,389,1103,356"/>
-<area shape="poly" id="edge66_Node000042_Node000043" title=" " alt="" coords="1026,349,924,391,922,386,1024,345"/>
-<area shape="rect" id="Node000044" href="$d0/dc1/meshx__gen__light__cli_8c.html" title=" " alt="" coords="974,462,1122,488"/>
-<area shape="poly" id="edge67_Node000043_Node000044" title=" " alt="" coords="934,419,1023,459,1021,464,932,424"/>
-<area shape="poly" id="edge68_Node000043_Node000045" title=" " alt="" coords="888,430,877,463,872,461,882,428"/>
-<area shape="poly" id="edge70_Node000045_Node000029" title=" " alt="" coords="919,491,1035,533,1033,538,918,496"/>
-<area shape="rect" id="Node000046" href="$d8/d93/meshx__light__ctl__client_8c.html" title="Implementation of the Light CTL Client model for ESP32 BLE Mesh." alt="" coords="819,544,978,569"/>
-<area shape="poly" id="edge69_Node000045_Node000046" title=" " alt="" coords="883,502,897,542,892,544,878,504"/>
-<area shape="poly" id="edge72_Node000047_Node000034" title=" " alt="" coords="2420,355,2393,390,2389,386,2416,351"/>
-<area shape="poly" id="edge73_Node000047_Node000048" title=" " alt="" coords="2483,348,2537,386,2534,390,2480,352"/>
-<area shape="poly" id="edge77_Node000048_Node000037" title=" " alt="" coords="2518,424,2445,464,2442,459,2516,420"/>
-<area shape="poly" id="edge74_Node000048_Node000049" title=" " alt="" coords="2598,418,2704,459,2703,464,2596,423"/>
-<area shape="poly" id="edge75_Node000049_Node000039" title=" " alt="" coords="2769,494,2850,541,2847,545,2767,498"/>
-<area shape="rect" id="Node000050" href="$d4/db6/meshx__light__ctl__srv_8c.html" title="Implementation of the Light CTL Server model for BLE Mesh Node." alt="" coords="2423,544,2569,569"/>
-<area shape="poly" id="edge76_Node000049_Node000050" title=" " alt="" coords="2684,496,2534,545,2532,540,2683,491"/>
-<area shape="poly" id="edge79_Node000051_Node000007" title=" " alt="" coords="1811,662,1861,681,1907,711,1919,724,1926,738,1932,764,1938,789,1945,800,1957,810,1979,820,2013,828,2115,842,2247,852,2398,859,2702,867,2925,869,2925,875,2702,873,2397,865,2247,857,2114,847,2013,833,1977,825,1955,815,1941,804,1933,791,1926,766,1921,740,1914,727,1904,715,1859,686,1809,667"/>
-<area shape="rect" id="Node000052" href="$da/dd1/esp__platform_8c.html" title="Platform&#45;specific initialization and BLE Mesh provisioning for ESP32. This file contains functions to..." alt="" coords="1787,713,1893,739"/>
-<area shape="poly" id="edge80_Node000051_Node000052" title=" " alt="" coords="1762,671,1823,710,1820,715,1759,676"/>
-<area shape="poly" id="edge81_Node000051_Node000053" title=" " alt="" coords="1626,667,1386,715,1385,710,1625,662"/>
-<area shape="rect" id="Node000054" href="$d9/d31/esp__prov__srv__model_8c.html" title="Implementation of BLE Mesh provisioning server model for ESP32. This file contains the provisioning c..." alt="" coords="1611,713,1762,739"/>
-<area shape="poly" id="edge82_Node000051_Node000054" title=" " alt="" coords="1707,681,1694,714,1689,712,1702,679"/>
-<area shape="rect" id="Node000055" href="$d2/d10/meshx__prov__srv_8h.html" title="Header file for provisioning related definitions and functions." alt="" coords="1968,713,2094,739"/>
-<area shape="poly" id="edge83_Node000051_Node000055" title=" " alt="" coords="1810,667,1983,710,1982,715,1809,672"/>
-<area shape="poly" id="edge84_Node000055_Node000056" title=" " alt="" coords="2033,754,2033,787,2028,787,2028,754"/>
-<area shape="poly" id="edge94_Node000058_Node000008" title=" " alt="" coords="2282,732,2330,736,2552,748,2725,751,2898,759,3000,768,3119,784,3131,787,3130,792,3118,790,2999,774,2898,764,2725,757,2551,754,2329,742,2281,737"/>
-<area shape="poly" id="edge95_Node000058_Node000013" title=" " alt="" coords="2248,746,2302,784,2299,789,2245,750"/>
-<area shape="poly" id="edge96_Node000058_Node000014" title=" " alt="" coords="2153,737,2106,742,1619,776,1242,797,1242,791,1619,770,2105,736,2153,732"/>
-<area shape="poly" id="edge99_Node000058_Node000015" title=" " alt="" coords="2279,741,2445,784,2443,789,2277,746"/>
-<area shape="poly" id="edge100_Node000058_Node000016" title=" " alt="" coords="2281,735,2585,784,2585,789,2281,740"/>
-<area shape="poly" id="edge98_Node000058_Node000056" title=" " alt="" coords="2172,747,2063,789,2062,784,2171,742"/>
-<area shape="rect" id="Node000059" href="$d5/d8f/meshx__nvs_8c.html" title="Implementation for MeshX Non&#45;Volatile Storage (NVS) operations." alt="" coords="2118,787,2215,813"/>
-<area shape="poly" id="edge97_Node000058_Node000059" title=" " alt="" coords="2202,753,2177,788,2173,785,2198,750"/>
-<area shape="poly" id="edge104_Node000060_Node000008" title=" " alt="" coords="2296,650,2523,672,2661,690,2799,711,2987,750,3131,786,3130,791,2986,755,2798,716,2660,695,2522,678,2296,655"/>
-<area shape="poly" id="edge107_Node000060_Node000056" title=" " alt="" coords="2193,670,2107,741,2047,789,2044,785,2104,737,2190,666"/>
-<area shape="poly" id="edge105_Node000060_Node000058" title=" " alt="" coords="2220,674,2220,713,2215,713,2215,674"/>
-<area shape="rect" id="Node000061" href="$dd/da1/meshx__os__timer_8c.html" title="Implementation of OS timer functionalities for BLE mesh node." alt="" coords="2341,713,2467,739"/>
-<area shape="poly" id="edge106_Node000060_Node000061" title=" " alt="" coords="2261,662,2377,710,2374,715,2259,667"/>
-<area shape="poly" id="edge124_Node000062_Node000006" title=" " alt="" coords="2906,118,2876,154,2872,150,2902,115"/>
-<area shape="poly" id="edge125_Node000062_Node000008" title=" " alt="" coords="2981,93,3117,105,3199,115,3281,129,3357,148,3419,172,3444,186,3462,201,3474,219,3479,238,3479,477,3476,526,3466,567,3451,602,3430,632,3404,660,3373,686,3295,741,3247,769,3201,789,3199,784,3244,764,3292,737,3369,681,3400,656,3426,629,3447,599,3461,565,3470,525,3473,476,3473,238,3470,221,3458,205,3441,190,3417,176,3355,153,3280,135,3199,120,3117,110,2980,99"/>
-<area shape="rect" id="Node000063" href="$da/dd5/unit__test_8c.html" title="Unit test module for the production console." alt="" coords="2943,153,3025,178"/>
-<area shape="poly" id="edge126_Node000062_Node000063" title=" " alt="" coords="2946,115,2976,150,2972,154,2942,118"/>
+<area shape="rect" id="Node000001" title="Defines module IDs for different elements in the BLE mesh node application." alt="" coords="226,5,316,31"/>
+<area shape="rect" id="Node000002" href="$dc/d28/esp__nvs_8c.html" title="Implementation for Non&#45;Volatile Storage (NVS) drivers Insterface APIs." alt="" coords="5,153,86,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="241,42,66,154,63,150,238,38"/>
+<area shape="rect" id="Node000003" href="$d0/dc9/meshx__log_8c.html" title="Implementation of the MeshX logging system." alt="" coords="110,153,203,178"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="254,45,168,154,164,151,250,42"/>
+<area shape="rect" id="Node000004" href="$d7/dcb/meshx__log_8h.html" title="Logging interface for MeshX with color&#45;coded output." alt="" coords="267,79,360,105"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="288,43,309,77,304,80,283,46"/>
+<area shape="rect" id="Node000065" href="$d8/d5d/unit__test_8h.html" title="Header file for the production console unit test functionality." alt="" coords="1674,79,1756,105"/>
+<area shape="poly" id="edge134_Node000001_Node000065" title=" " alt="" coords="332,20,1674,86,1674,91,331,25"/>
+<area shape="poly" id="edge131_Node000004_Node000002" title=" " alt="" coords="254,112,87,156,85,151,253,106"/>
+<area shape="poly" id="edge133_Node000004_Node000003" title=" " alt="" coords="274,114,184,154,182,150,272,109"/>
+<area shape="rect" id="Node000005" href="$d3/db6/FreeRTOS__meshx__timer_8c.html" title="Implementation of RTOS timer abstraction for MeshX using FreeRTOS. This file provides functions to cr..." alt="" coords="226,153,401,178"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="316,120,316,152,311,152,311,120"/>
+<area shape="rect" id="Node000006" href="$dd/d05/FreeRTOS__meshx__utils_8c.html" title="Utility functions for integrating MeshX with FreeRTOS. This file provides implementations for memory ..." alt="" coords="425,153,594,178"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="362,108,477,150,475,155,360,113"/>
+<area shape="rect" id="Node000007" href="$df/dd3/app__common_8h.html" title="Common application definitions and includes for BLE Mesh Node." alt="" coords="2642,153,2751,178"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="376,92,2641,160,2641,165,376,98"/>
+<area shape="rect" id="Node000055" href="$dc/d96/esp__platform__ble__mesh_8c.html" title="This file contains platform&#45;specific implementations for BLE Mesh functionality on the ESP32 using th..." alt="" coords="760,558,929,584"/>
+<area shape="poly" id="edge132_Node000004_Node000055" title=" " alt="" coords="376,97,506,117,566,132,607,150,661,198,707,253,745,313,777,374,822,485,844,557,839,559,817,487,773,377,741,316,702,256,657,201,604,155,564,137,505,122,375,102"/>
+<area shape="rect" id="Node000008" href="$d2/d6b/composition_8c.html" title="BLE Mesh Composition Initialization and Element Creation." alt="" coords="3107,861,3208,886"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="2766,176,2958,185,3192,189,3421,198,3518,208,3595,224,3656,236,3710,247,3733,256,3750,270,3762,291,3765,319,3765,728,3761,749,3747,768,3726,785,3698,800,3627,824,3541,842,3448,856,3357,865,3209,874,3208,868,3357,860,3448,851,3540,837,3625,819,3696,795,3723,780,3743,764,3756,747,3760,727,3760,319,3756,292,3746,274,3730,261,3709,252,3655,241,3594,229,3517,214,3421,203,3192,194,2957,190,2766,181"/>
+<area shape="rect" id="Node000009" href="$d3/d18/meshx_8h.html" title="This file contains the headers for meshx.c." alt="" coords="1316,787,1386,813"/>
+<area shape="poly" id="edge8_Node000007_Node000009" title=" " alt="" coords="2626,169,2327,171,1902,179,1680,186,1472,197,1294,211,1159,229,1019,252,909,273,859,289,808,312,754,345,695,391,672,413,654,435,642,458,634,482,632,506,635,532,655,591,686,646,722,683,766,710,826,737,868,750,926,761,1066,778,1208,789,1316,795,1316,800,1208,794,1065,784,925,766,867,755,825,741,764,714,718,687,682,649,650,593,630,534,627,506,629,480,637,456,650,432,668,409,692,387,751,341,806,307,857,284,908,267,1018,246,1158,224,1293,206,1472,191,1680,181,1902,174,2327,166,2626,164"/>
+<area shape="rect" id="Node000013" href="$db/d2f/meshx__api_8h.html" title="This file contains the API definitions for the MeshX application." alt="" coords="2299,713,2392,739"/>
+<area shape="poly" id="edge13_Node000007_Node000013" title=" " alt="" coords="2767,179,2840,198,2917,224,2991,253,3021,271,3055,298,3102,346,3120,371,3132,397,3139,424,3138,450,3129,478,3110,505,3088,525,3066,536,3044,540,3021,540,2973,539,2947,543,2919,553,2904,563,2893,573,2883,584,2867,594,2803,622,2737,646,2604,684,2484,708,2393,722,2392,717,2483,703,2603,678,2735,641,2801,617,2864,589,2879,580,2890,569,2900,559,2916,549,2945,538,2972,534,3021,535,3043,535,3065,531,3085,520,3106,501,3124,475,3132,450,3133,424,3127,399,3115,374,3098,350,3052,302,3018,275,2988,258,2915,229,2838,203,2765,184"/>
+<area shape="rect" id="Node000016" href="$d0/d53/meshx__light__cwww__client_8c.html" title="Implementation of the CW&#45;WW (Cool White &#45; Warm White) client model for BLE Mesh." alt="" coords="1892,787,2074,813"/>
+<area shape="poly" id="edge123_Node000007_Node000016" title=" " alt="" coords="2626,170,2289,176,1825,188,1402,205,1260,216,1216,222,1193,229,1175,243,1164,258,1148,301,1126,359,1112,410,1112,433,1117,455,1128,478,1147,501,1180,527,1212,540,1243,543,1276,541,1346,534,1386,537,1429,549,1463,567,1494,589,1613,670,1666,703,1738,737,1825,765,1908,784,1907,789,1824,770,1737,741,1663,707,1610,675,1491,594,1460,571,1427,553,1385,542,1347,540,1276,546,1243,548,1210,545,1177,531,1144,505,1124,481,1112,457,1106,433,1107,409,1120,357,1143,299,1159,256,1171,239,1191,224,1215,217,1260,211,1402,200,1825,182,2289,171,2626,165"/>
+<area shape="rect" id="Node000017" href="$da/df4/meshx__relay__client_8c.html" title="Implementation of the relay client model for BLE Mesh." alt="" coords="2979,787,3120,813"/>
+<area shape="poly" id="edge127_Node000007_Node000017" title=" " alt="" coords="2767,176,2876,185,2968,188,3127,187,3203,187,3283,192,3374,203,3479,224,3520,230,3561,233,3637,237,3668,245,3693,259,3709,283,3715,319,3715,573,3711,612,3698,642,3679,666,3653,684,3589,712,3513,742,3481,752,3438,762,3333,778,3121,797,3120,792,3332,772,3437,757,3479,747,3511,736,3587,707,3651,680,3675,662,3694,640,3705,610,3710,573,3710,319,3704,285,3689,263,3666,250,3636,243,3561,238,3520,235,3478,229,3373,208,3283,197,3203,193,3127,192,2968,194,2875,190,2766,181"/>
+<area shape="rect" id="Node000019" href="$da/db3/meshx__control__task_8h.html" title="Header file for the control task in the BLE mesh node application." alt="" coords="2036,226,2183,252"/>
+<area shape="poly" id="edge20_Node000007_Node000019" title=" " alt="" coords="2626,178,2184,232,2183,226,2626,173"/>
+<area shape="rect" id="Node000027" href="$dc/d5f/meshx__elements_8h.html" title="Header file for MeshX elements." alt="" coords="2178,640,2308,665"/>
+<area shape="poly" id="edge120_Node000007_Node000027" title=" " alt="" coords="2626,169,2312,170,1877,177,1661,185,1470,195,1323,210,1272,219,1239,229,1214,242,1196,257,1183,275,1171,301,1148,359,1141,385,1139,410,1142,434,1150,456,1165,479,1186,501,1223,528,1258,542,1292,547,1327,546,1402,539,1445,540,1493,548,1524,559,1547,569,1570,580,1601,589,1762,618,1923,636,2067,645,2178,648,2178,654,2067,650,1922,641,1761,623,1600,594,1568,585,1545,574,1522,564,1492,554,1444,545,1402,544,1327,551,1292,552,1257,547,1220,532,1182,505,1160,482,1145,459,1137,435,1134,410,1136,384,1143,357,1166,299,1179,273,1193,253,1211,238,1236,224,1270,214,1322,204,1469,190,1660,179,1877,172,2312,165,2626,164"/>
+<area shape="rect" id="Node000031" href="$d8/dd5/meshx__onoff__client_8h.html" title="Header file for the On/Off client model in BLE mesh." alt="" coords="2954,470,3097,496"/>
+<area shape="poly" id="edge125_Node000007_Node000031" title=" " alt="" coords="2755,181,2811,200,2877,225,2944,258,3008,298,3062,335,3082,356,3099,388,3102,401,3100,413,3088,437,3068,456,3048,471,3045,467,3065,452,3084,433,3095,412,3096,401,3094,390,3077,359,3059,339,3005,302,2942,263,2874,230,2809,205,2754,186"/>
+<area shape="rect" id="Node000032" href="$df/dc5/meshx__light__cwww__client__element_8h.html" title="Implementation of the CW&#45;WW (Cool White &#45; Warm White) client model for BLE Mesh." alt="" coords="1847,551,2020,592"/>
+<area shape="poly" id="edge124_Node000007_Node000032" title=" " alt="" coords="2626,171,1929,189,1553,206,1416,217,1335,229,1290,240,1253,250,1223,268,1196,301,1181,330,1171,358,1168,384,1169,409,1176,434,1189,457,1207,480,1231,501,1252,513,1277,524,1341,538,1416,545,1498,548,1659,546,1729,546,1784,548,1847,556,1846,561,1784,554,1729,551,1659,551,1497,553,1415,551,1340,543,1276,529,1249,518,1228,505,1203,483,1184,460,1171,436,1164,410,1162,384,1166,356,1176,328,1191,299,1220,263,1251,245,1288,234,1334,224,1415,212,1552,201,1929,184,2626,165"/>
+<area shape="rect" id="Node000034" href="$de/dca/meshx__relay__client__element_8h.html" title="Header file for the Relay Client Model in BLE Mesh." alt="" coords="3544,551,3675,592"/>
+<area shape="poly" id="edge128_Node000007_Node000034" title=" " alt="" coords="2766,176,2861,184,2941,187,3078,186,3143,187,3213,192,3290,204,3381,224,3453,235,3519,242,3546,250,3568,264,3582,287,3587,319,3587,403,3594,485,3607,550,3602,551,3589,486,3582,403,3582,319,3577,288,3564,268,3544,255,3518,247,3452,240,3380,229,3290,209,3212,198,3143,193,3078,192,2941,192,2860,189,2766,181"/>
+<area shape="rect" id="Node000040" href="$db/d01/meshx__onoff__server_8h.html" title="Header file for the On/Off Server model in the BLE Mesh Node application." alt="" coords="3178,470,3326,496"/>
+<area shape="poly" id="edge126_Node000007_Node000040" title=" " alt="" coords="2767,176,2879,178,3013,178,3078,181,3138,189,3187,203,3206,212,3222,224,3244,253,3259,286,3267,322,3270,358,3266,424,3258,470,3252,469,3261,424,3264,358,3261,323,3253,288,3240,256,3218,228,3204,217,3185,208,3136,194,3078,187,3013,183,2879,183,2767,181"/>
+<area shape="rect" id="Node000041" href="$d8/da4/meshx__cwww__server__element_8h.html" title="Header file for CWWW Server Model." alt="" coords="2929,558,3138,584"/>
+<area shape="poly" id="edge119_Node000007_Node000041" title=" " alt="" coords="2767,176,2841,183,2904,185,3013,185,3064,187,3119,192,3179,204,3249,224,3305,237,3356,249,3376,259,3393,272,3403,292,3407,319,3407,403,3403,438,3390,463,3368,484,3339,505,3305,518,3244,532,3102,560,3101,555,3243,527,3303,512,3336,501,3365,480,3385,460,3397,436,3402,403,3402,319,3398,294,3388,276,3374,263,3354,254,3304,243,3247,229,3178,209,3118,197,3064,192,3013,190,2904,190,2840,188,2766,181"/>
+<area shape="rect" id="Node000043" href="$dc/dee/meshx__relay__server__element_8h.html" title="Header file for the Relay Server Model." alt="" coords="3333,551,3470,592"/>
+<area shape="poly" id="edge129_Node000007_Node000043" title=" " alt="" coords="2767,176,2852,183,2925,184,3050,180,3110,180,3172,186,3241,199,3321,224,3371,238,3414,252,3432,262,3446,276,3454,294,3457,319,3457,403,3453,446,3442,487,3414,552,3410,550,3437,485,3448,445,3452,403,3452,319,3449,296,3441,279,3429,266,3412,257,3369,243,3319,229,3240,204,3171,191,3109,185,3050,185,2925,189,2852,188,2766,181"/>
+<area shape="rect" id="Node000047" href="$da/dfd/meshx__light__ctl__client_8h.html" title="Header file for the Light CTL (Color Temperature Light) Client model." alt="" coords="1242,470,1401,496"/>
+<area shape="poly" id="edge121_Node000007_Node000047" title=" " alt="" coords="2626,170,2299,178,2078,186,1846,198,1623,215,1429,238,1349,251,1284,267,1235,283,1208,302,1203,321,1202,354,1206,389,1213,413,1228,431,1246,446,1286,467,1283,472,1243,450,1224,435,1208,416,1201,390,1197,355,1197,320,1203,298,1233,279,1282,261,1348,246,1428,233,1623,210,1846,193,2078,181,2298,173,2626,165"/>
+<area shape="rect" id="Node000051" href="$db/dde/meshx__light__ctl__srv_8h.html" title="Header file for the Light CTL Server module." alt="" coords="2542,470,2688,496"/>
+<area shape="poly" id="edge122_Node000007_Node000051" title=" " alt="" coords="2748,182,2787,200,2829,226,2867,258,2897,299,2902,320,2897,341,2889,383,2881,399,2866,416,2825,444,2779,463,2732,475,2689,481,2688,476,2731,469,2778,458,2823,439,2862,412,2877,396,2884,381,2892,340,2897,320,2892,301,2863,262,2826,230,2784,205,2746,187"/>
+<area shape="rect" id="Node000064" href="$df/d06/meshx__txcm_8h.html" title="MeshX Tx Control Module This header file contains the definitions and function prototypes for the Mes..." alt="" coords="2581,389,2686,414"/>
+<area shape="poly" id="edge130_Node000007_Node000064" title=" " alt="" coords="2692,194,2639,389,2634,387,2686,193"/>
+<area shape="poly" id="edge9_Node000009_Node000008" title=" " alt="" coords="1401,810,1404,810,1565,825,1779,837,2289,854,2782,865,3106,869,3106,874,2782,870,2289,860,1779,842,1565,830,1404,815,1400,815"/>
+<area shape="rect" id="Node000010" href="$d0/d29/main_8c.html" title="Main application file for initializing MeshX on ESP32." alt="" coords="1332,861,1391,886"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="1357,827,1362,860,1357,861,1352,828"/>
+<area shape="rect" id="Node000011" href="$d9/d05/meshx_8c.html" title="meshX application file for ESP BLE Mesh node." alt="" coords="1239,861,1308,886"/>
+<area shape="poly" id="edge11_Node000009_Node000011" title=" " alt="" coords="1328,825,1288,862,1285,858,1325,822"/>
+<area shape="rect" id="Node000012" href="$d7/d82/meshx__txcm_8c.html" title="MeshX Tx Control Module This file contains the implementation of the MeshX Tx Control Module,..." alt="" coords="1476,861,1580,886"/>
+<area shape="poly" id="edge12_Node000009_Node000012" title=" " alt="" coords="1396,816,1499,858,1497,863,1394,821"/>
+<area shape="poly" id="edge14_Node000013_Node000009" title=" " alt="" coords="2283,735,1386,799,1386,793,2283,729"/>
+<area shape="rect" id="Node000014" href="$dc/d93/meshx__api_8c.html" title="Implementation of the BLE Mesh application API." alt="" coords="2136,787,2230,813"/>
+<area shape="poly" id="edge15_Node000013_Node000014" title=" " alt="" coords="2305,748,2212,789,2209,784,2303,743"/>
+<area shape="rect" id="Node000015" href="$d9/d46/meshx__cwww__server_8c.html" title="Implementation of the CW&#45;WW server model for BLE Mesh." alt="" coords="2293,787,2449,813"/>
+<area shape="poly" id="edge16_Node000013_Node000015" title=" " alt="" coords="2357,752,2369,786,2364,787,2352,754"/>
+<area shape="poly" id="edge17_Node000013_Node000016" title=" " alt="" coords="2284,742,2045,789,2044,784,2283,737"/>
+<area shape="poly" id="edge18_Node000013_Node000017" title=" " alt="" coords="2408,731,2979,789,2978,794,2408,736"/>
+<area shape="rect" id="Node000018" href="$d1/df4/meshx__relay__server_8c.html" title="Relay server model implementation for BLE Mesh networks." alt="" coords="2526,787,2672,813"/>
+<area shape="poly" id="edge19_Node000013_Node000018" title=" " alt="" coords="2404,741,2556,784,2555,789,2402,746"/>
+<area shape="poly" id="edge25_Node000019_Node000013" title=" " alt="" coords="2199,252,2259,269,2321,296,2350,313,2377,334,2401,359,2420,388,2424,402,2420,416,2405,429,2378,445,2302,485,2226,525,2199,541,2186,553,2179,569,2176,583,2178,595,2184,604,2203,620,2231,629,2291,636,2321,637,2334,656,2342,676,2348,712,2343,713,2337,678,2330,658,2319,642,2290,642,2230,634,2201,624,2179,608,2173,596,2171,583,2174,567,2182,549,2196,537,2224,520,2300,480,2376,441,2402,424,2415,413,2419,402,2415,390,2397,362,2374,338,2347,318,2319,300,2257,274,2198,257"/>
+<area shape="poly" id="edge24_Node000019_Node000014" title=" " alt="" coords="2157,257,2182,275,2201,299,2212,329,2213,355,2201,415,2195,454,2186,483,2178,513,2171,551,2169,595,2169,640,2169,665,2184,786,2178,787,2164,665,2164,640,2163,595,2166,551,2172,512,2181,482,2190,453,2196,414,2207,355,2207,330,2197,301,2178,279,2153,262"/>
+<area shape="poly" id="edge94_Node000019_Node000016" title=" " alt="" coords="2021,249,1914,266,1857,282,1803,302,1765,319,1736,335,1713,356,1692,390,1683,413,1677,441,1680,472,1686,487,1697,501,1716,518,1736,530,1756,536,1777,539,1820,534,1864,523,1908,512,1952,508,1974,511,1995,518,2015,531,2034,549,2052,579,2058,612,2056,647,2047,681,2020,744,1994,788,1989,785,2015,742,2042,680,2051,646,2053,612,2047,581,2030,553,2012,535,1992,523,1972,516,1952,514,1909,518,1865,528,1821,540,1777,544,1755,542,1734,535,1713,523,1693,505,1682,490,1675,473,1672,441,1678,411,1687,387,1708,353,1733,331,1762,315,1800,298,1855,277,1913,261,2020,244"/>
+<area shape="poly" id="edge113_Node000019_Node000017" title=" " alt="" coords="2199,238,2398,241,2649,250,2892,267,2991,281,3066,297,3203,337,3261,355,3313,376,3360,403,3403,439,3444,487,3484,550,3495,577,3498,603,3494,627,3482,649,3465,669,3443,688,3387,720,3320,745,3249,766,3121,792,3120,786,3248,761,3318,740,3385,715,3440,684,3461,666,3478,646,3489,625,3493,603,3490,579,3479,552,3440,490,3399,443,3356,408,3310,381,3259,360,3202,342,3065,303,2990,286,2891,273,2649,255,2398,246,2199,243"/>
+<area shape="rect" id="Node000020" href="$d0/de1/esp__gen__cli__model_8c.html" title="Implementation of the Generic OnOff Client model for BLE Mesh. This file contains the initialization,..." alt="" coords="2710,389,2853,414"/>
+<area shape="poly" id="edge21_Node000019_Node000020" title=" " alt="" coords="2199,238,2285,243,2387,252,2496,270,2602,297,2651,317,2698,342,2767,386,2764,390,2695,346,2649,322,2601,303,2495,275,2386,258,2284,248,2198,244"/>
+<area shape="rect" id="Node000021" href="$d1/d1d/esp__gen__light__cli__model_8c.html" title="Implementation of the Generic Light Client model for BLE Mesh. This file contains the initialization,..." alt="" coords="1454,389,1627,414"/>
+<area shape="poly" id="edge22_Node000019_Node000021" title=" " alt="" coords="2021,245,1954,251,1879,261,1802,278,1727,302,1710,311,1698,321,1670,343,1618,370,1571,391,1569,386,1616,365,1667,338,1694,317,1707,307,1724,298,1800,273,1879,256,1954,246,2020,240"/>
+<area shape="rect" id="Node000022" href="$d7/d7a/esp__gen__srv__model_8c.html" title="Implementation of the Generic OnOff Server model for BLE Mesh. This file contains the initialization,..." alt="" coords="1701,389,1848,414"/>
+<area shape="poly" id="edge23_Node000019_Node000022" title=" " alt="" coords="2021,248,1978,254,1933,265,1889,280,1848,302,1825,322,1807,346,1782,389,1778,387,1802,343,1822,318,1845,298,1887,275,1932,259,1977,249,2020,242"/>
+<area shape="rect" id="Node000023" href="$db/d5f/meshx__ble__mesh__config__srv_8h.html" title="Header file for MeshX BLE Mesh Configuration Server." alt="" coords="2354,462,2518,503"/>
+<area shape="poly" id="edge26_Node000019_Node000023" title=" " alt="" coords="2199,240,2275,246,2353,256,2420,273,2446,284,2463,298,2475,318,2481,339,2482,362,2479,385,2466,429,2450,463,2445,461,2461,427,2474,384,2477,362,2476,340,2471,320,2460,302,2443,289,2419,278,2352,261,2274,251,2199,246"/>
+<area shape="rect" id="Node000028" href="$de/d08/meshx__ble__mesh__gen__cli_8h.html" title="Header file for BLE Mesh Generic Client functionality in the MeshX framework. This file contains decl..." alt="" coords="2733,300,2883,341"/>
+<area shape="poly" id="edge37_Node000019_Node000028" title=" " alt="" coords="2199,247,2664,297,2733,306,2732,311,2664,303,2199,252"/>
+<area shape="rect" id="Node000029" href="$d1/d29/meshx__gen__client_8h.html" title="Implementation of the MeshX generic client model for BLE mesh nodes. This file contains functions for..." alt="" coords="2927,389,3062,414"/>
+<area shape="poly" id="edge90_Node000019_Node000029" title=" " alt="" coords="2199,237,2366,238,2568,246,2668,253,2760,264,2838,279,2896,298,2927,317,2954,341,2989,387,2985,390,2950,345,2924,321,2894,302,2837,284,2759,269,2668,259,2568,251,2366,244,2199,242"/>
+<area shape="poly" id="edge105_Node000019_Node000031" title=" " alt="" coords="2199,239,2374,242,2588,252,2794,269,2878,282,2941,297,2986,312,3022,327,3051,350,3077,388,3081,411,3073,434,3058,455,3042,471,3038,467,3054,452,3068,432,3076,411,3072,390,3047,353,3019,332,2984,317,2939,303,2877,287,2793,274,2588,257,2374,248,2199,244"/>
+<area shape="poly" id="edge95_Node000019_Node000032" title=" " alt="" coords="2020,244,1876,248,1705,257,1546,275,1481,287,1433,302,1420,311,1412,321,1403,332,1390,343,1354,357,1323,361,1295,368,1282,376,1270,390,1256,413,1254,424,1260,428,1276,429,1333,433,1372,442,1415,460,1430,471,1441,482,1451,492,1466,500,1614,525,1847,556,1846,561,1613,530,1465,506,1448,496,1437,485,1427,475,1412,465,1370,447,1332,438,1276,434,1258,433,1249,426,1251,411,1266,387,1279,372,1293,363,1322,356,1353,352,1387,338,1399,328,1407,317,1416,307,1431,298,1480,282,1545,269,1705,252,1876,242,2020,239"/>
+<area shape="rect" id="Node000035" href="$d4/d0c/meshx__ble__mesh__gen__srv_8h.html" title="Header file for Generic Server Models in MeshX BLE Mesh." alt="" coords="1858,300,2009,341"/>
+<area shape="poly" id="edge51_Node000019_Node000035" title=" " alt="" coords="2070,261,1979,302,1976,297,2067,256"/>
+<area shape="poly" id="edge106_Node000019_Node000040" title=" " alt="" coords="2198,237,2387,239,2621,247,2739,255,2847,265,2939,279,3008,297,3047,315,3084,336,3153,384,3208,432,3243,468,3239,471,3204,436,3150,389,3082,340,3044,319,3006,303,2938,285,2846,271,2738,260,2621,253,2387,245,2198,243"/>
+<area shape="rect" id="Node000044" href="$d4/def/meshx__ble__mesh__light__cli_8h.html" title="Header file for BLE Mesh Light Client functionality in the MeshX framework. This file contains declar..." alt="" coords="1502,300,1656,341"/>
+<area shape="poly" id="edge67_Node000019_Node000044" title=" " alt="" coords="2021,254,1860,275,1675,303,1656,306,1655,301,1674,297,1859,269,2020,248"/>
+<area shape="rect" id="Node000045" href="$dd/df0/meshx__gen__light__cli_8h.html" title="Implementation of the MeshX generic light client model for BLE mesh nodes. This file contains functio..." alt="" coords="1281,389,1429,414"/>
+<area shape="poly" id="edge91_Node000019_Node000045" title=" " alt="" coords="2020,246,1889,252,1736,263,1593,279,1535,290,1492,302,1372,390,1369,386,1490,298,1534,285,1592,274,1735,257,1888,247,2020,241"/>
+<area shape="poly" id="edge92_Node000019_Node000047" title=" " alt="" coords="2020,242,1812,243,1559,250,1439,258,1336,269,1259,283,1234,292,1220,302,1215,321,1215,355,1219,390,1227,413,1240,430,1257,445,1293,467,1290,471,1253,450,1236,434,1222,416,1214,391,1210,355,1209,320,1215,298,1232,287,1258,278,1335,263,1438,253,1558,245,1812,238,2020,237"/>
+<area shape="rect" id="Node000049" href="$d7/de0/meshx__ble__mesh__light__srv_8h.html" title="Header file for the MeshX BLE Mesh Light Server module. This file defines the data structures,..." alt="" coords="2033,300,2186,341"/>
+<area shape="poly" id="edge74_Node000019_Node000049" title=" " alt="" coords="2112,267,2112,300,2107,300,2107,267"/>
+<area shape="rect" id="Node000050" href="$dc/daf/meshx__light__server_8h.html" title="Header file for the production lighting server." alt="" coords="2262,389,2405,414"/>
+<area shape="poly" id="edge96_Node000019_Node000050" title=" " alt="" coords="2163,255,2204,274,2244,298,2271,320,2294,344,2327,387,2323,390,2290,348,2267,324,2241,302,2201,278,2160,260"/>
+<area shape="poly" id="edge93_Node000019_Node000051" title=" " alt="" coords="2199,244,2362,263,2437,278,2467,287,2490,298,2609,468,2605,471,2486,302,2465,292,2436,283,2361,268,2198,249"/>
+<area shape="rect" id="Node000053" href="$d4/de9/meshx__ble__mesh__prov__srv_8h.html" title="This header file defines the provisioning server interface for the MeshX BLE Mesh stack...." alt="" coords="860,462,1015,503"/>
+<area shape="poly" id="edge81_Node000019_Node000053" title=" " alt="" coords="2020,245,1795,251,1517,262,1265,279,1176,290,1124,302,1095,318,1067,337,1018,382,979,427,952,464,948,460,975,424,1014,378,1064,333,1092,313,1122,298,1175,285,1265,274,1516,257,1795,246,2020,240"/>
+<area shape="rect" id="Node000058" href="$d2/d21/meshx__prov__srv_8c.html" title="This file contains the implementation of the provisioning process for the BLE mesh node." alt="" coords="633,787,759,813"/>
+<area shape="poly" id="edge112_Node000019_Node000058" title=" " alt="" coords="2021,245,1760,251,1427,262,1123,279,1014,290,950,303,904,322,865,343,834,366,809,393,788,424,770,461,739,552,714,632,699,714,697,754,698,787,693,787,691,754,694,713,709,631,734,550,765,459,783,422,805,390,831,362,862,338,901,317,949,297,1013,285,1123,274,1427,257,1760,245,2020,239"/>
+<area shape="rect" id="Node000059" href="$df/d7e/meshx__control__task_8c.html" title="Implementation of control task for event handling and messaging." alt="" coords="1229,308,1376,333"/>
+<area shape="poly" id="edge89_Node000019_Node000059" title=" " alt="" coords="2021,247,1741,265,1568,281,1395,303,1357,309,1356,304,1394,297,1568,276,1741,260,2020,242"/>
+<area shape="rect" id="Node000060" href="$d3/d7d/meshx__nvs_8h.html" title="Header file for MeshX Non&#45;Volatile Storage (NVS) operations." alt="" coords="1749,713,1846,739"/>
+<area shape="poly" id="edge97_Node000019_Node000060" title=" " alt="" coords="2020,242,1809,243,1552,250,1430,257,1326,268,1248,283,1222,292,1207,302,1188,327,1176,352,1171,377,1172,402,1179,427,1192,453,1209,477,1231,501,1262,525,1291,537,1321,541,1351,540,1416,535,1453,538,1493,548,1582,588,1666,634,1783,711,1780,715,1663,639,1580,592,1491,554,1452,543,1416,541,1351,545,1320,547,1290,542,1259,529,1228,505,1205,480,1187,455,1174,429,1167,403,1166,376,1171,350,1184,324,1204,298,1220,287,1247,278,1325,263,1430,252,1552,245,1809,238,2020,237"/>
+<area shape="rect" id="Node000062" href="$d8/d03/meshx__os__timer_8h.html" title="Header file for OS timer utilities." alt="" coords="760,640,886,665"/>
+<area shape="poly" id="edge107_Node000019_Node000062" title=" " alt="" coords="2020,245,1781,252,1481,263,1209,280,1111,291,1054,303,947,345,905,367,867,391,834,419,804,454,776,498,749,552,744,571,749,590,771,618,799,637,796,641,767,622,744,593,738,571,744,550,772,495,800,451,831,416,864,387,902,362,945,341,1053,297,1110,285,1208,275,1481,258,1781,246,2020,240"/>
+<area shape="poly" id="edge114_Node000019_Node000064" title=" " alt="" coords="2199,241,2296,247,2402,258,2497,274,2536,285,2564,298,2588,318,2608,342,2631,387,2627,389,2603,345,2585,321,2561,302,2534,290,2496,279,2401,263,2295,253,2199,246"/>
+<area shape="rect" id="Node000024" href="$dc/d28/esp__cfg__srv__model_8c.html" title="Implementation of the BLE Mesh Configuration Server for the MeshX platform. This file contains the in..." alt="" coords="2196,558,2340,584"/>
+<area shape="poly" id="edge27_Node000023_Node000024" title=" " alt="" coords="2386,513,2293,560,2290,556,2384,508"/>
+<area shape="rect" id="Node000025" href="$d1/d47/meshx__config__server_8h.html" title="Header file for the meshxuction configuration server model." alt="" coords="2365,558,2518,584"/>
+<area shape="poly" id="edge28_Node000023_Node000025" title=" " alt="" coords="2441,518,2443,558,2438,558,2436,519"/>
+<area shape="poly" id="edge30_Node000025_Node000015" title=" " alt="" coords="2492,588,2519,602,2542,620,2555,641,2556,654,2552,666,2538,689,2521,710,2481,744,2439,771,2402,789,2400,784,2437,766,2478,740,2517,706,2534,686,2547,664,2551,653,2550,643,2538,623,2516,607,2490,593"/>
+<area shape="poly" id="edge34_Node000025_Node000016" title=" " alt="" coords="2371,591,2248,619,2168,642,2134,664,2111,687,2089,712,2059,741,2000,789,1997,784,2056,737,2086,708,2107,683,2131,660,2166,637,2247,614,2370,585"/>
+<area shape="poly" id="edge35_Node000025_Node000017" title=" " alt="" coords="2510,585,2530,589,2623,600,2698,602,2771,610,2812,620,2860,637,2920,670,2972,712,3014,753,3042,785,3038,788,3010,757,2969,716,2917,675,2858,642,2811,625,2770,615,2697,607,2623,605,2529,594,2509,590"/>
+<area shape="poly" id="edge36_Node000025_Node000018" title=" " alt="" coords="2501,588,2539,608,2557,622,2572,638,2591,677,2601,719,2603,758,2603,786,2597,786,2598,758,2595,720,2586,679,2567,641,2553,626,2536,612,2498,592"/>
+<area shape="rect" id="Node000026" href="$dd/d79/meshx__config__server_8c.html" title="Implementation of the Configuration Server for ESP BLE Mesh." alt="" coords="2384,640,2537,665"/>
+<area shape="poly" id="edge29_Node000025_Node000026" title=" " alt="" coords="2450,599,2460,639,2455,640,2445,600"/>
+<area shape="poly" id="edge31_Node000025_Node000027" title=" " alt="" coords="2398,593,2274,642,2272,637,2396,588"/>
+<area shape="poly" id="edge32_Node000027_Node000009" title=" " alt="" coords="2163,663,1969,684,1738,716,1538,756,1386,792,1385,787,1537,751,1737,711,1968,678,2162,658"/>
+<area shape="poly" id="edge33_Node000027_Node000013" title=" " alt="" coords="2274,672,2330,711,2326,715,2271,676"/>
+<area shape="poly" id="edge38_Node000028_Node000020" title=" " alt="" coords="2799,356,2788,389,2783,387,2794,355"/>
+<area shape="poly" id="edge39_Node000028_Node000029" title=" " alt="" coords="2870,345,2967,386,2965,391,2868,350"/>
+<area shape="rect" id="Node000030" href="$d0/dbc/meshx__gen__client_8c.html" title="Implementation of the MeshX generic client model for BLE mesh nodes. This file contains functions for..." alt="" coords="2784,470,2920,496"/>
+<area shape="poly" id="edge40_Node000029_Node000030" title=" " alt="" coords="2961,424,2875,472,2873,467,2958,420"/>
+<area shape="poly" id="edge41_Node000029_Node000031" title=" " alt="" coords="3007,428,3023,468,3018,470,3002,430"/>
+<area shape="poly" id="edge42_Node000031_Node000032" title=" " alt="" coords="2958,502,2933,506,2723,528,2559,537,2395,543,2184,554,2020,566,2020,561,2184,548,2395,537,2559,532,2722,523,2932,500,2957,496"/>
+<area shape="rect" id="Node000033" href="$d9/d33/meshx__onoff__client_8c.html" title="Implementation of the Generic OnOff Client Model for BLE Mesh." alt="" coords="2712,558,2854,584"/>
+<area shape="poly" id="edge46_Node000031_Node000033" title=" " alt="" coords="2978,504,2818,560,2816,555,2976,499"/>
+<area shape="poly" id="edge47_Node000031_Node000034" title=" " alt="" coords="3112,494,3482,548,3544,558,3543,563,3481,554,3111,499"/>
+<area shape="poly" id="edge43_Node000032_Node000008" title=" " alt="" coords="2035,578,2313,603,2451,619,2550,637,2616,656,2671,676,2761,717,2850,761,2968,810,3116,857,3114,863,2966,815,2848,766,2759,722,2669,681,2615,661,2549,642,2450,624,2312,608,2035,583"/>
+<area shape="poly" id="edge45_Node000032_Node000016" title=" " alt="" coords="1944,606,1983,786,1978,787,1938,608"/>
+<area shape="poly" id="edge44_Node000032_Node000027" title=" " alt="" coords="2026,593,2196,636,2194,642,2025,599"/>
+<area shape="poly" id="edge48_Node000034_Node000008" title=" " alt="" coords="3609,608,3601,638,3585,667,3543,709,3496,745,3445,776,3393,803,3292,841,3209,864,3208,859,3290,836,3391,798,3443,772,3493,741,3540,705,3581,664,3596,636,3604,606"/>
+<area shape="poly" id="edge50_Node000034_Node000017" title=" " alt="" coords="3596,607,3576,640,3550,677,3517,712,3479,741,3450,753,3412,764,3317,780,3213,791,3121,798,3121,792,3212,786,3316,775,3411,759,3449,748,3476,737,3514,709,3546,674,3572,637,3591,604"/>
+<area shape="poly" id="edge49_Node000034_Node000027" title=" " alt="" coords="3528,589,3482,594,3313,609,3170,617,2927,624,2684,628,2372,642,2308,647,2308,642,2372,637,2684,622,2927,618,3170,612,3313,603,3481,589,3528,583"/>
+<area shape="poly" id="edge52_Node000035_Node000022" title=" " alt="" coords="1882,350,1800,391,1798,386,1879,346"/>
+<area shape="rect" id="Node000036" href="$de/d42/esp__light__srv__model_8c.html" title="Implementation of the BLE Mesh Light CTL Server Model for ESP32. This file contains the initializatio..." alt="" coords="2037,389,2187,414"/>
+<area shape="poly" id="edge53_Node000035_Node000036" title=" " alt="" coords="1993,345,2086,386,2084,391,1991,350"/>
+<area shape="rect" id="Node000037" href="$de/ddc/meshx__gen__server_8h.html" title="Header file for the generic server model in the BLE mesh node application." alt="" coords="1873,389,2013,414"/>
+<area shape="poly" id="edge54_Node000035_Node000037" title=" " alt="" coords="1940,356,1944,388,1939,388,1935,356"/>
+<area shape="rect" id="Node000038" href="$da/dcb/meshx__gen__server_8c.html" title="Implementation of the MeshX generic server model for BLE mesh nodes. This file contains functions for..." alt="" coords="1707,470,1848,496"/>
+<area shape="poly" id="edge55_Node000037_Node000038" title=" " alt="" coords="1905,424,1804,472,1802,467,1902,419"/>
+<area shape="rect" id="Node000039" href="$d5/d98/meshx__light__server_8c.html" title="Implementation of the BLE Mesh Lighting Server for the ESP32." alt="" coords="1871,470,2014,496"/>
+<area shape="poly" id="edge56_Node000037_Node000039" title=" " alt="" coords="1946,430,1946,469,1940,469,1940,430"/>
+<area shape="poly" id="edge57_Node000037_Node000040" title=" " alt="" coords="2029,412,2193,425,2333,432,2570,436,2807,441,2945,447,3108,460,3178,468,3178,473,3108,465,2945,453,2806,446,2570,442,2333,437,2193,430,2028,417"/>
+<area shape="poly" id="edge58_Node000040_Node000041" title=" " alt="" coords="3208,504,3065,560,3063,555,3206,499"/>
+<area shape="rect" id="Node000042" href="$db/d7b/meshx__onoff__server_8c.html" title="Header file for the On/Off Server model in the BLE Mesh Node application." alt="" coords="3162,558,3310,584"/>
+<area shape="poly" id="edge62_Node000040_Node000042" title=" " alt="" coords="3250,511,3241,559,3236,558,3245,510"/>
+<area shape="poly" id="edge63_Node000040_Node000043" title=" " alt="" coords="3288,501,3369,548,3366,553,3285,506"/>
+<area shape="poly" id="edge59_Node000041_Node000008" title=" " alt="" coords="3049,597,3089,680,3135,786,3157,860,3152,861,3130,788,3085,682,3044,599"/>
+<area shape="poly" id="edge60_Node000041_Node000015" title=" " alt="" coords="3012,597,2967,633,2911,668,2851,693,2789,716,2663,751,2546,776,2450,792,2449,786,2545,771,2662,746,2787,711,2849,688,2908,663,2964,629,3009,592"/>
+<area shape="poly" id="edge61_Node000041_Node000027" title=" " alt="" coords="2914,589,2866,594,2308,648,2308,643,2865,589,2914,584"/>
+<area shape="poly" id="edge64_Node000043_Node000008" title=" " alt="" coords="3378,606,3169,862,3165,859,3374,602"/>
+<area shape="poly" id="edge66_Node000043_Node000018" title=" " alt="" coords="3319,599,2642,789,2641,784,3317,594"/>
+<area shape="poly" id="edge65_Node000043_Node000027" title=" " alt="" coords="3318,595,3175,612,3053,623,2845,630,2637,631,2515,634,2372,642,2308,648,2308,642,2372,637,2515,629,2637,626,2845,624,3052,617,3174,607,3317,589"/>
+<area shape="poly" id="edge68_Node000044_Node000021" title=" " alt="" coords="1565,356,1549,389,1544,387,1560,354"/>
+<area shape="poly" id="edge69_Node000044_Node000045" title=" " alt="" coords="1510,349,1390,391,1388,386,1508,344"/>
+<area shape="rect" id="Node000046" href="$d0/dc1/meshx__gen__light__cli_8c.html" title=" " alt="" coords="1478,470,1626,496"/>
+<area shape="poly" id="edge70_Node000045_Node000046" title=" " alt="" coords="1400,418,1523,467,1521,472,1398,423"/>
+<area shape="poly" id="edge71_Node000045_Node000047" title=" " alt="" coords="1346,430,1329,470,1324,468,1341,428"/>
+<area shape="poly" id="edge73_Node000047_Node000032" title=" " alt="" coords="1396,496,1421,500,1847,556,1847,562,1420,506,1396,501"/>
+<area shape="rect" id="Node000048" href="$d8/d93/meshx__light__ctl__client_8c.html" title="Implementation of the Light CTL Client model for ESP32 BLE Mesh." alt="" coords="1612,558,1772,584"/>
+<area shape="poly" id="edge72_Node000047_Node000048" title=" " alt="" coords="1389,497,1641,555,1640,561,1388,502"/>
+<area shape="poly" id="edge75_Node000049_Node000036" title=" " alt="" coords="2113,356,2114,388,2109,388,2108,356"/>
+<area shape="poly" id="edge76_Node000049_Node000050" title=" " alt="" coords="2181,344,2300,386,2298,391,2179,349"/>
+<area shape="poly" id="edge80_Node000050_Node000039" title=" " alt="" coords="2257,420,2034,465,2001,472,2000,467,2033,460,2256,415"/>
+<area shape="poly" id="edge77_Node000050_Node000051" title=" " alt="" coords="2392,416,2572,467,2571,472,2391,422"/>
+<area shape="poly" id="edge78_Node000051_Node000041" title=" " alt="" coords="2689,497,2975,555,2974,560,2688,502"/>
+<area shape="rect" id="Node000052" href="$d4/db6/meshx__light__ctl__srv_8c.html" title="Implementation of the Light CTL Server model for BLE Mesh Node." alt="" coords="2542,558,2688,584"/>
+<area shape="poly" id="edge79_Node000051_Node000052" title=" " alt="" coords="2618,511,2618,558,2612,558,2612,511"/>
+<area shape="poly" id="edge82_Node000053_Node000008" title=" " alt="" coords="1031,500,1034,500,1116,506,1223,509,1277,513,1327,520,1369,531,1399,549,1418,572,1426,595,1425,651,1425,727,1427,752,1433,771,1442,786,1453,797,1485,810,1527,813,1628,808,1683,806,1738,810,1866,824,2035,836,2441,854,2837,864,3106,869,3106,874,2837,870,2441,859,2035,842,1865,830,1737,815,1683,811,1628,813,1526,819,1484,815,1450,801,1438,789,1428,773,1422,753,1420,728,1420,651,1420,596,1414,574,1396,553,1367,536,1326,525,1276,518,1223,514,1116,511,1033,506,1030,505"/>
+<area shape="rect" id="Node000054" href="$da/dd1/esp__platform_8c.html" title="Platform&#45;specific initialization and BLE Mesh provisioning for ESP32. This file contains functions to..." alt="" coords="1103,558,1209,584"/>
+<area shape="poly" id="edge83_Node000053_Node000054" title=" " alt="" coords="1002,507,1127,556,1125,560,1000,512"/>
+<area shape="poly" id="edge84_Node000053_Node000055" title=" " alt="" coords="907,516,859,560,855,556,904,512"/>
+<area shape="rect" id="Node000056" href="$d9/d31/esp__prov__srv__model_8c.html" title="Implementation of BLE Mesh provisioning server model for ESP32. This file contains the provisioning c..." alt="" coords="1234,558,1385,584"/>
+<area shape="poly" id="edge85_Node000053_Node000056" title=" " alt="" coords="1031,503,1258,555,1257,561,1029,508"/>
+<area shape="rect" id="Node000057" href="$d2/d10/meshx__prov__srv_8h.html" title="Header file for provisioning related definitions and functions." alt="" coords="953,558,1079,584"/>
+<area shape="poly" id="edge86_Node000053_Node000057" title=" " alt="" coords="967,513,1007,556,1003,560,963,516"/>
+<area shape="poly" id="edge87_Node000057_Node000027" title=" " alt="" coords="1073,586,1091,589,1190,600,1321,611,1635,628,2178,647,2178,652,1635,633,1320,616,1190,606,1090,594,1072,591"/>
+<area shape="poly" id="edge88_Node000057_Node000058" title=" " alt="" coords="954,591,750,642,736,658,724,677,709,718,702,757,699,787,694,786,696,756,704,716,720,674,731,655,747,637,952,586"/>
+<area shape="poly" id="edge98_Node000060_Node000009" title=" " alt="" coords="1734,740,1386,796,1386,790,1733,735"/>
+<area shape="poly" id="edge99_Node000060_Node000015" title=" " alt="" coords="1861,733,2293,786,2292,791,1861,738"/>
+<area shape="poly" id="edge100_Node000060_Node000016" title=" " alt="" coords="1844,742,1952,784,1950,789,1842,747"/>
+<area shape="poly" id="edge103_Node000060_Node000017" title=" " alt="" coords="1862,728,2978,792,2978,797,1862,734"/>
+<area shape="poly" id="edge104_Node000060_Node000018" title=" " alt="" coords="1862,731,2526,789,2525,795,1861,736"/>
+<area shape="poly" id="edge102_Node000060_Node000058" title=" " alt="" coords="1734,734,760,797,760,792,1733,729"/>
+<area shape="rect" id="Node000061" href="$d5/d8f/meshx__nvs_8c.html" title="Implementation for MeshX Non&#45;Volatile Storage (NVS) operations." alt="" coords="1749,787,1846,813"/>
+<area shape="poly" id="edge101_Node000060_Node000061" title=" " alt="" coords="1800,754,1800,787,1795,787,1795,754"/>
+<area shape="poly" id="edge108_Node000062_Node000009" title=" " alt="" coords="826,680,833,711,840,725,850,737,885,756,937,771,1001,782,1070,789,1209,796,1316,797,1316,802,1209,801,1070,795,1000,787,936,776,883,761,846,741,835,728,828,713,821,682"/>
+<area shape="poly" id="edge111_Node000062_Node000058" title=" " alt="" coords="804,679,709,788,705,785,800,675"/>
+<area shape="poly" id="edge109_Node000062_Node000060" title=" " alt="" coords="902,657,1748,719,1748,724,901,662"/>
+<area shape="rect" id="Node000063" href="$dd/da1/meshx__os__timer_8c.html" title="Implementation of OS timer functionalities for BLE mesh node." alt="" coords="860,713,986,739"/>
+<area shape="poly" id="edge110_Node000062_Node000063" title=" " alt="" coords="854,672,907,711,904,715,851,677"/>
+<area shape="poly" id="edge118_Node000064_Node000012" title=" " alt="" coords="2566,416,2157,482,1951,521,1878,539,1836,553,1781,602,1693,694,1541,862,1537,858,1689,690,1778,598,1833,549,1877,534,1950,516,2156,477,2565,410"/>
+<area shape="poly" id="edge115_Node000064_Node000030" title=" " alt="" coords="2683,418,2819,467,2818,472,2681,423"/>
+<area shape="poly" id="edge117_Node000064_Node000033" title=" " alt="" coords="2662,423,2702,461,2746,513,2777,557,2773,560,2741,516,2698,464,2658,427"/>
+<area shape="poly" id="edge116_Node000064_Node000046" title=" " alt="" coords="2567,409,2125,435,1695,465,1627,473,1627,468,1695,460,2125,429,2566,404"/>
+<area shape="poly" id="edge135_Node000065_Node000007" title=" " alt="" coords="1771,95,2641,158,2641,163,1771,100"/>
+<area shape="poly" id="edge136_Node000065_Node000009" title=" " alt="" coords="1659,99,1575,108,1464,126,1335,154,1198,196,1129,223,1061,254,996,290,935,331,878,378,828,430,784,488,749,552,744,574,749,590,762,601,783,610,839,623,898,637,1318,784,1317,789,897,642,838,628,782,615,760,606,744,593,738,574,744,550,780,485,824,426,875,374,932,327,994,286,1059,250,1127,218,1196,191,1334,149,1463,121,1574,103,1659,94"/>
+<area shape="rect" id="Node000066" href="$da/dd5/unit__test_8c.html" title="Unit test module for the production console." alt="" coords="2776,153,2857,178"/>
+<area shape="poly" id="edge137_Node000065_Node000066" title=" " alt="" coords="1771,91,1940,93,2185,102,2471,119,2619,133,2763,150,2775,152,2775,157,2762,155,2618,138,2471,125,2185,107,1940,98,1771,96"/>
 </map>

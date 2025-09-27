@@ -1,14 +1,17 @@
 var meshx__nvs_8c =
 [
+    [ "meshx_nvs_write_list", "d1/d11/structmeshx__nvs__write__list.html", "d1/d11/structmeshx__nvs__write__list" ],
+    [ "MESHX_KEY_NAME_MAX_SIZE", "d5/d8f/meshx__nvs_8c.html#a5016982913764b01e071a775c6dede36", null ],
+    [ "MESHX_KEY_VALUE_MAX_SIZE", "d5/d8f/meshx__nvs_8c.html#aa31283cdee0da47b3779356c03ff794d", null ],
     [ "MESHX_NVS_ELEMENT_CTX", "d5/d8f/meshx__nvs_8c.html#a9f63f1cec16a0c6a53073fc8e103f1de", null ],
     [ "MESHX_NVS_INIT_MAGIC", "d5/d8f/meshx__nvs_8c.html#a51b36c822f93facc57ae18402884108f", null ],
-    [ "MESHX_NVS_NAMESPACE", "d5/d8f/meshx__nvs_8c.html#a0c55d54c5feb782f12273dfc2d6fe002", null ],
     [ "MESHX_NVS_NAMESPACE_CID", "d5/d8f/meshx__nvs_8c.html#a812a64b0c69f3d7c6b6efbc522b41c3b", null ],
     [ "MESHX_NVS_NAMESPACE_PID", "d5/d8f/meshx__nvs_8c.html#a769b5d9d50ec4ea248258b60c6655af3", null ],
     [ "MESHX_NVS_RELOAD_ONE_SHOT", "d5/d8f/meshx__nvs_8c.html#a6a6c9e3b4a2ffc92fb3aa4592f9dc56d", null ],
     [ "MESHX_NVS_TIMER_NAME", "d5/d8f/meshx__nvs_8c.html#a76fc1c567b7691651d2265edbdabf01a", null ],
     [ "MESHX_NVS_UNIT_TEST_KEY", "d5/d8f/meshx__nvs_8c.html#a65bede97f6d999e2e685468e67479b02", null ],
     [ "meshx_nvs_cli_cmd_t", "d5/d8f/meshx__nvs_8c.html#a36242d232ab90cf43949e0bb70c32417", null ],
+    [ "meshx_nvs_write_list_t", "d5/d8f/meshx__nvs_8c.html#ab07aa851c1eab788da9fc6594a17c8b1", null ],
     [ "meshx_nvs_cli_cmd", "d5/d8f/meshx__nvs_8c.html#ae84b906d55a82e2e45aa8340f6ac8373", [
       [ "MESHX_NVS_CLI_CMD_OPEN", "d5/d8f/meshx__nvs_8c.html#ae84b906d55a82e2e45aa8340f6ac8373ac8e46d99a25f141abaa50293c680139c", null ],
       [ "MESHX_NVS_CLI_CMD_SET", "d5/d8f/meshx__nvs_8c.html#ae84b906d55a82e2e45aa8340f6ac8373a33bed74cc4eeb5830341d72252a370a7", null ],
@@ -26,11 +29,12 @@ var meshx__nvs_8c =
     [ "meshx_nvs_element_ctx_set", "d5/d8f/meshx__nvs_8c.html#a091a0be186edb6d1dc740b838cf38037", null ],
     [ "meshx_nvs_erase", "d5/d8f/meshx__nvs_8c.html#adedf15ddc47ab70982fa07092112ffd1", null ],
     [ "meshx_nvs_erase_prod_init", "d5/d8f/meshx__nvs_8c.html#ae32d182aaba6ab32994ae22debaa1d6f", null ],
-    [ "meshx_nvs_get", "d5/d8f/meshx__nvs_8c.html#a66b5694246aa0f0a9be3c228de543200", null ],
+    [ "meshx_nvs_get", "d5/d8f/meshx__nvs_8c.html#ae36588f5b4ae5e5ac771e1af86a71e5a", null ],
     [ "meshx_nvs_init", "d5/d8f/meshx__nvs_8c.html#a0fbc3ba9cfa339d3e1b30d101d424685", null ],
     [ "meshx_nvs_open", "d5/d8f/meshx__nvs_8c.html#ab4e5c250438e810358991fbe0e6cd277", null ],
     [ "meshx_nvs_remove", "d5/d8f/meshx__nvs_8c.html#aa14948d7d45d83f3b6d9ca765a17cc58", null ],
-    [ "meshx_nvs_set", "d5/d8f/meshx__nvs_8c.html#a00bee4a5af97fa0b8d4195a827e9f5f5", null ],
+    [ "meshx_nvs_set", "d5/d8f/meshx__nvs_8c.html#ab9a39208cc2b067b0b5df0a85d7b4b03", null ],
     [ "meshx_nvs_unit_test_cb_handler", "d5/d8f/meshx__nvs_8c.html#af877bf8456b6217ae4cd642f29e85be6", null ],
-    [ "meshx_nvs_inst", "d5/d8f/meshx__nvs_8c.html#aaa01c7f0be8d3218cc846e565c6b8e23", null ]
+    [ "meshx_nvs_inst", "d5/d8f/meshx__nvs_8c.html#aaa01c7f0be8d3218cc846e565c6b8e23", null ],
+    [ "meshx_nvs_write_list_head", "d5/d8f/meshx__nvs_8c.html#ac95f13ed9cb5133d51c72830a7a860ca", null ]
 ];

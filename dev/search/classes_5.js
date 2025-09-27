@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['relay_5fclient_5felement_0',['relay_client_element',['../de/d7d/structrelay__client__element.html',1,'']]],
-  ['relay_5fclient_5felement_5fctrl_1',['relay_client_element_ctrl',['../d5/d2f/structrelay__client__element__ctrl.html',1,'']]]
+  ['prov_5fcb_5fevt_5fctrl_5ftask_5fevt_5ftable_0',['prov_cb_evt_ctrl_task_evt_table',['../d1/d5e/structprov__cb__evt__ctrl__task__evt__table.html',1,'']]]
 ];

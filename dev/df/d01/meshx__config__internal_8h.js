@@ -9,5 +9,6 @@ var meshx__config__internal_8h =
     [ "CONFIG_MAX_ELEMENT_COUNT", "df/d01/meshx__config__internal_8h.html#a91f3543ef224ff0ee338179fca4a1ad8", null ],
     [ "CONFIG_MESHX_DEFAULT", "df/d01/meshx__config__internal_8h.html#a9735d41c8c095b558e3cf3c85fc7a4db", null ],
     [ "CONFIG_PID_ID", "df/d01/meshx__config__internal_8h.html#a3c3419e674a10c521fcef919e41dface", null ],
-    [ "CONFIG_PRODUCT_NAME", "df/d01/meshx__config__internal_8h.html#afeca2d3dd4f508fb6da27c5f6bc29929", null ]
+    [ "CONFIG_PRODUCT_NAME", "df/d01/meshx__config__internal_8h.html#afeca2d3dd4f508fb6da27c5f6bc29929", null ],
+    [ "CONFIG_TXCM_ENABLE", "df/d01/meshx__config__internal_8h.html#a3f3353b7d39d1f2d30472356ff7aba91", null ]
 ];

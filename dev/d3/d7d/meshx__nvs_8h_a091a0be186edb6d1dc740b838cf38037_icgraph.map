@@ -6,7 +6,7 @@
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="1007,175,907,127,878,114,880,110,909,122,1010,170"/>
 <area shape="rect" id="Node000006" href="$d1/df4/meshx__relay__server_8c.html#a00cdd7f706b7ed6073f0a2c011ccdbb3" title="Callback function for relay server model events." alt="" coords="746,136,908,177"/>
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="951,179,908,172,908,167,952,174"/>
-<area shape="rect" id="Node000007" href="$da/df4/meshx__relay__client_8c.html#ac610d2be312dd0869c22868ae041963e" title="Handles the relay client element message." alt="" coords="747,200,907,256"/>
+<area shape="rect" id="Node000007" href="$da/df4/meshx__relay__client_8c.html#a99cebf2cc084fcecfd2c9d0968b2b7f1" title="Handles the relay client element message." alt="" coords="747,200,907,256"/>
 <area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="952,211,908,218,907,213,952,206"/>
 <area shape="rect" id="Node000011" href="$da/df4/meshx__relay__client_8c.html#ac7fbd86929248ee8e44906a8c8b5b687" title="Callback function for configuration client events." alt="" coords="532,273,659,314"/>
 <area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="1019,216,969,246,908,271,843,286,776,294,659,299,659,293,776,289,842,281,907,266,966,241,1016,212"/>

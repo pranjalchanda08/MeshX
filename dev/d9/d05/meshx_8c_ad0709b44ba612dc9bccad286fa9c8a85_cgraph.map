@@ -1,11 +1,13 @@
 <map id="meshx_tasks_init" name="meshx_tasks_init">
-<area shape="rect" id="Node000001" title="Initializes application tasks." alt="" coords="5,117,128,143"/>
-<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#a565d729859590da7d56e69401d935eb1" title="Create the control task." alt="" coords="176,117,311,143"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="128,128,160,128,160,133,128,133"/>
+<area shape="rect" id="Node000001" title="Initializes application tasks." alt="" coords="5,141,128,167"/>
+<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#a565d729859590da7d56e69401d935eb1" title="Create the control task." alt="" coords="176,116,311,142"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="128,143,160,138,160,143,129,148"/>
+<area shape="rect" id="Node000011" href="$df/d06/meshx__txcm_8h.html#a09d9909d12a0e348e2b81289220c6396" title="Initializes the MeshX Tx Control Module." alt="" coords="184,165,302,191"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="129,160,169,165,169,171,128,165"/>
 <area shape="rect" id="Node000003" href="$df/d7e/meshx__control__task_8c.html#aa80e3f0cf59f4ffe90febe75f56eb478" title="Task handler function for processing control task messages." alt="" coords="359,92,500,118"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="311,118,343,114,344,119,312,124"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="311,117,343,113,344,119,312,123"/>
 <area shape="rect" id="Node000010" href="$d6/d87/FreeRTOS__meshx__task_8c.html#ad9da426e4904251ffbf803de09d05e57" title="Create a MeshX Task." alt="" coords="362,141,497,167"/>
-<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="312,136,347,141,347,146,311,142"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="312,135,347,140,347,146,311,141"/>
 <area shape="rect" id="Node000004" href="$df/d7e/meshx__control__task_8c.html#a36673b6338c4b8864f30b3f97df92f12" title="Dispatch a message to the registered callbacks." alt="" coords="548,5,729,31"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="452,89,495,65,547,41,568,34,570,39,549,46,498,70,455,94"/>
 <area shape="rect" id="Node000005" href="$df/d7e/meshx__control__task_8c.html#af7ff66e2ee3553100aadf028c53a7abf" title="Create the control task message queue." alt="" coords="571,55,706,96"/>

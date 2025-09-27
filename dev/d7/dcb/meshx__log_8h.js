@@ -28,6 +28,6 @@ var meshx__log_8h =
     [ "meshx_log_level_t", "d7/dcb/meshx__log_8h.html#a2bb5164357b270ea80733b70e7e0ee17", null ],
     [ "meshx_logging_t", "d7/dcb/meshx__log_8h.html#a7e75f09650fd33bcd03ea92acd58408f", null ],
     [ "millis_t", "d7/dcb/meshx__log_8h.html#adef7845289a24e0f4bfd4ac68af4ba6d", null ],
-    [ "meshx_log_printf", "d7/dcb/meshx__log_8h.html#ab47e09c155a1ce6f88a355797f495c53", null ],
+    [ "meshx_log_printf", "d7/dcb/meshx__log_8h.html#a9d2caafeab2f3d7bf6338e70f768747f", null ],
     [ "meshx_logging_init", "d7/dcb/meshx__log_8h.html#a2943545097e48060e29c8be20f92677f", null ]
 ];

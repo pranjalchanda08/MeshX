@@ -396,6 +396,7 @@ var meshx__ble__mesh__cmn__def_8h =
     [ "MESHX_UUID_EMPTY", "d4/de0/meshx__ble__mesh__cmn__def_8h.html#a68d787e416fd8e536da0e7382d130587", null ],
     [ "meshx_addr_type_t", "d4/de0/meshx__ble__mesh__cmn__def_8h.html#a7550411e52b43b79dc91f9f3a4c78341", null ],
     [ "meshx_bd_addr_t", "d4/de0/meshx__ble__mesh__cmn__def_8h.html#aff1c12f21927bbb5569b48198db7d4ef", null ],
+    [ "meshx_cptr_t", "d4/de0/meshx__ble__mesh__cmn__def_8h.html#a56d35929ab21b57e927613ba03ce75fb", null ],
     [ "meshx_ptr_t", "d4/de0/meshx__ble__mesh__cmn__def_8h.html#a3bae9ce6d9b944b93bb8a0b64e758d19", null ],
     [ "meshx_uuid_addr_t", "d4/de0/meshx__ble__mesh__cmn__def_8h.html#a984bc958c91ad507e023440825ab24c7", null ],
     [ "meshx_cb_type_t", "d4/de0/meshx__ble__mesh__cmn__def_8h.html#a4176de2450da30ed4e7627a9b41a6217", [

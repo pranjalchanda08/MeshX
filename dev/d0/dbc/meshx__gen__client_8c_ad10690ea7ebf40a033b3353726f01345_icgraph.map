@@ -1,5 +1,15 @@
 <map id="meshx_is_gen_cli_get_opcode" name="meshx_is_gen_cli_get_opcode">
-<area shape="rect" id="Node000001" title="Checks if the given opcode corresponds to a GET request in the Generic Client group." alt="" coords="228,5,377,46"/>
-<area shape="rect" id="Node000002" href="$d0/dbc/meshx__gen__client_8c.html#adda618e510a15feed131d17bd3e57084" title="Sends a generic client message in the MeshX framework." alt="" coords="5,13,180,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,28,180,28,180,23,212,23"/>
+<area shape="rect" id="Node000001" title="Checks if the given opcode corresponds to a GET request in the Generic Client group." alt="" coords="682,47,832,87"/>
+<area shape="rect" id="Node000002" href="$d0/dbc/meshx__gen__client_8c.html#aef89cd09a9ce3fa4d6d71b25f252c1d6" title="Transmit callback handler for sending Generic Client model messages." alt="" coords="474,47,634,87"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="666,70,635,70,635,64,666,64"/>
+<area shape="rect" id="Node000003" href="$d0/dbc/meshx__gen__client_8c.html#a6bbf3df1e2c27b76c59774dab131ce73" title="Sends a Generic Client message over BLE Mesh." alt="" coords="246,29,420,54"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="458,59,421,54,421,49,459,53"/>
+<area shape="rect" id="Node000004" href="$d0/dc1/meshx__gen__light__cli_8c.html#a103a70022525769e7ed38978e196444c" title="Send a message using the generic client model." alt="" coords="241,78,426,104"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="459,80,427,84,426,78,458,75"/>
+<area shape="rect" id="Node000005" href="$d8/d93/meshx__light__ctl__client_8c.html#ae95db4bc247ab143853876d3ac375ae9" title="Sends a Light CTL (Color Temperature Lightness) message from the Light CTL Client model." alt="" coords="24,5,174,46"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="264,76,240,70,169,49,171,44,241,64,266,71"/>
+<area shape="rect" id="Node000006" href="$d8/d93/meshx__light__ctl__client_8c.html#ae84366ab4200bbf6f39715b0705ea453" title="Sends a Light CTL Temperature Range message from the client model." alt="" coords="16,71,182,111"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="225,94,182,94,182,88,225,88"/>
+<area shape="rect" id="Node000007" href="$d8/d93/meshx__light__ctl__client_8c.html#ab5a9d633ee4068249adf64aeb449880e" title="Sends a Light CTL Temperature message from the client model." alt="" coords="5,136,193,177"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="271,111,175,138,174,133,269,106"/>
 </map>

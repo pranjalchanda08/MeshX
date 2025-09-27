@@ -1,11 +1,11 @@
 <map id="meshx_gen_light_cli_cb_param" name="meshx_gen_light_cli_cb_param">
-<area shape="rect" id="Node000001" title="Callback parameters for Generic Light Client Model events. This structure is used to pass information..." alt="" coords="1827,497,1954,579"/>
+<area shape="rect" id="Node000001" title="Callback parameters for Generic Light Client Model events. This structure is used to pass information..." alt="" coords="1827,497,1954,599"/>
 <area shape="rect" id="Node000002" href="$db/d33/structmeshx__ctx.html" title="Structure to hold context information for BLE Mesh operations." alt="" coords="1747,266,1821,434"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1823,414,1862,482,1857,484,1818,417"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1823,418,1858,481,1853,484,1818,420"/>
 <area shape="rect" id="Node000003" href="$d7/df1/structmeshx__model.html" title=" " alt="" coords="1845,287,1936,414"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1893,414,1893,481,1888,481,1888,414"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1893,414,1893,480,1888,480,1888,414"/>
 <area shape="rect" id="Node000004" href="$d4/d2b/unionmeshx__gen__light__client__status__cb__t.html" title=" " alt="" coords="1960,310,2106,391"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="2007,393,1945,475,1936,486,1932,483,1941,472,2003,389"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="2007,392,1939,485,1935,482,2003,389"/>
 <area shape="rect" id="Node000005" href="$de/deb/structmeshx__light__lightness__status__cb__t.html" title="Bluetooth Mesh Light Lightness Client Model Get and Set callback parameters structure." alt="" coords="5,26,144,168"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="115,166,149,208,170,226,192,240,225,247,288,251,490,256,1069,254,1648,250,1850,254,1915,258,1949,264,1973,278,1994,295,1991,299,1970,282,1947,269,1914,263,1850,259,1648,256,1069,259,490,261,288,257,224,252,190,245,166,230,145,212,111,170"/>
 <area shape="rect" id="Node000006" href="$d4/dd2/structmeshx__light__lightness__linear__status__cb__t.html" title=" " alt="" coords="168,26,307,168"/>

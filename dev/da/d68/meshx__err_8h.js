@@ -5,6 +5,7 @@ var meshx__err_8h =
     [ "MESHX_FREE", "da/d68/meshx__err_8h.html#af8f58f6602b246397c882d9cddd9a334", null ],
     [ "MESHX_MALLOC", "da/d68/meshx__err_8h.html#ad0912ccd019463591174e0fa3516e236", null ],
     [ "MESHX_UNUSED", "da/d68/meshx__err_8h.html#a2aa59bde3a822db7e022cc4b70429d4f", null ],
+    [ "MESHX_WEEK", "da/d68/meshx__err_8h.html#afd06eb7b8ab3675d045204c907af34e8", null ],
     [ "meshx_err_t", "da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6", [
       [ "MESHX_SUCCESS", "da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b", null ],
       [ "MESHX_FAIL", "da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a4d423ab700ffdf5440a1f0579beba8af", null ],

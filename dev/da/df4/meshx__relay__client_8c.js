@@ -21,7 +21,7 @@ var meshx__relay__client_8c =
     [ "meshx_relay_cli_el_state_change_reg_cb", "da/df4/meshx__relay__client_8c.html#ad3d68068ef603baf6bf7d01ed3c7a9e3", null ],
     [ "meshx_relay_cli_reg_app_req_cb", "da/df4/meshx__relay__client_8c.html#a589bb558fe9feaf48de5a01429354601", null ],
     [ "meshx_relay_cli_send_onoff_msg", "da/df4/meshx__relay__client_8c.html#afbb3c7eb04580ff62c2aa328d1140a91", null ],
-    [ "meshx_relay_client_element_state_change_handler", "da/df4/meshx__relay__client_8c.html#ac610d2be312dd0869c22868ae041963e", null ],
+    [ "meshx_relay_client_element_state_change_handler", "da/df4/meshx__relay__client_8c.html#a99cebf2cc084fcecfd2c9d0968b2b7f1", null ],
     [ "meshx_relay_client_to_ble_handler", "da/df4/meshx__relay__client_8c.html#af3f0e8fee125cc694401dddfc2f00e82", null ],
     [ "meshx_relay_el_get_state", "da/df4/meshx__relay__client_8c.html#a782c400144f6ed0e3b295dfc659cddb0", null ],
     [ "meshx_relay_el_set_state", "da/df4/meshx__relay__client_8c.html#ab7ae17d716cbfca4e293f58700d9c5b9", null ],

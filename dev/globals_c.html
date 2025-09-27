@@ -104,6 +104,8 @@ $(function(){initNavTree('globals_c.html',''); initResizable(true); });
 <h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
 <li>callback_list&#160;:&#160;<a class="el" href="da/dd5/unit__test_8c.html#aabe4dd902ed5f2c6e9f66eece82f14c2">unit_test.c</a></li>
 <li>CID_ESP&#160;:&#160;<a class="el" href="d3/d18/meshx_8h.html#abde255c5abc3ab0c35adf9e0eedaa714">meshx.h</a></li>
+<li>cli_cb_reg_head&#160;:&#160;<a class="el" href="d0/dbc/meshx__gen__client_8c.html#abbcce63646d7a5d3a76da85f8fae6630">meshx_gen_client.c</a>, <a class="el" href="d0/dc1/meshx__gen__light__cli_8c.html#ae790bc2a5b36ed3f1f461164ade48e96">meshx_gen_light_cli.c</a></li>
+<li>client_init&#160;:&#160;<a class="el" href="d0/dbc/meshx__gen__client_8c.html#a7235d86e922307571f349e5567b3f82c">meshx_gen_client.c</a></li>
 <li>client_state_str&#160;:&#160;<a class="el" href="d0/de1/esp__gen__cli__model_8c.html#ac6cbe6ce18e0261bc7a151b04560d45e">esp_gen_cli_model.c</a>, <a class="el" href="d1/d1d/esp__gen__light__cli__model_8c.html#ac6cbe6ce18e0261bc7a151b04560d45e">esp_gen_light_cli_model.c</a></li>
 <li>CONFIG_CID_ID&#160;:&#160;<a class="el" href="df/d01/meshx__config__internal_8h.html#ad0c2bc56e223b9e73b5467acf93e0e83">meshx_config_internal.h</a></li>
 <li>CONFIG_CONTROL_TASK_NAME&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a9d355e9918da3da807f780c42c8a59bb">meshx_control_task.h</a></li>
@@ -131,6 +133,7 @@ $(function(){initNavTree('globals_c.html',''); initResizable(true); });
 <li>config_srv_evt_map_count&#160;:&#160;<a class="el" href="dd/d79/meshx__config__server_8c.html#aa74cdc772740897af3dedcd5ca5fad69">meshx_config_server.c</a></li>
 <li>config_srv_init_flag&#160;:&#160;<a class="el" href="dd/d79/meshx__config__server_8c.html#a7273d9adb7b8397621741e0e1c63409c">meshx_config_server.c</a></li>
 <li>CONFIG_SRV_INIT_MAGIC&#160;:&#160;<a class="el" href="dd/d79/meshx__config__server_8c.html#a8d02d8b73c5b375be77a4a62d9183817">meshx_config_server.c</a></li>
+<li>CONFIG_TXCM_ENABLE&#160;:&#160;<a class="el" href="df/d01/meshx__config__internal_8h.html#a3f3353b7d39d1f2d30472356ff7aba91">meshx_config_internal.h</a></li>
 <li>control_task_evt_cb_reg_t&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a5a25a0713406e11f3f91a16fb5c32d3c">meshx_control_task.h</a></li>
 <li>CONTROL_TASK_EVT_MASK&#160;:&#160;<a class="el" href="d9/d46/meshx__cwww__server_8c.html#a450ba1430b1109aab7ba3ffbb3bbe573">meshx_cwww_server.c</a>, <a class="el" href="d1/df4/meshx__relay__server_8c.html#a450ba1430b1109aab7ba3ffbb3bbe573">meshx_relay_server.c</a></li>
 <li>control_task_handler()&#160;:&#160;<a class="el" href="df/d7e/meshx__control__task_8c.html#aa80e3f0cf59f4ffe90febe75f56eb478">meshx_control_task.c</a></li>
@@ -147,60 +150,63 @@ $(function(){initNavTree('globals_c.html',''); initResizable(true); });
 <li>CONTROL_TASK_MSG_CODE_TO_APP&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fa81914ef57e7ff7b4775a446f29b54a3c">meshx_control_task.h</a></li>
 <li>CONTROL_TASK_MSG_CODE_TO_BLE&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fadd496706492bf07b548fbeeba784a7af">meshx_control_task.h</a></li>
 <li>CONTROL_TASK_MSG_CODE_TO_MESHX&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fab42691af173776334ebc029bc900ddd1">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_CODE_TXCM&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fa41c73413e1f6d2b4a607289f537e9030">meshx_control_task.h</a></li>
 <li>control_task_msg_dispatch()&#160;:&#160;<a class="el" href="df/d7e/meshx__control__task_8c.html#a36673b6338c4b8864f30b3f97df92f12">meshx_control_task.c</a></li>
-<li>CONTROL_TASK_MSG_EVT_APP_KEY_ADD&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a0c716533de40fd9e1e1c6f0beef5cb6fac390f948a1a8ee8892a33abd6638a08d">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_APP_KEY_BIND&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a0c716533de40fd9e1e1c6f0beef5cb6fae9dc319c581bf2310d0cfc1b2c913e4d">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_APP_KEY_DEL&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a0c716533de40fd9e1e1c6f0beef5cb6fa8aa14210a38ff1234e03fb4b09fd23b0">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_APP_KEY_UNBIND&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a0c716533de40fd9e1e1c6f0beef5cb6facf1311d7330ece157befe35e32f7f79e">meshx_control_task.h</a></li>
-<li>control_task_msg_evt_config&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a0c716533de40fd9e1e1c6f0beef5cb6f">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_CONFIG_ALL&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a0c716533de40fd9e1e1c6f0beef5cb6fa2674af785637eb08839470dc5a436877">meshx_control_task.h</a></li>
-<li>control_task_msg_evt_config_t&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a5ea00b0e30f5891e7fb9fdaf62b5935f">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_CTRL&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#aee2041f20815564c3882960385b43046adb87cf9cb87e136e0a4ad3f809058ab9">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_DATA&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#aee2041f20815564c3882960385b43046a5b942215bde3fb8b27ac077bcd24f168">meshx_control_task.h</a></li>
-<li>control_task_msg_evt_el_state_ch&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a6b848c829d6c0792babe921e2852e667">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_EL_STATE_CH_MAX&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a6b848c829d6c0792babe921e2852e667af03e823d4e030a10f401388b2b3ec060">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a6b848c829d6c0792babe921e2852e667a939ceea4f67595a29c18db1541523afe">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a6b848c829d6c0792babe921e2852e667a41576e1941c74d8f8f9aee8e22e1e772">meshx_control_task.h</a></li>
-<li>control_task_msg_evt_el_state_ch_t&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a2de751193dd281b34ae2186e6f91877f">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_EN_NODE_PROV&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a36b08cbb6c10c75974bce6cf253a3946a7060a2680eab41fbe660643436d6747d">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_IDENTIFY_START&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a36b08cbb6c10c75974bce6cf253a3946ad2462066bbf29ebc222f0b376bb7ba15">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_IDENTIFY_STOP&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a36b08cbb6c10c75974bce6cf253a3946a17e6c55521e2a0daabfbd38384690d3a">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_MAX&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#aee2041f20815564c3882960385b43046a51b31f436ce8df08562471dd62d7a3fc">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_NET_KEY_ADD&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a0c716533de40fd9e1e1c6f0beef5cb6fac82b64c2c962e0fa6c3b57980fccc562">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_NET_KEY_DEL&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a0c716533de40fd9e1e1c6f0beef5cb6fa442e69e3933221a6e891427d35e9cb39">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_NODE_RESET&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a36b08cbb6c10c75974bce6cf253a3946adb63d538cf1bf43c0615adf624964eaa">meshx_control_task.h</a></li>
-<li>control_task_msg_evt_provision&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a36b08cbb6c10c75974bce6cf253a3946">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_PROVISION_ALL&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a36b08cbb6c10c75974bce6cf253a3946ae2a094efae0739d49b2e57ce69188505">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_PROVISION_STOP&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a36b08cbb6c10c75974bce6cf253a3946a86f322436975af0b48f3cd14892123e6">meshx_control_task.h</a></li>
-<li>control_task_msg_evt_provision_t&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a25c7d40c299df5abbd926bbed7eada4b">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_PROXY_CONNECT&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a36b08cbb6c10c75974bce6cf253a3946a795d6e9898001ebd60abd23a820d8f69">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_PROXY_DISCONN&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a36b08cbb6c10c75974bce6cf253a3946ac04eb116cd1db24d2f071eff8a8eacf6">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_PUB_ADD&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a0c716533de40fd9e1e1c6f0beef5cb6fa0c0499249f00796c41880a6ab440a2d4">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_PUB_DEL&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a0c716533de40fd9e1e1c6f0beef5cb6fa7d5dc5b31e490e2fd78a86b96b3ec424">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_SUB_ADD&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a0c716533de40fd9e1e1c6f0beef5cb6fa56dbd692dcee8c4c5dc1e9ccf3edea04">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_SUB_DEL&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a0c716533de40fd9e1e1c6f0beef5cb6faace8f0cf057a93091776c7eb94d48f6e">meshx_control_task.h</a></li>
-<li>control_task_msg_evt_system&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a74c26ff7cf968dce6ce580cc8249bac3">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a36b08cbb6c10c75974bce6cf253a3946a4026b04ae1ecf072c99ecbf7266dd1c1">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_SYSTEM_MAX&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a74c26ff7cf968dce6ce580cc8249bac3a77dccf3c58d258f109f249996a2a0537">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_SYSTEM_RESTART&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a74c26ff7cf968dce6ce580cc8249bac3a010b78bf02fd52be7ce87245a3173e31">meshx_control_task.h</a></li>
-<li>control_task_msg_evt_system_t&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#aad0a212963b8648ec743dd1cf26fac2c">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_ARM&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a74c26ff7cf968dce6ce580cc8249bac3ab7ae1fb80a6a79376790fcf7bacf2fec">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_DISARM&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a74c26ff7cf968dce6ce580cc8249bac3a5faf0ba6aa9bb3728da4fa1e0366f179">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a74c26ff7cf968dce6ce580cc8249bac3a28b2d5b8769e78e6b180c99e7991ef13">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a74c26ff7cf968dce6ce580cc8249bac3ad6490bdb28535ff59224b995d753d64e">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_REARM&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a74c26ff7cf968dce6ce580cc8249bac3a62c5996227f5d995a05b4eab9c2ad185">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_APP_KEY_ADD&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a76de067f78d59e334c16244814c58e53">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_APP_KEY_BIND&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#abcfcf62bb67d683dc431799a2d16030a">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_APP_KEY_DEL&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a47c7e7a0763163488f5826812bafbc78">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_APP_KEY_UNBIND&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a67797fa703e298ce4259fd1e3f32c104">meshx_control_task.h</a></li>
+<li>control_task_msg_evt_config&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a20c3b9648e6b7ad056c2b1e155fbf128">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_CONFIG_ALL&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#ae82dbf4e24dde45af98319933e5eac45">meshx_control_task.h</a></li>
+<li>control_task_msg_evt_config_t&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a0a91d0a67d44c2eecb6044006ef471fa">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_CTRL&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#ad2c025ecb11d83c7986a9edb584f97bb">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_DATA&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#ada2813b1950a9d924d42bf44b508902b">meshx_control_task.h</a></li>
+<li>control_task_msg_evt_el_state_ch&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a56c23e0f8f03d6f6d54cdce42469ecbd">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_EL_STATE_CH_MAX&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a266309d7e66645b0d478785ee54590de">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#aa9dedac7746be2d7d4c59bd0b47e402b">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a5a83ba04d09994db452e6b4265c23b81">meshx_control_task.h</a></li>
+<li>control_task_msg_evt_el_state_ch_t&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a304fb3a3a083e9ab1b1107298ea1c7d9">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_EN_NODE_PROV&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#ab0858c9d7492e10f9e427a1c5c952e08">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_IDENTIFY_START&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a04a23fd3ab628f3b4cc744c91f54bfa3">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_IDENTIFY_STOP&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a9e2b830f02facc18bb1511196684dbd3">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_MAX&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a9de0c275ee1a2bd75a94c4f71f674c9f">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_NET_KEY_ADD&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#af03b7b4f78c0649c050839293b272c2b">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_NET_KEY_DEL&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a4196b36ec3be09a63657e814b3fc60c0">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_NODE_RESET&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#aa89c98bf40f50ecddf46f8f414fb444b">meshx_control_task.h</a></li>
+<li>control_task_msg_evt_provision&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#add2d7afbe5d53b35aff6e9e677ebc01d">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_PROVISION_ALL&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#ad5dcb04c048df3c94f73e74731e50281">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_PROVISION_STOP&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a1564fbdac59aa9fe3981ccadc2213b0a">meshx_control_task.h</a></li>
+<li>control_task_msg_evt_provision_t&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#ae617eb57b27f5c67002beb97cc50fa24">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_PROXY_CONNECT&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a4c1fd4645c58031b0796706b64d5477a">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_PROXY_DISCONN&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#aefddef80715eefd9b8c91cb68caa509d">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_PUB_ADD&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#aaef314f226d509ef6652aa2319e04033">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_PUB_DEL&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#aded2f2d31125735e1649d9d21e48299a">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_SUB_ADD&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#ac12097a78c2770129be293c3231beb5f">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_SUB_DEL&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a4fc573ef2dd6ac1f1a5d4cc396e2837a">meshx_control_task.h</a></li>
+<li>control_task_msg_evt_system&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a924cf3b59e551f6b725c53b3d00b583a">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a00a0dfdf842c6d6aa566c1f365166796">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_SYSTEM_MAX&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a2566acf3b20763c6ad2cf2bd1a8d18a1">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_SYSTEM_RESTART&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a5d82a3df95b24a620499d787ca2b1311">meshx_control_task.h</a></li>
+<li>control_task_msg_evt_system_t&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a416286ff8c93d4ef8abe02a94a335a72">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_ARM&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#ac794af8e290edbe2dd398a760e7160ee">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_DISARM&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#aab39a57511f89060463b93a463e4e40a">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a1c6a7a97c2c84ca39bae9877f05c57e3">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a215073451a269fdb8cc2bc97fc3a285d">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_REARM&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#ad0cd421b6a2a1340dd487478b8fb84bf">meshx_control_task.h</a></li>
 <li>control_task_msg_evt_t&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a3109cf0e00dc81938eb780233db68964">meshx_control_task.h</a></li>
-<li>control_task_msg_evt_to_app_meshx&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#aee2041f20815564c3882960385b43046">meshx_control_task.h</a></li>
-<li>control_task_msg_evt_to_app_meshx_t&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a33ee64248dee04d85fad2c0748e1e799">meshx_control_task.h</a></li>
-<li>control_task_msg_evt_to_ble&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#af0f09f726bff0d760104f7b204150949">meshx_control_task.h</a></li>
+<li>control_task_msg_evt_to_app_meshx&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#acee47fb602b2c6db7d0d7ea32cb1fa61">meshx_control_task.h</a></li>
+<li>control_task_msg_evt_to_app_meshx_t&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#aa88a717aebdfd7813a2931cfb8332267">meshx_control_task.h</a></li>
+<li>control_task_msg_evt_to_ble&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a7400e7520dd03e093a90fef2dac0c5bb">meshx_control_task.h</a></li>
 <li>CONTROL_TASK_MSG_EVT_TO_BLE_GEN_SRV_MASK&#160;:&#160;<a class="el" href="d9/d46/meshx__cwww__server_8c.html#a60974cfea748afafb417e5c92e4d0775">meshx_cwww_server.c</a>, <a class="el" href="d1/df4/meshx__relay__server_8c.html#a60974cfea748afafb417e5c92e4d0775">meshx_relay_server.c</a>, <a class="el" href="d7/d7a/esp__gen__srv__model_8c.html#a60974cfea748afafb417e5c92e4d0775">esp_gen_srv_model.c</a></li>
-<li>CONTROL_TASK_MSG_EVT_TO_BLE_MAX&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#af0f09f726bff0d760104f7b204150949a1c2fc854ccc0c7e5536430de328a2d19">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#af0f09f726bff0d760104f7b204150949a033dc3106603fc8750e9cdaab206bae5">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#af0f09f726bff0d760104f7b204150949a42f18669857bfe8c2dad08291f4c87c7">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_TO_BLE_SET_LIGHTNESS&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#af0f09f726bff0d760104f7b204150949a9e5617ec7445f675f47b33788a5a36d7">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#af0f09f726bff0d760104f7b204150949a1560d7a2c32224d132514ce9fc91d4cd">meshx_control_task.h</a></li>
-<li>CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#af0f09f726bff0d760104f7b204150949a425f4f6dfe1ba72c741bce7a393ad106">meshx_control_task.h</a></li>
-<li>control_task_msg_evt_to_ble_t&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a4c567c2e8d4552a2f950724092857aad">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a2a431535b131c279c61853be7cfe1a56">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a1069cba1c3d00149aaa7f7164890d3c9">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_TO_BLE_SET_LIGHTNESS&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#afb06265ad48a7eeb2672c585e69f7cf8">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#ac1180222ca9e96d75017083b74d57fcc">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a137bedd326d90064671b245d2235abec">meshx_control_task.h</a></li>
+<li>control_task_msg_evt_to_ble_t&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a16032d5f4189a6d1d8ad6d4ad59145ec">meshx_control_task.h</a></li>
+<li>control_task_msg_evt_txcm&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#af9f0ceb6ba1a83191c6f61d3707fc952">meshx_control_task.h</a></li>
+<li>CONTROL_TASK_MSG_EVT_TXCM_MSG_TIMEOUT&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a66837bc5e437d7886e82956f61d503dc">meshx_control_task.h</a></li>
+<li>control_task_msg_evt_txcm_t&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#ab05a4ea8a7bd1ce45d2b0a36a61448b6">meshx_control_task.h</a></li>
 <li>control_task_msg_handle_t&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#a579fb3e74e48372bcc0489cd86c56614">meshx_control_task.h</a></li>
 <li>control_task_msg_publish()&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#acc911e8c9467e5f4e224be56b1888e68">meshx_control_task.h</a>, <a class="el" href="df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68">meshx_control_task.c</a></li>
 <li>control_task_msg_subscribe()&#160;:&#160;<a class="el" href="da/db3/meshx__control__task_8h.html#af31decf28c19d825be2987e5dca60b20">meshx_control_task.h</a>, <a class="el" href="df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20">meshx_control_task.c</a></li>
@@ -254,7 +260,7 @@ $(function(){initNavTree('globals_c.html',''); initResizable(true); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Sep 5 2025 21:19:08 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Sat Sep 27 2025 12:08:12 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>
