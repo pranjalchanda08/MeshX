@@ -142,10 +142,3 @@ components:
         macros:
             - def: "CONFIG_MESHX_DEFAULT"
               value: false
-    unit_test:
-        path: null
-        type: software
-        default: false
-        macros:
-            - def: "CONFIG_ENABLE_UNIT_TEST"
-              value: false
