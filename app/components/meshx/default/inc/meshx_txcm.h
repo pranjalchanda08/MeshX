@@ -88,7 +88,8 @@ typedef enum
 /**
  * @brief Function pointer the Model client layer needs to provide for the msg to be sent for both MESHX_TXCM_SIG_ENQ_SEND and MESHX_TXCM_SIG_DIRECT_SEND
  *
- * @param[in] param Pointer to the model specific parameter structure
+ * @param[in] msg_param Pointer to the model specific parameter structure
+ * @param[in] msg_param_len Length of the msg_param
  */
 typedef meshx_err_t (*meshx_txcm_fn_model_send_t)(meshx_cptr_t msg_param, size_t msg_param_len);
 

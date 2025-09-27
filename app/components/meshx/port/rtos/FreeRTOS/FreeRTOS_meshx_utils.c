@@ -162,15 +162,15 @@ size_t meshx_rtos_get_free_heap(void)
  * @note Ensure that the `task_id` pointer is valid and not NULL before
  *       calling this function.
  */
-meshx_err_t meshx_rtos_get_curr_task_id_prio(unsigned int *task_id_prio)
+meshx_err_t meshx_rtos_get_curr_task_id_prio(unsigned int *task_id)
 {
 
 #ifdef configUSE_TRACE_FACILITY
     TaskStatus_t xTaskDetails;
     vTaskGetInfo(NULL, &xTaskDetails, pdTRUE, eInvalid);
-    *task_id_prio = xTaskDetails.xTaskNumber << 8 | xTaskDetails.uxCurrentPriority;
+    *task_id = xTaskDetails.xTaskNumber << 8 | xTaskDetails.uxCurrentPriority;
 #else
-    *task_id_prio = 0x5A;    /* Dummt Task ID*/
+    *task_id = 0x5A;    /* Dummy Task ID*/
 #endif
     return MESHX_SUCCESS;
 

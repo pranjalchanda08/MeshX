@@ -90,12 +90,14 @@ void meshx_module_set_log_level(module_id_t module_id, meshx_log_level_t log_lev
 /**
  * @brief Logs a formatted message for a specified module and log level.
  *
- * This weak function definition can be overridden by any other version of
- * definition required as per platform.
+ * @note This is a weak function, can be redefined to override in app layer
  *
- * The function checks if the provided module ID and log level are valid
+ * This function checks if the provided module ID and log level are valid
  * and above the current global and module-specific log levels. If valid,
  * it processes the variable arguments to format and log the message.
+ *
+ * @note This is a weak function defination and can be overriden by any other version
+ *       of defination required as per platform
  *
  * @param[in] module_id     The ID of the module for which the log is generated.
  * @param[in] log_level     The log level of the message.
@@ -104,7 +106,7 @@ void meshx_module_set_log_level(module_id_t module_id, meshx_log_level_t log_lev
  * @param[in] fmt           The format string for the log message.
  * @param[in] ...           Additional arguments for the format string.
  */
-__attribute__((weak)) void meshx_log_printf(module_id_t module_id, meshx_log_level_t log_level,
+void meshx_log_printf(module_id_t module_id, meshx_log_level_t log_level,
                       const char *func, int line_no, const char *fmt, ...)
 {
     /* Validate module ID */

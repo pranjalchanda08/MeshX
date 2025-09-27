@@ -66,7 +66,7 @@ meshx_err_t meshx_msg_q_delete(meshx_msg_q_t *msg_q_handle)
 }
 
 /**
- * @brief Send a Message to a MeshX Message Queue
+ * @brief Send a Message to a MeshX Message Queue Back
  *
  * This function sends a message to a MeshX Message Queue.
  *
