@@ -1,0 +1,11 @@
+<map id="meshx_data_payload" name="meshx_data_payload">
+<area shape="rect" id="Node000001" title="Structure for the BLE Mesh application control message." alt="" coords="288,333,420,399"/>
+<area shape="rect" id="Node000002" href="$d0/d8e/structmeshx__api__relay__client__state.html" title="Structure defines the payload for MESHX_ELEMENT_TYPE_RELAY_CLIENT." alt="" coords="5,87,150,188"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="102,187,142,250,169,281,199,306,235,326,273,341,271,346,233,331,197,311,165,285,138,254,98,190"/>
+<area shape="rect" id="Node000003" href="$d7/da3/structmeshx__api__relay__server__evt.html" title="Structure defines the payload for MESHX_ELEMENT_TYPE_RELAY_SERVER." alt="" coords="174,104,349,171"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="270,170,285,235,297,272,313,307,318,317,314,320,308,310,292,274,280,236,264,171"/>
+<area shape="rect" id="Node000004" href="$d7/d79/structmeshx__api__light__cwww__client__evt.html" title="Structure defines the payload for MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT." alt="" coords="373,5,521,270"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="435,271,419,310,411,322,406,319,414,307,430,268"/>
+<area shape="rect" id="Node000005" href="$dc/dbf/structmeshx__api__light__cwww__server__evt.html" title="Structure defines the payload for MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER." alt="" coords="545,16,693,260"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="603,261,590,287,572,311,542,333,507,349,471,359,436,365,435,360,470,354,505,344,539,328,568,307,586,284,599,258"/>
+</map>

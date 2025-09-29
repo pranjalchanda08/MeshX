@@ -1,0 +1,5 @@
+<map id="meshx_rtos_free" name="meshx_rtos_free">
+<area shape="rect" id="Node000001" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="5,5,123,31"/>
+<area shape="rect" id="Node000002" href="$d3/df5/meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="171,5,348,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,16,155,16,155,21,123,21"/>
+</map>
