@@ -1,0 +1,11 @@
+<map id="meshx_light_ctl_server_delete" name="meshx_light_ctl_server_delete">
+<area shape="rect" id="Node000001" title="Delete the CTL server model instance." alt="" coords="926,5,1080,46"/>
+<area shape="rect" id="Node000002" href="$d9/d46/meshx__cwww__server_8c.html#ae58e3714c7314300269ade7cf0e09216" title="Deinitializes the mesh element structure by freeing allocated memory." alt="" coords="725,5,878,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="910,28,878,28,878,23,910,23"/>
+<area shape="rect" id="Node000003" href="$d9/d46/meshx__cwww__server_8c.html#a9323b419771abef4a20d688f3f90188d" title="Create space for CW&#45;WW models." alt="" coords="503,5,677,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="710,28,678,28,678,23,710,23"/>
+<area shape="rect" id="Node000004" href="$d9/d46/meshx__cwww__server_8c.html#ac1498e20904edfabe76c92f9da6375bd" title="Create Dynamic CWWW Server Model Elements." alt="" coords="249,13,455,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="487,28,456,28,456,23,487,23"/>
+<area shape="rect" id="Node000005" href="$d9/d46/meshx__cwww__server_8c.html#aa8082758a025ec4f2663cc48f873b7d9" title=" " alt="" coords="5,13,201,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="233,28,201,28,201,23,233,23"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="meshx_lighting_srv_dereg_cb" name="meshx_lighting_srv_dereg_cb">
+<area shape="rect" id="Node000001" title="Callback function to deregister a lighting server model." alt="" coords="5,5,138,46"/>
+<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#a6440ac925100875e667008915b6f0086" title="Deregister a callback for a specific message code and event bitmap." alt="" coords="186,13,387,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="138,23,170,23,170,28,138,28"/>
+<area shape="rect" id="Node000003" href="$d3/df5/meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="435,13,552,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="388,23,419,23,419,28,388,28"/>
+<area shape="rect" id="Node000004" href="$d3/df5/meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="600,13,778,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="553,23,585,23,585,28,553,28"/>
+</map>

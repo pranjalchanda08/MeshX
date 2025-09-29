@@ -1,0 +1,16 @@
+<map id="meshx_sem.c" name="meshx_sem.c">
+<area shape="rect" id="Node000001" title="Implementation of MeshX Semaphore APIs using FreeRTOS. This file provides functions to create,..." alt="" coords="266,5,367,31"/>
+<area shape="rect" id="Node000002" href="$d0/d25/meshx__sem_8h.html" title="MeshX Semaphore Interface." alt="" coords="5,79,145,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="280,34,150,76,149,71,278,29"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="168,86,310,112"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="306,33,263,77,259,74,303,30"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="334,86,456,112"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="330,30,374,74,370,77,326,33"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="480,86,582,112"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="350,29,485,78,483,83,348,34"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="43,241,107,267"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="71,121,63,155,62,193,69,226,64,227,56,194,58,154,66,120"/>
+<area shape="rect" id="Node000004" href="$da/d68/meshx__err_8h.html" title="MeshX Error Codes." alt="" coords="71,168,162,193"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="88,119,105,152,101,155,83,121"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="112,195,92,229,87,226,107,192"/>
+</map>
