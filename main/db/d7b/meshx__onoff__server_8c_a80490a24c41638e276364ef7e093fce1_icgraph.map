@@ -1,5 +1,0 @@
-<map id="meshx_state_change_notify" name="meshx_state_change_notify">
-<area shape="rect" id="Node000001" title="Perform hardware change based on the BLE Mesh generic server callback parameter." alt="" coords="253,5,397,46"/>
-<area shape="rect" id="Node000002" href="$db/d7b/meshx__onoff__server_8c.html#abdf22b25862969361ebbdc24454f1f05" title="Handle Generic OnOff messages for the server model." alt="" coords="5,13,205,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="237,28,205,28,205,23,237,23"/>
-</map>

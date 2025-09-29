@@ -1,7 +1,0 @@
-<map id="meshx_relay_element_ctrl" name="meshx_relay_element_ctrl">
-<area shape="rect" id="Node000001" title="Structure to manage relay element initialization." alt="" coords="12,345,172,452"/>
-<area shape="rect" id="Node000002" href="$d8/d1d/structmeshx__relay__element.html" title="Structure to manage relay element models." alt="" coords="21,196,163,282"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,282,95,328,90,328,90,282"/>
-<area shape="rect" id="Node000003" href="$dc/d33/structmeshx__relay__srv__model__ctx.html" title="Structure to hold the relay server save restore context." alt="" coords="5,5,179,133"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="95,133,95,179,90,179,90,133"/>
-</map>

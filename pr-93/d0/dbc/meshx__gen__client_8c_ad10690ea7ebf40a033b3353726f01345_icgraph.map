@@ -1,5 +1,0 @@
-<map id="meshx_is_gen_cli_get_opcode" name="meshx_is_gen_cli_get_opcode">
-<area shape="rect" id="Node000001" title="Checks if the given opcode corresponds to a GET request in the Generic Client group." alt="" coords="228,5,377,46"/>
-<area shape="rect" id="Node000002" href="$d0/dbc/meshx__gen__client_8c.html#adda618e510a15feed131d17bd3e57084" title="Sends a generic client message in the MeshX framework." alt="" coords="5,13,180,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,28,180,28,180,23,212,23"/>
-</map>

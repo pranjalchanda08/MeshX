@@ -1,5 +1,0 @@
-<map id="meshx_plat_set_gen_srv_state" name="meshx_plat_set_gen_srv_state">
-<area shape="rect" id="Node000001" title="Set the state of a generic server model." alt="" coords="211,5,351,46"/>
-<area shape="rect" id="Node000002" href="$d7/d7a/esp__gen__srv__model_8c.html#aaecb4b5e4c2b30b2fc03ed2718c6ccc0" title="Restores the state of the Generic OnOff Server model." alt="" coords="5,5,163,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,28,163,28,163,23,195,23"/>
-</map>

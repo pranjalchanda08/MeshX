@@ -1,7 +1,0 @@
-<map id="meshx_gen_cli_send_msg" name="meshx_gen_cli_send_msg">
-<area shape="rect" id="Node000001" title="Sends a generic client message in the MeshX framework." alt="" coords="5,46,180,72"/>
-<area shape="rect" id="Node000002" href="$d0/dbc/meshx__gen__client_8c.html#ad10690ea7ebf40a033b3353726f01345" title="Checks if the given opcode corresponds to a GET request in the Generic Client group." alt="" coords="228,5,377,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,43,212,37,213,43,178,48"/>
-<area shape="rect" id="Node000003" href="$d0/de1/esp__gen__cli__model_8c.html#a9a7f82b22f4472ddaca488e202f5bad5" title="Sends a Generic Client message over BLE Mesh." alt="" coords="235,71,370,111"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="180,70,220,76,219,81,179,75"/>
-</map>

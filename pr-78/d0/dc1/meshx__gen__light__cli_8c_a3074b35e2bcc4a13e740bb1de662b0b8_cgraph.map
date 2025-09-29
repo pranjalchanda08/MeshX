@@ -1,9 +1,0 @@
-<map id="meshx_gen_light_client_from_ble_reg_cb" name="meshx_gen_light_client_from_ble_reg_cb">
-<area shape="rect" id="Node000001" title="Registers a callback function for getting Generic Light Client messages from BLE." alt="" coords="5,27,162,68"/>
-<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="210,5,397,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="162,34,194,30,194,35,162,40"/>
-<area shape="rect" id="Node000004" href="$d0/dc1/meshx__gen__light__cli_8c.html#a3e204da09e098d05200e0533be46ef04" title="Checks if the given model ID corresponds to a Generic Light Client model." alt="" coords="236,55,371,96"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="162,55,221,62,220,68,162,60"/>
-<area shape="rect" id="Node000003" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="445,5,578,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="397,16,429,16,429,21,397,21"/>
-</map>

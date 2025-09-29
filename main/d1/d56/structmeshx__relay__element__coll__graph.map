@@ -1,9 +1,0 @@
-<map id="meshx_relay_element" name="meshx_relay_element">
-<area shape="rect" id="Node000001" title="Structure to manage relay element models." alt="" coords="118,350,260,416"/>
-<area shape="rect" id="Node000002" href="$dc/d33/structmeshx__relay__srv__model__ctx.html" title="Structure to hold the relay server save restore context." alt="" coords="5,165,179,272"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,270,164,334,159,337,121,273"/>
-<area shape="rect" id="Node000003" href="$d7/d55/structmeshx__on__off__srv__el__state.html" title="Structure to hold the CW&#45;WW server on/off state." alt="" coords="26,5,158,87"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="95,87,95,148,90,148,90,87"/>
-<area shape="rect" id="Node000004" href="$d7/d48/structmeshx__onoff__server__model.html" title="Structure representing the MeshX On/Off Server Model." alt="" coords="203,150,374,287"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="250,288,220,337,215,334,245,285"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="meshx_gen_srv_status_send" name="meshx_gen_srv_status_send">
-<area shape="rect" id="Node000001" title="Sends a status message for the Generic Server model." alt="" coords="208,13,398,38"/>
-<area shape="rect" id="Node000002" href="$db/d7b/meshx__onoff__server_8c.html#adb2b8bf0c13f01cdffdcc09208c00ea6" title="Send the On/Off status message to the client." alt="" coords="5,5,160,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="192,28,160,28,160,23,192,23"/>
-</map>

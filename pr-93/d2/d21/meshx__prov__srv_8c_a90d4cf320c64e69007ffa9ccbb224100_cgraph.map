@@ -1,9 +1,0 @@
-<map id="meshx_handle_node_reset" name="meshx_handle_node_reset">
-<area shape="rect" id="Node000001" title="Handle node reset event." alt="" coords="5,42,181,68"/>
-<area shape="rect" id="Node000002" href="$d5/d8f/meshx__nvs_8c.html#a6dc2339887b4d2cb0faa01d799838cd1" title="Remove the context of a specific element from NVS." alt="" coords="229,5,393,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,41,213,36,214,41,182,46"/>
-<area shape="rect" id="Node000004" href="$da/dd1/esp__platform_8c.html#ac9292fafb9df0803c55a8700fbd9f34d" title="Resets the MeshX platform. This function performs a system reset, restarting the platform." alt="" coords="236,70,386,96"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="182,64,221,69,220,74,181,69"/>
-<area shape="rect" id="Node000003" href="$d5/d8f/meshx__nvs_8c.html#aa14948d7d45d83f3b6d9ca765a17cc58" title="Remove a key&#45;value pair from the NVS." alt="" coords="441,13,578,38"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="394,23,425,23,425,28,394,28"/>
-</map>

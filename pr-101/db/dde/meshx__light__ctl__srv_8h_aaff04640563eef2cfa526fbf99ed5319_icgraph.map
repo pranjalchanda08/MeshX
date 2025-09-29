@@ -1,9 +1,0 @@
-<map id="meshx_light_ctl_srv_send_pack_create" name="meshx_light_ctl_srv_send_pack_create">
-<area shape="rect" id="Node000001" title="Create a Light CTL Server send message packet." alt="" coords="719,5,856,46"/>
-<area shape="rect" id="Node000002" href="$d9/d46/meshx__cwww__server_8c.html#af44b869dfc97f122b46ad2752ee96d48" title="Callback function for relay server model events for Provisioning events." alt="" coords="503,5,671,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="704,28,672,28,672,23,704,23"/>
-<area shape="rect" id="Node000003" href="$d9/d46/meshx__cwww__server_8c.html#ac1498e20904edfabe76c92f9da6375bd" title="Create Dynamic CWWW Server Model Elements." alt="" coords="249,13,455,38"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="487,28,455,28,455,23,487,23"/>
-<area shape="rect" id="Node000004" href="$d9/d46/meshx__cwww__server_8c.html#aa8082758a025ec4f2663cc48f873b7d9" title=" " alt="" coords="5,13,201,38"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="233,28,201,28,201,23,233,23"/>
-</map>

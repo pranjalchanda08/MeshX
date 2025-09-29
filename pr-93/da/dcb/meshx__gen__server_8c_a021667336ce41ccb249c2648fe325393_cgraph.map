@@ -1,9 +1,0 @@
-<map id="meshx_gen_srv_dereg_cb" name="meshx_gen_srv_dereg_cb">
-<area shape="rect" id="Node000001" title="Callback function to deregister a generic server model." alt="" coords="5,5,178,31"/>
-<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#a6440ac925100875e667008915b6f0086" title="Deregister a callback for a specific message code and event bitmap." alt="" coords="226,5,427,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,16,210,16,210,21,178,21"/>
-<area shape="rect" id="Node000003" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="475,5,592,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="428,16,459,16,459,21,428,21"/>
-<area shape="rect" id="Node000004" href="$dd/d05/FreeRTOS__meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="640,5,818,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="593,16,625,16,625,21,593,21"/>
-</map>
