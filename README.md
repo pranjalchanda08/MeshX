@@ -21,7 +21,7 @@
 *********************************************************************************************************************
 ```
 
-[![CI Pipeline:main](https://github.com/pranjalchanda08/MeshX/actions/workflows/build_ci.yml/badge.svg)](https://github.com/pranjalchanda08/MeshX/actions/workflows/ci.yml) ![Release](https://img.shields.io/badge/Release-v0.4.3-blue)
+[![CI Pipeline:main](https://github.com/pranjalchanda08/MeshX/actions/workflows/build_ci.yml/badge.svg)](https://github.com/pranjalchanda08/MeshX/actions/workflows/ci.yml) ![Release](https://img.shields.io/badge/Release-v0.3.3-blue)
 
 MeshX is a portable C implementation of a Bluetooth Low Energy (BLE) Mesh node stack and example components. It is designed to be portable across board support packages (BSPs), microcontroller units (MCUs) and SDKs via a CMake-driven build system and small platform abstraction layers.
 
@@ -116,12 +116,12 @@ If you want to add a new product for a BSP, create or edit `port/bsp/<bsp>/prod_
 
 ```yaml
 prod:
-	cid: 0x7908
-	products:
-		- name: my_new_product
-			pid: 0x0100
-			elements:
-				- switch_relay_server: 2
+    cid: 0x7908
+    products:
+        - name: my_new_product
+          pid: 0x0100
+          elements:
+            - switch_relay_server: 2
 ```
 
 #### Fields explained
@@ -135,21 +135,21 @@ prod:
 
 ```yaml
 prod:
-	cid: 0x7908
-	products:
-		- name: 4_relay_panel
-			pid: 0x0001
-			elements:
-				- switch_relay_server: 4
-		- name: all_in_one
-			pid: 0x0004
-			elements:
-				- switch_relay_client: 1
-				- switch_relay_server: 1
-				- light_cwww_server: 1
-				- light_cwww_client: 1
-			components:
-				- unit_test: true
+  cid: 0x7908
+  products:
+    - name: 4_relay_panel
+      pid: 0x0001
+      elements:
+        - switch_relay_server: 4
+    - name: all_in_one
+      pid: 0x0004
+      elements:
+        - switch_relay_client: 1
+        - switch_relay_server: 1
+        - light_cwww_server: 1
+        - light_cwww_client: 1
+      components:
+        - unit_test: true
 ```
 
 #### How MeshX uses the profile
@@ -254,3 +254,4 @@ Contributions that add BSPs or improve portability are welcome. Please follow re
 ## License
 
 See `LICENSE.md` for licensing information.
+
