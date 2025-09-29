@@ -33,8 +33,8 @@ var NAVTREE =
     [ "Prerequisites", "index.html#autotoc_md6", null ],
     [ "Build", "index.html#autotoc_md7", null ],
     [ "Adding a Product to build", "index.html#autotoc_md8", null ],
-    [ "Adding Element, model to build:", "index.html#autotoc_md10", null ],
-    [ "Flashing and monitoring", "index.html#autotoc_md11", null ],
+    [ "Adding Element, model to build:", "index.html#autotoc_md9", null ],
+    [ "Flashing and monitoring", "index.html#autotoc_md10", null ],
     [ "MeshX Proprietary License (MPL) v1.0", "da/d19/md_LICENSE.html", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [

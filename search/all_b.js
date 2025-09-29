@@ -10,5 +10,5 @@ var searchData=
   ['bluetooth_5finit_7',['bluetooth_init',['../d9/db9/ble__mesh__plat__init_8h.html#a2bae8dcbee489037789f228234a3072d',1,'ble_mesh_plat_init.h']]],
   ['build_8',['Build',['../index.html#autotoc_md7',1,'']]],
   ['build_9',['Adding a Product to build',['../index.html#autotoc_md8',1,'']]],
-  ['build_3a_10',['Adding Element, model to build:',['../index.html#autotoc_md10',1,'']]]
+  ['build_3a_10',['Adding Element, model to build:',['../index.html#autotoc_md9',1,'']]]
 ];
