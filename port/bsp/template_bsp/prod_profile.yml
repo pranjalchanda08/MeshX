@@ -1,0 +1,9 @@
+prod:
+  cid: 0xFFFF    # Replace with your company identifier
+  products:
+    - name: example_product
+      pid: 0x1000
+      elements:
+        - switch_relay_server: 1
+      components:
+        - unit_test: false
