@@ -1,5 +1,0 @@
-<map id="meshx_os_timer_delete" name="meshx_os_timer_delete">
-<area shape="rect" id="Node000001" title="Delete a timer." alt="" coords="5,5,164,31"/>
-<area shape="rect" id="Node000002" href="$d5/d02/meshx__timer_8c.html#a6eb1e5296678e029069b59a546c6fecc" title="Deletes the RTOS timer." alt="" coords="212,5,378,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,16,196,16,196,21,164,21"/>
-</map>

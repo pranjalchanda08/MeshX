@@ -1,5 +1,0 @@
-<map id="meshx_gen_cli_cb_reg_add" name="meshx_gen_cli_cb_reg_add">
-<area shape="rect" id="Node000001" title="Adds a new callback registration to the linked list of registered callbacks." alt="" coords="212,13,393,38"/>
-<area shape="rect" id="Node000002" href="$d0/dbc/meshx__gen__client_8c.html#a008db8f74e4a1c34f11303986f05acf9" title="Registers a callback function for a specific generic server model." alt="" coords="5,5,164,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,28,164,28,164,23,196,23"/>
-</map>

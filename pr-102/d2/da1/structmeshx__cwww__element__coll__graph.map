@@ -1,9 +1,0 @@
-<map id="meshx_cwww_element" name="meshx_cwww_element">
-<area shape="rect" id="Node000001" title="Structure to manage CWWW element initialization." alt="" coords="91,599,243,686"/>
-<area shape="rect" id="Node000002" href="$de/d08/structcwww__srv__ctx.html" title="Structure to hold the context of the cwww client." alt="" coords="38,388,135,536"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,535,144,583,139,585,117,537"/>
-<area shape="rect" id="Node000003" href="$d5/d24/structmeshx__light__ctl__srv__state.html" title=" " alt="" coords="5,5,168,310"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="90,310,90,371,84,371,84,310"/>
-<area shape="rect" id="Node000004" href="$d5/db9/structmeshx__ctl__server__model.html" title=" " alt="" coords="159,409,338,516"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="227,516,195,585,190,583,222,514"/>
-</map>

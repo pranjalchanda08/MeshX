@@ -1,6 +1,0 @@
-var searchData=
-[
-  ['battery_5flevel_0',['battery_level',['../d2/d2e/structmeshx__gen__battery__status__cb__t.html#a58051f8c5ae962eeaa89ec49d35d2eed',1,'meshx_gen_battery_status_cb_t']]],
-  ['battery_5fstatus_1',['battery_status',['../d0/d91/unionmeshx__gen__client__status__cb__t.html#a50bc4385a7876e1dc79303070f64aae8',1,'meshx_gen_client_status_cb_t']]],
-  ['bearer_2',['bearer',['../d5/dc9/structmeshx__prov__cb__param__t_1_1meshx__link__open__evt__param.html#ab40df144f63714f503b9d8f5f98c3bf0',1,'meshx_prov_cb_param_t::meshx_link_open_evt_param::bearer'],['../d9/dfa/structmeshx__prov__cb__param__t_1_1meshx__link__close__evt__param.html#adb5004c5db55dedaed5086ddfa6eec3e',1,'meshx_prov_cb_param_t::meshx_link_close_evt_param::bearer'],['../d9/dc6/structmeshx__prov__cb__param__t_1_1meshx__provisioner__recv__unprov__adv__pkt__param.html#a49cfa850495c3c7a1cfe7cc82a0bdb5b',1,'meshx_prov_cb_param_t::meshx_provisioner_recv_unprov_adv_pkt_param::bearer'],['../d3/d9f/structmeshx__prov__cb__param__t_1_1meshx__provisioner__link__open__evt__param.html#a610e301df1be79e381dd7caa6e1b76a3',1,'meshx_prov_cb_param_t::meshx_provisioner_link_open_evt_param::bearer'],['../da/d91/structmeshx__prov__cb__param__t_1_1meshx__provisioner__link__close__evt__param.html#a8e0c4315ab36427460e324fd7fc64e15',1,'meshx_prov_cb_param_t::meshx_provisioner_link_close_evt_param::bearer']]]
-];

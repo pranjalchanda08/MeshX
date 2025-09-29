@@ -25,16 +25,34 @@
 var NAVTREE =
 [
   [ "MeshX", "index.html", [
-    [ "Features", "index.html#autotoc_md2", null ],
-    [ "Capabilities", "index.html#autotoc_md3", [
-      [ "Server", "index.html#autotoc_md4", null ],
-      [ "Client", "index.html#autotoc_md5", null ]
+    [ "Highlights", "index.html#autotoc_md20", null ],
+    [ "Repository layout (relevant parts)", "index.html#autotoc_md21", null ],
+    [ "Supported BSPs / MCUs / SDKs (current)", "index.html#autotoc_md22", [
+      [ "BSPs", "index.html#autotoc_md23", null ],
+      [ "MCU families / targets", "index.html#autotoc_md24", null ],
+      [ "SDKs / Integrations", "index.html#autotoc_md25", null ]
     ] ],
-    [ "Prerequisites", "index.html#autotoc_md6", null ],
-    [ "Build", "index.html#autotoc_md7", null ],
-    [ "Adding a Product to build", "index.html#autotoc_md8", null ],
-    [ "Adding Element, model to build:", "index.html#autotoc_md9", null ],
-    [ "Flashing and monitoring", "index.html#autotoc_md10", null ],
+    [ "CMake-level build system", "index.html#autotoc_md26", [
+      [ "Examples — out-of-tree CMake build", "index.html#autotoc_md27", null ],
+      [ "Notes on environment and code generation", "index.html#autotoc_md28", null ],
+      [ "Using the included helper scripts", "index.html#autotoc_md29", null ],
+      [ "Product and model profiles", "index.html#autotoc_md30", null ],
+      [ "Writing a custom product profile (prod_profile.yml)", "index.html#autotoc_md31", [
+        [ "Minimum product entry example", "index.html#autotoc_md32", null ],
+        [ "Fields explained", "index.html#autotoc_md33", null ],
+        [ "Practical example (based on tools/scripts/prod_profile.ci.yml)", "index.html#autotoc_md34", null ],
+        [ "How MeshX uses the profile", "index.html#autotoc_md35", null ],
+        [ "Testing a product profile locally", "index.html#autotoc_md36", null ]
+      ] ],
+      [ "Notes and tips", "index.html#autotoc_md37", null ],
+      [ "Flashing and monitoring (ESP-IDF)", "index.html#autotoc_md38", null ],
+      [ "Adding support for new boards, MCUs or SDKs", "index.html#autotoc_md39", [
+        [ "Templates and a step-by-step example", "index.html#autotoc_md40", null ]
+      ] ],
+      [ "Troubleshooting & tips", "index.html#autotoc_md41", null ]
+    ] ],
+    [ "Contributing", "index.html#autotoc_md42", null ],
+    [ "License", "index.html#autotoc_md43", null ],
     [ "MeshX Proprietary License (MPL) v1.0", "da/d19/md_LICENSE.html", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [

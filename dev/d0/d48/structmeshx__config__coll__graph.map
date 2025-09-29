@@ -1,9 +1,0 @@
-<map id="meshx_config" name="meshx_config">
-<area shape="rect" id="Node000001" title="Structure for MeshX configuration." alt="" coords="123,211,290,399"/>
-<area shape="rect" id="Node000002" href="$d0/ddf/structelement__comp.html" title="Structure for element composition." alt="" coords="5,33,101,120"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="62,119,71,153,85,185,114,223,109,226,81,188,66,154,57,120"/>
-<area shape="rect" id="Node000003" href="$d1/d0e/structmeshx__app__element__msg__header.html" title="Structure for the BLE Mesh application element message header." alt="" coords="126,5,287,148"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="209,147,209,194,204,194,204,147"/>
-<area shape="rect" id="Node000004" href="$da/d44/structmeshx__ctrl__msg__header.html" title="Structure for the BLE Mesh application control message header." alt="" coords="312,33,464,120"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="366,121,321,188,303,210,299,206,316,185,362,118"/>
-</map>
