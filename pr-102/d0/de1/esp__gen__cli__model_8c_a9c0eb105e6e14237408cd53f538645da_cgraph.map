@@ -1,0 +1,9 @@
+<map id="meshx_plat_on_off_gen_cli_create" name="meshx_plat_on_off_gen_cli_create">
+<area shape="rect" id="Node000001" title="Creates a Generic OnOff client model and its publication context." alt="" coords="5,23,163,64"/>
+<area shape="rect" id="Node000002" href="$dc/d96/esp__platform__ble__mesh_8c.html#ab2af046bc4c0e850d01643ba048e5194" title="Creates and initializes a generic client model for BLE Mesh." alt="" coords="211,31,379,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,41,195,41,195,46,163,46"/>
+<area shape="rect" id="Node000003" href="$dc/d96/esp__platform__ble__mesh_8c.html#a12b595bcf51021fcaa675e488fe24308" title="Creates and initializes model and publication structures." alt="" coords="427,5,627,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="379,32,411,28,412,33,379,37"/>
+<area shape="rect" id="Node000004" href="$dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="436,55,618,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="379,50,421,54,421,59,379,55"/>
+</map>

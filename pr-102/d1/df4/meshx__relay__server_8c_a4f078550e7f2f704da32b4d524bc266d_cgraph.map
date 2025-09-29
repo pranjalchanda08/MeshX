@@ -1,0 +1,71 @@
+<map id="REG_MESHX_ELEMENT_FN" name="REG_MESHX_ELEMENT_FN">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,256,201,282"/>
+<area shape="rect" id="Node000002" href="$d1/df4/meshx__relay__server_8c.html#af1332e2c64515cfa728a8b529abdc00b" title="Create Dynamic Relay Model Elements." alt="" coords="249,249,385,289"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="201,266,233,266,233,272,201,272"/>
+<area shape="rect" id="Node000003" href="$df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="646,19,834,44"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="319,248,329,202,350,144,365,114,383,85,405,60,432,39,460,24,491,13,554,4,617,5,672,13,671,18,616,10,555,9,492,19,462,29,434,43,409,64,387,89,369,117,355,146,335,204,324,249"/>
+<area shape="rect" id="Node000005" href="$d1/df4/meshx__relay__server_8c.html#a90b505526740de4bd9d8c07d1f46c546" title="Add relay server models to the element list." alt="" coords="436,183,594,224"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="380,246,436,227,438,232,381,251"/>
+<area shape="rect" id="Node000012" href="$d9/d46/meshx__cwww__server_8c.html#a9929dada86201ea717d859bfd66c9ffd" title="CW&#45;WW server model event handler." alt="" coords="434,314,596,355"/>
+<area shape="poly" id="edge11_Node000002_Node000012" title=" " alt="" coords="381,287,438,306,436,311,380,292"/>
+<area shape="rect" id="Node000022" href="$dd/d79/meshx__config__server_8c.html#aea136e2f0520f4f57129778288f17ec9" title="Registers a configuration server callback for specific events." alt="" coords="444,53,587,93"/>
+<area shape="poly" id="edge23_Node000002_Node000022" title=" " alt="" coords="326,247,366,178,396,139,431,104,438,99,442,103,435,108,400,142,370,181,330,249"/>
+<area shape="rect" id="Node000023" href="$d1/df4/meshx__relay__server_8c.html#aa35344ba836c00abe4d8ba1f34bcec0d" title="Create relay model space." alt="" coords="433,249,597,289"/>
+<area shape="poly" id="edge25_Node000002_Node000023" title=" " alt="" coords="386,266,417,266,417,272,386,272"/>
+<area shape="rect" id="Node000026" href="$d2/d21/meshx__prov__srv_8c.html#a294c30d13de4ce41c5502ec6ccd68599" title="Register a callback function for provisioning events." alt="" coords="444,118,586,159"/>
+<area shape="poly" id="edge28_Node000002_Node000026" title=" " alt="" coords="337,246,379,208,432,169,442,164,444,168,434,174,382,212,340,250"/>
+<area shape="rect" id="Node000027" href="$d1/df4/meshx__relay__server_8c.html#a1cdecd4e80ab6a5e28c4f7a191a0c4f0" title="Handles the BLE message sending for the Generic OnOff Server model." alt="" coords="440,379,590,420"/>
+<area shape="poly" id="edge30_Node000002_Node000027" title=" " alt="" coords="340,288,382,326,434,364,444,370,442,374,432,369,379,330,337,292"/>
+<area shape="rect" id="Node000028" href="$d1/df4/meshx__relay__server_8c.html#a5f5111cb1970185951be34d4aa8045de" title="Callback function for relay server model events for Provisioning events." alt="" coords="452,510,578,551"/>
+<area shape="poly" id="edge31_Node000002_Node000028" title=" " alt="" coords="326,289,339,332,361,387,393,444,412,471,435,495,441,500,437,504,431,499,408,475,388,447,356,389,334,333,321,291"/>
+<area shape="rect" id="Node000031" href="$d1/df4/meshx__relay__server_8c.html#a929aa494709b91cee262215525593cb9" title="Callback function for configuration server events." alt="" coords="449,445,581,485"/>
+<area shape="poly" id="edge35_Node000002_Node000031" title=" " alt="" coords="330,288,370,357,400,396,435,430,442,435,438,439,431,434,396,399,366,360,326,291"/>
+<area shape="rect" id="Node000004" href="$d3/df5/meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="1506,167,1640,192"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="834,37,1026,61,1291,112,1503,160,1502,165,1290,117,1026,66,834,42"/>
+<area shape="rect" id="Node000006" href="$d5/d8f/meshx__nvs_8c.html#a3773373d74bd4e2c0415a89f7652ebe8" title="Retrieve the context of a specific element from NVS." alt="" coords="645,133,835,159"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="594,181,671,161,672,166,595,186"/>
+<area shape="rect" id="Node000009" href="$dc/d96/esp__platform__ble__mesh_8c.html#a2bdab205d68a408e7ec03e58b2fa8a0b" title="Adds an element to the BLE Mesh composition." alt="" coords="656,183,824,224"/>
+<area shape="poly" id="edge8_Node000005_Node000009" title=" " alt="" coords="595,201,640,201,640,206,595,206"/>
+<area shape="rect" id="Node000010" href="$d1/df4/meshx__relay__server_8c.html#a6056b1ffd8dfaff87bd0c4444be15404" title="Restore saved relay model states." alt="" coords="666,69,814,109"/>
+<area shape="poly" id="edge9_Node000005_Node000010" title=" " alt="" coords="574,180,596,168,610,156,619,144,629,131,644,119,652,114,654,119,647,123,632,135,623,147,614,159,599,172,577,185"/>
+<area shape="rect" id="Node000007" href="$d5/d8f/meshx__nvs_8c.html#ae36588f5b4ae5e5ac771e1af86a71e5a" title="Get a value from the NVS." alt="" coords="898,133,1010,159"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="835,144,883,144,883,149,835,149"/>
+<area shape="rect" id="Node000008" href="$dc/d28/esp__nvs_8c.html#a01998c5a615417f7fd4c8e3e6aa06a61" title="Read blob value for given key from non&#45;volatile storage." alt="" coords="1080,133,1228,159"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="1011,144,1065,144,1065,149,1011,149"/>
+<area shape="rect" id="Node000011" href="$dc/d96/esp__platform__ble__mesh_8c.html#ab0b270ac4d086a2e566985d2aabd5be5" title="Retrieve the model ID of a generic server model." alt="" coords="883,76,1026,102"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="815,86,867,86,867,92,815,92"/>
+<area shape="rect" id="Node000013" href="$d5/d8f/meshx__nvs_8c.html#a091a0be186edb6d1dc740b838cf38037" title="Store the context of a specific element to NVS." alt="" coords="645,412,835,438"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="573,353,599,365,623,383,647,399,660,404,658,409,644,403,620,387,596,370,570,358"/>
+<area shape="rect" id="Node000020" href="$dc/d93/meshx__api_8c.html#a5b8d1eddceb8ab76e5fdc7fea5545496" title="Sends a message to the BLE Mesh application." alt="" coords="654,363,826,388"/>
+<area shape="poly" id="edge20_Node000012_Node000020" title=" " alt="" coords="597,346,652,357,651,362,596,352"/>
+<area shape="rect" id="Node000014" href="$d5/d8f/meshx__nvs_8c.html#ab9a39208cc2b067b0b5df0a85d7b4b03" title="Set a value in the NVS." alt="" coords="898,412,1010,438"/>
+<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="835,422,883,422,883,428,835,428"/>
+<area shape="rect" id="Node000015" href="$dd/da1/meshx__os__timer_8c.html#a63e6c1a15d1a30d41dc704c131a27062" title="Restart a timer." alt="" coords="1074,412,1234,438"/>
+<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="1011,422,1059,422,1059,428,1011,428"/>
+<area shape="rect" id="Node000016" href="$df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="1282,387,1455,412"/>
+<area shape="poly" id="edge15_Node000015_Node000016" title=" " alt="" coords="1235,413,1267,409,1267,414,1235,418"/>
+<area shape="poly" id="edge19_Node000016_Node000004" title=" " alt="" coords="1380,385,1547,202,1551,206,1384,388"/>
+<area shape="rect" id="Node000017" href="$d0/d77/meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue Back." alt="" coords="1503,411,1643,436"/>
+<area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="1455,407,1488,411,1487,416,1454,412"/>
+<area shape="rect" id="Node000018" href="$d3/df5/meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="1514,361,1632,387"/>
+<area shape="poly" id="edge17_Node000016_Node000018" title=" " alt="" coords="1454,386,1498,381,1499,386,1455,392"/>
+<area shape="rect" id="Node000019" href="$d3/df5/meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="1691,361,1868,387"/>
+<area shape="poly" id="edge18_Node000018_Node000019" title=" " alt="" coords="1632,372,1676,372,1676,377,1632,377"/>
+<area shape="poly" id="edge21_Node000020_Node000016" title=" " alt="" coords="826,376,1267,393,1266,398,826,382"/>
+<area shape="rect" id="Node000021" href="$dc/d93/meshx__api_8c.html#ac37c1c5b9f1e9cdaa510bf886d897e2d" title="Prepares a message to be sent to the BLE Mesh application." alt="" coords="884,297,1025,337"/>
+<area shape="poly" id="edge22_Node000020_Node000021" title=" " alt="" coords="794,360,834,349,868,340,869,345,835,354,795,365"/>
+<area shape="poly" id="edge24_Node000022_Node000003" title=" " alt="" coords="587,57,651,45,652,50,588,62"/>
+<area shape="rect" id="Node000024" href="$d1/df4/meshx__relay__server_8c.html#aa669937201e81721727213c8214c4971" title="Deinitializes the mesh element structure by freeing allocated memory." alt="" coords="664,249,816,289"/>
+<area shape="poly" id="edge26_Node000023_Node000024" title=" " alt="" coords="598,266,648,266,648,272,598,272"/>
+<area shape="rect" id="Node000025" href="$d1/df4/meshx__relay__server_8c.html#acfe19244baff39d7aaaeefa052997704" title="Initialize the mesh element structure by allocating memory for various components." alt="" coords="652,313,828,339"/>
+<area shape="poly" id="edge27_Node000023_Node000025" title=" " alt="" coords="598,287,673,307,671,312,597,292"/>
+<area shape="poly" id="edge29_Node000026_Node000003" title=" " alt="" coords="574,115,596,103,610,91,619,79,628,67,644,55,657,48,659,53,647,59,632,70,623,82,614,94,599,107,576,120"/>
+<area shape="rect" id="Node000029" href="$da/dcb/meshx__gen__server_8c.html#a0a25ca2d0f109691c37c60eb95331b36" title="Sends a message to the BLE subsystem via the control task." alt="" coords="666,511,814,552"/>
+<area shape="poly" id="edge32_Node000028_Node000029" title=" " alt="" coords="579,528,651,528,651,534,579,533"/>
+<area shape="poly" id="edge33_Node000029_Node000016" title=" " alt="" coords="814,512,882,498,981,484,1059,477,1136,468,1234,448,1323,417,1325,422,1235,453,1137,474,1060,483,982,489,883,504,815,517"/>
+<area shape="rect" id="Node000030" href="$da/dcb/meshx__gen__server_8c.html#a2de59535b6980e3872c49ed575711338" title="Checks if the given opcode corresponds to a status message in the Generic Server group." alt="" coords="886,513,1022,553"/>
+<area shape="poly" id="edge34_Node000029_Node000030" title=" " alt="" coords="814,529,870,530,870,535,814,535"/>
+<area shape="poly" id="edge37_Node000031_Node000013" title=" " alt="" coords="581,451,649,438,650,444,582,456"/>
+<area shape="rect" id="Node000032" href="$dc/d96/esp__platform__ble__mesh_8c.html#aed72eaf1b8f7fd7bf64c962bb028a31e" title="Retrieves the base element ID for the BLE Mesh platform." alt="" coords="645,461,835,487"/>
+<area shape="poly" id="edge36_Node000031_Node000032" title=" " alt="" coords="582,465,630,467,630,472,582,470"/>
+</map>

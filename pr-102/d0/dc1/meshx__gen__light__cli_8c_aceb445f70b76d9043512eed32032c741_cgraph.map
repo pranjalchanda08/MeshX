@@ -1,0 +1,5 @@
+<map id="meshx_gen_light_cli_handle_resend" name="meshx_gen_light_cli_handle_resend">
+<area shape="rect" id="Node000001" title="Handles resend request for generic light client messages." alt="" coords="5,5,144,46"/>
+<area shape="rect" id="Node000002" href="$df/d06/meshx__txcm_8h.html#a1800870a4a78392cd7f7116d2f683a7d" title="Sends a request to the Tx Control module." alt="" coords="192,13,371,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,23,176,23,176,28,144,28"/>
+</map>

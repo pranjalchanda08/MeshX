@@ -1,0 +1,23 @@
+<map id="meshx_is_status_in_gen_light_grp" name="meshx_is_status_in_gen_light_grp">
+<area shape="rect" id="Node000001" title="Checks if the given opcode belongs to the Generic Light group." alt="" coords="1105,96,1241,137"/>
+<area shape="rect" id="Node000002" href="$d5/d98/meshx__light__server_8c.html#acfab754bb56f290741a2fc1c49c595c8" title="Sends a message to the BLE subsystem via the control task." alt="" coords="914,63,1057,103"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1089,104,1057,98,1058,93,1090,99"/>
+<area shape="rect" id="Node000008" href="$d5/d98/meshx__light__server_8c.html#a40a91efcb35c7db08fd73143b779a31a" title="Sends a status message for the Lighting Server model." alt="" coords="914,128,1057,169"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="1090,133,1058,139,1057,133,1089,128"/>
+<area shape="rect" id="Node000003" href="$d9/d46/meshx__cwww__server_8c.html#af44b869dfc97f122b46ad2752ee96d48" title="Callback function for relay server model events for Provisioning events." alt="" coords="508,5,676,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="899,61,865,54,768,40,677,32,677,27,768,35,866,48,900,56"/>
+<area shape="rect" id="Node000006" href="$d4/db6/meshx__light__ctl__srv_8c.html#a7d11c7a15e9c2066afb3f22e72068518" title="Handle Light CTL messages for the lighting server model." alt="" coords="730,63,865,103"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="898,86,866,86,866,80,898,80"/>
+<area shape="rect" id="Node000004" href="$d9/d46/meshx__cwww__server_8c.html#ac1498e20904edfabe76c92f9da6375bd" title="Create Dynamic CWWW Server Model Elements." alt="" coords="249,70,455,96"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="493,52,409,72,408,67,492,47"/>
+<area shape="rect" id="Node000005" href="$d9/d46/meshx__cwww__server_8c.html#aa8082758a025ec4f2663cc48f873b7d9" title=" " alt="" coords="5,70,201,96"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="233,86,201,86,201,80,233,80"/>
+<area shape="rect" id="Node000007" href="$d4/db6/meshx__light__ctl__srv_8c.html#adc1d0d7fc5b8e44bebce9c905547780f" title="Initialize the CTL server model." alt="" coords="503,70,681,96"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="714,86,682,86,682,80,714,80"/>
+<area shape="poly" id="edge7_Node000007_Node000004" title=" " alt="" coords="487,86,455,86,455,80,487,80"/>
+<area shape="rect" id="Node000009" href="$d4/db6/meshx__light__ctl__srv_8c.html#a934b83618b10c26bf4d3f17e0ae1aa08" title="Send the Light CTL status message." alt="" coords="729,128,866,169"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="898,151,866,151,866,146,898,146"/>
+<area shape="rect" id="Node000010" href="$d9/d46/meshx__cwww__server_8c.html#a079e0e35fadd8737ea2216db7c76977c" title="Handler for sending messages from the CW&#45;WW server model to BLE." alt="" coords="512,124,672,165"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="714,149,673,149,673,143,714,144"/>
+<area shape="poly" id="edge11_Node000010_Node000004" title=" " alt="" coords="496,123,405,99,406,94,498,118"/>
+</map>

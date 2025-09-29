@@ -1,0 +1,16 @@
+<map id="meshx_msg_q.c" name="meshx_msg_q.c">
+<area shape="rect" id="Node000001" title="Implementation of MeshX Message Queue using FreeRTOS queues. This file provides functions to create,..." alt="" coords="181,5,297,31"/>
+<area shape="rect" id="Node000002" href="$d2/dc7/meshx__msg__q_8h.html" title="MeshX Message Queue Interface." alt="" coords="5,79,145,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="215,34,131,74,128,70,213,29"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="168,86,310,112"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="242,31,242,71,236,71,236,31"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="334,86,448,112"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="263,29,355,77,353,81,261,34"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="59,241,123,267"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="57,122,34,155,29,174,32,192,45,213,62,230,58,233,41,216,27,194,24,174,29,153,52,119"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="41,168,109,193"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="78,120,78,152,72,152,72,120"/>
+<area shape="rect" id="Node000005" href="$da/d68/meshx__err_8h.html" title="MeshX Error Codes." alt="" coords="133,168,225,193"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="102,118,152,156,149,160,99,122"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="166,196,119,234,116,229,162,192"/>
+</map>
