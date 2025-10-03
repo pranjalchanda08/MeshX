@@ -23,7 +23,7 @@
 /**
  * @brief Light CTL status packet.
  */
-typedef union ctl_status_pack
+typedef union meshx_plat_ctl_status
 {
     struct
     {
@@ -47,13 +47,19 @@ typedef union ctl_status_pack
         uint16_t range_min;  /**< Minimum temperature range */
         uint16_t range_max;  /**< Maximum temperature range */
     } ctl_temp_range;
-} ctl_status_t;
+} meshx_plat_ctl_status_t;
 
 /**
- * @brief Template for SIG model initialization.
+ * @brief Template for CTL Setup Srv SIG model initialization.
+ */
+static const MESHX_MODEL light_ctl_setup_sig_template = ESP_BLE_MESH_SIG_MODEL(
+    MESHX_MODEL_ID_LIGHT_CTL_SETUP_SRV, NULL, NULL, NULL);
+
+/**
+ * @brief Template for CTL Setup Srv SIG model initialization.
  */
 static const MESHX_MODEL light_ctl_sig_template = ESP_BLE_MESH_SIG_MODEL(
-    ESP_BLE_MESH_MODEL_ID_LIGHT_CTL_SRV, NULL, NULL, NULL);
+    MESHX_MODEL_ID_LIGHT_CTL_SRV, NULL, NULL, NULL);
 
 /**
  * @brief Callback function for BLE Mesh Lightness Server events.
@@ -201,7 +207,7 @@ meshx_err_t meshx_plat_gen_light_srv_send_status(
     {
         memcpy(&ctx, pctx, sizeof(esp_ble_mesh_msg_ctx_t));
     }
-    ctl_status_t ctl_status_union;
+    meshx_plat_ctl_status_t ctl_status_union;
     uint8_t ctl_status_pack_len = 0;
 
     switch (p_ctx->opcode)
@@ -268,6 +274,62 @@ meshx_err_t meshx_plat_light_srv_init(void)
     return err;
 }
 
+meshx_err_t meshx_plat_light_srv_delete(meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_srv)
+{
+    if (p_ctl_srv)
+    {
+        if(*p_ctl_srv && ((MESHX_LIGHT_CTL_SRV *)*p_ctl_srv)->state)
+        {
+            MESHX_FREE(((MESHX_LIGHT_CTL_SRV *)*p_ctl_srv)->state);
+            ((MESHX_LIGHT_CTL_SRV *)*p_ctl_srv)->state = NULL;
+        }
+        MESHX_FREE(*p_ctl_srv);
+        *p_ctl_srv = NULL;
+    }
+
+    return meshx_plat_del_model_pub(p_pub);
+}
+
+meshx_err_t meshx_plat_light_ctl_setup_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_srv)
+{
+    if (!p_model || !p_pub || !p_ctl_srv)
+        return MESHX_INVALID_ARG;
+
+    meshx_err_t err = MESHX_SUCCESS;
+
+    err = meshx_plat_create_model_pub(p_pub, 1);
+    if (err)
+        return meshx_plat_del_model_pub(p_pub);
+
+    *p_ctl_srv = (MESHX_LIGHT_CTL_SETUP_SRV *)MESHX_CALOC(1, sizeof(MESHX_LIGHT_CTL_SETUP_SRV));
+    if (!*p_ctl_srv)
+        return MESHX_NO_MEM;
+
+    /* SIG CTL Setup Server initialisation */
+    memcpy(p_model, &light_ctl_setup_sig_template, sizeof(MESHX_MODEL));
+
+    ((MESHX_LIGHT_CTL_SETUP_SRV *)*p_ctl_srv)->rsp_ctrl.get_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
+    ((MESHX_LIGHT_CTL_SETUP_SRV *)*p_ctl_srv)->rsp_ctrl.set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
+
+    ((MESHX_LIGHT_CTL_SETUP_SRV *)*p_ctl_srv)->state = (MESHX_LIGHT_CTL_STATE *)MESHX_CALOC(1, sizeof(MESHX_LIGHT_CTL_STATE));
+    if (!((MESHX_LIGHT_CTL_SETUP_SRV *)*p_ctl_srv)->state)
+    {
+        MESHX_FREE(*p_ctl_srv);
+        return MESHX_NO_MEM;
+    }
+
+    ((MESHX_LIGHT_CTL_SETUP_SRV *)*p_ctl_srv)->state->temperature_range_max = 0;
+    ((MESHX_LIGHT_CTL_SETUP_SRV *)*p_ctl_srv)->state->temperature_range_min = 0;
+
+    ((MESHX_MODEL *)p_model)->user_data = *p_ctl_srv;
+
+    meshx_ptr_t *temp = (meshx_ptr_t *)&((MESHX_MODEL *)p_model)->pub;
+
+    *temp = *p_pub;
+
+    return err;
+}
+
 meshx_err_t meshx_plat_light_ctl_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_srv)
 {
     if (!p_model || !p_pub || !p_ctl_srv)
@@ -310,17 +372,6 @@ meshx_err_t meshx_plat_light_ctl_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_
     *temp = *p_pub;
 
     return err;
-}
-
-meshx_err_t meshx_plat_light_ctl_srv_delete(meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_srv)
-{
-    if (p_ctl_srv)
-    {
-        MESHX_FREE(*p_ctl_srv);
-        *p_ctl_srv = NULL;
-    }
-
-    return meshx_plat_del_model_pub(p_pub);
 }
 
 meshx_err_t meshx_plat_set_light_ctl_srv_state(meshx_ptr_t p_model,
