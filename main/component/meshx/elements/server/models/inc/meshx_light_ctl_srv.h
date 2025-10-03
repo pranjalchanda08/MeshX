@@ -19,21 +19,32 @@
 #include "interface/ble_mesh/meshx_ble_mesh_cmn.h"
 
 #if CONFIG_ENABLE_LIGHT_CTL_SERVER
-/*
- * @brief Initialize the CTL Server model.
+
+
+/**
+ * @brief Structure representing the MeshX CTL (Color Temperature Lightness) Setup Server Model.
  *
- * This function initializes the CTL Server model, setting up necessary
- * configurations and state variables.
+ * This structure encapsulates pointers to the SIG model, publication structures,
+ * and generic server structures required for the CTL setup server functionality.
+ */
+typedef struct meshx_ctl_setup_server_model
+{
+    void *meshx_server_sig_model;   /**< CTL setup server SIG model pointer */
+    void *meshx_server_pub;         /**< List of ctl server publication structures */
+    void *meshx_server_gen_srv;     /**< List of ctl setup server generic structures */
+} meshx_ctl_setup_server_model_t;
+
+/**
+ * @brief Structure representing the MeshX CTL (Color Temperature Lightness) server model.
  *
- * @return
- *    - MESHX_SUCCESS: Success
- *    - MESHX_FAIL: Failure
+ * This structure encapsulates pointers to the CTL server SIG model, publication structures,
+ * and generic server structures used in the MeshX lighting control server implementation.
  */
 typedef struct meshx_ctl_server_model
 {
     void *meshx_server_sig_model;   /**< CTL server SIG model pointer */
     void *meshx_server_pub;         /**< List of ctl server publication structures */
-    void *meshx_server_ctl_gen_srv; /**< List of ctl server CTL generic structures */
+    void *meshx_server_gen_srv;     /**< List of ctl server generic structures */
 } meshx_ctl_server_model_t;
 
 /**
@@ -94,6 +105,19 @@ meshx_err_t meshx_light_ctl_srv_state_restore(meshx_ctl_server_model_t *p_model,
  *     - MESHX_FAIL: Failure
  */
 meshx_err_t meshx_light_ctl_server_init(void);
+
+/**
+ * @brief Retrieves the CTL (Color Temperature Lightness) Setup Server model instance.
+ *
+ * This function is used to obtain a reference or handle to the CTL Setup Server model,
+ * which is responsible for managing color temperature and lightness control in a mesh network.
+ *
+ * @param[in] p_model Pointer to the model structure or context.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the operation.
+ *                     Typically, MESHX_OK on success or an appropriate error code on failure.
+ */
+meshx_err_t meshx_get_ctl_setup_srv_model(meshx_ptr_t p_model);
 
 /**
  * @brief Send the Light CTL status message.

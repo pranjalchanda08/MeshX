@@ -41,10 +41,10 @@ typedef struct cwww_srv_ctx
     uint8_t tid;                                /**< Transaction ID */
     uint16_t app_id;                            /**< Application ID */
     uint16_t pub_addr;                          /**< Publish address */
-    meshx_on_off_srv_el_state_t state;          /**< State of the cwww client */
-    meshx_on_off_srv_el_state_t prev_state;     /**< State of the cwww client */
-    meshx_light_ctl_srv_state_t ctl_state;      /**< State of the cwww client */
-    meshx_light_ctl_srv_state_t prev_ctl_state; /**< State of the cwww client */
+    meshx_on_off_srv_el_state_t state;          /**< ON/OFF State of the cwww client */
+    meshx_on_off_srv_el_state_t prev_state;     /**< Prev ON/OFF State of the cwww client */
+    meshx_light_ctl_srv_state_t ctl_state;      /**< CTL State of the cwww client */
+    meshx_light_ctl_srv_state_t prev_ctl_state; /**< Prev CTL State of the cwww client */
 } meshx_cwww_server_ctx_t;
 
 /**
@@ -64,7 +64,7 @@ typedef struct meshx_cwww_element
  * This structure contains all the necessary context and configuration for
  * controlling a CW-WW (Cool White - Warm White) light element in a BLE mesh network.
  */
-typedef struct cwww_element
+typedef struct meshx_cwww_elements_ctrl
 {
     size_t element_cnt;            /**< Number of relay elements */
     size_t element_id_end;         /**< Ending ID of the element */

@@ -260,6 +260,21 @@ typedef struct meshx_light_ctl_srv
 meshx_err_t meshx_plat_light_srv_init(void);
 
 /**
+ * @brief Creates and initializes a Light CTL (Color Temperature Lightness) Setup Server model instance.
+ *
+ * This function sets up the Light CTL Setup Server for a given model, configuring publication and server context pointers.
+ *
+ * @param[in]  p_model    Pointer to the parent model instance.
+ * @param[out] p_pub      Pointer to the publication context to be initialized.
+ * @param[out] p_ctl_srv  Pointer to the Light CTL Setup Server context to be initialized.
+ *
+ * @return meshx_err_t    Error code indicating the result of the operation.
+ *                       - MESHX_OK on success
+ *                       - Appropriate error code otherwise
+ */
+meshx_err_t meshx_plat_light_ctl_setup_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_srv);
+
+/**
  * @brief Create a Light CTL Server instance.
  *
  * This function initializes and allocates resources for a Light CTL Server model.
@@ -286,7 +301,7 @@ meshx_err_t meshx_plat_light_ctl_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_
  *      - MESHX_SUCCESS on success.
  *      - Appropriate error code on failure.
  */
-meshx_err_t meshx_plat_light_ctl_srv_delete(meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_srv);
+meshx_err_t meshx_plat_light_srv_delete(meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_srv);
 
 /**
  * @brief Set the state of the Light CTL Server.

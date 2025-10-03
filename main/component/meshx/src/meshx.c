@@ -13,10 +13,10 @@
 #include "meshx.h"
 
 /**
- * @def ROOT_MODEL_VEN_CNT
- * @brief Defines the vendor count for the root model.
+ * @def ROOT_ELEMENT_IDX
+ * @brief Defines the index for the root element.
  */
-#define ROOT_MODEL_VEN_CNT 0
+#define ROOT_ELEMENT_IDX 0
 
 /**
  * @def FRESHBOOT_TIMEOUT_MS
@@ -63,8 +63,8 @@ meshx_prov_params_t g_prov_cfg = {
 
 extern size_t get_root_sig_models_count(void);
 extern size_t get_root_ven_models_count(void);
-extern MESHX_MODEL * get_root_sig_models(void);
-extern MESHX_MODEL * get_root_ven_models(void);
+extern meshx_ptr_t get_root_sig_models(void);
+extern meshx_ptr_t get_root_ven_models(void);
 extern meshx_err_t meshx_create_element_composition(dev_struct_t *p_dev, meshx_config_t const *config);
 
 /**
@@ -81,6 +81,9 @@ static meshx_err_t meshx_element_init(dev_struct_t *p_dev, meshx_config_t const 
         return MESHX_INVALID_STATE;
 
     meshx_err_t err = MESHX_SUCCESS;
+    meshx_ptr_t meshx_sig_root_model_arr = NULL;
+    meshx_ptr_t meshx_ven_root_model_arr = NULL;
+
     err = meshx_create_plat_composition(&p_dev->composition);
     if (err)
     {
@@ -88,22 +91,8 @@ static meshx_err_t meshx_element_init(dev_struct_t *p_dev, meshx_config_t const 
         return err;
     }
 
-    /* Initialize root model */
-    err = meshx_plat_add_element_to_composition(
-        0,
-        p_dev->elements,
-        get_root_sig_models(),
-        NULL,
-        (uint8_t) get_root_sig_models_count(),
-        (uint8_t) ROOT_MODEL_VEN_CNT
-    );
-    if(err)
-    {
-        MESHX_LOGE(MODULE_ID_COMMON, "Failed to add element to composition: (%d)", err);
-        return err;
-    }
-    p_dev->element_idx++;
-    /* Root to be used with fixed format */
+    /* Start with element index 1 as 0 is root element */
+    p_dev->element_idx = 1;
 
     err = meshx_create_element_composition(p_dev, config);
     if(err)
@@ -124,6 +113,27 @@ static meshx_err_t meshx_element_init(dev_struct_t *p_dev, meshx_config_t const 
         return err;
     }
 
+    meshx_sig_root_model_arr = get_root_sig_models();
+    if(meshx_sig_root_model_arr == NULL)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to get root SIG models");
+        return MESHX_FAIL;
+    }
+
+    /* Initialize root model */
+    err = meshx_plat_add_element_to_composition(
+        ROOT_ELEMENT_IDX,
+        p_dev->elements,
+        meshx_sig_root_model_arr,
+        meshx_ven_root_model_arr,
+        (uint8_t) get_root_sig_models_count(),
+        (uint8_t) get_root_ven_models_count()
+    );
+    if(err)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to add element to composition: (%d)", err);
+        return err;
+    }
     return MESHX_SUCCESS;
 }
 

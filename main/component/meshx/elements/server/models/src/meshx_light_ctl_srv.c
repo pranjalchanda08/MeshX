@@ -16,7 +16,40 @@
 #define MESHX_SERVER_INIT_MAGIC_NO 0x2483
 
 #if CONFIG_ENABLE_LIGHT_CTL_SERVER
-static uint16_t meshx_lighting_server_init = 0;
+
+/**
+ * @brief Structure representing the MeshX Light CTL Setup Server.
+ *
+ * This structure holds the initialization state, model information, and a pointer
+ * to the server model for the Light CTL (Color Temperature Lightness) Setup Server.
+ */
+typedef struct meshx_light_ctl_setup_server
+{
+    uint16_t ctl_setup_server_init;
+    MESHX_MODEL ctl_setup_srv_model;
+    meshx_ctl_setup_server_model_t *meshx_srv_model;
+}meshx_light_ctl_setup_server_t;
+
+/**
+ * @brief Structure to maintain the initialization and creation state of the MeshX Light CTL Server.
+ *
+ * This static structure holds flags indicating whether the CTL Setup Server and CTL Lighting Server
+ * have been initialized, as well as whether the CTL Lighting Server has been created.
+ */
+static struct
+{
+    uint16_t ctl_lighting_server_init;
+    uint16_t ctl_lighting_server_created;
+    meshx_light_ctl_setup_server_t ctl_setup_server;
+}g_meshx_light_ctl_srv = {
+    .ctl_setup_server = {
+        .ctl_setup_server_init = 0,
+        .meshx_srv_model = NULL,
+    },
+    .ctl_lighting_server_init = 0,
+    .ctl_lighting_server_created = 0,
+};
+
 /**
  * @brief Perform hardware change for the light control server model.
  *
@@ -175,6 +208,95 @@ static meshx_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
 }
 
 /**
+ * @brief Creates and initializes the Light CTL (Color Temperature Lightness) Setup Server.
+ *
+ * This function sets up the Light CTL Setup Server model, allocating necessary resources
+ * and initializing internal state. It should be called during the provisioning or initialization
+ * phase of the mesh node.
+ *
+ * @return meshx_err_t Returns MESHX_OK on success, or an appropriate error code on failure.
+ */
+static meshx_err_t meshx_light_ctl_setup_server_create(void)
+{
+    meshx_err_t err = MESHX_SUCCESS;
+    if  (   g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model != NULL
+        ||  g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_server_init == MESHX_SERVER_INIT_MAGIC_NO)
+        return MESHX_SUCCESS;
+
+    g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model =
+        (meshx_ctl_setup_server_model_t *)MESHX_CALOC(1, sizeof(meshx_ctl_setup_server_model_t));
+    if (NULL == g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model)
+    {
+        return MESHX_NO_MEM;
+    }
+
+    err = meshx_plat_light_ctl_setup_srv_create(
+        &g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_srv_model,
+        &g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model->meshx_server_pub,
+        &g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model->meshx_server_gen_srv);
+    if(err != MESHX_SUCCESS)
+    {
+        /* Tops down deinit for CTL setup server model */
+        meshx_light_ctl_setup_server_delete();
+        return err;
+    }
+    else
+    {
+        g_meshx_light_ctl_srv.ctl_lighting_server_init++;
+    }
+
+    return err;
+}
+
+/**
+ * @brief Deletes or deinitializes the Light CTL (Color Temperature Lightness) Setup Server instance.
+ *
+ * This function is responsible for cleaning up resources and performing any necessary teardown
+ * for the Light CTL Setup Server in the MeshX framework.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the delete operation.
+ */
+static meshx_err_t meshx_light_ctl_setup_server_delete(void)
+{
+    if (g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model != NULL)
+    {
+        MESHX_FREE(g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model);
+        g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model = NULL;
+
+        meshx_plat_light_srv_delete(
+            &g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_srv_model,
+            &g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model->meshx_server_gen_srv);
+
+        g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_srv_model = NULL;
+    }
+
+    g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_server_init = 0;
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Retrieves the CTL (Color Temperature Lightness) Setup Server model instance.
+ *
+ * This function is used to obtain a reference or handle to the CTL Setup Server model,
+ * which is responsible for managing color temperature and lightness control in a mesh network.
+ *
+ * @param[in] p_model Pointer to the model structure or context.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the operation.
+ *                     Typically, MESHX_OK on success or an appropriate error code on failure.
+ */
+meshx_err_t meshx_get_ctl_setup_srv_model(meshx_ptr_t p_model)
+{
+    if (!p_model)
+        return MESHX_INVALID_ARG;
+
+    if (g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model == NULL)
+        return MESHX_FAIL;
+
+    memcpy(p_model, &g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_srv_model, sizeof(MESHX_MODEL));
+    return MESHX_SUCCESS;
+}
+/**
  * @brief Initialize the Light CTL Server model.
  *
  * This function initializes the Light CTL (Color Temperature Light) Server model
@@ -189,10 +311,10 @@ meshx_err_t meshx_light_ctl_server_init(void)
 {
     meshx_err_t err = MESHX_SUCCESS;
 
-    if (meshx_lighting_server_init == MESHX_SERVER_INIT_MAGIC_NO)
+    if (g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_server_init == MESHX_SERVER_INIT_MAGIC_NO)
         return MESHX_SUCCESS;
 
-    meshx_lighting_server_init = MESHX_SERVER_INIT_MAGIC_NO;
+    g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_server_init = MESHX_SERVER_INIT_MAGIC_NO;
 
     err = meshx_lighting_srv_init();
     if (err)
@@ -233,6 +355,7 @@ meshx_err_t meshx_light_ctl_server_init(void)
  */
 meshx_err_t meshx_light_ctl_server_create(meshx_ctl_server_model_t **p_model, void *p_sig_model)
 {
+    meshx_err_t err = MESHX_SUCCESS;
     if (!p_model || !p_sig_model)
     {
         return MESHX_INVALID_ARG;
@@ -244,10 +367,41 @@ meshx_err_t meshx_light_ctl_server_create(meshx_ctl_server_model_t **p_model, vo
         return MESHX_NO_MEM;
     }
 
-    return meshx_plat_light_ctl_srv_create(
+    err = meshx_plat_light_ctl_srv_create(
         p_sig_model,
         &((*p_model)->meshx_server_pub),
-        &((*p_model)->meshx_server_ctl_gen_srv));
+        &((*p_model)->meshx_server_gen_srv));
+    if(err != MESHX_SUCCESS)
+    {
+        /* Tops down deinit for CTL server model */
+        meshx_light_ctl_server_delete(p_model);
+        return err;
+    }
+
+    if(     g_meshx_light_ctl_srv.ctl_lighting_server_created == 0
+        &&  g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_server_init == 0)
+    {
+        MESHX_LOGI(MODULE_ID_MODEL_SERVER, "Creating CTL setup server model");
+        /* Create CTL setup server */
+        err = meshx_light_ctl_setup_server_create();
+        if(err != MESHX_SUCCESS)
+        {
+            /* Tops down deinit for CTL server model */
+            meshx_light_ctl_setup_server_delete();
+            /* The code execution below is only possible if this is the very first model being created */
+            meshx_light_ctl_server_delete(p_model);
+            return err;
+        }
+        g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_server_init = MESHX_SERVER_INIT_MAGIC_NO;
+    }
+    else
+    {
+        g_meshx_light_ctl_srv.ctl_lighting_server_created++;
+    }
+
+    (*p_model)->meshx_server_sig_model = p_sig_model;
+
+    return err;
 }
 
 /**
@@ -269,13 +423,21 @@ meshx_err_t meshx_light_ctl_server_delete(meshx_ctl_server_model_t **p_model)
         return MESHX_INVALID_ARG;
     }
 
-    meshx_plat_light_ctl_srv_delete(
+    meshx_plat_light_srv_delete(
         &((*p_model)->meshx_server_pub),
-        &((*p_model)->meshx_server_ctl_gen_srv));
+        &((*p_model)->meshx_server_gen_srv));
 
     MESHX_FREE(*p_model);
     *p_model = NULL;
-
+    if (g_meshx_light_ctl_srv.ctl_lighting_server_created == 0)
+    {
+        MESHX_LOGW(MODULE_ID_MODEL_SERVER, "Deleting CTL setup server model");
+        /* Delete CTL setup server */
+    }
+    else
+    {
+        g_meshx_light_ctl_srv.ctl_lighting_server_created--;
+    }
     return MESHX_SUCCESS;
 }
 

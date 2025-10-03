@@ -53,8 +53,9 @@
 #define MESHX_LIGHT_SRV_CB_EVT  esp_ble_mesh_lighting_server_cb_event_t
 #define MESHX_LIGHT_SRV_CB_PARAM esp_ble_mesh_lighting_server_cb_param_t
 
-#define MESHX_LIGHT_CTL_SRV     esp_ble_mesh_light_ctl_srv_t
-#define MESHX_LIGHT_CTL_STATE   esp_ble_mesh_light_ctl_state_t
+#define MESHX_LIGHT_CTL_SRV         esp_ble_mesh_light_ctl_srv_t
+#define MESHX_LIGHT_CTL_SETUP_SRV   esp_ble_mesh_light_ctl_setup_srv_t
+#define MESHX_LIGHT_CTL_STATE       esp_ble_mesh_light_ctl_state_t
 
 /**
  * MESHX_CLIENT_MODELS
@@ -71,4 +72,5 @@
 #define MESHX_GEN_LIGHT_CLI_CB          esp_ble_mesh_light_client_cb_t
 #define MESHX_GEN_LIGHT_CLI_CB_EVT      esp_ble_mesh_light_client_cb_event_t
 #define MESHX_GEN_LIGHT_CLI_CB_PARAM    esp_ble_mesh_light_client_cb_param_t
+
 #endif /* __MESHX_BLE_MESH__ */
