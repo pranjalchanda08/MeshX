@@ -60,51 +60,26 @@ element_comp_fn_t element_comp_fn [MESHX_ELEMENT_TYPE_MAX] = {
 
 #endif /* CONFIG_SECTION_ENABLE_ELEMENT_TABLE */
 
-
-#if 0
-#if CONFIG_ENABLE_LIGHT_CTL_SERVER
-/** Light CTL state. */
-MESHX_LIGHT_CTL_STATE ctl_state;
-ESP_BLE_MESH_MODEL_PUB_DEFINE(ctl_setup_pub, 16, ROLE_NODE);
-
-/** Light CTL setup server model. */
-static esp_ble_mesh_light_ctl_setup_srv_t ctl_setup_server = {
-    .rsp_ctrl = {
-        .get_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP,
-        .set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP,
-    },
-    .state = &ctl_state,
-};
-#endif
-
-/** Root models for BLE Mesh elements. */
-static MESHX_MODEL meshx_sig_root_model_arr[] = {
-#if CONFIG_ENABLE_CONFIG_SERVER
-    ESP_BLE_MESH_MODEL_CFG_SRV(&MESHX_CONFIG_SERVER_INSTANCE),
-#endif /* CONFIG_ENABLE_CONFIG_SERVER */
-#if CONFIG_ENABLE_LIGHT_CTL_SERVER
-    ESP_BLE_MESH_MODEL_LIGHT_CTL_SETUP_SRV(&ctl_setup_pub, &ctl_setup_server),
-#endif
-};
-#else
-
 /** Root models for BLE Mesh elements. */
 static MESHX_MODEL *meshx_sig_root_model_arr = NULL;
 static MESHX_MODEL *meshx_ven_root_model_arr = NULL;
 
 typedef meshx_err_t (*root_model_getfn_t)(void* p_model);
 
+/* This table registers the functions that returns the root models */
 static root_model_getfn_t meshx_sig_root_model_getfn[] = {
 #if CONFIG_ENABLE_CONFIG_SERVER
     meshx_get_config_srv_model,
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
+#if CONFIG_ENABLE_LIGHT_CTL_SERVER
+    meshx_get_ctl_setup_srv_model,
+#endif /* CONFIG_ENABLE_LIGHT_CTL_SERVER */
 };
+
 static root_model_getfn_t meshx_ven_root_model_getfn[] = {};
 
 static uint16_t meshx_sig_root_model_arr_len = MESHX_ARRAY_SIZE(meshx_sig_root_model_getfn);
 static uint16_t meshx_ven_root_model_arr_len = MESHX_ARRAY_SIZE(meshx_ven_root_model_getfn);
-
-#endif /* #if 0 */
 
 /**
  * @brief Returns the root models for BLE Mesh elements.
@@ -113,6 +88,7 @@ static uint16_t meshx_ven_root_model_arr_len = MESHX_ARRAY_SIZE(meshx_ven_root_m
  */
 MESHX_MODEL * get_root_sig_models(void)
 {
+    meshx_err_t err;
     static MESHX_MODEL temp_model;
     if(meshx_sig_root_model_arr == NULL && meshx_sig_root_model_arr_len)
     {
@@ -130,7 +106,12 @@ MESHX_MODEL * get_root_sig_models(void)
             {
                 continue;
             }
-            meshx_sig_root_model_getfn[i]((void**)&temp_model);
+            err = meshx_sig_root_model_getfn[i]((void**)&temp_model);
+            if (err != MESHX_SUCCESS)
+            {
+                MESHX_LOGE(MODULE_ID_COMMON, "Failed to get root model (%p) (%d)", meshx_sig_root_model_getfn[i], err);
+                return NULL;
+            }
             memcpy(&meshx_sig_root_model_arr[i], &temp_model, sizeof(MESHX_MODEL));
         }
     }
