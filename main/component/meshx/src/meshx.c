@@ -120,7 +120,11 @@ static meshx_err_t meshx_element_init(dev_struct_t *p_dev, meshx_config_t const 
         return MESHX_FAIL;
     }
 
-    /* Initialize root model */
+    /**
+     * @brief Initialise the root element
+     * @note We initialise the root element later as root element's models needs
+     *       to be choosen based on the composition of the other elements
+     */
     err = meshx_plat_add_element_to_composition(
         ROOT_ELEMENT_IDX,
         p_dev->elements,
