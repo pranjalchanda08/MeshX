@@ -208,6 +208,33 @@ static meshx_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev,
 }
 
 /**
+ * @brief Deletes or deinitializes the Light CTL (Color Temperature Lightness) Setup Server instance.
+ *
+ * This function is responsible for cleaning up resources and performing any necessary teardown
+ * for the Light CTL Setup Server in the MeshX framework.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the delete operation.
+ */
+static meshx_err_t meshx_light_ctl_setup_server_delete(void)
+{
+    if (g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model != NULL)
+    {
+        MESHX_FREE(g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model);
+        g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model = NULL;
+
+        meshx_plat_light_srv_delete(
+            &(g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model->meshx_server_pub),
+            &(g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model->meshx_server_gen_srv)
+        );
+
+        g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model = NULL;
+    }
+
+    g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model = 0;
+    return MESHX_SUCCESS;
+}
+
+/**
  * @brief Creates and initializes the Light CTL (Color Temperature Lightness) Setup Server.
  *
  * This function sets up the Light CTL Setup Server model, allocating necessary resources
@@ -246,32 +273,6 @@ static meshx_err_t meshx_light_ctl_setup_server_create(void)
     }
 
     return err;
-}
-
-/**
- * @brief Deletes or deinitializes the Light CTL (Color Temperature Lightness) Setup Server instance.
- *
- * This function is responsible for cleaning up resources and performing any necessary teardown
- * for the Light CTL Setup Server in the MeshX framework.
- *
- * @return meshx_err_t Returns an error code indicating the result of the delete operation.
- */
-static meshx_err_t meshx_light_ctl_setup_server_delete(void)
-{
-    if (g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model != NULL)
-    {
-        MESHX_FREE(g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model);
-        g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model = NULL;
-
-        meshx_plat_light_srv_delete(
-            &g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_srv_model,
-            &g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model->meshx_server_gen_srv);
-
-        g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_srv_model = NULL;
-    }
-
-    g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_server_init = 0;
-    return MESHX_SUCCESS;
 }
 
 /**
