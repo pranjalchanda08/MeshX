@@ -1,0 +1,5 @@
+<map id="meshx_restore_model_states" name="meshx_restore_model_states">
+<area shape="rect" id="Node000001" title="Restore saved relay model states." alt="" coords="5,5,154,46"/>
+<area shape="rect" id="Node000002" href="$dc/d96/esp__platform__ble__mesh_8c.html#ab0b270ac4d086a2e566985d2aabd5be5" title="Retrieve the model ID of a generic server model." alt="" coords="202,13,345,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,23,186,23,186,28,154,28"/>
+</map>

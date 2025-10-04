@@ -1,0 +1,24 @@
+<map id="meshx_plat_light_srv_delete" name="meshx_plat_light_srv_delete">
+<area shape="rect" id="Node000001" title="Delete a Light CTL Server instance." alt="" coords="1553,35,1696,75"/>
+<area shape="rect" id="Node000002" href="$d4/db6/meshx__light__ctl__srv_8c.html#aed19d572f2a8028c955328e452df507e" title="Delete the CTL server model instance." alt="" coords="1152,5,1306,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1537,51,1307,34,1307,29,1537,46"/>
+<area shape="rect" id="Node000009" href="$d4/db6/meshx__light__ctl__srv_8c.html#a86ae7afdb87899d6bd6a4b8900c7c844" title="Deletes or deinitializes the Light CTL (Color Temperature Lightness) Setup Server instance." alt="" coords="1354,63,1505,103"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="1538,70,1506,75,1505,70,1537,65"/>
+<area shape="rect" id="Node000003" href="$d9/d46/meshx__cwww__server_8c.html#ae58e3714c7314300269ade7cf0e09216" title="Deinitializes the mesh element structure by freeing allocated memory." alt="" coords="737,5,890,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="1136,28,890,28,890,23,1136,23"/>
+<area shape="rect" id="Node000007" href="$d4/db6/meshx__light__ctl__srv_8c.html#a28ca32dccd7b19454cf530dc3525d0a6" title="Create and initialize a new CTL server model instance." alt="" coords="950,63,1104,103"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="1141,53,1102,65,1100,59,1140,48"/>
+<area shape="rect" id="Node000004" href="$d9/d46/meshx__cwww__server_8c.html#a9323b419771abef4a20d688f3f90188d" title="Create space for CW&#45;WW models." alt="" coords="503,35,677,75"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="722,40,678,46,678,41,722,35"/>
+<area shape="rect" id="Node000005" href="$d9/d46/meshx__cwww__server_8c.html#ac1498e20904edfabe76c92f9da6375bd" title="Create Dynamic CWWW Server Model Elements." alt="" coords="249,42,455,68"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="487,58,456,58,456,52,487,52"/>
+<area shape="rect" id="Node000006" href="$d9/d46/meshx__cwww__server_8c.html#aa8082758a025ec4f2663cc48f873b7d9" title=" " alt="" coords="5,42,201,68"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="233,58,201,58,201,52,233,52"/>
+<area shape="rect" id="Node000008" href="$d9/d46/meshx__cwww__server_8c.html#acfe19244baff39d7aaaeefa052997704" title="Initializes the mesh element structure by freeing allocated memory." alt="" coords="725,70,902,96"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="934,86,902,86,902,80,934,80"/>
+<area shape="poly" id="edge8_Node000008_Node000004" title=" " alt="" coords="710,73,677,69,678,63,710,67"/>
+<area shape="poly" id="edge10_Node000009_Node000007" title=" " alt="" coords="1339,86,1104,86,1104,80,1339,80"/>
+<area shape="rect" id="Node000010" href="$d4/db6/meshx__light__ctl__srv_8c.html#a9ccee3fc1fcc58cf55c17803cbee478f" title="Creates and initializes the Light CTL (Color Temperature Lightness) Setup Server." alt="" coords="1154,120,1304,161"/>
+<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="1342,111,1303,122,1302,117,1341,106"/>
+<area shape="poly" id="edge12_Node000010_Node000007" title=" " alt="" coords="1140,118,1100,107,1102,101,1141,113"/>
+</map>

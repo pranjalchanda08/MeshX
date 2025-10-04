@@ -1,0 +1,5 @@
+<map id="meshx_nvs_remove" name="meshx_nvs_remove">
+<area shape="rect" id="Node000001" title="Remove a key&#45;value pair from the NVS." alt="" coords="5,5,143,31"/>
+<area shape="rect" id="Node000002" href="$dc/d28/esp__nvs_8c.html#ac4731c0a5821db05dfc78f395caf73dd" title="Remove a key&#45;value pair from the non&#45;volatile storage with a given key and namespace." alt="" coords="191,5,356,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="143,16,175,16,175,21,143,21"/>
+</map>

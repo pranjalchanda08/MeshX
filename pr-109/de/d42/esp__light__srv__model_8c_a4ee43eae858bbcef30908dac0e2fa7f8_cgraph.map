@@ -1,0 +1,13 @@
+<map id="meshx_ble_lightness_server_cb" name="meshx_ble_lightness_server_cb">
+<area shape="rect" id="Node000001" title="Callback function for BLE Mesh Lightness Server events." alt="" coords="5,47,148,88"/>
+<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="196,55,368,80"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="148,65,180,65,180,70,148,70"/>
+<area shape="rect" id="Node000003" href="$d0/d77/meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue Back." alt="" coords="416,5,556,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="338,51,414,33,416,38,339,57"/>
+<area shape="rect" id="Node000004" href="$d3/df5/meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="428,55,545,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="368,65,412,65,412,70,368,70"/>
+<area shape="rect" id="Node000006" href="$d3/df5/meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="420,104,553,130"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="339,78,416,97,414,102,338,84"/>
+<area shape="rect" id="Node000005" href="$d3/df5/meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="604,55,782,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="545,65,589,65,589,70,545,70"/>
+</map>
