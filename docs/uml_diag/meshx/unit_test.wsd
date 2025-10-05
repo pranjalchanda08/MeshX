@@ -1,0 +1,61 @@
+@startuml CLI
+title "CLI Interface Flow"
+
+autonumber 1 1
+
+participant "Control Task" as CT
+participant "main" as MN
+participant "CLI FW" as UT
+participant "Platform" as PL
+participant "platform Interrupt" as PI
+
+== Init ==
+MN -> PL: meshx_platform_init()
+PL -> PL: platform_uart_init(RX_PIN, TX_PIN, BAUD, INTERRUPT_EN, uart_rx_cb)
+MN -> UT: meshx_unit_test_init()
+UT -> UT: Initialize UT data structure
+UT -> CT: control_task_subscribe(CONTROL_TASK_MSG_CODE_SYSTEM, evt, UT_string_rx_cb)
+note over UT
+    evt types:
+    - CONTROL_TASK_MSG_EVT_SYSTEM_CLI_STRING_RX
+    - CONTROL_TASK_MSG_EVT_SYSTEM_CLI_HISTORY_UP
+    - CONTROL_TASK_MSG_EVT_SYSTEM_CLI_HISTORY_DOWN
+end note
+
+== Run Test ==
+loop Platform Interrupt Enabled
+    note over PI
+        1. Wait for RX interrupt
+        2. Read character from RX buffer
+        3. Save character to platform RX buffer
+    end note
+    PI -> PI: TX received char
+    PI -> PL: platform_uart_read(&c, 1)
+    alt char != '\\n'
+        PL -> PL: save c to platform RX buffer
+    else char == backspace
+        PL -> PL: remove last char from platform RX buffer
+        PL -> PL: TX new string to terminal
+    else char == up_arrow || char == down_arrow || char == '\\n'
+        PL -> PL: NULL terminate platform RX buffer
+        UT -> CT: control_task_publish(CONTROL_TASK_MSG_CODE_SYSTEM, evt, string, string_len)
+        CT -> UT: UT_string_rx_cb()
+        alt evt == CONTROL_TASK_MSG_EVT_SYSTEM_CLI_STRING_RX
+            UT -> UT: Process command using shell parser
+            note over UT
+                1. Tokenize command string
+                2. Match command with registered commands
+                3. Execute command callback
+            end note
+        else evt == CONTROL_TASK_MSG_EVT_SYSTEM_CLI_HISTORY_UP
+            UT -> UT: Get previous command from history buffer
+            UT -> PL: platform_uart_write(previous_command, len)
+            UT -> PL: Update buffer with previous command
+        else evt == CONTROL_TASK_MSG_EVT_SYSTEM_CLI_HISTORY_DOWN
+            UT -> UT: Get next command from history buffer
+            UT -> PL: platform_uart_write(next_command, len)
+            UT -> PL: Update buffer with next command
+        end
+    end
+end loop
+@enduml
