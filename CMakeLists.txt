@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 # ------------------------------------------------------------------------------
 # Options
 # ------------------------------------------------------------------------------
-set(MESHX_VERSION "0.3.3" CACHE SREING "MESHX Build Version")
+set(MESHX_VERSION "0.3.3" CACHE STRING "MESHX Build Version")
 set(BSP "weact_c3" CACHE STRING "BSP Selection")
 set(ELF meshx_build CACHE STRING "Name of the final executable")
 set(PROD_PROFILE "port/bsp/${BSP}/prod_profile.yml" CACHE STRING "Path to the product profile YAML file")

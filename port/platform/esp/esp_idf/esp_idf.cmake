@@ -1,8 +1,13 @@
 set(ESP_COMMON_DIR "${CMAKE_SOURCE_DIR}/port/platform/esp/esp_idf")
 
+set(SDKCONFIG_DEFAULTS ${SDKCONFIG_DEFAULTS} "${ESP_COMMON_DIR}/sdkconfig.defaults.ble_mesh")
+
+# Filter out sdkconfig.defaults.old
+list(REMOVE_ITEM SDKCONFIG_DEFAULTS "${CMAKE_SOURCE_DIR}/sdkconfig.defaults.old")
+
 message(STATUS "ESP_TARGET: ${ESP_TARGET}")
 message(STATUS "IDF_PATH: $ENV{IDF_PATH}")
-message(STATUS "SDKCONFIG: ${SDKCONFIG}")
+message(STATUS "SDKCONFIG_DEFAULTS: ${SDKCONFIG_DEFAULTS}")
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
