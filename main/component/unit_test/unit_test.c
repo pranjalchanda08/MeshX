@@ -10,7 +10,8 @@
  */
 
 #include "unit_test.h"
-#include "meshx_log.h"
+#include "interface/logging/meshx_log.h"
+#include "esp_console.h"
 
 #if CONFIG_ENABLE_UNIT_TEST
 
@@ -34,17 +35,17 @@ static unit_test_callback_t callback_list[MODULE_ID_MAX];
  */
 static meshx_err_t ut_command_handler(int argc, char **argv) {
     if (argc < UT_CMD_MIN_ARGS) {
-        MESHX_LOGE("Insufficient arguments");
+        MESHX_LOGE(MODULE_ID_COMMON, "Insufficient arguments");
         return MESHX_INVALID_ARG;
     }
 
     int cmd_id = UT_GET_ARG(2, uint16_t, argv);
     int parsed_argc = UT_GET_ARG(3, uint16_t, argv);
     module_id_t module_id = UT_GET_ARG(1, uint16_t, argv);
-    ESP_LOGD(TAG, "Unit Test: Params -> argc: %d, Module: %d, cmd_id: %d", parsed_argc, cmd_id , module_id);
+    MESHX_LOGD(MODULE_ID_COMMON, , "Unit Test: Params -> argc: %d, Module: %d, cmd_id: %d", parsed_argc, cmd_id , module_id);
     if (parsed_argc > (argc - UT_CMD_MIN_ARGS))
     {
-        MESHX_LOGE("Insufficient module arguments");
+        MESHX_LOGE(MODULE_ID_COMMON, "Insufficient module arguments");
         return MESHX_INVALID_ARG;
     }
 
@@ -54,7 +55,7 @@ static meshx_err_t ut_command_handler(int argc, char **argv) {
     }
 
     if (module_id >= MODULE_ID_MAX) {
-        MESHX_LOGE("Module ID %d unknown", module_id);
+        MESHX_LOGE(MODULE_ID_COMMON, "Module ID %d unknown", module_id);
         return MESHX_INVALID_ARG;
     }
 
@@ -63,7 +64,7 @@ static meshx_err_t ut_command_handler(int argc, char **argv) {
         return callback_list[module_id].callback(cmd_id, parsed_argc, (argv + UT_CMD_MIN_ARGS));
     }
 
-    MESHX_LOGE("No unit test registered for module ID %d", module_id);
+    MESHX_LOGE(MODULE_ID_COMMON, "No unit test registered for module ID %d", module_id);
     return MESHX_NOT_FOUND;
 }
 
