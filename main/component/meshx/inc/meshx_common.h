@@ -16,14 +16,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <inttypes.h>
-#include <meshx_config_internal.h>
 #include <meshx_err.h>
+#include <meshx_config_internal.h>
 #include <interface/logging/meshx_log.h>
 #include "interface/meshx_platform.h"
-
-#if CONFIG_ENABLE_UNIT_TEST
-#include <unit_test.h>
-#endif /* CONFIG_ENABLE_UNIT_TEST */
+#include "unit_test.h"
 
 /*********************************************************************
  *      FEATURE CONFIGURATION
