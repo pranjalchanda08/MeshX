@@ -15,11 +15,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "esp_console.h"
+#include "meshx_config_internal.h"
 #include "argtable3/argtable3.h"
 #include "module_id.h"
 #include "meshx_err.h"
-#include "meshx_config_internal.h"
 
 #if CONFIG_ENABLE_UNIT_TEST
 /**

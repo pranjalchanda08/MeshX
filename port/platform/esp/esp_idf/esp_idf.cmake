@@ -62,3 +62,20 @@ set(INC_FILES
     ${INC_FILES}
     ${BASE_PLAT_INC}
 )
+
+set(PLATFORM_INC
+    ${BASE_PLAT_INC}
+    "${CMAKE_SOURCE_DIR}/port/platform/esp/${ESP_TARGET}"
+    CACHE STRING "platform include"
+)
+
+set(INC_FILES
+    ${INC_FILES}
+    ${PLATFORM_INC}
+    ${CMAKE_SOURCE_DIR}/main/component/meshx/inc
+)
+
+set(SRC_FILES
+    ${SRC_FILES}
+    ${BASE_PLAT_SRC}
+)
