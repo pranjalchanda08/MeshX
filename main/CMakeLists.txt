@@ -22,29 +22,27 @@ foreach(dir ${MESHX_INC_DIRS})
 endforeach()
 list(REMOVE_DUPLICATES MESHX_FINAL_INC)
 
+set(MESHX_FINAL_INC ${MESHX_FINAL_INC} ${PLATFORM_INC})
+
 set(INC_FILES
     ${INC_FILES}
     ${MESHX_FINAL_INC}
+    "${CMAKE_SOURCE_DIR}/main/component/unit_test"
 )
 
-message(STATUS "PLATFORM_INC: ${PLATFORM_INC}")
-
-set(MESHX_FINAL_INC ${MESHX_FINAL_INC} ${PLATFORM_INC})
-
-message(STATUS "MESHX_FINAL_INC: ${MESHX_FINAL_INC}")
+message(STATUS "INC_FILES: ${INC_FILES}")
 
 # ------------------------------------------------------------------------------
 # Unit Tests
 # ------------------------------------------------------------------------------
 if(ENABLE_TESTS AND PLATFORM_TEST_SUPPORTED)
-    message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    message(STATUS ">>>>>>>>>>>>>> Unit tests enabled <<<<<<<<<<<<<<<<<<")
-    message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    # Set the compile definition for complete prohect
+    message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    message(STATUS ">>>>>>>>> Unit tests enabled <<<<<<<<<")
+    message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    # Set the compile definition for complete project
     add_definitions(-DCONFIG_ENABLE_UNIT_TEST=1)
     include_directories("${CMAKE_SOURCE_DIR}/main/component/unit_test")
     set(MESHX_SRC ${MESHX_SRC} "${CMAKE_SOURCE_DIR}/main/component/unit_test/unit_test.c")
-    set(INC_FILES ${INC_FILES} "${CMAKE_SOURCE_DIR}/main/component/unit_test")
 endif()
 
 set(SRC_FILES ${SRC_FILES} ${MESHX_SRC})

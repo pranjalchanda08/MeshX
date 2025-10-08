@@ -27,6 +27,12 @@ MeshX is a portable C implementation of a Bluetooth Low Energy (BLE) Mesh node s
 
 This README documents the new portability model, the BSP/MCU/SDK support available in this repository, and how to build MeshX using the CMake-level build system.
 
+## Contributing
+
+Contributions that add BSPs or improve portability are welcome. Please follow repository conventions and add CMake glue under `port/bsp` and `port/platform`.
+
+[![](https://dcbadge.limes.pink/api/server/ezkCzchun)](https://discord.gg/ezkCzchun)
+
 ## Highlights
 - Portable CMake-based build integration for multiple BSPs and MCUs
 - Current BSP: `weact_c3` (WeAct ESP32-C3 board)
@@ -40,15 +46,15 @@ This README documents the new portability model, the BSP/MCU/SDK support availab
 - `main/CMakeLists.txt` - Collects sources from `main/component/meshx` and registers the component with the platform.
 - `port/bsp/` - BSPs live here. Each BSP contains board-specific CMake configuration and product profiles.
 - `port/platform/esp/` - ESP platform integration (ESP-IDF glue and esp32c3 support files).
-- `tools/scripts/` - Helper scripts and code-generation utilities (`code_gen.py`, `build.sh`, etc.).
+- `tools/scripts/` - Helper scripts and code-generation utilities (`code_gen.py`, `meshx_build.py`, etc.).
 
 ## Supported BSPs / MCUs / SDKs (current)
 
 ### BSPs
 
 | BSP name  | Board / Notes                         | Location (CMake)                        |
-|-----------|----------------------------------------|-----------------------------------------|
-| weact_c3  | WeAct ESP32-C3 development board      | `port/bsp/weact_c3/bsp.cmake`          |
+|-----------|---------------------------------------|-----------------------------------------|
+| weact_c3  | WeAct ESP32-C3 development board      | `port/bsp/weact_c3/bsp.cmake`           |
 
 ### MCU families / targets
 
@@ -75,33 +81,41 @@ MeshX is driven from the top-level `CMakeLists.txt`. The most important CMake op
 - `-DELF=<executable_name>` — Name of the final CMake project/ELF. Default set in top-level CMake.
 - `-DENABLE_TESTS=ON` — Enable unit tests if the chosen platform supports it.
 
-### Examples — out-of-tree CMake build
+Important: product code generation happens at configure time via tools/scripts/code_gen.py and must run before building. To simplify and standardize the configure/build/codegen flow we now provide tools/scripts/meshx_build.py which wraps the generator, CMake configure, and build steps.
 
-1. Set up ESP-IDF environment (example — bash):
+Examples — single-command wrapper (recommended)
+
+1. Set up ESP-IDF environment (if building ESP targets):
 
 ```bash
 export IDF_PATH=/path/to/esp-idf
 source $IDF_PATH/export.sh
 ```
 
-2. Create build directory and configure CMake (replacing PROD_NAME):
+2. Use the build helper:
 
 ```bash
-mkdir -p build
-cmake -S . -B build -DBSP=weact_c3 -DPROD_NAME=4_relay_panel -DPROD_PROFILE=../port/bsp/weact_c3/prod_profile.yml
-cmake --build build
+python3 tools/scripts/meshx_build.py --bsp weact_c3 --prod 4_relay_panel --profile port/bsp/weact_c3/prod_profile.yml --build-dir build
 ```
 
-This will include the BSP CMake (`port/bsp/weact_c3/bsp.cmake`), which in turn includes the platform glue `port/platform/esp/esp32c3/esp32c3.cmake` and the ESP-IDF integration.
+The script will:
+- run the code generator to produce product-specific sources and headers,
+- configure CMake in the specified build directory with recommended flags,
+- run the configured build (and optionally run tests or package artifacts).
 
-### Notes on environment and code generation
+For advanced usage the script exposes subcommands and flags to only run code generation, configure, or build separately; run it with `--help` to see available options.
 
-- `PROD_NAME` is required; `port/bsp/bsp_common.cmake` will call `tools/scripts/code_gen.py` to generate product-specific source at configure time. If `PROD_NAME` is not provided, CMake will stop with a helpful error.
-- The build system registers MeshX sources with the platform via a helper `register_component()` function implemented in the platform glue (for ESP-IDF this maps to `idf_component_register`).
+Notes on environment and code generation
 
-### Using the included helper scripts
+- `PROD_NAME` (or `--prod`) is required; the build helper will error if the product is not found.
+- The build helper invokes `tools/scripts/code_gen.py` and ensures generated files are placed where CMake expects them.
+- You can still run the underlying steps manually (code_gen.py + cmake configure/build) but using meshx_build.py ensures reproducible CI-friendly defaults and avoids common mistakes.
 
-- `tools/scripts/build.sh` and `tools/scripts/build_ci.sh` wrap the typical configure + build flow and drive `code_gen.py`. They are useful for CI or convenient local builds. You can inspect and adapt them to new BSPs or product profiles.
+Using the included helper scripts
+
+- tools/scripts/meshx_build.py — new top-level helper that wraps code generation, CMake configure, and build steps. Preferred for local development and CI.
+- tools/scripts/build_ci.sh — CI-oriented wrapper (may call meshx_build.py internally).
+- tools/scripts/code_gen.py — lower-level generator used by the helper; useful for debugging or validating profiles manually.
 
 ### Product and model profiles
 
@@ -116,12 +130,12 @@ If you want to add a new product for a BSP, create or edit `port/bsp/<bsp>/prod_
 
 ```yaml
 prod:
-    cid: 0x7908
-    products:
-        - name: my_new_product
-          pid: 0x0100
-          elements:
-            - switch_relay_server: 2
+  cid: 0x7908
+  products:
+    - name: my_new_product
+      pid: 0x0100
+      elements:
+      - switch_relay_server: 2
 ```
 
 #### Fields explained
@@ -137,26 +151,26 @@ prod:
 prod:
   cid: 0x7908
   products:
-    - name: 4_relay_panel
-      pid: 0x0001
-      elements:
-        - switch_relay_server: 4
-    - name: all_in_one
-      pid: 0x0004
-      elements:
-        - switch_relay_client: 1
-        - switch_relay_server: 1
-        - light_cwww_server: 1
-        - light_cwww_client: 1
-      components:
-        - unit_test: true
+  - name: 4_relay_panel
+    pid: 0x0001
+    elements:
+    - switch_relay_server: 4
+  - name: all_in_one
+    pid: 0x0004
+    elements:
+    - switch_relay_client: 1
+    - switch_relay_server: 1
+    - light_cwww_server: 1
+    - light_cwww_client: 1
+    components:
+    - unit_test: true
 ```
 
 #### How MeshX uses the profile
 
 - `tools/scripts/code_gen.py` reads the product profile and `tools/scripts/model_profile.yml` and constructs:
-	- compile-time macros (e.g. `CONFIG_PID_ID`, `CONFIG_MAX_ELEMENT_COUNT`) written into `meshx_config.h`.
-	- a list of source files and include directories from the selected elements and models so the build system can register them.
+  - compile-time macros (e.g. `CONFIG_PID_ID`, `CONFIG_MAX_ELEMENT_COUNT`) written into `meshx_config.h`.
+  - a list of source files and include directories from the selected elements and models so the build system can register them.
 
 #### Testing a product profile locally
 
@@ -165,7 +179,6 @@ prod:
 2. Run the code generator directly to verify it finds the product and creates `meshx_config.h`:
 
 ```bash
-# from repo root (example product name: 4_relay_panel)
 python3 tools/scripts/code_gen.py 4_relay_panel --root main/component/meshx --config main/component/meshx/default/inc --profile tools/scripts/prod_profile.ci.yml
 
 # Inspect the generated header
@@ -173,14 +186,13 @@ ls -l main/component/meshx/default/inc/meshx_config.h
 cat main/component/meshx/default/inc/meshx_config.h
 ```
 
-3. If the generator complains `Product Not Found`, check that `products[].name` exactly matches the name you passed to `code_gen.py` / `PROD_NAME`.
+3. If the generator complains `Product Not Found`, check that `products[].name` exactly matches the name you passed to `code_gen.py` / `--prod`.
 
 ### Notes and tips
 
-- Always re-run CMake (or the helper build script) after changing product profiles because the profile is processed at configure time.
+- Always re-run the build helper (or re-run the configure step) after changing product profiles because the profile is processed at configure time.
 - Use `tools/scripts/model_profile.yml` to see available element names and how they map to source paths and macros.
 - Keep `pid` values unique within a `cid` namespace to avoid accidental conflicts when you test product identification.
-
 
 ### Flashing and monitoring (ESP-IDF)
 
@@ -191,7 +203,7 @@ When building for ESP-IDF targets, the typical flash+monitor flow uses `idf.py` 
 idf.py -p /dev/ttyUSB0 flash monitor
 ```
 
-If you are using the `build.sh` helper it will generate an IDF project and artifacts compatible with `idf.py`.
+If you are using the build helper it will generate an IDF project and artifacts compatible with `idf.py`.
 
 ### Adding support for new boards, MCUs or SDKs
 
@@ -231,27 +243,17 @@ cp port/platform/template_family/template_mcu/template_mcu.cmake port/platform/m
 # Edit my_mcu.cmake to set BASE_PLAT_INC, BASE_PLAT_SRC, PLAT_LIBS and implement register_component() using your SDK's API
 ```
 
-4. Configure a local CMake build to test:
+4. Configure a local build using the build helper:
 
 ```bash
-mkdir -p build && cd build
-cmake .. -DBSP=my_board -DPROD_NAME=example_product -DPROD_PROFILE=../port/bsp/my_board/prod_profile.yml
-cmake --build .
+python3 tools/scripts/meshx_build.py --bsp my_board --prod example_product --profile port/bsp/my_board/prod_profile.yml --build-dir build
 ```
 
 5. Flash / monitor using your SDK's toolchain (for ESP-IDF use `idf.py`) after the build completes.
 
 ### Troubleshooting & tips
 
-- If CMake fails with "PROD_NAME is not set", re-run CMake with `-DPROD_NAME=<your_product>`.
+- If the build helper fails with "PROD_NAME is not set" or "Product Not Found", verify the product name and profile path.
 - Ensure `IDF_PATH` is exported and `source $IDF_PATH/export.sh` has been run when building ESP targets.
-- `tools/scripts/code_gen.py` is invoked at configure time. If you change product profiles, re-run CMake to regenerate sources.
-
-## Contributing
-
-Contributions that add BSPs or improve portability are welcome. Please follow repository conventions and add CMake glue under `port/bsp` and `port/platform`.
-
-## License
-
-See `LICENSE.md` for licensing information.
+- `tools/scripts/code_gen.py` is invoked by the build helper at configure time. If you change product profiles, re-run the helper to regenerate sources.
 
