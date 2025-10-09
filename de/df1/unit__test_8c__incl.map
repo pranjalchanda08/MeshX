@@ -1,27 +1,31 @@
 <map id="unit_test.c" name="unit_test.c">
-<area shape="rect" id="Node000001" title="Unit test module for the production console." alt="" coords="398,5,480,31"/>
-<area shape="rect" id="Node000002" href="$d8/d5d/unit__test_8h.html" title="Header file for the production console unit test functionality." alt="" coords="348,79,429,105"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="433,33,408,68,403,65,428,30"/>
-<area shape="rect" id="Node000013" title=" " alt="" coords="453,79,529,105"/>
-<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="450,30,475,65,471,68,445,33"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="5,153,65,178"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="348,103,232,124,80,155,79,150,231,118,347,97"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="89,153,152,178"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="348,107,167,154,166,149,347,101"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="175,153,239,178"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="359,108,253,149,251,144,357,103"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="263,153,367,178"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="378,107,340,144,336,140,374,103"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="391,153,532,178"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="402,103,440,140,437,144,399,107"/>
-<area shape="rect" id="Node000008" href="$d3/da1/module__id_8h.html" title="Defines module IDs for different elements in the BLE mesh node application." alt="" coords="556,153,647,178"/>
-<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="425,103,552,145,550,150,424,108"/>
-<area shape="rect" id="Node000009" href="$da/d68/meshx__err_8h.html" title="MeshX Error Codes." alt="" coords="671,153,762,178"/>
-<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="430,100,441,102,656,149,655,154,440,107,429,105"/>
-<area shape="rect" id="Node000011" href="$df/d01/meshx__config__internal_8h.html" title="Internal configuration settings for MeshX." alt="" coords="786,153,945,178"/>
-<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="430,100,441,102,771,149,770,154,440,107,429,105"/>
-<area shape="rect" id="Node000010" title=" " alt="" coords="685,226,748,252"/>
-<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="719,179,719,211,714,211,714,179"/>
-<area shape="rect" id="Node000012" title=" " alt="" coords="810,226,921,252"/>
-<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="868,179,868,211,863,211,863,179"/>
+<area shape="rect" id="Node000001" title="Unit test module for the production console." alt="" coords="392,5,474,31"/>
+<area shape="rect" id="Node000002" href="$d8/d5d/unit__test_8h.html" title="Header file for the production console unit test functionality." alt="" coords="392,86,474,112"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="436,31,436,71,430,71,430,31"/>
+<area shape="rect" id="Node000012" href="$d7/dcb/meshx__log_8h.html" title="Logging interface for MeshX with color&#45;coded output." alt="" coords="210,79,368,120"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="412,34,339,74,337,69,410,29"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="498,86,602,112"/>
+<area shape="poly" id="edge16_Node000001_Node000013" title=" " alt="" coords="452,29,521,75,518,80,449,34"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="189,168,248,193"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="401,115,264,165,262,160,399,110"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="502,168,564,193"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="450,110,508,156,504,160,447,115"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="588,168,651,193"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="463,110,579,159,576,164,461,115"/>
+<area shape="rect" id="Node000006" href="$df/d01/meshx__config__internal_8h.html" title="Internal configuration settings for MeshX." alt="" coords="5,168,165,193"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="402,115,380,122,275,148,176,167,175,162,273,143,379,117,401,110"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="676,168,817,193"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="466,110,487,117,582,142,670,161,668,167,580,147,486,122,464,115"/>
+<area shape="rect" id="Node000009" href="$d3/da1/module__id_8h.html" title="Defines module IDs for different elements in the BLE mesh node application." alt="" coords="388,168,478,193"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="436,113,436,152,430,152,430,113"/>
+<area shape="rect" id="Node000010" href="$da/d68/meshx__err_8h.html" title="MeshX Error Codes." alt="" coords="273,168,364,193"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="417,115,350,161,347,156,414,110"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="30,241,140,267"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="88,194,88,226,82,226,82,194"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="287,241,350,267"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="321,194,321,226,316,226,316,194"/>
+<area shape="poly" id="edge12_Node000012_Node000003" title=" " alt="" coords="274,122,241,158,237,154,270,118"/>
+<area shape="poly" id="edge13_Node000012_Node000006" title=" " alt="" coords="239,123,131,164,130,159,237,118"/>
+<area shape="poly" id="edge14_Node000012_Node000009" title=" " alt="" coords="326,118,399,157,396,162,324,123"/>
+<area shape="poly" id="edge15_Node000012_Node000010" title=" " alt="" coords="299,119,311,152,306,154,294,121"/>
 </map>

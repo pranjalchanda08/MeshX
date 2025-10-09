@@ -1,7 +1,0 @@
-<map id="meshx_log_printf" name="meshx_log_printf">
-<area shape="rect" id="Node000001" title="Logs a formatted message for a specified module and log level." alt="" coords="5,42,125,68"/>
-<area shape="rect" id="Node000002" href="$d3/df5/meshx__utils_8c.html#a6816e2e6131dc78da745ce5d815043e0" title="Retrieves the current task ID." alt="" coords="188,5,330,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,43,172,36,172,41,126,49"/>
-<area shape="rect" id="Node000003" href="$d3/df5/meshx__utils_8c.html#a36747ae13d908654ff25903375211660" title="Retrieves the current system time in milliseconds." alt="" coords="173,70,345,96"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="126,61,158,66,157,71,125,66"/>
-</map>

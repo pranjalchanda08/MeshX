@@ -30454,19 +30454,9 @@
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
     </TokenIdentifier>
-    <Path>da/dd5/unit__test_8c.html</Path>
+    <Path>d6/dec/esp__platform__bt_8c.html</Path>
     <Anchor>afc3d101f633a076cc1ca84b85b6224b2</Anchor>
-    <DeclaredIn>unit_test.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>TAG</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>macro</Type>
-    </TokenIdentifier>
-    <Path>d7/d32/ble__mesh__plat__init_8c.html</Path>
-    <Anchor>afc3d101f633a076cc1ca84b85b6224b2</Anchor>
-    <DeclaredIn>ble_mesh_plat_init.c</DeclaredIn>
+    <DeclaredIn>esp_platform_bt.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>

@@ -8,5 +8,6 @@ var searchData=
   ['esp_5fnvs_2ec_5',['esp_nvs.c',['../dc/d28/esp__nvs_8c.html',1,'']]],
   ['esp_5fplatform_2ec_6',['esp_platform.c',['../da/dd1/esp__platform_8c.html',1,'']]],
   ['esp_5fplatform_5fble_5fmesh_2ec_7',['esp_platform_ble_mesh.c',['../dc/d96/esp__platform__ble__mesh_8c.html',1,'']]],
-  ['esp_5fprov_5fsrv_5fmodel_2ec_8',['esp_prov_srv_model.c',['../d9/d31/esp__prov__srv__model_8c.html',1,'']]]
+  ['esp_5fplatform_5fbt_2ec_8',['esp_platform_bt.c',['../d6/dec/esp__platform__bt_8c.html',1,'']]],
+  ['esp_5fprov_5fsrv_5fmodel_2ec_9',['esp_prov_srv_model.c',['../d9/d31/esp__prov__srv__model_8c.html',1,'']]]
 ];

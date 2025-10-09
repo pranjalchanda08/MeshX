@@ -8,7 +8,7 @@ var searchData=
   ['netkey_5fdelete_5',['netkey_delete',['../de/da0/unionmeshx__cfg__srv__state__change__t.html#a55c6a15036fe30ea709a5372ef8ce06b',1,'meshx_cfg_srv_state_change_t']]],
   ['netkey_5fidx_6',['netkey_idx',['../d7/de6/structmeshx__prov__cb__param__t_1_1meshx__provisioner__prov__comp__param.html#a60c07c013fdeacad2d222e8cf8dd3528',1,'meshx_prov_cb_param_t::meshx_provisioner_prov_comp_param']]],
   ['netkey_5fupdate_7',['netkey_update',['../de/da0/unionmeshx__cfg__srv__state__change__t.html#a9b8a617feb0210f9e55f544569fd680b',1,'meshx_cfg_srv_state_change_t']]],
-  ['new_20boards_20mcus_20or_20sdks_8',['Adding support for new boards, MCUs or SDKs',['../index.html#autotoc_md39',1,'']]],
+  ['new_20boards_20mcus_20or_20sdks_8',['Adding support for new boards, MCUs or SDKs',['../index.html#autotoc_md37',1,'']]],
   ['next_9',['next',['../dd/d58/structmeshx__gen__cli__cb__reg__node.html#a07e742640e6299b80bb31aed4c4cfb57',1,'meshx_gen_cli_cb_reg_node::next'],['../dd/de6/structmeshx__gen__light__cli__cb__reg__node.html#a18e59cb03c2884d320001bcb13967206',1,'meshx_gen_light_cli_cb_reg_node::next'],['../dc/db1/structcontrol__task__evt__cb__reg.html#ab04af0802be06d522ce5f7272b2e0add',1,'control_task_evt_cb_reg::next'],['../d1/d11/structmeshx__nvs__write__list.html#a145b4b7296716b7d8912bfd603ad23b2',1,'meshx_nvs_write_list::next']]],
   ['no_20warranty_20strong_10',['&lt;strong&gt;6. No Warranty&lt;/strong&gt;',['../da/d19/md_LICENSE.html#autotoc_md15',1,'']]],
   ['node_5fadd_5fapp_5fkey_5fcomp_11',['node_add_app_key_comp',['../d1/db1/unionmeshx__prov__cb__param__t.html#a388200128d0bb6ea7753647418194645',1,'meshx_prov_cb_param_t']]],
@@ -37,7 +37,6 @@ var searchData=
   ['node_5fproxy_5fidentity_5fenable_5fcomp_34',['node_proxy_identity_enable_comp',['../d1/db1/unionmeshx__prov__cb__param__t.html#ac0e71d8cc96433781de149b14dff6fae',1,'meshx_prov_cb_param_t']]],
   ['node_5fset_5funprov_5fdev_5fname_5fcomp_35',['node_set_unprov_dev_name_comp',['../d1/db1/unionmeshx__prov__cb__param__t.html#ab9b3a2f7ebe6a24f0f05bbe956395825',1,'meshx_prov_cb_param_t']]],
   ['north_36',['north',['../d0/db6/structmeshx__state__change__gen__loc__local__set__t.html#a8253e55464f69cfc6d6ce0842be36c62',1,'meshx_state_change_gen_loc_local_set_t']]],
-  ['notes_20and_20tips_37',['Notes and tips',['../index.html#autotoc_md37',1,'']]],
-  ['notes_20on_20environment_20and_20code_20generation_38',['Notes on environment and code generation',['../index.html#autotoc_md28',1,'']]],
-  ['number_39',['number',['../d1/d28/structmeshx__prov__cb__param__t_1_1meshx__output__num__evt__param.html#a4d1de559c5830382693f86061a5fee43',1,'meshx_prov_cb_param_t::meshx_output_num_evt_param::number'],['../db/d16/structmeshx__prov__cb__param__t_1_1meshx__provisioner__prov__output__evt__param.html#a332be4a79d6d1f4a0638d8d78e880b91',1,'meshx_prov_cb_param_t::meshx_provisioner_prov_output_evt_param::number']]]
+  ['notes_20and_20tips_37',['Notes and tips',['../index.html#autotoc_md35',1,'']]],
+  ['number_38',['number',['../d1/d28/structmeshx__prov__cb__param__t_1_1meshx__output__num__evt__param.html#a4d1de559c5830382693f86061a5fee43',1,'meshx_prov_cb_param_t::meshx_output_num_evt_param::number'],['../db/d16/structmeshx__prov__cb__param__t_1_1meshx__provisioner__prov__output__evt__param.html#a332be4a79d6d1f4a0638d8d78e880b91',1,'meshx_prov_cb_param_t::meshx_provisioner_prov_output_evt_param::number']]]
 ];

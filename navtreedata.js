@@ -25,34 +25,30 @@
 var NAVTREE =
 [
   [ "MeshX", "index.html", [
-    [ "Highlights", "index.html#autotoc_md20", null ],
-    [ "Repository layout (relevant parts)", "index.html#autotoc_md21", null ],
-    [ "Supported BSPs / MCUs / SDKs (current)", "index.html#autotoc_md22", [
-      [ "BSPs", "index.html#autotoc_md23", null ],
-      [ "MCU families / targets", "index.html#autotoc_md24", null ],
-      [ "SDKs / Integrations", "index.html#autotoc_md25", null ]
+    [ "Contributing", "index.html#autotoc_md20", null ],
+    [ "Highlights", "index.html#autotoc_md21", null ],
+    [ "Repository layout (relevant parts)", "index.html#autotoc_md22", null ],
+    [ "Supported BSPs / MCUs / SDKs (current)", "index.html#autotoc_md23", [
+      [ "BSPs", "index.html#autotoc_md24", null ],
+      [ "MCU families / targets", "index.html#autotoc_md25", null ],
+      [ "SDKs / Integrations", "index.html#autotoc_md26", null ]
     ] ],
-    [ "CMake-level build system", "index.html#autotoc_md26", [
-      [ "Examples — out-of-tree CMake build", "index.html#autotoc_md27", null ],
-      [ "Notes on environment and code generation", "index.html#autotoc_md28", null ],
-      [ "Using the included helper scripts", "index.html#autotoc_md29", null ],
-      [ "Product and model profiles", "index.html#autotoc_md30", null ],
-      [ "Writing a custom product profile (prod_profile.yml)", "index.html#autotoc_md31", [
-        [ "Minimum product entry example", "index.html#autotoc_md32", null ],
-        [ "Fields explained", "index.html#autotoc_md33", null ],
-        [ "Practical example (based on tools/scripts/prod_profile.ci.yml)", "index.html#autotoc_md34", null ],
-        [ "How MeshX uses the profile", "index.html#autotoc_md35", null ],
-        [ "Testing a product profile locally", "index.html#autotoc_md36", null ]
+    [ "CMake-level build system", "index.html#autotoc_md27", [
+      [ "Product and model profiles", "index.html#autotoc_md28", null ],
+      [ "Writing a custom product profile (prod_profile.yml)", "index.html#autotoc_md29", [
+        [ "Minimum product entry example", "index.html#autotoc_md30", null ],
+        [ "Fields explained", "index.html#autotoc_md31", null ],
+        [ "Practical example (based on tools/scripts/prod_profile.ci.yml)", "index.html#autotoc_md32", null ],
+        [ "How MeshX uses the profile", "index.html#autotoc_md33", null ],
+        [ "Testing a product profile locally", "index.html#autotoc_md34", null ]
       ] ],
-      [ "Notes and tips", "index.html#autotoc_md37", null ],
-      [ "Flashing and monitoring (ESP-IDF)", "index.html#autotoc_md38", null ],
-      [ "Adding support for new boards, MCUs or SDKs", "index.html#autotoc_md39", [
-        [ "Templates and a step-by-step example", "index.html#autotoc_md40", null ]
+      [ "Notes and tips", "index.html#autotoc_md35", null ],
+      [ "Flashing and monitoring (ESP-IDF)", "index.html#autotoc_md36", null ],
+      [ "Adding support for new boards, MCUs or SDKs", "index.html#autotoc_md37", [
+        [ "Templates and a step-by-step example", "index.html#autotoc_md38", null ]
       ] ],
-      [ "Troubleshooting & tips", "index.html#autotoc_md41", null ]
+      [ "Troubleshooting & tips", "index.html#autotoc_md39", null ]
     ] ],
-    [ "Contributing", "index.html#autotoc_md42", null ],
-    [ "License", "index.html#autotoc_md43", null ],
     [ "MeshX Proprietary License (MPL) v1.0", "da/d19/md_LICENSE.html", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [
@@ -91,10 +87,10 @@ var NAVTREEINDEX =
 "d5/d8f/meshx__nvs_8c.html#a3773373d74bd4e2c0415a89f7652ebe8",
 "d7/dcb/meshx__log_8h.html#aab45c3bbc9cb0d29d9828b8f85794aa5",
 "d9/dad/structmeshx__state__change__sensor__status__t.html#a9e2ccbc79e713d12175c643f03ef1c9f",
-"da/df4/meshx__relay__client_8c.html#a78912dcce7e42851d05867d83e61ce9d",
-"dc/d93/meshx__api_8c.html#a5b8d1eddceb8ab76e5fdc7fea5545496",
-"de/d9b/structcwww__client__element.html#af388c27c57505282503728bd5e1ff9d3",
-"dir_310fa45c7e41c8dfdf0fcc0a2c75314a.html"
+"da/df4/meshx__relay__client_8c.html#a996b1b700c16cc503efcad84fab6077c",
+"dc/d93/meshx__api_8c.html#a5bf953dbf23563a53565103f90bc55bf",
+"de/d9b/structmeshx__state__change__cfg__mod__pub__va__set__t.html",
+"dir_3322b7073cb8cf8d9a00748e79ff14c5.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

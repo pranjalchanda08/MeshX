@@ -6,132 +6,112 @@
       <Path>index.html</Path>
       <Subnodes>
        <Node>
-        <Name>Highlights</Name>
+        <Name>Contributing</Name>
         <Path>index.html</Path>
         <Anchor>autotoc_md20</Anchor>
        </Node>
        <Node>
-        <Name>Repository layout (relevant parts)</Name>
+        <Name>Highlights</Name>
         <Path>index.html</Path>
         <Anchor>autotoc_md21</Anchor>
        </Node>
        <Node>
-        <Name>Supported BSPs / MCUs / SDKs (current)</Name>
+        <Name>Repository layout (relevant parts)</Name>
         <Path>index.html</Path>
         <Anchor>autotoc_md22</Anchor>
+       </Node>
+       <Node>
+        <Name>Supported BSPs / MCUs / SDKs (current)</Name>
+        <Path>index.html</Path>
+        <Anchor>autotoc_md23</Anchor>
       <Subnodes>
          <Node>
           <Name>BSPs</Name>
           <Path>index.html</Path>
-          <Anchor>autotoc_md23</Anchor>
+          <Anchor>autotoc_md24</Anchor>
          </Node>
          <Node>
           <Name>MCU families / targets</Name>
           <Path>index.html</Path>
-          <Anchor>autotoc_md24</Anchor>
+          <Anchor>autotoc_md25</Anchor>
          </Node>
          <Node>
           <Name>SDKs / Integrations</Name>
           <Path>index.html</Path>
-          <Anchor>autotoc_md25</Anchor>
+          <Anchor>autotoc_md26</Anchor>
          </Node>
         </Subnodes>
        </Node>
        <Node>
         <Name>CMake-level build system</Name>
         <Path>index.html</Path>
-        <Anchor>autotoc_md26</Anchor>
+        <Anchor>autotoc_md27</Anchor>
       <Subnodes>
          <Node>
-          <Name>Examples — out-of-tree CMake build</Name>
-          <Path>index.html</Path>
-          <Anchor>autotoc_md27</Anchor>
-         </Node>
-         <Node>
-          <Name>Notes on environment and code generation</Name>
+          <Name>Product and model profiles</Name>
           <Path>index.html</Path>
           <Anchor>autotoc_md28</Anchor>
          </Node>
          <Node>
-          <Name>Using the included helper scripts</Name>
-          <Path>index.html</Path>
-          <Anchor>autotoc_md29</Anchor>
-         </Node>
-         <Node>
-          <Name>Product and model profiles</Name>
-          <Path>index.html</Path>
-          <Anchor>autotoc_md30</Anchor>
-         </Node>
-         <Node>
           <Name>Writing a custom product profile (prod_profile.yml)</Name>
           <Path>index.html</Path>
-          <Anchor>autotoc_md31</Anchor>
+          <Anchor>autotoc_md29</Anchor>
         <Subnodes>
            <Node>
             <Name>Minimum product entry example</Name>
             <Path>index.html</Path>
-            <Anchor>autotoc_md32</Anchor>
+            <Anchor>autotoc_md30</Anchor>
            </Node>
            <Node>
             <Name>Fields explained</Name>
             <Path>index.html</Path>
-            <Anchor>autotoc_md33</Anchor>
+            <Anchor>autotoc_md31</Anchor>
            </Node>
            <Node>
             <Name>Practical example (based on tools/scripts/prod_profile.ci.yml)</Name>
             <Path>index.html</Path>
-            <Anchor>autotoc_md34</Anchor>
+            <Anchor>autotoc_md32</Anchor>
            </Node>
            <Node>
             <Name>How MeshX uses the profile</Name>
             <Path>index.html</Path>
-            <Anchor>autotoc_md35</Anchor>
+            <Anchor>autotoc_md33</Anchor>
            </Node>
            <Node>
             <Name>Testing a product profile locally</Name>
             <Path>index.html</Path>
-            <Anchor>autotoc_md36</Anchor>
+            <Anchor>autotoc_md34</Anchor>
            </Node>
           </Subnodes>
          </Node>
          <Node>
           <Name>Notes and tips</Name>
           <Path>index.html</Path>
-          <Anchor>autotoc_md37</Anchor>
+          <Anchor>autotoc_md35</Anchor>
          </Node>
          <Node>
           <Name>Flashing and monitoring (ESP-IDF)</Name>
           <Path>index.html</Path>
-          <Anchor>autotoc_md38</Anchor>
+          <Anchor>autotoc_md36</Anchor>
          </Node>
          <Node>
           <Name>Adding support for new boards, MCUs or SDKs</Name>
           <Path>index.html</Path>
-          <Anchor>autotoc_md39</Anchor>
+          <Anchor>autotoc_md37</Anchor>
         <Subnodes>
            <Node>
             <Name>Templates and a step-by-step example</Name>
             <Path>index.html</Path>
-            <Anchor>autotoc_md40</Anchor>
+            <Anchor>autotoc_md38</Anchor>
            </Node>
           </Subnodes>
          </Node>
          <Node>
           <Name>Troubleshooting &amp; tips</Name>
           <Path>index.html</Path>
-          <Anchor>autotoc_md41</Anchor>
+          <Anchor>autotoc_md39</Anchor>
          </Node>
         </Subnodes>
-       </Node>
-       <Node>
-        <Name>Contributing</Name>
-        <Path>index.html</Path>
-        <Anchor>autotoc_md42</Anchor>
-       </Node>
-       <Node>
-        <Name>License</Name>
-        <Path>index.html</Path>
-        <Anchor>autotoc_md43</Anchor>
        </Node>
        <Node>
         <Name>MeshX Proprietary License (MPL) v1.0</Name>
@@ -23103,11 +23083,6 @@
                   <Path>da/dd5/unit__test_8c.html</Path>
                 <Subnodes>
                    <Node>
-                    <Name>TAG</Name>
-                    <Path>da/dd5/unit__test_8c.html</Path>
-                    <Anchor>afc3d101f633a076cc1ca84b85b6224b2</Anchor>
-                   </Node>
-                   <Node>
                     <Name>UT_CMD_MIN_ARGS</Name>
                     <Path>da/dd5/unit__test_8c.html</Path>
                     <Anchor>a34a8f8586d117620af9b3f50833511d7</Anchor>
@@ -23540,6 +23515,263 @@
                       </Subnodes>
                      </Node>
                      <Node>
+                      <Name>common</Name>
+                      <Path>dir_70bdce58bf6b565962664df5772048ca.html</Path>
+                    <Subnodes>
+                       <Node>
+                        <Name>inc</Name>
+                        <Path>dir_f0f3b84ca297efdaee69b2dc24596f75.html</Path>
+                      <Subnodes>
+                         <Node>
+                          <Name>ble_mesh_plat_init.h</Name>
+                          <Path>d9/db9/ble__mesh__plat__init_8h.html</Path>
+                        <Subnodes>
+                           <Node>
+                            <Name>ble_mesh_get_dev_uuid</Name>
+                            <Path>d9/db9/ble__mesh__plat__init_8h.html</Path>
+                            <Anchor>a4c7465dc3b7f31add02610dcd8647477</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>bluetooth_init</Name>
+                            <Path>d9/db9/ble__mesh__plat__init_8h.html</Path>
+                            <Anchor>a2bae8dcbee489037789f228234a3072d</Anchor>
+                           </Node>
+                          </Subnodes>
+                         </Node>
+                         <Node>
+                          <Name>meshx_platform_ble_mesh.h</Name>
+                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                        <Subnodes>
+                           <Node>
+                            <Name>MESHX_CFG_SRV</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>af7c903f01a144ed6d82e929ddb0b00b0</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_CLI</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>adbe96b16fe2a2d9b4e8fd55b44c00688</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_CLIENT</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a6a02e31a4ad7e9f3694d6de2f381b0e2</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_COMPOSITION</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a82a05f1bae7f3ac89c3d82651ad10382</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_ELEMENT</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>aecfa46bbd0355df26660c0d118c68358</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_GEN_CLI_CB</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a59da08c0b69b0bf4b774f8791c8a8cdd</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_GEN_CLI_CB_EVT</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a12028648ee3c50e9b798fae862a40169</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_GEN_CLI_CB_PARAM</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a836e31f976d388b53b7fbd8e53742dab</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_GEN_LIGHT_CLI_CB</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>afc75bac1bc430a1f0f35d4dcc7df9791</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_GEN_LIGHT_CLI_CB_EVT</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a72faaf31aeb5444eb86c489cbcb2e9dc</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_GEN_LIGHT_CLI_CB_PARAM</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>afe78ad9e4c740abfc99226d5075c0f24</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_GEN_LIGHT_CTL_CLI</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>afe0609989d3cd26d2f8cc17b11ba3fff</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_GEN_LIGHT_CTL_STATE_CLI</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a50d8ef4ffe9796c003b3bd5645532918</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_GEN_ONOFF_CLI</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a6a3eb7e3bf3afee94ea52f43b6be3a0b</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_GEN_ONOFF_SRV</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a71cafe9985e201da1d33037ab36b1631</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_GEN_SRV_CB</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a25addffa44ed950eec873a8a51aacb2d</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_GEN_SRV_CB_EVT</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a0a7cb719335ca394fc7adcdb10c7c2eb</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_GEN_SRV_CB_PARAM</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a1a1fd4a0f559186af79555610dd0f92a</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_LIGHT_CTL_SRV</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a945bccc5506f70cdda5d65e1ef307c63</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_LIGHT_CTL_STATE</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a603f1cdfc61d8b70c14fc137dc322c96</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_LIGHT_SRV_CB</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a7312485cb65e59312ba85e4a15166912</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_LIGHT_SRV_CB_EVT</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a8b522a9da78e5f215ff15ef80a5a6512</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_LIGHT_SRV_CB_PARAM</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a3072c581597c9d6d79060e42d9ae5b1f</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_MODEL</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>ab8c86cf2f5e47acb374476edda8b5b7c</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_MODEL_PUB</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>ae8272f86afe3a74d8de48473ecefaf5e</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_PROV</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a7c53320caed399e04974f76c132f75b5</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_PROV_CB</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a9c1ad310b2d547104563bbc3863913ee</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_PROV_CB_EVT</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>ae3f1b7ed309a5b460dbfa8ded71474a1</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_PROV_CB_PARAM</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a99911eb52ba1efa38de0b999246b60ed</Anchor>
+                           </Node>
+                          </Subnodes>
+                         </Node>
+                        </Subnodes>
+                       </Node>
+                       <Node>
+                        <Name>src</Name>
+                        <Path>dir_dc99c03f06dfa2a41a722149d6b25635.html</Path>
+                      <Subnodes>
+                         <Node>
+                          <Name>esp_platform_ble_mesh.c</Name>
+                          <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
+                        <Subnodes>
+                           <Node>
+                            <Name>meshx_create_plat_composition</Name>
+                            <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
+                            <Anchor>a36e3c206ee82075d0b1ec6729d186f71</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_get_base_element_id</Name>
+                            <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
+                            <Anchor>aed72eaf1b8f7fd7bf64c962bb028a31e</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_get_model_id</Name>
+                            <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
+                            <Anchor>ab0b270ac4d086a2e566985d2aabd5be5</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_is_group_subscribed</Name>
+                            <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
+                            <Anchor>ab3ea84732bbdc4a0b8d742aa4f66be09</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_plat_add_element_to_composition</Name>
+                            <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
+                            <Anchor>a2bdab205d68a408e7ec03e58b2fa8a0b</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_plat_ble_mesh_init</Name>
+                            <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
+                            <Anchor>afb1dfab0e0872cf301f64153754e2a15</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_plat_client_create</Name>
+                            <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
+                            <Anchor>ab2af046bc4c0e850d01643ba048e5194</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_plat_composition_init</Name>
+                            <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
+                            <Anchor>a9136f58e68ca58a169038fb9e5fd5c66</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_plat_create_model_pub</Name>
+                            <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
+                            <Anchor>a12b595bcf51021fcaa675e488fe24308</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_plat_del_model_pub</Name>
+                            <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
+                            <Anchor>af87fda327ffe07a7c29d0f01b3d84a57</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_platform_bt_init</Name>
+                            <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
+                            <Anchor>a63a879267392250798cb2ee7caabf1a9</Anchor>
+                           </Node>
+                          </Subnodes>
+                         </Node>
+                         <Node>
+                          <Name>esp_platform_bt.c</Name>
+                          <Path>d6/dec/esp__platform__bt_8c.html</Path>
+                        <Subnodes>
+                           <Node>
+                            <Name>TAG</Name>
+                            <Path>d6/dec/esp__platform__bt_8c.html</Path>
+                            <Anchor>afc3d101f633a076cc1ca84b85b6224b2</Anchor>
+                           </Node>
+                          </Subnodes>
+                         </Node>
+                        </Subnodes>
+                       </Node>
+                      </Subnodes>
+                     </Node>
+                     <Node>
                       <Name>server</Name>
                       <Path>dir_6f6b1fc6b51f05b21cad459ebe0c57a1.html</Path>
                     <Subnodes>
@@ -23788,279 +24020,6 @@
                     </Subnodes>
                    </Node>
                    <Node>
-                    <Name>common</Name>
-                    <Path>dir_8f4cada0f86134971bbc8907753b8f82.html</Path>
-                  <Subnodes>
-                     <Node>
-                      <Name>inc</Name>
-                      <Path>dir_52ac6bdb429af1439551ebedf9752715.html</Path>
-                    <Subnodes>
-                       <Node>
-                        <Name>ble_mesh_plat_init.h</Name>
-                        <Path>d9/db9/ble__mesh__plat__init_8h.html</Path>
-                      <Subnodes>
-                         <Node>
-                          <Name>ble_mesh_get_dev_uuid</Name>
-                          <Path>d9/db9/ble__mesh__plat__init_8h.html</Path>
-                          <Anchor>a4c7465dc3b7f31add02610dcd8647477</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>bluetooth_init</Name>
-                          <Path>d9/db9/ble__mesh__plat__init_8h.html</Path>
-                          <Anchor>a2bae8dcbee489037789f228234a3072d</Anchor>
-                         </Node>
-                        </Subnodes>
-                       </Node>
-                       <Node>
-                        <Name>meshx_platform_ble_mesh.h</Name>
-                        <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                      <Subnodes>
-                         <Node>
-                          <Name>MESHX_CFG_SRV</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>af7c903f01a144ed6d82e929ddb0b00b0</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_CLI</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>adbe96b16fe2a2d9b4e8fd55b44c00688</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_CLIENT</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a6a02e31a4ad7e9f3694d6de2f381b0e2</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_COMPOSITION</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a82a05f1bae7f3ac89c3d82651ad10382</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_ELEMENT</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>aecfa46bbd0355df26660c0d118c68358</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_GEN_CLI_CB</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a59da08c0b69b0bf4b774f8791c8a8cdd</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_GEN_CLI_CB_EVT</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a12028648ee3c50e9b798fae862a40169</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_GEN_CLI_CB_PARAM</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a836e31f976d388b53b7fbd8e53742dab</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_GEN_LIGHT_CLI_CB</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>afc75bac1bc430a1f0f35d4dcc7df9791</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_GEN_LIGHT_CLI_CB_EVT</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a72faaf31aeb5444eb86c489cbcb2e9dc</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_GEN_LIGHT_CLI_CB_PARAM</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>afe78ad9e4c740abfc99226d5075c0f24</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_GEN_LIGHT_CTL_CLI</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>afe0609989d3cd26d2f8cc17b11ba3fff</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_GEN_LIGHT_CTL_STATE_CLI</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a50d8ef4ffe9796c003b3bd5645532918</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_GEN_ONOFF_CLI</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a6a3eb7e3bf3afee94ea52f43b6be3a0b</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_GEN_ONOFF_SRV</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a71cafe9985e201da1d33037ab36b1631</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_GEN_SRV_CB</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a25addffa44ed950eec873a8a51aacb2d</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_GEN_SRV_CB_EVT</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a0a7cb719335ca394fc7adcdb10c7c2eb</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_GEN_SRV_CB_PARAM</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a1a1fd4a0f559186af79555610dd0f92a</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_LIGHT_CTL_SRV</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a945bccc5506f70cdda5d65e1ef307c63</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_LIGHT_CTL_STATE</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a603f1cdfc61d8b70c14fc137dc322c96</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_LIGHT_SRV_CB</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a7312485cb65e59312ba85e4a15166912</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_LIGHT_SRV_CB_EVT</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a8b522a9da78e5f215ff15ef80a5a6512</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_LIGHT_SRV_CB_PARAM</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a3072c581597c9d6d79060e42d9ae5b1f</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_MODEL</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>ab8c86cf2f5e47acb374476edda8b5b7c</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_MODEL_PUB</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>ae8272f86afe3a74d8de48473ecefaf5e</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_PROV</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a7c53320caed399e04974f76c132f75b5</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_PROV_CB</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a9c1ad310b2d547104563bbc3863913ee</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_PROV_CB_EVT</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>ae3f1b7ed309a5b460dbfa8ded71474a1</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>MESHX_PROV_CB_PARAM</Name>
-                          <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
-                          <Anchor>a99911eb52ba1efa38de0b999246b60ed</Anchor>
-                         </Node>
-                        </Subnodes>
-                       </Node>
-                      </Subnodes>
-                     </Node>
-                     <Node>
-                      <Name>src</Name>
-                      <Path>dir_3fd44edb28a884e95a2792724db37734.html</Path>
-                    <Subnodes>
-                       <Node>
-                        <Name>ble_mesh_plat_init.c</Name>
-                        <Path>d7/d32/ble__mesh__plat__init_8c.html</Path>
-                      <Subnodes>
-                         <Node>
-                          <Name>TAG</Name>
-                          <Path>d7/d32/ble__mesh__plat__init_8c.html</Path>
-                          <Anchor>afc3d101f633a076cc1ca84b85b6224b2</Anchor>
-                         </Node>
-                        </Subnodes>
-                       </Node>
-                       <Node>
-                        <Name>esp_platform.c</Name>
-                        <Path>da/dd1/esp__platform_8c.html</Path>
-                      <Subnodes>
-                         <Node>
-                          <Name>meshx_platform_init</Name>
-                          <Path>da/dd1/esp__platform_8c.html</Path>
-                          <Anchor>ad7788a59fd2329ff4d38c18c9cbe16cd</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_platform_reset</Name>
-                          <Path>da/dd1/esp__platform_8c.html</Path>
-                          <Anchor>ac9292fafb9df0803c55a8700fbd9f34d</Anchor>
-                         </Node>
-                        </Subnodes>
-                       </Node>
-                       <Node>
-                        <Name>esp_platform_ble_mesh.c</Name>
-                        <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
-                      <Subnodes>
-                         <Node>
-                          <Name>meshx_create_plat_composition</Name>
-                          <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
-                          <Anchor>a36e3c206ee82075d0b1ec6729d186f71</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_get_base_element_id</Name>
-                          <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
-                          <Anchor>aed72eaf1b8f7fd7bf64c962bb028a31e</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_get_model_id</Name>
-                          <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
-                          <Anchor>ab0b270ac4d086a2e566985d2aabd5be5</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_is_group_subscribed</Name>
-                          <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
-                          <Anchor>ab3ea84732bbdc4a0b8d742aa4f66be09</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_plat_add_element_to_composition</Name>
-                          <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
-                          <Anchor>a2bdab205d68a408e7ec03e58b2fa8a0b</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_plat_ble_mesh_init</Name>
-                          <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
-                          <Anchor>afb1dfab0e0872cf301f64153754e2a15</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_plat_client_create</Name>
-                          <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
-                          <Anchor>ab2af046bc4c0e850d01643ba048e5194</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_plat_composition_init</Name>
-                          <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
-                          <Anchor>a9136f58e68ca58a169038fb9e5fd5c66</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_plat_create_model_pub</Name>
-                          <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
-                          <Anchor>a12b595bcf51021fcaa675e488fe24308</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_plat_del_model_pub</Name>
-                          <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
-                          <Anchor>af87fda327ffe07a7c29d0f01b3d84a57</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_platform_bt_init</Name>
-                          <Path>dc/d96/esp__platform__ble__mesh_8c.html</Path>
-                          <Anchor>a63a879267392250798cb2ee7caabf1a9</Anchor>
-                         </Node>
-                        </Subnodes>
-                       </Node>
-                      </Subnodes>
-                     </Node>
-                    </Subnodes>
-                   </Node>
-                   <Node>
                     <Name>utils</Name>
                     <Path>dir_7ffbd69596d7f4dbfe3ce974a552cf85.html</Path>
                   <Subnodes>
@@ -24107,6 +24066,22 @@
                         <Name>meshx_nvs_plat_write</Name>
                         <Path>dc/d28/esp__nvs_8c.html</Path>
                         <Anchor>a486367a843345efbb5edb7267a706eb3</Anchor>
+                       </Node>
+                      </Subnodes>
+                     </Node>
+                     <Node>
+                      <Name>esp_platform.c</Name>
+                      <Path>da/dd1/esp__platform_8c.html</Path>
+                    <Subnodes>
+                       <Node>
+                        <Name>meshx_platform_init</Name>
+                        <Path>da/dd1/esp__platform_8c.html</Path>
+                        <Anchor>ad7788a59fd2329ff4d38c18c9cbe16cd</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>meshx_platform_reset</Name>
+                        <Path>da/dd1/esp__platform_8c.html</Path>
+                        <Anchor>ac9292fafb9df0803c55a8700fbd9f34d</Anchor>
                        </Node>
                       </Subnodes>
                      </Node>
