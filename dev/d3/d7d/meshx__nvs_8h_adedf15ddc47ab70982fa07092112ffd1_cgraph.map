@@ -1,0 +1,5 @@
+<map id="meshx_nvs_erase" name="meshx_nvs_erase">
+<area shape="rect" id="Node000001" title="Erase all key&#45;value pairs stored in the NVS." alt="" coords="5,5,132,31"/>
+<area shape="rect" id="Node000002" href="$dc/d28/esp__nvs_8c.html#ac07e3fa684f8bd4f45c595c237b98504" title="Erase all key&#45;value pairs in the given namespace." alt="" coords="180,5,334,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="132,16,164,16,164,21,132,21"/>
+</map>

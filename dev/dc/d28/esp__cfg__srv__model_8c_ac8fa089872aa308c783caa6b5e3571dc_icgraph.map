@@ -1,0 +1,5 @@
+<map id="meshx_plat_get_config_srv_instance" name="meshx_plat_get_config_srv_instance">
+<area shape="rect" id="Node000001" title="Retrieve the instance of the BLE Mesh configuration server." alt="" coords="204,5,357,46"/>
+<area shape="rect" id="Node000002" href="$dd/d79/meshx__config__server_8c.html#a4c424cb298da477d3260629c3f6236e7" title="Retrieves the instance of the MeshX configuration server." alt="" coords="5,5,156,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="188,28,156,28,156,23,188,23"/>
+</map>

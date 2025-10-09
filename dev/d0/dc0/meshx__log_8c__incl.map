@@ -1,0 +1,26 @@
+<map id="meshx_log.c" name="meshx_log.c">
+<area shape="rect" id="Node000001" title="Implementation of the MeshX logging system." alt="" coords="272,5,366,31"/>
+<area shape="rect" id="Node000002" href="$d7/dcb/meshx__log_8h.html" title="Logging interface for MeshX with color&#45;coded output." alt="" coords="188,86,282,112"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="308,33,261,78,257,74,304,29"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,168,65,193"/>
+<area shape="poly" id="edge12_Node000001_Node000003" title=" " alt="" coords="285,34,233,54,178,81,115,121,63,160,60,156,112,117,175,77,231,50,283,29"/>
+<area shape="rect" id="Node000006" href="$d3/da1/module__id_8h.html" title="Defines module IDs for different elements in the BLE mesh node application." alt="" coords="272,168,363,193"/>
+<area shape="poly" id="edge8_Node000001_Node000006" title=" " alt="" coords="322,32,321,152,315,152,316,31"/>
+<area shape="rect" id="Node000009" href="$d8/d39/meshx__rtos__utils_8h.html" title="Utility functions for RTOS operations in the MeshX framework." alt="" coords="360,79,499,120"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="337,29,392,68,388,72,334,34"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="524,86,591,112"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="362,29,512,76,516,78,514,83,510,82,361,34"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="205,115,80,164,78,159,203,110"/>
+<area shape="rect" id="Node000004" href="$df/d01/meshx__config__internal_8h.html" title="Internal configuration settings for MeshX." alt="" coords="89,168,248,193"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="227,114,190,157,186,154,223,111"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="249,111,296,155,292,159,246,115"/>
+<area shape="rect" id="Node000007" href="$da/d68/meshx__err_8h.html" title="MeshX Error Codes." alt="" coords="387,168,478,193"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="266,110,389,159,387,164,264,115"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="113,241,224,267"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="171,194,171,226,166,226,166,194"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="401,241,464,267"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="435,194,435,226,430,226,430,194"/>
+<area shape="poly" id="edge10_Node000009_Node000007" title=" " alt="" coords="433,120,434,152,429,152,428,120"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="503,168,570,193"/>
+<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="458,118,510,156,506,160,454,122"/>
+</map>

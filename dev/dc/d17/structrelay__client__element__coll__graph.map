@@ -1,0 +1,5 @@
+<map id="relay_client_element" name="relay_client_element">
+<area shape="rect" id="Node000001" title="Structure to hold the context and configuration for the relay client element." alt="" coords="5,231,166,338"/>
+<area shape="rect" id="Node000002" href="$d2/d12/structmeshx__relay__client__model__ctx.html" title="Structure to hold the context of the relay client." alt="" coords="26,5,146,168"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,168,88,214,83,214,83,168"/>
+</map>
