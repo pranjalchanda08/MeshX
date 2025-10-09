@@ -1,0 +1,7 @@
+<map id="control_task_msg_unsubscribe" name="control_task_msg_unsubscribe">
+<area shape="rect" id="Node000001" title="Deregister a callback for a specific message code and event bitmap." alt="" coords="5,5,207,31"/>
+<area shape="rect" id="Node000002" href="$d3/df5/meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="255,5,372,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="207,16,239,16,239,21,207,21"/>
+<area shape="rect" id="Node000003" href="$d3/df5/meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="420,5,597,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="372,16,405,16,405,21,372,21"/>
+</map>

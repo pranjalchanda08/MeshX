@@ -1,0 +1,5 @@
+<map id="meshx_is_gen_cli_model" name="meshx_is_gen_cli_model">
+<area shape="rect" id="Node000001" title="Checks if the given model ID corresponds to a Generic Client model." alt="" coords="212,13,378,38"/>
+<area shape="rect" id="Node000002" href="$d0/dbc/meshx__gen__client_8c.html#a008db8f74e4a1c34f11303986f05acf9" title="Registers a callback function for a specific generic server model." alt="" coords="5,5,164,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,28,164,28,164,23,196,23"/>
+</map>

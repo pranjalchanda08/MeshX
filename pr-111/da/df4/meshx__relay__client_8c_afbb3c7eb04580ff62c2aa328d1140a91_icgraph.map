@@ -1,0 +1,11 @@
+<map id="meshx_relay_cli_send_onoff_msg" name="meshx_relay_cli_send_onoff_msg">
+<area shape="rect" id="Node000001" title="Sends a relay message over BLE mesh." alt="" coords="792,5,940,46"/>
+<area shape="rect" id="Node000002" href="$da/df4/meshx__relay__client_8c.html#af3f0e8fee125cc694401dddfc2f00e82" title="Relay Client Element Application Request Handler." alt="" coords="612,5,744,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="776,28,744,28,744,23,776,23"/>
+<area shape="rect" id="Node000003" href="$da/df4/meshx__relay__client_8c.html#a589bb558fe9feaf48de5a01429354601" title="Registers a callback handler for relay application requests." alt="" coords="426,5,564,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="597,28,565,28,565,23,597,23"/>
+<area shape="rect" id="Node000004" href="$da/df4/meshx__relay__client_8c.html#a78912dcce7e42851d05867d83e61ce9d" title="Create Dynamic Relay Model Elements." alt="" coords="249,5,378,46"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="411,28,379,28,379,23,411,23"/>
+<area shape="rect" id="Node000005" href="$da/df4/meshx__relay__client_8c.html#a6714b32ec5f1113fae863457f0cfe653" title=" " alt="" coords="5,13,201,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="233,28,201,28,201,23,233,23"/>
+</map>

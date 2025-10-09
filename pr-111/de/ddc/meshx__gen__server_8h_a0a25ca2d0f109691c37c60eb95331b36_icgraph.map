@@ -1,0 +1,15 @@
+<map id="meshx_gen_srv_send_msg_to_ble" name="meshx_gen_srv_send_msg_to_ble">
+<area shape="rect" id="Node000001" title="Sends a message to the BLE subsystem via the control task." alt="" coords="719,39,867,79"/>
+<area shape="rect" id="Node000002" href="$d9/d46/meshx__cwww__server_8c.html#af44b869dfc97f122b46ad2752ee96d48" title="Callback function for relay server model events for Provisioning events." alt="" coords="503,5,671,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="704,47,671,42,672,37,704,42"/>
+<area shape="rect" id="Node000005" href="$d1/df4/meshx__relay__server_8c.html#a5f5111cb1970185951be34d4aa8045de" title="Callback function for relay server model events for Provisioning events." alt="" coords="524,71,650,111"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="704,75,651,84,650,79,704,70"/>
+<area shape="rect" id="Node000003" href="$d9/d46/meshx__cwww__server_8c.html#ac1498e20904edfabe76c92f9da6375bd" title="Create Dynamic CWWW Server Model Elements." alt="" coords="249,13,455,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="487,28,455,28,455,23,487,23"/>
+<area shape="rect" id="Node000004" href="$d9/d46/meshx__cwww__server_8c.html#aa8082758a025ec4f2663cc48f873b7d9" title=" " alt="" coords="5,13,201,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="233,28,201,28,201,23,233,23"/>
+<area shape="rect" id="Node000006" href="$d1/df4/meshx__relay__server_8c.html#af1332e2c64515cfa728a8b529abdc00b" title="Create Dynamic Relay Model Elements." alt="" coords="284,71,420,111"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="508,94,421,94,421,88,508,88"/>
+<area shape="rect" id="Node000007" href="$d1/df4/meshx__relay__server_8c.html#a4f078550e7f2f704da32b4d524bc266d" title=" " alt="" coords="5,78,201,104"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="268,94,201,94,201,88,268,88"/>
+</map>
