@@ -132,8 +132,7 @@ Contributing</h1>
 Highlights</h1>
 <ul>
 <li>Portable CMake-based build integration for multiple BSPs and MCUs</li>
-<li>Current BSP: <code>weact_c3</code> (WeAct ESP32-C3 board)</li>
-<li>Current MCU family: <code>esp</code> with supported MCU: <code>esp32c3</code></li>
+<li>Current MCU family: <code>esp</code> with supported MCU: <code>esp32, esp32c3</code></li>
 <li>SDK integration: ESP-IDF (driven by the <code>IDF_PATH</code> environment variable)</li>
 <li>CMake options to select BSP, product profile, and build an executable</li>
 </ul>
@@ -154,7 +153,9 @@ BSPs</h2>
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">BSP name   </th><th class="markdownTableHeadNone">Board / Notes   </th><th class="markdownTableHeadNone">Location (CMake)    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">weact_c3   </td><td class="markdownTableBodyNone">WeAct ESP32-C3 development board   </td><td class="markdownTableBodyNone"><code>port/bsp/weact_c3/bsp.cmake</code>   </td></tr>
+<td class="markdownTableBodyNone">weact_c3   </td><td class="markdownTableBodyNone">WeAct ESP32-C3 development board   </td><td class="markdownTableBodyNone"><code>port/bsp/weact_c3/bsp.cmake</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">esp32-devkitC   </td><td class="markdownTableBodyNone">ESP32 WROOM Development board   </td><td class="markdownTableBodyNone"><code>port/bsp/esp32_devkitC/bsp.cmake</code>   </td></tr>
 </table>
 <h2><a class="anchor" id="autotoc_md25"></a>
 MCU families / targets</h2>
@@ -162,6 +163,8 @@ MCU families / targets</h2>
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">MCU family   </th><th class="markdownTableHeadNone">Target   </th><th class="markdownTableHeadNone">Notes / Location    </th></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">esp   </td><td class="markdownTableBodyNone">esp32   </td><td class="markdownTableBodyNone"><code>port/platform/esp/esp32/esp32.cmake</code>    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">esp   </td><td class="markdownTableBodyNone">esp32c3   </td><td class="markdownTableBodyNone"><code>port/platform/esp/esp32c3/esp32c3.cmake</code>   </td></tr>
 </table>
 <h2><a class="anchor" id="autotoc_md26"></a>
@@ -369,7 +372,7 @@ Troubleshooting &amp; tips</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Oct 9 2025 09:17:13 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Thu Oct 9 2025 12:37:40 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>
