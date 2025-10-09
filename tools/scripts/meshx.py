@@ -1,7 +1,15 @@
+#!/usr/bin/env python3
+
+"""
+    Copyright © 2024 - 2025 MeshX
+"""
+
 import os
 import sys
 import subprocess
 import argparse
+
+VERSION_STRING = "v0.0.1"
 
 BUILD_TYPE = ["Debug", "Release"]
 BSP_LIST = []
@@ -36,6 +44,7 @@ for tool in required_tools:
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description="Build MeshX project.")
 
+parser.add_argument("--version",        action="store_true",    help="Get the version details of meshx.py")
 parser.add_argument("--list-bsp",       action="store_true",    help="List available BSPs and exit.")
 parser.add_argument("--clean",          action="store_true",    help="Clean the build directory before building.")
 parser.add_argument("--bsp",            choices=BSP_LIST,       default=BSP_LIST[0], help="Specify the BSP to use.")
@@ -48,6 +57,10 @@ esp_group = parser.add_argument_group("ESP targets")
 esp_group.add_argument("--menuconfig", action="store_true", help="call ninja menuconfig after cmake")
 
 args = parser.parse_args()
+
+if args.version:
+    print(f"meshx.py Version: {VERSION_STRING}")
+    sys.exit(0)
 
 if args.list_bsp:
     print("Available BSPs:")

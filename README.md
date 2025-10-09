@@ -21,7 +21,7 @@
 *********************************************************************************************************************
 ```
 
-[![CI Pipeline:main](https://github.com/pranjalchanda08/MeshX/actions/workflows/build_ci.yml/badge.svg)](https://github.com/pranjalchanda08/MeshX/actions/workflows/ci.yml) ![Release](https://img.shields.io/badge/Release-v0.3.3-blue)
+[![CI Pipeline:main](https://github.com/pranjalchanda08/MeshX/actions/workflows/build_ci.yml/badge.svg)](https://github.com/pranjalchanda08/MeshX/actions/workflows/ci.yml) ![Release](https://img.shields.io/badge/Release-v0.3.4-blue)
 
 MeshX is a portable C implementation of a Bluetooth Low Energy (BLE) Mesh node stack and example components. It is designed to be portable across board support packages (BSPs), microcontroller units (MCUs) and SDKs via a CMake-driven build system and small platform abstraction layers.
 
@@ -35,8 +35,7 @@ Contributions that add BSPs or improve portability are welcome. Please follow re
 
 ## Highlights
 - Portable CMake-based build integration for multiple BSPs and MCUs
-- Current BSP: `weact_c3` (WeAct ESP32-C3 board)
-- Current MCU family: `esp` with supported MCU: `esp32c3`
+- Current MCU family: `esp` with supported MCU: `esp32, esp32c3`
 - SDK integration: ESP-IDF (driven by the `IDF_PATH` environment variable)
 - CMake options to select BSP, product profile, and build an executable
 
@@ -46,21 +45,23 @@ Contributions that add BSPs or improve portability are welcome. Please follow re
 - `main/CMakeLists.txt` - Collects sources from `main/component/meshx` and registers the component with the platform.
 - `port/bsp/` - BSPs live here. Each BSP contains board-specific CMake configuration and product profiles.
 - `port/platform/esp/` - ESP platform integration (ESP-IDF glue and esp32c3 support files).
-- `tools/scripts/` - Helper scripts and code-generation utilities (`code_gen.py`, `meshx_build.py`, etc.).
+- `tools/scripts/` - Helper scripts and code-generation utilities (`code_gen.py`, `meshx.py`, etc.).
 
 ## Supported BSPs / MCUs / SDKs (current)
 
 ### BSPs
 
-| BSP name  | Board / Notes                         | Location (CMake)                        |
-|-----------|---------------------------------------|-----------------------------------------|
-| weact_c3  | WeAct ESP32-C3 development board      | `port/bsp/weact_c3/bsp.cmake`           |
+| BSP name      | Board / Notes                    | Location (CMake)                        |
+|---------------|----------------------------------|-----------------------------------------|
+| weact_c3      | WeAct ESP32-C3 development board | `port/bsp/weact_c3/bsp.cmake`           |
+| esp32-devkitC | ESP32 WROOM Development board    | `port/bsp/esp32_devkitC/bsp.cmake`      |
 
 ### MCU families / targets
 
-| MCU family | Target     | Notes / Location                                      |
-|------------|------------|-------------------------------------------------------|
-| esp        | esp32c3    | `port/platform/esp/esp32c3/esp32c3.cmake`             |
+| MCU family | Target     | Notes / Location                           |
+|------------|------------|--------------------------------------------|
+| esp        | esp32      | `port/platform/esp/esp32/esp32.cmake`      |
+| esp        | esp32c3    | `port/platform/esp/esp32c3/esp32c3.cmake`  |
 
 ### SDKs / Integrations
 
@@ -81,21 +82,46 @@ MeshX is driven from the top-level `CMakeLists.txt`. The most important CMake op
 - `-DELF=<executable_name>` — Name of the final CMake project/ELF. Default set in top-level CMake.
 - `-DENABLE_TESTS=ON` — Enable unit tests if the chosen platform supports it.
 
-Important: product code generation happens at configure time via tools/scripts/code_gen.py and must run before building. To simplify and standardize the configure/build/codegen flow we now provide tools/scripts/meshx_build.py which wraps the generator, CMake configure, and build steps.
+Important: product code generation happens at configure time via tools/scripts/code_gen.py and must run before building. To simplify and standardize the configure/build/codegen flow we now provide tools/scripts/meshx.py which wraps the generator, CMake configure, and build steps.
 
 Examples — single-command wrapper (recommended)
 
-1. Set up ESP-IDF environment (if building ESP targets):
+1. Set up Build environment:
 
 ```bash
-export IDF_PATH=/path/to/esp-idf
-source $IDF_PATH/export.sh
+$ source tools/scripts/env.sh {extra setup execution command}
+# source tools/scripts/env.sh source path/to/esp/idf/export.sh to activate ESP-IDF env as well
 ```
 
 2. Use the build helper:
 
 ```bash
-python3 tools/scripts/meshx_build.py --bsp weact_c3 --prod 4_relay_panel --profile port/bsp/weact_c3/prod_profile.yml --build-dir build
+$ meshx.py --help
+usage: meshx.py [-h] [--list-bsp] [--clean] [--bsp {...}] [--prod-name PROD_NAME [PROD_NAME ...]]
+                      [--prod-profile PROD_PROFILE] [--build-type {Debug,Release}] [--menuconfig]
+
+Build MeshX project.
+
+options:
+  -h, --help            show this help message and exit
+  --version             Get the version details of meshx.py
+  --list-bsp            List available BSPs and exit.
+  --clean               Clean the build directory before building.
+  --bsp {...}
+                        Specify the BSP to use.
+  --prod-name PROD_NAME [PROD_NAME ...]
+                        Specify the product name.
+  --prod-profile PROD_PROFILE
+                        Specify the product profile.
+  --build-type {Debug,Release}
+                        Specify the build type.
+
+ESP targets:
+  --menuconfig          call ninja menuconfig after cmake
+```
+
+```bash
+$ meshx.py --bsp weact_c3 --prod 4_relay_panel --profile port/bsp/weact_c3/prod_profile.yml --build-dir build
 ```
 
 The script will:
@@ -109,12 +135,12 @@ Notes on environment and code generation
 
 - `PROD_NAME` (or `--prod`) is required; the build helper will error if the product is not found.
 - The build helper invokes `tools/scripts/code_gen.py` and ensures generated files are placed where CMake expects them.
-- You can still run the underlying steps manually (code_gen.py + cmake configure/build) but using meshx_build.py ensures reproducible CI-friendly defaults and avoids common mistakes.
+- You can still run the underlying steps manually (code_gen.py + cmake configure/build) but using meshx.py ensures reproducible CI-friendly defaults and avoids common mistakes.
 
 Using the included helper scripts
 
-- tools/scripts/meshx_build.py — new top-level helper that wraps code generation, CMake configure, and build steps. Preferred for local development and CI.
-- tools/scripts/build_ci.sh — CI-oriented wrapper (may call meshx_build.py internally).
+- tools/scripts/meshx.py — new top-level helper that wraps code generation, CMake configure, and build steps. Preferred for local development and CI.
+- tools/scripts/build_ci.sh — CI-oriented wrapper (may call meshx.py internally).
 - tools/scripts/code_gen.py — lower-level generator used by the helper; useful for debugging or validating profiles manually.
 
 ### Product and model profiles
@@ -179,11 +205,11 @@ prod:
 2. Run the code generator directly to verify it finds the product and creates `meshx_config.h`:
 
 ```bash
-python3 tools/scripts/code_gen.py 4_relay_panel --root main/component/meshx --config main/component/meshx/default/inc --profile tools/scripts/prod_profile.ci.yml
+$ code_gen.py 4_relay_panel --root main/component/meshx --config main/component/meshx/default/inc --profile tools/scripts/prod_profile.ci.yml
 
 # Inspect the generated header
-ls -l main/component/meshx/default/inc/meshx_config.h
-cat main/component/meshx/default/inc/meshx_config.h
+$ ls -l main/component/meshx/default/inc/meshx_config.h
+$ cat main/component/meshx/default/inc/meshx_config.h
 ```
 
 3. If the generator complains `Product Not Found`, check that `products[].name` exactly matches the name you passed to `code_gen.py` / `--prod`.
@@ -200,7 +226,7 @@ When building for ESP-IDF targets, the typical flash+monitor flow uses `idf.py` 
 
 ```bash
 # from the build directory configured with ESP-IDF environment
-idf.py -p /dev/ttyUSB0 flash monitor
+$ idf.py -p /dev/ttyUSB0 flash monitor
 ```
 
 If you are using the build helper it will generate an IDF project and artifacts compatible with `idf.py`.
@@ -224,29 +250,29 @@ Quick step-by-step: add a new BSP + MCU
 1. Copy the BSP template and update variables:
 
 ```bash
-cp -r port/bsp/template_bsp port/bsp/my_board
+$ cp -r port/bsp/template_bsp port/bsp/my_board
 # Edit port/bsp/my_board/bsp.cmake and set BOARD_NAME, BOARD_MCU, MCU_FAMILY
 ```
 
 2. Copy and edit the product profile for your board:
 
 ```bash
-cp port/bsp/template_bsp/prod_profile.yml port/bsp/my_board/prod_profile.yml
+$ cp port/bsp/template_bsp/prod_profile.yml port/bsp/my_board/prod_profile.yml
 # Edit prod_profile.yml: set cid, add products[].name, pid, and elements
 ```
 
 3. Create platform glue for your MCU family/target by copying the template and filling in SDK specifics:
 
 ```bash
-mkdir -p port/platform/my_family/my_mcu
-cp port/platform/template_family/template_mcu/template_mcu.cmake port/platform/my_family/my_mcu/my_mcu.cmake
+$ mkdir -p port/platform/my_family/my_mcu
+$ cp port/platform/template_family/template_mcu/template_mcu.cmake port/platform/my_family/my_mcu/my_mcu.cmake
 # Edit my_mcu.cmake to set BASE_PLAT_INC, BASE_PLAT_SRC, PLAT_LIBS and implement register_component() using your SDK's API
 ```
 
 4. Configure a local build using the build helper:
 
 ```bash
-python3 tools/scripts/meshx_build.py --bsp my_board --prod example_product --profile port/bsp/my_board/prod_profile.yml --build-dir build
+$ meshx.py --bsp my_board --prod example_product --profile port/bsp/my_board/prod_profile.yml --build-dir build
 ```
 
 5. Flash / monitor using your SDK's toolchain (for ESP-IDF use `idf.py`) after the build completes.
