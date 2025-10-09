@@ -1,0 +1,7 @@
+<map id="meshx_app_api_msg" name="meshx_app_api_msg">
+<area shape="rect" id="Node000001" title="Structure for the BLE Mesh application API message." alt="" coords="106,211,238,297"/>
+<area shape="rect" id="Node000002" href="$da/d44/structmeshx__ctrl__msg__header.html" title="Structure for the BLE Mesh application control message header." alt="" coords="5,33,157,120"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,118,145,195,140,197,101,121"/>
+<area shape="rect" id="Node000003" href="$d1/d0e/structmeshx__app__element__msg__header.html" title="Structure for the BLE Mesh application element message header." alt="" coords="182,5,343,148"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="229,149,204,197,199,194,224,146"/>
+</map>

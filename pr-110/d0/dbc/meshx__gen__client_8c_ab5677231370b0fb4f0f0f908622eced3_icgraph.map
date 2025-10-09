@@ -1,0 +1,5 @@
+<map id="meshx_handle_gen_onoff_msg" name="meshx_handle_gen_onoff_msg">
+<area shape="rect" id="Node000001" title="Handle the Generic OnOff Client messages." alt="" coords="212,13,411,38"/>
+<area shape="rect" id="Node000002" href="$d0/dbc/meshx__gen__client_8c.html#a008db8f74e4a1c34f11303986f05acf9" title="Registers a callback function for a specific generic server model." alt="" coords="5,5,164,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,28,164,28,164,23,196,23"/>
+</map>

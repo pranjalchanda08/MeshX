@@ -1,0 +1,25 @@
+<map id="meshx_create_element_composition" name="meshx_create_element_composition">
+<area shape="rect" id="Node000001" title="Creates the BLE Mesh element composition." alt="" coords="5,52,161,93"/>
+<area shape="rect" id="Node000002" href="$dd/d79/meshx__config__server_8c.html#a7182f93c9c1882d9523bc873a5a863e1" title="Initialize the meshxuction configuration server." alt="" coords="209,60,376,86"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,70,193,70,193,76,161,76"/>
+<area shape="rect" id="Node000003" href="$df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="649,5,837,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="340,57,424,38,531,25,633,19,634,24,532,31,424,43,341,62"/>
+<area shape="rect" id="Node000005" href="$dd/d79/meshx__config__server_8c.html#a1acaabaffb5bb2a637218fb0804d7b5f" title="Handles the configuration server events from the control task." alt="" coords="438,52,587,93"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="377,70,423,70,423,76,377,76"/>
+<area shape="rect" id="Node000010" href="$dc/d28/esp__cfg__srv__model_8c.html#ac097c3a50a4cb7b7c0167eafb1d011f5" title="Initializes the MeshX platform configuration server." alt="" coords="424,117,601,143"/>
+<area shape="poly" id="edge10_Node000002_Node000010" title=" " alt="" coords="345,84,447,110,445,115,344,89"/>
+<area shape="rect" id="Node000004" href="$d3/df5/meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="1108,9,1242,35"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="837,16,1093,19,1093,24,837,22"/>
+<area shape="rect" id="Node000006" href="$df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="885,60,1057,86"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="587,70,869,70,869,76,587,76"/>
+<area shape="poly" id="edge9_Node000006_Node000004" title=" " alt="" coords="1025,57,1105,37,1107,42,1026,62"/>
+<area shape="rect" id="Node000007" href="$d0/d77/meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue Back." alt="" coords="1105,59,1245,84"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="1057,70,1090,69,1090,75,1057,75"/>
+<area shape="rect" id="Node000008" href="$d3/df5/meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="1116,108,1234,134"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="1029,84,1103,101,1102,106,1028,89"/>
+<area shape="rect" id="Node000009" href="$d3/df5/meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="1293,108,1471,134"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="1234,118,1278,118,1278,124,1234,124"/>
+<area shape="rect" id="Node000011" href="$dc/d28/esp__cfg__srv__model_8c.html#ad87cac3c9cc18a1c278725e8d4b5e80a" title="BLE Mesh Configuration Server callback function." alt="" coords="661,110,825,150"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="601,128,646,128,646,133,601,133"/>
+<area shape="poly" id="edge12_Node000011_Node000006" title=" " alt="" coords="824,107,902,87,903,93,826,112"/>
+</map>

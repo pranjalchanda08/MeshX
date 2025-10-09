@@ -1,0 +1,7 @@
+<map id="meshx_plat_gen_srv_create" name="meshx_plat_gen_srv_create">
+<area shape="rect" id="Node000001" title="Creates and initializes the Generic Server model platform resources." alt="" coords="5,23,146,64"/>
+<area shape="rect" id="Node000002" href="$dc/d96/esp__platform__ble__mesh_8c.html#a12b595bcf51021fcaa675e488fe24308" title="Creates and initializes model and publication structures." alt="" coords="194,5,394,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,33,178,29,179,34,147,38"/>
+<area shape="rect" id="Node000003" href="$dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="203,55,384,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="147,49,188,53,187,58,146,54"/>
+</map>

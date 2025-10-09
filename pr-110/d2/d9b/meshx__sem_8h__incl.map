@@ -1,0 +1,8 @@
+<map id="meshx_sem.h" name="meshx_sem.h">
+<area shape="rect" id="Node000001" title="MeshX Semaphore Interface." alt="" coords="5,5,107,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="24,153,88,178"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="54,32,45,65,43,104,50,137,45,138,37,105,40,64,49,31"/>
+<area shape="rect" id="Node000003" href="$da/d68/meshx__err_8h.html" title="MeshX Error Codes." alt="" coords="52,79,143,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="65,30,85,64,80,67,61,33"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="93,106,73,141,68,138,88,104"/>
+</map>
