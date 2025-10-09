@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2024 - 2025 MeshX
  *
- * @file ble_mesh_plat_init.c
+ * @file esp_platform_bt.c
  * @brief This file contains the initialization code for BLE Mesh functionality
  *        on the ESP32 platform. It supports both Bluedroid and NimBLE BLE stacks.
  *        The file includes functions to initialize the Bluetooth controller,
