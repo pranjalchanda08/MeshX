@@ -36,6 +36,7 @@ jobs:
 
         sudo docker run --rm -v $PWD:$APP_PATH -w $APP_PATH -u $UID -e HOME=/tmp espressif/idf:release-v5.4 /bin/bash -c idf.py -DPROD_NAME="all_in_one" reconfigure
         for product in $(python -c "import yaml; print(' '.join([p['name'] for p in yaml.safe_load(open('tools/scripts/prod_profile.ci.yml'))['prod']['products']]))"); do
+          rm -f sdkconfig
           sh tools/scripts/build_ci.sh $product
         done
       shell: bash
