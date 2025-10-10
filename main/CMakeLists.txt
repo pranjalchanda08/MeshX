@@ -51,6 +51,14 @@ message(STATUS "SRC_FILES: ${SRC_FILES}")
 #-----------------------------------------------------------------------------
 
 # Platform library registration
-register_component("${SRC_FILES}" "${INC_FILES}" "${PLAT_LIBS}"
-)
+register_component("${SRC_FILES}" "${INC_FILES}" "${PLAT_LIBS}")
+#-----------------------------------------------------------------------------
+
+# Create a meshx.py args file like app-flash-args
+set(ARGSTRING "-N ${PROD_NAME} -B ${BSP} --build-type ${MESHX_BUILD_TYPE} -H esp")
+
+message(STATUS "ARGSTRING: ${ARGSTRING}")
+message(STATUS "CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}/meshx.args")
+file(WRITE ${CMAKE_BINARY_DIR}/meshx.args "${ARGSTRING}")
+
 #-----------------------------------------------------------------------------
