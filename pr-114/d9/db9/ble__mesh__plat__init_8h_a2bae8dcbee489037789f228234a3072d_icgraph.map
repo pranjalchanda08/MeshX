@@ -1,0 +1,11 @@
+<map id="bluetooth_init" name="bluetooth_init">
+<area shape="rect" id="Node000001" title="Initialize the Bluetooth stack for BLE Mesh." alt="" coords="730,5,828,31"/>
+<area shape="rect" id="Node000002" href="$dc/d96/esp__platform__ble__mesh_8c.html#a63a879267392250798cb2ee7caabf1a9" title="Initializes the Bluetooth subsystem of the MeshX platform." alt="" coords="526,5,682,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="714,21,682,21,682,16,714,16"/>
+<area shape="rect" id="Node000003" href="$d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="332,5,478,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="511,21,479,21,479,16,511,16"/>
+<area shape="rect" id="Node000004" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="201,5,284,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="316,21,284,21,284,16,316,16"/>
+<area shape="rect" id="Node000005" href="$d0/d29/main_8c.html#a3583f130e87200c7139a48b18f72c8b0" title="Main application entry point." alt="" coords="5,5,153,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="185,21,153,21,153,16,185,16"/>
+</map>

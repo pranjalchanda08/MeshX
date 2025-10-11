@@ -1,0 +1,27 @@
+var meshx__ble__mesh__gen__srv_8h =
+[
+    [ "meshx_state_change_gen_onoff_set_t", "dd/d8e/structmeshx__state__change__gen__onoff__set__t.html", "dd/d8e/structmeshx__state__change__gen__onoff__set__t" ],
+    [ "meshx_state_change_gen_level_set_t", "d7/d0a/structmeshx__state__change__gen__level__set__t.html", "d7/d0a/structmeshx__state__change__gen__level__set__t" ],
+    [ "meshx_state_change_gen_delta_set_t", "d3/d33/structmeshx__state__change__gen__delta__set__t.html", "d3/d33/structmeshx__state__change__gen__delta__set__t" ],
+    [ "meshx_state_change_gen_move_set_t", "d7/da1/structmeshx__state__change__gen__move__set__t.html", "d7/da1/structmeshx__state__change__gen__move__set__t" ],
+    [ "meshx_state_change_gen_def_trans_time_set_t", "d7/d40/structmeshx__state__change__gen__def__trans__time__set__t.html", "d7/d40/structmeshx__state__change__gen__def__trans__time__set__t" ],
+    [ "meshx_state_change_gen_onpowerup_set_t", "da/dbf/structmeshx__state__change__gen__onpowerup__set__t.html", "da/dbf/structmeshx__state__change__gen__onpowerup__set__t" ],
+    [ "meshx_state_change_gen_power_level_set_t", "d0/db7/structmeshx__state__change__gen__power__level__set__t.html", "d0/db7/structmeshx__state__change__gen__power__level__set__t" ],
+    [ "meshx_state_change_gen_power_default_set_t", "de/ddb/structmeshx__state__change__gen__power__default__set__t.html", "de/ddb/structmeshx__state__change__gen__power__default__set__t" ],
+    [ "meshx_state_change_gen_power_range_set_t", "de/d97/structmeshx__state__change__gen__power__range__set__t.html", "de/d97/structmeshx__state__change__gen__power__range__set__t" ],
+    [ "meshx_state_change_gen_loc_global_set_t", "da/dd6/structmeshx__state__change__gen__loc__global__set__t.html", "da/dd6/structmeshx__state__change__gen__loc__global__set__t" ],
+    [ "meshx_state_change_gen_loc_local_set_t", "d0/db6/structmeshx__state__change__gen__loc__local__set__t.html", "d0/db6/structmeshx__state__change__gen__loc__local__set__t" ],
+    [ "meshx_state_change_gen_user_property_set_t", "da/db3/structmeshx__state__change__gen__user__property__set__t.html", "da/db3/structmeshx__state__change__gen__user__property__set__t" ],
+    [ "meshx_state_change_gen_admin_property_set_t", "d5/d19/structmeshx__state__change__gen__admin__property__set__t.html", "d5/d19/structmeshx__state__change__gen__admin__property__set__t" ],
+    [ "meshx_state_change_gen_manu_property_set_t", "d6/d6a/structmeshx__state__change__gen__manu__property__set__t.html", "d6/d6a/structmeshx__state__change__gen__manu__property__set__t" ],
+    [ "meshx_gen_srv_state_change_t", "d3/dbf/unionmeshx__gen__srv__state__change__t.html", "d3/dbf/unionmeshx__gen__srv__state__change__t" ],
+    [ "meshx_gen_srv_cb_param", "d6/d03/structmeshx__gen__srv__cb__param.html", "d6/d03/structmeshx__gen__srv__cb__param" ],
+    [ "meshx_gen_srv_cb_param_t", "d4/d0c/meshx__ble__mesh__gen__srv_8h.html#aba014ef383d24eb88b8dc7e1b3af668b", null ],
+    [ "meshx_server_cb", "d4/d0c/meshx__ble__mesh__gen__srv_8h.html#a791bf7c798eda07732249755042c7459", null ],
+    [ "meshx_plat_gen_on_off_srv_restore", "d4/d0c/meshx__ble__mesh__gen__srv_8h.html#aaecb4b5e4c2b30b2fc03ed2718c6ccc0", null ],
+    [ "meshx_plat_gen_srv_delete", "d4/d0c/meshx__ble__mesh__gen__srv_8h.html#a0a110b2d2002ed7cf43664ff5088a633", null ],
+    [ "meshx_plat_gen_srv_init", "d4/d0c/meshx__ble__mesh__gen__srv_8h.html#a68e99996766c69c3bafe264441a53e58", null ],
+    [ "meshx_plat_gen_srv_send_status", "d4/d0c/meshx__ble__mesh__gen__srv_8h.html#abe7ad1ca0a3b7fa08c7bc2c23230dcee", null ],
+    [ "meshx_plat_on_off_gen_srv_create", "d4/d0c/meshx__ble__mesh__gen__srv_8h.html#a2387de9646c86c19dffb6b2cd78385fa", null ],
+    [ "meshx_plat_set_gen_srv_state", "d4/d0c/meshx__ble__mesh__gen__srv_8h.html#a1ab96d4bf48ce595e659e9735129d566", null ]
+];
