@@ -198,8 +198,8 @@ meshx_err_t meshx_on_off_server_create(meshx_onoff_server_model_t **p_model, voi
 
     return meshx_plat_on_off_gen_srv_create(
         p_sig_model,
-        &((*p_model)->meshx_server_pub),
-        &((*p_model)->meshx_server_onoff_gen_srv));
+        &((*p_model)->meshx_pub),
+        &((*p_model)->meshx_gen));
 }
 
 /**
@@ -222,8 +222,8 @@ meshx_err_t meshx_on_off_server_delete(meshx_onoff_server_model_t **p_model)
     }
 
     meshx_plat_gen_srv_delete(
-        &((*p_model)->meshx_server_pub),
-        &((*p_model)->meshx_server_onoff_gen_srv)
+        &((*p_model)->meshx_pub),
+        &((*p_model)->meshx_gen)
     );
 
     MESHX_FREE(*p_model);

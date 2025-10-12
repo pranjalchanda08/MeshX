@@ -437,12 +437,19 @@ if __name__ == "__main__":
 
     if args.prod_name != []:
         # Load product names from args.prod_profile eg: tools/scripts/prod_profile.ci.yml
+        if not os.path.exists(args.prod_profile):
+            raise FileNotFoundError(f"Product profile '{args.prod_profile}' not found.")
+
+        # Check if all product names are available in the profile
         with open(args.prod_profile, 'r') as f:
             profile_data = yaml.safe_load(f)
-        available_products = [prod['name'] for prod in profile_data['prod'].get('products', [])]
-        for prod in args.prod_name:
-            if prod not in available_products:
-                raise ValueError(f"Product name '{prod}' not found in profile '{args.prod_profile}'. Available products: {', '.join(available_products)}")
+        try:
+            available_products = [prod['name'] for prod in profile_data['prod'].get('products', [])]
+            for prod in args.prod_name:
+                if prod not in available_products:
+                    raise ValueError(f"Product name '{prod}' not found in profile '{args.prod_profile}'. Available products: {', '.join(available_products)}")
+        except (KeyError, TypeError):
+            raise ValueError(f"Product profile '{args.prod_profile}' is not valid.")
     else:
         # If no product name is specified, use all products from the profile
         with open(args.prod_profile, 'r') as f:

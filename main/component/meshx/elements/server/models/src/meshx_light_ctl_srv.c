@@ -223,8 +223,8 @@ static meshx_err_t meshx_light_ctl_setup_server_delete(void)
         g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model = NULL;
 
         meshx_plat_light_srv_delete(
-            &(g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model->meshx_server_pub),
-            &(g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model->meshx_server_gen_srv)
+            &(g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model->meshx_pub),
+            &(g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model->meshx_gen)
         );
 
         g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model = NULL;
@@ -259,8 +259,8 @@ static meshx_err_t meshx_light_ctl_setup_server_create(void)
 
     err = meshx_plat_light_ctl_setup_srv_create(
         &g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_srv_model,
-        &g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model->meshx_server_pub,
-        &g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model->meshx_server_gen_srv);
+        &g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model->meshx_pub,
+        &g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model->meshx_gen);
     if(err != MESHX_SUCCESS)
     {
         /* Tops down deinit for CTL setup server model */
@@ -354,7 +354,7 @@ meshx_err_t meshx_light_ctl_server_init(void)
  *     - MESHX_INVALID_ARG: The provided pointer is NULL.
  *     - MESHX_NO_MEM: Memory allocation failed.
  */
-meshx_err_t meshx_light_ctl_server_create(meshx_ctl_server_model_t **p_model, void *p_sig_model)
+meshx_err_t meshx_light_ctl_server_create(meshx_ctl_server_model_t **p_model, meshx_ptr_t p_sig_model)
 {
     meshx_err_t err = MESHX_SUCCESS;
     if (!p_model || !p_sig_model)
@@ -370,8 +370,8 @@ meshx_err_t meshx_light_ctl_server_create(meshx_ctl_server_model_t **p_model, vo
 
     err = meshx_plat_light_ctl_srv_create(
         p_sig_model,
-        &((*p_model)->meshx_server_pub),
-        &((*p_model)->meshx_server_gen_srv));
+        &((*p_model)->meshx_pub),
+        &((*p_model)->meshx_gen));
     if(err != MESHX_SUCCESS)
     {
         /* Tops down deinit for CTL server model */
@@ -400,7 +400,7 @@ meshx_err_t meshx_light_ctl_server_create(meshx_ctl_server_model_t **p_model, vo
         g_meshx_light_ctl_srv.ctl_lighting_server_created++;
     }
 
-    (*p_model)->meshx_server_sig_model = p_sig_model;
+    (*p_model)->meshx_sig = p_sig_model;
 
     return err;
 }
@@ -425,8 +425,8 @@ meshx_err_t meshx_light_ctl_server_delete(meshx_ctl_server_model_t **p_model)
     }
 
     meshx_plat_light_srv_delete(
-        &((*p_model)->meshx_server_pub),
-        &((*p_model)->meshx_server_gen_srv));
+        &((*p_model)->meshx_pub),
+        &((*p_model)->meshx_gen));
 
     MESHX_FREE(*p_model);
     *p_model = NULL;
@@ -461,7 +461,7 @@ meshx_err_t meshx_light_ctl_srv_state_restore(meshx_ctl_server_model_t *p_model,
     if (!p_model)
         return MESHX_INVALID_STATE;
 
-    return meshx_plat_light_ctl_srv_restore(p_model->meshx_server_sig_model,
+    return meshx_plat_light_ctl_srv_restore(p_model->meshx_sig,
                                             ctl_state.delta_uv,
                                             ctl_state.lightness,
                                             ctl_state.temperature,

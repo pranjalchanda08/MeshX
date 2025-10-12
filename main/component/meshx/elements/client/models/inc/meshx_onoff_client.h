@@ -35,12 +35,7 @@ typedef struct relay_client_state
  * This structure is used to define the On/Off client model in the MeshX framework.
  * It contains pointers to various components required for the On/Off client functionality.
  */
-typedef struct meshx_onoff_client_model
-{
-    meshx_ptr_t meshx_onoff_client_sig_model;     /**< Pointer to the On/Off client SIG model. */
-    meshx_ptr_t meshx_onoff_client_pub;           /**< Pointer to the list of relay client publication structures. */
-    meshx_ptr_t meshx_onoff_client_gen_cli;       /**< Pointer to the list of relay client On/Off generic structures. */
-} meshx_onoff_client_model_t;
+typedef meshx_model_interface_t meshx_onoff_client_model_t;
 
 /**
  * @brief Structure to hold the On/Off Server to element message.

@@ -151,8 +151,8 @@ meshx_err_t meshx_on_off_client_create(meshx_onoff_client_model_t **p_model, voi
 
     return meshx_plat_on_off_gen_cli_create(
         p_sig_model,
-        &((*p_model)->meshx_onoff_client_pub),
-        &((*p_model)->meshx_onoff_client_gen_cli));
+        &((*p_model)->meshx_pub),
+        &((*p_model)->meshx_gen));
 }
 
 /**
@@ -175,8 +175,8 @@ meshx_err_t meshx_on_off_client_delete(meshx_onoff_client_model_t **p_model)
     }
 
     meshx_plat_gen_cli_delete(
-        &((*p_model)->meshx_onoff_client_pub),
-        &((*p_model)->meshx_onoff_client_gen_cli)
+        &((*p_model)->meshx_pub),
+        &((*p_model)->meshx_gen)
     );
 
     MESHX_FREE(*p_model);
@@ -202,7 +202,7 @@ meshx_err_t meshx_onoff_client_send_msg(meshx_gen_onoff_send_params_t *params)
 {
     meshx_err_t err;
     meshx_gen_cli_set_t set = {0};
-    if (!params || !params->model || !params->model->meshx_onoff_client_sig_model)
+    if (!params || !params->model || !params->model->meshx_sig)
     {
         return MESHX_INVALID_ARG;
     }
@@ -213,7 +213,7 @@ meshx_err_t meshx_onoff_client_send_msg(meshx_gen_onoff_send_params_t *params)
         .opcode  = params->opcode,
         .app_idx = params->app_idx,
         .net_idx = params->net_idx,
-        .model   = params->model->meshx_onoff_client_sig_model,
+        .model   = params->model->meshx_sig,
     };
 
     if(params->opcode == MESHX_MODEL_OP_GEN_ONOFF_GET)
