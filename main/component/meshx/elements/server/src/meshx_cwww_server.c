@@ -167,8 +167,8 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
             MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Meshx CTL Server create failed (Err : 0x%x)", err);
             return err;
         }
-        CWWW_SRV_EL(i).onoff_srv_model->meshx_server_sig_model = &CWWW_SRV_EL(i).cwww_srv_model_list[CWWW_SIG_ONOFF_MODEL_ID];
-        CWWW_SRV_EL(i).ctl_srv_model->meshx_server_sig_model = &CWWW_SRV_EL(i).cwww_srv_model_list[CWWW_SIG_L_CTL_MODEL_ID];
+        CWWW_SRV_EL(i).onoff_srv_model->meshx_sig = &CWWW_SRV_EL(i).cwww_srv_model_list[CWWW_SIG_ONOFF_MODEL_ID];
+        CWWW_SRV_EL(i).ctl_srv_model->meshx_sig = &CWWW_SRV_EL(i).cwww_srv_model_list[CWWW_SIG_L_CTL_MODEL_ID];
     }
     return MESHX_SUCCESS;
 }
@@ -258,7 +258,7 @@ static meshx_err_t meshx_restore_model_states(uint16_t element_id)
     {
         if (i == CWWW_SIG_ONOFF_MODEL_ID)
         {
-            err = meshx_gen_on_off_srv_state_restore(CWWW_SRV_EL(element_id).onoff_srv_model->meshx_server_sig_model,
+            err = meshx_gen_on_off_srv_state_restore(CWWW_SRV_EL(element_id).onoff_srv_model->meshx_sig,
                                                      el_ctx->prev_state);
             if (err)
             {
@@ -469,7 +469,7 @@ static meshx_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, cont
                 rel_el_id = GET_RELATIVE_EL_IDX(el_id);
 
                 err = meshx_gen_on_off_srv_send_pack_create(
-                        CWWW_SRV_EL(rel_el_id).onoff_srv_model->meshx_server_sig_model,
+                        CWWW_SRV_EL(rel_el_id).onoff_srv_model->meshx_sig,
                         (uint16_t)el_id,
                         pdev->meshx_store.net_key_id,
                         CWWW_SRV_EL(rel_el_id).srv_ctx->app_id,
@@ -495,7 +495,7 @@ static meshx_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, cont
                 }
 
                 err = meshx_light_ctl_srv_send_pack_create(
-                        CWWW_SRV_EL(rel_el_id).ctl_srv_model->meshx_server_sig_model,
+                        CWWW_SRV_EL(rel_el_id).ctl_srv_model->meshx_sig,
                         (uint16_t)el_id,
                         pdev->meshx_store.net_key_id,
                         CWWW_SRV_EL(rel_el_id).srv_ctx->app_id,

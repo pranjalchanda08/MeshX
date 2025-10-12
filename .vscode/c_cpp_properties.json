@@ -4,7 +4,7 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "~/esp/esp-idf/components/**"
+                "~/esp/v5.4/esp-idf/components/**"
             ],
             "defines": [
                 "_DEBUG",

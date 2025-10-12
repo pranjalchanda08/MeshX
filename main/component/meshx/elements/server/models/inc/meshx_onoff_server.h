@@ -41,12 +41,7 @@ typedef struct meshx_on_off_srv_el_msg
  * This structure is used to define the On/Off server model in the MeshX framework.
  * It contains pointers to various components required for the On/Off server functionality.
  */
-typedef struct meshx_onoff_server_model
-{
-    meshx_ptr_t meshx_server_sig_model;     /**< Pointer to the On/Off server SIG model. */
-    meshx_ptr_t meshx_server_pub;           /**< Pointer to the list of relay server publication structures. */
-    meshx_ptr_t meshx_server_onoff_gen_srv; /**< Pointer to the list of relay server On/Off generic structures. */
-} meshx_onoff_server_model_t;
+typedef meshx_model_interface_t meshx_onoff_server_model_t;
 
 /**
  * @brief Send the On/Off status message to the client.

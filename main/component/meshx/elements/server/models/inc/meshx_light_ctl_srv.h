@@ -20,19 +20,13 @@
 
 #if CONFIG_ENABLE_LIGHT_CTL_SERVER
 
-
 /**
  * @brief Structure representing the MeshX CTL (Color Temperature Lightness) Setup Server Model.
  *
  * This structure encapsulates pointers to the SIG model, publication structures,
  * and generic server structures required for the CTL setup server functionality.
  */
-typedef struct meshx_ctl_setup_server_model
-{
-    void *meshx_server_sig_model;   /**< CTL setup server SIG model pointer */
-    void *meshx_server_pub;         /**< List of ctl server publication structures */
-    void *meshx_server_gen_srv;     /**< List of ctl setup server generic structures */
-} meshx_ctl_setup_server_model_t;
+typedef meshx_model_interface_t meshx_ctl_setup_server_model_t;
 
 /**
  * @brief Structure representing the MeshX CTL (Color Temperature Lightness) server model.
@@ -40,12 +34,7 @@ typedef struct meshx_ctl_setup_server_model
  * This structure encapsulates pointers to the CTL server SIG model, publication structures,
  * and generic server structures used in the MeshX lighting control server implementation.
  */
-typedef struct meshx_ctl_server_model
-{
-    void *meshx_server_sig_model;   /**< CTL server SIG model pointer */
-    void *meshx_server_pub;         /**< List of ctl server publication structures */
-    void *meshx_server_gen_srv;     /**< List of ctl server generic structures */
-} meshx_ctl_server_model_t;
+typedef meshx_model_interface_t meshx_ctl_server_model_t;
 
 /**
  * @brief Create and initialize a new CTL server model instance.
@@ -63,7 +52,7 @@ typedef struct meshx_ctl_server_model
  *     - MESHX_INVALID_ARG: The provided pointer is NULL.
  *     - MESHX_NO_MEM: Memory allocation failed.
  */
-meshx_err_t meshx_light_ctl_server_create(meshx_ctl_server_model_t **p_model, void *p_sig_model);
+meshx_err_t meshx_light_ctl_server_create(meshx_ctl_server_model_t **p_model, meshx_ptr_t p_sig_model);
 
 /**
  * @brief Delete the CTL server model instance.
