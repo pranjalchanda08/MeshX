@@ -86,7 +86,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
             MESHX_LOGE(MOD_SRC, "Meshx On Off Client create failed (Err : 0x%x)", err);
             return err;
         }
-        RELAY_CLI_EL(i).onoff_cli_model->meshx_onoff_client_sig_model
+        RELAY_CLI_EL(i).onoff_cli_model->meshx_sig
             = &RELAY_CLI_EL(i).relay_cli_sig_model_list[RELAY_CLI_SIG_ONOFF_MODEL_ID];
     }
 

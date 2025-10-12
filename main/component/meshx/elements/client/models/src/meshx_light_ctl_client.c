@@ -169,8 +169,8 @@ meshx_err_t meshx_light_ctl_client_create(meshx_light_ctl_client_model_t **p_mod
 
     return meshx_plat_light_ctl_client_create(
         p_sig_model,
-        &((*p_model)->meshx_light_ctl_client_pub),
-        &((*p_model)->meshx_light_ctl_client_gen_cli));
+        &((*p_model)->meshx_pub),
+        &((*p_model)->meshx_gen));
 }
 
 /**
@@ -193,8 +193,8 @@ meshx_err_t meshx_light_ctl_client_delete(meshx_light_ctl_client_model_t **p_mod
     }
 
     meshx_plat_light_client_delete(
-        &((*p_model)->meshx_light_ctl_client_pub),
-        &((*p_model)->meshx_light_ctl_client_gen_cli)
+        &((*p_model)->meshx_pub),
+        &((*p_model)->meshx_gen)
     );
 
     MESHX_FREE(*p_model);
@@ -217,7 +217,7 @@ meshx_err_t meshx_light_ctl_client_delete(meshx_light_ctl_client_model_t **p_mod
 meshx_err_t meshx_light_ctl_client_send_msg(meshx_gen_ctl_send_params_t *params)
 {
     meshx_light_client_set_state_t set = {0};
-    if (!params || !params->model || !params->model->meshx_light_ctl_client_sig_model)
+    if (!params || !params->model || !params->model->meshx_sig)
     {
         return MESHX_INVALID_ARG; // Invalid model pointer
     }
@@ -227,7 +227,7 @@ meshx_err_t meshx_light_ctl_client_send_msg(meshx_gen_ctl_send_params_t *params)
         .opcode     = params->opcode,
         .app_idx    = params->app_idx,
         .net_idx    = params->net_idx,
-        .model      = params->model->meshx_light_ctl_client_sig_model,
+        .model      = params->model->meshx_sig,
     };
 
     if (params->opcode == MESHX_MODEL_OP_LIGHT_CTL_GET)
@@ -264,7 +264,7 @@ meshx_err_t meshx_light_ctl_client_send_msg(meshx_gen_ctl_send_params_t *params)
 meshx_err_t meshx_light_ctl_temperature_client_send_msg(meshx_gen_ctl_send_params_t *params)
 {
     meshx_light_client_set_state_t set = {0};
-    if (!params || !params->model || !params->model->meshx_light_ctl_client_sig_model)
+    if (!params || !params->model || !params->model->meshx_sig)
     {
         return MESHX_INVALID_ARG; // Invalid model pointer
     }
@@ -274,7 +274,7 @@ meshx_err_t meshx_light_ctl_temperature_client_send_msg(meshx_gen_ctl_send_param
         .opcode     = params->opcode,
         .app_idx    = params->app_idx,
         .net_idx    = params->net_idx,
-        .model      = params->model->meshx_light_ctl_client_sig_model,
+        .model      = params->model->meshx_sig,
     };
 
     if (params->opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET)
@@ -312,7 +312,7 @@ meshx_err_t meshx_light_ctl_temperature_client_send_msg(meshx_gen_ctl_send_param
 meshx_err_t meshx_light_ctl_temp_range_client_send_msg(meshx_gen_ctl_send_params_t *params)
 {
     meshx_light_client_set_state_t set = {0};
-    if (!params || !params->model || !params->model->meshx_light_ctl_client_sig_model)
+    if (!params || !params->model || !params->model->meshx_sig)
     {
         return MESHX_INVALID_ARG; // Invalid model pointer
     }
@@ -322,7 +322,7 @@ meshx_err_t meshx_light_ctl_temp_range_client_send_msg(meshx_gen_ctl_send_params
         .opcode     = params->opcode,
         .app_idx    = params->app_idx,
         .net_idx    = params->net_idx,
-        .model      = params->model->meshx_light_ctl_client_sig_model,
+        .model      = params->model->meshx_sig,
     };
 
     if(params->opcode == MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET)

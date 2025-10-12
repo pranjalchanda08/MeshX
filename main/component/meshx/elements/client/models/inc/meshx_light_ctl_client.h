@@ -60,12 +60,7 @@ typedef struct meshx_ctl_cli_el_msg
  * This structure holds pointers to the SIG model, publication structures, and generic structures
  * associated with the Light CTL client functionality.
  */
-typedef struct meshx_light_ctl_client_model
-{
-    meshx_ptr_t meshx_light_ctl_client_sig_model;     /**< Pointer to the Light CTL client SIG model. */
-    meshx_ptr_t meshx_light_ctl_client_pub;           /**< Pointer to the list of Light CTL client publication structures. */
-    meshx_ptr_t meshx_light_ctl_client_gen_cli;       /**< Pointer to the list of Light CTL client generic structures. */
-} meshx_light_ctl_client_model_t;
+typedef meshx_model_interface_t meshx_light_ctl_client_model_t;
 
 /**
  * @brief Structure to hold the parameters for sending a Generic Ctl message.

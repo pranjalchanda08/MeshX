@@ -170,7 +170,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
             MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Meshx On Off Server create failed (Err : 0x%x)", err);
             return err;
         }
-        RELAY_SRV_EL(i).onoff_srv_model->meshx_server_sig_model
+        RELAY_SRV_EL(i).onoff_srv_model->meshx_sig
             = &RELAY_SRV_EL(i).relay_srv_model_list[RELAY_SIG_ONOFF_MODEL_ID];
     }
 
@@ -255,7 +255,7 @@ static meshx_err_t meshx_restore_model_states(uint16_t element_id)
     meshx_relay_srv_model_ctx_t const *el_ctx = RELAY_SRV_EL(element_id).srv_ctx;
     for (size_t i = 0; i < RELAY_SRV_MODEL_SIG_CNT; i++)
     {
-        err = meshx_get_model_id(RELAY_SRV_EL(element_id).onoff_srv_model->meshx_server_sig_model,
+        err = meshx_get_model_id(RELAY_SRV_EL(element_id).onoff_srv_model->meshx_sig,
                                  &model_id);
         if (err)
         {
@@ -265,7 +265,7 @@ static meshx_err_t meshx_restore_model_states(uint16_t element_id)
 
         if (model_id == MESHX_MODEL_ID_GEN_ONOFF_SRV)
         {
-            err = meshx_gen_on_off_srv_state_restore(RELAY_SRV_EL(element_id).onoff_srv_model->meshx_server_sig_model,
+            err = meshx_gen_on_off_srv_state_restore(RELAY_SRV_EL(element_id).onoff_srv_model->meshx_sig,
                                                      el_ctx->state);
             if (err)
             {
@@ -409,7 +409,7 @@ static meshx_err_t relay_prov_control_task_handler(dev_struct_t const *pdev, con
                 rel_el_id = GET_RELATIVE_EL_IDX(el_id);
 
                 err = meshx_gen_on_off_srv_send_pack_create(
-                    RELAY_SRV_EL(rel_el_id).onoff_srv_model->meshx_server_sig_model,
+                    RELAY_SRV_EL(rel_el_id).onoff_srv_model->meshx_sig,
                     (uint16_t)el_id,
                     pdev->meshx_store.net_key_id,
                     RELAY_SRV_EL(rel_el_id).srv_ctx->app_id,
