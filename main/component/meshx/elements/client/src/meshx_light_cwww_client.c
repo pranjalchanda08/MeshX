@@ -755,7 +755,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
             MESHX_LOGE(MOD_LCC, "Meshx On Off Client create failed (Err : 0x%x)", err);
             return err;
         }
-        CWWW_CLI_EL(i).onoff_cli_model->meshx_onoff_client_sig_model
+        CWWW_CLI_EL(i).onoff_cli_model->meshx_sig
             = &CWWW_CLI_EL(i).cwww_cli_sig_model_list[CWWW_CLI_SIG_ONOFF_MODEL_ID];
 
         err = meshx_light_ctl_client_create(&CWWW_CLI_EL(i).ctl_cli_model,
@@ -765,7 +765,7 @@ static meshx_err_t meshx_element_struct_init(uint16_t n_max)
             MESHX_LOGE(MOD_LCC, "Meshx CTL Client create failed (Err : 0x%x)", err);
             return err;
         }
-        CWWW_CLI_EL(i).ctl_cli_model->meshx_light_ctl_client_sig_model
+        CWWW_CLI_EL(i).ctl_cli_model->meshx_sig
             = &CWWW_CLI_EL(i).cwww_cli_sig_model_list[CWWW_CLI_SIG_L_CTL_MODEL_ID];
     }
     return MESHX_SUCCESS;

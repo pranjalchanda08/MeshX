@@ -59,6 +59,17 @@ typedef struct dev_struct
 } dev_struct_t;
 
 /**
+ * @struct meshx_model
+ * @brief Structure as Interface for meshx models.
+ */
+typedef struct meshx_model_interface
+{
+    meshx_ptr_t meshx_sig;   /**< SIG model pointer */
+    meshx_ptr_t meshx_pub;   /**< publication structures */
+    meshx_ptr_t meshx_gen;   /**< generic structures */
+}meshx_model_interface_t;
+
+/**
  * @brief MeshX Compostion init Function Pointer
  * @typedef element_comp_fn_t
  *
