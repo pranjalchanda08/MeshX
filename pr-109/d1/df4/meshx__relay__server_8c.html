@@ -1200,7 +1200,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  170</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca2d5864879e90e2ec82e8a21eedbd9636">MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER</a>, <span class="stringliteral">&quot;Meshx On Off Server create failed (Err : 0x%x)&quot;</span>, err);</div>
 <div class="line"><span class="lineno">  171</span>            <span class="keywordflow">return</span> err;</div>
 <div class="line"><span class="lineno">  172</span>        }</div>
-<div class="line"><span class="lineno">  173</span>        <a class="code hl_define" href="#aa7b44e8f8a9e22bb030f3048146780e5">RELAY_SRV_EL</a>(i).onoff_srv_model-&gt;meshx_server_sig_model</div>
+<div class="line"><span class="lineno">  173</span>        <a class="code hl_define" href="#aa7b44e8f8a9e22bb030f3048146780e5">RELAY_SRV_EL</a>(i).onoff_srv_model-&gt;meshx_sig</div>
 <div class="line"><span class="lineno">  174</span>            = &amp;<a class="code hl_define" href="#aa7b44e8f8a9e22bb030f3048146780e5">RELAY_SRV_EL</a>(i).relay_srv_model_list[<a class="code hl_enumvalue" href="../../dc/dee/meshx__relay__server__element_8h.html#ac91fe49073e8b7c8ea48afb5baf5c2e5a029c6bcabc81077e8a62719e3876f179">RELAY_SIG_ONOFF_MODEL_ID</a>];</div>
 <div class="line"><span class="lineno">  175</span>    }</div>
 <div class="line"><span class="lineno">  176</span> </div>
@@ -1361,7 +1361,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  255</span>    <a class="code hl_typedef" href="../../dc/dee/meshx__relay__server__element_8h.html#a7fea42693c29337d5fbb44a45baa0e2e">meshx_relay_srv_model_ctx_t</a> <span class="keyword">const</span> *el_ctx = <a class="code hl_define" href="#aa7b44e8f8a9e22bb030f3048146780e5">RELAY_SRV_EL</a>(element_id).srv_ctx;</div>
 <div class="line"><span class="lineno">  256</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_define" href="../../dc/dee/meshx__relay__server__element_8h.html#ae1f5994e6b8441426611de471c634a26">RELAY_SRV_MODEL_SIG_CNT</a>; i++)</div>
 <div class="line"><span class="lineno">  257</span>    {</div>
-<div class="line"><span class="lineno">  258</span>        err = <a class="code hl_function" href="../../d6/d1d/meshx__ble__mesh__cmn_8h.html#ab0b270ac4d086a2e566985d2aabd5be5">meshx_get_model_id</a>(<a class="code hl_define" href="#aa7b44e8f8a9e22bb030f3048146780e5">RELAY_SRV_EL</a>(element_id).onoff_srv_model-&gt;meshx_server_sig_model,</div>
+<div class="line"><span class="lineno">  258</span>        err = <a class="code hl_function" href="../../d6/d1d/meshx__ble__mesh__cmn_8h.html#ab0b270ac4d086a2e566985d2aabd5be5">meshx_get_model_id</a>(<a class="code hl_define" href="#aa7b44e8f8a9e22bb030f3048146780e5">RELAY_SRV_EL</a>(element_id).onoff_srv_model-&gt;meshx_sig,</div>
 <div class="line"><span class="lineno">  259</span>                                 &amp;model_id);</div>
 <div class="line"><span class="lineno">  260</span>        <span class="keywordflow">if</span> (err)</div>
 <div class="line"><span class="lineno">  261</span>        {</div>
@@ -1371,7 +1371,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  265</span> </div>
 <div class="line"><span class="lineno">  266</span>        <span class="keywordflow">if</span> (model_id == <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#ab58db78210e3fe0da5c8ef8802f0b6b5">MESHX_MODEL_ID_GEN_ONOFF_SRV</a>)</div>
 <div class="line"><span class="lineno">  267</span>        {</div>
-<div class="line"><span class="lineno">  268</span>            err = meshx_gen_on_off_srv_state_restore(<a class="code hl_define" href="#aa7b44e8f8a9e22bb030f3048146780e5">RELAY_SRV_EL</a>(element_id).onoff_srv_model-&gt;meshx_server_sig_model,</div>
+<div class="line"><span class="lineno">  268</span>            err = meshx_gen_on_off_srv_state_restore(<a class="code hl_define" href="#aa7b44e8f8a9e22bb030f3048146780e5">RELAY_SRV_EL</a>(element_id).onoff_srv_model-&gt;meshx_sig,</div>
 <div class="line"><span class="lineno">  269</span>                                                     el_ctx-&gt;<a class="code hl_variable" href="../../dc/d33/structmeshx__relay__srv__model__ctx.html#a32de0b1e429c6a57f5a1e63046203e8a">state</a>);</div>
 <div class="line"><span class="lineno">  270</span>            <span class="keywordflow">if</span> (err)</div>
 <div class="line"><span class="lineno">  271</span>            {</div>
@@ -1572,7 +1572,7 @@ Here is the call graph for this function:</div>
 <div class="line"><span class="lineno">  409</span>                rel_el_id = <a class="code hl_define" href="#a58ccb2e65fb0601bcbdb84e9dafb7f06">GET_RELATIVE_EL_IDX</a>(el_id);</div>
 <div class="line"><span class="lineno">  410</span> </div>
 <div class="line"><span class="lineno">  411</span>                err = meshx_gen_on_off_srv_send_pack_create(</div>
-<div class="line"><span class="lineno">  412</span>                    <a class="code hl_define" href="#aa7b44e8f8a9e22bb030f3048146780e5">RELAY_SRV_EL</a>(rel_el_id).onoff_srv_model-&gt;meshx_server_sig_model,</div>
+<div class="line"><span class="lineno">  412</span>                    <a class="code hl_define" href="#aa7b44e8f8a9e22bb030f3048146780e5">RELAY_SRV_EL</a>(rel_el_id).onoff_srv_model-&gt;meshx_sig,</div>
 <div class="line"><span class="lineno">  413</span>                    (uint16_t)el_id,</div>
 <div class="line"><span class="lineno">  414</span>                    pdev-&gt;meshx_store.net_key_id,</div>
 <div class="line"><span class="lineno">  415</span>                    <a class="code hl_define" href="#aa7b44e8f8a9e22bb030f3048146780e5">RELAY_SRV_EL</a>(rel_el_id).srv_ctx-&gt;app_id,</div>
@@ -1833,7 +1833,7 @@ Here is the caller graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_5c982d53a68cdbcd421152b4020263a9.html">main</a></li><li class="navelem"><a class="el" href="../../dir_8c5515a604d4a2bb78291420d5b72747.html">component</a></li><li class="navelem"><a class="el" href="../../dir_17e62e33567b93c5a1475a84b6c9c934.html">meshx</a></li><li class="navelem"><a class="el" href="../../dir_731868db0f8d6d1cac5b0ffc22af1dd4.html">elements</a></li><li class="navelem"><a class="el" href="../../dir_e75a121ce4fbf4ac625776640133c289.html">server</a></li><li class="navelem"><a class="el" href="../../dir_e5ca8378fa9de5cc6580568cf4ef897f.html">src</a></li><li class="navelem"><a class="el" href="../../d1/df4/meshx__relay__server_8c.html">meshx_relay_server.c</a></li>
-    <li class="footer">Generated on Thu Oct 9 2025 16:19:25 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Sun Oct 12 2025 20:12:47 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

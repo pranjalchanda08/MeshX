@@ -1,5 +1,5 @@
 <map id="meshx_gen_ctl_send_params" name="meshx_gen_ctl_send_params">
-<area shape="rect" id="Node000001" title="Structure to hold the parameters for sending a Generic Ctl message." alt="" coords="29,220,162,505"/>
-<area shape="rect" id="Node000002" href="$d4/d6b/structmeshx__light__ctl__client__model.html" title="Structure representing the Light CTL (Color Temperature Lightness) client model in MeshX." alt="" coords="5,5,185,157"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="98,157,98,204,93,204,93,157"/>
+<area shape="rect" id="Node000001" title="Structure to hold the parameters for sending a Generic Ctl message." alt="" coords="13,175,146,460"/>
+<area shape="rect" id="Node000002" href="$d1/da6/structmeshx__model__interface.html" title=" " alt="" coords="5,5,153,112"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="82,112,82,158,76,158,76,112"/>
 </map>

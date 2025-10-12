@@ -383,6 +383,8 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d41/structdev__struct.html">dev_struct</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure representing the device composition and elements.  <a href="../../d7/d41/structdev__struct.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/da6/structmeshx__model__interface.html">meshx_model_interface</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/dc5/structelement__comp__table.html">element_comp_table</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure to store element composition functions.  <a href="../../d0/dc5/structelement__comp__table.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -408,6 +410,8 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a42c6642d8c5c083ff71aaf93e6a3e6b8" id="r_a42c6642d8c5c083ff71aaf93e6a3e6b8"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="../../d7/d41/structdev__struct.html">dev_struct</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a42c6642d8c5c083ff71aaf93e6a3e6b8">dev_struct_t</a></td></tr>
 <tr class="memdesc:a42c6642d8c5c083ff71aaf93e6a3e6b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure representing the device composition and elements.  <br /></td></tr>
 <tr class="separator:a42c6642d8c5c083ff71aaf93e6a3e6b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8e45ab8a90ec79235f3db0423e164f3" id="r_ac8e45ab8a90ec79235f3db0423e164f3"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="../../d1/da6/structmeshx__model__interface.html">meshx_model_interface</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac8e45ab8a90ec79235f3db0423e164f3">meshx_model_interface_t</a></td></tr>
+<tr class="separator:ac8e45ab8a90ec79235f3db0423e164f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a435272c82289b32a15a65fbe484e0386" id="r_a435272c82289b32a15a65fbe484e0386"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a435272c82289b32a15a65fbe484e0386">element_comp_fn_t</a>) (<a class="el" href="#a42c6642d8c5c083ff71aaf93e6a3e6b8">dev_struct_t</a> *pdev, uint16_t element_cnt)</td></tr>
 <tr class="memdesc:a435272c82289b32a15a65fbe484e0386"><td class="mdescLeft">&#160;</td><td class="mdescRight">MeshX Compostion init Function Pointer.  <br /></td></tr>
 <tr class="separator:a435272c82289b32a15a65fbe484e0386"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -509,7 +513,7 @@ Typedefs</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/de3/meshx__common_8h_source.html#l00111">111</a> of file <a class="el" href="../../d2/de3/meshx__common_8h_source.html">meshx_common.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/de3/meshx__common_8h_source.html#l00122">122</a> of file <a class="el" href="../../d2/de3/meshx__common_8h_source.html">meshx_common.h</a>.</p>
 
 </div>
 </div>
@@ -552,7 +556,7 @@ Typedefs</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6" title="MeshX Error Codes.">meshx_err_t</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d2/de3/meshx__common_8h_source.html#l00070">70</a> of file <a class="el" href="../../d2/de3/meshx__common_8h_source.html">meshx_common.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d2/de3/meshx__common_8h_source.html#l00081">81</a> of file <a class="el" href="../../d2/de3/meshx__common_8h_source.html">meshx_common.h</a>.</p>
 
 </div>
 </div>
@@ -586,13 +590,27 @@ Typedefs</h2></td></tr>
 
 </div>
 </div>
+<a id="ac8e45ab8a90ec79235f3db0423e164f3" name="ac8e45ab8a90ec79235f3db0423e164f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8e45ab8a90ec79235f3db0423e164f3">&#9670;&#160;</a></span>meshx_model_interface_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct <a class="el" href="../../d1/da6/structmeshx__model__interface.html">meshx_model_interface</a> <a class="el" href="#ac8e45ab8a90ec79235f3db0423e164f3">meshx_model_interface_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_5c982d53a68cdbcd421152b4020263a9.html">main</a></li><li class="navelem"><a class="el" href="../../dir_8c5515a604d4a2bb78291420d5b72747.html">component</a></li><li class="navelem"><a class="el" href="../../dir_17e62e33567b93c5a1475a84b6c9c934.html">meshx</a></li><li class="navelem"><a class="el" href="../../dir_86bf887972b3e0a7dcf1ab1624617c1e.html">inc</a></li><li class="navelem"><a class="el" href="../../d2/de3/meshx__common_8h.html">meshx_common.h</a></li>
-    <li class="footer">Generated on Thu Oct 9 2025 16:19:25 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Sun Oct 12 2025 20:12:47 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

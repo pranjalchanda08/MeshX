@@ -260,26 +260,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>meshx_ctl_server_model</Name>
-      <APILanguage>c</APILanguage>
-      <Type>cl</Type>
-      <Scope>meshx_ctl_server_model</Scope>
-    </TokenIdentifier>
-    <Path>d5/db9/structmeshx__ctl__server__model.html</Path>
-    <DeclaredIn>meshx_light_ctl_srv.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_ctl_setup_server_model</Name>
-      <APILanguage>c</APILanguage>
-      <Type>cl</Type>
-      <Scope>meshx_ctl_setup_server_model</Scope>
-    </TokenIdentifier>
-    <Path>d1/d14/structmeshx__ctl__setup__server__model.html</Path>
-    <DeclaredIn>meshx_light_ctl_srv.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>meshx_ctrl_msg_header</Name>
       <APILanguage>c</APILanguage>
       <Type>cl</Type>
@@ -902,16 +882,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>meshx_light_ctl_client_model</Name>
-      <APILanguage>c</APILanguage>
-      <Type>cl</Type>
-      <Scope>meshx_light_ctl_client_model</Scope>
-    </TokenIdentifier>
-    <Path>d4/d6b/structmeshx__light__ctl__client__model.html</Path>
-    <DeclaredIn>meshx_light_ctl_client.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>meshx_light_ctl_default_set_t</Name>
       <APILanguage>c</APILanguage>
       <Type>cl</Type>
@@ -1488,6 +1458,16 @@
     </TokenIdentifier>
     <Path>d7/df1/structmeshx__model.html</Path>
     <DeclaredIn>meshx_ble_mesh_cmn.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_model_interface</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_model_interface</Scope>
+    </TokenIdentifier>
+    <Path>d1/da6/structmeshx__model__interface.html</Path>
+    <DeclaredIn>meshx_common.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -7768,33 +7748,13 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>meshx_light_ctl_client_gen_cli</Name>
+      <Name>meshx_gen</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
-      <Scope>meshx_light_ctl_client_model</Scope>
+      <Scope>meshx_model_interface</Scope>
     </TokenIdentifier>
-    <Path>d4/d6b/structmeshx__light__ctl__client__model.html</Path>
-    <Anchor>aeae53e75c09bf4227ec8d9acb9ae62a0</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_light_ctl_client_pub</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_light_ctl_client_model</Scope>
-    </TokenIdentifier>
-    <Path>d4/d6b/structmeshx__light__ctl__client__model.html</Path>
-    <Anchor>a2251e71c379d9ec6e7f33e16b08b542b</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_light_ctl_client_sig_model</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_light_ctl_client_model</Scope>
-    </TokenIdentifier>
-    <Path>d4/d6b/structmeshx__light__ctl__client__model.html</Path>
-    <Anchor>a50a7f07a4ce0f8e8661129ed19c26891</Anchor>
+    <Path>d1/da6/structmeshx__model__interface.html</Path>
+    <Anchor>a6c47ca8c9b884c48b9237b8044125bca</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -7838,63 +7798,23 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>meshx_server_gen_srv</Name>
+      <Name>meshx_pub</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
-      <Scope>meshx_ctl_setup_server_model</Scope>
+      <Scope>meshx_model_interface</Scope>
     </TokenIdentifier>
-    <Path>d1/d14/structmeshx__ctl__setup__server__model.html</Path>
-    <Anchor>ae996a9c89125f850df947e94ec0c5dc7</Anchor>
+    <Path>d1/da6/structmeshx__model__interface.html</Path>
+    <Anchor>aa7baf283dd80b02a19fdd9a1e758db34</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>meshx_server_gen_srv</Name>
+      <Name>meshx_sig</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
-      <Scope>meshx_ctl_server_model</Scope>
+      <Scope>meshx_model_interface</Scope>
     </TokenIdentifier>
-    <Path>d5/db9/structmeshx__ctl__server__model.html</Path>
-    <Anchor>a824dec2d6e4d01afbe748e877d260307</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_server_pub</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_ctl_setup_server_model</Scope>
-    </TokenIdentifier>
-    <Path>d1/d14/structmeshx__ctl__setup__server__model.html</Path>
-    <Anchor>a694ed7ced6beca0d27dc454648e7111f</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_server_pub</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_ctl_server_model</Scope>
-    </TokenIdentifier>
-    <Path>d5/db9/structmeshx__ctl__server__model.html</Path>
-    <Anchor>a415d43206e037dcbf1fb25a4b199d6b0</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_server_sig_model</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_ctl_setup_server_model</Scope>
-    </TokenIdentifier>
-    <Path>d1/d14/structmeshx__ctl__setup__server__model.html</Path>
-    <Anchor>aeb82c4395a7ca8b9ece1be1b376cea82</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_server_sig_model</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_ctl_server_model</Scope>
-    </TokenIdentifier>
-    <Path>d5/db9/structmeshx__ctl__server__model.html</Path>
-    <Anchor>a655e625542540fd1c9a7c482ed9bdcd4</Anchor>
+    <Path>d1/da6/structmeshx__model__interface.html</Path>
+    <Anchor>a6707c0437b18f6c3a38857b586eb8ba3</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -17224,7 +17144,7 @@
       <Type>tdef</Type>
     </TokenIdentifier>
     <Path>db/dde/meshx__light__ctl__srv_8h.html</Path>
-    <Anchor>a60799ea8377b44c6b39fd92335252e91</Anchor>
+    <Anchor>a8ba6098c98f00634f675fa2f2d7fb625</Anchor>
     <DeclaredIn>meshx_light_ctl_srv.h</DeclaredIn>
   </Token>
   <Token>
@@ -17234,7 +17154,7 @@
       <Type>tdef</Type>
     </TokenIdentifier>
     <Path>db/dde/meshx__light__ctl__srv_8h.html</Path>
-    <Anchor>a9ef965dbdcc38a04e36d9197a7d93218</Anchor>
+    <Anchor>ae6c7ab6d2bce16f5c802c863bcf3b70a</Anchor>
     <DeclaredIn>meshx_light_ctl_srv.h</DeclaredIn>
   </Token>
   <Token>
@@ -19414,7 +19334,7 @@
       <Type>tdef</Type>
     </TokenIdentifier>
     <Path>da/dfd/meshx__light__ctl__client_8h.html</Path>
-    <Anchor>a21cae33989e7d67a89cd9c41e9acb535</Anchor>
+    <Anchor>aef70e4e0a19b8e34b05dbb059df52fdf</Anchor>
     <DeclaredIn>meshx_light_ctl_client.h</DeclaredIn>
   </Token>
   <Token>
@@ -19444,7 +19364,7 @@
       <Type>func</Type>
     </TokenIdentifier>
     <Path>db/dde/meshx__light__ctl__srv_8h.html</Path>
-    <Anchor>a28ca32dccd7b19454cf530dc3525d0a6</Anchor>
+    <Anchor>a61a46f68788b46871dc34d09289e8530</Anchor>
     <DeclaredIn>meshx_light_ctl_srv.h</DeclaredIn>
   </Token>
   <Token>
@@ -20936,6 +20856,16 @@
     <Path>d4/de0/meshx__ble__mesh__cmn__def_8h.html</Path>
     <Anchor>aff9d7b58a330ce16aaf89d83064cf07a</Anchor>
     <DeclaredIn>meshx_ble_mesh_cmn_def.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_model_interface_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>d2/de3/meshx__common_8h.html</Path>
+    <Anchor>ac8e45ab8a90ec79235f3db0423e164f3</Anchor>
+    <DeclaredIn>meshx_common.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
