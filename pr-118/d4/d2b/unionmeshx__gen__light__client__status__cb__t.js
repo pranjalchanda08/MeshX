@@ -1,0 +1,26 @@
+var unionmeshx__gen__light__client__status__cb__t =
+[
+    [ "ctl_default_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#acb6b30bfd99a71f4c6bdb5342eac56bb", null ],
+    [ "ctl_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#a28b0f58d584096f6edad23d518da8ca3", null ],
+    [ "ctl_temperature_range_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#a16bae037ca15b24f26bdff8635e12c9c", null ],
+    [ "ctl_temperature_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#a90bd8e3336ac7b81182ee1b218a1f000", null ],
+    [ "hsl_default_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#a76e221b701f626015faa44d1260f1053", null ],
+    [ "hsl_hue_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#a6f4080a7b5fc0e73fd03a62706f7f5be", null ],
+    [ "hsl_range_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#aa885b427fe85d365b858c007b8238057", null ],
+    [ "hsl_saturation_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#ac4792c640893c86ef39ef6658b46db1e", null ],
+    [ "hsl_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#ad399b8c0e66d80dbfcfba41ecb0b4380", null ],
+    [ "hsl_target_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#af6660a8d74c7df2c9ed8db8ddea2a75e", null ],
+    [ "lc_light_onoff_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#aa1e34495cdfe3b3d931b20f34b0fd273", null ],
+    [ "lc_mode_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#a21a0ceaa87be1c77c5babdb1791162be", null ],
+    [ "lc_om_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#a8cf3cbb57bbcecfbcae2747ac3c573bb", null ],
+    [ "lc_property_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#a879af4d501760c7f6ab28e56d05f30d5", null ],
+    [ "lightness_default_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#a67262a573adc413d334989f443d39bd4", null ],
+    [ "lightness_last_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#a286a1af8458b875683de8483d299e0b3", null ],
+    [ "lightness_linear_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#adb4f0a64d0da47d11dd581fe0a24433a", null ],
+    [ "lightness_range_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#a4cd7518dca71885c130c88a3d96b2b73", null ],
+    [ "lightness_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#a524bc0664a1aef0eead5e6a5dd31ca2b", null ],
+    [ "xyl_default_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#a2f5666b7972f793fbf5a237a6444df2b", null ],
+    [ "xyl_range_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#a54c42eeae1ca5d4da56b721053097ad8", null ],
+    [ "xyl_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#a510180088c7442f73978aae483a6b604", null ],
+    [ "xyl_target_status", "d4/d2b/unionmeshx__gen__light__client__status__cb__t.html#a5c73614d825b60aecc133ac1976ce5d9", null ]
+];

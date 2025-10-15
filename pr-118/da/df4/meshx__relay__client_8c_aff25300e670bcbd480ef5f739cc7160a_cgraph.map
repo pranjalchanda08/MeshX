@@ -1,0 +1,7 @@
+<map id="meshx_dev_create_relay_model_space" name="meshx_dev_create_relay_model_space">
+<area shape="rect" id="Node000001" title="Create Dynamic Relay Model Elements." alt="" coords="5,35,170,75"/>
+<area shape="rect" id="Node000002" href="$da/df4/meshx__relay__client_8c.html#aa669937201e81721727213c8214c4971" title="Deinitializes the mesh element structure." alt="" coords="230,5,382,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,41,214,35,214,41,170,47"/>
+<area shape="rect" id="Node000003" href="$da/df4/meshx__relay__client_8c.html#acfe19244baff39d7aaaeefa052997704" title="Initializes the mesh element structure." alt="" coords="218,70,394,96"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="170,63,203,67,202,72,169,68"/>
+</map>

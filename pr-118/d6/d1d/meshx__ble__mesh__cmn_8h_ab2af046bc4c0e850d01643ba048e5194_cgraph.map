@@ -1,0 +1,7 @@
+<map id="meshx_plat_client_create" name="meshx_plat_client_create">
+<area shape="rect" id="Node000001" title="Creates and initializes a generic client model for BLE Mesh." alt="" coords="5,31,174,56"/>
+<area shape="rect" id="Node000002" href="$dc/d96/esp__platform__ble__mesh_8c.html#a12b595bcf51021fcaa675e488fe24308" title="Creates and initializes model and publication structures." alt="" coords="222,5,422,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="173,32,206,28,207,33,174,37"/>
+<area shape="rect" id="Node000003" href="$dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="231,55,412,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="174,50,216,54,215,59,173,55"/>
+</map>
