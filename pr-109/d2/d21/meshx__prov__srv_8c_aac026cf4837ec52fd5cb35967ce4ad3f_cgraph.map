@@ -1,0 +1,27 @@
+<map id="meshx_prov_control_task_handler" name="meshx_prov_control_task_handler">
+<area shape="rect" id="Node000001" title="Handles provisioning control task events." alt="" coords="5,88,143,129"/>
+<area shape="rect" id="Node000002" href="$d2/d21/meshx__prov__srv_8c.html#a90d4cf320c64e69007ffa9ccbb224100" title="Handle node reset event." alt="" coords="191,70,366,96"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="143,97,175,93,175,98,143,102"/>
+<area shape="rect" id="Node000007" href="$d5/d8f/meshx__nvs_8c.html#ab9a39208cc2b067b0b5df0a85d7b4b03" title="Set a value in the NVS." alt="" coords="222,120,334,145"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="143,114,207,121,207,127,143,119"/>
+<area shape="rect" id="Node000003" href="$d5/d8f/meshx__nvs_8c.html#a6dc2339887b4d2cb0faa01d799838cd1" title="Remove the context of a specific element from NVS." alt="" coords="414,5,578,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="329,67,401,48,402,53,331,72"/>
+<area shape="rect" id="Node000006" href="$da/dd1/esp__platform_8c.html#ac9292fafb9df0803c55a8700fbd9f34d" title="Resets the MeshX platform. This function performs a system reset, restarting the platform." alt="" coords="422,70,571,96"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="367,80,406,80,406,86,367,86"/>
+<area shape="rect" id="Node000004" href="$d5/d8f/meshx__nvs_8c.html#aa14948d7d45d83f3b6d9ca765a17cc58" title="Remove a key&#45;value pair from the NVS." alt="" coords="644,13,781,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="579,23,628,23,628,28,579,28"/>
+<area shape="rect" id="Node000005" href="$dc/d28/esp__nvs_8c.html#ac4731c0a5821db05dfc78f395caf73dd" title="Remove a key&#45;value pair from the non&#45;volatile storage with a given key and namespace." alt="" coords="847,13,1012,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="782,23,831,23,831,28,782,28"/>
+<area shape="rect" id="Node000008" href="$dd/da1/meshx__os__timer_8c.html#a63e6c1a15d1a30d41dc704c131a27062" title="Restart a timer." alt="" coords="416,120,576,145"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="335,130,400,130,400,135,335,135"/>
+<area shape="rect" id="Node000009" href="$df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="626,120,799,145"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="576,130,611,130,611,135,576,135"/>
+<area shape="rect" id="Node000010" href="$d0/d77/meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue Back." alt="" coords="859,70,1000,96"/>
+<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="772,116,854,97,856,102,773,121"/>
+<area shape="rect" id="Node000011" href="$d3/df5/meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="871,120,988,145"/>
+<area shape="poly" id="edge10_Node000009_Node000011" title=" " alt="" coords="799,130,855,130,855,135,799,135"/>
+<area shape="rect" id="Node000013" href="$d3/df5/meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="863,169,996,194"/>
+<area shape="poly" id="edge12_Node000009_Node000013" title=" " alt="" coords="773,143,856,162,854,167,772,148"/>
+<area shape="rect" id="Node000012" href="$d3/df5/meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="1060,120,1237,145"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="988,130,1044,130,1044,135,988,135"/>
+</map>

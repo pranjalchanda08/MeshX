@@ -1,0 +1,14 @@
+<map id="meshx_light_ctl_setup_server_create" name="meshx_light_ctl_setup_server_create">
+<area shape="rect" id="Node000001" title="Creates and initializes the Light CTL (Color Temperature Lightness) Setup Server." alt="" coords="5,39,156,79"/>
+<area shape="rect" id="Node000002" href="$d4/db6/meshx__light__ctl__srv_8c.html#a86ae7afdb87899d6bd6a4b8900c7c844" title="Deletes or deinitializes the Light CTL (Color Temperature Lightness) Setup Server instance." alt="" coords="204,5,354,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="155,44,188,38,189,43,156,49"/>
+<area shape="rect" id="Node000005" href="$de/d42/esp__light__srv__model_8c.html#a0807c654e0a630b66f06f2732dfcf440" title="Creates and initializes a Light CTL (Color Temperature Lightness) Setup Server model instance." alt="" coords="209,71,348,111"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="156,68,194,75,193,80,155,74"/>
+<area shape="rect" id="Node000003" href="$de/d42/esp__light__srv__model_8c.html#a0ee9a897168a69c9ede40278fdb4b445" title="Delete a Light CTL Server instance." alt="" coords="430,5,574,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="354,23,415,23,415,28,354,28"/>
+<area shape="rect" id="Node000004" href="$dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="650,42,832,68"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="575,32,635,39,635,45,574,37"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="349,83,635,61,635,66,349,88"/>
+<area shape="rect" id="Node000006" href="$dc/d96/esp__platform__ble__mesh_8c.html#a12b595bcf51021fcaa675e488fe24308" title="Creates and initializes model and publication structures." alt="" coords="402,121,602,146"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="349,102,417,115,416,120,348,107"/>
+</map>

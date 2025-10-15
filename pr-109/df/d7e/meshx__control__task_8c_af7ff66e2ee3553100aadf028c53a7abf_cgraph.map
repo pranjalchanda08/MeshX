@@ -1,0 +1,5 @@
+<map id="create_control_task_msg_q" name="create_control_task_msg_q">
+<area shape="rect" id="Node000001" title="Create the control task message queue." alt="" coords="5,5,141,46"/>
+<area shape="rect" id="Node000002" href="$d0/d77/meshx__msg__q_8c.html#a41c74f6b72168b1ffccded41d8fa4f25" title="Create a MeshX Message Queue." alt="" coords="189,13,337,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="141,23,173,23,173,28,141,28"/>
+</map>
