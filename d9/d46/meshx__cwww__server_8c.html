@@ -367,7 +367,7 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a3f634d94ffb0b967947e935155e77776" id="r_a3f634d94ffb0b967947e935155e77776"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../d8/da4/meshx__cwww__server__element_8h.html#a36b00f0d77112e8077c58aea6580ba2b">meshx_cwww_elements_ctrl_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f634d94ffb0b967947e935155e77776">cwww_element_init_ctrl</a></td></tr>
+<tr class="memitem:a3f634d94ffb0b967947e935155e77776" id="r_a3f634d94ffb0b967947e935155e77776"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../d8/da4/meshx__cwww__server__element_8h.html#a70d05e52e8b219b97f9329b6d14af88f">meshx_cwww_elements_ctrl_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3f634d94ffb0b967947e935155e77776">cwww_element_init_ctrl</a></td></tr>
 <tr class="separator:a3f634d94ffb0b967947e935155e77776"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -604,7 +604,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  469</span>                rel_el_id = <a class="code hl_define" href="#a58ccb2e65fb0601bcbdb84e9dafb7f06">GET_RELATIVE_EL_IDX</a>(el_id);</div>
 <div class="line"><span class="lineno">  470</span> </div>
 <div class="line"><span class="lineno">  471</span>                err = meshx_gen_on_off_srv_send_pack_create(</div>
-<div class="line"><span class="lineno">  472</span>                        <a class="code hl_define" href="#a31505f40f0323d68c5adfd236419fea1">CWWW_SRV_EL</a>(rel_el_id).onoff_srv_model-&gt;meshx_server_sig_model,</div>
+<div class="line"><span class="lineno">  472</span>                        <a class="code hl_define" href="#a31505f40f0323d68c5adfd236419fea1">CWWW_SRV_EL</a>(rel_el_id).onoff_srv_model-&gt;meshx_sig,</div>
 <div class="line"><span class="lineno">  473</span>                        (uint16_t)el_id,</div>
 <div class="line"><span class="lineno">  474</span>                        pdev-&gt;meshx_store.net_key_id,</div>
 <div class="line"><span class="lineno">  475</span>                        <a class="code hl_define" href="#a31505f40f0323d68c5adfd236419fea1">CWWW_SRV_EL</a>(rel_el_id).srv_ctx-&gt;app_id,</div>
@@ -630,7 +630,7 @@ Variables</h2></td></tr>
 <div class="line"><span class="lineno">  495</span>                }</div>
 <div class="line"><span class="lineno">  496</span> </div>
 <div class="line"><span class="lineno">  497</span>                err = <a class="code hl_function" href="../../db/dde/meshx__light__ctl__srv_8h.html#aaff04640563eef2cfa526fbf99ed5319">meshx_light_ctl_srv_send_pack_create</a>(</div>
-<div class="line"><span class="lineno">  498</span>                        <a class="code hl_define" href="#a31505f40f0323d68c5adfd236419fea1">CWWW_SRV_EL</a>(rel_el_id).ctl_srv_model-&gt;meshx_server_sig_model,</div>
+<div class="line"><span class="lineno">  498</span>                        <a class="code hl_define" href="#a31505f40f0323d68c5adfd236419fea1">CWWW_SRV_EL</a>(rel_el_id).ctl_srv_model-&gt;meshx_sig,</div>
 <div class="line"><span class="lineno">  499</span>                        (uint16_t)el_id,</div>
 <div class="line"><span class="lineno">  500</span>                        pdev-&gt;meshx_store.net_key_id,</div>
 <div class="line"><span class="lineno">  501</span>                        <a class="code hl_define" href="#a31505f40f0323d68c5adfd236419fea1">CWWW_SRV_EL</a>(rel_el_id).srv_ctx-&gt;app_id,</div>
@@ -675,7 +675,7 @@ Variables</h2></td></tr>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a></div><div class="ttdeci">@ MESHX_SUCCESS</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00040">meshx_err.h:40</a></div></div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a></div><div class="ttdeci">@ MESHX_INVALID_STATE</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00045">meshx_err.h:45</a></div></div>
 <div class="ttc" id="ameshx__gen__server_8h_html_a0a25ca2d0f109691c37c60eb95331b36"><div class="ttname"><a href="../../de/ddc/meshx__gen__server_8h.html#a0a25ca2d0f109691c37c60eb95331b36">meshx_gen_srv_send_msg_to_ble</a></div><div class="ttdeci">meshx_err_t meshx_gen_srv_send_msg_to_ble(control_task_msg_evt_to_ble_t evt, const meshx_gen_srv_cb_param_t *params)</div><div class="ttdoc">Sends a message to the BLE subsystem via the control task.</div><div class="ttdef"><b>Definition</b> <a href="../../da/dcb/meshx__gen__server_8c_source.html#l00100">meshx_gen_server.c:100</a></div></div>
-<div class="ttc" id="ameshx__light__ctl__srv_8h_html_aaff04640563eef2cfa526fbf99ed5319"><div class="ttname"><a href="../../db/dde/meshx__light__ctl__srv_8h.html#aaff04640563eef2cfa526fbf99ed5319">meshx_light_ctl_srv_send_pack_create</a></div><div class="ttdeci">meshx_err_t meshx_light_ctl_srv_send_pack_create(meshx_ptr_t p_model, uint16_t element_id, uint16_t net_idx, uint16_t app_idx, uint16_t pub_addr, meshx_light_ctl_srv_state_t ctl_state, meshx_lighting_server_cb_param_t *light_srv_send)</div><div class="ttdoc">Create a Light CTL Server send message packet.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00373">meshx_light_ctl_srv.c:373</a></div></div>
+<div class="ttc" id="ameshx__light__ctl__srv_8h_html_aaff04640563eef2cfa526fbf99ed5319"><div class="ttname"><a href="../../db/dde/meshx__light__ctl__srv_8h.html#aaff04640563eef2cfa526fbf99ed5319">meshx_light_ctl_srv_send_pack_create</a></div><div class="ttdeci">meshx_err_t meshx_light_ctl_srv_send_pack_create(meshx_ptr_t p_model, uint16_t element_id, uint16_t net_idx, uint16_t app_idx, uint16_t pub_addr, meshx_light_ctl_srv_state_t ctl_state, meshx_lighting_server_cb_param_t *light_srv_send)</div><div class="ttdoc">Create a Light CTL Server send message packet.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00536">meshx_light_ctl_srv.c:536</a></div></div>
 <div class="ttc" id="ameshx__light__server_8h_html_acfab754bb56f290741a2fc1c49c595c8"><div class="ttname"><a href="../../dc/daf/meshx__light__server_8h.html#acfab754bb56f290741a2fc1c49c595c8">meshx_gen_light_srv_send_msg_to_ble</a></div><div class="ttdeci">meshx_err_t meshx_gen_light_srv_send_msg_to_ble(control_task_msg_evt_to_ble_t evt, const meshx_lighting_server_cb_param_t *params)</div><div class="ttdoc">Sends a message to the BLE subsystem via the control task.</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d98/meshx__light__server_8c_source.html#l00062">meshx_light_server.c:62</a></div></div>
 <div class="ttc" id="ameshx__log_8h_html_a3df9f46a0a08969094d8eef3581409e8"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a3df9f46a0a08969094d8eef3581409e8">MESHX_LOGW</a></div><div class="ttdeci">#define MESHX_LOGW(module_id, format,...)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dcb/meshx__log_8h_source.html#l00087">meshx_log.h:87</a></div></div>
 <div class="ttc" id="ameshx__log_8h_html_a56673888067cbe14c7a33b0856f46eb8"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a></div><div class="ttdeci">#define MESHX_LOGE(module_id, format,...)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dcb/meshx__log_8h_source.html#l00073">meshx_log.h:73</a></div></div>
@@ -1346,7 +1346,7 @@ Here is the caller graph for this function:</div>
 <div class="ttc" id="ameshx__cwww__server_8c_html_ab8653550cf31c3c5ac29ebf5d2d4654f"><div class="ttname"><a href="#ab8653550cf31c3c5ac29ebf5d2d4654f">cwww_server_config_srv_cb</a></div><div class="ttdeci">static meshx_err_t cwww_server_config_srv_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const meshx_config_srv_cb_param_t *params)</div><div class="ttdoc">Callback function for configuration server events.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d46/meshx__cwww__server_8c_source.html#l00058">meshx_cwww_server.c:58</a></div></div>
 <div class="ttc" id="ameshx__cwww__server_8c_html_ade969ecdaaeafbdb83b4f4ecabcef37c"><div class="ttname"><a href="#ade969ecdaaeafbdb83b4f4ecabcef37c">meshx_add_cwww_srv_model_to_element_list</a></div><div class="ttdeci">static meshx_err_t meshx_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, uint16_t *start_idx, uint16_t n_max)</div><div class="ttdoc">Add CW-WW server models to the element list.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d46/meshx__cwww__server_8c_source.html#l00296">meshx_cwww_server.c:296</a></div></div>
 <div class="ttc" id="ameshx__cwww__server_8c_html_af44b869dfc97f122b46ad2752ee96d48"><div class="ttname"><a href="#af44b869dfc97f122b46ad2752ee96d48">cwww_prov_control_task_handler</a></div><div class="ttdeci">static meshx_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, control_task_msg_evt_t evt, void const *params)</div><div class="ttdoc">Callback function for relay server model events for Provisioning events.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d46/meshx__cwww__server_8c_source.html#l00455">meshx_cwww_server.c:455</a></div></div>
-<div class="ttc" id="ameshx__light__ctl__srv_8h_html_adc1d0d7fc5b8e44bebce9c905547780f"><div class="ttname"><a href="../../db/dde/meshx__light__ctl__srv_8h.html#adc1d0d7fc5b8e44bebce9c905547780f">meshx_light_ctl_server_init</a></div><div class="ttdeci">meshx_err_t meshx_light_ctl_server_init(void)</div><div class="ttdoc">Initialize the CTL server model.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00188">meshx_light_ctl_srv.c:188</a></div></div>
+<div class="ttc" id="ameshx__light__ctl__srv_8h_html_adc1d0d7fc5b8e44bebce9c905547780f"><div class="ttname"><a href="../../db/dde/meshx__light__ctl__srv_8h.html#adc1d0d7fc5b8e44bebce9c905547780f">meshx_light_ctl_server_init</a></div><div class="ttdeci">meshx_err_t meshx_light_ctl_server_init(void)</div><div class="ttdoc">Initialize the CTL server model.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00311">meshx_light_ctl_srv.c:311</a></div></div>
 <div class="ttc" id="ameshx__light__cwww__client_8c_html_a0983d7745dcb50ce2c0639619ac08442"><div class="ttname"><a href="../../d0/d53/meshx__light__cwww__client_8c.html#a0983d7745dcb50ce2c0639619ac08442">CONFIG_SERVER_CB_MASK</a></div><div class="ttdeci">#define CONFIG_SERVER_CB_MASK</div><div class="ttdoc">Configuration server callback event mask for cwww server.</div><div class="ttdef"><b>Definition</b> <a href="../../d0/d53/meshx__light__cwww__client_8c_source.html#l00038">meshx_light_cwww_client.c:38</a></div></div>
 <div class="ttc" id="ameshx__prov__srv_8h_html_a294c30d13de4ce41c5502ec6ccd68599"><div class="ttname"><a href="../../d2/d10/meshx__prov__srv_8h.html#a294c30d13de4ce41c5502ec6ccd68599">meshx_prov_srv_reg_el_server_cb</a></div><div class="ttdeci">meshx_err_t meshx_prov_srv_reg_el_server_cb(prov_srv_cb_t cb)</div><div class="ttdoc">Register a callback function for provisioning events.</div><div class="ttdef"><b>Definition</b> <a href="../../d2/d21/meshx__prov__srv_8c_source.html#l00378">meshx_prov_srv.c:378</a></div></div>
 <div class="ttc" id="astructdev__struct_html_a273d14f95989fcb253c16ff172c6d87c"><div class="ttname"><a href="../../d7/d41/structdev__struct.html#a273d14f95989fcb253c16ff172c6d87c">dev_struct::element_idx</a></div><div class="ttdeci">size_t element_idx</div><div class="ttdef"><b>Definition</b> <a href="../../d2/de3/meshx__common_8h_source.html#l00055">meshx_common.h:55</a></div></div>
@@ -1355,124 +1355,135 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/d46/meshx__cwww__server_8c_ac1498e20904edfabe76c92f9da6375bd_cgraph.png" border="0" usemap="#ad9/d46/meshx__cwww__server_8c_ac1498e20904edfabe76c92f9da6375bd_cgraph" alt=""/></div>
 <map name="ad9/d46/meshx__cwww__server_8c_ac1498e20904edfabe76c92f9da6375bd_cgraph" id="ad9/d46/meshx__cwww__server_8c_ac1498e20904edfabe76c92f9da6375bd_cgraph">
-<area shape="rect" title="Create Dynamic CWWW Server Model Elements." alt="" coords="5,392,212,417"/>
-<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="723,57,911,83"/>
-<area shape="poly" title=" " alt="" coords="108,391,117,328,140,236,159,187,185,139,217,97,258,62,321,30,390,12,461,4,532,4,600,11,663,23,764,49,763,54,662,28,599,17,531,10,461,9,391,17,323,35,261,67,221,100,189,142,164,189,145,238,122,329,113,391"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#af44b869dfc97f122b46ad2752ee96d48" title="Callback function for relay server model events for Provisioning events." alt="" coords="496,327,665,367"/>
-<area shape="poly" title=" " alt="" coords="212,389,481,356,481,362,213,395"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#ab8653550cf31c3c5ac29ebf5d2d4654f" title="Callback function for configuration server events." alt="" coords="278,477,420,518"/>
-<area shape="poly" title=" " alt="" coords="143,415,261,462,279,469,277,474,259,467,142,420"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#ade969ecdaaeafbdb83b4f4ecabcef37c" title="Add CW&#45;WW server models to the element list." alt="" coords="270,661,428,702"/>
-<area shape="poly" title=" " alt="" coords="121,416,177,497,218,550,262,601,312,649,309,653,258,605,213,553,173,500,116,419"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#a9929dada86201ea717d859bfd66c9ffd" title="CW&#45;WW server model event handler." alt="" coords="268,412,430,453"/>
-<area shape="poly" title=" " alt="" coords="212,414,253,419,252,424,212,419"/>
-<area shape="rect" href="../../dd/d79/meshx__config__server_8c.html#aea136e2f0520f4f57129778288f17ec9" title="Registers a configuration server callback for specific events." alt="" coords="277,76,420,117"/>
-<area shape="poly" title=" " alt="" coords="114,390,168,293,209,228,258,167,304,124,307,128,262,170,214,232,172,296,119,392"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#a079e0e35fadd8737ea2216db7c76977c" title="Handler for sending messages from the CW&#45;WW server model to BLE." alt="" coords="269,551,429,591"/>
-<area shape="poly" title=" " alt="" coords="125,416,182,468,261,528,286,541,283,546,258,532,179,472,122,420"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#a9323b419771abef4a20d688f3f90188d" title="Create space for CW&#45;WW models." alt="" coords="262,821,436,862"/>
-<area shape="poly" title=" " alt="" coords="118,417,173,540,215,626,262,712,325,807,321,810,257,715,210,628,168,542,113,419"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#adc1d0d7fc5b8e44bebce9c905547780f" title="Initialize the CTL server model." alt="" coords="260,256,438,281"/>
-<area shape="poly" title=" " alt="" coords="132,389,310,287,313,291,134,393"/>
-<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#a294c30d13de4ce41c5502ec6ccd68599" title="Register a callback function for provisioning events." alt="" coords="278,180,420,221"/>
-<area shape="poly" title=" " alt="" coords="117,389,173,321,213,279,258,241,281,226,284,231,261,245,217,283,177,325,121,393"/>
-<area shape="rect" href="../../d3/df5/meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="1444,109,1577,135"/>
-<area shape="poly" title=" " alt="" coords="911,71,1144,84,1428,110,1428,116,1144,90,911,76"/>
-<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#acfab754bb56f290741a2fc1c49c595c8" title="Sends a message to the BLE subsystem via the control task." alt="" coords="745,233,889,274"/>
-<area shape="poly" title=" " alt="" coords="635,324,674,307,722,285,740,277,742,282,724,290,676,312,637,329"/>
-<area shape="rect" href="../../da/dcb/meshx__gen__server_8c.html#a0a25ca2d0f109691c37c60eb95331b36" title="Sends a message to the BLE subsystem via the control task." alt="" coords="743,299,891,339"/>
-<area shape="poly" title=" " alt="" coords="665,334,728,327,729,332,665,340"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#aaff04640563eef2cfa526fbf99ed5319" title="Create a Light CTL Server send message packet." alt="" coords="749,364,885,405"/>
-<area shape="poly" title=" " alt="" coords="665,358,734,369,733,374,665,363"/>
-<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="1206,265,1378,291"/>
-<area shape="poly" title=" " alt="" coords="889,255,1190,270,1190,275,889,260"/>
-<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#a93ab84b7706337c1dd550a817efca526" title="Checks if the given opcode belongs to the Generic Light group." alt="" coords="983,315,1120,355"/>
-<area shape="poly" title=" " alt="" coords="879,272,977,307,975,312,877,277"/>
-<area shape="poly" title=" " alt="" coords="1310,262,1477,142,1480,146,1313,267"/>
-<area shape="rect" href="../../d0/d77/meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue Back." alt="" coords="1440,290,1581,316"/>
-<area shape="poly" title=" " alt="" coords="1379,285,1425,291,1425,296,1378,290"/>
-<area shape="rect" href="../../d3/df5/meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="1452,241,1569,267"/>
-<area shape="poly" title=" " alt="" coords="1378,266,1436,259,1437,264,1379,271"/>
-<area shape="rect" href="../../d3/df5/meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="1629,241,1806,267"/>
-<area shape="poly" title=" " alt="" coords="1570,251,1613,251,1613,256,1570,256"/>
-<area shape="poly" title=" " alt="" coords="877,337,959,364,1052,378,1093,376,1143,365,1177,352,1209,335,1262,299,1265,303,1212,340,1179,357,1145,370,1093,381,1052,383,958,370,876,343"/>
-<area shape="rect" href="../../da/dcb/meshx__gen__server_8c.html#a2de59535b6980e3872c49ed575711338" title="Checks if the given opcode corresponds to a status message in the Generic Server group." alt="" coords="983,429,1120,470"/>
-<area shape="poly" title=" " alt="" coords="890,338,912,350,928,365,937,380,946,394,960,409,977,420,974,424,957,413,942,398,933,383,924,369,909,355,888,342"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#aed72eaf1b8f7fd7bf64c962bb028a31e" title="Retrieves the base element ID for the BLE Mesh platform." alt="" coords="486,526,675,552"/>
-<area shape="poly" title=" " alt="" coords="421,508,490,520,489,526,420,513"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#a091a0be186edb6d1dc740b838cf38037" title="Store the context of a specific element to NVS." alt="" coords="486,477,675,503"/>
-<area shape="poly" title=" " alt="" coords="420,493,471,491,471,496,420,498"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#ab9a39208cc2b067b0b5df0a85d7b4b03" title="Set a value in the NVS." alt="" coords="761,545,873,571"/>
-<area shape="poly" title=" " alt="" coords="637,501,676,511,761,537,759,542,675,516,636,506"/>
-<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a63e6c1a15d1a30d41dc704c131a27062" title="Restart a timer." alt="" coords="971,545,1132,571"/>
-<area shape="poly" title=" " alt="" coords="874,555,956,555,956,560,874,560"/>
-<area shape="poly" title=" " alt="" coords="1109,542,1142,524,1169,499,1192,471,1232,410,1261,351,1279,304,1284,306,1266,353,1236,413,1197,474,1172,503,1146,528,1112,547"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#a3773373d74bd4e2c0415a89f7652ebe8" title="Retrieve the context of a specific element from NVS." alt="" coords="486,641,675,667"/>
-<area shape="poly" title=" " alt="" coords="428,670,470,664,471,670,429,675"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a2bdab205d68a408e7ec03e58b2fa8a0b" title="Adds an element to the BLE Mesh composition." alt="" coords="496,691,665,731"/>
-<area shape="poly" title=" " alt="" coords="429,689,481,696,480,701,428,694"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#a6056b1ffd8dfaff87bd0c4444be15404" title="Restore saved CW&#45;WW model states." alt="" coords="506,756,655,797"/>
-<area shape="poly" title=" " alt="" coords="395,700,487,741,505,748,503,753,485,746,393,705"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#ae36588f5b4ae5e5ac771e1af86a71e5a" title="Get a value from the NVS." alt="" coords="761,660,873,685"/>
-<area shape="poly" title=" " alt="" coords="676,659,746,664,745,669,675,664"/>
-<area shape="rect" href="../../dc/d28/esp__nvs_8c.html#a01998c5a615417f7fd4c8e3e6aa06a61" title="Read blob value for given key from non&#45;volatile storage." alt="" coords="978,660,1125,685"/>
-<area shape="poly" title=" " alt="" coords="874,670,962,670,962,675,874,675"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a8695297933d548b07c6b2ccce8236920" title="Restore the CTL state for the generic server model." alt="" coords="749,756,885,797"/>
-<area shape="poly" title=" " alt="" coords="655,774,733,774,733,779,655,779"/>
-<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#add201d93559ff4ff071950572182e204" title="Restore the state of the Light CTL Server." alt="" coords="982,756,1121,797"/>
-<area shape="poly" title=" " alt="" coords="885,774,966,774,966,779,885,779"/>
-<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#a0dc534558d13a140c430ef5bb1f659f9" title="Set the state of the Light CTL Server." alt="" coords="1220,756,1364,797"/>
-<area shape="poly" title=" " alt="" coords="1122,774,1205,774,1205,779,1122,779"/>
-<area shape="poly" title=" " alt="" coords="430,450,512,470,510,475,429,455"/>
-<area shape="rect" href="../../dc/d93/meshx__api_8c.html#a5b8d1eddceb8ab76e5fdc7fea5545496" title="Sends a message to the BLE Mesh application." alt="" coords="494,428,667,453"/>
-<area shape="poly" title=" " alt="" coords="430,433,479,434,479,440,430,438"/>
-<area shape="poly" title=" " alt="" coords="639,451,676,462,700,472,724,479,844,505,941,523,986,525,1033,520,1085,505,1143,479,1169,463,1192,443,1231,395,1260,346,1278,304,1283,306,1264,348,1235,398,1196,447,1172,467,1145,484,1087,510,1034,525,986,530,940,528,843,510,723,484,698,477,674,467,637,456"/>
-<area shape="rect" href="../../dc/d93/meshx__api_8c.html#ac37c1c5b9f1e9cdaa510bf886d897e2d" title="Prepares a message to be sent to the BLE Mesh application." alt="" coords="746,429,888,470"/>
-<area shape="poly" title=" " alt="" coords="667,441,731,444,731,449,667,446"/>
-<area shape="poly" title=" " alt="" coords="421,90,708,73,708,79,421,95"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a934b83618b10c26bf4d3f17e0ae1aa08" title="Send the Light CTL status message." alt="" coords="512,576,649,617"/>
-<area shape="poly" title=" " alt="" coords="429,577,497,585,497,590,429,582"/>
-<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#a40a91efcb35c7db08fd73143b779a31a" title="Sends a status message for the Lighting Server model." alt="" coords="745,595,889,635"/>
-<area shape="poly" title=" " alt="" coords="649,599,730,606,730,611,649,604"/>
-<area shape="poly" title=" " alt="" coords="888,597,909,581,924,561,932,542,937,504,939,463,945,440,956,416,979,387,1006,363,1009,367,983,391,961,419,950,442,944,464,942,504,937,544,928,564,913,585,891,601"/>
-<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#ac79c39e50439290a87cd0b7da8fa886a" title="Send a status message from the Light Server. This function constructs and sends a status message cont..." alt="" coords="978,595,1124,635"/>
-<area shape="poly" title=" " alt="" coords="889,612,962,612,962,618,889,618"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#ae58e3714c7314300269ade7cf0e09216" title="Deinitializes the mesh element structure by freeing allocated memory." alt="" coords="504,821,657,862"/>
-<area shape="poly" title=" " alt="" coords="436,839,489,839,489,844,436,844"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#acfe19244baff39d7aaaeefa052997704" title="Initializes the mesh element structure by freeing allocated memory." alt="" coords="492,890,669,916"/>
-<area shape="poly" title=" " alt="" coords="429,860,515,883,514,888,428,865"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#aed19d572f2a8028c955328e452df507e" title="Delete the CTL server model instance." alt="" coords="740,821,894,862"/>
-<area shape="poly" title=" " alt="" coords="657,839,724,839,724,844,657,844"/>
-<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#adcc92f91b94547ecd612f3a8fd93e412" title="Delete a Light CTL Server instance." alt="" coords="982,821,1121,862"/>
-<area shape="poly" title=" " alt="" coords="895,839,966,839,966,844,895,844"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="1202,837,1383,863"/>
-<area shape="poly" title=" " alt="" coords="1122,841,1186,844,1186,849,1121,847"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a28ca32dccd7b19454cf530dc3525d0a6" title="Create and initialize a new CTL server model instance." alt="" coords="740,887,894,927"/>
-<area shape="poly" title=" " alt="" coords="669,902,724,903,724,908,669,907"/>
-<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#aa7384157587813da254014dfd8f13b17" title="Create a Light CTL Server instance." alt="" coords="982,887,1121,927"/>
-<area shape="poly" title=" " alt="" coords="895,904,966,904,966,910,895,910"/>
-<area shape="poly" title=" " alt="" coords="1121,888,1219,864,1221,869,1122,893"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a12b595bcf51021fcaa675e488fe24308" title="Creates and initializes model and publication structures." alt="" coords="1192,894,1392,920"/>
-<area shape="poly" title=" " alt="" coords="1122,904,1177,904,1177,910,1122,910"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a7d11c7a15e9c2066afb3f22e72068518" title="Handle Light CTL messages for the lighting server model." alt="" coords="513,257,648,298"/>
-<area shape="poly" title=" " alt="" coords="438,269,498,272,497,277,438,275"/>
-<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#ac2ffaf1fcb582f87cf5e5a9b36f2d043" title="Register a callback function for the lighting server model." alt="" coords="504,158,657,184"/>
-<area shape="poly" title=" " alt="" coords="388,253,437,230,460,211,485,193,498,187,500,192,487,197,463,215,439,235,390,257"/>
-<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#a12af3296e750ff638ba757ebf12d9043" title="Initialize the production lighting server." alt="" coords="502,208,659,233"/>
-<area shape="poly" title=" " alt="" coords="414,252,500,234,501,240,415,258"/>
-<area shape="poly" title=" " alt="" coords="649,268,730,260,730,265,649,274"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a9cde80da166fd8a69dd7261a2478d1b8" title="Perform hardware change for the light control server model." alt="" coords="745,168,889,209"/>
-<area shape="poly" title=" " alt="" coords="646,254,674,243,722,219,740,212,742,217,724,224,676,248,648,259"/>
-<area shape="poly" title=" " alt="" coords="890,198,1145,244,1214,259,1213,264,1143,250,889,203"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#ab3ea84732bbdc4a0b8d742aa4f66be09" title="Checks if a model is subscribed to a specific group address." alt="" coords="959,164,1144,189"/>
-<area shape="poly" title=" " alt="" coords="890,182,943,179,943,185,890,187"/>
-<area shape="poly" title=" " alt="" coords="630,155,674,137,698,118,722,98,749,86,751,91,725,103,701,122,677,141,632,160"/>
-<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#afd34945754064f76b2471c0f9598e785" title="Initialize the platform&#45;specific Light Server." alt="" coords="733,113,901,139"/>
-<area shape="poly" title=" " alt="" coords="648,205,674,194,688,185,698,175,707,165,722,154,749,142,751,147,725,159,711,169,701,179,692,189,677,199,650,209"/>
-<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#a4ee43eae858bbcef30908dac0e2fa7f8" title="Callback function for BLE Mesh Lightness Server events." alt="" coords="980,99,1122,139"/>
-<area shape="poly" title=" " alt="" coords="901,121,965,119,965,124,901,126"/>
-<area shape="poly" title=" " alt="" coords="1122,138,1145,149,1182,173,1216,201,1270,252,1267,256,1213,205,1179,177,1143,153,1120,142"/>
-<area shape="poly" title=" " alt="" coords="396,177,485,143,612,109,727,83,729,89,613,114,487,148,398,182"/>
+<area shape="rect" title="Create Dynamic CWWW Server Model Elements." alt="" coords="5,395,212,421"/>
+<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="723,68,911,94"/>
+<area shape="poly" title=" " alt="" coords="108,394,116,331,139,237,158,187,184,138,217,94,258,59,289,41,322,27,392,9,464,3,536,6,605,16,668,29,769,60,767,65,667,35,604,21,535,11,464,8,393,15,324,32,292,46,261,63,221,98,188,141,163,189,144,239,121,332,113,395"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#af44b869dfc97f122b46ad2752ee96d48" title="Callback function for relay server model events for Provisioning events." alt="" coords="496,341,665,382"/>
+<area shape="poly" title=" " alt="" coords="212,395,481,368,481,374,213,400"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#ab8653550cf31c3c5ac29ebf5d2d4654f" title="Callback function for configuration server events." alt="" coords="278,496,420,536"/>
+<area shape="poly" title=" " alt="" coords="136,419,261,480,277,487,275,492,259,485,134,424"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#ade969ecdaaeafbdb83b4f4ecabcef37c" title="Add CW&#45;WW server models to the element list." alt="" coords="270,702,428,743"/>
+<area shape="poly" title=" " alt="" coords="120,420,176,511,217,572,262,632,316,690,312,693,258,635,212,575,171,514,115,423"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#a9929dada86201ea717d859bfd66c9ffd" title="CW&#45;WW server model event handler." alt="" coords="268,430,430,471"/>
+<area shape="poly" title=" " alt="" coords="186,419,254,431,253,436,185,424"/>
+<area shape="rect" href="../../dd/d79/meshx__config__server_8c.html#aea136e2f0520f4f57129778288f17ec9" title="Registers a configuration server callback for specific events." alt="" coords="277,73,420,114"/>
+<area shape="poly" title=" " alt="" coords="111,394,128,347,159,279,202,204,228,168,258,135,278,120,281,124,261,139,232,171,206,207,163,281,133,349,116,396"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#a079e0e35fadd8737ea2216db7c76977c" title="Handler for sending messages from the CW&#45;WW server model to BLE." alt="" coords="269,581,429,622"/>
+<area shape="poly" title=" " alt="" coords="124,419,181,477,261,546,298,570,295,575,258,550,178,481,120,423"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#a9323b419771abef4a20d688f3f90188d" title="Create space for CW&#45;WW models." alt="" coords="262,854,436,895"/>
+<area shape="poly" title=" " alt="" coords="117,420,169,558,212,656,262,753,292,800,323,841,319,844,288,803,257,756,207,658,164,560,112,422"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#adc1d0d7fc5b8e44bebce9c905547780f" title="Initialize the CTL server model." alt="" coords="260,247,438,273"/>
+<area shape="poly" title=" " alt="" coords="130,392,312,279,314,284,133,397"/>
+<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#a294c30d13de4ce41c5502ec6ccd68599" title="Register a callback function for provisioning events." alt="" coords="278,149,420,190"/>
+<area shape="poly" title=" " alt="" coords="118,393,174,322,215,276,258,233,302,197,305,201,261,237,218,280,179,325,122,396"/>
+<area shape="rect" href="../../d3/df5/meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="1446,120,1579,146"/>
+<area shape="poly" title=" " alt="" coords="911,82,1144,96,1431,122,1430,127,1144,101,911,88"/>
+<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#acfab754bb56f290741a2fc1c49c595c8" title="Sends a message to the BLE subsystem via the control task." alt="" coords="745,246,889,287"/>
+<area shape="poly" title=" " alt="" coords="630,338,674,319,722,297,740,290,742,295,724,302,676,324,632,343"/>
+<area shape="rect" href="../../da/dcb/meshx__gen__server_8c.html#a0a25ca2d0f109691c37c60eb95331b36" title="Sends a message to the BLE subsystem via the control task." alt="" coords="743,312,891,352"/>
+<area shape="poly" title=" " alt="" coords="665,348,728,340,729,346,665,353"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#aaff04640563eef2cfa526fbf99ed5319" title="Create a Light CTL Server send message packet." alt="" coords="749,377,885,418"/>
+<area shape="poly" title=" " alt="" coords="665,371,734,382,733,387,665,377"/>
+<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="1192,276,1364,302"/>
+<area shape="poly" title=" " alt="" coords="889,267,1177,282,1176,287,889,273"/>
+<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#a93ab84b7706337c1dd550a817efca526" title="Checks if the given opcode belongs to the Generic Light group." alt="" coords="983,542,1120,583"/>
+<area shape="poly" title=" " alt="" coords="891,281,913,298,932,328,940,358,940,387,937,416,934,444,934,472,942,500,961,529,971,539,968,542,957,532,937,502,929,473,929,444,932,415,935,387,935,359,927,330,909,302,888,285"/>
+<area shape="poly" title=" " alt="" coords="1298,274,1477,153,1480,157,1301,278"/>
+<area shape="rect" href="../../d0/d77/meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue Back." alt="" coords="1442,252,1583,278"/>
+<area shape="poly" title=" " alt="" coords="1364,278,1426,271,1427,277,1365,283"/>
+<area shape="rect" href="../../d3/df5/meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="1454,302,1571,327"/>
+<area shape="poly" title=" " alt="" coords="1365,296,1439,304,1438,309,1364,301"/>
+<area shape="rect" href="../../d3/df5/meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="1663,302,1840,327"/>
+<area shape="poly" title=" " alt="" coords="1572,312,1647,312,1647,317,1572,317"/>
+<area shape="poly" title=" " alt="" coords="891,322,1176,296,1177,301,891,328"/>
+<area shape="rect" href="../../da/dcb/meshx__gen__server_8c.html#a2de59535b6980e3872c49ed575711338" title="Checks if the given opcode corresponds to a status message in the Generic Server group." alt="" coords="983,377,1120,418"/>
+<area shape="poly" title=" " alt="" coords="892,350,969,372,967,377,890,355"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#aed72eaf1b8f7fd7bf64c962bb028a31e" title="Retrieves the base element ID for the BLE Mesh platform." alt="" coords="486,548,675,574"/>
+<area shape="poly" title=" " alt="" coords="421,527,497,542,496,547,420,532"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#a091a0be186edb6d1dc740b838cf38037" title="Store the context of a specific element to NVS." alt="" coords="486,499,675,525"/>
+<area shape="poly" title=" " alt="" coords="420,512,471,511,471,516,420,517"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#ab9a39208cc2b067b0b5df0a85d7b4b03" title="Set a value in the NVS." alt="" coords="761,556,873,582"/>
+<area shape="poly" title=" " alt="" coords="637,523,747,550,746,555,636,528"/>
+<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a63e6c1a15d1a30d41dc704c131a27062" title="Restart a timer." alt="" coords="971,492,1132,518"/>
+<area shape="poly" title=" " alt="" coords="867,553,910,541,958,528,986,520,988,525,959,533,911,546,868,558"/>
+<area shape="poly" title=" " alt="" coords="1107,490,1142,471,1182,434,1216,392,1243,350,1262,315,1267,317,1247,353,1220,395,1186,438,1146,475,1109,494"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#a3773373d74bd4e2c0415a89f7652ebe8" title="Retrieve the context of a specific element from NVS." alt="" coords="486,738,675,763"/>
+<area shape="poly" title=" " alt="" coords="429,729,471,735,470,740,428,735"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a2bdab205d68a408e7ec03e58b2fa8a0b" title="Adds an element to the BLE Mesh composition." alt="" coords="496,788,665,828"/>
+<area shape="poly" title=" " alt="" coords="403,741,487,773,504,779,502,784,485,778,401,746"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#a6056b1ffd8dfaff87bd0c4444be15404" title="Restore saved CW&#45;WW model states." alt="" coords="506,673,655,714"/>
+<area shape="poly" title=" " alt="" coords="428,710,491,702,492,707,429,715"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#ae36588f5b4ae5e5ac771e1af86a71e5a" title="Get a value from the NVS." alt="" coords="761,738,873,763"/>
+<area shape="poly" title=" " alt="" coords="676,748,746,748,746,753,676,753"/>
+<area shape="rect" href="../../dc/d28/esp__nvs_8c.html#a01998c5a615417f7fd4c8e3e6aa06a61" title="Read blob value for given key from non&#45;volatile storage." alt="" coords="978,738,1125,763"/>
+<area shape="poly" title=" " alt="" coords="874,748,962,748,962,753,874,753"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a8695297933d548b07c6b2ccce8236920" title="Restore the CTL state for the generic server model." alt="" coords="749,673,885,714"/>
+<area shape="poly" title=" " alt="" coords="655,691,733,691,733,696,655,696"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#add201d93559ff4ff071950572182e204" title="Restore the state of the Light CTL Server." alt="" coords="982,673,1121,714"/>
+<area shape="poly" title=" " alt="" coords="885,691,966,691,966,696,885,696"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#a0dc534558d13a140c430ef5bb1f659f9" title="Set the state of the Light CTL Server." alt="" coords="1206,673,1350,714"/>
+<area shape="poly" title=" " alt="" coords="1121,691,1191,691,1191,696,1121,696"/>
+<area shape="poly" title=" " alt="" coords="429,469,515,492,514,497,428,474"/>
+<area shape="rect" href="../../dc/d93/meshx__api_8c.html#a5b8d1eddceb8ab76e5fdc7fea5545496" title="Sends a message to the BLE Mesh application." alt="" coords="494,442,667,467"/>
+<area shape="poly" title=" " alt="" coords="430,449,479,450,479,455,430,455"/>
+<area shape="poly" title=" " alt="" coords="667,456,787,459,925,457,1053,448,1105,439,1143,427,1180,404,1213,374,1239,342,1259,314,1264,317,1244,345,1217,377,1183,408,1145,432,1106,444,1054,453,926,462,787,464,667,461"/>
+<area shape="rect" href="../../dc/d93/meshx__api_8c.html#ac37c1c5b9f1e9cdaa510bf886d897e2d" title="Prepares a message to be sent to the BLE Mesh application." alt="" coords="746,492,888,532"/>
+<area shape="poly" title=" " alt="" coords="637,465,732,489,730,494,636,471"/>
+<area shape="poly" title=" " alt="" coords="421,89,708,81,708,87,421,94"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a934b83618b10c26bf4d3f17e0ae1aa08" title="Send the Light CTL status message." alt="" coords="512,602,649,643"/>
+<area shape="poly" title=" " alt="" coords="429,606,497,612,497,618,429,611"/>
+<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#a40a91efcb35c7db08fd73143b779a31a" title="Sends a status message for the Lighting Server model." alt="" coords="745,606,889,647"/>
+<area shape="poly" title=" " alt="" coords="649,621,730,622,730,628,649,626"/>
+<area shape="poly" title=" " alt="" coords="888,604,968,583,969,588,890,610"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#ac79c39e50439290a87cd0b7da8fa886a" title="Send a status message from the Light Server. This function constructs and sends a status message cont..." alt="" coords="978,608,1124,648"/>
+<area shape="poly" title=" " alt="" coords="889,624,962,625,962,630,889,630"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#ae58e3714c7314300269ade7cf0e09216" title="Deinitializes the mesh element structure by freeing allocated memory." alt="" coords="741,932,893,972"/>
+<area shape="poly" title=" " alt="" coords="437,888,486,897,726,936,725,941,486,903,436,894"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#acfe19244baff39d7aaaeefa052997704" title="Initializes the mesh element structure by freeing allocated memory." alt="" coords="492,862,669,887"/>
+<area shape="poly" title=" " alt="" coords="436,872,477,872,477,877,436,877"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#aed19d572f2a8028c955328e452df507e" title="Delete the CTL server model instance." alt="" coords="974,953,1128,994"/>
+<area shape="poly" title=" " alt="" coords="894,956,959,962,959,967,893,961"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#a0ee9a897168a69c9ede40278fdb4b445" title="Delete a Light CTL Server instance." alt="" coords="1441,909,1584,950"/>
+<area shape="poly" title=" " alt="" coords="1129,965,1364,945,1425,938,1426,943,1365,951,1129,971"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="1661,859,1842,885"/>
+<area shape="poly" title=" " alt="" coords="1584,909,1679,886,1680,892,1585,915"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a61a46f68788b46871dc34d09289e8530" title="Create and initialize a new CTL server model instance." alt="" coords="740,854,894,895"/>
+<area shape="poly" title=" " alt="" coords="669,872,724,872,724,877,669,877"/>
+<area shape="poly" title=" " alt="" coords="868,893,960,932,988,944,986,949,958,937,866,898"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a9ccee3fc1fcc58cf55c17803cbee478f" title="Creates and initializes the Light CTL (Color Temperature Lightness) Setup Server." alt="" coords="976,838,1126,879"/>
+<area shape="poly" title=" " alt="" coords="895,867,961,862,961,867,895,872"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a86ae7afdb87899d6bd6a4b8900c7c844" title="Deletes or deinitializes the Light CTL (Color Temperature Lightness) Setup Server instance." alt="" coords="1203,896,1353,936"/>
+<area shape="poly" title=" " alt="" coords="895,881,959,888,1188,907,1187,912,958,893,894,886"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#aa7384157587813da254014dfd8f13b17" title="Create a Light CTL Server instance." alt="" coords="1208,765,1348,806"/>
+<area shape="poly" title=" " alt="" coords="870,851,958,824,1081,802,1193,789,1193,794,1081,807,959,829,872,856"/>
+<area shape="poly" title=" " alt="" coords="1127,875,1189,891,1187,896,1126,880"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#a0807c654e0a630b66f06f2732dfcf440" title="Creates and initializes a Light CTL (Color Temperature Lightness) Setup Server model instance." alt="" coords="1208,830,1348,871"/>
+<area shape="poly" title=" " alt="" coords="1127,853,1193,851,1193,856,1127,859"/>
+<area shape="poly" title=" " alt="" coords="1354,917,1425,922,1425,927,1353,923"/>
+<area shape="poly" title=" " alt="" coords="1349,851,1645,864,1645,870,1348,856"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a12b595bcf51021fcaa675e488fe24308" title="Creates and initializes model and publication structures." alt="" coords="1412,808,1613,834"/>
+<area shape="poly" title=" " alt="" coords="1348,839,1396,833,1397,838,1349,844"/>
+<area shape="poly" title=" " alt="" coords="1348,776,1406,773,1473,773,1544,779,1613,793,1673,818,1722,848,1719,852,1670,823,1612,798,1543,785,1472,779,1406,778,1348,781"/>
+<area shape="poly" title=" " alt="" coords="1349,793,1410,803,1409,808,1348,799"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a7d11c7a15e9c2066afb3f22e72068518" title="Handle Light CTL messages for the lighting server model." alt="" coords="513,269,648,310"/>
+<area shape="poly" title=" " alt="" coords="438,269,498,276,497,281,438,274"/>
+<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#ac2ffaf1fcb582f87cf5e5a9b36f2d043" title="Register a callback function for the lighting server model." alt="" coords="504,170,657,195"/>
+<area shape="poly" title=" " alt="" coords="380,244,485,204,507,197,509,203,487,209,382,249"/>
+<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#a12af3296e750ff638ba757ebf12d9043" title="Initialize the production lighting server." alt="" coords="502,219,659,245"/>
+<area shape="poly" title=" " alt="" coords="438,247,487,241,487,246,438,252"/>
+<area shape="poly" title=" " alt="" coords="649,280,730,272,730,278,649,285"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a9cde80da166fd8a69dd7261a2478d1b8" title="Perform hardware change for the light control server model." alt="" coords="745,181,889,222"/>
+<area shape="poly" title=" " alt="" coords="645,266,674,255,722,232,740,225,742,230,724,237,676,260,647,271"/>
+<area shape="poly" title=" " alt="" coords="890,211,1145,257,1204,270,1203,275,1143,263,889,216"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#ab3ea84732bbdc4a0b8d742aa4f66be09" title="Checks if a model is subscribed to a specific group address." alt="" coords="959,175,1144,201"/>
+<area shape="poly" title=" " alt="" coords="890,194,943,191,943,197,890,200"/>
+<area shape="poly" title=" " alt="" coords="630,167,674,148,698,129,722,110,749,97,751,102,725,114,701,133,677,153,632,172"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#afd34945754064f76b2471c0f9598e785" title="Initialize the platform&#45;specific Light Server." alt="" coords="733,124,901,150"/>
+<area shape="poly" title=" " alt="" coords="648,216,674,206,688,196,698,187,722,167,752,153,754,158,725,171,701,191,691,201,677,210,650,221"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#a4ee43eae858bbcef30908dac0e2fa7f8" title="Callback function for BLE Mesh Lightness Server events." alt="" coords="980,110,1122,151"/>
+<area shape="poly" title=" " alt="" coords="901,132,965,130,965,136,901,138"/>
+<area shape="poly" title=" " alt="" coords="1124,149,1145,160,1179,184,1210,211,1258,262,1255,266,1206,215,1176,188,1143,165,1121,154"/>
+<area shape="poly" title=" " alt="" coords="419,153,729,95,730,100,420,159"/>
 </map>
 </div>
 <div class="dynheader">
@@ -1588,7 +1599,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  599</span>cwww_srv_msg_handler_exit:</div>
 <div class="line"><span class="lineno">  600</span>    <span class="keywordflow">return</span> err;</div>
 <div class="line"><span class="lineno">  601</span>}</div>
-<div class="ttc" id="ameshx__light__ctl__srv_8h_html_a934b83618b10c26bf4d3f17e0ae1aa08"><div class="ttname"><a href="../../db/dde/meshx__light__ctl__srv_8h.html#a934b83618b10c26bf4d3f17e0ae1aa08">meshx_light_ctl_srv_status_send</a></div><div class="ttdeci">meshx_err_t meshx_light_ctl_srv_status_send(meshx_model_t *p_model, meshx_ctx_t *ctx, int16_t delta_uv, uint16_t lightness, uint16_t temperature)</div><div class="ttdoc">Send the Light CTL status message.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00323">meshx_light_ctl_srv.c:323</a></div></div>
+<div class="ttc" id="ameshx__light__ctl__srv_8h_html_a934b83618b10c26bf4d3f17e0ae1aa08"><div class="ttname"><a href="../../db/dde/meshx__light__ctl__srv_8h.html#a934b83618b10c26bf4d3f17e0ae1aa08">meshx_light_ctl_srv_status_send</a></div><div class="ttdeci">meshx_err_t meshx_light_ctl_srv_status_send(meshx_model_t *p_model, meshx_ctx_t *ctx, int16_t delta_uv, uint16_t lightness, uint16_t temperature)</div><div class="ttdoc">Send the Light CTL status message.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00486">meshx_light_ctl_srv.c:486</a></div></div>
 <div class="ttc" id="astructmeshx__gen__srv__cb__param_html_a41558a031ae658109a333c28ebf9fc3d"><div class="ttname"><a href="../../d6/d03/structmeshx__gen__srv__cb__param.html#a41558a031ae658109a333c28ebf9fc3d">meshx_gen_srv_cb_param::model</a></div><div class="ttdeci">meshx_model_t model</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d0c/meshx__ble__mesh__gen__srv_8h_source.html#l00142">meshx_ble_mesh_gen_srv.h:142</a></div></div>
 <div class="ttc" id="astructmeshx__gen__srv__cb__param_html_aa8812defd8fd51b2d05f345343e21db9"><div class="ttname"><a href="../../d6/d03/structmeshx__gen__srv__cb__param.html#aa8812defd8fd51b2d05f345343e21db9">meshx_gen_srv_cb_param::state_change</a></div><div class="ttdeci">meshx_gen_srv_state_change_t state_change</div><div class="ttdef"><b>Definition</b> <a href="../../d4/d0c/meshx__ble__mesh__gen__srv_8h_source.html#l00143">meshx_ble_mesh_gen_srv.h:143</a></div></div>
 <div class="ttc" id="astructmeshx__lighting__server__cb__param_html_a73cda8c575b818b96c9b4ab30b55e2d5"><div class="ttname"><a href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a73cda8c575b818b96c9b4ab30b55e2d5">meshx_lighting_server_cb_param::model</a></div><div class="ttdeci">meshx_model_t model</div><div class="ttdef"><b>Definition</b> <a href="../../d7/de0/meshx__ble__mesh__light__srv_8h_source.html#l00216">meshx_ble_mesh_light_srv.h:216</a></div></div>
@@ -1682,23 +1693,34 @@ Here is the call graph for this function:</div>
 <div class="center"><img src="../../d9/d46/meshx__cwww__server_8c_a9323b419771abef4a20d688f3f90188d_cgraph.png" border="0" usemap="#ad9/d46/meshx__cwww__server_8c_a9323b419771abef4a20d688f3f90188d_cgraph" alt=""/></div>
 <map name="ad9/d46/meshx__cwww__server_8c_a9323b419771abef4a20d688f3f90188d_cgraph" id="ad9/d46/meshx__cwww__server_8c_a9323b419771abef4a20d688f3f90188d_cgraph">
 <area shape="rect" title="Create space for CW&#45;WW models." alt="" coords="5,39,180,79"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#ae58e3714c7314300269ade7cf0e09216" title="Deinitializes the mesh element structure by freeing allocated memory." alt="" coords="240,8,392,49"/>
-<area shape="poly" title=" " alt="" coords="179,44,224,38,225,44,180,50"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#acfe19244baff39d7aaaeefa052997704" title="Initializes the mesh element structure by freeing allocated memory." alt="" coords="228,74,404,100"/>
-<area shape="poly" title=" " alt="" coords="180,67,212,71,212,77,179,73"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#aed19d572f2a8028c955328e452df507e" title="Delete the CTL server model instance." alt="" coords="452,5,606,46"/>
-<area shape="poly" title=" " alt="" coords="393,25,436,24,436,29,393,30"/>
-<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#adcc92f91b94547ecd612f3a8fd93e412" title="Delete a Light CTL Server instance." alt="" coords="654,5,794,46"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#ae58e3714c7314300269ade7cf0e09216" title="Deinitializes the mesh element structure by freeing allocated memory." alt="" coords="453,5,605,46"/>
+<area shape="poly" title=" " alt="" coords="180,50,437,30,438,35,180,55"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#acfe19244baff39d7aaaeefa052997704" title="Initializes the mesh element structure by freeing allocated memory." alt="" coords="228,72,404,97"/>
+<area shape="poly" title=" " alt="" coords="180,66,212,70,212,75,179,72"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#aed19d572f2a8028c955328e452df507e" title="Delete the CTL server model instance." alt="" coords="654,5,809,46"/>
 <area shape="poly" title=" " alt="" coords="606,23,639,23,639,28,606,28"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="851,21,1032,46"/>
-<area shape="poly" title=" " alt="" coords="794,26,836,27,836,32,794,31"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a28ca32dccd7b19454cf530dc3525d0a6" title="Create and initialize a new CTL server model instance." alt="" coords="452,71,606,111"/>
-<area shape="poly" title=" " alt="" coords="404,86,437,87,437,92,404,91"/>
-<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#aa7384157587813da254014dfd8f13b17" title="Create a Light CTL Server instance." alt="" coords="654,71,794,111"/>
-<area shape="poly" title=" " alt="" coords="606,88,639,88,639,94,606,94"/>
-<area shape="poly" title=" " alt="" coords="793,70,875,48,876,54,795,75"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a12b595bcf51021fcaa675e488fe24308" title="Creates and initializes model and publication structures." alt="" coords="842,78,1042,104"/>
-<area shape="poly" title=" " alt="" coords="794,88,826,88,826,94,794,94"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#a0ee9a897168a69c9ede40278fdb4b445" title="Delete a Light CTL Server instance." alt="" coords="1084,48,1227,89"/>
+<area shape="poly" title=" " alt="" coords="809,30,1007,48,1068,55,1068,60,1007,54,809,35"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="1303,113,1485,138"/>
+<area shape="poly" title=" " alt="" coords="1228,83,1323,106,1322,111,1227,88"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a61a46f68788b46871dc34d09289e8530" title="Create and initialize a new CTL server model instance." alt="" coords="452,71,606,111"/>
+<area shape="poly" title=" " alt="" coords="404,84,437,85,437,91,404,90"/>
+<area shape="poly" title=" " alt="" coords="593,68,651,49,653,54,595,73"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a9ccee3fc1fcc58cf55c17803cbee478f" title="Creates and initializes the Light CTL (Color Temperature Lightness) Setup Server." alt="" coords="656,120,807,161"/>
+<area shape="poly" title=" " alt="" coords="607,107,642,116,641,121,606,112"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a86ae7afdb87899d6bd6a4b8900c7c844" title="Deletes or deinitializes the Light CTL (Color Temperature Lightness) Setup Server instance." alt="" coords="857,63,1007,103"/>
+<area shape="poly" title=" " alt="" coords="607,87,841,82,841,87,607,92"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#aa7384157587813da254014dfd8f13b17" title="Create a Light CTL Server instance." alt="" coords="862,193,1002,234"/>
+<area shape="poly" title=" " alt="" coords="557,110,601,142,655,170,703,185,753,196,847,208,846,213,752,201,702,190,653,175,598,146,554,114"/>
+<area shape="poly" title=" " alt="" coords="804,117,843,106,845,111,805,122"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#a0807c654e0a630b66f06f2732dfcf440" title="Creates and initializes a Light CTL (Color Temperature Lightness) Setup Server model instance." alt="" coords="862,128,1002,169"/>
+<area shape="poly" title=" " alt="" coords="807,141,847,142,846,148,807,146"/>
+<area shape="poly" title=" " alt="" coords="1007,75,1068,71,1068,77,1007,81"/>
+<area shape="poly" title=" " alt="" coords="1002,142,1288,128,1288,133,1002,148"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a12b595bcf51021fcaa675e488fe24308" title="Creates and initializes model and publication structures." alt="" coords="1055,164,1255,189"/>
+<area shape="poly" title=" " alt="" coords="1002,154,1040,159,1039,164,1001,160"/>
+<area shape="poly" title=" " alt="" coords="1002,218,1121,219,1189,212,1255,199,1313,175,1362,145,1364,150,1315,180,1256,204,1190,218,1122,224,1002,223"/>
+<area shape="poly" title=" " alt="" coords="1001,199,1059,190,1060,195,1002,205"/>
 </map>
 </div>
 <div class="dynheader">
@@ -1782,7 +1804,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  222</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
 <div class="line"><span class="lineno">  223</span>}</div>
 <div class="ttc" id="ameshx__err_8h_html_af8f58f6602b246397c882d9cddd9a334"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#af8f58f6602b246397c882d9cddd9a334">MESHX_FREE</a></div><div class="ttdeci">#define MESHX_FREE</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00032">meshx_err.h:32</a></div></div>
-<div class="ttc" id="ameshx__light__ctl__srv_8h_html_aed19d572f2a8028c955328e452df507e"><div class="ttname"><a href="../../db/dde/meshx__light__ctl__srv_8h.html#aed19d572f2a8028c955328e452df507e">meshx_light_ctl_server_delete</a></div><div class="ttdeci">meshx_err_t meshx_light_ctl_server_delete(meshx_ctl_server_model_t **p_model)</div><div class="ttdoc">Delete the CTL server model instance.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00265">meshx_light_ctl_srv.c:265</a></div></div>
+<div class="ttc" id="ameshx__light__ctl__srv_8h_html_aed19d572f2a8028c955328e452df507e"><div class="ttname"><a href="../../db/dde/meshx__light__ctl__srv_8h.html#aed19d572f2a8028c955328e452df507e">meshx_light_ctl_server_delete</a></div><div class="ttdeci">meshx_err_t meshx_light_ctl_server_delete(meshx_ctl_server_model_t **p_model)</div><div class="ttdoc">Delete the CTL server model instance.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00420">meshx_light_ctl_srv.c:420</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1791,10 +1813,10 @@ Here is the call graph for this function:</div>
 <area shape="rect" title="Deinitializes the mesh element structure by freeing allocated memory." alt="" coords="5,5,158,46"/>
 <area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#aed19d572f2a8028c955328e452df507e" title="Delete the CTL server model instance." alt="" coords="206,5,360,46"/>
 <area shape="poly" title=" " alt="" coords="158,23,190,23,190,28,158,28"/>
-<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#adcc92f91b94547ecd612f3a8fd93e412" title="Delete a Light CTL Server instance." alt="" coords="408,5,547,46"/>
-<area shape="poly" title=" " alt="" coords="360,23,393,23,393,28,360,28"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="595,13,777,38"/>
-<area shape="poly" title=" " alt="" coords="547,23,580,23,580,28,547,28"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#a0ee9a897168a69c9ede40278fdb4b445" title="Delete a Light CTL Server instance." alt="" coords="408,5,551,46"/>
+<area shape="poly" title=" " alt="" coords="360,23,392,23,392,28,360,28"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="599,13,781,38"/>
+<area shape="poly" title=" " alt="" coords="552,23,584,23,584,28,552,28"/>
 </map>
 </div>
 <div class="dynheader">
@@ -1887,36 +1909,51 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  160</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca2d5864879e90e2ec82e8a21eedbd9636">MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER</a>, <span class="stringliteral">&quot;Meshx On Off Server create failed (Err : 0x%x)&quot;</span>, err);</div>
 <div class="line"><span class="lineno">  161</span>            <span class="keywordflow">return</span> err;</div>
 <div class="line"><span class="lineno">  162</span>        }</div>
-<div class="line"><span class="lineno">  163</span>        err = <a class="code hl_function" href="../../db/dde/meshx__light__ctl__srv_8h.html#a28ca32dccd7b19454cf530dc3525d0a6">meshx_light_ctl_server_create</a>(&amp;<a class="code hl_define" href="#a31505f40f0323d68c5adfd236419fea1">CWWW_SRV_EL</a>(i).ctl_srv_model,</div>
+<div class="line"><span class="lineno">  163</span>        err = <a class="code hl_function" href="../../db/dde/meshx__light__ctl__srv_8h.html#a61a46f68788b46871dc34d09289e8530">meshx_light_ctl_server_create</a>(&amp;<a class="code hl_define" href="#a31505f40f0323d68c5adfd236419fea1">CWWW_SRV_EL</a>(i).ctl_srv_model,</div>
 <div class="line"><span class="lineno">  164</span>                                            &amp;<a class="code hl_define" href="#a31505f40f0323d68c5adfd236419fea1">CWWW_SRV_EL</a>(i).cwww_srv_model_list[<a class="code hl_enumvalue" href="../../d8/da4/meshx__cwww__server__element_8h.html#a8c798aadd16ea8f86c2ade34eac19340a8e996d9dfa99a458dc6bf59b65e26a15">CWWW_SIG_L_CTL_MODEL_ID</a>]);</div>
 <div class="line"><span class="lineno">  165</span>        <span class="keywordflow">if</span> (err)</div>
 <div class="line"><span class="lineno">  166</span>        {</div>
 <div class="line"><span class="lineno">  167</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca2d5864879e90e2ec82e8a21eedbd9636">MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER</a>, <span class="stringliteral">&quot;Meshx CTL Server create failed (Err : 0x%x)&quot;</span>, err);</div>
 <div class="line"><span class="lineno">  168</span>            <span class="keywordflow">return</span> err;</div>
 <div class="line"><span class="lineno">  169</span>        }</div>
-<div class="line"><span class="lineno">  170</span>        <a class="code hl_define" href="#a31505f40f0323d68c5adfd236419fea1">CWWW_SRV_EL</a>(i).onoff_srv_model-&gt;meshx_server_sig_model = &amp;<a class="code hl_define" href="#a31505f40f0323d68c5adfd236419fea1">CWWW_SRV_EL</a>(i).cwww_srv_model_list[<a class="code hl_enumvalue" href="../../d8/da4/meshx__cwww__server__element_8h.html#a8c798aadd16ea8f86c2ade34eac19340a3f3c4c810ae6e05bac678cc73d782236">CWWW_SIG_ONOFF_MODEL_ID</a>];</div>
-<div class="line"><span class="lineno">  171</span>        <a class="code hl_define" href="#a31505f40f0323d68c5adfd236419fea1">CWWW_SRV_EL</a>(i).ctl_srv_model-&gt;meshx_server_sig_model = &amp;<a class="code hl_define" href="#a31505f40f0323d68c5adfd236419fea1">CWWW_SRV_EL</a>(i).cwww_srv_model_list[<a class="code hl_enumvalue" href="../../d8/da4/meshx__cwww__server__element_8h.html#a8c798aadd16ea8f86c2ade34eac19340a8e996d9dfa99a458dc6bf59b65e26a15">CWWW_SIG_L_CTL_MODEL_ID</a>];</div>
+<div class="line"><span class="lineno">  170</span>        <a class="code hl_define" href="#a31505f40f0323d68c5adfd236419fea1">CWWW_SRV_EL</a>(i).onoff_srv_model-&gt;meshx_sig = &amp;<a class="code hl_define" href="#a31505f40f0323d68c5adfd236419fea1">CWWW_SRV_EL</a>(i).cwww_srv_model_list[<a class="code hl_enumvalue" href="../../d8/da4/meshx__cwww__server__element_8h.html#a8c798aadd16ea8f86c2ade34eac19340a3f3c4c810ae6e05bac678cc73d782236">CWWW_SIG_ONOFF_MODEL_ID</a>];</div>
+<div class="line"><span class="lineno">  171</span>        <a class="code hl_define" href="#a31505f40f0323d68c5adfd236419fea1">CWWW_SRV_EL</a>(i).ctl_srv_model-&gt;meshx_sig = &amp;<a class="code hl_define" href="#a31505f40f0323d68c5adfd236419fea1">CWWW_SRV_EL</a>(i).cwww_srv_model_list[<a class="code hl_enumvalue" href="../../d8/da4/meshx__cwww__server__element_8h.html#a8c798aadd16ea8f86c2ade34eac19340a8e996d9dfa99a458dc6bf59b65e26a15">CWWW_SIG_L_CTL_MODEL_ID</a>];</div>
 <div class="line"><span class="lineno">  172</span>    }</div>
 <div class="line"><span class="lineno">  173</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
 <div class="line"><span class="lineno">  174</span>}</div>
 <div class="ttc" id="ameshx__cwww__server__element_8h_html_aeea883a240a1c953ee682f2590823c87"><div class="ttname"><a href="../../d8/da4/meshx__cwww__server__element_8h.html#aeea883a240a1c953ee682f2590823c87">meshx_cwww_element_t</a></div><div class="ttdeci">struct meshx_cwww_element meshx_cwww_element_t</div><div class="ttdoc">Structure to manage CWWW element initialization.</div></div>
 <div class="ttc" id="ameshx__err_8h_html_a1d35fd42fb3bbaaa86816df7b0263b50"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a1d35fd42fb3bbaaa86816df7b0263b50">MESHX_CALOC</a></div><div class="ttdeci">#define MESHX_CALOC</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00028">meshx_err.h:28</a></div></div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a></div><div class="ttdeci">@ MESHX_INVALID_ARG</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00042">meshx_err.h:42</a></div></div>
-<div class="ttc" id="ameshx__light__ctl__srv_8h_html_a28ca32dccd7b19454cf530dc3525d0a6"><div class="ttname"><a href="../../db/dde/meshx__light__ctl__srv_8h.html#a28ca32dccd7b19454cf530dc3525d0a6">meshx_light_ctl_server_create</a></div><div class="ttdeci">meshx_err_t meshx_light_ctl_server_create(meshx_ctl_server_model_t **p_model, void *p_sig_model)</div><div class="ttdoc">Create and initialize a new CTL server model instance.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00234">meshx_light_ctl_srv.c:234</a></div></div>
+<div class="ttc" id="ameshx__light__ctl__srv_8h_html_a61a46f68788b46871dc34d09289e8530"><div class="ttname"><a href="../../db/dde/meshx__light__ctl__srv_8h.html#a61a46f68788b46871dc34d09289e8530">meshx_light_ctl_server_create</a></div><div class="ttdeci">meshx_err_t meshx_light_ctl_server_create(meshx_ctl_server_model_t **p_model, meshx_ptr_t p_sig_model)</div><div class="ttdoc">Create and initialize a new CTL server model instance.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00357">meshx_light_ctl_srv.c:357</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/d46/meshx__cwww__server_8c_acfe19244baff39d7aaaeefa052997704_cgraph.png" border="0" usemap="#ad9/d46/meshx__cwww__server_8c_acfe19244baff39d7aaaeefa052997704_cgraph" alt=""/></div>
 <map name="ad9/d46/meshx__cwww__server_8c_acfe19244baff39d7aaaeefa052997704_cgraph" id="ad9/d46/meshx__cwww__server_8c_acfe19244baff39d7aaaeefa052997704_cgraph">
-<area shape="rect" title="Initializes the mesh element structure by freeing allocated memory." alt="" coords="5,31,182,56"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a28ca32dccd7b19454cf530dc3525d0a6" title="Create and initialize a new CTL server model instance." alt="" coords="230,23,384,64"/>
-<area shape="poly" title=" " alt="" coords="182,41,214,41,214,46,182,46"/>
-<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#aa7384157587813da254014dfd8f13b17" title="Create a Light CTL Server instance." alt="" coords="432,23,571,64"/>
-<area shape="poly" title=" " alt="" coords="384,41,417,41,417,46,384,46"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a12b595bcf51021fcaa675e488fe24308" title="Creates and initializes model and publication structures." alt="" coords="619,5,820,31"/>
-<area shape="poly" title=" " alt="" coords="571,33,604,29,604,34,572,38"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="629,55,810,80"/>
-<area shape="poly" title=" " alt="" coords="572,49,614,53,613,59,571,54"/>
+<area shape="rect" title="Initializes the mesh element structure by freeing allocated memory." alt="" coords="5,100,182,125"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a61a46f68788b46871dc34d09289e8530" title="Create and initialize a new CTL server model instance." alt="" coords="230,92,384,133"/>
+<area shape="poly" title=" " alt="" coords="182,110,214,110,214,115,182,115"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#aed19d572f2a8028c955328e452df507e" title="Delete the CTL server model instance." alt="" coords="432,5,586,46"/>
+<area shape="poly" title=" " alt="" coords="355,89,444,50,447,55,358,94"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a9ccee3fc1fcc58cf55c17803cbee478f" title="Creates and initializes the Light CTL (Color Temperature Lightness) Setup Server." alt="" coords="434,120,584,161"/>
+<area shape="poly" title=" " alt="" coords="385,120,419,125,419,131,384,126"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a86ae7afdb87899d6bd6a4b8900c7c844" title="Deletes or deinitializes the Light CTL (Color Temperature Lightness) Setup Server instance." alt="" coords="634,63,785,103"/>
+<area shape="poly" title=" " alt="" coords="384,104,619,87,619,92,385,109"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#aa7384157587813da254014dfd8f13b17" title="Create a Light CTL Server instance." alt="" coords="640,193,779,234"/>
+<area shape="poly" title=" " alt="" coords="345,131,386,152,433,170,531,193,625,205,624,210,530,198,431,175,384,157,343,136"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#a0ee9a897168a69c9ede40278fdb4b445" title="Delete a Light CTL Server instance." alt="" coords="861,48,1004,89"/>
+<area shape="poly" title=" " alt="" coords="587,30,785,48,846,55,845,60,784,54,587,35"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="1081,113,1262,138"/>
+<area shape="poly" title=" " alt="" coords="1006,83,1101,106,1100,111,1004,88"/>
+<area shape="poly" title=" " alt="" coords="582,117,621,106,622,111,583,122"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#a0807c654e0a630b66f06f2732dfcf440" title="Creates and initializes a Light CTL (Color Temperature Lightness) Setup Server model instance." alt="" coords="640,128,779,169"/>
+<area shape="poly" title=" " alt="" coords="585,141,624,142,624,148,585,146"/>
+<area shape="poly" title=" " alt="" coords="785,75,845,71,846,77,785,81"/>
+<area shape="poly" title=" " alt="" coords="779,142,1066,128,1066,133,780,148"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a12b595bcf51021fcaa675e488fe24308" title="Creates and initializes model and publication structures." alt="" coords="833,164,1033,189"/>
+<area shape="poly" title=" " alt="" coords="780,154,817,159,817,164,779,160"/>
+<area shape="poly" title=" " alt="" coords="780,218,899,219,966,212,1032,199,1091,175,1139,145,1142,150,1093,180,1034,204,967,218,899,224,779,223"/>
+<area shape="poly" title=" " alt="" coords="779,199,837,190,838,195,780,205"/>
 </map>
 </div>
 <div class="dynheader">
@@ -1978,7 +2015,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  258</span>    {</div>
 <div class="line"><span class="lineno">  259</span>        <span class="keywordflow">if</span> (i == <a class="code hl_enumvalue" href="../../d8/da4/meshx__cwww__server__element_8h.html#a8c798aadd16ea8f86c2ade34eac19340a3f3c4c810ae6e05bac678cc73d782236">CWWW_SIG_ONOFF_MODEL_ID</a>)</div>
 <div class="line"><span class="lineno">  260</span>        {</div>
-<div class="line"><span class="lineno">  261</span>            err = meshx_gen_on_off_srv_state_restore(<a class="code hl_define" href="#a31505f40f0323d68c5adfd236419fea1">CWWW_SRV_EL</a>(element_id).onoff_srv_model-&gt;meshx_server_sig_model,</div>
+<div class="line"><span class="lineno">  261</span>            err = meshx_gen_on_off_srv_state_restore(<a class="code hl_define" href="#a31505f40f0323d68c5adfd236419fea1">CWWW_SRV_EL</a>(element_id).onoff_srv_model-&gt;meshx_sig,</div>
 <div class="line"><span class="lineno">  262</span>                                                     el_ctx-&gt;<a class="code hl_variable" href="../../de/d08/structcwww__srv__ctx.html#a9f8ca628c55d21883f5b15bf0f3e0c29">prev_state</a>);</div>
 <div class="line"><span class="lineno">  263</span>            <span class="keywordflow">if</span> (err)</div>
 <div class="line"><span class="lineno">  264</span>            {</div>
@@ -2004,7 +2041,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  284</span>    <span class="keywordflow">return</span> err;</div>
 <div class="line"><span class="lineno">  285</span>}</div>
 <div class="ttc" id="ameshx__err_8h_html_a7719f6393990c6d3eea95a9df49e906e"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a7719f6393990c6d3eea95a9df49e906e">MESHX_DO_NOTHING</a></div><div class="ttdeci">#define MESHX_DO_NOTHING</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00017">meshx_err.h:17</a></div></div>
-<div class="ttc" id="ameshx__light__ctl__srv_8h_html_a8695297933d548b07c6b2ccce8236920"><div class="ttname"><a href="../../db/dde/meshx__light__ctl__srv_8h.html#a8695297933d548b07c6b2ccce8236920">meshx_light_ctl_srv_state_restore</a></div><div class="ttdeci">meshx_err_t meshx_light_ctl_srv_state_restore(meshx_ctl_server_model_t *p_model, meshx_light_ctl_srv_state_t ctl_state)</div><div class="ttdoc">Restore the CTL state for the generic server model.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00296">meshx_light_ctl_srv.c:296</a></div></div>
+<div class="ttc" id="ameshx__light__ctl__srv_8h_html_a8695297933d548b07c6b2ccce8236920"><div class="ttname"><a href="../../db/dde/meshx__light__ctl__srv_8h.html#a8695297933d548b07c6b2ccce8236920">meshx_light_ctl_srv_state_restore</a></div><div class="ttdeci">meshx_err_t meshx_light_ctl_srv_state_restore(meshx_ctl_server_model_t *p_model, meshx_light_ctl_srv_state_t ctl_state)</div><div class="ttdoc">Restore the CTL state for the generic server model.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00459">meshx_light_ctl_srv.c:459</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2064,126 +2101,137 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d9/d46/meshx__cwww__server_8c_aa8082758a025ec4f2663cc48f873b7d9_cgraph.png" border="0" usemap="#ad9/d46/meshx__cwww__server_8c_aa8082758a025ec4f2663cc48f873b7d9_cgraph" alt=""/></div>
 <map name="ad9/d46/meshx__cwww__server_8c_aa8082758a025ec4f2663cc48f873b7d9_cgraph" id="ad9/d46/meshx__cwww__server_8c_aa8082758a025ec4f2663cc48f873b7d9_cgraph">
-<area shape="rect" title=" " alt="" coords="5,392,201,417"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#ac1498e20904edfabe76c92f9da6375bd" title="Create Dynamic CWWW Server Model Elements." alt="" coords="249,392,455,417"/>
-<area shape="poly" title=" " alt="" coords="201,402,233,402,233,407,201,407"/>
-<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="967,57,1154,83"/>
-<area shape="poly" title=" " alt="" coords="351,391,360,328,383,236,402,187,428,139,461,97,502,62,565,30,633,12,704,4,775,4,843,11,907,23,1008,49,1006,54,905,28,843,17,775,10,704,9,634,17,567,35,504,67,465,100,432,142,407,189,388,238,365,329,357,391"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#af44b869dfc97f122b46ad2752ee96d48" title="Callback function for relay server model events for Provisioning events." alt="" coords="740,327,908,367"/>
-<area shape="poly" title=" " alt="" coords="455,389,724,356,725,362,456,395"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#ab8653550cf31c3c5ac29ebf5d2d4654f" title="Callback function for configuration server events." alt="" coords="521,477,663,518"/>
-<area shape="poly" title=" " alt="" coords="387,415,504,462,522,469,520,474,502,467,385,420"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#ade969ecdaaeafbdb83b4f4ecabcef37c" title="Add CW&#45;WW server models to the element list." alt="" coords="513,661,671,702"/>
-<area shape="poly" title=" " alt="" coords="364,416,420,497,461,550,505,601,556,649,552,653,501,605,457,553,416,500,360,419"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#a9929dada86201ea717d859bfd66c9ffd" title="CW&#45;WW server model event handler." alt="" coords="512,412,673,453"/>
-<area shape="poly" title=" " alt="" coords="456,414,496,419,496,424,455,419"/>
-<area shape="rect" href="../../dd/d79/meshx__config__server_8c.html#aea136e2f0520f4f57129778288f17ec9" title="Registers a configuration server callback for specific events." alt="" coords="520,76,664,117"/>
-<area shape="poly" title=" " alt="" coords="357,390,411,293,453,228,501,167,547,124,551,128,505,170,457,232,415,296,362,392"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#a079e0e35fadd8737ea2216db7c76977c" title="Handler for sending messages from the CW&#45;WW server model to BLE." alt="" coords="512,551,672,591"/>
-<area shape="poly" title=" " alt="" coords="368,416,426,468,504,528,529,541,526,546,502,532,422,472,365,420"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#a9323b419771abef4a20d688f3f90188d" title="Create space for CW&#45;WW models." alt="" coords="505,821,679,862"/>
-<area shape="poly" title=" " alt="" coords="361,417,416,540,458,626,505,712,568,807,564,810,501,715,454,628,411,542,356,419"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#adc1d0d7fc5b8e44bebce9c905547780f" title="Initialize the CTL server model." alt="" coords="503,256,681,281"/>
-<area shape="poly" title=" " alt="" coords="375,389,553,287,556,291,378,393"/>
-<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#a294c30d13de4ce41c5502ec6ccd68599" title="Register a callback function for provisioning events." alt="" coords="522,180,663,221"/>
-<area shape="poly" title=" " alt="" coords="361,389,416,321,456,279,501,241,525,226,528,231,505,245,460,283,420,325,365,393"/>
-<area shape="rect" href="../../d3/df5/meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="1687,109,1820,135"/>
-<area shape="poly" title=" " alt="" coords="1155,71,1388,84,1672,110,1671,116,1387,90,1154,76"/>
-<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#acfab754bb56f290741a2fc1c49c595c8" title="Sends a message to the BLE subsystem via the control task." alt="" coords="989,233,1132,274"/>
-<area shape="poly" title=" " alt="" coords="878,324,918,307,966,285,983,277,985,282,968,290,920,312,880,329"/>
-<area shape="rect" href="../../da/dcb/meshx__gen__server_8c.html#a0a25ca2d0f109691c37c60eb95331b36" title="Sends a message to the BLE subsystem via the control task." alt="" coords="987,299,1134,339"/>
-<area shape="poly" title=" " alt="" coords="908,334,971,327,972,332,909,340"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#aaff04640563eef2cfa526fbf99ed5319" title="Create a Light CTL Server send message packet." alt="" coords="992,364,1128,405"/>
-<area shape="poly" title=" " alt="" coords="909,358,977,369,976,374,908,363"/>
-<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="1449,265,1622,291"/>
-<area shape="poly" title=" " alt="" coords="1133,255,1434,270,1434,275,1132,260"/>
-<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#a93ab84b7706337c1dd550a817efca526" title="Checks if the given opcode belongs to the Generic Light group." alt="" coords="1226,315,1363,355"/>
-<area shape="poly" title=" " alt="" coords="1122,272,1221,307,1219,312,1120,277"/>
-<area shape="poly" title=" " alt="" coords="1554,262,1720,142,1723,146,1557,267"/>
-<area shape="rect" href="../../d0/d77/meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue Back." alt="" coords="1684,290,1824,316"/>
-<area shape="poly" title=" " alt="" coords="1622,285,1669,291,1668,296,1622,290"/>
-<area shape="rect" href="../../d3/df5/meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="1695,241,1812,267"/>
-<area shape="poly" title=" " alt="" coords="1622,266,1680,259,1680,264,1622,271"/>
-<area shape="rect" href="../../d3/df5/meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="1872,241,2049,267"/>
-<area shape="poly" title=" " alt="" coords="1813,251,1857,251,1857,256,1813,256"/>
-<area shape="poly" title=" " alt="" coords="1121,337,1203,364,1296,378,1336,376,1387,365,1420,352,1452,335,1505,299,1508,303,1455,340,1423,357,1388,370,1337,381,1295,383,1201,370,1119,343"/>
-<area shape="rect" href="../../da/dcb/meshx__gen__server_8c.html#a2de59535b6980e3872c49ed575711338" title="Checks if the given opcode corresponds to a status message in the Generic Server group." alt="" coords="1226,429,1363,470"/>
-<area shape="poly" title=" " alt="" coords="1134,338,1156,350,1171,365,1180,380,1189,394,1204,409,1221,420,1218,424,1200,413,1185,398,1176,383,1167,369,1152,355,1131,342"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#aed72eaf1b8f7fd7bf64c962bb028a31e" title="Retrieves the base element ID for the BLE Mesh platform." alt="" coords="729,526,919,552"/>
-<area shape="poly" title=" " alt="" coords="664,508,733,520,733,526,663,513"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#a091a0be186edb6d1dc740b838cf38037" title="Store the context of a specific element to NVS." alt="" coords="729,477,919,503"/>
-<area shape="poly" title=" " alt="" coords="663,493,714,491,714,496,664,498"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#ab9a39208cc2b067b0b5df0a85d7b4b03" title="Set a value in the NVS." alt="" coords="1004,545,1116,571"/>
-<area shape="poly" title=" " alt="" coords="880,501,919,511,1004,537,1003,542,918,516,879,506"/>
-<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a63e6c1a15d1a30d41dc704c131a27062" title="Restart a timer." alt="" coords="1214,545,1375,571"/>
-<area shape="poly" title=" " alt="" coords="1117,555,1199,555,1199,560,1117,560"/>
-<area shape="poly" title=" " alt="" coords="1352,542,1386,524,1412,499,1436,471,1475,410,1504,351,1523,304,1528,306,1509,353,1480,413,1440,474,1416,503,1389,528,1355,547"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#a3773373d74bd4e2c0415a89f7652ebe8" title="Retrieve the context of a specific element from NVS." alt="" coords="729,641,919,667"/>
-<area shape="poly" title=" " alt="" coords="671,670,714,664,714,670,672,675"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a2bdab205d68a408e7ec03e58b2fa8a0b" title="Adds an element to the BLE Mesh composition." alt="" coords="740,691,908,731"/>
-<area shape="poly" title=" " alt="" coords="672,689,724,696,724,701,671,694"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#a6056b1ffd8dfaff87bd0c4444be15404" title="Restore saved CW&#45;WW model states." alt="" coords="750,756,898,797"/>
-<area shape="poly" title=" " alt="" coords="638,700,730,741,748,748,746,753,728,746,636,705"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#ae36588f5b4ae5e5ac771e1af86a71e5a" title="Get a value from the NVS." alt="" coords="1004,660,1116,685"/>
-<area shape="poly" title=" " alt="" coords="919,659,989,664,989,669,919,664"/>
-<area shape="rect" href="../../dc/d28/esp__nvs_8c.html#a01998c5a615417f7fd4c8e3e6aa06a61" title="Read blob value for given key from non&#45;volatile storage." alt="" coords="1221,660,1368,685"/>
-<area shape="poly" title=" " alt="" coords="1117,670,1206,670,1206,675,1117,675"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a8695297933d548b07c6b2ccce8236920" title="Restore the CTL state for the generic server model." alt="" coords="992,756,1128,797"/>
-<area shape="poly" title=" " alt="" coords="899,774,976,774,976,779,899,779"/>
-<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#add201d93559ff4ff071950572182e204" title="Restore the state of the Light CTL Server." alt="" coords="1225,756,1364,797"/>
-<area shape="poly" title=" " alt="" coords="1129,774,1209,774,1209,779,1129,779"/>
-<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#a0dc534558d13a140c430ef5bb1f659f9" title="Set the state of the Light CTL Server." alt="" coords="1464,756,1607,797"/>
-<area shape="poly" title=" " alt="" coords="1365,774,1448,774,1448,779,1365,779"/>
-<area shape="poly" title=" " alt="" coords="674,450,755,470,754,475,672,455"/>
-<area shape="rect" href="../../dc/d93/meshx__api_8c.html#a5b8d1eddceb8ab76e5fdc7fea5545496" title="Sends a message to the BLE Mesh application." alt="" coords="738,428,910,453"/>
-<area shape="poly" title=" " alt="" coords="673,433,723,434,722,440,673,438"/>
-<area shape="poly" title=" " alt="" coords="882,451,920,462,943,472,967,479,1087,505,1184,523,1230,525,1277,520,1328,505,1386,479,1412,463,1435,443,1474,395,1503,346,1522,304,1527,306,1508,348,1478,398,1439,447,1415,467,1389,484,1330,510,1278,525,1230,530,1183,528,1086,510,966,484,942,477,918,467,881,456"/>
-<area shape="rect" href="../../dc/d93/meshx__api_8c.html#ac37c1c5b9f1e9cdaa510bf886d897e2d" title="Prepares a message to be sent to the BLE Mesh application." alt="" coords="990,429,1131,470"/>
-<area shape="poly" title=" " alt="" coords="910,441,974,444,974,449,910,446"/>
-<area shape="poly" title=" " alt="" coords="664,90,951,73,952,79,664,95"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a934b83618b10c26bf4d3f17e0ae1aa08" title="Send the Light CTL status message." alt="" coords="756,576,892,617"/>
-<area shape="poly" title=" " alt="" coords="673,577,741,585,740,590,672,582"/>
-<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#a40a91efcb35c7db08fd73143b779a31a" title="Sends a status message for the Lighting Server model." alt="" coords="989,595,1132,635"/>
-<area shape="poly" title=" " alt="" coords="893,599,974,606,973,611,892,604"/>
-<area shape="poly" title=" " alt="" coords="1131,597,1152,581,1167,561,1175,542,1180,504,1182,463,1188,440,1200,416,1223,387,1249,363,1253,367,1227,391,1204,419,1193,442,1187,464,1185,504,1181,544,1172,564,1156,585,1134,601"/>
-<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#ac79c39e50439290a87cd0b7da8fa886a" title="Send a status message from the Light Server. This function constructs and sends a status message cont..." alt="" coords="1222,595,1368,635"/>
-<area shape="poly" title=" " alt="" coords="1132,612,1206,612,1206,618,1132,618"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#ae58e3714c7314300269ade7cf0e09216" title="Deinitializes the mesh element structure by freeing allocated memory." alt="" coords="748,821,900,862"/>
-<area shape="poly" title=" " alt="" coords="679,839,732,839,732,844,679,844"/>
-<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#acfe19244baff39d7aaaeefa052997704" title="Initializes the mesh element structure by freeing allocated memory." alt="" coords="736,890,912,916"/>
-<area shape="poly" title=" " alt="" coords="672,860,758,883,757,888,671,865"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#aed19d572f2a8028c955328e452df507e" title="Delete the CTL server model instance." alt="" coords="983,821,1138,862"/>
-<area shape="poly" title=" " alt="" coords="901,839,968,839,968,844,901,844"/>
-<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#adcc92f91b94547ecd612f3a8fd93e412" title="Delete a Light CTL Server instance." alt="" coords="1225,821,1364,862"/>
-<area shape="poly" title=" " alt="" coords="1138,839,1209,839,1209,844,1138,844"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="1445,837,1626,863"/>
-<area shape="poly" title=" " alt="" coords="1365,841,1430,844,1429,849,1365,847"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a28ca32dccd7b19454cf530dc3525d0a6" title="Create and initialize a new CTL server model instance." alt="" coords="983,887,1138,927"/>
-<area shape="poly" title=" " alt="" coords="912,902,968,903,968,908,912,907"/>
-<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#aa7384157587813da254014dfd8f13b17" title="Create a Light CTL Server instance." alt="" coords="1225,887,1364,927"/>
-<area shape="poly" title=" " alt="" coords="1138,904,1209,904,1209,910,1138,910"/>
-<area shape="poly" title=" " alt="" coords="1364,888,1463,864,1464,869,1366,893"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a12b595bcf51021fcaa675e488fe24308" title="Creates and initializes model and publication structures." alt="" coords="1435,894,1636,920"/>
-<area shape="poly" title=" " alt="" coords="1365,904,1420,904,1420,910,1365,910"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a7d11c7a15e9c2066afb3f22e72068518" title="Handle Light CTL messages for the lighting server model." alt="" coords="756,257,892,298"/>
-<area shape="poly" title=" " alt="" coords="682,269,741,272,741,277,681,275"/>
-<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#ac2ffaf1fcb582f87cf5e5a9b36f2d043" title="Register a callback function for the lighting server model." alt="" coords="747,158,901,184"/>
-<area shape="poly" title=" " alt="" coords="631,253,680,230,703,211,728,193,741,187,743,192,731,197,707,215,683,235,634,257"/>
-<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#a12af3296e750ff638ba757ebf12d9043" title="Initialize the production lighting server." alt="" coords="746,208,902,233"/>
-<area shape="poly" title=" " alt="" coords="657,252,743,234,744,240,658,258"/>
-<area shape="poly" title=" " alt="" coords="892,268,973,260,974,265,893,274"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a9cde80da166fd8a69dd7261a2478d1b8" title="Perform hardware change for the light control server model." alt="" coords="988,168,1132,209"/>
-<area shape="poly" title=" " alt="" coords="889,254,918,243,966,219,983,212,985,217,968,224,920,248,891,259"/>
-<area shape="poly" title=" " alt="" coords="1133,198,1388,244,1458,259,1457,264,1387,250,1132,203"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#ab3ea84732bbdc4a0b8d742aa4f66be09" title="Checks if a model is subscribed to a specific group address." alt="" coords="1202,164,1387,189"/>
-<area shape="poly" title=" " alt="" coords="1133,182,1186,179,1187,185,1133,187"/>
-<area shape="poly" title=" " alt="" coords="874,155,917,137,941,118,965,98,992,86,995,91,968,103,944,122,920,141,876,160"/>
-<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#afd34945754064f76b2471c0f9598e785" title="Initialize the platform&#45;specific Light Server." alt="" coords="977,113,1144,139"/>
-<area shape="poly" title=" " alt="" coords="891,205,917,194,931,185,941,175,951,165,965,154,992,142,994,147,968,159,954,169,945,179,935,189,920,199,893,209"/>
-<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#a4ee43eae858bbcef30908dac0e2fa7f8" title="Callback function for BLE Mesh Lightness Server events." alt="" coords="1224,99,1366,139"/>
-<area shape="poly" title=" " alt="" coords="1145,121,1208,119,1208,124,1145,126"/>
-<area shape="poly" title=" " alt="" coords="1366,138,1389,149,1425,173,1460,201,1514,252,1510,256,1456,205,1422,177,1386,153,1363,142"/>
-<area shape="poly" title=" " alt="" coords="639,177,729,143,855,109,971,83,972,89,856,114,730,148,641,182"/>
+<area shape="rect" title=" " alt="" coords="5,395,201,421"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#ac1498e20904edfabe76c92f9da6375bd" title="Create Dynamic CWWW Server Model Elements." alt="" coords="249,395,455,421"/>
+<area shape="poly" title=" " alt="" coords="201,405,233,405,233,411,201,411"/>
+<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="967,68,1154,94"/>
+<area shape="poly" title=" " alt="" coords="351,394,359,331,382,237,401,187,427,138,460,94,501,59,533,41,566,27,635,9,707,3,779,6,848,16,912,29,1012,60,1011,65,910,35,847,21,778,11,707,8,636,15,567,32,535,46,505,63,464,98,431,141,406,189,387,239,365,332,357,395"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#af44b869dfc97f122b46ad2752ee96d48" title="Callback function for relay server model events for Provisioning events." alt="" coords="740,341,908,382"/>
+<area shape="poly" title=" " alt="" coords="455,395,724,368,725,374,456,400"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#ab8653550cf31c3c5ac29ebf5d2d4654f" title="Callback function for configuration server events." alt="" coords="521,496,663,536"/>
+<area shape="poly" title=" " alt="" coords="379,419,504,480,520,487,518,492,502,485,377,424"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#ade969ecdaaeafbdb83b4f4ecabcef37c" title="Add CW&#45;WW server models to the element list." alt="" coords="513,702,671,743"/>
+<area shape="poly" title=" " alt="" coords="363,420,419,511,460,572,505,632,559,690,555,693,501,635,456,575,414,514,359,423"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#a9929dada86201ea717d859bfd66c9ffd" title="CW&#45;WW server model event handler." alt="" coords="512,430,673,471"/>
+<area shape="poly" title=" " alt="" coords="429,419,497,431,496,436,428,424"/>
+<area shape="rect" href="../../dd/d79/meshx__config__server_8c.html#aea136e2f0520f4f57129778288f17ec9" title="Registers a configuration server callback for specific events." alt="" coords="520,73,664,114"/>
+<area shape="poly" title=" " alt="" coords="355,394,372,347,402,279,445,204,471,168,501,135,522,120,525,124,505,139,476,171,449,207,407,281,377,349,360,396"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#a079e0e35fadd8737ea2216db7c76977c" title="Handler for sending messages from the CW&#45;WW server model to BLE." alt="" coords="512,581,672,622"/>
+<area shape="poly" title=" " alt="" coords="367,419,425,477,505,546,541,570,538,575,501,550,421,481,364,423"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#a9323b419771abef4a20d688f3f90188d" title="Create space for CW&#45;WW models." alt="" coords="505,854,679,895"/>
+<area shape="poly" title=" " alt="" coords="360,420,412,558,455,656,505,753,536,800,566,841,562,844,531,803,501,756,450,658,407,560,355,422"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#adc1d0d7fc5b8e44bebce9c905547780f" title="Initialize the CTL server model." alt="" coords="503,247,681,273"/>
+<area shape="poly" title=" " alt="" coords="373,392,555,279,558,284,376,397"/>
+<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#a294c30d13de4ce41c5502ec6ccd68599" title="Register a callback function for provisioning events." alt="" coords="522,149,663,190"/>
+<area shape="poly" title=" " alt="" coords="361,393,418,322,458,276,501,233,545,197,549,201,505,237,462,280,422,325,365,396"/>
+<area shape="rect" href="../../d3/df5/meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="1689,120,1822,146"/>
+<area shape="poly" title=" " alt="" coords="1155,82,1388,96,1674,122,1673,127,1387,101,1154,88"/>
+<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#acfab754bb56f290741a2fc1c49c595c8" title="Sends a message to the BLE subsystem via the control task." alt="" coords="989,246,1132,287"/>
+<area shape="poly" title=" " alt="" coords="873,338,918,319,966,297,984,290,986,295,968,302,920,324,875,343"/>
+<area shape="rect" href="../../da/dcb/meshx__gen__server_8c.html#a0a25ca2d0f109691c37c60eb95331b36" title="Sends a message to the BLE subsystem via the control task." alt="" coords="987,312,1134,352"/>
+<area shape="poly" title=" " alt="" coords="908,348,971,340,972,346,909,353"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#aaff04640563eef2cfa526fbf99ed5319" title="Create a Light CTL Server send message packet." alt="" coords="992,377,1128,418"/>
+<area shape="poly" title=" " alt="" coords="909,371,977,382,976,387,908,377"/>
+<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="1435,276,1608,302"/>
+<area shape="poly" title=" " alt="" coords="1132,267,1420,282,1420,287,1132,273"/>
+<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#a93ab84b7706337c1dd550a817efca526" title="Checks if the given opcode belongs to the Generic Light group." alt="" coords="1226,542,1363,583"/>
+<area shape="poly" title=" " alt="" coords="1134,281,1156,298,1175,328,1183,358,1184,387,1181,416,1177,444,1178,472,1185,500,1204,529,1215,539,1211,542,1200,532,1181,502,1172,473,1172,444,1175,415,1178,387,1178,359,1171,330,1152,302,1131,285"/>
+<area shape="poly" title=" " alt="" coords="1541,274,1720,153,1723,157,1544,278"/>
+<area shape="rect" href="../../d0/d77/meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue Back." alt="" coords="1686,252,1826,278"/>
+<area shape="poly" title=" " alt="" coords="1608,278,1670,271,1670,277,1608,283"/>
+<area shape="rect" href="../../d3/df5/meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="1697,302,1814,327"/>
+<area shape="poly" title=" " alt="" coords="1608,296,1682,304,1681,309,1607,301"/>
+<area shape="rect" href="../../d3/df5/meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="1906,302,2083,327"/>
+<area shape="poly" title=" " alt="" coords="1815,312,1891,312,1891,317,1815,317"/>
+<area shape="poly" title=" " alt="" coords="1134,322,1420,296,1420,301,1135,328"/>
+<area shape="rect" href="../../da/dcb/meshx__gen__server_8c.html#a2de59535b6980e3872c49ed575711338" title="Checks if the given opcode corresponds to a status message in the Generic Server group." alt="" coords="1226,377,1363,418"/>
+<area shape="poly" title=" " alt="" coords="1135,350,1212,372,1211,377,1134,355"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#aed72eaf1b8f7fd7bf64c962bb028a31e" title="Retrieves the base element ID for the BLE Mesh platform." alt="" coords="729,548,919,574"/>
+<area shape="poly" title=" " alt="" coords="664,527,740,542,739,547,663,532"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#a091a0be186edb6d1dc740b838cf38037" title="Store the context of a specific element to NVS." alt="" coords="729,499,919,525"/>
+<area shape="poly" title=" " alt="" coords="663,512,714,511,714,516,664,517"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#ab9a39208cc2b067b0b5df0a85d7b4b03" title="Set a value in the NVS." alt="" coords="1004,556,1116,582"/>
+<area shape="poly" title=" " alt="" coords="881,523,990,550,989,555,879,528"/>
+<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a63e6c1a15d1a30d41dc704c131a27062" title="Restart a timer." alt="" coords="1214,492,1375,518"/>
+<area shape="poly" title=" " alt="" coords="1110,553,1153,541,1201,528,1230,520,1231,525,1203,533,1155,546,1111,558"/>
+<area shape="poly" title=" " alt="" coords="1350,490,1386,471,1426,434,1459,392,1486,350,1505,315,1510,317,1491,353,1464,395,1429,438,1389,475,1353,494"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#a3773373d74bd4e2c0415a89f7652ebe8" title="Retrieve the context of a specific element from NVS." alt="" coords="729,738,919,763"/>
+<area shape="poly" title=" " alt="" coords="672,729,714,735,714,740,671,735"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a2bdab205d68a408e7ec03e58b2fa8a0b" title="Adds an element to the BLE Mesh composition." alt="" coords="740,788,908,828"/>
+<area shape="poly" title=" " alt="" coords="646,741,730,773,747,779,745,784,728,778,644,746"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#a6056b1ffd8dfaff87bd0c4444be15404" title="Restore saved CW&#45;WW model states." alt="" coords="750,673,898,714"/>
+<area shape="poly" title=" " alt="" coords="671,710,734,702,735,707,672,715"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#ae36588f5b4ae5e5ac771e1af86a71e5a" title="Get a value from the NVS." alt="" coords="1004,738,1116,763"/>
+<area shape="poly" title=" " alt="" coords="919,748,989,748,989,753,919,753"/>
+<area shape="rect" href="../../dc/d28/esp__nvs_8c.html#a01998c5a615417f7fd4c8e3e6aa06a61" title="Read blob value for given key from non&#45;volatile storage." alt="" coords="1221,738,1368,763"/>
+<area shape="poly" title=" " alt="" coords="1117,748,1206,748,1206,753,1117,753"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a8695297933d548b07c6b2ccce8236920" title="Restore the CTL state for the generic server model." alt="" coords="992,673,1128,714"/>
+<area shape="poly" title=" " alt="" coords="899,691,976,691,976,696,899,696"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#add201d93559ff4ff071950572182e204" title="Restore the state of the Light CTL Server." alt="" coords="1225,673,1364,714"/>
+<area shape="poly" title=" " alt="" coords="1129,691,1209,691,1209,696,1129,696"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#a0dc534558d13a140c430ef5bb1f659f9" title="Set the state of the Light CTL Server." alt="" coords="1450,673,1593,714"/>
+<area shape="poly" title=" " alt="" coords="1364,691,1434,691,1434,696,1364,696"/>
+<area shape="poly" title=" " alt="" coords="672,469,758,492,757,497,671,474"/>
+<area shape="rect" href="../../dc/d93/meshx__api_8c.html#a5b8d1eddceb8ab76e5fdc7fea5545496" title="Sends a message to the BLE Mesh application." alt="" coords="738,442,910,467"/>
+<area shape="poly" title=" " alt="" coords="673,449,722,450,722,455,673,455"/>
+<area shape="poly" title=" " alt="" coords="910,456,1031,459,1169,457,1297,448,1348,439,1386,427,1424,404,1456,374,1483,342,1503,314,1507,317,1487,345,1460,377,1427,408,1388,432,1349,444,1297,453,1169,462,1031,464,910,461"/>
+<area shape="rect" href="../../dc/d93/meshx__api_8c.html#ac37c1c5b9f1e9cdaa510bf886d897e2d" title="Prepares a message to be sent to the BLE Mesh application." alt="" coords="990,492,1131,532"/>
+<area shape="poly" title=" " alt="" coords="881,465,975,489,974,494,879,471"/>
+<area shape="poly" title=" " alt="" coords="664,89,951,81,951,87,664,94"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a934b83618b10c26bf4d3f17e0ae1aa08" title="Send the Light CTL status message." alt="" coords="756,602,892,643"/>
+<area shape="poly" title=" " alt="" coords="673,606,741,612,740,618,672,611"/>
+<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#a40a91efcb35c7db08fd73143b779a31a" title="Sends a status message for the Lighting Server model." alt="" coords="989,606,1132,647"/>
+<area shape="poly" title=" " alt="" coords="892,621,973,622,973,628,892,626"/>
+<area shape="poly" title=" " alt="" coords="1132,604,1211,583,1212,588,1133,610"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#ac79c39e50439290a87cd0b7da8fa886a" title="Send a status message from the Light Server. This function constructs and sends a status message cont..." alt="" coords="1222,608,1368,648"/>
+<area shape="poly" title=" " alt="" coords="1132,624,1206,625,1206,630,1132,630"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#ae58e3714c7314300269ade7cf0e09216" title="Deinitializes the mesh element structure by freeing allocated memory." alt="" coords="984,932,1136,972"/>
+<area shape="poly" title=" " alt="" coords="680,888,730,897,969,936,968,941,729,903,679,894"/>
+<area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#acfe19244baff39d7aaaeefa052997704" title="Initializes the mesh element structure by freeing allocated memory." alt="" coords="736,862,912,887"/>
+<area shape="poly" title=" " alt="" coords="679,872,720,872,720,877,679,877"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#aed19d572f2a8028c955328e452df507e" title="Delete the CTL server model instance." alt="" coords="1218,953,1372,994"/>
+<area shape="poly" title=" " alt="" coords="1137,956,1202,962,1202,967,1137,961"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#a0ee9a897168a69c9ede40278fdb4b445" title="Delete a Light CTL Server instance." alt="" coords="1684,909,1828,950"/>
+<area shape="poly" title=" " alt="" coords="1372,965,1607,945,1668,938,1669,943,1608,951,1373,971"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="1904,859,2085,885"/>
+<area shape="poly" title=" " alt="" coords="1827,909,1923,886,1924,892,1829,915"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a61a46f68788b46871dc34d09289e8530" title="Create and initialize a new CTL server model instance." alt="" coords="983,854,1138,895"/>
+<area shape="poly" title=" " alt="" coords="912,872,968,872,968,877,912,877"/>
+<area shape="poly" title=" " alt="" coords="1111,893,1203,932,1231,944,1229,949,1201,937,1109,898"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a9ccee3fc1fcc58cf55c17803cbee478f" title="Creates and initializes the Light CTL (Color Temperature Lightness) Setup Server." alt="" coords="1220,838,1370,879"/>
+<area shape="poly" title=" " alt="" coords="1138,867,1204,862,1204,867,1138,872"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a86ae7afdb87899d6bd6a4b8900c7c844" title="Deletes or deinitializes the Light CTL (Color Temperature Lightness) Setup Server instance." alt="" coords="1446,896,1597,936"/>
+<area shape="poly" title=" " alt="" coords="1138,881,1202,888,1431,907,1431,912,1202,893,1138,886"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#aa7384157587813da254014dfd8f13b17" title="Create a Light CTL Server instance." alt="" coords="1452,765,1591,806"/>
+<area shape="poly" title=" " alt="" coords="1113,851,1201,824,1324,802,1436,789,1436,794,1325,807,1203,829,1115,856"/>
+<area shape="poly" title=" " alt="" coords="1371,875,1432,891,1431,896,1369,880"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#a0807c654e0a630b66f06f2732dfcf440" title="Creates and initializes a Light CTL (Color Temperature Lightness) Setup Server model instance." alt="" coords="1452,830,1591,871"/>
+<area shape="poly" title=" " alt="" coords="1370,853,1437,851,1437,856,1370,859"/>
+<area shape="poly" title=" " alt="" coords="1597,917,1669,922,1668,927,1597,923"/>
+<area shape="poly" title=" " alt="" coords="1592,851,1889,864,1888,870,1592,856"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a12b595bcf51021fcaa675e488fe24308" title="Creates and initializes model and publication structures." alt="" coords="1656,808,1856,834"/>
+<area shape="poly" title=" " alt="" coords="1591,839,1640,833,1640,838,1592,844"/>
+<area shape="poly" title=" " alt="" coords="1591,776,1649,773,1716,773,1787,779,1857,793,1916,818,1965,848,1962,852,1914,823,1855,798,1786,785,1716,779,1649,778,1591,781"/>
+<area shape="poly" title=" " alt="" coords="1592,793,1653,803,1652,808,1591,799"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a7d11c7a15e9c2066afb3f22e72068518" title="Handle Light CTL messages for the lighting server model." alt="" coords="756,269,892,310"/>
+<area shape="poly" title=" " alt="" coords="682,269,741,276,741,281,681,274"/>
+<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#ac2ffaf1fcb582f87cf5e5a9b36f2d043" title="Register a callback function for the lighting server model." alt="" coords="747,170,901,195"/>
+<area shape="poly" title=" " alt="" coords="623,244,728,204,751,197,752,203,730,209,625,249"/>
+<area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#a12af3296e750ff638ba757ebf12d9043" title="Initialize the production lighting server." alt="" coords="746,219,902,245"/>
+<area shape="poly" title=" " alt="" coords="681,247,730,241,731,246,682,252"/>
+<area shape="poly" title=" " alt="" coords="892,280,973,272,974,278,893,285"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a9cde80da166fd8a69dd7261a2478d1b8" title="Perform hardware change for the light control server model." alt="" coords="988,181,1132,222"/>
+<area shape="poly" title=" " alt="" coords="888,266,918,255,966,232,983,225,985,230,968,237,920,260,890,271"/>
+<area shape="poly" title=" " alt="" coords="1133,211,1388,257,1448,270,1446,275,1387,263,1132,216"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#ab3ea84732bbdc4a0b8d742aa4f66be09" title="Checks if a model is subscribed to a specific group address." alt="" coords="1202,175,1387,201"/>
+<area shape="poly" title=" " alt="" coords="1133,194,1186,191,1187,197,1133,200"/>
+<area shape="poly" title=" " alt="" coords="874,167,917,148,941,129,965,110,992,97,995,102,968,114,944,133,920,153,876,172"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#afd34945754064f76b2471c0f9598e785" title="Initialize the platform&#45;specific Light Server." alt="" coords="977,124,1144,150"/>
+<area shape="poly" title=" " alt="" coords="891,216,917,206,931,196,941,187,965,167,995,153,997,158,968,171,945,191,935,201,920,210,893,221"/>
+<area shape="rect" href="../../de/d42/esp__light__srv__model_8c.html#a4ee43eae858bbcef30908dac0e2fa7f8" title="Callback function for BLE Mesh Lightness Server events." alt="" coords="1224,110,1366,151"/>
+<area shape="poly" title=" " alt="" coords="1145,132,1208,130,1208,136,1145,138"/>
+<area shape="poly" title=" " alt="" coords="1367,149,1389,160,1422,184,1453,211,1502,262,1498,266,1450,215,1419,188,1386,165,1365,154"/>
+<area shape="poly" title=" " alt="" coords="663,153,972,95,973,100,664,159"/>
 </map>
 </div>
 
@@ -2200,7 +2248,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d8/da4/meshx__cwww__server__element_8h.html#a36b00f0d77112e8077c58aea6580ba2b">meshx_cwww_elements_ctrl_t</a> cwww_element_init_ctrl</td>
+          <td class="memname"><a class="el" href="../../d8/da4/meshx__cwww__server__element_8h.html#a70d05e52e8b219b97f9329b6d14af88f">meshx_cwww_elements_ctrl_t</a> cwww_element_init_ctrl</td>
         </tr>
       </table>
   </td>
@@ -2220,7 +2268,7 @@ Here is the call graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_5c982d53a68cdbcd421152b4020263a9.html">main</a></li><li class="navelem"><a class="el" href="../../dir_8c5515a604d4a2bb78291420d5b72747.html">component</a></li><li class="navelem"><a class="el" href="../../dir_17e62e33567b93c5a1475a84b6c9c934.html">meshx</a></li><li class="navelem"><a class="el" href="../../dir_731868db0f8d6d1cac5b0ffc22af1dd4.html">elements</a></li><li class="navelem"><a class="el" href="../../dir_e75a121ce4fbf4ac625776640133c289.html">server</a></li><li class="navelem"><a class="el" href="../../dir_e5ca8378fa9de5cc6580568cf4ef897f.html">src</a></li><li class="navelem"><a class="el" href="../../d9/d46/meshx__cwww__server_8c.html">meshx_cwww_server.c</a></li>
-    <li class="footer">Generated on Wed Oct 15 2025 18:27:28 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Wed Oct 15 2025 19:11:17 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

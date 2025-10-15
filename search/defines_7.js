@@ -8,5 +8,5 @@ var searchData=
   ['relay_5fsrv_5fel_5',['RELAY_SRV_EL',['../d1/df4/meshx__relay__server_8c.html#aa7b44e8f8a9e22bb030f3048146780e5',1,'meshx_relay_server.c']]],
   ['relay_5fsrv_5fmodel_5fsig_5fcnt_6',['RELAY_SRV_MODEL_SIG_CNT',['../dc/dee/meshx__relay__server__element_8h.html#ae1f5994e6b8441426611de471c634a26',1,'meshx_relay_server_element.h']]],
   ['relay_5fsrv_5fmodel_5fven_5fcnt_7',['RELAY_SRV_MODEL_VEN_CNT',['../dc/dee/meshx__relay__server__element_8h.html#a342a627354feffc9d7b0748d29681b8c',1,'meshx_relay_server_element.h']]],
-  ['root_5fmodel_5fven_5fcnt_8',['ROOT_MODEL_VEN_CNT',['../d9/d05/meshx_8c.html#a05d0de55f2373731b943e2fbff10a41b',1,'meshx.c']]]
+  ['root_5felement_5fidx_8',['ROOT_ELEMENT_IDX',['../d9/d05/meshx_8c.html#a983be56b1b99c979fae237c33776aa0b',1,'meshx.c']]]
 ];

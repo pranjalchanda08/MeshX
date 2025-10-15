@@ -261,77 +261,6 @@
             </Subnodes>
            </Node>
            <Node>
-            <Name>ctl_status_pack</Name>
-            <Path>da/dc6/unionctl__status__pack.html</Path>
-          <Subnodes>
-             <Node>
-              <Name>ctl_default</Name>
-              <Path>da/dc6/unionctl__status__pack.html</Path>
-              <Anchor>ae6b8527703398cd3c05a6fe574bf6275</Anchor>
-             </Node>
-             <Node>
-              <Name>ctl_status</Name>
-              <Path>da/dc6/unionctl__status__pack.html</Path>
-              <Anchor>a4a5430a4186afef16bcf63fc85278989</Anchor>
-             </Node>
-             <Node>
-              <Name>ctl_temp_range</Name>
-              <Path>da/dc6/unionctl__status__pack.html</Path>
-              <Anchor>a8c7fa6e0dbf0f2cc9119f45fc6e3b724</Anchor>
-             </Node>
-             <Node>
-              <Name>ctl_temp_status</Name>
-              <Path>da/dc6/unionctl__status__pack.html</Path>
-              <Anchor>a75a75db84d1878e1192d8dfbd4f749b5</Anchor>
-             </Node>
-             <Node>
-              <Name>delta_uv</Name>
-              <Path>da/dc6/unionctl__status__pack.html</Path>
-              <Anchor>af59675fa0947146c4eff5fbf0213bd2b</Anchor>
-             </Node>
-             <Node>
-              <Name>delta_uv_def</Name>
-              <Path>da/dc6/unionctl__status__pack.html</Path>
-              <Anchor>a90f6cc6d60e403897667afa40a921e26</Anchor>
-             </Node>
-             <Node>
-              <Name>lightness</Name>
-              <Path>da/dc6/unionctl__status__pack.html</Path>
-              <Anchor>ae4eed187cca57e2eeac3452204be344a</Anchor>
-             </Node>
-             <Node>
-              <Name>lightness_def</Name>
-              <Path>da/dc6/unionctl__status__pack.html</Path>
-              <Anchor>a3bcb08a11f13562d1e81467709f47168</Anchor>
-             </Node>
-             <Node>
-              <Name>range_max</Name>
-              <Path>da/dc6/unionctl__status__pack.html</Path>
-              <Anchor>ac59341c3e482aee544c65a6fd604a229</Anchor>
-             </Node>
-             <Node>
-              <Name>range_min</Name>
-              <Path>da/dc6/unionctl__status__pack.html</Path>
-              <Anchor>a4d2e4340872a6e453103a479bca55952</Anchor>
-             </Node>
-             <Node>
-              <Name>status_code</Name>
-              <Path>da/dc6/unionctl__status__pack.html</Path>
-              <Anchor>ae47354dbd041586f96ba226985b99b89</Anchor>
-             </Node>
-             <Node>
-              <Name>temperature</Name>
-              <Path>da/dc6/unionctl__status__pack.html</Path>
-              <Anchor>aa645de0906d28d0876afe2b6593fb81a</Anchor>
-             </Node>
-             <Node>
-              <Name>temperature_def</Name>
-              <Path>da/dc6/unionctl__status__pack.html</Path>
-              <Anchor>a5e70cbf07858f406a4fb335bd490f711</Anchor>
-             </Node>
-            </Subnodes>
-           </Node>
-           <Node>
             <Name>cwww_cli_ctx</Name>
             <Path>d2/dd1/structcwww__cli__ctx.html</Path>
           <Subnodes>
@@ -379,7 +308,7 @@
              <Node>
               <Name>ctl_cli_model</Name>
               <Path>de/d9b/structcwww__client__element.html</Path>
-              <Anchor>a9f11a82d48ab6508c47146aa7416955e</Anchor>
+              <Anchor>a3cdcc94a7a0532418380023db02c83e3</Anchor>
              </Node>
              <Node>
               <Name>cwww_cli_ctx</Name>
@@ -399,7 +328,7 @@
              <Node>
               <Name>onoff_cli_model</Name>
               <Path>de/d9b/structcwww__client__element.html</Path>
-              <Anchor>a9741b1d63f61ad300543ce22a11ebb23</Anchor>
+              <Anchor>a90af4e1abfc11759a1542a0293881419</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -477,32 +406,6 @@
               <Name>temperature</Name>
               <Path>d3/d96/structcwww__client__msg.html</Path>
               <Anchor>a95d07eb790441192b77fd75c9941cadf</Anchor>
-             </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>cwww_element</Name>
-            <Path>d2/dc7/structcwww__element.html</Path>
-          <Subnodes>
-             <Node>
-              <Name>el_list</Name>
-              <Path>d2/dc7/structcwww__element.html</Path>
-              <Anchor>a02291288d5a1b59a1319192099ff4688</Anchor>
-             </Node>
-             <Node>
-              <Name>element_cnt</Name>
-              <Path>d2/dc7/structcwww__element.html</Path>
-              <Anchor>ace9c99c45ca051bcd1bb51fccdb652c4</Anchor>
-             </Node>
-             <Node>
-              <Name>element_id_end</Name>
-              <Path>d2/dc7/structcwww__element.html</Path>
-              <Anchor>aba0a257ca96257aa7ab86b1aff5979b6</Anchor>
-             </Node>
-             <Node>
-              <Name>element_id_start</Name>
-              <Path>d2/dc7/structcwww__element.html</Path>
-              <Anchor>ac8035cd17488c00ebae42b844e30e971</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -1053,27 +956,6 @@
             </Subnodes>
            </Node>
            <Node>
-            <Name>meshx_ctl_server_model</Name>
-            <Path>d5/db9/structmeshx__ctl__server__model.html</Path>
-          <Subnodes>
-             <Node>
-              <Name>meshx_server_ctl_gen_srv</Name>
-              <Path>d5/db9/structmeshx__ctl__server__model.html</Path>
-              <Anchor>abfb5bba622d86d959a0839e4de2c4277</Anchor>
-             </Node>
-             <Node>
-              <Name>meshx_server_pub</Name>
-              <Path>d5/db9/structmeshx__ctl__server__model.html</Path>
-              <Anchor>a415d43206e037dcbf1fb25a4b199d6b0</Anchor>
-             </Node>
-             <Node>
-              <Name>meshx_server_sig_model</Name>
-              <Path>d5/db9/structmeshx__ctl__server__model.html</Path>
-              <Anchor>a655e625542540fd1c9a7c482ed9bdcd4</Anchor>
-             </Node>
-            </Subnodes>
-           </Node>
-           <Node>
             <Name>meshx_ctrl_msg_header</Name>
             <Path>da/d44/structmeshx__ctrl__msg__header.html</Path>
           <Subnodes>
@@ -1159,6 +1041,32 @@
               <Name>srv_ctx</Name>
               <Path>d0/de7/structmeshx__cwww__element.html</Path>
               <Anchor>a5d4bd4e11a252f85f6d9c988f87b33a2</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
+            <Name>meshx_cwww_elements_ctrl</Name>
+            <Path>dd/d4e/structmeshx__cwww__elements__ctrl.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>el_list</Name>
+              <Path>dd/d4e/structmeshx__cwww__elements__ctrl.html</Path>
+              <Anchor>afce886e4a445ffb2c551d27faf343300</Anchor>
+             </Node>
+             <Node>
+              <Name>element_cnt</Name>
+              <Path>dd/d4e/structmeshx__cwww__elements__ctrl.html</Path>
+              <Anchor>a67f8ee04ab8a0248b1f9681125a82ccd</Anchor>
+             </Node>
+             <Node>
+              <Name>element_id_end</Name>
+              <Path>dd/d4e/structmeshx__cwww__elements__ctrl.html</Path>
+              <Anchor>a63a35e43f1763deb7dfa554dd72fd60a</Anchor>
+             </Node>
+             <Node>
+              <Name>element_id_start</Name>
+              <Path>dd/d4e/structmeshx__cwww__elements__ctrl.html</Path>
+              <Anchor>a0e83c3b7849c273d2042330aa04a379e</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -2674,27 +2582,6 @@
             </Subnodes>
            </Node>
            <Node>
-            <Name>meshx_light_ctl_client_model</Name>
-            <Path>d4/d6b/structmeshx__light__ctl__client__model.html</Path>
-          <Subnodes>
-             <Node>
-              <Name>meshx_light_ctl_client_gen_cli</Name>
-              <Path>d4/d6b/structmeshx__light__ctl__client__model.html</Path>
-              <Anchor>aeae53e75c09bf4227ec8d9acb9ae62a0</Anchor>
-             </Node>
-             <Node>
-              <Name>meshx_light_ctl_client_pub</Name>
-              <Path>d4/d6b/structmeshx__light__ctl__client__model.html</Path>
-              <Anchor>a2251e71c379d9ec6e7f33e16b08b542b</Anchor>
-             </Node>
-             <Node>
-              <Name>meshx_light_ctl_client_sig_model</Name>
-              <Path>d4/d6b/structmeshx__light__ctl__client__model.html</Path>
-              <Anchor>a50a7f07a4ce0f8e8661129ed19c26891</Anchor>
-             </Node>
-            </Subnodes>
-           </Node>
-           <Node>
             <Name>meshx_light_ctl_default_set_t</Name>
             <Path>dc/d13/structmeshx__light__ctl__default__set__t.html</Path>
           <Subnodes>
@@ -2774,6 +2661,27 @@
               <Name>trans_time</Name>
               <Path>dc/dda/structmeshx__light__ctl__set__t.html</Path>
               <Anchor>a5433894b408151b74e9185fe09ea897f</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
+            <Name>meshx_light_ctl_setup_server</Name>
+            <Path>d6/d32/structmeshx__light__ctl__setup__server.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>ctl_setup_server_init</Name>
+              <Path>d6/d32/structmeshx__light__ctl__setup__server.html</Path>
+              <Anchor>abf71e144089c5cb748c3819cd31861a3</Anchor>
+             </Node>
+             <Node>
+              <Name>ctl_setup_srv_model</Name>
+              <Path>d6/d32/structmeshx__light__ctl__setup__server.html</Path>
+              <Anchor>ae05f0f7827d8f261bf53c28d955b9700</Anchor>
+             </Node>
+             <Node>
+              <Name>meshx_srv_model</Name>
+              <Path>d6/d32/structmeshx__light__ctl__setup__server.html</Path>
+              <Anchor>abcada55cbe96a948f6982f21f3353624</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -4020,6 +3928,27 @@
             </Subnodes>
            </Node>
            <Node>
+            <Name>meshx_model_interface</Name>
+            <Path>d1/da6/structmeshx__model__interface.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>meshx_gen</Name>
+              <Path>d1/da6/structmeshx__model__interface.html</Path>
+              <Anchor>a6c47ca8c9b884c48b9237b8044125bca</Anchor>
+             </Node>
+             <Node>
+              <Name>meshx_pub</Name>
+              <Path>d1/da6/structmeshx__model__interface.html</Path>
+              <Anchor>aa7baf283dd80b02a19fdd9a1e758db34</Anchor>
+             </Node>
+             <Node>
+              <Name>meshx_sig</Name>
+              <Path>d1/da6/structmeshx__model__interface.html</Path>
+              <Anchor>a6707c0437b18f6c3a38857b586eb8ba3</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
             <Name>meshx_msg_q</Name>
             <Path>db/d59/structmeshx__msg__q.html</Path>
           <Subnodes>
@@ -4131,6 +4060,77 @@
            <Node>
             <Name>meshx_os_timer_reg_head</Name>
             <Path>d5/d05/structmeshx__os__timer__reg__head.html</Path>
+           </Node>
+           <Node>
+            <Name>meshx_plat_ctl_status</Name>
+            <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>ctl_default</Name>
+              <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+              <Anchor>a00b503b76995e8df33375969906cd410</Anchor>
+             </Node>
+             <Node>
+              <Name>ctl_status</Name>
+              <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+              <Anchor>afd413c5890f3de07940ec7544ec04b86</Anchor>
+             </Node>
+             <Node>
+              <Name>ctl_temp_range</Name>
+              <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+              <Anchor>ad7ec9b8ce9414d14306f3cf017bab3f9</Anchor>
+             </Node>
+             <Node>
+              <Name>ctl_temp_status</Name>
+              <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+              <Anchor>a117901e1e6db08ac79a662dff223e3c9</Anchor>
+             </Node>
+             <Node>
+              <Name>delta_uv</Name>
+              <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+              <Anchor>ae0263fd2ecd3645aaeec90cd0c963664</Anchor>
+             </Node>
+             <Node>
+              <Name>delta_uv_def</Name>
+              <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+              <Anchor>a5f66651e2e0b6a50de94a9639faaab79</Anchor>
+             </Node>
+             <Node>
+              <Name>lightness</Name>
+              <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+              <Anchor>a1fb5e853f7d47414b2145ce477dfa5db</Anchor>
+             </Node>
+             <Node>
+              <Name>lightness_def</Name>
+              <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+              <Anchor>a75254ad44e71fa54afbccca47d06b82b</Anchor>
+             </Node>
+             <Node>
+              <Name>range_max</Name>
+              <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+              <Anchor>af89139cf42f20b7f60911e2789cb9f37</Anchor>
+             </Node>
+             <Node>
+              <Name>range_min</Name>
+              <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+              <Anchor>a455e0f9a9fa29679d9e7f29524337e79</Anchor>
+             </Node>
+             <Node>
+              <Name>status_code</Name>
+              <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+              <Anchor>adb386b19c68172da3a6a946b6a202af1</Anchor>
+             </Node>
+             <Node>
+              <Name>temperature</Name>
+              <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+              <Anchor>aa3ce35e8eed8d5794584e69c51540791</Anchor>
+             </Node>
+             <Node>
+              <Name>temperature_def</Name>
+              <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+              <Anchor>abf1f151f6df6fc16837d383ba90108b2</Anchor>
+             </Node>
+            </Subnodes>
            </Node>
            <Node>
             <Name>meshx_prov_cb_param_t</Name>
@@ -7651,7 +7651,7 @@
                            <Node>
                             <Name>ctl_cli_model</Name>
                             <Path>de/d9b/structcwww__client__element.html</Path>
-                            <Anchor>a9f11a82d48ab6508c47146aa7416955e</Anchor>
+                            <Anchor>a3cdcc94a7a0532418380023db02c83e3</Anchor>
                            </Node>
                            <Node>
                             <Name>cwww_cli_ctx</Name>
@@ -7671,7 +7671,7 @@
                            <Node>
                             <Name>onoff_cli_model</Name>
                             <Path>de/d9b/structcwww__client__element.html</Path>
-                            <Anchor>a9741b1d63f61ad300543ce22a11ebb23</Anchor>
+                            <Anchor>a90af4e1abfc11759a1542a0293881419</Anchor>
                            </Node>
                           </Subnodes>
                          </Node>
@@ -7817,11 +7817,6 @@
                             <Anchor>ab2c80e66d65aaeb5740b8a7dcd36cd50a25a9de5ff6f0895c9bece1596004a5e7</Anchor>
                            </Node>
                           </Subnodes>
-                         </Node>
-                         <Node>
-                          <Name>ble_mesh_send_cwww_msg</Name>
-                          <Path>df/dc5/meshx__light__cwww__client__element_8h.html</Path>
-                          <Anchor>ac0ea9fcc86e6d20432d9022539203404</Anchor>
                          </Node>
                          <Node>
                           <Name>create_cwww_client_elements</Name>
@@ -8621,27 +8616,6 @@
                             </Subnodes>
                            </Node>
                            <Node>
-                            <Name>meshx_light_ctl_client_model</Name>
-                            <Path>d4/d6b/structmeshx__light__ctl__client__model.html</Path>
-                          <Subnodes>
-                             <Node>
-                              <Name>meshx_light_ctl_client_gen_cli</Name>
-                              <Path>d4/d6b/structmeshx__light__ctl__client__model.html</Path>
-                              <Anchor>aeae53e75c09bf4227ec8d9acb9ae62a0</Anchor>
-                             </Node>
-                             <Node>
-                              <Name>meshx_light_ctl_client_pub</Name>
-                              <Path>d4/d6b/structmeshx__light__ctl__client__model.html</Path>
-                              <Anchor>a2251e71c379d9ec6e7f33e16b08b542b</Anchor>
-                             </Node>
-                             <Node>
-                              <Name>meshx_light_ctl_client_sig_model</Name>
-                              <Path>d4/d6b/structmeshx__light__ctl__client__model.html</Path>
-                              <Anchor>a50a7f07a4ce0f8e8661129ed19c26891</Anchor>
-                             </Node>
-                            </Subnodes>
-                           </Node>
-                           <Node>
                             <Name>meshx_gen_ctl_send_params</Name>
                             <Path>df/d29/structmeshx__gen__ctl__send__params.html</Path>
                           <Subnodes>
@@ -8745,7 +8719,7 @@
                            <Node>
                             <Name>meshx_light_ctl_client_model_t</Name>
                             <Path>da/dfd/meshx__light__ctl__client_8h.html</Path>
-                            <Anchor>a21cae33989e7d67a89cd9c41e9acb535</Anchor>
+                            <Anchor>aef70e4e0a19b8e34b05dbb059df52fdf</Anchor>
                            </Node>
                            <Node>
                             <Name>meshx_light_ctl_client_create</Name>
@@ -9202,28 +9176,28 @@
                           </Subnodes>
                          </Node>
                          <Node>
-                          <Name>cwww_element</Name>
-                          <Path>d2/dc7/structcwww__element.html</Path>
+                          <Name>meshx_cwww_elements_ctrl</Name>
+                          <Path>dd/d4e/structmeshx__cwww__elements__ctrl.html</Path>
                         <Subnodes>
                            <Node>
                             <Name>el_list</Name>
-                            <Path>d2/dc7/structcwww__element.html</Path>
-                            <Anchor>a02291288d5a1b59a1319192099ff4688</Anchor>
+                            <Path>dd/d4e/structmeshx__cwww__elements__ctrl.html</Path>
+                            <Anchor>afce886e4a445ffb2c551d27faf343300</Anchor>
                            </Node>
                            <Node>
                             <Name>element_cnt</Name>
-                            <Path>d2/dc7/structcwww__element.html</Path>
-                            <Anchor>ace9c99c45ca051bcd1bb51fccdb652c4</Anchor>
+                            <Path>dd/d4e/structmeshx__cwww__elements__ctrl.html</Path>
+                            <Anchor>a67f8ee04ab8a0248b1f9681125a82ccd</Anchor>
                            </Node>
                            <Node>
                             <Name>element_id_end</Name>
-                            <Path>d2/dc7/structcwww__element.html</Path>
-                            <Anchor>aba0a257ca96257aa7ab86b1aff5979b6</Anchor>
+                            <Path>dd/d4e/structmeshx__cwww__elements__ctrl.html</Path>
+                            <Anchor>a63a35e43f1763deb7dfa554dd72fd60a</Anchor>
                            </Node>
                            <Node>
                             <Name>element_id_start</Name>
-                            <Path>d2/dc7/structcwww__element.html</Path>
-                            <Anchor>ac8035cd17488c00ebae42b844e30e971</Anchor>
+                            <Path>dd/d4e/structmeshx__cwww__elements__ctrl.html</Path>
+                            <Anchor>a0e83c3b7849c273d2042330aa04a379e</Anchor>
                            </Node>
                           </Subnodes>
                          </Node>
@@ -9245,7 +9219,7 @@
                          <Node>
                           <Name>meshx_cwww_elements_ctrl_t</Name>
                           <Path>d8/da4/meshx__cwww__server__element_8h.html</Path>
-                          <Anchor>a36b00f0d77112e8077c58aea6580ba2b</Anchor>
+                          <Anchor>a70d05e52e8b219b97f9329b6d14af88f</Anchor>
                          </Node>
                          <Node>
                           <Name>meshx_cwww_server_ctx_t</Name>
@@ -9625,35 +9599,24 @@
                           <Path>db/dde/meshx__light__ctl__srv_8h.html</Path>
                         <Subnodes>
                            <Node>
-                            <Name>meshx_ctl_server_model</Name>
-                            <Path>d5/db9/structmeshx__ctl__server__model.html</Path>
-                          <Subnodes>
-                             <Node>
-                              <Name>meshx_server_ctl_gen_srv</Name>
-                              <Path>d5/db9/structmeshx__ctl__server__model.html</Path>
-                              <Anchor>abfb5bba622d86d959a0839e4de2c4277</Anchor>
-                             </Node>
-                             <Node>
-                              <Name>meshx_server_pub</Name>
-                              <Path>d5/db9/structmeshx__ctl__server__model.html</Path>
-                              <Anchor>a415d43206e037dcbf1fb25a4b199d6b0</Anchor>
-                             </Node>
-                             <Node>
-                              <Name>meshx_server_sig_model</Name>
-                              <Path>d5/db9/structmeshx__ctl__server__model.html</Path>
-                              <Anchor>a655e625542540fd1c9a7c482ed9bdcd4</Anchor>
-                             </Node>
-                            </Subnodes>
-                           </Node>
-                           <Node>
                             <Name>meshx_ctl_server_model_t</Name>
                             <Path>db/dde/meshx__light__ctl__srv_8h.html</Path>
-                            <Anchor>a60799ea8377b44c6b39fd92335252e91</Anchor>
+                            <Anchor>a8ba6098c98f00634f675fa2f2d7fb625</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_ctl_setup_server_model_t</Name>
+                            <Path>db/dde/meshx__light__ctl__srv_8h.html</Path>
+                            <Anchor>ae6c7ab6d2bce16f5c802c863bcf3b70a</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_get_ctl_setup_srv_model</Name>
+                            <Path>db/dde/meshx__light__ctl__srv_8h.html</Path>
+                            <Anchor>a7d34b245947a247d2d779fb364c38bc3</Anchor>
                            </Node>
                            <Node>
                             <Name>meshx_light_ctl_server_create</Name>
                             <Path>db/dde/meshx__light__ctl__srv_8h.html</Path>
-                            <Anchor>a28ca32dccd7b19454cf530dc3525d0a6</Anchor>
+                            <Anchor>a61a46f68788b46871dc34d09289e8530</Anchor>
                            </Node>
                            <Node>
                             <Name>meshx_light_ctl_server_delete</Name>
@@ -9766,7 +9729,7 @@
                            <Node>
                             <Name>meshx_get_config_srv_model</Name>
                             <Path>dd/d79/meshx__config__server_8c.html</Path>
-                            <Anchor>a05303b3102bbe45472c410971abbb4b8</Anchor>
+                            <Anchor>aae78b08f9820f348cd083ad3a4ca67bf</Anchor>
                            </Node>
                            <Node>
                             <Name>meshx_init_config_server</Name>
@@ -9795,9 +9758,40 @@
                           <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
                         <Subnodes>
                            <Node>
+                            <Name>meshx_light_ctl_setup_server</Name>
+                            <Path>d6/d32/structmeshx__light__ctl__setup__server.html</Path>
+                          <Subnodes>
+                             <Node>
+                              <Name>ctl_setup_server_init</Name>
+                              <Path>d6/d32/structmeshx__light__ctl__setup__server.html</Path>
+                              <Anchor>abf71e144089c5cb748c3819cd31861a3</Anchor>
+                             </Node>
+                             <Node>
+                              <Name>ctl_setup_srv_model</Name>
+                              <Path>d6/d32/structmeshx__light__ctl__setup__server.html</Path>
+                              <Anchor>ae05f0f7827d8f261bf53c28d955b9700</Anchor>
+                             </Node>
+                             <Node>
+                              <Name>meshx_srv_model</Name>
+                              <Path>d6/d32/structmeshx__light__ctl__setup__server.html</Path>
+                              <Anchor>abcada55cbe96a948f6982f21f3353624</Anchor>
+                             </Node>
+                            </Subnodes>
+                           </Node>
+                           <Node>
                             <Name>MESHX_SERVER_INIT_MAGIC_NO</Name>
                             <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
                             <Anchor>ad9e063fcc893a076ff956ac6020372ed</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_light_ctl_setup_server_t</Name>
+                            <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
+                            <Anchor>afcfff8d0923d1491b1be60053c090f31</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_get_ctl_setup_srv_model</Name>
+                            <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
+                            <Anchor>a7d34b245947a247d2d779fb364c38bc3</Anchor>
                            </Node>
                            <Node>
                             <Name>meshx_handle_light_ctl_msg</Name>
@@ -9807,7 +9801,7 @@
                            <Node>
                             <Name>meshx_light_ctl_server_create</Name>
                             <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
-                            <Anchor>a28ca32dccd7b19454cf530dc3525d0a6</Anchor>
+                            <Anchor>a61a46f68788b46871dc34d09289e8530</Anchor>
                            </Node>
                            <Node>
                             <Name>meshx_light_ctl_server_delete</Name>
@@ -9818,6 +9812,16 @@
                             <Name>meshx_light_ctl_server_init</Name>
                             <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
                             <Anchor>adc1d0d7fc5b8e44bebce9c905547780f</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_light_ctl_setup_server_create</Name>
+                            <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
+                            <Anchor>a9ccee3fc1fcc58cf55c17803cbee478f</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_light_ctl_setup_server_delete</Name>
+                            <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
+                            <Anchor>a86ae7afdb87899d6bd6a4b8900c7c844</Anchor>
                            </Node>
                            <Node>
                             <Name>meshx_light_ctl_srv_send_pack_create</Name>
@@ -9840,9 +9844,24 @@
                             <Anchor>a9cde80da166fd8a69dd7261a2478d1b8</Anchor>
                            </Node>
                            <Node>
-                            <Name>meshx_lighting_server_init</Name>
+                            <Name>ctl_lighting_server_created</Name>
                             <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
-                            <Anchor>ac5efe3ac4cddc76c1c6de878a351223f</Anchor>
+                            <Anchor>a19fb416e1509935256f38ab5df688029</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>ctl_lighting_server_init</Name>
+                            <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
+                            <Anchor>a4d3616c3a48d9a7057c057d71a872975</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>ctl_setup_server</Name>
+                            <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
+                            <Anchor>a621c667489e1ed46167a56127d157d5e</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>g_meshx_light_ctl_srv</Name>
+                            <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
+                            <Anchor>ad7b3965ec05b69bf693150a97200e279</Anchor>
                            </Node>
                           </Subnodes>
                          </Node>
@@ -13859,19 +13878,24 @@
                             <Anchor>ac79c39e50439290a87cd0b7da8fa886a</Anchor>
                            </Node>
                            <Node>
+                            <Name>meshx_plat_light_ctl_setup_srv_create</Name>
+                            <Path>d7/de0/meshx__ble__mesh__light__srv_8h.html</Path>
+                            <Anchor>a0807c654e0a630b66f06f2732dfcf440</Anchor>
+                           </Node>
+                           <Node>
                             <Name>meshx_plat_light_ctl_srv_create</Name>
                             <Path>d7/de0/meshx__ble__mesh__light__srv_8h.html</Path>
                             <Anchor>aa7384157587813da254014dfd8f13b17</Anchor>
                            </Node>
                            <Node>
-                            <Name>meshx_plat_light_ctl_srv_delete</Name>
-                            <Path>d7/de0/meshx__ble__mesh__light__srv_8h.html</Path>
-                            <Anchor>adcc92f91b94547ecd612f3a8fd93e412</Anchor>
-                           </Node>
-                           <Node>
                             <Name>meshx_plat_light_ctl_srv_restore</Name>
                             <Path>d7/de0/meshx__ble__mesh__light__srv_8h.html</Path>
                             <Anchor>add201d93559ff4ff071950572182e204</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_plat_light_srv_delete</Name>
+                            <Path>d7/de0/meshx__ble__mesh__light__srv_8h.html</Path>
+                            <Anchor>a0ee9a897168a69c9ede40278fdb4b445</Anchor>
                            </Node>
                            <Node>
                             <Name>meshx_plat_light_srv_init</Name>
@@ -21344,6 +21368,27 @@
                       </Subnodes>
                      </Node>
                      <Node>
+                      <Name>meshx_model_interface</Name>
+                      <Path>d1/da6/structmeshx__model__interface.html</Path>
+                    <Subnodes>
+                       <Node>
+                        <Name>meshx_gen</Name>
+                        <Path>d1/da6/structmeshx__model__interface.html</Path>
+                        <Anchor>a6c47ca8c9b884c48b9237b8044125bca</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>meshx_pub</Name>
+                        <Path>d1/da6/structmeshx__model__interface.html</Path>
+                        <Anchor>aa7baf283dd80b02a19fdd9a1e758db34</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>meshx_sig</Name>
+                        <Path>d1/da6/structmeshx__model__interface.html</Path>
+                        <Anchor>a6707c0437b18f6c3a38857b586eb8ba3</Anchor>
+                       </Node>
+                      </Subnodes>
+                     </Node>
+                     <Node>
                       <Name>element_comp_table</Name>
                       <Path>d0/dc5/structelement__comp__table.html</Path>
                     <Subnodes>
@@ -21398,6 +21443,11 @@
                       <Name>meshx_app_store_t</Name>
                       <Path>d2/de3/meshx__common_8h.html</Path>
                       <Anchor>aa99cb211022e303dfea76bdf6368235a</Anchor>
+                     </Node>
+                     <Node>
+                      <Name>meshx_model_interface_t</Name>
+                      <Path>d2/de3/meshx__common_8h.html</Path>
+                      <Anchor>ac8e45ab8a90ec79235f3db0423e164f3</Anchor>
                      </Node>
                     </Subnodes>
                    </Node>
@@ -22546,14 +22596,14 @@
                       <Anchor>af23a5bec224ddbc5499118b9f2439a66</Anchor>
                      </Node>
                      <Node>
-                      <Name>ROOT_MODEL_VEN_CNT</Name>
+                      <Name>ROOT_ELEMENT_IDX</Name>
                       <Path>d9/d05/meshx_8c.html</Path>
-                      <Anchor>a05d0de55f2373731b943e2fbff10a41b</Anchor>
+                      <Anchor>a983be56b1b99c979fae237c33776aa0b</Anchor>
                      </Node>
                      <Node>
                       <Name>get_root_sig_models</Name>
                       <Path>d9/d05/meshx_8c.html</Path>
-                      <Anchor>a341817f6f87ef8d6f5673f1d13b8f7ca</Anchor>
+                      <Anchor>ae7719b590342b2a5ca112e4d00f368f5</Anchor>
                      </Node>
                      <Node>
                       <Name>get_root_sig_models_count</Name>
@@ -22563,7 +22613,7 @@
                      <Node>
                       <Name>get_root_ven_models</Name>
                       <Path>d9/d05/meshx_8c.html</Path>
-                      <Anchor>ac7e52935585239c70edd322d00c2bb4f</Anchor>
+                      <Anchor>a9919d63a57b344949ba8bd5cc6754690</Anchor>
                      </Node>
                      <Node>
                       <Name>get_root_ven_models_count</Name>
@@ -23633,6 +23683,11 @@
                             <Anchor>a1a1fd4a0f559186af79555610dd0f92a</Anchor>
                            </Node>
                            <Node>
+                            <Name>MESHX_LIGHT_CTL_SETUP_SRV</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>aa9c90e220dcd2b613e2a14fba5cad37a</Anchor>
+                           </Node>
+                           <Node>
                             <Name>MESHX_LIGHT_CTL_SRV</Name>
                             <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
                             <Anchor>a945bccc5506f70cdda5d65e1ef307c63</Anchor>
@@ -23872,80 +23927,80 @@
                         <Path>de/d42/esp__light__srv__model_8c.html</Path>
                       <Subnodes>
                          <Node>
-                          <Name>ctl_status_pack</Name>
-                          <Path>da/dc6/unionctl__status__pack.html</Path>
+                          <Name>meshx_plat_ctl_status</Name>
+                          <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
                         <Subnodes>
                            <Node>
                             <Name>ctl_default</Name>
-                            <Path>da/dc6/unionctl__status__pack.html</Path>
-                            <Anchor>ae6b8527703398cd3c05a6fe574bf6275</Anchor>
+                            <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+                            <Anchor>a00b503b76995e8df33375969906cd410</Anchor>
                            </Node>
                            <Node>
                             <Name>ctl_status</Name>
-                            <Path>da/dc6/unionctl__status__pack.html</Path>
-                            <Anchor>a4a5430a4186afef16bcf63fc85278989</Anchor>
+                            <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+                            <Anchor>afd413c5890f3de07940ec7544ec04b86</Anchor>
                            </Node>
                            <Node>
                             <Name>ctl_temp_range</Name>
-                            <Path>da/dc6/unionctl__status__pack.html</Path>
-                            <Anchor>a8c7fa6e0dbf0f2cc9119f45fc6e3b724</Anchor>
+                            <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+                            <Anchor>ad7ec9b8ce9414d14306f3cf017bab3f9</Anchor>
                            </Node>
                            <Node>
                             <Name>ctl_temp_status</Name>
-                            <Path>da/dc6/unionctl__status__pack.html</Path>
-                            <Anchor>a75a75db84d1878e1192d8dfbd4f749b5</Anchor>
+                            <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+                            <Anchor>a117901e1e6db08ac79a662dff223e3c9</Anchor>
                            </Node>
                            <Node>
                             <Name>delta_uv</Name>
-                            <Path>da/dc6/unionctl__status__pack.html</Path>
-                            <Anchor>af59675fa0947146c4eff5fbf0213bd2b</Anchor>
+                            <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+                            <Anchor>ae0263fd2ecd3645aaeec90cd0c963664</Anchor>
                            </Node>
                            <Node>
                             <Name>delta_uv_def</Name>
-                            <Path>da/dc6/unionctl__status__pack.html</Path>
-                            <Anchor>a90f6cc6d60e403897667afa40a921e26</Anchor>
+                            <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+                            <Anchor>a5f66651e2e0b6a50de94a9639faaab79</Anchor>
                            </Node>
                            <Node>
                             <Name>lightness</Name>
-                            <Path>da/dc6/unionctl__status__pack.html</Path>
-                            <Anchor>ae4eed187cca57e2eeac3452204be344a</Anchor>
+                            <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+                            <Anchor>a1fb5e853f7d47414b2145ce477dfa5db</Anchor>
                            </Node>
                            <Node>
                             <Name>lightness_def</Name>
-                            <Path>da/dc6/unionctl__status__pack.html</Path>
-                            <Anchor>a3bcb08a11f13562d1e81467709f47168</Anchor>
+                            <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+                            <Anchor>a75254ad44e71fa54afbccca47d06b82b</Anchor>
                            </Node>
                            <Node>
                             <Name>range_max</Name>
-                            <Path>da/dc6/unionctl__status__pack.html</Path>
-                            <Anchor>ac59341c3e482aee544c65a6fd604a229</Anchor>
+                            <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+                            <Anchor>af89139cf42f20b7f60911e2789cb9f37</Anchor>
                            </Node>
                            <Node>
                             <Name>range_min</Name>
-                            <Path>da/dc6/unionctl__status__pack.html</Path>
-                            <Anchor>a4d2e4340872a6e453103a479bca55952</Anchor>
+                            <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+                            <Anchor>a455e0f9a9fa29679d9e7f29524337e79</Anchor>
                            </Node>
                            <Node>
                             <Name>status_code</Name>
-                            <Path>da/dc6/unionctl__status__pack.html</Path>
-                            <Anchor>ae47354dbd041586f96ba226985b99b89</Anchor>
+                            <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+                            <Anchor>adb386b19c68172da3a6a946b6a202af1</Anchor>
                            </Node>
                            <Node>
                             <Name>temperature</Name>
-                            <Path>da/dc6/unionctl__status__pack.html</Path>
-                            <Anchor>aa645de0906d28d0876afe2b6593fb81a</Anchor>
+                            <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+                            <Anchor>aa3ce35e8eed8d5794584e69c51540791</Anchor>
                            </Node>
                            <Node>
                             <Name>temperature_def</Name>
-                            <Path>da/dc6/unionctl__status__pack.html</Path>
-                            <Anchor>a5e70cbf07858f406a4fb335bd490f711</Anchor>
+                            <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
+                            <Anchor>abf1f151f6df6fc16837d383ba90108b2</Anchor>
                            </Node>
                           </Subnodes>
                          </Node>
                          <Node>
-                          <Name>ctl_status_t</Name>
+                          <Name>meshx_plat_ctl_status_t</Name>
                           <Path>de/d42/esp__light__srv__model_8c.html</Path>
-                          <Anchor>aa9c798c038425d59517f483455f3fbea</Anchor>
+                          <Anchor>acbff44e606e09653f307c0ca3e290891</Anchor>
                          </Node>
                          <Node>
                           <Name>meshx_ble_lightness_server_cb</Name>
@@ -23958,19 +24013,24 @@
                           <Anchor>ac79c39e50439290a87cd0b7da8fa886a</Anchor>
                          </Node>
                          <Node>
+                          <Name>meshx_plat_light_ctl_setup_srv_create</Name>
+                          <Path>de/d42/esp__light__srv__model_8c.html</Path>
+                          <Anchor>a0807c654e0a630b66f06f2732dfcf440</Anchor>
+                         </Node>
+                         <Node>
                           <Name>meshx_plat_light_ctl_srv_create</Name>
                           <Path>de/d42/esp__light__srv__model_8c.html</Path>
                           <Anchor>aa7384157587813da254014dfd8f13b17</Anchor>
                          </Node>
                          <Node>
-                          <Name>meshx_plat_light_ctl_srv_delete</Name>
-                          <Path>de/d42/esp__light__srv__model_8c.html</Path>
-                          <Anchor>adcc92f91b94547ecd612f3a8fd93e412</Anchor>
-                         </Node>
-                         <Node>
                           <Name>meshx_plat_light_ctl_srv_restore</Name>
                           <Path>de/d42/esp__light__srv__model_8c.html</Path>
                           <Anchor>add201d93559ff4ff071950572182e204</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>meshx_plat_light_srv_delete</Name>
+                          <Path>de/d42/esp__light__srv__model_8c.html</Path>
+                          <Anchor>a0ee9a897168a69c9ede40278fdb4b445</Anchor>
                          </Node>
                          <Node>
                           <Name>meshx_plat_light_srv_init</Name>
@@ -23981,6 +24041,11 @@
                           <Name>meshx_plat_set_light_ctl_srv_state</Name>
                           <Path>de/d42/esp__light__srv__model_8c.html</Path>
                           <Anchor>a0dc534558d13a140c430ef5bb1f659f9</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>light_ctl_setup_sig_template</Name>
+                          <Path>de/d42/esp__light__srv__model_8c.html</Path>
+                          <Anchor>ab68d3878c97036c625e655d7987d3474</Anchor>
                          </Node>
                          <Node>
                           <Name>light_ctl_sig_template</Name>

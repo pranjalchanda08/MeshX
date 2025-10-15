@@ -14,6 +14,5 @@ var searchData=
   ['control_5ftask_5fmsg_5fevt_5fto_5fble_5ft_11',['control_task_msg_evt_to_ble_t',['../da/db3/meshx__control__task_8h.html#a16032d5f4189a6d1d8ad6d4ad59145ec',1,'meshx_control_task.h']]],
   ['control_5ftask_5fmsg_5fevt_5ftxcm_5ft_12',['control_task_msg_evt_txcm_t',['../da/db3/meshx__control__task_8h.html#ab05a4ea8a7bd1ce45d2b0a36a61448b6',1,'meshx_control_task.h']]],
   ['control_5ftask_5fmsg_5fhandle_5ft_13',['control_task_msg_handle_t',['../da/db3/meshx__control__task_8h.html#a579fb3e74e48372bcc0489cd86c56614',1,'meshx_control_task.h']]],
-  ['control_5ftask_5fmsg_5ft_14',['control_task_msg_t',['../da/db3/meshx__control__task_8h.html#a7e1e4e411c763096ec566949d6dcd232',1,'meshx_control_task.h']]],
-  ['ctl_5fstatus_5ft_15',['ctl_status_t',['../de/d42/esp__light__srv__model_8c.html#aa9c798c038425d59517f483455f3fbea',1,'esp_light_srv_model.c']]]
+  ['control_5ftask_5fmsg_5ft_14',['control_task_msg_t',['../da/db3/meshx__control__task_8h.html#a7e1e4e411c763096ec566949d6dcd232',1,'meshx_control_task.h']]]
 ];

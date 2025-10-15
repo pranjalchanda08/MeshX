@@ -18,6 +18,7 @@ var meshx__platform__ble__mesh_8h =
     [ "MESHX_GEN_SRV_CB", "d3/d2b/meshx__platform__ble__mesh_8h.html#a25addffa44ed950eec873a8a51aacb2d", null ],
     [ "MESHX_GEN_SRV_CB_EVT", "d3/d2b/meshx__platform__ble__mesh_8h.html#a0a7cb719335ca394fc7adcdb10c7c2eb", null ],
     [ "MESHX_GEN_SRV_CB_PARAM", "d3/d2b/meshx__platform__ble__mesh_8h.html#a1a1fd4a0f559186af79555610dd0f92a", null ],
+    [ "MESHX_LIGHT_CTL_SETUP_SRV", "d3/d2b/meshx__platform__ble__mesh_8h.html#aa9c90e220dcd2b613e2a14fba5cad37a", null ],
     [ "MESHX_LIGHT_CTL_SRV", "d3/d2b/meshx__platform__ble__mesh_8h.html#a945bccc5506f70cdda5d65e1ef307c63", null ],
     [ "MESHX_LIGHT_CTL_STATE", "d3/d2b/meshx__platform__ble__mesh_8h.html#a603f1cdfc61d8b70c14fc137dc322c96", null ],
     [ "MESHX_LIGHT_SRV_CB", "d3/d2b/meshx__platform__ble__mesh_8h.html#a7312485cb65e59312ba85e4a15166912", null ],

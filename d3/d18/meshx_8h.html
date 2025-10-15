@@ -490,72 +490,72 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>MESHX_SUCCESS, Success </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d9/d05/meshx_8c_source.html#l00217">217</a> of file <a class="el" href="../../d9/d05/meshx_8c_source.html">meshx.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  218</span>{</div>
-<div class="line"><span class="lineno">  219</span>    <span class="comment">/* Check if the configuration is valid */</span></div>
-<div class="line"><span class="lineno">  220</span>    <span class="keywordflow">if</span>(!config)</div>
-<div class="line"><span class="lineno">  221</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
-<div class="line"><span class="lineno">  222</span> </div>
-<div class="line"><span class="lineno">  223</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  224</span> </div>
-<div class="line"><span class="lineno">  225</span>    <span class="comment">/* Copy the configuration to the global config structure */</span></div>
-<div class="line"><span class="lineno">  226</span>    memcpy(&amp;<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a74ef270513d2b83c6db30d9c2de6001d">g_config</a>, config, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="#aa50e2294627a29e154267e14fb3d8584">meshx_config_t</a>));</div>
-<div class="line"><span class="lineno">  227</span> </div>
-<div class="line"><span class="lineno">  228</span>    <a class="code hl_typedef" href="../../d7/dcb/meshx__log_8h.html#a7e75f09650fd33bcd03ea92acd58408f">meshx_logging_t</a> logging_cfg;</div>
-<div class="line"><span class="lineno">  229</span> </div>
-<div class="line"><span class="lineno">  230</span>    logging_cfg.<a class="code hl_variable" href="../../db/d0b/structmeshx__logging.html#a140b99328b305503577b5333d5504873">def_log_level</a> = config-&gt;meshx_log_level == <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a4d2cb7b27cc324414a98b0aaa88fd2cf">MESHX_LOG_VERBOSE</a> ?</div>
-<div class="line"><span class="lineno">  231</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a736ad74c6ead5d4e1c683216f0898781">CONFIG_MESHX_DEFAULT_LOG_LEVEL</a> : config-&gt;meshx_log_level;</div>
-<div class="line"><span class="lineno">  232</span> </div>
-<div class="line"><span class="lineno">  233</span>    err = <a class="code hl_function" href="../../d0/dc9/meshx__log_8c.html#a2943545097e48060e29c8be20f92677f">meshx_logging_init</a>(&amp;logging_cfg);</div>
-<div class="line"><span class="lineno">  234</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Logging init failed&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  235</span> </div>
-<div class="line"><span class="lineno">  236</span>    <span class="comment">/* Initialise Platform deps */</span></div>
-<div class="line"><span class="lineno">  237</span>    err = <a class="code hl_function" href="../../df/d96/meshx__platform_8h.html#ad7788a59fd2329ff4d38c18c9cbe16cd">meshx_platform_init</a>();</div>
-<div class="line"><span class="lineno">  238</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Platform init failed&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  239</span> </div>
-<div class="line"><span class="lineno">  240</span>    <span class="comment">/* Initialize OS timer */</span></div>
-<div class="line"><span class="lineno">  241</span>    err = <a class="code hl_function" href="../../d8/d03/meshx__os__timer_8h.html#a2ae8e7e3e3019501c5a5dc68608f829a">meshx_os_timer_init</a>();</div>
-<div class="line"><span class="lineno">  242</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;OS Timer Init failed&quot;</span>, err);</div>
+<p class="definition">Definition at line <a class="el" href="../../d9/d05/meshx_8c_source.html#l00231">231</a> of file <a class="el" href="../../d9/d05/meshx_8c_source.html">meshx.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  232</span>{</div>
+<div class="line"><span class="lineno">  233</span>    <span class="comment">/* Check if the configuration is valid */</span></div>
+<div class="line"><span class="lineno">  234</span>    <span class="keywordflow">if</span>(!config)</div>
+<div class="line"><span class="lineno">  235</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<div class="line"><span class="lineno">  236</span> </div>
+<div class="line"><span class="lineno">  237</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  238</span> </div>
+<div class="line"><span class="lineno">  239</span>    <span class="comment">/* Copy the configuration to the global config structure */</span></div>
+<div class="line"><span class="lineno">  240</span>    memcpy(&amp;<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a74ef270513d2b83c6db30d9c2de6001d">g_config</a>, config, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="#aa50e2294627a29e154267e14fb3d8584">meshx_config_t</a>));</div>
+<div class="line"><span class="lineno">  241</span> </div>
+<div class="line"><span class="lineno">  242</span>    <a class="code hl_typedef" href="../../d7/dcb/meshx__log_8h.html#a7e75f09650fd33bcd03ea92acd58408f">meshx_logging_t</a> logging_cfg;</div>
 <div class="line"><span class="lineno">  243</span> </div>
-<div class="line"><span class="lineno">  244</span>    <span class="comment">/* Initialize MeshX NVS */</span></div>
-<div class="line"><span class="lineno">  245</span>    err = <a class="code hl_function" href="../../d3/d7d/meshx__nvs_8h.html#a0fbc3ba9cfa339d3e1b30d101d424685">meshx_nvs_init</a>();</div>
-<div class="line"><span class="lineno">  246</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;MeshX NVS Init failed&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  247</span> </div>
-<div class="line"><span class="lineno">  248</span>    <span class="comment">/* Initialize application tasks */</span></div>
-<div class="line"><span class="lineno">  249</span>    err = <a class="code hl_function" href="../../d9/d05/meshx_8c.html#ad0709b44ba612dc9bccad286fa9c8a85">meshx_tasks_init</a>(&amp;<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#af31ccf3df00a77efab6715c8eb050ebe">g_dev</a>);</div>
-<div class="line"><span class="lineno">  250</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Tasks initialization failed&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  251</span> </div>
-<div class="line"><span class="lineno">  252</span>    <span class="comment">/* Register application element callback */</span></div>
-<div class="line"><span class="lineno">  253</span>    err = <a class="code hl_function" href="../../db/d2f/meshx__api_8h.html#a99aec204c219f57b93f8a9e483b2cd1e">meshx_app_reg_element_callback</a>(<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a74ef270513d2b83c6db30d9c2de6001d">g_config</a>.app_element_cb);</div>
-<div class="line"><span class="lineno">  254</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Failed to register app element callback&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  255</span> </div>
-<div class="line"><span class="lineno">  256</span>    <span class="comment">/* Register application control callback */</span></div>
-<div class="line"><span class="lineno">  257</span>    err = <a class="code hl_function" href="../../db/d2f/meshx__api_8h.html#ae788eb4aed0ebe9513f85726a84a0c04">meshx_app_reg_system_events_callback</a>(<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a74ef270513d2b83c6db30d9c2de6001d">g_config</a>.app_ctrl_cb);</div>
-<div class="line"><span class="lineno">  258</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Failed to register app control callback&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  259</span> </div>
-<div class="line"><span class="lineno">  260</span>    <span class="comment">/* Initialize the Bluetooth Mesh Subsystem */</span></div>
-<div class="line"><span class="lineno">  261</span>    err = <a class="code hl_function" href="../../d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1">meshx_ble_mesh_init</a>(&amp;<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a74ef270513d2b83c6db30d9c2de6001d">g_config</a>);</div>
-<div class="line"><span class="lineno">  262</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Bluetooth mesh init failed&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  263</span> </div>
-<div class="line"><span class="lineno">  264</span>    <span class="comment">/* Print the MeshX banner */</span></div>
-<div class="line"><span class="lineno">  265</span>    <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#aab871af326d6c21d6210c588f4a85dd1">CONFIG_MESHX_LOG_PRINTF</a>(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_CYAN) <span class="stringliteral">&quot;%s&quot;</span> LOG_ANSI_COLOR_RESET, <a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a8d8608f53903cb8ea6495daafd61fdf3">meshX_banner</a>);</div>
-<div class="line"><span class="lineno">  266</span> </div>
-<div class="line"><span class="lineno">  267</span><span class="preprocessor">#if CONFIG_ENABLE_UNIT_TEST</span></div>
-<div class="line"><span class="lineno">  268</span>    <span class="comment">/* Register unit test command */</span></div>
-<div class="line"><span class="lineno">  269</span>    err = <a class="code hl_function" href="../../da/dd5/unit__test_8c.html#a0a94d2d1ac1c4f3f4744437b65cca426">register_ut_command</a>();</div>
-<div class="line"><span class="lineno">  270</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Failed to register unit test command&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  271</span> </div>
-<div class="line"><span class="lineno">  272</span>    <span class="comment">/* Initialize unit test console */</span></div>
-<div class="line"><span class="lineno">  273</span>    err = <a class="code hl_function" href="../../da/dd5/unit__test_8c.html#a3e1a1ae5e20371a64ddd11c70b046ccf">init_unit_test_console</a>();</div>
-<div class="line"><span class="lineno">  274</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Failed to initialize production console&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  275</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_ENABLE_UNIT_TEST */</span><span class="preprocessor"></span></div>
-<div class="line"><span class="lineno">  276</span> </div>
-<div class="line"><span class="lineno">  277</span>    <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  278</span>}</div>
+<div class="line"><span class="lineno">  244</span>    logging_cfg.<a class="code hl_variable" href="../../db/d0b/structmeshx__logging.html#a140b99328b305503577b5333d5504873">def_log_level</a> = config-&gt;meshx_log_level == <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a4d2cb7b27cc324414a98b0aaa88fd2cf">MESHX_LOG_VERBOSE</a> ?</div>
+<div class="line"><span class="lineno">  245</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a736ad74c6ead5d4e1c683216f0898781">CONFIG_MESHX_DEFAULT_LOG_LEVEL</a> : config-&gt;meshx_log_level;</div>
+<div class="line"><span class="lineno">  246</span> </div>
+<div class="line"><span class="lineno">  247</span>    err = <a class="code hl_function" href="../../d0/dc9/meshx__log_8c.html#a2943545097e48060e29c8be20f92677f">meshx_logging_init</a>(&amp;logging_cfg);</div>
+<div class="line"><span class="lineno">  248</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Logging init failed&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  249</span> </div>
+<div class="line"><span class="lineno">  250</span>    <span class="comment">/* Initialise Platform deps */</span></div>
+<div class="line"><span class="lineno">  251</span>    err = <a class="code hl_function" href="../../df/d96/meshx__platform_8h.html#ad7788a59fd2329ff4d38c18c9cbe16cd">meshx_platform_init</a>();</div>
+<div class="line"><span class="lineno">  252</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Platform init failed&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  253</span> </div>
+<div class="line"><span class="lineno">  254</span>    <span class="comment">/* Initialize OS timer */</span></div>
+<div class="line"><span class="lineno">  255</span>    err = <a class="code hl_function" href="../../d8/d03/meshx__os__timer_8h.html#a2ae8e7e3e3019501c5a5dc68608f829a">meshx_os_timer_init</a>();</div>
+<div class="line"><span class="lineno">  256</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;OS Timer Init failed&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  257</span> </div>
+<div class="line"><span class="lineno">  258</span>    <span class="comment">/* Initialize MeshX NVS */</span></div>
+<div class="line"><span class="lineno">  259</span>    err = <a class="code hl_function" href="../../d3/d7d/meshx__nvs_8h.html#a0fbc3ba9cfa339d3e1b30d101d424685">meshx_nvs_init</a>();</div>
+<div class="line"><span class="lineno">  260</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;MeshX NVS Init failed&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  261</span> </div>
+<div class="line"><span class="lineno">  262</span>    <span class="comment">/* Initialize application tasks */</span></div>
+<div class="line"><span class="lineno">  263</span>    err = <a class="code hl_function" href="../../d9/d05/meshx_8c.html#ad0709b44ba612dc9bccad286fa9c8a85">meshx_tasks_init</a>(&amp;<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#af31ccf3df00a77efab6715c8eb050ebe">g_dev</a>);</div>
+<div class="line"><span class="lineno">  264</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Tasks initialization failed&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  265</span> </div>
+<div class="line"><span class="lineno">  266</span>    <span class="comment">/* Register application element callback */</span></div>
+<div class="line"><span class="lineno">  267</span>    err = <a class="code hl_function" href="../../db/d2f/meshx__api_8h.html#a99aec204c219f57b93f8a9e483b2cd1e">meshx_app_reg_element_callback</a>(<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a74ef270513d2b83c6db30d9c2de6001d">g_config</a>.app_element_cb);</div>
+<div class="line"><span class="lineno">  268</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Failed to register app element callback&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  269</span> </div>
+<div class="line"><span class="lineno">  270</span>    <span class="comment">/* Register application control callback */</span></div>
+<div class="line"><span class="lineno">  271</span>    err = <a class="code hl_function" href="../../db/d2f/meshx__api_8h.html#ae788eb4aed0ebe9513f85726a84a0c04">meshx_app_reg_system_events_callback</a>(<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a74ef270513d2b83c6db30d9c2de6001d">g_config</a>.app_ctrl_cb);</div>
+<div class="line"><span class="lineno">  272</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Failed to register app control callback&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  273</span> </div>
+<div class="line"><span class="lineno">  274</span>    <span class="comment">/* Initialize the Bluetooth Mesh Subsystem */</span></div>
+<div class="line"><span class="lineno">  275</span>    err = <a class="code hl_function" href="../../d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1">meshx_ble_mesh_init</a>(&amp;<a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a74ef270513d2b83c6db30d9c2de6001d">g_config</a>);</div>
+<div class="line"><span class="lineno">  276</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Bluetooth mesh init failed&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  277</span> </div>
+<div class="line"><span class="lineno">  278</span>    <span class="comment">/* Print the MeshX banner */</span></div>
+<div class="line"><span class="lineno">  279</span>    <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#aab871af326d6c21d6210c588f4a85dd1">CONFIG_MESHX_LOG_PRINTF</a>(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_CYAN) <span class="stringliteral">&quot;%s&quot;</span> LOG_ANSI_COLOR_RESET, <a class="code hl_variable" href="../../d9/d05/meshx_8c.html#a8d8608f53903cb8ea6495daafd61fdf3">meshX_banner</a>);</div>
+<div class="line"><span class="lineno">  280</span> </div>
+<div class="line"><span class="lineno">  281</span><span class="preprocessor">#if CONFIG_ENABLE_UNIT_TEST</span></div>
+<div class="line"><span class="lineno">  282</span>    <span class="comment">/* Register unit test command */</span></div>
+<div class="line"><span class="lineno">  283</span>    err = <a class="code hl_function" href="../../da/dd5/unit__test_8c.html#a0a94d2d1ac1c4f3f4744437b65cca426">register_ut_command</a>();</div>
+<div class="line"><span class="lineno">  284</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Failed to register unit test command&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  285</span> </div>
+<div class="line"><span class="lineno">  286</span>    <span class="comment">/* Initialize unit test console */</span></div>
+<div class="line"><span class="lineno">  287</span>    err = <a class="code hl_function" href="../../da/dd5/unit__test_8c.html#a3e1a1ae5e20371a64ddd11c70b046ccf">init_unit_test_console</a>();</div>
+<div class="line"><span class="lineno">  288</span>    <a class="code hl_define" href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a>(<span class="stringliteral">&quot;Failed to initialize production console&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  289</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_ENABLE_UNIT_TEST */</span><span class="preprocessor"></span></div>
+<div class="line"><span class="lineno">  290</span> </div>
+<div class="line"><span class="lineno">  291</span>    <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  292</span>}</div>
 <div class="ttc" id="ameshx_8c_html_a74ef270513d2b83c6db30d9c2de6001d"><div class="ttname"><a href="../../d9/d05/meshx_8c.html#a74ef270513d2b83c6db30d9c2de6001d">g_config</a></div><div class="ttdeci">static meshx_config_t g_config</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d05/meshx_8c_source.html#l00057">meshx.c:57</a></div></div>
 <div class="ttc" id="ameshx_8c_html_a8d8608f53903cb8ea6495daafd61fdf3"><div class="ttname"><a href="../../d9/d05/meshx_8c.html#a8d8608f53903cb8ea6495daafd61fdf3">meshX_banner</a></div><div class="ttdeci">static const char meshX_banner[]</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d05/meshx_8c_source.html#l00034">meshx.c:34</a></div></div>
-<div class="ttc" id="ameshx_8c_html_ad0709b44ba612dc9bccad286fa9c8a85"><div class="ttname"><a href="../../d9/d05/meshx_8c.html#ad0709b44ba612dc9bccad286fa9c8a85">meshx_tasks_init</a></div><div class="ttdeci">static meshx_err_t meshx_tasks_init(dev_struct_t *pdev)</div><div class="ttdoc">Initializes application tasks.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d05/meshx_8c_source.html#l00137">meshx.c:137</a></div></div>
-<div class="ttc" id="ameshx_8c_html_ae488bc4a1d8eb698d2e2e60ec90bbad1"><div class="ttname"><a href="../../d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1">meshx_ble_mesh_init</a></div><div class="ttdeci">static meshx_err_t meshx_ble_mesh_init(meshx_config_t *config)</div><div class="ttdoc">Initializes the BLE Mesh subsystem.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d05/meshx_8c_source.html#l00180">meshx.c:180</a></div></div>
+<div class="ttc" id="ameshx_8c_html_ad0709b44ba612dc9bccad286fa9c8a85"><div class="ttname"><a href="../../d9/d05/meshx_8c.html#ad0709b44ba612dc9bccad286fa9c8a85">meshx_tasks_init</a></div><div class="ttdeci">static meshx_err_t meshx_tasks_init(dev_struct_t *pdev)</div><div class="ttdoc">Initializes application tasks.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d05/meshx_8c_source.html#l00151">meshx.c:151</a></div></div>
+<div class="ttc" id="ameshx_8c_html_ae488bc4a1d8eb698d2e2e60ec90bbad1"><div class="ttname"><a href="../../d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1">meshx_ble_mesh_init</a></div><div class="ttdeci">static meshx_err_t meshx_ble_mesh_init(meshx_config_t *config)</div><div class="ttdoc">Initializes the BLE Mesh subsystem.</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d05/meshx_8c_source.html#l00194">meshx.c:194</a></div></div>
 <div class="ttc" id="ameshx_8c_html_af31ccf3df00a77efab6715c8eb050ebe"><div class="ttname"><a href="../../d9/d05/meshx_8c.html#af31ccf3df00a77efab6715c8eb050ebe">g_dev</a></div><div class="ttdeci">static dev_struct_t g_dev</div><div class="ttdef"><b>Definition</b> <a href="../../d9/d05/meshx_8c_source.html#l00055">meshx.c:55</a></div></div>
 <div class="ttc" id="ameshx_8h_html_aa50e2294627a29e154267e14fb3d8584"><div class="ttname"><a href="#aa50e2294627a29e154267e14fb3d8584">meshx_config_t</a></div><div class="ttdeci">struct meshx_config meshx_config_t</div></div>
 <div class="ttc" id="ameshx_8h_html_aec5ace063c988d69d85b1f5de673b480"><div class="ttname"><a href="#aec5ace063c988d69d85b1f5de673b480">MESHX_ERR_PRINT_RET</a></div><div class="ttdeci">#define MESHX_ERR_PRINT_RET(_e_str, _err)</div><div class="ttdoc">Print and return error message if an error occurs.</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d18/meshx_8h_source.html#l00037">meshx.h:37</a></div></div>
@@ -579,225 +579,227 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="../../d3/d18/meshx_8h_ad4e8f334efad60b97f2d5335210b3a19_cgraph.png" border="0" usemap="#ad3/d18/meshx_8h_ad4e8f334efad60b97f2d5335210b3a19_cgraph" alt=""/></div>
 <map name="ad3/d18/meshx_8h_ad4e8f334efad60b97f2d5335210b3a19_cgraph" id="ad3/d18/meshx_8h_ad4e8f334efad60b97f2d5335210b3a19_cgraph">
-<area shape="rect" title="MeshX initialisation function." alt="" coords="5,504,89,529"/>
-<area shape="rect" href="../../da/dd5/unit__test_8c.html#a3e1a1ae5e20371a64ddd11c70b046ccf" title="Initialize the production console." alt="" coords="137,142,284,168"/>
-<area shape="poly" title=" " alt="" coords="47,503,53,452,67,377,93,292,112,250,134,211,151,191,171,175,174,179,155,195,139,214,117,252,98,294,72,378,58,453,52,503"/>
+<area shape="rect" title="MeshX initialisation function." alt="" coords="5,470,89,496"/>
+<area shape="rect" href="../../da/dd5/unit__test_8c.html#a3e1a1ae5e20371a64ddd11c70b046ccf" title="Initialize the production console." alt="" coords="137,137,284,162"/>
+<area shape="poly" title=" " alt="" coords="47,470,54,422,68,353,94,275,113,237,135,201,151,184,169,169,172,173,154,188,139,205,117,239,99,277,74,355,59,423,52,470"/>
 <area shape="rect" href="../../da/dd5/unit__test_8c.html#a0a94d2d1ac1c4f3f4744437b65cca426" title="Registers the unit test (ut) command with the ESP console." alt="" coords="346,64,492,89"/>
-<area shape="poly" title=" " alt="" coords="47,503,55,426,72,313,98,201,115,157,135,128,156,111,178,97,229,79,281,69,330,67,331,72,281,75,230,84,181,102,159,115,139,131,119,160,103,203,77,314,60,427,52,503"/>
+<area shape="poly" title=" " alt="" coords="47,470,56,398,73,293,99,190,116,150,135,123,156,106,179,93,229,75,281,67,330,65,330,71,281,72,230,80,181,98,159,110,139,126,120,152,104,192,78,294,61,398,52,470"/>
 <area shape="rect" href="../../dc/d93/meshx__api_8c.html#a99aec204c219f57b93f8a9e483b2cd1e" title="Registers the BLE Mesh application callback." alt="" coords="336,179,502,219"/>
-<area shape="poly" title=" " alt="" coords="62,501,381,227,384,231,65,505"/>
+<area shape="poly" title=" " alt="" coords="64,468,377,227,380,231,67,472"/>
 <area shape="rect" href="../../dc/d93/meshx__api_8c.html#ae788eb4aed0ebe9513f85726a84a0c04" title="Registers the BLE Mesh application control callback." alt="" coords="338,113,500,154"/>
-<area shape="poly" title=" " alt="" coords="52,502,84,439,134,360,182,298,222,251,267,210,331,165,340,159,343,164,333,169,270,214,226,255,186,301,139,363,89,442,57,504"/>
-<area shape="rect" href="../../d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="137,1013,284,1038"/>
-<area shape="poly" title=" " alt="" coords="55,529,203,997,198,999,50,530"/>
-<area shape="rect" href="../../d0/dc9/meshx__log_8c.html#a2943545097e48060e29c8be20f92677f" title="Initializes the MeshX logging system with the provided configuration." alt="" coords="145,1112,276,1137"/>
-<area shape="poly" title=" " alt="" coords="51,529,55,639,67,810,78,900,93,983,114,1052,125,1079,139,1099,140,1100,136,1103,135,1102,121,1081,109,1054,88,984,73,901,62,810,49,639,46,529"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#a0fbc3ba9cfa339d3e1b30d101d424685" title="MeshX NVS Initialisation." alt="" coords="155,529,266,554"/>
-<area shape="poly" title=" " alt="" coords="90,520,140,528,139,533,89,525"/>
-<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a2ae8e7e3e3019501c5a5dc68608f829a" title="Initialize the OS timer module." alt="" coords="349,472,489,497"/>
-<area shape="poly" title=" " alt="" coords="89,510,333,489,333,494,90,515"/>
-<area shape="rect" href="../../da/dd1/esp__platform_8c.html#ad7788a59fd2329ff4d38c18c9cbe16cd" title="Initializes the MeshX platform." alt="" coords="142,1161,279,1186"/>
-<area shape="poly" title=" " alt="" coords="51,529,53,647,64,833,75,931,91,1022,112,1097,124,1126,139,1148,140,1149,136,1153,135,1151,120,1129,107,1099,86,1023,70,932,59,833,48,647,46,529"/>
-<area shape="rect" href="../../d9/d05/meshx_8c.html#ad0709b44ba612dc9bccad286fa9c8a85" title="Initializes application tasks." alt="" coords="149,1062,272,1088"/>
-<area shape="poly" title=" " alt="" coords="51,530,56,631,70,787,81,869,96,945,115,1007,126,1031,139,1049,140,1050,136,1054,135,1053,122,1034,110,1009,91,946,76,870,65,788,51,631,46,530"/>
-<area shape="poly" title=" " alt="" coords="238,139,331,99,353,92,355,97,333,104,240,144"/>
+<area shape="poly" title=" " alt="" coords="53,468,85,411,135,340,183,284,223,242,269,205,331,165,341,159,344,163,333,169,272,210,227,246,187,287,139,343,90,413,57,471"/>
+<area shape="rect" href="../../d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="137,954,284,980"/>
+<area shape="poly" title=" " alt="" coords="55,496,203,939,197,941,50,497"/>
+<area shape="rect" href="../../d0/dc9/meshx__log_8c.html#a2943545097e48060e29c8be20f92677f" title="Initializes the MeshX logging system with the provided configuration." alt="" coords="145,1053,276,1078"/>
+<area shape="poly" title=" " alt="" coords="51,496,56,602,69,765,80,851,95,930,114,996,126,1021,139,1040,140,1041,136,1045,135,1043,121,1023,109,998,90,932,75,852,63,766,50,602,46,497"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#a0fbc3ba9cfa339d3e1b30d101d424685" title="MeshX NVS Initialisation." alt="" coords="155,496,266,521"/>
+<area shape="poly" title=" " alt="" coords="90,487,140,495,139,500,89,492"/>
+<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a2ae8e7e3e3019501c5a5dc68608f829a" title="Initialize the OS timer module." alt="" coords="349,438,489,464"/>
+<area shape="poly" title=" " alt="" coords="89,477,333,456,333,461,90,482"/>
+<area shape="rect" href="../../da/dd1/esp__platform_8c.html#ad7788a59fd2329ff4d38c18c9cbe16cd" title="Initializes the MeshX platform." alt="" coords="142,1102,279,1128"/>
+<area shape="poly" title=" " alt="" coords="51,496,54,609,66,788,77,882,92,969,113,1041,125,1068,139,1089,140,1090,136,1094,135,1093,120,1071,108,1042,87,970,71,883,60,788,49,609,46,496"/>
+<area shape="rect" href="../../d9/d05/meshx_8c.html#ad0709b44ba612dc9bccad286fa9c8a85" title="Initializes application tasks." alt="" coords="149,1004,272,1029"/>
+<area shape="poly" title=" " alt="" coords="51,496,57,593,71,742,83,820,98,891,116,951,139,991,140,992,136,995,134,994,111,953,92,893,78,821,66,742,52,593,46,496"/>
+<area shape="poly" title=" " alt="" coords="242,134,331,99,354,92,356,97,333,104,244,139"/>
 <area shape="rect" href="../../da/dd5/unit__test_8c.html#a07a836ad567a565fe2ff8648d168742d" title="Handles unit test commands by invoking the appropriate callback based on the module ID." alt="" coords="585,13,731,38"/>
 <area shape="poly" title=" " alt="" coords="483,60,579,40,580,45,484,65"/>
-<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="1047,474,1234,500"/>
-<area shape="poly" title=" " alt="" coords="502,189,629,183,777,182,848,187,911,196,964,210,1001,230,1023,256,1032,284,1033,312,1029,340,1025,369,1025,397,1031,425,1049,453,1062,464,1058,468,1045,457,1026,427,1019,398,1020,368,1024,340,1028,312,1027,285,1018,259,997,234,962,215,910,201,847,192,776,188,629,188,502,195"/>
+<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="1047,472,1234,497"/>
+<area shape="poly" title=" " alt="" coords="502,186,629,175,776,170,847,172,911,179,963,192,1001,212,1024,239,1034,268,1034,298,1030,329,1025,360,1024,390,1030,421,1049,451,1062,462,1058,466,1045,454,1025,423,1018,391,1020,359,1025,328,1029,298,1029,269,1020,242,997,216,962,197,910,184,847,178,776,175,629,181,502,192"/>
 <area shape="rect" href="../../d9/d46/meshx__cwww__server_8c.html#a9929dada86201ea717d859bfd66c9ffd" title="CW&#45;WW server model event handler." alt="" coords="577,113,739,154"/>
 <area shape="poly" title=" " alt="" coords="495,176,566,156,567,161,497,181"/>
-<area shape="rect" href="../../d3/df5/meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="1928,617,2061,642"/>
-<area shape="poly" title=" " alt="" coords="1235,497,1429,524,1656,560,1916,610,1915,616,1656,566,1428,530,1234,502"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#a091a0be186edb6d1dc740b838cf38037" title="Store the context of a specific element to NVS." alt="" coords="810,122,999,148"/>
-<area shape="poly" title=" " alt="" coords="739,131,794,132,794,137,739,137"/>
+<area shape="rect" href="../../d3/df5/meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="1928,613,2061,638"/>
+<area shape="poly" title=" " alt="" coords="1235,489,1447,514,1709,561,1921,606,1920,612,1708,566,1446,519,1235,494"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#a091a0be186edb6d1dc740b838cf38037" title="Store the context of a specific element to NVS." alt="" coords="810,852,999,877"/>
+<area shape="poly" title=" " alt="" coords="680,153,724,210,747,248,764,288,775,341,778,410,774,572,773,654,777,729,789,792,799,817,812,837,814,840,810,843,808,841,794,820,784,794,772,730,768,654,769,572,772,410,769,342,759,289,742,250,720,213,676,156"/>
 <area shape="rect" href="../../dc/d93/meshx__api_8c.html#a5b8d1eddceb8ab76e5fdc7fea5545496" title="Sends a message to the BLE Mesh application." alt="" coords="818,13,990,38"/>
 <area shape="poly" title=" " alt="" coords="705,110,858,43,860,48,707,115"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#ab9a39208cc2b067b0b5df0a85d7b4b03" title="Set a value in the NVS." alt="" coords="1084,988,1197,1013"/>
-<area shape="poly" title=" " alt="" coords="921,146,963,195,985,228,1002,263,1010,295,1015,333,1018,421,1008,631,1004,737,1007,834,1012,878,1021,916,1033,949,1049,975,1072,991,1068,995,1045,978,1028,951,1016,918,1007,879,1002,835,999,737,1003,630,1012,421,1010,333,1005,296,996,265,980,230,958,198,917,150"/>
-<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a63e6c1a15d1a30d41dc704c131a27062" title="Restart a timer." alt="" coords="1284,857,1445,882"/>
-<area shape="poly" title=" " alt="" coords="1197,991,1216,984,1233,974,1249,955,1256,935,1263,914,1281,893,1288,888,1291,892,1284,897,1268,916,1261,937,1254,958,1236,978,1218,989,1198,996"/>
-<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="1704,806,1876,832"/>
-<area shape="poly" title=" " alt="" coords="1445,866,1546,860,1656,848,1727,834,1728,839,1656,854,1546,866,1445,871"/>
-<area shape="poly" title=" " alt="" coords="1804,804,1967,651,1970,655,1807,808"/>
-<area shape="rect" href="../../d0/d77/meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue Back." alt="" coords="1924,806,2065,832"/>
-<area shape="poly" title=" " alt="" coords="1876,816,1909,816,1909,822,1876,822"/>
-<area shape="rect" href="../../d3/df5/meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="1936,1254,2053,1280"/>
-<area shape="poly" title=" " alt="" coords="1800,831,1983,1239,1979,1241,1795,834"/>
-<area shape="rect" href="../../d3/df5/meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="2113,1254,2290,1280"/>
-<area shape="poly" title=" " alt="" coords="2054,1264,2097,1264,2097,1270,2054,1270"/>
-<area shape="poly" title=" " alt="" coords="935,37,1061,103,1150,155,1251,218,1357,291,1464,374,1566,464,1658,561,1701,621,1736,685,1782,790,1777,793,1732,687,1697,624,1654,565,1562,468,1460,378,1354,296,1248,223,1148,160,1058,108,932,42"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#ab9a39208cc2b067b0b5df0a85d7b4b03" title="Set a value in the NVS." alt="" coords="1084,941,1197,966"/>
+<area shape="poly" title=" " alt="" coords="942,875,1091,932,1089,937,940,880"/>
+<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a63e6c1a15d1a30d41dc704c131a27062" title="Restart a timer." alt="" coords="1284,918,1445,944"/>
+<area shape="poly" title=" " alt="" coords="1197,945,1269,938,1269,943,1198,951"/>
+<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="1704,802,1876,828"/>
+<area shape="poly" title=" " alt="" coords="1427,915,1534,890,1655,858,1737,831,1739,836,1657,863,1536,895,1429,920"/>
+<area shape="poly" title=" " alt="" coords="1804,800,1967,647,1970,651,1807,804"/>
+<area shape="rect" href="../../d0/d77/meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue Back." alt="" coords="1924,802,2065,828"/>
+<area shape="poly" title=" " alt="" coords="1876,812,1909,812,1909,818,1876,818"/>
+<area shape="rect" href="../../d3/df5/meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="1936,1262,2053,1288"/>
+<area shape="poly" title=" " alt="" coords="1800,827,1984,1247,1979,1249,1795,829"/>
+<area shape="rect" href="../../d3/df5/meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="2113,1262,2290,1288"/>
+<area shape="poly" title=" " alt="" coords="2054,1272,2097,1272,2097,1278,2054,1278"/>
+<area shape="poly" title=" " alt="" coords="934,37,1059,103,1149,155,1249,218,1355,291,1462,373,1565,462,1658,559,1701,618,1737,681,1764,740,1782,787,1777,788,1759,742,1732,683,1697,621,1654,562,1561,466,1459,377,1352,295,1246,222,1146,160,1057,108,932,41"/>
 <area shape="rect" href="../../dc/d93/meshx__api_8c.html#ac37c1c5b9f1e9cdaa510bf886d897e2d" title="Prepares a message to be sent to the BLE Mesh application." alt="" coords="1070,5,1211,46"/>
 <area shape="poly" title=" " alt="" coords="991,23,1055,23,1055,28,991,28"/>
-<area shape="poly" title=" " alt="" coords="494,110,554,99,655,86,786,74,852,72,913,76,964,87,984,96,1001,108,1020,128,1032,148,1040,169,1044,190,1041,233,1032,277,1022,321,1017,365,1019,387,1024,409,1034,431,1049,453,1060,464,1057,468,1045,457,1029,434,1019,411,1013,388,1012,365,1016,320,1027,276,1036,233,1039,191,1035,170,1028,151,1015,131,997,112,982,101,962,92,912,82,852,78,786,79,655,91,555,104,495,115"/>
+<area shape="poly" title=" " alt="" coords="487,110,601,85,670,77,742,74,814,80,883,97,916,110,947,127,975,148,1001,173,1024,209,1033,244,1032,279,1026,314,1021,348,1020,382,1028,416,1049,451,1061,462,1058,465,1045,454,1023,418,1014,382,1015,347,1021,313,1026,279,1027,245,1019,211,997,177,972,152,944,132,914,115,882,102,813,85,741,80,670,82,602,90,488,115"/>
 <area shape="poly" title=" " alt="" coords="500,131,562,131,562,136,500,136"/>
-<area shape="rect" href="../../d9/d05/meshx_8c.html#acbc9147d880e04feca27a7fa57a45945" title="Restore the device state from the NVS." alt="" coords="352,1252,486,1277"/>
-<area shape="poly" title=" " alt="" coords="271,1037,286,1048,301,1066,309,1085,314,1121,317,1157,323,1176,334,1196,357,1221,383,1241,379,1245,353,1225,330,1199,318,1178,312,1158,309,1121,304,1086,296,1069,282,1052,268,1041"/>
-<area shape="rect" href="../../d9/d05/meshx_8c.html#a9a6dcac8b5368ca6d77be9caf99cddaa" title="Initializes BLE Mesh elements." alt="" coords="351,742,487,768"/>
-<area shape="poly" title=" " alt="" coords="220,1011,397,778,401,782,224,1014"/>
-<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#a69e4bb9282a6aad8faa9ee42c968541b" title="Initialize provisioning parameters." alt="" coords="362,1013,477,1038"/>
-<area shape="poly" title=" " alt="" coords="284,1023,346,1023,346,1028,284,1028"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#afb1dfab0e0872cf301f64153754e2a15" title="Initializes the BLE Mesh stack with the given provisioning parameters." alt="" coords="332,1078,506,1104"/>
-<area shape="poly" title=" " alt="" coords="255,1037,362,1070,360,1075,253,1042"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a63a879267392250798cb2ee7caabf1a9" title="Initializes the Bluetooth subsystem of the MeshX platform." alt="" coords="342,1160,497,1185"/>
-<area shape="poly" title=" " alt="" coords="266,1037,286,1048,302,1064,311,1080,320,1097,334,1114,381,1149,377,1153,330,1118,315,1100,307,1083,298,1067,282,1052,264,1041"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#ae36588f5b4ae5e5ac771e1af86a71e5a" title="Get a value from the NVS." alt="" coords="848,1305,960,1330"/>
-<area shape="poly" title=" " alt="" coords="484,1275,555,1287,703,1303,833,1312,832,1317,703,1308,554,1292,483,1280"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#ab4e5c250438e810358991fbe0e6cd277" title="Open the NVS with a timeout." alt="" coords="597,1252,719,1277"/>
-<area shape="poly" title=" " alt="" coords="487,1262,581,1262,581,1267,487,1267"/>
-<area shape="rect" href="../../dc/d28/esp__nvs_8c.html#a01998c5a615417f7fd4c8e3e6aa06a61" title="Read blob value for given key from non&#45;volatile storage." alt="" coords="1067,1305,1214,1330"/>
-<area shape="poly" title=" " alt="" coords="961,1315,1052,1315,1052,1320,961,1320"/>
-<area shape="poly" title=" " alt="" coords="720,1275,833,1300,832,1305,719,1280"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#ae32d182aaba6ab32994ae22debaa1d6f" title="Erase the NVS and set the product ID." alt="" coords="813,1206,996,1232"/>
-<area shape="poly" title=" " alt="" coords="719,1251,815,1233,816,1238,720,1256"/>
-<area shape="rect" href="../../dc/d28/esp__nvs_8c.html#a15b34ee0dff883205fa21a0594fc0c7c" title="Open non&#45;volatile storage with a given namespace from the default partition." alt="" coords="829,1256,980,1281"/>
-<area shape="poly" title=" " alt="" coords="720,1263,814,1264,814,1270,720,1268"/>
-<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a59d86249c9c97227b869567af3b2cade" title="Create a timer." alt="" coords="825,1157,984,1182"/>
-<area shape="poly" title=" " alt="" coords="719,1253,760,1238,775,1227,784,1215,793,1203,808,1191,818,1186,821,1191,811,1196,797,1207,788,1219,778,1231,763,1243,721,1258"/>
-<area shape="poly" title=" " alt="" coords="983,1203,997,1193,1013,1173,1020,1152,1020,1110,1021,1066,1029,1044,1045,1022,1068,1008,1071,1012,1049,1026,1033,1047,1026,1067,1026,1110,1025,1153,1017,1175,1001,1197,986,1208"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#adedf15ddc47ab70982fa07092112ffd1" title="Erase all key&#45;value pairs stored in the NVS." alt="" coords="1078,1454,1204,1480"/>
-<area shape="poly" title=" " alt="" coords="983,1230,1001,1241,1021,1265,1030,1288,1037,1313,1049,1342,1086,1396,1121,1441,1117,1444,1082,1399,1045,1344,1032,1315,1025,1290,1017,1267,997,1245,980,1235"/>
-<area shape="rect" href="../../dc/d28/esp__nvs_8c.html#ac07e3fa684f8bd4f45c595c237b98504" title="Erase all key&#45;value pairs in the given namespace." alt="" coords="1287,1454,1442,1480"/>
-<area shape="poly" title=" " alt="" coords="1204,1464,1272,1464,1272,1470,1204,1470"/>
-<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a77adef39c1cdb9692b86241af2ca75ae" title=" " alt="" coords="1495,1189,1656,1214"/>
-<area shape="poly" title=" " alt="" coords="984,1171,1479,1194,1479,1200,984,1176"/>
-<area shape="rect" href="../../d5/d02/meshx__timer_8c.html#afdde188e70278d7d1b6ee57e72a39ed8" title="Creates a new RTOS timer." alt="" coords="1057,1240,1224,1265"/>
-<area shape="poly" title=" " alt="" coords="968,1181,1000,1191,1024,1204,1048,1218,1082,1231,1080,1236,1046,1223,1022,1209,998,1196,966,1186"/>
-<area shape="poly" title=" " alt="" coords="1606,1186,1631,1171,1654,1151,1682,1113,1706,1072,1743,986,1767,906,1781,846,1786,847,1773,908,1748,988,1710,1074,1686,1116,1658,1154,1635,1175,1609,1191"/>
-<area shape="rect" href="../../d5/d02/meshx__timer_8c.html#a0238244bfe5230d1ce6fc3614bab8318" title="Callback function for FreeRTOS timer events." alt="" coords="1312,1240,1417,1265"/>
-<area shape="poly" title=" " alt="" coords="1225,1250,1296,1250,1296,1255,1225,1255"/>
-<area shape="poly" title=" " alt="" coords="1417,1237,1503,1216,1505,1221,1418,1242"/>
-<area shape="rect" href="../../d2/d6b/composition_8c.html#a341817f6f87ef8d6f5673f1d13b8f7ca" title="Returns the root models for BLE Mesh elements." alt="" coords="587,578,729,604"/>
-<area shape="poly" title=" " alt="" coords="427,740,476,679,512,644,553,614,572,605,574,610,556,619,515,648,480,683,432,743"/>
-<area shape="rect" href="../../d2/d6b/composition_8c.html#ac59f6ae1acf72f1cf67bbff1df68e1a0" title="Returns the count of the root models." alt="" coords="587,628,729,669"/>
-<area shape="poly" title=" " alt="" coords="440,739,490,709,553,678,572,670,574,675,555,683,493,714,443,744"/>
-<area shape="rect" href="../../d2/d6b/composition_8c.html#af14ef1213779043f3932d29054340c33" title="Creates the BLE Mesh element composition." alt="" coords="580,857,736,898"/>
-<area shape="poly" title=" " alt="" coords="439,766,490,803,556,842,571,849,569,854,553,847,487,808,436,771"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a36e3c206ee82075d0b1ec6729d186f71" title="Creates a platform&#45;specific BLE Mesh composition object." alt="" coords="554,742,762,768"/>
-<area shape="poly" title=" " alt="" coords="488,752,538,752,538,758,488,758"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a2bdab205d68a408e7ec03e58b2fa8a0b" title="Adds an element to the BLE Mesh composition." alt="" coords="574,792,742,833"/>
-<area shape="poly" title=" " alt="" coords="476,766,559,786,558,791,475,771"/>
-<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a9136f58e68ca58a169038fb9e5fd5c66" title="Initializes a platform&#45;specific BLE Mesh composition." alt="" coords="564,693,752,718"/>
-<area shape="poly" title=" " alt="" coords="484,739,577,720,578,725,486,744"/>
-<area shape="rect" href="../../dd/d79/meshx__config__server_8c.html#a7182f93c9c1882d9523bc873a5a863e1" title="Initialize the meshxuction configuration server." alt="" coords="821,826,988,852"/>
-<area shape="poly" title=" " alt="" coords="736,863,805,852,806,857,737,868"/>
-<area shape="poly" title=" " alt="" coords="981,823,997,813,1029,780,1056,742,1079,700,1096,658,1121,577,1133,515,1138,516,1126,578,1101,660,1083,703,1061,745,1034,783,1001,817,984,828"/>
-<area shape="rect" href="../../dd/d79/meshx__config__server_8c.html#a1acaabaffb5bb2a637218fb0804d7b5f" title="Handles the configuration server events from the control task." alt="" coords="1501,799,1650,839"/>
-<area shape="poly" title=" " alt="" coords="989,834,1486,819,1486,824,989,839"/>
-<area shape="rect" href="../../dc/d28/esp__cfg__srv__model_8c.html#ac097c3a50a4cb7b7c0167eafb1d011f5" title="Initializes the MeshX platform configuration server." alt="" coords="1052,786,1229,812"/>
-<area shape="poly" title=" " alt="" coords="984,823,1046,812,1046,818,985,828"/>
-<area shape="poly" title=" " alt="" coords="1650,816,1688,816,1688,822,1650,822"/>
-<area shape="rect" href="../../dc/d28/esp__cfg__srv__model_8c.html#ad87cac3c9cc18a1c278725e8d4b5e80a" title="BLE Mesh Configuration Server callback function." alt="" coords="1283,741,1446,782"/>
-<area shape="poly" title=" " alt="" coords="1221,783,1267,775,1268,780,1222,788"/>
-<area shape="poly" title=" " alt="" coords="1446,763,1547,771,1656,784,1726,799,1725,804,1656,790,1546,776,1446,768"/>
-<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#a35f1927392b1941e9c0389f49fa24f1f" title="Initializes the fresh boot timer." alt="" coords="586,1088,730,1129"/>
-<area shape="poly" title=" " alt="" coords="455,1037,555,1074,574,1080,573,1085,553,1079,453,1042"/>
-<area shape="rect" href="../../d9/d31/esp__prov__srv__model_8c.html#a158407471e9cdd7cb6ba7716cd6a8822" title="Initialize provisioning parameters." alt="" coords="586,1038,730,1064"/>
-<area shape="poly" title=" " alt="" coords="477,1029,571,1039,570,1044,477,1034"/>
-<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#acb04eaca0a71bc777d56e2d49162ad58" title="Register the BLE Mesh provisioning callback for MeshX Layer Internal." alt="" coords="577,923,739,963"/>
-<area shape="poly" title=" " alt="" coords="458,1010,582,966,584,971,460,1015"/>
-<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#afe9a38e591c761b4dd9284872d5b7913" title="Register the BLE Mesh provisioning callback." alt="" coords="834,876,975,917"/>
-<area shape="poly" title=" " alt="" coords="477,1025,538,1023,611,1016,688,1000,760,973,775,962,784,951,793,939,808,926,818,921,821,925,811,931,797,942,788,954,779,966,763,977,689,1005,612,1021,539,1029,477,1030"/>
-<area shape="poly" title=" " alt="" coords="731,1124,836,1150,834,1155,730,1129"/>
-<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#ad47b41b2c2dc13db173dce4538907a61" title="Callback function for the boot timer." alt="" coords="1503,1100,1648,1141"/>
-<area shape="poly" title=" " alt="" coords="731,1107,1488,1117,1488,1122,731,1112"/>
-<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a00755275246a6415bf159ff805ab731c" title="Start a timer." alt="" coords="830,777,979,802"/>
-<area shape="poly" title=" " alt="" coords="730,1095,746,1086,760,1075,781,1042,788,1010,787,977,782,945,777,912,776,879,785,845,808,812,815,806,818,810,812,815,790,847,782,879,782,911,787,944,793,977,794,1010,785,1044,764,1078,749,1091,732,1099"/>
-<area shape="poly" title=" " alt="" coords="1598,1098,1654,1039,1691,987,1724,933,1773,844,1778,847,1729,936,1695,990,1658,1042,1602,1101"/>
-<area shape="poly" title=" " alt="" coords="958,774,1084,748,1167,736,1259,727,1357,722,1458,724,1559,735,1657,756,1707,775,1752,796,1750,801,1705,780,1655,762,1558,740,1458,729,1357,727,1259,732,1168,741,1085,754,959,779"/>
-<area shape="rect" href="../../d9/d31/esp__prov__srv__model_8c.html#a5343cdd5814d333b18c748e6cdcbc439" title="Callback function for BLE Mesh provisioning events." alt="" coords="826,1056,982,1081"/>
-<area shape="poly" title=" " alt="" coords="730,1053,811,1059,811,1064,730,1059"/>
-<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#aca01220ebad971e14ed4fb6650153c51" title="Notify the model event to the application." alt="" coords="1498,988,1652,1029"/>
-<area shape="poly" title=" " alt="" coords="983,1079,1078,1090,1194,1096,1321,1092,1384,1085,1446,1072,1490,1056,1530,1035,1533,1040,1493,1061,1447,1078,1385,1090,1321,1097,1194,1101,1077,1095,982,1084"/>
-<area shape="poly" title=" " alt="" coords="1603,985,1654,944,1763,841,1767,845,1658,948,1606,990"/>
-<area shape="poly" title=" " alt="" coords="738,923,760,908,774,891,782,874,787,840,790,804,796,784,807,763,841,719,878,678,960,605,1039,546,1102,506,1105,510,1042,551,963,609,882,682,845,723,812,766,801,786,795,805,792,840,787,875,778,893,763,912,741,928"/>
-<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#aac026cf4837ec52fd5cb35967ce4ad3f" title="Handles provisioning control task events." alt="" coords="836,991,973,1031"/>
-<area shape="poly" title=" " alt="" coords="735,961,821,985,820,991,734,967"/>
-<area shape="poly" title=" " alt="" coords="973,1005,1069,1001,1069,1006,973,1011"/>
-<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#a90d4cf320c64e69007ffa9ccbb224100" title="Handle node reset event." alt="" coords="1053,1037,1228,1062"/>
-<area shape="poly" title=" " alt="" coords="974,1020,1043,1031,1042,1036,973,1025"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#a6dc2339887b4d2cb0faa01d799838cd1" title="Remove the context of a specific element from NVS." alt="" coords="1282,972,1447,1013"/>
-<area shape="poly" title=" " alt="" coords="1193,1034,1267,1015,1268,1020,1195,1039"/>
-<area shape="rect" href="../../da/dd1/esp__platform_8c.html#ac9292fafb9df0803c55a8700fbd9f34d" title="Resets the MeshX platform. This function performs a system reset, restarting the platform." alt="" coords="1290,1037,1439,1062"/>
-<area shape="poly" title=" " alt="" coords="1229,1047,1274,1047,1274,1052,1229,1052"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#aa14948d7d45d83f3b6d9ca765a17cc58" title="Remove a key&#45;value pair from the NVS." alt="" coords="1507,1421,1644,1446"/>
-<area shape="poly" title=" " alt="" coords="1436,1011,1449,1023,1467,1048,1478,1072,1484,1095,1486,1119,1487,1168,1490,1195,1497,1226,1532,1326,1565,1405,1560,1407,1527,1327,1492,1228,1485,1196,1481,1168,1480,1119,1479,1096,1473,1074,1463,1051,1445,1026,1432,1015"/>
-<area shape="rect" href="../../dc/d28/esp__nvs_8c.html#ac4731c0a5821db05dfc78f395caf73dd" title="Remove a key&#45;value pair from the non&#45;volatile storage with a given key and namespace." alt="" coords="1708,1421,1873,1446"/>
-<area shape="poly" title=" " alt="" coords="1644,1431,1692,1431,1692,1436,1644,1436"/>
-<area shape="poly" title=" " alt="" coords="974,878,997,862,1009,844,1025,809,1062,710,1128,514,1133,515,1067,712,1030,811,1014,847,1001,866,977,882"/>
-<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#a4da462f934af3855a63a15b2b5b9561d" title="Control task handler for the provisioning server." alt="" coords="1283,907,1446,947"/>
-<area shape="poly" title=" " alt="" coords="976,898,1268,918,1267,923,975,904"/>
-<area shape="poly" title=" " alt="" coords="1446,913,1546,895,1655,868,1745,836,1746,841,1657,874,1548,900,1447,918"/>
-<area shape="rect" href="../../d9/d31/esp__prov__srv__model_8c.html#abae1983bb7292ae3f77ebeb5276c2344" title="Get the provisioning parameters." alt="" coords="586,1153,730,1178"/>
-<area shape="poly" title=" " alt="" coords="455,1102,555,1138,583,1146,582,1151,554,1143,453,1107"/>
-<area shape="rect" href="../../d9/db9/ble__mesh__plat__init_8h.html#a2bae8dcbee489037789f228234a3072d" title="Initialize the Bluetooth stack for BLE Mesh." alt="" coords="609,1202,707,1228"/>
-<area shape="poly" title=" " alt="" coords="496,1183,594,1201,593,1206,495,1188"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#af877bf8456b6217ae4cd642f29e85be6" title="Callback handler for MeshX NVS unit test command." alt="" coords="347,1421,491,1462"/>
-<area shape="poly" title=" " alt="" coords="216,555,335,1289,364,1353,397,1407,392,1410,359,1355,329,1290,211,556"/>
-<area shape="rect" href="../../da/dd5/unit__test_8c.html#a763886d5c865bfc15d5693604c5f5923" title="Register a unit test for a specific module." alt="" coords="597,529,719,554"/>
-<area shape="poly" title=" " alt="" coords="266,539,582,539,582,544,266,544"/>
-<area shape="poly" title=" " alt="" coords="492,1442,554,1444,658,1449,703,1449,761,1444,886,1430,953,1414,979,1404,997,1390,1014,1368,1026,1346,1033,1323,1035,1301,1031,1255,1021,1210,1010,1163,1006,1117,1009,1093,1016,1070,1027,1046,1045,1022,1069,1006,1072,1011,1049,1026,1032,1049,1021,1072,1014,1094,1012,1117,1016,1162,1026,1208,1037,1254,1041,1301,1038,1324,1031,1348,1019,1371,1001,1394,982,1408,955,1419,887,1435,762,1450,704,1454,658,1454,554,1450,492,1448"/>
-<area shape="poly" title=" " alt="" coords="492,1441,552,1439,621,1431,693,1415,760,1389,775,1378,784,1365,793,1352,808,1339,833,1328,835,1333,811,1344,797,1356,788,1368,779,1381,763,1393,694,1420,622,1436,552,1444,492,1447"/>
-<area shape="poly" title=" " alt="" coords="446,1419,553,1338,625,1285,628,1289,556,1342,449,1423"/>
-<area shape="poly" title=" " alt="" coords="441,1461,490,1504,521,1525,555,1541,620,1560,676,1574,727,1581,775,1582,823,1578,875,1570,998,1540,1029,1530,1058,1517,1108,1487,1110,1492,1060,1522,1031,1535,1000,1546,876,1575,824,1584,775,1587,727,1586,675,1579,619,1566,553,1545,518,1530,486,1508,438,1465"/>
-<area shape="poly" title=" " alt="" coords="434,1461,454,1491,481,1526,515,1560,556,1587,604,1608,646,1621,685,1627,723,1628,802,1621,903,1616,1142,1616,1203,1611,1264,1598,1323,1578,1379,1554,1475,1500,1544,1454,1547,1458,1478,1504,1381,1558,1325,1583,1265,1603,1204,1617,1142,1622,903,1622,803,1627,723,1633,685,1632,645,1626,602,1613,553,1592,512,1564,477,1530,449,1494,430,1464"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#a331ae59bfd5632726157f612d8b57b00" title="Close the NVS handle." alt="" coords="595,1353,721,1378"/>
-<area shape="poly" title=" " alt="" coords="483,1418,554,1395,598,1381,599,1386,555,1400,484,1423"/>
-<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#adbf5f3a6e63cae605581b0f23b21345c" title="Commit changes to the NVS." alt="" coords="589,1505,727,1530"/>
-<area shape="poly" title=" " alt="" coords="484,1460,555,1483,599,1497,598,1502,554,1488,483,1465"/>
-<area shape="rect" href="../../dc/d28/esp__nvs_8c.html#ad5a8b76fa8a5b7105ee6cac1edb47ec3" title="Close the non&#45;volatile storage handle." alt="" coords="828,1354,981,1380"/>
-<area shape="poly" title=" " alt="" coords="721,1363,812,1364,812,1369,721,1369"/>
-<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a934420ed4dad831b215afe128d2cbcd6" title="Delete a timer." alt="" coords="825,941,984,966"/>
-<area shape="poly" title=" " alt="" coords="687,1350,726,1325,744,1308,759,1288,778,1246,784,1205,781,1167,775,1129,770,1092,770,1054,781,1016,808,977,811,974,815,978,812,981,786,1018,776,1055,775,1091,780,1128,787,1166,789,1205,783,1247,764,1291,748,1312,729,1329,690,1354"/>
-<area shape="rect" href="../../d5/d02/meshx__timer_8c.html#a6eb1e5296678e029069b59a546c6fecc" title="Deletes the RTOS timer." alt="" coords="1058,938,1224,964"/>
-<area shape="poly" title=" " alt="" coords="984,950,1042,949,1042,955,984,955"/>
-<area shape="rect" href="../../dc/d28/esp__nvs_8c.html#a5dd0ef1876320dd92b9c102574e08435" title="Commit changes to the non&#45;volatile storage." alt="" coords="822,1505,987,1530"/>
-<area shape="poly" title=" " alt="" coords="727,1515,806,1515,806,1520,727,1520"/>
-<area shape="rect" href="../../dc/d28/esp__nvs_8c.html#a486367a843345efbb5edb7267a706eb3" title="Write a blob value to the non&#45;volatile storage with a given key and namespace." alt="" coords="829,1456,980,1481"/>
-<area shape="poly" title=" " alt="" coords="725,1502,821,1482,822,1487,726,1507"/>
-<area shape="poly" title=" " alt="" coords="429,469,479,415,514,382,553,354,620,316,675,292,733,276,809,262,864,248,910,237,932,235,954,238,976,247,1001,262,1021,284,1030,307,1032,331,1029,356,1027,381,1027,405,1033,429,1049,453,1062,464,1059,468,1045,457,1028,432,1022,406,1021,380,1024,355,1026,331,1025,308,1016,287,997,266,974,251,952,243,932,240,911,242,866,254,810,267,735,281,677,297,622,320,556,359,517,387,482,418,433,473"/>
-<area shape="poly" title=" " alt="" coords="476,495,587,522,586,527,475,500"/>
-<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a11716d0afd56fcadf26d731a771292a2" title=" " alt="" coords="577,368,739,409"/>
-<area shape="poly" title=" " alt="" coords="452,469,590,413,592,418,454,473"/>
-<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a1722013fe588021c8f81ee4532b0b089" title="Callback handler for OS Timer unit test command." alt="" coords="586,464,730,505"/>
-<area shape="poly" title=" " alt="" coords="489,482,570,482,570,487,489,487"/>
-<area shape="rect" href="../../d5/d02/meshx__timer_8c.html#a7d37c7f58bdbb342a0885b20f73e361c" title="Changes the period of the RTOS timer." alt="" coords="818,425,991,466"/>
-<area shape="poly" title=" " alt="" coords="740,405,803,419,802,425,739,410"/>
-<area shape="rect" href="../../d5/d02/meshx__timer_8c.html#aa50a77c352028677b805d5dae291677c" title="Resets the RTOS timer." alt="" coords="824,277,984,302"/>
-<area shape="poly" title=" " alt="" coords="695,365,748,338,809,311,828,305,830,310,811,316,750,342,697,370"/>
-<area shape="rect" href="../../d5/d02/meshx__timer_8c.html#a65622b75bf8b72d3a3bbc87ee4c54d69" title="Starts the RTOS timer." alt="" coords="826,326,983,352"/>
-<area shape="poly" title=" " alt="" coords="739,369,821,353,822,358,740,375"/>
-<area shape="rect" href="../../d5/d02/meshx__timer_8c.html#a00fe9ff387444a7f806d27f1d671d4fb" title="Stops the RTOS timer." alt="" coords="826,376,982,401"/>
-<area shape="poly" title=" " alt="" coords="740,386,810,386,810,391,740,391"/>
-<area shape="poly" title=" " alt="" coords="732,494,749,503,764,514,780,537,787,559,787,603,788,646,795,666,812,686,837,708,862,724,911,743,960,750,1009,748,1060,744,1114,743,1172,750,1235,771,1294,806,1340,844,1337,848,1291,811,1233,776,1171,755,1113,748,1060,749,1009,753,960,755,910,748,860,729,834,712,808,690,791,669,783,647,782,603,782,560,775,539,760,518,746,507,729,499"/>
-<area shape="poly" title=" " alt="" coords="732,492,749,501,764,515,777,537,787,565,797,633,799,713,796,800,791,969,796,1040,803,1069,812,1092,836,1123,866,1147,863,1151,832,1127,807,1095,798,1070,791,1041,785,970,791,800,794,713,792,633,782,566,772,539,760,518,746,506,729,497"/>
-<area shape="poly" title=" " alt="" coords="732,493,749,502,764,515,784,546,793,576,793,607,789,637,785,667,785,696,792,726,812,756,824,767,821,771,808,759,787,728,779,697,779,666,783,636,787,607,787,577,779,548,760,518,746,507,729,498"/>
-<area shape="poly" title=" " alt="" coords="732,493,749,502,764,515,783,541,795,568,802,595,805,621,799,673,787,724,775,774,771,825,773,850,780,875,793,901,812,927,815,930,811,933,808,930,788,904,775,877,768,851,765,825,770,774,782,723,794,672,799,621,797,596,790,570,778,544,760,518,746,506,730,497"/>
-<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a6d88b96a08a517ffb6478e41defb79e3" title="Set period on an initialised timer." alt="" coords="1505,575,1646,615"/>
-<area shape="poly" title=" " alt="" coords="731,502,763,514,787,528,811,541,902,563,997,580,1092,592,1185,599,1356,602,1489,598,1489,604,1356,608,1185,604,1091,597,996,586,901,569,809,545,784,533,760,519,730,507"/>
-<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a7b6e99135692a24ef5d2303247d2fc20" title="Stop a timer." alt="" coords="1501,640,1650,665"/>
-<area shape="poly" title=" " alt="" coords="732,497,763,514,780,533,787,552,795,569,811,585,895,625,986,654,1079,671,1173,681,1263,683,1347,680,1486,665,1486,671,1348,685,1263,688,1172,686,1078,677,985,659,893,630,808,589,790,573,782,554,775,536,760,518,729,502"/>
-<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a7989f626c01f2cf8bf9955d53922b0cb" title="OS Timer Unit Test Callback handler." alt="" coords="827,491,982,531"/>
-<area shape="poly" title=" " alt="" coords="731,489,812,498,811,504,730,495"/>
-<area shape="poly" title=" " alt="" coords="1640,614,1658,625,1698,665,1733,710,1779,791,1774,793,1728,713,1694,668,1654,629,1637,618"/>
-<area shape="poly" title=" " alt="" coords="1620,663,1657,682,1692,708,1723,738,1772,792,1768,796,1719,742,1688,712,1655,687,1618,668"/>
-<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#a565d729859590da7d56e69401d935eb1" title="Create the control task." alt="" coords="352,1584,487,1609"/>
-<area shape="poly" title=" " alt="" coords="273,1086,286,1097,317,1145,331,1190,333,1233,328,1277,321,1321,317,1367,320,1417,334,1473,364,1527,398,1570,393,1574,359,1530,330,1475,314,1418,311,1367,316,1320,323,1276,327,1233,325,1191,312,1147,282,1101,270,1091"/>
-<area shape="rect" href="../../df/d06/meshx__txcm_8h.html#a09d9909d12a0e348e2b81289220c6396" title="Initializes the MeshX Tx Control Module." alt="" coords="360,1633,478,1658"/>
-<area shape="poly" title=" " alt="" coords="274,1086,286,1097,298,1118,306,1143,314,1206,314,1281,310,1361,306,1441,306,1515,314,1577,322,1601,334,1620,348,1631,344,1635,330,1623,318,1603,309,1578,301,1515,300,1441,305,1361,309,1281,309,1207,301,1145,293,1120,282,1101,270,1090"/>
-<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#aa80e3f0cf59f4ffe90febe75f56eb478" title="Task handler function for processing control task messages." alt="" coords="587,1708,729,1733"/>
-<area shape="poly" title=" " alt="" coords="489,1607,508,1618,525,1637,533,1657,540,1676,556,1693,574,1703,572,1708,553,1697,536,1678,528,1659,520,1640,505,1622,486,1612"/>
-<area shape="rect" href="../../dd/d7b/meshx__task_8c.html#ad9da426e4904251ffbf803de09d05e57" title="Create a MeshX Task." alt="" coords="591,1657,725,1682"/>
-<area shape="poly" title=" " alt="" coords="472,1607,507,1618,555,1635,599,1649,597,1654,553,1640,505,1623,470,1612"/>
-<area shape="poly" title=" " alt="" coords="729,1705,809,1692,974,1673,1139,1667,1577,1667,1616,1664,1654,1655,1690,1640,1724,1621,1787,1573,1843,1514,1890,1451,1929,1389,1979,1293,1984,1295,1934,1392,1895,1454,1847,1517,1791,1577,1727,1626,1692,1645,1655,1660,1617,1669,1577,1672,1139,1672,974,1678,810,1698,730,1710"/>
-<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#a36673b6338c4b8864f30b3f97df92f12" title="Dispatch a message to the registered callbacks." alt="" coords="814,1708,994,1733"/>
-<area shape="poly" title=" " alt="" coords="729,1718,798,1718,798,1723,729,1723"/>
-<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#af7ff66e2ee3553100aadf028c53a7abf" title="Create the control task message queue." alt="" coords="837,1757,972,1798"/>
-<area shape="poly" title=" " alt="" coords="717,1731,822,1756,821,1761,716,1736"/>
-<area shape="rect" href="../../d0/d77/meshx__msg__q_8c.html#ade5ec72805eb237d065dd54953407fe1" title="Receive a Message from a MeshX Message Queue." alt="" coords="836,1822,973,1848"/>
-<area shape="poly" title=" " alt="" coords="679,1731,737,1769,811,1807,831,1815,829,1820,809,1812,734,1773,676,1736"/>
-<area shape="rect" href="../../d0/d77/meshx__msg__q_8c.html#a41c74f6b72168b1ffccded41d8fa4f25" title="Create a MeshX Message Queue." alt="" coords="1066,1765,1215,1790"/>
-<area shape="poly" title=" " alt="" coords="973,1775,1051,1775,1051,1780,973,1780"/>
+<area shape="rect" href="../../d9/d05/meshx_8c.html#acbc9147d880e04feca27a7fa57a45945" title="Restore the device state from the NVS." alt="" coords="352,1320,486,1345"/>
+<area shape="poly" title=" " alt="" coords="271,978,286,989,302,1009,312,1027,320,1064,323,1103,335,1149,372,1235,406,1305,401,1307,367,1237,329,1151,318,1104,315,1065,307,1029,298,1012,282,993,268,982"/>
+<area shape="rect" href="../../d9/d05/meshx_8c.html#a9a6dcac8b5368ca6d77be9caf99cddaa" title="Initializes BLE Mesh elements." alt="" coords="351,749,487,774"/>
+<area shape="poly" title=" " alt="" coords="223,952,392,783,396,787,227,955"/>
+<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#a69e4bb9282a6aad8faa9ee42c968541b" title="Initialize provisioning parameters." alt="" coords="362,1005,477,1030"/>
+<area shape="poly" title=" " alt="" coords="267,978,349,998,348,1003,266,983"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#afb1dfab0e0872cf301f64153754e2a15" title="Initializes the BLE Mesh stack with the given provisioning parameters." alt="" coords="332,954,506,980"/>
+<area shape="poly" title=" " alt="" coords="284,964,317,964,317,970,284,970"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a63a879267392250798cb2ee7caabf1a9" title="Initializes the Bluetooth subsystem of the MeshX platform." alt="" coords="342,1112,497,1137"/>
+<area shape="poly" title=" " alt="" coords="264,978,285,989,301,1001,312,1013,334,1041,395,1099,391,1103,330,1045,308,1017,298,1005,283,993,262,983"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#ae36588f5b4ae5e5ac771e1af86a71e5a" title="Get a value from the NVS." alt="" coords="848,1421,960,1446"/>
+<area shape="poly" title=" " alt="" coords="487,1343,762,1400,834,1416,833,1421,761,1406,486,1348"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#ab4e5c250438e810358991fbe0e6cd277" title="Open the NVS with a timeout." alt="" coords="597,1320,719,1345"/>
+<area shape="poly" title=" " alt="" coords="487,1330,581,1330,581,1335,487,1335"/>
+<area shape="rect" href="../../dc/d28/esp__nvs_8c.html#a01998c5a615417f7fd4c8e3e6aa06a61" title="Read blob value for given key from non&#45;volatile storage." alt="" coords="1067,1421,1214,1446"/>
+<area shape="poly" title=" " alt="" coords="961,1431,1052,1431,1052,1436,961,1436"/>
+<area shape="poly" title=" " alt="" coords="719,1343,763,1362,778,1374,788,1386,797,1397,811,1407,835,1418,833,1423,808,1412,793,1401,783,1389,774,1378,760,1367,717,1348"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#ae32d182aaba6ab32994ae22debaa1d6f" title="Erase the NVS and set the product ID." alt="" coords="813,1322,996,1348"/>
+<area shape="poly" title=" " alt="" coords="720,1330,798,1331,797,1337,720,1336"/>
+<area shape="rect" href="../../dc/d28/esp__nvs_8c.html#a15b34ee0dff883205fa21a0594fc0c7c" title="Open non&#45;volatile storage with a given namespace from the default partition." alt="" coords="829,1372,980,1397"/>
+<area shape="poly" title=" " alt="" coords="720,1343,826,1365,825,1370,719,1348"/>
+<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a59d86249c9c97227b869567af3b2cade" title="Create a timer." alt="" coords="825,1174,984,1200"/>
+<area shape="poly" title=" " alt="" coords="719,1325,741,1318,760,1306,771,1295,777,1284,783,1259,789,1234,796,1221,808,1209,812,1206,815,1210,811,1213,801,1224,794,1236,788,1260,782,1286,775,1298,763,1310,743,1322,720,1330"/>
+<area shape="poly" title=" " alt="" coords="984,1320,997,1309,1013,1289,1023,1268,1032,1227,1029,1186,1020,1145,1012,1103,1009,1061,1018,1019,1029,997,1045,976,1069,960,1072,964,1049,980,1033,1000,1023,1020,1014,1061,1017,1102,1026,1144,1034,1186,1037,1228,1028,1270,1017,1292,1001,1313,988,1324"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#adedf15ddc47ab70982fa07092112ffd1" title="Erase all key&#45;value pairs stored in the NVS." alt="" coords="1078,1472,1204,1497"/>
+<area shape="poly" title=" " alt="" coords="983,1346,1001,1357,1013,1369,1020,1382,1026,1408,1031,1434,1038,1445,1049,1457,1065,1467,1062,1472,1045,1461,1033,1448,1026,1435,1020,1409,1015,1384,1008,1373,997,1361,980,1351"/>
+<area shape="rect" href="../../dc/d28/esp__nvs_8c.html#ac07e3fa684f8bd4f45c595c237b98504" title="Erase all key&#45;value pairs in the given namespace." alt="" coords="1287,1472,1442,1497"/>
+<area shape="poly" title=" " alt="" coords="1204,1482,1272,1482,1272,1487,1204,1487"/>
+<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a77adef39c1cdb9692b86241af2ca75ae" title=" " alt="" coords="1495,1142,1656,1168"/>
+<area shape="poly" title=" " alt="" coords="984,1181,1479,1157,1479,1162,984,1186"/>
+<area shape="rect" href="../../d5/d02/meshx__timer_8c.html#afdde188e70278d7d1b6ee57e72a39ed8" title="Creates a new RTOS timer." alt="" coords="1057,1193,1224,1218"/>
+<area shape="poly" title=" " alt="" coords="984,1191,1042,1195,1041,1201,984,1196"/>
+<area shape="poly" title=" " alt="" coords="1585,1140,1654,1050,1723,934,1773,840,1778,843,1728,937,1658,1052,1590,1144"/>
+<area shape="rect" href="../../d5/d02/meshx__timer_8c.html#a0238244bfe5230d1ce6fc3614bab8318" title="Callback function for FreeRTOS timer events." alt="" coords="1312,1193,1417,1218"/>
+<area shape="poly" title=" " alt="" coords="1225,1203,1296,1203,1296,1208,1225,1208"/>
+<area shape="poly" title=" " alt="" coords="1417,1190,1503,1169,1505,1175,1418,1196"/>
+<area shape="rect" href="../../d2/d6b/composition_8c.html#a341817f6f87ef8d6f5673f1d13b8f7ca" title="Returns the root models for BLE Mesh elements." alt="" coords="587,774,729,800"/>
+<area shape="poly" title=" " alt="" coords="488,766,572,775,572,781,487,772"/>
+<area shape="rect" href="../../d2/d6b/composition_8c.html#ac59f6ae1acf72f1cf67bbff1df68e1a0" title="Returns the count of the root models." alt="" coords="587,824,729,865"/>
+<area shape="poly" title=" " alt="" coords="455,773,555,810,574,816,573,821,553,815,453,778"/>
+<area shape="rect" href="../../d2/d6b/composition_8c.html#a5e1bda274f01ae047df2fd8515637beb" title="Returns the count of the vendor root models." alt="" coords="585,545,731,586"/>
+<area shape="poly" title=" " alt="" coords="425,747,472,675,509,633,553,595,570,586,572,591,556,600,513,636,477,679,430,750"/>
+<area shape="rect" href="../../d2/d6b/composition_8c.html#af14ef1213779043f3932d29054340c33" title="Creates the BLE Mesh element composition." alt="" coords="580,889,736,930"/>
+<area shape="poly" title=" " alt="" coords="434,773,484,822,519,850,556,874,568,880,566,885,553,879,515,854,481,826,431,777"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a36e3c206ee82075d0b1ec6729d186f71" title="Creates a platform&#45;specific BLE Mesh composition object." alt="" coords="554,610,762,636"/>
+<area shape="poly" title=" " alt="" coords="430,746,480,697,515,670,553,646,569,639,572,644,556,651,518,674,484,701,434,750"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a2bdab205d68a408e7ec03e58b2fa8a0b" title="Adds an element to the BLE Mesh composition." alt="" coords="574,660,742,701"/>
+<area shape="poly" title=" " alt="" coords="455,746,553,710,573,703,575,708,555,715,456,751"/>
+<area shape="rect" href="../../dc/d96/esp__platform__ble__mesh_8c.html#a9136f58e68ca58a169038fb9e5fd5c66" title="Initializes a platform&#45;specific BLE Mesh composition." alt="" coords="564,725,752,750"/>
+<area shape="poly" title=" " alt="" coords="487,752,548,746,549,751,488,758"/>
+<area shape="rect" href="../../dd/d79/meshx__config__server_8c.html#a7182f93c9c1882d9523bc873a5a863e1" title="Initialize the meshxuction configuration server." alt="" coords="821,737,988,762"/>
+<area shape="poly" title=" " alt="" coords="735,890,760,874,771,862,777,850,783,825,789,799,796,786,808,773,814,768,818,772,811,777,800,789,794,801,788,826,782,852,775,865,763,878,738,895"/>
+<area shape="poly" title=" " alt="" coords="979,734,997,724,1023,701,1046,674,1084,616,1112,558,1129,511,1134,513,1116,560,1089,618,1051,677,1027,704,1001,728,982,739"/>
+<area shape="rect" href="../../dd/d79/meshx__config__server_8c.html#a1acaabaffb5bb2a637218fb0804d7b5f" title="Handles the configuration server events from the control task." alt="" coords="1501,737,1650,778"/>
+<area shape="poly" title=" " alt="" coords="989,748,1486,754,1486,759,989,753"/>
+<area shape="rect" href="../../dc/d28/esp__cfg__srv__model_8c.html#ac097c3a50a4cb7b7c0167eafb1d011f5" title="Initializes the MeshX platform configuration server." alt="" coords="1052,789,1229,814"/>
+<area shape="poly" title=" " alt="" coords="966,760,1065,782,1064,788,965,766"/>
+<area shape="poly" title=" " alt="" coords="1650,775,1725,795,1724,800,1649,780"/>
+<area shape="rect" href="../../dc/d28/esp__cfg__srv__model_8c.html#ad87cac3c9cc18a1c278725e8d4b5e80a" title="BLE Mesh Configuration Server callback function." alt="" coords="1283,788,1446,829"/>
+<area shape="poly" title=" " alt="" coords="1229,802,1267,803,1267,808,1229,807"/>
+<area shape="poly" title=" " alt="" coords="1446,807,1689,811,1689,816,1446,812"/>
+<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#a35f1927392b1941e9c0389f49fa24f1f" title="Initializes the fresh boot timer." alt="" coords="586,1055,730,1095"/>
+<area shape="poly" title=" " alt="" coords="476,1029,571,1052,570,1057,475,1034"/>
+<area shape="rect" href="../../d9/d31/esp__prov__srv__model_8c.html#a158407471e9cdd7cb6ba7716cd6a8822" title="Initialize provisioning parameters." alt="" coords="586,1120,730,1145"/>
+<area shape="poly" title=" " alt="" coords="438,1029,488,1066,555,1105,575,1112,573,1117,553,1109,486,1071,435,1033"/>
+<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#acb04eaca0a71bc777d56e2d49162ad58" title="Register the BLE Mesh provisioning callback for MeshX Layer Internal." alt="" coords="577,365,739,406"/>
+<area shape="poly" title=" " alt="" coords="476,1009,492,1002,504,991,517,970,526,943,534,875,533,794,528,706,523,618,522,537,530,468,539,440,552,417,562,407,566,411,556,421,544,442,535,469,527,537,528,618,534,706,539,794,539,875,531,944,522,972,508,994,495,1006,478,1014"/>
+<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#afe9a38e591c761b4dd9284872d5b7913" title="Register the BLE Mesh provisioning callback." alt="" coords="834,787,975,827"/>
+<area shape="poly" title=" " alt="" coords="477,1028,541,1037,616,1039,655,1034,692,1025,728,1011,760,990,776,974,783,956,785,918,786,878,793,857,808,837,819,828,822,832,812,841,798,860,792,879,791,918,788,957,780,977,763,994,730,1015,694,1030,656,1039,617,1044,541,1043,477,1034"/>
+<area shape="poly" title=" " alt="" coords="732,1089,763,1105,779,1119,788,1134,796,1148,811,1161,819,1165,817,1170,808,1165,792,1151,783,1137,775,1123,760,1109,729,1094"/>
+<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#ad47b41b2c2dc13db173dce4538907a61" title="Callback function for the boot timer." alt="" coords="1503,999,1648,1039"/>
+<area shape="poly" title=" " alt="" coords="730,1068,1446,1026,1487,1023,1488,1028,1447,1031,731,1074"/>
+<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a00755275246a6415bf159ff805ab731c" title="Start a timer." alt="" coords="830,688,979,713"/>
+<area shape="poly" title=" " alt="" coords="695,1052,730,1026,759,991,775,954,781,919,780,885,775,853,772,821,773,788,784,756,808,723,814,716,818,720,812,726,789,758,779,789,777,821,781,852,785,885,786,919,781,955,764,994,734,1030,698,1056"/>
+<area shape="poly" title=" " alt="" coords="1597,996,1654,942,1763,837,1766,841,1658,946,1601,1000"/>
+<area shape="poly" title=" " alt="" coords="979,687,1109,675,1280,670,1374,673,1470,683,1565,699,1657,723,1688,736,1717,753,1765,789,1762,794,1714,758,1686,741,1655,728,1564,704,1469,688,1374,679,1280,675,1110,680,980,692"/>
+<area shape="rect" href="../../d9/d31/esp__prov__srv__model_8c.html#a5343cdd5814d333b18c748e6cdcbc439" title="Callback function for BLE Mesh provisioning events." alt="" coords="826,1224,982,1249"/>
+<area shape="poly" title=" " alt="" coords="731,1140,763,1154,779,1168,788,1183,796,1197,811,1210,819,1215,817,1219,808,1215,792,1200,783,1186,775,1172,760,1159,729,1145"/>
+<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#aca01220ebad971e14ed4fb6650153c51" title="Notify the model event to the application." alt="" coords="1498,1215,1652,1255"/>
+<area shape="poly" title=" " alt="" coords="983,1234,1483,1233,1483,1238,983,1239"/>
+<area shape="poly" title=" " alt="" coords="1615,1212,1636,1197,1654,1179,1683,1136,1707,1091,1745,995,1769,908,1782,843,1787,844,1774,909,1750,997,1712,1093,1687,1139,1658,1182,1640,1201,1618,1216"/>
+<area shape="poly" title=" " alt="" coords="736,404,763,417,778,427,787,438,796,448,811,457,865,474,922,484,979,489,1031,490,1031,495,978,494,922,489,864,479,809,461,793,452,783,442,774,431,760,421,733,409"/>
+<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#aac026cf4837ec52fd5cb35967ce4ad3f" title="Handles provisioning control task events." alt="" coords="836,952,973,993"/>
+<area shape="poly" title=" " alt="" coords="741,399,764,417,775,436,783,458,793,514,796,579,795,650,794,788,799,845,812,888,833,917,858,941,855,945,829,921,807,891,794,846,789,788,790,650,791,579,788,514,778,460,770,438,760,421,737,403"/>
+<area shape="poly" title=" " alt="" coords="973,964,1069,957,1069,962,973,970"/>
+<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#a90d4cf320c64e69007ffa9ccbb224100" title="Handle node reset event." alt="" coords="1053,990,1228,1016"/>
+<area shape="poly" title=" " alt="" coords="974,979,1038,987,1037,992,973,984"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#a6dc2339887b4d2cb0faa01d799838cd1" title="Remove the context of a specific element from NVS." alt="" coords="1282,1311,1447,1351"/>
+<area shape="poly" title=" " alt="" coords="1167,1014,1202,1041,1237,1077,1256,1118,1263,1153,1269,1188,1285,1230,1308,1266,1334,1297,1330,1300,1304,1269,1280,1232,1264,1190,1258,1154,1251,1120,1232,1081,1199,1045,1163,1019"/>
+<area shape="rect" href="../../da/dd1/esp__platform_8c.html#ac9292fafb9df0803c55a8700fbd9f34d" title="Resets the MeshX platform. This function performs a system reset, restarting the platform." alt="" coords="1290,990,1439,1016"/>
+<area shape="poly" title=" " alt="" coords="1229,1000,1274,1000,1274,1006,1229,1006"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#aa14948d7d45d83f3b6d9ca765a17cc58" title="Remove a key&#45;value pair from the NVS." alt="" coords="1507,1336,1644,1361"/>
+<area shape="poly" title=" " alt="" coords="1447,1335,1492,1339,1491,1344,1447,1340"/>
+<area shape="rect" href="../../dc/d28/esp__nvs_8c.html#ac4731c0a5821db05dfc78f395caf73dd" title="Remove a key&#45;value pair from the non&#45;volatile storage with a given key and namespace." alt="" coords="1708,1336,1873,1361"/>
+<area shape="poly" title=" " alt="" coords="1644,1346,1692,1346,1692,1351,1644,1351"/>
+<area shape="poly" title=" " alt="" coords="974,788,997,773,1026,743,1051,710,1090,637,1116,566,1131,512,1136,513,1121,568,1095,639,1055,713,1030,747,1001,777,977,792"/>
+<area shape="rect" href="../../d2/d21/meshx__prov__srv_8c.html#a4da462f934af3855a63a15b2b5b9561d" title="Control task handler for the provisioning server." alt="" coords="1283,853,1446,894"/>
+<area shape="poly" title=" " alt="" coords="976,815,1268,857,1268,862,975,820"/>
+<area shape="poly" title=" " alt="" coords="1446,860,1688,826,1689,832,1446,865"/>
+<area shape="rect" href="../../d9/d31/esp__prov__srv__model_8c.html#abae1983bb7292ae3f77ebeb5276c2344" title="Get the provisioning parameters." alt="" coords="586,954,730,980"/>
+<area shape="poly" title=" " alt="" coords="507,964,571,964,571,970,507,970"/>
+<area shape="rect" href="../../d9/db9/ble__mesh__plat__init_8h.html#a2bae8dcbee489037789f228234a3072d" title="Initialize the Bluetooth stack for BLE Mesh." alt="" coords="609,1169,707,1194"/>
+<area shape="poly" title=" " alt="" coords="475,1135,555,1155,594,1164,593,1170,554,1160,473,1140"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#af877bf8456b6217ae4cd642f29e85be6" title="Callback handler for MeshX NVS unit test command." alt="" coords="347,1391,491,1431"/>
+<area shape="poly" title=" " alt="" coords="217,521,247,689,287,941,293,1034,297,1155,308,1272,319,1320,334,1356,357,1380,353,1384,330,1359,314,1322,303,1273,292,1155,287,1035,281,942,241,690,212,522"/>
+<area shape="rect" href="../../da/dd5/unit__test_8c.html#a763886d5c865bfc15d5693604c5f5923" title="Register a unit test for a specific module." alt="" coords="597,496,719,521"/>
+<area shape="poly" title=" " alt="" coords="266,506,582,506,582,511,266,511"/>
+<area shape="poly" title=" " alt="" coords="463,1388,485,1373,504,1356,520,1330,526,1305,533,1280,553,1256,580,1238,607,1230,633,1228,658,1229,708,1229,733,1221,760,1205,778,1183,785,1161,791,1136,808,1110,1046,975,1068,967,1070,972,1048,980,812,1114,796,1138,790,1162,783,1186,763,1209,736,1226,709,1234,658,1235,633,1234,608,1235,582,1243,556,1260,538,1282,531,1306,525,1332,508,1359,488,1378,466,1392"/>
+<area shape="poly" title=" " alt="" coords="492,1412,833,1428,832,1433,492,1417"/>
+<area shape="poly" title=" " alt="" coords="482,1388,601,1348,603,1353,484,1393"/>
+<area shape="poly" title=" " alt="" coords="492,1420,555,1430,834,1459,1062,1477,1062,1482,834,1465,554,1435,492,1426"/>
+<area shape="poly" title=" " alt="" coords="469,1429,550,1460,657,1494,779,1521,841,1529,903,1532,1142,1532,1230,1537,1300,1544,1333,1543,1367,1538,1404,1527,1445,1507,1484,1479,1516,1444,1541,1407,1559,1374,1564,1377,1546,1409,1520,1447,1487,1483,1448,1512,1406,1532,1368,1543,1334,1549,1300,1549,1230,1543,1142,1538,903,1538,841,1535,778,1526,656,1499,549,1465,467,1434"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#a331ae59bfd5632726157f612d8b57b00" title="Close the NVS handle." alt="" coords="595,1270,721,1296"/>
+<area shape="poly" title=" " alt="" coords="457,1388,505,1356,518,1342,527,1329,537,1317,553,1305,579,1293,582,1298,556,1309,541,1321,531,1332,522,1345,508,1360,460,1392"/>
+<area shape="rect" href="../../d5/d8f/meshx__nvs_8c.html#adbf5f3a6e63cae605581b0f23b21345c" title="Commit changes to the NVS." alt="" coords="589,1573,727,1598"/>
+<area shape="poly" title=" " alt="" coords="437,1430,485,1490,518,1523,556,1551,583,1565,580,1570,553,1556,515,1527,481,1494,432,1433"/>
+<area shape="rect" href="../../dc/d28/esp__nvs_8c.html#ad5a8b76fa8a5b7105ee6cac1edb47ec3" title="Close the non&#45;volatile storage handle." alt="" coords="828,1273,981,1298"/>
+<area shape="poly" title=" " alt="" coords="721,1281,812,1282,812,1287,721,1286"/>
+<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a934420ed4dad831b215afe128d2cbcd6" title="Delete a timer." alt="" coords="825,1125,984,1150"/>
+<area shape="poly" title=" " alt="" coords="720,1270,741,1261,760,1249,776,1228,783,1205,790,1182,808,1160,813,1156,816,1160,811,1164,794,1185,788,1207,781,1230,763,1253,744,1266,722,1275"/>
+<area shape="rect" href="../../d5/d02/meshx__timer_8c.html#a6eb1e5296678e029069b59a546c6fecc" title="Deletes the RTOS timer." alt="" coords="1058,1092,1224,1117"/>
+<area shape="poly" title=" " alt="" coords="984,1124,1042,1116,1043,1121,985,1129"/>
+<area shape="rect" href="../../dc/d28/esp__nvs_8c.html#a5dd0ef1876320dd92b9c102574e08435" title="Commit changes to the non&#45;volatile storage." alt="" coords="822,1622,987,1648"/>
+<area shape="poly" title=" " alt="" coords="726,1597,822,1616,821,1621,725,1602"/>
+<area shape="rect" href="../../dc/d28/esp__nvs_8c.html#a486367a843345efbb5edb7267a706eb3" title="Write a blob value to the non&#45;volatile storage with a given key and namespace." alt="" coords="829,1573,980,1598"/>
+<area shape="poly" title=" " alt="" coords="727,1583,814,1583,814,1588,727,1588"/>
+<area shape="poly" title=" " alt="" coords="425,436,443,405,471,363,508,321,553,286,594,267,648,249,712,234,779,223,847,216,909,217,962,225,983,233,1001,244,1022,267,1031,292,1033,318,1030,345,1026,372,1026,398,1032,425,1049,451,1062,462,1059,466,1045,454,1027,427,1021,399,1021,371,1024,344,1027,318,1026,293,1017,270,997,248,981,238,960,230,909,222,847,222,780,228,713,239,650,255,596,272,556,291,511,325,475,367,447,408,429,439"/>
+<area shape="poly" title=" " alt="" coords="476,462,587,489,586,494,475,467"/>
+<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a11716d0afd56fcadf26d731a771292a2" title=" " alt="" coords="577,300,739,341"/>
+<area shape="poly" title=" " alt="" coords="434,436,485,395,553,351,568,345,570,349,556,356,488,399,437,440"/>
+<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a1722013fe588021c8f81ee4532b0b089" title="Callback handler for OS Timer unit test command." alt="" coords="586,431,730,471"/>
+<area shape="poly" title=" " alt="" coords="489,448,570,448,570,454,489,454"/>
+<area shape="rect" href="../../d5/d02/meshx__timer_8c.html#a7d37c7f58bdbb342a0885b20f73e361c" title="Changes the period of the RTOS timer." alt="" coords="818,407,991,447"/>
+<area shape="poly" title=" " alt="" coords="736,339,763,351,778,362,788,372,797,383,811,393,820,397,817,402,808,397,794,387,784,376,774,366,760,356,734,344"/>
+<area shape="rect" href="../../d5/d02/meshx__timer_8c.html#aa50a77c352028677b805d5dae291677c" title="Resets the RTOS timer." alt="" coords="824,258,984,284"/>
+<area shape="poly" title=" " alt="" coords="739,301,821,285,822,290,740,307"/>
+<area shape="rect" href="../../d5/d02/meshx__timer_8c.html#a65622b75bf8b72d3a3bbc87ee4c54d69" title="Starts the RTOS timer." alt="" coords="826,308,983,333"/>
+<area shape="poly" title=" " alt="" coords="740,318,810,318,810,323,740,323"/>
+<area shape="rect" href="../../d5/d02/meshx__timer_8c.html#a00fe9ff387444a7f806d27f1d671d4fb" title="Stops the RTOS timer." alt="" coords="826,357,982,382"/>
+<area shape="poly" title=" " alt="" coords="740,334,822,351,821,356,739,339"/>
+<area shape="poly" title=" " alt="" coords="732,459,749,468,764,481,782,508,794,535,801,561,802,588,796,641,783,692,770,743,766,793,769,817,777,841,791,864,811,887,828,893,867,898,988,909,1269,924,1269,930,988,914,866,904,827,898,808,892,787,867,772,843,764,818,760,793,765,742,777,691,791,640,797,588,795,562,789,536,778,511,760,485,746,473,730,464"/>
+<area shape="poly" title=" " alt="" coords="732,459,749,468,764,481,779,508,789,541,795,580,798,623,795,720,787,824,779,928,777,1024,780,1067,786,1105,797,1136,812,1161,814,1164,810,1167,808,1165,792,1139,781,1106,775,1068,772,1024,774,928,782,824,790,720,793,623,790,580,784,542,774,510,760,485,746,472,729,464"/>
+<area shape="poly" title=" " alt="" coords="732,461,749,469,764,481,781,505,788,529,789,575,789,621,796,644,812,667,825,678,822,682,808,670,791,646,783,622,783,575,783,530,776,507,760,485,746,474,730,465"/>
+<area shape="poly" title=" " alt="" coords="732,459,749,468,764,481,776,501,786,526,797,587,801,659,801,737,798,889,802,954,812,1003,826,1034,844,1064,882,1111,878,1115,840,1067,822,1037,807,1005,796,955,793,890,795,737,796,659,792,588,781,528,771,504,760,485,746,472,729,464"/>
+<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a6d88b96a08a517ffb6478e41defb79e3" title="Set period on an initialised timer." alt="" coords="1505,572,1646,613"/>
+<area shape="poly" title=" " alt="" coords="727,469,810,495,999,530,1188,555,1358,573,1490,584,1489,589,1357,579,1187,561,998,535,809,500,726,475"/>
+<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a7b6e99135692a24ef5d2303247d2fc20" title="Stop a timer." alt="" coords="1501,637,1650,662"/>
+<area shape="poly" title=" " alt="" coords="732,461,763,481,778,499,784,519,786,556,789,591,796,607,811,622,847,634,911,643,1097,652,1308,653,1486,650,1486,655,1308,658,1097,658,911,649,846,640,808,627,792,610,784,593,781,556,779,520,773,502,760,485,729,466"/>
+<area shape="rect" href="../../dd/da1/meshx__os__timer_8c.html#a7989f626c01f2cf8bf9955d53922b0cb" title="OS Timer Unit Test Callback handler." alt="" coords="827,572,982,613"/>
+<area shape="poly" title=" " alt="" coords="732,464,763,481,780,499,788,517,796,534,811,552,827,562,824,567,808,556,792,537,784,519,776,502,760,485,729,469"/>
+<area shape="poly" title=" " alt="" coords="1640,611,1658,622,1698,662,1733,707,1779,787,1774,790,1728,710,1694,665,1654,626,1637,615"/>
+<area shape="poly" title=" " alt="" coords="1620,661,1657,679,1692,705,1723,735,1772,789,1768,792,1719,738,1688,709,1655,684,1618,665"/>
+<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#a565d729859590da7d56e69401d935eb1" title="Create the control task." alt="" coords="352,1549,487,1574"/>
+<area shape="poly" title=" " alt="" coords="274,1028,286,1039,304,1073,314,1121,318,1176,320,1236,321,1354,325,1404,334,1442,363,1494,397,1536,392,1539,359,1497,330,1444,320,1405,316,1355,314,1236,313,1176,308,1121,299,1075,282,1042,270,1032"/>
+<area shape="rect" href="../../df/d06/meshx__txcm_8h.html#a09d9909d12a0e348e2b81289220c6396" title="Initializes the MeshX Tx Control Module." alt="" coords="360,1598,478,1624"/>
+<area shape="poly" title=" " alt="" coords="274,1028,286,1039,299,1060,307,1087,315,1153,315,1231,310,1315,305,1398,305,1475,313,1540,322,1565,334,1585,348,1597,344,1601,330,1589,317,1568,308,1541,300,1476,300,1398,304,1314,309,1231,310,1153,302,1088,294,1062,282,1042,270,1032"/>
+<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#aa80e3f0cf59f4ffe90febe75f56eb478" title="Task handler function for processing control task messages." alt="" coords="587,1724,729,1749"/>
+<area shape="poly" title=" " alt="" coords="489,1573,508,1584,526,1602,535,1620,542,1639,556,1659,589,1688,623,1712,620,1717,586,1692,552,1662,538,1641,530,1622,521,1605,505,1588,486,1577"/>
+<area shape="rect" href="../../dd/d7b/meshx__task_8c.html#ad9da426e4904251ffbf803de09d05e57" title="Create a MeshX Task." alt="" coords="591,1622,725,1648"/>
+<area shape="poly" title=" " alt="" coords="476,1573,507,1583,532,1596,555,1609,577,1616,575,1621,553,1613,529,1601,505,1588,474,1578"/>
+<area shape="poly" title=" " alt="" coords="729,1721,809,1708,974,1689,1139,1683,1577,1683,1616,1680,1655,1670,1691,1656,1725,1636,1789,1586,1844,1526,1892,1462,1930,1399,1980,1301,1984,1303,1935,1402,1896,1465,1849,1530,1792,1590,1728,1641,1693,1660,1656,1675,1617,1685,1577,1688,1139,1688,974,1694,810,1714,730,1726"/>
+<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#a36673b6338c4b8864f30b3f97df92f12" title="Dispatch a message to the registered callbacks." alt="" coords="814,1724,994,1749"/>
+<area shape="poly" title=" " alt="" coords="729,1734,798,1734,798,1739,729,1739"/>
+<area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#af7ff66e2ee3553100aadf028c53a7abf" title="Create the control task message queue." alt="" coords="837,1773,972,1814"/>
+<area shape="poly" title=" " alt="" coords="717,1747,822,1772,821,1777,716,1752"/>
+<area shape="rect" href="../../d0/d77/meshx__msg__q_8c.html#ade5ec72805eb237d065dd54953407fe1" title="Receive a Message from a MeshX Message Queue." alt="" coords="836,1838,973,1864"/>
+<area shape="poly" title=" " alt="" coords="679,1747,737,1785,811,1823,831,1831,829,1836,809,1828,734,1789,676,1752"/>
+<area shape="rect" href="../../d0/d77/meshx__msg__q_8c.html#a41c74f6b72168b1ffccded41d8fa4f25" title="Create a MeshX Message Queue." alt="" coords="1066,1781,1215,1806"/>
+<area shape="poly" title=" " alt="" coords="973,1791,1051,1791,1051,1796,973,1796"/>
 </map>
 </div>
 <div class="dynheader">
@@ -819,7 +821,7 @@ Here is the caller graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_5c982d53a68cdbcd421152b4020263a9.html">main</a></li><li class="navelem"><a class="el" href="../../dir_8c5515a604d4a2bb78291420d5b72747.html">component</a></li><li class="navelem"><a class="el" href="../../dir_17e62e33567b93c5a1475a84b6c9c934.html">meshx</a></li><li class="navelem"><a class="el" href="../../dir_86bf887972b3e0a7dcf1ab1624617c1e.html">inc</a></li><li class="navelem"><a class="el" href="../../d3/d18/meshx_8h.html">meshx.h</a></li>
-    <li class="footer">Generated on Wed Oct 15 2025 18:27:28 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Wed Oct 15 2025 19:11:17 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

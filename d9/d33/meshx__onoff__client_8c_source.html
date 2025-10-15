@@ -200,8 +200,8 @@ $(function(){initNavTree('d9/d33/meshx__onoff__client_8c_source.html','../../');
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../de/d08/meshx__ble__mesh__gen__cli_8h.html#a9c0eb105e6e14237408cd53f538645da">meshx_plat_on_off_gen_cli_create</a>(</div>
 <div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        p_sig_model,</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        &amp;((*p_model)-&gt;meshx_onoff_client_pub),</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        &amp;((*p_model)-&gt;meshx_onoff_client_gen_cli));</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        &amp;((*p_model)-&gt;meshx_pub),</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        &amp;((*p_model)-&gt;meshx_gen));</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>}</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span></div>
 <div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> meshx_on_off_client_delete(meshx_onoff_client_model_t **p_model)</div>
@@ -212,8 +212,8 @@ $(function(){initNavTree('d9/d33/meshx__onoff__client_8c_source.html','../../');
 <div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    }</div>
 <div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
 <div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <a class="code hl_function" href="../../de/d08/meshx__ble__mesh__gen__cli_8h.html#a8fe8e5eb7ef98d6f828de07f97ead59d">meshx_plat_gen_cli_delete</a>(</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        &amp;((*p_model)-&gt;meshx_onoff_client_pub),</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        &amp;((*p_model)-&gt;meshx_onoff_client_gen_cli)</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        &amp;((*p_model)-&gt;meshx_pub),</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        &amp;((*p_model)-&gt;meshx_gen)</div>
 <div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    );</div>
 <div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
 <div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#af8f58f6602b246397c882d9cddd9a334">MESHX_FREE</a>(*p_model);</div>
@@ -226,7 +226,7 @@ $(function(){initNavTree('d9/d33/meshx__onoff__client_8c_source.html','../../');
 <div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>{</div>
 <div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err;</div>
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    <a class="code hl_union" href="../../d8/df2/unionmeshx__gen__cli__set__t.html">meshx_gen_cli_set_t</a> set = {0};</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="keywordflow">if</span> (!params || !params-&gt;model || !params-&gt;model-&gt;meshx_onoff_client_sig_model)</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="keywordflow">if</span> (!params || !params-&gt;model || !params-&gt;model-&gt;meshx_sig)</div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    {</div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    }</div>
@@ -237,7 +237,7 @@ $(function(){initNavTree('d9/d33/meshx__onoff__client_8c_source.html','../../');
 <div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        .opcode  = params-&gt;opcode,</div>
 <div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        .app_idx = params-&gt;app_idx,</div>
 <div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>        .net_idx = params-&gt;net_idx,</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>        .model   = params-&gt;model-&gt;meshx_onoff_client_sig_model,</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>        .model   = params-&gt;model-&gt;meshx_sig,</div>
 <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    };</div>
 <div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
 <div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    <span class="keywordflow">if</span>(params-&gt;opcode == <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a9c8584e2fe99450288e41f590b4bcac9">MESHX_MODEL_OP_GEN_ONOFF_GET</a>)</div>
@@ -324,7 +324,7 @@ $(function(){initNavTree('d9/d33/meshx__onoff__client_8c_source.html','../../');
 <div class="ttc" id="ameshx__gen__client_8h_html_a1d77f867cbfeed7c9bccc16b63d7b982"><div class="ttname"><a href="../../d1/d29/meshx__gen__client_8h.html#a1d77f867cbfeed7c9bccc16b63d7b982">meshx_gen_client_send_params_t</a></div><div class="ttdeci">struct meshx_gen_client_send_params meshx_gen_client_send_params_t</div><div class="ttdoc">Generic Client Model send parameters. This structure is used to pass parameters to the Generic Client...</div></div>
 <div class="ttc" id="ameshx__gen__client_8h_html_a6bbf3df1e2c27b76c59774dab131ce73"><div class="ttname"><a href="../../d1/d29/meshx__gen__client_8h.html#a6bbf3df1e2c27b76c59774dab131ce73">meshx_gen_cli_send_msg</a></div><div class="ttdeci">meshx_err_t meshx_gen_cli_send_msg(meshx_gen_client_send_params_t *params)</div><div class="ttdoc">Sends a Generic Client message over BLE Mesh.</div><div class="ttdef"><b>Definition</b> <a href="../../d0/dbc/meshx__gen__client_8c_source.html#l00426">meshx_gen_client.c:426</a></div></div>
 <div class="ttc" id="ameshx__gen__client_8h_html_af0bffb6cf82fbe98c287d7423355cb31"><div class="ttname"><a href="../../d1/d29/meshx__gen__client_8h.html#af0bffb6cf82fbe98c287d7423355cb31">meshx_gen_client_init</a></div><div class="ttdeci">meshx_err_t meshx_gen_client_init(void)</div><div class="ttdoc">Initialize the meshxuction generic client.</div><div class="ttdef"><b>Definition</b> <a href="../../d0/dbc/meshx__gen__client_8c_source.html#l00404">meshx_gen_client.c:404</a></div></div>
-<div class="ttc" id="ameshx__light__ctl__srv_8c_html_a9cde80da166fd8a69dd7261a2478d1b8"><div class="ttname"><a href="../../d4/db6/meshx__light__ctl__srv_8c.html#a9cde80da166fd8a69dd7261a2478d1b8">meshx_state_change_notify</a></div><div class="ttdeci">static meshx_err_t meshx_state_change_notify(meshx_lighting_server_cb_param_t *param)</div><div class="ttdoc">Perform hardware change for the light control server model.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00032">meshx_light_ctl_srv.c:32</a></div></div>
+<div class="ttc" id="ameshx__light__ctl__srv_8c_html_a9cde80da166fd8a69dd7261a2478d1b8"><div class="ttname"><a href="../../d4/db6/meshx__light__ctl__srv_8c.html#a9cde80da166fd8a69dd7261a2478d1b8">meshx_state_change_notify</a></div><div class="ttdeci">static meshx_err_t meshx_state_change_notify(meshx_lighting_server_cb_param_t *param)</div><div class="ttdoc">Perform hardware change for the light control server model.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00065">meshx_light_ctl_srv.c:65</a></div></div>
 <div class="ttc" id="ameshx__log_8h_html_a56673888067cbe14c7a33b0856f46eb8"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a></div><div class="ttdeci">#define MESHX_LOGE(module_id, format,...)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dcb/meshx__log_8h_source.html#l00073">meshx_log.h:73</a></div></div>
 <div class="ttc" id="ameshx__log_8h_html_acb76057f2c8e23ca61edf04fd824818b"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a></div><div class="ttdeci">#define MESHX_LOGD(module_id, format,...)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dcb/meshx__log_8h_source.html#l00113">meshx_log.h:113</a></div></div>
 <div class="ttc" id="ameshx__onoff__client_8c_html_ab89186504167cd3acb75647a452462dd"><div class="ttname"><a href="../../d9/d33/meshx__onoff__client_8c.html#ab89186504167cd3acb75647a452462dd">MESHX_CLIENT_INIT_MAGIC</a></div><div class="ttdeci">#define MESHX_CLIENT_INIT_MAGIC</div><div class="ttdef"><b>Definition</b> <a href="#l00016">meshx_onoff_client.c:16</a></div></div>
@@ -349,7 +349,7 @@ $(function(){initNavTree('d9/d33/meshx__onoff__client_8c_source.html','../../');
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_5c982d53a68cdbcd421152b4020263a9.html">main</a></li><li class="navelem"><a class="el" href="../../dir_8c5515a604d4a2bb78291420d5b72747.html">component</a></li><li class="navelem"><a class="el" href="../../dir_17e62e33567b93c5a1475a84b6c9c934.html">meshx</a></li><li class="navelem"><a class="el" href="../../dir_731868db0f8d6d1cac5b0ffc22af1dd4.html">elements</a></li><li class="navelem"><a class="el" href="../../dir_3bf68657330bb9e1ea3aa3c649cf1fe1.html">client</a></li><li class="navelem"><a class="el" href="../../dir_0bd94fd843486eb9603dcf9cd6ceec5f.html">models</a></li><li class="navelem"><a class="el" href="../../dir_3322b7073cb8cf8d9a00748e79ff14c5.html">src</a></li><li class="navelem"><a class="el" href="../../d9/d33/meshx__onoff__client_8c.html">meshx_onoff_client.c</a></li>
-    <li class="footer">Generated on Wed Oct 15 2025 18:27:27 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Wed Oct 15 2025 19:11:16 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

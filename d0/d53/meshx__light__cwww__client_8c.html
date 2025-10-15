@@ -1358,7 +1358,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  755</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Meshx On Off Client create failed (Err : 0x%x)&quot;</span>, err);</div>
 <div class="line"><span class="lineno">  756</span>            <span class="keywordflow">return</span> err;</div>
 <div class="line"><span class="lineno">  757</span>        }</div>
-<div class="line"><span class="lineno">  758</span>        <a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).onoff_cli_model-&gt;meshx_onoff_client_sig_model</div>
+<div class="line"><span class="lineno">  758</span>        <a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).onoff_cli_model-&gt;meshx_sig</div>
 <div class="line"><span class="lineno">  759</span>            = &amp;<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).cwww_cli_sig_model_list[<a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50a8cd1dac492675851c4178ac0f342f49d">CWWW_CLI_SIG_ONOFF_MODEL_ID</a>];</div>
 <div class="line"><span class="lineno">  760</span> </div>
 <div class="line"><span class="lineno">  761</span>        err = <a class="code hl_function" href="../../da/dfd/meshx__light__ctl__client_8h.html#a7c7cc48c89c94e6d90b77aa26ce13b46">meshx_light_ctl_client_create</a>(&amp;<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).ctl_cli_model,</div>
@@ -1368,7 +1368,7 @@ Here is the caller graph for this function:</div>
 <div class="line"><span class="lineno">  765</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_define" href="#aa0ad1e47aa701098a8202979c5f1937d">MOD_LCC</a>, <span class="stringliteral">&quot;Meshx CTL Client create failed (Err : 0x%x)&quot;</span>, err);</div>
 <div class="line"><span class="lineno">  766</span>            <span class="keywordflow">return</span> err;</div>
 <div class="line"><span class="lineno">  767</span>        }</div>
-<div class="line"><span class="lineno">  768</span>        <a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).ctl_cli_model-&gt;meshx_light_ctl_client_sig_model</div>
+<div class="line"><span class="lineno">  768</span>        <a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).ctl_cli_model-&gt;meshx_sig</div>
 <div class="line"><span class="lineno">  769</span>            = &amp;<a class="code hl_define" href="#a4f8bc087bea725c9b1e91fd617c0c42b">CWWW_CLI_EL</a>(i).cwww_cli_sig_model_list[<a class="code hl_enumvalue" href="../../df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50aa02a6779f0b7c25d3ac7b9e35457098d">CWWW_CLI_SIG_L_CTL_MODEL_ID</a>];</div>
 <div class="line"><span class="lineno">  770</span>    }</div>
 <div class="line"><span class="lineno">  771</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
@@ -1559,7 +1559,7 @@ Here is the call graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_5c982d53a68cdbcd421152b4020263a9.html">main</a></li><li class="navelem"><a class="el" href="../../dir_8c5515a604d4a2bb78291420d5b72747.html">component</a></li><li class="navelem"><a class="el" href="../../dir_17e62e33567b93c5a1475a84b6c9c934.html">meshx</a></li><li class="navelem"><a class="el" href="../../dir_731868db0f8d6d1cac5b0ffc22af1dd4.html">elements</a></li><li class="navelem"><a class="el" href="../../dir_3bf68657330bb9e1ea3aa3c649cf1fe1.html">client</a></li><li class="navelem"><a class="el" href="../../dir_41825937548e08e1bde8e06367393ca4.html">src</a></li><li class="navelem"><a class="el" href="../../d0/d53/meshx__light__cwww__client_8c.html">meshx_light_cwww_client.c</a></li>
-    <li class="footer">Generated on Wed Oct 15 2025 18:27:28 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Wed Oct 15 2025 19:11:16 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

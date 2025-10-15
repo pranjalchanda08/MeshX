@@ -2,11 +2,11 @@ var meshx__cwww__server__element_8h =
 [
     [ "cwww_srv_ctx", "de/d08/structcwww__srv__ctx.html", "de/d08/structcwww__srv__ctx" ],
     [ "meshx_cwww_element", "d0/de7/structmeshx__cwww__element.html", "d0/de7/structmeshx__cwww__element" ],
-    [ "cwww_element", "d2/dc7/structcwww__element.html", "d2/dc7/structcwww__element" ],
+    [ "meshx_cwww_elements_ctrl", "dd/d4e/structmeshx__cwww__elements__ctrl.html", "dd/d4e/structmeshx__cwww__elements__ctrl" ],
     [ "CWWW_SRV_MODEL_SIG_CNT", "d8/da4/meshx__cwww__server__element_8h.html#a7c0b486f598b85136254fc42aa6b29e5", null ],
     [ "CWWW_SRV_MODEL_VEN_CNT", "d8/da4/meshx__cwww__server__element_8h.html#a37adebdc5e0dc0f6300d8d5a3c956483", null ],
     [ "meshx_cwww_element_t", "d8/da4/meshx__cwww__server__element_8h.html#aeea883a240a1c953ee682f2590823c87", null ],
-    [ "meshx_cwww_elements_ctrl_t", "d8/da4/meshx__cwww__server__element_8h.html#a36b00f0d77112e8077c58aea6580ba2b", null ],
+    [ "meshx_cwww_elements_ctrl_t", "d8/da4/meshx__cwww__server__element_8h.html#a70d05e52e8b219b97f9329b6d14af88f", null ],
     [ "meshx_cwww_server_ctx_t", "d8/da4/meshx__cwww__server__element_8h.html#ae2aae3bde6dd09404893e4d4d286426a", null ],
     [ "cwww_sig_id_t", "d8/da4/meshx__cwww__server__element_8h.html#a8c798aadd16ea8f86c2ade34eac19340", [
       [ "CWWW_SIG_ONOFF_MODEL_ID", "d8/da4/meshx__cwww__server__element_8h.html#a8c798aadd16ea8f86c2ade34eac19340a3f3c4c810ae6e05bac678cc73d782236", null ],

@@ -29,9 +29,10 @@ var meshx__ble__mesh__light__srv_8h =
     [ "meshx_light_ctl_srv_t", "d7/de0/meshx__ble__mesh__light__srv_8h.html#a2d54ce26847c66f816bb6f2be7f7c70c", null ],
     [ "meshx_lighting_server_cb_param_t", "d7/de0/meshx__ble__mesh__light__srv_8h.html#ab7d1e0ab27057d7d631cbe509570476d", null ],
     [ "meshx_plat_gen_light_srv_send_status", "d7/de0/meshx__ble__mesh__light__srv_8h.html#ac79c39e50439290a87cd0b7da8fa886a", null ],
+    [ "meshx_plat_light_ctl_setup_srv_create", "d7/de0/meshx__ble__mesh__light__srv_8h.html#a0807c654e0a630b66f06f2732dfcf440", null ],
     [ "meshx_plat_light_ctl_srv_create", "d7/de0/meshx__ble__mesh__light__srv_8h.html#aa7384157587813da254014dfd8f13b17", null ],
-    [ "meshx_plat_light_ctl_srv_delete", "d7/de0/meshx__ble__mesh__light__srv_8h.html#adcc92f91b94547ecd612f3a8fd93e412", null ],
     [ "meshx_plat_light_ctl_srv_restore", "d7/de0/meshx__ble__mesh__light__srv_8h.html#add201d93559ff4ff071950572182e204", null ],
+    [ "meshx_plat_light_srv_delete", "d7/de0/meshx__ble__mesh__light__srv_8h.html#a0ee9a897168a69c9ede40278fdb4b445", null ],
     [ "meshx_plat_light_srv_init", "d7/de0/meshx__ble__mesh__light__srv_8h.html#afd34945754064f76b2471c0f9598e785", null ],
     [ "meshx_plat_set_light_ctl_srv_state", "d7/de0/meshx__ble__mesh__light__srv_8h.html#a0dc534558d13a140c430ef5bb1f659f9", null ]
 ];

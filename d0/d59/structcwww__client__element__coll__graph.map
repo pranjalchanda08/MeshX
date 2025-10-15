@@ -1,9 +1,9 @@
 <map id="cwww_client_element" name="cwww_client_element">
-<area shape="rect" id="Node000001" title="Structure to hold the cwww client element." alt="" coords="61,507,232,614"/>
-<area shape="rect" id="Node000002" href="$d2/dd1/structcwww__cli__ctx.html" title="Structure to hold the context of the cwww client." alt="" coords="21,294,113,442"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="92,441,108,482,112,491,107,493,103,484,87,443"/>
+<area shape="rect" id="Node000001" title="Structure to hold the cwww client element." alt="" coords="53,518,224,604"/>
+<area shape="rect" id="Node000002" href="$d2/dd1/structcwww__cli__ctx.html" title="Structure to hold the context of the cwww client." alt="" coords="21,292,113,440"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="76,438,92,493,97,502,92,504,87,495,71,440"/>
 <area shape="rect" id="Node000003" href="$d1/d7c/structmeshx__ctl__el__state.html" title="Structure to hold arguments for sending Light CTL messages." alt="" coords="5,5,128,214"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="70,214,70,277,64,277,64,214"/>
-<area shape="rect" id="Node000004" href="$d4/d6b/structmeshx__light__ctl__client__model.html" title="Structure representing the Light CTL (Color Temperature Lightness) client model in MeshX." alt="" coords="137,292,317,444"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="214,445,200,484,195,493,191,491,195,482,209,443"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="70,214,70,275,64,275,64,214"/>
+<area shape="rect" id="Node000004" href="$d1/da6/structmeshx__model__interface.html" title=" " alt="" coords="137,312,285,419"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="206,420,197,457,184,495,180,504,175,502,179,493,192,455,200,418"/>
 </map>

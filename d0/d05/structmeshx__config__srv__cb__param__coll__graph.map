@@ -2,7 +2,7 @@
 <area shape="rect" id="Node000001" title=" " alt="" coords="874,543,1009,625"/>
 <area shape="rect" id="Node000002" href="$db/d33/structmeshx__ctx.html" title="Structure to hold context information for BLE Mesh operations." alt="" coords="798,312,872,480"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="874,460,913,528,908,530,869,463"/>
-<area shape="rect" id="Node000003" href="$d7/df1/structmeshx__model.html" title=" " alt="" coords="896,333,987,460"/>
+<area shape="rect" id="Node000003" href="$d7/df1/structmeshx__model.html" title="Structure as Interface for meshx models." alt="" coords="896,333,987,460"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="944,460,944,527,939,527,939,460"/>
 <area shape="rect" id="Node000004" href="$de/da0/unionmeshx__cfg__srv__state__change__t.html" title="Configuration Server model state change value union." alt="" coords="1012,356,1146,437"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1055,438,996,521,987,532,983,529,991,518,1050,435"/>
