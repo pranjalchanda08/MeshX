@@ -1,5 +1,0 @@
-<map id="meshx_is_gen_light_cli_get_opcode" name="meshx_is_gen_light_cli_get_opcode">
-<area shape="rect" id="Node000001" title="Checks if the given model ID corresponds to a Generic Light Client GET opcode." alt="" coords="214,5,349,46"/>
-<area shape="rect" id="Node000002" href="$d0/dc1/meshx__gen__light__cli_8c.html#a772555371a4ab0df89dd32c9f0ead006" title="Send a message using the generic client model." alt="" coords="5,5,166,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="198,28,166,28,166,23,198,23"/>
-</map>
