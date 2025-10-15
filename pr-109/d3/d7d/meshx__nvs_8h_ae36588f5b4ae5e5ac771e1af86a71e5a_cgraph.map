@@ -1,5 +1,0 @@
-<map id="meshx_nvs_get" name="meshx_nvs_get">
-<area shape="rect" id="Node000001" title="Get a value from the NVS." alt="" coords="5,5,118,31"/>
-<area shape="rect" id="Node000002" href="$dc/d28/esp__nvs_8c.html#a01998c5a615417f7fd4c8e3e6aa06a61" title="Read blob value for given key from non&#45;volatile storage." alt="" coords="166,5,313,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,16,150,16,150,21,118,21"/>
-</map>

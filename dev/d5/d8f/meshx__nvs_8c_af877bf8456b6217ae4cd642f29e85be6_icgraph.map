@@ -1,9 +1,0 @@
-<map id="meshx_nvs_unit_test_cb_handler" name="meshx_nvs_unit_test_cb_handler">
-<area shape="rect" id="Node000001" title="Callback handler for MeshX NVS unit test command." alt="" coords="491,5,636,46"/>
-<area shape="rect" id="Node000002" href="$d5/d8f/meshx__nvs_8c.html#a0fbc3ba9cfa339d3e1b30d101d424685" title="MeshX NVS Initialisation." alt="" coords="332,13,443,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="476,28,444,28,444,23,476,23"/>
-<area shape="rect" id="Node000003" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="201,13,284,38"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="316,28,284,28,284,23,316,23"/>
-<area shape="rect" id="Node000004" href="$d0/d29/main_8c.html#a3583f130e87200c7139a48b18f72c8b0" title="Main application entry point." alt="" coords="5,13,153,38"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="185,28,153,28,153,23,185,23"/>
-</map>

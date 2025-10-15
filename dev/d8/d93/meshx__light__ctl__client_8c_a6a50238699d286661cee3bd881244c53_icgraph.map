@@ -1,5 +1,0 @@
-<map id="meshx_ctl_state_change_notify" name="meshx_ctl_state_change_notify">
-<area shape="rect" id="Node000001" title="Notifies about a change in the CTL (Color Temperature Lightness) state." alt="" coords="249,5,414,46"/>
-<area shape="rect" id="Node000002" href="$d8/d93/meshx__light__ctl__client_8c.html#a6270d9d91a94934c3a9b260519c5a16b" title="Handles generic light model messages for the Light CTL client." alt="" coords="5,13,201,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="234,28,201,28,201,23,234,23"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="cwww_client_element" name="cwww_client_element">
-<area shape="rect" id="Node000001" title="Structure to hold the cwww client element." alt="" coords="53,503,224,610"/>
-<area shape="rect" id="Node000002" href="$d2/dd1/structcwww__cli__ctx.html" title="Structure to hold the context of the cwww client." alt="" coords="21,292,113,440"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,438,92,478,96,487,91,489,87,480,75,440"/>
-<area shape="rect" id="Node000003" href="$d1/d7c/structmeshx__ctl__el__state.html" title="Structure to hold arguments for sending Light CTL messages." alt="" coords="5,5,128,214"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="70,214,70,275,64,275,64,214"/>
-<area shape="rect" id="Node000004" href="$d1/da6/structmeshx__model__interface.html" title=" " alt="" coords="137,312,285,419"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="203,420,184,480,180,488,175,486,179,478,198,418"/>
-</map>
