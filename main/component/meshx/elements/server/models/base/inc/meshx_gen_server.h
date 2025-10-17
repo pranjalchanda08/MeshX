@@ -15,6 +15,14 @@
 
 #include "interface/ble_mesh/server/meshx_ble_mesh_gen_srv.h"
 
+typedef struct meshx_gen_server_send_params
+{
+    meshx_model_t *p_model;
+    meshx_ctx_t *p_ctx;
+    meshx_gen_srv_state_change_t state_change;
+    size_t data_len;
+}meshx_gen_server_send_params_t;
+
 /**
  * @brief Sends a message to the BLE subsystem via the control task.
  *
@@ -77,20 +85,13 @@ meshx_err_t meshx_gen_srv_init(void);
  * It checks if the provided model and context are valid, and if the opcode is within the
  * range of supported Generic Server opcodes.
  *
- * @param[in] p_model       Pointer to the Generic Server model structure.
- * @param[in] p_ctx         Pointer to the context containing message information.
- * @param[in] state_change  The state change data to be sent in the status message.
- * @param[in] data_len      The length of the data to be sent in the status message.
+ * @param[in] params       Pointer to the Generic Server sending params
  *
  * @return
  *     - MESHX_SUCCESS: Successfully sent the status message.
  *     - MESHX_INVALID_ARG: Invalid argument provided.
  *     - MESHX_ERR_PLAT: Platform-specific error occurred.
  */
-meshx_err_t meshx_gen_srv_status_send(
-    meshx_model_t *p_model,
-    meshx_ctx_t *p_ctx,
-    meshx_gen_srv_state_change_t state_change,
-    size_t data_len);
+meshx_err_t meshx_gen_srv_status_send(meshx_gen_server_send_params_t *params);
 
 #endif /* __MESHX_GEN_SERVER_H__ */
