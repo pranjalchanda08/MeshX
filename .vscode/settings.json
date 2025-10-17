@@ -2,11 +2,13 @@
     "files.associations": {
         "*.h": "c",
         "*.c": "c",
+        "*.cpp": "cpp",
+        "*.hpp": "cpp"
     },
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
     "editor.wordWrapColumn": 100,
-    "cmake.sourceDirectory": "/workspaces/MeshX",
-    "sonarlint.pathToCompileCommands": "${workspaceFolder}/build/compile_commands.json",
-    "idf.pythonInstallPath": "/home/codespace/.python/current/bin/python",
+    "cmake.sourceDirectory": "${workspaceFolder}",
+    "sonarlint.pathToCompileCommands": "${workspaceFolder}/build/weact_c3/Debug/all_in_one/compile_commands.json",
+    "idf.pythonInstallPath": "/usr/bin/python3",
 }

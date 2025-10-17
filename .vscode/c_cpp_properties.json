@@ -4,7 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "~/esp/v5.4/esp-idf/components/**"
+                "~/esp/v5.4/esp-idf/components/**",
+                "~/esp/v5.4/esp-idf/**"
             ],
             "defines": [
                 "_DEBUG",
@@ -16,7 +17,8 @@
             "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "windows-msvc-x64",
-            "configurationProvider": "none"
+            "configurationProvider": "none",
+            "compileCommands" : "${workspaceFolder}/build/**/compile_commands.json"
         }
     ],
     "version": 4

@@ -1,4 +1,6 @@
 /**
+ * Copyright © 2024 - 2025 MeshX
+ *
  * @file meshx_api.h
  * @brief This file contains the API definitions for the MeshX application.
  *
