@@ -58,32 +58,25 @@ meshx_err_t meshx_is_status_in_gen_srv_grp(uint16_t opcode)
  * It checks if the provided model and context are valid, and if the opcode is within the
  * range of supported Generic Server opcodes.
  *
- * @param[in] p_model       Pointer to the Generic Server model structure.
- * @param[in] p_ctx         Pointer to the context containing message information.
- * @param[in] state_change  The state change data to be sent in the status message.
- * @param[in] data_len      The length of the data to be sent in the status message.
+ * @param[in] params       Pointer to the Generic Server sending params
  *
  * @return
  *     - MESHX_SUCCESS: Successfully sent the status message.
  *     - MESHX_INVALID_ARG: Invalid argument provided.
  *     - MESHX_ERR_PLAT: Platform-specific error occurred.
  */
-meshx_err_t meshx_gen_srv_status_send(
-    meshx_model_t *p_model,
-    meshx_ctx_t *p_ctx,
-    meshx_gen_srv_state_change_t state_change,
-    size_t data_len)
+meshx_err_t meshx_gen_srv_status_send(meshx_gen_server_send_params_t *params)
 {
-    if (!p_model || !p_ctx || p_ctx->dst_addr == MESHX_ADDR_UNASSIGNED)
+    if (!params|| !params->p_model || !params->p_ctx || params->data_len == 0 || params->p_ctx->dst_addr == MESHX_ADDR_UNASSIGNED)
         return MESHX_INVALID_ARG;
-    if (meshx_is_status_in_gen_srv_grp((uint16_t)p_ctx->opcode) != MESHX_SUCCESS)
+    if (meshx_is_status_in_gen_srv_grp((uint16_t)params->p_ctx->opcode) != MESHX_SUCCESS)
         return MESHX_INVALID_ARG;
 
     return meshx_plat_gen_srv_send_status(
-        p_model,
-        p_ctx,
-        &state_change,
-        data_len
+        params->p_model,
+        params->p_ctx,
+        &params->state_change,
+        params->data_len
     );
 }
 /**

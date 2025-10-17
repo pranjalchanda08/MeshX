@@ -18,9 +18,6 @@
 #include "meshx_control_task.h"
 #include "interface/ble_mesh/server/meshx_ble_mesh_gen_srv.h"
 
-#define CONTROL_TASK_MSG_EVT_TO_BLE_GEN_SRV_MASK \
-    CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV
-
 /**
  * @brief Creates and initializes the Generic Server model platform resources.
  *
