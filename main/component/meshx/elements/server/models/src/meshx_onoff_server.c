@@ -129,12 +129,13 @@ meshx_err_t meshx_gen_on_off_srv_status_send(
             .onoff = on_off_state
         }
     };
-    return meshx_gen_srv_status_send(
-            model,
-            ctx,
-            state_change,
-            sizeof(meshx_state_change_gen_onoff_set_t)
-    );
+    meshx_gen_server_send_params_t params = {
+        .p_model = model,
+        .p_ctx = ctx,
+        .state_change = state_change,
+        .data_len = sizeof(meshx_state_change_gen_onoff_set_t)
+    };
+    return meshx_gen_srv_status_send(&params);
 }
 /**
  * @brief Initialize the On/Off server model.
