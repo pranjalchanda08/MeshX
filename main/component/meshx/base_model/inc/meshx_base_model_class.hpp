@@ -15,6 +15,7 @@
 #include <meshx_c_header.h>
 #include <forward_list>
 #include <functional>
+#include <memory>
 
 #define MESHX_BASE_TEMPLATE_PROTO          template <typename ble_mesh_send_msg_params>
 #define MESHX_BASE_TEMPLATE_PARAMS                  <ble_mesh_send_msg_params>
