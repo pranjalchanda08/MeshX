@@ -471,8 +471,8 @@ static meshx_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, cont
                 err = meshx_gen_on_off_srv_send_pack_create(
                         CWWW_SRV_EL(rel_el_id).onoff_srv_model->meshx_sig,
                         (uint16_t)el_id,
-                        pdev->meshx_store.net_key_id,
-                        CWWW_SRV_EL(rel_el_id).srv_ctx->app_id,
+                        (uint8_t)pdev->meshx_store.net_key_id,
+                        (uint8_t)CWWW_SRV_EL(rel_el_id).srv_ctx->app_id,
                         CWWW_SRV_EL(rel_el_id).srv_ctx->pub_addr,
                         CWWW_SRV_EL(rel_el_id).srv_ctx->prev_state.on_off,
                         &gen_srv_send

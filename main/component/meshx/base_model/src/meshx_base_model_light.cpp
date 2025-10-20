@@ -279,3 +279,123 @@ meshx_err_t meshXBaseLightClientModel::plat_send_msg(meshx_gen_light_client_send
 /*********************************************************************************************************
  * meshXBaseLightServerModel
  ********************************************************************************************************/
+#if CONFIG_ENABLE_LIGHT_SERVER
+
+constexpr uint32_t MESHX_LIGHT_SERVER_INIT_MAGIC_NO = 0x2483;
+
+/**
+ * @brief Constructor for the meshXBaseLightServerModel class.
+ *
+ * This constructor initializes a meshXBaseLightServerModel object with the given
+ * model ID and control task message handle.
+ *
+ * @param model_id The model ID associated with the light server model.
+ * @param from_ble_cb The control task message handle associated with the light server model.
+ *
+ * @return None
+ */
+meshXBaseLightServerModel::meshXBaseLightServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
+    : meshXBaseServerModel(model_id, from_ble_cb)
+{
+    status = meshXBaseLightServerModel::plat_model_init();
+    if (status != MESHX_SUCCESS)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "plat_model_init failed");
+        return;
+    }
+}
+
+/**
+ * @brief Initialization function for the Light Server model.
+ *
+ * This function is responsible for initializing the Light Server model.
+ * It checks if the model has been initialized before, and if not, it calls the platform
+ * specific initialization function.
+ *
+ * @return meshx_err_t containing the result of the initialization operation.
+ */
+meshx_err_t meshXBaseLightServerModel::plat_model_init(void)
+{
+    if(plat_server_init == MESHX_LIGHT_SERVER_INIT_MAGIC_NO)
+    {
+        return MESHX_SUCCESS;
+    }
+    plat_server_init = MESHX_LIGHT_SERVER_INIT_MAGIC_NO;
+    return meshx_plat_light_srv_init();
+}
+
+/**
+ * @brief Validate a light server status opcode.
+ *
+ * This function determines whether the provided opcode corresponds to a status message
+ * in the Light Server group in the MeshX protocol.
+ *
+ * @param[in] opcode The opcode to validate.
+ * @return meshx_err_t containing the result of the validation operation.
+ *                     Returns MESHX_SUCCESS if the opcode is valid, or an error code otherwise.
+ */
+meshx_err_t meshXBaseLightServerModel::validate_server_status_opcode(uint16_t opcode)
+{
+    switch(opcode)
+    {
+        case MESHX_MODEL_OP_LIGHT_LIGHTNESS_STATUS:
+        case MESHX_MODEL_OP_LIGHT_LIGHTNESS_LINEAR_STATUS:
+        case MESHX_MODEL_OP_LIGHT_LIGHTNESS_LAST_STATUS:
+        case MESHX_MODEL_OP_LIGHT_LIGHTNESS_DEFAULT_STATUS:
+        case MESHX_MODEL_OP_LIGHT_LIGHTNESS_RANGE_STATUS:
+        case MESHX_MODEL_OP_LIGHT_CTL_STATUS:
+        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS:
+        case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS:
+        case MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS:
+        case MESHX_MODEL_OP_LIGHT_HSL_STATUS:
+        case MESHX_MODEL_OP_LIGHT_HSL_HUE_STATUS:
+        case MESHX_MODEL_OP_LIGHT_HSL_SATURATION_STATUS:
+        case MESHX_MODEL_OP_LIGHT_HSL_DEFAULT_STATUS:
+        case MESHX_MODEL_OP_LIGHT_HSL_RANGE_STATUS:
+        case MESHX_MODEL_OP_LIGHT_XYL_STATUS:
+        case MESHX_MODEL_OP_LIGHT_XYL_TARGET_STATUS:
+        case MESHX_MODEL_OP_LIGHT_XYL_DEFAULT_STATUS:
+        case MESHX_MODEL_OP_LIGHT_XYL_RANGE_STATUS:
+        case MESHX_MODEL_OP_LIGHT_LC_MODE_STATUS:
+        case MESHX_MODEL_OP_LIGHT_LC_OM_STATUS:
+        case MESHX_MODEL_OP_LIGHT_LC_LIGHT_ONOFF_STATUS:
+        case MESHX_MODEL_OP_LIGHT_LC_PROPERTY_STATUS:
+            return MESHX_SUCCESS;
+        default:
+            return MESHX_FAIL;
+    }
+}
+
+/**
+ * @brief Sends a status message for the Light Server model.
+ *
+ * This function sends a status message for the Light Server model to the BLE Mesh network.
+ * It checks if the provided model and context are valid, and if the opcode is within the
+ * range of supported Light Server opcodes.
+ *
+ * @param[in] params Pointer to the Light Server sending params
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully sent the status message.
+ *     - MESHX_INVALID_ARG: Invalid argument provided.
+ *     - MESHX_ERR_PLAT: Platform-specific error occurred.
+ */
+meshx_err_t meshXBaseLightServerModel::plat_send_msg(meshx_light_server_send_params_t *params)
+{
+    if (!params || !params->p_model || !params->p_ctx || params->p_ctx->dst_addr == MESHX_ADDR_UNASSIGNED)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    if (validate_server_status_opcode((uint16_t)params->p_ctx->opcode) != MESHX_SUCCESS)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    return meshx_plat_gen_light_srv_send_status(
+        params->p_model,
+        params->p_ctx,
+        params->state_change
+    );
+}
+
+#endif /* CONFIG_ENABLE_LIGHT_SERVER */
