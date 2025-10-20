@@ -110,12 +110,13 @@ meshx_err_t meshx_plat_del_model_pub(meshx_ptr_t* p_pub);
  *
  * @param[in]  p_model      Pointer to the model structure to be initialized.
  * @param[out] p_pub        Pointer to a location where the address of the publication context will be stored.
- * @param[out] p_cli  Pointer to a location where the address of the on/off client instance will be stored.
+ * @param[out] p_cli        Pointer to a location where the address of the on/off client instance will be stored.
+ * @param[in]  model_id     Model ID for the generic client model.
  *
  * @return meshx_err_t      Returns an error code indicating the result of the operation.
  *                          Typically, MESHX_OK on success or an appropriate error code on failure.
  */
-meshx_err_t meshx_plat_client_create(meshx_ptr_t p_model, meshx_ptr_t* p_pub, meshx_ptr_t* p_cli);
+meshx_err_t meshx_plat_client_create(meshx_ptr_t p_model, meshx_ptr_t* p_pub, meshx_ptr_t* p_cli, uint16_t model_id);
 
 /**
  * @brief Retrieve the model ID of a generic server model.

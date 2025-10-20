@@ -501,12 +501,13 @@ meshx_err_t meshx_light_ctl_srv_status_send( meshx_model_t *p_model,
             .temperature = temperature
         }
     };
-
-    meshx_err_t err = meshx_gen_light_srv_status_send(
-        p_model,
-        ctx,
-        &state_change
-    );
+    meshx_light_server_send_params_t params =
+    {
+        .p_model = p_model,
+        .p_ctx = ctx,
+        .state_change = &state_change
+    };
+    meshx_err_t err = meshx_gen_light_srv_status_send(&params);
 
     if (err != MESHX_SUCCESS)
     {

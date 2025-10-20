@@ -112,4 +112,45 @@ public:
     ~meshXBaseLightClientModel() = default;
 };
 
+/*********************************************************************************************************
+ * meshXBaseLightServerModel
+ ********************************************************************************************************/
+/**
+ * @class meshXBaseLightServerModel
+ * @brief Implementation of meshXBaseServerModel for Light BLE mesh models.
+ *
+ * This class provides a concrete implementation of the template-based meshXBaseServerModel
+ * specifically designed for Light BLE mesh server models. It inherits all the template
+ * benefits including type safety, static callback dispatching, and enhanced debugging
+ * while providing Light-specific functionality.
+ *
+ * Key Features:
+ * - Inherits template-based architecture from meshXBaseServerModel
+ * - Provides Light-specific opcode validation and message handling
+ * - Implements platform-specific message sending for Light models
+ * - Supports all Light server model types (Lightness, CTL, HSL, XYL, LC)
+ * - Enhanced error handling and debugging with template type identification
+ *
+ * Supported Operations:
+ * - Light Lightness status operations
+ * - Light CTL status operations
+ * - Light HSL status operations
+ * - Light XYL status operations
+ * - Light LC (Light Control) status operations
+ *
+ * @see meshXBaseServerModel for base template functionality.
+ * @see meshx_light_server_send_params_t for send parameter structure.
+ */
+class meshXBaseLightServerModel : private meshXBaseServerModel <meshXBaseLightServerModel, meshx_light_server_send_params_t>
+{
+    private:
+        meshx_err_t plat_model_init(void) override;
+        meshx_err_t validate_server_status_opcode(uint16_t opcode) override;
+    public:
+        meshx_err_t plat_send_msg(meshx_light_server_send_params_t *params) override;
+        meshXBaseLightServerModel() = delete;
+        meshXBaseLightServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb);
+        ~meshXBaseLightServerModel() = default;
+};
+
 #endif /* _MESHX_BASE_MODEL_LIGHT_H_ */
