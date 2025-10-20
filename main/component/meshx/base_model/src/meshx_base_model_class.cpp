@@ -21,7 +21,7 @@
 
 #include "meshx_base_model_class.hpp"
 
-#define MESHX_CLIENT_INIT_MAGIC_NO 0x1121
+constexpr uint32_t MESHX_CLIENT_INIT_MAGIC_NO = 0x1121;
 
 /**
  * @brief Constructor for the meshXBaseModel class.
