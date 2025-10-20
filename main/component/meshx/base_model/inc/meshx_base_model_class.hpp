@@ -41,7 +41,15 @@ using control_msg_cb = std::function<meshx_err_t(dev_struct_t *, control_task_ms
 MESHX_BASE_TEMPLATE_PROTO
     class meshXBaseModel {
 private:
+    /**
+     * @brief This function is used to register a callback function for a BLE message associated with the given model ID.
+     * @note This function is self invoking and shall be called as soon as the model is initialized using meshXBaseModel(...)
+     */
     meshx_err_t from_ble_reg_cb(void) const;
+    /**
+     * @brief This function is used to deregister a callback function for a BLE message associated with the given model ID.
+     * @note This function is self invoking and shall be called as soon as the model is deinitialized using ~meshXBaseModel()
+     */
     meshx_err_t from_ble_dereg_cb(void) const;
 public:
     uint32_t model_id;
@@ -50,11 +58,18 @@ public:
     /* meshx_err_t status to be used where return value is not used */
     meshx_err_t status = MESHX_SUCCESS;
 
+    /*
+     * @brief A virtual function to be implemented by derived classes which shall be used to initialize the platform model library
+     * and not actually create a logical model
+     */
     virtual meshx_err_t plat_model_init(void) = 0;
+    /**
+     * @brief A virtual function to be implemented by derived classes which shall be used to send a message to the platform model
+     */
     virtual meshx_err_t plat_send_msg(ble_mesh_send_msg_params *params) = 0;
 
-    meshXBaseModel() = delete;
     meshXBaseModel(uint32_t model_id, const control_msg_cb& from_ble_cb, meshXBaseModelType model_type);
+    meshXBaseModel() = delete;
     ~meshXBaseModel();
 };
 
@@ -91,20 +106,20 @@ private:
         uint16_t model_id;                   /**< Model ID associated with the re-sending. */
         ble_mesh_plat_model_cb_params param; /**< Params received from Platform callback */
     };
-
 protected:
     /* Re-initialization protection by multiple client objects */
     static uint16_t plat_client_init;
     static std::forward_list<base_client_model_cb_reg_t> base_client_model_cb_list;
 
-    // Template type identification for debugging (RTTI-free)
+    /* Template type identification for debugging (RTTI-free) */
     static constexpr const char* get_client_type_name() {
         return __PRETTY_FUNCTION__;
     }
 
-    // Model validation function - to be implemented by derived classes
+    /* Model validation function - to be implemented by derived classes */
     virtual meshx_err_t validate_client_model_id (uint32_t model_id) = 0;
 
+    /* Per instance template based static functions */
     static meshx_err_t base_txcm_handle_ack     (uint16_t src_addr);
     static meshx_err_t base_txcm_handle_resend  (uint16_t model_id, const ble_mesh_plat_model_cb_params *param);
     static meshx_err_t base_from_ble_msg_handle (dev_struct_t *pdev, control_task_msg_evt_t evt, ble_mesh_plat_model_cb_params *params);

@@ -26,7 +26,7 @@
 #ifndef _MESHX_BASE_MODEL_GENERIC_H_
 #define _MESHX_BASE_MODEL_GENERIC_H_
 
-#include<meshx_base_model_class.hpp>
+#include <meshx_base_model_class.hpp>
 
 #define MESHX_BASE_GENERIC_SERVER_TEMPLATE_PROTO
 #define MESHX_BASE_GENERIC_SERVER_TEMPLATE_PARAMS
@@ -56,12 +56,12 @@ using meshx_gen_cli_resend_ctx = struct meshx_gen_cli_resend_ctx
  */
 using meshx_gen_client_msg_ctx_t = struct meshx_gen_client_msg_ctx
 {
-    meshx_ptr_t model;              /**< Model context associated with the message. */
-    uint16_t opcode;                /**< Opcode associated with the message. */
-    uint16_t addr;                  /**< Destination address associated with the message. */
-    uint16_t net_idx;               /**< Network index associated with the message. */
-    uint16_t app_idx;               /**< Application key index associated with the message. */
-    meshx_gen_cli_set_t state;      /**< State parameters associated with the message. */
+    meshx_ptr_t model;         /**< Model context associated with the message. */
+    uint16_t opcode;           /**< Opcode associated with the message. */
+    uint16_t addr;             /**< Destination address associated with the message. */
+    uint16_t net_idx;          /**< Network index associated with the message. */
+    uint16_t app_idx;          /**< Application key index associated with the message. */
+    meshx_gen_cli_set_t state; /**< State parameters associated with the message. */
 };
 
 /**
@@ -101,7 +101,7 @@ using meshx_gen_client_msg_ctx_t = struct meshx_gen_client_msg_ctx
  * @see meshx_gen_client_send_params_t for send parameter structure.
  */
 MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PROTO
-class meshXBaseGenericClientModel : private meshXBaseClientModel <meshXBaseGenericClientModel, meshx_gen_client_send_params_t, meshx_gen_cli_cb_param_t>
+class meshXBaseGenericClientModel : private meshXBaseClientModel<meshXBaseGenericClientModel, meshx_gen_client_send_params_t, meshx_gen_cli_cb_param_t>
 {
 private:
     meshx_err_t plat_model_init(void) override;
@@ -110,28 +110,30 @@ private:
     static meshx_err_t meshx_is_unack_opcode(uint32_t opcode);
     static meshx_err_t meshx_is_get_req_opcode(uint16_t opcode);
     static meshx_err_t meshx_gen_client_txcm_fn_model_send(meshx_gen_client_msg_ctx_t *msg_param, size_t msg_param_len);
+
 public:
     meshx_err_t plat_send_msg(meshx_gen_client_send_params_t *params) override;
 
     meshXBaseGenericClientModel() = delete;
-    meshXBaseGenericClientModel(uint32_t model_id, const control_msg_cb& from_ble_cb);
+    meshXBaseGenericClientModel(uint32_t model_id, const control_msg_cb &from_ble_cb);
 
-    ~meshXBaseGenericClientModel() = default;
+    virtual ~meshXBaseGenericClientModel() = default;
 };
 
 /*********************************************************************************************************
  * meshXBaseGenericServerModel
  ********************************************************************************************************/
 MESHX_BASE_GENERIC_SERVER_TEMPLATE_PROTO
-class meshXBaseGenericServerModel : private meshXBaseServerModel <meshXBaseGenericServerModel, meshx_gen_server_send_params_t>
+class meshXBaseGenericServerModel : private meshXBaseServerModel<meshXBaseGenericServerModel, meshx_gen_server_send_params_t>
 {
-    private:
-        meshx_err_t plat_model_init(void) override;
-        meshx_err_t validate_server_status_opcode(uint16_t opcode) override;
-    public:
-        meshx_err_t plat_send_msg(meshx_gen_server_send_params_t *params) override;
-        meshXBaseGenericServerModel() = delete;
-        meshXBaseGenericServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb);
-        ~meshXBaseGenericServerModel() = default;
+private:
+    meshx_err_t plat_model_init(void) override;
+    meshx_err_t validate_server_status_opcode(uint16_t opcode) override;
+
+public:
+    meshXBaseGenericServerModel() = delete;
+    meshx_err_t plat_send_msg(meshx_gen_server_send_params_t *params) override;
+    meshXBaseGenericServerModel(uint32_t model_id, const control_msg_cb &from_ble_cb);
+    virtual ~meshXBaseGenericServerModel() = default;
 };
 #endif /* _MESHX_BASE_MODEL_GENERIC_H_ */

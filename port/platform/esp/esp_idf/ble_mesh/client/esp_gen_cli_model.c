@@ -163,11 +163,8 @@ meshx_err_t meshx_plat_on_off_gen_cli_create(meshx_ptr_t p_model, meshx_ptr_t* p
     {
         return MESHX_INVALID_ARG; // Invalid arguments
     }
-    /* SIG On OFF Init */
-    uint16_t model_id = ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_CLI;
-    memcpy((meshx_ptr_t)&(((MESHX_MODEL *)p_model)->model_id), &model_id, sizeof(model_id));
 
-    return meshx_plat_client_create(p_model, p_pub, p_onoff_cli);
+    return meshx_plat_client_create(p_model, p_pub, p_onoff_cli, ESP_BLE_MESH_MODEL_ID_GEN_ONOFF_CLI);
 }
 
 /**

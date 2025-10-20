@@ -27,6 +27,7 @@ extern "C" {
 #include "meshx_gen_light_cli.h"
 
 #include "meshx_gen_server.h"
+#include "meshx_light_server.h"
 /*************************************************************
  * Interface Header
  *************************************************************/
@@ -34,6 +35,7 @@ extern "C" {
 #include <interface/ble_mesh/client/meshx_ble_mesh_light_cli.h>
 
 #include <interface/ble_mesh/server/meshx_ble_mesh_gen_srv.h>
+#include <interface/ble_mesh/server/meshx_ble_mesh_light_srv.h>
 
 #ifdef __cplusplus
 }

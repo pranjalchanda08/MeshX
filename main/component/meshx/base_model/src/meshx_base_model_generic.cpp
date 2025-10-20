@@ -297,7 +297,6 @@ meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAM
 /*********************************************************************************************************
  * meshXBaseGenericServerModel
  ********************************************************************************************************/
-
 #if CONFIG_ENABLE_GEN_SERVER
 
 constexpr uint32_t MESHX_SERVER_INIT_MAGIC_NO = 0x1121;
@@ -379,10 +378,38 @@ meshx_err_t meshXBaseGenericServerModel MESHX_BASE_GENERIC_SERVER_TEMPLATE_PARAM
     }
 }
 
+/**
+ * @brief Sends a status message for the Generic Server model.
+ *
+ * This function sends a status message for the Generic Server model to the BLE Mesh network.
+ * It checks if the provided model and context are valid, and if the opcode is within the
+ * range of supported Generic Server opcodes.
+ *
+ * @param[in] params Pointer to the Generic Server sending params
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully sent the status message.
+ *     - MESHX_INVALID_ARG: Invalid argument provided.
+ *     - MESHX_ERR_PLAT: Platform-specific error occurred.
+ */
 MESHX_BASE_GENERIC_SERVER_TEMPLATE_PROTO
 meshx_err_t meshXBaseGenericServerModel MESHX_BASE_GENERIC_SERVER_TEMPLATE_PARAMS::plat_send_msg(meshx_gen_server_send_params_t *params)
 {
-    return MESHX_SUCCESS;
+    if (!params || !params->p_model || !params->p_ctx || params->data_len == 0 || params->p_ctx->dst_addr == MESHX_ADDR_UNASSIGNED)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    if (validate_server_status_opcode((uint16_t)params->p_ctx->opcode) != MESHX_SUCCESS)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    return meshx_plat_gen_srv_send_status(
+        params->p_model,
+        params->p_ctx,
+        &params->state_change,
+        params->data_len
+    );
 }
 
 #endif /* CONFIG_ENABLE_GEN_SERVER */
