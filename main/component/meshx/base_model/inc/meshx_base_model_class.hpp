@@ -12,19 +12,7 @@
 #ifndef _MESHX_BASE_MODEL_CLASS_H_
 #define _MESHX_BASE_MODEL_CLASS_H_
 
-#include <meshx_c_header.h>
-#include <forward_list>
-#include <functional>
-#include <memory>
-
-#define MESHX_BASE_TEMPLATE_PROTO          template <typename ble_mesh_send_msg_params>
-#define MESHX_BASE_TEMPLATE_PARAMS                  <ble_mesh_send_msg_params>
-
-#define MESHX_BASE_CLIENT_TEMPLATE_PROTO   template <typename baseClientModelDerived, typename ble_mesh_send_msg_params, typename ble_mesh_plat_model_cb_params>
-#define MESHX_BASE_CLIENT_TEMPLATE_PARAMS           <baseClientModelDerived, ble_mesh_send_msg_params, ble_mesh_plat_model_cb_params>
-
-#define MESHX_BASE_SERVER_TEMPLATE_PROTO   template <typename baseServerModelDerived, typename ble_mesh_send_msg_params>
-#define MESHX_BASE_SERVER_TEMPLATE_PARAMS           <baseServerModelDerived, ble_mesh_send_msg_params>
+#include <meshx_fwd_decl.hpp>
 
 /**************************************************************************************************************************************************************
  * meshXBaseModel
@@ -37,8 +25,15 @@ enum class meshXBaseModelType
 };
 
 using meshXBaseModelType_t = enum meshXBaseModelType;
-using control_msg_cb = std::function<meshx_err_t(dev_struct_t *, control_task_msg_evt_t, void *)>;
 
+using control_msg_cb = std::function<meshx_err_t(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t)>;
+
+/**
+ * @class meshXBaseModel
+ * @brief This class is used for the meshXBaseModel.
+ *
+ * @tparam ble_mesh_send_msg_params_t The type of the BLE mesh send message parameters.
+ */
 MESHX_BASE_TEMPLATE_PROTO
     class meshXBaseModel {
 private:
@@ -59,15 +54,15 @@ public:
     /* meshx_err_t status to be used where return value is not used */
     meshx_err_t status = MESHX_SUCCESS;
 
-    /*
+    /**
      * @brief A virtual function to be implemented by derived classes which shall be used to initialize the platform model library
-     * and not actually create a logical model
+     *        and not actually create a logical model
      */
     virtual meshx_err_t plat_model_init(void) = 0;
     /**
      * @brief A virtual function to be implemented by derived classes which shall be used to send a message to the platform model
      */
-    virtual meshx_err_t plat_send_msg(ble_mesh_send_msg_params *params) = 0;
+    virtual meshx_err_t plat_send_msg(ble_mesh_send_msg_params_t *params) = 0;
 
     meshXBaseModel(uint32_t model_id, const control_msg_cb& from_ble_cb, meshXBaseModelType model_type);
     meshXBaseModel() = delete;
@@ -79,7 +74,7 @@ public:
  * @brief This class is used for the meshXBaseServerModel.
  **************************************************************************************************************************************************************/
 MESHX_BASE_SERVER_TEMPLATE_PROTO
-    class meshXBaseServerModel : public meshXBaseModel<ble_mesh_send_msg_params> {
+    class meshXBaseServerModel : public meshXBaseModel<ble_mesh_send_msg_params_t> {
 protected:
     static uint16_t plat_server_init;
     virtual meshx_err_t validate_server_status_opcode(uint16_t opcode) = 0;
@@ -94,8 +89,23 @@ public:
  * @brief This class is used for the meshXBaseClientModel.
  *************************************************************************************************************************************************************/
 
+enum class meshx_base_cli_evt
+{
+    MESHX_BASE_CLI_EVT_GET = MESHX_BIT(0),
+    MESHX_BASE_CLI_EVT_SET = MESHX_BIT(1),
+    MESHX_BASE_CLI_PUBLISH = MESHX_BIT(2),
+    MESHX_BASE_CLI_TIMEOUT = MESHX_BIT(3),
+    MESHX_BASE_CLI_EVT_ALL = (       \
+            MESHX_BASE_CLI_EVT_GET | \
+            MESHX_BASE_CLI_EVT_SET | \
+            MESHX_BASE_CLI_PUBLISH | \
+            MESHX_BASE_CLI_TIMEOUT)
+};
+
+using meshx_base_cli_evt_t = enum meshx_base_cli_evt;
+
 MESHX_BASE_CLIENT_TEMPLATE_PROTO
-    class meshXBaseClientModel : public meshXBaseModel<ble_mesh_send_msg_params> {
+    class meshXBaseClientModel : public meshXBaseModel<ble_mesh_send_msg_params_t> {
 private:
     using base_client_model_cb_reg_t = struct base_client_model_cb_reg
     {
@@ -105,7 +115,7 @@ private:
     using base_client_model_resend_ctx_t = struct base_client_model_resend_ctx
     {
         uint16_t model_id;                   /**< Model ID associated with the re-sending. */
-        ble_mesh_plat_model_cb_params param; /**< Params received from Platform callback */
+        ble_mesh_plat_model_cb_params_t param; /**< Params received from Platform callback */
     };
 protected:
     /* Re-initialization protection by multiple client objects */
@@ -122,8 +132,8 @@ protected:
 
     /* Per instance template based static functions */
     static meshx_err_t base_txcm_handle_ack     (uint16_t src_addr);
-    static meshx_err_t base_txcm_handle_resend  (uint16_t model_id, const ble_mesh_plat_model_cb_params *param);
-    static meshx_err_t base_from_ble_msg_handle (dev_struct_t *pdev, control_task_msg_evt_t evt, ble_mesh_plat_model_cb_params *params);
+    static meshx_err_t base_txcm_handle_resend  (uint16_t model_id, const ble_mesh_plat_model_cb_params_t *param);
+    static meshx_err_t base_from_ble_msg_handle (dev_struct_t *pdev, control_task_msg_evt_t evt, ble_mesh_plat_model_cb_params_t *params);
     static meshx_err_t base_handle_txcm_msg     (dev_struct_t *pdev, control_task_msg_evt_t evt, base_client_model_resend_ctx_t *param);
 public:
 

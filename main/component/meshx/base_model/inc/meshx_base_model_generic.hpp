@@ -82,9 +82,9 @@ using meshx_gen_client_msg_ctx_t = struct meshx_gen_client_msg_ctx
  * - Static wrapper functions for C-style callback compatibility
  *
  * Template Parameters:
- * - baseClientModelDerived: meshXBaseGenericClientModel (CRTP pattern)
- * - ble_mesh_plat_model_cb_params: meshx_gen_cli_cb_param_t
- * - ble_mesh_send_msg_params: meshx_gen_client_send_params_t
+ * - baseClientModelDerived_t: meshXBaseGenericClientModel (CRTP pattern)
+ * - ble_mesh_plat_model_cb_params_t: meshx_gen_cli_cb_param_t
+ * - ble_mesh_send_msg_params_t: meshx_gen_client_send_params_t
  *
  * Supported Operations:
  * - Generic OnOff SET/GET operations
