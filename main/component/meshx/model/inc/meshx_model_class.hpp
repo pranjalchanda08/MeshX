@@ -15,23 +15,9 @@
  * @author Pranjal Chanda
  * @date 2024-2025
  * @copyright Copyright 2024 - 2025 MeshX
- * @project MeshX
- * @version 1.0
- * @license MIT License
- * @note This file is part of the MeshX project.
- * @warning This file is subject to change without notice.
  */
 
 #include <meshx_base_model_class.hpp>
-
-#define MESHX_MODEL_TEMPLATE_PROTO          template <typename meshxBaseModel_t, typename meshx_send_packet_params_t>
-#define MESHX_MODEL_TEMPLATE_PARAMS                  <meshxBaseModel_t, meshx_send_packet_params_t>
-
-#define MESHX_SERVER_MODEL_TEMPLATE_PROTO   template <typename meshxBaseServerModel_t, typename meshx_send_packet_params_t>
-#define MESHX_SERVER_MODEL_TEMPLATE_PARAMS           <meshxBaseServerModel_t, meshx_send_packet_params_t>
-
-#define MESHX_CLIENT_MODEL_TEMPLATE_PROTO   template <typename meshxBaseClientModel_t, typename meshx_send_packet_params_t>
-#define MESHX_CLIENT_MODEL_TEMPLATE_PARAMS           <meshxBaseClientModel_t, meshx_send_packet_params_t>
 
 /*********************************************************************************
  * meshXModel
@@ -44,17 +30,48 @@ MESHX_MODEL_TEMPLATE_PROTO
 class meshXModel
 {
 private:
+    /* private members */
+    meshXElement *parent_element;           /*<! Pointer to the parent element */
+    meshxBaseModel_t *base_model;           /*<! Pointer to the base model */
 
-    meshxBaseModel_t *base_model;
-    meshx_model_interface_t model;
+    meshx_err_t status;                     /*<! Status of the model */
+    MESHX_MODEL *p_plat_model;              /*<! Pointer to the platform model */
+    meshx_model_interface_t *model_intr;    /*<! Pointer to the model interface */
 
 public:
-
-    virtual meshx_err_t plat_model_create(void) = 0;
+    /***********************************************************
+     * Virtual Functions
+     ***********************************************************/
+    /**
+     * @brief A virtual function to be implemented by derived classes which shall be used
+     *        to handle upstream events from BLE MESH.
+     * @note  The defination is only required for the callback to be autoatically registered by
+     *        respective base_model->base_client_model_cb_list
+     * @relates meshXModel(MESHX_MODEL *p_plat_model, uint32_t model_id)
+     */
+    virtual meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) = 0;
+    /**
+     * @brief A virtual function to be implemented by derived classes which shall be used to
+     *        send a message to the platform model
+     */
     virtual meshx_err_t send_packet(meshx_send_packet_params_t *params) = 0;
+    /**
+     * @brief A virtual function to be implemented by derived classes which shall be used to
+     *        create a logical model
+     */
+    virtual meshx_err_t plat_model_create(void) = 0;
 
-    meshx_err_t set_base_model(meshxBaseModel_t *p_base_model);
-    meshXModel(uint32_t model_id, const control_msg_cb& from_ble_cb);
+    /***********************************************************
+     * Functions
+     ***********************************************************/
+    meshx_err_t get_init_status(void) const { return status; }
+    MESHX_MODEL * get_plat_model(void) const { return p_plat_model; }
+    meshxBaseModel_t * get_base_model(void) const { return base_model; }
+    meshx_model_interface_t * get_model_intr(void) const { return model_intr; }
+
+    void set_parent_element(meshXElement *parent) { parent_element = parent; }
+
+    meshXModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElement *parent_element = nullptr);
     ~meshXModel() = default;
 };
 
@@ -62,33 +79,36 @@ public:
  * meshXServerModel
  *********************************************************************************/
 /**
- * @brief meshXServerModel class
+ * @class meshXServerModel class
  * @details This is a base class for server models.
- * @params meshxBaseServerModel_t is a meshXBaseServerModel type Class for server models
- * @params meshx_send_packet_params_t is a meshx_send_packet_params_t structure
+ *
+ * @tparam meshxBaseServerModel_t is a meshXBaseServerModel type Class for server models
+ * @tparam meshx_send_packet_params_t is a meshx_send_packet_params_t structure
  */
 MESHX_SERVER_MODEL_TEMPLATE_PROTO
-class meshXServerModel : public meshXModel<meshxBaseServerModel_t, meshx_send_packet_params_t>
+class meshXServerModel : public meshXModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS
 {
 public:
-
-    meshXServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb);
+    meshXServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElement *parent_element = nullptr);
     ~meshXServerModel() = default;
+    meshXServerModel() = delete;
 };
 
 /*********************************************************************************
  * meshXClientModel
  *********************************************************************************/
 /**
- * @brief meshXClientModel class
+ * @class meshXClientModel class
  * @details This is a base class for client models.
- * @params meshxBaseClientModel_t is a meshXBaseClientModel type Class for client models
- * @params meshx_send_packet_params_t is a meshx_send_packet_params_t structure
+ *
+ * @tparam meshxBaseClientModel_t is a meshXBaseClientModel type Class for client models
+ * @tparam meshx_send_packet_params_t is a meshx_send_packet_params_t structure
  */
 MESHX_CLIENT_MODEL_TEMPLATE_PROTO
-class meshXClientModel : public meshXModel<meshxBaseClientModel_t, meshx_send_packet_params_t>
+class meshXClientModel : public meshXModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
 {
 public:
-    meshXClientModel(uint32_t model_id, const control_msg_cb& from_ble_cb);
-    ~meshXClientModel() = default;
+    meshXClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElement *parent_element = nullptr);
+    meshXClientModel() = delete;
+    ~meshXClientModel();
 };

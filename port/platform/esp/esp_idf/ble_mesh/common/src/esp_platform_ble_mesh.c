@@ -89,6 +89,21 @@ meshx_err_t meshx_plat_client_create(meshx_ptr_t p_model, meshx_ptr_t* p_pub, me
     return MESHX_SUCCESS; // Successfully created the model and publication context
 }
 
+meshx_err_t meshx_plat_client_delete(meshx_ptr_t p_model, meshx_ptr_t* p_pub, meshx_ptr_t* p_cli)
+{
+    if (!p_model || !p_pub || !p_cli)
+    {
+        return MESHX_INVALID_ARG; // Invalid arguments
+    }
+
+    meshx_plat_del_model_pub(p_pub);
+
+    MESHX_FREE(*p_cli);
+    *p_cli = NULL;
+
+    return MESHX_SUCCESS;
+}
+
 meshx_err_t meshx_get_model_id(meshx_ptr_t p_model, uint16_t *model_id)
 {
     if(!p_model)

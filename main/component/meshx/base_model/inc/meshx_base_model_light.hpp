@@ -77,9 +77,9 @@ using meshx_light_client_msg_ctx_t = struct meshx_light_client_msg_ctx
  * - Static wrapper functions for C-style callback compatibility
  *
  * Template Parameters:
- * - baseClientModelDerived: meshXBaseLightClientModel (CRTP pattern)
- * - ble_mesh_plat_model_cb_params: meshx_gen_light_cli_cb_param_t
- * - ble_mesh_send_msg_params: meshx_gen_light_client_send_params_t
+ * - baseClientModelDerived_t: meshXBaseLightClientModel (CRTP pattern)
+ * - ble_mesh_plat_model_cb_params_t: meshx_gen_light_cli_cb_param_t
+ * - ble_mesh_send_msg_params_t: meshx_gen_light_client_send_params_t
  *
  * Supported Operations:
  * - Light Lightness SET/GET operations

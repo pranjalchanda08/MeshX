@@ -24,6 +24,8 @@ extern "C" {
  * MESHX Model Common Header
  *************************************************************/
 #include "meshx_gen_client.h"
+#include "meshx_onoff_client.h"
+
 #include "meshx_gen_light_cli.h"
 
 #include "meshx_gen_server.h"
