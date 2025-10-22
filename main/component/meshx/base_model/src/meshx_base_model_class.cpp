@@ -108,28 +108,13 @@ uint16_t meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::plat_server_ini
  */
 MESHX_BASE_SERVER_TEMPLATE_PROTO
 meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::meshXBaseServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
-    : meshXBaseModel<ble_mesh_send_msg_params>(model_id, from_ble_cb, meshXBaseModelType::MESHX_BASE_MODEL_TYPE_SERVER)
+    : meshXBaseModel<ble_mesh_send_msg_params_t>(model_id, from_ble_cb, meshXBaseModelType::MESHX_BASE_MODEL_TYPE_SERVER)
 {
 }
 
 /*********************************************************************************************************
  * meshXBaseClientModel
  ********************************************************************************************************/
-enum class meshx_base_cli_evt
-{
-    MESHX_BASE_CLI_EVT_GET = MESHX_BIT(0),
-    MESHX_BASE_CLI_EVT_SET = MESHX_BIT(1),
-    MESHX_BASE_CLI_PUBLISH = MESHX_BIT(2),
-    MESHX_BASE_CLI_TIMEOUT = MESHX_BIT(3),
-    MESHX_BASE_CLI_EVT_ALL = (       \
-            MESHX_BASE_CLI_EVT_GET | \
-            MESHX_BASE_CLI_EVT_SET | \
-            MESHX_BASE_CLI_PUBLISH | \
-            MESHX_BASE_CLI_TIMEOUT)
-};
-
-using meshx_base_cli_evt_t = enum meshx_base_cli_evt;
-
 MESHX_BASE_CLIENT_TEMPLATE_PROTO
 std::forward_list<typename meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_client_model_cb_reg_t>
     meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_client_model_cb_list = {};
@@ -153,9 +138,9 @@ uint16_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::plat_client_ini
  * 5. Registers the callback in the template-specific callback list
  * 6. Sets up initialization protection using magic number
  *
- * @tparam baseClientModelDerived The derived client model class type
- * @tparam ble_mesh_plat_model_cb_params Platform-specific callback parameter type
- * @tparam ble_mesh_send_msg_params Platform-specific send message parameter type
+ * @tparam baseClientModelDerived_t The derived client model class type
+ * @tparam ble_mesh_plat_model_cb_params_t Platform-specific callback parameter type
+ * @tparam ble_mesh_send_msg_params_t Platform-specific send message parameter type
  *
  * @param[in] model_id The unique 32-bit identifier of the Generic Client model.
  *                     Must be a supported model ID (see validate_client_model_id()).
@@ -172,10 +157,10 @@ uint16_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::plat_client_ini
  */
 MESHX_BASE_CLIENT_TEMPLATE_PROTO
 meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::meshXBaseClientModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
-    : meshXBaseModel<ble_mesh_send_msg_params>(model_id, base_from_ble_msg_handle, meshXBaseModelType::MESHX_BASE_MODEL_TYPE_CLIENT)
+    : meshXBaseModel<ble_mesh_send_msg_params_t>(model_id, base_from_ble_msg_handle, meshXBaseModelType::MESHX_BASE_MODEL_TYPE_CLIENT)
 {
     // Validate model ID and callback - consistent with C implementation
-    if (!from_ble_cb || static_cast<baseClientModelDerived*>(this)->validate_client_model_id(model_id) != MESHX_SUCCESS)
+    if (!from_ble_cb || static_cast<baseClientModelDerived_t*>(this)->validate_client_model_id(model_id) != MESHX_SUCCESS)
     {
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "[%s] Invalid model_id (%08" PRIx32 ") or callback", get_client_type_name(), model_id);
         this->status = MESHX_INVALID_ARG;
@@ -186,7 +171,7 @@ meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::meshXBaseClientModel(uin
         this->status = MESHX_SUCCESS;
     plat_client_init = MESHX_CLIENT_INIT_MAGIC_NO;
 
-    static_cast <baseClientModelDerived*>(this)->plat_model_init(); // call the Derived platform specific model initialization function
+    static_cast <baseClientModelDerived_t*>(this)->plat_model_init(); // call the Derived platform specific model initialization function
 
     base_client_model_cb_list.push_front({model_id, from_ble_cb});
     this->status = MESHX_SUCCESS;
@@ -219,12 +204,12 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_txcm_ha
  * @retval MESHX_SUCCESS if the message was resent successfully, otherwise an error code.
  */
 MESHX_BASE_CLIENT_TEMPLATE_PROTO
-meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_txcm_handle_resend(uint16_t model_id, const ble_mesh_plat_model_cb_params *param)
+meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_txcm_handle_resend(uint16_t model_id, const ble_mesh_plat_model_cb_params_t *param)
 {
     base_client_model_resend_ctx_t ctx = {
         .model_id = model_id
     };
-    memcpy(&ctx.param, param, sizeof(ble_mesh_plat_model_cb_params));
+    memcpy(&ctx.param, param, sizeof(ble_mesh_plat_model_cb_params_t));
 
     return meshx_txcm_request_send(
         MESHX_TXCM_SIG_RESEND,
@@ -256,9 +241,9 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_txcm_ha
  * 4. Processes successful messages and handles ACK
  * 5. Invokes the registered application callback
  *
- * @tparam baseClientModelDerived The derived client model class type
- * @tparam ble_mesh_plat_model_cb_params Platform-specific callback parameter type
- * @tparam ble_mesh_send_msg_params Platform-specific send message parameter type
+ * @tparam baseClientModelDerived_t The derived client model class type
+ * @tparam ble_mesh_plat_model_cb_params_t Platform-specific callback parameter type
+ * @tparam ble_mesh_send_msg_params_t Platform-specific send message parameter type
  *
  * @param[in] pdev Pointer to the device structure associated with the BLE Mesh node.
  *                 Must not be NULL.
@@ -278,7 +263,7 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_txcm_ha
  */
 MESHX_BASE_CLIENT_TEMPLATE_PROTO
 meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_from_ble_msg_handle(
-    dev_struct_t *pdev, control_task_msg_evt_t evt, ble_mesh_plat_model_cb_params *params)
+    dev_struct_t *pdev, control_task_msg_evt_t evt, ble_mesh_plat_model_cb_params_t *params)
 {
     if (pdev == nullptr || params == nullptr)
     {
@@ -291,7 +276,7 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_from_bl
                get_client_type_name(), params->model_id);
 
     meshx_err_t err = MESHX_SUCCESS;
-    auto *param = static_cast<ble_mesh_plat_model_cb_params*>(params);
+    auto *param = static_cast<ble_mesh_plat_model_cb_params_t*>(params);
     bool cb_invoked = false;
 
     for (auto &node : base_client_model_cb_list)
@@ -357,9 +342,9 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_from_bl
  * 4. Invokes registered callback with timeout notification
  * 5. Returns gracefully if no callback is registered (consistent with C impl)
  *
- * @tparam baseClientModelDerived The derived client model class type
- * @tparam ble_mesh_plat_model_cb_params Platform-specific callback parameter type
- * @tparam ble_mesh_send_msg_params Platform-specific send message parameter type
+ * @tparam baseClientModelDerived_t The derived client model class type
+ * @tparam ble_mesh_plat_model_cb_params_t Platform-specific callback parameter type
+ * @tparam ble_mesh_send_msg_params_t Platform-specific send message parameter type
  *
  * @param[in] pdev Pointer to the device structure associated with the BLE Mesh node.
  *                 Must not be NULL.

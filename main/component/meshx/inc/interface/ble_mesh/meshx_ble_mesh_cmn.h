@@ -119,6 +119,21 @@ meshx_err_t meshx_plat_del_model_pub(meshx_ptr_t* p_pub);
 meshx_err_t meshx_plat_client_create(meshx_ptr_t p_model, meshx_ptr_t* p_pub, meshx_ptr_t* p_cli, uint16_t model_id);
 
 /**
+ * @brief Deletes a generic client model from BLE Mesh.
+ *
+ * This function deletes a generic client model from the BLE Mesh stack,
+ * including the associated publication context and on/off client instance.
+ *
+ * @param[in]  p_model      Pointer to the model structure to be deleted.
+ * @param[out] p_pub        Pointer to a location where the address of the publication context will be stored.
+ * @param[out] p_cli        Pointer to a location where the address of the on/off client instance will be stored.
+ *
+ * @return meshx_err_t      Returns an error code indicating the result of the operation.
+ *                          Typically, MESHX_OK on success or an appropriate error code on failure.
+ */
+meshx_err_t meshx_plat_client_delete(meshx_ptr_t p_model, meshx_ptr_t* p_pub, meshx_ptr_t* p_cli);
+
+/**
  * @brief Retrieve the model ID of a generic server model.
  *
  * This function obtains the model ID associated with a specified generic server model.
