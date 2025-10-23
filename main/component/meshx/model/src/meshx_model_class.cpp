@@ -42,7 +42,7 @@
  */
 MESHX_MODEL_TEMPLATE_PROTO
 meshXModel MESHX_MODEL_TEMPLATE_PARAMS
-    ::meshXModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElement *parent_element)
+    ::meshXModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element)
     : parent_element(parent_element)
 {
     this->p_plat_model = p_plat_model;
@@ -73,7 +73,7 @@ meshXModel MESHX_MODEL_TEMPLATE_PARAMS
  */
 MESHX_SERVER_MODEL_TEMPLATE_PROTO
 meshXServerModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS
-    ::meshXServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElement *parent_element)
+    ::meshXServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element)
     : meshXModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS (p_plat_model, model_id, parent_element) {}
 
 /**************************************************************************************************
@@ -91,28 +91,44 @@ meshXServerModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS
  */
 MESHX_CLIENT_MODEL_TEMPLATE_PROTO
 meshXClientModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
-    ::meshXClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElement *parent_element)
-    : meshXModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS (p_plat_model, model_id, parent_element) {
-        meshx_err_t err = MESHX_SUCCESS;
+    ::meshXClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element)
+    : meshXModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS (p_plat_model, model_id, parent_element) { }
 
-        err = meshx_plat_client_create(
-            p_plat_model,
-            &this->get_model_intr()->pub,
-            &this->get_model_intr()->cli,
-            model_id);
-        if(err)
+/**
+ * @brief Creates and initializes a client model instance.
+ *
+ * This function creates a client model instance associated with the given platform model and
+ * model ID. It also initializes the logical model for the client model and its derivatives.
+ *
+ * @param[in] p_plat_model  A pointer to the platform model (MESHX_MODEL).
+ * @param[in] model_id      The model ID associated with the client model.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the operation.
+ *                      - MESHX_SUCCESS on success
+ *                      - Appropriate error code otherwise
+ */
+MESHX_CLIENT_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXClientModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
+    ::plat_model_create()
+{
+    meshx_err_t err = MESHX_SUCCESS;
+
+    err = meshx_plat_client_create(
+        this->get_plat_model(),
+        &this->get_model_intr()->pub,
+        &this->get_model_intr()->cli,
+        this->get_model_id());
+    if (err)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to create client model");
+        err = meshx_plat_client_delete(this->get_plat_model(), &this->get_model_intr()->cli);
+        if (err)
         {
-            this->status = err;
-            MESHX_LOGE(MODULE_ID_COMMON, "Failed to create client model");
-            err = meshx_plat_client_delete(p_plat_model, &this->get_model_intr()->cli);
-            if (err)
-            {
-                MESHX_LOGE(MODULE_ID_COMMON, "Failed to delete client model");
-                this->status = err;
-            }
-            return;
+            MESHX_LOGE(MODULE_ID_COMMON, "Failed to delete client model");
         }
     }
+    return err;
+}
 
 /**
  * Destructor for the meshXClientModel class.
