@@ -31,7 +31,7 @@ class meshXModel
 {
 private:
     /* private members */
-    meshXElement *parent_element;           /*<! Pointer to the parent element */
+    meshXElementIF *parent_element;         /*<! Pointer to the parent element interface */
     meshxBaseModel_t *base_model;           /*<! Pointer to the base model */
 
     meshx_err_t status;                     /*<! Status of the model */
@@ -69,9 +69,10 @@ public:
     meshxBaseModel_t * get_base_model(void) const { return base_model; }
     meshx_model_interface_t * get_model_intr(void) const { return model_intr; }
 
-    void set_parent_element(meshXElement *parent) { parent_element = parent; }
+    void set_parent_element(meshXElementIF *parent) { parent_element = parent; }
+    meshXElementIF * get_parent_element(void) const { return parent_element; }
 
-    meshXModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElement *parent_element = nullptr);
+    meshXModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
     ~meshXModel() = default;
 };
 
@@ -89,7 +90,7 @@ MESHX_SERVER_MODEL_TEMPLATE_PROTO
 class meshXServerModel : public meshXModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS
 {
 public:
-    meshXServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElement *parent_element = nullptr);
+    meshXServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
     ~meshXServerModel() = default;
     meshXServerModel() = delete;
 };
@@ -108,7 +109,9 @@ MESHX_CLIENT_MODEL_TEMPLATE_PROTO
 class meshXClientModel : public meshXModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
 {
 public:
-    meshXClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElement *parent_element = nullptr);
+
+    meshx_err_t plat_model_create(void) final;
+    meshXClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
     meshXClientModel() = delete;
     ~meshXClientModel();
 };
