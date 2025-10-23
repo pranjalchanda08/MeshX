@@ -50,6 +50,7 @@ MESHX_MODEL_TEMPLATE_PROTO class meshXModel;
 MESHX_SERVER_MODEL_TEMPLATE_PROTO class meshXServerModel;
 MESHX_CLIENT_MODEL_TEMPLATE_PROTO class meshXClientModel;
 
+class meshXElementIF;
 MESHX_ELEMENT_TEMPLATE_PROTO    class meshXElement;
 
 #endif/* __MESHX_FWD_DEC_H__ */
