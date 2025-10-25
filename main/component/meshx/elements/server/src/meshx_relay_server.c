@@ -471,11 +471,14 @@ static meshx_err_t meshx_relay_srv_msg_send_handler(
     if (!IS_EL_IN_RANGE(element_id))
         return MESHX_SUCCESS;
 
-    meshx_err_t err = meshx_gen_on_off_srv_status_send(
-        &params->model,
-        &params->ctx,
-        params->state_change.onoff_set.onoff
-    );
+    meshx_on_off_srv_state_t send_params =
+    {
+        .ctx = &params->ctx,
+        .model = &params->model,
+        .on_off_state = params->state_change.onoff_set.onoff,
+    };
+
+    meshx_err_t err = meshx_gen_on_off_srv_status_send(&send_params);
     if(err)
     {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Mesh Model msg send failed (err: 0x%x)", err);

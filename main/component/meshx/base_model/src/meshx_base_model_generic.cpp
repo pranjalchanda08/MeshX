@@ -62,7 +62,8 @@ constexpr uint32_t MESHX_CLIENT_INIT_MAGIC_NO = 0x1121;
  *       will have their own implementations with different supported model IDs.
  */
 MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PROTO
-meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS::validate_client_model_id(uint32_t model_id)
+meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS
+    ::validate_client_model_id(uint32_t model_id)
 {
     switch (model_id)
     {
@@ -109,7 +110,8 @@ meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAM
  * @see meshx_is_get_req_opcode() for GET request validation.
  */
 MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PROTO
-meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS::meshx_is_unack_opcode(uint32_t opcode)
+meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS
+    ::meshx_is_unack_opcode(uint32_t opcode)
 {
     switch(opcode)
     {
@@ -139,7 +141,8 @@ meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAM
  * @return MESHX_SUCCESS if the opcode is a GET request opcode, MESHX_FAIL otherwise.
  */
 MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PROTO
-meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS::meshx_is_get_req_opcode(uint16_t opcode)
+meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS
+    ::meshx_is_get_req_opcode(uint16_t opcode)
 {
     switch(opcode)
     {
@@ -175,7 +178,8 @@ meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAM
  * @return meshx_err_t  Result of the operation. Returns MESHX_OK on success or an error code on failure.
  */
 MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PROTO
-meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS::meshx_gen_client_txcm_fn_model_send(meshx_gen_client_msg_ctx_t *msg_param, size_t msg_param_len)
+meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS
+    ::meshx_gen_client_txcm_fn_model_send(meshx_gen_client_msg_ctx_t *msg_param, size_t msg_param_len)
 {
     if(msg_param == nullptr || msg_param_len != sizeof(meshx_gen_client_msg_ctx_t))
     {
@@ -205,11 +209,12 @@ meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAM
  * @return None
  */
 MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PROTO
-meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS::meshXBaseGenericClientModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
+meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS
+    ::meshXBaseGenericClientModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
     : meshXBaseClientModel(model_id, from_ble_cb)
 {
-    status = meshXBaseGenericClientModel::plat_model_init();
-    if (status != MESHX_SUCCESS)
+    set_status(meshXBaseGenericClientModel::plat_model_init());
+    if (get_status() != MESHX_SUCCESS)
     {
         MESHX_LOGE(MODULE_ID_COMMON, "plat_model_init failed");
         return;
@@ -227,7 +232,8 @@ meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS::meshXBase
  * @return meshx_err_t containing the result of the initialization operation.
  */
 MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PROTO
-meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS::plat_model_init(void)
+meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS
+    :: plat_model_init(void)
 {
     if(plat_client_init == MESHX_CLIENT_INIT_MAGIC_NO)
     {
@@ -255,7 +261,8 @@ meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAM
  * @return meshx_err_t containing the result of the send operation. Returns MESHX_OK on success or an error code on failure.
  */
 MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PROTO
-meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS::plat_send_msg(meshx_gen_client_send_params_t *params)
+meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS
+    :: plat_send_msg(meshx_gen_client_send_params_t *params)
 {
     if (!params || !params->model || !params->state)
     {
@@ -312,11 +319,12 @@ constexpr uint32_t MESHX_SERVER_INIT_MAGIC_NO = 0x1121;
  * @return None
  */
 MESHX_BASE_GENERIC_SERVER_TEMPLATE_PROTO
-meshXBaseGenericServerModel MESHX_BASE_GENERIC_SERVER_TEMPLATE_PARAMS :: meshXBaseGenericServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
+meshXBaseGenericServerModel MESHX_BASE_GENERIC_SERVER_TEMPLATE_PARAMS
+    :: meshXBaseGenericServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
     : meshXBaseServerModel(model_id, from_ble_cb)
 {
-    status = meshXBaseGenericServerModel::plat_model_init();
-    if (status != MESHX_SUCCESS)
+    set_status(meshXBaseGenericServerModel::plat_model_init());
+    if (get_status() != MESHX_SUCCESS)
     {
         MESHX_LOGE(MODULE_ID_COMMON, "plat_model_init failed");
         return;
@@ -334,7 +342,8 @@ meshXBaseGenericServerModel MESHX_BASE_GENERIC_SERVER_TEMPLATE_PARAMS :: meshXBa
  * @return meshx_err_t containing the result of the initialization operation.
  */
 MESHX_BASE_GENERIC_SERVER_TEMPLATE_PROTO
-meshx_err_t meshXBaseGenericServerModel MESHX_BASE_GENERIC_SERVER_TEMPLATE_PARAMS::plat_model_init(void)
+meshx_err_t meshXBaseGenericServerModel MESHX_BASE_GENERIC_SERVER_TEMPLATE_PARAMS
+    ::plat_model_init(void)
 {
     if(plat_server_init == MESHX_SERVER_INIT_MAGIC_NO)
     {
@@ -355,7 +364,8 @@ meshx_err_t meshXBaseGenericServerModel MESHX_BASE_GENERIC_SERVER_TEMPLATE_PARAM
  *                     Returns MESHX_SUCCESS if the opcode is valid, or an error code otherwise.
  */
 MESHX_BASE_GENERIC_SERVER_TEMPLATE_PROTO
-meshx_err_t meshXBaseGenericServerModel MESHX_BASE_GENERIC_SERVER_TEMPLATE_PARAMS::validate_server_status_opcode(uint16_t opcode)
+meshx_err_t meshXBaseGenericServerModel MESHX_BASE_GENERIC_SERVER_TEMPLATE_PARAMS
+    ::validate_server_status_opcode(uint16_t opcode)
 {
     switch(opcode)
     {
@@ -393,9 +403,15 @@ meshx_err_t meshXBaseGenericServerModel MESHX_BASE_GENERIC_SERVER_TEMPLATE_PARAM
  *     - MESHX_ERR_PLAT: Platform-specific error occurred.
  */
 MESHX_BASE_GENERIC_SERVER_TEMPLATE_PROTO
-meshx_err_t meshXBaseGenericServerModel MESHX_BASE_GENERIC_SERVER_TEMPLATE_PARAMS::plat_send_msg(meshx_gen_server_send_params_t *params)
+meshx_err_t meshXBaseGenericServerModel MESHX_BASE_GENERIC_SERVER_TEMPLATE_PARAMS
+    ::plat_send_msg(meshx_gen_server_send_params_t *params)
 {
-    if (!params || !params->p_model || !params->p_ctx || params->data_len == 0 || params->p_ctx->dst_addr == MESHX_ADDR_UNASSIGNED)
+    if (   params == nullptr
+        || params->p_model == nullptr
+        || params->p_ctx == nullptr
+        || params->data_len == 0
+        || params->p_ctx->dst_addr == MESHX_ADDR_UNASSIGNED
+    )
     {
         return MESHX_INVALID_ARG;
     }
@@ -407,9 +423,60 @@ meshx_err_t meshXBaseGenericServerModel MESHX_BASE_GENERIC_SERVER_TEMPLATE_PARAM
     return meshx_plat_gen_srv_send_status(
         params->p_model,
         params->p_ctx,
-        &params->state_change,
+       &params->state_change,
         params->data_len
     );
+}
+
+/**
+ * @brief Restores the state of the Generic Server model.
+ *
+ * This function sets the user data of the specified model to the given state.
+ * It checks if the model pointer is valid before proceeding with the operation.
+ *
+ * @param[in] param Pointer to the structure containing the model and state to be restored.
+ *
+ * @return
+ *     - MESHX_SUCCESS: State restored successfully.
+ *     - MESHX_INVALID_ARG: Invalid model pointer.
+ */
+MESHX_BASE_GENERIC_SERVER_TEMPLATE_PROTO
+meshx_err_t meshXBaseGenericServerModel MESHX_BASE_GENERIC_SERVER_TEMPLATE_PARAMS
+    :: server_state_restore(meshx_gen_server_restore_params_t* param)
+{
+    if(!param || !param->p_model)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    uint16_t state_len = 0;
+    switch(this->get_model_id())
+    {
+        case MESHX_MODEL_ID_GEN_ONOFF_SRV:
+            state_len = sizeof(param->state_change.onoff);
+            break;
+        case MESHX_MODEL_ID_GEN_LEVEL_SRV:
+            state_len = sizeof(param->state_change.level);
+            break;
+        case MESHX_MODEL_ID_GEN_POWER_ONOFF_SRV:
+            state_len = sizeof(param->state_change.onpowerup);
+            break;
+        case MESHX_MODEL_ID_GEN_POWER_LEVEL_SRV:
+            state_len = sizeof(param->state_change.power_level);
+            break;
+        case MESHX_MODEL_ID_GEN_BATTERY_SRV:
+            state_len = sizeof(param->state_change.battery);
+            break;
+        case MESHX_MODEL_ID_GEN_LOCATION_SRV:
+            state_len = sizeof(param->state_change.location);
+            break;
+        case MESHX_MODEL_ID_GEN_DEF_TRANS_TIME_SRV:
+            state_len = sizeof(param->state_change.def_trans_time);
+            break;
+        default:
+            return MESHX_NOT_SUPPORTED;
+    }
+    return meshx_plat_set_gen_srv_state(param->p_model, &param->state_change, state_len);
 }
 
 #endif /* CONFIG_ENABLE_GEN_SERVER */
