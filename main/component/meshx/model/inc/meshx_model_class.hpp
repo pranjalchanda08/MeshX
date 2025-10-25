@@ -54,7 +54,7 @@ public:
      * @brief A virtual function to be implemented by derived classes which shall be used to
      *        send a message to the platform model
      */
-    virtual meshx_err_t send_packet(meshx_send_packet_params_t *params) = 0;
+    virtual meshx_err_t model_send(meshx_send_packet_params_t *params) = 0;
     /**
      * @brief A virtual function to be implemented by derived classes which shall be used to
      *        create a logical model

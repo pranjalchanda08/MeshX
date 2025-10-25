@@ -1,3 +1,19 @@
+/**
+ * @file meshx_model_onoff.cpp
+ * @brief Implementation of Generic OnOff Model classes for MeshX.
+ *        This file contains the implementation of the Generic OnOff Server and Client models
+ *        for the MeshX BLE mesh framework.
+ *
+ * Key Features:
+ *  - Implements Bluetooth SIG-defined Generic OnOff model
+ *  - Inherits from meshXServerModel and meshXClientModel templates
+ *  - Provides standard OnOff control operations
+ *  - Integrates with MeshX transmission control
+ * @author Pranjal Chanda
+ * @date 2024-2025
+ * @copyright Copyright 2024 - 2025 MeshX
+ */
+
 #include <meshx_model_onoff.hpp>
 #include <meshx_element_class.hpp>
 
@@ -88,11 +104,11 @@ meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_P
  */
 MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PARAMS
-    :: send_packet(meshx_gen_onoff_send_params_t *params)
+    :: model_send(meshx_gen_onoff_send_params_t *params)
 {
     meshx_err_t err;
     meshx_gen_cli_set_t set;
-    if (!params || !params->model || !params->model->meshx_sig)
+    if (!params || !params->model || !params->model->p_model)
     {
         return MESHX_INVALID_ARG;
     }
@@ -100,19 +116,19 @@ meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_P
     meshx_gen_client_send_params_t send_params;
 
     send_params.state   = &set;
-    send_params.addr    = params->addr;
-    send_params.opcode  = params->opcode;
-    send_params.net_idx = params->net_idx;
-    send_params.app_idx = params->app_idx;
-    send_params.model   = params->model->meshx_sig;
+    send_params.opcode  = static_cast<uint16_t>(params->ctx->opcode);
+    send_params.net_idx = params->ctx->net_idx;
+    send_params.app_idx = params->ctx->app_idx;
+    send_params.addr    = params->model->pub_addr;
+    send_params.model   = params->model->p_model;
 
-    if (params->opcode == MESHX_MODEL_OP_GEN_ONOFF_GET)
+    if (params->ctx->opcode == MESHX_MODEL_OP_GEN_ONOFF_GET)
     {
         err = this->get_base_model()->plat_send_msg(&send_params);
     }
 
-    else if (params->opcode == MESHX_MODEL_OP_GEN_ONOFF_SET ||
-             params->opcode == MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK)
+    else if (params->ctx->opcode == MESHX_MODEL_OP_GEN_ONOFF_SET ||
+             params->ctx->opcode == MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK)
     {
         set.onoff_set.tid = params->tid;
         set.onoff_set.onoff = params->state;
@@ -123,7 +139,7 @@ meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_P
     else
     {
         err = MESHX_INVALID_ARG; // Invalid opcode
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid opcode for Generic OnOff Client: %04x", params->opcode);
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid opcode for Generic OnOff Client: %04x", params->ctx->opcode);
     }
     return err;
 }
@@ -145,10 +161,40 @@ meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_P
 MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PARAMS
     ::meshXGenericOnOffClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element)
-    : meshXClientModel(p_plat_model, model_id, parent_element) {}
+    : meshXClientModel(p_plat_model, model_id, parent_element) {/* Used only for initialization of Parent Class */}
 
 #endif /* CONFIG_ENABLE_GEN_ONOFF_CLIENT */
 /*******************************************************************************************************************/
 #if CONFIG_ENABLE_GEN_ONOFF_SERVER
-
+/**
+ * @brief Send a packet to the MeshX stack based on the given parameters
+ *
+ * This function takes a pointer to a meshx_gen_onoff_send_params_t structure as input
+ * and sends the corresponding packet to the MeshX stack for processing.
+ *
+ * @param[in] params Pointer to the meshx_gen_onoff_send_params_t structure containing the parameters
+ * @return MESHX_SUCCESS on success, or an error code on failure
+ */
+MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
+    :: model_send(meshx_gen_onoff_send_params_t *params)
+{
+if (!params|| !params->model || !params->ctx)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    params->ctx->opcode = MESHX_MODEL_OP_GEN_ONOFF_STATUS;
+    meshx_gen_srv_state_change_t state_change = {
+        .onoff_set = {
+            .onoff = params->state
+        }
+    };
+    meshx_gen_server_send_params_t send_params = {
+        .p_model = params->model,
+        .p_ctx = params->ctx,
+        .state_change = state_change,
+        .data_len = sizeof(meshx_state_change_gen_onoff_set_t)
+    };
+    return this->get_base_model()->plat_send_msg(&send_params);
+}
 #endif /* CONFIG_ENABLE_GEN_ONOFF_SERVER */

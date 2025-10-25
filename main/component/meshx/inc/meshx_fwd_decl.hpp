@@ -25,8 +25,8 @@
 #define MESHX_BASE_TEMPLATE_PARAMS                  <ble_mesh_send_msg_params_t>
 #define MESHX_BASE_CLIENT_TEMPLATE_PROTO   template <typename baseClientModelDerived_t, typename ble_mesh_send_msg_params_t, typename ble_mesh_plat_model_cb_params_t>
 #define MESHX_BASE_CLIENT_TEMPLATE_PARAMS           <baseClientModelDerived_t, ble_mesh_send_msg_params_t, ble_mesh_plat_model_cb_params_t>
-#define MESHX_BASE_SERVER_TEMPLATE_PROTO   template <typename baseServerModelDerived_t, typename ble_mesh_send_msg_params_t>
-#define MESHX_BASE_SERVER_TEMPLATE_PARAMS           <baseServerModelDerived_t, ble_mesh_send_msg_params_t>
+#define MESHX_BASE_SERVER_TEMPLATE_PROTO   template <typename baseServerModelDerived_t, typename ble_mesh_send_msg_params_t, typename ble_mesh_plat_restore_params_t>
+#define MESHX_BASE_SERVER_TEMPLATE_PARAMS           <baseServerModelDerived_t, ble_mesh_send_msg_params_t, ble_mesh_plat_restore_params_t>
 
 #define MESHX_MODEL_TEMPLATE_PROTO          template <typename meshxBaseModel_t, typename meshx_send_packet_params_t>
 #define MESHX_MODEL_TEMPLATE_PARAMS                  <meshxBaseModel_t, meshx_send_packet_params_t>

@@ -65,14 +65,15 @@ static const char *server_state_str[] = {
     [ESP_BLE_MESH_GENERIC_SERVER_RECV_SET_MSG_EVT] = "SRV_RECV_SET"
 };
 
-
 /**
  * @brief Callback function for BLE Mesh Generic Server events.
  *
- * This function is called whenever a BLE Mesh Generic Server event occurs.
+ * This function is invoked to handle events related to the Generic Server model
+ * in the BLE Mesh stack. It processes various server events and their associated
+ * parameters.
  *
- * @param[in] event The event type for the BLE Mesh Generic Server.
- * @param[in] param Parameters associated with the event.
+ * @param event The event type received by the Generic Server.
+ * @param param Pointer to the structure containing event-specific parameters.
  */
 static void esp_ble_mesh_generic_server_cb(MESHX_GEN_SRV_CB_EVT event,
                                            MESHX_GEN_SRV_CB_PARAM *param)
@@ -121,21 +122,6 @@ static void esp_ble_mesh_generic_server_cb(MESHX_GEN_SRV_CB_EVT event,
     }
 }
 
-/**
- * @brief Send a status message from the Generic Server model.
- *
- * This function sends a status message to the specified context with the provided data.
- *
- * @param[in] p_model Pointer to the model instance.
- * @param[in] p_ctx Pointer to the context structure containing destination address and other parameters.
- * @param[in] p_data Pointer to the data to be sent.
- * @param[in] data_len Length of the data to be sent.
- *
- * @return
- *     - MESHX_SUCCESS: Message sent successfully.
- *     - MESHX_NO_MEM: Memory allocation failed.
- *     - MESHX_ERR_PLAT: Platform error occurred while sending the message.
- */
 meshx_err_t meshx_plat_gen_srv_send_status(
         meshx_model_t *p_model,
         meshx_ctx_t *p_ctx,
@@ -171,25 +157,25 @@ meshx_err_t meshx_plat_gen_srv_send_status(
     return MESHX_SUCCESS;
 }
 
-/**
- * @brief Set the state of a generic server model.
- *
- * This function updates the on/off state of a specified generic server model.
- *
- * @param[in] p_model       Pointer to the model whose state is to be set.
- * @param[in] on_off_state  The desired on/off state to set for the model.
- *
- * @return MESHX_SUCCESS on success, or an appropriate error code on failure.
- */
-meshx_err_t meshx_plat_set_gen_srv_state(void * p_model, uint8_t on_off_state)
+meshx_err_t meshx_plat_set_gen_srv_state(void * p_model, const meshx_gen_server_state_t *state, uint16_t state_len)
 {
     if(!p_model)
         return MESHX_INVALID_ARG;
 
     MESHX_MODEL * model = (MESHX_MODEL *)p_model;
-    MESHX_GEN_ONOFF_SRV *srv = (MESHX_GEN_ONOFF_SRV *)model->user_data;
+    meshx_ptr_t srv = model->user_data;
 
-    srv->state.onoff = on_off_state;
+    if(!srv)
+        return MESHX_INVALID_STATE;
+
+    /**
+     * Here we are getting the state pointer from the generic onoff server structure
+     * But in all the other generic servers, the state pointer are at the same position
+     * that of the generic onoff server structure.
+     */
+    meshx_ptr_t state_ptr = (meshx_ptr_t)&((esp_ble_mesh_gen_onoff_srv_t*) srv)->state;
+
+    memcpy(state_ptr, state, state_len);
 
     return MESHX_SUCCESS;
 }
@@ -243,5 +229,10 @@ meshx_err_t meshx_plat_gen_srv_delete(void** p_pub, void** p_srv)
 
 meshx_err_t meshx_plat_gen_on_off_srv_restore(void* p_model, uint8_t state)
 {
-    return meshx_plat_set_gen_srv_state (p_model, state);
+    meshx_gen_server_state_t state_change;
+
+    state_change.onoff.onoff = state;
+    state_change.onoff.target_onoff = state;
+
+    return meshx_plat_set_gen_srv_state (p_model, &state_change, sizeof(state));
 }

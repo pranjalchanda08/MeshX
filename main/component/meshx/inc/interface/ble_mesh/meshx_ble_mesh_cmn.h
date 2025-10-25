@@ -31,7 +31,7 @@ typedef struct meshx_model
 {
     uint16_t el_id;         /**< Element ID */
     uint16_t model_id;      /**< Model ID */
-    uint16_t pub_addr;      /**< Publication address */
+    uint16_t pub_addr;      /**< Publication address. Used by client models */
     meshx_ptr_t p_model;    /**< Pointer to the model structure */
 } meshx_model_t;
 
@@ -40,12 +40,12 @@ typedef struct meshx_model
  */
 typedef struct meshx_ctx
 {
-    uint16_t app_idx;  /** AppKey Index */
-    uint16_t net_idx;  /** NetKey Index */
-    uint16_t src_addr; /** Source address */
-    uint16_t dst_addr; /** Destination address */
-    uint32_t opcode;   /** Opcode */
-    meshx_ptr_t p_ctx; /** Pointer to the context structure */
+    uint16_t app_idx;  /** AppKey Index. Used by client models */
+    uint16_t net_idx;  /** NetKey Index. Used by client models */
+    uint32_t opcode;   /** Opcode. Used by client models */
+    uint16_t src_addr; /** Source address. Not used by client models */
+    uint16_t dst_addr; /** Destination address. Not used by client models */
+    meshx_ptr_t p_ctx; /** Pointer to the context structure. Not used by client models */
 } meshx_ctx_t;
 
 /**

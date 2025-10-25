@@ -374,6 +374,24 @@ meshx_err_t meshx_plat_light_ctl_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_
     return err;
 }
 
+meshx_err_t meshx_plat_light_srv_restore(meshx_ptr_t p_model, const meshx_lighting_server_state_t *state, uint16_t state_len)
+{
+    if (!p_model || !state)
+        return MESHX_INVALID_ARG;
+
+    MESHX_MODEL *model = (MESHX_MODEL *)p_model;
+    MESHX_LIGHT_CTL_SRV *srv = (MESHX_LIGHT_CTL_SRV *)model->user_data;
+
+    if(!srv)
+        return MESHX_INVALID_STATE;
+
+    meshx_ptr_t state_ptr = (meshx_ptr_t)&srv->state;
+
+    memcpy(state_ptr, state, state_len);
+
+    return MESHX_SUCCESS;
+}
+
 meshx_err_t meshx_plat_set_light_ctl_srv_state(meshx_ptr_t p_model,
                                                uint16_t delta_uv,
                                                uint16_t lightness,

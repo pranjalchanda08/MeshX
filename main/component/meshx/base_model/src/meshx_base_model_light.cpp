@@ -192,8 +192,8 @@ meshx_err_t meshXBaseLightClientModel::meshx_light_client_txcm_fn_model_send(mes
 meshXBaseLightClientModel::meshXBaseLightClientModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
     : meshXBaseClientModel(model_id, from_ble_cb)
 {
-    status = meshXBaseLightClientModel::plat_model_init();
-    if (status != MESHX_SUCCESS)
+    set_status(meshXBaseLightClientModel::plat_model_init());
+    if (get_status() != MESHX_SUCCESS)
     {
         MESHX_LOGE(MODULE_ID_COMMON, "plat_model_init failed");
         return;
@@ -297,8 +297,8 @@ constexpr uint32_t MESHX_LIGHT_SERVER_INIT_MAGIC_NO = 0x2483;
 meshXBaseLightServerModel::meshXBaseLightServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
     : meshXBaseServerModel(model_id, from_ble_cb)
 {
-    status = meshXBaseLightServerModel::plat_model_init();
-    if (status != MESHX_SUCCESS)
+    set_status(meshXBaseLightServerModel::plat_model_init());
+    if (get_status() != MESHX_SUCCESS)
     {
         MESHX_LOGE(MODULE_ID_COMMON, "plat_model_init failed");
         return;
@@ -398,4 +398,61 @@ meshx_err_t meshXBaseLightServerModel::plat_send_msg(meshx_light_server_send_par
     );
 }
 
+/**
+ * @brief Restores the state of the Light Server model.
+ *
+ * This function restores the state of the Light Server model using the provided
+ * restore parameters. It validates the model ID and state type before calling
+ * the platform-specific function to set the server state.
+ *
+ * @param[in] param Pointer to the structure containing the restore parameters.
+ *
+ * @return meshx_err_t containing the result of the restore operation.
+ *         - MESHX_SUCCESS: State restored successfully
+ *         - MESHX_INVALID_ARG: Invalid parameters provided
+ *         - MESHX_NOT_SUPPORTED: Model ID not supported
+ *         - MESHX_INVALID_STATE: Invalid or unrecognized state
+ */
+meshx_err_t meshXBaseLightServerModel::server_state_restore(meshx_light_server_restore_params_t *param)
+{
+    if (!param || !param->p_model)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    uint16_t state_len = 0;
+
+    // Determine the model ID and handle each state type
+    switch (this->get_model_id())
+    {
+        // Light Lightness Server Model (0x1300)
+        case MESHX_MODEL_ID_LIGHT_LIGHTNESS_SRV:
+            state_len = sizeof(meshx_light_lightness_state_t);
+            break;
+        case MESHX_MODEL_ID_LIGHT_CTL_SRV:
+        case MESHX_MODEL_ID_LIGHT_CTL_SETUP_SRV:
+            state_len = sizeof(meshx_light_ctl_state_t);
+            break;
+        case MESHX_MODEL_ID_LIGHT_HSL_SRV:
+        case MESHX_MODEL_ID_LIGHT_HSL_SETUP_SRV:
+            state_len = sizeof(meshx_light_hsl_state_t);
+            break;
+        case MESHX_MODEL_ID_LIGHT_XYL_SRV:
+        case MESHX_MODEL_ID_LIGHT_XYL_SETUP_SRV:
+            state_len = sizeof(meshx_light_xyl_state_t);
+            break;
+        case MESHX_MODEL_ID_LIGHT_LC_SRV:
+            state_len = sizeof(meshx_light_lc_state_t);
+            break;
+        default:
+            return MESHX_NOT_SUPPORTED;
+    }
+
+    if (state_len == 0)
+    {
+        return MESHX_INVALID_STATE;
+    }
+
+    return meshx_plat_light_srv_restore(param->p_model, &param->state_change, state_len);
+}
 #endif /* CONFIG_ENABLE_LIGHT_SERVER */

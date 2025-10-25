@@ -26,7 +26,13 @@
 #ifndef _MESHX_BASE_MODEL_LIGHT_H_
 #define _MESHX_BASE_MODEL_LIGHT_H_
 
-#include<meshx_base_model_class.hpp>
+#include <meshx_base_model_class.hpp>
+
+#define MESHX_BASE_LIGHT_SERVER_TEMPLATE_PROTO
+#define MESHX_BASE_LIGHT_SERVER_TEMPLATE_PARAMS
+
+#define MESHX_BASE_LIGHT_CLIENT_TEMPLATE_PROTO
+#define MESHX_BASE_LIGHT_CLIENT_TEMPLATE_PARAMS
 
 /*********************************************************************************************************
  * meshXBaseLightClientModel
@@ -94,6 +100,7 @@ using meshx_light_client_msg_ctx_t = struct meshx_light_client_msg_ctx
  * @see meshx_gen_light_cli_cb_param_t for callback parameter structure.
  * @see meshx_gen_light_client_send_params_t for send parameter structure.
  */
+MESHX_BASE_LIGHT_CLIENT_TEMPLATE_PROTO
 class meshXBaseLightClientModel : private meshXBaseClientModel <meshXBaseLightClientModel, meshx_gen_light_client_send_params_t, meshx_gen_light_cli_cb_param_t>
 {
 private:
@@ -109,7 +116,7 @@ public:
     meshXBaseLightClientModel() = delete;
     meshXBaseLightClientModel(uint32_t model_id, const control_msg_cb& from_ble_cb);
 
-    ~meshXBaseLightClientModel() = default;
+    virtual ~meshXBaseLightClientModel() = default;
 };
 
 /*********************************************************************************************************
@@ -141,16 +148,27 @@ public:
  * @see meshXBaseServerModel for base template functionality.
  * @see meshx_light_server_send_params_t for send parameter structure.
  */
-class meshXBaseLightServerModel : private meshXBaseServerModel <meshXBaseLightServerModel, meshx_light_server_send_params_t>
+
+/* Restore params for light server state restore (used by server_state_restore) */
+using meshx_light_server_restore_params_t = struct meshx_light_server_restore_params
 {
-    private:
-        meshx_err_t plat_model_init(void) override;
-        meshx_err_t validate_server_status_opcode(uint16_t opcode) override;
-    public:
-        meshx_err_t plat_send_msg(meshx_light_server_send_params_t *params) override;
-        meshXBaseLightServerModel() = delete;
-        meshXBaseLightServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb);
-        ~meshXBaseLightServerModel() = default;
+    meshx_model_t *p_model;                     /**< Pointer to the server model. */
+    meshx_lighting_server_state_t state_change; /**< State change information. Platform Interface. */
+};
+
+MESHX_BASE_LIGHT_SERVER_TEMPLATE_PROTO
+class meshXBaseLightServerModel : private meshXBaseServerModel<meshXBaseLightServerModel, meshx_light_server_send_params_t, meshx_light_server_restore_params_t>
+{
+private:
+    meshx_err_t plat_model_init(void) override;
+    meshx_err_t validate_server_status_opcode(uint16_t opcode) override;
+public:
+    meshx_err_t server_state_restore(meshx_light_server_restore_params_t* param) override;
+    meshx_err_t plat_send_msg(meshx_light_server_send_params_t *params) override;
+    meshXBaseLightServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb);
+
+    meshXBaseLightServerModel() = delete;
+    ~meshXBaseLightServerModel() final = default;
 };
 
 #endif /* _MESHX_BASE_MODEL_LIGHT_H_ */

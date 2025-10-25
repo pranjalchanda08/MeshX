@@ -108,20 +108,17 @@ uint16_t meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::plat_server_ini
  */
 MESHX_BASE_SERVER_TEMPLATE_PROTO
 meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::meshXBaseServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
-    : meshXBaseModel<ble_mesh_send_msg_params_t>(model_id, from_ble_cb, meshXBaseModelType::MESHX_BASE_MODEL_TYPE_SERVER)
-{
-}
+    : meshXBaseModel<ble_mesh_send_msg_params_t>(model_id, from_ble_cb, meshXBaseModelType::MESHX_BASE_MODEL_TYPE_SERVER) { }
 
 /*********************************************************************************************************
  * meshXBaseClientModel
  ********************************************************************************************************/
 MESHX_BASE_CLIENT_TEMPLATE_PROTO
 std::forward_list<typename meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_client_model_cb_reg_t>
-    meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_client_model_cb_list = {};
+    meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_client_model_cb_list = { };
 
 MESHX_BASE_CLIENT_TEMPLATE_PROTO
 uint16_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::plat_client_init = 0;
-
 
 /**
  * @brief Constructor for the meshXBaseClientModel template class.
