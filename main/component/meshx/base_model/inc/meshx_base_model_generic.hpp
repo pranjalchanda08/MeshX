@@ -123,17 +123,65 @@ public:
 /*********************************************************************************************************
  * meshXBaseGenericServerModel
  ********************************************************************************************************/
+
+using meshx_gen_server_send_params_t = struct meshx_gen_server_send_params
+{
+    meshx_model_t *p_model;                     /**< Pointer to the server model. */
+    meshx_ctx_t *p_ctx;                         /**< Pointer to the context. */
+    meshx_gen_srv_state_change_t state_change;  /**< State change information. Platform Interface. */
+    size_t data_len;                            /**< Length of the data. */
+};
+
+using meshx_gen_server_restore_params_t = struct meshx_gen_server_restore_params
+{
+    meshx_model_t *p_model;                     /**< Pointer to the server model. */
+    meshx_gen_server_state_t state_change;      /**< State change information. Platform Interface. */
+};
+/**
+ * @class meshXBaseGenericServerModel
+ * @brief Template specialization of meshXBaseServerModel for Generic BLE mesh models.
+ *
+ * This class provides a concrete implementation of the template-based meshXBaseServerModel
+ * specifically designed for Generic BLE mesh server models. It inherits all the template
+ * benefits including type safety, static callback dispatching, and enhanced debugging
+ * while providing Generic-specific functionality.
+ *
+ * Key Features:
+ * - Inherits template-based architecture from meshXBaseServerModel
+ * - Provides Generic-specific opcode validation and message handling
+ * - Implements platform-specific message sending
+ * - Supports all Generic model types (OnOff, Level, Power, Battery, Location)
+ * - Enhanced error handling and debugging with template type identification
+ * - Static wrapper functions for C-style callback compatibility
+ *
+ * Template Parameters:
+ * - baseServerModelDerived_t: meshXBaseGenericServerModel (CRTP pattern)
+ * - ble_mesh_send_msg_params_t: meshx_gen_server_send_params_t
+ *
+ * Supported Operations:
+ * - Generic OnOff status updates
+ * - Generic Level status updates
+ * - Generic Power Level status updates
+ * - Generic Battery status updates
+ * - Generic Location status updates
+ * - Property-based status updates (Manufacturer, Admin, User)
+ *
+ * @note This class uses private inheritance to maintain encapsulation while
+ *       providing access to base functionality through friendship.
+ * @see meshXBaseServerModel for base template functionality.
+ * @see meshx_gen_server_send_params_t for send parameter structure.
+ */
 MESHX_BASE_GENERIC_SERVER_TEMPLATE_PROTO
-class meshXBaseGenericServerModel : private meshXBaseServerModel<meshXBaseGenericServerModel, meshx_gen_server_send_params_t>
+class meshXBaseGenericServerModel : private meshXBaseServerModel<meshXBaseGenericServerModel, meshx_gen_server_send_params_t, meshx_gen_server_restore_params_t>
 {
 private:
     meshx_err_t plat_model_init(void) override;
     meshx_err_t validate_server_status_opcode(uint16_t opcode) override;
-
 public:
-    meshXBaseGenericServerModel() = delete;
+    meshx_err_t server_state_restore(meshx_gen_server_restore_params_t* param) override;
     meshx_err_t plat_send_msg(meshx_gen_server_send_params_t *params) override;
     meshXBaseGenericServerModel(uint32_t model_id, const control_msg_cb &from_ble_cb);
-    virtual ~meshXBaseGenericServerModel() = default;
+    meshXBaseGenericServerModel() = delete;
+    ~meshXBaseGenericServerModel() final = default;
 };
 #endif /* _MESHX_BASE_MODEL_GENERIC_H_ */

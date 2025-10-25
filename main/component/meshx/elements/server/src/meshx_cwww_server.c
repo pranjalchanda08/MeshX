@@ -560,11 +560,13 @@ static meshx_err_t meshx_cwww_srv_msg_send_handler(
             element_id = gen_srv_send->model.el_id;
             if (!IS_EL_IN_RANGE(element_id))
                 goto cwww_srv_msg_handler_exit;
-            err = meshx_gen_on_off_srv_status_send(
-                &gen_srv_send->model,
-                &gen_srv_send->ctx,
-                gen_srv_send->state_change.onoff_set.onoff
-            );
+
+            meshx_on_off_srv_state_t on_off_state = {
+                .on_off_state = gen_srv_send->state_change.onoff_set.onoff,
+                .ctx = &gen_srv_send->ctx,
+                .model = &gen_srv_send->model
+            };
+            err = meshx_gen_on_off_srv_status_send(&on_off_state);
             if (err)
             {
                 MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to send ONOFF status message (Err: %x)", err);

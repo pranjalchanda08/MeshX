@@ -114,10 +114,10 @@ meshx_err_t meshXClientModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
     meshx_err_t err = MESHX_SUCCESS;
 
     err = meshx_plat_client_create(
-        this->get_plat_model(),
+         this->get_plat_model(),
         &this->get_model_intr()->pub,
         &this->get_model_intr()->cli,
-        this->get_model_id());
+         this->get_model_id());
     if (err)
     {
         MESHX_LOGE(MODULE_ID_COMMON, "Failed to create client model");
