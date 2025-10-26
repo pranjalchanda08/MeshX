@@ -1,5 +1,5 @@
 /**
- * @file meshx_model_generic.hpp
+ * @file meshx_model_onoff.hpp
  * @brief Implementation of Generic OnOff Client Model for MeshX
  *
  * This file contains the implementation of the Generic OnOff client model,
@@ -17,7 +17,6 @@
  */
 #include <meshx_model_class.hpp>
 #include <meshx_base_model_generic.hpp>
-
 
 #define MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PROTO
 #define MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PARAMS
@@ -45,10 +44,10 @@ using meshx_gen_onoff_send_params_t = struct meshx_gen_onoff_send_params;
  */
 struct meshx_on_off_cli_el_msg
 {
-    uint8_t err_code;           /**< Error code */
-    meshx_model_t model;        /**< Generic OnOff Server model */
-    meshx_ctx_t ctx;            /**< Context of the message */
-    uint8_t on_off_state;       /**< The present value of Generic OnOff state */
+    uint8_t err_code;     /**< Error code */
+    meshx_model_t model;  /**< Generic OnOff Server model */
+    meshx_ctx_t ctx;      /**< Context of the message */
+    uint8_t on_off_state; /**< The present value of Generic OnOff state */
 };
 
 using meshx_on_off_cli_el_msg_t = struct meshx_on_off_cli_el_msg;
@@ -62,10 +61,11 @@ using meshx_on_off_cli_el_msg_t = struct meshx_on_off_cli_el_msg;
  * element layer.
  */
 MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PROTO
-class meshXGenericOnOffClientModel : public meshXClientModel <meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t>
+class meshXGenericOnOffClientModel : public meshXClientModel<meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t>
 {
 private:
     meshx_err_t meshx_state_change_notify(const meshx_gen_cli_cb_param_t *param, uint8_t status) const;
+
 public:
     meshx_err_t model_send(meshx_gen_onoff_send_params_t *params) override;
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
@@ -79,6 +79,15 @@ public:
 /********************************************************************************************************************************** */
 #if CONFIG_ENABLE_GEN_ONOFF_SERVER
 /**
+ * @brief Structure to hold the On/Off Server to element message.
+ */
+using meshx_on_off_srv_el_msg_t = struct meshx_on_off_srv_el_msg
+{
+    meshx_model_t model;  /**< Generic OnOff Server model */
+    uint8_t on_off_state; /**< The present value of Generic OnOff state */
+};
+
+/**
  * @class meshXGenericOnOffServerModel
  * @brief A template class for creating Generic OnOff Server models.
  *
@@ -88,7 +97,7 @@ public:
  * element layer.
  */
 MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PROTO
-class meshXGenericOnOffServerModel : public meshXServerModel <meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t>
+class meshXGenericOnOffServerModel : public meshXServerModel<meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t>
 {
 public:
     meshx_err_t model_send(meshx_gen_onoff_send_params_t *params) override;

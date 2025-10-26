@@ -48,10 +48,10 @@ constexpr uint32_t MESHX_CLIENT_INIT_MAGIC_NO = 0x1121;
  * Supported Generic Client Model IDs:
  * - MESHX_MODEL_ID_GEN_ONOFF_CLI: Generic OnOff Client
  * - MESHX_MODEL_ID_GEN_LEVEL_CLI: Generic Level Client
- * - MESHX_MODEL_ID_GEN_POWER_ONOFF_CLI: Generic Power OnOff Client
- * - MESHX_MODEL_ID_GEN_POWER_LEVEL_CLI: Generic Power Level Client
  * - MESHX_MODEL_ID_GEN_BATTERY_CLI: Generic Battery Client
  * - MESHX_MODEL_ID_GEN_LOCATION_CLI: Generic Location Client
+ * - MESHX_MODEL_ID_GEN_POWER_ONOFF_CLI: Generic Power OnOff Client
+ * - MESHX_MODEL_ID_GEN_POWER_LEVEL_CLI: Generic Power Level Client
  *
  * @param[in] model_id The 32-bit model ID to validate against supported Generic client models.
  *
@@ -205,8 +205,6 @@ meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAM
  *
  * @param model_id The model ID associated with the generic client model
  * @param from_ble_cb The control task message handle associated with the generic client model
- *
- * @return None
  */
 MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PROTO
 meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS
@@ -316,7 +314,6 @@ constexpr uint32_t MESHX_SERVER_INIT_MAGIC_NO = 0x1121;
  * @param model_id The model ID associated with the generic server model.
  * @param from_ble_cb The control task message handle associated with the generic server model.
  *
- * @return None
  */
 MESHX_BASE_GENERIC_SERVER_TEMPLATE_PROTO
 meshXBaseGenericServerModel MESHX_BASE_GENERIC_SERVER_TEMPLATE_PARAMS

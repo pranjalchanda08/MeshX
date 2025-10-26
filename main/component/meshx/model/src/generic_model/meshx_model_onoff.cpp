@@ -14,7 +14,7 @@
  * @copyright Copyright 2024 - 2025 MeshX
  */
 
-#include <meshx_model_onoff.hpp>
+#include <generic_model/meshx_model_onoff.hpp>
 #include <meshx_element_class.hpp>
 
 #if CONFIG_ENABLE_GEN_ONOFF_CLIENT
@@ -157,6 +157,7 @@ meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_P
  *
  * @param[in] p_plat_model  A pointer to the platform model (MESHX_MODEL).
  * @param[in] model_id      The unique identifier of the BLE mesh model.
+ * @param[in] parent_element A pointer to the parent element (meshXElementIF).
  */
 MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PARAMS
@@ -196,5 +197,96 @@ if (!params|| !params->model || !params->ctx)
         .data_len = sizeof(meshx_state_change_gen_onoff_set_t)
     };
     return this->get_base_model()->plat_send_msg(&send_params);
+}
+
+/**
+ * @brief This function is the callback for the Generic OnOff Server model.
+ *
+ * This function is triggered whenever a Generic OnOff message is received from the MeshX stack.
+ * It handles the Generic OnOff state change notifications from the MeshX stack and publishes
+ * the state change event to the element layer.
+ *
+ * @param[in] p_dev       A pointer to the device structure.
+ * @param[in] model_id    The unique identifier of the BLE mesh model.
+ * @param[in] params      A pointer to the callback parameter structure containing the details of the
+ *                        received message.
+ *
+ * @return
+ *    - MESHX_SUCCESS: Success
+ *    - MESHX_INVALID_ARG: Invalid argument
+ *    - MESHX_FAIL: Other failures
+ */
+meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
+    :: model_from_ble_cb(
+        dev_struct_t *p_dev,
+        control_task_msg_evt_t model_id,
+        meshx_ptr_t params)
+{
+    if(!params || !p_dev)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid parameters");
+        return MESHX_INVALID_ARG;
+    }
+    if(model_id != MESHX_MODEL_ID_GEN_ONOFF_SRV)
+    {
+        /* Callback triggered not for this model */
+        return MESHX_SUCCESS;
+    }
+
+    auto *param = static_cast<meshx_gen_srv_cb_param_t *>(params);
+
+    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "op|src|dst:%04" PRIx32 "|%04x|%04x",
+               param->ctx.opcode, param->ctx.src_addr, param->ctx.dst_addr);
+
+    meshx_on_off_srv_el_msg_t srv_onoff_param = {
+        .model = param->model,
+        .on_off_state = param->state_change.onoff_set.onoff
+    };
+    bool send_reply = (param->ctx.opcode != MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK);
+    switch (param->ctx.opcode)
+    {
+        case MESHX_MODEL_OP_GEN_ONOFF_GET:
+            break;
+        case MESHX_MODEL_OP_GEN_ONOFF_SET:
+        case MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK:
+        {
+            if (MESHX_ADDR_IS_UNICAST(param->ctx.dst_addr)
+            || (MESHX_ADDR_BROADCAST(param->ctx.dst_addr))
+            || (MESHX_ADDR_IS_GROUP(param->ctx.dst_addr)
+            && (MESHX_SUCCESS == meshx_is_group_subscribed(&param->model, param->ctx.dst_addr))))
+            {
+                if (this->get_parent_element())
+                {
+                    return this->get_parent_element()->on_model_cb(&srv_onoff_param);
+                }
+                else
+                {
+                    MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
+                }
+            }
+            break;
+        }
+        default:
+            break;
+    }
+    if (send_reply
+        /* This is meant to notify the respective publish client */
+        || param->ctx.src_addr != param->model.pub_addr)
+    {
+        /* Here the message was received from unregistered source and mention the state to the respective client */
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "PUB: src|pub %x|%x", param->ctx.src_addr, param->model.pub_addr);
+        param->ctx.dst_addr = param->model.pub_addr;
+
+        // Create a parameter structure for sending the response
+        meshx_gen_onoff_send_params_t send_params = {
+            .model = &param->model,
+            .ctx = &param->ctx,
+            .state = param->state_change.onoff_set.onoff,
+            .tid = 0  // TID not used in server response
+        };
+
+        return this->model_send(&send_params);
+    }
+    return MESHX_SUCCESS;
 }
 #endif /* CONFIG_ENABLE_GEN_ONOFF_SERVER */

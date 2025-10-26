@@ -28,17 +28,22 @@
  * meshXModel
  ******************************************************************************************************/
 /**
- * @brief A template class for creating BLE mesh models.
+ * @brief Constructs a new meshXModel instance.
  *
- * This class acts as a wrapper around the meshXBaseModel class and provides a
- * convenient interface for creating BLE mesh models.
+ * This constructor initializes a meshXModel object with the given platform model,
+ * model ID, and optional parent element. It sets up the base model and model interface
+ * for BLE mesh communication.
  *
- * @tparam meshxBaseModel_t The type of the meshXBaseModel class to be used.
- * @tparam meshx_send_packet_params_t The type of the meshXSendPacketParams structure used
- * for sending packets.
+ * @tparam MESHX_MODEL Platform-specific model type (e.g., esp_ble_mesh_model_t)
+ * @tparam meshxBaseModel_t Base model implementation type
+ * @tparam meshx_send_packet_params_t Type for send packet parameters
  *
- * @param[in] p_plat_model  A pointer to the platform model (MESHX_MODEL).
- * @param[in] model_id      The unique identifier of the BLE mesh model.
+ * @param[in] p_plat_model  Pointer to the platform model instance
+ * @param[in] model_id      Unique identifier for this model
+ * @param[in] parent_element Optional pointer to the parent element
+ *
+ * @note The constructor allocates memory for the base model and model interface.
+ *       If memory allocation fails, the status will be set to MESHX_NO_MEM.
  */
 MESHX_MODEL_TEMPLATE_PROTO
 meshXModel MESHX_MODEL_TEMPLATE_PARAMS
@@ -63,13 +68,17 @@ meshXModel MESHX_MODEL_TEMPLATE_PARAMS
  * meshXServerModel
  ****************************************************************************************************/
 /**
- * @brief Constructor for the meshXServerModel class.
+ * @brief Constructs a new meshXServerModel instance.
  *
- * This constructor initializes a meshXServerModel object with the given model ID and control task message handle.
+ * This constructor initializes a server model with the given platform model,
+ * model ID, and optional parent element. It sets up the base server model
+ * functionality.
  *
- * @param[in] p_plat_model   A pointer to the platform model (MESHX_MODEL).
- * @param[in] model_id       The model ID associated with the server model.
- * @param[in] parent_element A pointer to the parent element.
+ * @tparam MESHX_MODEL Platform-specific model type
+ * @tparam meshxBaseModel_t Base model implementation type
+ * @tparam meshx_send_packet_params_t Type for send packet parameters
+ * 
+ * @note This constructor delegates to the base meshXModel constructor.
  */
 MESHX_SERVER_MODEL_TEMPLATE_PROTO
 meshXServerModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS
@@ -80,14 +89,18 @@ meshXServerModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS
  * meshXClientModel
  **************************************************************************************************/
 /**
- * @brief A class for the client model.
+ * @brief Constructs a new meshXClientModel instance.
  *
- * This class is used to define the client model and its associated functionality.
- * @note This constructor also creates the logical model for the client model and derivatives.
- *       Hence, this constructor should be used to create the client model by the derived client model.
+ * This constructor initializes a client model with the given platform model,
+ * model ID, and optional parent element. It sets up the base client model
+ * functionality and creates the logical model for the client model and its derivatives.
  *
- * @param[in] p_plat_model A pointer to the platform model (MESHX_MODEL).
- * @param[in] model_id The model ID associated with the client model.
+ * @tparam MESHX_MODEL Platform-specific model type
+ * @tparam meshxBaseModel_t Base model implementation type
+ * @tparam meshx_send_packet_params_t Type for send packet parameters
+ *
+ * @note This constructor delegates to the base meshXModel constructor.
+ *       Derived client models should use this constructor to ensure proper initialization.
  */
 MESHX_CLIENT_MODEL_TEMPLATE_PROTO
 meshXClientModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
@@ -97,15 +110,19 @@ meshXClientModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
 /**
  * @brief Creates and initializes a client model instance.
  *
- * This function creates a client model instance associated with the given platform model and
- * model ID. It also initializes the logical model for the client model and its derivatives.
+ * This function handles the platform-specific model creation process for client models.
+ * It initializes client-specific features and cannot be overridden by derived classes.
  *
- * @param[in] p_plat_model  A pointer to the platform model (MESHX_MODEL).
- * @param[in] model_id      The model ID associated with the client model.
+ * @tparam MESHX_MODEL Platform-specific model type
+ * @tparam meshxBaseModel_t Base model implementation type
+ * @tparam meshx_send_packet_params_t Type for send packet parameters
  *
  * @return meshx_err_t Returns an error code indicating the result of the operation.
- *                      - MESHX_SUCCESS on success
- *                      - Appropriate error code otherwise
+ *         - MESHX_SUCCESS on successful model creation and initialization
+ *         - MESHX_ERR_NO_MEM if memory allocation fails
+ *         - Other error codes for platform-specific failures
+ *
+ * @note This is a final function and cannot be overridden by derived classes.
  */
 MESHX_CLIENT_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXClientModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
@@ -131,9 +148,16 @@ meshx_err_t meshXClientModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
 }
 
 /**
- * Destructor for the meshXClientModel class.
+ * @brief Destroys the meshXClientModel instance.
  *
- * This destructor is used to delete the client model and release associated resources.
+ * This destructor cleans up any resources associated with the client model,
+ * including platform-specific model instances and allocated memory.
+ *
+ * @tparam MESHX_MODEL Platform-specific model type
+ * @tparam meshxBaseModel_t Base model implementation type
+ * @tparam meshx_send_packet_params_t Type for send packet parameters
+ *
+ * @note The destructor is virtual to ensure proper cleanup in derived classes.
  */
 MESHX_CLIENT_MODEL_TEMPLATE_PROTO
 meshXClientModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS::~meshXClientModel()
