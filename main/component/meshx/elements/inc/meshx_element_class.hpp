@@ -19,8 +19,9 @@
  * meshXElementIF
  *********************************************************************************/
 /**
- * @class meshXElementIF class
- * @details This is an interface class for elements.
+ * @class meshXElementIF
+ * @brief Interface class for MeshX elements
+ * @details This is an interface class defining the base functionality for mesh elements.
  */
 class meshXElementIF
 {
@@ -41,7 +42,8 @@ public:
  * meshXElement
  *********************************************************************************/
 /**
- * @class meshXElement class
+ * @class meshXElement
+ * @brief Base class for MeshX elements
  * @details This is a base class for elements.
  */
 MESHX_ELEMENT_TEMPLATE_PROTO

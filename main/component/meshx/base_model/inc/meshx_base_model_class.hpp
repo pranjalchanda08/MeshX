@@ -30,12 +30,21 @@ using control_msg_cb = std::function<meshx_err_t(dev_struct_t *, control_task_ms
 
 /**
  * @class meshXBaseModel
- * @brief This class is used for the meshXBaseModel.
+ * @brief Base class for all mesh models
  *
- * @tparam ble_mesh_send_msg_params_t The type of the BLE mesh send message parameters.
+ * This class serves as the foundation for all MeshX models, providing common
+ * functionality and interfaces for both client and server models.
+ *
+ * @tparam meshXBaseT Template parameter for base model customization.
+ *                    This should be a derived class that implements platform-specific behavior.
+ * @tparam ble_mesh_send_msg_params_t BLE mesh message parameters type.
+ *                                    This type defines the structure used for sending BLE mesh messages.
+ *
+ * @note This is an abstract base class that cannot be instantiated directly.
+ *       Use meshXBaseServerModel or meshXBaseClientModel instead.
  */
 MESHX_BASE_TEMPLATE_PROTO
-    class meshXBaseModel {
+class meshXBaseModel {
 private:
     uint32_t model_id;
     control_msg_cb from_ble_cb;
@@ -43,40 +52,122 @@ private:
     /* meshx_err_t status to be used where return value is not used */
     meshx_err_t status = MESHX_SUCCESS;
     /**
-     * @brief This function is used to register a callback function for a BLE message associated with the given model ID.
-     * @note This function is self invoking and shall be called as soon as the model is initialized using meshXBaseModel(...)
+     * @brief Register BLE message callback for this model
+     * @details Automatically called during model initialization to register a callback
+     *          function that handles BLE messages for this model's ID.
+     * @return MESHX_SUCCESS if registration successful, error code otherwise
      */
     meshx_err_t from_ble_reg_cb(void) const;
+
     /**
-     * @brief This function is used to deregister a callback function for a BLE message associated with the given model ID.
-     * @note This function is self invoking and shall be called as soon as the model is deinitialized using ~meshXBaseModel()
+     * @brief Deregister BLE message callback for this model
+     * @details Automatically called during model destruction to remove the callback
+     *          function that handles BLE messages for this model's ID.
+     * @return MESHX_SUCCESS if deregistration successful, error code otherwise
      */
     meshx_err_t from_ble_dereg_cb(void) const;
 
 public:
     /**
-     * @brief A virtual function to be implemented by derived classes which shall be used to initialize the platform model library
-     *        and not actually create a logical model
+     * @brief Initialize platform model
+     * @details Pure virtual function to be implemented by derived classes for platform-specific
+     *          model initialization. This function is called during model construction.
+     *
+     * @tparam meshXBaseT Derived model type
+     * @tparam ble_mesh_send_msg_params_t Type for BLE mesh send message parameters
+     *
+     * @return MESHX_SUCCESS on success, error code otherwise
+     * @retval MESHX_SUCCESS Initialization successful
+     * @retval MESHX_ERR_* Error code indicating reason for failure
      */
     virtual meshx_err_t plat_model_init(void) = 0;
+
     /**
-     * @brief A virtual function to be implemented by derived classes which shall be used to send a message to the platform model
+     * @brief Send message through the model
+     * @details Pure virtual function to be implemented by derived classes for sending messages
+     *          through the BLE mesh network. The implementation should handle the actual
+     *          transmission of the message to the BLE stack.
+     *
+     * @tparam meshXBaseT Derived model type
+     * @tparam ble_mesh_send_msg_params_t Type for BLE mesh send message parameters
+     *
+     * @param[in] params Pointer to message parameters structure containing:
+     *                   - opcode: Message opcode
+     *                   - msg: Pointer to message data
+     *                   - len: Length of message data
+     *                   - dst: Destination address
+     *                   - app_idx: Application key index
+     *                   - ttl: Time to live value
+     *
+     * @return MESHX_SUCCESS on success, error code otherwise
+     * @retval MESHX_SUCCESS Message sent successfully
+     * @retval MESHX_ERR_INVALID_ARG Invalid parameters
+     * @retval MESHX_ERR_NO_MEM Insufficient memory
+     * @retval MESHX_ERR_INTERNAL Internal error
      */
     virtual meshx_err_t plat_send_msg(ble_mesh_send_msg_params_t *params) = 0;
 
-    meshx_err_t get_status(void) const              { return status; }
-    uint32_t get_model_id(void) const               { return model_id; }
-    control_msg_cb get_from_ble_cb(void) const      { return from_ble_cb; }
+    /**
+     * @brief Get the current status of the model
+     * @return Current status code
+     */
+    meshx_err_t get_status(void) const { return status; }
+
+    /**
+     * @brief Get the model identifier
+     * @return Model ID value
+     */
+    uint32_t get_model_id(void) const { return model_id; }
+
+    /**
+     * @brief Get the BLE message callback function
+     * @return Callback function for handling BLE messages
+     */
+    control_msg_cb get_from_ble_cb(void) const { return from_ble_cb; }
+
+    /**
+     * @brief Get the model type (server/client)
+     * @return Model type enumeration value
+     */
     meshXBaseModelType_t get_model_type(void) const { return model_type; }
 
-    void set_status(meshx_err_t err)               { status = err; }
-    void set_model_id(uint32_t id)                 { model_id = id; }
+    /**
+     * @brief Set the model status
+     * @param[in] err Status code to set
+     */
+    void set_status(meshx_err_t err) { status = err; }
+
+    /**
+     * @brief Set the model identifier
+     * @param[in] id Model ID to set
+     */
+    void set_model_id(uint32_t id) { model_id = id; }
+
+    /**
+     * @brief Set the BLE message callback function
+     * @param[in] cb Callback function for handling BLE messages
+     */
     void set_from_ble_cb(const control_msg_cb& cb) { from_ble_cb = cb; }
+
+    /**
+     * @brief Set the model type
+     * @param[in] type Model type (server/client) to set
+     */
     void set_model_type(meshXBaseModelType_t type) { model_type = type; }
 
-    meshXBaseModel(uint32_t model_id, const control_msg_cb& from_ble_cb, meshXBaseModelType model_type);
+    /**
+     * @brief Construct a new meshXBaseModel object
+     * @param[in] model_id Model identifier
+     * @param[in] from_ble_cb Callback for handling BLE messages
+     * @param[in] model_type Type of the model (server/client)
+     */
+    meshXBaseModel(uint32_t model_id, const control_msg_cb &from_ble_cb, meshXBaseModelType_t model_type);
     meshXBaseModel() = delete;
-    ~meshXBaseModel();
+
+    /**
+     * @brief Virtual destructor for meshXBaseModel
+     */
+    virtual ~meshXBaseModel();
 };
 
 /**************************************************************************************************************************************************************

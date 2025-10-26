@@ -34,6 +34,7 @@
 #define MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PROTO
 #define MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS
 
+#if CONFIG_ENABLE_GEN_CLIENT
 /*********************************************************************************************************
  * meshXBaseGenericClientModel
  ********************************************************************************************************/
@@ -104,7 +105,10 @@ MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PROTO
 class meshXBaseGenericClientModel : private meshXBaseClientModel<meshXBaseGenericClientModel, meshx_gen_client_send_params_t, meshx_gen_cli_cb_param_t>
 {
 private:
+    /* @copydoc meshXBaseClientModel::plat_model_init */
     meshx_err_t plat_model_init(void) override;
+
+    /* @copydoc meshXBaseClientModel::validate_client_model_id */
     meshx_err_t validate_client_model_id(uint32_t model_id) override;
 
     static meshx_err_t meshx_is_unack_opcode(uint32_t opcode);
@@ -120,6 +124,9 @@ public:
     virtual ~meshXBaseGenericClientModel() = default;
 };
 
+#endif /* CONFIG_ENABLE_GEN_CLIENT */
+
+#if CONFIG_ENABLE_GEN_SERVER
 /*********************************************************************************************************
  * meshXBaseGenericServerModel
  ********************************************************************************************************/
@@ -184,4 +191,6 @@ public:
     meshXBaseGenericServerModel() = delete;
     ~meshXBaseGenericServerModel() final = default;
 };
+#endif /* CONFIG_ENABLE_GEN_SERVER */
+
 #endif /* _MESHX_BASE_MODEL_GENERIC_H_ */
