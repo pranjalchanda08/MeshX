@@ -24,13 +24,10 @@
 constexpr uint32_t MESHX_CLIENT_INIT_MAGIC_NO = 0x1121;
 
 /**
- * @brief Constructor for the meshXBaseModel class.
- *
- * This constructor initializes a meshXBaseModel object with the given model ID, callback function, and model type.
- *
- * @params[in] model_id      The unique identifier of the generic server model.
- * @params[in] from_ble_cb   The callback function to be registered for the model.
- * @params[in] model_type    The type of the generic server model.
+ * @brief Construct a new meshXBaseModel object
+ * @param[in] model_id Model identifier
+ * @param[in] from_ble_cb Callback for handling BLE messages
+ * @param[in] model_type Type of the model (server/client)
  */
 MESHX_BASE_TEMPLATE_PROTO
 meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::meshXBaseModel(uint32_t model_id, const control_msg_cb& from_ble_cb, meshXBaseModelType_t model_type)
@@ -103,8 +100,8 @@ uint16_t meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::plat_server_ini
  *
  * This constructor initializes the meshXBaseServerModel class with the given model ID and callback function.
  *
- * @params[in] model_id  The unique identifier of the generic server model.
- * @params[in] from_ble_cb  The callback function to be registered for the model.
+ * @param[in] model_id  The unique identifier of the generic server model.
+ * @param[in] from_ble_cb  The callback function to be registered for the model.
  */
 MESHX_BASE_SERVER_TEMPLATE_PROTO
 meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::meshXBaseServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
