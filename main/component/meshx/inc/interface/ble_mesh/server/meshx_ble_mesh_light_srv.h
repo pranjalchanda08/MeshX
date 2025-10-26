@@ -376,16 +376,19 @@ typedef struct meshx_light_ctl_srv
 meshx_err_t meshx_plat_light_srv_init(void);
 
 /**
- * @brief Create and initialize the Light CTL Server model platform resources.
+ * @brief Restore the Light Server model state from persistent storage.
  *
- * This function sets up the necessary resources for a Light CTL Server model,
- * including publication and Light CTL server instances.
+ * This function restores the Light Server model state from persistent storage.
  *
- * @param[in]  p_model  Pointer to the model instance to be initialized.
- * @param[out] p_pub    Pointer to the location where the publication context will be stored.
- * @param[out] p_ctl_srv Pointer to the location where the Light CTL server instance will be stored.
+ * @param[in] p_model    Pointer to the model instance to be restored.
+ * @param[in] state      Pointer to the state data to be restored.
+ * @param[in] state_len  Length of the state data in bytes.
  *
  * @return meshx_err_t Returns an error code indicating success or failure of the operation.
+ *         - MESHX_SUCCESS on success.
+ *         - MESHX_ERR_INVALID_ARG if any parameter is invalid.
+ *         - MESHX_ERR_INVALID_STATE if the state data is corrupted.
+ *         - Other error codes for implementation-specific failures.
  */
 meshx_err_t meshx_plat_light_srv_restore(meshx_ptr_t p_model, const meshx_lighting_server_state_t *state, uint16_t state_len);
 

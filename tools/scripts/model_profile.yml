@@ -80,6 +80,132 @@ models:
               value: false
         base_model: "gen_server"
 
+    gen_level_client:
+        path: "elements/client/models/gen_level_client"
+        type: "client"
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_GEN_LEVEL_CLIENT"
+              value: false
+        base_model: "gen_client"
+
+    gen_level_server:
+        path: "elements/server/models/gen_level_server"
+        type: "server"
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_GEN_LEVEL_SERVER"
+              value: false
+        base_model: "gen_server"
+
+    gen_battery_client:
+        path: "elements/client/models/gen_battery_client"
+        type: "client"
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_GEN_BATTERY_CLIENT"
+              value: false
+        base_model: "gen_client"
+
+    gen_battery_server:
+        path: "elements/server/models/gen_battery_server"
+        type: "server"
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_GEN_BATTERY_SERVER"
+              value: false
+        base_model: "gen_server"
+
+    gen_power_level_client:
+        path: "elements/client/models/gen_power_level_client"
+        type: "client"
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_GEN_POWER_LEVEL_CLIENT"
+              value: false
+        base_model: "gen_client"
+
+    gen_power_level_server:
+        path: "elements/server/models/gen_power_level_server"
+        type: "server"
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_GEN_POWER_LEVEL_SERVER"
+              value: false
+        base_model: "gen_server"
+
+    gen_power_onoff_client:
+        path: "elements/client/models/gen_power_onoff_client"
+        type: "client"
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_GEN_POWER_ONOFF_CLIENT"
+              value: false
+        base_model: "gen_client"
+
+    gen_power_onoff_server:
+        path: "elements/server/models/gen_power_onoff_server"
+        type: "server"
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_GEN_POWER_ONOFF_SERVER"
+              value: false
+        base_model: "gen_server"
+
+    gen_property_client:
+        path: "elements/client/models/gen_property_client"
+        type: "client"
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_GEN_PROPERTY_CLIENT"
+              value: false
+        base_model: "gen_client"
+
+    gen_property_server:
+        path: "elements/server/models/gen_property_server"
+        type: "server"
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_GEN_PROPERTY_SERVER"
+              value: false
+        base_model: "gen_server"
+
+    gen_location_client:
+        path: "elements/client/models/gen_location_client"
+        type: "client"
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_GEN_LOCATION_CLIENT"
+              value: false
+        base_model: "gen_client"
+
+    gen_location_server:
+        path: "elements/server/models/gen_location_server"
+        type: "server"
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_GEN_LOCATION_SERVER"
+              value: false
+        base_model: "gen_server"
+
+    gen_def_trans_time_client:
+        path: "elements/client/models/gen_def_trans_time_client"
+        type: "client"
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_GEN_DEF_TRANS_TIME_CLIENT"
+              value: false
+        base_model: "gen_client"
+
+    gen_def_trans_time_server:
+        path: "elements/server/models/gen_def_trans_time_server"
+        type: "server"
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_GEN_DEF_TRANS_TIME_SERVER"
+              value: false
+        base_model: "gen_server"
+
     light_ctl_server:
         path: "elements/server/models/light_ctl_server"
         type: "server"
@@ -106,6 +232,42 @@ models:
             - def: "CONFIG_LIGHT_CTL_CLIENT_COUNT"
               value: 0
         base_model: "light_client"
+
+    gen_admin_property_server:
+        path: "elements/server/models/gen_admin_property_server"
+        type: "server"
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_GEN_ADMIN_PROPERTY_SERVER"
+              value: false
+        base_model: "gen_server"
+
+    gen_manufacturer_property_server:
+        path: "elements/server/models/gen_manufacturer_property_server"
+        type: "server"
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_GEN_MANU_PROP_SERVER"
+              value: false
+        base_model: "gen_server"
+
+    gen_user_property_server:
+        path: "elements/server/models/gen_user_property_server"
+        type: "server"
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_GEN_USER_PROPERTY_SERVER"
+              value: false
+        base_model: "gen_server"
+
+    gen_client_property_server:
+        path: "elements/server/models/gen_client_property_server"
+        type: "server"
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_GEN_CLIENT_PROPERTY_SERVER"
+              value: false
+        base_model: "gen_server"
 
 # Base model build registration
 base_models:
