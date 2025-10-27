@@ -100,11 +100,8 @@ $(function(){initNavTree('d4/db6/meshx__light__ctl__srv_8c.html','../../'); init
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">meshx_light_ctl_srv.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -219,28 +216,16 @@ Include dependency graph for meshx_light_ctl_srv.c:</div>
 </div>
 <p><a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Data Structures</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d32/structmeshx__light__ctl__setup__server.html">meshx_light_ctl_setup_server</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure representing the MeshX Light CTL Setup Server.  <a href="../../d6/d32/structmeshx__light__ctl__setup__server.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:ad9e063fcc893a076ff956ac6020372ed" id="r_ad9e063fcc893a076ff956ac6020372ed"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad9e063fcc893a076ff956ac6020372ed">MESHX_SERVER_INIT_MAGIC_NO</a>&#160;&#160;&#160;0x2483</td></tr>
 <tr class="separator:ad9e063fcc893a076ff956ac6020372ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:afcfff8d0923d1491b1be60053c090f31" id="r_afcfff8d0923d1491b1be60053c090f31"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="../../d6/d32/structmeshx__light__ctl__setup__server.html">meshx_light_ctl_setup_server</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afcfff8d0923d1491b1be60053c090f31">meshx_light_ctl_setup_server_t</a></td></tr>
-<tr class="memdesc:afcfff8d0923d1491b1be60053c090f31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure representing the MeshX Light CTL Setup Server.  <br /></td></tr>
-<tr class="separator:afcfff8d0923d1491b1be60053c090f31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a9cde80da166fd8a69dd7261a2478d1b8" id="r_a9cde80da166fd8a69dd7261a2478d1b8"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9cde80da166fd8a69dd7261a2478d1b8">meshx_state_change_notify</a> (<a class="el" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#ab7d1e0ab27057d7d631cbe509570476d">meshx_lighting_server_cb_param_t</a> *param)</td></tr>
-<tr class="memdesc:a9cde80da166fd8a69dd7261a2478d1b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform hardware change for the light control server model.  <br /></td></tr>
-<tr class="separator:a9cde80da166fd8a69dd7261a2478d1b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf71e72c1ffe4b781c7ed81df835b102" id="r_adf71e72c1ffe4b781c7ed81df835b102"><td class="memItemLeft" align="right" valign="top">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD static uint16_t <a class="el" href="../../d5/d98/meshx__light__server_8c.html#ac5efe3ac4cddc76c1c6de878a351223f">meshx_lighting_server_init</a>=0;=======typedef struct meshx_light_ctl_setup_server { uint16_t ctl_setup_server_init;<a class="el" href="../../d3/d2b/meshx__platform__ble__mesh_8h.html#ab8c86cf2f5e47acb374476edda8b5b7c">MESHX_MODEL</a> ctl_setup_srv_model;<a class="el" href="../../db/dde/meshx__light__ctl__srv_8h.html#ae6c7ab6d2bce16f5c802c863bcf3b70a">meshx_ctl_setup_server_model_t</a> *meshx_srv_model;}meshx_light_ctl_setup_server_t;static struct { uint16_t ctl_lighting_server_init;uint16_t ctl_lighting_server_created;meshx_light_ctl_setup_server_t ctl_setup_server;}g_meshx_light_ctl_srv={ .ctl_setup_server={ .ctl_setup_server_init=0,.meshx_srv_model=NULL, },.ctl_lighting_server_init=0,.ctl_lighting_server_created=0, };&gt; &gt; &gt; &gt; &gt; &gt; static <a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf71e72c1ffe4b781c7ed81df835b102">meshx_state_change_notify</a> (<a class="el" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#ab7d1e0ab27057d7d631cbe509570476d">meshx_lighting_server_cb_param_t</a> *param)</td></tr>
+<tr class="memdesc:adf71e72c1ffe4b781c7ed81df835b102"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform hardware change for the light control server model.  <br /></td></tr>
+<tr class="separator:adf71e72c1ffe4b781c7ed81df835b102"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d11c7a15e9c2066afb3f22e72068518" id="r_a7d11c7a15e9c2066afb3f22e72068518"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7d11c7a15e9c2066afb3f22e72068518">meshx_handle_light_ctl_msg</a> (const <a class="el" href="../../d2/de3/meshx__common_8h.html#a42c6642d8c5c083ff71aaf93e6a3e6b8">dev_struct_t</a> *pdev, const <a class="el" href="../../da/db3/meshx__control__task_8h.html#a3109cf0e00dc81938eb780233db68964">control_task_msg_evt_t</a> evt, <a class="el" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#ab7d1e0ab27057d7d631cbe509570476d">meshx_lighting_server_cb_param_t</a> *param)</td></tr>
 <tr class="memdesc:a7d11c7a15e9c2066afb3f22e72068518"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle Light CTL messages for the lighting server model.  <br /></td></tr>
 <tr class="separator:a7d11c7a15e9c2066afb3f22e72068518"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -271,20 +256,6 @@ Functions</h2></td></tr>
 <tr class="memitem:aaff04640563eef2cfa526fbf99ed5319" id="r_aaff04640563eef2cfa526fbf99ed5319"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaff04640563eef2cfa526fbf99ed5319">meshx_light_ctl_srv_send_pack_create</a> (<a class="el" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a3bae9ce6d9b944b93bb8a0b64e758d19">meshx_ptr_t</a> p_model, uint16_t element_id, uint16_t net_idx, uint16_t app_idx, uint16_t pub_addr, <a class="el" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#a1d9a4faf50d1bf5ec8b4b042fdbc66be">meshx_light_ctl_srv_state_t</a> ctl_state, <a class="el" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#ab7d1e0ab27057d7d631cbe509570476d">meshx_lighting_server_cb_param_t</a> *light_srv_send)</td></tr>
 <tr class="memdesc:aaff04640563eef2cfa526fbf99ed5319"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a Light CTL Server send message packet.  <br /></td></tr>
 <tr class="separator:aaff04640563eef2cfa526fbf99ed5319"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:ad7b3965ec05b69bf693150a97200e279" id="r_ad7b3965ec05b69bf693150a97200e279"><td class="memItemLeft" >struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69f7a83a3860055f6155a2cf95d1e589" id="r_a69f7a83a3860055f6155a2cf95d1e589"><td class="memItemLeft" >&#160;&#160;&#160;uint16_t&#160;&#160;&#160;<a class="el" href="#a4d3616c3a48d9a7057c057d71a872975">ctl_lighting_server_init</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="separator:a69f7a83a3860055f6155a2cf95d1e589"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2daae984ccfa8e78c092ce5779a05fbb" id="r_a2daae984ccfa8e78c092ce5779a05fbb"><td class="memItemLeft" >&#160;&#160;&#160;uint16_t&#160;&#160;&#160;<a class="el" href="#a19fb416e1509935256f38ab5df688029">ctl_lighting_server_created</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="separator:a2daae984ccfa8e78c092ce5779a05fbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0cb8da2d495f914de375d399f7b44b58" id="r_a0cb8da2d495f914de375d399f7b44b58"><td class="memItemLeft" >&#160;&#160;&#160;<a class="el" href="#afcfff8d0923d1491b1be60053c090f31">meshx_light_ctl_setup_server_t</a>&#160;&#160;&#160;<a class="el" href="#a621c667489e1ed46167a56127d157d5e">ctl_setup_server</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="separator:a0cb8da2d495f914de375d399f7b44b58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7b3965ec05b69bf693150a97200e279" id="r_ad7b3965ec05b69bf693150a97200e279"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="memdesc:ad7b3965ec05b69bf693150a97200e279"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure to maintain the initialization and creation state of the MeshX Light CTL Server.  <br /></td></tr>
-<tr class="separator:ad7b3965ec05b69bf693150a97200e279"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of the Light CTL Server model for BLE Mesh Node. </p>
@@ -307,24 +278,6 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00016">16</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="afcfff8d0923d1491b1be60053c090f31" name="afcfff8d0923d1491b1be60053c090f31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afcfff8d0923d1491b1be60053c090f31">&#9670;&#160;</a></span>meshx_light_ctl_setup_server_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="../../d6/d32/structmeshx__light__ctl__setup__server.html">meshx_light_ctl_setup_server</a> <a class="el" href="#afcfff8d0923d1491b1be60053c090f31">meshx_light_ctl_setup_server_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Structure representing the MeshX Light CTL Setup Server. </p>
-<p>This structure holds the initialization state, model information, and a pointer to the server model for the Light CTL (Color Temperature Lightness) Setup Server. </p>
 
 </div>
 </div>
@@ -354,21 +307,20 @@ Variables</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6" title="MeshX Error Codes.">meshx_err_t</a> Returns an error code indicating the result of the operation. Typically, MESHX_OK on success or an appropriate error code on failure. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00289">289</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  290</span>{</div>
-<div class="line"><span class="lineno">  291</span>    <span class="keywordflow">if</span> (!p_model)</div>
-<div class="line"><span class="lineno">  292</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
-<div class="line"><span class="lineno">  293</span> </div>
-<div class="line"><span class="lineno">  294</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.meshx_srv_model == NULL)</div>
-<div class="line"><span class="lineno">  295</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a4d423ab700ffdf5440a1f0579beba8af">MESHX_FAIL</a>;</div>
-<div class="line"><span class="lineno">  296</span> </div>
-<div class="line"><span class="lineno">  297</span>    memcpy(p_model, &amp;<a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.ctl_setup_srv_model, <span class="keyword">sizeof</span>(<a class="code hl_define" href="../../d3/d2b/meshx__platform__ble__mesh_8h.html#ab8c86cf2f5e47acb374476edda8b5b7c">MESHX_MODEL</a>));</div>
-<div class="line"><span class="lineno">  298</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  299</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00293">293</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  294</span>{</div>
+<div class="line"><span class="lineno">  295</span>    <span class="keywordflow">if</span> (!p_model)</div>
+<div class="line"><span class="lineno">  296</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<div class="line"><span class="lineno">  297</span> </div>
+<div class="line"><span class="lineno">  298</span>    <span class="keywordflow">if</span> (g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model == NULL)</div>
+<div class="line"><span class="lineno">  299</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a4d423ab700ffdf5440a1f0579beba8af">MESHX_FAIL</a>;</div>
+<div class="line"><span class="lineno">  300</span> </div>
+<div class="line"><span class="lineno">  301</span>    memcpy(p_model, &amp;g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_srv_model, <span class="keyword">sizeof</span>(<a class="code hl_define" href="../../d3/d2b/meshx__platform__ble__mesh_8h.html#ab8c86cf2f5e47acb374476edda8b5b7c">MESHX_MODEL</a>));</div>
+<div class="line"><span class="lineno">  302</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  303</span>}</div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a></div><div class="ttdeci">@ MESHX_SUCCESS</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00040">meshx_err.h:40</a></div></div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a></div><div class="ttdeci">@ MESHX_INVALID_ARG</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00042">meshx_err.h:42</a></div></div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6a4d423ab700ffdf5440a1f0579beba8af"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a4d423ab700ffdf5440a1f0579beba8af">MESHX_FAIL</a></div><div class="ttdeci">@ MESHX_FAIL</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00041">meshx_err.h:41</a></div></div>
-<div class="ttc" id="ameshx__light__ctl__srv_8c_html_ad7b3965ec05b69bf693150a97200e279"><div class="ttname"><a href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a></div><div class="ttdeci">static struct @162134341120176320346270047367114065256252040066 g_meshx_light_ctl_srv</div><div class="ttdoc">Structure to maintain the initialization and creation state of the MeshX Light CTL Server.</div></div>
 <div class="ttc" id="ameshx__platform__ble__mesh_8h_html_ab8c86cf2f5e47acb374476edda8b5b7c"><div class="ttname"><a href="../../d3/d2b/meshx__platform__ble__mesh_8h.html#ab8c86cf2f5e47acb374476edda8b5b7c">MESHX_MODEL</a></div><div class="ttdeci">#define MESHX_MODEL</div><div class="ttdef"><b>Definition</b> <a href="../../d3/d2b/meshx__platform__ble__mesh_8h_source.html#l00034">meshx_platform_ble_mesh.h:34</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -424,94 +376,94 @@ Variables</h2></td></tr>
 <p>&lt; Light CTL Message Opcode</p>
 <p>&lt; Light CTL Setup Message Opcode</p>
 
-<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00117">117</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  120</span>{</div>
-<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">if</span> (!pdev || (evt != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a7c86fb8431368de11d949af079f0edc4">MESHX_MODEL_ID_LIGHT_CTL_SRV</a> &amp;&amp; evt != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a5887d8ba40864cf6754204bd8d9d8a23">MESHX_MODEL_ID_LIGHT_CTL_SETUP_SRV</a>))</div>
-<div class="line"><span class="lineno">  122</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
-<div class="line"><span class="lineno">  123</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  124</span> </div>
-<div class="line"><span class="lineno">  125</span>    <span class="keywordtype">bool</span> send_reply_to_src = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  126</span>    <span class="keywordtype">bool</span> state_change_notify = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  127</span>    uint32_t op_code = param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#a791eb2748742c87194f25ccd9f13aafb">opcode</a>;</div>
-<div class="line"><span class="lineno">  128</span>    uint32_t status_op = 0;</div>
-<div class="line"><span class="lineno">  129</span>    <span class="keywordflow">switch</span> (op_code)</div>
-<div class="line"><span class="lineno">  130</span>    {</div>
-<div class="line"><span class="lineno">  131</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a344b0c68c38dc56d262ac5c21001a18c">MESHX_MODEL_OP_LIGHT_CTL_STATUS</a>:</div>
-<div class="line"><span class="lineno">  132</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a8d3f4681952eb06ffeac90b9bbee5b02">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS</a>:</div>
-<div class="line"><span class="lineno">  133</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a8b357025fc22ab3af662b50b05ba0067">MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS</a>:</div>
-<div class="line"><span class="lineno">  134</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a0ce630aa3598896acd740ab3f91993f1">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS</a>:</div>
-<div class="line"><span class="lineno">  135</span>            <span class="comment">/* Ignore, as these are status messages */</span></div>
-<div class="line"><span class="lineno">  136</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  138</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#ad8b1667db4ac0e67296410c7b1727341">MESHX_MODEL_OP_LIGHT_CTL_GET</a>:</div>
-<div class="line"><span class="lineno">  139</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a10c4f4a740b4e97ab7dd2fc3f1ee3b16">MESHX_MODEL_OP_LIGHT_CTL_SET</a>:</div>
-<div class="line"><span class="lineno">  140</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#ac8fd063f95afbb6795ef24ba0e81ed8a">MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK</a>:</div>
-<div class="line"><span class="lineno">  141</span>            status_op = <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a344b0c68c38dc56d262ac5c21001a18c">MESHX_MODEL_OP_LIGHT_CTL_STATUS</a>;</div>
-<div class="line"><span class="lineno">  142</span>            <span class="keywordflow">if</span> (op_code != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#ad8b1667db4ac0e67296410c7b1727341">MESHX_MODEL_OP_LIGHT_CTL_GET</a>)</div>
-<div class="line"><span class="lineno">  143</span>                state_change_notify = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  144</span> </div>
-<div class="line"><span class="lineno">  145</span>            <span class="keywordflow">if</span> (op_code != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#ac8fd063f95afbb6795ef24ba0e81ed8a">MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK</a>)</div>
-<div class="line"><span class="lineno">  146</span>                send_reply_to_src = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  147</span> </div>
-<div class="line"><span class="lineno">  148</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  149</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a32ef4a326bdf3db0c2a731c3ce5649c3">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET</a>:</div>
-<div class="line"><span class="lineno">  150</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#aa9714b377b326c0a721f911f061c4990">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET</a>:</div>
-<div class="line"><span class="lineno">  151</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a5cb8c218aad268a3b72feb9e9f5fab4e">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK</a>:</div>
-<div class="line"><span class="lineno">  152</span>            status_op = <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a8d3f4681952eb06ffeac90b9bbee5b02">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS</a>;</div>
-<div class="line"><span class="lineno">  153</span>            <span class="keywordflow">if</span> (op_code != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a32ef4a326bdf3db0c2a731c3ce5649c3">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET</a>)</div>
-<div class="line"><span class="lineno">  154</span>                state_change_notify = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  155</span> </div>
-<div class="line"><span class="lineno">  156</span>            <span class="keywordflow">if</span> (op_code != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a5cb8c218aad268a3b72feb9e9f5fab4e">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK</a>)</div>
-<div class="line"><span class="lineno">  157</span>                send_reply_to_src = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  158</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  160</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a9895f52e58e13c6e5306db49146756cb">MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_SET</a>:</div>
-<div class="line"><span class="lineno">  161</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a620bfcfdadcba13f32fdb3dd6991e6d3">MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_GET</a>:</div>
-<div class="line"><span class="lineno">  162</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a84a731eade7627fee91e8fb2b2f2d813">MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_SET_UNACK</a>:</div>
-<div class="line"><span class="lineno">  163</span>            status_op = <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a8b357025fc22ab3af662b50b05ba0067">MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS</a>;</div>
-<div class="line"><span class="lineno">  164</span>            <span class="keywordflow">if</span> (op_code != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a620bfcfdadcba13f32fdb3dd6991e6d3">MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_GET</a>)</div>
-<div class="line"><span class="lineno">  165</span>                <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#a7719f6393990c6d3eea95a9df49e906e">MESHX_DO_NOTHING</a>;</div>
-<div class="line"><span class="lineno">  166</span> </div>
-<div class="line"><span class="lineno">  167</span>            <span class="keywordflow">if</span> (op_code != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a84a731eade7627fee91e8fb2b2f2d813">MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_SET_UNACK</a>)</div>
-<div class="line"><span class="lineno">  168</span>                send_reply_to_src = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  169</span> </div>
-<div class="line"><span class="lineno">  170</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  171</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#adabfbba74bdb028c48e24561a93aae19">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET</a>:</div>
-<div class="line"><span class="lineno">  172</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#ad76b5a1e6c7267ab150b1e0b9fcc3e77">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET</a>:</div>
-<div class="line"><span class="lineno">  173</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a9ff091f4e4a760e4a70b5c7755160ac9">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK</a>:</div>
-<div class="line"><span class="lineno">  174</span>            status_op = <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a0ce630aa3598896acd740ab3f91993f1">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS</a>;</div>
-<div class="line"><span class="lineno">  175</span>            <span class="keywordflow">if</span> (op_code != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#ad76b5a1e6c7267ab150b1e0b9fcc3e77">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET</a>)</div>
-<div class="line"><span class="lineno">  176</span>                <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#a7719f6393990c6d3eea95a9df49e906e">MESHX_DO_NOTHING</a>;</div>
-<div class="line"><span class="lineno">  177</span> </div>
-<div class="line"><span class="lineno">  178</span>            <span class="keywordflow">if</span> (op_code != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a9ff091f4e4a760e4a70b5c7755160ac9">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK</a>)</div>
-<div class="line"><span class="lineno">  179</span>                send_reply_to_src = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  180</span> </div>
-<div class="line"><span class="lineno">  181</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  182</span>        <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  183</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a3df9f46a0a08969094d8eef3581409e8">MESHX_LOGW</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;CTL Unhandled Event %p&quot;</span>, (<span class="keywordtype">void</span> *)param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#a791eb2748742c87194f25ccd9f13aafb">opcode</a>);</div>
-<div class="line"><span class="lineno">  184</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  185</span>    }</div>
-<div class="line"><span class="lineno">  186</span>    <span class="keywordflow">if</span> (state_change_notify)</div>
-<div class="line"><span class="lineno">  187</span>    {</div>
-<div class="line"><span class="lineno">  188</span>        err = <a class="code hl_function" href="#a9cde80da166fd8a69dd7261a2478d1b8">meshx_state_change_notify</a>(param);</div>
-<div class="line"><span class="lineno">  189</span>        <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno">  190</span>            <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  191</span>    }</div>
-<div class="line"><span class="lineno">  192</span>    <span class="keywordflow">if</span> (send_reply_to_src</div>
-<div class="line"><span class="lineno">  193</span>        <span class="comment">/* This is meant to notify the respective publish client */</span></div>
-<div class="line"><span class="lineno">  194</span>        || param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#adca87f7e6e22789f4eee48a4ca23dcac">src_addr</a> != param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a73cda8c575b818b96c9b4ab30b55e2d5">model</a>.<a class="code hl_variable" href="../../d7/df1/structmeshx__model.html#ab1df817993486e21f3420104dc010f5e">pub_addr</a>)</div>
-<div class="line"><span class="lineno">  195</span>    {</div>
-<div class="line"><span class="lineno">  196</span>        <span class="comment">/* Here the message was received from unregistered source and mention the state to the respective client */</span></div>
-<div class="line"><span class="lineno">  197</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;PUB: src|pub %x|%x&quot;</span>, param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#adca87f7e6e22789f4eee48a4ca23dcac">src_addr</a>, param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a73cda8c575b818b96c9b4ab30b55e2d5">model</a>.<a class="code hl_variable" href="../../d7/df1/structmeshx__model.html#ab1df817993486e21f3420104dc010f5e">pub_addr</a>);</div>
-<div class="line"><span class="lineno">  198</span>        param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#a791eb2748742c87194f25ccd9f13aafb">opcode</a> = (uint16_t)status_op;</div>
-<div class="line"><span class="lineno">  199</span>        param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#af8b310010317426cc7a107a510a5e4bd">dst_addr</a> = param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a73cda8c575b818b96c9b4ab30b55e2d5">model</a>.<a class="code hl_variable" href="../../d7/df1/structmeshx__model.html#ab1df817993486e21f3420104dc010f5e">pub_addr</a>;</div>
-<div class="line"><span class="lineno">  200</span> </div>
-<div class="line"><span class="lineno">  201</span>        err = <a class="code hl_function" href="../../dc/daf/meshx__light__server_8h.html#acfab754bb56f290741a2fc1c49c595c8">meshx_gen_light_srv_send_msg_to_ble</a>(</div>
-<div class="line"><span class="lineno">  202</span>            <a class="code hl_variable" href="../../da/db3/meshx__control__task_8h.html#a1069cba1c3d00149aaa7f7164890d3c9">CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV</a>,</div>
-<div class="line"><span class="lineno">  203</span>            param</div>
-<div class="line"><span class="lineno">  204</span>        );</div>
-<div class="line"><span class="lineno">  205</span>    }</div>
-<div class="line"><span class="lineno">  206</span> </div>
-<div class="line"><span class="lineno">  207</span>    <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  208</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00121">121</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  124</span>{</div>
+<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">if</span> (!pdev || (evt != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a7c86fb8431368de11d949af079f0edc4">MESHX_MODEL_ID_LIGHT_CTL_SRV</a> &amp;&amp; evt != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a5887d8ba40864cf6754204bd8d9d8a23">MESHX_MODEL_ID_LIGHT_CTL_SETUP_SRV</a>))</div>
+<div class="line"><span class="lineno">  126</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<div class="line"><span class="lineno">  127</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  128</span> </div>
+<div class="line"><span class="lineno">  129</span>    <span class="keywordtype">bool</span> send_reply_to_src = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  130</span>    <span class="keywordtype">bool</span> state_change_notify = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  131</span>    uint32_t op_code = param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#a791eb2748742c87194f25ccd9f13aafb">opcode</a>;</div>
+<div class="line"><span class="lineno">  132</span>    uint32_t status_op = 0;</div>
+<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">switch</span> (op_code)</div>
+<div class="line"><span class="lineno">  134</span>    {</div>
+<div class="line"><span class="lineno">  135</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a344b0c68c38dc56d262ac5c21001a18c">MESHX_MODEL_OP_LIGHT_CTL_STATUS</a>:</div>
+<div class="line"><span class="lineno">  136</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a8d3f4681952eb06ffeac90b9bbee5b02">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS</a>:</div>
+<div class="line"><span class="lineno">  137</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a8b357025fc22ab3af662b50b05ba0067">MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS</a>:</div>
+<div class="line"><span class="lineno">  138</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a0ce630aa3598896acd740ab3f91993f1">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS</a>:</div>
+<div class="line"><span class="lineno">  139</span>            <span class="comment">/* Ignore, as these are status messages */</span></div>
+<div class="line"><span class="lineno">  140</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  142</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#ad8b1667db4ac0e67296410c7b1727341">MESHX_MODEL_OP_LIGHT_CTL_GET</a>:</div>
+<div class="line"><span class="lineno">  143</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a10c4f4a740b4e97ab7dd2fc3f1ee3b16">MESHX_MODEL_OP_LIGHT_CTL_SET</a>:</div>
+<div class="line"><span class="lineno">  144</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#ac8fd063f95afbb6795ef24ba0e81ed8a">MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK</a>:</div>
+<div class="line"><span class="lineno">  145</span>            status_op = <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a344b0c68c38dc56d262ac5c21001a18c">MESHX_MODEL_OP_LIGHT_CTL_STATUS</a>;</div>
+<div class="line"><span class="lineno">  146</span>            <span class="keywordflow">if</span> (op_code != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#ad8b1667db4ac0e67296410c7b1727341">MESHX_MODEL_OP_LIGHT_CTL_GET</a>)</div>
+<div class="line"><span class="lineno">  147</span>                state_change_notify = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  148</span> </div>
+<div class="line"><span class="lineno">  149</span>            <span class="keywordflow">if</span> (op_code != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#ac8fd063f95afbb6795ef24ba0e81ed8a">MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK</a>)</div>
+<div class="line"><span class="lineno">  150</span>                send_reply_to_src = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  151</span> </div>
+<div class="line"><span class="lineno">  152</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  153</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a32ef4a326bdf3db0c2a731c3ce5649c3">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET</a>:</div>
+<div class="line"><span class="lineno">  154</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#aa9714b377b326c0a721f911f061c4990">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET</a>:</div>
+<div class="line"><span class="lineno">  155</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a5cb8c218aad268a3b72feb9e9f5fab4e">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK</a>:</div>
+<div class="line"><span class="lineno">  156</span>            status_op = <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a8d3f4681952eb06ffeac90b9bbee5b02">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_STATUS</a>;</div>
+<div class="line"><span class="lineno">  157</span>            <span class="keywordflow">if</span> (op_code != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a32ef4a326bdf3db0c2a731c3ce5649c3">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET</a>)</div>
+<div class="line"><span class="lineno">  158</span>                state_change_notify = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  159</span> </div>
+<div class="line"><span class="lineno">  160</span>            <span class="keywordflow">if</span> (op_code != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a5cb8c218aad268a3b72feb9e9f5fab4e">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET_UNACK</a>)</div>
+<div class="line"><span class="lineno">  161</span>                send_reply_to_src = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  162</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  164</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a9895f52e58e13c6e5306db49146756cb">MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_SET</a>:</div>
+<div class="line"><span class="lineno">  165</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a620bfcfdadcba13f32fdb3dd6991e6d3">MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_GET</a>:</div>
+<div class="line"><span class="lineno">  166</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a84a731eade7627fee91e8fb2b2f2d813">MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_SET_UNACK</a>:</div>
+<div class="line"><span class="lineno">  167</span>            status_op = <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a8b357025fc22ab3af662b50b05ba0067">MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_STATUS</a>;</div>
+<div class="line"><span class="lineno">  168</span>            <span class="keywordflow">if</span> (op_code != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a620bfcfdadcba13f32fdb3dd6991e6d3">MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_GET</a>)</div>
+<div class="line"><span class="lineno">  169</span>                <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#a7719f6393990c6d3eea95a9df49e906e">MESHX_DO_NOTHING</a>;</div>
+<div class="line"><span class="lineno">  170</span> </div>
+<div class="line"><span class="lineno">  171</span>            <span class="keywordflow">if</span> (op_code != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a84a731eade7627fee91e8fb2b2f2d813">MESHX_MODEL_OP_LIGHT_CTL_DEFAULT_SET_UNACK</a>)</div>
+<div class="line"><span class="lineno">  172</span>                send_reply_to_src = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  173</span> </div>
+<div class="line"><span class="lineno">  174</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  175</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#adabfbba74bdb028c48e24561a93aae19">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET</a>:</div>
+<div class="line"><span class="lineno">  176</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#ad76b5a1e6c7267ab150b1e0b9fcc3e77">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET</a>:</div>
+<div class="line"><span class="lineno">  177</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a9ff091f4e4a760e4a70b5c7755160ac9">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK</a>:</div>
+<div class="line"><span class="lineno">  178</span>            status_op = <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a0ce630aa3598896acd740ab3f91993f1">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS</a>;</div>
+<div class="line"><span class="lineno">  179</span>            <span class="keywordflow">if</span> (op_code != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#ad76b5a1e6c7267ab150b1e0b9fcc3e77">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET</a>)</div>
+<div class="line"><span class="lineno">  180</span>                <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#a7719f6393990c6d3eea95a9df49e906e">MESHX_DO_NOTHING</a>;</div>
+<div class="line"><span class="lineno">  181</span> </div>
+<div class="line"><span class="lineno">  182</span>            <span class="keywordflow">if</span> (op_code != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a9ff091f4e4a760e4a70b5c7755160ac9">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK</a>)</div>
+<div class="line"><span class="lineno">  183</span>                send_reply_to_src = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  184</span> </div>
+<div class="line"><span class="lineno">  185</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  186</span>        <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  187</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a3df9f46a0a08969094d8eef3581409e8">MESHX_LOGW</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;CTL Unhandled Event %p&quot;</span>, (<span class="keywordtype">void</span> *)param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#a791eb2748742c87194f25ccd9f13aafb">opcode</a>);</div>
+<div class="line"><span class="lineno">  188</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  189</span>    }</div>
+<div class="line"><span class="lineno">  190</span>    <span class="keywordflow">if</span> (state_change_notify)</div>
+<div class="line"><span class="lineno">  191</span>    {</div>
+<div class="line"><span class="lineno">  192</span>        err = <a class="code hl_function" href="#adf71e72c1ffe4b781c7ed81df835b102">meshx_state_change_notify</a>(param);</div>
+<div class="line"><span class="lineno">  193</span>        <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno">  194</span>            <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  195</span>    }</div>
+<div class="line"><span class="lineno">  196</span>    <span class="keywordflow">if</span> (send_reply_to_src</div>
+<div class="line"><span class="lineno">  197</span>        <span class="comment">/* This is meant to notify the respective publish client */</span></div>
+<div class="line"><span class="lineno">  198</span>        || param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#adca87f7e6e22789f4eee48a4ca23dcac">src_addr</a> != param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a73cda8c575b818b96c9b4ab30b55e2d5">model</a>.<a class="code hl_variable" href="../../d7/df1/structmeshx__model.html#ab1df817993486e21f3420104dc010f5e">pub_addr</a>)</div>
+<div class="line"><span class="lineno">  199</span>    {</div>
+<div class="line"><span class="lineno">  200</span>        <span class="comment">/* Here the message was received from unregistered source and mention the state to the respective client */</span></div>
+<div class="line"><span class="lineno">  201</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;PUB: src|pub %x|%x&quot;</span>, param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#adca87f7e6e22789f4eee48a4ca23dcac">src_addr</a>, param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a73cda8c575b818b96c9b4ab30b55e2d5">model</a>.<a class="code hl_variable" href="../../d7/df1/structmeshx__model.html#ab1df817993486e21f3420104dc010f5e">pub_addr</a>);</div>
+<div class="line"><span class="lineno">  202</span>        param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#a791eb2748742c87194f25ccd9f13aafb">opcode</a> = (uint16_t)status_op;</div>
+<div class="line"><span class="lineno">  203</span>        param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#af8b310010317426cc7a107a510a5e4bd">dst_addr</a> = param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a73cda8c575b818b96c9b4ab30b55e2d5">model</a>.<a class="code hl_variable" href="../../d7/df1/structmeshx__model.html#ab1df817993486e21f3420104dc010f5e">pub_addr</a>;</div>
+<div class="line"><span class="lineno">  204</span> </div>
+<div class="line"><span class="lineno">  205</span>        err = <a class="code hl_function" href="../../dc/daf/meshx__light__server_8h.html#acfab754bb56f290741a2fc1c49c595c8">meshx_gen_light_srv_send_msg_to_ble</a>(</div>
+<div class="line"><span class="lineno">  206</span>            <a class="code hl_variable" href="../../da/db3/meshx__control__task_8h.html#a1069cba1c3d00149aaa7f7164890d3c9">CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV</a>,</div>
+<div class="line"><span class="lineno">  207</span>            param</div>
+<div class="line"><span class="lineno">  208</span>        );</div>
+<div class="line"><span class="lineno">  209</span>    }</div>
+<div class="line"><span class="lineno">  210</span> </div>
+<div class="line"><span class="lineno">  211</span>    <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  212</span>}</div>
 <div class="ttc" id="ameshx__ble__mesh__cmn__def_8h_html_a0ce630aa3598896acd740ab3f91993f1"><div class="ttname"><a href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a0ce630aa3598896acd740ab3f91993f1">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS</a></div><div class="ttdeci">#define MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_STATUS</div><div class="ttdef"><b>Definition</b> <a href="../../d4/de0/meshx__ble__mesh__cmn__def_8h_source.html#l00416">meshx_ble_mesh_cmn_def.h:416</a></div></div>
 <div class="ttc" id="ameshx__ble__mesh__cmn__def_8h_html_a10c4f4a740b4e97ab7dd2fc3f1ee3b16"><div class="ttname"><a href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a10c4f4a740b4e97ab7dd2fc3f1ee3b16">MESHX_MODEL_OP_LIGHT_CTL_SET</a></div><div class="ttdeci">#define MESHX_MODEL_OP_LIGHT_CTL_SET</div><div class="ttdef"><b>Definition</b> <a href="../../d4/de0/meshx__ble__mesh__cmn__def_8h_source.html#l00411">meshx_ble_mesh_cmn_def.h:411</a></div></div>
 <div class="ttc" id="ameshx__ble__mesh__cmn__def_8h_html_a32ef4a326bdf3db0c2a731c3ce5649c3"><div class="ttname"><a href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a32ef4a326bdf3db0c2a731c3ce5649c3">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET</a></div><div class="ttdeci">#define MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET</div><div class="ttdef"><b>Definition</b> <a href="../../d4/de0/meshx__ble__mesh__cmn__def_8h_source.html#l00414">meshx_ble_mesh_cmn_def.h:414</a></div></div>
@@ -533,7 +485,7 @@ Variables</h2></td></tr>
 <div class="ttc" id="ameshx__control__task_8h_html_a1069cba1c3d00149aaa7f7164890d3c9"><div class="ttname"><a href="../../da/db3/meshx__control__task_8h.html#a1069cba1c3d00149aaa7f7164890d3c9">CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV</a></div><div class="ttdeci">CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV</div><div class="ttdef"><b>Definition</b> <a href="../../da/db3/meshx__control__task_8h_source.html#l00103">meshx_control_task.h:103</a></div></div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a></div><div class="ttdeci">meshx_err_t</div><div class="ttdoc">MeshX Error Codes.</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00038">meshx_err.h:39</a></div></div>
 <div class="ttc" id="ameshx__err_8h_html_a7719f6393990c6d3eea95a9df49e906e"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a7719f6393990c6d3eea95a9df49e906e">MESHX_DO_NOTHING</a></div><div class="ttdeci">#define MESHX_DO_NOTHING</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00017">meshx_err.h:17</a></div></div>
-<div class="ttc" id="ameshx__light__ctl__srv_8c_html_a9cde80da166fd8a69dd7261a2478d1b8"><div class="ttname"><a href="#a9cde80da166fd8a69dd7261a2478d1b8">meshx_state_change_notify</a></div><div class="ttdeci">static meshx_err_t meshx_state_change_notify(meshx_lighting_server_cb_param_t *param)</div><div class="ttdoc">Perform hardware change for the light control server model.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00065">meshx_light_ctl_srv.c:65</a></div></div>
+<div class="ttc" id="ameshx__light__ctl__srv_8c_html_adf71e72c1ffe4b781c7ed81df835b102"><div class="ttname"><a href="#adf71e72c1ffe4b781c7ed81df835b102">meshx_state_change_notify</a></div><div class="ttdeci">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD static uint16_t meshx_lighting_server_init=0;=======typedef struct meshx_light_ctl_setup_server { uint16_t ctl_setup_server_init;MESHX_MODEL ctl_setup_srv_model;meshx_ctl_setup_server_model_t *meshx_srv_model;}meshx_light_ctl_setup_server_t;static struct { uint16_t ctl_lighting_server_init;uint16_t ctl_lighting_server_created;meshx_light_ctl_setup_server_t ctl_setup_server;}g_meshx_light_ctl_srv={ .ctl_setup_server={ .ctl_setup_server_init=0,.meshx_srv_model=NULL, },.ctl_lighting_server_init=0,.ctl_lighting_server_created=0, };&gt; &gt; &gt; &gt; &gt; &gt; static meshx_err_t meshx_state_change_notify(meshx_lighting_server_cb_param_t *param)</div><div class="ttdoc">Perform hardware change for the light control server model.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00069">meshx_light_ctl_srv.c:69</a></div></div>
 <div class="ttc" id="ameshx__light__server_8h_html_acfab754bb56f290741a2fc1c49c595c8"><div class="ttname"><a href="../../dc/daf/meshx__light__server_8h.html#acfab754bb56f290741a2fc1c49c595c8">meshx_gen_light_srv_send_msg_to_ble</a></div><div class="ttdeci">meshx_err_t meshx_gen_light_srv_send_msg_to_ble(control_task_msg_evt_to_ble_t evt, const meshx_lighting_server_cb_param_t *params)</div><div class="ttdoc">Sends a message to the BLE subsystem via the control task.</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d98/meshx__light__server_8c_source.html#l00062">meshx_light_server.c:62</a></div></div>
 <div class="ttc" id="ameshx__log_8h_html_a3df9f46a0a08969094d8eef3581409e8"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a3df9f46a0a08969094d8eef3581409e8">MESHX_LOGW</a></div><div class="ttdeci">#define MESHX_LOGW(module_id, format,...)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dcb/meshx__log_8h_source.html#l00087">meshx_log.h:87</a></div></div>
 <div class="ttc" id="ameshx__log_8h_html_acb76057f2c8e23ca61edf04fd824818b"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a></div><div class="ttdeci">#define MESHX_LOGD(module_id, format,...)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dcb/meshx__log_8h_source.html#l00113">meshx_log.h:113</a></div></div>
@@ -552,7 +504,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" title="Handle Light CTL messages for the lighting server model." alt="" coords="5,60,141,101"/>
 <area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#acfab754bb56f290741a2fc1c49c595c8" title="Sends a message to the BLE subsystem via the control task." alt="" coords="189,27,332,67"/>
 <area shape="poly" title=" " alt="" coords="141,66,174,60,175,65,142,71"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a9cde80da166fd8a69dd7261a2478d1b8" title="Perform hardware change for the light control server model." alt="" coords="189,92,333,133"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#adf71e72c1ffe4b781c7ed81df835b102" title="Perform hardware change for the light control server model." alt="" coords="189,92,333,133"/>
 <area shape="poly" title=" " alt="" coords="142,89,174,95,173,100,141,95"/>
 <area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="388,70,560,96"/>
 <area shape="poly" title=" " alt="" coords="333,56,379,64,378,70,332,62"/>
@@ -623,63 +575,63 @@ Here is the caller graph for this function:</div>
 </ul>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00357">357</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  358</span>{</div>
-<div class="line"><span class="lineno">  359</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  360</span>    <span class="keywordflow">if</span> (!p_model || !p_sig_model)</div>
-<div class="line"><span class="lineno">  361</span>    {</div>
-<div class="line"><span class="lineno">  362</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
-<div class="line"><span class="lineno">  363</span>    }</div>
-<div class="line"><span class="lineno">  364</span> </div>
-<div class="line"><span class="lineno">  365</span>    *p_model = (<a class="code hl_typedef" href="../../db/dde/meshx__light__ctl__srv_8h.html#a8ba6098c98f00634f675fa2f2d7fb625">meshx_ctl_server_model_t</a> *)<a class="code hl_define" href="../../da/d68/meshx__err_8h.html#a1d35fd42fb3bbaaa86816df7b0263b50">MESHX_CALOC</a>(1, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/dde/meshx__light__ctl__srv_8h.html#a8ba6098c98f00634f675fa2f2d7fb625">meshx_ctl_server_model_t</a>));</div>
-<div class="line"><span class="lineno">  366</span>    <span class="keywordflow">if</span> (!*p_model)</div>
-<div class="line"><span class="lineno">  367</span>    {</div>
-<div class="line"><span class="lineno">  368</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ad805de8202860d5657dc396e4b00aefe">MESHX_NO_MEM</a>;</div>
-<div class="line"><span class="lineno">  369</span>    }</div>
-<div class="line"><span class="lineno">  370</span> </div>
-<div class="line"><span class="lineno">  371</span>    err = <a class="code hl_function" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#aa7384157587813da254014dfd8f13b17">meshx_plat_light_ctl_srv_create</a>(</div>
-<div class="line"><span class="lineno">  372</span>        p_sig_model,</div>
-<div class="line"><span class="lineno">  373</span>        &amp;((*p_model)-&gt;meshx_pub),</div>
-<div class="line"><span class="lineno">  374</span>        &amp;((*p_model)-&gt;meshx_gen));</div>
-<div class="line"><span class="lineno">  375</span>    <span class="keywordflow">if</span>(err != <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>)</div>
-<div class="line"><span class="lineno">  376</span>    {</div>
-<div class="line"><span class="lineno">  377</span>        <span class="comment">/* Tops down deinit for CTL server model */</span></div>
-<div class="line"><span class="lineno">  378</span>        <a class="code hl_function" href="#aed19d572f2a8028c955328e452df507e">meshx_light_ctl_server_delete</a>(p_model);</div>
-<div class="line"><span class="lineno">  379</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  380</span>    }</div>
-<div class="line"><span class="lineno">  381</span> </div>
-<div class="line"><span class="lineno">  382</span>    <span class="keywordflow">if</span>(     <a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_lighting_server_created == 0</div>
-<div class="line"><span class="lineno">  383</span>        &amp;&amp;  <a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.ctl_setup_server_init == 0)</div>
-<div class="line"><span class="lineno">  384</span>    {</div>
-<div class="line"><span class="lineno">  385</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a47d4a699f2997a758e0eca271b66cb48">MESHX_LOGI</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Creating CTL setup server model&quot;</span>);</div>
-<div class="line"><span class="lineno">  386</span>        <span class="comment">/* Create CTL setup server */</span></div>
-<div class="line"><span class="lineno">  387</span>        err = <a class="code hl_function" href="#a9ccee3fc1fcc58cf55c17803cbee478f">meshx_light_ctl_setup_server_create</a>();</div>
-<div class="line"><span class="lineno">  388</span>        <span class="keywordflow">if</span>(err != <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>)</div>
-<div class="line"><span class="lineno">  389</span>        {</div>
-<div class="line"><span class="lineno">  390</span>            <span class="comment">/* Tops down deinit for CTL server model */</span></div>
-<div class="line"><span class="lineno">  391</span>            <a class="code hl_function" href="#a86ae7afdb87899d6bd6a4b8900c7c844">meshx_light_ctl_setup_server_delete</a>();</div>
-<div class="line"><span class="lineno">  392</span>            <span class="comment">/* The code execution below is only possible if this is the very first model being created */</span></div>
-<div class="line"><span class="lineno">  393</span>            <a class="code hl_function" href="#aed19d572f2a8028c955328e452df507e">meshx_light_ctl_server_delete</a>(p_model);</div>
-<div class="line"><span class="lineno">  394</span>            <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  395</span>        }</div>
-<div class="line"><span class="lineno">  396</span>        <a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.ctl_setup_server_init = <a class="code hl_define" href="../../da/dcb/meshx__gen__server_8c.html#ad9e063fcc893a076ff956ac6020372ed">MESHX_SERVER_INIT_MAGIC_NO</a>;</div>
-<div class="line"><span class="lineno">  397</span>    }</div>
-<div class="line"><span class="lineno">  398</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  399</span>    {</div>
-<div class="line"><span class="lineno">  400</span>        <a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_lighting_server_created++;</div>
+<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00361">361</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  362</span>{</div>
+<div class="line"><span class="lineno">  363</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  364</span>    <span class="keywordflow">if</span> (!p_model || !p_sig_model)</div>
+<div class="line"><span class="lineno">  365</span>    {</div>
+<div class="line"><span class="lineno">  366</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<div class="line"><span class="lineno">  367</span>    }</div>
+<div class="line"><span class="lineno">  368</span> </div>
+<div class="line"><span class="lineno">  369</span>    *p_model = (<a class="code hl_typedef" href="../../db/dde/meshx__light__ctl__srv_8h.html#a8ba6098c98f00634f675fa2f2d7fb625">meshx_ctl_server_model_t</a> *)<a class="code hl_define" href="../../da/d68/meshx__err_8h.html#a1d35fd42fb3bbaaa86816df7b0263b50">MESHX_CALOC</a>(1, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/dde/meshx__light__ctl__srv_8h.html#a8ba6098c98f00634f675fa2f2d7fb625">meshx_ctl_server_model_t</a>));</div>
+<div class="line"><span class="lineno">  370</span>    <span class="keywordflow">if</span> (!*p_model)</div>
+<div class="line"><span class="lineno">  371</span>    {</div>
+<div class="line"><span class="lineno">  372</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ad805de8202860d5657dc396e4b00aefe">MESHX_NO_MEM</a>;</div>
+<div class="line"><span class="lineno">  373</span>    }</div>
+<div class="line"><span class="lineno">  374</span> </div>
+<div class="line"><span class="lineno">  375</span>    err = <a class="code hl_function" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#aa7384157587813da254014dfd8f13b17">meshx_plat_light_ctl_srv_create</a>(</div>
+<div class="line"><span class="lineno">  376</span>        p_sig_model,</div>
+<div class="line"><span class="lineno">  377</span>        &amp;((*p_model)-&gt;meshx_pub),</div>
+<div class="line"><span class="lineno">  378</span>        &amp;((*p_model)-&gt;meshx_gen));</div>
+<div class="line"><span class="lineno">  379</span>    <span class="keywordflow">if</span>(err != <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>)</div>
+<div class="line"><span class="lineno">  380</span>    {</div>
+<div class="line"><span class="lineno">  381</span>        <span class="comment">/* Tops down deinit for CTL server model */</span></div>
+<div class="line"><span class="lineno">  382</span>        <a class="code hl_function" href="#aed19d572f2a8028c955328e452df507e">meshx_light_ctl_server_delete</a>(p_model);</div>
+<div class="line"><span class="lineno">  383</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  384</span>    }</div>
+<div class="line"><span class="lineno">  385</span> </div>
+<div class="line"><span class="lineno">  386</span>    <span class="keywordflow">if</span>(     g_meshx_light_ctl_srv.ctl_lighting_server_created == 0</div>
+<div class="line"><span class="lineno">  387</span>        &amp;&amp;  g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_server_init == 0)</div>
+<div class="line"><span class="lineno">  388</span>    {</div>
+<div class="line"><span class="lineno">  389</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a47d4a699f2997a758e0eca271b66cb48">MESHX_LOGI</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Creating CTL setup server model&quot;</span>);</div>
+<div class="line"><span class="lineno">  390</span>        <span class="comment">/* Create CTL setup server */</span></div>
+<div class="line"><span class="lineno">  391</span>        err = <a class="code hl_function" href="#a9ccee3fc1fcc58cf55c17803cbee478f">meshx_light_ctl_setup_server_create</a>();</div>
+<div class="line"><span class="lineno">  392</span>        <span class="keywordflow">if</span>(err != <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>)</div>
+<div class="line"><span class="lineno">  393</span>        {</div>
+<div class="line"><span class="lineno">  394</span>            <span class="comment">/* Tops down deinit for CTL server model */</span></div>
+<div class="line"><span class="lineno">  395</span>            <a class="code hl_function" href="#a86ae7afdb87899d6bd6a4b8900c7c844">meshx_light_ctl_setup_server_delete</a>();</div>
+<div class="line"><span class="lineno">  396</span>            <span class="comment">/* The code execution below is only possible if this is the very first model being created */</span></div>
+<div class="line"><span class="lineno">  397</span>            <a class="code hl_function" href="#aed19d572f2a8028c955328e452df507e">meshx_light_ctl_server_delete</a>(p_model);</div>
+<div class="line"><span class="lineno">  398</span>            <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  399</span>        }</div>
+<div class="line"><span class="lineno">  400</span>        g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_server_init = <a class="code hl_define" href="../../da/dcb/meshx__gen__server_8c.html#ad9e063fcc893a076ff956ac6020372ed">MESHX_SERVER_INIT_MAGIC_NO</a>;</div>
 <div class="line"><span class="lineno">  401</span>    }</div>
-<div class="line"><span class="lineno">  402</span> </div>
-<div class="line"><span class="lineno">  403</span>    (*p_model)-&gt;meshx_sig = p_sig_model;</div>
-<div class="line"><span class="lineno">  404</span> </div>
-<div class="line"><span class="lineno">  405</span>    <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  406</span>}</div>
+<div class="line"><span class="lineno">  402</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  403</span>    {</div>
+<div class="line"><span class="lineno">  404</span>        g_meshx_light_ctl_srv.ctl_lighting_server_created++;</div>
+<div class="line"><span class="lineno">  405</span>    }</div>
+<div class="line"><span class="lineno">  406</span> </div>
+<div class="line"><span class="lineno">  407</span>    (*p_model)-&gt;meshx_sig = p_sig_model;</div>
+<div class="line"><span class="lineno">  408</span> </div>
+<div class="line"><span class="lineno">  409</span>    <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  410</span>}</div>
 <div class="ttc" id="ameshx__ble__mesh__light__srv_8h_html_aa7384157587813da254014dfd8f13b17"><div class="ttname"><a href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#aa7384157587813da254014dfd8f13b17">meshx_plat_light_ctl_srv_create</a></div><div class="ttdeci">meshx_err_t meshx_plat_light_ctl_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_srv)</div><div class="ttdoc">Create a Light CTL Server instance.</div><div class="ttdef"><b>Definition</b> <a href="../../de/d42/esp__light__srv__model_8c_source.html#l00333">esp_light_srv_model.c:333</a></div></div>
 <div class="ttc" id="ameshx__err_8h_html_a1d35fd42fb3bbaaa86816df7b0263b50"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a1d35fd42fb3bbaaa86816df7b0263b50">MESHX_CALOC</a></div><div class="ttdeci">#define MESHX_CALOC</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00028">meshx_err.h:28</a></div></div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6ad805de8202860d5657dc396e4b00aefe"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ad805de8202860d5657dc396e4b00aefe">MESHX_NO_MEM</a></div><div class="ttdeci">@ MESHX_NO_MEM</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00044">meshx_err.h:44</a></div></div>
 <div class="ttc" id="ameshx__gen__server_8c_html_ad9e063fcc893a076ff956ac6020372ed"><div class="ttname"><a href="../../da/dcb/meshx__gen__server_8c.html#ad9e063fcc893a076ff956ac6020372ed">MESHX_SERVER_INIT_MAGIC_NO</a></div><div class="ttdeci">#define MESHX_SERVER_INIT_MAGIC_NO</div><div class="ttdef"><b>Definition</b> <a href="../../da/dcb/meshx__gen__server_8c_source.html#l00019">meshx_gen_server.c:19</a></div></div>
-<div class="ttc" id="ameshx__light__ctl__srv_8c_html_a86ae7afdb87899d6bd6a4b8900c7c844"><div class="ttname"><a href="#a86ae7afdb87899d6bd6a4b8900c7c844">meshx_light_ctl_setup_server_delete</a></div><div class="ttdeci">static meshx_err_t meshx_light_ctl_setup_server_delete(void)</div><div class="ttdoc">Deletes or deinitializes the Light CTL (Color Temperature Lightness) Setup Server instance.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00218">meshx_light_ctl_srv.c:218</a></div></div>
-<div class="ttc" id="ameshx__light__ctl__srv_8c_html_a9ccee3fc1fcc58cf55c17803cbee478f"><div class="ttname"><a href="#a9ccee3fc1fcc58cf55c17803cbee478f">meshx_light_ctl_setup_server_create</a></div><div class="ttdeci">static meshx_err_t meshx_light_ctl_setup_server_create(void)</div><div class="ttdoc">Creates and initializes the Light CTL (Color Temperature Lightness) Setup Server.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00246">meshx_light_ctl_srv.c:246</a></div></div>
-<div class="ttc" id="ameshx__light__ctl__srv_8c_html_aed19d572f2a8028c955328e452df507e"><div class="ttname"><a href="#aed19d572f2a8028c955328e452df507e">meshx_light_ctl_server_delete</a></div><div class="ttdeci">meshx_err_t meshx_light_ctl_server_delete(meshx_ctl_server_model_t **p_model)</div><div class="ttdoc">Delete the CTL server model instance.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00420">meshx_light_ctl_srv.c:420</a></div></div>
+<div class="ttc" id="ameshx__light__ctl__srv_8c_html_a86ae7afdb87899d6bd6a4b8900c7c844"><div class="ttname"><a href="#a86ae7afdb87899d6bd6a4b8900c7c844">meshx_light_ctl_setup_server_delete</a></div><div class="ttdeci">static meshx_err_t meshx_light_ctl_setup_server_delete(void)</div><div class="ttdoc">Deletes or deinitializes the Light CTL (Color Temperature Lightness) Setup Server instance.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00222">meshx_light_ctl_srv.c:222</a></div></div>
+<div class="ttc" id="ameshx__light__ctl__srv_8c_html_a9ccee3fc1fcc58cf55c17803cbee478f"><div class="ttname"><a href="#a9ccee3fc1fcc58cf55c17803cbee478f">meshx_light_ctl_setup_server_create</a></div><div class="ttdeci">static meshx_err_t meshx_light_ctl_setup_server_create(void)</div><div class="ttdoc">Creates and initializes the Light CTL (Color Temperature Lightness) Setup Server.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00250">meshx_light_ctl_srv.c:250</a></div></div>
+<div class="ttc" id="ameshx__light__ctl__srv_8c_html_aed19d572f2a8028c955328e452df507e"><div class="ttname"><a href="#aed19d572f2a8028c955328e452df507e">meshx_light_ctl_server_delete</a></div><div class="ttdeci">meshx_err_t meshx_light_ctl_server_delete(meshx_ctl_server_model_t **p_model)</div><div class="ttdoc">Delete the CTL server model instance.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00424">meshx_light_ctl_srv.c:424</a></div></div>
 <div class="ttc" id="ameshx__light__ctl__srv_8h_html_a8ba6098c98f00634f675fa2f2d7fb625"><div class="ttname"><a href="../../db/dde/meshx__light__ctl__srv_8h.html#a8ba6098c98f00634f675fa2f2d7fb625">meshx_ctl_server_model_t</a></div><div class="ttdeci">meshx_model_interface_t meshx_ctl_server_model_t</div><div class="ttdoc">Structure representing the MeshX CTL (Color Temperature Lightness) server model.</div><div class="ttdef"><b>Definition</b> <a href="../../db/dde/meshx__light__ctl__srv_8h_source.html#l00037">meshx_light_ctl_srv.h:37</a></div></div>
 <div class="ttc" id="ameshx__log_8h_html_a47d4a699f2997a758e0eca271b66cb48"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a47d4a699f2997a758e0eca271b66cb48">MESHX_LOGI</a></div><div class="ttdeci">#define MESHX_LOGI(module_id, format,...)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dcb/meshx__log_8h_source.html#l00100">meshx_log.h:100</a></div></div>
 </div><!-- fragment --><div class="dynheader">
@@ -759,30 +711,30 @@ Here is the caller graph for this function:</div>
 </ul>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00420">420</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  421</span>{</div>
-<div class="line"><span class="lineno">  422</span>    <span class="keywordflow">if</span> (p_model == NULL || *p_model == NULL)</div>
-<div class="line"><span class="lineno">  423</span>    {</div>
-<div class="line"><span class="lineno">  424</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
-<div class="line"><span class="lineno">  425</span>    }</div>
-<div class="line"><span class="lineno">  426</span> </div>
-<div class="line"><span class="lineno">  427</span>    <a class="code hl_function" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#a0ee9a897168a69c9ede40278fdb4b445">meshx_plat_light_srv_delete</a>(</div>
-<div class="line"><span class="lineno">  428</span>        &amp;((*p_model)-&gt;meshx_pub),</div>
-<div class="line"><span class="lineno">  429</span>        &amp;((*p_model)-&gt;meshx_gen));</div>
+<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00424">424</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  425</span>{</div>
+<div class="line"><span class="lineno">  426</span>    <span class="keywordflow">if</span> (p_model == NULL || *p_model == NULL)</div>
+<div class="line"><span class="lineno">  427</span>    {</div>
+<div class="line"><span class="lineno">  428</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<div class="line"><span class="lineno">  429</span>    }</div>
 <div class="line"><span class="lineno">  430</span> </div>
-<div class="line"><span class="lineno">  431</span>    <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#af8f58f6602b246397c882d9cddd9a334">MESHX_FREE</a>(*p_model);</div>
-<div class="line"><span class="lineno">  432</span>    *p_model = NULL;</div>
-<div class="line"><span class="lineno">  433</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_lighting_server_created == 0)</div>
-<div class="line"><span class="lineno">  434</span>    {</div>
-<div class="line"><span class="lineno">  435</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a3df9f46a0a08969094d8eef3581409e8">MESHX_LOGW</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Deleting CTL setup server model&quot;</span>);</div>
-<div class="line"><span class="lineno">  436</span>        <span class="comment">/* Delete CTL setup server */</span></div>
-<div class="line"><span class="lineno">  437</span>    }</div>
-<div class="line"><span class="lineno">  438</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  439</span>    {</div>
-<div class="line"><span class="lineno">  440</span>        <a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_lighting_server_created--;</div>
+<div class="line"><span class="lineno">  431</span>    <a class="code hl_function" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#a0ee9a897168a69c9ede40278fdb4b445">meshx_plat_light_srv_delete</a>(</div>
+<div class="line"><span class="lineno">  432</span>        &amp;((*p_model)-&gt;meshx_pub),</div>
+<div class="line"><span class="lineno">  433</span>        &amp;((*p_model)-&gt;meshx_gen));</div>
+<div class="line"><span class="lineno">  434</span> </div>
+<div class="line"><span class="lineno">  435</span>    <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#af8f58f6602b246397c882d9cddd9a334">MESHX_FREE</a>(*p_model);</div>
+<div class="line"><span class="lineno">  436</span>    *p_model = NULL;</div>
+<div class="line"><span class="lineno">  437</span>    <span class="keywordflow">if</span> (g_meshx_light_ctl_srv.ctl_lighting_server_created == 0)</div>
+<div class="line"><span class="lineno">  438</span>    {</div>
+<div class="line"><span class="lineno">  439</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a3df9f46a0a08969094d8eef3581409e8">MESHX_LOGW</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Deleting CTL setup server model&quot;</span>);</div>
+<div class="line"><span class="lineno">  440</span>        <span class="comment">/* Delete CTL setup server */</span></div>
 <div class="line"><span class="lineno">  441</span>    }</div>
-<div class="line"><span class="lineno">  442</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  443</span>}</div>
+<div class="line"><span class="lineno">  442</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  443</span>    {</div>
+<div class="line"><span class="lineno">  444</span>        g_meshx_light_ctl_srv.ctl_lighting_server_created--;</div>
+<div class="line"><span class="lineno">  445</span>    }</div>
+<div class="line"><span class="lineno">  446</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  447</span>}</div>
 <div class="ttc" id="ameshx__ble__mesh__light__srv_8h_html_a0ee9a897168a69c9ede40278fdb4b445"><div class="ttname"><a href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#a0ee9a897168a69c9ede40278fdb4b445">meshx_plat_light_srv_delete</a></div><div class="ttdeci">meshx_err_t meshx_plat_light_srv_delete(meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_srv)</div><div class="ttdoc">Delete a Light CTL Server instance.</div><div class="ttdef"><b>Definition</b> <a href="../../de/d42/esp__light__srv__model_8c_source.html#l00277">esp_light_srv_model.c:277</a></div></div>
 <div class="ttc" id="ameshx__err_8h_html_af8f58f6602b246397c882d9cddd9a334"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#af8f58f6602b246397c882d9cddd9a334">MESHX_FREE</a></div><div class="ttdeci">#define MESHX_FREE</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00032">meshx_err.h:32</a></div></div>
 </div><!-- fragment --><div class="dynheader">
@@ -845,36 +797,36 @@ Here is the caller graph for this function:</div>
 </ul>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00311">311</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  312</span>{</div>
-<div class="line"><span class="lineno">  313</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  314</span> </div>
-<div class="line"><span class="lineno">  315</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.ctl_setup_server_init == <a class="code hl_define" href="../../da/dcb/meshx__gen__server_8c.html#ad9e063fcc893a076ff956ac6020372ed">MESHX_SERVER_INIT_MAGIC_NO</a>)</div>
-<div class="line"><span class="lineno">  316</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  317</span> </div>
-<div class="line"><span class="lineno">  318</span>    <a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.ctl_setup_server_init = <a class="code hl_define" href="../../da/dcb/meshx__gen__server_8c.html#ad9e063fcc893a076ff956ac6020372ed">MESHX_SERVER_INIT_MAGIC_NO</a>;</div>
-<div class="line"><span class="lineno">  319</span> </div>
-<div class="line"><span class="lineno">  320</span>    err = <a class="code hl_function" href="../../dc/daf/meshx__light__server_8h.html#a12af3296e750ff638ba757ebf12d9043">meshx_lighting_srv_init</a>();</div>
-<div class="line"><span class="lineno">  321</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno">  322</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Failed to initialize prod server&quot;</span>);</div>
+<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00315">315</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  316</span>{</div>
+<div class="line"><span class="lineno">  317</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  318</span> </div>
+<div class="line"><span class="lineno">  319</span>    <span class="keywordflow">if</span> (g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_server_init == <a class="code hl_define" href="../../da/dcb/meshx__gen__server_8c.html#ad9e063fcc893a076ff956ac6020372ed">MESHX_SERVER_INIT_MAGIC_NO</a>)</div>
+<div class="line"><span class="lineno">  320</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  321</span> </div>
+<div class="line"><span class="lineno">  322</span>    g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_server_init = <a class="code hl_define" href="../../da/dcb/meshx__gen__server_8c.html#ad9e063fcc893a076ff956ac6020372ed">MESHX_SERVER_INIT_MAGIC_NO</a>;</div>
 <div class="line"><span class="lineno">  323</span> </div>
-<div class="line"><span class="lineno">  324</span>    err = <a class="code hl_function" href="../../dc/daf/meshx__light__server_8h.html#ac2ffaf1fcb582f87cf5e5a9b36f2d043">meshx_lighting_reg_cb</a>(</div>
-<div class="line"><span class="lineno">  325</span>        <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a7c86fb8431368de11d949af079f0edc4">MESHX_MODEL_ID_LIGHT_CTL_SRV</a>,</div>
-<div class="line"><span class="lineno">  326</span>        (<a class="code hl_typedef" href="../../dc/daf/meshx__light__server_8h.html#ac16451a5084a43c20394d49ed6620a03">meshx_lighting_server_cb</a>)&amp;<a class="code hl_function" href="#a7d11c7a15e9c2066afb3f22e72068518">meshx_handle_light_ctl_msg</a></div>
-<div class="line"><span class="lineno">  327</span>    );</div>
-<div class="line"><span class="lineno">  328</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno">  329</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Failed to initialize meshx_gen_srv_reg_cb (Err: %d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  330</span> </div>
-<div class="line"><span class="lineno">  331</span>    err = <a class="code hl_function" href="../../dc/daf/meshx__light__server_8h.html#ac2ffaf1fcb582f87cf5e5a9b36f2d043">meshx_lighting_reg_cb</a>(</div>
-<div class="line"><span class="lineno">  332</span>        <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a5887d8ba40864cf6754204bd8d9d8a23">MESHX_MODEL_ID_LIGHT_CTL_SETUP_SRV</a>,</div>
-<div class="line"><span class="lineno">  333</span>        (<a class="code hl_typedef" href="../../dc/daf/meshx__light__server_8h.html#ac16451a5084a43c20394d49ed6620a03">meshx_lighting_server_cb</a>)&amp;<a class="code hl_function" href="#a7d11c7a15e9c2066afb3f22e72068518">meshx_handle_light_ctl_msg</a></div>
-<div class="line"><span class="lineno">  334</span>    );</div>
-<div class="line"><span class="lineno">  335</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno">  336</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Failed to initialize meshx_gen_srv_reg_cb (Err: %d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  337</span> </div>
-<div class="line"><span class="lineno">  338</span>    <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  339</span>}</div>
-<div class="ttc" id="ameshx__light__ctl__srv_8c_html_a7d11c7a15e9c2066afb3f22e72068518"><div class="ttname"><a href="#a7d11c7a15e9c2066afb3f22e72068518">meshx_handle_light_ctl_msg</a></div><div class="ttdeci">static meshx_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev, const control_task_msg_evt_t evt, meshx_lighting_server_cb_param_t *param)</div><div class="ttdoc">Handle Light CTL messages for the lighting server model.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00117">meshx_light_ctl_srv.c:117</a></div></div>
+<div class="line"><span class="lineno">  324</span>    err = <a class="code hl_function" href="../../dc/daf/meshx__light__server_8h.html#a12af3296e750ff638ba757ebf12d9043">meshx_lighting_srv_init</a>();</div>
+<div class="line"><span class="lineno">  325</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno">  326</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Failed to initialize prod server&quot;</span>);</div>
+<div class="line"><span class="lineno">  327</span> </div>
+<div class="line"><span class="lineno">  328</span>    err = <a class="code hl_function" href="../../dc/daf/meshx__light__server_8h.html#ac2ffaf1fcb582f87cf5e5a9b36f2d043">meshx_lighting_reg_cb</a>(</div>
+<div class="line"><span class="lineno">  329</span>        <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a7c86fb8431368de11d949af079f0edc4">MESHX_MODEL_ID_LIGHT_CTL_SRV</a>,</div>
+<div class="line"><span class="lineno">  330</span>        (<a class="code hl_typedef" href="../../dc/daf/meshx__light__server_8h.html#ac16451a5084a43c20394d49ed6620a03">meshx_lighting_server_cb</a>)&amp;<a class="code hl_function" href="#a7d11c7a15e9c2066afb3f22e72068518">meshx_handle_light_ctl_msg</a></div>
+<div class="line"><span class="lineno">  331</span>    );</div>
+<div class="line"><span class="lineno">  332</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno">  333</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Failed to initialize meshx_gen_srv_reg_cb (Err: %d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  334</span> </div>
+<div class="line"><span class="lineno">  335</span>    err = <a class="code hl_function" href="../../dc/daf/meshx__light__server_8h.html#ac2ffaf1fcb582f87cf5e5a9b36f2d043">meshx_lighting_reg_cb</a>(</div>
+<div class="line"><span class="lineno">  336</span>        <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a5887d8ba40864cf6754204bd8d9d8a23">MESHX_MODEL_ID_LIGHT_CTL_SETUP_SRV</a>,</div>
+<div class="line"><span class="lineno">  337</span>        (<a class="code hl_typedef" href="../../dc/daf/meshx__light__server_8h.html#ac16451a5084a43c20394d49ed6620a03">meshx_lighting_server_cb</a>)&amp;<a class="code hl_function" href="#a7d11c7a15e9c2066afb3f22e72068518">meshx_handle_light_ctl_msg</a></div>
+<div class="line"><span class="lineno">  338</span>    );</div>
+<div class="line"><span class="lineno">  339</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno">  340</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Failed to initialize meshx_gen_srv_reg_cb (Err: %d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  341</span> </div>
+<div class="line"><span class="lineno">  342</span>    <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  343</span>}</div>
+<div class="ttc" id="ameshx__light__ctl__srv_8c_html_a7d11c7a15e9c2066afb3f22e72068518"><div class="ttname"><a href="#a7d11c7a15e9c2066afb3f22e72068518">meshx_handle_light_ctl_msg</a></div><div class="ttdeci">static meshx_err_t meshx_handle_light_ctl_msg(const dev_struct_t *pdev, const control_task_msg_evt_t evt, meshx_lighting_server_cb_param_t *param)</div><div class="ttdoc">Handle Light CTL messages for the lighting server model.</div><div class="ttdef"><b>Definition</b> <a href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00121">meshx_light_ctl_srv.c:121</a></div></div>
 <div class="ttc" id="ameshx__light__server_8h_html_a12af3296e750ff638ba757ebf12d9043"><div class="ttname"><a href="../../dc/daf/meshx__light__server_8h.html#a12af3296e750ff638ba757ebf12d9043">meshx_lighting_srv_init</a></div><div class="ttdeci">meshx_err_t meshx_lighting_srv_init(void)</div><div class="ttdoc">Initialize the production lighting server.</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d98/meshx__light__server_8c_source.html#l00123">meshx_light_server.c:123</a></div></div>
 <div class="ttc" id="ameshx__light__server_8h_html_ac16451a5084a43c20394d49ed6620a03"><div class="ttname"><a href="../../dc/daf/meshx__light__server_8h.html#ac16451a5084a43c20394d49ed6620a03">meshx_lighting_server_cb</a></div><div class="ttdeci">control_task_msg_handle_t meshx_lighting_server_cb</div><div class="ttdef"><b>Definition</b> <a href="../../dc/daf/meshx__light__server_8h_source.html#l00020">meshx_light_server.h:20</a></div></div>
 <div class="ttc" id="ameshx__light__server_8h_html_ac2ffaf1fcb582f87cf5e5a9b36f2d043"><div class="ttname"><a href="../../dc/daf/meshx__light__server_8h.html#ac2ffaf1fcb582f87cf5e5a9b36f2d043">meshx_lighting_reg_cb</a></div><div class="ttdeci">meshx_err_t meshx_lighting_reg_cb(uint32_t model_id, meshx_lighting_server_cb cb)</div><div class="ttdoc">Register a callback function for the lighting server model.</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d98/meshx__light__server_8c_source.html#l00108">meshx_light_server.c:108</a></div></div>
@@ -893,7 +845,7 @@ Here is the call graph for this function:</div>
 <area shape="poly" title=" " alt="" coords="149,122,239,99,241,104,150,127"/>
 <area shape="rect" href="../../d5/d98/meshx__light__server_8c.html#acfab754bb56f290741a2fc1c49c595c8" title="Sends a message to the BLE subsystem via the control task." alt="" coords="672,136,815,177"/>
 <area shape="poly" title=" " alt="" coords="598,141,657,146,656,151,598,146"/>
-<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a9cde80da166fd8a69dd7261a2478d1b8" title="Perform hardware change for the light control server model." alt="" coords="671,71,816,111"/>
+<area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#adf71e72c1ffe4b781c7ed81df835b102" title="Perform hardware change for the light control server model." alt="" coords="671,71,816,111"/>
 <area shape="poly" title=" " alt="" coords="597,120,655,107,657,113,598,126"/>
 <area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="870,37,1042,62"/>
 <area shape="poly" title=" " alt="" coords="794,133,814,121,828,108,837,96,847,83,862,71,872,67,874,71,865,76,850,87,841,99,832,112,817,125,797,138"/>
@@ -962,37 +914,37 @@ Here is the caller graph for this function:</div>
 <p>This function sets up the Light CTL Setup Server model, allocating necessary resources and initializing internal state. It should be called during the provisioning or initialization phase of the mesh node.</p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6" title="MeshX Error Codes.">meshx_err_t</a> Returns MESHX_OK on success, or an appropriate error code on failure. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00246">246</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  247</span>{</div>
-<div class="line"><span class="lineno">  248</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  249</span>    <span class="keywordflow">if</span>  (   <a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.meshx_srv_model != NULL</div>
-<div class="line"><span class="lineno">  250</span>        ||  <a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.ctl_setup_server_init == <a class="code hl_define" href="../../da/dcb/meshx__gen__server_8c.html#ad9e063fcc893a076ff956ac6020372ed">MESHX_SERVER_INIT_MAGIC_NO</a>)</div>
-<div class="line"><span class="lineno">  251</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  252</span> </div>
-<div class="line"><span class="lineno">  253</span>    <a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.meshx_srv_model =</div>
-<div class="line"><span class="lineno">  254</span>        (<a class="code hl_typedef" href="../../db/dde/meshx__light__ctl__srv_8h.html#ae6c7ab6d2bce16f5c802c863bcf3b70a">meshx_ctl_setup_server_model_t</a> *)<a class="code hl_define" href="../../da/d68/meshx__err_8h.html#a1d35fd42fb3bbaaa86816df7b0263b50">MESHX_CALOC</a>(1, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/dde/meshx__light__ctl__srv_8h.html#ae6c7ab6d2bce16f5c802c863bcf3b70a">meshx_ctl_setup_server_model_t</a>));</div>
-<div class="line"><span class="lineno">  255</span>    <span class="keywordflow">if</span> (NULL == <a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.meshx_srv_model)</div>
-<div class="line"><span class="lineno">  256</span>    {</div>
-<div class="line"><span class="lineno">  257</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ad805de8202860d5657dc396e4b00aefe">MESHX_NO_MEM</a>;</div>
-<div class="line"><span class="lineno">  258</span>    }</div>
-<div class="line"><span class="lineno">  259</span> </div>
-<div class="line"><span class="lineno">  260</span>    err = <a class="code hl_function" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#a0807c654e0a630b66f06f2732dfcf440">meshx_plat_light_ctl_setup_srv_create</a>(</div>
-<div class="line"><span class="lineno">  261</span>        &amp;<a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.ctl_setup_srv_model,</div>
-<div class="line"><span class="lineno">  262</span>        &amp;<a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.meshx_srv_model-&gt;meshx_pub,</div>
-<div class="line"><span class="lineno">  263</span>        &amp;<a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.meshx_srv_model-&gt;meshx_gen);</div>
-<div class="line"><span class="lineno">  264</span>    <span class="keywordflow">if</span>(err != <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>)</div>
-<div class="line"><span class="lineno">  265</span>    {</div>
-<div class="line"><span class="lineno">  266</span>        <span class="comment">/* Tops down deinit for CTL setup server model */</span></div>
-<div class="line"><span class="lineno">  267</span>        <a class="code hl_function" href="#a86ae7afdb87899d6bd6a4b8900c7c844">meshx_light_ctl_setup_server_delete</a>();</div>
-<div class="line"><span class="lineno">  268</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  269</span>    }</div>
-<div class="line"><span class="lineno">  270</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  271</span>    {</div>
-<div class="line"><span class="lineno">  272</span>        <a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_lighting_server_init++;</div>
+<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00250">250</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  251</span>{</div>
+<div class="line"><span class="lineno">  252</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  253</span>    <span class="keywordflow">if</span>  (   g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model != NULL</div>
+<div class="line"><span class="lineno">  254</span>        ||  g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_server_init == <a class="code hl_define" href="../../da/dcb/meshx__gen__server_8c.html#ad9e063fcc893a076ff956ac6020372ed">MESHX_SERVER_INIT_MAGIC_NO</a>)</div>
+<div class="line"><span class="lineno">  255</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  256</span> </div>
+<div class="line"><span class="lineno">  257</span>    g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model =</div>
+<div class="line"><span class="lineno">  258</span>        (<a class="code hl_typedef" href="../../db/dde/meshx__light__ctl__srv_8h.html#ae6c7ab6d2bce16f5c802c863bcf3b70a">meshx_ctl_setup_server_model_t</a> *)<a class="code hl_define" href="../../da/d68/meshx__err_8h.html#a1d35fd42fb3bbaaa86816df7b0263b50">MESHX_CALOC</a>(1, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/dde/meshx__light__ctl__srv_8h.html#ae6c7ab6d2bce16f5c802c863bcf3b70a">meshx_ctl_setup_server_model_t</a>));</div>
+<div class="line"><span class="lineno">  259</span>    <span class="keywordflow">if</span> (NULL == g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model)</div>
+<div class="line"><span class="lineno">  260</span>    {</div>
+<div class="line"><span class="lineno">  261</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ad805de8202860d5657dc396e4b00aefe">MESHX_NO_MEM</a>;</div>
+<div class="line"><span class="lineno">  262</span>    }</div>
+<div class="line"><span class="lineno">  263</span> </div>
+<div class="line"><span class="lineno">  264</span>    err = <a class="code hl_function" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#a0807c654e0a630b66f06f2732dfcf440">meshx_plat_light_ctl_setup_srv_create</a>(</div>
+<div class="line"><span class="lineno">  265</span>        &amp;g_meshx_light_ctl_srv.ctl_setup_server.ctl_setup_srv_model,</div>
+<div class="line"><span class="lineno">  266</span>        &amp;g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model-&gt;meshx_pub,</div>
+<div class="line"><span class="lineno">  267</span>        &amp;g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model-&gt;meshx_gen);</div>
+<div class="line"><span class="lineno">  268</span>    <span class="keywordflow">if</span>(err != <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>)</div>
+<div class="line"><span class="lineno">  269</span>    {</div>
+<div class="line"><span class="lineno">  270</span>        <span class="comment">/* Tops down deinit for CTL setup server model */</span></div>
+<div class="line"><span class="lineno">  271</span>        <a class="code hl_function" href="#a86ae7afdb87899d6bd6a4b8900c7c844">meshx_light_ctl_setup_server_delete</a>();</div>
+<div class="line"><span class="lineno">  272</span>        <span class="keywordflow">return</span> err;</div>
 <div class="line"><span class="lineno">  273</span>    }</div>
-<div class="line"><span class="lineno">  274</span> </div>
-<div class="line"><span class="lineno">  275</span>    <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  276</span>}</div>
+<div class="line"><span class="lineno">  274</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  275</span>    {</div>
+<div class="line"><span class="lineno">  276</span>        g_meshx_light_ctl_srv.ctl_lighting_server_init++;</div>
+<div class="line"><span class="lineno">  277</span>    }</div>
+<div class="line"><span class="lineno">  278</span> </div>
+<div class="line"><span class="lineno">  279</span>    <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  280</span>}</div>
 <div class="ttc" id="ameshx__ble__mesh__light__srv_8h_html_a0807c654e0a630b66f06f2732dfcf440"><div class="ttname"><a href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#a0807c654e0a630b66f06f2732dfcf440">meshx_plat_light_ctl_setup_srv_create</a></div><div class="ttdeci">meshx_err_t meshx_plat_light_ctl_setup_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_srv)</div><div class="ttdoc">Creates and initializes a Light CTL (Color Temperature Lightness) Setup Server model instance.</div><div class="ttdef"><b>Definition</b> <a href="../../de/d42/esp__light__srv__model_8c_source.html#l00293">esp_light_srv_model.c:293</a></div></div>
 <div class="ttc" id="ameshx__light__ctl__srv_8h_html_ae6c7ab6d2bce16f5c802c863bcf3b70a"><div class="ttname"><a href="../../db/dde/meshx__light__ctl__srv_8h.html#ae6c7ab6d2bce16f5c802c863bcf3b70a">meshx_ctl_setup_server_model_t</a></div><div class="ttdeci">meshx_model_interface_t meshx_ctl_setup_server_model_t</div><div class="ttdoc">Structure representing the MeshX CTL (Color Temperature Lightness) Setup Server Model.</div><div class="ttdef"><b>Definition</b> <a href="../../db/dde/meshx__light__ctl__srv_8h_source.html#l00029">meshx_light_ctl_srv.h:29</a></div></div>
 </div><!-- fragment --><div class="dynheader">
@@ -1062,24 +1014,24 @@ Here is the caller graph for this function:</div>
 <p>This function is responsible for cleaning up resources and performing any necessary teardown for the Light CTL Setup Server in the MeshX framework.</p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6" title="MeshX Error Codes.">meshx_err_t</a> Returns an error code indicating the result of the delete operation. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00218">218</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  219</span>{</div>
-<div class="line"><span class="lineno">  220</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.meshx_srv_model != NULL)</div>
-<div class="line"><span class="lineno">  221</span>    {</div>
-<div class="line"><span class="lineno">  222</span>        <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#af8f58f6602b246397c882d9cddd9a334">MESHX_FREE</a>(<a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.meshx_srv_model);</div>
-<div class="line"><span class="lineno">  223</span>        <a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.meshx_srv_model = NULL;</div>
-<div class="line"><span class="lineno">  224</span> </div>
-<div class="line"><span class="lineno">  225</span>        <a class="code hl_function" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#a0ee9a897168a69c9ede40278fdb4b445">meshx_plat_light_srv_delete</a>(</div>
-<div class="line"><span class="lineno">  226</span>            &amp;(<a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.meshx_srv_model-&gt;meshx_pub),</div>
-<div class="line"><span class="lineno">  227</span>            &amp;(<a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.meshx_srv_model-&gt;meshx_gen)</div>
-<div class="line"><span class="lineno">  228</span>        );</div>
-<div class="line"><span class="lineno">  229</span> </div>
-<div class="line"><span class="lineno">  230</span>        <a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.meshx_srv_model = NULL;</div>
-<div class="line"><span class="lineno">  231</span>    }</div>
-<div class="line"><span class="lineno">  232</span> </div>
-<div class="line"><span class="lineno">  233</span>    <a class="code hl_variable" href="#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.meshx_srv_model = 0;</div>
-<div class="line"><span class="lineno">  234</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  235</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00222">222</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  223</span>{</div>
+<div class="line"><span class="lineno">  224</span>    <span class="keywordflow">if</span> (g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model != NULL)</div>
+<div class="line"><span class="lineno">  225</span>    {</div>
+<div class="line"><span class="lineno">  226</span>        <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#af8f58f6602b246397c882d9cddd9a334">MESHX_FREE</a>(g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model);</div>
+<div class="line"><span class="lineno">  227</span>        g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model = NULL;</div>
+<div class="line"><span class="lineno">  228</span> </div>
+<div class="line"><span class="lineno">  229</span>        <a class="code hl_function" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#a0ee9a897168a69c9ede40278fdb4b445">meshx_plat_light_srv_delete</a>(</div>
+<div class="line"><span class="lineno">  230</span>            &amp;(g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model-&gt;meshx_pub),</div>
+<div class="line"><span class="lineno">  231</span>            &amp;(g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model-&gt;meshx_gen)</div>
+<div class="line"><span class="lineno">  232</span>        );</div>
+<div class="line"><span class="lineno">  233</span> </div>
+<div class="line"><span class="lineno">  234</span>        g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model = NULL;</div>
+<div class="line"><span class="lineno">  235</span>    }</div>
+<div class="line"><span class="lineno">  236</span> </div>
+<div class="line"><span class="lineno">  237</span>    g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model = 0;</div>
+<div class="line"><span class="lineno">  238</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  239</span>}</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1180,30 +1132,30 @@ Here is the caller graph for this function:</div>
 </ul>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00536">536</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  544</span>{</div>
-<div class="line"><span class="lineno">  545</span>    <span class="keywordflow">if</span> (!p_model || !light_srv_send)</div>
-<div class="line"><span class="lineno">  546</span>    {</div>
-<div class="line"><span class="lineno">  547</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
-<div class="line"><span class="lineno">  548</span>    }</div>
-<div class="line"><span class="lineno">  549</span> </div>
-<div class="line"><span class="lineno">  550</span>    memset(light_srv_send, 0, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#ab7d1e0ab27057d7d631cbe509570476d">meshx_lighting_server_cb_param_t</a>));</div>
-<div class="line"><span class="lineno">  551</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#aae16e1fbd81f097bdac104ecc0e9991e">net_idx</a> = net_idx;</div>
-<div class="line"><span class="lineno">  552</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#a619e41bfdbb6eb1145054fb6b853abda">app_idx</a> = app_idx;</div>
-<div class="line"><span class="lineno">  553</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#adca87f7e6e22789f4eee48a4ca23dcac">src_addr</a> = element_id;</div>
-<div class="line"><span class="lineno">  554</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#af8b310010317426cc7a107a510a5e4bd">dst_addr</a> = pub_addr;</div>
-<div class="line"><span class="lineno">  555</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#a791eb2748742c87194f25ccd9f13aafb">opcode</a> = <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a344b0c68c38dc56d262ac5c21001a18c">MESHX_MODEL_OP_LIGHT_CTL_STATUS</a>;</div>
-<div class="line"><span class="lineno">  556</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#a008b742864438d623de613909036f8a6">p_ctx</a> = NULL;</div>
-<div class="line"><span class="lineno">  557</span> </div>
-<div class="line"><span class="lineno">  558</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a73cda8c575b818b96c9b4ab30b55e2d5">model</a>.<a class="code hl_variable" href="../../d7/df1/structmeshx__model.html#aca9a32ca9d557de21436fa5019ab9f1b">el_id</a> = element_id;</div>
-<div class="line"><span class="lineno">  559</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a73cda8c575b818b96c9b4ab30b55e2d5">model</a>.<a class="code hl_variable" href="../../d7/df1/structmeshx__model.html#a93aa811e6fc21f6848bacf62853edab7">p_model</a> = p_model;</div>
-<div class="line"><span class="lineno">  560</span> </div>
-<div class="line"><span class="lineno">  561</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#aac263c598899aa419704c785b731b10f">state_change</a>.<a class="code hl_variable" href="../../d3/d74/unionmeshx__lighting__server__state__change__t.html#af27cfd5b9ee34d1685768eb1373cd7f4">ctl_set</a>.<a class="code hl_variable" href="../../dc/d08/structmeshx__state__change__light__ctl__set__t.html#a2249a9c3ce8727d7495b5f52749822ec">delta_uv</a> = ctl_state.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#a9a115fac8c507d2cb8f924523ff9528c">delta_uv</a>;</div>
-<div class="line"><span class="lineno">  562</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#aac263c598899aa419704c785b731b10f">state_change</a>.<a class="code hl_variable" href="../../d3/d74/unionmeshx__lighting__server__state__change__t.html#af27cfd5b9ee34d1685768eb1373cd7f4">ctl_set</a>.<a class="code hl_variable" href="../../dc/d08/structmeshx__state__change__light__ctl__set__t.html#ad478ecf14524d734de4b61d80c1acccf">lightness</a> = ctl_state.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#aa51508449e7a8a7129f90e5cf5f0bedd">lightness</a>;</div>
-<div class="line"><span class="lineno">  563</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#aac263c598899aa419704c785b731b10f">state_change</a>.<a class="code hl_variable" href="../../d3/d74/unionmeshx__lighting__server__state__change__t.html#af27cfd5b9ee34d1685768eb1373cd7f4">ctl_set</a>.<a class="code hl_variable" href="../../dc/d08/structmeshx__state__change__light__ctl__set__t.html#ac18bb67373d16a5629562a8bd5132c21">temperature</a> = ctl_state.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#af8bf9b31292db3e4ead7f2e768cf37bd">temperature</a>;</div>
+<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00540">540</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  548</span>{</div>
+<div class="line"><span class="lineno">  549</span>    <span class="keywordflow">if</span> (!p_model || !light_srv_send)</div>
+<div class="line"><span class="lineno">  550</span>    {</div>
+<div class="line"><span class="lineno">  551</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<div class="line"><span class="lineno">  552</span>    }</div>
+<div class="line"><span class="lineno">  553</span> </div>
+<div class="line"><span class="lineno">  554</span>    memset(light_srv_send, 0, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#ab7d1e0ab27057d7d631cbe509570476d">meshx_lighting_server_cb_param_t</a>));</div>
+<div class="line"><span class="lineno">  555</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#aae16e1fbd81f097bdac104ecc0e9991e">net_idx</a> = net_idx;</div>
+<div class="line"><span class="lineno">  556</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#a619e41bfdbb6eb1145054fb6b853abda">app_idx</a> = app_idx;</div>
+<div class="line"><span class="lineno">  557</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#adca87f7e6e22789f4eee48a4ca23dcac">src_addr</a> = element_id;</div>
+<div class="line"><span class="lineno">  558</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#af8b310010317426cc7a107a510a5e4bd">dst_addr</a> = pub_addr;</div>
+<div class="line"><span class="lineno">  559</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#a791eb2748742c87194f25ccd9f13aafb">opcode</a> = <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a344b0c68c38dc56d262ac5c21001a18c">MESHX_MODEL_OP_LIGHT_CTL_STATUS</a>;</div>
+<div class="line"><span class="lineno">  560</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#a008b742864438d623de613909036f8a6">p_ctx</a> = NULL;</div>
+<div class="line"><span class="lineno">  561</span> </div>
+<div class="line"><span class="lineno">  562</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a73cda8c575b818b96c9b4ab30b55e2d5">model</a>.<a class="code hl_variable" href="../../d7/df1/structmeshx__model.html#aca9a32ca9d557de21436fa5019ab9f1b">el_id</a> = element_id;</div>
+<div class="line"><span class="lineno">  563</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a73cda8c575b818b96c9b4ab30b55e2d5">model</a>.<a class="code hl_variable" href="../../d7/df1/structmeshx__model.html#a93aa811e6fc21f6848bacf62853edab7">p_model</a> = p_model;</div>
 <div class="line"><span class="lineno">  564</span> </div>
-<div class="line"><span class="lineno">  565</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  566</span>}</div>
+<div class="line"><span class="lineno">  565</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#aac263c598899aa419704c785b731b10f">state_change</a>.<a class="code hl_variable" href="../../d3/d74/unionmeshx__lighting__server__state__change__t.html#af27cfd5b9ee34d1685768eb1373cd7f4">ctl_set</a>.<a class="code hl_variable" href="../../dc/d08/structmeshx__state__change__light__ctl__set__t.html#a2249a9c3ce8727d7495b5f52749822ec">delta_uv</a> = ctl_state.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#a9a115fac8c507d2cb8f924523ff9528c">delta_uv</a>;</div>
+<div class="line"><span class="lineno">  566</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#aac263c598899aa419704c785b731b10f">state_change</a>.<a class="code hl_variable" href="../../d3/d74/unionmeshx__lighting__server__state__change__t.html#af27cfd5b9ee34d1685768eb1373cd7f4">ctl_set</a>.<a class="code hl_variable" href="../../dc/d08/structmeshx__state__change__light__ctl__set__t.html#ad478ecf14524d734de4b61d80c1acccf">lightness</a> = ctl_state.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#aa51508449e7a8a7129f90e5cf5f0bedd">lightness</a>;</div>
+<div class="line"><span class="lineno">  567</span>    light_srv_send-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#aac263c598899aa419704c785b731b10f">state_change</a>.<a class="code hl_variable" href="../../d3/d74/unionmeshx__lighting__server__state__change__t.html#af27cfd5b9ee34d1685768eb1373cd7f4">ctl_set</a>.<a class="code hl_variable" href="../../dc/d08/structmeshx__state__change__light__ctl__set__t.html#ac18bb67373d16a5629562a8bd5132c21">temperature</a> = ctl_state.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#af8bf9b31292db3e4ead7f2e768cf37bd">temperature</a>;</div>
+<div class="line"><span class="lineno">  568</span> </div>
+<div class="line"><span class="lineno">  569</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  570</span>}</div>
 <div class="ttc" id="ameshx__ble__mesh__light__srv_8h_html_ab7d1e0ab27057d7d631cbe509570476d"><div class="ttname"><a href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#ab7d1e0ab27057d7d631cbe509570476d">meshx_lighting_server_cb_param_t</a></div><div class="ttdeci">struct meshx_lighting_server_cb_param meshx_lighting_server_cb_param_t</div></div>
 <div class="ttc" id="astructmeshx__ctx_html_a008b742864438d623de613909036f8a6"><div class="ttname"><a href="../../db/d33/structmeshx__ctx.html#a008b742864438d623de613909036f8a6">meshx_ctx::p_ctx</a></div><div class="ttdeci">meshx_ptr_t p_ctx</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d1d/meshx__ble__mesh__cmn_8h_source.html#l00048">meshx_ble_mesh_cmn.h:48</a></div></div>
 <div class="ttc" id="astructmeshx__ctx_html_a619e41bfdbb6eb1145054fb6b853abda"><div class="ttname"><a href="../../db/d33/structmeshx__ctx.html#a619e41bfdbb6eb1145054fb6b853abda">meshx_ctx::app_idx</a></div><div class="ttdeci">uint16_t app_idx</div><div class="ttdef"><b>Definition</b> <a href="../../d6/d1d/meshx__ble__mesh__cmn_8h_source.html#l00043">meshx_ble_mesh_cmn.h:43</a></div></div>
@@ -1269,18 +1221,18 @@ Here is the caller graph for this function:</div>
 </ul>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00459">459</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  460</span>{</div>
-<div class="line"><span class="lineno">  461</span>    <span class="keywordflow">if</span> (!p_model)</div>
-<div class="line"><span class="lineno">  462</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno">  463</span> </div>
-<div class="line"><span class="lineno">  464</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#add201d93559ff4ff071950572182e204">meshx_plat_light_ctl_srv_restore</a>(p_model-&gt;<a class="code hl_variable" href="../../d1/da6/structmeshx__model__interface.html#a6707c0437b18f6c3a38857b586eb8ba3">meshx_sig</a>,</div>
-<div class="line"><span class="lineno">  465</span>                                            ctl_state.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#a9a115fac8c507d2cb8f924523ff9528c">delta_uv</a>,</div>
-<div class="line"><span class="lineno">  466</span>                                            ctl_state.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#aa51508449e7a8a7129f90e5cf5f0bedd">lightness</a>,</div>
-<div class="line"><span class="lineno">  467</span>                                            ctl_state.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#af8bf9b31292db3e4ead7f2e768cf37bd">temperature</a>,</div>
-<div class="line"><span class="lineno">  468</span>                                            ctl_state.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#ab048349e3ecf7d6a15323a9f01f1470f">temperature_range_max</a>,</div>
-<div class="line"><span class="lineno">  469</span>                                            ctl_state.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#a794df7a72e72bc58b47c81e1dab76d08">temperature_range_min</a>);</div>
-<div class="line"><span class="lineno">  470</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00463">463</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  464</span>{</div>
+<div class="line"><span class="lineno">  465</span>    <span class="keywordflow">if</span> (!p_model)</div>
+<div class="line"><span class="lineno">  466</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno">  467</span> </div>
+<div class="line"><span class="lineno">  468</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#add201d93559ff4ff071950572182e204">meshx_plat_light_ctl_srv_restore</a>(p_model-&gt;<a class="code hl_variable" href="../../d1/da6/structmeshx__model__interface.html#a6707c0437b18f6c3a38857b586eb8ba3">meshx_sig</a>,</div>
+<div class="line"><span class="lineno">  469</span>                                            ctl_state.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#a9a115fac8c507d2cb8f924523ff9528c">delta_uv</a>,</div>
+<div class="line"><span class="lineno">  470</span>                                            ctl_state.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#aa51508449e7a8a7129f90e5cf5f0bedd">lightness</a>,</div>
+<div class="line"><span class="lineno">  471</span>                                            ctl_state.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#af8bf9b31292db3e4ead7f2e768cf37bd">temperature</a>,</div>
+<div class="line"><span class="lineno">  472</span>                                            ctl_state.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#ab048349e3ecf7d6a15323a9f01f1470f">temperature_range_max</a>,</div>
+<div class="line"><span class="lineno">  473</span>                                            ctl_state.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#a794df7a72e72bc58b47c81e1dab76d08">temperature_range_min</a>);</div>
+<div class="line"><span class="lineno">  474</span>}</div>
 <div class="ttc" id="ameshx__ble__mesh__light__srv_8h_html_add201d93559ff4ff071950572182e204"><div class="ttname"><a href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#add201d93559ff4ff071950572182e204">meshx_plat_light_ctl_srv_restore</a></div><div class="ttdeci">meshx_err_t meshx_plat_light_ctl_srv_restore(meshx_ptr_t p_model, uint16_t delta_uv, uint16_t lightness, uint16_t temperature, uint16_t temp_range_max, uint16_t temp_range_min)</div><div class="ttdoc">Restore the state of the Light CTL Server.</div><div class="ttdef"><b>Definition</b> <a href="../../de/d42/esp__light__srv__model_8c_source.html#l00398">esp_light_srv_model.c:398</a></div></div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a></div><div class="ttdeci">@ MESHX_INVALID_STATE</div><div class="ttdef"><b>Definition</b> <a href="../../da/d68/meshx__err_8h_source.html#l00045">meshx_err.h:45</a></div></div>
 <div class="ttc" id="astructmeshx__light__ctl__srv__state_html_a794df7a72e72bc58b47c81e1dab76d08"><div class="ttname"><a href="../../d5/d24/structmeshx__light__ctl__srv__state.html#a794df7a72e72bc58b47c81e1dab76d08">meshx_light_ctl_srv_state::temperature_range_min</a></div><div class="ttdeci">uint16_t temperature_range_min</div><div class="ttdef"><b>Definition</b> <a href="../../d7/de0/meshx__ble__mesh__light__srv_8h_source.html#l00232">meshx_ble_mesh_light_srv.h:232</a></div></div>
@@ -1369,34 +1321,34 @@ Here is the caller graph for this function:</div>
 </ul>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00486">486</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  491</span>{</div>
-<div class="line"><span class="lineno">  492</span>    <span class="keywordflow">if</span> (!p_model)</div>
-<div class="line"><span class="lineno">  493</span>    {</div>
-<div class="line"><span class="lineno">  494</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
-<div class="line"><span class="lineno">  495</span>    }</div>
-<div class="line"><span class="lineno">  496</span> </div>
-<div class="line"><span class="lineno">  497</span>    <a class="code hl_union" href="../../d3/d74/unionmeshx__lighting__server__state__change__t.html">meshx_lighting_server_state_change_t</a> state_change = {</div>
-<div class="line"><span class="lineno">  498</span>        .ctl_set = {</div>
-<div class="line"><span class="lineno">  499</span>            .delta_uv = delta_uv,</div>
-<div class="line"><span class="lineno">  500</span>            .lightness = lightness,</div>
-<div class="line"><span class="lineno">  501</span>            .temperature = temperature</div>
-<div class="line"><span class="lineno">  502</span>        }</div>
-<div class="line"><span class="lineno">  503</span>    };</div>
-<div class="line"><span class="lineno">  504</span> </div>
-<div class="line"><span class="lineno">  505</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_function" href="../../dc/daf/meshx__light__server_8h.html#a40a91efcb35c7db08fd73143b779a31a">meshx_gen_light_srv_status_send</a>(</div>
-<div class="line"><span class="lineno">  506</span>        p_model,</div>
-<div class="line"><span class="lineno">  507</span>        ctx,</div>
-<div class="line"><span class="lineno">  508</span>        &amp;state_change</div>
-<div class="line"><span class="lineno">  509</span>    );</div>
-<div class="line"><span class="lineno">  510</span> </div>
-<div class="line"><span class="lineno">  511</span>    <span class="keywordflow">if</span> (err != <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>)</div>
-<div class="line"><span class="lineno">  512</span>    {</div>
-<div class="line"><span class="lineno">  513</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Failed to send Light CTL status: %d&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  514</span>    }</div>
-<div class="line"><span class="lineno">  515</span> </div>
-<div class="line"><span class="lineno">  516</span>    <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  517</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00490">490</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">  495</span>{</div>
+<div class="line"><span class="lineno">  496</span>    <span class="keywordflow">if</span> (!p_model)</div>
+<div class="line"><span class="lineno">  497</span>    {</div>
+<div class="line"><span class="lineno">  498</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<div class="line"><span class="lineno">  499</span>    }</div>
+<div class="line"><span class="lineno">  500</span> </div>
+<div class="line"><span class="lineno">  501</span>    <a class="code hl_union" href="../../d3/d74/unionmeshx__lighting__server__state__change__t.html">meshx_lighting_server_state_change_t</a> state_change = {</div>
+<div class="line"><span class="lineno">  502</span>        .ctl_set = {</div>
+<div class="line"><span class="lineno">  503</span>            .delta_uv = delta_uv,</div>
+<div class="line"><span class="lineno">  504</span>            .lightness = lightness,</div>
+<div class="line"><span class="lineno">  505</span>            .temperature = temperature</div>
+<div class="line"><span class="lineno">  506</span>        }</div>
+<div class="line"><span class="lineno">  507</span>    };</div>
+<div class="line"><span class="lineno">  508</span> </div>
+<div class="line"><span class="lineno">  509</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_function" href="../../dc/daf/meshx__light__server_8h.html#a40a91efcb35c7db08fd73143b779a31a">meshx_gen_light_srv_status_send</a>(</div>
+<div class="line"><span class="lineno">  510</span>        p_model,</div>
+<div class="line"><span class="lineno">  511</span>        ctx,</div>
+<div class="line"><span class="lineno">  512</span>        &amp;state_change</div>
+<div class="line"><span class="lineno">  513</span>    );</div>
+<div class="line"><span class="lineno">  514</span> </div>
+<div class="line"><span class="lineno">  515</span>    <span class="keywordflow">if</span> (err != <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>)</div>
+<div class="line"><span class="lineno">  516</span>    {</div>
+<div class="line"><span class="lineno">  517</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Failed to send Light CTL status: %d&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  518</span>    }</div>
+<div class="line"><span class="lineno">  519</span> </div>
+<div class="line"><span class="lineno">  520</span>    <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  521</span>}</div>
 <div class="ttc" id="ameshx__light__server_8h_html_a40a91efcb35c7db08fd73143b779a31a"><div class="ttname"><a href="../../dc/daf/meshx__light__server_8h.html#a40a91efcb35c7db08fd73143b779a31a">meshx_gen_light_srv_status_send</a></div><div class="ttdeci">meshx_err_t meshx_gen_light_srv_status_send(meshx_model_t *p_model, meshx_ctx_t *ctx, meshx_lighting_server_state_change_t *state_change)</div><div class="ttdoc">Sends a status message for the Lighting Server model.</div><div class="ttdef"><b>Definition</b> <a href="../../d5/d98/meshx__light__server_8c_source.html#l00143">meshx_light_server.c:143</a></div></div>
 <div class="ttc" id="aunionmeshx__lighting__server__state__change__t_html"><div class="ttname"><a href="../../d3/d74/unionmeshx__lighting__server__state__change__t.html">meshx_lighting_server_state_change_t</a></div><div class="ttdoc">Lighting Server Model state change value union.</div><div class="ttdef"><b>Definition</b> <a href="../../d7/de0/meshx__ble__mesh__light__srv_8h_source.html#l00184">meshx_ble_mesh_light_srv.h:185</a></div></div>
 </div><!-- fragment --><div class="dynheader">
@@ -1430,8 +1382,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a9cde80da166fd8a69dd7261a2478d1b8" name="a9cde80da166fd8a69dd7261a2478d1b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9cde80da166fd8a69dd7261a2478d1b8">&#9670;&#160;</a></span>meshx_state_change_notify()</h2>
+<a id="adf71e72c1ffe4b781c7ed81df835b102" name="adf71e72c1ffe4b781c7ed81df835b102"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf71e72c1ffe4b781c7ed81df835b102">&#9670;&#160;</a></span>meshx_state_change_notify()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1440,7 +1392,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> meshx_state_change_notify </td>
+          <td class="memname">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD static uint16_t <a class="el" href="../../d5/d98/meshx__light__server_8c.html#ac5efe3ac4cddc76c1c6de878a351223f">meshx_lighting_server_init</a>=0;======= typedef struct meshx_light_ctl_setup_server { uint16_t ctl_setup_server_init;<a class="el" href="../../d3/d2b/meshx__platform__ble__mesh_8h.html#ab8c86cf2f5e47acb374476edda8b5b7c">MESHX_MODEL</a> ctl_setup_srv_model;<a class="el" href="../../db/dde/meshx__light__ctl__srv_8h.html#ae6c7ab6d2bce16f5c802c863bcf3b70a">meshx_ctl_setup_server_model_t</a> *meshx_srv_model;}meshx_light_ctl_setup_server_t; static struct { uint16_t ctl_lighting_server_init;uint16_t ctl_lighting_server_created;meshx_light_ctl_setup_server_t ctl_setup_server;}g_meshx_light_ctl_srv={ .ctl_setup_server={ .ctl_setup_server_init=0,.meshx_srv_model=NULL, },.ctl_lighting_server_init=0,.ctl_lighting_server_created=0, };&gt; &gt; &gt; &gt; &gt; &gt; static <a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> meshx_state_change_notify </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#ab7d1e0ab27057d7d631cbe509570476d">meshx_lighting_server_cb_param_t</a> *</td>          <td class="paramname"><span class="paramname"><em>param</em></span></td><td>)</td>
           <td></td>
@@ -1467,42 +1419,42 @@ Here is the caller graph for this function:</div>
 </ul>
 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00065">65</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   66</span>{</div>
-<div class="line"><span class="lineno">   67</span>    <a class="code hl_typedef" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#a2d54ce26847c66f816bb6f2be7f7c70c">meshx_light_ctl_srv_t</a> ctl_srv_params = {</div>
-<div class="line"><span class="lineno">   68</span>        .model = param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a73cda8c575b818b96c9b4ab30b55e2d5">model</a>};</div>
-<div class="line"><span class="lineno">   69</span> </div>
-<div class="line"><span class="lineno">   70</span>    <span class="keywordflow">if</span> (<a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#abe6779831edf061a1d3e1503541aecd0">MESHX_ADDR_IS_UNICAST</a>(param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#af8b310010317426cc7a107a510a5e4bd">dst_addr</a>) || (<a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#ac1ad45ac151fff6da1b6aa890d698a77">MESHX_ADDR_BROADCAST</a>(param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#af8b310010317426cc7a107a510a5e4bd">dst_addr</a>)) || (<a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a089c92bca2ebe3941bb181eafa670695">MESHX_ADDR_IS_GROUP</a>(param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#af8b310010317426cc7a107a510a5e4bd">dst_addr</a>) &amp;&amp; (<a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a> == <a class="code hl_function" href="../../d6/d1d/meshx__ble__mesh__cmn_8h.html#ab3ea84732bbdc4a0b8d742aa4f66be09">meshx_is_group_subscribed</a>(param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a73cda8c575b818b96c9b4ab30b55e2d5">model</a>.<a class="code hl_variable" href="../../d7/df1/structmeshx__model.html#a93aa811e6fc21f6848bacf62853edab7">p_model</a>, param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#af8b310010317426cc7a107a510a5e4bd">dst_addr</a>))))</div>
-<div class="line"><span class="lineno">   71</span>    {</div>
-<div class="line"><span class="lineno">   72</span>        <span class="keywordflow">switch</span> (param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#a791eb2748742c87194f25ccd9f13aafb">opcode</a>)</div>
-<div class="line"><span class="lineno">   73</span>        {</div>
-<div class="line"><span class="lineno">   74</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a10c4f4a740b4e97ab7dd2fc3f1ee3b16">MESHX_MODEL_OP_LIGHT_CTL_SET</a>:</div>
-<div class="line"><span class="lineno">   75</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#ac8fd063f95afbb6795ef24ba0e81ed8a">MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK</a>:</div>
-<div class="line"><span class="lineno">   76</span>            ctl_srv_params.<a class="code hl_variable" href="../../d9/dd3/structmeshx__light__ctl__srv.html#a55b6292e5fe78648092710543fe11cf7">state</a>.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#a9a115fac8c507d2cb8f924523ff9528c">delta_uv</a> = param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#aac263c598899aa419704c785b731b10f">state_change</a>.<a class="code hl_variable" href="../../d3/d74/unionmeshx__lighting__server__state__change__t.html#af27cfd5b9ee34d1685768eb1373cd7f4">ctl_set</a>.<a class="code hl_variable" href="../../dc/d08/structmeshx__state__change__light__ctl__set__t.html#a2249a9c3ce8727d7495b5f52749822ec">delta_uv</a>;</div>
-<div class="line"><span class="lineno">   77</span>            ctl_srv_params.<a class="code hl_variable" href="../../d9/dd3/structmeshx__light__ctl__srv.html#a55b6292e5fe78648092710543fe11cf7">state</a>.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#aa51508449e7a8a7129f90e5cf5f0bedd">lightness</a> = param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#aac263c598899aa419704c785b731b10f">state_change</a>.<a class="code hl_variable" href="../../d3/d74/unionmeshx__lighting__server__state__change__t.html#af27cfd5b9ee34d1685768eb1373cd7f4">ctl_set</a>.<a class="code hl_variable" href="../../dc/d08/structmeshx__state__change__light__ctl__set__t.html#ad478ecf14524d734de4b61d80c1acccf">lightness</a>;</div>
-<div class="line"><span class="lineno">   78</span>            ctl_srv_params.<a class="code hl_variable" href="../../d9/dd3/structmeshx__light__ctl__srv.html#a55b6292e5fe78648092710543fe11cf7">state</a>.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#af8bf9b31292db3e4ead7f2e768cf37bd">temperature</a> = param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#aac263c598899aa419704c785b731b10f">state_change</a>.<a class="code hl_variable" href="../../d3/d74/unionmeshx__lighting__server__state__change__t.html#af27cfd5b9ee34d1685768eb1373cd7f4">ctl_set</a>.<a class="code hl_variable" href="../../dc/d08/structmeshx__state__change__light__ctl__set__t.html#ac18bb67373d16a5629562a8bd5132c21">temperature</a>;</div>
-<div class="line"><span class="lineno">   79</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   80</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a32ef4a326bdf3db0c2a731c3ce5649c3">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET</a>:</div>
-<div class="line"><span class="lineno">   81</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#aa9714b377b326c0a721f911f061c4990">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET</a>:</div>
-<div class="line"><span class="lineno">   82</span>            ctl_srv_params.<a class="code hl_variable" href="../../d9/dd3/structmeshx__light__ctl__srv.html#a55b6292e5fe78648092710543fe11cf7">state</a>.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#a9a115fac8c507d2cb8f924523ff9528c">delta_uv</a> = param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#aac263c598899aa419704c785b731b10f">state_change</a>.<a class="code hl_variable" href="../../d3/d74/unionmeshx__lighting__server__state__change__t.html#a473a8a3b1a86209120452cd5a3821d16">ctl_temp_set</a>.<a class="code hl_variable" href="../../d2/db7/structmeshx__state__change__light__ctl__temperature__set__t.html#ad454c1971be1f2627437a5ad01359449">delta_uv</a>;</div>
-<div class="line"><span class="lineno">   83</span>            ctl_srv_params.<a class="code hl_variable" href="../../d9/dd3/structmeshx__light__ctl__srv.html#a55b6292e5fe78648092710543fe11cf7">state</a>.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#af8bf9b31292db3e4ead7f2e768cf37bd">temperature</a> = param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#aac263c598899aa419704c785b731b10f">state_change</a>.<a class="code hl_variable" href="../../d3/d74/unionmeshx__lighting__server__state__change__t.html#a473a8a3b1a86209120452cd5a3821d16">ctl_temp_set</a>.<a class="code hl_variable" href="../../d2/db7/structmeshx__state__change__light__ctl__temperature__set__t.html#a9ff487fe96568e99405aade0f7817bdc">temperature</a>;</div>
-<div class="line"><span class="lineno">   84</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">   85</span>        <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">   86</span>            <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a1fd3948cfb1a0f51ba7ba767416938ae">MESHX_NOT_SUPPORTED</a>;</div>
-<div class="line"><span class="lineno">   87</span>        }</div>
-<div class="line"><span class="lineno">   88</span>        <span class="comment">/* Send msg for hw manipulation */</span></div>
-<div class="line"><span class="lineno">   89</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;HW change requested, Element_id: 0x%x&quot;</span>,</div>
-<div class="line"><span class="lineno">   90</span>                   param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a73cda8c575b818b96c9b4ab30b55e2d5">model</a>.<a class="code hl_variable" href="../../d7/df1/structmeshx__model.html#aca9a32ca9d557de21436fa5019ab9f1b">el_id</a>);</div>
-<div class="line"><span class="lineno">   91</span> </div>
-<div class="line"><span class="lineno">   92</span>        <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#acc911e8c9467e5f4e224be56b1888e68">control_task_msg_publish</a>(</div>
-<div class="line"><span class="lineno">   93</span>            <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fada2e951a2072299e90d2ccf65f4cdde2">CONTROL_TASK_MSG_CODE_EL_STATE_CH</a>,</div>
-<div class="line"><span class="lineno">   94</span>            <a class="code hl_variable" href="../../da/db3/meshx__control__task_8h.html#aa9dedac7746be2d7d4c59bd0b47e402b">CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL</a>,</div>
-<div class="line"><span class="lineno">   95</span>            &amp;ctl_srv_params,</div>
-<div class="line"><span class="lineno">   96</span>            <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#a2d54ce26847c66f816bb6f2be7f7c70c">meshx_light_ctl_srv_t</a>));</div>
-<div class="line"><span class="lineno">   97</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">   98</span>    }</div>
-<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a1fd3948cfb1a0f51ba7ba767416938ae">MESHX_NOT_SUPPORTED</a>;</div>
-<div class="line"><span class="lineno">  100</span>}</div>
+<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00069">69</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
+<div class="fragment"><div class="line"><span class="lineno">   70</span>{</div>
+<div class="line"><span class="lineno">   71</span>    <a class="code hl_typedef" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#a2d54ce26847c66f816bb6f2be7f7c70c">meshx_light_ctl_srv_t</a> ctl_srv_params = {</div>
+<div class="line"><span class="lineno">   72</span>        .model = param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a73cda8c575b818b96c9b4ab30b55e2d5">model</a>};</div>
+<div class="line"><span class="lineno">   73</span> </div>
+<div class="line"><span class="lineno">   74</span>    <span class="keywordflow">if</span> (<a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#abe6779831edf061a1d3e1503541aecd0">MESHX_ADDR_IS_UNICAST</a>(param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#af8b310010317426cc7a107a510a5e4bd">dst_addr</a>) || (<a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#ac1ad45ac151fff6da1b6aa890d698a77">MESHX_ADDR_BROADCAST</a>(param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#af8b310010317426cc7a107a510a5e4bd">dst_addr</a>)) || (<a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a089c92bca2ebe3941bb181eafa670695">MESHX_ADDR_IS_GROUP</a>(param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#af8b310010317426cc7a107a510a5e4bd">dst_addr</a>) &amp;&amp; (<a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a> == <a class="code hl_function" href="../../d6/d1d/meshx__ble__mesh__cmn_8h.html#ab3ea84732bbdc4a0b8d742aa4f66be09">meshx_is_group_subscribed</a>(param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a73cda8c575b818b96c9b4ab30b55e2d5">model</a>.<a class="code hl_variable" href="../../d7/df1/structmeshx__model.html#a93aa811e6fc21f6848bacf62853edab7">p_model</a>, param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#af8b310010317426cc7a107a510a5e4bd">dst_addr</a>))))</div>
+<div class="line"><span class="lineno">   75</span>    {</div>
+<div class="line"><span class="lineno">   76</span>        <span class="keywordflow">switch</span> (param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a3c2a6672a3d343b1ecf7182c2a8c230b">ctx</a>.<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#a791eb2748742c87194f25ccd9f13aafb">opcode</a>)</div>
+<div class="line"><span class="lineno">   77</span>        {</div>
+<div class="line"><span class="lineno">   78</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a10c4f4a740b4e97ab7dd2fc3f1ee3b16">MESHX_MODEL_OP_LIGHT_CTL_SET</a>:</div>
+<div class="line"><span class="lineno">   79</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#ac8fd063f95afbb6795ef24ba0e81ed8a">MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK</a>:</div>
+<div class="line"><span class="lineno">   80</span>            ctl_srv_params.<a class="code hl_variable" href="../../d9/dd3/structmeshx__light__ctl__srv.html#a55b6292e5fe78648092710543fe11cf7">state</a>.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#a9a115fac8c507d2cb8f924523ff9528c">delta_uv</a> = param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#aac263c598899aa419704c785b731b10f">state_change</a>.<a class="code hl_variable" href="../../d3/d74/unionmeshx__lighting__server__state__change__t.html#af27cfd5b9ee34d1685768eb1373cd7f4">ctl_set</a>.<a class="code hl_variable" href="../../dc/d08/structmeshx__state__change__light__ctl__set__t.html#a2249a9c3ce8727d7495b5f52749822ec">delta_uv</a>;</div>
+<div class="line"><span class="lineno">   81</span>            ctl_srv_params.<a class="code hl_variable" href="../../d9/dd3/structmeshx__light__ctl__srv.html#a55b6292e5fe78648092710543fe11cf7">state</a>.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#aa51508449e7a8a7129f90e5cf5f0bedd">lightness</a> = param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#aac263c598899aa419704c785b731b10f">state_change</a>.<a class="code hl_variable" href="../../d3/d74/unionmeshx__lighting__server__state__change__t.html#af27cfd5b9ee34d1685768eb1373cd7f4">ctl_set</a>.<a class="code hl_variable" href="../../dc/d08/structmeshx__state__change__light__ctl__set__t.html#ad478ecf14524d734de4b61d80c1acccf">lightness</a>;</div>
+<div class="line"><span class="lineno">   82</span>            ctl_srv_params.<a class="code hl_variable" href="../../d9/dd3/structmeshx__light__ctl__srv.html#a55b6292e5fe78648092710543fe11cf7">state</a>.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#af8bf9b31292db3e4ead7f2e768cf37bd">temperature</a> = param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#aac263c598899aa419704c785b731b10f">state_change</a>.<a class="code hl_variable" href="../../d3/d74/unionmeshx__lighting__server__state__change__t.html#af27cfd5b9ee34d1685768eb1373cd7f4">ctl_set</a>.<a class="code hl_variable" href="../../dc/d08/structmeshx__state__change__light__ctl__set__t.html#ac18bb67373d16a5629562a8bd5132c21">temperature</a>;</div>
+<div class="line"><span class="lineno">   83</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   84</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a32ef4a326bdf3db0c2a731c3ce5649c3">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_GET</a>:</div>
+<div class="line"><span class="lineno">   85</span>        <span class="keywordflow">case</span> <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#aa9714b377b326c0a721f911f061c4990">MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_SET</a>:</div>
+<div class="line"><span class="lineno">   86</span>            ctl_srv_params.<a class="code hl_variable" href="../../d9/dd3/structmeshx__light__ctl__srv.html#a55b6292e5fe78648092710543fe11cf7">state</a>.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#a9a115fac8c507d2cb8f924523ff9528c">delta_uv</a> = param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#aac263c598899aa419704c785b731b10f">state_change</a>.<a class="code hl_variable" href="../../d3/d74/unionmeshx__lighting__server__state__change__t.html#a473a8a3b1a86209120452cd5a3821d16">ctl_temp_set</a>.<a class="code hl_variable" href="../../d2/db7/structmeshx__state__change__light__ctl__temperature__set__t.html#ad454c1971be1f2627437a5ad01359449">delta_uv</a>;</div>
+<div class="line"><span class="lineno">   87</span>            ctl_srv_params.<a class="code hl_variable" href="../../d9/dd3/structmeshx__light__ctl__srv.html#a55b6292e5fe78648092710543fe11cf7">state</a>.<a class="code hl_variable" href="../../d5/d24/structmeshx__light__ctl__srv__state.html#af8bf9b31292db3e4ead7f2e768cf37bd">temperature</a> = param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#aac263c598899aa419704c785b731b10f">state_change</a>.<a class="code hl_variable" href="../../d3/d74/unionmeshx__lighting__server__state__change__t.html#a473a8a3b1a86209120452cd5a3821d16">ctl_temp_set</a>.<a class="code hl_variable" href="../../d2/db7/structmeshx__state__change__light__ctl__temperature__set__t.html#a9ff487fe96568e99405aade0f7817bdc">temperature</a>;</div>
+<div class="line"><span class="lineno">   88</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">   89</span>        <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">   90</span>            <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a1fd3948cfb1a0f51ba7ba767416938ae">MESHX_NOT_SUPPORTED</a>;</div>
+<div class="line"><span class="lineno">   91</span>        }</div>
+<div class="line"><span class="lineno">   92</span>        <span class="comment">/* Send msg for hw manipulation */</span></div>
+<div class="line"><span class="lineno">   93</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;HW change requested, Element_id: 0x%x&quot;</span>,</div>
+<div class="line"><span class="lineno">   94</span>                   param-&gt;<a class="code hl_variable" href="../../dc/d6c/structmeshx__lighting__server__cb__param.html#a73cda8c575b818b96c9b4ab30b55e2d5">model</a>.<a class="code hl_variable" href="../../d7/df1/structmeshx__model.html#aca9a32ca9d557de21436fa5019ab9f1b">el_id</a>);</div>
+<div class="line"><span class="lineno">   95</span> </div>
+<div class="line"><span class="lineno">   96</span>        <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#acc911e8c9467e5f4e224be56b1888e68">control_task_msg_publish</a>(</div>
+<div class="line"><span class="lineno">   97</span>            <a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fada2e951a2072299e90d2ccf65f4cdde2">CONTROL_TASK_MSG_CODE_EL_STATE_CH</a>,</div>
+<div class="line"><span class="lineno">   98</span>            <a class="code hl_variable" href="../../da/db3/meshx__control__task_8h.html#aa9dedac7746be2d7d4c59bd0b47e402b">CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL</a>,</div>
+<div class="line"><span class="lineno">   99</span>            &amp;ctl_srv_params,</div>
+<div class="line"><span class="lineno">  100</span>            <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../d7/de0/meshx__ble__mesh__light__srv_8h.html#a2d54ce26847c66f816bb6f2be7f7c70c">meshx_light_ctl_srv_t</a>));</div>
+<div class="line"><span class="lineno">  101</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  102</span>    }</div>
+<div class="line"><span class="lineno">  103</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a1fd3948cfb1a0f51ba7ba767416938ae">MESHX_NOT_SUPPORTED</a>;</div>
+<div class="line"><span class="lineno">  104</span>}</div>
 <div class="ttc" id="ameshx__ble__mesh__cmn_8h_html_ab3ea84732bbdc4a0b8d742aa4f66be09"><div class="ttname"><a href="../../d6/d1d/meshx__ble__mesh__cmn_8h.html#ab3ea84732bbdc4a0b8d742aa4f66be09">meshx_is_group_subscribed</a></div><div class="ttdeci">meshx_err_t meshx_is_group_subscribed(meshx_model_t *p_model, uint16_t addr)</div><div class="ttdoc">Checks if a model is subscribed to a specific group address.</div><div class="ttdef"><b>Definition</b> <a href="../../dc/d96/esp__platform__ble__mesh_8c_source.html#l00023">esp_platform_ble_mesh.c:23</a></div></div>
 <div class="ttc" id="ameshx__ble__mesh__cmn__def_8h_html_a089c92bca2ebe3941bb181eafa670695"><div class="ttname"><a href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a089c92bca2ebe3941bb181eafa670695">MESHX_ADDR_IS_GROUP</a></div><div class="ttdeci">#define MESHX_ADDR_IS_GROUP(_addr)</div><div class="ttdef"><b>Definition</b> <a href="../../d4/de0/meshx__ble__mesh__cmn__def_8h_source.html#l00027">meshx_ble_mesh_cmn_def.h:27</a></div></div>
 <div class="ttc" id="ameshx__ble__mesh__cmn__def_8h_html_abe6779831edf061a1d3e1503541aecd0"><div class="ttname"><a href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#abe6779831edf061a1d3e1503541aecd0">MESHX_ADDR_IS_UNICAST</a></div><div class="ttdeci">#define MESHX_ADDR_IS_UNICAST(_addr)</div><div class="ttdef"><b>Definition</b> <a href="../../d4/de0/meshx__ble__mesh__cmn__def_8h_source.html#l00025">meshx_ble_mesh_cmn_def.h:25</a></div></div>
@@ -1519,8 +1471,8 @@ Here is the caller graph for this function:</div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="../../d4/db6/meshx__light__ctl__srv_8c_a9cde80da166fd8a69dd7261a2478d1b8_cgraph.png" border="0" usemap="#ad4/db6/meshx__light__ctl__srv_8c_a9cde80da166fd8a69dd7261a2478d1b8_cgraph" alt=""/></div>
-<map name="ad4/db6/meshx__light__ctl__srv_8c_a9cde80da166fd8a69dd7261a2478d1b8_cgraph" id="ad4/db6/meshx__light__ctl__srv_8c_a9cde80da166fd8a69dd7261a2478d1b8_cgraph">
+<div class="center"><img src="../../d4/db6/meshx__light__ctl__srv_8c_adf71e72c1ffe4b781c7ed81df835b102_cgraph.png" border="0" usemap="#ad4/db6/meshx__light__ctl__srv_8c_adf71e72c1ffe4b781c7ed81df835b102_cgraph" alt=""/></div>
+<map name="ad4/db6/meshx__light__ctl__srv_8c_adf71e72c1ffe4b781c7ed81df835b102_cgraph" id="ad4/db6/meshx__light__ctl__srv_8c_adf71e72c1ffe4b781c7ed81df835b102_cgraph">
 <area shape="rect" title="Perform hardware change for the light control server model." alt="" coords="5,72,150,113"/>
 <area shape="rect" href="../../df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="204,55,376,80"/>
 <area shape="poly" title=" " alt="" coords="150,82,188,77,189,82,150,87"/>
@@ -1539,8 +1491,8 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="../../d4/db6/meshx__light__ctl__srv_8c_a9cde80da166fd8a69dd7261a2478d1b8_icgraph.png" border="0" usemap="#ad4/db6/meshx__light__ctl__srv_8c_a9cde80da166fd8a69dd7261a2478d1b8_icgraph" alt=""/></div>
-<map name="ad4/db6/meshx__light__ctl__srv_8c_a9cde80da166fd8a69dd7261a2478d1b8_icgraph" id="ad4/db6/meshx__light__ctl__srv_8c_a9cde80da166fd8a69dd7261a2478d1b8_icgraph">
+<div class="center"><img src="../../d4/db6/meshx__light__ctl__srv_8c_adf71e72c1ffe4b781c7ed81df835b102_icgraph.png" border="0" usemap="#ad4/db6/meshx__light__ctl__srv_8c_adf71e72c1ffe4b781c7ed81df835b102_icgraph" alt=""/></div>
+<map name="ad4/db6/meshx__light__ctl__srv_8c_adf71e72c1ffe4b781c7ed81df835b102_icgraph" id="ad4/db6/meshx__light__ctl__srv_8c_adf71e72c1ffe4b781c7ed81df835b102_icgraph">
 <area shape="rect" title="Perform hardware change for the light control server model." alt="" coords="913,5,1057,46"/>
 <area shape="rect" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a7d11c7a15e9c2066afb3f22e72068518" title="Handle Light CTL messages for the lighting server model." alt="" coords="729,5,865,46"/>
 <area shape="poly" title=" " alt="" coords="897,28,865,28,865,23,897,23"/>
@@ -1555,87 +1507,13 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<h2 class="groupheader">Variable Documentation</h2>
-<a id="a19fb416e1509935256f38ab5df688029" name="a19fb416e1509935256f38ab5df688029"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19fb416e1509935256f38ab5df688029">&#9670;&#160;</a></span>ctl_lighting_server_created</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint16_t ctl_lighting_server_created</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00042">42</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
-
-</div>
-</div>
-<a id="a4d3616c3a48d9a7057c057d71a872975" name="a4d3616c3a48d9a7057c057d71a872975"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d3616c3a48d9a7057c057d71a872975">&#9670;&#160;</a></span>ctl_lighting_server_init</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint16_t ctl_lighting_server_init</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00041">41</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
-
-</div>
-</div>
-<a id="a621c667489e1ed46167a56127d157d5e" name="a621c667489e1ed46167a56127d157d5e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a621c667489e1ed46167a56127d157d5e">&#9670;&#160;</a></span>ctl_setup_server</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="#afcfff8d0923d1491b1be60053c090f31">meshx_light_ctl_setup_server_t</a> ctl_setup_server</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html#l00043">43</a> of file <a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c_source.html">meshx_light_ctl_srv.c</a>.</p>
-
-</div>
-</div>
-<a id="ad7b3965ec05b69bf693150a97200e279" name="ad7b3965ec05b69bf693150a97200e279"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7b3965ec05b69bf693150a97200e279">&#9670;&#160;</a></span>[struct]</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct  { ... }  g_meshx_light_ctl_srv</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    .ctl_setup_server = {</div>
-<div class="line">        .ctl_setup_server_init = 0,</div>
-<div class="line">        .meshx_srv_model = NULL,</div>
-<div class="line">    },</div>
-<div class="line">    .ctl_lighting_server_init = 0,</div>
-<div class="line">    .ctl_lighting_server_created = 0,</div>
-<div class="line">}</div>
-</div><!-- fragment -->
-<p>Structure to maintain the initialization and creation state of the MeshX Light CTL Server. </p>
-<p>This static structure holds flags indicating whether the CTL Setup Server and CTL Lighting Server have been initialized, as well as whether the CTL Lighting Server has been created. </p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_5c982d53a68cdbcd421152b4020263a9.html">main</a></li><li class="navelem"><a class="el" href="../../dir_8c5515a604d4a2bb78291420d5b72747.html">component</a></li><li class="navelem"><a class="el" href="../../dir_17e62e33567b93c5a1475a84b6c9c934.html">meshx</a></li><li class="navelem"><a class="el" href="../../dir_731868db0f8d6d1cac5b0ffc22af1dd4.html">elements</a></li><li class="navelem"><a class="el" href="../../dir_e75a121ce4fbf4ac625776640133c289.html">server</a></li><li class="navelem"><a class="el" href="../../dir_de06a67f94a28ad18faee55f202b3120.html">models</a></li><li class="navelem"><a class="el" href="../../dir_310fa45c7e41c8dfdf0fcc0a2c75314a.html">src</a></li><li class="navelem"><a class="el" href="../../d4/db6/meshx__light__ctl__srv_8c.html">meshx_light_ctl_srv.c</a></li>
-    <li class="footer">Generated on Mon Oct 27 2025 05:57:59 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Mon Oct 27 2025 06:08:31 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

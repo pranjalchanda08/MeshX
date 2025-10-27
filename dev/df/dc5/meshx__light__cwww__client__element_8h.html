@@ -364,6 +364,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a2b18c9b388becb88fae3b11dc91227ad" id="r_a2b18c9b388becb88fae3b11dc91227ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2b18c9b388becb88fae3b11dc91227ad">create_cwww_client_elements</a> (<a class="el" href="../../d2/de3/meshx__common_8h.html#a42c6642d8c5c083ff71aaf93e6a3e6b8">dev_struct_t</a> *pdev, uint16_t element_cnt)</td></tr>
 <tr class="memdesc:a2b18c9b388becb88fae3b11dc91227ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create Dynamic CW-WW Model Elements.  <br /></td></tr>
 <tr class="separator:a2b18c9b388becb88fae3b11dc91227ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0ea9fcc86e6d20432d9022539203404" id="r_ac0ea9fcc86e6d20432d9022539203404"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac0ea9fcc86e6d20432d9022539203404">ble_mesh_send_cwww_msg</a> (<a class="el" href="../../d2/de3/meshx__common_8h.html#a42c6642d8c5c083ff71aaf93e6a3e6b8">dev_struct_t</a> *pdev, <a class="el" href="#ab2c80e66d65aaeb5740b8a7dcd36cd50">cwww_cli_sig_id_t</a> model_id, uint16_t element_id, uint8_t set_get, uint8_t is_range, uint8_t ack)</td></tr>
+<tr class="memdesc:ac0ea9fcc86e6d20432d9022539203404"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a CW/WW (Cool White/Warm White) message over BLE Mesh.  <br /></td></tr>
+<tr class="separator:ac0ea9fcc86e6d20432d9022539203404"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of the CW-WW (Cool White - Warm White) client model for BLE Mesh. </p>
@@ -732,6 +735,66 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ac0ea9fcc86e6d20432d9022539203404" name="ac0ea9fcc86e6d20432d9022539203404"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0ea9fcc86e6d20432d9022539203404">&#9670;&#160;</a></span>ble_mesh_send_cwww_msg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> ble_mesh_send_cwww_msg </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d2/de3/meshx__common_8h.html#a42c6642d8c5c083ff71aaf93e6a3e6b8">dev_struct_t</a> *</td>          <td class="paramname"><span class="paramname"><em>pdev</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#ab2c80e66d65aaeb5740b8a7dcd36cd50">cwww_cli_sig_id_t</a></td>          <td class="paramname"><span class="paramname"><em>model_id</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t</td>          <td class="paramname"><span class="paramname"><em>element_id</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>set_get</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>is_range</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>ack</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send a CW/WW (Cool White/Warm White) message over BLE Mesh. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">pdev</td><td>Pointer to the device structure. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">model_id</td><td>Model ID of the CW/WW client. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">element_id</td><td>Element ID to which the message is addressed. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">set_get</td><td>Flag indicating whether the message is a set (1) or get (0) operation. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">is_range</td><td>Flag indicating whether the message is a temperature range set (1) or not (0). </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ack</td><td>Flag indicating whether the message requires an acknowledgment (1) or not (0).</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><ul>
+<li>MESHX_SUCCESS: Success</li>
+<li>MESHX_INVALID_ARG: Invalid argument</li>
+<li>MESHX_FAIL: Sending message failed </li>
+</ul>
+</dd></dl>
+
+</div>
+</div>
 <a id="a2b18c9b388becb88fae3b11dc91227ad" name="a2b18c9b388becb88fae3b11dc91227ad"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2b18c9b388becb88fae3b11dc91227ad">&#9670;&#160;</a></span>create_cwww_client_elements()</h2>
 
@@ -1057,9 +1120,9 @@ Here is the caller graph for this function:</div>
 <div class="ttc" id="ameshx__light__cwww__client__element_8h_html_a13264d47e9659307bea52f189565e9c3"><div class="ttname"><a href="#a13264d47e9659307bea52f189565e9c3">meshx_cwww_client_msg_t</a></div><div class="ttdeci">struct cwww_client_msg meshx_cwww_client_msg_t</div><div class="ttdoc">Structure to hold the cwww client message sent from APP layer.</div></div>
 <div class="ttc" id="ameshx__light__cwww__client__element_8h_html_a27ada85d4a43670c416f7864351b7209"><div class="ttname"><a href="#a27ada85d4a43670c416f7864351b7209">CWWW_CLI_MSG_GET</a></div><div class="ttdeci">#define CWWW_CLI_MSG_GET</div><div class="ttdoc">Message type for getting CW-WW client state.</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/meshx__light__cwww__client__element_8h_source.html#l00041">meshx_light_cwww_client_element.h:41</a></div></div>
 <div class="ttc" id="ameshx__log_8h_html_acb76057f2c8e23ca61edf04fd824818b"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a></div><div class="ttdeci">#define MESHX_LOGD(module_id, format,...)</div><div class="ttdef"><b>Definition</b> <a href="../../d7/dcb/meshx__log_8h_source.html#l00113">meshx_log.h:113</a></div></div>
-<div class="ttc" id="astructcwww__client__msg_html_a66c913e65a7664fb10a399bbbe59e084"><div class="ttname"><a href="../../d3/d96/structcwww__client__msg.html#a66c913e65a7664fb10a399bbbe59e084">cwww_client_msg::set_get</a></div><div class="ttdeci">uint8_t set_get</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/meshx__light__cwww__client__element_8h_source.html#l00110">meshx_light_cwww_client_element.h:110</a></div></div>
-<div class="ttc" id="astructcwww__client__msg_html_ade82f6ba369c73449027a76de3d4c44c"><div class="ttname"><a href="../../d3/d96/structcwww__client__msg.html#ade82f6ba369c73449027a76de3d4c44c">cwww_client_msg::element_id</a></div><div class="ttdeci">uint16_t element_id</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/meshx__light__cwww__client__element_8h_source.html#l00112">meshx_light_cwww_client_element.h:112</a></div></div>
-<div class="ttc" id="astructcwww__client__msg_html_ae4bd1bc8f53a7dd014094972b6946756"><div class="ttname"><a href="../../d3/d96/structcwww__client__msg.html#ae4bd1bc8f53a7dd014094972b6946756">cwww_client_msg::ack</a></div><div class="ttdeci">uint8_t ack</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/meshx__light__cwww__client__element_8h_source.html#l00109">meshx_light_cwww_client_element.h:109</a></div></div>
+<div class="ttc" id="astructcwww__client__msg_html_a66c913e65a7664fb10a399bbbe59e084"><div class="ttname"><a href="../../d3/d96/structcwww__client__msg.html#a66c913e65a7664fb10a399bbbe59e084">cwww_client_msg::set_get</a></div><div class="ttdeci">uint8_t set_get</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/meshx__light__cwww__client__element_8h_source.html#l00115">meshx_light_cwww_client_element.h:115</a></div></div>
+<div class="ttc" id="astructcwww__client__msg_html_ade82f6ba369c73449027a76de3d4c44c"><div class="ttname"><a href="../../d3/d96/structcwww__client__msg.html#ade82f6ba369c73449027a76de3d4c44c">cwww_client_msg::element_id</a></div><div class="ttdeci">uint16_t element_id</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/meshx__light__cwww__client__element_8h_source.html#l00117">meshx_light_cwww_client_element.h:117</a></div></div>
+<div class="ttc" id="astructcwww__client__msg_html_ae4bd1bc8f53a7dd014094972b6946756"><div class="ttname"><a href="../../d3/d96/structcwww__client__msg.html#ae4bd1bc8f53a7dd014094972b6946756">cwww_client_msg::ack</a></div><div class="ttdeci">uint8_t ack</div><div class="ttdef"><b>Definition</b> <a href="../../df/dc5/meshx__light__cwww__client__element_8h_source.html#l00114">meshx_light_cwww_client_element.h:114</a></div></div>
 </div><!-- fragment --><div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1087,7 +1150,7 @@ Here is the call graph for this function:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_5c982d53a68cdbcd421152b4020263a9.html">main</a></li><li class="navelem"><a class="el" href="../../dir_8c5515a604d4a2bb78291420d5b72747.html">component</a></li><li class="navelem"><a class="el" href="../../dir_17e62e33567b93c5a1475a84b6c9c934.html">meshx</a></li><li class="navelem"><a class="el" href="../../dir_731868db0f8d6d1cac5b0ffc22af1dd4.html">elements</a></li><li class="navelem"><a class="el" href="../../dir_3bf68657330bb9e1ea3aa3c649cf1fe1.html">client</a></li><li class="navelem"><a class="el" href="../../dir_564523dddebeb4985f7c9c51a725c488.html">inc</a></li><li class="navelem"><a class="el" href="../../df/dc5/meshx__light__cwww__client__element_8h.html">meshx_light_cwww_client_element.h</a></li>
-    <li class="footer">Generated on Mon Oct 27 2025 05:57:59 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
+    <li class="footer">Generated on Mon Oct 27 2025 06:08:31 for MeshX by <a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2 </li>
   </ul>
 </div>
 </body>

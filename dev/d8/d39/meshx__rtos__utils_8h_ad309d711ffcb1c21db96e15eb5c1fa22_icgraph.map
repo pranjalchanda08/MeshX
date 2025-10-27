@@ -60,7 +60,7 @@
 <area shape="poly" id="edge116_Node000008_Node000086" title=" " alt="" coords="2088,745,1978,801,1738,911,1630,954,1489,1003,1454,1014,1452,1009,1488,998,1628,949,1736,906,1976,796,2086,740"/>
 <area shape="rect" id="Node000087" href="$dc/d93/meshx__api_8c.html#a8c55b18a6ea8b0f0cde41c0e7dbadf75" title="Sends a message to the element." alt="" coords="1780,169,1977,195"/>
 <area shape="poly" id="edge120_Node000008_Node000087" title=" " alt="" coords="2114,695,1975,209,1959,198,1962,193,1980,206,2119,694"/>
-<area shape="rect" id="Node000088" href="$d4/db6/meshx__light__ctl__srv_8c.html#a9cde80da166fd8a69dd7261a2478d1b8" title="Perform hardware change for the light control server model." alt="" coords="1806,1543,1951,1584"/>
+<area shape="rect" id="Node000088" href="$d4/db6/meshx__light__ctl__srv_8c.html#adf71e72c1ffe4b781c7ed81df835b102" title="Perform hardware change for the light control server model." alt="" coords="1806,1543,1951,1584"/>
 <area shape="poly" id="edge121_Node000008_Node000088" title=" " alt="" coords="2126,751,2115,910,2089,1144,2070,1265,2046,1376,2016,1468,1998,1504,1979,1532,1953,1551,1949,1547,1975,1528,1994,1502,2011,1466,2041,1375,2065,1264,2084,1143,2109,910,2121,751"/>
 <area shape="rect" id="Node000010" href="$d0/de1/esp__gen__cli__model_8c.html#ab379b0b9bd42e991d46dede2b420d74c" title="Initialize the meshxuction generic client." alt="" coords="1555,1020,1714,1046"/>
 <area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="1786,1017,1715,1026,1714,1021,1785,1012"/>

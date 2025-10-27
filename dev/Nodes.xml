@@ -114,6 +114,11 @@
         </Subnodes>
        </Node>
        <Node>
+        <Name>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</Name>
+        <Path>index.html</Path>
+        <Anchor>autotoc_md40</Anchor>
+       </Node>
+       <Node>
         <Name>MeshX Proprietary License (MPL) v1.0</Name>
         <Path>da/d19/md_LICENSE.html</Path>
       <Subnodes>
@@ -272,7 +277,7 @@
              <Node>
               <Name>ctl_state</Name>
               <Path>d2/dd1/structcwww__cli__ctx.html</Path>
-              <Anchor>a8b2ac72763fe4bf9155871af1cce98c2</Anchor>
+              <Anchor>a5271cad7e3550a1bfdc3a694dea7a592</Anchor>
              </Node>
              <Node>
               <Name>prev_ctl_state</Name>
@@ -280,19 +285,9 @@
               <Anchor>a43c4cf2bb8904104ba8ef7a46bb63fdd</Anchor>
              </Node>
              <Node>
-              <Name>prev_state</Name>
-              <Path>d2/dd1/structcwww__cli__ctx.html</Path>
-              <Anchor>aa1a0d3916406b711ed46a332993537b6</Anchor>
-             </Node>
-             <Node>
               <Name>pub_addr</Name>
               <Path>d2/dd1/structcwww__cli__ctx.html</Path>
               <Anchor>a0c73ec08559c1f7e2f9dca413c6a55a5</Anchor>
-             </Node>
-             <Node>
-              <Name>state</Name>
-              <Path>d2/dd1/structcwww__cli__ctx.html</Path>
-              <Anchor>a0fdc58706be320312949fc63f0fb8b8d</Anchor>
              </Node>
              <Node>
               <Name>tid</Name>
@@ -1510,7 +1505,7 @@
              <Node>
               <Name>model</Name>
               <Path>df/d29/structmeshx__gen__ctl__send__params.html</Path>
-              <Anchor>ac4904eb4493f40d6b4e433bafda3b6c8</Anchor>
+              <Anchor>aeb1470e561fe5f33c141bb58c468bee9</Anchor>
              </Node>
              <Node>
               <Name>net_idx</Name>
@@ -2661,27 +2656,6 @@
               <Name>trans_time</Name>
               <Path>dc/dda/structmeshx__light__ctl__set__t.html</Path>
               <Anchor>a5433894b408151b74e9185fe09ea897f</Anchor>
-             </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshx_light_ctl_setup_server</Name>
-            <Path>d6/d32/structmeshx__light__ctl__setup__server.html</Path>
-          <Subnodes>
-             <Node>
-              <Name>ctl_setup_server_init</Name>
-              <Path>d6/d32/structmeshx__light__ctl__setup__server.html</Path>
-              <Anchor>abf71e144089c5cb748c3819cd31861a3</Anchor>
-             </Node>
-             <Node>
-              <Name>ctl_setup_srv_model</Name>
-              <Path>d6/d32/structmeshx__light__ctl__setup__server.html</Path>
-              <Anchor>ae05f0f7827d8f261bf53c28d955b9700</Anchor>
-             </Node>
-             <Node>
-              <Name>meshx_srv_model</Name>
-              <Path>d6/d32/structmeshx__light__ctl__setup__server.html</Path>
-              <Anchor>abcada55cbe96a948f6982f21f3353624</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -7564,7 +7538,7 @@
                            <Node>
                             <Name>ctl_state</Name>
                             <Path>d2/dd1/structcwww__cli__ctx.html</Path>
-                            <Anchor>a8b2ac72763fe4bf9155871af1cce98c2</Anchor>
+                            <Anchor>a5271cad7e3550a1bfdc3a694dea7a592</Anchor>
                            </Node>
                            <Node>
                             <Name>prev_ctl_state</Name>
@@ -7572,19 +7546,9 @@
                             <Anchor>a43c4cf2bb8904104ba8ef7a46bb63fdd</Anchor>
                            </Node>
                            <Node>
-                            <Name>prev_state</Name>
-                            <Path>d2/dd1/structcwww__cli__ctx.html</Path>
-                            <Anchor>aa1a0d3916406b711ed46a332993537b6</Anchor>
-                           </Node>
-                           <Node>
                             <Name>pub_addr</Name>
                             <Path>d2/dd1/structcwww__cli__ctx.html</Path>
                             <Anchor>a0c73ec08559c1f7e2f9dca413c6a55a5</Anchor>
-                           </Node>
-                           <Node>
-                            <Name>state</Name>
-                            <Path>d2/dd1/structcwww__cli__ctx.html</Path>
-                            <Anchor>a0fdc58706be320312949fc63f0fb8b8d</Anchor>
                            </Node>
                            <Node>
                             <Name>tid</Name>
@@ -7817,6 +7781,11 @@
                             <Anchor>ab2c80e66d65aaeb5740b8a7dcd36cd50a25a9de5ff6f0895c9bece1596004a5e7</Anchor>
                            </Node>
                           </Subnodes>
+                         </Node>
+                         <Node>
+                          <Name>ble_mesh_send_cwww_msg</Name>
+                          <Path>df/dc5/meshx__light__cwww__client__element_8h.html</Path>
+                          <Anchor>ac0ea9fcc86e6d20432d9022539203404</Anchor>
                          </Node>
                          <Node>
                           <Name>create_cwww_client_elements</Name>
@@ -8647,7 +8616,7 @@
                              <Node>
                               <Name>model</Name>
                               <Path>df/d29/structmeshx__gen__ctl__send__params.html</Path>
-                              <Anchor>ac4904eb4493f40d6b4e433bafda3b6c8</Anchor>
+                              <Anchor>aeb1470e561fe5f33c141bb58c468bee9</Anchor>
                              </Node>
                              <Node>
                               <Name>net_idx</Name>
@@ -9758,35 +9727,9 @@
                           <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
                         <Subnodes>
                            <Node>
-                            <Name>meshx_light_ctl_setup_server</Name>
-                            <Path>d6/d32/structmeshx__light__ctl__setup__server.html</Path>
-                          <Subnodes>
-                             <Node>
-                              <Name>ctl_setup_server_init</Name>
-                              <Path>d6/d32/structmeshx__light__ctl__setup__server.html</Path>
-                              <Anchor>abf71e144089c5cb748c3819cd31861a3</Anchor>
-                             </Node>
-                             <Node>
-                              <Name>ctl_setup_srv_model</Name>
-                              <Path>d6/d32/structmeshx__light__ctl__setup__server.html</Path>
-                              <Anchor>ae05f0f7827d8f261bf53c28d955b9700</Anchor>
-                             </Node>
-                             <Node>
-                              <Name>meshx_srv_model</Name>
-                              <Path>d6/d32/structmeshx__light__ctl__setup__server.html</Path>
-                              <Anchor>abcada55cbe96a948f6982f21f3353624</Anchor>
-                             </Node>
-                            </Subnodes>
-                           </Node>
-                           <Node>
                             <Name>MESHX_SERVER_INIT_MAGIC_NO</Name>
                             <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
                             <Anchor>ad9e063fcc893a076ff956ac6020372ed</Anchor>
-                           </Node>
-                           <Node>
-                            <Name>meshx_light_ctl_setup_server_t</Name>
-                            <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
-                            <Anchor>afcfff8d0923d1491b1be60053c090f31</Anchor>
                            </Node>
                            <Node>
                             <Name>meshx_get_ctl_setup_srv_model</Name>
@@ -9841,27 +9784,7 @@
                            <Node>
                             <Name>meshx_state_change_notify</Name>
                             <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
-                            <Anchor>a9cde80da166fd8a69dd7261a2478d1b8</Anchor>
-                           </Node>
-                           <Node>
-                            <Name>ctl_lighting_server_created</Name>
-                            <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
-                            <Anchor>a19fb416e1509935256f38ab5df688029</Anchor>
-                           </Node>
-                           <Node>
-                            <Name>ctl_lighting_server_init</Name>
-                            <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
-                            <Anchor>a4d3616c3a48d9a7057c057d71a872975</Anchor>
-                           </Node>
-                           <Node>
-                            <Name>ctl_setup_server</Name>
-                            <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
-                            <Anchor>a621c667489e1ed46167a56127d157d5e</Anchor>
-                           </Node>
-                           <Node>
-                            <Name>g_meshx_light_ctl_srv</Name>
-                            <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
-                            <Anchor>ad7b3965ec05b69bf693150a97200e279</Anchor>
+                            <Anchor>adf71e72c1ffe4b781c7ed81df835b102</Anchor>
                            </Node>
                           </Subnodes>
                          </Node>
