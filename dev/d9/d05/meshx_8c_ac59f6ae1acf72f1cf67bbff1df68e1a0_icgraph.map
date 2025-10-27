@@ -1,0 +1,11 @@
+<map id="get_root_sig_models_count" name="get_root_sig_models_count">
+<area shape="rect" id="Node000001" title="Returns the count of the root models." alt="" coords="711,5,852,46"/>
+<area shape="rect" id="Node000002" href="$d9/d05/meshx_8c.html#a9a6dcac8b5368ca6d77be9caf99cddaa" title="Initializes BLE Mesh elements." alt="" coords="526,13,663,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="695,28,663,28,663,23,695,23"/>
+<area shape="rect" id="Node000003" href="$d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="332,13,478,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="511,28,479,28,479,23,511,23"/>
+<area shape="rect" id="Node000004" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="201,13,284,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="316,28,284,28,284,23,316,23"/>
+<area shape="rect" id="Node000005" href="$d0/d29/main_8c.html#a3583f130e87200c7139a48b18f72c8b0" title="Main application entry point." alt="" coords="5,13,153,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="185,28,153,28,153,23,185,23"/>
+</map>

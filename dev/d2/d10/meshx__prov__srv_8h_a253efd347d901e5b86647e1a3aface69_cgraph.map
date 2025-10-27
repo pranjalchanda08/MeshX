@@ -1,0 +1,7 @@
+<map id="meshx_prov_srv_reg_el_client_cb" name="meshx_prov_srv_reg_el_client_cb">
+<area shape="rect" id="Node000001" title="Register a callback function for provisioning events." alt="" coords="5,5,147,46"/>
+<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="195,13,382,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,23,179,23,179,28,147,28"/>
+<area shape="rect" id="Node000003" href="$d3/df5/meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="430,13,563,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="382,23,414,23,414,28,382,28"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="meshx_restore_model_states" name="meshx_restore_model_states">
+<area shape="rect" id="Node000001" title="Restore saved CW&#45;WW model states." alt="" coords="5,5,154,46"/>
+<area shape="rect" id="Node000002" href="$d4/db6/meshx__light__ctl__srv_8c.html#a8695297933d548b07c6b2ccce8236920" title="Restore the CTL state for the generic server model." alt="" coords="202,5,338,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,23,186,23,186,28,154,28"/>
+<area shape="rect" id="Node000003" href="$de/d42/esp__light__srv__model_8c.html#add201d93559ff4ff071950572182e204" title="Restore the state of the Light CTL Server." alt="" coords="386,5,525,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="338,23,370,23,370,28,338,28"/>
+<area shape="rect" id="Node000004" href="$de/d42/esp__light__srv__model_8c.html#a0dc534558d13a140c430ef5bb1f659f9" title="Set the state of the Light CTL Server." alt="" coords="573,5,717,46"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="526,23,558,23,558,28,526,28"/>
+</map>

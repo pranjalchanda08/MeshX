@@ -1,0 +1,18 @@
+<map id="meshx_nvs_erase_prod_init" name="meshx_nvs_erase_prod_init">
+<area shape="rect" id="Node000001" title="Erase the NVS and set the product ID." alt="" coords="889,35,1071,60"/>
+<area shape="rect" id="Node000002" href="$d5/d8f/meshx__nvs_8c.html#ab4e5c250438e810358991fbe0e6cd277" title="Open the NVS with a timeout." alt="" coords="719,35,841,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="874,50,841,50,841,45,874,45"/>
+<area shape="rect" id="Node000003" href="$d9/d05/meshx_8c.html#acbc9147d880e04feca27a7fa57a45945" title="Restore the device state from the NVS." alt="" coords="531,5,666,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="703,38,665,32,666,26,704,32"/>
+<area shape="rect" id="Node000007" href="$d5/d8f/meshx__nvs_8c.html#af877bf8456b6217ae4cd642f29e85be6" title="Callback handler for MeshX NVS unit test command." alt="" coords="526,55,671,96"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="704,62,671,67,670,62,703,57"/>
+<area shape="rect" id="Node000004" href="$d9/d05/meshx_8c.html#ae488bc4a1d8eb698d2e2e60ec90bbad1" title="Initializes the BLE Mesh subsystem." alt="" coords="332,8,478,34"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="516,22,478,22,478,17,516,17"/>
+<area shape="rect" id="Node000005" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="201,35,284,60"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="317,38,285,43,284,38,316,33"/>
+<area shape="rect" id="Node000006" href="$d0/d29/main_8c.html#a3583f130e87200c7139a48b18f72c8b0" title="Main application entry point." alt="" coords="5,35,153,60"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="185,50,153,50,153,45,185,45"/>
+<area shape="rect" id="Node000008" href="$d5/d8f/meshx__nvs_8c.html#a0fbc3ba9cfa339d3e1b30d101d424685" title="MeshX NVS Initialisation." alt="" coords="350,59,461,84"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="511,76,461,75,462,70,511,71"/>
+<area shape="poly" id="edge8_Node000008_Node000005" title=" " alt="" coords="334,64,284,56,285,51,335,58"/>
+</map>
