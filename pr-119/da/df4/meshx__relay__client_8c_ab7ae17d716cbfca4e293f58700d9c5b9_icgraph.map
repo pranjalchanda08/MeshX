@@ -1,9 +1,0 @@
-<map id="meshx_relay_el_set_state" name="meshx_relay_el_set_state">
-<area shape="rect" id="Node000001" title="Set the On/Off state for a specific element in the BLE mesh network." alt="" coords="599,5,735,46"/>
-<area shape="rect" id="Node000002" href="$da/df4/meshx__relay__client_8c.html#a26286497912407139646be5d9983b2f2" title="Callback handler for the Relay client unit test command." alt="" coords="426,5,551,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="584,28,552,28,552,23,584,23"/>
-<area shape="rect" id="Node000003" href="$da/df4/meshx__relay__client_8c.html#a78912dcce7e42851d05867d83e61ce9d" title="Create Dynamic Relay Model Elements." alt="" coords="249,5,378,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="410,28,378,28,378,23,410,23"/>
-<area shape="rect" id="Node000004" href="$da/df4/meshx__relay__client_8c.html#a6714b32ec5f1113fae863457f0cfe653" title=" " alt="" coords="5,13,201,38"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="233,28,201,28,201,23,233,23"/>
-</map>

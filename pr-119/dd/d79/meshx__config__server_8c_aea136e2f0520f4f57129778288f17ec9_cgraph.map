@@ -1,7 +1,0 @@
-<map id="meshx_config_server_cb_reg" name="meshx_config_server_cb_reg">
-<area shape="rect" id="Node000001" title="Registers a configuration server callback for specific events." alt="" coords="5,5,149,46"/>
-<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="197,13,384,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="149,23,181,23,181,28,149,28"/>
-<area shape="rect" id="Node000003" href="$d3/df5/meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="432,13,565,38"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="384,23,416,23,416,28,384,28"/>
-</map>
