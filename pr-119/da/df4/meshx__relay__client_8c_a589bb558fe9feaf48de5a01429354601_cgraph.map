@@ -1,0 +1,11 @@
+<map id="meshx_relay_cli_reg_app_req_cb" name="meshx_relay_cli_reg_app_req_cb">
+<area shape="rect" id="Node000001" title="Registers a callback handler for relay application requests." alt="" coords="5,27,144,68"/>
+<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="192,5,379,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="144,35,176,31,177,36,144,41"/>
+<area shape="rect" id="Node000004" href="$da/df4/meshx__relay__client_8c.html#af3f0e8fee125cc694401dddfc2f00e82" title="Relay Client Element Application Request Handler." alt="" coords="220,55,351,96"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="144,54,205,62,204,67,144,59"/>
+<area shape="rect" id="Node000003" href="$d3/df5/meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="434,5,568,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="380,16,419,16,419,21,380,21"/>
+<area shape="rect" id="Node000005" href="$da/df4/meshx__relay__client_8c.html#afbb3c7eb04580ff62c2aa328d1140a91" title="Sends a relay message over BLE mesh." alt="" coords="427,55,575,96"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="351,73,411,73,411,78,351,78"/>
+</map>

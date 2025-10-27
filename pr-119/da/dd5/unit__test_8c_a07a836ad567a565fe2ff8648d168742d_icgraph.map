@@ -1,0 +1,12 @@
+<map id="ut_command_handler" name="ut_command_handler">
+<area shape="rect" id="Node000001" title="Handles unit test commands by invoking the appropriate callback based on the module ID." alt="" coords="722,31,867,56"/>
+<area shape="rect" id="Node000002" href="$da/dd5/unit__test_8c.html#a0a94d2d1ac1c4f3f4744437b65cca426" title="Registers the unit test (ut) command with the ESP console." alt="" coords="527,31,674,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="706,46,674,46,674,41,706,41"/>
+<area shape="rect" id="Node000003" href="$da/dd5/unit__test_8c.html#a3e1a1ae5e20371a64ddd11c70b046ccf" title="Initialize the production console." alt="" coords="332,5,479,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="512,35,479,30,480,25,512,29"/>
+<area shape="rect" id="Node000004" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="201,31,284,56"/>
+<area shape="poly" id="edge5_Node000002_Node000004" title=" " alt="" coords="512,46,284,46,284,41,512,41"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="317,35,285,40,284,34,316,29"/>
+<area shape="rect" id="Node000005" href="$d0/d29/main_8c.html#a3583f130e87200c7139a48b18f72c8b0" title="Main application entry point." alt="" coords="5,31,153,56"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="185,46,153,46,153,41,185,41"/>
+</map>

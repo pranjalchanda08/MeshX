@@ -1,0 +1,7 @@
+<map id="meshx_light_ctl_server_delete" name="meshx_light_ctl_server_delete">
+<area shape="rect" id="Node000001" title="Delete the CTL server model instance." alt="" coords="5,5,160,46"/>
+<area shape="rect" id="Node000002" href="$de/d42/esp__light__srv__model_8c.html#a0ee9a897168a69c9ede40278fdb4b445" title="Delete a Light CTL Server instance." alt="" coords="208,5,351,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,23,192,23,192,28,160,28"/>
+<area shape="rect" id="Node000003" href="$dc/d96/esp__platform__ble__mesh_8c.html#af87fda327ffe07a7c29d0f01b3d84a57" title="Deletes the model and publication objects." alt="" coords="399,13,580,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="352,23,383,23,383,28,352,28"/>
+</map>
