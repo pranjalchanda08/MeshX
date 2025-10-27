@@ -1,0 +1,18 @@
+<map id="meshx_os_timer_delete" name="meshx_os_timer_delete">
+<area shape="rect" id="Node000001" title="Delete a timer." alt="" coords="905,42,1063,68"/>
+<area shape="rect" id="Node000002" href="$d5/d8f/meshx__nvs_8c.html#a331ae59bfd5632726157f612d8b57b00" title="Close the NVS handle." alt="" coords="722,13,848,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="889,44,847,38,848,32,890,38"/>
+<area shape="rect" id="Node000007" href="$dd/da1/meshx__os__timer_8c.html#a1722013fe588021c8f81ee4532b0b089" title="Callback handler for OS Timer unit test command." alt="" coords="713,63,857,103"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="890,71,858,76,857,70,889,66"/>
+<area shape="rect" id="Node000003" href="$d5/d8f/meshx__nvs_8c.html#af877bf8456b6217ae4cd642f29e85be6" title="Callback handler for MeshX NVS unit test command." alt="" coords="520,5,665,46"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="707,28,665,28,665,23,707,23"/>
+<area shape="rect" id="Node000004" href="$d5/d8f/meshx__nvs_8c.html#a0fbc3ba9cfa339d3e1b30d101d424685" title="MeshX NVS Initialisation." alt="" coords="346,16,458,41"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="505,30,458,30,458,25,505,24"/>
+<area shape="rect" id="Node000005" href="$d9/d05/meshx_8c.html#ad4e8f334efad60b97f2d5335210b3a19" title="MeshX initialisation function." alt="" coords="201,42,284,68"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="331,43,285,51,284,45,330,38"/>
+<area shape="rect" id="Node000006" href="$d0/d29/main_8c.html#a3583f130e87200c7139a48b18f72c8b0" title="Main application entry point." alt="" coords="5,42,153,68"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="185,58,153,58,153,52,185,52"/>
+<area shape="rect" id="Node000008" href="$dd/da1/meshx__os__timer_8c.html#a2ae8e7e3e3019501c5a5dc68608f829a" title="Initialize the OS timer module." alt="" coords="332,66,472,92"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="697,85,473,82,473,77,697,79"/>
+<area shape="poly" id="edge8_Node000008_Node000005" title=" " alt="" coords="316,69,284,64,285,59,317,64"/>
+</map>

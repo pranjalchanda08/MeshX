@@ -1,0 +1,5 @@
+<map id="meshx_relay_client_to_ble_handler" name="meshx_relay_client_to_ble_handler">
+<area shape="rect" id="Node000001" title="Relay Client Element Application Request Handler." alt="" coords="5,5,137,46"/>
+<area shape="rect" id="Node000002" href="$da/df4/meshx__relay__client_8c.html#afbb3c7eb04580ff62c2aa328d1140a91" title="Sends a relay message over BLE mesh." alt="" coords="185,5,333,46"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="137,23,169,23,169,28,137,28"/>
+</map>

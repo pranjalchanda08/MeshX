@@ -1,0 +1,18 @@
+<map id="meshx_prov_srv_reg_from_ble_cb" name="meshx_prov_srv_reg_from_ble_cb">
+<area shape="rect" id="Node000001" title="Register the BLE Mesh provisioning callback." alt="" coords="5,26,147,66"/>
+<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="405,5,592,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,39,389,23,390,28,147,44"/>
+<area shape="rect" id="Node000004" href="$d2/d21/meshx__prov__srv_8c.html#a4da462f934af3855a63a15b2b5b9561d" title="Control task handler for the provisioning server." alt="" coords="195,54,357,94"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="147,53,180,58,179,63,146,59"/>
+<area shape="rect" id="Node000003" href="$d3/df5/meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="644,5,777,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="593,16,628,16,628,21,593,21"/>
+<area shape="rect" id="Node000005" href="$df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="412,57,585,83"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="357,70,397,69,397,75,357,75"/>
+<area shape="poly" id="edge8_Node000005_Node000003" title=" " alt="" coords="553,54,640,33,641,38,555,59"/>
+<area shape="rect" id="Node000006" href="$d0/d77/meshx__msg__q_8c.html#a7f1cd772e91a7005b2fac769ce4257e8" title="Send a Message to a MeshX Message Queue Back." alt="" coords="640,56,781,82"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="585,67,625,67,625,72,585,72"/>
+<area shape="rect" id="Node000007" href="$d3/df5/meshx__utils_8c.html#a99d2d0830c65372a6e033a1533dec6ad" title="Frees memory allocated to a pointer and sets it to NULL." alt="" coords="652,105,769,131"/>
+<area shape="poly" id="edge6_Node000005_Node000007" title=" " alt="" coords="559,81,637,99,636,104,558,86"/>
+<area shape="rect" id="Node000008" href="$d3/df5/meshx__utils_8c.html#ad309d711ffcb1c21db96e15eb5c1fa22" title="Retrieves the amount of free heap memory available in the system." alt="" coords="829,105,1006,131"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="770,116,813,116,813,121,770,121"/>
+</map>
