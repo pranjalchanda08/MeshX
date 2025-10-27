@@ -21,7 +21,7 @@
 *********************************************************************************************************************
 ```
 
-[![CI Pipeline:main](https://github.com/pranjalchanda08/MeshX/actions/workflows/build_ci.yml/badge.svg)](https://github.com/pranjalchanda08/MeshX/actions/workflows/ci.yml) ![Release](https://img.shields.io/badge/Release-v0.3.5-blue)
+[![CI Pipeline:main](https://github.com/pranjalchanda08/MeshX/actions/workflows/build_ci.yml/badge.svg)](https://github.com/pranjalchanda08/MeshX/actions/workflows/ci.yml) ![Release](https://img.shields.io/badge/Release-v0.4-blue)
 
 MeshX is a portable C implementation of a Bluetooth Low Energy (BLE) Mesh node stack and example components. It is designed to be portable across board support packages (BSPs), microcontroller units (MCUs) and SDKs via a CMake-driven build system and small platform abstraction layers.
 
@@ -282,4 +282,5 @@ $ meshx.py --bsp my_board --prod example_product --profile port/bsp/my_board/pro
 - If the build helper fails with "PROD_NAME is not set" or "Product Not Found", verify the product name and profile path.
 - Ensure `IDF_PATH` is exported and `source $IDF_PATH/export.sh` has been run when building ESP targets.
 - `tools/scripts/code_gen.py` is invoked by the build helper at configure time. If you change product profiles, re-run the helper to regenerate sources.
+
 
