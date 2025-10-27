@@ -49,7 +49,6 @@ var NAVTREE =
       ] ],
       [ "Troubleshooting & tips", "index.html#autotoc_md39", null ]
     ] ],
-    [ "<<<<<<< HEAD", "index.html#autotoc_md40", null ],
     [ "MeshX Proprietary License (MPL) v1.0", "da/d19/md_LICENSE.html", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [
@@ -82,16 +81,16 @@ var NAVTREEINDEX =
 "annotated.html",
 "d1/d5e/structprov__cb__evt__ctrl__task__evt__table.html",
 "d2/d74/structmeshx__prov__cb__param__t_1_1meshx__proxy__gatt__disable__comp__param.html#a0532684fc9f5c7a4049273fbcaaf1a1e",
-"d3/de8/structmeshx__prov__cb__param__t_1_1meshx__lpn__disable__comp__param.html",
-"d4/de0/meshx__ble__mesh__cmn__def_8h.html#a5cb6b05c872e588ba3d15dfad93830d7",
-"d4/de0/meshx__ble__mesh__cmn__def_8h.html#ab9c31267bf739b045324a855e81f0044",
-"d5/d78/structmeshx__prov__cb__param__t_1_1meshx__provisioner__send__prov__record__req__evt__param.html#ac8891d62a82c126ed63c4a2552043091",
-"d7/dcb/meshx__log_8h.html#a7e75f09650fd33bcd03ea92acd58408f",
-"d9/d89/structmeshx__light__lightness__range__status__cb__t.html#ab21fa95ef5ce3eb651876f29817290ab",
-"da/df4/meshx__relay__client_8c.html#ac27066798dab136d08a414f1091c6c49a4b1548ae0a764a0d16c8039d9162bdb0",
-"dc/d93/meshx__api_8c.html#ac37c1c5b9f1e9cdaa510bf886d897e2d",
-"de/d9b/structcwww__client__element.html#a965f822a31dc8782e264a951e81fd56a",
-"dir_26f05b192eb828a4470c1bae283fce21.html"
+"d3/de3/structmeshx__gen__power__level__status__cb__t.html#adb8316ec32a89fd9fc997c25a48fc429",
+"d4/de0/meshx__ble__mesh__cmn__def_8h.html#a5966709d20b9640b72ca259186498cf9",
+"d4/de0/meshx__ble__mesh__cmn__def_8h.html#ab7c6c3f999043b210539b65ff84b4fe3",
+"d5/d5c/structmeshx__light__hsl__saturation__status__cb__t.html#aa254bfca1a094519b217f596c00c1b70",
+"d7/dcb/meshx__log_8h.html#a2943545097e48060e29c8be20f92677f",
+"d9/d50/structmeshx__light__ctl__default__status__cb__t.html",
+"da/df4/meshx__relay__client_8c.html#a589bb558fe9feaf48de5a01429354601",
+"dc/d87/structmeshx__state__change__cfg__model__app__unbind__t.html#ae7ab481773347f1d8b123dc62004fed7",
+"de/d97/structmeshx__state__change__gen__power__range__set__t.html#a6e6d2964e125f0cc5d56d78c3ffebef8",
+"df/dfc/unionmeshx__light__client__set__state__t.html#aef18118c1e074de0e89d3c3daab60b4e"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

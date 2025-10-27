@@ -8,7 +8,7 @@
 <area shape="poly" id="edge15_Node000001_Node000014" title=" " alt="" coords="149,122,239,99,241,104,150,127"/>
 <area shape="rect" id="Node000003" href="$d5/d98/meshx__light__server_8c.html#acfab754bb56f290741a2fc1c49c595c8" title="Sends a message to the BLE subsystem via the control task." alt="" coords="672,136,815,177"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="598,141,657,146,656,151,598,146"/>
-<area shape="rect" id="Node000010" href="$d4/db6/meshx__light__ctl__srv_8c.html#adf71e72c1ffe4b781c7ed81df835b102" title="Perform hardware change for the light control server model." alt="" coords="671,71,816,111"/>
+<area shape="rect" id="Node000010" href="$d4/db6/meshx__light__ctl__srv_8c.html#a9cde80da166fd8a69dd7261a2478d1b8" title="Perform hardware change for the light control server model." alt="" coords="671,71,816,111"/>
 <area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="597,120,655,107,657,113,598,126"/>
 <area shape="rect" id="Node000004" href="$df/d7e/meshx__control__task_8c.html#acc911e8c9467e5f4e224be56b1888e68" title="Publish a control task message." alt="" coords="870,37,1042,62"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="794,133,814,121,828,108,837,96,847,83,862,71,872,67,874,71,865,76,850,87,841,99,832,112,817,125,797,138"/>

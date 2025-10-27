@@ -28,7 +28,6 @@ var meshx__light__cwww__client__element_8h =
       [ "CWWW_CLI_SIG_L_CTL_MODEL_ID", "df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50aa02a6779f0b7c25d3ac7b9e35457098d", null ],
       [ "CWWW_CLI_SIG_ID_MAX", "df/dc5/meshx__light__cwww__client__element_8h.html#ab2c80e66d65aaeb5740b8a7dcd36cd50a25a9de5ff6f0895c9bece1596004a5e7", null ]
     ] ],
-    [ "ble_mesh_send_cwww_msg", "df/dc5/meshx__light__cwww__client__element_8h.html#ac0ea9fcc86e6d20432d9022539203404", null ],
     [ "create_cwww_client_elements", "df/dc5/meshx__light__cwww__client__element_8h.html#a2b18c9b388becb88fae3b11dc91227ad", null ],
     [ "meshx_cwww_el_get_state", "df/dc5/meshx__light__cwww__client__element_8h.html#ab54b12b94031fd68edb9072ca517f488", null ]
 ];

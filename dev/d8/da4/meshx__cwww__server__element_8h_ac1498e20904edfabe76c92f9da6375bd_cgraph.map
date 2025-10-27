@@ -116,7 +116,7 @@
 <area shape="rect" id="Node000053" href="$d5/d98/meshx__light__server_8c.html#a12af3296e750ff638ba757ebf12d9043" title="Initialize the production lighting server." alt="" coords="502,219,659,245"/>
 <area shape="poly" id="edge68_Node000048_Node000053" title=" " alt="" coords="438,247,487,241,487,246,438,252"/>
 <area shape="poly" id="edge62_Node000049_Node000005" title=" " alt="" coords="649,280,730,272,730,278,649,285"/>
-<area shape="rect" id="Node000050" href="$d4/db6/meshx__light__ctl__srv_8c.html#adf71e72c1ffe4b781c7ed81df835b102" title="Perform hardware change for the light control server model." alt="" coords="745,181,889,222"/>
+<area shape="rect" id="Node000050" href="$d4/db6/meshx__light__ctl__srv_8c.html#a9cde80da166fd8a69dd7261a2478d1b8" title="Perform hardware change for the light control server model." alt="" coords="745,181,889,222"/>
 <area shape="poly" id="edge63_Node000049_Node000050" title=" " alt="" coords="645,266,674,255,722,232,740,225,742,230,724,237,676,260,647,271"/>
 <area shape="poly" id="edge64_Node000050_Node000006" title=" " alt="" coords="890,211,1145,257,1204,270,1203,275,1143,263,889,216"/>
 <area shape="rect" id="Node000051" href="$dc/d96/esp__platform__ble__mesh_8c.html#ab3ea84732bbdc4a0b8d742aa4f66be09" title="Checks if a model is subscribed to a specific group address." alt="" coords="959,175,1144,201"/>

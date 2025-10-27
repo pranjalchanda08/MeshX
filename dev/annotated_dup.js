@@ -85,6 +85,7 @@ var annotated_dup =
     [ "meshx_light_ctl_default_set_t", "dc/d13/structmeshx__light__ctl__default__set__t.html", "dc/d13/structmeshx__light__ctl__default__set__t" ],
     [ "meshx_light_ctl_default_status_cb_t", "d9/d50/structmeshx__light__ctl__default__status__cb__t.html", "d9/d50/structmeshx__light__ctl__default__status__cb__t" ],
     [ "meshx_light_ctl_set_t", "dc/dda/structmeshx__light__ctl__set__t.html", "dc/dda/structmeshx__light__ctl__set__t" ],
+    [ "meshx_light_ctl_setup_server", "d6/d32/structmeshx__light__ctl__setup__server.html", "d6/d32/structmeshx__light__ctl__setup__server" ],
     [ "meshx_light_ctl_srv", "d9/dd3/structmeshx__light__ctl__srv.html", "d9/dd3/structmeshx__light__ctl__srv" ],
     [ "meshx_light_ctl_srv_state", "d5/d24/structmeshx__light__ctl__srv__state.html", "d5/d24/structmeshx__light__ctl__srv__state" ],
     [ "meshx_light_ctl_status_cb_t", "d8/dcd/structmeshx__light__ctl__status__cb__t.html", "d8/dcd/structmeshx__light__ctl__status__cb__t" ],
