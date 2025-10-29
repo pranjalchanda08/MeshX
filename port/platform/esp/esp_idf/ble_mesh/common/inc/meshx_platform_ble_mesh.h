@@ -48,6 +48,11 @@
 #define MESHX_GEN_SRV_CB_EVT    esp_ble_mesh_generic_server_cb_event_t
 #define MESHX_GEN_SRV_CB_PARAM  esp_ble_mesh_generic_server_cb_param_t
 #define MESHX_GEN_ONOFF_SRV     esp_ble_mesh_gen_onoff_srv_t
+#define MESHX_GEN_LEVEL_SRV     esp_ble_mesh_gen_level_srv_t
+#define MESHX_GEN_BATTERY_SRV   esp_ble_mesh_gen_battery_srv_t
+#define MESHX_GEN_LOCATION_SRV  esp_ble_mesh_gen_location_srv_t
+#define MESHX_GEN_POWER_SRV     esp_ble_mesh_gen_power_level_srv_t
+#define MESHX_GEN_TRANS_TIME_SRV esp_ble_mesh_gen_def_trans_time_srv_t
 
 #define MESHX_LIGHT_SRV_CB      esp_ble_mesh_lighting_server_cb_t
 #define MESHX_LIGHT_SRV_CB_EVT  esp_ble_mesh_lighting_server_cb_event_t
@@ -56,6 +61,25 @@
 #define MESHX_LIGHT_CTL_SRV         esp_ble_mesh_light_ctl_srv_t
 #define MESHX_LIGHT_CTL_SETUP_SRV   esp_ble_mesh_light_ctl_setup_srv_t
 #define MESHX_LIGHT_CTL_STATE       esp_ble_mesh_light_ctl_state_t
+
+/* Light Lightness Server Model */
+#define MESHX_LIGHT_LIGHTNESS_SRV       esp_ble_mesh_light_lightness_srv_t
+#define MESHX_LIGHT_LIGHTNESS_STATE     esp_ble_mesh_light_lightness_state_t
+
+/* Light HSL Server Model */
+#define MESHX_LIGHT_HSL_SRV             esp_ble_mesh_light_hsl_srv_t
+#define MESHX_LIGHT_HSL_STATE           esp_ble_mesh_light_hsl_state_t
+#define MESHX_LIGHT_HSL_HUE_SRV         esp_ble_mesh_light_hsl_hue_srv_t
+#define MESHX_LIGHT_HSL_SAT_SRV         esp_ble_mesh_light_hsl_sat_srv_t
+
+/* Light xyL Server Model */
+#define MESHX_LIGHT_XYL_SRV             esp_ble_mesh_light_xyl_srv_t
+#define MESHX_LIGHT_XYL_STATE           esp_ble_mesh_light_xyl_state_t
+
+/* Light LC (Light Control) Server Model */
+#define MESHX_LIGHT_LC_SRV              esp_ble_mesh_light_lc_srv_t
+#define MESHX_LIGHT_LC_STATE            esp_ble_mesh_light_control_t
+#define MESHX_LIGHT_LC_SETUP_SRV        esp_ble_mesh_light_lc_setup_srv_t
 
 /**
  * MESHX_CLIENT_MODELS
