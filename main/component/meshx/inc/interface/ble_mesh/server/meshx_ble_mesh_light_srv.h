@@ -423,6 +423,66 @@ meshx_err_t meshx_plat_light_ctl_setup_srv_create(meshx_ptr_t p_model, meshx_ptr
 meshx_err_t meshx_plat_light_ctl_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_srv);
 
 /**
+ * @brief Create a Light Lightness Server instance.
+ *
+ * This function initializes and allocates resources for a Light Lightness Server model.
+ *
+ * @param[in]  p_model  Pointer to the model instance.
+ * @param[out] p_pub    Pointer to the publication context.
+ * @param[out] p_lightness_srv Pointer to the Light Lightness Server instance.
+ *
+ * @return
+ *      - MESHX_SUCCESS on success.
+ *      - Appropriate error code on failure.
+ */
+meshx_err_t meshx_plat_light_lightness_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_pub, meshx_ptr_t *p_lightness_srv);
+
+/**
+ * @brief Create a Light HSL Server instance.
+ *
+ * This function initializes and allocates resources for a Light HSL Server model.
+ *
+ * @param[in]  p_model  Pointer to the model instance.
+ * @param[out] p_pub    Pointer to the publication context.
+ * @param[out] p_hsl_srv Pointer to the Light HSL Server instance.
+ *
+ * @return
+ *      - MESHX_SUCCESS on success.
+ *      - Appropriate error code on failure.
+ */
+meshx_err_t meshx_plat_light_hsl_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_pub, meshx_ptr_t *p_hsl_srv);
+
+/**
+ * @brief Create a Light xyL Server instance.
+ *
+ * This function initializes and allocates resources for a Light xyL Server model.
+ *
+ * @param[in]  p_model  Pointer to the model instance.
+ * @param[out] p_pub    Pointer to the publication context.
+ * @param[out] p_xyl_srv Pointer to the Light xyL Server instance.
+ *
+ * @return
+ *      - MESHX_SUCCESS on success.
+ *      - Appropriate error code on failure.
+ */
+meshx_err_t meshx_plat_light_xyl_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_pub, meshx_ptr_t *p_xyl_srv);
+
+/**
+ * @brief Create a Light LC Server instance.
+ *
+ * This function initializes and allocates resources for a Light LC (Light Control) Server model.
+ *
+ * @param[in]  p_model  Pointer to the model instance.
+ * @param[out] p_pub    Pointer to the publication context.
+ * @param[out] p_lc_srv Pointer to the Light LC Server instance.
+ *
+ * @return
+ *      - MESHX_SUCCESS on success.
+ *      - Appropriate error code on failure.
+ */
+meshx_err_t meshx_plat_light_lc_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_pub, meshx_ptr_t *p_lc_srv);
+
+/**
  * @brief Delete a Light CTL Server instance.
  *
  * This function releases resources associated with a Light CTL Server model.

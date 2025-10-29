@@ -278,6 +278,48 @@ meshx_err_t meshXGenericAdminPropertyServerModel MESHX_GEN_ADMIN_PROPERTY_SERVER
     MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
     return MESHX_INVALID_STATE;
 }
+
+MESHX_GEN_ADMIN_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericAdminPropertyServerModel MESHX_GEN_ADMIN_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
+    :: plat_model_create(void)
+{
+    meshx_ptr_t p_pub = this->get_pub_struct();
+    meshx_ptr_t p_gen = this->get_gen_struct();
+    meshx_err_t err = MESHX_SUCCESS;
+
+    err = meshx_plat_admin_property_gen_srv_create(this->get_plat_model(), &p_pub, &p_gen);
+    if(err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to create Generic Admin Property Server Model");
+    }
+    else
+    {
+        this->set_pub_struct(p_pub);
+        this->set_gen_struct(p_gen);
+    }
+    return err;
+}
+
+MESHX_GEN_ADMIN_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericAdminPropertyServerModel MESHX_GEN_ADMIN_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
+    :: plat_model_delete(void)
+{
+    meshx_ptr_t p_pub = this->get_pub_struct();
+    meshx_ptr_t p_gen = this->get_gen_struct();
+
+    meshx_err_t err = meshx_plat_gen_srv_delete(&p_pub, &p_gen);
+    if (err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to delete Generic Admin Property Server Model");
+    }
+    else
+    {
+        this->set_pub_struct(nullptr);
+        this->set_gen_struct(nullptr);
+    }
+    return err;
+}
+
 #endif /* CONFIG_ENABLE_GEN_ADMIN_PROPERTY_SERVER */
 
 #if CONFIG_ENABLE_GEN_MANU_PROP_SERVER
@@ -343,6 +385,48 @@ meshx_err_t meshXGenericManufacturerPropertyServerModel MESHX_GEN_MANUFACTURER_P
     MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
     return MESHX_INVALID_STATE;
 }
+
+MESHX_GEN_MANUFACTURER_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericManufacturerPropertyServerModel MESHX_GEN_MANUFACTURER_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
+    :: plat_model_create(void)
+{
+    meshx_ptr_t p_pub = this->get_pub_struct();
+    meshx_ptr_t p_gen = this->get_gen_struct();
+    meshx_err_t err = MESHX_SUCCESS;
+
+    err = meshx_plat_manu_property_gen_srv_create(this->get_plat_model(), &p_pub, &p_gen);
+    if(err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to create Generic Manufacturer Property Server Model");
+    }
+    else
+    {
+        this->set_pub_struct(p_pub);
+        this->set_gen_struct(p_gen);
+    }
+    return err;
+}
+
+MESHX_GEN_MANUFACTURER_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericManufacturerPropertyServerModel MESHX_GEN_MANUFACTURER_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
+    :: plat_model_delete(void)
+{
+    meshx_ptr_t p_pub = this->get_pub_struct();
+    meshx_ptr_t p_gen = this->get_gen_struct();
+
+    meshx_err_t err = meshx_plat_gen_srv_delete(&p_pub, &p_gen);
+    if (err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to delete Generic Manufacturer Property Server Model");
+    }
+    else
+    {
+        this->set_pub_struct(nullptr);
+        this->set_gen_struct(nullptr);
+    }
+    return err;
+}
+
 #endif /* CONFIG_ENABLE_GEN_MANU_PROP_SERVER */
 
 #if CONFIG_ENABLE_GEN_USER_PROPERTY_SERVER
@@ -408,6 +492,48 @@ meshx_err_t meshXGenericUserPropertyServerModel MESHX_GEN_USER_PROPERTY_SERVER_M
     MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
     return MESHX_INVALID_STATE;
 }
+
+MESHX_GEN_USER_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericUserPropertyServerModel MESHX_GEN_USER_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
+    :: plat_model_create(void)
+{
+    meshx_ptr_t p_pub = this->get_pub_struct();
+    meshx_ptr_t p_gen = this->get_gen_struct();
+    meshx_err_t err = MESHX_SUCCESS;
+
+    err = meshx_plat_user_property_gen_srv_create(this->get_plat_model(), &p_pub, &p_gen);
+    if(err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to create Generic User Property Server Model");
+    }
+    else
+    {
+        this->set_pub_struct(p_pub);
+        this->set_gen_struct(p_gen);
+    }
+    return err;
+}
+
+MESHX_GEN_USER_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericUserPropertyServerModel MESHX_GEN_USER_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
+    :: plat_model_delete(void)
+{
+    meshx_ptr_t p_pub = this->get_pub_struct();
+    meshx_ptr_t p_gen = this->get_gen_struct();
+
+    meshx_err_t err = meshx_plat_gen_srv_delete(&p_pub, &p_gen);
+    if (err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to delete Generic User Property Server Model");
+    }
+    else
+    {
+        this->set_pub_struct(nullptr);
+        this->set_gen_struct(nullptr);
+    }
+    return err;
+}
+
 #endif /* CONFIG_ENABLE_GEN_USER_PROPERTY_SERVER */
 
 #if CONFIG_ENABLE_GEN_CLIENT_PROPERTY_SERVER
@@ -470,4 +596,5 @@ meshx_err_t meshXGenericClientPropertyServerModel MESHX_GEN_CLIENT_PROPERTY_SERV
     MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
     return MESHX_INVALID_STATE;
 }
+
 #endif /* CONFIG_ENABLE_GEN_CLIENT_PROPERTY_SERVER */

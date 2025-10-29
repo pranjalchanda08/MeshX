@@ -240,6 +240,96 @@ typedef control_task_msg_handle_t meshx_server_cb;
 meshx_err_t meshx_plat_on_off_gen_srv_create(void* p_model, void** p_pub, void** p_onoff_srv);
 
 /**
+ * @brief Creates a Generic Level Server model and its publication context.
+ *
+ * This function initializes the Generic Level Server model, its publication
+ * context, and allocates memory for the server instance. It checks for
+ * invalid arguments and handles memory allocation failures.
+ *
+ * @param[out] p_model Pointer to the model structure to be created.
+ * @param[out] p_pub Pointer to the publication context to be created.
+ * @param[out] p_level_srv Pointer to the Level server instance to be allocated.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully created the model and publication context.
+ *     - MESHX_INVALID_ARG: One or more arguments are invalid.
+ *     - MESHX_NO_MEM: Memory allocation failed.
+ */
+meshx_err_t meshx_plat_level_gen_srv_create(void* p_model, void** p_pub, void** p_level_srv);
+
+/**
+ * @brief Creates a Generic Battery Server model and its publication context.
+ *
+ * This function initializes the Generic Battery Server model, its publication
+ * context, and allocates memory for the server instance. It checks for
+ * invalid arguments and handles memory allocation failures.
+ *
+ * @param[out] p_model Pointer to the model structure to be created.
+ * @param[out] p_pub Pointer to the publication context to be created.
+ * @param[out] p_battery_srv Pointer to the Battery server instance to be allocated.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully created the model and publication context.
+ *     - MESHX_INVALID_ARG: One or more arguments are invalid.
+ *     - MESHX_NO_MEM: Memory allocation failed.
+ */
+meshx_err_t meshx_plat_battery_gen_srv_create(void* p_model, void** p_pub, void** p_battery_srv);
+
+/**
+ * @brief Creates a Generic Location Server model and its publication context.
+ *
+ * This function initializes the Generic Location Server model, its publication
+ * context, and allocates memory for the server instance. It checks for
+ * invalid arguments and handles memory allocation failures.
+ *
+ * @param[out] p_model Pointer to the model structure to be created.
+ * @param[out] p_pub Pointer to the publication context to be created.
+ * @param[out] p_location_srv Pointer to the Location server instance to be allocated.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully created the model and publication context.
+ *     - MESHX_INVALID_ARG: One or more arguments are invalid.
+ *     - MESHX_NO_MEM: Memory allocation failed.
+ */
+meshx_err_t meshx_plat_location_gen_srv_create(void* p_model, void** p_pub, void** p_location_srv);
+
+/**
+ * @brief Creates a Generic Power Level Server model and its publication context.
+ *
+ * This function initializes the Generic Power Level Server model, its publication
+ * context, and allocates memory for the server instance. It checks for
+ * invalid arguments and handles memory allocation failures.
+ *
+ * @param[out] p_model Pointer to the model structure to be created.
+ * @param[out] p_pub Pointer to the publication context to be created.
+ * @param[out] p_power_level_srv Pointer to the Power Level server instance to be allocated.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully created the model and publication context.
+ *     - MESHX_INVALID_ARG: One or more arguments are invalid.
+ *     - MESHX_NO_MEM: Memory allocation failed.
+ */
+meshx_err_t meshx_plat_power_level_gen_srv_create(void* p_model, void** p_pub, void** p_power_level_srv);
+
+/**
+ * @brief Creates a Generic Default Transition Time Server model and its publication context.
+ *
+ * This function initializes the Generic Default Transition Time Server model, its publication
+ * context, and allocates memory for the server instance. It checks for
+ * invalid arguments and handles memory allocation failures.
+ *
+ * @param[out] p_model Pointer to the model structure to be created.
+ * @param[out] p_pub Pointer to the publication context to be created.
+ * @param[out] p_trans_time_srv Pointer to the Default Transition Time server instance to be allocated.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully created the model and publication context.
+ *     - MESHX_INVALID_ARG: One or more arguments are invalid.
+ *     - MESHX_NO_MEM: Memory allocation failed.
+ */
+meshx_err_t meshx_plat_def_trans_time_gen_srv_create(void* p_model, void** p_pub, void** p_trans_time_srv);
+
+/**
  * @brief Deletes the Generic OnOff Server model and its associated resources.
  *
  * This function frees the memory allocated for the Generic OnOff Server
