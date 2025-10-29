@@ -226,4 +226,45 @@ meshx_err_t meshXGenericDefTransTimeServerModel MESHX_GEN_DEF_TRANS_TIME_SERVER_
     MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
     return MESHX_INVALID_STATE;
 }
+
+MESHX_GEN_DEF_TRANS_TIME_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericDefTransTimeServerModel MESHX_GEN_DEF_TRANS_TIME_SERVER_MODEL_TEMPLATE_PARAMS
+    :: plat_model_create(void)
+{
+    meshx_ptr_t p_pub = this->get_pub_struct();
+    meshx_ptr_t p_gen = this->get_gen_struct();
+    meshx_err_t err = MESHX_SUCCESS;
+
+    err = meshx_plat_def_trans_time_gen_srv_create(this->get_plat_model(), &p_pub, &p_gen);
+    if(err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to create Generic Default Transition Time Server Model");
+    }
+    else
+    {
+        this->set_pub_struct(p_pub);
+        this->set_gen_struct(p_gen);
+    }
+    return err;
+}
+
+MESHX_GEN_DEF_TRANS_TIME_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericDefTransTimeServerModel MESHX_GEN_DEF_TRANS_TIME_SERVER_MODEL_TEMPLATE_PARAMS
+    :: plat_model_delete(void)
+{
+    meshx_ptr_t p_pub = this->get_pub_struct();
+    meshx_ptr_t p_gen = this->get_gen_struct();
+
+    meshx_err_t err = meshx_plat_gen_srv_delete(&p_pub, &p_gen);
+    if (err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to delete Generic Default Transition Time Server Model");
+    }
+    else
+    {
+        this->set_pub_struct(nullptr);
+        this->set_gen_struct(nullptr);
+    }
+    return err;
+}
 #endif /* CONFIG_ENABLE_GEN_DEF_TRANS_TIME_SERVER */

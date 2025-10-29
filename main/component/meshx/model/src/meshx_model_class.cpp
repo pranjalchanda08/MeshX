@@ -34,10 +34,6 @@
  * model ID, and optional parent element. It sets up the base model and model interface
  * for BLE mesh communication.
  *
- * @tparam MESHX_MODEL Platform-specific model type (e.g., esp_ble_mesh_model_t)
- * @tparam meshxBaseModel_t Base model implementation type
- * @tparam meshx_send_packet_params_t Type for send packet parameters
- *
  * @param[in] p_plat_model  Pointer to the platform model instance
  * @param[in] model_id      Unique identifier for this model
  * @param[in] parent_element Optional pointer to the parent element
@@ -53,15 +49,23 @@ meshXModel MESHX_MODEL_TEMPLATE_PARAMS
     this->p_plat_model = p_plat_model;
     /* base_model needs to be used logically by the element composition */
     base_model = new meshxBaseModel_t(model_id, model_from_ble_cb);
-    model_intr = (meshx_model_interface_t *)MESHX_CALOC(1, sizeof(meshx_model_interface_t));
-    if(nullptr == model_intr)
-    {
-        status = MESHX_NO_MEM;
-        delete base_model;
-        MESHX_LOGE(MODULE_ID_COMMON, "Failed to allocate memory for model interface");
-        return;
-    }
+
+    /* Create logical model instance */
+    this->plat_model_create();
+
     status = MESHX_SUCCESS;
+}
+
+/**
+ * @brief Destructor for meshXModel
+ * @details Releases any allocated resources (base model and model interface) and
+ *          calls the platform-specific model deletion function.
+ */
+MESHX_MODEL_TEMPLATE_PROTO
+meshXModel MESHX_MODEL_TEMPLATE_PARAMS
+    :: ~meshXModel()
+{
+    this->plat_model_delete();
 }
 
 /****************************************************************************************************
@@ -77,7 +81,7 @@ meshXModel MESHX_MODEL_TEMPLATE_PARAMS
  * @tparam MESHX_MODEL Platform-specific model type
  * @tparam meshxBaseModel_t Base model implementation type
  * @tparam meshx_send_packet_params_t Type for send packet parameters
- * 
+ *
  * @note This constructor delegates to the base meshXModel constructor.
  */
 MESHX_SERVER_MODEL_TEMPLATE_PROTO
@@ -130,40 +134,50 @@ meshx_err_t meshXClientModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
 {
     meshx_err_t err = MESHX_SUCCESS;
 
-    err = meshx_plat_client_create(
-         this->get_plat_model(),
-        &this->get_model_intr()->pub,
-        &this->get_model_intr()->cli,
-         this->get_model_id());
+    meshx_ptr_t p_pub = this->get_pub_struct();
+    meshx_ptr_t p_gen = this->get_gen_struct();
+
+    err = meshx_plat_client_create(this->get_plat_model(), &p_pub, &p_gen, this->get_model_id());
     if (err)
     {
         MESHX_LOGE(MODULE_ID_COMMON, "Failed to create client model");
-        err = meshx_plat_client_delete(this->get_plat_model(), &this->get_model_intr()->cli);
+        err = plat_model_delete();
         if (err)
         {
             MESHX_LOGE(MODULE_ID_COMMON, "Failed to delete client model");
         }
     }
+    else
+    {
+        /* Set the publication and generic structures */
+        this->set_pub_struct(p_pub);
+        this->set_gen_struct(p_gen);
+    }
     return err;
 }
 
 /**
- * @brief Destroys the meshXClientModel instance.
+ * @brief Deletes the client model instance.
  *
- * This destructor cleans up any resources associated with the client model,
- * including platform-specific model instances and allocated memory.
+ * This function is responsible for deleting the client model instance
+ * and releasing any associated resources.
  *
- * @tparam MESHX_MODEL Platform-specific model type
- * @tparam meshxBaseModel_t Base model implementation type
- * @tparam meshx_send_packet_params_t Type for send packet parameters
+ * @return meshx_err_t Returns an error code indicating the result of the operation.
+ *         - MESHX_SUCCESS on successful deletion
+ *         - Other error codes for platform-specific failures
  *
- * @note The destructor is virtual to ensure proper cleanup in derived classes.
+ * @note This is a final function and cannot be overridden by derived classes.
  */
 MESHX_CLIENT_MODEL_TEMPLATE_PROTO
-meshXClientModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS::~meshXClientModel()
+meshx_err_t meshXClientModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
+    ::plat_model_delete()
 {
-    meshx_plat_client_delete(this->get_plat_model(), &this->get_model_intr()->cli);
+    return meshx_plat_client_delete(
+        this->get_plat_model(),
+        &this->get_pub_struct(),
+        &this->get_gen_struct());
 }
+
 /**
  * @}
  */

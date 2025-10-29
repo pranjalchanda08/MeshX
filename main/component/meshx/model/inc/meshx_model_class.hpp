@@ -31,12 +31,13 @@ class meshXModel
 {
 private:
     /* private members */
-    meshXElementIF *parent_element;         /*<! Pointer to the parent element interface */
-    meshxBaseModel_t *base_model;           /*<! Pointer to the base model */
+    meshXElementIF *parent_element; /*<! Pointer to the parent element interface */
+    meshxBaseModel_t *base_model;   /*<! Pointer to the base model */
 
-    meshx_err_t status;                     /*<! Status of the model */
-    MESHX_MODEL *p_plat_model;              /*<! Pointer to the platform model */
-    meshx_model_interface_t *model_intr;    /*<! Pointer to the model interface */
+    meshx_err_t status;        /*<! Status of the model */
+    MESHX_MODEL *p_plat_model; /*<! Pointer to the platform model */
+    meshx_ptr_t p_plat_pub;    /**< publication structures */
+    meshx_ptr_t p_plat_gen;    /**< generic structures */
 
 public:
     /***********************************************************
@@ -75,6 +76,14 @@ public:
      */
     virtual meshx_err_t plat_model_create(void) = 0;
 
+    /**
+     * @brief Delete logical model instance
+     * @details Pure virtual function that derived classes must implement to delete
+     *          the logical model instance from the platform. This is called during
+     *          model cleanup to release resources associated with the model.
+     */
+    virtual meshx_err_t plat_model_delete(void) = 0;
+
     /***********************************************************
      * Accessor Functions
      ***********************************************************/
@@ -91,16 +100,33 @@ public:
     MESHX_MODEL * get_plat_model(void) const { return p_plat_model; }
 
     /**
+     * @brief Get the publication structures
+     * @return Pointer to the publication structures
+     */
+    meshx_ptr_t get_pub_struct(void) const { return p_plat_pub; }
+
+    /**
+     * @brief Get the generic structures
+     * @return Pointer to the generic structures
+     */
+    meshx_ptr_t get_gen_struct(void) const { return p_plat_gen; }
+
+    /**
+     * @brief Set the publication structures
+     * @param[in] pub Pointer to the publication structures
+     */
+    void set_pub_struct(meshx_ptr_t pub) { p_plat_pub = pub; }
+
+    /**
+     * @brief Set the generic structures
+     * @param[in] gen Pointer to the generic structures
+     */
+    void set_gen_struct(meshx_ptr_t gen) { p_plat_gen = gen; }
+    /**
      * @brief Get the base model instance
      * @return Pointer to the base model implementation
      */
     meshxBaseModel_t * get_base_model(void) const { return base_model; }
-
-    /**
-     * @brief Get the model interface
-     * @return Pointer to the model interface structure
-     */
-    meshx_model_interface_t * get_model_intr(void) const { return model_intr; }
 
     /**
      * @brief Set the parent element for this model
@@ -114,8 +140,28 @@ public:
      */
     meshXElementIF * get_parent_element(void) const { return parent_element; }
 
+    /**
+     * @brief Constructs a new meshXModel instance.
+     *
+     * This constructor initializes a meshXModel object with the given platform model,
+     * model ID, and optional parent element. It sets up the base model and model interface
+     * for BLE mesh communication.
+     *
+     * @param[in] p_plat_model  Pointer to the platform model instance
+     * @param[in] model_id      Unique identifier for this model
+     * @param[in] parent_element Optional pointer to the parent element
+     *
+     * @note The constructor allocates memory for the base model and model interface.
+     *       If memory allocation fails, the status will be set to MESHX_NO_MEM.
+     */
     meshXModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
-    ~meshXModel() = default;
+
+    /**
+     * @brief Destroy the meshXModel
+     * @details Cleans up resources associated with the model, including
+     *          calling the platform-specific model deletion function.
+     */
+    ~meshXModel(void);
 };
 
 /*********************************************************************************
@@ -146,7 +192,7 @@ public:
     /**
      * @brief Default destructor
      */
-    ~meshXServerModel() = default;
+    ~meshXServerModel(void) = default;
 
     /**
      * @brief Deleted default constructor
@@ -169,7 +215,7 @@ public:
 MESHX_CLIENT_MODEL_TEMPLATE_PROTO
 class meshXClientModel : public meshXModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
 {
-public:
+private:
     /**
      * @brief Create platform-specific client model instance
      * @details Final implementation of the model creation process for client models.
@@ -182,6 +228,15 @@ public:
     meshx_err_t plat_model_create(void) final;
 
     /**
+     * @brief Delete platform-specific client model instance
+     * @details Final implementation of the model deletion process for client models.
+     *          This function handles the cleanup of client-specific resources
+     *          and cannot be overridden by derived classes.
+     */
+    meshx_err_t plat_model_delete(void) final;
+public:
+
+    /**
      * @brief Construct a new meshXClientModel
      * @param[in] p_plat_model Platform model instance
      * @param[in] model_id Model identifier
@@ -189,10 +244,9 @@ public:
      */
     meshXClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
 
-    meshXClientModel() = delete;
-
     /**
      * @brief Destroy the meshXClientModel
      */
-    ~meshXClientModel();
+    ~meshXClientModel() = default;
+    meshXClientModel() = delete;
 };

@@ -52,14 +52,32 @@ typedef union meshx_plat_ctl_status
 /**
  * @brief Template for CTL Setup Srv SIG model initialization.
  */
-static const MESHX_MODEL light_ctl_setup_sig_template = ESP_BLE_MESH_SIG_MODEL(
-    MESHX_MODEL_ID_LIGHT_CTL_SETUP_SRV, NULL, NULL, NULL);
+static const MESHX_MODEL light_ctl_setup_sig_template = ESP_BLE_MESH_SIG_MODEL(MESHX_MODEL_ID_LIGHT_CTL_SETUP_SRV, NULL, NULL, NULL);
 
 /**
- * @brief Template for CTL Setup Srv SIG model initialization.
+ * @brief Template for CTL Srv SIG model initialization.
  */
-static const MESHX_MODEL light_ctl_sig_template = ESP_BLE_MESH_SIG_MODEL(
-    MESHX_MODEL_ID_LIGHT_CTL_SRV, NULL, NULL, NULL);
+static const MESHX_MODEL light_ctl_sig_template = ESP_BLE_MESH_SIG_MODEL(MESHX_MODEL_ID_LIGHT_CTL_SRV, NULL, NULL, NULL);
+
+/**
+ * @brief Template for Lightness Srv SIG model initialization.
+ */
+static const MESHX_MODEL light_lightness_sig_template = ESP_BLE_MESH_SIG_MODEL(MESHX_MODEL_ID_LIGHT_LIGHTNESS_SRV, NULL, NULL, NULL);
+
+/**
+ * @brief Template for HSL Srv SIG model initialization.
+ */
+static const MESHX_MODEL light_hsl_sig_template = ESP_BLE_MESH_SIG_MODEL(MESHX_MODEL_ID_LIGHT_HSL_SRV, NULL, NULL, NULL);
+
+/**
+ * @brief Template for xyL Srv SIG model initialization.
+ */
+static const MESHX_MODEL light_xyl_sig_template = ESP_BLE_MESH_SIG_MODEL(MESHX_MODEL_ID_LIGHT_XYL_SRV, NULL, NULL, NULL);
+
+/**
+ * @brief Template for LC Srv SIG model initialization.
+ */
+static const MESHX_MODEL light_lc_sig_template = ESP_BLE_MESH_SIG_MODEL(MESHX_MODEL_ID_LIGHT_LC_SRV, NULL, NULL, NULL);
 
 /**
  * @brief Callback function for BLE Mesh Lightness Server events.
@@ -191,6 +209,17 @@ static void meshx_ble_lightness_server_cb(MESHX_LIGHT_SRV_CB_EVT event,
                                  sizeof(meshx_lighting_server_cb_param_t));
 }
 
+/**
+ * @brief Send a status message from the Light Server.
+ * This function constructs and sends a status message containing the current state of the Light Server.
+ * @param[in] p_model       Pointer to the Light Server model.
+ * @param[in] p_ctx         Pointer to the context containing message information.
+ * @param[in] state_change  The state change data to be sent in the status message.
+ * @return
+ *     - MESHX_SUCCESS: Successfully sent the status message.
+ *     - MESHX_INVALID_ARG: Invalid argument provided.
+ *     - MESHX_ERR_PLAT: Platform-specific error occurred.
+ */
 meshx_err_t meshx_plat_gen_light_srv_send_status(
     const meshx_model_t *p_model,
     const meshx_ctx_t *p_ctx,
@@ -260,6 +289,15 @@ meshx_err_t meshx_plat_gen_light_srv_send_status(
     return err;
 }
 
+/**
+ * @brief Initialize the platform-specific Light Server.
+ *
+ * This function sets up the necessary resources for the Light Server.
+ *
+ * @return
+ *      - MESHX_SUCCESS on success.
+ *      - Appropriate error code on failure.
+ */
 meshx_err_t meshx_plat_light_srv_init(void)
 {
     /* Register callback for enabling Sending of Model Msg From MeshX to BLE Layer */
@@ -274,6 +312,18 @@ meshx_err_t meshx_plat_light_srv_init(void)
     return err;
 }
 
+/**
+ * @brief Delete a Light CTL Server instance.
+ *
+ * This function releases resources associated with a Light CTL Server model.
+ *
+ * @param[in,out] p_pub    Pointer to the publication context to be deleted.
+ * @param[in,out] p_ctl_srv Pointer to the Light CTL Server instance to be deleted.
+ *
+ * @return
+ *      - MESHX_SUCCESS on success.
+ *      - Appropriate error code on failure.
+ */
 meshx_err_t meshx_plat_light_srv_delete(meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_srv)
 {
     if (p_ctl_srv)
@@ -290,6 +340,19 @@ meshx_err_t meshx_plat_light_srv_delete(meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_s
     return meshx_plat_del_model_pub(p_pub);
 }
 
+/**
+ * @brief Creates and initializes a Light CTL (Color Temperature Lightness) Setup Server model instance.
+ *
+ * This function sets up the Light CTL Setup Server for a given model, configuring publication and server context pointers.
+ *
+ * @param[in]  p_model    Pointer to the parent model instance.
+ * @param[out] p_pub      Pointer to the publication context to be initialized.
+ * @param[out] p_ctl_srv  Pointer to the Light CTL Setup Server context to be initialized.
+ *
+ * @return meshx_err_t    Error code indicating the result of the operation.
+ *                       - MESHX_OK on success
+ *                       - Appropriate error code otherwise
+ */
 meshx_err_t meshx_plat_light_ctl_setup_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_srv)
 {
     if (!p_model || !p_pub || !p_ctl_srv)
@@ -323,13 +386,25 @@ meshx_err_t meshx_plat_light_ctl_setup_srv_create(meshx_ptr_t p_model, meshx_ptr
 
     ((MESHX_MODEL *)p_model)->user_data = *p_ctl_srv;
 
-    meshx_ptr_t *temp = (meshx_ptr_t *)&((MESHX_MODEL *)p_model)->pub;
-
-    *temp = *p_pub;
+    // Update the publication pointer with proper const handling
+    *((meshx_ptr_t *)((uint8_t *)p_model + offsetof(MESHX_MODEL, pub))) = *p_pub;
 
     return err;
 }
 
+/**
+ * @brief Create a Light CTL Server instance.
+ *
+ * This function initializes and allocates resources for a Light CTL Server model.
+ *
+ * @param[in]  p_model  Pointer to the model instance.
+ * @param[out] p_pub    Pointer to the publication context.
+ * @param[out] p_ctl_srv Pointer to the Light CTL Server instance.
+ *
+ * @return
+ *      - MESHX_SUCCESS on success.
+ *      - Appropriate error code on failure.
+ */
 meshx_err_t meshx_plat_light_ctl_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_srv)
 {
     if (!p_model || !p_pub || !p_ctl_srv)
@@ -366,14 +441,215 @@ meshx_err_t meshx_plat_light_ctl_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_
     ((MESHX_LIGHT_CTL_SRV *)*p_ctl_srv)->state->temperature_range_max = 0;
 
     ((MESHX_MODEL *)p_model)->user_data = *p_ctl_srv;
-
-    meshx_ptr_t *temp = (meshx_ptr_t *)&((MESHX_MODEL *)p_model)->pub;
-
-    *temp = *p_pub;
+    // Update the publication pointer with proper const handling
+    *((meshx_ptr_t *)((uint8_t *)p_model + offsetof(MESHX_MODEL, pub))) = *p_pub;
 
     return err;
 }
 
+/**
+ * @brief Create a Light Lightness Server instance.
+ *
+ * This function initializes and allocates resources for a Light Lightness Server model.
+ *
+ * @param[in]  p_model  Pointer to the model instance.
+ * @param[out] p_pub    Pointer to the publication context.
+ * @param[out] p_lightness_srv Pointer to the Light Lightness Server instance.
+ *
+ * @return
+ *      - MESHX_SUCCESS on success.
+ *      - Appropriate error code on failure.
+ */
+meshx_err_t meshx_plat_light_lightness_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_pub, meshx_ptr_t *p_lightness_srv)
+{
+    if (!p_model || !p_pub || !p_lightness_srv)
+        return MESHX_INVALID_ARG;
+
+    meshx_err_t err = MESHX_SUCCESS;
+
+    err = meshx_plat_create_model_pub(p_pub, 1);
+    if (err)
+        return meshx_plat_del_model_pub(p_pub);
+
+    *p_lightness_srv = (MESHX_LIGHT_LIGHTNESS_SRV *)MESHX_CALOC(1, sizeof(MESHX_LIGHT_LIGHTNESS_SRV));
+    if (!*p_lightness_srv)
+        return MESHX_NO_MEM;
+
+    memcpy(p_model, &light_lightness_sig_template, sizeof(MESHX_MODEL));
+
+    ((MESHX_LIGHT_LIGHTNESS_SRV *)*p_lightness_srv)->rsp_ctrl.get_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
+    ((MESHX_LIGHT_LIGHTNESS_SRV *)*p_lightness_srv)->rsp_ctrl.set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
+
+    ((MESHX_LIGHT_LIGHTNESS_SRV *)*p_lightness_srv)->state = (MESHX_LIGHT_LIGHTNESS_STATE *)MESHX_CALOC(1, sizeof(MESHX_LIGHT_LIGHTNESS_STATE));
+    if (!((MESHX_LIGHT_LIGHTNESS_SRV *)*p_lightness_srv)->state)
+    {
+        MESHX_FREE(*p_lightness_srv);
+        return MESHX_NO_MEM;
+    }
+
+    ((MESHX_MODEL *)p_model)->user_data = *p_lightness_srv;
+    // Update the publication pointer with proper const handling
+    *((meshx_ptr_t *)((uint8_t *)p_model + offsetof(MESHX_MODEL, pub))) = *p_pub;
+
+    return err;
+}
+
+/**
+ * @brief Create a Light HSL Server instance.
+ *
+ * This function initializes and allocates resources for a Light HSL Server model.
+ *
+ * @param[in]  p_model  Pointer to the model instance.
+ * @param[out] p_pub    Pointer to the publication context.
+ * @param[out] p_hsl_srv Pointer to the Light HSL Server instance.
+ *
+ * @return
+ *      - MESHX_SUCCESS on success.
+ *      - Appropriate error code on failure.
+ */
+meshx_err_t meshx_plat_light_hsl_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_pub, meshx_ptr_t *p_hsl_srv)
+{
+    if (!p_model || !p_pub || !p_hsl_srv)
+        return MESHX_INVALID_ARG;
+
+    meshx_err_t err = MESHX_SUCCESS;
+
+    err = meshx_plat_create_model_pub(p_pub, 1);
+    if (err)
+        return meshx_plat_del_model_pub(p_pub);
+
+    *p_hsl_srv = (MESHX_LIGHT_HSL_SRV *)MESHX_CALOC(1, sizeof(MESHX_LIGHT_HSL_SRV));
+    if (!*p_hsl_srv)
+        return MESHX_NO_MEM;
+
+    memcpy(p_model, &light_hsl_sig_template, sizeof(MESHX_MODEL));
+
+    ((MESHX_LIGHT_HSL_SRV *)*p_hsl_srv)->rsp_ctrl.get_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
+    ((MESHX_LIGHT_HSL_SRV *)*p_hsl_srv)->rsp_ctrl.set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
+
+    ((MESHX_LIGHT_HSL_SRV *)*p_hsl_srv)->state = (MESHX_LIGHT_HSL_STATE *)MESHX_CALOC(1, sizeof(MESHX_LIGHT_HSL_STATE));
+    if (!((MESHX_LIGHT_HSL_SRV *)*p_hsl_srv)->state)
+    {
+        MESHX_FREE(*p_hsl_srv);
+        return MESHX_NO_MEM;
+    }
+
+    ((MESHX_MODEL *)p_model)->user_data = *p_hsl_srv;
+    // Update the publication pointer with proper const handling
+    *((meshx_ptr_t *)((uint8_t *)p_model + offsetof(MESHX_MODEL, pub))) = *p_pub;
+
+    return err;
+}
+
+/**
+ * @brief Create a Light xyL Server instance.
+ *
+ * This function initializes and allocates resources for a Light xyL Server model.
+ *
+ * @param[in]  p_model  Pointer to the model instance.
+ * @param[out] p_pub    Pointer to the publication context.
+ * @param[out] p_xyl_srv Pointer to the Light xyL Server instance.
+ *
+ * @return
+ *      - MESHX_SUCCESS on success.
+ *      - Appropriate error code on failure.
+ */
+meshx_err_t meshx_plat_light_xyl_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_pub, meshx_ptr_t *p_xyl_srv)
+{
+    if (!p_model || !p_pub || !p_xyl_srv)
+        return MESHX_INVALID_ARG;
+
+    meshx_err_t err = MESHX_SUCCESS;
+
+    err = meshx_plat_create_model_pub(p_pub, 1);
+    if (err)
+        return meshx_plat_del_model_pub(p_pub);
+
+    *p_xyl_srv = (MESHX_LIGHT_XYL_SRV *)MESHX_CALOC(1, sizeof(MESHX_LIGHT_XYL_SRV));
+    if (!*p_xyl_srv)
+        return MESHX_NO_MEM;
+
+    memcpy(p_model, &light_xyl_sig_template, sizeof(MESHX_MODEL));
+
+    ((MESHX_LIGHT_XYL_SRV *)*p_xyl_srv)->rsp_ctrl.get_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
+    ((MESHX_LIGHT_XYL_SRV *)*p_xyl_srv)->rsp_ctrl.set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
+
+    ((MESHX_LIGHT_XYL_SRV *)*p_xyl_srv)->state = (MESHX_LIGHT_XYL_STATE *)MESHX_CALOC(1, sizeof(MESHX_LIGHT_XYL_STATE));
+    if (!((MESHX_LIGHT_XYL_SRV *)*p_xyl_srv)->state)
+    {
+        MESHX_FREE(*p_xyl_srv);
+        return MESHX_NO_MEM;
+    }
+
+    ((MESHX_MODEL *)p_model)->user_data = *p_xyl_srv;
+    // Update the publication pointer with proper const handling
+    *((meshx_ptr_t *)((uint8_t *)p_model + offsetof(MESHX_MODEL, pub))) = *p_pub;
+
+    return err;
+}
+
+/**
+ * @brief Create a Light LC Server instance.
+ *
+ * This function initializes and allocates resources for a Light LC (Light Control) Server model.
+ *
+ * @param[in]  p_model  Pointer to the model instance.
+ * @param[out] p_pub    Pointer to the publication context.
+ * @param[out] p_lc_srv Pointer to the Light LC Server instance.
+ *
+ * @return
+ *      - MESHX_SUCCESS on success.
+ *      - Appropriate error code on failure.
+ */
+meshx_err_t meshx_plat_light_lc_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_pub, meshx_ptr_t *p_lc_srv)
+{
+    if (!p_model || !p_pub || !p_lc_srv)
+        return MESHX_INVALID_ARG;
+
+    meshx_err_t err = MESHX_SUCCESS;
+
+    err = meshx_plat_create_model_pub(p_pub, 1);
+    if (err)
+        return meshx_plat_del_model_pub(p_pub);
+
+    *p_lc_srv = (MESHX_LIGHT_LC_SRV *)MESHX_CALOC(1, sizeof(MESHX_LIGHT_LC_SRV));
+    if (!*p_lc_srv)
+        return MESHX_NO_MEM;
+
+    memcpy(p_model, &light_lc_sig_template, sizeof(MESHX_MODEL));
+
+    ((MESHX_LIGHT_LC_SRV *)*p_lc_srv)->rsp_ctrl.get_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
+    ((MESHX_LIGHT_LC_SRV *)*p_lc_srv)->rsp_ctrl.set_auto_rsp = ESP_BLE_MESH_SERVER_AUTO_RSP;
+
+    ((MESHX_LIGHT_LC_SRV *)*p_lc_srv)->lc = (MESHX_LIGHT_LC_STATE *)MESHX_CALOC(1, sizeof(MESHX_LIGHT_LC_STATE));
+    if (!((MESHX_LIGHT_LC_SRV *)*p_lc_srv)->lc)
+    {
+        MESHX_FREE(*p_lc_srv);
+        return MESHX_NO_MEM;
+    }
+
+    ((MESHX_MODEL *)p_model)->user_data = *p_lc_srv;
+    // Update the publication pointer with proper const handling
+    *((meshx_ptr_t *)((uint8_t *)p_model + offsetof(MESHX_MODEL, pub))) = *p_pub;
+
+    return err;
+}
+
+/**
+ * @brief Restore the Light Server model state from persistent storage.
+ *
+ * This function restores the Light Server model state from persistent storage.
+ *
+ * @param[in] p_model    Pointer to the model instance to be restored.
+ * @param[in] state      Pointer to the state data to be restored.
+ * @param[in] state_len  Length of the state data in bytes.
+ *
+ * @return meshx_err_t Returns an error code indicating success or failure of the operation.
+ *         - MESHX_SUCCESS on success.
+ *         - MESHX_ERR_INVALID_ARG if any parameter is invalid.
+ *         - MESHX_ERR_INVALID_STATE if the state data is corrupted.
+ *         - Other error codes for implementation-specific failures.
+ */
 meshx_err_t meshx_plat_light_srv_restore(meshx_ptr_t p_model, const meshx_lighting_server_state_t *state, uint16_t state_len)
 {
     if (!p_model || !state)
@@ -392,13 +668,28 @@ meshx_err_t meshx_plat_light_srv_restore(meshx_ptr_t p_model, const meshx_lighti
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Set the state of the Light CTL Server.
+ *
+ * This function updates the state of the Light CTL Server with the provided parameters.
+ *
+ * @param[in] p_model         Pointer to the model instance.
+ * @param[in] delta_uv        Delta UV value.
+ * @param[in] lightness       Lightness value.
+ * @param[in] temperature     Temperature value.
+ * @param[in] temp_range_max  Maximum temperature range.
+ * @param[in] temp_range_min  Minimum temperature range.
+ *
+ * @return
+ *      - MESHX_SUCCESS on success.
+ *      - Appropriate error code on failure.
+ */
 meshx_err_t meshx_plat_set_light_ctl_srv_state(meshx_ptr_t p_model,
                                                uint16_t delta_uv,
                                                uint16_t lightness,
                                                uint16_t temperature,
                                                uint16_t temp_range_max,
-                                               uint16_t temp_range_min
-                                            )
+                                               uint16_t temp_range_min)
 {
     if (!p_model)
         return MESHX_INVALID_ARG;
@@ -413,6 +704,21 @@ meshx_err_t meshx_plat_set_light_ctl_srv_state(meshx_ptr_t p_model,
 
     return MESHX_SUCCESS;
 }
+
+/**
+ * This function restores the state of the Light CTL Server with the provided parameters.
+ *
+ * @param[in] p_model         Pointer to the model instance.
+ * @param[in] delta_uv        Delta UV value.
+ * @param[in] lightness       Lightness value.
+ * @param[in] temperature     Temperature value.
+ * @param[in] temp_range_max  Maximum temperature range.
+ * @param[in] temp_range_min  Minimum temperature range.
+ *
+ * @return
+ *      - MESHX_SUCCESS on success.
+ *      - Appropriate error code on failure.
+ */
 meshx_err_t meshx_plat_light_ctl_srv_restore(meshx_ptr_t p_model,
                                              uint16_t delta_uv,
                                              uint16_t lightness,
