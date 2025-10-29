@@ -103,6 +103,9 @@ using meshx_def_trans_time_srv_el_msg_t = struct meshx_def_trans_time_srv_el_msg
 MESHX_GEN_DEF_TRANS_TIME_SERVER_MODEL_TEMPLATE_PROTO
 class meshXGenericDefTransTimeServerModel : public meshXServerModel<meshXBaseGenericServerModel, meshx_gen_def_trans_time_send_params_t>
 {
+private:
+    meshx_err_t plat_model_create(void) override;
+    meshx_err_t plat_model_delete(void) override;
 public:
     meshx_err_t model_send(meshx_gen_def_trans_time_send_params_t *params) override;
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
