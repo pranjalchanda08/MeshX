@@ -9285,6 +9285,16 @@
               <Path>df/d36/classmeshXGenericAdminPropertyServerModel.html</Path>
               <Anchor>acb45d770d5335cf484a241c41ca45a6c</Anchor>
              </Node>
+             <Node>
+              <Name>plat_model_create</Name>
+              <Path>df/d36/classmeshXGenericAdminPropertyServerModel.html</Path>
+              <Anchor>a05d5bab3ee0325940c186b321ef50cd8</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_delete</Name>
+              <Path>df/d36/classmeshXGenericAdminPropertyServerModel.html</Path>
+              <Anchor>a2051000b1fac68f14f70615e42eba009</Anchor>
+             </Node>
             </Subnodes>
            </Node>
            <Node>
@@ -9341,6 +9351,16 @@
               <Name>model_send</Name>
               <Path>d8/d43/classmeshXGenericBatteryServerModel.html</Path>
               <Anchor>afe6e80f4af258df40ce134529a9f1380</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_create</Name>
+              <Path>d8/d43/classmeshXGenericBatteryServerModel.html</Path>
+              <Anchor>afe882e49d3a8cdedbf6ec005e223134c</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_delete</Name>
+              <Path>d8/d43/classmeshXGenericBatteryServerModel.html</Path>
+              <Anchor>a00718d126bd69a9dc33c98d792eb9d8d</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -9425,6 +9445,16 @@
               <Path>d5/db6/classmeshXGenericDefTransTimeServerModel.html</Path>
               <Anchor>a8831d3e237f5adff2324a4778c166b9d</Anchor>
              </Node>
+             <Node>
+              <Name>plat_model_create</Name>
+              <Path>d5/db6/classmeshXGenericDefTransTimeServerModel.html</Path>
+              <Anchor>aee9db640f662b14c5a1e5840c2298380</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_delete</Name>
+              <Path>d5/db6/classmeshXGenericDefTransTimeServerModel.html</Path>
+              <Anchor>a8bcd273819dc8db11bbe701ff5afc9e7</Anchor>
+             </Node>
             </Subnodes>
            </Node>
            <Node>
@@ -9481,6 +9511,16 @@
               <Name>model_send</Name>
               <Path>d9/d54/classmeshXGenericLevelServerModel.html</Path>
               <Anchor>a41b408c8e4c4c9077f7241c97729c711</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_create</Name>
+              <Path>d9/d54/classmeshXGenericLevelServerModel.html</Path>
+              <Anchor>a859e38b35bc1571ffeed037c890b5eb5</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_delete</Name>
+              <Path>d9/d54/classmeshXGenericLevelServerModel.html</Path>
+              <Anchor>a53aee4f0de1ae1e3391e85b805479453</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -9539,6 +9579,16 @@
               <Path>dd/d46/classmeshXGenericLocationServerModel.html</Path>
               <Anchor>aaf6217996b4b86a678ed690773a21330</Anchor>
              </Node>
+             <Node>
+              <Name>plat_model_create</Name>
+              <Path>dd/d46/classmeshXGenericLocationServerModel.html</Path>
+              <Anchor>a828d85d263c566e476fb0e75d3ec2553</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_delete</Name>
+              <Path>dd/d46/classmeshXGenericLocationServerModel.html</Path>
+              <Anchor>a127a6d75b43fd66ad49030ee7e400b63</Anchor>
+             </Node>
             </Subnodes>
            </Node>
            <Node>
@@ -9590,6 +9640,16 @@
               <Name>model_send</Name>
               <Path>d2/d74/classmeshXGenericManufacturerPropertyServerModel.html</Path>
               <Anchor>ad2eead68c6865b09e638c813e6efbeae</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_create</Name>
+              <Path>d2/d74/classmeshXGenericManufacturerPropertyServerModel.html</Path>
+              <Anchor>a4469e3ca3dc20ed231d68561fd140dcc</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_delete</Name>
+              <Path>d2/d74/classmeshXGenericManufacturerPropertyServerModel.html</Path>
+              <Anchor>a25a08cd2b4d0607e96c28d1eb0e8d6da</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -9715,6 +9775,16 @@
               <Path>d4/d95/classmeshXGenericPowerLevelServerModel.html</Path>
               <Anchor>a4b758a27879f30422f4f1171ba7ad6e7</Anchor>
              </Node>
+             <Node>
+              <Name>plat_model_create</Name>
+              <Path>d4/d95/classmeshXGenericPowerLevelServerModel.html</Path>
+              <Anchor>a73dcc38f219e09d098be0f82d1ba4a9c</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_delete</Name>
+              <Path>d4/d95/classmeshXGenericPowerLevelServerModel.html</Path>
+              <Anchor>a5584b366bf7881f3f8d311f32a5b84d0</Anchor>
+             </Node>
             </Subnodes>
            </Node>
            <Node>
@@ -9798,6 +9868,16 @@
               <Path>da/dfe/classmeshXGenericPowerOnOffServerModel.html</Path>
               <Anchor>a5a023bb5a7dd47d7596e6118abc74ce8</Anchor>
              </Node>
+             <Node>
+              <Name>plat_model_create</Name>
+              <Path>da/dfe/classmeshXGenericPowerOnOffServerModel.html</Path>
+              <Anchor>a3753e200c78f3062256293fea89df8be</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_delete</Name>
+              <Path>da/dfe/classmeshXGenericPowerOnOffServerModel.html</Path>
+              <Anchor>a38a0efc0d25dc1b3631477b8664223df</Anchor>
+             </Node>
             </Subnodes>
            </Node>
            <Node>
@@ -9880,6 +9960,16 @@
               <Name>model_send</Name>
               <Path>d5/d31/classmeshXGenericUserPropertyServerModel.html</Path>
               <Anchor>a8a9ce90dbad2edb6a32a962540e5ed8e</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_create</Name>
+              <Path>d5/d31/classmeshXGenericUserPropertyServerModel.html</Path>
+              <Anchor>a7f04c23bf719d45b18f4644c5cc9ff94</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_delete</Name>
+              <Path>d5/d31/classmeshXGenericUserPropertyServerModel.html</Path>
+              <Anchor>a76e327b780816e3b989eb2c162861b96</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -11918,6 +12008,44 @@
            <Node>
             <Name>Functions</Name>
             <Path>functions_func.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>b</Name>
+              <Path>functions_func.html</Path>
+             </Node>
+             <Node>
+              <Name>f</Name>
+              <Path>functions_func_f.html</Path>
+             </Node>
+             <Node>
+              <Name>g</Name>
+              <Path>functions_func_g.html</Path>
+             </Node>
+             <Node>
+              <Name>m</Name>
+              <Path>functions_func_m.html</Path>
+             </Node>
+             <Node>
+              <Name>o</Name>
+              <Path>functions_func_o.html</Path>
+             </Node>
+             <Node>
+              <Name>p</Name>
+              <Path>functions_func_p.html</Path>
+             </Node>
+             <Node>
+              <Name>s</Name>
+              <Path>functions_func_s.html</Path>
+             </Node>
+             <Node>
+              <Name>v</Name>
+              <Path>functions_func_v.html</Path>
+             </Node>
+             <Node>
+              <Name>~</Name>
+              <Path>functions_func_~.html</Path>
+             </Node>
+            </Subnodes>
            </Node>
            <Node>
             <Name>Variables</Name>
@@ -29078,6 +29206,16 @@
                             <Path>d8/d43/classmeshXGenericBatteryServerModel.html</Path>
                             <Anchor>afe6e80f4af258df40ce134529a9f1380</Anchor>
                            </Node>
+                           <Node>
+                            <Name>plat_model_create</Name>
+                            <Path>d8/d43/classmeshXGenericBatteryServerModel.html</Path>
+                            <Anchor>afe882e49d3a8cdedbf6ec005e223134c</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_delete</Name>
+                            <Path>d8/d43/classmeshXGenericBatteryServerModel.html</Path>
+                            <Anchor>a00718d126bd69a9dc33c98d792eb9d8d</Anchor>
+                           </Node>
                           </Subnodes>
                          </Node>
                          <Node>
@@ -29243,6 +29381,16 @@
                             <Name>model_send</Name>
                             <Path>d5/db6/classmeshXGenericDefTransTimeServerModel.html</Path>
                             <Anchor>a8831d3e237f5adff2324a4778c166b9d</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_create</Name>
+                            <Path>d5/db6/classmeshXGenericDefTransTimeServerModel.html</Path>
+                            <Anchor>aee9db640f662b14c5a1e5840c2298380</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_delete</Name>
+                            <Path>d5/db6/classmeshXGenericDefTransTimeServerModel.html</Path>
+                            <Anchor>a8bcd273819dc8db11bbe701ff5afc9e7</Anchor>
                            </Node>
                           </Subnodes>
                          </Node>
@@ -29413,6 +29561,16 @@
                             <Name>model_send</Name>
                             <Path>d9/d54/classmeshXGenericLevelServerModel.html</Path>
                             <Anchor>a41b408c8e4c4c9077f7241c97729c711</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_create</Name>
+                            <Path>d9/d54/classmeshXGenericLevelServerModel.html</Path>
+                            <Anchor>a859e38b35bc1571ffeed037c890b5eb5</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_delete</Name>
+                            <Path>d9/d54/classmeshXGenericLevelServerModel.html</Path>
+                            <Anchor>a53aee4f0de1ae1e3391e85b805479453</Anchor>
                            </Node>
                           </Subnodes>
                          </Node>
@@ -29689,6 +29847,16 @@
                             <Name>model_send</Name>
                             <Path>dd/d46/classmeshXGenericLocationServerModel.html</Path>
                             <Anchor>aaf6217996b4b86a678ed690773a21330</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_create</Name>
+                            <Path>dd/d46/classmeshXGenericLocationServerModel.html</Path>
+                            <Anchor>a828d85d263c566e476fb0e75d3ec2553</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_delete</Name>
+                            <Path>dd/d46/classmeshXGenericLocationServerModel.html</Path>
+                            <Anchor>a127a6d75b43fd66ad49030ee7e400b63</Anchor>
                            </Node>
                           </Subnodes>
                          </Node>
@@ -30122,6 +30290,16 @@
                             <Path>d4/d95/classmeshXGenericPowerLevelServerModel.html</Path>
                             <Anchor>a4b758a27879f30422f4f1171ba7ad6e7</Anchor>
                            </Node>
+                           <Node>
+                            <Name>plat_model_create</Name>
+                            <Path>d4/d95/classmeshXGenericPowerLevelServerModel.html</Path>
+                            <Anchor>a73dcc38f219e09d098be0f82d1ba4a9c</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_delete</Name>
+                            <Path>d4/d95/classmeshXGenericPowerLevelServerModel.html</Path>
+                            <Anchor>a5584b366bf7881f3f8d311f32a5b84d0</Anchor>
+                           </Node>
                           </Subnodes>
                          </Node>
                          <Node>
@@ -30323,6 +30501,16 @@
                             <Name>model_send</Name>
                             <Path>da/dfe/classmeshXGenericPowerOnOffServerModel.html</Path>
                             <Anchor>a5a023bb5a7dd47d7596e6118abc74ce8</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_create</Name>
+                            <Path>da/dfe/classmeshXGenericPowerOnOffServerModel.html</Path>
+                            <Anchor>a3753e200c78f3062256293fea89df8be</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_delete</Name>
+                            <Path>da/dfe/classmeshXGenericPowerOnOffServerModel.html</Path>
+                            <Anchor>a38a0efc0d25dc1b3631477b8664223df</Anchor>
                            </Node>
                           </Subnodes>
                          </Node>
@@ -30551,6 +30739,16 @@
                             <Path>df/d36/classmeshXGenericAdminPropertyServerModel.html</Path>
                             <Anchor>acb45d770d5335cf484a241c41ca45a6c</Anchor>
                            </Node>
+                           <Node>
+                            <Name>plat_model_create</Name>
+                            <Path>df/d36/classmeshXGenericAdminPropertyServerModel.html</Path>
+                            <Anchor>a05d5bab3ee0325940c186b321ef50cd8</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_delete</Name>
+                            <Path>df/d36/classmeshXGenericAdminPropertyServerModel.html</Path>
+                            <Anchor>a2051000b1fac68f14f70615e42eba009</Anchor>
+                           </Node>
                           </Subnodes>
                          </Node>
                          <Node>
@@ -30577,6 +30775,16 @@
                             <Path>d2/d74/classmeshXGenericManufacturerPropertyServerModel.html</Path>
                             <Anchor>ad2eead68c6865b09e638c813e6efbeae</Anchor>
                            </Node>
+                           <Node>
+                            <Name>plat_model_create</Name>
+                            <Path>d2/d74/classmeshXGenericManufacturerPropertyServerModel.html</Path>
+                            <Anchor>a4469e3ca3dc20ed231d68561fd140dcc</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_delete</Name>
+                            <Path>d2/d74/classmeshXGenericManufacturerPropertyServerModel.html</Path>
+                            <Anchor>a25a08cd2b4d0607e96c28d1eb0e8d6da</Anchor>
+                           </Node>
                           </Subnodes>
                          </Node>
                          <Node>
@@ -30602,6 +30810,16 @@
                             <Name>model_send</Name>
                             <Path>d5/d31/classmeshXGenericUserPropertyServerModel.html</Path>
                             <Anchor>a8a9ce90dbad2edb6a32a962540e5ed8e</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_create</Name>
+                            <Path>d5/d31/classmeshXGenericUserPropertyServerModel.html</Path>
+                            <Anchor>a7f04c23bf719d45b18f4644c5cc9ff94</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_delete</Name>
+                            <Path>d5/d31/classmeshXGenericUserPropertyServerModel.html</Path>
+                            <Anchor>a76e327b780816e3b989eb2c162861b96</Anchor>
                            </Node>
                           </Subnodes>
                          </Node>

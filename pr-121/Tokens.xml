@@ -17182,11 +17182,110 @@
       <Name>plat_model_create</Name>
       <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
+      <Scope>meshXGenericBatteryServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d8/d43/classmeshXGenericBatteryServerModel.html</Path>
+    <Anchor>afe882e49d3a8cdedbf6ec005e223134c</Anchor>
+    <DeclaredIn>meshx_model_battery.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_create</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXGenericDefTransTimeServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d5/db6/classmeshXGenericDefTransTimeServerModel.html</Path>
+    <Anchor>aee9db640f662b14c5a1e5840c2298380</Anchor>
+    <DeclaredIn>meshx_model_def_trans_time.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_create</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXGenericLevelServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d9/d54/classmeshXGenericLevelServerModel.html</Path>
+    <Anchor>a859e38b35bc1571ffeed037c890b5eb5</Anchor>
+    <DeclaredIn>meshx_model_level.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_create</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXGenericLocationServerModel</Scope>
+    </TokenIdentifier>
+    <Path>dd/d46/classmeshXGenericLocationServerModel.html</Path>
+    <Anchor>a828d85d263c566e476fb0e75d3ec2553</Anchor>
+    <DeclaredIn>meshx_model_location.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_create</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
       <Scope>meshXGenericOnOffServerModel</Scope>
     </TokenIdentifier>
     <Path>d7/d7a/classmeshXGenericOnOffServerModel.html</Path>
     <Anchor>abff17405840be42c295c7d25a77dd4f1</Anchor>
     <DeclaredIn>meshx_model_onoff.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_create</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXGenericPowerLevelServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d4/d95/classmeshXGenericPowerLevelServerModel.html</Path>
+    <Anchor>a73dcc38f219e09d098be0f82d1ba4a9c</Anchor>
+    <DeclaredIn>meshx_model_power_level.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_create</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXGenericPowerOnOffServerModel</Scope>
+    </TokenIdentifier>
+    <Path>da/dfe/classmeshXGenericPowerOnOffServerModel.html</Path>
+    <Anchor>a3753e200c78f3062256293fea89df8be</Anchor>
+    <DeclaredIn>meshx_model_power_onoff.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_create</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXGenericAdminPropertyServerModel</Scope>
+    </TokenIdentifier>
+    <Path>df/d36/classmeshXGenericAdminPropertyServerModel.html</Path>
+    <Anchor>a05d5bab3ee0325940c186b321ef50cd8</Anchor>
+    <DeclaredIn>meshx_model_property.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_create</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXGenericManufacturerPropertyServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d2/d74/classmeshXGenericManufacturerPropertyServerModel.html</Path>
+    <Anchor>a4469e3ca3dc20ed231d68561fd140dcc</Anchor>
+    <DeclaredIn>meshx_model_property.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_create</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXGenericUserPropertyServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d5/d31/classmeshXGenericUserPropertyServerModel.html</Path>
+    <Anchor>a7f04c23bf719d45b18f4644c5cc9ff94</Anchor>
+    <DeclaredIn>meshx_model_property.hpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -17475,11 +17574,110 @@
       <Name>plat_model_delete</Name>
       <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
+      <Scope>meshXGenericBatteryServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d8/d43/classmeshXGenericBatteryServerModel.html</Path>
+    <Anchor>a00718d126bd69a9dc33c98d792eb9d8d</Anchor>
+    <DeclaredIn>meshx_model_battery.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXGenericDefTransTimeServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d5/db6/classmeshXGenericDefTransTimeServerModel.html</Path>
+    <Anchor>a8bcd273819dc8db11bbe701ff5afc9e7</Anchor>
+    <DeclaredIn>meshx_model_def_trans_time.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXGenericLevelServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d9/d54/classmeshXGenericLevelServerModel.html</Path>
+    <Anchor>a53aee4f0de1ae1e3391e85b805479453</Anchor>
+    <DeclaredIn>meshx_model_level.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXGenericLocationServerModel</Scope>
+    </TokenIdentifier>
+    <Path>dd/d46/classmeshXGenericLocationServerModel.html</Path>
+    <Anchor>a127a6d75b43fd66ad49030ee7e400b63</Anchor>
+    <DeclaredIn>meshx_model_location.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
       <Scope>meshXGenericOnOffServerModel</Scope>
     </TokenIdentifier>
     <Path>d7/d7a/classmeshXGenericOnOffServerModel.html</Path>
     <Anchor>ac31f534908d08b57defde11c0fdde490</Anchor>
     <DeclaredIn>meshx_model_onoff.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXGenericPowerLevelServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d4/d95/classmeshXGenericPowerLevelServerModel.html</Path>
+    <Anchor>a5584b366bf7881f3f8d311f32a5b84d0</Anchor>
+    <DeclaredIn>meshx_model_power_level.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXGenericPowerOnOffServerModel</Scope>
+    </TokenIdentifier>
+    <Path>da/dfe/classmeshXGenericPowerOnOffServerModel.html</Path>
+    <Anchor>a38a0efc0d25dc1b3631477b8664223df</Anchor>
+    <DeclaredIn>meshx_model_power_onoff.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXGenericAdminPropertyServerModel</Scope>
+    </TokenIdentifier>
+    <Path>df/d36/classmeshXGenericAdminPropertyServerModel.html</Path>
+    <Anchor>a2051000b1fac68f14f70615e42eba009</Anchor>
+    <DeclaredIn>meshx_model_property.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXGenericManufacturerPropertyServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d2/d74/classmeshXGenericManufacturerPropertyServerModel.html</Path>
+    <Anchor>a25a08cd2b4d0607e96c28d1eb0e8d6da</Anchor>
+    <DeclaredIn>meshx_model_property.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXGenericUserPropertyServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d5/d31/classmeshXGenericUserPropertyServerModel.html</Path>
+    <Anchor>a76e327b780816e3b989eb2c162861b96</Anchor>
+    <DeclaredIn>meshx_model_property.hpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>

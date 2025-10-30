@@ -272,36 +272,36 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>MESHX_SUCCESS if event handled successfully, error code otherwise </dd></dl>
 
 <p>Implements <a class="el" href="../../df/d4b/classmeshXModel.html#a3199572478d863522e7b11e5aab6755b">meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t &gt;</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  302</span>{</div>
-<div class="line"><span class="lineno">  303</span>    <span class="keywordflow">if</span>(!params || !p_dev)</div>
-<div class="line"><span class="lineno">  304</span>    {</div>
-<div class="line"><span class="lineno">  305</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Invalid parameters&quot;</span>);</div>
-<div class="line"><span class="lineno">  306</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
-<div class="line"><span class="lineno">  307</span>    }</div>
-<div class="line"><span class="lineno">  308</span>    <span class="keywordflow">if</span>(model_id != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a2408cabfc02a46770aae9467569576da">MESHX_MODEL_ID_GEN_POWER_LEVEL_SETUP_SRV</a>)</div>
-<div class="line"><span class="lineno">  309</span>    {</div>
-<div class="line"><span class="lineno">  310</span>        <span class="comment">/* Callback triggered not for this model */</span></div>
-<div class="line"><span class="lineno">  311</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  312</span>    }</div>
-<div class="line"><span class="lineno">  313</span> </div>
-<div class="line"><span class="lineno">  314</span>    <span class="keyword">auto</span> *param = <span class="keyword">static_cast&lt;</span><a class="code hl_typedef" href="../../d4/d0c/meshx__ble__mesh__gen__srv_8h.html#aba014ef383d24eb88b8dc7e1b3af668b">meshx_gen_srv_cb_param_t</a> *<span class="keyword">&gt;</span>(params);</div>
-<div class="line"><span class="lineno">  315</span>    <span class="comment">// Setup server forwards state changes to its base server model</span></div>
-<div class="line"><span class="lineno">  316</span>    <a class="code hl_typedef" href="../../d2/dea/meshx__model__power__level_8hpp.html#adada28708ccdb489554e4b8dad3cf351">meshx_power_level_srv_el_msg_t</a> msg = {</div>
-<div class="line"><span class="lineno">  317</span>        .model = &amp;param-&gt;model,</div>
-<div class="line"><span class="lineno">  318</span>        .power_default = param-&gt;state_change.power_default_set.power,</div>
-<div class="line"><span class="lineno">  319</span>        .range = {</div>
-<div class="line"><span class="lineno">  320</span>            .range_min = param-&gt;state_change.power_range_set.range_min,</div>
-<div class="line"><span class="lineno">  321</span>            .range_max = param-&gt;state_change.power_range_set.range_max</div>
-<div class="line"><span class="lineno">  322</span>        },</div>
-<div class="line"><span class="lineno">  323</span>    };</div>
-<div class="line"><span class="lineno">  324</span> </div>
-<div class="line"><span class="lineno">  325</span>    <span class="keywordflow">if</span> (this-&gt;<a class="code hl_function" href="../../df/d4b/classmeshXModel.html#a61afb7b49d139ea2da9681e48ec376a1">get_parent_element</a>()) {</div>
-<div class="line"><span class="lineno">  326</span>        <span class="keywordflow">return</span> this-&gt;<a class="code hl_function" href="../../df/d4b/classmeshXModel.html#a61afb7b49d139ea2da9681e48ec376a1">get_parent_element</a>()-&gt;<a class="code hl_function" href="../../d9/db0/classmeshXElementIF.html#a20a0b02257d7a59be7757ad0f01fb6f1">on_model_cb</a>(&amp;msg);</div>
-<div class="line"><span class="lineno">  327</span>    }</div>
-<div class="line"><span class="lineno">  328</span> </div>
-<div class="line"><span class="lineno">  329</span>    <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Parent element is null&quot;</span>);</div>
-<div class="line"><span class="lineno">  330</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno">  331</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  343</span>{</div>
+<div class="line"><span class="lineno">  344</span>    <span class="keywordflow">if</span>(!params || !p_dev)</div>
+<div class="line"><span class="lineno">  345</span>    {</div>
+<div class="line"><span class="lineno">  346</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Invalid parameters&quot;</span>);</div>
+<div class="line"><span class="lineno">  347</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<div class="line"><span class="lineno">  348</span>    }</div>
+<div class="line"><span class="lineno">  349</span>    <span class="keywordflow">if</span>(model_id != <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a2408cabfc02a46770aae9467569576da">MESHX_MODEL_ID_GEN_POWER_LEVEL_SETUP_SRV</a>)</div>
+<div class="line"><span class="lineno">  350</span>    {</div>
+<div class="line"><span class="lineno">  351</span>        <span class="comment">/* Callback triggered not for this model */</span></div>
+<div class="line"><span class="lineno">  352</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  353</span>    }</div>
+<div class="line"><span class="lineno">  354</span> </div>
+<div class="line"><span class="lineno">  355</span>    <span class="keyword">auto</span> *param = <span class="keyword">static_cast&lt;</span><a class="code hl_typedef" href="../../d4/d0c/meshx__ble__mesh__gen__srv_8h.html#aba014ef383d24eb88b8dc7e1b3af668b">meshx_gen_srv_cb_param_t</a> *<span class="keyword">&gt;</span>(params);</div>
+<div class="line"><span class="lineno">  356</span>    <span class="comment">// Setup server forwards state changes to its base server model</span></div>
+<div class="line"><span class="lineno">  357</span>    <a class="code hl_typedef" href="../../d2/dea/meshx__model__power__level_8hpp.html#adada28708ccdb489554e4b8dad3cf351">meshx_power_level_srv_el_msg_t</a> msg = {</div>
+<div class="line"><span class="lineno">  358</span>        .model = &amp;param-&gt;model,</div>
+<div class="line"><span class="lineno">  359</span>        .power_default = param-&gt;state_change.power_default_set.power,</div>
+<div class="line"><span class="lineno">  360</span>        .range = {</div>
+<div class="line"><span class="lineno">  361</span>            .range_min = param-&gt;state_change.power_range_set.range_min,</div>
+<div class="line"><span class="lineno">  362</span>            .range_max = param-&gt;state_change.power_range_set.range_max</div>
+<div class="line"><span class="lineno">  363</span>        },</div>
+<div class="line"><span class="lineno">  364</span>    };</div>
+<div class="line"><span class="lineno">  365</span> </div>
+<div class="line"><span class="lineno">  366</span>    <span class="keywordflow">if</span> (this-&gt;<a class="code hl_function" href="../../df/d4b/classmeshXModel.html#a61afb7b49d139ea2da9681e48ec376a1">get_parent_element</a>()) {</div>
+<div class="line"><span class="lineno">  367</span>        <span class="keywordflow">return</span> this-&gt;<a class="code hl_function" href="../../df/d4b/classmeshXModel.html#a61afb7b49d139ea2da9681e48ec376a1">get_parent_element</a>()-&gt;<a class="code hl_function" href="../../d9/db0/classmeshXElementIF.html#a20a0b02257d7a59be7757ad0f01fb6f1">on_model_cb</a>(&amp;msg);</div>
+<div class="line"><span class="lineno">  368</span>    }</div>
+<div class="line"><span class="lineno">  369</span> </div>
+<div class="line"><span class="lineno">  370</span>    <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Parent element is null&quot;</span>);</div>
+<div class="line"><span class="lineno">  371</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno">  372</span>}</div>
 <div class="ttc" id="aclassmeshXElementIF_html_a20a0b02257d7a59be7757ad0f01fb6f1"><div class="ttname"><a href="../../d9/db0/classmeshXElementIF.html#a20a0b02257d7a59be7757ad0f01fb6f1">meshXElementIF::on_model_cb</a></div><div class="ttdeci">virtual meshx_err_t on_model_cb(meshx_ptr_t param)=0</div></div>
 <div class="ttc" id="aclassmeshXModel_html_a61afb7b49d139ea2da9681e48ec376a1"><div class="ttname"><a href="../../df/d4b/classmeshXModel.html#a61afb7b49d139ea2da9681e48ec376a1">meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t &gt;::get_parent_element</a></div><div class="ttdeci">meshXElementIF * get_parent_element(void) const</div><div class="ttdef"><b>Definition</b> meshx_model_class.hpp:141</div></div>
 <div class="ttc" id="ameshx__ble__mesh__cmn__def_8h_html_a2408cabfc02a46770aae9467569576da"><div class="ttname"><a href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a2408cabfc02a46770aae9467569576da">MESHX_MODEL_ID_GEN_POWER_LEVEL_SETUP_SRV</a></div><div class="ttdeci">#define MESHX_MODEL_ID_GEN_POWER_LEVEL_SETUP_SRV</div><div class="ttdef"><b>Definition</b> meshx_ble_mesh_cmn_def.h:75</div></div>
@@ -349,25 +349,25 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>MESHX_SUCCESS on success, or an error code on failure </dd></dl>
 
 <p>Implements <a class="el" href="../../df/d4b/classmeshXModel.html#af1c63527b851de806ec4c3eda91b7c27">meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t &gt;</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">  279</span>{</div>
-<div class="line"><span class="lineno">  280</span><span class="keywordflow">if</span> (!params|| !params-&gt;<a class="code hl_variable" href="../../db/d8b/structmeshx__gen__power__level__send__params.html#aece6372522096a0ad232395292f865bf">model</a> || !params-&gt;<a class="code hl_variable" href="../../db/d8b/structmeshx__gen__power__level__send__params.html#a8bb857f71f6e66331cf39de205505812">ctx</a>)</div>
-<div class="line"><span class="lineno">  281</span>    {</div>
-<div class="line"><span class="lineno">  282</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
-<div class="line"><span class="lineno">  283</span>    }</div>
-<div class="line"><span class="lineno">  284</span>    params-&gt;<a class="code hl_variable" href="../../db/d8b/structmeshx__gen__power__level__send__params.html#a8bb857f71f6e66331cf39de205505812">ctx</a>-&gt;<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#a791eb2748742c87194f25ccd9f13aafb">opcode</a> = <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#adaacf265d1419ce53439850c8c6e70ec">MESHX_MODEL_OP_GEN_POWER_LEVEL_STATUS</a>;</div>
-<div class="line"><span class="lineno">  285</span>    meshx_gen_srv_state_change_t state_change = {</div>
-<div class="line"><span class="lineno">  286</span>        .power_level_set = {</div>
-<div class="line"><span class="lineno">  287</span>            .power = params-&gt;<a class="code hl_variable" href="../../db/d8b/structmeshx__gen__power__level__send__params.html#a1f687267904c40fe303509d63c32f115">power_level</a></div>
-<div class="line"><span class="lineno">  288</span>        }</div>
-<div class="line"><span class="lineno">  289</span>    };</div>
-<div class="line"><span class="lineno">  290</span>    <a class="code hl_typedef" href="../../de/d42/meshx__base__model__generic_8hpp.html#ab30875ea439ca3d30baa7332236d4fed">meshx_gen_server_send_params_t</a> send_params = {</div>
-<div class="line"><span class="lineno">  291</span>        .p_model = params-&gt;<a class="code hl_variable" href="../../db/d8b/structmeshx__gen__power__level__send__params.html#aece6372522096a0ad232395292f865bf">model</a>,</div>
-<div class="line"><span class="lineno">  292</span>        .p_ctx = params-&gt;<a class="code hl_variable" href="../../db/d8b/structmeshx__gen__power__level__send__params.html#a8bb857f71f6e66331cf39de205505812">ctx</a>,</div>
-<div class="line"><span class="lineno">  293</span>        .state_change = state_change,</div>
-<div class="line"><span class="lineno">  294</span>        .data_len = <span class="keyword">sizeof</span>(meshx_state_change_gen_power_level_set_t)</div>
-<div class="line"><span class="lineno">  295</span>    };</div>
-<div class="line"><span class="lineno">  296</span>    <span class="keywordflow">return</span> this-&gt;<a class="code hl_function" href="../../df/d4b/classmeshXModel.html#a4c89eef412069b61d52fcd49444810de">get_base_model</a>()-&gt;<a class="code hl_function" href="../../da/d39/classmeshXBaseGenericServerModel.html#ae1b28aaf43e45673462d770c1fa48264">plat_send_msg</a>(&amp;send_params);</div>
-<div class="line"><span class="lineno">  297</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  320</span>{</div>
+<div class="line"><span class="lineno">  321</span><span class="keywordflow">if</span> (!params|| !params-&gt;<a class="code hl_variable" href="../../db/d8b/structmeshx__gen__power__level__send__params.html#aece6372522096a0ad232395292f865bf">model</a> || !params-&gt;<a class="code hl_variable" href="../../db/d8b/structmeshx__gen__power__level__send__params.html#a8bb857f71f6e66331cf39de205505812">ctx</a>)</div>
+<div class="line"><span class="lineno">  322</span>    {</div>
+<div class="line"><span class="lineno">  323</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<div class="line"><span class="lineno">  324</span>    }</div>
+<div class="line"><span class="lineno">  325</span>    params-&gt;<a class="code hl_variable" href="../../db/d8b/structmeshx__gen__power__level__send__params.html#a8bb857f71f6e66331cf39de205505812">ctx</a>-&gt;<a class="code hl_variable" href="../../db/d33/structmeshx__ctx.html#a791eb2748742c87194f25ccd9f13aafb">opcode</a> = <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#adaacf265d1419ce53439850c8c6e70ec">MESHX_MODEL_OP_GEN_POWER_LEVEL_STATUS</a>;</div>
+<div class="line"><span class="lineno">  326</span>    meshx_gen_srv_state_change_t state_change = {</div>
+<div class="line"><span class="lineno">  327</span>        .power_level_set = {</div>
+<div class="line"><span class="lineno">  328</span>            .power = params-&gt;<a class="code hl_variable" href="../../db/d8b/structmeshx__gen__power__level__send__params.html#a1f687267904c40fe303509d63c32f115">power_level</a></div>
+<div class="line"><span class="lineno">  329</span>        }</div>
+<div class="line"><span class="lineno">  330</span>    };</div>
+<div class="line"><span class="lineno">  331</span>    <a class="code hl_typedef" href="../../de/d42/meshx__base__model__generic_8hpp.html#ab30875ea439ca3d30baa7332236d4fed">meshx_gen_server_send_params_t</a> send_params = {</div>
+<div class="line"><span class="lineno">  332</span>        .p_model = params-&gt;<a class="code hl_variable" href="../../db/d8b/structmeshx__gen__power__level__send__params.html#aece6372522096a0ad232395292f865bf">model</a>,</div>
+<div class="line"><span class="lineno">  333</span>        .p_ctx = params-&gt;<a class="code hl_variable" href="../../db/d8b/structmeshx__gen__power__level__send__params.html#a8bb857f71f6e66331cf39de205505812">ctx</a>,</div>
+<div class="line"><span class="lineno">  334</span>        .state_change = state_change,</div>
+<div class="line"><span class="lineno">  335</span>        .data_len = <span class="keyword">sizeof</span>(meshx_state_change_gen_power_level_set_t)</div>
+<div class="line"><span class="lineno">  336</span>    };</div>
+<div class="line"><span class="lineno">  337</span>    <span class="keywordflow">return</span> this-&gt;<a class="code hl_function" href="../../df/d4b/classmeshXModel.html#a4c89eef412069b61d52fcd49444810de">get_base_model</a>()-&gt;<a class="code hl_function" href="../../da/d39/classmeshXBaseGenericServerModel.html#ae1b28aaf43e45673462d770c1fa48264">plat_send_msg</a>(&amp;send_params);</div>
+<div class="line"><span class="lineno">  338</span>}</div>
 <div class="ttc" id="aclassmeshXBaseGenericServerModel_html_ae1b28aaf43e45673462d770c1fa48264"><div class="ttname"><a href="../../da/d39/classmeshXBaseGenericServerModel.html#ae1b28aaf43e45673462d770c1fa48264">meshXBaseGenericServerModel::plat_send_msg</a></div><div class="ttdeci">meshx_err_t plat_send_msg(meshx_gen_server_send_params_t *params) override</div><div class="ttdoc">Sends a status message for the Generic Server model.</div><div class="ttdef"><b>Definition</b> meshx_base_model_generic.cpp:404</div></div>
 <div class="ttc" id="aclassmeshXModel_html_a4c89eef412069b61d52fcd49444810de"><div class="ttname"><a href="../../df/d4b/classmeshXModel.html#a4c89eef412069b61d52fcd49444810de">meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t &gt;::get_base_model</a></div><div class="ttdeci">meshXBaseGenericServerModel * get_base_model(void) const</div><div class="ttdef"><b>Definition</b> meshx_model_class.hpp:129</div></div>
 <div class="ttc" id="ameshx__base__model__generic_8hpp_html_ab30875ea439ca3d30baa7332236d4fed"><div class="ttname"><a href="../../de/d42/meshx__base__model__generic_8hpp.html#ab30875ea439ca3d30baa7332236d4fed">meshx_gen_server_send_params_t</a></div><div class="ttdeci">struct meshx_gen_server_send_params { meshx_model_t *p_model; meshx_ctx_t *p_ctx; meshx_gen_srv_state_change_t state_change; size_t data_len; } meshx_gen_server_send_params_t</div><div class="ttdef"><b>Definition</b> meshx_base_model_generic.hpp:134</div></div>
@@ -386,7 +386,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Oct 30 2025 04:53:55 for MeshX by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
+Generated on Thu Oct 30 2025 16:11:43 for MeshX by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
 </small></address>
 </div><!-- doc-content -->
 </body>
