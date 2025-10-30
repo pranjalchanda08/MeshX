@@ -49,7 +49,6 @@ static meshx_err_t meshx_state_change_notify(const meshx_gen_cli_cb_param_t *par
             CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF,
             &cli_onoff_param,
             sizeof(meshx_on_off_cli_el_msg_t));
-
 }
 
 /**

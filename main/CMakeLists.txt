@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 # Recursively collect sources
 file(GLOB_RECURSE MESHX_SRC
     "${CMAKE_SOURCE_DIR}/main/component/meshx/**/*.c"
+    "${CMAKE_SOURCE_DIR}/main/component/meshx/**/*.cpp"
     "${CMAKE_SOURCE_DIR}/main/src/*.c"
 )
 message(STATUS "MESHX_SRC: ${MESHX_SRC}")

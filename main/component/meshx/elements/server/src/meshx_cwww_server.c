@@ -471,8 +471,8 @@ static meshx_err_t cwww_prov_control_task_handler(dev_struct_t const *pdev, cont
                 err = meshx_gen_on_off_srv_send_pack_create(
                         CWWW_SRV_EL(rel_el_id).onoff_srv_model->meshx_sig,
                         (uint16_t)el_id,
-                        pdev->meshx_store.net_key_id,
-                        CWWW_SRV_EL(rel_el_id).srv_ctx->app_id,
+                        (uint8_t)pdev->meshx_store.net_key_id,
+                        (uint8_t)CWWW_SRV_EL(rel_el_id).srv_ctx->app_id,
                         CWWW_SRV_EL(rel_el_id).srv_ctx->pub_addr,
                         CWWW_SRV_EL(rel_el_id).srv_ctx->prev_state.on_off,
                         &gen_srv_send
@@ -560,11 +560,13 @@ static meshx_err_t meshx_cwww_srv_msg_send_handler(
             element_id = gen_srv_send->model.el_id;
             if (!IS_EL_IN_RANGE(element_id))
                 goto cwww_srv_msg_handler_exit;
-            err = meshx_gen_on_off_srv_status_send(
-                &gen_srv_send->model,
-                &gen_srv_send->ctx,
-                gen_srv_send->state_change.onoff_set.onoff
-            );
+
+            meshx_on_off_srv_state_t on_off_state = {
+                .on_off_state = gen_srv_send->state_change.onoff_set.onoff,
+                .ctx = &gen_srv_send->ctx,
+                .model = &gen_srv_send->model
+            };
+            err = meshx_gen_on_off_srv_status_send(&on_off_state);
             if (err)
             {
                 MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to send ONOFF status message (Err: %x)", err);

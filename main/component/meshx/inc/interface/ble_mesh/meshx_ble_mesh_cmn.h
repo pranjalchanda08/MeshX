@@ -31,7 +31,7 @@ typedef struct meshx_model
 {
     uint16_t el_id;         /**< Element ID */
     uint16_t model_id;      /**< Model ID */
-    uint16_t pub_addr;      /**< Publication address */
+    uint16_t pub_addr;      /**< Publication address. Used by client models */
     meshx_ptr_t p_model;    /**< Pointer to the model structure */
 } meshx_model_t;
 
@@ -40,12 +40,12 @@ typedef struct meshx_model
  */
 typedef struct meshx_ctx
 {
-    uint16_t app_idx;  /** AppKey Index */
-    uint16_t net_idx;  /** NetKey Index */
-    uint16_t src_addr; /** Source address */
-    uint16_t dst_addr; /** Destination address */
-    uint32_t opcode;   /** Opcode */
-    meshx_ptr_t p_ctx; /** Pointer to the context structure */
+    uint16_t app_idx;  /** AppKey Index. Used by client models */
+    uint16_t net_idx;  /** NetKey Index. Used by client models */
+    uint32_t opcode;   /** Opcode. Used by client models */
+    uint16_t src_addr; /** Source address. Not used by client models */
+    uint16_t dst_addr; /** Destination address. Not used by client models */
+    meshx_ptr_t p_ctx; /** Pointer to the context structure. Not used by client models */
 } meshx_ctx_t;
 
 /**
@@ -110,12 +110,28 @@ meshx_err_t meshx_plat_del_model_pub(meshx_ptr_t* p_pub);
  *
  * @param[in]  p_model      Pointer to the model structure to be initialized.
  * @param[out] p_pub        Pointer to a location where the address of the publication context will be stored.
- * @param[out] p_cli  Pointer to a location where the address of the on/off client instance will be stored.
+ * @param[out] p_cli        Pointer to a location where the address of the on/off client instance will be stored.
+ * @param[in]  model_id     Model ID for the generic client model.
  *
  * @return meshx_err_t      Returns an error code indicating the result of the operation.
  *                          Typically, MESHX_OK on success or an appropriate error code on failure.
  */
-meshx_err_t meshx_plat_client_create(meshx_ptr_t p_model, meshx_ptr_t* p_pub, meshx_ptr_t* p_cli);
+meshx_err_t meshx_plat_client_create(meshx_ptr_t p_model, meshx_ptr_t* p_pub, meshx_ptr_t* p_cli, uint16_t model_id);
+
+/**
+ * @brief Deletes a generic client model from BLE Mesh.
+ *
+ * This function deletes a generic client model from the BLE Mesh stack,
+ * including the associated publication context and on/off client instance.
+ *
+ * @param[in]  p_model      Pointer to the model structure to be deleted.
+ * @param[out] p_pub        Pointer to a location where the address of the publication context will be stored.
+ * @param[out] p_cli        Pointer to a location where the address of the on/off client instance will be stored.
+ *
+ * @return meshx_err_t      Returns an error code indicating the result of the operation.
+ *                          Typically, MESHX_OK on success or an appropriate error code on failure.
+ */
+meshx_err_t meshx_plat_client_delete(meshx_ptr_t p_model, meshx_ptr_t* p_pub, meshx_ptr_t* p_cli);
 
 /**
  * @brief Retrieve the model ID of a generic server model.

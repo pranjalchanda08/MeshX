@@ -13,8 +13,9 @@
  * @author Pranjal Chanda
  *
  */
-#include "ble_mesh_plat_init.h"
+#include "string.h"
 #include "esp_bt_device.h"
+#include "ble_mesh_plat_init.h"
 #include "interface/meshx_platform.h"
 #include "interface/logging/meshx_log.h"
 #include "interface/ble_mesh/meshx_ble_mesh_cmn.h"
@@ -53,13 +54,16 @@ meshx_err_t meshx_plat_del_model_pub(void ** p_pub)
     return MESHX_SUCCESS;
 }
 
-meshx_err_t meshx_plat_client_create(meshx_ptr_t p_model, meshx_ptr_t* p_pub, meshx_ptr_t* p_cli)
+meshx_err_t meshx_plat_client_create(meshx_ptr_t p_model, meshx_ptr_t* p_pub, meshx_ptr_t* p_cli, uint16_t model_id)
 {
     if (!p_model || !p_pub || !p_cli)
     {
         return MESHX_INVALID_ARG; // Invalid arguments
     }
     meshx_err_t err = MESHX_SUCCESS;
+
+    /* SIG On OFF Init */
+    memcpy((meshx_ptr_t)&(((MESHX_MODEL *)p_model)->model_id), &model_id, sizeof(model_id));
 
     // Create the publication context for the model
     err = meshx_plat_create_model_pub(p_pub, 1);
@@ -83,6 +87,21 @@ meshx_err_t meshx_plat_client_create(meshx_ptr_t p_model, meshx_ptr_t* p_pub, me
     *temp = *p_pub;
 
     return MESHX_SUCCESS; // Successfully created the model and publication context
+}
+
+meshx_err_t meshx_plat_client_delete(meshx_ptr_t p_model, meshx_ptr_t* p_pub, meshx_ptr_t* p_cli)
+{
+    if (!p_model || !p_pub || !p_cli)
+    {
+        return MESHX_INVALID_ARG; // Invalid arguments
+    }
+
+    meshx_plat_del_model_pub(p_pub);
+
+    MESHX_FREE(*p_cli);
+    *p_cli = NULL;
+
+    return MESHX_SUCCESS;
 }
 
 meshx_err_t meshx_get_model_id(meshx_ptr_t p_model, uint16_t *model_id)

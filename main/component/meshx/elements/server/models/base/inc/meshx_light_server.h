@@ -19,6 +19,13 @@
 #if CONFIG_ENABLE_LIGHT_SERVER
 typedef control_task_msg_handle_t meshx_lighting_server_cb;
 
+typedef struct meshx_light_server_send_params
+{
+    meshx_model_t *p_model;
+    meshx_ctx_t *p_ctx;
+    meshx_lighting_server_state_change_t *state_change;
+}meshx_light_server_send_params_t;
+
 /**
  * @brief Sends a message to the BLE subsystem via the control task.
  *
@@ -77,16 +84,11 @@ meshx_err_t meshx_lighting_srv_init(void);
  *
  * This function sends a status message for the Lighting Server model with the specified parameters.
  *
- * @param[in] p_model       Pointer to the Lighting Server model.
- * @param[in] ctx           Pointer to the context of the received messages.
- * @param[in] state_change  Pointer to the state change data for the Lighting Server.
+ * @param[in] params       Pointer to the Lighting Server Sending params
  *
  * @return MESHX_SUCCESS on success, or an appropriate error code on failure.
  */
-meshx_err_t meshx_gen_light_srv_status_send(
-    meshx_model_t *p_model,
-    meshx_ctx_t *ctx,
-    meshx_lighting_server_state_change_t *state_change);
+meshx_err_t meshx_gen_light_srv_status_send(const meshx_light_server_send_params_t *params);
 
 #endif /* CONFIG_ENABLE_LIGHT_SERVER */
 #endif /* __MESHX_LIGHT_SERVER_H__ */

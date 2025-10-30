@@ -104,37 +104,32 @@ static meshx_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_
  * Generic OnOff Set or Get request. It uses the provided model and context to
  * construct and send the message.
  *
- * @param[in] model         The model instance that is sending the status.
- * @param[in] ctx           The context containing information about the message.
- * @param[in] on_off_state  The current On/Off state to be sent in the status message.
+ * @param[in] params The structure containing the model and context for sending the status.
  *
  * @return
  *     - MESHX_SUCCESS: Successfully sent the status message.
  *     - MESHX_INVALID_ARG: Invalid argument provided.
  *     - MESHX_ERR_PLAT: Platform-specific error occurred.
  */
-meshx_err_t meshx_gen_on_off_srv_status_send(
-    meshx_model_t *model,
-    meshx_ctx_t *ctx,
-    uint8_t on_off_state
-)
+meshx_err_t meshx_gen_on_off_srv_status_send(meshx_on_off_srv_state_t *params)
 {
-    if (!model || !ctx)
+    if (!params|| !params->model || !params->ctx)
     {
         return MESHX_INVALID_ARG;
     }
-    ctx->opcode = MESHX_MODEL_OP_GEN_ONOFF_STATUS;
+    params->ctx->opcode = MESHX_MODEL_OP_GEN_ONOFF_STATUS;
     meshx_gen_srv_state_change_t state_change = {
         .onoff_set = {
-            .onoff = on_off_state
+            .onoff = params->on_off_state
         }
     };
-    return meshx_gen_srv_status_send(
-            model,
-            ctx,
-            state_change,
-            sizeof(meshx_state_change_gen_onoff_set_t)
-    );
+    meshx_gen_server_send_params_t send_params = {
+        .p_model = params->model,
+        .p_ctx = params->ctx,
+        .state_change = state_change,
+        .data_len = sizeof(meshx_state_change_gen_onoff_set_t)
+    };
+    return meshx_gen_srv_status_send(&send_params);
 }
 /**
  * @brief Initialize the On/Off server model.

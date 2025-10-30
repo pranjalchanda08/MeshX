@@ -64,6 +64,7 @@ typedef struct dev_struct
  */
 typedef struct meshx_model_interface
 {
+    /* meshx_sig to be deplicated post C++ migration */
     meshx_ptr_t meshx_sig;   /**< SIG model pointer */
     meshx_ptr_t meshx_pub;   /**< publication structures */
     meshx_ptr_t meshx_gen;   /**< generic structures */

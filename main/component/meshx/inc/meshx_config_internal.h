@@ -88,7 +88,6 @@
 #define CONFIG_ENABLE_GEN_ONOFF_CLIENT           1
 #endif /* CONFIG_ENABLE_GEN_ONOFF_CLIENT */
 
-
 /**
  * @brief Gen OnOff Client Counts
  */
@@ -96,6 +95,145 @@
 #define CONFIG_ENABLE_GEN_ONOFF_SERVER           1
 #endif /* CONFIG_ENABLE_GEN_ONOFF_SERVER */
 
+/**
+ * @brief Gen Level Client Enable
+ */
+#ifndef CONFIG_ENABLE_GEN_LEVEL_CLIENT
+#define CONFIG_ENABLE_GEN_LEVEL_CLIENT           1
+#endif /* CONFIG_ENABLE_GEN_LEVEL_CLIENT */
+
+/**
+ * @brief Gen Level Server Enable
+ */
+#ifndef CONFIG_ENABLE_GEN_LEVEL_SERVER
+#define CONFIG_ENABLE_GEN_LEVEL_SERVER           1
+#endif /* CONFIG_ENABLE_GEN_LEVEL_SERVER */
+
+/**
+ * @brief Gen Power OnOff Client Enable
+ */
+#ifndef CONFIG_ENABLE_GEN_POWER_ONOFF_CLIENT
+#define CONFIG_ENABLE_GEN_POWER_ONOFF_CLIENT     1
+#endif /* CONFIG_ENABLE_GEN_POWER_ONOFF_CLIENT */
+
+/**
+ * @brief Gen Power OnOff Server Enable
+ */
+#ifndef CONFIG_ENABLE_GEN_POWER_ONOFF_SERVER
+#define CONFIG_ENABLE_GEN_POWER_ONOFF_SERVER     1
+#endif /* CONFIG_ENABLE_GEN_POWER_ONOFF_SERVER */
+
+/**
+ * @brief Gen Power OnOff Setup Server Enable
+ */
+#if CONFIG_ENABLE_GEN_POWER_ONOFF_SERVER
+#define CONFIG_ENABLE_GEN_POWER_ONOFF_SETUP_SERVER 1
+#endif /* CONFIG_ENABLE_GEN_POWER_ONOFF_SERVER */
+
+/**
+ * @brief Gen Power Level Client Enable
+ */
+#ifndef CONFIG_ENABLE_GEN_POWER_LEVEL_CLIENT
+#define CONFIG_ENABLE_GEN_POWER_LEVEL_CLIENT     1
+#endif /* CONFIG_ENABLE_GEN_POWER_LEVEL_CLIENT */
+
+/**
+ * @brief Gen Power Level Server Enable
+ */
+#ifndef CONFIG_ENABLE_GEN_POWER_LEVEL_SERVER
+#define CONFIG_ENABLE_GEN_POWER_LEVEL_SERVER     1
+#endif /* CONFIG_ENABLE_GEN_POWER_LEVEL_SERVER */
+
+/**
+ * @brief Gen Power Level Setup Server Enable
+ */
+#if CONFIG_ENABLE_GEN_POWER_LEVEL_SERVER
+#define CONFIG_ENABLE_GEN_POWER_LEVEL_SETUP_SERVER 1
+#endif /* CONFIG_ENABLE_GEN_POWER_LEVEL_SERVER */
+
+/**
+ * @brief Gen Default Transition Time Client Enable
+ */
+#ifndef CONFIG_ENABLE_GEN_DEF_TRANS_TIME_CLIENT
+#define CONFIG_ENABLE_GEN_DEF_TRANS_TIME_CLIENT  1
+#endif /* CONFIG_ENABLE_GEN_DEF_TRANS_TIME_CLIENT */
+
+/**
+ * @brief Gen Default Transition Time Server Enable
+ */
+#ifndef CONFIG_ENABLE_GEN_DEF_TRANS_TIME_SERVER
+#define CONFIG_ENABLE_GEN_DEF_TRANS_TIME_SERVER  1
+#endif /* CONFIG_ENABLE_GEN_DEF_TRANS_TIME_SERVER */
+
+/**
+ * @brief Gen Battery Client Enable
+ */
+#ifndef CONFIG_ENABLE_GEN_BATTERY_CLIENT
+#define CONFIG_ENABLE_GEN_BATTERY_CLIENT         1
+#endif /* CONFIG_ENABLE_GEN_BATTERY_CLIENT */
+
+/**
+ * @brief Gen Battery Server Enable
+ */
+#ifndef CONFIG_ENABLE_GEN_BATTERY_SERVER
+#define CONFIG_ENABLE_GEN_BATTERY_SERVER         1
+#endif /* CONFIG_ENABLE_GEN_BATTERY_SERVER */
+
+/**
+ * @brief Gen Location Client Enable
+ */
+#ifndef CONFIG_ENABLE_GEN_LOCATION_CLIENT
+#define CONFIG_ENABLE_GEN_LOCATION_CLIENT        1
+#endif /* CONFIG_ENABLE_GEN_LOCATION_CLIENT */
+
+/**
+ * @brief Gen Location Server Enable
+ */
+#ifndef CONFIG_ENABLE_GEN_LOCATION_SERVER
+#define CONFIG_ENABLE_GEN_LOCATION_SERVER        1
+#endif /* CONFIG_ENABLE_GEN_LOCATION_SERVER */
+
+/**
+ * @brief Gen Location Setup Server Enable
+ */
+#if CONFIG_ENABLE_GEN_LOCATION_SERVER
+#define CONFIG_ENABLE_GEN_LOCATION_SETUP_SERVER  1
+#endif /* CONFIG_ENABLE_GEN_LOCATION_SERVER */
+
+/**
+ * @brief Gen Property Client Enable
+ */
+#ifndef CONFIG_ENABLE_GEN_PROPERTY_CLIENT
+#define CONFIG_ENABLE_GEN_PROPERTY_CLIENT        1
+#endif /* CONFIG_ENABLE_GEN_PROPERTY_CLIENT */
+
+/**
+ * @brief Gen Admin Property Server Enable
+ */
+#ifndef CONFIG_ENABLE_GEN_ADMIN_PROPERTY_SERVER
+#define CONFIG_ENABLE_GEN_ADMIN_PROPERTY_SERVER  1
+#endif /* CONFIG_ENABLE_GEN_ADMIN_PROPERTY_SERVER */
+
+/**
+ * @brief Gen Manufacturer Property Server Enable
+ */
+#ifndef CONFIG_ENABLE_GEN_MANU_PROP_SERVER
+#define CONFIG_ENABLE_GEN_MANU_PROP_SERVER 1
+#endif /* CONFIG_ENABLE_GEN_MANU_PROP_SERVER */
+
+/**
+ * @brief Gen User Property Server Enable
+ */
+#ifndef CONFIG_ENABLE_GEN_USER_PROPERTY_SERVER
+#define CONFIG_ENABLE_GEN_USER_PROPERTY_SERVER   1
+#endif /* CONFIG_ENABLE_GEN_USER_PROPERTY_SERVER */
+
+/**
+ * @brief Gen Client Property Server Enable
+ */
+#ifndef CONFIG_ENABLE_GEN_CLIENT_PROPERTY_SERVER
+#define CONFIG_ENABLE_GEN_CLIENT_PROPERTY_SERVER 1
+#endif /* CONFIG_ENABLE_GEN_CLIENT_PROPERTY_SERVER */
 
 /**
  * @brief Light CTL Server Counts
@@ -191,6 +329,97 @@
     #error "Enable this to use OnOff Server Element"
     #endif
 #endif /* CONFIG_ENABLE_GEN_ONOFF_SERVER */
+
+#if CONFIG_ENABLE_GEN_ONOFF_CLIENT
+    #if !CONFIG_ENABLE_GEN_CLIENT
+    #error "Enable GEN_CLIENT to use OnOff Client Element"
+    #endif
+#endif /* CONFIG_ENABLE_GEN_ONOFF_CLIENT */
+
+#if CONFIG_ENABLE_GEN_LEVEL_SERVER
+    #if !CONFIG_ENABLE_GEN_SERVER
+    #error "Enable GEN_SERVER to use Level Server Element"
+    #endif
+#endif /* CONFIG_ENABLE_GEN_LEVEL_SERVER */
+
+#if CONFIG_ENABLE_GEN_LEVEL_CLIENT
+    #if !CONFIG_ENABLE_GEN_CLIENT
+    #error "Enable GEN_CLIENT to use Level Client Element"
+    #endif
+#endif /* CONFIG_ENABLE_GEN_LEVEL_CLIENT */
+
+#if CONFIG_ENABLE_GEN_BATTERY_SERVER
+    #if !CONFIG_ENABLE_GEN_SERVER
+    #error "Enable GEN_SERVER to use Battery Server Element"
+    #endif
+#endif /* CONFIG_ENABLE_GEN_BATTERY_SERVER */
+
+#if CONFIG_ENABLE_GEN_BATTERY_CLIENT
+    #if !CONFIG_ENABLE_GEN_CLIENT
+    #error "Enable GEN_CLIENT to use Battery Client Element"
+    #endif
+#endif /* CONFIG_ENABLE_GEN_BATTERY_CLIENT */
+
+#if CONFIG_ENABLE_GEN_POWER_LEVEL_SERVER
+    #if !CONFIG_ENABLE_GEN_SERVER
+    #error "Enable GEN_SERVER to use Power Level Server Element"
+    #endif
+#endif /* CONFIG_ENABLE_GEN_POWER_LEVEL_SERVER */
+
+#if CONFIG_ENABLE_GEN_POWER_LEVEL_CLIENT
+    #if !CONFIG_ENABLE_GEN_CLIENT
+    #error "Enable GEN_CLIENT to use Power Level Client Element"
+    #endif
+#endif /* CONFIG_ENABLE_GEN_POWER_LEVEL_CLIENT */
+
+#if CONFIG_ENABLE_GEN_POWER_ONOFF_SERVER
+    #if !CONFIG_ENABLE_GEN_SERVER
+    #error "Enable GEN_SERVER to use Power OnOff Server Element"
+    #endif
+#endif /* CONFIG_ENABLE_GEN_POWER_ONOFF_SERVER */
+
+#if CONFIG_ENABLE_GEN_POWER_ONOFF_CLIENT
+    #if !CONFIG_ENABLE_GEN_CLIENT
+    #error "Enable GEN_CLIENT to use Power OnOff Client Element"
+    #endif
+#endif /* CONFIG_ENABLE_GEN_POWER_ONOFF_CLIENT */
+
+#if CONFIG_ENABLE_GEN_DEF_TRANS_TIME_SERVER
+    #if !CONFIG_ENABLE_GEN_SERVER
+    #error "Enable GEN_SERVER to use Default Transition Time Server Element"
+    #endif
+#endif /* CONFIG_ENABLE_GEN_DEF_TRANS_TIME_SERVER */
+
+#if CONFIG_ENABLE_GEN_DEF_TRANS_TIME_CLIENT
+    #if !CONFIG_ENABLE_GEN_CLIENT
+    #error "Enable GEN_CLIENT to use Default Transition Time Client Element"
+    #endif
+#endif /* CONFIG_ENABLE_GEN_DEF_TRANS_TIME_CLIENT */
+
+#if CONFIG_ENABLE_GEN_LOCATION_SERVER
+    #if !CONFIG_ENABLE_GEN_SERVER
+    #error "Enable GEN_SERVER to use Location Server Element"
+    #endif
+#endif /* CONFIG_ENABLE_GEN_LOCATION_SERVER */
+
+#if CONFIG_ENABLE_GEN_LOCATION_CLIENT
+    #if !CONFIG_ENABLE_GEN_CLIENT
+    #error "Enable GEN_CLIENT to use Location Client Element"
+    #endif
+#endif /* CONFIG_ENABLE_GEN_LOCATION_CLIENT */
+
+/* Property Server checks require all property types */
+#if CONFIG_ENABLE_GEN_ADMIN_PROPERTY_SERVER || CONFIG_ENABLE_GEN_MANU_PROP_SERVER || CONFIG_ENABLE_GEN_USER_PROPERTY_SERVER || CONFIG_ENABLE_GEN_CLIENT_PROPERTY_SERVER
+    #if !CONFIG_ENABLE_GEN_SERVER
+    #error "Enable GEN_SERVER to use Property Server Elements"
+    #endif
+#endif
+
+#if CONFIG_ENABLE_GEN_PROPERTY_CLIENT
+    #if !CONFIG_ENABLE_GEN_CLIENT
+    #error "Enable GEN_CLIENT to use Property Client Element"
+    #endif
+#endif /* CONFIG_ENABLE_GEN_PROPERTY_CLIENT */
 
 #if CONFIG_ENABLE_LIGHT_CTL_SERVER
     #if !CONFIG_ENABLE_LIGHT_SERVER

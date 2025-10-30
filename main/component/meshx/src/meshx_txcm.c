@@ -265,6 +265,7 @@ static meshx_err_t meshx_tx_queue_peek(const meshx_tx_queue_t *q, meshx_txcm_tx_
  *
  * @param[in] q Pointer to the transmission queue structure to search in.
  * @param[in] param Pointer to the uint8_t array to search for.
+ * @param[in] dest_addr Destination address associated with the parameter.
  *
  * @return meshx_err_t
  */
