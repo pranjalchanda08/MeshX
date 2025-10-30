@@ -7,7 +7,7 @@ var searchData=
   ['_7emeshxbaselightservermodel_4',['~meshXBaseLightServerModel',['../db/df5/classmeshXBaseLightServerModel.html#ab269aac1a33fa51493b956fab343f565',1,'meshXBaseLightServerModel']]],
   ['_7emeshxbasemodel_5',['~meshXBaseModel',['../de/dac/classmeshXBaseModel.html#ad061e64780bc96c8a0527c384a612f1f',1,'meshXBaseModel']]],
   ['_7emeshxbaseservermodel_6',['~meshXBaseServerModel',['../d8/d9b/classmeshXBaseServerModel.html#ab52e7665a9d791ec6909137ec2309986',1,'meshXBaseServerModel']]],
-  ['_7emeshxclientmodel_7',['~meshXClientModel',['../db/d08/group__meshx__model.html#ga53bd53d62327850ec281dd501273b6cf',1,'meshXClientModel']]],
+  ['_7emeshxclientmodel_7',['~meshXClientModel',['../db/de4/classmeshXClientModel.html#ae0aa745ed922fa8fe8029c775c92805a',1,'meshXClientModel']]],
   ['_7emeshxelement_8',['~meshXElement',['../de/dfb/classmeshXElement.html#a6a6dc1440c5439a2433996ff55aefda3',1,'meshXElement']]],
   ['_7emeshxelementif_9',['~meshXElementIF',['../d9/db0/classmeshXElementIF.html#a6978b15f87c4ea728f528af671147f0d',1,'meshXElementIF']]],
   ['_7emeshxgenericadminpropertyservermodel_10',['~meshXGenericAdminPropertyServerModel',['../df/d36/classmeshXGenericAdminPropertyServerModel.html#a4ac02d1a98e82b4f4d829c7030578480',1,'meshXGenericAdminPropertyServerModel']]],
@@ -32,6 +32,6 @@ var searchData=
   ['_7emeshxgenericpoweronoffsetupservermodel_29',['~meshXGenericPowerOnOffSetupServerModel',['../da/d7f/classmeshXGenericPowerOnOffSetupServerModel.html#a48450e8d8e86eebac860e42cf4638b0b',1,'meshXGenericPowerOnOffSetupServerModel']]],
   ['_7emeshxgenericpropertyclientmodel_30',['~meshXGenericPropertyClientModel',['../d8/dfa/classmeshXGenericPropertyClientModel.html#ac36de995a43fb9feb8782c0ac46beae2',1,'meshXGenericPropertyClientModel']]],
   ['_7emeshxgenericuserpropertyservermodel_31',['~meshXGenericUserPropertyServerModel',['../d5/d31/classmeshXGenericUserPropertyServerModel.html#a179231fadec862c2c70abdb133a21b27',1,'meshXGenericUserPropertyServerModel']]],
-  ['_7emeshxmodel_32',['~meshXModel',['../df/d4b/classmeshXModel.html#a42ddb638193f45e6df5db7cfad0517b0',1,'meshXModel']]],
-  ['_7emeshxservermodel_33',['~meshXServerModel',['../da/dbb/classmeshXServerModel.html#a1c0352459f96183509fffb64c9e100bd',1,'meshXServerModel']]]
+  ['_7emeshxmodel_32',['~meshXModel',['../db/d08/group__meshx__model.html#gaccacc6ba99e081764361218b0c2ed43b',1,'meshXModel']]],
+  ['_7emeshxservermodel_33',['~meshXServerModel',['../da/dbb/classmeshXServerModel.html#a724548b7085f64d0e6f270f8358cd2d6',1,'meshXServerModel']]]
 ];

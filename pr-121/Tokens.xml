@@ -8175,6 +8175,197 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshxBaseModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+    <DeclaredIn>meshx_model_class.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshxBaseClientModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_battery_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_battery_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_location_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_location_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>get_init_status</Name>
       <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
@@ -8417,197 +8608,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>get_model_intr</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshXModel&lt; meshxBaseModel_t, meshx_send_packet_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
-    <DeclaredIn>meshx_model_class.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>get_model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshXModel&lt; meshxBaseClientModel_t, meshx_send_packet_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>get_model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_property_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>get_model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_battery_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>get_model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_battery_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>get_model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>get_model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>get_model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_level_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>get_model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_level_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>get_model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_location_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>get_model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_location_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>get_model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>get_model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>get_model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_level_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>get_model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>get_model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>get_model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>get_model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>get_model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>get_model_type</Name>
       <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
@@ -9038,6 +9038,197 @@
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
     <Anchor>a4f0d11deeb9a398031d9df6f29ac197b</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshxBaseModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+    <DeclaredIn>meshx_model_class.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshxBaseClientModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_battery_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_battery_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_location_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_location_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -13914,196 +14105,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>model_intr</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshXModel&lt; meshxBaseModel_t, meshx_send_packet_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>data</Type>
-      <Scope>meshXModel&lt; meshxBaseClientModel_t, meshx_send_packet_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>data</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_property_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>data</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_battery_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>data</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_battery_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>data</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>data</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>data</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_level_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>data</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_level_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>data</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_location_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>data</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_location_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>data</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>data</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>data</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_level_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>data</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>data</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>data</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>data</Type>
-      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>model_intr</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>data</Type>
-      <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
-    </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>model_op_code</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -16328,6 +16329,196 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshxBaseModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshxBaseClientModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_battery_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_battery_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_location_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_location_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>p_plat_model</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -16515,6 +16706,196 @@
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
     <Anchor>a8a5d29f57289d451c897257235e8d165</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshxBaseModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshxBaseClientModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_battery_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_battery_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_location_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_location_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -16801,6 +17182,17 @@
       <Name>plat_model_create</Name>
       <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
+      <Scope>meshXGenericOnOffServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d7/d7a/classmeshXGenericOnOffServerModel.html</Path>
+    <Anchor>abff17405840be42c295c7d25a77dd4f1</Anchor>
+    <DeclaredIn>meshx_model_onoff.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_create</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
       <Scope>meshXModel&lt; meshxBaseModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
@@ -17077,6 +17469,299 @@
     </TokenIdentifier>
     <Path>db/d08/group__meshx__model.html</Path>
     <Anchor>ga92de375d5622517bb09c0b763358f20a</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXGenericOnOffServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d7/d7a/classmeshXGenericOnOffServerModel.html</Path>
+    <Anchor>ac31f534908d08b57defde11c0fdde490</Anchor>
+    <DeclaredIn>meshx_model_onoff.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshxBaseModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+    <DeclaredIn>meshx_model_class.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXClientModel&lt; meshxBaseClientModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>ga605a2f8548b5177ff1a2b1108915a702</Anchor>
+    <DeclaredIn>meshx_model_class.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshxBaseClientModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_battery_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_battery_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_location_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_location_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_battery_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>ga605a2f8548b5177ff1a2b1108915a702</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>ga605a2f8548b5177ff1a2b1108915a702</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>ga605a2f8548b5177ff1a2b1108915a702</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_location_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>ga605a2f8548b5177ff1a2b1108915a702</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>ga605a2f8548b5177ff1a2b1108915a702</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_power_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>ga605a2f8548b5177ff1a2b1108915a702</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>ga605a2f8548b5177ff1a2b1108915a702</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>ga605a2f8548b5177ff1a2b1108915a702</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -19755,6 +20440,197 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshxBaseModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+    <DeclaredIn>meshx_model_class.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshxBaseClientModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_battery_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_battery_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_location_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_location_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>set_get</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -20075,6 +20951,197 @@
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
     <Anchor>a332e584bb9487a0865d4ee3519ca0230</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshxBaseModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+    <DeclaredIn>meshx_model_class.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshxBaseClientModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_battery_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_battery_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_location_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_location_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23148,8 +24215,8 @@
       <Type>instm</Type>
       <Scope>meshXClientModel&lt; meshxBaseClientModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>db/d08/group__meshx__model.html</Path>
-    <Anchor>ga53bd53d62327850ec281dd501273b6cf</Anchor>
+    <Path>db/de4/classmeshXClientModel.html</Path>
+    <Anchor>ae0aa745ed922fa8fe8029c775c92805a</Anchor>
     <DeclaredIn>meshx_model_class.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -23159,8 +24226,8 @@
       <Type>instm</Type>
       <Scope>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_battery_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>db/d08/group__meshx__model.html</Path>
-    <Anchor>ga53bd53d62327850ec281dd501273b6cf</Anchor>
+    <Path>db/de4/classmeshXClientModel.html</Path>
+    <Anchor>ae0aa745ed922fa8fe8029c775c92805a</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23169,8 +24236,8 @@
       <Type>instm</Type>
       <Scope>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>db/d08/group__meshx__model.html</Path>
-    <Anchor>ga53bd53d62327850ec281dd501273b6cf</Anchor>
+    <Path>db/de4/classmeshXClientModel.html</Path>
+    <Anchor>ae0aa745ed922fa8fe8029c775c92805a</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23179,8 +24246,8 @@
       <Type>instm</Type>
       <Scope>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_level_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>db/d08/group__meshx__model.html</Path>
-    <Anchor>ga53bd53d62327850ec281dd501273b6cf</Anchor>
+    <Path>db/de4/classmeshXClientModel.html</Path>
+    <Anchor>ae0aa745ed922fa8fe8029c775c92805a</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23189,8 +24256,8 @@
       <Type>instm</Type>
       <Scope>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_location_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>db/d08/group__meshx__model.html</Path>
-    <Anchor>ga53bd53d62327850ec281dd501273b6cf</Anchor>
+    <Path>db/de4/classmeshXClientModel.html</Path>
+    <Anchor>ae0aa745ed922fa8fe8029c775c92805a</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23199,8 +24266,8 @@
       <Type>instm</Type>
       <Scope>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>db/d08/group__meshx__model.html</Path>
-    <Anchor>ga53bd53d62327850ec281dd501273b6cf</Anchor>
+    <Path>db/de4/classmeshXClientModel.html</Path>
+    <Anchor>ae0aa745ed922fa8fe8029c775c92805a</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23209,8 +24276,8 @@
       <Type>instm</Type>
       <Scope>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_power_level_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>db/d08/group__meshx__model.html</Path>
-    <Anchor>ga53bd53d62327850ec281dd501273b6cf</Anchor>
+    <Path>db/de4/classmeshXClientModel.html</Path>
+    <Anchor>ae0aa745ed922fa8fe8029c775c92805a</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23219,8 +24286,8 @@
       <Type>instm</Type>
       <Scope>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>db/d08/group__meshx__model.html</Path>
-    <Anchor>ga53bd53d62327850ec281dd501273b6cf</Anchor>
+    <Path>db/de4/classmeshXClientModel.html</Path>
+    <Anchor>ae0aa745ed922fa8fe8029c775c92805a</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23229,8 +24296,8 @@
       <Type>instm</Type>
       <Scope>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>db/d08/group__meshx__model.html</Path>
-    <Anchor>ga53bd53d62327850ec281dd501273b6cf</Anchor>
+    <Path>db/de4/classmeshXClientModel.html</Path>
+    <Anchor>ae0aa745ed922fa8fe8029c775c92805a</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23503,8 +24570,8 @@
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshxBaseModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
     <DeclaredIn>meshx_model_class.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -23514,8 +24581,8 @@
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshxBaseClientModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23524,8 +24591,8 @@
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_property_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23534,8 +24601,8 @@
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_battery_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23544,8 +24611,8 @@
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_battery_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23554,8 +24621,8 @@
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23564,8 +24631,8 @@
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23574,8 +24641,8 @@
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_level_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23584,8 +24651,8 @@
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_level_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23594,8 +24661,8 @@
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_location_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23604,8 +24671,8 @@
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_location_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23614,8 +24681,8 @@
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23624,8 +24691,8 @@
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23634,8 +24701,8 @@
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_level_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23644,8 +24711,8 @@
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23654,8 +24721,8 @@
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23664,8 +24731,8 @@
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23674,8 +24741,8 @@
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23684,8 +24751,8 @@
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
-    <Path>df/d4b/classmeshXModel.html</Path>
-    <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23695,7 +24762,7 @@
       <Scope>meshXServerModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>da/dbb/classmeshXServerModel.html</Path>
-    <Anchor>a1c0352459f96183509fffb64c9e100bd</Anchor>
+    <Anchor>a724548b7085f64d0e6f270f8358cd2d6</Anchor>
     <DeclaredIn>meshx_model_class.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -23706,7 +24773,7 @@
       <Scope>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_property_send_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>da/dbb/classmeshXServerModel.html</Path>
-    <Anchor>a1c0352459f96183509fffb64c9e100bd</Anchor>
+    <Anchor>a724548b7085f64d0e6f270f8358cd2d6</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23716,7 +24783,7 @@
       <Scope>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_battery_send_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>da/dbb/classmeshXServerModel.html</Path>
-    <Anchor>a1c0352459f96183509fffb64c9e100bd</Anchor>
+    <Anchor>a724548b7085f64d0e6f270f8358cd2d6</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23726,7 +24793,7 @@
       <Scope>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_def_trans_time_send_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>da/dbb/classmeshXServerModel.html</Path>
-    <Anchor>a1c0352459f96183509fffb64c9e100bd</Anchor>
+    <Anchor>a724548b7085f64d0e6f270f8358cd2d6</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23736,7 +24803,7 @@
       <Scope>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_level_send_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>da/dbb/classmeshXServerModel.html</Path>
-    <Anchor>a1c0352459f96183509fffb64c9e100bd</Anchor>
+    <Anchor>a724548b7085f64d0e6f270f8358cd2d6</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23746,7 +24813,7 @@
       <Scope>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_location_send_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>da/dbb/classmeshXServerModel.html</Path>
-    <Anchor>a1c0352459f96183509fffb64c9e100bd</Anchor>
+    <Anchor>a724548b7085f64d0e6f270f8358cd2d6</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23756,7 +24823,7 @@
       <Scope>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>da/dbb/classmeshXServerModel.html</Path>
-    <Anchor>a1c0352459f96183509fffb64c9e100bd</Anchor>
+    <Anchor>a724548b7085f64d0e6f270f8358cd2d6</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23766,7 +24833,7 @@
       <Scope>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>da/dbb/classmeshXServerModel.html</Path>
-    <Anchor>a1c0352459f96183509fffb64c9e100bd</Anchor>
+    <Anchor>a724548b7085f64d0e6f270f8358cd2d6</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23776,7 +24843,7 @@
       <Scope>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>da/dbb/classmeshXServerModel.html</Path>
-    <Anchor>a1c0352459f96183509fffb64c9e100bd</Anchor>
+    <Anchor>a724548b7085f64d0e6f270f8358cd2d6</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -26300,6 +27367,46 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>light_hsl_sig_template</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>de/d42/esp__light__srv__model_8c.html</Path>
+    <Anchor>a8f7504863144057443dd96d6f99b4fee</Anchor>
+    <DeclaredIn>esp_light_srv_model.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>light_lc_sig_template</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>de/d42/esp__light__srv__model_8c.html</Path>
+    <Anchor>a44f7c3b9105cdc1cb5f5dda91f328f39</Anchor>
+    <DeclaredIn>esp_light_srv_model.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>light_lightness_sig_template</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>de/d42/esp__light__srv__model_8c.html</Path>
+    <Anchor>a349d7c855f690e401d32557f270d3423</Anchor>
+    <DeclaredIn>esp_light_srv_model.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>light_xyl_sig_template</Name>
+      <APILanguage>c</APILanguage>
+      <Type>data</Type>
+    </TokenIdentifier>
+    <Path>de/d42/esp__light__srv__model_8c.html</Path>
+    <Anchor>aedb5475eb89445ecfde96b7246b14879</Anchor>
+    <DeclaredIn>esp_light_srv_model.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>log_lvl_str</Name>
       <APILanguage>c</APILanguage>
       <Type>data</Type>
@@ -28621,6 +29728,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>MESHX_GEN_BATTERY_SRV</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+    <Anchor>a05b5722201ad255f5c3460b48693e076</Anchor>
+    <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_GEN_CLI_CB</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
@@ -29091,6 +30208,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>MESHX_GEN_LEVEL_SRV</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+    <Anchor>ab955e72044dd88072fbcc84f6dcccd21</Anchor>
+    <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_GEN_LIGHT_CLI_CB</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
@@ -29521,6 +30648,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>MESHX_GEN_LOCATION_SRV</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+    <Anchor>a290039206e98a6e419431793d597d5cb</Anchor>
+    <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_GEN_MANUFACTURER_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
@@ -29881,6 +31018,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>MESHX_GEN_POWER_SRV</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+    <Anchor>a141ab2fe82d7b7f839092d94426a89c2</Anchor>
+    <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_GEN_PROPERTY_CLIENT_MODEL_TEMPLATE_PARAMS</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
@@ -30088,6 +31235,16 @@
     <Path>da/dcb/meshx__gen__server_8c.html</Path>
     <Anchor>a561407a90aaafb5535ac626a7f067448</Anchor>
     <DeclaredIn>meshx_gen_server.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_GEN_TRANS_TIME_SRV</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+    <Anchor>af2ba6e92c023c9379835a73870f64371</Anchor>
+    <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -31041,6 +32198,96 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>MESHX_LIGHT_HSL_HUE_SRV</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+    <Anchor>a5b2c4483e7b784daced3658d6c20025e</Anchor>
+    <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_HSL_SAT_SRV</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+    <Anchor>a2e598ee4bc579917c0219dcd570ad3b0</Anchor>
+    <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_HSL_SRV</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+    <Anchor>aa75dde2a4288519dc9f2736038a7a499</Anchor>
+    <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_HSL_STATE</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+    <Anchor>a14e74cbc4a324e7a6a57511c812bac73</Anchor>
+    <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_LC_SETUP_SRV</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+    <Anchor>aec490fda2bf04d865c37ffeea49c5b51</Anchor>
+    <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_LC_SRV</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+    <Anchor>a903fd6d6d77de567f9a7082eccc2f794</Anchor>
+    <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_LC_STATE</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+    <Anchor>aec14d58b09930c4ac02e7d1d194c8776</Anchor>
+    <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_LIGHTNESS_SRV</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+    <Anchor>ade222257f910c65899a9cc4d1bbf8b05</Anchor>
+    <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_LIGHTNESS_STATE</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+    <Anchor>a160e04719447c878ce7bfec5972e376d</Anchor>
+    <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_LIGHT_SERVER_INIT_MAGIC_NO</Name>
       <APILanguage>c</APILanguage>
       <Type>data</Type>
@@ -31097,6 +32344,26 @@
     </TokenIdentifier>
     <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
     <Anchor>a3072c581597c9d6d79060e42d9ae5b1f</Anchor>
+    <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_XYL_SRV</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+    <Anchor>a95eb8cea552e5d489f24a491ecd8f52b</Anchor>
+    <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_XYL_STATE</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+    <Anchor>a28eba9ffc7d99aebde7202722d56efe6</Anchor>
     <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
   </Token>
   <Token>
@@ -37101,6 +38368,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_plat_battery_gen_srv_create</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d4/d0c/meshx__ble__mesh__gen__srv_8h.html</Path>
+    <Anchor>a7ceb12ca4acc3e0eef85e7f82391577b</Anchor>
+    <DeclaredIn>meshx_ble_mesh_gen_srv.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_plat_battery_gen_srv_create</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d7/d7a/esp__gen__srv__model_8c.html</Path>
+    <Anchor>a7ceb12ca4acc3e0eef85e7f82391577b</Anchor>
+    <DeclaredIn>esp_gen_srv_model.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_plat_ble_mesh_init</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -37228,6 +38515,26 @@
     <Path>de/d42/esp__light__srv__model_8c.html</Path>
     <Anchor>acbff44e606e09653f307c0ca3e290891</Anchor>
     <DeclaredIn>esp_light_srv_model.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_plat_def_trans_time_gen_srv_create</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d4/d0c/meshx__ble__mesh__gen__srv_8h.html</Path>
+    <Anchor>a86e388bc3e7e33c76f9f13f4e7f796a9</Anchor>
+    <DeclaredIn>meshx_ble_mesh_gen_srv.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_plat_def_trans_time_gen_srv_create</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d7/d7a/esp__gen__srv__model_8c.html</Path>
+    <Anchor>a86e388bc3e7e33c76f9f13f4e7f796a9</Anchor>
+    <DeclaredIn>esp_gen_srv_model.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -37521,6 +38828,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_plat_level_gen_srv_create</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d4/d0c/meshx__ble__mesh__gen__srv_8h.html</Path>
+    <Anchor>a473e52cd522efe68f735555199a1ae22</Anchor>
+    <DeclaredIn>meshx_ble_mesh_gen_srv.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_plat_level_gen_srv_create</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d7/d7a/esp__gen__srv__model_8c.html</Path>
+    <Anchor>a473e52cd522efe68f735555199a1ae22</Anchor>
+    <DeclaredIn>esp_gen_srv_model.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_plat_light_client_delete</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -37641,6 +38968,66 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_plat_light_hsl_srv_create</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d7/de0/meshx__ble__mesh__light__srv_8h.html</Path>
+    <Anchor>aac2ce1dbfdaf3a031c534ea03cdcec38</Anchor>
+    <DeclaredIn>meshx_ble_mesh_light_srv.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_plat_light_hsl_srv_create</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>de/d42/esp__light__srv__model_8c.html</Path>
+    <Anchor>aac2ce1dbfdaf3a031c534ea03cdcec38</Anchor>
+    <DeclaredIn>esp_light_srv_model.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_plat_light_lc_srv_create</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d7/de0/meshx__ble__mesh__light__srv_8h.html</Path>
+    <Anchor>a1e91d17b1d95604e6b208324d07d2bac</Anchor>
+    <DeclaredIn>meshx_ble_mesh_light_srv.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_plat_light_lc_srv_create</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>de/d42/esp__light__srv__model_8c.html</Path>
+    <Anchor>a1e91d17b1d95604e6b208324d07d2bac</Anchor>
+    <DeclaredIn>esp_light_srv_model.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_plat_light_lightness_srv_create</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d7/de0/meshx__ble__mesh__light__srv_8h.html</Path>
+    <Anchor>adbae4b1f94fa8e433732afdc17ba0695</Anchor>
+    <DeclaredIn>meshx_ble_mesh_light_srv.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_plat_light_lightness_srv_create</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>de/d42/esp__light__srv__model_8c.html</Path>
+    <Anchor>adbae4b1f94fa8e433732afdc17ba0695</Anchor>
+    <DeclaredIn>esp_light_srv_model.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_plat_light_srv_delete</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -37698,6 +39085,46 @@
     <Path>de/d42/esp__light__srv__model_8c.html</Path>
     <Anchor>aaf4a06cbc32f7df952d6b4ec876051de</Anchor>
     <DeclaredIn>esp_light_srv_model.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_plat_light_xyl_srv_create</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d7/de0/meshx__ble__mesh__light__srv_8h.html</Path>
+    <Anchor>ac873825181117494bff9c017ae3f5f1c</Anchor>
+    <DeclaredIn>meshx_ble_mesh_light_srv.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_plat_light_xyl_srv_create</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>de/d42/esp__light__srv__model_8c.html</Path>
+    <Anchor>ac873825181117494bff9c017ae3f5f1c</Anchor>
+    <DeclaredIn>esp_light_srv_model.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_plat_location_gen_srv_create</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d4/d0c/meshx__ble__mesh__gen__srv_8h.html</Path>
+    <Anchor>aa242106b6a15f40a53d2279a7ad20677</Anchor>
+    <DeclaredIn>meshx_ble_mesh_gen_srv.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_plat_location_gen_srv_create</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d7/d7a/esp__gen__srv__model_8c.html</Path>
+    <Anchor>aa242106b6a15f40a53d2279a7ad20677</Anchor>
+    <DeclaredIn>esp_gen_srv_model.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -37737,6 +39164,26 @@
     </TokenIdentifier>
     <Path>d7/d7a/esp__gen__srv__model_8c.html</Path>
     <Anchor>a2387de9646c86c19dffb6b2cd78385fa</Anchor>
+    <DeclaredIn>esp_gen_srv_model.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_plat_power_level_gen_srv_create</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d4/d0c/meshx__ble__mesh__gen__srv_8h.html</Path>
+    <Anchor>aae7e711e85ae465439c3ba9d7232ab72</Anchor>
+    <DeclaredIn>meshx_ble_mesh_gen_srv.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_plat_power_level_gen_srv_create</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d7/d7a/esp__gen__srv__model_8c.html</Path>
+    <Anchor>aae7e711e85ae465439c3ba9d7232ab72</Anchor>
     <DeclaredIn>esp_gen_srv_model.c</DeclaredIn>
   </Token>
   <Token>

@@ -201,9 +201,14 @@
             <Anchor>ga92de375d5622517bb09c0b763358f20a</Anchor>
            </Node>
            <Node>
-            <Name>meshXClientModel::~meshXClientModel</Name>
+            <Name>meshXClientModel::plat_model_delete</Name>
             <Path>db/d08/group__meshx__model.html</Path>
-            <Anchor>ga53bd53d62327850ec281dd501273b6cf</Anchor>
+            <Anchor>ga605a2f8548b5177ff1a2b1108915a702</Anchor>
+           </Node>
+           <Node>
+            <Name>meshXModel::~meshXModel</Name>
+            <Path>db/d08/group__meshx__model.html</Path>
+            <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
            </Node>
           </Subnodes>
          </Node>
@@ -9173,19 +9178,24 @@
               <Anchor>gaab2b8cd0d3e6df21160ef87fd7ac193b</Anchor>
              </Node>
              <Node>
+              <Name>~meshXClientModel</Name>
+              <Path>db/de4/classmeshXClientModel.html</Path>
+              <Anchor>ae0aa745ed922fa8fe8029c775c92805a</Anchor>
+             </Node>
+             <Node>
               <Name>meshXClientModel</Name>
               <Path>db/de4/classmeshXClientModel.html</Path>
               <Anchor>a63c7c60e1aebfda568f618cdc40b7ebd</Anchor>
              </Node>
              <Node>
-              <Name>~meshXClientModel</Name>
-              <Path>db/d08/group__meshx__model.html</Path>
-              <Anchor>ga53bd53d62327850ec281dd501273b6cf</Anchor>
-             </Node>
-             <Node>
               <Name>plat_model_create</Name>
               <Path>db/d08/group__meshx__model.html</Path>
               <Anchor>ga92de375d5622517bb09c0b763358f20a</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_delete</Name>
+              <Path>db/d08/group__meshx__model.html</Path>
+              <Anchor>ga605a2f8548b5177ff1a2b1108915a702</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -9638,6 +9648,16 @@
               <Path>d7/d7a/classmeshXGenericOnOffServerModel.html</Path>
               <Anchor>a1913146efa33d917e16c4a364676e851</Anchor>
              </Node>
+             <Node>
+              <Name>plat_model_create</Name>
+              <Path>d7/d7a/classmeshXGenericOnOffServerModel.html</Path>
+              <Anchor>abff17405840be42c295c7d25a77dd4f1</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_delete</Name>
+              <Path>d7/d7a/classmeshXGenericOnOffServerModel.html</Path>
+              <Anchor>ac31f534908d08b57defde11c0fdde490</Anchor>
+             </Node>
             </Subnodes>
            </Node>
            <Node>
@@ -9874,8 +9894,8 @@
              </Node>
              <Node>
               <Name>~meshXModel</Name>
-              <Path>df/d4b/classmeshXModel.html</Path>
-              <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+              <Path>db/d08/group__meshx__model.html</Path>
+              <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
              </Node>
              <Node>
               <Name>get_base_model</Name>
@@ -9883,14 +9903,14 @@
               <Anchor>a4c89eef412069b61d52fcd49444810de</Anchor>
              </Node>
              <Node>
+              <Name>get_gen_struct</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
+              <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+             </Node>
+             <Node>
               <Name>get_init_status</Name>
               <Path>df/d4b/classmeshXModel.html</Path>
               <Anchor>a4cd7ad73052af2fc6b825a83325d5163</Anchor>
-             </Node>
-             <Node>
-              <Name>get_model_intr</Name>
-              <Path>df/d4b/classmeshXModel.html</Path>
-              <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
              </Node>
              <Node>
               <Name>get_parent_element</Name>
@@ -9901,6 +9921,11 @@
               <Name>get_plat_model</Name>
               <Path>df/d4b/classmeshXModel.html</Path>
               <Anchor>a4f0d11deeb9a398031d9df6f29ac197b</Anchor>
+             </Node>
+             <Node>
+              <Name>get_pub_struct</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
+              <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
              </Node>
              <Node>
               <Name>model_from_ble_cb</Name>
@@ -9918,9 +9943,24 @@
               <Anchor>aff99fd62a17483196f25c126f0d8af5a</Anchor>
              </Node>
              <Node>
+              <Name>plat_model_delete</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
+              <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+             </Node>
+             <Node>
+              <Name>set_gen_struct</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
+              <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+             </Node>
+             <Node>
               <Name>set_parent_element</Name>
               <Path>df/d4b/classmeshXModel.html</Path>
               <Anchor>a332e584bb9487a0865d4ee3519ca0230</Anchor>
+             </Node>
+             <Node>
+              <Name>set_pub_struct</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
+              <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
              </Node>
              <Node>
               <Name>base_model</Name>
@@ -9928,14 +9968,19 @@
               <Anchor>aa5e205fde4c253c222e066fa887dbd6b</Anchor>
              </Node>
              <Node>
-              <Name>model_intr</Name>
+              <Name>p_plat_gen</Name>
               <Path>df/d4b/classmeshXModel.html</Path>
-              <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
+              <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
              </Node>
              <Node>
               <Name>p_plat_model</Name>
               <Path>df/d4b/classmeshXModel.html</Path>
               <Anchor>a8a5d29f57289d451c897257235e8d165</Anchor>
+             </Node>
+             <Node>
+              <Name>p_plat_pub</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
+              <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
              </Node>
              <Node>
               <Name>parent_element</Name>
@@ -9961,7 +10006,7 @@
              <Node>
               <Name>~meshXServerModel</Name>
               <Path>da/dbb/classmeshXServerModel.html</Path>
-              <Anchor>a1c0352459f96183509fffb64c9e100bd</Anchor>
+              <Anchor>a724548b7085f64d0e6f270f8358cd2d6</Anchor>
              </Node>
              <Node>
               <Name>meshXServerModel</Name>
@@ -19034,6 +19079,16 @@
                             <Anchor>a791bf7c798eda07732249755042c7459</Anchor>
                            </Node>
                            <Node>
+                            <Name>meshx_plat_battery_gen_srv_create</Name>
+                            <Path>d4/d0c/meshx__ble__mesh__gen__srv_8h.html</Path>
+                            <Anchor>a7ceb12ca4acc3e0eef85e7f82391577b</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_plat_def_trans_time_gen_srv_create</Name>
+                            <Path>d4/d0c/meshx__ble__mesh__gen__srv_8h.html</Path>
+                            <Anchor>a86e388bc3e7e33c76f9f13f4e7f796a9</Anchor>
+                           </Node>
+                           <Node>
                             <Name>meshx_plat_gen_on_off_srv_restore</Name>
                             <Path>d4/d0c/meshx__ble__mesh__gen__srv_8h.html</Path>
                             <Anchor>aaecb4b5e4c2b30b2fc03ed2718c6ccc0</Anchor>
@@ -19054,9 +19109,24 @@
                             <Anchor>abe7ad1ca0a3b7fa08c7bc2c23230dcee</Anchor>
                            </Node>
                            <Node>
+                            <Name>meshx_plat_level_gen_srv_create</Name>
+                            <Path>d4/d0c/meshx__ble__mesh__gen__srv_8h.html</Path>
+                            <Anchor>a473e52cd522efe68f735555199a1ae22</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_plat_location_gen_srv_create</Name>
+                            <Path>d4/d0c/meshx__ble__mesh__gen__srv_8h.html</Path>
+                            <Anchor>aa242106b6a15f40a53d2279a7ad20677</Anchor>
+                           </Node>
+                           <Node>
                             <Name>meshx_plat_on_off_gen_srv_create</Name>
                             <Path>d4/d0c/meshx__ble__mesh__gen__srv_8h.html</Path>
                             <Anchor>a2387de9646c86c19dffb6b2cd78385fa</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_plat_power_level_gen_srv_create</Name>
+                            <Path>d4/d0c/meshx__ble__mesh__gen__srv_8h.html</Path>
+                            <Anchor>aae7e711e85ae465439c3ba9d7232ab72</Anchor>
                            </Node>
                            <Node>
                             <Name>meshx_plat_set_gen_srv_state</Name>
@@ -20026,6 +20096,21 @@
                             <Anchor>add201d93559ff4ff071950572182e204</Anchor>
                            </Node>
                            <Node>
+                            <Name>meshx_plat_light_hsl_srv_create</Name>
+                            <Path>d7/de0/meshx__ble__mesh__light__srv_8h.html</Path>
+                            <Anchor>aac2ce1dbfdaf3a031c534ea03cdcec38</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_plat_light_lc_srv_create</Name>
+                            <Path>d7/de0/meshx__ble__mesh__light__srv_8h.html</Path>
+                            <Anchor>a1e91d17b1d95604e6b208324d07d2bac</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_plat_light_lightness_srv_create</Name>
+                            <Path>d7/de0/meshx__ble__mesh__light__srv_8h.html</Path>
+                            <Anchor>adbae4b1f94fa8e433732afdc17ba0695</Anchor>
+                           </Node>
+                           <Node>
                             <Name>meshx_plat_light_srv_delete</Name>
                             <Path>d7/de0/meshx__ble__mesh__light__srv_8h.html</Path>
                             <Anchor>a0ee9a897168a69c9ede40278fdb4b445</Anchor>
@@ -20039,6 +20124,11 @@
                             <Name>meshx_plat_light_srv_restore</Name>
                             <Path>d7/de0/meshx__ble__mesh__light__srv_8h.html</Path>
                             <Anchor>aaf4a06cbc32f7df952d6b4ec876051de</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_plat_light_xyl_srv_create</Name>
+                            <Path>d7/de0/meshx__ble__mesh__light__srv_8h.html</Path>
+                            <Anchor>ac873825181117494bff9c017ae3f5f1c</Anchor>
                            </Node>
                            <Node>
                             <Name>meshx_plat_set_light_ctl_srv_state</Name>
@@ -29816,6 +29906,16 @@
                             <Path>d7/d7a/classmeshXGenericOnOffServerModel.html</Path>
                             <Anchor>a1913146efa33d917e16c4a364676e851</Anchor>
                            </Node>
+                           <Node>
+                            <Name>plat_model_create</Name>
+                            <Path>d7/d7a/classmeshXGenericOnOffServerModel.html</Path>
+                            <Anchor>abff17405840be42c295c7d25a77dd4f1</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_delete</Name>
+                            <Path>d7/d7a/classmeshXGenericOnOffServerModel.html</Path>
+                            <Anchor>ac31f534908d08b57defde11c0fdde490</Anchor>
+                           </Node>
                           </Subnodes>
                          </Node>
                          <Node>
@@ -30615,8 +30715,8 @@
                          </Node>
                          <Node>
                           <Name>~meshXModel</Name>
-                          <Path>df/d4b/classmeshXModel.html</Path>
-                          <Anchor>a42ddb638193f45e6df5db7cfad0517b0</Anchor>
+                          <Path>db/d08/group__meshx__model.html</Path>
+                          <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
                          </Node>
                          <Node>
                           <Name>get_base_model</Name>
@@ -30624,14 +30724,14 @@
                           <Anchor>a4c89eef412069b61d52fcd49444810de</Anchor>
                          </Node>
                          <Node>
+                          <Name>get_gen_struct</Name>
+                          <Path>df/d4b/classmeshXModel.html</Path>
+                          <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+                         </Node>
+                         <Node>
                           <Name>get_init_status</Name>
                           <Path>df/d4b/classmeshXModel.html</Path>
                           <Anchor>a4cd7ad73052af2fc6b825a83325d5163</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>get_model_intr</Name>
-                          <Path>df/d4b/classmeshXModel.html</Path>
-                          <Anchor>a08dac0c0fc10906c8bbb04d478e97065</Anchor>
                          </Node>
                          <Node>
                           <Name>get_parent_element</Name>
@@ -30642,6 +30742,11 @@
                           <Name>get_plat_model</Name>
                           <Path>df/d4b/classmeshXModel.html</Path>
                           <Anchor>a4f0d11deeb9a398031d9df6f29ac197b</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_pub_struct</Name>
+                          <Path>df/d4b/classmeshXModel.html</Path>
+                          <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
                          </Node>
                          <Node>
                           <Name>model_from_ble_cb</Name>
@@ -30659,9 +30764,24 @@
                           <Anchor>aff99fd62a17483196f25c126f0d8af5a</Anchor>
                          </Node>
                          <Node>
+                          <Name>plat_model_delete</Name>
+                          <Path>df/d4b/classmeshXModel.html</Path>
+                          <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>set_gen_struct</Name>
+                          <Path>df/d4b/classmeshXModel.html</Path>
+                          <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+                         </Node>
+                         <Node>
                           <Name>set_parent_element</Name>
                           <Path>df/d4b/classmeshXModel.html</Path>
                           <Anchor>a332e584bb9487a0865d4ee3519ca0230</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>set_pub_struct</Name>
+                          <Path>df/d4b/classmeshXModel.html</Path>
+                          <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
                          </Node>
                          <Node>
                           <Name>base_model</Name>
@@ -30669,14 +30789,19 @@
                           <Anchor>aa5e205fde4c253c222e066fa887dbd6b</Anchor>
                          </Node>
                          <Node>
-                          <Name>model_intr</Name>
+                          <Name>p_plat_gen</Name>
                           <Path>df/d4b/classmeshXModel.html</Path>
-                          <Anchor>ad5cadac1a9c36da374b80b3eae0b48ee</Anchor>
+                          <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
                          </Node>
                          <Node>
                           <Name>p_plat_model</Name>
                           <Path>df/d4b/classmeshXModel.html</Path>
                           <Anchor>a8a5d29f57289d451c897257235e8d165</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>p_plat_pub</Name>
+                          <Path>df/d4b/classmeshXModel.html</Path>
+                          <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
                          </Node>
                          <Node>
                           <Name>parent_element</Name>
@@ -30702,7 +30827,7 @@
                          <Node>
                           <Name>~meshXServerModel</Name>
                           <Path>da/dbb/classmeshXServerModel.html</Path>
-                          <Anchor>a1c0352459f96183509fffb64c9e100bd</Anchor>
+                          <Anchor>a724548b7085f64d0e6f270f8358cd2d6</Anchor>
                          </Node>
                          <Node>
                           <Name>meshXServerModel</Name>
@@ -30721,19 +30846,24 @@
                           <Anchor>gaab2b8cd0d3e6df21160ef87fd7ac193b</Anchor>
                          </Node>
                          <Node>
+                          <Name>~meshXClientModel</Name>
+                          <Path>db/de4/classmeshXClientModel.html</Path>
+                          <Anchor>ae0aa745ed922fa8fe8029c775c92805a</Anchor>
+                         </Node>
+                         <Node>
                           <Name>meshXClientModel</Name>
                           <Path>db/de4/classmeshXClientModel.html</Path>
                           <Anchor>a63c7c60e1aebfda568f618cdc40b7ebd</Anchor>
                          </Node>
                          <Node>
-                          <Name>~meshXClientModel</Name>
-                          <Path>db/d08/group__meshx__model.html</Path>
-                          <Anchor>ga53bd53d62327850ec281dd501273b6cf</Anchor>
-                         </Node>
-                         <Node>
                           <Name>plat_model_create</Name>
                           <Path>db/d08/group__meshx__model.html</Path>
                           <Anchor>ga92de375d5622517bb09c0b763358f20a</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>plat_model_delete</Name>
+                          <Path>db/d08/group__meshx__model.html</Path>
+                          <Anchor>ga605a2f8548b5177ff1a2b1108915a702</Anchor>
                          </Node>
                         </Subnodes>
                        </Node>
@@ -32122,6 +32252,11 @@
                             <Anchor>aecfa46bbd0355df26660c0d118c68358</Anchor>
                            </Node>
                            <Node>
+                            <Name>MESHX_GEN_BATTERY_SRV</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a05b5722201ad255f5c3460b48693e076</Anchor>
+                           </Node>
+                           <Node>
                             <Name>MESHX_GEN_CLI_CB</Name>
                             <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
                             <Anchor>a59da08c0b69b0bf4b774f8791c8a8cdd</Anchor>
@@ -32135,6 +32270,11 @@
                             <Name>MESHX_GEN_CLI_CB_PARAM</Name>
                             <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
                             <Anchor>a836e31f976d388b53b7fbd8e53742dab</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_GEN_LEVEL_SRV</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>ab955e72044dd88072fbcc84f6dcccd21</Anchor>
                            </Node>
                            <Node>
                             <Name>MESHX_GEN_LIGHT_CLI_CB</Name>
@@ -32162,6 +32302,11 @@
                             <Anchor>a50d8ef4ffe9796c003b3bd5645532918</Anchor>
                            </Node>
                            <Node>
+                            <Name>MESHX_GEN_LOCATION_SRV</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a290039206e98a6e419431793d597d5cb</Anchor>
+                           </Node>
+                           <Node>
                             <Name>MESHX_GEN_ONOFF_CLI</Name>
                             <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
                             <Anchor>a6a3eb7e3bf3afee94ea52f43b6be3a0b</Anchor>
@@ -32170,6 +32315,11 @@
                             <Name>MESHX_GEN_ONOFF_SRV</Name>
                             <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
                             <Anchor>a71cafe9985e201da1d33037ab36b1631</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_GEN_POWER_SRV</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a141ab2fe82d7b7f839092d94426a89c2</Anchor>
                            </Node>
                            <Node>
                             <Name>MESHX_GEN_SRV_CB</Name>
@@ -32187,6 +32337,11 @@
                             <Anchor>a1a1fd4a0f559186af79555610dd0f92a</Anchor>
                            </Node>
                            <Node>
+                            <Name>MESHX_GEN_TRANS_TIME_SRV</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>af2ba6e92c023c9379835a73870f64371</Anchor>
+                           </Node>
+                           <Node>
                             <Name>MESHX_LIGHT_CTL_SETUP_SRV</Name>
                             <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
                             <Anchor>aa9c90e220dcd2b613e2a14fba5cad37a</Anchor>
@@ -32202,6 +32357,51 @@
                             <Anchor>a603f1cdfc61d8b70c14fc137dc322c96</Anchor>
                            </Node>
                            <Node>
+                            <Name>MESHX_LIGHT_HSL_HUE_SRV</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a5b2c4483e7b784daced3658d6c20025e</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_LIGHT_HSL_SAT_SRV</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a2e598ee4bc579917c0219dcd570ad3b0</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_LIGHT_HSL_SRV</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>aa75dde2a4288519dc9f2736038a7a499</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_LIGHT_HSL_STATE</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a14e74cbc4a324e7a6a57511c812bac73</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_LIGHT_LC_SETUP_SRV</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>aec490fda2bf04d865c37ffeea49c5b51</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_LIGHT_LC_SRV</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a903fd6d6d77de567f9a7082eccc2f794</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_LIGHT_LC_STATE</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>aec14d58b09930c4ac02e7d1d194c8776</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_LIGHT_LIGHTNESS_SRV</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>ade222257f910c65899a9cc4d1bbf8b05</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_LIGHT_LIGHTNESS_STATE</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a160e04719447c878ce7bfec5972e376d</Anchor>
+                           </Node>
+                           <Node>
                             <Name>MESHX_LIGHT_SRV_CB</Name>
                             <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
                             <Anchor>a7312485cb65e59312ba85e4a15166912</Anchor>
@@ -32215,6 +32415,16 @@
                             <Name>MESHX_LIGHT_SRV_CB_PARAM</Name>
                             <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
                             <Anchor>a3072c581597c9d6d79060e42d9ae5b1f</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_LIGHT_XYL_SRV</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a95eb8cea552e5d489f24a491ecd8f52b</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>MESHX_LIGHT_XYL_STATE</Name>
+                            <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
+                            <Anchor>a28eba9ffc7d99aebde7202722d56efe6</Anchor>
                            </Node>
                            <Node>
                             <Name>MESHX_MODEL</Name>
@@ -32385,6 +32595,16 @@
                           <Anchor>a5eb157be87df8088b600bdd134741310</Anchor>
                          </Node>
                          <Node>
+                          <Name>meshx_plat_battery_gen_srv_create</Name>
+                          <Path>d7/d7a/esp__gen__srv__model_8c.html</Path>
+                          <Anchor>a7ceb12ca4acc3e0eef85e7f82391577b</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>meshx_plat_def_trans_time_gen_srv_create</Name>
+                          <Path>d7/d7a/esp__gen__srv__model_8c.html</Path>
+                          <Anchor>a86e388bc3e7e33c76f9f13f4e7f796a9</Anchor>
+                         </Node>
+                         <Node>
                           <Name>meshx_plat_gen_on_off_srv_restore</Name>
                           <Path>d7/d7a/esp__gen__srv__model_8c.html</Path>
                           <Anchor>aaecb4b5e4c2b30b2fc03ed2718c6ccc0</Anchor>
@@ -32410,9 +32630,24 @@
                           <Anchor>abe7ad1ca0a3b7fa08c7bc2c23230dcee</Anchor>
                          </Node>
                          <Node>
+                          <Name>meshx_plat_level_gen_srv_create</Name>
+                          <Path>d7/d7a/esp__gen__srv__model_8c.html</Path>
+                          <Anchor>a473e52cd522efe68f735555199a1ae22</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>meshx_plat_location_gen_srv_create</Name>
+                          <Path>d7/d7a/esp__gen__srv__model_8c.html</Path>
+                          <Anchor>aa242106b6a15f40a53d2279a7ad20677</Anchor>
+                         </Node>
+                         <Node>
                           <Name>meshx_plat_on_off_gen_srv_create</Name>
                           <Path>d7/d7a/esp__gen__srv__model_8c.html</Path>
                           <Anchor>a2387de9646c86c19dffb6b2cd78385fa</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>meshx_plat_power_level_gen_srv_create</Name>
+                          <Path>d7/d7a/esp__gen__srv__model_8c.html</Path>
+                          <Anchor>aae7e711e85ae465439c3ba9d7232ab72</Anchor>
                          </Node>
                          <Node>
                           <Name>meshx_plat_set_gen_srv_state</Name>
@@ -32532,6 +32767,21 @@
                           <Anchor>add201d93559ff4ff071950572182e204</Anchor>
                          </Node>
                          <Node>
+                          <Name>meshx_plat_light_hsl_srv_create</Name>
+                          <Path>de/d42/esp__light__srv__model_8c.html</Path>
+                          <Anchor>aac2ce1dbfdaf3a031c534ea03cdcec38</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>meshx_plat_light_lc_srv_create</Name>
+                          <Path>de/d42/esp__light__srv__model_8c.html</Path>
+                          <Anchor>a1e91d17b1d95604e6b208324d07d2bac</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>meshx_plat_light_lightness_srv_create</Name>
+                          <Path>de/d42/esp__light__srv__model_8c.html</Path>
+                          <Anchor>adbae4b1f94fa8e433732afdc17ba0695</Anchor>
+                         </Node>
+                         <Node>
                           <Name>meshx_plat_light_srv_delete</Name>
                           <Path>de/d42/esp__light__srv__model_8c.html</Path>
                           <Anchor>a0ee9a897168a69c9ede40278fdb4b445</Anchor>
@@ -32547,6 +32797,11 @@
                           <Anchor>aaf4a06cbc32f7df952d6b4ec876051de</Anchor>
                          </Node>
                          <Node>
+                          <Name>meshx_plat_light_xyl_srv_create</Name>
+                          <Path>de/d42/esp__light__srv__model_8c.html</Path>
+                          <Anchor>ac873825181117494bff9c017ae3f5f1c</Anchor>
+                         </Node>
+                         <Node>
                           <Name>meshx_plat_set_light_ctl_srv_state</Name>
                           <Path>de/d42/esp__light__srv__model_8c.html</Path>
                           <Anchor>a0dc534558d13a140c430ef5bb1f659f9</Anchor>
@@ -32560,6 +32815,26 @@
                           <Name>light_ctl_sig_template</Name>
                           <Path>de/d42/esp__light__srv__model_8c.html</Path>
                           <Anchor>a4e50386c18b5d1bde709af067b7d7c71</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>light_hsl_sig_template</Name>
+                          <Path>de/d42/esp__light__srv__model_8c.html</Path>
+                          <Anchor>a8f7504863144057443dd96d6f99b4fee</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>light_lc_sig_template</Name>
+                          <Path>de/d42/esp__light__srv__model_8c.html</Path>
+                          <Anchor>a44f7c3b9105cdc1cb5f5dda91f328f39</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>light_lightness_sig_template</Name>
+                          <Path>de/d42/esp__light__srv__model_8c.html</Path>
+                          <Anchor>a349d7c855f690e401d32557f270d3423</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>light_xyl_sig_template</Name>
+                          <Path>de/d42/esp__light__srv__model_8c.html</Path>
+                          <Anchor>aedb5475eb89445ecfde96b7246b14879</Anchor>
                          </Node>
                         </Subnodes>
                        </Node>
