@@ -226,6 +226,19 @@ meshx_err_t meshXGenericBatteryServerModel MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLA
     return MESHX_NOT_SUPPORTED;
 }
 
+/**
+ * @brief Creates and initializes a server model instance for Generic Battery Server.
+ *
+ * This function handles the platform-specific model creation process for Generic Battery Server models.
+ * It initializes server-specific features and cannot be overridden by derived classes.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the operation.
+ *         - MESHX_SUCCESS on successful model creation and initialization
+ *         - MESHX_ERR_NO_MEM if memory allocation fails
+ *         - Other error codes for platform-specific failures
+ *
+ * @note This is a final function and cannot be overridden by derived classes.
+ */
 MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericBatteryServerModel MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLATE_PARAMS
     :: plat_model_create(void)
@@ -241,6 +254,7 @@ meshx_err_t meshXGenericBatteryServerModel MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLA
     }
     else
     {
+        /* Set the publication and generic structures */
         this->set_pub_struct(p_pub);
         this->set_gen_struct(p_gen);
     }

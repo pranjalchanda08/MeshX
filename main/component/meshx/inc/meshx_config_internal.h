@@ -245,9 +245,9 @@
 /**
  * @brief Light CTL Client Counts
  */
-#ifndef CONFIG_LIGHT_CTL_CLIENT_COUNT
-#define CONFIG_LIGHT_CTL_CLIENT_COUNT           1
-#endif /* CONFIG_LIGHT_CTL_CLIENT_COUNT */
+#ifndef CONFIG_ENABLE_LIGHT_CTL_CLIENT
+#define CONFIG_ENABLE_LIGHT_CTL_CLIENT           1
+#endif /* CONFIG_ENABLE_LIGHT_CTL_CLIENT */
 
 /**
  * @brief Gen OnOff Client Enable

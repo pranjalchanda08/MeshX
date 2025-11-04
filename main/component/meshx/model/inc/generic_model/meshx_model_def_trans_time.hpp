@@ -15,6 +15,9 @@
  * @date 2024-2025
  * @copyright Copyright 2024 - 2025 MeshX
  */
+#ifndef _MESHX_MODEL_DEF_TRANS_TIME_HPP_
+#define _MESHX_MODEL_DEF_TRANS_TIME_HPP_
+
 #include <meshx_model_class.hpp>
 #include <meshx_base_model_generic.hpp>
 
@@ -114,3 +117,5 @@ public:
     ~meshXGenericDefTransTimeServerModel() = default;
 };
 #endif /* CONFIG_ENABLE_GEN_DEF_TRANS_TIME_SERVER */
+
+#endif /* _MESHX_MODEL_DEF_TRANS_TIME_HPP_ */

@@ -16,6 +16,9 @@
  * @date 2024-2025
  * @copyright Copyright 2024 - 2025 MeshX
  */
+#ifndef _MESHX_MODEL_PROPERTY_HPP_
+#define _MESHX_MODEL_PROPERTY_HPP_
+
 #include <meshx_model_class.hpp>
 #include <meshx_base_model_generic.hpp>
 
@@ -202,3 +205,5 @@ public:
     ~meshXGenericClientPropertyServerModel() = default;
 };
 #endif /* CONFIG_ENABLE_GEN_CLIENT_PROPERTY_SERVER */
+
+#endif /* _MESHX_MODEL_PROPERTY_HPP_ */

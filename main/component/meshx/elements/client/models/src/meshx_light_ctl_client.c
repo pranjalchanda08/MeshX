@@ -15,7 +15,7 @@
 
 #define LIGHT_CTL_CLIENT_INIT_MAGIC 0x8932
 
-#if CONFIG_LIGHT_CTL_CLIENT_COUNT > 0
+#if CONFIG_ENABLE_LIGHT_CTL_CLIENT > 0
 
 static uint16_t light_ctl_client_init_flag = 0;
 
@@ -418,4 +418,4 @@ meshx_err_t meshx_light_ctl_state_change_handle(
     return state_change ? MESHX_SUCCESS : MESHX_INVALID_STATE;
 }
 
-#endif /* CONFIG_LIGHT_CTL_CLIENT_COUNT > 0 */
+#endif /* CONFIG_ENABLE_LIGHT_CTL_CLIENT > 0 */
