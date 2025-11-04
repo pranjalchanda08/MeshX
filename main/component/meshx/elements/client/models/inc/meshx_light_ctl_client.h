@@ -21,7 +21,7 @@
 #include "meshx_control_task.h"
 #include "meshx_gen_light_cli.h"
 
-#if CONFIG_LIGHT_CTL_CLIENT_COUNT > 0
+#if CONFIG_ENABLE_LIGHT_CTL_CLIENT > 0
 
 #define MESHX_LIGHT_CTL_CLI_MSG_SET 0
 #define MESHX_LIGHT_CTL_CLI_MSG_GET 1
@@ -179,5 +179,5 @@ meshx_err_t meshx_light_ctl_state_change_handle(
     const meshx_ctl_el_state_t *p_ctl_next_state
 );
 
-#endif /* CONFIG_LIGHT_CTL_CLIENT_COUNT > 0 */
+#endif /* CONFIG_ENABLE_LIGHT_CTL_CLIENT > 0 */
 #endif /*__LIGHT_CTL_CLIENT_H__*/
