@@ -15,6 +15,9 @@
  * @date 2024-2025
  * @copyright Copyright 2024 - 2025 MeshX
  */
+#ifndef _MESHX_MODEL_LEVEL_HPP_
+#define _MESHX_MODEL_LEVEL_HPP_
+
 #include <meshx_model_class.hpp>
 #include <meshx_base_model_generic.hpp>
 
@@ -112,3 +115,6 @@ public:
     ~meshXGenericLevelServerModel() = default;
 };
 #endif /* CONFIG_ENABLE_GEN_LEVEL_SERVER */
+
+#endif /* _MESHX_MODEL_LEVEL_HPP_ */
+

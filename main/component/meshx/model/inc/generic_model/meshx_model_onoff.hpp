@@ -15,6 +15,10 @@
  * @date 2024-2025
  * @copyright Copyright 2024 - 2025 MeshX
  */
+
+#ifndef _MESHX_MODEL_ONOFF_HPP_
+#define _MESHX_MODEL_ONOFF_HPP_
+
 #include <meshx_model_class.hpp>
 #include <meshx_base_model_generic.hpp>
 
@@ -81,12 +85,13 @@ public:
 /**
  * @brief Structure to hold the On/Off Server to element message.
  */
-using meshx_on_off_srv_el_msg_t = struct meshx_on_off_srv_el_msg
+struct meshx_on_off_srv_el_msg
 {
     meshx_model_t model;  /**< Generic OnOff Server model */
     uint8_t on_off_state; /**< The present value of Generic OnOff state */
 };
 
+using meshx_on_off_srv_el_msg_t = struct meshx_on_off_srv_el_msg;
 /**
  * @class meshXGenericOnOffServerModel
  * @brief A template class for creating Generic OnOff Server models.
@@ -110,3 +115,5 @@ public:
     ~meshXGenericOnOffServerModel() = default;
 };
 #endif /* CONFIG_ENABLE_GEN_ONOFF_SERVER */
+
+#endif /* _MESHX_MODEL_ONOFF_HPP_ */

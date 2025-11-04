@@ -17,6 +17,9 @@
  * @copyright Copyright 2024 - 2025 MeshX
  */
 
+#ifndef _MESHX_MODEL_CLASS_HPP_
+#define _MESHX_MODEL_CLASS_HPP_
+
 #include <meshx_base_model_class.hpp>
 
 /*********************************************************************************
@@ -250,3 +253,5 @@ public:
     ~meshXClientModel() = default;
     meshXClientModel() = delete;
 };
+
+#endif /* _MESHX_MODEL_CLASS_HPP_ */

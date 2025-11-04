@@ -15,6 +15,10 @@
  * @date 2024-2025
  * @copyright Copyright 2024 - 2025 MeshX
  */
+
+#ifndef _MESHX_MODEL_LOCATION_HPP_
+#define _MESHX_MODEL_LOCATION_HPP_
+
 #include <meshx_model_class.hpp>
 #include <meshx_base_model_generic.hpp>
 
@@ -169,3 +173,5 @@ public:
     ~meshXGenericLocationSetupServerModel() = default;
 };
 #endif /* CONFIG_ENABLE_GEN_LOCATION_SETUP_SERVER */
+
+#endif /* CONFIG_ENABLE_GEN_LOCATION */

@@ -15,6 +15,9 @@
  * @date 2024-2025
  * @copyright Copyright 2024 - 2025 MeshX
  */
+#ifndef _MESHX_MODEL_BATTERY_HPP_
+#define _MESHX_MODEL_BATTERY_HPP_
+
 #include <meshx_model_class.hpp>
 #include <meshx_base_model_generic.hpp>
 
@@ -121,3 +124,5 @@ public:
     ~meshXGenericBatteryServerModel() = default;
 };
 #endif /* CONFIG_ENABLE_GEN_BATTERY_SERVER */
+
+#endif /* _MESHX_MODEL_BATTERY_HPP_ */
