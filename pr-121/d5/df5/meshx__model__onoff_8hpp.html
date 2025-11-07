@@ -93,8 +93,7 @@ $(function(){ initResizable(false); });
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
-<a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a>  </div>
+<a href="#define-members">Macros</a>  </div>
   <div class="headertitle"><div class="title">meshx_model_onoff.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -117,6 +116,9 @@ Data Structures</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d68/classmeshXGenericOnOffClientModel.html">meshXGenericOnOffClientModel</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A template class for creating Generic OnOff Client models.  <a href="../../d4/d68/classmeshXGenericOnOffClientModel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/ddf/structmeshx__on__off__srv__el__msg.html">meshx_on_off_srv_el_msg</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure to hold the On/Off Server to element message.  <a href="../../d6/ddf/structmeshx__on__off__srv__el__msg.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7a/classmeshXGenericOnOffServerModel.html">meshXGenericOnOffServerModel</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A template class for creating Generic OnOff Server models.  <a href="../../d7/d7a/classmeshXGenericOnOffServerModel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -131,12 +133,6 @@ Macros</h2></td></tr>
 <tr class="separator:a8e2a5afaf1e06869f4475816bae6607f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59b368df1a5ecd40a2f90c90145e419e" id="r_a59b368df1a5ecd40a2f90c90145e419e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a59b368df1a5ecd40a2f90c90145e419e">MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS</a></td></tr>
 <tr class="separator:a59b368df1a5ecd40a2f90c90145e419e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a1136b6d9b9ffed7114b0dc275f9d283d" id="r_a1136b6d9b9ffed7114b0dc275f9d283d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1136b6d9b9ffed7114b0dc275f9d283d">meshx_on_off_srv_el_msg_t</a></td></tr>
-<tr class="memdesc:a1136b6d9b9ffed7114b0dc275f9d283d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure to hold the On/Off Server to element message.  <br /></td></tr>
-<tr class="separator:a1136b6d9b9ffed7114b0dc275f9d283d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implementation of Generic OnOff Client Model for MeshX. </p>
@@ -207,38 +203,10 @@ Typedefs</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="a1136b6d9b9ffed7114b0dc275f9d283d" name="a1136b6d9b9ffed7114b0dc275f9d283d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1136b6d9b9ffed7114b0dc275f9d283d">&#9670;&#160;</a></span>meshx_on_off_srv_el_msg_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="../../db/d01/meshx__onoff__server_8h.html#a023541a6192b312c79e84b1036539e6e">meshx_on_off_srv_el_msg_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line"> <span class="keyword">struct </span><a class="code hl_struct" href="../../d6/ddf/structmeshx__on__off__srv__el__msg.html">meshx_on_off_srv_el_msg</a></div>
-<div class="line">{</div>
-<div class="line">    <a class="code hl_typedef" href="../../d6/d1d/meshx__ble__mesh__cmn_8h.html#ae2bb37b6b888ca21c50c93294c099237">meshx_model_t</a> model;  </div>
-<div class="line">    uint8_t on_off_state; </div>
-<div class="line">}</div>
-<div class="ttc" id="ameshx__ble__mesh__cmn_8h_html_ae2bb37b6b888ca21c50c93294c099237"><div class="ttname"><a href="../../d6/d1d/meshx__ble__mesh__cmn_8h.html#ae2bb37b6b888ca21c50c93294c099237">meshx_model_t</a></div><div class="ttdeci">struct meshx_model meshx_model_t</div></div>
-<div class="ttc" id="astructmeshx__on__off__srv__el__msg_html"><div class="ttname"><a href="../../d6/ddf/structmeshx__on__off__srv__el__msg.html">meshx_on_off_srv_el_msg</a></div><div class="ttdoc">Structure to hold the On/Off Server to element message.</div><div class="ttdef"><b>Definition</b> meshx_onoff_server.h:33</div></div>
-</div><!-- fragment -->
-<p>Structure to hold the On/Off Server to element message. </p>
-<div class="fragment"><div class="line"><span class="lineno">   85</span>{</div>
-<div class="line"><span class="lineno">   86</span>    <a class="code hl_typedef" href="../../d6/d1d/meshx__ble__mesh__cmn_8h.html#ae2bb37b6b888ca21c50c93294c099237">meshx_model_t</a> model;  <span class="comment">/**&lt; Generic OnOff Server model */</span></div>
-<div class="line"><span class="lineno">   87</span>    uint8_t on_off_state; <span class="comment">/**&lt; The present value of Generic OnOff state */</span></div>
-<div class="line"><span class="lineno">   88</span>};</div>
-</div><!-- fragment -->
-</div>
-</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Oct 30 2025 16:11:42 for MeshX by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
+Generated on Fri Nov 7 2025 19:26:36 for MeshX by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
 </small></address>
 </div><!-- doc-content -->
 </body>

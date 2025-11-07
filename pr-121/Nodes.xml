@@ -27937,6 +27937,11 @@
                       <Anchor>afb5d9569407f39391568c84c7d5d4d9a</Anchor>
                      </Node>
                      <Node>
+                      <Name>CONFIG_ENABLE_LIGHT_CTL_CLIENT</Name>
+                      <Path>df/d01/meshx__config__internal_8h.html</Path>
+                      <Anchor>abad09f52b68314833ed806b9dccf4669</Anchor>
+                     </Node>
+                     <Node>
                       <Name>CONFIG_ENABLE_PROVISIONING</Name>
                       <Path>df/d01/meshx__config__internal_8h.html</Path>
                       <Anchor>a605503bb5689535a702282f16d3d577e</Anchor>
@@ -30051,6 +30056,22 @@
                           </Subnodes>
                          </Node>
                          <Node>
+                          <Name>meshx_on_off_srv_el_msg</Name>
+                          <Path>d6/ddf/structmeshx__on__off__srv__el__msg.html</Path>
+                        <Subnodes>
+                           <Node>
+                            <Name>model</Name>
+                            <Path>d6/ddf/structmeshx__on__off__srv__el__msg.html</Path>
+                            <Anchor>ac4f1152c4921baeec45b2745c862427b</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>on_off_state</Name>
+                            <Path>d6/ddf/structmeshx__on__off__srv__el__msg.html</Path>
+                            <Anchor>aed9c7594a4f3fdce45b740d7b735b22e</Anchor>
+                           </Node>
+                          </Subnodes>
+                         </Node>
+                         <Node>
                           <Name>meshXGenericOnOffServerModel</Name>
                           <Path>d7/d7a/classmeshXGenericOnOffServerModel.html</Path>
                         <Subnodes>
@@ -30105,11 +30126,6 @@
                           <Name>MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PROTO</Name>
                           <Path>d5/df5/meshx__model__onoff_8hpp.html</Path>
                           <Anchor>a8e2a5afaf1e06869f4475816bae6607f</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>meshx_on_off_srv_el_msg_t</Name>
-                          <Path>d5/df5/meshx__model__onoff_8hpp.html</Path>
-                          <Anchor>a1136b6d9b9ffed7114b0dc275f9d283d</Anchor>
                          </Node>
                         </Subnodes>
                        </Node>
@@ -30915,6 +30931,16 @@
                           <Anchor>a95f67018b54abfdefce0be88cf30c5f6</Anchor>
                          </Node>
                         </Subnodes>
+                       </Node>
+                      </Subnodes>
+                     </Node>
+                     <Node>
+                      <Name>light_model</Name>
+                      <Path>dir_57d2771d3a17186ee8ec73bdb1d20a27.html</Path>
+                    <Subnodes>
+                       <Node>
+                        <Name>meshx_model_ctl.hpp</Name>
+                        <Path>d0/d13/meshx__model__ctl_8hpp.html</Path>
                        </Node>
                       </Subnodes>
                      </Node>

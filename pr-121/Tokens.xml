@@ -25445,6 +25445,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>CONFIG_ENABLE_LIGHT_CTL_CLIENT</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>df/d01/meshx__config__internal_8h.html</Path>
+    <Anchor>abad09f52b68314833ed806b9dccf4669</Anchor>
+    <DeclaredIn>meshx_config_internal.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>CONFIG_ENABLE_PROVISIONING</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
@@ -38033,16 +38043,6 @@
     <Path>db/d01/meshx__onoff__server_8h.html</Path>
     <Anchor>a023541a6192b312c79e84b1036539e6e</Anchor>
     <DeclaredIn>meshx_onoff_server.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_on_off_srv_el_msg_t</Name>
-      <APILanguage>c</APILanguage>
-      <Type>tdef</Type>
-    </TokenIdentifier>
-    <Path>d5/df5/meshx__model__onoff_8hpp.html</Path>
-    <Anchor>a1136b6d9b9ffed7114b0dc275f9d283d</Anchor>
-    <DeclaredIn>meshx_model_onoff.hpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
