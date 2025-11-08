@@ -91,31 +91,174 @@ $(function(){ initResizable(false); });
 </div><!-- top -->
 <div id="doc-content">
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Data Structures</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle"><div class="title">meshx_model_ctl.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Header file for MeshX Control Models This file contains the declarations and definitions for the MeshX Control Models, including the Generic OnOff Server and Client models.  
+<p>Header file for MeshX Light CTL Models This file contains the declarations and definitions for the MeshX Light CTL Models, including the Light CTL Server and Client models for color temperature and lightness control.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;<a class="el" href="../../d9/d58/meshx__model__class_8hpp_source.html">meshx_model_class.hpp</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="../../de/d42/meshx__base__model__generic_8hpp_source.html">meshx_base_model_generic.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="../../d7/d45/meshx__base__model__light_8hpp_source.html">meshx_base_model_light.hpp</a>&gt;</code><br />
 </div>
 <p><a href="../../d0/d13/meshx__model__ctl_8hpp_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d37/structmeshx__light__ctl__send__params.html">meshx_light_ctl_send_params</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure to hold the parameters for sending a Light CTL message.  <a href="../../d5/d37/structmeshx__light__ctl__send__params.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d04/structmeshx__light__ctl__cli__el__msg.html">meshx_light_ctl_cli_el_msg</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure to hold the Light CTL Client to element message.  <a href="../../d9/d04/structmeshx__light__ctl__cli__el__msg.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d95/classmeshXLightCTLClientModel.html">meshXLightCTLClientModel</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A template class for creating Light CTL Client models.  <a href="../../df/d95/classmeshXLightCTLClientModel.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d0e/structmeshx__light__ctl__srv__el__msg.html">meshx_light_ctl_srv_el_msg</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure to hold the Light CTL Server to element message.  <a href="../../d1/d0e/structmeshx__light__ctl__srv__el__msg.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/dfa/classmeshXLightCTLServerModel.html">meshXLightCTLServerModel</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A template class for creating Light CTL Server models.  <a href="../../db/dfa/classmeshXLightCTLServerModel.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a4885f94d37e8504dec5526c25e575f05" id="r_a4885f94d37e8504dec5526c25e575f05"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4885f94d37e8504dec5526c25e575f05">MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PROTO</a></td></tr>
+<tr class="separator:a4885f94d37e8504dec5526c25e575f05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2329a7b571d857bbfb9e1af25b37db2f" id="r_a2329a7b571d857bbfb9e1af25b37db2f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2329a7b571d857bbfb9e1af25b37db2f">MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAMS</a></td></tr>
+<tr class="separator:a2329a7b571d857bbfb9e1af25b37db2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9655c108ce908ef5bfe37b60dd227f23" id="r_a9655c108ce908ef5bfe37b60dd227f23"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9655c108ce908ef5bfe37b60dd227f23">MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PROTO</a></td></tr>
+<tr class="separator:a9655c108ce908ef5bfe37b60dd227f23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6f0abaea8fc76086586f3cda2e01aac" id="r_ab6f0abaea8fc76086586f3cda2e01aac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab6f0abaea8fc76086586f3cda2e01aac">MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAMS</a></td></tr>
+<tr class="separator:ab6f0abaea8fc76086586f3cda2e01aac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:aa7ff296e80049e02bf592d5ebf6ead37" id="r_aa7ff296e80049e02bf592d5ebf6ead37"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7ff296e80049e02bf592d5ebf6ead37">meshx_light_ctl_send_params_t</a> = struct <a class="el" href="../../d5/d37/structmeshx__light__ctl__send__params.html">meshx_light_ctl_send_params</a></td></tr>
+<tr class="separator:aa7ff296e80049e02bf592d5ebf6ead37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c5093dbf2ca42c0723418bb592dd1f6" id="r_a3c5093dbf2ca42c0723418bb592dd1f6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c5093dbf2ca42c0723418bb592dd1f6">meshx_light_ctl_cli_el_msg_t</a> = struct <a class="el" href="../../d9/d04/structmeshx__light__ctl__cli__el__msg.html">meshx_light_ctl_cli_el_msg</a></td></tr>
+<tr class="separator:a3c5093dbf2ca42c0723418bb592dd1f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0af8039e1f4116f0258492f558c8041" id="r_af0af8039e1f4116f0258492f558c8041"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0af8039e1f4116f0258492f558c8041">meshx_light_ctl_srv_el_msg_t</a> = struct <a class="el" href="../../d1/d0e/structmeshx__light__ctl__srv__el__msg.html">meshx_light_ctl_srv_el_msg</a></td></tr>
+<tr class="separator:af0af8039e1f4116f0258492f558c8041"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Header file for MeshX Control Models This file contains the declarations and definitions for the MeshX Control Models, including the Generic OnOff Server and Client models. </p>
+<div class="textblock"><p>Header file for MeshX Light CTL Models This file contains the declarations and definitions for the MeshX Light CTL Models, including the Light CTL Server and Client models for color temperature and lightness control. </p>
 <p>Key Features:</p><ul>
-<li>Implements Bluetooth SIG-defined Generic OnOff model</li>
+<li>Implements Bluetooth SIG-defined Light CTL model</li>
 <li>Inherits from <a class="el" href="../../da/dbb/classmeshXServerModel.html" title="Base class for all server models in MeshX.">meshXServerModel</a> and <a class="el" href="../../db/de4/classmeshXClientModel.html" title="Base class for all client models in the mesh network.">meshXClientModel</a> templates</li>
-<li>Provides standard OnOff control operations</li>
+<li>Provides standard Light CTL control operations (lightness, temperature, delta UV)</li>
 <li>Integrates with MeshX transmission control</li>
 </ul>
 <dl class="section author"><dt>Author</dt><dd>Pranjal Chanda </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2024-2025 </dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright 2024 - 2025 MeshX </dd></dl>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a2329a7b571d857bbfb9e1af25b37db2f" name="a2329a7b571d857bbfb9e1af25b37db2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2329a7b571d857bbfb9e1af25b37db2f">&#9670;&#160;</a></span>MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAMS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAMS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4885f94d37e8504dec5526c25e575f05" name="a4885f94d37e8504dec5526c25e575f05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4885f94d37e8504dec5526c25e575f05">&#9670;&#160;</a></span>MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PROTO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PROTO</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab6f0abaea8fc76086586f3cda2e01aac" name="ab6f0abaea8fc76086586f3cda2e01aac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6f0abaea8fc76086586f3cda2e01aac">&#9670;&#160;</a></span>MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAMS</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAMS</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9655c108ce908ef5bfe37b60dd227f23" name="a9655c108ce908ef5bfe37b60dd227f23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9655c108ce908ef5bfe37b60dd227f23">&#9670;&#160;</a></span>MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PROTO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PROTO</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="a3c5093dbf2ca42c0723418bb592dd1f6" name="a3c5093dbf2ca42c0723418bb592dd1f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c5093dbf2ca42c0723418bb592dd1f6">&#9670;&#160;</a></span>meshx_light_ctl_cli_el_msg_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#a3c5093dbf2ca42c0723418bb592dd1f6">meshx_light_ctl_cli_el_msg_t</a> = struct <a class="el" href="../../d9/d04/structmeshx__light__ctl__cli__el__msg.html">meshx_light_ctl_cli_el_msg</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa7ff296e80049e02bf592d5ebf6ead37" name="aa7ff296e80049e02bf592d5ebf6ead37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7ff296e80049e02bf592d5ebf6ead37">&#9670;&#160;</a></span>meshx_light_ctl_send_params_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#aa7ff296e80049e02bf592d5ebf6ead37">meshx_light_ctl_send_params_t</a> = struct <a class="el" href="../../d5/d37/structmeshx__light__ctl__send__params.html">meshx_light_ctl_send_params</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af0af8039e1f4116f0258492f558c8041" name="af0af8039e1f4116f0258492f558c8041"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0af8039e1f4116f0258492f558c8041">&#9670;&#160;</a></span>meshx_light_ctl_srv_el_msg_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="#af0af8039e1f4116f0258492f558c8041">meshx_light_ctl_srv_el_msg_t</a> = struct <a class="el" href="../../d1/d0e/structmeshx__light__ctl__srv__el__msg.html">meshx_light_ctl_srv_el_msg</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Nov 7 2025 19:26:36 for MeshX by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
+Generated on Sat Nov 8 2025 18:40:15 for MeshX by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
 </small></address>
 </div><!-- doc-content -->
 </body>

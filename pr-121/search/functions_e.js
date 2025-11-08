@@ -32,6 +32,9 @@ var searchData=
   ['_7emeshxgenericpoweronoffsetupservermodel_29',['~meshXGenericPowerOnOffSetupServerModel',['../da/d7f/classmeshXGenericPowerOnOffSetupServerModel.html#a48450e8d8e86eebac860e42cf4638b0b',1,'meshXGenericPowerOnOffSetupServerModel']]],
   ['_7emeshxgenericpropertyclientmodel_30',['~meshXGenericPropertyClientModel',['../d8/dfa/classmeshXGenericPropertyClientModel.html#ac36de995a43fb9feb8782c0ac46beae2',1,'meshXGenericPropertyClientModel']]],
   ['_7emeshxgenericuserpropertyservermodel_31',['~meshXGenericUserPropertyServerModel',['../d5/d31/classmeshXGenericUserPropertyServerModel.html#a179231fadec862c2c70abdb133a21b27',1,'meshXGenericUserPropertyServerModel']]],
-  ['_7emeshxmodel_32',['~meshXModel',['../db/d08/group__meshx__model.html#gaccacc6ba99e081764361218b0c2ed43b',1,'meshXModel']]],
-  ['_7emeshxservermodel_33',['~meshXServerModel',['../da/dbb/classmeshXServerModel.html#a724548b7085f64d0e6f270f8358cd2d6',1,'meshXServerModel']]]
+  ['_7emeshxlightctlclientmodel_32',['~meshXLightCTLClientModel',['../df/d95/classmeshXLightCTLClientModel.html#a9379b8a864caa7f13109499a7bb94d30',1,'meshXLightCTLClientModel']]],
+  ['_7emeshxlightctlservermodel_33',['~meshXLightCTLServerModel',['../db/dfa/classmeshXLightCTLServerModel.html#a5ae314bcd0b099be65c5426278851d3f',1,'meshXLightCTLServerModel']]],
+  ['_7emeshxlighthslservermodel_34',['~meshXLightHSLServerModel',['../d8/d23/classmeshXLightHSLServerModel.html#ad84ad4f70639bb69c3c68533d405657a',1,'meshXLightHSLServerModel']]],
+  ['_7emeshxmodel_35',['~meshXModel',['../db/d08/group__meshx__model.html#gaccacc6ba99e081764361218b0c2ed43b',1,'meshXModel']]],
+  ['_7emeshxservermodel_36',['~meshXServerModel',['../da/dbb/classmeshXServerModel.html#a724548b7085f64d0e6f270f8358cd2d6',1,'meshXServerModel']]]
 ];

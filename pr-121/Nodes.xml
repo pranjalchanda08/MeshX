@@ -3332,6 +3332,52 @@
             </Subnodes>
            </Node>
            <Node>
+            <Name>meshx_light_ctl_cli_el_msg</Name>
+            <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>ctx</Name>
+              <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+              <Anchor>a91ad18999ee32275584e58e52543abee</Anchor>
+             </Node>
+             <Node>
+              <Name>delta_uv</Name>
+              <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+              <Anchor>a4cf243908b83d72a2224d28c26f2f612</Anchor>
+             </Node>
+             <Node>
+              <Name>err_code</Name>
+              <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+              <Anchor>a7ec2899baa1f1d83450a9e786f1dcff3</Anchor>
+             </Node>
+             <Node>
+              <Name>lightness</Name>
+              <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+              <Anchor>a46ff94aa8198cd76660469ee005d1068</Anchor>
+             </Node>
+             <Node>
+              <Name>model</Name>
+              <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+              <Anchor>a61430469960cd4712304f760817f21e7</Anchor>
+             </Node>
+             <Node>
+              <Name>temp_range_max</Name>
+              <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+              <Anchor>a9ca7caa96147f6d4cb91778cac73f7e3</Anchor>
+             </Node>
+             <Node>
+              <Name>temp_range_min</Name>
+              <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+              <Anchor>ae364e68450916df963bc49b060c34512</Anchor>
+             </Node>
+             <Node>
+              <Name>temperature</Name>
+              <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+              <Anchor>aec69d72fa989c6ab22ebd29dc8ba5d7d</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
             <Name>meshx_light_ctl_default_set_t</Name>
             <Path>dc/d13/structmeshx__light__ctl__default__set__t.html</Path>
           <Subnodes>
@@ -3370,6 +3416,42 @@
               <Name>temperature</Name>
               <Path>d9/d50/structmeshx__light__ctl__default__status__cb__t.html</Path>
               <Anchor>a0fe0a871d0509178284f67013a8ce7f9</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
+            <Name>meshx_light_ctl_send_params</Name>
+            <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>ctx</Name>
+              <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+              <Anchor>aceeebd84d8be25bd2aaca287201d92c1</Anchor>
+             </Node>
+             <Node>
+              <Name>delta_uv</Name>
+              <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+              <Anchor>a37e50209ccb85af4e6f6022574816993</Anchor>
+             </Node>
+             <Node>
+              <Name>lightness</Name>
+              <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+              <Anchor>a58efbccf63bf2aa4afdc8980152652dc</Anchor>
+             </Node>
+             <Node>
+              <Name>model</Name>
+              <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+              <Anchor>aeaa7add6223e1247143fc7bcdc135f48</Anchor>
+             </Node>
+             <Node>
+              <Name>temperature</Name>
+              <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+              <Anchor>a824114159dc478b5ce5c826fc3c16d0d</Anchor>
+             </Node>
+             <Node>
+              <Name>tid</Name>
+              <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+              <Anchor>a3ec99841eb1c2acc29c1986b22e2cca2</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -3448,6 +3530,32 @@
               <Name>state</Name>
               <Path>d9/dd3/structmeshx__light__ctl__srv.html</Path>
               <Anchor>a55b6292e5fe78648092710543fe11cf7</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
+            <Name>meshx_light_ctl_srv_el_msg</Name>
+            <Path>d1/d0e/structmeshx__light__ctl__srv__el__msg.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>delta_uv</Name>
+              <Path>d1/d0e/structmeshx__light__ctl__srv__el__msg.html</Path>
+              <Anchor>aa92afcad6d326f87e42ebdb4a0a1fea3</Anchor>
+             </Node>
+             <Node>
+              <Name>lightness</Name>
+              <Path>d1/d0e/structmeshx__light__ctl__srv__el__msg.html</Path>
+              <Anchor>ab54a2d51e8b7e95fb1ed3a5d275db861</Anchor>
+             </Node>
+             <Node>
+              <Name>model</Name>
+              <Path>d1/d0e/structmeshx__light__ctl__srv__el__msg.html</Path>
+              <Anchor>af01368248c339be7c288a1217c6196de</Anchor>
+             </Node>
+             <Node>
+              <Name>temperature</Name>
+              <Path>d1/d0e/structmeshx__light__ctl__srv__el__msg.html</Path>
+              <Anchor>a82426199ea4fda4995ee48de63ae5ac9</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -3942,6 +4050,62 @@
             </Subnodes>
            </Node>
            <Node>
+            <Name>meshx_light_hsl_send_params</Name>
+            <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>ctx</Name>
+              <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+              <Anchor>a3bd546ea8c88b43e516083d0e3ae1346</Anchor>
+             </Node>
+             <Node>
+              <Name>hue</Name>
+              <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+              <Anchor>ad559b311b4a6ba8611e4e67363ee75ad</Anchor>
+             </Node>
+             <Node>
+              <Name>hue_range_max</Name>
+              <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+              <Anchor>ac68ea7e75b8e72e5242c9ef7790b3a37</Anchor>
+             </Node>
+             <Node>
+              <Name>hue_range_min</Name>
+              <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+              <Anchor>a2647e165b8905110713ccf8cf39859c5</Anchor>
+             </Node>
+             <Node>
+              <Name>lightness</Name>
+              <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+              <Anchor>aa2471e1126b7dda196a4ed3b91914882</Anchor>
+             </Node>
+             <Node>
+              <Name>model</Name>
+              <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+              <Anchor>a7c5936db68b9d856689ffe1149e99955</Anchor>
+             </Node>
+             <Node>
+              <Name>sat_range_max</Name>
+              <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+              <Anchor>a012845290d96198e5f08484675de0565</Anchor>
+             </Node>
+             <Node>
+              <Name>sat_range_min</Name>
+              <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+              <Anchor>a81f6934e0d10d41e894124ea666c9c86</Anchor>
+             </Node>
+             <Node>
+              <Name>saturation</Name>
+              <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+              <Anchor>a0a39185eea2f080eca926fe269b2f4a9</Anchor>
+             </Node>
+             <Node>
+              <Name>tid</Name>
+              <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+              <Anchor>acc686e56fa7f1ad91ff7e56c0e7c1002</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
             <Name>meshx_light_hsl_set_t</Name>
             <Path>d9/dbd/structmeshx__light__hsl__set__t.html</Path>
           <Subnodes>
@@ -3979,6 +4143,32 @@
               <Name>trans_time</Name>
               <Path>d9/dbd/structmeshx__light__hsl__set__t.html</Path>
               <Anchor>a77af268e70aeedd93b8d8ef81f90bd11</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
+            <Name>meshx_light_hsl_srv_el_msg</Name>
+            <Path>d5/de7/structmeshx__light__hsl__srv__el__msg.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>hue</Name>
+              <Path>d5/de7/structmeshx__light__hsl__srv__el__msg.html</Path>
+              <Anchor>a3954d5f185006c5a2ab6b5f80e5bc20f</Anchor>
+             </Node>
+             <Node>
+              <Name>lightness</Name>
+              <Path>d5/de7/structmeshx__light__hsl__srv__el__msg.html</Path>
+              <Anchor>ad5b11b99b16d70082adb5cb405b1bcd1</Anchor>
+             </Node>
+             <Node>
+              <Name>model</Name>
+              <Path>d5/de7/structmeshx__light__hsl__srv__el__msg.html</Path>
+              <Anchor>a568448fb203310e3554bc0a0ba8088d3</Anchor>
+             </Node>
+             <Node>
+              <Name>saturation</Name>
+              <Path>d5/de7/structmeshx__light__hsl__srv__el__msg.html</Path>
+              <Anchor>a1748f1758660a40192a84cf46cd876e3</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -4429,6 +4619,42 @@
               <Name>status_code</Name>
               <Path>d9/d89/structmeshx__light__lightness__range__status__cb__t.html</Path>
               <Anchor>ab21fa95ef5ce3eb651876f29817290ab</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
+            <Name>meshx_light_lightness_send_params</Name>
+            <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>ctx</Name>
+              <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+              <Anchor>a8c5ccedc5ad2356ea0f8caeea69d95d6</Anchor>
+             </Node>
+             <Node>
+              <Name>lightness</Name>
+              <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+              <Anchor>a5bd0ff9a70b06b96470c68b081c8b12c</Anchor>
+             </Node>
+             <Node>
+              <Name>model</Name>
+              <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+              <Anchor>a9db8b6ddf0974fe7c0dc1bf97d92a465</Anchor>
+             </Node>
+             <Node>
+              <Name>range_max</Name>
+              <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+              <Anchor>a0e2ac36f1b76d3b41e86382a8cbf372e</Anchor>
+             </Node>
+             <Node>
+              <Name>range_min</Name>
+              <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+              <Anchor>a955da640ffd43f2e6b51e2e308b6dc1f</Anchor>
+             </Node>
+             <Node>
+              <Name>tid</Name>
+              <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+              <Anchor>a4c815420a3e6f99fd109fcc4c954cc75</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -9974,6 +10200,109 @@
             </Subnodes>
            </Node>
            <Node>
+            <Name>meshXLightCTLClientModel</Name>
+            <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>meshXLightCTLClientModel</Name>
+              <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+              <Anchor>a0e1ae2008049f4e5aaa209e7cd04d1fa</Anchor>
+             </Node>
+             <Node>
+              <Name>~meshXLightCTLClientModel</Name>
+              <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+              <Anchor>a9379b8a864caa7f13109499a7bb94d30</Anchor>
+             </Node>
+             <Node>
+              <Name>meshx_state_change_notify</Name>
+              <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+              <Anchor>a23b7df64b6025061bd14565e1b80c0b3</Anchor>
+             </Node>
+             <Node>
+              <Name>model_from_ble_cb</Name>
+              <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+              <Anchor>a3378c9d51e6c47f8b876ae329b59124e</Anchor>
+             </Node>
+             <Node>
+              <Name>model_send</Name>
+              <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+              <Anchor>ac289ac051c9ee29157a111480ded625d</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
+            <Name>meshXLightCTLServerModel</Name>
+            <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>meshXLightCTLServerModel</Name>
+              <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+              <Anchor>ae17a0aa3bb9767819cc9e582e75e0ef8</Anchor>
+             </Node>
+             <Node>
+              <Name>~meshXLightCTLServerModel</Name>
+              <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+              <Anchor>a5ae314bcd0b099be65c5426278851d3f</Anchor>
+             </Node>
+             <Node>
+              <Name>model_from_ble_cb</Name>
+              <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+              <Anchor>a83380ee7e9d16cf726d16bdee5319c76</Anchor>
+             </Node>
+             <Node>
+              <Name>model_send</Name>
+              <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+              <Anchor>afafe8049697060315740b2eeb3a35cf6</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_create</Name>
+              <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+              <Anchor>a5c75c5b69f13e677e42a0941c27ab58c</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_delete</Name>
+              <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+              <Anchor>af08a8a312bf5323f92bbf62b55d65130</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
+            <Name>meshXLightHSLServerModel</Name>
+            <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>meshXLightHSLServerModel</Name>
+              <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+              <Anchor>a21c19fe3e9a9a52007f351f0ece6a818</Anchor>
+             </Node>
+             <Node>
+              <Name>~meshXLightHSLServerModel</Name>
+              <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+              <Anchor>ad84ad4f70639bb69c3c68533d405657a</Anchor>
+             </Node>
+             <Node>
+              <Name>model_from_ble_cb</Name>
+              <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+              <Anchor>a13e2d44e566ea18198ed98e4eca3e225</Anchor>
+             </Node>
+             <Node>
+              <Name>model_send</Name>
+              <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+              <Anchor>a4e03b043202de298b619622aa9d514ab</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_create</Name>
+              <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+              <Anchor>abc3b65bbfa1c465d474284099ea969ac</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_delete</Name>
+              <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+              <Anchor>a59ac7e4e58b27814b7c71ccf140afc5e</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
             <Name>meshXModel</Name>
             <Path>df/d4b/classmeshXModel.html</Path>
           <Subnodes>
@@ -10638,12 +10967,20 @@
             <Path>df/dfc/unionmeshx__light__client__set__state__t.html</Path>
            </Node>
            <Node>
+            <Name>meshx_light_ctl_cli_el_msg</Name>
+            <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+           </Node>
+           <Node>
             <Name>meshx_light_ctl_default_set_t</Name>
             <Path>dc/d13/structmeshx__light__ctl__default__set__t.html</Path>
            </Node>
            <Node>
             <Name>meshx_light_ctl_default_status_cb_t</Name>
             <Path>d9/d50/structmeshx__light__ctl__default__status__cb__t.html</Path>
+           </Node>
+           <Node>
+            <Name>meshx_light_ctl_send_params</Name>
+            <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
            </Node>
            <Node>
             <Name>meshx_light_ctl_set_t</Name>
@@ -10656,6 +10993,10 @@
            <Node>
             <Name>meshx_light_ctl_srv</Name>
             <Path>d9/dd3/structmeshx__light__ctl__srv.html</Path>
+           </Node>
+           <Node>
+            <Name>meshx_light_ctl_srv_el_msg</Name>
+            <Path>d1/d0e/structmeshx__light__ctl__srv__el__msg.html</Path>
            </Node>
            <Node>
             <Name>meshx_light_ctl_srv_state</Name>
@@ -10718,8 +11059,16 @@
             <Path>d5/d5c/structmeshx__light__hsl__saturation__status__cb__t.html</Path>
            </Node>
            <Node>
+            <Name>meshx_light_hsl_send_params</Name>
+            <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+           </Node>
+           <Node>
             <Name>meshx_light_hsl_set_t</Name>
             <Path>d9/dbd/structmeshx__light__hsl__set__t.html</Path>
+           </Node>
+           <Node>
+            <Name>meshx_light_hsl_srv_el_msg</Name>
+            <Path>d5/de7/structmeshx__light__hsl__srv__el__msg.html</Path>
            </Node>
            <Node>
             <Name>meshx_light_hsl_state_t</Name>
@@ -10800,6 +11149,10 @@
            <Node>
             <Name>meshx_light_lightness_range_status_cb_t</Name>
             <Path>d9/d89/structmeshx__light__lightness__range__status__cb__t.html</Path>
+           </Node>
+           <Node>
+            <Name>meshx_light_lightness_send_params</Name>
+            <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
            </Node>
            <Node>
             <Name>meshx_light_lightness_set_t</Name>
@@ -11862,6 +12215,54 @@
                <Node>
                 <Name>meshXGenericUserPropertyServerModel</Name>
                 <Path>d5/d31/classmeshXGenericUserPropertyServerModel.html</Path>
+               </Node>
+              </Subnodes>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
+            <Name>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Name>
+            <Path>df/d4b/classmeshXModel.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>meshXClientModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Name>
+              <Path>db/de4/classmeshXClientModel.html</Path>
+            <Subnodes>
+               <Node>
+                <Name>meshXLightCTLClientModel</Name>
+                <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+               </Node>
+              </Subnodes>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
+            <Name>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Name>
+            <Path>df/d4b/classmeshXModel.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>meshXServerModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Name>
+              <Path>da/dbb/classmeshXServerModel.html</Path>
+            <Subnodes>
+               <Node>
+                <Name>meshXLightCTLServerModel</Name>
+                <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+               </Node>
+              </Subnodes>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
+            <Name>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Name>
+            <Path>df/d4b/classmeshXModel.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>meshXServerModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Name>
+              <Path>da/dbb/classmeshXServerModel.html</Path>
+            <Subnodes>
+               <Node>
+                <Name>meshXLightHSLServerModel</Name>
+                <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
                </Node>
               </Subnodes>
              </Node>
@@ -27937,11 +28338,6 @@
                       <Anchor>afb5d9569407f39391568c84c7d5d4d9a</Anchor>
                      </Node>
                      <Node>
-                      <Name>CONFIG_ENABLE_LIGHT_CTL_CLIENT</Name>
-                      <Path>df/d01/meshx__config__internal_8h.html</Path>
-                      <Anchor>abad09f52b68314833ed806b9dccf4669</Anchor>
-                     </Node>
-                     <Node>
                       <Name>CONFIG_ENABLE_PROVISIONING</Name>
                       <Path>df/d01/meshx__config__internal_8h.html</Path>
                       <Anchor>a605503bb5689535a702282f16d3d577e</Anchor>
@@ -30941,6 +31337,439 @@
                        <Node>
                         <Name>meshx_model_ctl.hpp</Name>
                         <Path>d0/d13/meshx__model__ctl_8hpp.html</Path>
+                      <Subnodes>
+                         <Node>
+                          <Name>meshx_light_ctl_send_params</Name>
+                          <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+                        <Subnodes>
+                           <Node>
+                            <Name>ctx</Name>
+                            <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+                            <Anchor>aceeebd84d8be25bd2aaca287201d92c1</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>delta_uv</Name>
+                            <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+                            <Anchor>a37e50209ccb85af4e6f6022574816993</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>lightness</Name>
+                            <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+                            <Anchor>a58efbccf63bf2aa4afdc8980152652dc</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>model</Name>
+                            <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+                            <Anchor>aeaa7add6223e1247143fc7bcdc135f48</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>temperature</Name>
+                            <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+                            <Anchor>a824114159dc478b5ce5c826fc3c16d0d</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>tid</Name>
+                            <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+                            <Anchor>a3ec99841eb1c2acc29c1986b22e2cca2</Anchor>
+                           </Node>
+                          </Subnodes>
+                         </Node>
+                         <Node>
+                          <Name>meshx_light_ctl_cli_el_msg</Name>
+                          <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+                        <Subnodes>
+                           <Node>
+                            <Name>ctx</Name>
+                            <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+                            <Anchor>a91ad18999ee32275584e58e52543abee</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>delta_uv</Name>
+                            <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+                            <Anchor>a4cf243908b83d72a2224d28c26f2f612</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>err_code</Name>
+                            <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+                            <Anchor>a7ec2899baa1f1d83450a9e786f1dcff3</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>lightness</Name>
+                            <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+                            <Anchor>a46ff94aa8198cd76660469ee005d1068</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>model</Name>
+                            <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+                            <Anchor>a61430469960cd4712304f760817f21e7</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>temp_range_max</Name>
+                            <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+                            <Anchor>a9ca7caa96147f6d4cb91778cac73f7e3</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>temp_range_min</Name>
+                            <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+                            <Anchor>ae364e68450916df963bc49b060c34512</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>temperature</Name>
+                            <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+                            <Anchor>aec69d72fa989c6ab22ebd29dc8ba5d7d</Anchor>
+                           </Node>
+                          </Subnodes>
+                         </Node>
+                         <Node>
+                          <Name>meshXLightCTLClientModel</Name>
+                          <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+                        <Subnodes>
+                           <Node>
+                            <Name>meshXLightCTLClientModel</Name>
+                            <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+                            <Anchor>a0e1ae2008049f4e5aaa209e7cd04d1fa</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>~meshXLightCTLClientModel</Name>
+                            <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+                            <Anchor>a9379b8a864caa7f13109499a7bb94d30</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>meshx_state_change_notify</Name>
+                            <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+                            <Anchor>a23b7df64b6025061bd14565e1b80c0b3</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>model_from_ble_cb</Name>
+                            <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+                            <Anchor>a3378c9d51e6c47f8b876ae329b59124e</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>model_send</Name>
+                            <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+                            <Anchor>ac289ac051c9ee29157a111480ded625d</Anchor>
+                           </Node>
+                          </Subnodes>
+                         </Node>
+                         <Node>
+                          <Name>meshx_light_ctl_srv_el_msg</Name>
+                          <Path>d1/d0e/structmeshx__light__ctl__srv__el__msg.html</Path>
+                        <Subnodes>
+                           <Node>
+                            <Name>delta_uv</Name>
+                            <Path>d1/d0e/structmeshx__light__ctl__srv__el__msg.html</Path>
+                            <Anchor>aa92afcad6d326f87e42ebdb4a0a1fea3</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>lightness</Name>
+                            <Path>d1/d0e/structmeshx__light__ctl__srv__el__msg.html</Path>
+                            <Anchor>ab54a2d51e8b7e95fb1ed3a5d275db861</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>model</Name>
+                            <Path>d1/d0e/structmeshx__light__ctl__srv__el__msg.html</Path>
+                            <Anchor>af01368248c339be7c288a1217c6196de</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>temperature</Name>
+                            <Path>d1/d0e/structmeshx__light__ctl__srv__el__msg.html</Path>
+                            <Anchor>a82426199ea4fda4995ee48de63ae5ac9</Anchor>
+                           </Node>
+                          </Subnodes>
+                         </Node>
+                         <Node>
+                          <Name>meshXLightCTLServerModel</Name>
+                          <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+                        <Subnodes>
+                           <Node>
+                            <Name>meshXLightCTLServerModel</Name>
+                            <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+                            <Anchor>ae17a0aa3bb9767819cc9e582e75e0ef8</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>~meshXLightCTLServerModel</Name>
+                            <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+                            <Anchor>a5ae314bcd0b099be65c5426278851d3f</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>model_from_ble_cb</Name>
+                            <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+                            <Anchor>a83380ee7e9d16cf726d16bdee5319c76</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>model_send</Name>
+                            <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+                            <Anchor>afafe8049697060315740b2eeb3a35cf6</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_create</Name>
+                            <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+                            <Anchor>a5c75c5b69f13e677e42a0941c27ab58c</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_delete</Name>
+                            <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+                            <Anchor>af08a8a312bf5323f92bbf62b55d65130</Anchor>
+                           </Node>
+                          </Subnodes>
+                         </Node>
+                         <Node>
+                          <Name>MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAMS</Name>
+                          <Path>d0/d13/meshx__model__ctl_8hpp.html</Path>
+                          <Anchor>a2329a7b571d857bbfb9e1af25b37db2f</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PROTO</Name>
+                          <Path>d0/d13/meshx__model__ctl_8hpp.html</Path>
+                          <Anchor>a4885f94d37e8504dec5526c25e575f05</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAMS</Name>
+                          <Path>d0/d13/meshx__model__ctl_8hpp.html</Path>
+                          <Anchor>ab6f0abaea8fc76086586f3cda2e01aac</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PROTO</Name>
+                          <Path>d0/d13/meshx__model__ctl_8hpp.html</Path>
+                          <Anchor>a9655c108ce908ef5bfe37b60dd227f23</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>meshx_light_ctl_cli_el_msg_t</Name>
+                          <Path>d0/d13/meshx__model__ctl_8hpp.html</Path>
+                          <Anchor>a3c5093dbf2ca42c0723418bb592dd1f6</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>meshx_light_ctl_send_params_t</Name>
+                          <Path>d0/d13/meshx__model__ctl_8hpp.html</Path>
+                          <Anchor>aa7ff296e80049e02bf592d5ebf6ead37</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>meshx_light_ctl_srv_el_msg_t</Name>
+                          <Path>d0/d13/meshx__model__ctl_8hpp.html</Path>
+                          <Anchor>af0af8039e1f4116f0258492f558c8041</Anchor>
+                         </Node>
+                        </Subnodes>
+                       </Node>
+                       <Node>
+                        <Name>meshx_model_hsl.hpp</Name>
+                        <Path>d8/da9/meshx__model__hsl_8hpp.html</Path>
+                      <Subnodes>
+                         <Node>
+                          <Name>meshx_light_hsl_send_params</Name>
+                          <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+                        <Subnodes>
+                           <Node>
+                            <Name>ctx</Name>
+                            <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+                            <Anchor>a3bd546ea8c88b43e516083d0e3ae1346</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>hue</Name>
+                            <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+                            <Anchor>ad559b311b4a6ba8611e4e67363ee75ad</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>hue_range_max</Name>
+                            <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+                            <Anchor>ac68ea7e75b8e72e5242c9ef7790b3a37</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>hue_range_min</Name>
+                            <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+                            <Anchor>a2647e165b8905110713ccf8cf39859c5</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>lightness</Name>
+                            <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+                            <Anchor>aa2471e1126b7dda196a4ed3b91914882</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>model</Name>
+                            <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+                            <Anchor>a7c5936db68b9d856689ffe1149e99955</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>sat_range_max</Name>
+                            <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+                            <Anchor>a012845290d96198e5f08484675de0565</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>sat_range_min</Name>
+                            <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+                            <Anchor>a81f6934e0d10d41e894124ea666c9c86</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>saturation</Name>
+                            <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+                            <Anchor>a0a39185eea2f080eca926fe269b2f4a9</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>tid</Name>
+                            <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+                            <Anchor>acc686e56fa7f1ad91ff7e56c0e7c1002</Anchor>
+                           </Node>
+                          </Subnodes>
+                         </Node>
+                         <Node>
+                          <Name>meshx_light_hsl_srv_el_msg</Name>
+                          <Path>d5/de7/structmeshx__light__hsl__srv__el__msg.html</Path>
+                        <Subnodes>
+                           <Node>
+                            <Name>hue</Name>
+                            <Path>d5/de7/structmeshx__light__hsl__srv__el__msg.html</Path>
+                            <Anchor>a3954d5f185006c5a2ab6b5f80e5bc20f</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>lightness</Name>
+                            <Path>d5/de7/structmeshx__light__hsl__srv__el__msg.html</Path>
+                            <Anchor>ad5b11b99b16d70082adb5cb405b1bcd1</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>model</Name>
+                            <Path>d5/de7/structmeshx__light__hsl__srv__el__msg.html</Path>
+                            <Anchor>a568448fb203310e3554bc0a0ba8088d3</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>saturation</Name>
+                            <Path>d5/de7/structmeshx__light__hsl__srv__el__msg.html</Path>
+                            <Anchor>a1748f1758660a40192a84cf46cd876e3</Anchor>
+                           </Node>
+                          </Subnodes>
+                         </Node>
+                         <Node>
+                          <Name>meshXLightHSLServerModel</Name>
+                          <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+                        <Subnodes>
+                           <Node>
+                            <Name>meshXLightHSLServerModel</Name>
+                            <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+                            <Anchor>a21c19fe3e9a9a52007f351f0ece6a818</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>~meshXLightHSLServerModel</Name>
+                            <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+                            <Anchor>ad84ad4f70639bb69c3c68533d405657a</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>model_from_ble_cb</Name>
+                            <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+                            <Anchor>a13e2d44e566ea18198ed98e4eca3e225</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>model_send</Name>
+                            <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+                            <Anchor>a4e03b043202de298b619622aa9d514ab</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_create</Name>
+                            <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+                            <Anchor>abc3b65bbfa1c465d474284099ea969ac</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_delete</Name>
+                            <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+                            <Anchor>a59ac7e4e58b27814b7c71ccf140afc5e</Anchor>
+                           </Node>
+                          </Subnodes>
+                         </Node>
+                         <Node>
+                          <Name>MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAMS</Name>
+                          <Path>d8/da9/meshx__model__hsl_8hpp.html</Path>
+                          <Anchor>ac6b108fdbc6fd0a1d1741630b810a392</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PROTO</Name>
+                          <Path>d8/da9/meshx__model__hsl_8hpp.html</Path>
+                          <Anchor>a98a6cc67804f3893b34608c50c8f60e6</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAMS</Name>
+                          <Path>d8/da9/meshx__model__hsl_8hpp.html</Path>
+                          <Anchor>a0b4a8def48d10d4597bb2a819ddf67c4</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PROTO</Name>
+                          <Path>d8/da9/meshx__model__hsl_8hpp.html</Path>
+                          <Anchor>a832a794f5a50e590ec657ea946e0f95f</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>meshx_light_hsl_send_params_t</Name>
+                          <Path>d8/da9/meshx__model__hsl_8hpp.html</Path>
+                          <Anchor>a620d1589d2918eb90dad7aa707343fa6</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>meshx_light_hsl_srv_el_msg_t</Name>
+                          <Path>d8/da9/meshx__model__hsl_8hpp.html</Path>
+                          <Anchor>a2e88f78559b0728aba8d1956da4b5af2</Anchor>
+                         </Node>
+                        </Subnodes>
+                       </Node>
+                       <Node>
+                        <Name>meshx_model_lightness.hpp</Name>
+                        <Path>db/df1/meshx__model__lightness_8hpp.html</Path>
+                      <Subnodes>
+                         <Node>
+                          <Name>meshx_light_lightness_send_params</Name>
+                          <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+                        <Subnodes>
+                           <Node>
+                            <Name>ctx</Name>
+                            <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+                            <Anchor>a8c5ccedc5ad2356ea0f8caeea69d95d6</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>lightness</Name>
+                            <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+                            <Anchor>a5bd0ff9a70b06b96470c68b081c8b12c</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>model</Name>
+                            <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+                            <Anchor>a9db8b6ddf0974fe7c0dc1bf97d92a465</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>range_max</Name>
+                            <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+                            <Anchor>a0e2ac36f1b76d3b41e86382a8cbf372e</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>range_min</Name>
+                            <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+                            <Anchor>a955da640ffd43f2e6b51e2e308b6dc1f</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>tid</Name>
+                            <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+                            <Anchor>a4c815420a3e6f99fd109fcc4c954cc75</Anchor>
+                           </Node>
+                          </Subnodes>
+                         </Node>
+                         <Node>
+                          <Name>MESHX_LIGHT_LIGHTNESS_CLIENT_MODEL_TEMPLATE_PARAMS</Name>
+                          <Path>db/df1/meshx__model__lightness_8hpp.html</Path>
+                          <Anchor>aab5aeffacfaf964d2d66f80b5d69372f</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>MESHX_LIGHT_LIGHTNESS_CLIENT_MODEL_TEMPLATE_PROTO</Name>
+                          <Path>db/df1/meshx__model__lightness_8hpp.html</Path>
+                          <Anchor>aad06c0bb77a6ded87c4da80cf8962fe7</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>MESHX_LIGHT_LIGHTNESS_SERVER_MODEL_TEMPLATE_PARAMS</Name>
+                          <Path>db/df1/meshx__model__lightness_8hpp.html</Path>
+                          <Anchor>a7db90edcce65cec32111526f55b5b507</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>MESHX_LIGHT_LIGHTNESS_SERVER_MODEL_TEMPLATE_PROTO</Name>
+                          <Path>db/df1/meshx__model__lightness_8hpp.html</Path>
+                          <Anchor>ac235903d4f85f4ea0fdaf077755a364b</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>meshx_light_lightness_send_params_t</Name>
+                          <Path>db/df1/meshx__model__lightness_8hpp.html</Path>
+                          <Anchor>aca840a602fde7a13b4bdbdf92fe16bef</Anchor>
+                         </Node>
+                        </Subnodes>
                        </Node>
                       </Subnodes>
                      </Node>
@@ -31154,6 +31983,24 @@
                        <Node>
                         <Name>meshx_model_property.cpp</Name>
                         <Path>de/dfc/meshx__model__property_8cpp.html</Path>
+                       </Node>
+                      </Subnodes>
+                     </Node>
+                     <Node>
+                      <Name>light_model</Name>
+                      <Path>dir_69fdfa3675bfcaf999c54f372c30f365.html</Path>
+                    <Subnodes>
+                       <Node>
+                        <Name>meshx_model_ctl.cpp</Name>
+                        <Path>d2/dc2/meshx__model__ctl_8cpp.html</Path>
+                       </Node>
+                       <Node>
+                        <Name>meshx_model_hsl.cpp</Name>
+                        <Path>dd/dd7/meshx__model__hsl_8cpp.html</Path>
+                       </Node>
+                       <Node>
+                        <Name>meshx_model_lightness.cpp</Name>
+                        <Path>d4/d1f/meshx__model__lightness_8cpp.html</Path>
                        </Node>
                       </Subnodes>
                      </Node>

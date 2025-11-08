@@ -1114,6 +1114,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_light_ctl_cli_el_msg</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_light_ctl_cli_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_light_ctl_default_set_t</Name>
       <APILanguage>c</APILanguage>
       <Type>cl</Type>
@@ -1131,6 +1141,16 @@
     </TokenIdentifier>
     <Path>d9/d50/structmeshx__light__ctl__default__status__cb__t.html</Path>
     <DeclaredIn>meshx_ble_mesh_light_cli.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_light_ctl_send_params</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_light_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -1160,6 +1180,16 @@
     </TokenIdentifier>
     <Path>d9/dd3/structmeshx__light__ctl__srv.html</Path>
     <DeclaredIn>meshx_ble_mesh_light_srv.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_light_ctl_srv_el_msg</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_light_ctl_srv_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d1/d0e/structmeshx__light__ctl__srv__el__msg.html</Path>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -1313,6 +1343,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_light_hsl_send_params</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_light_hsl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+    <DeclaredIn>meshx_model_hsl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_light_hsl_set_t</Name>
       <APILanguage>c</APILanguage>
       <Type>cl</Type>
@@ -1320,6 +1360,16 @@
     </TokenIdentifier>
     <Path>d9/dbd/structmeshx__light__hsl__set__t.html</Path>
     <DeclaredIn>meshx_ble_mesh_light_cli.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_light_hsl_srv_el_msg</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_light_hsl_srv_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d5/de7/structmeshx__light__hsl__srv__el__msg.html</Path>
+    <DeclaredIn>meshx_model_hsl.hpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -1520,6 +1570,16 @@
     </TokenIdentifier>
     <Path>d9/d89/structmeshx__light__lightness__range__status__cb__t.html</Path>
     <DeclaredIn>meshx_ble_mesh_light_cli.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_light_lightness_send_params</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshx_light_lightness_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+    <DeclaredIn>meshx_model_lightness.hpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -3548,6 +3608,36 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshXLightCTLClientModel</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshXLightCTLClientModel</Scope>
+    </TokenIdentifier>
+    <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshXLightCTLServerModel</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshXLightCTLServerModel</Scope>
+    </TokenIdentifier>
+    <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshXLightHSLServerModel</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshXLightHSLServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+    <DeclaredIn>meshx_model_hsl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshXModel</Name>
       <APILanguage>c</APILanguage>
       <Type>tmplt</Type>
@@ -4720,6 +4810,36 @@
       <Name>base_model</Name>
       <APILanguage>unknown</APILanguage>
       <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>aa5e205fde4c253c222e066fa887dbd6b</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>base_model</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>aa5e205fde4c253c222e066fa887dbd6b</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>base_model</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>aa5e205fde4c253c222e066fa887dbd6b</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>base_model</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
       <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
@@ -5829,6 +5949,46 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>ctx</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+    <Anchor>aceeebd84d8be25bd2aaca287201d92c1</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>ctx</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_ctl_cli_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+    <Anchor>a91ad18999ee32275584e58e52543abee</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>ctx</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_hsl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+    <Anchor>a3bd546ea8c88b43e516083d0e3ae1346</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>ctx</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_lightness_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+    <Anchor>a8c5ccedc5ad2356ea0f8caeea69d95d6</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>cwww_cli_ctx</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -6256,6 +6416,36 @@
     </TokenIdentifier>
     <Path>d7/d79/structmeshx__api__light__cwww__client__evt.html</Path>
     <Anchor>a4119f76512a8ff2c84a3d004f82fdd96</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>delta_uv</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+    <Anchor>a37e50209ccb85af4e6f6022574816993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>delta_uv</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_ctl_cli_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+    <Anchor>a4cf243908b83d72a2224d28c26f2f612</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>delta_uv</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_ctl_srv_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d1/d0e/structmeshx__light__ctl__srv__el__msg.html</Path>
+    <Anchor>aa92afcad6d326f87e42ebdb4a0a1fea3</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -7499,6 +7689,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>err_code</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_ctl_cli_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+    <Anchor>a7ec2899baa1f1d83450a9e786f1dcff3</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>evt</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -8075,6 +8275,36 @@
       <Name>get_base_model</Name>
       <APILanguage>unknown</APILanguage>
       <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a4c89eef412069b61d52fcd49444810de</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_base_model</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a4c89eef412069b61d52fcd49444810de</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_base_model</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a4c89eef412069b61d52fcd49444810de</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_base_model</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
       <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
@@ -8359,6 +8589,36 @@
       <Name>get_gen_struct</Name>
       <APILanguage>unknown</APILanguage>
       <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
       <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
@@ -8550,6 +8810,36 @@
       <Name>get_init_status</Name>
       <APILanguage>unknown</APILanguage>
       <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a4cd7ad73052af2fc6b825a83325d5163</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_init_status</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a4cd7ad73052af2fc6b825a83325d5163</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_init_status</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a4cd7ad73052af2fc6b825a83325d5163</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_init_status</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
       <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
@@ -8843,6 +9133,36 @@
       <Name>get_parent_element</Name>
       <APILanguage>unknown</APILanguage>
       <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a61afb7b49d139ea2da9681e48ec376a1</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_parent_element</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a61afb7b49d139ea2da9681e48ec376a1</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_parent_element</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a61afb7b49d139ea2da9681e48ec376a1</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_parent_element</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
       <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
@@ -9034,6 +9354,36 @@
       <Name>get_plat_model</Name>
       <APILanguage>unknown</APILanguage>
       <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a4f0d11deeb9a398031d9df6f29ac197b</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_plat_model</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a4f0d11deeb9a398031d9df6f29ac197b</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_plat_model</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a4f0d11deeb9a398031d9df6f29ac197b</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_plat_model</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
       <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
@@ -9216,6 +9566,36 @@
       <APILanguage>unknown</APILanguage>
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>get_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
     <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
@@ -9853,6 +10233,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>hue</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_hsl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+    <Anchor>ad559b311b4a6ba8611e4e67363ee75ad</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>hue</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_hsl_srv_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d5/de7/structmeshx__light__hsl__srv__el__msg.html</Path>
+    <Anchor>a3954d5f185006c5a2ab6b5f80e5bc20f</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>hue_default</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -9903,6 +10303,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>hue_range_max</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_hsl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+    <Anchor>ac68ea7e75b8e72e5242c9ef7790b3a37</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>hue_range_min</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -9940,6 +10350,16 @@
     </TokenIdentifier>
     <Path>d6/dc3/structmeshx__light__hsl__state__t.html</Path>
     <Anchor>ac573c9dda9f0bd2eaaabefb4af100941</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>hue_range_min</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_hsl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+    <Anchor>a2647e165b8905110713ccf8cf39859c5</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -10730,6 +11150,66 @@
     </TokenIdentifier>
     <Path>d7/d79/structmeshx__api__light__cwww__client__evt.html</Path>
     <Anchor>ac66e28ce35c86a073ffa5debe4b5148b</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>lightness</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+    <Anchor>a58efbccf63bf2aa4afdc8980152652dc</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>lightness</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_ctl_cli_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+    <Anchor>a46ff94aa8198cd76660469ee005d1068</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>lightness</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_ctl_srv_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d1/d0e/structmeshx__light__ctl__srv__el__msg.html</Path>
+    <Anchor>ab54a2d51e8b7e95fb1ed3a5d275db861</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>lightness</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_hsl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+    <Anchor>aa2471e1126b7dda196a4ed3b91914882</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>lightness</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_hsl_srv_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d5/de7/structmeshx__light__hsl__srv__el__msg.html</Path>
+    <Anchor>ad5b11b99b16d70082adb5cb405b1bcd1</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>lightness</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_lightness_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+    <Anchor>a5bd0ff9a70b06b96470c68b081c8b12c</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -11787,6 +12267,17 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_state_change_notify</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXLightCTLClientModel</Scope>
+    </TokenIdentifier>
+    <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+    <Anchor>a23b7df64b6025061bd14565e1b80c0b3</Anchor>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_store</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -12303,6 +12794,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshXClientModel</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXClientModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaab2b8cd0d3e6df21160ef87fd7ac193b</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshXClientModel</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXClientModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/de4/classmeshXClientModel.html</Path>
+    <Anchor>a63c7c60e1aebfda568f618cdc40b7ebd</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshXElement</Name>
       <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
@@ -12589,6 +13100,39 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshXLightCTLClientModel</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXLightCTLClientModel</Scope>
+    </TokenIdentifier>
+    <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+    <Anchor>a0e1ae2008049f4e5aaa209e7cd04d1fa</Anchor>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshXLightCTLServerModel</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXLightCTLServerModel</Scope>
+    </TokenIdentifier>
+    <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+    <Anchor>ae17a0aa3bb9767819cc9e582e75e0ef8</Anchor>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshXLightHSLServerModel</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXLightHSLServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+    <Anchor>a21c19fe3e9a9a52007f351f0ece6a818</Anchor>
+    <DeclaredIn>meshx_model_hsl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshXModel</Name>
       <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
@@ -12764,6 +13308,36 @@
       <APILanguage>unknown</APILanguage>
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>ga5e15a6594aa3c3325f7159d204ae2e9d</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshXModel</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>ga5e15a6594aa3c3325f7159d204ae2e9d</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshXModel</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>ga5e15a6594aa3c3325f7159d204ae2e9d</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshXModel</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>db/d08/group__meshx__model.html</Path>
     <Anchor>ga5e15a6594aa3c3325f7159d204ae2e9d</Anchor>
@@ -12956,6 +13530,46 @@
       <APILanguage>unknown</APILanguage>
       <Type>instm</Type>
       <Scope>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>da/dbb/classmeshXServerModel.html</Path>
+    <Anchor>abe55a26e1c4ff1dd91992e475a8c44a7</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshXServerModel</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXServerModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>ga8cdc5c8d3c43a0d0275bf75245a6b3bb</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshXServerModel</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXServerModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>da/dbb/classmeshXServerModel.html</Path>
+    <Anchor>abe55a26e1c4ff1dd91992e475a8c44a7</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshXServerModel</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXServerModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>ga8cdc5c8d3c43a0d0275bf75245a6b3bb</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshXServerModel</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXServerModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>da/dbb/classmeshXServerModel.html</Path>
     <Anchor>abe55a26e1c4ff1dd91992e475a8c44a7</Anchor>
@@ -13472,6 +14086,66 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>model</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+    <Anchor>aeaa7add6223e1247143fc7bcdc135f48</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_ctl_cli_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+    <Anchor>a61430469960cd4712304f760817f21e7</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_ctl_srv_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d1/d0e/structmeshx__light__ctl__srv__el__msg.html</Path>
+    <Anchor>af01368248c339be7c288a1217c6196de</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_hsl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+    <Anchor>a7c5936db68b9d856689ffe1149e99955</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_hsl_srv_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d5/de7/structmeshx__light__hsl__srv__el__msg.html</Path>
+    <Anchor>a568448fb203310e3554bc0a0ba8088d3</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_lightness_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+    <Anchor>a9db8b6ddf0974fe7c0dc1bf97d92a465</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>model_from_ble_cb</Name>
       <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
@@ -13717,6 +14391,39 @@
       <Name>model_from_ble_cb</Name>
       <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
+      <Scope>meshXLightCTLClientModel</Scope>
+    </TokenIdentifier>
+    <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+    <Anchor>a3378c9d51e6c47f8b876ae329b59124e</Anchor>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model_from_ble_cb</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXLightCTLServerModel</Scope>
+    </TokenIdentifier>
+    <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+    <Anchor>a83380ee7e9d16cf726d16bdee5319c76</Anchor>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model_from_ble_cb</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXLightHSLServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+    <Anchor>a13e2d44e566ea18198ed98e4eca3e225</Anchor>
+    <DeclaredIn>meshx_model_hsl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model_from_ble_cb</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
       <Scope>meshXModel&lt; meshxBaseModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
@@ -13889,6 +14596,36 @@
       <APILanguage>unknown</APILanguage>
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a3199572478d863522e7b11e5aab6755b</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model_from_ble_cb</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a3199572478d863522e7b11e5aab6755b</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model_from_ble_cb</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a3199572478d863522e7b11e5aab6755b</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model_from_ble_cb</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
     <Anchor>a3199572478d863522e7b11e5aab6755b</Anchor>
@@ -14360,6 +15097,39 @@
       <Name>model_send</Name>
       <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
+      <Scope>meshXLightCTLClientModel</Scope>
+    </TokenIdentifier>
+    <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+    <Anchor>ac289ac051c9ee29157a111480ded625d</Anchor>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model_send</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXLightCTLServerModel</Scope>
+    </TokenIdentifier>
+    <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+    <Anchor>afafe8049697060315740b2eeb3a35cf6</Anchor>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model_send</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXLightHSLServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+    <Anchor>a4e03b043202de298b619622aa9d514ab</Anchor>
+    <DeclaredIn>meshx_model_hsl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model_send</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
       <Scope>meshXModel&lt; meshxBaseModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
@@ -14532,6 +15302,36 @@
       <APILanguage>unknown</APILanguage>
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>af1c63527b851de806ec4c3eda91b7c27</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model_send</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>af1c63527b851de806ec4c3eda91b7c27</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model_send</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>af1c63527b851de806ec4c3eda91b7c27</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>model_send</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
     <Anchor>af1c63527b851de806ec4c3eda91b7c27</Anchor>
@@ -16512,6 +17312,36 @@
       <Name>p_plat_gen</Name>
       <APILanguage>unknown</APILanguage>
       <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_gen</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
       <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
@@ -16702,6 +17532,36 @@
       <Name>p_plat_model</Name>
       <APILanguage>unknown</APILanguage>
       <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8a5d29f57289d451c897257235e8d165</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_model</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8a5d29f57289d451c897257235e8d165</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_model</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8a5d29f57289d451c897257235e8d165</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_model</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
       <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
@@ -16883,6 +17743,36 @@
       <APILanguage>unknown</APILanguage>
       <Type>data</Type>
       <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>p_plat_pub</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
     <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
@@ -17112,6 +18002,36 @@
       <Name>parent_element</Name>
       <APILanguage>unknown</APILanguage>
       <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2fbc831c62c91bffebb96850232ae1cf</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>parent_element</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2fbc831c62c91bffebb96850232ae1cf</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>parent_element</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2fbc831c62c91bffebb96850232ae1cf</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>parent_element</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
       <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
@@ -17292,6 +18212,28 @@
       <Name>plat_model_create</Name>
       <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
+      <Scope>meshXLightCTLServerModel</Scope>
+    </TokenIdentifier>
+    <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+    <Anchor>a5c75c5b69f13e677e42a0941c27ab58c</Anchor>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_create</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXLightHSLServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+    <Anchor>abc3b65bbfa1c465d474284099ea969ac</Anchor>
+    <DeclaredIn>meshx_model_hsl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_create</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
       <Scope>meshXModel&lt; meshxBaseModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
@@ -17484,6 +18426,36 @@
       <Name>plat_model_create</Name>
       <APILanguage>unknown</APILanguage>
       <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>aff99fd62a17483196f25c126f0d8af5a</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_create</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>aff99fd62a17483196f25c126f0d8af5a</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_create</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>aff99fd62a17483196f25c126f0d8af5a</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_create</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
       <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
@@ -17565,6 +18537,16 @@
       <APILanguage>unknown</APILanguage>
       <Type>instm</Type>
       <Scope>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>ga92de375d5622517bb09c0b763358f20a</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_create</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXClientModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>db/d08/group__meshx__model.html</Path>
     <Anchor>ga92de375d5622517bb09c0b763358f20a</Anchor>
@@ -17684,6 +18666,28 @@
       <Name>plat_model_delete</Name>
       <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
+      <Scope>meshXLightCTLServerModel</Scope>
+    </TokenIdentifier>
+    <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+    <Anchor>af08a8a312bf5323f92bbf62b55d65130</Anchor>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXLightHSLServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+    <Anchor>a59ac7e4e58b27814b7c71ccf140afc5e</Anchor>
+    <DeclaredIn>meshx_model_hsl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
       <Scope>meshXModel&lt; meshxBaseModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
@@ -17876,6 +18880,36 @@
       <Name>plat_model_delete</Name>
       <APILanguage>unknown</APILanguage>
       <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
       <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
@@ -17957,6 +18991,16 @@
       <APILanguage>unknown</APILanguage>
       <Type>instm</Type>
       <Scope>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>ga605a2f8548b5177ff1a2b1108915a702</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>plat_model_delete</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXClientModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>db/d08/group__meshx__model.html</Path>
     <Anchor>ga605a2f8548b5177ff1a2b1108915a702</Anchor>
@@ -19776,6 +20820,16 @@
       <Name>range_max</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
+      <Scope>meshx_light_lightness_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+    <Anchor>a0e2ac36f1b76d3b41e86382a8cbf372e</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>range_max</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
       <Scope>meshx_plat_ctl_status</Scope>
     </TokenIdentifier>
     <Path>d1/d26/unionmeshx__plat__ctl__status.html</Path>
@@ -19880,6 +20934,16 @@
     </TokenIdentifier>
     <Path>d8/de7/structmeshx__power__level__srv__el__msg.html</Path>
     <Anchor>aeb29a6ecd654736c344ca254d455b916</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>range_min</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_lightness_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+    <Anchor>a955da640ffd43f2e6b51e2e308b6dc1f</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -20293,6 +21357,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>sat_range_max</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_hsl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+    <Anchor>a012845290d96198e5f08484675de0565</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>sat_range_min</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_hsl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+    <Anchor>a81f6934e0d10d41e894124ea666c9c86</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>saturation</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -20360,6 +21444,26 @@
     </TokenIdentifier>
     <Path>d6/dc3/structmeshx__light__hsl__state__t.html</Path>
     <Anchor>aca4b41ef700d8849bb3bb1bb2bae54c8</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>saturation</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_hsl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+    <Anchor>a0a39185eea2f080eca926fe269b2f4a9</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>saturation</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_hsl_srv_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d5/de7/structmeshx__light__hsl__srv__el__msg.html</Path>
+    <Anchor>a1748f1758660a40192a84cf46cd876e3</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -20822,6 +21926,36 @@
       <Name>set_gen_struct</Name>
       <APILanguage>unknown</APILanguage>
       <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_gen_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
       <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
@@ -21145,6 +22279,36 @@
       <Name>set_parent_element</Name>
       <APILanguage>unknown</APILanguage>
       <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a332e584bb9487a0865d4ee3519ca0230</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_parent_element</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a332e584bb9487a0865d4ee3519ca0230</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_parent_element</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a332e584bb9487a0865d4ee3519ca0230</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_parent_element</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
       <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
@@ -21327,6 +22491,36 @@
       <APILanguage>unknown</APILanguage>
       <Type>instm</Type>
       <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>set_pub_struct</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
     <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
@@ -21939,6 +23133,36 @@
       <APILanguage>unknown</APILanguage>
       <Type>data</Type>
       <Scope>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a079535c8b408df1516e9e7ae12d6f972</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>status</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a079535c8b408df1516e9e7ae12d6f972</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>status</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>df/d4b/classmeshXModel.html</Path>
+    <Anchor>a079535c8b408df1516e9e7ae12d6f972</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>status</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>data</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>df/d4b/classmeshXModel.html</Path>
     <Anchor>a079535c8b408df1516e9e7ae12d6f972</Anchor>
@@ -22595,6 +23819,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>temp_range_max</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_ctl_cli_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+    <Anchor>a9ca7caa96147f6d4cb91778cac73f7e3</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>temp_range_min</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -22642,6 +23876,16 @@
     </TokenIdentifier>
     <Path>d7/d79/structmeshx__api__light__cwww__client__evt.html</Path>
     <Anchor>a85d0142f1a1a3c7f1884da32ea4e977f</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>temp_range_min</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_ctl_cli_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+    <Anchor>ae364e68450916df963bc49b060c34512</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -22762,6 +24006,36 @@
     </TokenIdentifier>
     <Path>d7/d79/structmeshx__api__light__cwww__client__evt.html</Path>
     <Anchor>a775d56e00f3b99df00df6e4eec1483a8</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>temperature</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+    <Anchor>a824114159dc478b5ce5c826fc3c16d0d</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>temperature</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_ctl_cli_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d9/d04/structmeshx__light__ctl__cli__el__msg.html</Path>
+    <Anchor>aec69d72fa989c6ab22ebd29dc8ba5d7d</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>temperature</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_ctl_srv_el_msg</Scope>
+    </TokenIdentifier>
+    <Path>d1/d0e/structmeshx__light__ctl__srv__el__msg.html</Path>
+    <Anchor>a82426199ea4fda4995ee48de63ae5ac9</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23092,6 +24366,36 @@
     </TokenIdentifier>
     <Path>dd/da9/structmeshx__gen__power__onoff__send__params.html</Path>
     <Anchor>ab8ff0b6952c07fb656c264cb3fbfbb9c</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>tid</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_ctl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d5/d37/structmeshx__light__ctl__send__params.html</Path>
+    <Anchor>a3ec99841eb1c2acc29c1986b22e2cca2</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>tid</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_hsl_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d0/d48/structmeshx__light__hsl__send__params.html</Path>
+    <Anchor>acc686e56fa7f1ad91ff7e56c0e7c1002</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>tid</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_light_lightness_send_params</Scope>
+    </TokenIdentifier>
+    <Path>d0/d38/structmeshx__light__lightness__send__params.html</Path>
+    <Anchor>a4c815420a3e6f99fd109fcc4c954cc75</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -24499,6 +25803,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>~meshXClientModel</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXClientModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/de4/classmeshXClientModel.html</Path>
+    <Anchor>ae0aa745ed922fa8fe8029c775c92805a</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>~meshXElement</Name>
       <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
@@ -24763,6 +26077,39 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>~meshXLightCTLClientModel</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXLightCTLClientModel</Scope>
+    </TokenIdentifier>
+    <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+    <Anchor>a9379b8a864caa7f13109499a7bb94d30</Anchor>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>~meshXLightCTLServerModel</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXLightCTLServerModel</Scope>
+    </TokenIdentifier>
+    <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+    <Anchor>a5ae314bcd0b099be65c5426278851d3f</Anchor>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>~meshXLightHSLServerModel</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXLightHSLServerModel</Scope>
+    </TokenIdentifier>
+    <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+    <Anchor>ad84ad4f70639bb69c3c68533d405657a</Anchor>
+    <DeclaredIn>meshx_model_hsl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>~meshXModel</Name>
       <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
@@ -24947,6 +26294,36 @@
       <Name>~meshXModel</Name>
       <APILanguage>unknown</APILanguage>
       <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>~meshXModel</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>~meshXModel</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>db/d08/group__meshx__model.html</Path>
+    <Anchor>gaccacc6ba99e081764361218b0c2ed43b</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>~meshXModel</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
       <Scope>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>db/d08/group__meshx__model.html</Path>
@@ -25039,6 +26416,26 @@
       <APILanguage>unknown</APILanguage>
       <Type>instm</Type>
       <Scope>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_power_onoff_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>da/dbb/classmeshXServerModel.html</Path>
+    <Anchor>a724548b7085f64d0e6f270f8358cd2d6</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>~meshXServerModel</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXServerModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Scope>
+    </TokenIdentifier>
+    <Path>da/dbb/classmeshXServerModel.html</Path>
+    <Anchor>a724548b7085f64d0e6f270f8358cd2d6</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>~meshXServerModel</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXServerModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Scope>
     </TokenIdentifier>
     <Path>da/dbb/classmeshXServerModel.html</Path>
     <Anchor>a724548b7085f64d0e6f270f8358cd2d6</Anchor>
@@ -25441,16 +26838,6 @@
     </TokenIdentifier>
     <Path>df/d01/meshx__config__internal_8h.html</Path>
     <Anchor>afb5d9569407f39391568c84c7d5d4d9a</Anchor>
-    <DeclaredIn>meshx_config_internal.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONFIG_ENABLE_LIGHT_CTL_CLIENT</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>macro</Type>
-    </TokenIdentifier>
-    <Path>df/d01/meshx__config__internal_8h.html</Path>
-    <Anchor>abad09f52b68314833ed806b9dccf4669</Anchor>
     <DeclaredIn>meshx_config_internal.h</DeclaredIn>
   </Token>
   <Token>
@@ -32016,6 +33403,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_light_ctl_cli_el_msg_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>d0/d13/meshx__model__ctl_8hpp.html</Path>
+    <Anchor>a3c5093dbf2ca42c0723418bb592dd1f6</Anchor>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_LIGHT_CTL_CLI_MSG_ACK</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
@@ -32126,6 +33523,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAMS</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d0/d13/meshx__model__ctl_8hpp.html</Path>
+    <Anchor>a2329a7b571d857bbfb9e1af25b37db2f</Anchor>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PROTO</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d0/d13/meshx__model__ctl_8hpp.html</Path>
+    <Anchor>a4885f94d37e8504dec5526c25e575f05</Anchor>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_light_ctl_client_send_msg</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -32146,6 +33563,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_light_ctl_send_params_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>d0/d13/meshx__model__ctl_8hpp.html</Path>
+    <Anchor>aa7ff296e80049e02bf592d5ebf6ead37</Anchor>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_light_ctl_server_create</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -32203,6 +33630,26 @@
     <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
     <Anchor>adc1d0d7fc5b8e44bebce9c905547780f</Anchor>
     <DeclaredIn>meshx_light_ctl_srv.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAMS</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d0/d13/meshx__model__ctl_8hpp.html</Path>
+    <Anchor>ab6f0abaea8fc76086586f3cda2e01aac</Anchor>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PROTO</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d0/d13/meshx__model__ctl_8hpp.html</Path>
+    <Anchor>a9655c108ce908ef5bfe37b60dd227f23</Anchor>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -32253,6 +33700,16 @@
     <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
     <Anchor>a945bccc5506f70cdda5d65e1ef307c63</Anchor>
     <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_light_ctl_srv_el_msg_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>d0/d13/meshx__model__ctl_8hpp.html</Path>
+    <Anchor>af0af8039e1f4116f0258492f558c8041</Anchor>
+    <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -32406,6 +33863,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAMS</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d8/da9/meshx__model__hsl_8hpp.html</Path>
+    <Anchor>ac6b108fdbc6fd0a1d1741630b810a392</Anchor>
+    <DeclaredIn>meshx_model_hsl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PROTO</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d8/da9/meshx__model__hsl_8hpp.html</Path>
+    <Anchor>a98a6cc67804f3893b34608c50c8f60e6</Anchor>
+    <DeclaredIn>meshx_model_hsl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_LIGHT_HSL_HUE_SRV</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
@@ -32426,6 +33903,36 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_light_hsl_send_params_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>d8/da9/meshx__model__hsl_8hpp.html</Path>
+    <Anchor>a620d1589d2918eb90dad7aa707343fa6</Anchor>
+    <DeclaredIn>meshx_model_hsl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAMS</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d8/da9/meshx__model__hsl_8hpp.html</Path>
+    <Anchor>a0b4a8def48d10d4597bb2a819ddf67c4</Anchor>
+    <DeclaredIn>meshx_model_hsl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PROTO</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d8/da9/meshx__model__hsl_8hpp.html</Path>
+    <Anchor>a832a794f5a50e590ec657ea946e0f95f</Anchor>
+    <DeclaredIn>meshx_model_hsl.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_LIGHT_HSL_SRV</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
@@ -32433,6 +33940,16 @@
     <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
     <Anchor>aa75dde2a4288519dc9f2736038a7a499</Anchor>
     <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_light_hsl_srv_el_msg_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>d8/da9/meshx__model__hsl_8hpp.html</Path>
+    <Anchor>a2e88f78559b0728aba8d1956da4b5af2</Anchor>
+    <DeclaredIn>meshx_model_hsl.hpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -32473,6 +33990,56 @@
     <Path>d3/d2b/meshx__platform__ble__mesh_8h.html</Path>
     <Anchor>aec14d58b09930c4ac02e7d1d194c8776</Anchor>
     <DeclaredIn>meshx_platform_ble_mesh.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_LIGHTNESS_CLIENT_MODEL_TEMPLATE_PARAMS</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>db/df1/meshx__model__lightness_8hpp.html</Path>
+    <Anchor>aab5aeffacfaf964d2d66f80b5d69372f</Anchor>
+    <DeclaredIn>meshx_model_lightness.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_LIGHTNESS_CLIENT_MODEL_TEMPLATE_PROTO</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>db/df1/meshx__model__lightness_8hpp.html</Path>
+    <Anchor>aad06c0bb77a6ded87c4da80cf8962fe7</Anchor>
+    <DeclaredIn>meshx_model_lightness.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_light_lightness_send_params_t</Name>
+      <APILanguage>c</APILanguage>
+      <Type>tdef</Type>
+    </TokenIdentifier>
+    <Path>db/df1/meshx__model__lightness_8hpp.html</Path>
+    <Anchor>aca840a602fde7a13b4bdbdf92fe16bef</Anchor>
+    <DeclaredIn>meshx_model_lightness.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_LIGHTNESS_SERVER_MODEL_TEMPLATE_PARAMS</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>db/df1/meshx__model__lightness_8hpp.html</Path>
+    <Anchor>a7db90edcce65cec32111526f55b5b507</Anchor>
+    <DeclaredIn>meshx_model_lightness.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LIGHT_LIGHTNESS_SERVER_MODEL_TEMPLATE_PROTO</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>db/df1/meshx__model__lightness_8hpp.html</Path>
+    <Anchor>ac235903d4f85f4ea0fdaf077755a364b</Anchor>
+    <DeclaredIn>meshx_model_lightness.hpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
