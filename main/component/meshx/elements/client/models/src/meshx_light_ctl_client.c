@@ -15,7 +15,7 @@
 
 #define LIGHT_CTL_CLIENT_INIT_MAGIC 0x8932
 
-#if CONFIG_ENABLE_LIGHT_CTL_CLIENT > 0
+#if CONFIG_ENABLE_LIGHT_CTL_CLIENT
 
 static uint16_t light_ctl_client_init_flag = 0;
 
