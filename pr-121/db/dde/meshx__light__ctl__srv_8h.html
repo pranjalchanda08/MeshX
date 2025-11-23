@@ -86,7 +86,7 @@ $(function(){ initResizable(false); });
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="../../dir_5c982d53a68cdbcd421152b4020263a9.html">main</a></li><li class="navelem"><a class="el" href="../../dir_8c5515a604d4a2bb78291420d5b72747.html">component</a></li><li class="navelem"><a class="el" href="../../dir_17e62e33567b93c5a1475a84b6c9c934.html">meshx</a></li><li class="navelem"><a class="el" href="../../dir_731868db0f8d6d1cac5b0ffc22af1dd4.html">elements</a></li><li class="navelem"><a class="el" href="../../dir_e75a121ce4fbf4ac625776640133c289.html">server</a></li><li class="navelem"><a class="el" href="../../dir_de06a67f94a28ad18faee55f202b3120.html">models</a></li><li class="navelem"><a class="el" href="../../dir_669592cf7fa1893fca894cfefda031ba.html">inc</a></li>  </ul>
+<li class="navelem"><a class="el" href="../../dir_5c982d53a68cdbcd421152b4020263a9.html">main</a></li><li class="navelem"><a class="el" href="../../dir_8c5515a604d4a2bb78291420d5b72747.html">component</a></li><li class="navelem"><a class="el" href="../../dir_17e62e33567b93c5a1475a84b6c9c934.html">meshx</a></li><li class="navelem"><a class="el" href="../../dir_c1e500e3fffd9508cba481807c4d7387.html">elements_c</a></li><li class="navelem"><a class="el" href="../../dir_3b2c633b5804cf42af91a73254e87e1e.html">server</a></li><li class="navelem"><a class="el" href="../../dir_9a7b4591719a920d92aae932b00ab492.html">models</a></li><li class="navelem"><a class="el" href="../../dir_20476ece384cb74d8d53ee9879f10f0f.html">inc</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div id="doc-content">
@@ -209,16 +209,16 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  291</span>    <span class="keywordflow">if</span> (!p_model)</div>
 <div class="line"><span class="lineno">  292</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
 <div class="line"><span class="lineno">  293</span> </div>
-<div class="line"><span class="lineno">  294</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.meshx_srv_model == NULL)</div>
+<div class="line"><span class="lineno">  294</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a67841f2c0afbc6c97c43313776c2cc11">g_meshx_light_ctl_srv</a>.ctl_setup_server.meshx_srv_model == NULL)</div>
 <div class="line"><span class="lineno">  295</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a4d423ab700ffdf5440a1f0579beba8af">MESHX_FAIL</a>;</div>
 <div class="line"><span class="lineno">  296</span> </div>
-<div class="line"><span class="lineno">  297</span>    memcpy(p_model, &amp;<a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.ctl_setup_srv_model, <span class="keyword">sizeof</span>(<a class="code hl_define" href="../../d3/d2b/meshx__platform__ble__mesh_8h.html#ab8c86cf2f5e47acb374476edda8b5b7c">MESHX_MODEL</a>));</div>
+<div class="line"><span class="lineno">  297</span>    memcpy(p_model, &amp;<a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a67841f2c0afbc6c97c43313776c2cc11">g_meshx_light_ctl_srv</a>.ctl_setup_server.ctl_setup_srv_model, <span class="keyword">sizeof</span>(<a class="code hl_define" href="../../d3/d2b/meshx__platform__ble__mesh_8h.html#ab8c86cf2f5e47acb374476edda8b5b7c">MESHX_MODEL</a>));</div>
 <div class="line"><span class="lineno">  298</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
 <div class="line"><span class="lineno">  299</span>}</div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a></div><div class="ttdeci">@ MESHX_SUCCESS</div><div class="ttdef"><b>Definition</b> meshx_err.h:40</div></div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a></div><div class="ttdeci">@ MESHX_INVALID_ARG</div><div class="ttdef"><b>Definition</b> meshx_err.h:42</div></div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6a4d423ab700ffdf5440a1f0579beba8af"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a4d423ab700ffdf5440a1f0579beba8af">MESHX_FAIL</a></div><div class="ttdeci">@ MESHX_FAIL</div><div class="ttdef"><b>Definition</b> meshx_err.h:41</div></div>
-<div class="ttc" id="ameshx__light__ctl__srv_8c_html_ad7b3965ec05b69bf693150a97200e279"><div class="ttname"><a href="../../d4/db6/meshx__light__ctl__srv_8c.html#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a></div><div class="ttdeci">static struct @162134341120176320346270047367114065256252040066 g_meshx_light_ctl_srv</div><div class="ttdoc">Structure to maintain the initialization and creation state of the MeshX Light CTL Server.</div></div>
+<div class="ttc" id="ameshx__light__ctl__srv_8c_html_a67841f2c0afbc6c97c43313776c2cc11"><div class="ttname"><a href="../../d4/db6/meshx__light__ctl__srv_8c.html#a67841f2c0afbc6c97c43313776c2cc11">g_meshx_light_ctl_srv</a></div><div class="ttdeci">static struct @121347272100236043012044351041067131140320334270 g_meshx_light_ctl_srv</div><div class="ttdoc">Structure to maintain the initialization and creation state of the MeshX Light CTL Server.</div></div>
 <div class="ttc" id="ameshx__platform__ble__mesh_8h_html_ab8c86cf2f5e47acb374476edda8b5b7c"><div class="ttname"><a href="../../d3/d2b/meshx__platform__ble__mesh_8h.html#ab8c86cf2f5e47acb374476edda8b5b7c">MESHX_MODEL</a></div><div class="ttdeci">#define MESHX_MODEL</div><div class="ttdef"><b>Definition</b> meshx_platform_ble_mesh.h:34</div></div>
 </div><!-- fragment -->
 </div>
@@ -281,8 +281,8 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  379</span>        <span class="keywordflow">return</span> err;</div>
 <div class="line"><span class="lineno">  380</span>    }</div>
 <div class="line"><span class="lineno">  381</span> </div>
-<div class="line"><span class="lineno">  382</span>    <span class="keywordflow">if</span>(     <a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_lighting_server_created == 0</div>
-<div class="line"><span class="lineno">  383</span>        &amp;&amp;  <a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.ctl_setup_server_init == 0)</div>
+<div class="line"><span class="lineno">  382</span>    <span class="keywordflow">if</span>(     <a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a67841f2c0afbc6c97c43313776c2cc11">g_meshx_light_ctl_srv</a>.ctl_lighting_server_created == 0</div>
+<div class="line"><span class="lineno">  383</span>        &amp;&amp;  <a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a67841f2c0afbc6c97c43313776c2cc11">g_meshx_light_ctl_srv</a>.ctl_setup_server.ctl_setup_server_init == 0)</div>
 <div class="line"><span class="lineno">  384</span>    {</div>
 <div class="line"><span class="lineno">  385</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a47d4a699f2997a758e0eca271b66cb48">MESHX_LOGI</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Creating CTL setup server model&quot;</span>);</div>
 <div class="line"><span class="lineno">  386</span>        <span class="comment">/* Create CTL setup server */</span></div>
@@ -295,11 +295,11 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  393</span>            <a class="code hl_function" href="../../d4/db6/meshx__light__ctl__srv_8c.html#aed19d572f2a8028c955328e452df507e">meshx_light_ctl_server_delete</a>(p_model);</div>
 <div class="line"><span class="lineno">  394</span>            <span class="keywordflow">return</span> err;</div>
 <div class="line"><span class="lineno">  395</span>        }</div>
-<div class="line"><span class="lineno">  396</span>        <a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.ctl_setup_server_init = <a class="code hl_define" href="../../da/dcb/meshx__gen__server_8c.html#ad9e063fcc893a076ff956ac6020372ed">MESHX_SERVER_INIT_MAGIC_NO</a>;</div>
+<div class="line"><span class="lineno">  396</span>        <a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a67841f2c0afbc6c97c43313776c2cc11">g_meshx_light_ctl_srv</a>.ctl_setup_server.ctl_setup_server_init = <a class="code hl_define" href="../../da/dcb/meshx__gen__server_8c.html#ad9e063fcc893a076ff956ac6020372ed">MESHX_SERVER_INIT_MAGIC_NO</a>;</div>
 <div class="line"><span class="lineno">  397</span>    }</div>
 <div class="line"><span class="lineno">  398</span>    <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  399</span>    {</div>
-<div class="line"><span class="lineno">  400</span>        <a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_lighting_server_created++;</div>
+<div class="line"><span class="lineno">  400</span>        <a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a67841f2c0afbc6c97c43313776c2cc11">g_meshx_light_ctl_srv</a>.ctl_lighting_server_created++;</div>
 <div class="line"><span class="lineno">  401</span>    }</div>
 <div class="line"><span class="lineno">  402</span> </div>
 <div class="line"><span class="lineno">  403</span>    (*p_model)-&gt;meshx_sig = p_sig_model;</div>
@@ -360,14 +360,14 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">  430</span> </div>
 <div class="line"><span class="lineno">  431</span>    <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#af8f58f6602b246397c882d9cddd9a334">MESHX_FREE</a>(*p_model);</div>
 <div class="line"><span class="lineno">  432</span>    *p_model = NULL;</div>
-<div class="line"><span class="lineno">  433</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_lighting_server_created == 0)</div>
+<div class="line"><span class="lineno">  433</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a67841f2c0afbc6c97c43313776c2cc11">g_meshx_light_ctl_srv</a>.ctl_lighting_server_created == 0)</div>
 <div class="line"><span class="lineno">  434</span>    {</div>
 <div class="line"><span class="lineno">  435</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a3df9f46a0a08969094d8eef3581409e8">MESHX_LOGW</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedcae99b3f7b220d81ae4efb1b11bc390689">MODULE_ID_MODEL_SERVER</a>, <span class="stringliteral">&quot;Deleting CTL setup server model&quot;</span>);</div>
 <div class="line"><span class="lineno">  436</span>        <span class="comment">/* Delete CTL setup server */</span></div>
 <div class="line"><span class="lineno">  437</span>    }</div>
 <div class="line"><span class="lineno">  438</span>    <span class="keywordflow">else</span></div>
 <div class="line"><span class="lineno">  439</span>    {</div>
-<div class="line"><span class="lineno">  440</span>        <a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_lighting_server_created--;</div>
+<div class="line"><span class="lineno">  440</span>        <a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a67841f2c0afbc6c97c43313776c2cc11">g_meshx_light_ctl_srv</a>.ctl_lighting_server_created--;</div>
 <div class="line"><span class="lineno">  441</span>    }</div>
 <div class="line"><span class="lineno">  442</span>    <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
 <div class="line"><span class="lineno">  443</span>}</div>
@@ -409,10 +409,10 @@ Functions</h2></td></tr>
 <div class="fragment"><div class="line"><span class="lineno">  312</span>{</div>
 <div class="line"><span class="lineno">  313</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
 <div class="line"><span class="lineno">  314</span> </div>
-<div class="line"><span class="lineno">  315</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.ctl_setup_server_init == <a class="code hl_define" href="../../da/dcb/meshx__gen__server_8c.html#ad9e063fcc893a076ff956ac6020372ed">MESHX_SERVER_INIT_MAGIC_NO</a>)</div>
+<div class="line"><span class="lineno">  315</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a67841f2c0afbc6c97c43313776c2cc11">g_meshx_light_ctl_srv</a>.ctl_setup_server.ctl_setup_server_init == <a class="code hl_define" href="../../da/dcb/meshx__gen__server_8c.html#ad9e063fcc893a076ff956ac6020372ed">MESHX_SERVER_INIT_MAGIC_NO</a>)</div>
 <div class="line"><span class="lineno">  316</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0bcfcbc6db2a31dd3b3c3a91d999841b">MESHX_SUCCESS</a>;</div>
 <div class="line"><span class="lineno">  317</span> </div>
-<div class="line"><span class="lineno">  318</span>    <a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#ad7b3965ec05b69bf693150a97200e279">g_meshx_light_ctl_srv</a>.ctl_setup_server.ctl_setup_server_init = <a class="code hl_define" href="../../da/dcb/meshx__gen__server_8c.html#ad9e063fcc893a076ff956ac6020372ed">MESHX_SERVER_INIT_MAGIC_NO</a>;</div>
+<div class="line"><span class="lineno">  318</span>    <a class="code hl_variable" href="../../d4/db6/meshx__light__ctl__srv_8c.html#a67841f2c0afbc6c97c43313776c2cc11">g_meshx_light_ctl_srv</a>.ctl_setup_server.ctl_setup_server_init = <a class="code hl_define" href="../../da/dcb/meshx__gen__server_8c.html#ad9e063fcc893a076ff956ac6020372ed">MESHX_SERVER_INIT_MAGIC_NO</a>;</div>
 <div class="line"><span class="lineno">  319</span> </div>
 <div class="line"><span class="lineno">  320</span>    err = <a class="code hl_function" href="../../dc/daf/meshx__light__server_8h.html#a12af3296e750ff638ba757ebf12d9043">meshx_lighting_srv_init</a>();</div>
 <div class="line"><span class="lineno">  321</span>    <span class="keywordflow">if</span> (err)</div>
@@ -693,7 +693,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Nov 9 2025 16:35:02 for MeshX by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
+Generated on Sun Nov 23 2025 14:50:46 for MeshX by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
 </small></address>
 </div><!-- doc-content -->
 </body>

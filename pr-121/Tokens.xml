@@ -28667,7 +28667,7 @@
       <Type>data</Type>
     </TokenIdentifier>
     <Path>d0/dbc/meshx__gen__client_8c.html</Path>
-    <Anchor>af6da07c886d90c9e80c9b01cdab6ef80</Anchor>
+    <Anchor>a95fa170df820e26aadff8babd640ea27</Anchor>
     <DeclaredIn>meshx_gen_client.c</DeclaredIn>
   </Token>
   <Token>
@@ -28677,7 +28677,7 @@
       <Type>data</Type>
     </TokenIdentifier>
     <Path>d0/dc1/meshx__gen__light__cli_8c.html</Path>
-    <Anchor>a2ce2edd038860a0166dd425b8277d125</Anchor>
+    <Anchor>a00b1c0500ed02cb838bf68d67fd3ec22</Anchor>
     <DeclaredIn>meshx_gen_light_cli.c</DeclaredIn>
   </Token>
   <Token>
@@ -28687,7 +28687,7 @@
       <Type>data</Type>
     </TokenIdentifier>
     <Path>d4/db6/meshx__light__ctl__srv_8c.html</Path>
-    <Anchor>ad7b3965ec05b69bf693150a97200e279</Anchor>
+    <Anchor>a67841f2c0afbc6c97c43313776c2cc11</Anchor>
     <DeclaredIn>meshx_light_ctl_srv.c</DeclaredIn>
   </Token>
   <Token>
