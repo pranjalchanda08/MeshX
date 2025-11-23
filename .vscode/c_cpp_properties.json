@@ -12,13 +12,14 @@
                 "UNICODE",
                 "_UNICODE"
             ],
-            "windowsSdkVersion": "10.0.19041.0",
-            "compilerPath": "cl.exe",
+            "compilerPath": "gcc",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "windows-msvc-x64",
+            "intelliSenseMode": "gcc-arm",
             "configurationProvider": "none",
-            "compileCommands" : "${workspaceFolder}/build/**/compile_commands.json"
+            "compileCommands" : [
+                "${workspaceFolder}/build/**/compile_commands.json"
+            ]
         }
     ],
     "version": 4
