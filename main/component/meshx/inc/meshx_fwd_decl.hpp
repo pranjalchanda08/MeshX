@@ -37,6 +37,10 @@
 
 #define MESHX_ELEMENT_TEMPLATE_PROTO
 #define MESHX_ELEMENT_TEMPLATE_PARAMS
+#define MESHX_SERVER_ELEMENT_TEMPLATE_PROTO
+#define MESHX_SERVER_ELEMENT_TEMPLATE_PARAMS
+#define MESHX_CLIENT_ELEMENT_TEMPLATE_PROTO
+#define MESHX_CLIENT_ELEMENT_TEMPLATE_PARAMS
 
 /***************************************************************************************************************************************
  * Forward declaration of Classes
@@ -51,6 +55,8 @@ MESHX_SERVER_MODEL_TEMPLATE_PROTO class meshXServerModel;
 MESHX_CLIENT_MODEL_TEMPLATE_PROTO class meshXClientModel;
 
 class meshXElementIF;
-MESHX_ELEMENT_TEMPLATE_PROTO    class meshXElement;
+MESHX_ELEMENT_TEMPLATE_PROTO        class meshXElement;
+MESHX_SERVER_ELEMENT_TEMPLATE_PROTO class meshXElementServer;
+MESHX_CLIENT_ELEMENT_TEMPLATE_PROTO class meshXElementClient;
 
 #endif/* __MESHX_FWD_DEC_H__ */
