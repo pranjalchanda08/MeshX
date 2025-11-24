@@ -25,50 +25,18 @@
 /*********************************************************************************
  * meshXModel
  *********************************************************************************/
-/**
- * @brief meshXModel class
- * @details This is a base class for both client and server models.
- */
-MESHX_MODEL_TEMPLATE_PROTO
-class meshXModel
+
+class meshXModelIF
 {
 private:
-    /* private members */
-    meshXElementIF *parent_element; /*<! Pointer to the parent element interface */
-    meshxBaseModel_t *base_model;   /*<! Pointer to the base model */
-
-    meshx_err_t status;        /*<! Status of the model */
-    MESHX_MODEL *p_plat_model; /*<! Pointer to the platform model */
+    MESHX_MODEL *p_plat_model; /**< Pointer to the platform model */
     meshx_ptr_t p_plat_pub;    /**< publication structures */
     meshx_ptr_t p_plat_gen;    /**< generic structures */
-
 public:
+
     /***********************************************************
      * Virtual Functions
      ***********************************************************/
-    /**
-     * @brief Handle upstream BLE Mesh events
-     * @details Pure virtual function that derived classes must implement to process
-     *          messages and events coming from the BLE Mesh network. The implementation
-     *          will be automatically registered with base_model->base_client_model_cb_list.
-     *
-     * @param[in] dev Device structure containing sender information
-     * @param[in] evt Event type indicating the nature of the message
-     * @param[in] data Event-specific data payload
-     * @return MESHX_SUCCESS if event handled successfully, error code otherwise
-     */
-    virtual meshx_err_t model_from_ble_cb(dev_struct_t *dev, control_task_msg_evt_t evt, meshx_ptr_t data) = 0;
-
-    /**
-     * @brief Send message through the model
-     * @details Pure virtual function that derived classes must implement to send
-     *          messages through the model to the BLE Mesh network.
-     *
-     * @param[in] params Message parameters including destination, opcode, and data
-     * @return MESHX_SUCCESS if message sent successfully, error code otherwise
-     */
-    virtual meshx_err_t model_send(meshx_send_packet_params_t *params) = 0;
-
     /**
      * @brief Create logical model instance
      * @details Pure virtual function that derived classes must implement to create
@@ -91,10 +59,10 @@ public:
      * Accessor Functions
      ***********************************************************/
     /**
-     * @brief Get the model initialization status
-     * @return Status code indicating success or failure of initialization
+     * @brief Set the platform-specific model instance
+     * @param[in] p_model Pointer to the platform model instance
      */
-    meshx_err_t get_init_status(void) const { return status; }
+    void set_plat_model(MESHX_MODEL *p_model) { p_plat_model = p_model; }
 
     /**
      * @brief Get the platform-specific model instance
@@ -125,6 +93,62 @@ public:
      * @param[in] gen Pointer to the generic structures
      */
     void set_gen_struct(meshx_ptr_t gen) { p_plat_gen = gen; }
+
+    meshXModelIF() = default;
+    explicit meshXModelIF(MESHX_MODEL *p_plat_model) : p_plat_model(p_plat_model) { }
+    virtual ~meshXModelIF() = default;
+};
+
+/**
+ * @brief meshXModel class
+ * @details This is a base class for both client and server models.
+ */
+MESHX_MODEL_TEMPLATE_PROTO
+class meshXModel : public meshXModelIF
+{
+private:
+    /* private members */
+    meshXElementIF *parent_element; /*<! Pointer to the parent element interface */
+    meshxBaseModel_t *base_model;   /*<! Pointer to the base model */
+
+    meshx_err_t status;        /*<! Status of the model */
+
+public:
+    /***********************************************************
+     * Virtual Functions
+     ***********************************************************/
+    /**
+     * @brief Handle upstream BLE Mesh events
+     * @details Pure virtual function that derived classes must implement to process
+     *          messages and events coming from the BLE Mesh network. The implementation
+     *          will be automatically registered with base_model->base_client_model_cb_list.
+     *
+     * @param[in] dev Device structure containing sender information
+     * @param[in] evt Event type indicating the nature of the message
+     * @param[in] data Event-specific data payload
+     * @return MESHX_SUCCESS if event handled successfully, error code otherwise
+     */
+    virtual meshx_err_t model_from_ble_cb(dev_struct_t *dev, control_task_msg_evt_t evt, meshx_ptr_t data) = 0;
+
+    /**
+     * @brief Send message through the model
+     * @details Pure virtual function that derived classes must implement to send
+     *          messages through the model to the BLE Mesh network.
+     *
+     * @param[in] params Message parameters including destination, opcode, and data
+     * @return MESHX_SUCCESS if message sent successfully, error code otherwise
+     */
+    virtual meshx_err_t model_send(meshx_send_packet_params_t *params) = 0;
+
+    /***********************************************************
+     * Accessor Functions
+     ***********************************************************/
+    /**
+     * @brief Get the model initialization status
+     * @return Status code indicating success or failure of initialization
+     */
+    meshx_err_t get_init_status(void) const { return status; }
+
     /**
      * @brief Get the base model instance
      * @return Pointer to the base model implementation
@@ -193,11 +217,6 @@ public:
     meshXServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
 
     /**
-     * @brief Default destructor
-     */
-    ~meshXServerModel(void) = default;
-
-    /**
      * @brief Deleted default constructor
      * @details Server models must be initialized with a platform model and ID
      */
@@ -247,10 +266,6 @@ public:
      */
     meshXClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
 
-    /**
-     * @brief Destroy the meshXClientModel
-     */
-    ~meshXClientModel() = default;
     meshXClientModel() = delete;
 };
 
