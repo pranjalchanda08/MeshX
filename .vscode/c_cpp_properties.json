@@ -17,9 +17,7 @@
             "cppStandard": "c++17",
             "intelliSenseMode": "gcc-arm",
             "configurationProvider": "none",
-            "compileCommands" : [
-                "${workspaceFolder}/build/**/compile_commands.json"
-            ]
+            "compileCommands" : "${workspaceFolder}/build/weact_c3/Debug/all_in_one/compile_commands.json"
         }
     ],
     "version": 4

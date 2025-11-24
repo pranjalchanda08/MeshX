@@ -83,7 +83,6 @@ public:
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
     meshXLightCTLClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
-    ~meshXLightCTLClientModel() = default;
 };
 
 #endif /* CONFIG_ENABLE_LIGHT_CTL_CLIENT */
@@ -126,7 +125,6 @@ public:
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
     meshXLightCTLServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
-    ~meshXLightCTLServerModel() = default;
 };
 
 #endif /* CONFIG_ENABLE_LIGHT_CTL_SERVER */

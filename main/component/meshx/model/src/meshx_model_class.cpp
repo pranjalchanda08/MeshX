@@ -44,11 +44,12 @@
 MESHX_MODEL_TEMPLATE_PROTO
 meshXModel MESHX_MODEL_TEMPLATE_PARAMS
     ::meshXModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element)
-    : parent_element(parent_element)
+    : parent_element(parent_element),
+      meshXModelIF(p_plat_model)
 {
     this->p_plat_model = p_plat_model;
     /* base_model needs to be used logically by the element composition */
-    base_model = new meshxBaseModel_t(model_id, model_from_ble_cb);
+    base_model = std::make_unique<meshxBaseModel_t>(model_id, model_from_ble_cb);
 
     /* Create logical model instance */
     this->plat_model_create();
