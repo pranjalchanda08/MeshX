@@ -12,10 +12,22 @@
  */
 
 #include <meshx_element_class.hpp>
+#include <memory>
 
 /*****************************************************************************************************
  * meshXElement
  *****************************************************************************************************/
+/**
+ * @brief Constructs a new meshXElement instance.
+ *
+ * @param[in] element_idx Index of the element in the mesh network
+ */
+MESHX_ELEMENT_TEMPLATE_PROTO
+meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::meshXElement()
+    : meshXElementIF(0), no_of_sig_models(0), no_of_ven_models(0)
+{ }
+
 /**
  * @brief Constructs a new meshXElement instance.
  *
@@ -36,17 +48,35 @@ meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
  */
 MESHX_ELEMENT_TEMPLATE_PROTO
 meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
-    ::meshXElement(uint16_t element_idx, uint8_t no_of_sig_models, uint8_t no_of_ven_models, meshxElementType_t element_type)
+    ::meshXElement(uint16_t element_idx, meshxElementType_t element_type, uint8_t no_of_sig_models, uint8_t no_of_ven_models)
     : meshXElementIF(element_idx), no_of_sig_models(no_of_sig_models), no_of_ven_models(no_of_ven_models), element_type(element_type)
 {
-    if(no_of_sig_models > 0)
+    sig_model_array_allocate();
+    ven_model_array_allocate();
+}
+
+MESHX_ELEMENT_TEMPLATE_PROTO
+meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::sig_model_array_allocate()
+{
+    if (no_of_sig_models > 0)
     {
-        p_plat_sig_model_array = std::array<MESHX_MODEL, no_of_sig_models>();
+        sig_model_array.reserve(no_of_sig_models);
+        return MESHX_SUCCESS;
     }
-    if(no_of_ven_models > 0)
+    return MESHX_NOT_SUPPORTED;
+}
+
+MESHX_ELEMENT_TEMPLATE_PROTO
+meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::ven_model_array_allocate()
+{
+    if (no_of_ven_models > 0)
     {
-        p_plat_ven_model_array = std::array<MESHX_MODEL, no_of_ven_models>();
+        ven_model_array.reserve(no_of_ven_models);
+        return MESHX_SUCCESS;
     }
+    return MESHX_NOT_SUPPORTED;
 }
 
 /*****************************************************************************************************
