@@ -67,8 +67,8 @@ private:
     uint8_t no_of_sig_models;
     uint8_t no_of_ven_models;
 
-    MESHX_MODEL *p_plat_sig_model_array;      /* MESHX_MODEL type array */
-    MESHX_MODEL *p_plat_ven_model_array;      /* MESHX_MODEL type array */
+    std::vector<MESHX_MODEL> sig_model_array;
+    std::vector<MESHX_MODEL> ven_model_array;
 
     std::vector<std::unique_ptr<meshXModelIF>> sig_models;
     std::vector<std::unique_ptr<meshXModelIF>> ven_models;
@@ -84,19 +84,23 @@ public:
     void set_no_of_ven_models(uint8_t cnt) { no_of_ven_models = cnt; }
     uint8_t get_no_of_ven_models(void) const { return no_of_ven_models; }
 
+    meshx_err_t sig_model_array_allocate(void);
+    meshx_err_t ven_model_array_allocate(void);
+
     MESHX_ELEMENT_ADD_MODEL_TEMPLATE_PROTO
     meshx_err_t add_sig_model(ConstructorsArgs&&... args);
 
     MESHX_ELEMENT_ADD_MODEL_TEMPLATE_PROTO
     meshx_err_t add_ven_model(ConstructorsArgs&&... args);
 
-    meshXElement() = delete;
+    meshXElement();
     explicit meshXElement(uint16_t element_idx);
     explicit meshXElement(
         uint16_t element_idx,
+        meshxElementType_t element_type = meshxElementType_t::MESHX_ELEMENT_TYPE_SERVER,
         uint8_t no_of_sig_models = 0,
-        uint8_t no_of_ven_models = 0,
-        meshxElementType_t element_type = meshxElementType_t::MESHX_ELEMENT_TYPE_SERVER);
+        uint8_t no_of_ven_models = 0
+    );
 
     ~meshXElement() override = default;
 };
@@ -109,9 +113,9 @@ MESHX_SERVER_ELEMENT_TEMPLATE_PROTO
 class meshXElementServer : public meshXElement
 {
 public:
-    meshXElementServer() = delete;
+    meshXElementServer() = default;
     explicit meshXElementServer(uint16_t element_idx, uint8_t no_of_sig_models = 0, uint8_t no_of_ven_models = 0)
-        : meshXElement(element_idx, no_of_sig_models, no_of_ven_models, meshxElementType_t::MESHX_ELEMENT_TYPE_SERVER) { }
+        : meshXElement(element_idx, meshxElementType_t::MESHX_ELEMENT_TYPE_SERVER, no_of_sig_models, no_of_ven_models) { }
 };
 
 /**
@@ -122,9 +126,9 @@ MESHX_CLIENT_ELEMENT_TEMPLATE_PROTO
 class meshXElementClient : public meshXElement
 {
 public:
-    meshXElementClient() = delete;
+    meshXElementClient() = default;
     explicit meshXElementClient(uint16_t element_idx, uint8_t no_of_sig_models = 0, uint8_t no_of_ven_models = 0)
-        : meshXElement(element_idx, no_of_sig_models, no_of_ven_models, meshxElementType_t::MESHX_ELEMENT_TYPE_CLIENT) { }
+        : meshXElement(element_idx, meshxElementType_t::MESHX_ELEMENT_TYPE_CLIENT, no_of_sig_models, no_of_ven_models) { }
 };
 
 #endif /* __MESHX_ELEMENT_CLASS__ */
