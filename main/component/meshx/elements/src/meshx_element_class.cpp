@@ -13,51 +13,34 @@
 
 #include <meshx_element_class.hpp>
 #include <memory>
+#include <ranges>
+#include <vector>
 
 /*****************************************************************************************************
  * meshXElement
  *****************************************************************************************************/
-/**
- * @brief Constructs a new meshXElement instance.
- *
- * @param[in] element_idx Index of the element in the mesh network
- */
-MESHX_ELEMENT_TEMPLATE_PROTO
-meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
-    ::meshXElement()
-    : meshXElementIF(0), no_of_sig_models(0), no_of_ven_models(0)
-{ }
-
-/**
- * @brief Constructs a new meshXElement instance.
- *
- * @param[in] element_idx Index of the element in the mesh network
- */
 MESHX_ELEMENT_TEMPLATE_PROTO
 meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
     ::meshXElement(uint16_t element_idx)
-    : meshXElementIF(element_idx), no_of_sig_models(0), no_of_ven_models(0)
-{ }
-
-/**
- * @brief Constructs a new meshXElement instance.
- *
- * @param[in] element_idx Index of the element in the mesh network
- * @param[in] no_of_sig_models Number of SIG models in the element
- * @param[in] no_of_ven_models Number of Ven models in the element
- */
-MESHX_ELEMENT_TEMPLATE_PROTO
-meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
-    ::meshXElement(uint16_t element_idx, meshxElementType_t element_type, uint8_t no_of_sig_models, uint8_t no_of_ven_models)
-    : meshXElementIF(element_idx), no_of_sig_models(no_of_sig_models), no_of_ven_models(no_of_ven_models), element_type(element_type)
+    : meshXElementIF(element_idx)
 {
-    sig_model_array_allocate();
-    ven_model_array_allocate();
+    // Create vector to hold all required root models
+    uint8_t num_sig_models = this->list_sig_models();
+    uint8_t num_ven_models = this->list_ven_models();
+
+    this->set_no_of_sig_models(num_sig_models);
+    this->set_no_of_ven_models(num_ven_models);
+
+    this->sig_plat_model_array_allocate();
+    this->ven_plat_model_array_allocate();
+
+    // Add all root models to the element
+    this->add_models();
 }
 
 MESHX_ELEMENT_TEMPLATE_PROTO
 meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
-    ::sig_model_array_allocate()
+    ::sig_plat_model_array_allocate()
 {
     if (no_of_sig_models > 0)
     {
@@ -69,7 +52,7 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
 
 MESHX_ELEMENT_TEMPLATE_PROTO
 meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
-    ::ven_model_array_allocate()
+    ::ven_plat_model_array_allocate()
 {
     if (no_of_ven_models > 0)
     {
@@ -82,14 +65,6 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
 /*****************************************************************************************************
  * meshXElement - Template Functions
  *****************************************************************************************************/
-/**
- * @brief Add a SIG model to the element
- * @tparam meshXModelT Type of the model to add
- * @tparam ConstructorsArgs
- *
- * @param[in] args Constructor arguments for the model
- * @return MESHX_SUCCESS on success, error code otherwise
- */
 MESHX_ELEMENT_TEMPLATE_PROTO
 MESHX_ELEMENT_ADD_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
@@ -110,14 +85,47 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
     return MESHX_SUCCESS;
 }
 
-/**
- * @brief Add a Vendor model to the element
- * @tparam meshXModelT Type of the model to add
- * @tparam ConstructorsArgs
- *
- * @param[in] args Constructor arguments for the model
- * @return MESHX_SUCCESS on success, error code otherwise
- */
+MESHX_ELEMENT_TEMPLATE_PROTO
+meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::add_sig_models()
+{
+    std::vector<std::unique_ptr<meshXModelIF>>& models = this->get_sig_models();
+
+    if(no_of_sig_models == 0)
+    {
+        return MESHX_NOT_SUPPORTED;
+    }
+
+    if (models.empty())
+    {
+        return MESHX_INVALID_STATE;
+    }
+
+    if ((sig_models.size() + models.size()) > no_of_sig_models)
+    {
+        return MESHX_NO_MEM;
+    }
+
+    for (auto [index, model] : std::views::enumerate(models))
+    {
+        if (model == nullptr)
+        {
+            return MESHX_INVALID_ARG;
+        }
+
+        // Set the platform model for the model
+        model->set_plat_model(&this->sig_model_array[index]);
+        // Set the parent element for the model
+        model->set_parent_element(this);
+
+        // Add the model to the sig_models vector
+        // Since sig_models is a vector of unique_ptr, we need to transfer ownership
+        sig_models.emplace_back(std::move(model));
+    }
+
+    return MESHX_SUCCESS;
+}
+
 MESHX_ELEMENT_TEMPLATE_PROTO
 MESHX_ELEMENT_ADD_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
@@ -136,4 +144,73 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
     }
     ven_models.emplace_back(std::forward<ConstructorsArgs>(args)...);
     return MESHX_SUCCESS;
+}
+
+MESHX_ELEMENT_TEMPLATE_PROTO
+meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::add_ven_models()
+{
+    std::vector<std::unique_ptr<meshXModelIF>>& models = this->get_ven_models();
+
+    if(no_of_ven_models == 0)
+    {
+        return MESHX_NOT_SUPPORTED;
+    }
+
+    if (models.empty())
+    {
+        return MESHX_INVALID_STATE;
+    }
+
+    if ((ven_models.size() + models.size()) > no_of_ven_models)
+    {
+        return MESHX_NO_MEM;
+    }
+
+    for (auto [index, model] : std::views::enumerate(models))
+    {
+        if (model == nullptr)
+        {
+            return MESHX_INVALID_ARG;
+        }
+
+        // Set the platform model for the model
+        model->set_plat_model(&this->ven_model_array[index]);
+        // Set the parent element for the model
+        model->set_parent_element(this);
+
+        // Add the model to the ven_models vector
+        // Since ven_models is a vector of unique_ptr, we need to transfer ownership
+        ven_models.emplace_back(std::move(model));
+    }
+
+    return MESHX_SUCCESS;
+}
+
+MESHX_ELEMENT_TEMPLATE_PROTO
+meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::add_models()
+{
+    meshx_err_t result = MESHX_SUCCESS;
+
+    // Add SIG models
+    meshx_err_t sig_result = add_sig_models();
+    if (sig_result != MESHX_SUCCESS && sig_result != MESHX_NOT_SUPPORTED)
+    {
+        return sig_result;
+    }
+    // Add Vendor models
+    meshx_err_t ven_result = add_ven_models();
+    if (ven_result != MESHX_SUCCESS && ven_result != MESHX_NOT_SUPPORTED)
+    {
+        return ven_result;
+    }
+
+    // Check if at least one type of model is supported
+    if (no_of_sig_models == 0 && no_of_ven_models == 0)
+    {
+        return MESHX_NOT_SUPPORTED;
+    }
+
+    return result;
 }
