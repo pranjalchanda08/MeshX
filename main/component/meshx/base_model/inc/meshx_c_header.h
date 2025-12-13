@@ -34,6 +34,7 @@ extern "C" {
 #include <interface/ble_mesh/client/meshx_ble_mesh_gen_cli.h>
 #include <interface/ble_mesh/client/meshx_ble_mesh_light_cli.h>
 
+#include <interface/ble_mesh/server/meshx_ble_mesh_config_srv.h>
 #include <interface/ble_mesh/server/meshx_ble_mesh_gen_srv.h>
 #include <interface/ble_mesh/server/meshx_ble_mesh_light_srv.h>
 
