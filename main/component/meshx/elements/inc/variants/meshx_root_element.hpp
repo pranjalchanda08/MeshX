@@ -25,7 +25,23 @@
 MESHX_ROOT_ELEMENT_TEMPLATE_PROTO
 class meshXRootElement : public meshXElementServer MESHX_SERVER_ELEMENT_TEMPLATE_PARAMS
 {
+private:
+    uint8_t list_sig_models() override;
+    uint8_t list_ven_models() override;
 public:
+    /**
+     * @brief Constructs a new meshXRootElement instance.
+     *
+     * The meshXRootElement represents the primary element in the MeshX BLE mesh network.
+     * It automatically initializes and configures all required SIG models for the root element,
+     * including the Configuration Server model and other essential models.
+     *
+     * The constructor follows these steps:
+     * 1. Creates the root element with the predefined index
+     * 2. Determines the number of required SIG models
+     * 3. Allocates memory for the SIG models
+     * 4. Adds all required SIG models to the element
+     */
     meshXRootElement();
 };
 

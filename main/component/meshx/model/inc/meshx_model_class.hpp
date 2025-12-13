@@ -29,9 +29,10 @@
 class meshXModelIF
 {
 private:
-    MESHX_MODEL *p_plat_model; /**< Pointer to the platform model */
-    meshx_ptr_t p_plat_pub;    /**< publication structures */
-    meshx_ptr_t p_plat_gen;    /**< generic structures */
+    MESHX_MODEL *p_plat_model;      /**< Pointer to the platform model */
+    meshx_ptr_t p_plat_pub;         /**< publication structures */
+    meshx_ptr_t p_plat_gen;         /**< generic structures */
+    meshXElementIF *parent_element; /**< Pointer to the parent element interface */
 public:
 
     /***********************************************************
@@ -94,6 +95,18 @@ public:
      */
     void set_gen_struct(meshx_ptr_t gen) { p_plat_gen = gen; }
 
+        /**
+     * @brief Set the parent element for this model
+     * @param[in] parent Pointer to the parent element interface
+     */
+    void set_parent_element(meshXElementIF *parent) { parent_element = parent; }
+
+    /**
+     * @brief Get the parent element of this model
+     * @return Pointer to the parent element interface
+     */
+    meshXElementIF * get_parent_element(void) const { return parent_element; }
+
     meshXModelIF() = default;
     explicit meshXModelIF(MESHX_MODEL *p_plat_model) : p_plat_model(p_plat_model) { }
     virtual ~meshXModelIF() = default;
@@ -108,7 +121,6 @@ class meshXModel : public meshXModelIF
 {
 private:
     /* private members */
-    meshXElementIF *parent_element; /*<! Pointer to the parent element interface */
     meshxBaseModel_t *base_model;   /*<! Pointer to the base model */
 
     meshx_err_t status;        /*<! Status of the model */
@@ -154,18 +166,6 @@ public:
      * @return Pointer to the base model implementation
      */
     meshxBaseModel_t * get_base_model(void) const { return base_model; }
-
-    /**
-     * @brief Set the parent element for this model
-     * @param[in] parent Pointer to the parent element interface
-     */
-    void set_parent_element(meshXElementIF *parent) { parent_element = parent; }
-
-    /**
-     * @brief Get the parent element of this model
-     * @return Pointer to the parent element interface
-     */
-    meshXElementIF * get_parent_element(void) const { return parent_element; }
 
     /**
      * @brief Constructs a new meshXModel instance.
