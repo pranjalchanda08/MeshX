@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['validate_5fclient_5fmodel_5fid_0',['validate_client_model_id',['../d5/d42/classmeshXBaseClientModel.html#ae94067ee5938d53be5dcf832921b9bb2',1,'meshXBaseClientModel::validate_client_model_id()'],['../df/dfd/classmeshXBaseGenericClientModel.html#aad6e96513cd3a8bf891a75ee8e2e4f08',1,'meshXBaseGenericClientModel::validate_client_model_id()'],['../d0/d9b/classmeshXBaseLightClientModel.html#aaaf720f0cc329e922d3b6f6b0d912086',1,'meshXBaseLightClientModel::validate_client_model_id()']]],
-  ['validate_5fserver_5fstatus_5fopcode_1',['validate_server_status_opcode',['../d8/d9b/classmeshXBaseServerModel.html#a3686cf406563be2fc1f11d31be65ca22',1,'meshXBaseServerModel::validate_server_status_opcode()'],['../da/d39/classmeshXBaseGenericServerModel.html#abb84179512247aa7f68937aa57e222e2',1,'meshXBaseGenericServerModel::validate_server_status_opcode()'],['../db/df5/classmeshXBaseLightServerModel.html#ad577e6d686fe181dfa9f0295b55b2113',1,'meshXBaseLightServerModel::validate_server_status_opcode()']]]
+  ['timer_5fcallback_0',['timer_callback',['../d5/d02/meshx__timer_8c.html#a0238244bfe5230d1ce6fc3614bab8318',1,'meshx_timer.c']]]
 ];

@@ -940,6 +940,35 @@
             </Subnodes>
            </Node>
            <Node>
+            <Name>meshx_config_send_params</Name>
+            <Path>d4/d48/structmeshx__config__send__params.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>ctx</Name>
+              <Path>d4/d48/structmeshx__config__send__params.html</Path>
+              <Anchor>acc67c53a3c5ed3ffcc9dd0ff63b9303e</Anchor>
+             </Node>
+             <Node>
+              <Name>model</Name>
+              <Path>d4/d48/structmeshx__config__send__params.html</Path>
+              <Anchor>a64d458d65fe6c0c6adad328dcdfdda4f</Anchor>
+             </Node>
+             <Node>
+              <Name>stub</Name>
+              <Path>d4/d48/structmeshx__config__send__params.html</Path>
+              <Anchor>a6f45e3f8d2a0431c3801c726c5e44cbc</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
+            <Name>meshx_config_server_restore_params</Name>
+            <Path>de/d54/structmeshx__config__server__restore__params.html</Path>
+           </Node>
+           <Node>
+            <Name>meshx_config_server_send_params</Name>
+            <Path>df/d68/structmeshx__config__server__send__params.html</Path>
+           </Node>
+           <Node>
             <Name>meshx_config_srv_cb_param</Name>
             <Path>d5/dbd/structmeshx__config__srv__cb__param.html</Path>
           <Subnodes>
@@ -957,6 +986,27 @@
               <Name>state_change</Name>
               <Path>d5/dbd/structmeshx__config__srv__cb__param.html</Path>
               <Anchor>a656945d5c8b28ffd28aca7a5cac345cc</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
+            <Name>meshx_config_srv_el_msg</Name>
+            <Path>de/d3c/structmeshx__config__srv__el__msg.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>ctx</Name>
+              <Path>de/d3c/structmeshx__config__srv__el__msg.html</Path>
+              <Anchor>aeaa8c5356580c30c59198a2c03feb4db</Anchor>
+             </Node>
+             <Node>
+              <Name>model</Name>
+              <Path>de/d3c/structmeshx__config__srv__el__msg.html</Path>
+              <Anchor>a8c70b6cb59c51458fb53a8a367be39ab</Anchor>
+             </Node>
+             <Node>
+              <Name>state_change</Name>
+              <Path>de/d3c/structmeshx__config__srv__el__msg.html</Path>
+              <Anchor>af89b1ce2e7ec1843b87ef5c26102997a</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -9074,6 +9124,47 @@
             </Subnodes>
            </Node>
            <Node>
+            <Name>meshXBaseConfigServerModel</Name>
+            <Path>dd/df7/classmeshXBaseConfigServerModel.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>meshXBaseConfigServerModel</Name>
+              <Path>dd/df7/classmeshXBaseConfigServerModel.html</Path>
+              <Anchor>a31df3385add6edd004c1de487ff06900</Anchor>
+             </Node>
+             <Node>
+              <Name>meshXBaseConfigServerModel</Name>
+              <Path>dd/df7/classmeshXBaseConfigServerModel.html</Path>
+              <Anchor>ae89b7bdbdc709f5b0961c1db0db4a531</Anchor>
+             </Node>
+             <Node>
+              <Name>~meshXBaseConfigServerModel</Name>
+              <Path>dd/df7/classmeshXBaseConfigServerModel.html</Path>
+              <Anchor>aa4c25691ec08d9b9eff57d5ec1cc8e6e</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_init</Name>
+              <Path>dd/df7/classmeshXBaseConfigServerModel.html</Path>
+              <Anchor>af41a9f6aa24bc58ad8f943f8b8c6b741</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_send_msg</Name>
+              <Path>dd/df7/classmeshXBaseConfigServerModel.html</Path>
+              <Anchor>aebbbdc46123b43850d04a2f793f53737</Anchor>
+             </Node>
+             <Node>
+              <Name>server_state_restore</Name>
+              <Path>dd/df7/classmeshXBaseConfigServerModel.html</Path>
+              <Anchor>ab8f988c19bbadc402a1966d2d0dc9043</Anchor>
+             </Node>
+             <Node>
+              <Name>validate_server_status_opcode</Name>
+              <Path>dd/df7/classmeshXBaseConfigServerModel.html</Path>
+              <Anchor>a2519fa037c6080b4abab85002713a387</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
             <Name>meshXBaseGenericClientModel</Name>
             <Path>df/dfd/classmeshXBaseGenericClientModel.html</Path>
           <Subnodes>
@@ -9404,11 +9495,6 @@
               <Anchor>gaab2b8cd0d3e6df21160ef87fd7ac193b</Anchor>
              </Node>
              <Node>
-              <Name>~meshXClientModel</Name>
-              <Path>db/de4/classmeshXClientModel.html</Path>
-              <Anchor>ae0aa745ed922fa8fe8029c775c92805a</Anchor>
-             </Node>
-             <Node>
               <Name>meshXClientModel</Name>
               <Path>db/de4/classmeshXClientModel.html</Path>
               <Anchor>a63c7c60e1aebfda568f618cdc40b7ebd</Anchor>
@@ -9422,6 +9508,42 @@
               <Name>plat_model_delete</Name>
               <Path>db/d08/group__meshx__model.html</Path>
               <Anchor>ga605a2f8548b5177ff1a2b1108915a702</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
+            <Name>meshXConfigModel</Name>
+            <Path>da/d7d/classmeshXConfigModel.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>meshXConfigModel</Name>
+              <Path>da/d7d/classmeshXConfigModel.html</Path>
+              <Anchor>ae3a1b8f54591cb7c802d9ee2a3bc0ebd</Anchor>
+             </Node>
+             <Node>
+              <Name>~meshXConfigModel</Name>
+              <Path>da/d7d/classmeshXConfigModel.html</Path>
+              <Anchor>abd5e51922d66ef9c3b382343e1d28524</Anchor>
+             </Node>
+             <Node>
+              <Name>model_from_ble_cb</Name>
+              <Path>da/d7d/classmeshXConfigModel.html</Path>
+              <Anchor>a595396cffeae253c5ecaa5a44ee3c5f9</Anchor>
+             </Node>
+             <Node>
+              <Name>model_send</Name>
+              <Path>da/d7d/classmeshXConfigModel.html</Path>
+              <Anchor>a735767bca96361f11e0fcb87e519cafa</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_create</Name>
+              <Path>da/d7d/classmeshXConfigModel.html</Path>
+              <Anchor>ad75f39a2a3f39d5cd6d64e2a240ca255</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_delete</Name>
+              <Path>da/d7d/classmeshXConfigModel.html</Path>
+              <Anchor>a5db59be784b1756ef4eda2f933afa87e</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -9440,9 +9562,185 @@
               <Anchor>afebc6cc222578610c100aa838b9074f6</Anchor>
              </Node>
              <Node>
+              <Name>meshXElement</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>a81bd54ff82179ac086a9b6270a2a455a</Anchor>
+             </Node>
+             <Node>
               <Name>~meshXElement</Name>
               <Path>de/dfb/classmeshXElement.html</Path>
-              <Anchor>a6a6dc1440c5439a2433996ff55aefda3</Anchor>
+              <Anchor>aefcc7c1a5dcef98ea58207e350887cab</Anchor>
+             </Node>
+             <Node>
+              <Name>add_models</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>af82779f355e5c3ef6a7af4712db79cc9</Anchor>
+             </Node>
+             <Node>
+              <Name>add_sig_model</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>a6fb3cfa6e968a60a20d98376e99b5307</Anchor>
+             </Node>
+             <Node>
+              <Name>add_sig_models</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>adc9a5aae86c704d3dafe80551b65a9c2</Anchor>
+             </Node>
+             <Node>
+              <Name>add_ven_model</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>adab8b4253f347741316c82be26518013</Anchor>
+             </Node>
+             <Node>
+              <Name>add_ven_models</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>a0db52ec0d6c94e832febcdbdd2c1f2d1</Anchor>
+             </Node>
+             <Node>
+              <Name>get_element_type</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>ae7317bfadfea0ad46a4a861b2d241954</Anchor>
+             </Node>
+             <Node>
+              <Name>get_no_of_sig_models</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>a76464417cc6130a52c5bc50e92167e2b</Anchor>
+             </Node>
+             <Node>
+              <Name>get_no_of_ven_models</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>ab92f9d47b5609913a8c700b1f243960d</Anchor>
+             </Node>
+             <Node>
+              <Name>get_sig_model_array</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>a1a9be675556c6e6e5a0993cb1ca277da</Anchor>
+             </Node>
+             <Node>
+              <Name>get_sig_model_count</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>acd683f16bc506458302ab770334bec28</Anchor>
+             </Node>
+             <Node>
+              <Name>get_sig_models</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>ac31458b7499ed0f622b96edd79e323c3</Anchor>
+             </Node>
+             <Node>
+              <Name>get_sig_plat_model_array</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>abee50c89cccfb3039622fb2b11417997</Anchor>
+             </Node>
+             <Node>
+              <Name>get_ven_model_array</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>ac00813a7ab25fdb833ded616e62db242</Anchor>
+             </Node>
+             <Node>
+              <Name>get_ven_model_count</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>afcc347ec4aa0e7d3d039cb88982618f9</Anchor>
+             </Node>
+             <Node>
+              <Name>get_ven_models</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>a5dab334350cfc9706c4d41f85e2622e7</Anchor>
+             </Node>
+             <Node>
+              <Name>get_ven_plat_model_array</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>a2c93c7a923b798c748db5c79c1fdd277</Anchor>
+             </Node>
+             <Node>
+              <Name>list_sig_models</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>aa461ef809cfcf95d9080618fcf1793a0</Anchor>
+             </Node>
+             <Node>
+              <Name>list_ven_models</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>ad544d7c0bdec639f2a86f1d77e115b99</Anchor>
+             </Node>
+             <Node>
+              <Name>on_model_cb</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>a95d7ff3adaaadc703d8955e906a14386</Anchor>
+             </Node>
+             <Node>
+              <Name>set_element_type</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>a418344bde6544d4f059cce4851837bf3</Anchor>
+             </Node>
+             <Node>
+              <Name>set_no_of_sig_models</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>a1a9d5f85c5778f7645174a84d83bc24a</Anchor>
+             </Node>
+             <Node>
+              <Name>set_no_of_ven_models</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>a81f64a74a50dba4b4b16a7e7e9c6ab4c</Anchor>
+             </Node>
+             <Node>
+              <Name>sig_plat_model_array_allocate</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>a04dd77d2f56e8f471998f3a8e5cf554c</Anchor>
+             </Node>
+             <Node>
+              <Name>ven_plat_model_array_allocate</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>ac91c0864410c9b4f9f5b9a563559212d</Anchor>
+             </Node>
+             <Node>
+              <Name>element_type</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>a00dc0597e755ddacf4a1e933ad1409ee</Anchor>
+             </Node>
+             <Node>
+              <Name>no_of_sig_models</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>ad888429825d5410aff042adc45b0c08a</Anchor>
+             </Node>
+             <Node>
+              <Name>no_of_ven_models</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>afb691c98e0588435754139cce90d9e45</Anchor>
+             </Node>
+             <Node>
+              <Name>sig_model_array</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>a42a2b2dd649b9d2ec41501382705948e</Anchor>
+             </Node>
+             <Node>
+              <Name>sig_models</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>aa5cb479c09036e3027b34fdb0ce30b1a</Anchor>
+             </Node>
+             <Node>
+              <Name>ven_model_array</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>ac735e0267187190249cbe48b22285d66</Anchor>
+             </Node>
+             <Node>
+              <Name>ven_models</Name>
+              <Path>de/dfb/classmeshXElement.html</Path>
+              <Anchor>a5b1589cd868b30f3d606a9df2cdad02b</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
+            <Name>meshXElementClient</Name>
+            <Path>d3/dbd/classmeshXElementClient.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>meshXElementClient</Name>
+              <Path>d3/dbd/classmeshXElementClient.html</Path>
+              <Anchor>a94e73691aa751461060374f6c1af5a03</Anchor>
+             </Node>
+             <Node>
+              <Name>meshXElementClient</Name>
+              <Path>d3/dbd/classmeshXElementClient.html</Path>
+              <Anchor>a5d9322d733b75ad3afd0d51690c5c006</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -9453,7 +9751,7 @@
              <Node>
               <Name>meshXElementIF</Name>
               <Path>d9/db0/classmeshXElementIF.html</Path>
-              <Anchor>a8f1be23699ee6be4a3be266b9ce5e5e6</Anchor>
+              <Anchor>a8d29cd8737eeb88a66794c47d202f47e</Anchor>
              </Node>
              <Node>
               <Name>meshXElementIF</Name>
@@ -9463,17 +9761,57 @@
              <Node>
               <Name>~meshXElementIF</Name>
               <Path>d9/db0/classmeshXElementIF.html</Path>
-              <Anchor>a6978b15f87c4ea728f528af671147f0d</Anchor>
+              <Anchor>a2f65bf759528f9af53c5a5031a09a033</Anchor>
              </Node>
              <Node>
               <Name>get_element_idx</Name>
               <Path>d9/db0/classmeshXElementIF.html</Path>
-              <Anchor>a321414819888eaa17705e905fcaf6489</Anchor>
+              <Anchor>ab36d218cbe4445fedfc9d14e00126054</Anchor>
+             </Node>
+             <Node>
+              <Name>get_element_type</Name>
+              <Path>d9/db0/classmeshXElementIF.html</Path>
+              <Anchor>afe9a285b8bd6f64d16d3594f3e7a1407</Anchor>
+             </Node>
+             <Node>
+              <Name>get_no_of_sig_models</Name>
+              <Path>d9/db0/classmeshXElementIF.html</Path>
+              <Anchor>a3a74299ff42f7071836b501ba09e7839</Anchor>
+             </Node>
+             <Node>
+              <Name>get_no_of_ven_models</Name>
+              <Path>d9/db0/classmeshXElementIF.html</Path>
+              <Anchor>ac55730ee28c079fc62cd505c706981cf</Anchor>
+             </Node>
+             <Node>
+              <Name>get_sig_models</Name>
+              <Path>d9/db0/classmeshXElementIF.html</Path>
+              <Anchor>ad80b0bc2aa2cbc63fbe9eccfac7e42f1</Anchor>
+             </Node>
+             <Node>
+              <Name>get_ven_models</Name>
+              <Path>d9/db0/classmeshXElementIF.html</Path>
+              <Anchor>a2aaec23bb470e4cc6653364fd5a172fc</Anchor>
+             </Node>
+             <Node>
+              <Name>initialize</Name>
+              <Path>d9/db0/classmeshXElementIF.html</Path>
+              <Anchor>aadca4beced06884c117dd981facafd23</Anchor>
+             </Node>
+             <Node>
+              <Name>is_initialized</Name>
+              <Path>d9/db0/classmeshXElementIF.html</Path>
+              <Anchor>a93b4f321862d2002e272e28ad11c6eb3</Anchor>
              </Node>
              <Node>
               <Name>on_model_cb</Name>
               <Path>d9/db0/classmeshXElementIF.html</Path>
               <Anchor>a20a0b02257d7a59be7757ad0f01fb6f1</Anchor>
+             </Node>
+             <Node>
+              <Name>reset</Name>
+              <Path>d9/db0/classmeshXElementIF.html</Path>
+              <Anchor>a88322fc03cdce07803bdebd36f4bb41b</Anchor>
              </Node>
              <Node>
               <Name>set_element_idx</Name>
@@ -9484,6 +9822,22 @@
               <Name>element_idx</Name>
               <Path>d9/db0/classmeshXElementIF.html</Path>
               <Anchor>ae749e85f741104d1114ceab963ddf042</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
+            <Name>meshXElementServer</Name>
+            <Path>d4/db7/classmeshXElementServer.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>meshXElementServer</Name>
+              <Path>d4/db7/classmeshXElementServer.html</Path>
+              <Anchor>ab27a8aa5522c2d453ec585c4442ae52e</Anchor>
+             </Node>
+             <Node>
+              <Name>meshXElementServer</Name>
+              <Path>d4/db7/classmeshXElementServer.html</Path>
+              <Anchor>a4be68b4fa0ff3ac179340f1c91f4f8bc</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -9891,7 +10245,7 @@
              <Node>
               <Name>~meshXGenericOnOffClientModel</Name>
               <Path>d4/d68/classmeshXGenericOnOffClientModel.html</Path>
-              <Anchor>a456bfa3e2bfc09ed1da79a4eaa32b556</Anchor>
+              <Anchor>ac68a27e58900c1d46459201d7af2f9fc</Anchor>
              </Node>
              <Node>
               <Name>meshx_state_change_notify</Name>
@@ -9922,7 +10276,7 @@
              <Node>
               <Name>~meshXGenericOnOffServerModel</Name>
               <Path>d7/d7a/classmeshXGenericOnOffServerModel.html</Path>
-              <Anchor>acfed4d3176173c937c5366480b2fcccc</Anchor>
+              <Anchor>a4bc51470772a58a7c50c57c9bd69b4b9</Anchor>
              </Node>
              <Node>
               <Name>model_from_ble_cb</Name>
@@ -10209,11 +10563,6 @@
               <Anchor>a0e1ae2008049f4e5aaa209e7cd04d1fa</Anchor>
              </Node>
              <Node>
-              <Name>~meshXLightCTLClientModel</Name>
-              <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
-              <Anchor>a9379b8a864caa7f13109499a7bb94d30</Anchor>
-             </Node>
-             <Node>
               <Name>meshx_state_change_notify</Name>
               <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
               <Anchor>a23b7df64b6025061bd14565e1b80c0b3</Anchor>
@@ -10238,11 +10587,6 @@
               <Name>meshXLightCTLServerModel</Name>
               <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
               <Anchor>ae17a0aa3bb9767819cc9e582e75e0ef8</Anchor>
-             </Node>
-             <Node>
-              <Name>~meshXLightCTLServerModel</Name>
-              <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
-              <Anchor>a5ae314bcd0b099be65c5426278851d3f</Anchor>
              </Node>
              <Node>
               <Name>model_from_ble_cb</Name>
@@ -10322,29 +10666,9 @@
               <Anchor>a4c89eef412069b61d52fcd49444810de</Anchor>
              </Node>
              <Node>
-              <Name>get_gen_struct</Name>
-              <Path>df/d4b/classmeshXModel.html</Path>
-              <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
-             </Node>
-             <Node>
               <Name>get_init_status</Name>
               <Path>df/d4b/classmeshXModel.html</Path>
               <Anchor>a4cd7ad73052af2fc6b825a83325d5163</Anchor>
-             </Node>
-             <Node>
-              <Name>get_parent_element</Name>
-              <Path>df/d4b/classmeshXModel.html</Path>
-              <Anchor>a61afb7b49d139ea2da9681e48ec376a1</Anchor>
-             </Node>
-             <Node>
-              <Name>get_plat_model</Name>
-              <Path>df/d4b/classmeshXModel.html</Path>
-              <Anchor>a4f0d11deeb9a398031d9df6f29ac197b</Anchor>
-             </Node>
-             <Node>
-              <Name>get_pub_struct</Name>
-              <Path>df/d4b/classmeshXModel.html</Path>
-              <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
              </Node>
              <Node>
               <Name>model_from_ble_cb</Name>
@@ -10357,59 +10681,126 @@
               <Anchor>af1c63527b851de806ec4c3eda91b7c27</Anchor>
              </Node>
              <Node>
-              <Name>plat_model_create</Name>
-              <Path>df/d4b/classmeshXModel.html</Path>
-              <Anchor>aff99fd62a17483196f25c126f0d8af5a</Anchor>
-             </Node>
-             <Node>
-              <Name>plat_model_delete</Name>
-              <Path>df/d4b/classmeshXModel.html</Path>
-              <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
-             </Node>
-             <Node>
-              <Name>set_gen_struct</Name>
-              <Path>df/d4b/classmeshXModel.html</Path>
-              <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
-             </Node>
-             <Node>
-              <Name>set_parent_element</Name>
-              <Path>df/d4b/classmeshXModel.html</Path>
-              <Anchor>a332e584bb9487a0865d4ee3519ca0230</Anchor>
-             </Node>
-             <Node>
-              <Name>set_pub_struct</Name>
-              <Path>df/d4b/classmeshXModel.html</Path>
-              <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
-             </Node>
-             <Node>
               <Name>base_model</Name>
               <Path>df/d4b/classmeshXModel.html</Path>
               <Anchor>aa5e205fde4c253c222e066fa887dbd6b</Anchor>
              </Node>
              <Node>
-              <Name>p_plat_gen</Name>
-              <Path>df/d4b/classmeshXModel.html</Path>
-              <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
-             </Node>
-             <Node>
-              <Name>p_plat_model</Name>
-              <Path>df/d4b/classmeshXModel.html</Path>
-              <Anchor>a8a5d29f57289d451c897257235e8d165</Anchor>
-             </Node>
-             <Node>
-              <Name>p_plat_pub</Name>
-              <Path>df/d4b/classmeshXModel.html</Path>
-              <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
-             </Node>
-             <Node>
-              <Name>parent_element</Name>
-              <Path>df/d4b/classmeshXModel.html</Path>
-              <Anchor>a2fbc831c62c91bffebb96850232ae1cf</Anchor>
-             </Node>
-             <Node>
               <Name>status</Name>
               <Path>df/d4b/classmeshXModel.html</Path>
               <Anchor>a079535c8b408df1516e9e7ae12d6f972</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
+            <Name>meshXModelIF</Name>
+            <Path>d1/d52/classmeshXModelIF.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>meshXModelIF</Name>
+              <Path>d1/d52/classmeshXModelIF.html</Path>
+              <Anchor>a7984b4191ee7c6074d6282b0c291372c</Anchor>
+             </Node>
+             <Node>
+              <Name>meshXModelIF</Name>
+              <Path>d1/d52/classmeshXModelIF.html</Path>
+              <Anchor>afde857310fe47751ecd56e232571deab</Anchor>
+             </Node>
+             <Node>
+              <Name>~meshXModelIF</Name>
+              <Path>d1/d52/classmeshXModelIF.html</Path>
+              <Anchor>ad0dcea00b8b8a965344eefb338bd9df0</Anchor>
+             </Node>
+             <Node>
+              <Name>get_gen_struct</Name>
+              <Path>d1/d52/classmeshXModelIF.html</Path>
+              <Anchor>acc12df5149e2f17c8efb85d414c8b461</Anchor>
+             </Node>
+             <Node>
+              <Name>get_parent_element</Name>
+              <Path>d1/d52/classmeshXModelIF.html</Path>
+              <Anchor>a46c156c189bd020105cf394a60eb2f19</Anchor>
+             </Node>
+             <Node>
+              <Name>get_plat_model</Name>
+              <Path>d1/d52/classmeshXModelIF.html</Path>
+              <Anchor>afe1ef3e7bbcae737e144137016760cf7</Anchor>
+             </Node>
+             <Node>
+              <Name>get_pub_struct</Name>
+              <Path>d1/d52/classmeshXModelIF.html</Path>
+              <Anchor>a177cbf1d7b261b2e3bc1041c3d1502a7</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_create</Name>
+              <Path>d1/d52/classmeshXModelIF.html</Path>
+              <Anchor>a4a647e8d6b47b23155d2cdebd10426a0</Anchor>
+             </Node>
+             <Node>
+              <Name>plat_model_delete</Name>
+              <Path>d1/d52/classmeshXModelIF.html</Path>
+              <Anchor>ad0aa271ded14454da20e2d92ada64ae5</Anchor>
+             </Node>
+             <Node>
+              <Name>set_gen_struct</Name>
+              <Path>d1/d52/classmeshXModelIF.html</Path>
+              <Anchor>ac08c8d67f72aef2b76fd5d75bf6efb32</Anchor>
+             </Node>
+             <Node>
+              <Name>set_parent_element</Name>
+              <Path>d1/d52/classmeshXModelIF.html</Path>
+              <Anchor>a07afab758522cf85b82eaef3dfa68558</Anchor>
+             </Node>
+             <Node>
+              <Name>set_plat_model</Name>
+              <Path>d1/d52/classmeshXModelIF.html</Path>
+              <Anchor>af360002f5406dacef76d38cce4c322c0</Anchor>
+             </Node>
+             <Node>
+              <Name>set_pub_struct</Name>
+              <Path>d1/d52/classmeshXModelIF.html</Path>
+              <Anchor>af46ba33494ad3e85e3cb535b863c9310</Anchor>
+             </Node>
+             <Node>
+              <Name>p_plat_gen</Name>
+              <Path>d1/d52/classmeshXModelIF.html</Path>
+              <Anchor>a9ea1cbda4d8a8957ac28086f47d3fbf5</Anchor>
+             </Node>
+             <Node>
+              <Name>p_plat_model</Name>
+              <Path>d1/d52/classmeshXModelIF.html</Path>
+              <Anchor>ad656ee898071db736c4582bff4918de0</Anchor>
+             </Node>
+             <Node>
+              <Name>p_plat_pub</Name>
+              <Path>d1/d52/classmeshXModelIF.html</Path>
+              <Anchor>a77e15c019d3de8139b06e697dfb560eb</Anchor>
+             </Node>
+             <Node>
+              <Name>parent_element</Name>
+              <Path>d1/d52/classmeshXModelIF.html</Path>
+              <Anchor>a0474b091b2f287e435c749a1617ddc21</Anchor>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
+            <Name>meshXRootElement</Name>
+            <Path>d9/d25/classmeshXRootElement.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>meshXRootElement</Name>
+              <Path>d9/d25/classmeshXRootElement.html</Path>
+              <Anchor>a98449a29a5ee9a87269c3222b28dd68f</Anchor>
+             </Node>
+             <Node>
+              <Name>list_sig_models</Name>
+              <Path>d9/d25/classmeshXRootElement.html</Path>
+              <Anchor>ac218329fada9a4d93ee65d55709316af</Anchor>
+             </Node>
+             <Node>
+              <Name>list_ven_models</Name>
+              <Path>d9/d25/classmeshXRootElement.html</Path>
+              <Anchor>af0d72e00fa106f3186ac459320182836</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -10421,11 +10812,6 @@
               <Name>meshXServerModel</Name>
               <Path>db/d08/group__meshx__model.html</Path>
               <Anchor>ga8cdc5c8d3c43a0d0275bf75245a6b3bb</Anchor>
-             </Node>
-             <Node>
-              <Name>~meshXServerModel</Name>
-              <Path>da/dbb/classmeshXServerModel.html</Path>
-              <Anchor>a724548b7085f64d0e6f270f8358cd2d6</Anchor>
              </Node>
              <Node>
               <Name>meshXServerModel</Name>
@@ -10615,8 +11001,24 @@
             <Path>d5/d3e/structmeshx__config.html</Path>
            </Node>
            <Node>
+            <Name>meshx_config_send_params</Name>
+            <Path>d4/d48/structmeshx__config__send__params.html</Path>
+           </Node>
+           <Node>
+            <Name>meshx_config_server_restore_params</Name>
+            <Path>de/d54/structmeshx__config__server__restore__params.html</Path>
+           </Node>
+           <Node>
+            <Name>meshx_config_server_send_params</Name>
+            <Path>df/d68/structmeshx__config__server__send__params.html</Path>
+           </Node>
+           <Node>
             <Name>meshx_config_srv_cb_param</Name>
             <Path>d5/dbd/structmeshx__config__srv__cb__param.html</Path>
+           </Node>
+           <Node>
+            <Name>meshx_config_srv_el_msg</Name>
+            <Path>de/d3c/structmeshx__config__srv__el__msg.html</Path>
            </Node>
            <Node>
             <Name>meshx_ctl_cli_el_msg</Name>
@@ -11853,6 +12255,22 @@
             </Subnodes>
            </Node>
            <Node>
+            <Name>meshXBaseModel&lt; meshx_config_server_send_params_t &gt;</Name>
+            <Path>de/dac/classmeshXBaseModel.html</Path>
+          <Subnodes>
+             <Node>
+              <Name>meshXBaseServerModel&lt; meshXBaseConfigServerModel, meshx_config_server_send_params_t, meshx_config_server_restore_params_t &gt;</Name>
+              <Path>d8/d9b/classmeshXBaseServerModel.html</Path>
+            <Subnodes>
+               <Node>
+                <Name>meshXBaseConfigServerModel</Name>
+                <Path>dd/df7/classmeshXBaseConfigServerModel.html</Path>
+               </Node>
+              </Subnodes>
+             </Node>
+            </Subnodes>
+           </Node>
+           <Node>
             <Name>meshXBaseModel&lt; meshx_gen_client_send_params_t &gt;</Name>
             <Path>de/dac/classmeshXBaseModel.html</Path>
           <Subnodes>
@@ -11923,358 +12341,396 @@
              <Node>
               <Name>meshXElement</Name>
               <Path>de/dfb/classmeshXElement.html</Path>
-             </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshxBaseModel_t, meshx_send_packet_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshxBaseClientModel_t, meshx_send_packet_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
-             <Node>
-              <Name>meshXClientModel&lt; meshxBaseClientModel_t, meshx_send_packet_params_t &gt;</Name>
-              <Path>db/de4/classmeshXClientModel.html</Path>
-             </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_battery_send_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
-             <Node>
-              <Name>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_battery_send_params_t &gt;</Name>
-              <Path>db/de4/classmeshXClientModel.html</Path>
             <Subnodes>
                <Node>
-                <Name>meshXGenericBatteryClientModel</Name>
-                <Path>d2/db0/classmeshXGenericBatteryClientModel.html</Path>
+                <Name>meshXElementClient</Name>
+                <Path>d3/dbd/classmeshXElementClient.html</Path>
+               </Node>
+               <Node>
+                <Name>meshXElementServer</Name>
+                <Path>d4/db7/classmeshXElementServer.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXRootElement</Name>
+                  <Path>d9/d25/classmeshXRootElement.html</Path>
+                 </Node>
+                </Subnodes>
                </Node>
               </Subnodes>
              </Node>
             </Subnodes>
            </Node>
            <Node>
-            <Name>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_def_trans_time_send_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
+            <Name>meshXModelIF</Name>
+            <Path>d1/d52/classmeshXModelIF.html</Path>
           <Subnodes>
              <Node>
-              <Name>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_def_trans_time_send_params_t &gt;</Name>
-              <Path>db/de4/classmeshXClientModel.html</Path>
+              <Name>meshXModel&lt; meshxBaseClientModel_t, meshx_send_packet_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
             <Subnodes>
                <Node>
-                <Name>meshXGenericDefTransTimeClientModel</Name>
-                <Path>d7/d51/classmeshXGenericDefTransTimeClientModel.html</Path>
+                <Name>meshXClientModel&lt; meshxBaseClientModel_t, meshx_send_packet_params_t &gt;</Name>
+                <Path>db/de4/classmeshXClientModel.html</Path>
                </Node>
               </Subnodes>
              </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_level_send_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
              <Node>
-              <Name>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_level_send_params_t &gt;</Name>
-              <Path>db/de4/classmeshXClientModel.html</Path>
+              <Name>meshXModel&lt; meshXBaseConfigServerModel, meshx_config_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
             <Subnodes>
                <Node>
-                <Name>meshXGenericLevelClientModel</Name>
-                <Path>d9/dda/classmeshXGenericLevelClientModel.html</Path>
+                <Name>meshXServerModel&lt; meshXBaseConfigServerModel, meshx_config_send_params_t &gt;</Name>
+                <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXConfigModel</Name>
+                  <Path>da/d7d/classmeshXConfigModel.html</Path>
+                 </Node>
+                </Subnodes>
                </Node>
               </Subnodes>
              </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_location_send_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
              <Node>
-              <Name>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_location_send_params_t &gt;</Name>
-              <Path>db/de4/classmeshXClientModel.html</Path>
+              <Name>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_property_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
             <Subnodes>
                <Node>
-                <Name>meshXGenericLocationClientModel</Name>
-                <Path>db/d29/classmeshXGenericLocationClientModel.html</Path>
+                <Name>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_property_send_params_t &gt;</Name>
+                <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXGenericAdminPropertyServerModel</Name>
+                  <Path>df/d36/classmeshXGenericAdminPropertyServerModel.html</Path>
+                 </Node>
+                 <Node>
+                  <Name>meshXGenericClientPropertyServerModel</Name>
+                  <Path>d2/dc5/classmeshXGenericClientPropertyServerModel.html</Path>
+                 </Node>
+                 <Node>
+                  <Name>meshXGenericManufacturerPropertyServerModel</Name>
+                  <Path>d2/d74/classmeshXGenericManufacturerPropertyServerModel.html</Path>
+                 </Node>
+                 <Node>
+                  <Name>meshXGenericUserPropertyServerModel</Name>
+                  <Path>d5/d31/classmeshXGenericUserPropertyServerModel.html</Path>
+                 </Node>
+                </Subnodes>
                </Node>
               </Subnodes>
              </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
              <Node>
-              <Name>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t &gt;</Name>
-              <Path>db/de4/classmeshXClientModel.html</Path>
+              <Name>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_battery_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
             <Subnodes>
                <Node>
-                <Name>meshXGenericOnOffClientModel</Name>
-                <Path>d4/d68/classmeshXGenericOnOffClientModel.html</Path>
+                <Name>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_battery_send_params_t &gt;</Name>
+                <Path>db/de4/classmeshXClientModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXGenericBatteryClientModel</Name>
+                  <Path>d2/db0/classmeshXGenericBatteryClientModel.html</Path>
+                 </Node>
+                </Subnodes>
                </Node>
               </Subnodes>
              </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_level_send_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
              <Node>
-              <Name>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_power_level_send_params_t &gt;</Name>
-              <Path>db/de4/classmeshXClientModel.html</Path>
+              <Name>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_battery_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
             <Subnodes>
                <Node>
-                <Name>meshXGenericPowerLevelClientModel</Name>
-                <Path>d2/d70/classmeshXGenericPowerLevelClientModel.html</Path>
+                <Name>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_battery_send_params_t &gt;</Name>
+                <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXGenericBatteryServerModel</Name>
+                  <Path>d8/d43/classmeshXGenericBatteryServerModel.html</Path>
+                 </Node>
+                </Subnodes>
                </Node>
               </Subnodes>
              </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_onoff_send_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
              <Node>
-              <Name>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_power_onoff_send_params_t &gt;</Name>
-              <Path>db/de4/classmeshXClientModel.html</Path>
+              <Name>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_def_trans_time_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
             <Subnodes>
                <Node>
-                <Name>meshXGenericPowerOnOffClientModel</Name>
-                <Path>d9/de9/classmeshXGenericPowerOnOffClientModel.html</Path>
+                <Name>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_def_trans_time_send_params_t &gt;</Name>
+                <Path>db/de4/classmeshXClientModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXGenericDefTransTimeClientModel</Name>
+                  <Path>d7/d51/classmeshXGenericDefTransTimeClientModel.html</Path>
+                 </Node>
+                </Subnodes>
                </Node>
               </Subnodes>
              </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
              <Node>
-              <Name>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Name>
-              <Path>db/de4/classmeshXClientModel.html</Path>
+              <Name>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_def_trans_time_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
             <Subnodes>
                <Node>
-                <Name>meshXGenericPropertyClientModel</Name>
-                <Path>d8/dfa/classmeshXGenericPropertyClientModel.html</Path>
+                <Name>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_def_trans_time_send_params_t &gt;</Name>
+                <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXGenericDefTransTimeServerModel</Name>
+                  <Path>d5/db6/classmeshXGenericDefTransTimeServerModel.html</Path>
+                 </Node>
+                </Subnodes>
                </Node>
               </Subnodes>
              </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_battery_send_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
              <Node>
-              <Name>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_battery_send_params_t &gt;</Name>
-              <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Name>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_level_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
             <Subnodes>
                <Node>
-                <Name>meshXGenericBatteryServerModel</Name>
-                <Path>d8/d43/classmeshXGenericBatteryServerModel.html</Path>
+                <Name>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_level_send_params_t &gt;</Name>
+                <Path>db/de4/classmeshXClientModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXGenericLevelClientModel</Name>
+                  <Path>d9/dda/classmeshXGenericLevelClientModel.html</Path>
+                 </Node>
+                </Subnodes>
                </Node>
               </Subnodes>
              </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_def_trans_time_send_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
              <Node>
-              <Name>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_def_trans_time_send_params_t &gt;</Name>
-              <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Name>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_level_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
             <Subnodes>
                <Node>
-                <Name>meshXGenericDefTransTimeServerModel</Name>
-                <Path>d5/db6/classmeshXGenericDefTransTimeServerModel.html</Path>
+                <Name>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_level_send_params_t &gt;</Name>
+                <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXGenericLevelServerModel</Name>
+                  <Path>d9/d54/classmeshXGenericLevelServerModel.html</Path>
+                 </Node>
+                </Subnodes>
                </Node>
               </Subnodes>
              </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_level_send_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
              <Node>
-              <Name>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_level_send_params_t &gt;</Name>
-              <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Name>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_location_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
             <Subnodes>
                <Node>
-                <Name>meshXGenericLevelServerModel</Name>
-                <Path>d9/d54/classmeshXGenericLevelServerModel.html</Path>
+                <Name>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_location_send_params_t &gt;</Name>
+                <Path>db/de4/classmeshXClientModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXGenericLocationClientModel</Name>
+                  <Path>db/d29/classmeshXGenericLocationClientModel.html</Path>
+                 </Node>
+                </Subnodes>
                </Node>
               </Subnodes>
              </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_location_send_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
              <Node>
-              <Name>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_location_send_params_t &gt;</Name>
-              <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Name>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_location_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
             <Subnodes>
                <Node>
-                <Name>meshXGenericLocationServerModel</Name>
-                <Path>dd/d46/classmeshXGenericLocationServerModel.html</Path>
-               </Node>
-               <Node>
-                <Name>meshXGenericLocationSetupServerModel</Name>
-                <Path>d5/d82/classmeshXGenericLocationSetupServerModel.html</Path>
+                <Name>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_location_send_params_t &gt;</Name>
+                <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXGenericLocationServerModel</Name>
+                  <Path>dd/d46/classmeshXGenericLocationServerModel.html</Path>
+                 </Node>
+                 <Node>
+                  <Name>meshXGenericLocationSetupServerModel</Name>
+                  <Path>d5/d82/classmeshXGenericLocationSetupServerModel.html</Path>
+                 </Node>
+                </Subnodes>
                </Node>
               </Subnodes>
              </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
              <Node>
-              <Name>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t &gt;</Name>
-              <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Name>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
             <Subnodes>
                <Node>
-                <Name>meshXGenericOnOffServerModel</Name>
-                <Path>d7/d7a/classmeshXGenericOnOffServerModel.html</Path>
+                <Name>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t &gt;</Name>
+                <Path>db/de4/classmeshXClientModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXGenericOnOffClientModel</Name>
+                  <Path>d4/d68/classmeshXGenericOnOffClientModel.html</Path>
+                 </Node>
+                </Subnodes>
                </Node>
               </Subnodes>
              </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
              <Node>
-              <Name>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t &gt;</Name>
-              <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Name>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
             <Subnodes>
                <Node>
-                <Name>meshXGenericPowerLevelServerModel</Name>
-                <Path>d4/d95/classmeshXGenericPowerLevelServerModel.html</Path>
-               </Node>
-               <Node>
-                <Name>meshXGenericPowerLevelSetupServerModel</Name>
-                <Path>d8/d9f/classmeshXGenericPowerLevelSetupServerModel.html</Path>
+                <Name>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t &gt;</Name>
+                <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXGenericOnOffServerModel</Name>
+                  <Path>d7/d7a/classmeshXGenericOnOffServerModel.html</Path>
+                 </Node>
+                </Subnodes>
                </Node>
               </Subnodes>
              </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_onoff_send_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
              <Node>
-              <Name>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_power_onoff_send_params_t &gt;</Name>
-              <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Name>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_level_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
             <Subnodes>
                <Node>
-                <Name>meshXGenericPowerOnOffServerModel</Name>
-                <Path>da/dfe/classmeshXGenericPowerOnOffServerModel.html</Path>
-               </Node>
-               <Node>
-                <Name>meshXGenericPowerOnOffSetupServerModel</Name>
-                <Path>da/d7f/classmeshXGenericPowerOnOffSetupServerModel.html</Path>
+                <Name>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_power_level_send_params_t &gt;</Name>
+                <Path>db/de4/classmeshXClientModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXGenericPowerLevelClientModel</Name>
+                  <Path>d2/d70/classmeshXGenericPowerLevelClientModel.html</Path>
+                 </Node>
+                </Subnodes>
                </Node>
               </Subnodes>
              </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_property_send_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
              <Node>
-              <Name>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_property_send_params_t &gt;</Name>
-              <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Name>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
             <Subnodes>
                <Node>
-                <Name>meshXGenericAdminPropertyServerModel</Name>
-                <Path>df/d36/classmeshXGenericAdminPropertyServerModel.html</Path>
-               </Node>
-               <Node>
-                <Name>meshXGenericClientPropertyServerModel</Name>
-                <Path>d2/dc5/classmeshXGenericClientPropertyServerModel.html</Path>
-               </Node>
-               <Node>
-                <Name>meshXGenericManufacturerPropertyServerModel</Name>
-                <Path>d2/d74/classmeshXGenericManufacturerPropertyServerModel.html</Path>
-               </Node>
-               <Node>
-                <Name>meshXGenericUserPropertyServerModel</Name>
-                <Path>d5/d31/classmeshXGenericUserPropertyServerModel.html</Path>
+                <Name>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t &gt;</Name>
+                <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXGenericPowerLevelServerModel</Name>
+                  <Path>d4/d95/classmeshXGenericPowerLevelServerModel.html</Path>
+                 </Node>
+                 <Node>
+                  <Name>meshXGenericPowerLevelSetupServerModel</Name>
+                  <Path>d8/d9f/classmeshXGenericPowerLevelSetupServerModel.html</Path>
+                 </Node>
+                </Subnodes>
                </Node>
               </Subnodes>
              </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
              <Node>
-              <Name>meshXClientModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Name>
-              <Path>db/de4/classmeshXClientModel.html</Path>
+              <Name>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_power_onoff_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
             <Subnodes>
                <Node>
-                <Name>meshXLightCTLClientModel</Name>
-                <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+                <Name>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_power_onoff_send_params_t &gt;</Name>
+                <Path>db/de4/classmeshXClientModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXGenericPowerOnOffClientModel</Name>
+                  <Path>d9/de9/classmeshXGenericPowerOnOffClientModel.html</Path>
+                 </Node>
+                </Subnodes>
                </Node>
               </Subnodes>
              </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
              <Node>
-              <Name>meshXServerModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Name>
-              <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Name>meshXModel&lt; meshXBaseGenericServerModel, meshx_gen_power_onoff_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
             <Subnodes>
                <Node>
-                <Name>meshXLightCTLServerModel</Name>
-                <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+                <Name>meshXServerModel&lt; meshXBaseGenericServerModel, meshx_gen_power_onoff_send_params_t &gt;</Name>
+                <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXGenericPowerOnOffServerModel</Name>
+                  <Path>da/dfe/classmeshXGenericPowerOnOffServerModel.html</Path>
+                 </Node>
+                 <Node>
+                  <Name>meshXGenericPowerOnOffSetupServerModel</Name>
+                  <Path>da/d7f/classmeshXGenericPowerOnOffSetupServerModel.html</Path>
+                 </Node>
+                </Subnodes>
                </Node>
               </Subnodes>
              </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
              <Node>
-              <Name>meshXServerModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Name>
-              <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Name>meshXModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
             <Subnodes>
                <Node>
-                <Name>meshXLightHSLServerModel</Name>
-                <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+                <Name>meshXClientModel&lt; meshXBaseGenericClientModel, meshx_gen_property_send_params_t &gt;</Name>
+                <Path>db/de4/classmeshXClientModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXGenericPropertyClientModel</Name>
+                  <Path>d8/dfa/classmeshXGenericPropertyClientModel.html</Path>
+                 </Node>
+                </Subnodes>
                </Node>
               </Subnodes>
              </Node>
-            </Subnodes>
-           </Node>
-           <Node>
-            <Name>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Name>
-            <Path>df/d4b/classmeshXModel.html</Path>
-          <Subnodes>
              <Node>
-              <Name>meshXServerModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Name>
-              <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Name>meshXModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
+            <Subnodes>
+               <Node>
+                <Name>meshXClientModel&lt; meshXBaseLightClientModel, meshx_light_ctl_send_params_t &gt;</Name>
+                <Path>db/de4/classmeshXClientModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXLightCTLClientModel</Name>
+                  <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
+                 </Node>
+                </Subnodes>
+               </Node>
+              </Subnodes>
+             </Node>
+             <Node>
+              <Name>meshXModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
+            <Subnodes>
+               <Node>
+                <Name>meshXServerModel&lt; meshXBaseLightServerModel, meshx_light_ctl_send_params_t &gt;</Name>
+                <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXLightCTLServerModel</Name>
+                  <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
+                 </Node>
+                </Subnodes>
+               </Node>
+              </Subnodes>
+             </Node>
+             <Node>
+              <Name>meshXModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
+            <Subnodes>
+               <Node>
+                <Name>meshXServerModel&lt; meshXBaseLightServerModel, meshx_light_hsl_send_params_t &gt;</Name>
+                <Path>da/dbb/classmeshXServerModel.html</Path>
+              <Subnodes>
+                 <Node>
+                  <Name>meshXLightHSLServerModel</Name>
+                  <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
+                 </Node>
+                </Subnodes>
+               </Node>
+              </Subnodes>
+             </Node>
+             <Node>
+              <Name>meshXModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
+            <Subnodes>
+               <Node>
+                <Name>meshXServerModel&lt; meshxBaseServerModel_t, meshx_send_packet_params_t &gt;</Name>
+                <Path>da/dbb/classmeshXServerModel.html</Path>
+               </Node>
+              </Subnodes>
+             </Node>
+             <Node>
+              <Name>meshXModel&lt; meshxBaseModel_t, meshx_send_packet_params_t &gt;</Name>
+              <Path>df/d4b/classmeshXModel.html</Path>
              </Node>
             </Subnodes>
            </Node>
@@ -12411,8 +12867,12 @@
             <Path>functions_func.html</Path>
           <Subnodes>
              <Node>
-              <Name>b</Name>
+              <Name>a</Name>
               <Path>functions_func.html</Path>
+             </Node>
+             <Node>
+              <Name>b</Name>
+              <Path>functions_func_b.html</Path>
              </Node>
              <Node>
               <Name>f</Name>
@@ -12421,6 +12881,14 @@
              <Node>
               <Name>g</Name>
               <Path>functions_func_g.html</Path>
+             </Node>
+             <Node>
+              <Name>i</Name>
+              <Path>functions_func_i.html</Path>
+             </Node>
+             <Node>
+              <Name>l</Name>
+              <Path>functions_func_l.html</Path>
              </Node>
              <Node>
               <Name>m</Name>
@@ -12433,6 +12901,10 @@
              <Node>
               <Name>p</Name>
               <Path>functions_func_p.html</Path>
+             </Node>
+             <Node>
+              <Name>r</Name>
+              <Path>functions_func_r.html</Path>
              </Node>
              <Node>
               <Name>s</Name>
@@ -12869,6 +13341,73 @@
                       </Subnodes>
                      </Node>
                      <Node>
+                      <Name>meshx_base_model_common.hpp</Name>
+                      <Path>d2/d6f/meshx__base__model__common_8hpp.html</Path>
+                    <Subnodes>
+                       <Node>
+                        <Name>meshXBaseConfigServerModel</Name>
+                        <Path>dd/df7/classmeshXBaseConfigServerModel.html</Path>
+                      <Subnodes>
+                         <Node>
+                          <Name>meshXBaseConfigServerModel</Name>
+                          <Path>dd/df7/classmeshXBaseConfigServerModel.html</Path>
+                          <Anchor>a31df3385add6edd004c1de487ff06900</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>meshXBaseConfigServerModel</Name>
+                          <Path>dd/df7/classmeshXBaseConfigServerModel.html</Path>
+                          <Anchor>ae89b7bdbdc709f5b0961c1db0db4a531</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>~meshXBaseConfigServerModel</Name>
+                          <Path>dd/df7/classmeshXBaseConfigServerModel.html</Path>
+                          <Anchor>aa4c25691ec08d9b9eff57d5ec1cc8e6e</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>plat_model_init</Name>
+                          <Path>dd/df7/classmeshXBaseConfigServerModel.html</Path>
+                          <Anchor>af41a9f6aa24bc58ad8f943f8b8c6b741</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>plat_send_msg</Name>
+                          <Path>dd/df7/classmeshXBaseConfigServerModel.html</Path>
+                          <Anchor>aebbbdc46123b43850d04a2f793f53737</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>server_state_restore</Name>
+                          <Path>dd/df7/classmeshXBaseConfigServerModel.html</Path>
+                          <Anchor>ab8f988c19bbadc402a1966d2d0dc9043</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>validate_server_status_opcode</Name>
+                          <Path>dd/df7/classmeshXBaseConfigServerModel.html</Path>
+                          <Anchor>a2519fa037c6080b4abab85002713a387</Anchor>
+                         </Node>
+                        </Subnodes>
+                       </Node>
+                       <Node>
+                        <Name>MESHX_BASE_CONFIG_SERVER_TEMPLATE_PARAMS</Name>
+                        <Path>d2/d6f/meshx__base__model__common_8hpp.html</Path>
+                        <Anchor>a993e5dcc53ea19ea3d0b96318e51e852</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>MESHX_BASE_CONFIG_SERVER_TEMPLATE_PROTO</Name>
+                        <Path>d2/d6f/meshx__base__model__common_8hpp.html</Path>
+                        <Anchor>ac369be123a86d99d54b00b88f94eb912</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>meshx_config_server_restore_params_t</Name>
+                        <Path>d2/d6f/meshx__base__model__common_8hpp.html</Path>
+                        <Anchor>abaece86913d3d922a0d522535010a6be</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>meshx_config_server_send_params_t</Name>
+                        <Path>d2/d6f/meshx__base__model__common_8hpp.html</Path>
+                        <Anchor>a10ccc1efa74d40a9b244da08d884a2bb</Anchor>
+                       </Node>
+                      </Subnodes>
+                     </Node>
+                     <Node>
                       <Name>meshx_base_model_generic.hpp</Name>
                       <Path>de/d42/meshx__base__model__generic_8hpp.html</Path>
                     <Subnodes>
@@ -13176,6 +13715,17 @@
                       </Subnodes>
                      </Node>
                      <Node>
+                      <Name>meshx_base_model_common.cpp</Name>
+                      <Path>d7/dbb/meshx__base__model__common_8cpp.html</Path>
+                    <Subnodes>
+                       <Node>
+                        <Name>MESHX_CONFIG_SERVER_INIT_MAGIC_NO</Name>
+                        <Path>d7/dbb/meshx__base__model__common_8cpp.html</Path>
+                        <Anchor>accef5f8dba9a6e4730e06ed5aaffcd1b</Anchor>
+                       </Node>
+                      </Subnodes>
+                     </Node>
+                     <Node>
                       <Name>meshx_base_model_generic.cpp</Name>
                       <Path>d4/dc9/meshx__base__model__generic_8cpp.html</Path>
                     <Subnodes>
@@ -13220,6 +13770,44 @@
                     <Path>dir_840a8ae155349e7c63d84b77da8867b2.html</Path>
                   <Subnodes>
                      <Node>
+                      <Name>variants</Name>
+                      <Path>dir_6d5141b1447021c24f23988ab4e5a6ae.html</Path>
+                    <Subnodes>
+                       <Node>
+                        <Name>meshx_root_element.hpp</Name>
+                        <Path>d6/d95/meshx__root__element_8hpp.html</Path>
+                      <Subnodes>
+                         <Node>
+                          <Name>meshXRootElement</Name>
+                          <Path>d9/d25/classmeshXRootElement.html</Path>
+                        <Subnodes>
+                           <Node>
+                            <Name>meshXRootElement</Name>
+                            <Path>d9/d25/classmeshXRootElement.html</Path>
+                            <Anchor>a98449a29a5ee9a87269c3222b28dd68f</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>list_sig_models</Name>
+                            <Path>d9/d25/classmeshXRootElement.html</Path>
+                            <Anchor>ac218329fada9a4d93ee65d55709316af</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>list_ven_models</Name>
+                            <Path>d9/d25/classmeshXRootElement.html</Path>
+                            <Anchor>af0d72e00fa106f3186ac459320182836</Anchor>
+                           </Node>
+                          </Subnodes>
+                         </Node>
+                         <Node>
+                          <Name>MESHX_ROOT_ELEMENT_TEMPLATE_PROTO</Name>
+                          <Path>d6/d95/meshx__root__element_8hpp.html</Path>
+                          <Anchor>a9a0851f82abab4f62f6f532da9f8129c</Anchor>
+                         </Node>
+                        </Subnodes>
+                       </Node>
+                      </Subnodes>
+                     </Node>
+                     <Node>
                       <Name>meshx_element_class.hpp</Name>
                       <Path>d6/d37/meshx__element__class_8hpp.html</Path>
                     <Subnodes>
@@ -13230,7 +13818,7 @@
                          <Node>
                           <Name>meshXElementIF</Name>
                           <Path>d9/db0/classmeshXElementIF.html</Path>
-                          <Anchor>a8f1be23699ee6be4a3be266b9ce5e5e6</Anchor>
+                          <Anchor>a8d29cd8737eeb88a66794c47d202f47e</Anchor>
                          </Node>
                          <Node>
                           <Name>meshXElementIF</Name>
@@ -13240,17 +13828,57 @@
                          <Node>
                           <Name>~meshXElementIF</Name>
                           <Path>d9/db0/classmeshXElementIF.html</Path>
-                          <Anchor>a6978b15f87c4ea728f528af671147f0d</Anchor>
+                          <Anchor>a2f65bf759528f9af53c5a5031a09a033</Anchor>
                          </Node>
                          <Node>
                           <Name>get_element_idx</Name>
                           <Path>d9/db0/classmeshXElementIF.html</Path>
-                          <Anchor>a321414819888eaa17705e905fcaf6489</Anchor>
+                          <Anchor>ab36d218cbe4445fedfc9d14e00126054</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_element_type</Name>
+                          <Path>d9/db0/classmeshXElementIF.html</Path>
+                          <Anchor>afe9a285b8bd6f64d16d3594f3e7a1407</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_no_of_sig_models</Name>
+                          <Path>d9/db0/classmeshXElementIF.html</Path>
+                          <Anchor>a3a74299ff42f7071836b501ba09e7839</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_no_of_ven_models</Name>
+                          <Path>d9/db0/classmeshXElementIF.html</Path>
+                          <Anchor>ac55730ee28c079fc62cd505c706981cf</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_sig_models</Name>
+                          <Path>d9/db0/classmeshXElementIF.html</Path>
+                          <Anchor>ad80b0bc2aa2cbc63fbe9eccfac7e42f1</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_ven_models</Name>
+                          <Path>d9/db0/classmeshXElementIF.html</Path>
+                          <Anchor>a2aaec23bb470e4cc6653364fd5a172fc</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>initialize</Name>
+                          <Path>d9/db0/classmeshXElementIF.html</Path>
+                          <Anchor>aadca4beced06884c117dd981facafd23</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>is_initialized</Name>
+                          <Path>d9/db0/classmeshXElementIF.html</Path>
+                          <Anchor>a93b4f321862d2002e272e28ad11c6eb3</Anchor>
                          </Node>
                          <Node>
                           <Name>on_model_cb</Name>
                           <Path>d9/db0/classmeshXElementIF.html</Path>
                           <Anchor>a20a0b02257d7a59be7757ad0f01fb6f1</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>reset</Name>
+                          <Path>d9/db0/classmeshXElementIF.html</Path>
+                          <Anchor>a88322fc03cdce07803bdebd36f4bb41b</Anchor>
                          </Node>
                          <Node>
                           <Name>set_element_idx</Name>
@@ -13279,13 +13907,264 @@
                           <Anchor>afebc6cc222578610c100aa838b9074f6</Anchor>
                          </Node>
                          <Node>
+                          <Name>meshXElement</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>a81bd54ff82179ac086a9b6270a2a455a</Anchor>
+                         </Node>
+                         <Node>
                           <Name>~meshXElement</Name>
                           <Path>de/dfb/classmeshXElement.html</Path>
-                          <Anchor>a6a6dc1440c5439a2433996ff55aefda3</Anchor>
+                          <Anchor>aefcc7c1a5dcef98ea58207e350887cab</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>add_models</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>af82779f355e5c3ef6a7af4712db79cc9</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>add_sig_model</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>a6fb3cfa6e968a60a20d98376e99b5307</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>add_sig_models</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>adc9a5aae86c704d3dafe80551b65a9c2</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>add_ven_model</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>adab8b4253f347741316c82be26518013</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>add_ven_models</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>a0db52ec0d6c94e832febcdbdd2c1f2d1</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_element_type</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>ae7317bfadfea0ad46a4a861b2d241954</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_no_of_sig_models</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>a76464417cc6130a52c5bc50e92167e2b</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_no_of_ven_models</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>ab92f9d47b5609913a8c700b1f243960d</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_sig_model_array</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>a1a9be675556c6e6e5a0993cb1ca277da</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_sig_model_count</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>acd683f16bc506458302ab770334bec28</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_sig_models</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>ac31458b7499ed0f622b96edd79e323c3</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_sig_plat_model_array</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>abee50c89cccfb3039622fb2b11417997</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_ven_model_array</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>ac00813a7ab25fdb833ded616e62db242</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_ven_model_count</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>afcc347ec4aa0e7d3d039cb88982618f9</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_ven_models</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>a5dab334350cfc9706c4d41f85e2622e7</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_ven_plat_model_array</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>a2c93c7a923b798c748db5c79c1fdd277</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>list_sig_models</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>aa461ef809cfcf95d9080618fcf1793a0</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>list_ven_models</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>ad544d7c0bdec639f2a86f1d77e115b99</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>on_model_cb</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>a95d7ff3adaaadc703d8955e906a14386</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>set_element_type</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>a418344bde6544d4f059cce4851837bf3</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>set_no_of_sig_models</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>a1a9d5f85c5778f7645174a84d83bc24a</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>set_no_of_ven_models</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>a81f64a74a50dba4b4b16a7e7e9c6ab4c</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>sig_plat_model_array_allocate</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>a04dd77d2f56e8f471998f3a8e5cf554c</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>ven_plat_model_array_allocate</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>ac91c0864410c9b4f9f5b9a563559212d</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>element_type</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>a00dc0597e755ddacf4a1e933ad1409ee</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>no_of_sig_models</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>ad888429825d5410aff042adc45b0c08a</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>no_of_ven_models</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>afb691c98e0588435754139cce90d9e45</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>sig_model_array</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>a42a2b2dd649b9d2ec41501382705948e</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>sig_models</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>aa5cb479c09036e3027b34fdb0ce30b1a</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>ven_model_array</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>ac735e0267187190249cbe48b22285d66</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>ven_models</Name>
+                          <Path>de/dfb/classmeshXElement.html</Path>
+                          <Anchor>a5b1589cd868b30f3d606a9df2cdad02b</Anchor>
+                         </Node>
+                        </Subnodes>
+                       </Node>
+                       <Node>
+                        <Name>meshXElementServer</Name>
+                        <Path>d4/db7/classmeshXElementServer.html</Path>
+                      <Subnodes>
+                         <Node>
+                          <Name>meshXElementServer</Name>
+                          <Path>d4/db7/classmeshXElementServer.html</Path>
+                          <Anchor>ab27a8aa5522c2d453ec585c4442ae52e</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>meshXElementServer</Name>
+                          <Path>d4/db7/classmeshXElementServer.html</Path>
+                          <Anchor>a4be68b4fa0ff3ac179340f1c91f4f8bc</Anchor>
+                         </Node>
+                        </Subnodes>
+                       </Node>
+                       <Node>
+                        <Name>meshXElementClient</Name>
+                        <Path>d3/dbd/classmeshXElementClient.html</Path>
+                      <Subnodes>
+                         <Node>
+                          <Name>meshXElementClient</Name>
+                          <Path>d3/dbd/classmeshXElementClient.html</Path>
+                          <Anchor>a94e73691aa751461060374f6c1af5a03</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>meshXElementClient</Name>
+                          <Path>d3/dbd/classmeshXElementClient.html</Path>
+                          <Anchor>a5d9322d733b75ad3afd0d51690c5c006</Anchor>
+                         </Node>
+                        </Subnodes>
+                       </Node>
+                       <Node>
+                        <Name>MESHX_ELEMENT_ADD_MODEL_TEMPLATE_PARAMS</Name>
+                        <Path>d6/d37/meshx__element__class_8hpp.html</Path>
+                        <Anchor>a1302b36fc09277266b5ff2e24130e010</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>MESHX_ELEMENT_ADD_MODEL_TEMPLATE_PROTO</Name>
+                        <Path>d6/d37/meshx__element__class_8hpp.html</Path>
+                        <Anchor>a9336ffeb959401745fc7b0efa3961c1b</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>meshxElementType_t</Name>
+                        <Path>d6/d37/meshx__element__class_8hpp.html</Path>
+                        <Anchor>af879911766c94862efe9426d14959865</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>meshxElementType</Name>
+                        <Path>d6/d37/meshx__element__class_8hpp.html</Path>
+                        <Anchor>a66df73474e832d82c8e32d68075e6e7a</Anchor>
+                      <Subnodes>
+                         <Node>
+                          <Name>MESHX_ELEMENT_TYPE_SERVER</Name>
+                          <Path>d6/d37/meshx__element__class_8hpp.html</Path>
+                          <Anchor>a66df73474e832d82c8e32d68075e6e7aab5fd2bc66633bd9a25488a9591e94272</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>MESHX_ELEMENT_TYPE_CLIENT</Name>
+                          <Path>d6/d37/meshx__element__class_8hpp.html</Path>
+                          <Anchor>a66df73474e832d82c8e32d68075e6e7aa2f959f2a554b36ab2599984463d7c1da</Anchor>
                          </Node>
                         </Subnodes>
                        </Node>
                       </Subnodes>
+                     </Node>
+                    </Subnodes>
+                   </Node>
+                   <Node>
+                    <Name>src</Name>
+                    <Path>dir_31cd45d442527bcb0bd485cc3876fde5.html</Path>
+                  <Subnodes>
+                     <Node>
+                      <Name>variants</Name>
+                      <Path>dir_a6768671503f2916e46a2554edf001ae.html</Path>
+                    <Subnodes>
+                       <Node>
+                        <Name>meshx_root_element.cpp</Name>
+                        <Path>dc/d49/meshx__root__element_8cpp.html</Path>
+                      <Subnodes>
+                         <Node>
+                          <Name>MESHX_ROOT_ELEMENT_INDEX</Name>
+                          <Path>dc/d49/meshx__root__element_8cpp.html</Path>
+                          <Anchor>a1634d273aa114ab0f52bf0fbf10be51f</Anchor>
+                         </Node>
+                        </Subnodes>
+                       </Node>
+                      </Subnodes>
+                     </Node>
+                     <Node>
+                      <Name>meshx_element_class.cpp</Name>
+                      <Path>de/d82/meshx__element__class_8cpp.html</Path>
                      </Node>
                     </Subnodes>
                    </Node>
@@ -28947,6 +29826,16 @@
                       <Anchor>a3451319fde8215eb08ca8b8a8b8e319c</Anchor>
                      </Node>
                      <Node>
+                      <Name>MESHX_CLIENT_ELEMENT_TEMPLATE_PARAMS</Name>
+                      <Path>de/de6/meshx__fwd__decl_8hpp.html</Path>
+                      <Anchor>a02044fe431284719ad2af0591ad4b73b</Anchor>
+                     </Node>
+                     <Node>
+                      <Name>MESHX_CLIENT_ELEMENT_TEMPLATE_PROTO</Name>
+                      <Path>de/de6/meshx__fwd__decl_8hpp.html</Path>
+                      <Anchor>aa1112ab44075569a958781ddab5ec500</Anchor>
+                     </Node>
+                     <Node>
                       <Name>MESHX_CLIENT_MODEL_TEMPLATE_PARAMS</Name>
                       <Path>de/de6/meshx__fwd__decl_8hpp.html</Path>
                       <Anchor>a781ea6a1bf3c2136c855071bbaac75d7</Anchor>
@@ -28975,6 +29864,16 @@
                       <Name>MESHX_MODEL_TEMPLATE_PROTO</Name>
                       <Path>de/de6/meshx__fwd__decl_8hpp.html</Path>
                       <Anchor>a8467a8dae486a3308e84b4a3dfd8a1dd</Anchor>
+                     </Node>
+                     <Node>
+                      <Name>MESHX_SERVER_ELEMENT_TEMPLATE_PARAMS</Name>
+                      <Path>de/de6/meshx__fwd__decl_8hpp.html</Path>
+                      <Anchor>a940d8f572d061392e5f993d0021c3c50</Anchor>
+                     </Node>
+                     <Node>
+                      <Name>MESHX_SERVER_ELEMENT_TEMPLATE_PROTO</Name>
+                      <Path>de/de6/meshx__fwd__decl_8hpp.html</Path>
+                      <Anchor>a0e664c8a3f3c4cc71283a8565fe49a06</Anchor>
                      </Node>
                      <Node>
                       <Name>MESHX_SERVER_MODEL_TEMPLATE_PARAMS</Name>
@@ -29463,6 +30362,121 @@
                     <Name>inc</Name>
                     <Path>dir_ccb8bc78e8b722f0f65bb8c8cd693376.html</Path>
                   <Subnodes>
+                     <Node>
+                      <Name>common_model</Name>
+                      <Path>dir_5bf1e38b85ddea9e9985a60c03957887.html</Path>
+                    <Subnodes>
+                       <Node>
+                        <Name>meshx_model_config.hpp</Name>
+                        <Path>dc/db7/meshx__model__config_8hpp.html</Path>
+                      <Subnodes>
+                         <Node>
+                          <Name>meshx_config_send_params</Name>
+                          <Path>d4/d48/structmeshx__config__send__params.html</Path>
+                        <Subnodes>
+                           <Node>
+                            <Name>ctx</Name>
+                            <Path>d4/d48/structmeshx__config__send__params.html</Path>
+                            <Anchor>acc67c53a3c5ed3ffcc9dd0ff63b9303e</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>model</Name>
+                            <Path>d4/d48/structmeshx__config__send__params.html</Path>
+                            <Anchor>a64d458d65fe6c0c6adad328dcdfdda4f</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>stub</Name>
+                            <Path>d4/d48/structmeshx__config__send__params.html</Path>
+                            <Anchor>a6f45e3f8d2a0431c3801c726c5e44cbc</Anchor>
+                           </Node>
+                          </Subnodes>
+                         </Node>
+                         <Node>
+                          <Name>meshx_config_srv_el_msg</Name>
+                          <Path>de/d3c/structmeshx__config__srv__el__msg.html</Path>
+                        <Subnodes>
+                           <Node>
+                            <Name>ctx</Name>
+                            <Path>de/d3c/structmeshx__config__srv__el__msg.html</Path>
+                            <Anchor>aeaa8c5356580c30c59198a2c03feb4db</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>model</Name>
+                            <Path>de/d3c/structmeshx__config__srv__el__msg.html</Path>
+                            <Anchor>a8c70b6cb59c51458fb53a8a367be39ab</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>state_change</Name>
+                            <Path>de/d3c/structmeshx__config__srv__el__msg.html</Path>
+                            <Anchor>af89b1ce2e7ec1843b87ef5c26102997a</Anchor>
+                           </Node>
+                          </Subnodes>
+                         </Node>
+                         <Node>
+                          <Name>meshXConfigModel</Name>
+                          <Path>da/d7d/classmeshXConfigModel.html</Path>
+                        <Subnodes>
+                           <Node>
+                            <Name>meshXConfigModel</Name>
+                            <Path>da/d7d/classmeshXConfigModel.html</Path>
+                            <Anchor>ae3a1b8f54591cb7c802d9ee2a3bc0ebd</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>~meshXConfigModel</Name>
+                            <Path>da/d7d/classmeshXConfigModel.html</Path>
+                            <Anchor>abd5e51922d66ef9c3b382343e1d28524</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>model_from_ble_cb</Name>
+                            <Path>da/d7d/classmeshXConfigModel.html</Path>
+                            <Anchor>a595396cffeae253c5ecaa5a44ee3c5f9</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>model_send</Name>
+                            <Path>da/d7d/classmeshXConfigModel.html</Path>
+                            <Anchor>a735767bca96361f11e0fcb87e519cafa</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_create</Name>
+                            <Path>da/d7d/classmeshXConfigModel.html</Path>
+                            <Anchor>ad75f39a2a3f39d5cd6d64e2a240ca255</Anchor>
+                           </Node>
+                           <Node>
+                            <Name>plat_model_delete</Name>
+                            <Path>da/d7d/classmeshXConfigModel.html</Path>
+                            <Anchor>a5db59be784b1756ef4eda2f933afa87e</Anchor>
+                           </Node>
+                          </Subnodes>
+                         </Node>
+                         <Node>
+                          <Name>_MESHX_MODEL_CONFIG_HPP_</Name>
+                          <Path>dc/db7/meshx__model__config_8hpp.html</Path>
+                          <Anchor>ab9c6d567308f8ad5c8ebec3bab3e88d9</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS</Name>
+                          <Path>dc/db7/meshx__model__config_8hpp.html</Path>
+                          <Anchor>a027336e2d0890e38c1e1cf34b960f759</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PROTO</Name>
+                          <Path>dc/db7/meshx__model__config_8hpp.html</Path>
+                          <Anchor>a5f6f3a05fa55bca130c2465ce106529b</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>meshx_config_send_params_t</Name>
+                          <Path>dc/db7/meshx__model__config_8hpp.html</Path>
+                          <Anchor>a26662891e427403869ca33db67725f63</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>meshx_config_srv_el_msg_t</Name>
+                          <Path>dc/db7/meshx__model__config_8hpp.html</Path>
+                          <Anchor>a922fbd23df7ede83f020ed781407f185</Anchor>
+                         </Node>
+                        </Subnodes>
+                       </Node>
+                      </Subnodes>
+                     </Node>
                      <Node>
                       <Name>generic_model</Name>
                       <Path>dir_c96ad3909c65328dd790caa2e8d2522d.html</Path>
@@ -30438,7 +31452,7 @@
                            <Node>
                             <Name>~meshXGenericOnOffClientModel</Name>
                             <Path>d4/d68/classmeshXGenericOnOffClientModel.html</Path>
-                            <Anchor>a456bfa3e2bfc09ed1da79a4eaa32b556</Anchor>
+                            <Anchor>ac68a27e58900c1d46459201d7af2f9fc</Anchor>
                            </Node>
                            <Node>
                             <Name>meshx_state_change_notify</Name>
@@ -30485,7 +31499,7 @@
                            <Node>
                             <Name>~meshXGenericOnOffServerModel</Name>
                             <Path>d7/d7a/classmeshXGenericOnOffServerModel.html</Path>
-                            <Anchor>acfed4d3176173c937c5366480b2fcccc</Anchor>
+                            <Anchor>a4bc51470772a58a7c50c57c9bd69b4b9</Anchor>
                            </Node>
                            <Node>
                             <Name>model_from_ble_cb</Name>
@@ -31436,11 +32450,6 @@
                             <Anchor>a0e1ae2008049f4e5aaa209e7cd04d1fa</Anchor>
                            </Node>
                            <Node>
-                            <Name>~meshXLightCTLClientModel</Name>
-                            <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
-                            <Anchor>a9379b8a864caa7f13109499a7bb94d30</Anchor>
-                           </Node>
-                           <Node>
                             <Name>meshx_state_change_notify</Name>
                             <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
                             <Anchor>a23b7df64b6025061bd14565e1b80c0b3</Anchor>
@@ -31491,11 +32500,6 @@
                             <Name>meshXLightCTLServerModel</Name>
                             <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
                             <Anchor>ae17a0aa3bb9767819cc9e582e75e0ef8</Anchor>
-                           </Node>
-                           <Node>
-                            <Name>~meshXLightCTLServerModel</Name>
-                            <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
-                            <Anchor>a5ae314bcd0b099be65c5426278851d3f</Anchor>
                            </Node>
                            <Node>
                             <Name>model_from_ble_cb</Name>
@@ -31784,6 +32788,97 @@
                       <Path>d9/d58/meshx__model__class_8hpp.html</Path>
                     <Subnodes>
                        <Node>
+                        <Name>meshXModelIF</Name>
+                        <Path>d1/d52/classmeshXModelIF.html</Path>
+                      <Subnodes>
+                         <Node>
+                          <Name>meshXModelIF</Name>
+                          <Path>d1/d52/classmeshXModelIF.html</Path>
+                          <Anchor>a7984b4191ee7c6074d6282b0c291372c</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>meshXModelIF</Name>
+                          <Path>d1/d52/classmeshXModelIF.html</Path>
+                          <Anchor>afde857310fe47751ecd56e232571deab</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>~meshXModelIF</Name>
+                          <Path>d1/d52/classmeshXModelIF.html</Path>
+                          <Anchor>ad0dcea00b8b8a965344eefb338bd9df0</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_gen_struct</Name>
+                          <Path>d1/d52/classmeshXModelIF.html</Path>
+                          <Anchor>acc12df5149e2f17c8efb85d414c8b461</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_parent_element</Name>
+                          <Path>d1/d52/classmeshXModelIF.html</Path>
+                          <Anchor>a46c156c189bd020105cf394a60eb2f19</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_plat_model</Name>
+                          <Path>d1/d52/classmeshXModelIF.html</Path>
+                          <Anchor>afe1ef3e7bbcae737e144137016760cf7</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>get_pub_struct</Name>
+                          <Path>d1/d52/classmeshXModelIF.html</Path>
+                          <Anchor>a177cbf1d7b261b2e3bc1041c3d1502a7</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>plat_model_create</Name>
+                          <Path>d1/d52/classmeshXModelIF.html</Path>
+                          <Anchor>a4a647e8d6b47b23155d2cdebd10426a0</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>plat_model_delete</Name>
+                          <Path>d1/d52/classmeshXModelIF.html</Path>
+                          <Anchor>ad0aa271ded14454da20e2d92ada64ae5</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>set_gen_struct</Name>
+                          <Path>d1/d52/classmeshXModelIF.html</Path>
+                          <Anchor>ac08c8d67f72aef2b76fd5d75bf6efb32</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>set_parent_element</Name>
+                          <Path>d1/d52/classmeshXModelIF.html</Path>
+                          <Anchor>a07afab758522cf85b82eaef3dfa68558</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>set_plat_model</Name>
+                          <Path>d1/d52/classmeshXModelIF.html</Path>
+                          <Anchor>af360002f5406dacef76d38cce4c322c0</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>set_pub_struct</Name>
+                          <Path>d1/d52/classmeshXModelIF.html</Path>
+                          <Anchor>af46ba33494ad3e85e3cb535b863c9310</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>p_plat_gen</Name>
+                          <Path>d1/d52/classmeshXModelIF.html</Path>
+                          <Anchor>a9ea1cbda4d8a8957ac28086f47d3fbf5</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>p_plat_model</Name>
+                          <Path>d1/d52/classmeshXModelIF.html</Path>
+                          <Anchor>ad656ee898071db736c4582bff4918de0</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>p_plat_pub</Name>
+                          <Path>d1/d52/classmeshXModelIF.html</Path>
+                          <Anchor>a77e15c019d3de8139b06e697dfb560eb</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>parent_element</Name>
+                          <Path>d1/d52/classmeshXModelIF.html</Path>
+                          <Anchor>a0474b091b2f287e435c749a1617ddc21</Anchor>
+                         </Node>
+                        </Subnodes>
+                       </Node>
+                       <Node>
                         <Name>meshXModel&lt; meshxBaseModel_t, meshx_send_packet_params_t &gt;</Name>
                         <Path>df/d4b/classmeshXModel.html</Path>
                       <Subnodes>
@@ -31803,29 +32898,9 @@
                           <Anchor>a4c89eef412069b61d52fcd49444810de</Anchor>
                          </Node>
                          <Node>
-                          <Name>get_gen_struct</Name>
-                          <Path>df/d4b/classmeshXModel.html</Path>
-                          <Anchor>adb8b31352c71562548908bd31fbcb993</Anchor>
-                         </Node>
-                         <Node>
                           <Name>get_init_status</Name>
                           <Path>df/d4b/classmeshXModel.html</Path>
                           <Anchor>a4cd7ad73052af2fc6b825a83325d5163</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>get_parent_element</Name>
-                          <Path>df/d4b/classmeshXModel.html</Path>
-                          <Anchor>a61afb7b49d139ea2da9681e48ec376a1</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>get_plat_model</Name>
-                          <Path>df/d4b/classmeshXModel.html</Path>
-                          <Anchor>a4f0d11deeb9a398031d9df6f29ac197b</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>get_pub_struct</Name>
-                          <Path>df/d4b/classmeshXModel.html</Path>
-                          <Anchor>a24713ad51125e3f62c28276a5544dcc2</Anchor>
                          </Node>
                          <Node>
                           <Name>model_from_ble_cb</Name>
@@ -31838,54 +32913,9 @@
                           <Anchor>af1c63527b851de806ec4c3eda91b7c27</Anchor>
                          </Node>
                          <Node>
-                          <Name>plat_model_create</Name>
-                          <Path>df/d4b/classmeshXModel.html</Path>
-                          <Anchor>aff99fd62a17483196f25c126f0d8af5a</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>plat_model_delete</Name>
-                          <Path>df/d4b/classmeshXModel.html</Path>
-                          <Anchor>a04be7009ad7ffbb5df0e96d6b68ff544</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>set_gen_struct</Name>
-                          <Path>df/d4b/classmeshXModel.html</Path>
-                          <Anchor>a2e9ba67844a5cac8b96db1fa3c25bc01</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>set_parent_element</Name>
-                          <Path>df/d4b/classmeshXModel.html</Path>
-                          <Anchor>a332e584bb9487a0865d4ee3519ca0230</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>set_pub_struct</Name>
-                          <Path>df/d4b/classmeshXModel.html</Path>
-                          <Anchor>a849b4d5201922401704364d686fd4367</Anchor>
-                         </Node>
-                         <Node>
                           <Name>base_model</Name>
                           <Path>df/d4b/classmeshXModel.html</Path>
                           <Anchor>aa5e205fde4c253c222e066fa887dbd6b</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>p_plat_gen</Name>
-                          <Path>df/d4b/classmeshXModel.html</Path>
-                          <Anchor>ad12925614dbfa6e0660f1cc891153fb9</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>p_plat_model</Name>
-                          <Path>df/d4b/classmeshXModel.html</Path>
-                          <Anchor>a8a5d29f57289d451c897257235e8d165</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>p_plat_pub</Name>
-                          <Path>df/d4b/classmeshXModel.html</Path>
-                          <Anchor>a8b215af884217ea090993ff98f66b868</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>parent_element</Name>
-                          <Path>df/d4b/classmeshXModel.html</Path>
-                          <Anchor>a2fbc831c62c91bffebb96850232ae1cf</Anchor>
                          </Node>
                          <Node>
                           <Name>status</Name>
@@ -31904,11 +32934,6 @@
                           <Anchor>ga8cdc5c8d3c43a0d0275bf75245a6b3bb</Anchor>
                          </Node>
                          <Node>
-                          <Name>~meshXServerModel</Name>
-                          <Path>da/dbb/classmeshXServerModel.html</Path>
-                          <Anchor>a724548b7085f64d0e6f270f8358cd2d6</Anchor>
-                         </Node>
-                         <Node>
                           <Name>meshXServerModel</Name>
                           <Path>da/dbb/classmeshXServerModel.html</Path>
                           <Anchor>abe55a26e1c4ff1dd91992e475a8c44a7</Anchor>
@@ -31923,11 +32948,6 @@
                           <Name>meshXClientModel</Name>
                           <Path>db/d08/group__meshx__model.html</Path>
                           <Anchor>gaab2b8cd0d3e6df21160ef87fd7ac193b</Anchor>
-                         </Node>
-                         <Node>
-                          <Name>~meshXClientModel</Name>
-                          <Path>db/de4/classmeshXClientModel.html</Path>
-                          <Anchor>ae0aa745ed922fa8fe8029c775c92805a</Anchor>
                          </Node>
                          <Node>
                           <Name>meshXClientModel</Name>
@@ -31954,6 +32974,16 @@
                     <Name>src</Name>
                     <Path>dir_0a46625fbdebd645427279d223827de7.html</Path>
                   <Subnodes>
+                     <Node>
+                      <Name>common_model</Name>
+                      <Path>dir_a13b7aab80d8c00588489072890c843d.html</Path>
+                    <Subnodes>
+                       <Node>
+                        <Name>meshx_model_config.cpp</Name>
+                        <Path>d0/d8f/meshx__model__config_8cpp.html</Path>
+                       </Node>
+                      </Subnodes>
+                     </Node>
                      <Node>
                       <Name>generic_model</Name>
                       <Path>dir_ce319f2ccb698138ceda48e3ec84cd98.html</Path>
@@ -34052,8 +35082,12 @@
             <Path>globals.html</Path>
           <Subnodes>
              <Node>
-              <Name>a</Name>
+              <Name>_</Name>
               <Path>globals.html</Path>
+             </Node>
+             <Node>
+              <Name>a</Name>
+              <Path>globals_a.html</Path>
              </Node>
              <Node>
               <Name>b</Name>
@@ -34202,8 +35236,12 @@
             <Path>globals_defs.html</Path>
           <Subnodes>
              <Node>
-              <Name>c</Name>
+              <Name>_</Name>
               <Path>globals_defs.html</Path>
+             </Node>
+             <Node>
+              <Name>c</Name>
+              <Path>globals_defs_c.html</Path>
              </Node>
              <Node>
               <Name>f</Name>

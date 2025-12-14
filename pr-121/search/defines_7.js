@@ -1,12 +1,7 @@
 var searchData=
 [
-  ['reg_5fmeshx_5felement_5ffn_0',['REG_MESHX_ELEMENT_FN',['../d2/de3/meshx__common_8h.html#a3ca09f7c9bba29dcb94c6fad5c0a06cb',1,'meshx_common.h']]],
-  ['relay_5fcli_5fel_1',['RELAY_CLI_EL',['../da/df4/meshx__relay__client_8c.html#af028238d886a5f090084241fbe038810',1,'meshx_relay_client.c']]],
-  ['relay_5fcli_5fel_5fstate_5fch_5fevt_5fmask_2',['RELAY_CLI_EL_STATE_CH_EVT_MASK',['../da/df4/meshx__relay__client_8c.html#ad9a9b60357afa51142a00692e4f6a41d',1,'meshx_relay_client.c']]],
-  ['relay_5fcli_5fmodel_5fsig_5fcnt_3',['RELAY_CLI_MODEL_SIG_CNT',['../de/dca/meshx__relay__client__element_8h.html#ab5a732e06f68bace2e88d074239909ce',1,'meshx_relay_client_element.h']]],
-  ['relay_5fcli_5fmodel_5fven_5fcnt_4',['RELAY_CLI_MODEL_VEN_CNT',['../de/dca/meshx__relay__client__element_8h.html#a3f358f788d24724dfb0d6a18ed886a0a',1,'meshx_relay_client_element.h']]],
-  ['relay_5fsrv_5fel_5',['RELAY_SRV_EL',['../d1/df4/meshx__relay__server_8c.html#aa7b44e8f8a9e22bb030f3048146780e5',1,'meshx_relay_server.c']]],
-  ['relay_5fsrv_5fmodel_5fsig_5fcnt_6',['RELAY_SRV_MODEL_SIG_CNT',['../dc/dee/meshx__relay__server__element_8h.html#ae1f5994e6b8441426611de471c634a26',1,'meshx_relay_server_element.h']]],
-  ['relay_5fsrv_5fmodel_5fven_5fcnt_7',['RELAY_SRV_MODEL_VEN_CNT',['../dc/dee/meshx__relay__server__element_8h.html#a342a627354feffc9d7b0748d29681b8c',1,'meshx_relay_server_element.h']]],
-  ['root_5felement_5fidx_8',['ROOT_ELEMENT_IDX',['../d9/d05/meshx_8c.html#a983be56b1b99c979fae237c33776aa0b',1,'meshx.c']]]
+  ['os_5ftimer_5fcontrol_5ftask_5fevt_5fmask_0',['OS_TIMER_CONTROL_TASK_EVT_MASK',['../dd/da1/meshx__os__timer_8c.html#a71d3fb8939ec1e9890274ddb93118aed',1,'meshx_os_timer.c']]],
+  ['os_5ftimer_5finit_5fmagic_1',['OS_TIMER_INIT_MAGIC',['../dd/da1/meshx__os__timer_8c.html#a297d2679d06ff46588ed5cc251f07ebf',1,'meshx_os_timer.c']]],
+  ['os_5ftimer_5fsize_2',['OS_TIMER_SIZE',['../d8/d03/meshx__os__timer_8h.html#a5b36f76812b76b64f3b434fd4b7bc5d3',1,'meshx_os_timer.h']]],
+  ['os_5ftmer_5fget_5ftimer_5fname_3',['OS_TMER_GET_TIMER_NAME',['../d8/d03/meshx__os__timer_8h.html#adb0ba77bc857e8f6bfec9be2081d5370',1,'meshx_os_timer.h']]]
 ];

@@ -51,10 +51,11 @@ var searchData=
   ['repository_20layout_20relevant_20parts_48',['Repository layout (relevant parts)',['../index.html#autotoc_md22',1,'']]],
   ['request_5ftype_49',['request_type',['../d0/d56/structmeshx__txcm__request.html#a2bbf00bbba1af44374bef5a77936e201',1,'meshx_txcm_request']]],
   ['reserved_50',['reserved',['../db/df4/structmeshx__gen__on__off__cli__msg.html#a836b25417183068574db192357b32df3',1,'meshx_gen_on_off_cli_msg::reserved'],['../d2/d1b/unionmeshx__ctrl__payload.html#a6f4132d716cd457e31208511187e1b2f',1,'meshx_ctrl_payload::reserved'],['../da/d44/structmeshx__ctrl__msg__header.html#ac8247b5ec36078761cc802c76084ed11',1,'meshx_ctrl_msg_header::reserved']]],
-  ['restrictions_20strong_51',['&lt;strong&gt;4. Restrictions&lt;/strong&gt;',['../da/d19/md_LICENSE.html#autotoc_md11',1,'']]],
-  ['retry_5fcnt_52',['retry_cnt',['../d3/daa/structmeshx__txcm__tx__q.html#aefc16695d1c0ae9f6540b1778e270a01',1,'meshx_txcm_tx_q']]],
-  ['root_5felement_5fidx_53',['ROOT_ELEMENT_IDX',['../d9/d05/meshx_8c.html#a983be56b1b99c979fae237c33776aa0b',1,'meshx.c']]],
-  ['root_5fmodel_5fgetfn_5ft_54',['root_model_getfn_t',['../d2/d6b/composition_8c.html#acff87a8de802466f592235e3ac82e6ba',1,'composition.c']]],
-  ['rssi_55',['rssi',['../d9/dc6/structmeshx__prov__cb__param__t_1_1meshx__provisioner__recv__unprov__adv__pkt__param.html#a7494dc6e30cdf756983cfef59452a315',1,'meshx_prov_cb_param_t::meshx_provisioner_recv_unprov_adv_pkt_param::rssi'],['../d1/db1/unionmeshx__prov__cb__param__t.html#a8f3bf2f6747427ba75d5d32b7f3f20cd',1,'meshx_prov_cb_param_t::rssi'],['../d1/de5/structmeshx__prov__cb__param__t_1_1meshx__proxy__client__recv__adv__pkt__param.html#a30ff22f0c8272452d9fd628f1b480b1b',1,'meshx_prov_cb_param_t::meshx_proxy_client_recv_adv_pkt_param::rssi']]],
-  ['rx_5fttl_56',['rx_ttl',['../d1/db1/unionmeshx__prov__cb__param__t.html#aa2674d6147d0c0744c9dec461db80f53',1,'meshx_prov_cb_param_t']]]
+  ['reset_51',['reset',['../d9/db0/classmeshXElementIF.html#a88322fc03cdce07803bdebd36f4bb41b',1,'meshXElementIF']]],
+  ['restrictions_20strong_52',['&lt;strong&gt;4. Restrictions&lt;/strong&gt;',['../da/d19/md_LICENSE.html#autotoc_md11',1,'']]],
+  ['retry_5fcnt_53',['retry_cnt',['../d3/daa/structmeshx__txcm__tx__q.html#aefc16695d1c0ae9f6540b1778e270a01',1,'meshx_txcm_tx_q']]],
+  ['root_5felement_5fidx_54',['ROOT_ELEMENT_IDX',['../d9/d05/meshx_8c.html#a983be56b1b99c979fae237c33776aa0b',1,'meshx.c']]],
+  ['root_5fmodel_5fgetfn_5ft_55',['root_model_getfn_t',['../d2/d6b/composition_8c.html#acff87a8de802466f592235e3ac82e6ba',1,'composition.c']]],
+  ['rssi_56',['rssi',['../d9/dc6/structmeshx__prov__cb__param__t_1_1meshx__provisioner__recv__unprov__adv__pkt__param.html#a7494dc6e30cdf756983cfef59452a315',1,'meshx_prov_cb_param_t::meshx_provisioner_recv_unprov_adv_pkt_param::rssi'],['../d1/db1/unionmeshx__prov__cb__param__t.html#a8f3bf2f6747427ba75d5d32b7f3f20cd',1,'meshx_prov_cb_param_t::rssi'],['../d1/de5/structmeshx__prov__cb__param__t_1_1meshx__proxy__client__recv__adv__pkt__param.html#a30ff22f0c8272452d9fd628f1b480b1b',1,'meshx_prov_cb_param_t::meshx_proxy_client_recv_adv_pkt_param::rssi']]],
+  ['rx_5fttl_57',['rx_ttl',['../d1/db1/unionmeshx__prov__cb__param__t.html#aa2674d6147d0c0744c9dec461db80f53',1,'meshx_prov_cb_param_t']]]
 ];

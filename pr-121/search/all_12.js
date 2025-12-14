@@ -10,7 +10,9 @@ var searchData=
   ['init_5fmagic_7',['init_magic',['../d7/d82/meshx__txcm_8c.html#a7b2f29fd581c7bd85f6ef59ec00b5d82',1,'meshx_txcm.c']]],
   ['init_5fttl_8',['init_ttl',['../d1/db1/unionmeshx__prov__cb__param__t.html#a2a12eaeb29d1b7f738475b295b995610',1,'meshx_prov_cb_param_t']]],
   ['init_5funit_5ftest_5fconsole_9',['init_unit_test_console',['../da/dd5/unit__test_8c.html#a3e1a1ae5e20371a64ddd11c70b046ccf',1,'init_unit_test_console():&#160;unit_test.c'],['../d8/d5d/unit__test_8h.html#ac53b1c7902dc73e10c0add8b1a7a2985',1,'init_unit_test_console(void):&#160;unit_test.c']]],
-  ['integrations_10',['SDKs / Integrations',['../index.html#autotoc_md26',1,'']]],
-  ['is_5fel_5fin_5frange_11',['IS_EL_IN_RANGE',['../d0/d53/meshx__light__cwww__client_8c.html#ad548550b8b82eac5acc715ddf7e27c58',1,'IS_EL_IN_RANGE:&#160;meshx_light_cwww_client.c'],['../da/df4/meshx__relay__client_8c.html#ad548550b8b82eac5acc715ddf7e27c58',1,'IS_EL_IN_RANGE:&#160;meshx_relay_client.c'],['../d9/d46/meshx__cwww__server_8c.html#ad548550b8b82eac5acc715ddf7e27c58',1,'IS_EL_IN_RANGE:&#160;meshx_cwww_server.c'],['../d1/df4/meshx__relay__server_8c.html#ad548550b8b82eac5acc715ddf7e27c58',1,'IS_EL_IN_RANGE:&#160;meshx_relay_server.c']]],
-  ['iv_5findex_12',['iv_index',['../d6/db3/structmeshx__prov__cb__param__t_1_1meshx__provision__complete__evt__param.html#a9ff7b2da275ce2dc8a78b8c766e027b7',1,'meshx_prov_cb_param_t::meshx_provision_complete_evt_param']]]
+  ['initialize_10',['initialize',['../d9/db0/classmeshXElementIF.html#aadca4beced06884c117dd981facafd23',1,'meshXElementIF']]],
+  ['integrations_11',['SDKs / Integrations',['../index.html#autotoc_md26',1,'']]],
+  ['is_5fel_5fin_5frange_12',['IS_EL_IN_RANGE',['../d0/d53/meshx__light__cwww__client_8c.html#ad548550b8b82eac5acc715ddf7e27c58',1,'IS_EL_IN_RANGE:&#160;meshx_light_cwww_client.c'],['../da/df4/meshx__relay__client_8c.html#ad548550b8b82eac5acc715ddf7e27c58',1,'IS_EL_IN_RANGE:&#160;meshx_relay_client.c'],['../d9/d46/meshx__cwww__server_8c.html#ad548550b8b82eac5acc715ddf7e27c58',1,'IS_EL_IN_RANGE:&#160;meshx_cwww_server.c'],['../d1/df4/meshx__relay__server_8c.html#ad548550b8b82eac5acc715ddf7e27c58',1,'IS_EL_IN_RANGE:&#160;meshx_relay_server.c']]],
+  ['is_5finitialized_13',['is_initialized',['../d9/db0/classmeshXElementIF.html#a93b4f321862d2002e272e28ad11c6eb3',1,'meshXElementIF']]],
+  ['iv_5findex_14',['iv_index',['../d6/db3/structmeshx__prov__cb__param__t_1_1meshx__provision__complete__evt__param.html#a9ff7b2da275ce2dc8a78b8c766e027b7',1,'meshx_prov_cb_param_t::meshx_provision_complete_evt_param']]]
 ];

@@ -104,7 +104,10 @@ Inheritance diagram for meshXElementIF:</div>
  <div class="center">
   <img src="../../d9/db0/classmeshXElementIF.png" usemap="#meshXElementIF_map" alt=""/>
   <map id="meshXElementIF_map" name="meshXElementIF_map">
-<area href="../../de/dfb/classmeshXElement.html" title="Base class for MeshX elements." alt="meshXElement" shape="rect" coords="0,56,105,80"/>
+<area href="../../de/dfb/classmeshXElement.html" title="Base class for MeshX elements." alt="meshXElement" shape="rect" coords="71,56,204,80"/>
+<area href="../../d3/dbd/classmeshXElementClient.html" title="Derived class for client elements." alt="meshXElementClient" shape="rect" coords="0,112,133,136"/>
+<area href="../../d4/db7/classmeshXElementServer.html" title="Derived class for server elements." alt="meshXElementServer" shape="rect" coords="143,112,276,136"/>
+<area href="../../d9/d25/classmeshXRootElement.html" title="Derived class for the root element." alt="meshXRootElement" shape="rect" coords="143,168,276,192"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -114,14 +117,38 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a20a0b02257d7a59be7757ad0f01fb6f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa228e3ea5b8b1bcddb3162ac6025a9e3" id="r_aa228e3ea5b8b1bcddb3162ac6025a9e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa228e3ea5b8b1bcddb3162ac6025a9e3">set_element_idx</a> (uint16_t idx)</td></tr>
 <tr class="separator:aa228e3ea5b8b1bcddb3162ac6025a9e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a321414819888eaa17705e905fcaf6489" id="r_a321414819888eaa17705e905fcaf6489"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a321414819888eaa17705e905fcaf6489">get_element_idx</a> (void)</td></tr>
-<tr class="separator:a321414819888eaa17705e905fcaf6489"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f1be23699ee6be4a3be266b9ce5e5e6" id="r_a8f1be23699ee6be4a3be266b9ce5e5e6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f1be23699ee6be4a3be266b9ce5e5e6">meshXElementIF</a> ()</td></tr>
-<tr class="separator:a8f1be23699ee6be4a3be266b9ce5e5e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab36d218cbe4445fedfc9d14e00126054" id="r_ab36d218cbe4445fedfc9d14e00126054"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab36d218cbe4445fedfc9d14e00126054">get_element_idx</a> (void) const</td></tr>
+<tr class="separator:ab36d218cbe4445fedfc9d14e00126054"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe9a285b8bd6f64d16d3594f3e7a1407" id="r_afe9a285b8bd6f64d16d3594f3e7a1407"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d6/d37/meshx__element__class_8hpp.html#af879911766c94862efe9426d14959865">meshxElementType_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe9a285b8bd6f64d16d3594f3e7a1407">get_element_type</a> (void) const =0</td></tr>
+<tr class="memdesc:afe9a285b8bd6f64d16d3594f3e7a1407"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the element type.  <br /></td></tr>
+<tr class="separator:afe9a285b8bd6f64d16d3594f3e7a1407"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a74299ff42f7071836b501ba09e7839" id="r_a3a74299ff42f7071836b501ba09e7839"><td class="memItemLeft" align="right" valign="top">virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a74299ff42f7071836b501ba09e7839">get_no_of_sig_models</a> (void) const =0</td></tr>
+<tr class="memdesc:a3a74299ff42f7071836b501ba09e7839"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of SIG models supported by the element.  <br /></td></tr>
+<tr class="separator:a3a74299ff42f7071836b501ba09e7839"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac55730ee28c079fc62cd505c706981cf" id="r_ac55730ee28c079fc62cd505c706981cf"><td class="memItemLeft" align="right" valign="top">virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac55730ee28c079fc62cd505c706981cf">get_no_of_ven_models</a> (void) const =0</td></tr>
+<tr class="memdesc:ac55730ee28c079fc62cd505c706981cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of Vendor models supported by the element.  <br /></td></tr>
+<tr class="separator:ac55730ee28c079fc62cd505c706981cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad80b0bc2aa2cbc63fbe9eccfac7e42f1" id="r_ad80b0bc2aa2cbc63fbe9eccfac7e42f1"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::unique_ptr&lt; <a class="el" href="../../d1/d52/classmeshXModelIF.html">meshXModelIF</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad80b0bc2aa2cbc63fbe9eccfac7e42f1">get_sig_models</a> (void)=0</td></tr>
+<tr class="memdesc:ad80b0bc2aa2cbc63fbe9eccfac7e42f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the SIG models vector.  <br /></td></tr>
+<tr class="separator:ad80b0bc2aa2cbc63fbe9eccfac7e42f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2aaec23bb470e4cc6653364fd5a172fc" id="r_a2aaec23bb470e4cc6653364fd5a172fc"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::unique_ptr&lt; <a class="el" href="../../d1/d52/classmeshXModelIF.html">meshXModelIF</a> &gt; &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2aaec23bb470e4cc6653364fd5a172fc">get_ven_models</a> (void)=0</td></tr>
+<tr class="memdesc:a2aaec23bb470e4cc6653364fd5a172fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Vendor models vector.  <br /></td></tr>
+<tr class="separator:a2aaec23bb470e4cc6653364fd5a172fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadca4beced06884c117dd981facafd23" id="r_aadca4beced06884c117dd981facafd23"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aadca4beced06884c117dd981facafd23">initialize</a> (void)=0</td></tr>
+<tr class="memdesc:aadca4beced06884c117dd981facafd23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the element.  <br /></td></tr>
+<tr class="separator:aadca4beced06884c117dd981facafd23"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88322fc03cdce07803bdebd36f4bb41b" id="r_a88322fc03cdce07803bdebd36f4bb41b"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a88322fc03cdce07803bdebd36f4bb41b">reset</a> (void)=0</td></tr>
+<tr class="memdesc:a88322fc03cdce07803bdebd36f4bb41b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the element.  <br /></td></tr>
+<tr class="separator:a88322fc03cdce07803bdebd36f4bb41b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93b4f321862d2002e272e28ad11c6eb3" id="r_a93b4f321862d2002e272e28ad11c6eb3"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a93b4f321862d2002e272e28ad11c6eb3">is_initialized</a> (void) const =0</td></tr>
+<tr class="memdesc:a93b4f321862d2002e272e28ad11c6eb3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if the element is initialized.  <br /></td></tr>
+<tr class="separator:a93b4f321862d2002e272e28ad11c6eb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d29cd8737eeb88a66794c47d202f47e" id="r_a8d29cd8737eeb88a66794c47d202f47e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d29cd8737eeb88a66794c47d202f47e">meshXElementIF</a> ()=delete</td></tr>
+<tr class="separator:a8d29cd8737eeb88a66794c47d202f47e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae57e5661c7b526749c93e48b2bc5933e" id="r_ae57e5661c7b526749c93e48b2bc5933e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae57e5661c7b526749c93e48b2bc5933e">meshXElementIF</a> (uint16_t <a class="el" href="#ae749e85f741104d1114ceab963ddf042">element_idx</a>)</td></tr>
 <tr class="separator:ae57e5661c7b526749c93e48b2bc5933e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6978b15f87c4ea728f528af671147f0d" id="r_a6978b15f87c4ea728f528af671147f0d"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6978b15f87c4ea728f528af671147f0d">~meshXElementIF</a> ()</td></tr>
-<tr class="separator:a6978b15f87c4ea728f528af671147f0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f65bf759528f9af53c5a5031a09a033" id="r_a2f65bf759528f9af53c5a5031a09a033"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2f65bf759528f9af53c5a5031a09a033">~meshXElementIF</a> ()=default</td></tr>
+<tr class="separator:a2f65bf759528f9af53c5a5031a09a033"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -132,8 +159,8 @@ Private Attributes</h2></td></tr>
 <div class="textblock"><p>Interface class for MeshX elements. </p>
 <p>This is an interface class defining the base functionality for mesh elements. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a8f1be23699ee6be4a3be266b9ce5e5e6" name="a8f1be23699ee6be4a3be266b9ce5e5e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f1be23699ee6be4a3be266b9ce5e5e6">&#9670;&#160;</a></span>meshXElementIF() <span class="overload">[1/2]</span></h2>
+<a id="a8d29cd8737eeb88a66794c47d202f47e" name="a8d29cd8737eeb88a66794c47d202f47e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d29cd8737eeb88a66794c47d202f47e">&#9670;&#160;</a></span>meshXElementIF() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -150,12 +177,11 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel delete">delete</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">   36</span>{ }</div>
-</div><!-- fragment -->
+
 </div>
 </div>
 <a id="ae57e5661c7b526749c93e48b2bc5933e" name="ae57e5661c7b526749c93e48b2bc5933e"></a>
@@ -176,17 +202,17 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel explicit">explicit</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">   37</span>: <a class="code hl_variable" href="#ae749e85f741104d1114ceab963ddf042">element_idx</a>(<a class="code hl_variable" href="#ae749e85f741104d1114ceab963ddf042">element_idx</a>) { }</div>
-<div class="ttc" id="aclassmeshXElementIF_html_ae749e85f741104d1114ceab963ddf042"><div class="ttname"><a href="#ae749e85f741104d1114ceab963ddf042">meshXElementIF::element_idx</a></div><div class="ttdeci">uint16_t element_idx</div><div class="ttdef"><b>Definition</b> meshx_element_class.hpp:29</div></div>
+<div class="fragment"><div class="line"><span class="lineno">  100</span>: <a class="code hl_variable" href="#ae749e85f741104d1114ceab963ddf042">element_idx</a>(<a class="code hl_variable" href="#ae749e85f741104d1114ceab963ddf042">element_idx</a>) { }</div>
+<div class="ttc" id="aclassmeshXElementIF_html_ae749e85f741104d1114ceab963ddf042"><div class="ttname"><a href="#ae749e85f741104d1114ceab963ddf042">meshXElementIF::element_idx</a></div><div class="ttdeci">uint16_t element_idx</div><div class="ttdef"><b>Definition</b> meshx_element_class.hpp:44</div></div>
 </div><!-- fragment -->
 </div>
 </div>
-<a id="a6978b15f87c4ea728f528af671147f0d" name="a6978b15f87c4ea728f528af671147f0d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6978b15f87c4ea728f528af671147f0d">&#9670;&#160;</a></span>~meshXElementIF()</h2>
+<a id="a2f65bf759528f9af53c5a5031a09a033" name="a2f65bf759528f9af53c5a5031a09a033"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f65bf759528f9af53c5a5031a09a033">&#9670;&#160;</a></span>~meshXElementIF()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -203,17 +229,16 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel virtual">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel virtual">virtual</span><span class="mlabel default">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">   38</span>{ }</div>
-</div><!-- fragment -->
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a321414819888eaa17705e905fcaf6489" name="a321414819888eaa17705e905fcaf6489"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a321414819888eaa17705e905fcaf6489">&#9670;&#160;</a></span>get_element_idx()</h2>
+<a id="ab36d218cbe4445fedfc9d14e00126054" name="ab36d218cbe4445fedfc9d14e00126054"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab36d218cbe4445fedfc9d14e00126054">&#9670;&#160;</a></span>get_element_idx()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -225,7 +250,7 @@ Private Attributes</h2></td></tr>
           <td class="memname">uint16_t meshXElementIF::get_element_idx </td>
           <td>(</td>
           <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -234,8 +259,214 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">   34</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#ae749e85f741104d1114ceab963ddf042">element_idx</a>; }</div>
+<div class="fragment"><div class="line"><span class="lineno">   49</span>{ <span class="keywordflow">return</span> <a class="code hl_variable" href="#ae749e85f741104d1114ceab963ddf042">element_idx</a>; }</div>
 </div><!-- fragment -->
+</div>
+</div>
+<a id="afe9a285b8bd6f64d16d3594f3e7a1407" name="afe9a285b8bd6f64d16d3594f3e7a1407"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe9a285b8bd6f64d16d3594f3e7a1407">&#9670;&#160;</a></span>get_element_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="../../d6/d37/meshx__element__class_8hpp.html#af879911766c94862efe9426d14959865">meshxElementType_t</a> meshXElementIF::get_element_type </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the element type. </p>
+<dl class="section return"><dt>Returns</dt><dd>Element type (server or client) </dd></dl>
+
+<p>Implemented in <a class="el" href="../../de/dfb/classmeshXElement.html#ae7317bfadfea0ad46a4a861b2d241954">meshXElement</a>.</p>
+
+</div>
+</div>
+<a id="a3a74299ff42f7071836b501ba09e7839" name="a3a74299ff42f7071836b501ba09e7839"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a74299ff42f7071836b501ba09e7839">&#9670;&#160;</a></span>get_no_of_sig_models()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual uint8_t meshXElementIF::get_no_of_sig_models </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the number of SIG models supported by the element. </p>
+<dl class="section return"><dt>Returns</dt><dd>Number of SIG models </dd></dl>
+
+<p>Implemented in <a class="el" href="../../de/dfb/classmeshXElement.html#a76464417cc6130a52c5bc50e92167e2b">meshXElement</a>.</p>
+
+</div>
+</div>
+<a id="ac55730ee28c079fc62cd505c706981cf" name="ac55730ee28c079fc62cd505c706981cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac55730ee28c079fc62cd505c706981cf">&#9670;&#160;</a></span>get_no_of_ven_models()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual uint8_t meshXElementIF::get_no_of_ven_models </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the number of Vendor models supported by the element. </p>
+<dl class="section return"><dt>Returns</dt><dd>Number of Vendor models </dd></dl>
+
+<p>Implemented in <a class="el" href="../../de/dfb/classmeshXElement.html#ab92f9d47b5609913a8c700b1f243960d">meshXElement</a>.</p>
+
+</div>
+</div>
+<a id="ad80b0bc2aa2cbc63fbe9eccfac7e42f1" name="ad80b0bc2aa2cbc63fbe9eccfac7e42f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad80b0bc2aa2cbc63fbe9eccfac7e42f1">&#9670;&#160;</a></span>get_sig_models()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::vector&lt; std::unique_ptr&lt; <a class="el" href="../../d1/d52/classmeshXModelIF.html">meshXModelIF</a> &gt; &gt; &amp; meshXElementIF::get_sig_models </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the SIG models vector. </p>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the SIG models vector </dd></dl>
+
+<p>Implemented in <a class="el" href="../../de/dfb/classmeshXElement.html#ac31458b7499ed0f622b96edd79e323c3">meshXElement</a>.</p>
+
+</div>
+</div>
+<a id="a2aaec23bb470e4cc6653364fd5a172fc" name="a2aaec23bb470e4cc6653364fd5a172fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2aaec23bb470e4cc6653364fd5a172fc">&#9670;&#160;</a></span>get_ven_models()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::vector&lt; std::unique_ptr&lt; <a class="el" href="../../d1/d52/classmeshXModelIF.html">meshXModelIF</a> &gt; &gt; &amp; meshXElementIF::get_ven_models </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the Vendor models vector. </p>
+<dl class="section return"><dt>Returns</dt><dd>Reference to the Vendor models vector </dd></dl>
+
+<p>Implemented in <a class="el" href="../../de/dfb/classmeshXElement.html#a5dab334350cfc9706c4d41f85e2622e7">meshXElement</a>.</p>
+
+</div>
+</div>
+<a id="aadca4beced06884c117dd981facafd23" name="aadca4beced06884c117dd981facafd23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadca4beced06884c117dd981facafd23">&#9670;&#160;</a></span>initialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> meshXElementIF::initialize </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Initialize the element. </p>
+<dl class="section return"><dt>Returns</dt><dd>MESHX_SUCCESS on success, error code otherwise </dd></dl>
+
+</div>
+</div>
+<a id="a93b4f321862d2002e272e28ad11c6eb3" name="a93b4f321862d2002e272e28ad11c6eb3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93b4f321862d2002e272e28ad11c6eb3">&#9670;&#160;</a></span>is_initialized()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool meshXElementIF::is_initialized </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if the element is initialized. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if initialized, false otherwise </dd></dl>
+
 </div>
 </div>
 <a id="a20a0b02257d7a59be7757ad0f01fb6f1" name="a20a0b02257d7a59be7757ad0f01fb6f1"></a>
@@ -261,6 +492,36 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Implemented in <a class="el" href="../../de/dfb/classmeshXElement.html#a95d7ff3adaaadc703d8955e906a14386">meshXElement</a>.</p>
+
+</div>
+</div>
+<a id="a88322fc03cdce07803bdebd36f4bb41b" name="a88322fc03cdce07803bdebd36f4bb41b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88322fc03cdce07803bdebd36f4bb41b">&#9670;&#160;</a></span>reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> meshXElementIF::reset </td>
+          <td>(</td>
+          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel pure-virtual">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reset the element. </p>
+<dl class="section return"><dt>Returns</dt><dd>MESHX_SUCCESS on success, error code otherwise </dd></dl>
+
 </div>
 </div>
 <a id="aa228e3ea5b8b1bcddb3162ac6025a9e3" name="aa228e3ea5b8b1bcddb3162ac6025a9e3"></a>
@@ -285,7 +546,7 @@ Private Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">   33</span>{ <a class="code hl_variable" href="#ae749e85f741104d1114ceab963ddf042">element_idx</a> = idx; }</div>
+<div class="fragment"><div class="line"><span class="lineno">   48</span>{ <a class="code hl_variable" href="#ae749e85f741104d1114ceab963ddf042">element_idx</a> = idx; }</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -318,7 +579,7 @@ Private Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Nov 23 2025 14:50:47 for MeshX by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
+Generated on Sun Dec 14 2025 14:47:10 for MeshX by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
 </small></address>
 </div><!-- doc-content -->
 </body>
