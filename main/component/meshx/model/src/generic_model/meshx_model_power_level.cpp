@@ -185,14 +185,12 @@ meshx_err_t meshXGenericPowerLevelClientModel MESHX_GEN_POWER_LEVEL_CLIENT_MODEL
  * @tparam meshx_send_packet_params_t The type of the meshXSendPacketParams structure used
  * for sending packets.
  *
- * @param[in] p_plat_model  A pointer to the platform model (MESHX_MODEL).
- * @param[in] model_id      The unique identifier of the BLE mesh model.
  * @param[in] parent_element A pointer to the parent element (meshXElementIF).
  */
 MESHX_GEN_POWER_LEVEL_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericPowerLevelClientModel MESHX_GEN_POWER_LEVEL_CLIENT_MODEL_TEMPLATE_PARAMS
-    ::meshXGenericPowerLevelClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element)
-    : meshXClientModel(p_plat_model, model_id, parent_element) {/* Used only for initialization of Parent Class */}
+    ::meshXGenericPowerLevelClientModel(meshXElementIF *parent_element)
+    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_POWER_LEVEL_CLI, parent_element) {/* Used only for initialization of Parent Class */}
 
 #endif /* CONFIG_ENABLE_GEN_POWER_LEVEL_CLIENT */
 /*******************************************************************************************************************/
@@ -229,6 +227,19 @@ if (!params|| !params->model || !params->ctx)
     return this->get_base_model()->plat_send_msg(&send_params);
 }
 
+/**
+ * @brief Callback function for handling BLE mesh events for Generic Power Level Server Model
+ *
+ * @param[in] p_dev     Pointer to the device structure
+ * @param[in] model_id  Model ID associated with the event
+ * @param[in] params    Pointer to the callback parameter structure containing the details of the
+ *                        received message
+ *
+ * @return
+ *    - MESHX_SUCCESS: Success
+ *    - MESHX_INVALID_ARG: Invalid argument
+ *    - MESHX_FAIL: Other failures
+ */
 MESHX_GEN_POWER_LEVEL_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericPowerLevelServerModel MESHX_GEN_POWER_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(dev_struct_t *p_dev, control_task_msg_evt_t model_id, meshx_ptr_t params)
@@ -261,7 +272,29 @@ meshx_err_t meshXGenericPowerLevelServerModel MESHX_GEN_POWER_LEVEL_SERVER_MODEL
     MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
     return MESHX_INVALID_STATE;
 }
+/**
+ * @brief Constructor for Generic Power Level Server Model
+ *
+ * @param[in] parent_element Pointer to the parent element (meshXElementIF)
+ */
+MESHX_GEN_POWER_LEVEL_SERVER_MODEL_TEMPLATE_PROTO
+meshXGenericPowerLevelServerModel MESHX_GEN_POWER_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
+    ::meshXGenericPowerLevelServerModel(meshXElementIF *parent_element)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_POWER_LEVEL_SRV, parent_element) {}
 
+/**
+ * @brief Creates and initializes a server model instance for Generic Power Level Server.
+ *
+ * This function handles the platform-specific model creation process for Generic Power Level Server models.
+ * It initializes server-specific features and cannot be overridden by derived classes.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the operation.
+ *         - MESHX_SUCCESS on successful model creation and initialization
+ *         - MESHX_ERR_NO_MEM if memory allocation fails
+ *         - Other error codes for platform-specific failures
+ *
+ * @note This is a final function and cannot be overridden by derived classes.
+ */
 MESHX_GEN_POWER_LEVEL_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericPowerLevelServerModel MESHX_GEN_POWER_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
     :: plat_model_create(void)
@@ -283,6 +316,17 @@ meshx_err_t meshXGenericPowerLevelServerModel MESHX_GEN_POWER_LEVEL_SERVER_MODEL
     return err;
 }
 
+/**
+ * @brief Deletes the Generic Power Level Server model and its associated resources.
+ *
+ * This function frees the memory allocated for the Generic Power Level Server
+ * and sets the pointer to NULL. It also deletes the model publication
+ * resources associated with the server.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Model and publication deleted successfully.
+ *     - MESHX_FAIL: Failed to delete the model or publication.
+ */
 MESHX_GEN_POWER_LEVEL_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericPowerLevelServerModel MESHX_GEN_POWER_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
     :: plat_model_delete(void)
@@ -305,6 +349,16 @@ meshx_err_t meshXGenericPowerLevelServerModel MESHX_GEN_POWER_LEVEL_SERVER_MODEL
 #endif /* CONFIG_ENABLE_GEN_POWER_LEVEL_SERVER */
 
 #if CONFIG_ENABLE_GEN_POWER_LEVEL_SETUP_SERVER
+/**
+ * @brief Constructor for Generic Power Level Setup Server Model
+ *
+ * @param[in] parent_element Pointer to the parent element (meshXElementIF)
+ */
+MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_TEMPLATE_PROTO
+meshXGenericPowerLevelSetupServerModel MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_TEMPLATE_PARAMS
+    ::meshXGenericPowerLevelSetupServerModel(meshXElementIF *parent_element)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_POWER_LEVEL_SETUP_SRV, parent_element) {}
+
 /**
  * @brief Send a packet to the MeshX stack based on the given parameters
  *
@@ -337,6 +391,24 @@ if (!params|| !params->model || !params->ctx)
     return this->get_base_model()->plat_send_msg(&send_params);
 }
 
+/**
+ * @brief Constructor for Generic Power Level Setup Server Model
+ *
+ * @param[in] parent_element Pointer to the parent element (meshXElementIF)
+ */
+MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_TEMPLATE_PROTO
+meshXGenericPowerLevelSetupServerModel MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_TEMPLATE_PARAMS
+    ::meshXGenericPowerLevelSetupServerModel(meshXElementIF *parent_element)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_POWER_LEVEL_SETUP_SRV, parent_element) {}
+
+/**
+ * @brief Callback function for handling BLE mesh events for Generic Power Level Setup Server Model
+ *
+ * @param[in] p_dev     Pointer to the device structure
+ * @param[in] model_id  Model ID associated with the event
+ * @param[in] params    Pointer to the event parameters
+ * @return MESHX_SUCCESS if successful, error code otherwise
+ */
 MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericPowerLevelSetupServerModel MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(dev_struct_t *p_dev, control_task_msg_evt_t model_id, meshx_ptr_t params)

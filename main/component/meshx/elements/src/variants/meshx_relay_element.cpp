@@ -1,0 +1,99 @@
+/**
+ * @file meshx_relay_element.cpp
+ * @brief Implementation of MeshX Relay Element.
+ *        This file contains the implementation of the MeshX Relay Element class,
+ *        which represents a relay element in the MeshX BLE mesh network.
+ * Key Features:
+ * - Implements relay element functionality
+ * - Inherits from meshXElementServer
+ * - Automatically initializes required SIG models for relay elements
+ *
+ * @author Pranjal Chanda
+ * @date 2024-2025
+ * @copyright Copyright 2024 - 2025 MeshX
+ */
+
+#include <variants/meshx_relay_element.hpp>
+
+#if CONFIG_RELAY_SERVER_COUNT > 0
+/*********************************************************************************
+ * meshXRelayServerElement
+ *********************************************************************************/
+
+/**
+ * @brief Lists and initializes SIG models for Relay Server Element
+ *
+ * This function creates and adds the Generic OnOff Server model to the element's
+ * SIG models list. The Relay Server element requires the Generic OnOff model
+ * for proper operation in the BLE mesh network.
+ *
+ * @return uint8_t Number of SIG models added to the element
+ */
+MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PROTO
+uint8_t meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
+    :: list_sig_models()
+{
+    // Create Relay Server model
+    auto relay_model = std::make_unique<meshXGenericOnOffServerModel>(this);
+    this->get_sig_models().push_back(std::move(relay_model));
+
+    return this->get_sig_models().size();
+}
+
+/**
+ * @brief Lists vendor-specific models for Relay Server Element
+ *
+ * This function returns the count of vendor-specific models for the Relay Server element.
+ * Currently, no vendor-specific models are supported for relay elements.
+ *
+ * @return uint8_t Number of vendor models (always 0)
+ */
+MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PROTO
+uint8_t meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
+    :: list_ven_models()
+{
+    return 0;
+}
+
+#endif /* CONFIG_RELAY_SERVER_COUNT */
+
+#if CONFIG_RELAY_CLIENT_COUNT > 0
+/*********************************************************************************
+ * meshXRelayClientElement
+ *********************************************************************************/
+
+/**
+ * @brief Lists and initializes SIG models for Relay Client Element
+ *
+ * This function creates and adds the Generic OnOff Client model to the element's
+ * SIG models list. The Relay Client element requires the Generic OnOff model
+ * for proper operation in the BLE mesh network.
+ *
+ * @return uint8_t Number of SIG models added to the element
+ */
+MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
+uint8_t meshXRelayClientElement MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
+    :: list_sig_models()
+{
+    // Create Relay Client model
+    auto relay_model = std::make_unique<meshXGenericOnOffClientModel>(this);
+    this->get_sig_models().push_back(std::move(relay_model));
+    return this->get_sig_models().size();
+}
+
+/**
+ * @brief Lists vendor-specific models for Relay Client Element
+ *
+ * This function returns the count of vendor-specific models for the Relay Client element.
+ * Currently, no vendor-specific models are supported for relay elements.
+ *
+ * @return uint8_t Number of vendor models (always 0)
+ */
+MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
+uint8_t meshXRelayClientElement MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
+    :: list_ven_models()
+{
+    return 0;
+}
+
+#endif /* CONFIG_RELAY_CLIENT_COUNT */

@@ -148,14 +148,12 @@ meshx_err_t meshXGenericBatteryClientModel MESHX_GEN_BATTERY_CLIENT_MODEL_TEMPLA
  * @tparam meshx_send_packet_params_t The type of the meshXSendPacketParams structure used
  * for sending packets.
  *
- * @param[in] p_plat_model  A pointer to the platform model (MESHX_MODEL).
- * @param[in] model_id      The unique identifier of the BLE mesh model.
  * @param[in] parent_element A pointer to the parent element (meshXElementIF).
  */
 MESHX_GEN_BATTERY_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericBatteryClientModel MESHX_GEN_BATTERY_CLIENT_MODEL_TEMPLATE_PARAMS
-    ::meshXGenericBatteryClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element)
-    : meshXClientModel(p_plat_model, model_id, parent_element) {/* Used only for initialization of Parent Class */}
+    ::meshXGenericBatteryClientModel(meshXElementIF *parent_element)
+    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_BATTERY_CLI, parent_element) {/* Used only for initialization of Parent Class */}
 
 #endif /* CONFIG_ENABLE_GEN_BATTERY_CLIENT */
 /*******************************************************************************************************************/
@@ -189,6 +187,14 @@ if (!params|| !params->model || !params->ctx)
     return this->get_base_model()->plat_send_msg(&send_params);
 }
 
+/**
+ * @brief Callback function for handling BLE mesh events for Generic Battery Server Model
+ *
+ * @param[in] p_dev     Pointer to the device structure
+ * @param[in] model_id  Model ID associated with the event
+ * @param[in] params    Pointer to the event parameters
+ * @return MESHX_SUCCESS if successful, error code otherwise
+ */
 MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericBatteryServerModel MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(dev_struct_t *p_dev, control_task_msg_evt_t model_id, meshx_ptr_t params)
@@ -227,6 +233,16 @@ meshx_err_t meshXGenericBatteryServerModel MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLA
 }
 
 /**
+ * @brief Constructor for Generic Battery Server Model
+ *
+ * @param[in] parent_element Pointer to the parent element (meshXElementIF)
+ */
+MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLATE_PROTO
+meshXGenericBatteryServerModel MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLATE_PARAMS
+    ::meshXGenericBatteryServerModel(meshXElementIF *parent_element)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_BATTERY_SRV, parent_element) {}
+
+/**
  * @brief Creates and initializes a server model instance for Generic Battery Server.
  *
  * This function handles the platform-specific model creation process for Generic Battery Server models.
@@ -261,6 +277,17 @@ meshx_err_t meshXGenericBatteryServerModel MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLA
     return err;
 }
 
+/**
+ * @brief Deletes the Generic Battery Server model and its associated resources.
+ *
+ * This function frees the memory allocated for the Generic Battery Server
+ * and sets the pointer to NULL. It also deletes the model publication
+ * resources associated with the server.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Model and publication deleted successfully.
+ *     - MESHX_FAIL: Failed to delete the model or publication.
+ */
 MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericBatteryServerModel MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLATE_PARAMS
     :: plat_model_delete(void)

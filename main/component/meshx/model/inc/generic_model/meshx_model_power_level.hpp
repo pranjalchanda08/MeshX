@@ -84,7 +84,7 @@ public:
     meshx_err_t model_send(meshx_gen_power_level_send_params_t *params) override;
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXGenericPowerLevelClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
+    meshXGenericPowerLevelClientModel(meshXElementIF *parent_element = nullptr);
     ~meshXGenericPowerLevelClientModel() = default;
 };
 
@@ -129,7 +129,7 @@ public:
     meshx_err_t model_send(meshx_gen_power_level_send_params_t *params) override;
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXGenericPowerLevelServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
+    meshXGenericPowerLevelServerModel(meshXElementIF *parent_element = nullptr);
     ~meshXGenericPowerLevelServerModel() = default;
 };
 #endif /* CONFIG_ENABLE_GEN_POWER_LEVEL_SERVER */
@@ -150,7 +150,7 @@ public:
     meshx_err_t model_send(meshx_gen_power_level_send_params_t *params) override;
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXGenericPowerLevelSetupServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
+    meshXGenericPowerLevelSetupServerModel(meshXElementIF *parent_element = nullptr);
     ~meshXGenericPowerLevelSetupServerModel() = default;
 };
 #endif /* CONFIG_ENABLE_GEN_POWER_LEVEL_SETUP_SERVER */

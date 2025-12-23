@@ -182,14 +182,12 @@ meshx_err_t meshXLightHSLClientModel MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAM
 /**
  * @brief Constructor for Light HSL Client Model
  *
- * @param[in] p_plat_model  A pointer to the platform model (MESHX_MODEL).
- * @param[in] model_id      The unique identifier of the BLE mesh model.
  * @param[in] parent_element A pointer to the parent element (meshXElementIF).
  */
 MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PROTO
 meshXLightHSLClientModel MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAMS
-    ::meshXLightHSLClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element)
-    : meshXClientModel(p_plat_model, model_id, parent_element) {/* Used only for initialization of Parent Class */}
+    ::meshXLightHSLClientModel(meshXElementIF *parent_element)
+    : meshXClientModel(nullptr, MESHX_MODEL_ID_LIGHT_HSL_CLI, parent_element) {/* Used only for initialization of Parent Class */}
 #endif /* CONFIG_ENABLE_LIGHT_HSL_CLIENT */
 
 #if CONFIG_ENABLE_LIGHT_HSL_SERVER
@@ -415,13 +413,11 @@ meshx_err_t meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAM
 /**
  * @brief Constructor for Light HSL Server Model
  *
- * @param[in] p_plat_model  A pointer to the platform model (MESHX_MODEL).
- * @param[in] model_id      The unique identifier of the BLE mesh model.
- * @param[in] parent_element A pointer to the parent element (meshXElementIF).
+ * @param[in] parent_element Pointer to the parent element (meshXElementIF)
  */
 MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PROTO
 meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAMS
-    ::meshXLightHSLServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element)
-    : meshXServerModel(p_plat_model, model_id, parent_element) {/* Used only for initialization of Parent Class */}
+    ::meshXLightHSLServerModel(meshXElementIF *parent_element)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_LIGHT_HSL_SRV, parent_element) {/* Used only for initialization of Parent Class */}
 
 #endif /* CONFIG_ENABLE_LIGHT_HSL_SERVER */

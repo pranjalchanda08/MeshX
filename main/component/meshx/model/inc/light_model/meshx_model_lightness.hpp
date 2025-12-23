@@ -84,7 +84,7 @@ public:
     meshx_err_t model_send(meshx_light_lightness_send_params_t *params) override;
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXLightLightnessClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
+    meshXLightLightnessClientModel(meshXElementIF *parent_element = nullptr);
     ~meshXLightLightnessClientModel() = default;
 };
 
@@ -125,7 +125,7 @@ public:
     meshx_err_t model_send(meshx_light_lightness_send_params_t *params) override;
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXLightLightnessServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
+    meshXLightLightnessServerModel(meshXElementIF *parent_element = nullptr);
     ~meshXLightLightnessServerModel() = default;
 };
 

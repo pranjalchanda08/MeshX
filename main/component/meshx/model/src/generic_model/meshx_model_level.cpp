@@ -178,14 +178,12 @@ meshx_err_t meshXGenericLevelClientModel MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_P
  * @tparam meshx_send_packet_params_t The type of the meshXSendPacketParams structure used
  * for sending packets.
  *
- * @param[in] p_plat_model  A pointer to the platform model (MESHX_MODEL).
- * @param[in] model_id      The unique identifier of the BLE mesh model.
  * @param[in] parent_element A pointer to the parent element (meshXElementIF).
  */
 MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericLevelClientModel MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_PARAMS
-    ::meshXGenericLevelClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element)
-    : meshXClientModel(p_plat_model, model_id, parent_element) {/* Used only for initialization of Parent Class */}
+    ::meshXGenericLevelClientModel(meshXElementIF *parent_element)
+    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_LEVEL_CLI, parent_element) {/* Used only for initialization of Parent Class */}
 
 #endif /* CONFIG_ENABLE_GEN_LEVEL_CLIENT */
 /*******************************************************************************************************************/
@@ -260,12 +258,27 @@ meshx_err_t meshXGenericLevelServerModel MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_P
 }
 
 /**
- * @brief Create a platform model for the Generic Level Server
+ * @brief Constructor for Generic Level Server Model
  *
- * This function creates a platform model for the Generic Level Server and initializes
- * the necessary parameters.
+ * @param[in] parent_element Pointer to the parent element (meshXElementIF)
+ */
+MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PROTO
+meshXGenericLevelServerModel MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
+    ::meshXGenericLevelServerModel(meshXElementIF *parent_element)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_LEVEL_SRV, parent_element) {}
+
+/**
+ * @brief Creates and initializes a server model instance for Generic Level Server.
  *
- * @return MESHX_SUCCESS on success, or an error code on failure
+ * This function handles the platform-specific model creation process for Generic Level Server models.
+ * It initializes server-specific features and cannot be overridden by derived classes.
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the operation.
+ *         - MESHX_SUCCESS on successful model creation and initialization
+ *         - MESHX_ERR_NO_MEM if memory allocation fails
+ *         - Other error codes for platform-specific failures
+ *
+ * @note This is a final function and cannot be overridden by derived classes.
  */
 MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericLevelServerModel MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
@@ -289,12 +302,15 @@ meshx_err_t meshXGenericLevelServerModel MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_P
 }
 
 /**
- * @brief Delete a platform model for the Generic Level Server
+ * @brief Deletes the Generic Level Server model and its associated resources.
  *
- * This function deletes a platform model for the Generic Level Server and releases
- * the necessary resources.
+ * This function frees the memory allocated for the Generic Level Server
+ * and sets the pointer to NULL. It also deletes the model publication
+ * resources associated with the server.
  *
- * @return MESHX_SUCCESS on success, or an error code on failure
+ * @return
+ *     - MESHX_SUCCESS: Model and publication deleted successfully.
+ *     - MESHX_FAIL: Failed to delete the model or publication.
  */
 MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericLevelServerModel MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
