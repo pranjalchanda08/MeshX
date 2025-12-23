@@ -151,12 +151,10 @@ meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::model_fr
 /**
  * @brief Constructor for meshXConfigModel class
  *
- * @param[in]   p_plat_model    Platform Model pointer
- * @param[in]   model_id        Model ID
  * @param[in]   parent_element  Pointer to parent element
  */
-meshXConfigModel::meshXConfigModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element)
-    : meshXServerModel(p_plat_model, model_id, parent_element)
+meshXConfigModel::meshXConfigModel(meshXElementIF *parent_element)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_CONFIG_SRV, parent_element)
 {
     // Constructor body can be empty; initialization done in base class.
 }

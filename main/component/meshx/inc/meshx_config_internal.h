@@ -306,7 +306,7 @@
     #if !CONFIG_ENABLE_GEN_CLIENT
     #error "Enable this to use Relay Client Element"
     #endif
-#endif /* CONFIG_RELAY_SERVER_COUNT */
+#endif /* CONFIG_RELAY_CLIENT_COUNT */
 
 #if CONFIG_LIGHT_CWWW_SRV_COUNT
     #if !CONFIG_ENABLE_GEN_SERVER || !CONFIG_ENABLE_LIGHT_CTL_SERVER
