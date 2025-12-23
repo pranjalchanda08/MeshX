@@ -87,7 +87,7 @@ public:
     meshx_err_t model_send(meshx_gen_property_send_params_t *params) override;
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXGenericPropertyClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
+    meshXGenericPropertyClientModel(meshXElementIF *parent_element = nullptr);
     ~meshXGenericPropertyClientModel() = default;
 };
 
@@ -129,7 +129,7 @@ public:
     meshx_err_t model_send(meshx_gen_property_send_params_t *params) override;
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXGenericAdminPropertyServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
+    meshXGenericAdminPropertyServerModel(meshXElementIF *parent_element = nullptr);
     ~meshXGenericAdminPropertyServerModel() = default;
 };
 #endif /* CONFIG_ENABLE_GEN_ADMIN_PROPERTY_SERVER */
@@ -154,7 +154,7 @@ public:
     meshx_err_t model_send(meshx_gen_property_send_params_t *params) override;
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXGenericManufacturerPropertyServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
+    meshXGenericManufacturerPropertyServerModel(meshXElementIF *parent_element = nullptr);
     ~meshXGenericManufacturerPropertyServerModel() = default;
 };
 #endif /* CONFIG_ENABLE_GEN_MANU_PROP_SERVER */
@@ -179,7 +179,7 @@ public:
     meshx_err_t model_send(meshx_gen_property_send_params_t *params) override;
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXGenericUserPropertyServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
+    meshXGenericUserPropertyServerModel(meshXElementIF *parent_element = nullptr);
     ~meshXGenericUserPropertyServerModel() = default;
 };
 #endif /* CONFIG_ENABLE_GEN_USER_PROPERTY_SERVER */
@@ -201,7 +201,7 @@ public:
     meshx_err_t model_send(meshx_gen_property_send_params_t *params) override;
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXGenericClientPropertyServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
+    meshXGenericClientPropertyServerModel(meshXElementIF *parent_element = nullptr);
     ~meshXGenericClientPropertyServerModel() = default;
 };
 #endif /* CONFIG_ENABLE_GEN_CLIENT_PROPERTY_SERVER */

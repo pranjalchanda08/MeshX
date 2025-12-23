@@ -15,6 +15,7 @@
 #include <meshx_element_class.hpp>
 
 #define MESHX_ROOT_ELEMENT_TEMPLATE_PROTO
+#define MESHX_ROOT_ELEMENT_TEMPLATE_PARAMS
 /*********************************************************************************
  * meshXRootElement
  *********************************************************************************/
@@ -23,7 +24,7 @@
  * @brief Derived class for the root element
  */
 MESHX_ROOT_ELEMENT_TEMPLATE_PROTO
-class meshXRootElement : public meshXElementServer MESHX_SERVER_ELEMENT_TEMPLATE_PARAMS
+class meshXRootElement : public meshXElementServer MESHX_ROOT_ELEMENT_TEMPLATE_PARAMS
 {
 private:
     uint8_t list_sig_models() override;

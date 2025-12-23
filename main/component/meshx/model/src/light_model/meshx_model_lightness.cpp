@@ -178,14 +178,12 @@ meshx_err_t meshXLightLightnessClientModel MESHX_LIGHT_LIGHTNESS_CLIENT_MODEL_TE
  * notifications from the MeshX stack and publishes the state change event to the
  * element layer.
  *
- * @param[in] p_plat_model  A pointer to the platform model (MESHX_MODEL).
- * @param[in] model_id      The unique identifier of the BLE mesh model.
  * @param[in] parent_element A pointer to the parent element (meshXElementIF).
  */
 MESHX_LIGHT_LIGHTNESS_CLIENT_MODEL_TEMPLATE_PROTO
 meshXLightLightnessClientModel MESHX_LIGHT_LIGHTNESS_CLIENT_MODEL_TEMPLATE_PARAMS
-    ::meshXLightLightnessClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element)
-    : meshXClientModel(p_plat_model, model_id, parent_element) {/* Used only for initialization of Parent Class */}
+    ::meshXLightLightnessClientModel(meshXElementIF *parent_element)
+    : meshXClientModel(nullptr, MESHX_MODEL_ID_LIGHT_LIGHTNESS_CLI, parent_element) {/* Used only for initialization of Parent Class */}
 #endif /* CONFIG_ENABLE_LIGHT_LIGHTNESS_CLIENT */
 
 #if CONFIG_ENABLE_LIGHT_LIGHTNESS_SERVER
@@ -393,13 +391,11 @@ meshx_err_t meshXLightLightnessServerModel MESHX_LIGHT_LIGHTNESS_SERVER_MODEL_TE
 /**
  * @brief Constructor for Light Lightness Server Model
  *
- * @param[in] p_plat_model  A pointer to the platform model (MESHX_MODEL).
- * @param[in] model_id      The unique identifier of the BLE mesh model.
- * @param[in] parent_element A pointer to the parent element (meshXElementIF).
+ * @param[in] parent_element Pointer to the parent element (meshXElementIF)
  */
 MESHX_LIGHT_LIGHTNESS_SERVER_MODEL_TEMPLATE_PROTO
 meshXLightLightnessServerModel MESHX_LIGHT_LIGHTNESS_SERVER_MODEL_TEMPLATE_PARAMS
-    ::meshXLightLightnessServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element)
-    : meshXServerModel(p_plat_model, model_id, parent_element) {/* Used only for initialization of Parent Class */}
+    ::meshXLightLightnessServerModel(meshXElementIF *parent_element)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_LIGHT_LIGHTNESS_SRV, parent_element) {/* Used only for initialization of Parent Class */}
 
 #endif /* CONFIG_ENABLE_LIGHT_LIGHTNESS_SERVER */

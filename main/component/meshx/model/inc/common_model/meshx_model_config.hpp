@@ -60,7 +60,7 @@ public:
     meshx_err_t model_send(meshx_config_send_params_t *params) override;
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXConfigModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
+    meshXConfigModel(meshXElementIF *parent_element = nullptr);
     ~meshXConfigModel() override = default;
     // Configuration model related members and methods would be defined here.
 };
