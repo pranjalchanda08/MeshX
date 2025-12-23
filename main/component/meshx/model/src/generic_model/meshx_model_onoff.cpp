@@ -155,18 +155,35 @@ meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_P
  * @tparam meshx_send_packet_params_t The type of the meshXSendPacketParams structure used
  * for sending packets.
  *
- * @param[in] p_plat_model  A pointer to the platform model (MESHX_MODEL).
- * @param[in] model_id      The unique identifier of the BLE mesh model.
  * @param[in] parent_element A pointer to the parent element (meshXElementIF).
  */
 MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PARAMS
-    ::meshXGenericOnOffClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element)
-    : meshXClientModel(p_plat_model, model_id, parent_element) {/* Used only for initialization of Parent Class */}
+    ::meshXGenericOnOffClientModel(meshXElementIF *parent_element)
+    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_ONOFF_CLI, parent_element) {/* Used only for initialization of Parent Class */}
 
 #endif /* CONFIG_ENABLE_GEN_ONOFF_CLIENT */
 /*******************************************************************************************************************/
 #if CONFIG_ENABLE_GEN_ONOFF_SERVER
+
+/**
+ * @brief A template class for creating Generic OnOff Server models.
+ *
+ * This class is derived from meshXServerModel and provides a convenient interface for
+ * creating Generic OnOff Server models. It handles the Generic OnOff state change
+ * notifications from the MeshX stack and publishes the state change event to the
+ * element layer.
+ *
+ * @tparam meshxBaseServerModel_t The type of the meshXBaseServerModel class to be used.
+ * @tparam meshx_send_packet_params_t The type of the meshXSendPacketParams structure used
+ * for sending packets.
+ *
+ * @param[in] parent_element A pointer to the parent element (meshXElementIF).
+ */
+MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PROTO
+meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
+    ::meshXGenericOnOffServerModel(meshXElementIF *parent_element)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_ONOFF_SRV, parent_element) {}
 
 /**
  * @brief Creates and initializes a server model instance.

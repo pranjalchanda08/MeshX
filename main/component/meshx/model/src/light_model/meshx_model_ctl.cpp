@@ -167,14 +167,12 @@ meshx_err_t meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAM
  * @tparam meshx_send_packet_params_t The type of the meshXSendPacketParams structure used
  * for sending packets.
  *
- * @param[in] p_plat_model  A pointer to the platform model (MESHX_MODEL).
- * @param[in] model_id      The unique identifier of the BLE mesh model.
  * @param[in] parent_element A pointer to the parent element (meshXElementIF).
  */
 MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PROTO
 meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAMS
-    ::meshXLightCTLClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element)
-    : meshXClientModel(p_plat_model, model_id, parent_element) {/* Used only for initialization of Parent Class */}
+    ::meshXLightCTLClientModel(meshXElementIF *parent_element)
+    : meshXClientModel(nullptr, MESHX_MODEL_ID_LIGHT_CTL_CLI, parent_element) {/* Used only for initialization of Parent Class */}
 #endif /* CONFIG_ENABLE_LIGHT_CTL_CLIENT */
 
 #if CONFIG_ENABLE_LIGHT_CTL_SERVER
@@ -297,6 +295,7 @@ meshx_err_t meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAM
  *    - MESHX_INVALID_ARG: Invalid argument
  *    - MESHX_FAIL: Other failures
  */
+MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
@@ -334,18 +333,18 @@ meshx_err_t meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAM
         case MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK:
         {
             if (MESHX_ADDR_IS_UNICAST(param->ctx.dst_addr)
-            || (MESHX_ADDR_BROADCAST(param->ctx.dst_addr))
-            || (MESHX_ADDR_IS_GROUP(param->ctx.dst_addr)
-            && (MESHX_SUCCESS == meshx_is_group_subscribed(&param->model, param->ctx.dst_addr))))
+                || (MESHX_ADDR_BROADCAST(param->ctx.dst_addr))
+                || (MESHX_ADDR_IS_GROUP(param->ctx.dst_addr)
+                && (MESHX_SUCCESS == meshx_is_group_subscribed(&param->model, param->ctx.dst_addr))))
             {
                 if (this->get_parent_element())
-                {
-                    return this->get_parent_element()->on_model_cb(&srv_ctl_param);
-                }
+                    {
+                        return this->get_parent_element()->on_model_cb(&srv_ctl_param);
+                    }
                 else
-                {
-                    MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
-                }
+                    {
+                        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
+                    }
             }
             break;
         }
@@ -380,4 +379,14 @@ meshx_err_t meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAM
     }
     return MESHX_SUCCESS;
 }
+
+/**
+ * @brief Constructor for Light CTL Server Model
+ *
+ * @param[in] parent_element Pointer to the parent element (meshXElementIF)
+ */
+MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PROTO
+meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAMS
+    ::meshXLightCTLServerModel(meshXElementIF *parent_element)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_LIGHT_CTL_SRV, parent_element) {/* Used only for initialization of Parent Class */}
 #endif /* CONFIG_ENABLE_LIGHT_CTL_SERVER */

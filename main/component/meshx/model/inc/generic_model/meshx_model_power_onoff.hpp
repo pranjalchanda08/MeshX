@@ -78,7 +78,7 @@ public:
     meshx_err_t model_send(meshx_gen_power_onoff_send_params_t *params) override;
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXGenericPowerOnOffClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
+    meshXGenericPowerOnOffClientModel(meshXElementIF *parent_element = nullptr);
     ~meshXGenericPowerOnOffClientModel() = default;
 };
 
@@ -118,7 +118,7 @@ public:
     meshx_err_t model_send(meshx_gen_power_onoff_send_params_t *params) override;
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXGenericPowerOnOffServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
+    meshXGenericPowerOnOffServerModel(meshXElementIF *parent_element = nullptr);
     ~meshXGenericPowerOnOffServerModel() = default;
 };
 #endif /* CONFIG_ENABLE_GEN_POWER_ONOFF_SERVER */
@@ -139,7 +139,7 @@ public:
     meshx_err_t model_send(meshx_gen_power_onoff_send_params_t *params) override;
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXGenericPowerOnOffSetupServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
+    meshXGenericPowerOnOffSetupServerModel(meshXElementIF *parent_element = nullptr);
     ~meshXGenericPowerOnOffSetupServerModel() = default;
 };
 #endif /* CONFIG_ENABLE_GEN_POWER_ONOFF_SETUP_SERVER */

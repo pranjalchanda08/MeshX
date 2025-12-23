@@ -78,7 +78,7 @@ public:
     meshx_err_t model_send(meshx_gen_level_send_params_t *params) override;
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXGenericLevelClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
+    meshXGenericLevelClientModel(meshXElementIF *parent_element = nullptr);
     ~meshXGenericLevelClientModel() = default;
 };
 
@@ -111,7 +111,7 @@ public:
     meshx_err_t model_send(meshx_gen_level_send_params_t *params) override;
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXGenericLevelServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
+    meshXGenericLevelServerModel(meshXElementIF *parent_element = nullptr);
     ~meshXGenericLevelServerModel() = default;
 };
 #endif /* CONFIG_ENABLE_GEN_LEVEL_SERVER */
