@@ -221,10 +221,10 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr class="memitem:ac218329fada9a4d93ee65d55709316af" id="r_ac218329fada9a4d93ee65d55709316af"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac218329fada9a4d93ee65d55709316af">list_sig_models</a> () override</td></tr>
-<tr class="memdesc:ac218329fada9a4d93ee65d55709316af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lists and creates all required SIG models for the element.  <br /></td></tr>
+<tr class="memdesc:ac218329fada9a4d93ee65d55709316af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lists and initializes SIG models for Root Element.  <br /></td></tr>
 <tr class="separator:ac218329fada9a4d93ee65d55709316af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0d72e00fa106f3186ac459320182836" id="r_af0d72e00fa106f3186ac459320182836"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0d72e00fa106f3186ac459320182836">list_ven_models</a> () override</td></tr>
-<tr class="memdesc:af0d72e00fa106f3186ac459320182836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lists and creates all required Vendor models for the element.  <br /></td></tr>
+<tr class="memdesc:af0d72e00fa106f3186ac459320182836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lists vendor-specific models for Root Element.  <br /></td></tr>
 <tr class="separator:af0d72e00fa106f3186ac459320182836"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -246,18 +246,20 @@ Private Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Constructs a new <a class="el" href="../../d9/d25/classmeshXRootElement.html" title="Derived class for the root element.">meshXRootElement</a> instance. </p>
+<p>Constructor for Root Element.</p>
 <p>The <a class="el" href="../../d9/d25/classmeshXRootElement.html" title="Derived class for the root element.">meshXRootElement</a> represents the primary element in the MeshX BLE mesh network. It automatically initializes and configures all required SIG models for the root element, including the Configuration Server model and other essential models.</p>
 <p>The constructor follows these steps:</p><ol type="1">
 <li>Creates the root element with the predefined index</li>
 <li>Determines the number of required SIG models</li>
 <li>Allocates memory for the SIG models</li>
-<li>Adds all required SIG models to the element </li>
+<li>Adds all required SIG models to the element</li>
 </ol>
-<div class="fragment"><div class="line"><span class="lineno">   22</span>    : <a class="code hl_function" href="../../d4/db7/classmeshXElementServer.html#ab27a8aa5522c2d453ec585c4442ae52e">meshXElementServer</a>( <a class="code hl_variable" href="../../dc/d49/meshx__root__element_8cpp.html#a1634d273aa114ab0f52bf0fbf10be51f">MESHX_ROOT_ELEMENT_INDEX</a> )</div>
-<div class="line"><span class="lineno">   23</span>{</div>
-<div class="line"><span class="lineno">   24</span>    <span class="comment">// All required SIG models are added in list_sig_models()</span></div>
-<div class="line"><span class="lineno">   25</span>    <span class="comment">// Auto initialisation taken care by meshXElement constructor</span></div>
-<div class="line"><span class="lineno">   26</span>}</div>
+<p>This constructor initializes a Root Element with the predefined element index. All required SIG models are added in <a class="el" href="#ac218329fada9a4d93ee65d55709316af" title="Lists and initializes SIG models for Root Element.">list_sig_models()</a> method. Auto initialization is taken care by <a class="el" href="../../de/dfb/classmeshXElement.html" title="Base class for MeshX elements.">meshXElement</a> constructor. </p>
+<div class="fragment"><div class="line"><span class="lineno">   29</span>    : <a class="code hl_function" href="../../d4/db7/classmeshXElementServer.html#ab27a8aa5522c2d453ec585c4442ae52e">meshXElementServer</a>( <a class="code hl_variable" href="../../dc/d49/meshx__root__element_8cpp.html#a1634d273aa114ab0f52bf0fbf10be51f">MESHX_ROOT_ELEMENT_INDEX</a> )</div>
+<div class="line"><span class="lineno">   30</span>{</div>
+<div class="line"><span class="lineno">   31</span>    <span class="comment">// All required SIG models are added in list_sig_models()</span></div>
+<div class="line"><span class="lineno">   32</span>    <span class="comment">// Auto initialisation taken care by meshXElement constructor</span></div>
+<div class="line"><span class="lineno">   33</span>}</div>
 <div class="ttc" id="aclassmeshXElementServer_html_ab27a8aa5522c2d453ec585c4442ae52e"><div class="ttname"><a href="../../d4/db7/classmeshXElementServer.html#ab27a8aa5522c2d453ec585c4442ae52e">meshXElementServer::meshXElementServer</a></div><div class="ttdeci">meshXElementServer()=default</div></div>
 <div class="ttc" id="ameshx__root__element_8cpp_html_a1634d273aa114ab0f52bf0fbf10be51f"><div class="ttname"><a href="../../dc/d49/meshx__root__element_8cpp.html#a1634d273aa114ab0f52bf0fbf10be51f">MESHX_ROOT_ELEMENT_INDEX</a></div><div class="ttdeci">constexpr uint16_t MESHX_ROOT_ELEMENT_INDEX</div><div class="ttdef"><b>Definition</b> meshx_root_element.cpp:15</div></div>
 </div><!-- fragment -->
@@ -287,22 +289,19 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Lists and creates all required SIG models for the element. </p>
-<p>This function is responsible for creating and populating the sig_models vector with all essential SIG models that the element must have.</p>
-<p>The function can be extended to include additional models based on configuration flags or specific requirements.</p>
-<dl class="section return"><dt>Returns</dt><dd>uint8_t The total number of SIG models created and added to the root_sig_models vector </dd></dl>
+<p>Lists and initializes SIG models for Root Element. </p>
+<p>This function creates and adds the Configuration Server model to the element's SIG models list. The Configuration Server model is always required for root elements in the BLE mesh network.</p>
+<dl class="section return"><dt>Returns</dt><dd>uint8_t Number of SIG models added to the element </dd></dl>
 
 <p>Reimplemented from <a class="el" href="../../de/dfb/classmeshXElement.html#aa461ef809cfcf95d9080618fcf1793a0">meshXElement</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   29</span>{</div>
-<div class="line"><span class="lineno">   30</span>    <span class="comment">// Create Configuration Server model (always required)</span></div>
-<div class="line"><span class="lineno">   31</span>    <span class="keyword">auto</span> config_model = std::make_unique&lt;meshXConfigModel&gt;(</div>
-<div class="line"><span class="lineno">   32</span>        <span class="keyword">nullptr</span>, <a class="code hl_define" href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a5375d9de1542b8229dffeddb23338471">MESHX_MODEL_ID_CONFIG_SRV</a>, <span class="keyword">this</span>);</div>
-<div class="line"><span class="lineno">   33</span>    this-&gt;<a class="code hl_function" href="../../de/dfb/classmeshXElement.html#ac31458b7499ed0f622b96edd79e323c3">get_sig_models</a>().push_back(std::move(config_model));</div>
-<div class="line"><span class="lineno">   34</span> </div>
-<div class="line"><span class="lineno">   35</span>    <span class="keywordflow">return</span> this-&gt;<a class="code hl_function" href="../../de/dfb/classmeshXElement.html#ac31458b7499ed0f622b96edd79e323c3">get_sig_models</a>().size();</div>
-<div class="line"><span class="lineno">   36</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">   45</span>{</div>
+<div class="line"><span class="lineno">   46</span>    <span class="comment">// Create Configuration Server model (always required)</span></div>
+<div class="line"><span class="lineno">   47</span>    <span class="keyword">auto</span> config_model = std::make_unique&lt;meshXConfigModel&gt;(<span class="keyword">nullptr</span>, <span class="keyword">this</span>);</div>
+<div class="line"><span class="lineno">   48</span>    this-&gt;<a class="code hl_function" href="../../de/dfb/classmeshXElement.html#ac31458b7499ed0f622b96edd79e323c3">get_sig_models</a>().push_back(std::move(config_model));</div>
+<div class="line"><span class="lineno">   49</span> </div>
+<div class="line"><span class="lineno">   50</span>    <span class="keywordflow">return</span> this-&gt;<a class="code hl_function" href="../../de/dfb/classmeshXElement.html#ac31458b7499ed0f622b96edd79e323c3">get_sig_models</a>().size();</div>
+<div class="line"><span class="lineno">   51</span>}</div>
 <div class="ttc" id="aclassmeshXElement_html_ac31458b7499ed0f622b96edd79e323c3"><div class="ttname"><a href="../../de/dfb/classmeshXElement.html#ac31458b7499ed0f622b96edd79e323c3">meshXElement::get_sig_models</a></div><div class="ttdeci">std::vector&lt; std::unique_ptr&lt; meshXModelIF &gt; &gt; &amp; get_sig_models(void)</div><div class="ttdoc">Get the SIG models vector.</div><div class="ttdef"><b>Definition</b> meshx_element_class.hpp:136</div></div>
-<div class="ttc" id="ameshx__ble__mesh__cmn__def_8h_html_a5375d9de1542b8229dffeddb23338471"><div class="ttname"><a href="../../d4/de0/meshx__ble__mesh__cmn__def_8h.html#a5375d9de1542b8229dffeddb23338471">MESHX_MODEL_ID_CONFIG_SRV</a></div><div class="ttdeci">#define MESHX_MODEL_ID_CONFIG_SRV</div><div class="ttdoc">BLE Mesh models related Model ID and Opcode definitions.</div><div class="ttdef"><b>Definition</b> meshx_ble_mesh_cmn_def.h:41</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -329,15 +328,14 @@ Private Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Lists and creates all required Vendor models for the element. </p>
-<p>This function is responsible for creating and populating the ven_models vector with all essential Vendor models that the element must have.</p>
-<p>The function can be extended to include additional models based on configuration flags or specific requirements.</p>
-<dl class="section return"><dt>Returns</dt><dd>uint8_t The total number of Vendor models created and added to the root_sig_models vector </dd></dl>
+<p>Lists vendor-specific models for Root Element. </p>
+<p>This function returns the count of vendor-specific models for the Root Element. Currently, no vendor-specific models are supported for root elements.</p>
+<dl class="section return"><dt>Returns</dt><dd>uint8_t Number of vendor models (always 0) </dd></dl>
 
 <p>Reimplemented from <a class="el" href="../../de/dfb/classmeshXElement.html#ad544d7c0bdec639f2a86f1d77e115b99">meshXElement</a>.</p>
-<div class="fragment"><div class="line"><span class="lineno">   39</span>{</div>
-<div class="line"><span class="lineno">   40</span>    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><span class="lineno">   41</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">   62</span>{</div>
+<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><span class="lineno">   64</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -348,7 +346,7 @@ Private Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Dec 14 2025 14:47:10 for MeshX by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
+Generated on Tue Dec 23 2025 20:20:34 for MeshX by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
 </small></address>
 </div><!-- doc-content -->
 </body>

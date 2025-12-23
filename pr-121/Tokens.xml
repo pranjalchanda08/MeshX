@@ -3738,6 +3738,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshXRelayClientElement</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshXRelayClientElement</Scope>
+    </TokenIdentifier>
+    <Path>de/dd1/classmeshXRelayClientElement.html</Path>
+    <DeclaredIn>meshx_relay_element.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshXRelayServerElement</Name>
+      <APILanguage>c</APILanguage>
+      <Type>cl</Type>
+      <Scope>meshXRelayServerElement</Scope>
+    </TokenIdentifier>
+    <Path>d9/d44/classmeshXRelayServerElement.html</Path>
+    <DeclaredIn>meshx_relay_element.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshXRootElement</Name>
       <APILanguage>c</APILanguage>
       <Type>cl</Type>
@@ -11240,6 +11260,28 @@
       <Name>list_sig_models</Name>
       <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
+      <Scope>meshXRelayServerElement</Scope>
+    </TokenIdentifier>
+    <Path>d9/d44/classmeshXRelayServerElement.html</Path>
+    <Anchor>a10fabb983e8871ef2018fddcb4ceb32c</Anchor>
+    <DeclaredIn>meshx_relay_element.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>list_sig_models</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXRelayClientElement</Scope>
+    </TokenIdentifier>
+    <Path>de/dd1/classmeshXRelayClientElement.html</Path>
+    <Anchor>a761e8cf70d48ec954a4b7c08ec97cf13</Anchor>
+    <DeclaredIn>meshx_relay_element.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>list_sig_models</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
       <Scope>meshXRootElement</Scope>
     </TokenIdentifier>
     <Path>d9/d25/classmeshXRootElement.html</Path>
@@ -11266,6 +11308,28 @@
     <Path>de/dfb/classmeshXElement.html</Path>
     <Anchor>ad544d7c0bdec639f2a86f1d77e115b99</Anchor>
     <DeclaredIn>meshx_element_class.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>list_ven_models</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXRelayServerElement</Scope>
+    </TokenIdentifier>
+    <Path>d9/d44/classmeshXRelayServerElement.html</Path>
+    <Anchor>a8d79261733e506d5f91442c05ed89db3</Anchor>
+    <DeclaredIn>meshx_relay_element.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>list_ven_models</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXRelayClientElement</Scope>
+    </TokenIdentifier>
+    <Path>de/dd1/classmeshXRelayClientElement.html</Path>
+    <Anchor>a15ce5bada99aab8c1b96537f4117b150</Anchor>
+    <DeclaredIn>meshx_relay_element.hpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -12569,7 +12633,7 @@
       <Scope>meshXConfigModel</Scope>
     </TokenIdentifier>
     <Path>da/d7d/classmeshXConfigModel.html</Path>
-    <Anchor>ae3a1b8f54591cb7c802d9ee2a3bc0ebd</Anchor>
+    <Anchor>a1e6b6f8e6ea2401f9b54f67e93d88e7a</Anchor>
     <DeclaredIn>meshx_model_config.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12679,7 +12743,7 @@
       <Scope>meshXGenericAdminPropertyServerModel</Scope>
     </TokenIdentifier>
     <Path>df/d36/classmeshXGenericAdminPropertyServerModel.html</Path>
-    <Anchor>a65198995af38f8a7910b9a1257c77b89</Anchor>
+    <Anchor>a1c1164f9aec1a3dbf03493ee61b42919</Anchor>
     <DeclaredIn>meshx_model_property.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12690,7 +12754,7 @@
       <Scope>meshXGenericBatteryClientModel</Scope>
     </TokenIdentifier>
     <Path>d2/db0/classmeshXGenericBatteryClientModel.html</Path>
-    <Anchor>aef97e5bf85a8e30e8baf3e276ca355d6</Anchor>
+    <Anchor>a0aed1ac4508718cfdfc03fdd9bf60f20</Anchor>
     <DeclaredIn>meshx_model_battery.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12701,7 +12765,7 @@
       <Scope>meshXGenericBatteryServerModel</Scope>
     </TokenIdentifier>
     <Path>d8/d43/classmeshXGenericBatteryServerModel.html</Path>
-    <Anchor>acaae6ed2aa1f1e9ae1b808a8d8e65b9d</Anchor>
+    <Anchor>a70568dd795b036ffd31f6b7e6b080b6b</Anchor>
     <DeclaredIn>meshx_model_battery.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12712,7 +12776,7 @@
       <Scope>meshXGenericClientPropertyServerModel</Scope>
     </TokenIdentifier>
     <Path>d2/dc5/classmeshXGenericClientPropertyServerModel.html</Path>
-    <Anchor>a06ef705c237ed22991b2f4be6cb2fc72</Anchor>
+    <Anchor>a94add2669807f1c6b271cab1fd411dfd</Anchor>
     <DeclaredIn>meshx_model_property.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12723,7 +12787,7 @@
       <Scope>meshXGenericDefTransTimeClientModel</Scope>
     </TokenIdentifier>
     <Path>d7/d51/classmeshXGenericDefTransTimeClientModel.html</Path>
-    <Anchor>a6b0b647a9300f1c4af6301584b840fff</Anchor>
+    <Anchor>a983b7b14b1e329b3e81aab8aa04d6a36</Anchor>
     <DeclaredIn>meshx_model_def_trans_time.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12734,7 +12798,7 @@
       <Scope>meshXGenericDefTransTimeServerModel</Scope>
     </TokenIdentifier>
     <Path>d5/db6/classmeshXGenericDefTransTimeServerModel.html</Path>
-    <Anchor>a83720ee7bc9e316dd72c0202767f46bf</Anchor>
+    <Anchor>ab31074fcc92b08b49feb1fc966edf60a</Anchor>
     <DeclaredIn>meshx_model_def_trans_time.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12745,7 +12809,7 @@
       <Scope>meshXGenericLevelClientModel</Scope>
     </TokenIdentifier>
     <Path>d9/dda/classmeshXGenericLevelClientModel.html</Path>
-    <Anchor>aea0aadd61d16c28914fb4bd68b7edb9e</Anchor>
+    <Anchor>aab9d03ce9c59a303361af163468a262f</Anchor>
     <DeclaredIn>meshx_model_level.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12756,7 +12820,7 @@
       <Scope>meshXGenericLevelServerModel</Scope>
     </TokenIdentifier>
     <Path>d9/d54/classmeshXGenericLevelServerModel.html</Path>
-    <Anchor>aa65f6af3498a6ade5a63573a19de8d56</Anchor>
+    <Anchor>a96d45711d197a8693a49d48850551e81</Anchor>
     <DeclaredIn>meshx_model_level.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12767,7 +12831,7 @@
       <Scope>meshXGenericLocationClientModel</Scope>
     </TokenIdentifier>
     <Path>db/d29/classmeshXGenericLocationClientModel.html</Path>
-    <Anchor>a7cfa8216a148f940269a4f55ee9f7639</Anchor>
+    <Anchor>ab8594bdfcc3f2925b453ccf896f3b463</Anchor>
     <DeclaredIn>meshx_model_location.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12778,7 +12842,7 @@
       <Scope>meshXGenericLocationServerModel</Scope>
     </TokenIdentifier>
     <Path>dd/d46/classmeshXGenericLocationServerModel.html</Path>
-    <Anchor>abe5b8c1f65cd06ff4c6deca86b812419</Anchor>
+    <Anchor>ae06ffde279874223f6ac050faed6c5a9</Anchor>
     <DeclaredIn>meshx_model_location.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12789,7 +12853,7 @@
       <Scope>meshXGenericLocationSetupServerModel</Scope>
     </TokenIdentifier>
     <Path>d5/d82/classmeshXGenericLocationSetupServerModel.html</Path>
-    <Anchor>ae0b4906cf4b66fd0419ff4a808c5a4ad</Anchor>
+    <Anchor>aa9511512cc95b53e294dac2786dc71bc</Anchor>
     <DeclaredIn>meshx_model_location.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12800,7 +12864,7 @@
       <Scope>meshXGenericManufacturerPropertyServerModel</Scope>
     </TokenIdentifier>
     <Path>d2/d74/classmeshXGenericManufacturerPropertyServerModel.html</Path>
-    <Anchor>a382b00e8872d049061abdd510f948ada</Anchor>
+    <Anchor>a24a07d195b5c4105da2ed675c6bc6fa9</Anchor>
     <DeclaredIn>meshx_model_property.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12811,7 +12875,7 @@
       <Scope>meshXGenericOnOffClientModel</Scope>
     </TokenIdentifier>
     <Path>d4/d68/classmeshXGenericOnOffClientModel.html</Path>
-    <Anchor>a85cdd978f5a5911a3d7fdedd44f45a91</Anchor>
+    <Anchor>a4c8ea1d2e71dfaabe5e5b595eaca2fe4</Anchor>
     <DeclaredIn>meshx_model_onoff.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12822,7 +12886,7 @@
       <Scope>meshXGenericOnOffServerModel</Scope>
     </TokenIdentifier>
     <Path>d7/d7a/classmeshXGenericOnOffServerModel.html</Path>
-    <Anchor>a8a07346650b4c67ed50f2bffa84bcc30</Anchor>
+    <Anchor>af06a3521ddbd0b087755a748e048ecba</Anchor>
     <DeclaredIn>meshx_model_onoff.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12833,7 +12897,7 @@
       <Scope>meshXGenericPowerLevelClientModel</Scope>
     </TokenIdentifier>
     <Path>d2/d70/classmeshXGenericPowerLevelClientModel.html</Path>
-    <Anchor>a3407fd6c89c1ac7234f84ed314406d3a</Anchor>
+    <Anchor>ab9fe2ea25d6294e4468e2df3e1540563</Anchor>
     <DeclaredIn>meshx_model_power_level.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12844,7 +12908,7 @@
       <Scope>meshXGenericPowerLevelServerModel</Scope>
     </TokenIdentifier>
     <Path>d4/d95/classmeshXGenericPowerLevelServerModel.html</Path>
-    <Anchor>aaf45c5feef822ba38e6521212e69501f</Anchor>
+    <Anchor>a6246dca9a8d53b6f4e7bcea2fdfda98c</Anchor>
     <DeclaredIn>meshx_model_power_level.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12855,7 +12919,7 @@
       <Scope>meshXGenericPowerLevelSetupServerModel</Scope>
     </TokenIdentifier>
     <Path>d8/d9f/classmeshXGenericPowerLevelSetupServerModel.html</Path>
-    <Anchor>adbfd87c65fde2eaae47140aa663a67ee</Anchor>
+    <Anchor>adef2ee150ae3debedb395af40a232800</Anchor>
     <DeclaredIn>meshx_model_power_level.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12866,7 +12930,7 @@
       <Scope>meshXGenericPowerOnOffClientModel</Scope>
     </TokenIdentifier>
     <Path>d9/de9/classmeshXGenericPowerOnOffClientModel.html</Path>
-    <Anchor>ab1f42cbe162ee6535f97c5d36160b22d</Anchor>
+    <Anchor>a17a4fc1f99c680180ad52e79dc1d0b0c</Anchor>
     <DeclaredIn>meshx_model_power_onoff.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12877,7 +12941,7 @@
       <Scope>meshXGenericPowerOnOffServerModel</Scope>
     </TokenIdentifier>
     <Path>da/dfe/classmeshXGenericPowerOnOffServerModel.html</Path>
-    <Anchor>a9e603c53417cfe9f27fded105db8c89e</Anchor>
+    <Anchor>ac33ba7bf076c2281e725f29dcac82e01</Anchor>
     <DeclaredIn>meshx_model_power_onoff.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12888,7 +12952,7 @@
       <Scope>meshXGenericPowerOnOffSetupServerModel</Scope>
     </TokenIdentifier>
     <Path>da/d7f/classmeshXGenericPowerOnOffSetupServerModel.html</Path>
-    <Anchor>a46b45565d2ffa33f3099b69e8ad40cf2</Anchor>
+    <Anchor>a2aab7a05b893a8fc1b38d3c563ac45c9</Anchor>
     <DeclaredIn>meshx_model_power_onoff.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12899,7 +12963,7 @@
       <Scope>meshXGenericPropertyClientModel</Scope>
     </TokenIdentifier>
     <Path>d8/dfa/classmeshXGenericPropertyClientModel.html</Path>
-    <Anchor>ae40722c38a1b54d9ab2d43e02e72b248</Anchor>
+    <Anchor>a1d7a81b5556ea421d5d388fe505c7e75</Anchor>
     <DeclaredIn>meshx_model_property.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12910,7 +12974,7 @@
       <Scope>meshXGenericUserPropertyServerModel</Scope>
     </TokenIdentifier>
     <Path>d5/d31/classmeshXGenericUserPropertyServerModel.html</Path>
-    <Anchor>a1c8426a4df100716236927519e73c07c</Anchor>
+    <Anchor>aa9d58508cc83ff28628033c7f6f4147a</Anchor>
     <DeclaredIn>meshx_model_property.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12921,7 +12985,7 @@
       <Scope>meshXLightCTLClientModel</Scope>
     </TokenIdentifier>
     <Path>df/d95/classmeshXLightCTLClientModel.html</Path>
-    <Anchor>a0e1ae2008049f4e5aaa209e7cd04d1fa</Anchor>
+    <Anchor>a6f91119155b43d438c5b4374d05e7682</Anchor>
     <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12932,7 +12996,7 @@
       <Scope>meshXLightCTLServerModel</Scope>
     </TokenIdentifier>
     <Path>db/dfa/classmeshXLightCTLServerModel.html</Path>
-    <Anchor>ae17a0aa3bb9767819cc9e582e75e0ef8</Anchor>
+    <Anchor>a65b371143dd8b47c3c60ec7e21610496</Anchor>
     <DeclaredIn>meshx_model_ctl.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -12943,7 +13007,7 @@
       <Scope>meshXLightHSLServerModel</Scope>
     </TokenIdentifier>
     <Path>d8/d23/classmeshXLightHSLServerModel.html</Path>
-    <Anchor>a21c19fe3e9a9a52007f351f0ece6a818</Anchor>
+    <Anchor>aa4aba6ecd4a8ab4c3db18f5b14163de8</Anchor>
     <DeclaredIn>meshx_model_hsl.hpp</DeclaredIn>
   </Token>
   <Token>
@@ -13198,6 +13262,39 @@
     <Path>d1/d52/classmeshXModelIF.html</Path>
     <Anchor>afde857310fe47751ecd56e232571deab</Anchor>
     <DeclaredIn>meshx_model_class.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshXRelayClientElement</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXRelayClientElement</Scope>
+    </TokenIdentifier>
+    <Path>de/dd1/classmeshXRelayClientElement.html</Path>
+    <Anchor>a4b261b8e5a16ec809a2644bb1b862b6a</Anchor>
+    <DeclaredIn>meshx_relay_element.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshXRelayServerElement</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXRelayServerElement</Scope>
+    </TokenIdentifier>
+    <Path>d9/d44/classmeshXRelayServerElement.html</Path>
+    <Anchor>a6ed883c8dab2b38be4bfb157008f04e7</Anchor>
+    <DeclaredIn>meshx_relay_element.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshXRelayServerElement</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>instm</Type>
+      <Scope>meshXRelayServerElement</Scope>
+    </TokenIdentifier>
+    <Path>d9/d44/classmeshXRelayServerElement.html</Path>
+    <Anchor>a3299962efe330998e29411be5e19e767</Anchor>
+    <DeclaredIn>meshx_relay_element.hpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -41696,6 +41793,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>df/d7e/meshx__relay__element_8hpp.html</Path>
+    <Anchor>a288dcec9cb755135a45dfb2e47ccb58e</Anchor>
+    <DeclaredIn>meshx_relay_element.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>df/d7e/meshx__relay__element_8hpp.html</Path>
+    <Anchor>a2618e45b17334d69d3e07317967a94f5</Anchor>
+    <DeclaredIn>meshx_relay_element.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_relay_client_model_ctx_t</Name>
       <APILanguage>c</APILanguage>
       <Type>tdef</Type>
@@ -41776,6 +41893,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>df/d7e/meshx__relay__element_8hpp.html</Path>
+    <Anchor>a9a5d287a03a08d7237efb981ab4292be</Anchor>
+    <DeclaredIn>meshx_relay_element.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PROTO</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>df/d7e/meshx__relay__element_8hpp.html</Path>
+    <Anchor>af8a495d8aa0dec6d7d9a652fbdbe522a</Anchor>
+    <DeclaredIn>meshx_relay_element.hpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_relay_srv_model_ctx_t</Name>
       <APILanguage>c</APILanguage>
       <Type>tdef</Type>
@@ -41823,6 +41960,16 @@
     <Path>dc/d49/meshx__root__element_8cpp.html</Path>
     <Anchor>a1634d273aa114ab0f52bf0fbf10be51f</Anchor>
     <DeclaredIn>meshx_root_element.cpp</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_ROOT_ELEMENT_TEMPLATE_PARAMS</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d6/d95/meshx__root__element_8hpp.html</Path>
+    <Anchor>a0fc7a7e705ee6b2e7f916aa4fdff3af5</Anchor>
+    <DeclaredIn>meshx_root_element.hpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>

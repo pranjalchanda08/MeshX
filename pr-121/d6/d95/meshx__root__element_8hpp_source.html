@@ -111,50 +111,51 @@ $(function(){ initResizable(false); });
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;<a class="code" href="../../d6/d37/meshx__element__class_8hpp.html">meshx_element_class.hpp</a>&gt;</span></div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="../../d6/d95/meshx__root__element_8hpp.html#a9a0851f82abab4f62f6f532da9f8129c">   17</a></span><span class="preprocessor">#define MESHX_ROOT_ELEMENT_TEMPLATE_PROTO</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">/*********************************************************************************</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> * meshXRootElement</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> *********************************************************************************/</span><span class="comment"></span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"> * @class meshXRootElement</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> * @brief Derived class for the root element</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><a class="code hl_define" href="../../d6/d95/meshx__root__element_8hpp.html#a9a0851f82abab4f62f6f532da9f8129c">MESHX_ROOT_ELEMENT_TEMPLATE_PROTO</a></div>
-<div class="foldopen" id="foldopen00026" data-start="{" data-end="};">
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="../../d9/d25/classmeshXRootElement.html">   26</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d9/d25/classmeshXRootElement.html#a98449a29a5ee9a87269c3222b28dd68f">meshXRootElement</a> : <span class="keyword">public</span> <a class="code hl_function" href="../../d4/db7/classmeshXElementServer.html#ab27a8aa5522c2d453ec585c4442ae52e">meshXElementServer</a> <a class="code hl_define" href="../../de/de6/meshx__fwd__decl_8hpp.html#a940d8f572d061392e5f993d0021c3c50">MESHX_SERVER_ELEMENT_TEMPLATE_PARAMS</a></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>{</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    uint8_t <a class="code hl_function" href="../../d9/d25/classmeshXRootElement.html#ac218329fada9a4d93ee65d55709316af">list_sig_models</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    uint8_t <a class="code hl_function" href="../../d9/d25/classmeshXRootElement.html#af0d72e00fa106f3186ac459320182836">list_ven_models</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">public</span>:<span class="comment"></span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">    /**</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">     * @brief Constructs a new meshXRootElement instance.</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">     *</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">     * The meshXRootElement represents the primary element in the MeshX BLE mesh network.</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">     * It automatically initializes and configures all required SIG models for the root element,</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment">     * including the Configuration Server model and other essential models.</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">     *</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">     * The constructor follows these steps:</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">     * 1. Creates the root element with the predefined index</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment">     * 2. Determines the number of required SIG models</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">     * 3. Allocates memory for the SIG models</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">     * 4. Adds all required SIG models to the element</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">     */</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <a class="code hl_function" href="../../d9/d25/classmeshXRootElement.html#a98449a29a5ee9a87269c3222b28dd68f">meshXRootElement</a>();</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>};</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="../../d6/d95/meshx__root__element_8hpp.html#a0fc7a7e705ee6b2e7f916aa4fdff3af5">   18</a></span><span class="preprocessor">#define MESHX_ROOT_ELEMENT_TEMPLATE_PARAMS</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment">/*********************************************************************************</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> * meshXRootElement</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> *********************************************************************************/</span><span class="comment"></span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"> * @class meshXRootElement</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment"> * @brief Derived class for the root element</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><a class="code hl_define" href="../../d6/d95/meshx__root__element_8hpp.html#a9a0851f82abab4f62f6f532da9f8129c">MESHX_ROOT_ELEMENT_TEMPLATE_PROTO</a></div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="};">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../d9/d25/classmeshXRootElement.html">   27</a></span><span class="keyword">class </span><a class="code hl_function" href="../../d9/d25/classmeshXRootElement.html#a98449a29a5ee9a87269c3222b28dd68f">meshXRootElement</a> : <span class="keyword">public</span> <a class="code hl_function" href="../../d4/db7/classmeshXElementServer.html#ab27a8aa5522c2d453ec585c4442ae52e">meshXElementServer</a> <a class="code hl_define" href="../../d6/d95/meshx__root__element_8hpp.html#a0fc7a7e705ee6b2e7f916aa4fdff3af5">MESHX_ROOT_ELEMENT_TEMPLATE_PARAMS</a></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>{</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    uint8_t <a class="code hl_function" href="../../d9/d25/classmeshXRootElement.html#ac218329fada9a4d93ee65d55709316af">list_sig_models</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    uint8_t <a class="code hl_function" href="../../d9/d25/classmeshXRootElement.html#af0d72e00fa106f3186ac459320182836">list_ven_models</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword">public</span>:<span class="comment"></span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">    /**</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment">     * @brief Constructs a new meshXRootElement instance.</span></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">     *</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">     * The meshXRootElement represents the primary element in the MeshX BLE mesh network.</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment">     * It automatically initializes and configures all required SIG models for the root element,</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">     * including the Configuration Server model and other essential models.</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">     *</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">     * The constructor follows these steps:</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment">     * 1. Creates the root element with the predefined index</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">     * 2. Determines the number of required SIG models</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">     * 3. Allocates memory for the SIG models</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment">     * 4. Adds all required SIG models to the element</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">     */</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <a class="code hl_function" href="../../d9/d25/classmeshXRootElement.html#a98449a29a5ee9a87269c3222b28dd68f">meshXRootElement</a>();</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>};</div>
 </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#endif </span><span class="comment">/* __MESHX_ROOT_ELEMENT_HPP__ */</span><span class="preprocessor"></span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#endif </span><span class="comment">/* __MESHX_ROOT_ELEMENT_HPP__ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="aclassmeshXElementServer_html_ab27a8aa5522c2d453ec585c4442ae52e"><div class="ttname"><a href="../../d4/db7/classmeshXElementServer.html#ab27a8aa5522c2d453ec585c4442ae52e">meshXElementServer::meshXElementServer</a></div><div class="ttdeci">meshXElementServer()=default</div></div>
-<div class="ttc" id="aclassmeshXRootElement_html_a98449a29a5ee9a87269c3222b28dd68f"><div class="ttname"><a href="../../d9/d25/classmeshXRootElement.html#a98449a29a5ee9a87269c3222b28dd68f">meshXRootElement::meshXRootElement</a></div><div class="ttdeci">meshXRootElement()</div><div class="ttdoc">Constructs a new meshXRootElement instance.</div><div class="ttdef"><b>Definition</b> meshx_root_element.cpp:21</div></div>
-<div class="ttc" id="aclassmeshXRootElement_html_ac218329fada9a4d93ee65d55709316af"><div class="ttname"><a href="../../d9/d25/classmeshXRootElement.html#ac218329fada9a4d93ee65d55709316af">meshXRootElement::list_sig_models</a></div><div class="ttdeci">uint8_t list_sig_models() override</div><div class="ttdoc">Lists and creates all required SIG models for the element.</div><div class="ttdef"><b>Definition</b> meshx_root_element.cpp:28</div></div>
-<div class="ttc" id="aclassmeshXRootElement_html_af0d72e00fa106f3186ac459320182836"><div class="ttname"><a href="../../d9/d25/classmeshXRootElement.html#af0d72e00fa106f3186ac459320182836">meshXRootElement::list_ven_models</a></div><div class="ttdeci">uint8_t list_ven_models() override</div><div class="ttdoc">Lists and creates all required Vendor models for the element.</div><div class="ttdef"><b>Definition</b> meshx_root_element.cpp:38</div></div>
+<div class="ttc" id="aclassmeshXRootElement_html_a98449a29a5ee9a87269c3222b28dd68f"><div class="ttname"><a href="../../d9/d25/classmeshXRootElement.html#a98449a29a5ee9a87269c3222b28dd68f">meshXRootElement::meshXRootElement</a></div><div class="ttdeci">meshXRootElement()</div><div class="ttdoc">Constructs a new meshXRootElement instance.</div><div class="ttdef"><b>Definition</b> meshx_root_element.cpp:28</div></div>
+<div class="ttc" id="aclassmeshXRootElement_html_ac218329fada9a4d93ee65d55709316af"><div class="ttname"><a href="../../d9/d25/classmeshXRootElement.html#ac218329fada9a4d93ee65d55709316af">meshXRootElement::list_sig_models</a></div><div class="ttdeci">uint8_t list_sig_models() override</div><div class="ttdoc">Lists and initializes SIG models for Root Element.</div><div class="ttdef"><b>Definition</b> meshx_root_element.cpp:44</div></div>
+<div class="ttc" id="aclassmeshXRootElement_html_af0d72e00fa106f3186ac459320182836"><div class="ttname"><a href="../../d9/d25/classmeshXRootElement.html#af0d72e00fa106f3186ac459320182836">meshXRootElement::list_ven_models</a></div><div class="ttdeci">uint8_t list_ven_models() override</div><div class="ttdoc">Lists vendor-specific models for Root Element.</div><div class="ttdef"><b>Definition</b> meshx_root_element.cpp:61</div></div>
 <div class="ttc" id="ameshx__element__class_8hpp_html"><div class="ttname"><a href="../../d6/d37/meshx__element__class_8hpp.html">meshx_element_class.hpp</a></div><div class="ttdoc">MeshX Element class and interface declaration This file contains the meshXElement class and its inter...</div></div>
-<div class="ttc" id="ameshx__fwd__decl_8hpp_html_a940d8f572d061392e5f993d0021c3c50"><div class="ttname"><a href="../../de/de6/meshx__fwd__decl_8hpp.html#a940d8f572d061392e5f993d0021c3c50">MESHX_SERVER_ELEMENT_TEMPLATE_PARAMS</a></div><div class="ttdeci">#define MESHX_SERVER_ELEMENT_TEMPLATE_PARAMS</div><div class="ttdef"><b>Definition</b> meshx_fwd_decl.hpp:41</div></div>
+<div class="ttc" id="ameshx__root__element_8hpp_html_a0fc7a7e705ee6b2e7f916aa4fdff3af5"><div class="ttname"><a href="../../d6/d95/meshx__root__element_8hpp.html#a0fc7a7e705ee6b2e7f916aa4fdff3af5">MESHX_ROOT_ELEMENT_TEMPLATE_PARAMS</a></div><div class="ttdeci">#define MESHX_ROOT_ELEMENT_TEMPLATE_PARAMS</div><div class="ttdef"><b>Definition</b> meshx_root_element.hpp:18</div></div>
 <div class="ttc" id="ameshx__root__element_8hpp_html_a9a0851f82abab4f62f6f532da9f8129c"><div class="ttname"><a href="../../d6/d95/meshx__root__element_8hpp.html#a9a0851f82abab4f62f6f532da9f8129c">MESHX_ROOT_ELEMENT_TEMPLATE_PROTO</a></div><div class="ttdeci">#define MESHX_ROOT_ELEMENT_TEMPLATE_PROTO</div><div class="ttdef"><b>Definition</b> meshx_root_element.hpp:17</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Dec 14 2025 14:47:08 for MeshX by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
+Generated on Tue Dec 23 2025 20:20:32 for MeshX by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="../../doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.13.2
 </small></address>
 </div><!-- doc-content -->
 </body>
