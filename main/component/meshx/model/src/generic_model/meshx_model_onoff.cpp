@@ -36,27 +36,80 @@
  */
 MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PARAMS
-    :: meshx_state_change_notify(const meshx_gen_cli_cb_param_t *param, uint8_t status) const
+    :: meshx_state_change_notify(const meshx_gen_cli_cb_param_t *param, uint8_t status)
 {
     if (!param){
         return MESHX_INVALID_ARG;
     }
 
-    meshx_on_off_cli_el_msg_t cli_onoff_param = {
-        .err_code = status,
-        .model = param->model,
-        .ctx = param->ctx,
-        .on_off_state = param->status.onoff_status.present_onoff
+    model_state.on_off = param->status.onoff_status.present_onoff;
+
+    meshx_on_off_cli_el_msg_t cli_onoff_param =
+    {
+        .header = {
+            .err_code               = param->err_code,
+            .model                  = param->model,
+            .ctx                    = param->ctx,
+            .element_state_change   = MESHX_SUCCESS,
+        },
+        .state                  = model_state,
     };
     /* Send the state change event to the respective Element */
-    if (this->get_parent_element()) {
-        return this->get_parent_element()->on_model_cb(&cli_onoff_param);
-    } else {
+    if (this->get_parent_element())
+    {
+        if(this->get_parent_element_state())
+        {
+            cli_onoff_param.header.element_state_change = this->element_state_change_handle();
+        }
+        else
+        {
+            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Parent element state is null");
+            cli_onoff_param.header.element_state_change = MESHX_NOT_FOUND;
+        }
+        return this->get_parent_element()->on_model_cb(&cli_onoff_param, sizeof(cli_onoff_param));
+    }
+    else
+    {
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Parent element is null");
     }
 
     return MESHX_INVALID_STATE;
 }
+
+/**
+ * @brief Handle state change request from element.
+ *
+ * This function is called by the parent element when a state change request
+ * is received. It validates the request and returns a result to the element.
+ * Note: The actual state is maintained in the element layer, not the model layer.
+ *
+ * @param[in] curr_el_state Pointer to meshx_gen_onoff_model_state_t containing the new state
+ * @return
+ *     - MESHX_SUCCESS: State change handled successfully
+ *     - MESHX_INVALID_ARG: Invalid parameter
+ */
+MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PARAMS
+    :: element_state_change_handle()
+{
+    meshx_gen_onoff_model_state_t *el_state =
+        static_cast<meshx_gen_onoff_model_state_t*>(this->get_parent_element_state());
+    if(!el_state)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid parameter in element_state_change_handle");
+        return MESHX_INVALID_ARG;
+    }
+    if(el_state->on_off != model_state.on_off)
+    {
+        el_state->on_off = model_state.on_off;
+        return MESHX_SUCCESS;
+    }
+    else
+    {
+        return MESHX_INVALID_STATE;
+    }
+}
+
 /**
  * @brief Creates a meshXGenericOnOffClientModel instance based on a BLE device
  *
@@ -81,7 +134,7 @@ meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_P
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid parameters");
         return MESHX_INVALID_ARG;
     }
-    if(model_id != MESHX_MODEL_ID_GEN_ONOFF_CLI)
+    if(model_id != this->get_model_id())
     {
         /* Callback triggered not for this model */
         return MESHX_SUCCESS;
@@ -130,15 +183,19 @@ meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_P
     else if (params->ctx->opcode == MESHX_MODEL_OP_GEN_ONOFF_SET ||
              params->ctx->opcode == MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK)
     {
-        set.onoff_set.tid = params->tid;
-        set.onoff_set.onoff = params->state;
+        set.onoff_set.tid   = params->tid;
+        set.onoff_set.onoff = params->state.on_off;
         set.onoff_set.op_en = false;
 
         err = this->get_base_model()->plat_send_msg(&send_params);
+        if(err)
+        {
+            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Failed to send Generic OnOff Set message");
+        }
     }
     else
     {
-        err = MESHX_INVALID_ARG; // Invalid opcode
+        err = MESHX_INVALID_ARG;
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid opcode for Generic OnOff Client: %04x", params->ctx->opcode);
     }
     return err;
@@ -159,7 +216,7 @@ meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_P
  */
 MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PARAMS
-    ::meshXGenericOnOffClientModel(meshXElementIF *parent_element)
+    ::meshXGenericOnOffClientModel(meshXElementIF *parent_element, meshx_ptr_t parent_element_state)
     : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_ONOFF_CLI, parent_element) {/* Used only for initialization of Parent Class */}
 
 #endif /* CONFIG_ENABLE_GEN_ONOFF_CLIENT */
@@ -170,7 +227,7 @@ meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PARAMS
  * @brief A template class for creating Generic OnOff Server models.
  *
  * This class is derived from meshXServerModel and provides a convenient interface for
- * creating Generic OnOff Server models. It handles the Generic OnOff state change
+ * creating Generic OnOff Server models. It handles Generic OnOff state change
  * notifications from the MeshX stack and publishes the state change event to the
  * element layer.
  *
@@ -182,8 +239,10 @@ meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PARAMS
  */
 MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
-    ::meshXGenericOnOffServerModel(meshXElementIF *parent_element)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_ONOFF_SRV, parent_element) {}
+::meshXGenericOnOffServerModel(
+        meshXElementIF *parent_element,
+        meshx_ptr_t parent_element_state)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_ONOFF_SRV, parent_element, parent_element_state) {}
 
 /**
  * @brief Creates and initializes a server model instance.
@@ -233,7 +292,7 @@ meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_P
  */
 MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
-    :: plat_model_delete(void)
+:: plat_model_delete(void)
 {
     meshx_ptr_t p_pub = this->get_pub_struct();
     meshx_ptr_t p_gen = this->get_gen_struct();
@@ -251,6 +310,41 @@ meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_P
     }
 
     return err;
+}
+
+/**
+ * @brief Handle state change request from element.
+ *
+ * This function is called by the parent element when a state change request
+ * is received. It validates the request and returns a result to the element.
+ * Note: The actual state is maintained in the element layer, not the model layer.
+ *
+ * @param[in] param Pointer to meshx_on_off_srv_el_msg_t containing the new state
+ * @return
+ *     - MESHX_SUCCESS: State change handled successfully
+ *     - MESHX_INVALID_ARG: Invalid parameter
+ */
+MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
+:: element_state_change_handle()
+{
+
+    meshx_gen_onoff_model_state_t *el_state = static_cast<meshx_gen_onoff_model_state_t*>(this->get_parent_element_state());
+
+    if (!el_state) {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid parameter in element_state_change_handle");
+        return MESHX_INVALID_ARG;
+    }
+
+    if(el_state->on_off != model_state.on_off)
+    {
+        el_state->on_off = model_state.on_off;
+    }
+    else
+    {
+        return MESHX_INVALID_STATE;
+    }
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -273,14 +367,14 @@ meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_P
     params->ctx->opcode = MESHX_MODEL_OP_GEN_ONOFF_STATUS;
     meshx_gen_srv_state_change_t state_change = {
         .onoff_set = {
-            .onoff = params->state
+            .onoff = params->state.on_off
         }
     };
     meshx_gen_server_send_params_t send_params = {
-        .p_model = params->model,
-        .p_ctx = params->ctx,
-        .state_change = state_change,
-        .data_len = sizeof(meshx_state_change_gen_onoff_set_t)
+        .p_model        = params->model,
+        .p_ctx          = params->ctx,
+        .state_change   = state_change,
+        .data_len       = sizeof(meshx_state_change_gen_onoff_set_t)
     };
     return this->get_base_model()->plat_send_msg(&send_params);
 }
@@ -289,7 +383,7 @@ meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_P
  * @brief This function is the callback for the Generic OnOff Server model.
  *
  * This function is triggered whenever a Generic OnOff message is received from the MeshX stack.
- * It handles the Generic OnOff state change notifications from the MeshX stack and publishes
+ * It handles Generic OnOff state change notifications from the MeshX stack and publishes
  * the state change event to the element layer.
  *
  * @param[in] p_dev       A pointer to the device structure.
@@ -313,7 +407,7 @@ meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_P
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid parameters");
         return MESHX_INVALID_ARG;
     }
-    if(model_id != MESHX_MODEL_ID_GEN_ONOFF_SRV)
+    if(model_id != this->get_model_id())
     {
         /* Callback triggered not for this model */
         return MESHX_SUCCESS;
@@ -324,9 +418,14 @@ meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_P
     MESHX_LOGD(MODULE_ID_MODEL_SERVER, "op|src|dst:%04" PRIx32 "|%04x|%04x",
                param->ctx.opcode, param->ctx.src_addr, param->ctx.dst_addr);
 
+    model_state.on_off = param->state_change.onoff_set.onoff;
+
     meshx_on_off_srv_el_msg_t srv_onoff_param = {
-        .model = param->model,
-        .on_off_state = param->state_change.onoff_set.onoff
+        .header = {
+            .model = param->model,
+            .element_state_change = MESHX_SUCCESS
+        },
+        .state = model_state
     };
     bool send_reply = (param->ctx.opcode != MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK);
     switch (param->ctx.opcode)
@@ -341,9 +440,19 @@ meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_P
             || (MESHX_ADDR_IS_GROUP(param->ctx.dst_addr)
             && (MESHX_SUCCESS == meshx_is_group_subscribed(&param->model, param->ctx.dst_addr))))
             {
+                // Notify parent element - state is maintained in element layer
                 if (this->get_parent_element())
                 {
-                    return this->get_parent_element()->on_model_cb(&srv_onoff_param);
+                    if(this->get_parent_element_state())
+                    {
+                        srv_onoff_param.header.element_state_change = this->element_state_change_handle();
+                    }
+                    else
+                    {
+                        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element state is null");
+                        srv_onoff_param.header.element_state_change = MESHX_NOT_FOUND;
+                    }
+                    return this->get_parent_element()->on_model_cb(&srv_onoff_param, sizeof(srv_onoff_param));
                 }
                 else
                 {
@@ -359,7 +468,7 @@ meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_P
         /* This is meant to notify the respective publish client */
         || param->ctx.src_addr != param->model.pub_addr)
     {
-        /* Here the message was received from unregistered source and mention the state to the respective client */
+        /* Here message was received from unregistered source and mention the state to the respective client */
         MESHX_LOGD(MODULE_ID_MODEL_SERVER, "PUB: src|pub %x|%x", param->ctx.src_addr, param->model.pub_addr);
         param->ctx.dst_addr = param->model.pub_addr;
 

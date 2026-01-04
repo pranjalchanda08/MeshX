@@ -87,8 +87,11 @@ meshXModel MESHX_MODEL_TEMPLATE_PARAMS
  */
 MESHX_SERVER_MODEL_TEMPLATE_PROTO
 meshXServerModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS
-    ::meshXServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element)
-    : meshXModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS (p_plat_model, model_id, parent_element) {}
+    ::meshXServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element, meshx_ptr_t parent_element_state)
+    : meshXModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS (p_plat_model, model_id, parent_element)
+{
+    this->set_parent_element_state(parent_element_state);
+}
 
 /**************************************************************************************************
  * meshXClientModel
@@ -109,8 +112,11 @@ meshXServerModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS
  */
 MESHX_CLIENT_MODEL_TEMPLATE_PROTO
 meshXClientModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
-    ::meshXClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element)
-    : meshXModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS (p_plat_model, model_id, parent_element) { }
+    ::meshXClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element, meshx_ptr_t parent_element_state)
+    : meshXModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS (p_plat_model, model_id, parent_element)
+{
+    this->set_parent_element_state(parent_element_state);
+}
 
 /**
  * @brief Creates and initializes a client model instance.

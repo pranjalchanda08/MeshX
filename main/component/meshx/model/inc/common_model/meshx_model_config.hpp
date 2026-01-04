@@ -56,6 +56,12 @@ class meshXConfigModel : public meshXServerModel<meshXBaseConfigServerModel, mes
 private:
     meshx_err_t plat_model_create(void) override;
     meshx_err_t plat_model_delete(void) override;
+    meshx_err_t element_state_change_handle(void) override
+    {
+        /* Nothing to do here */
+        return MESHX_SUCCESS;
+    };
+
 public:
     meshx_err_t model_send(meshx_config_send_params_t *params) override;
     meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;

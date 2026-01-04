@@ -22,7 +22,7 @@
  */
 typedef enum {
     MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT   = 0x00,
-    MODULE_ID_ELEMENT_LIGHT_CWWWW_CLIENT    = 0x01,
+    MODULE_ID_ELEMENT_LIGHT_CWWW_CLIENT     = 0x01,
     MODULE_ID_COMPONENT_OS_TIMER            = 0x02,
     MODULE_ID_COMPONENT_MESHX_NVS           = 0x03,
     MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER   = 0x04,
@@ -31,6 +31,7 @@ typedef enum {
     MODULE_ID_MODEL_CLIENT                  = 0x07,
     MODULE_ID_COMMON                        = 0x08,
     MODULE_ID_TXCM                          = 0x09,
+    MODULE_ID_ELEMENT_ROOT                  = 0x0A,
     MODULE_ID_MAX
 } module_id_t;
 

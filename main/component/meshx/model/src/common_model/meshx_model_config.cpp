@@ -141,7 +141,7 @@ meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::model_fr
 
     // Send the state change event to the respective Element
     if (this->get_parent_element()) {
-        return this->get_parent_element()->on_model_cb(&srv_config_param);
+        return this->get_parent_element()->on_model_cb(&srv_config_param, sizeof(srv_config_param));
     } else {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
         return MESHX_INVALID_STATE;

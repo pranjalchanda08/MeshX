@@ -50,7 +50,7 @@
     |   CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL
 #endif /* __MESHX_CONTROL_TASK__ */
 
-#define MOD_LCC                             MODULE_ID_ELEMENT_LIGHT_CWWWW_CLIENT
+#define MOD_LCC                             MODULE_ID_ELEMENT_LIGHT_CWWW_CLIENT
 #define CWWW_CLI_MESHX_ONOFF_ENABLE_CB      true
 #define CWWW_CLI_EL_STATE_CH_EVT_MASK       CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_ON_OFF | CONTROL_TASK_MSG_EVT_EL_STATE_CH_SET_CTL
 
@@ -1064,7 +1064,7 @@ meshx_err_t create_cwww_client_elements(dev_struct_t *pdev, uint16_t element_cnt
 
 #endif /* __MESHX_CONTROL_TASK__ */
 #if CONFIG_ENABLE_UNIT_TEST
-    err = register_unit_test(MODULE_ID_ELEMENT_LIGHT_CWWWW_CLIENT, &cwww_cli_unit_test_cb_handler);
+    err = register_unit_test(MODULE_ID_ELEMENT_LIGHT_CWWW_CLIENT, &cwww_cli_unit_test_cb_handler);
     if (err)
     {
         MESHX_LOGE(MOD_LCC, "unit_test reg failed: (%d)", err);

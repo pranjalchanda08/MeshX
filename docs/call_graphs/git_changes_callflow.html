@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Changes Callflow - MeshX CPP Shift</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .diagram-container {
+            overflow-x: auto;
+            padding: 20px;
+            background-color: #fafafa;
+            border-radius: 5px;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 30px;
+        }
+        .section-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        .legend {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #3498db;
+        }
+        .legend h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .legend ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .legend li {
+            margin: 8px 0;
+            padding: 5px 0;
+        }
+        .legend .new {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .legend .modified {
+            color: #e67e22;
+            font-weight: bold;
+        }
+        .legend .removed {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .file-info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff3cd;
+            border-radius: 5px;
+            border-left: 4px solid #ffc107;
+            font-size: 13px;
+        }
+        .file-info code {
+            background-color: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 32px;
+        }
+        .stat-card p {
+            margin: 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Git Changes Callflow Diagram</h1>
+        <p class="subtitle">Branch: fr/117-fr-meshx-cpp-shift | Total Changes: +793/-210 lines across 22 files</p>
+
+        <div class="stats">
+            <div class="stat-card">
+                <h3>22</h3>
+                <p>Files Modified</p>
+            </div>
+            <div class="stat-card">
+                <h3>+793</h3>
+                <p>Lines Added</p>
+            </div>
+            <div class="stat-card">
+                <h3>-210</h3>
+                <p>Lines Removed</p>
+            </div>
+            <div class="stat-card">
+                <h3>1</h3>
+                <p>Files Deleted</p>
+            </div>
+        </div>
+
+        <h2 class="section-title">Architecture Overview - State Management Flow</h2>
+        <div class="diagram-container">
+            <div class="mermaid">
+flowchart TB
+    subgraph BLE_Mesh["BLE Mesh Stack"]
+        BLE_CB[BLE Callback<br/>model_from_ble_cb]
+    end
+
+    subgraph Model_Layer["Model Layer (C++)"]
+        direction TB
+        ModelIF[meshXModelIF<br/>Interface]
+        ServerModel[meshXServerModel<br/>Template Class]
+        ClientModel[meshXClientModel<br/>Template Class]
+
+        ModelIF -->|Inherits| ServerModel
+        ModelIF -->|Inherits| ClientModel
+
+        ServerModel -->|Specializes| OnOffSrv[meshXGenericOnOffServerModel]
+        ServerModel -->|Specializes| CTLSrv[meshXLightCTLServerModel]
+
+        ClientModel -->|Specializes| OnOffCli[meshXGenericOnOffClientModel]
+        ClientModel -->|Specializes| CTLCli[meshXLightCTLClientModel]
+    end
+
+    subgraph Element_Layer["Element Layer (C++)"]
+        direction TB
+        ElementIF[meshXElementIF<br/>Interface]
+        Element[meshXElement<br/>Template Class]
+        ElementServer[meshXElementServer<br/>Template Class]
+        ElementClient[meshXElementClient<br/>Template Class]
+
+        ElementIF -->|Inherits| Element
+        Element -->|Specializes| ElementServer
+        Element -->|Specializes| ElementClient
+
+        ElementServer -->|Specializes| RootElement[meshXRootElement]
+        ElementServer -->|Specializes| RelayElement[meshXRelayElement]
+        ElementServer -->|Specializes| CWWWElement[meshXCWWWElement]
+    end
+
+    subgraph State_Management["State Management (NEW)"]
+        direction TB
+        ModelState[model_state<br/>Model Internal State]
+        ElementState[element_ctx<br/>Element Context State]
+        StateSync[element_state_change_handle<br/>State Synchronization]
+    end
+
+    BLE_CB -->|Callback| ServerModel
+    BLE_CB -->|Callback| ClientModel
+
+    ServerModel -->|Parent Pointer| ElementServer
+    ClientModel -->|Parent Pointer| ElementClient
+
+    ServerModel -->|Access| ModelState
+    ElementServer -->|Access| ElementState
+
+    ServerModel -->|Calls| StateSync
+    ClientModel -->|Calls| StateSync
+
+    StateSync -->|Updates| ElementState
+    StateSync -->|Validates| ModelState
+
+    ElementServer -->|Notifies| on_model_cb
+    ElementClient -->|Notifies| on_model_cb
+
+    on_model_cb -->|Calls| element_state_change_notify
+    element_state_change_notify -->|Derived Implementation| RootElement
+    element_state_change_notify -->|Derived Implementation| RelayElement
+    element_state_change_notify -->|Derived Implementation| CWWWElement
+
+    classDef newFeature fill:#d4edda,stroke:#28a745,stroke-width:3px;
+    classDef modified fill:#fff3cd,stroke:#ffc107,stroke-width:2px;
+    classDef interface fill:#e3f2fd,stroke:#2196f3,stroke-width:2px;
+    classDef model fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px;
+    classDef element fill:#e8f5e9,stroke:#4caf50,stroke-width:2px;
+
+    class StateSync,ElementState newFeature;
+    class ServerModel,ClientModel,Element,ElementServer,ElementClient modified;
+    class ModelIF,ElementIF interface;
+    class OnOffSrv,CTLSrv,OnOffCli,CTLCli model;
+    class RootElement,RelayElement,CWWWElement element;
+            </div>
+        </div>
+
+        <h2 class="section-title">Detailed Callflow - Server Model State Change</h2>
+        <div class="diagram-container">
+            <div class="mermaid">
+flowchart TD
+    Start([BLE Mesh Callback<br/>model_from_ble_cb]) --> ValidateParams{Validate params<br/>and p_dev}
+
+    ValidateParams -->|Invalid| ReturnError[Return<br/>MESHX_INVALID_ARG]
+    ValidateParams -->|Valid| CheckModelID{model_id equals<br/>this->get_model_id}
+
+    CheckModelID -->|No Match| ReturnSuccess[Return<br/>MESHX_SUCCESS]
+    CheckModelID -->|Match| CastParams[Cast params to<br/>meshx_gen_srv_cb_param_t]
+
+    CastParams --> LogOpcode[Log opcode,<br/>src_addr, dst_addr]
+    LogOpcode --> UpdateModelState[Update model_state<br/>from params]
+
+    UpdateModelState --> CreateMsg[Create message<br/>structure with header]
+    CreateMsg --> CheckOpcode{Check opcode type}
+
+    CheckOpcode -->|GET| BreakGet[Break - No action]
+    CheckOpcode -->|SET| ValidateAddr{Validate address:<br/>Unicast OR Broadcast<br/>OR Subscribed Group}
+    CheckOpcode -->|SET_UNACK| ValidateAddr
+    CheckOpcode -->|Other| BreakOther[Break - No action]
+
+    ValidateAddr -->|Invalid| BreakAddr[Break - No action]
+    ValidateAddr -->|Valid| GetParentElement{get_parent_element<br/>not null}
+
+    GetParentElement -->|No| LogErrorParent[Log error:<br/>Parent element is null]
+    GetParentElement -->|Yes| GetParentState{get_parent_element_state<br/>not null}
+
+    GetParentState -->|No| SetErrorState[Set element_state_change<br/>= MESHX_NOT_FOUND]
+    GetParentState -->|Yes| HandleStateChange[element_state_change_handle<br/>Validate and update state]
+
+    SetErrorState --> OnModelCb[get_parent_element<br/>->on_model_cb<br/>param, param_size]
+    HandleStateChange --> OnModelCb
+
+    OnModelCb --> ValidateHeader{Validate message<br/>header}
+    ValidateHeader -->|Invalid| LogErrorHeader[Log error:<br/>Invalid header]
+    ValidateHeader -->|Valid| GetElementCtx{get_element_ctx<br/>not null}
+
+    GetElementCtx -->|No| LogErrorCtx[Log error:<br/>Element context is null]
+    GetElementCtx -->|Yes| CheckStateChange{element_state_change<br/>== MESHX_SUCCESS}
+
+    CheckStateChange -->|No| DoNothing[No action needed]
+    CheckStateChange -->|Yes| NotifyElement[element_state_change_notify<br/>param, param_size]
+
+    NotifyElement --> DerivedImpl{Derived class<br/>implementation?}
+    DerivedImpl -->|Yes| HandleDerived[Handle state change<br/>in derived element]
+    DerivedImpl -->|No| ReturnSuccess[Return<br/>MESHX_SUCCESS]
+
+    HandleDerived --> SaveNVS[Save state to NVS]
+    SaveNVS --> NotifyApp[Notify application]
+    NotifyApp --> ReturnSuccess
+
+    LogErrorParent --> ReturnSuccess
+    LogErrorHeader --> ReturnSuccess
+    LogErrorCtx --> ReturnSuccess
+    DoNothing --> ReturnSuccess
+    BreakGet --> ReturnSuccess
+    BreakOther --> ReturnSuccess
+    BreakAddr --> ReturnSuccess
+
+    classDef newFeature fill:#d4edda,stroke:#28a745,stroke-width:3px;
+    classDef modified fill:#fff3cd,stroke:#ffc107,stroke-width:2px;
+    classDef decision fill:#fff9c4,stroke:#f39c12,stroke-width:2px;
+    classDef terminal fill:#f5f5f5,stroke:#7f8c8d,stroke-width:2px;
+    classDef action fill:#e3f2fd,stroke:#2196f3,stroke-width:2px;
+
+    class HandleStateChange,GetParentState,NotifyElement,DerivedImpl,HandleDerived newFeature;
+    class UpdateModelState,CreateMsg,OnModelCb modified;
+    class ValidateParams,CheckModelID,CheckOpcode,ValidateAddr,GetParentElement,GetElementCtx,CheckStateChange,DerivedImpl decision;
+    class Start,ReturnSuccess,ReturnError terminal;
+    class LogOpcode,BreakGet,BreakOther,BreakAddr,LogErrorParent,SetErrorState,ValidateHeader,LogErrorHeader,LogErrorCtx,DoNothing,SaveNVS,NotifyApp action;
+            </div>
+        </div>
+
+        <h2 class="section-title">Detailed Callflow - Client Model State Change</h2>
+        <div class="diagram-container">
+            <div class="mermaid">
+flowchart TD
+    Start([BLE Mesh Callback<br/>model_from_ble_cb]) --> ValidateParams{Validate params<br/>and p_dev}
+
+    ValidateParams -->|Invalid| ReturnError[Return<br/>MESHX_INVALID_ARG]
+    ValidateParams -->|Valid| CheckModelID{model_id equals<br/>this->get_model_id}
+
+    CheckModelID -->|No Match| ReturnSuccess[Return<br/>MESHX_SUCCESS]
+    CheckModelID -->|Match| CastParams[Cast params to<br/>meshx_gen_cli_cb_param_t]
+
+    CastParams --> CheckEvent{Check event type}
+    CheckEvent -->|TIMEOUT| SetStatusTimeout[Set status =<br/>MESHX_TIMEOUT]
+    CheckEvent -->|SUCCESS| SetStatusSuccess[Set status =<br/>MESHX_SUCCESS]
+
+    SetStatusTimeout --> UpdateModelState[Update model_state<br/>from params]
+    SetStatusSuccess --> UpdateModelState
+
+    UpdateModelState --> CreateMsg[Create message<br/>structure with header]
+    CreateMsg --> GetParentElement{get_parent_element<br/>not null}
+
+    GetParentElement -->|No| LogErrorParent[Log error:<br/>Parent element is null]
+    GetParentElement -->|Yes| GetParentState{get_parent_element_state<br/>not null}
+
+    GetParentState -->|No| SetErrorState[Set element_state_change<br/>= MESHX_NOT_FOUND]
+    GetParentState -->|Yes| HandleStateChange[element_state_change_handle<br/>Validate and update state]
+
+    SetErrorState --> OnModelCb[get_parent_element<br/>->on_model_cb<br/>param, param_size]
+    HandleStateChange --> OnModelCb
+
+    OnModelCb --> ValidateHeader{Validate message<br/>header}
+    ValidateHeader -->|Invalid| LogErrorHeader[Log error:<br/>Invalid header]
+    ValidateHeader -->|Valid| GetElementCtx{get_element_ctx<br/>not null}
+
+    GetElementCtx -->|No| LogErrorCtx[Log error:<br/>Element context is null]
+    GetElementCtx -->|Yes| CheckStateChange{element_state_change<br/>== MESHX_SUCCESS}
+
+    CheckStateChange -->|No| DoNothing[No action needed]
+    CheckStateChange -->|Yes| NotifyElement[element_state_change_notify<br/>param, param_size]
+
+    NotifyElement --> DerivedImpl{Derived class<br/>implementation?}
+    DerivedImpl -->|Yes| HandleDerived[Handle state change<br/>in derived element]
+    DerivedImpl -->|No| ReturnSuccess[Return<br/>MESHX_SUCCESS]
+
+    HandleDerived --> SaveNVS[Save state to NVS]
+    SaveNVS --> NotifyApp[Notify application]
+    NotifyApp --> ReturnSuccess
+
+    LogErrorParent --> ReturnSuccess
+    LogErrorHeader --> ReturnSuccess
+    LogErrorCtx --> ReturnSuccess
+    DoNothing --> ReturnSuccess
+
+    classDef newFeature fill:#d4edda,stroke:#28a745,stroke-width:3px;
+    classDef modified fill:#fff3cd,stroke:#ffc107,stroke-width:2px;
+    classDef decision fill:#fff9c4,stroke:#f39c12,stroke-width:2px;
+    classDef terminal fill:#f5f5f5,stroke:#7f8c8d,stroke-width:2px;
+    classDef action fill:#e3f2fd,stroke:#2196f3,stroke-width:2px;
+
+    class HandleStateChange,GetParentState,NotifyElement,DerivedImpl,HandleDerived newFeature;
+    class UpdateModelState,CreateMsg,OnModelCb modified;
+    class ValidateParams,CheckModelID,CheckEvent,GetParentElement,GetElementCtx,CheckStateChange,DerivedImpl decision;
+    class Start,ReturnSuccess,ReturnError terminal;
+    class SetStatusTimeout,SetStatusSuccess,LogOpcode,LogErrorParent,SetErrorState,ValidateHeader,LogErrorHeader,LogErrorCtx,DoNothing,SaveNVS,NotifyApp action;
+            </div>
+        </div>
+
+        <h2 class="section-title">Class Hierarchy Changes</h2>
+        <div class="diagram-container">
+            <div class="mermaid">
+classDiagram
+    class meshXModelIF {
+        -MESHX_MODEL* p_plat_model
+        -meshx_ptr_t p_plat_pub
+        -meshx_ptr_t p_plat_gen
+        -meshXElementIF* parent_element
+        -meshx_ptr_t p_parent_element_state
+        +plat_model_create()
+        +plat_model_delete()
+        +element_state_change_handle()
+        +get_parent_element()
+        +set_parent_element_state(state)
+        +get_parent_element_state()
+    }
+
+    class meshXModel {
+        -meshxBaseModel_t* base_model
+        -meshx_err_t status
+        -uint16_t model_id
+        +get_model_id()
+        +set_model_id(id)
+    }
+
+    class meshXServerModel {
+        +meshXServerModel(p_plat_model, model_id, parent_element, parent_element_state)
+    }
+
+    class meshXClientModel {
+        +meshXClientModel(p_plat_model, model_id, parent_element, parent_element_state)
+    }
+
+    class meshXElementIF {
+        -uint16_t element_idx
+        +on_model_cb(param, param_size)
+    }
+
+    class meshXElement {
+        -vector sig_models
+        -vector ven_models
+        -meshxElementType_t element_type
+        -meshx_ptr_t element_ctx
+        -size_t element_ctx_size
+        +on_model_cb(param, param_size)
+        +list_sig_models()
+        +list_ven_models()
+        +element_state_change_notify(param, param_size)
+        +register_element_ctx(ctx, ctx_size)
+        +get_element_ctx()
+        +get_element_ctx_size()
+    }
+
+    class meshXElementServer {
+        +add_sig_models()
+        +add_ven_models()
+    }
+
+    class meshXElementClient {
+        +add_sig_models()
+        +add_ven_models()
+    }
+
+    class meshXRootElement {
+        +list_sig_models()
+        +list_ven_models()
+        +element_state_change_notify(param, param_size)
+    }
+
+    class meshXRelayElement {
+        +list_sig_models()
+        +list_ven_models()
+    }
+
+    class meshXCWWWElement {
+        +list_sig_models()
+        +list_ven_models()
+    }
+
+    meshXModelIF <|-- meshXModel
+    meshXModel <|-- meshXServerModel
+    meshXModel <|-- meshXClientModel
+
+    meshXElementIF <|-- meshXElement
+    meshXElement <|-- meshXElementServer
+    meshXElement <|-- meshXElementClient
+
+    meshXElementServer <|-- meshXRootElement
+    meshXElementServer <|-- meshXRelayElement
+    meshXElementServer <|-- meshXCWWWElement
+
+    meshXServerModel o-- meshXElementServer : parent_element
+    meshXClientModel o-- meshXElementClient : parent_element
+
+    classDef newFeature fill:#d4edda,stroke:#28a745,stroke-width:3px;
+    classDef modified fill:#fff3cd,stroke:#ffc107,stroke-width:2px;
+
+    class meshXModelIF newFeature
+    class meshXModel modified
+    class meshXElement newFeature
+    class meshXRootElement newFeature
+            </div>
+        </div>
+
+        <div class="legend">
+            <h3>Legend</h3>
+            <ul>
+                <li><span class="new">Green Highlight</span> - New features added in this commit</li>
+                <li><span class="modified">Yellow Highlight</span> - Modified existing functionality</li>
+                <li><span class="removed">Red Highlight</span> - Removed functionality</li>
+                <li><strong>Key Changes:</strong></li>
+                <ul>
+                    <li>Added parent element state pointer to models</li>
+                    <li>Added element_state_change_handle() for state synchronization</li>
+                    <li>Added element context (element_ctx) for state management</li>
+                    <li>Added element_state_change_notify() for derived element implementations</li>
+                    <li>Updated on_model_cb() signature to include param_size</li>
+                    <li>Added model_id member to meshXModel class</li>
+                    <li>Added new parameter structures: meshx_srv_model_send_param_header_t, meshx_cli_model_send_param_header_t</li>
+                </ul>
+            </ul>
+        </div>
+
+        <div class="file-info">
+            <h3>Modified Files Summary</h3>
+            <p><strong>Model Layer:</strong></p>
+            <ul>
+                <li><code>main/component/meshx/model/inc/meshx_model_class.hpp</code> - Added state management members and methods</li>
+                <li><code>main/component/meshx/model/src/meshx_model_class.cpp</code> - Updated constructors</li>
+                <li><code>main/component/meshx/model/inc/generic_model/meshx_model_onoff.hpp</code> - Updated state structures</li>
+                <li><code>main/component/meshx/model/src/generic_model/meshx_model_onoff.cpp</code> - Implemented state change handling</li>
+                <li><code>main/component/meshx/model/inc/light_model/meshx_model_ctl.hpp</code> - Updated state structures</li>
+                <li><code>main/component/meshx/model/src/light_model/meshx_model_ctl.cpp</code> - Implemented state change handling</li>
+                <li><code>main/component/meshx/model/inc/common_model/meshx_model_config.hpp</code> - Minor updates</li>
+                <li><code>main/component/meshx/model/src/common_model/meshx_model_config.cpp</code> - Minor updates</li>
+            </ul>
+            <p><strong>Element Layer:</strong></p>
+            <ul>
+                <li><code>main/component/meshx/elements/inc/meshx_element_class.hpp</code> - Added context and state management</li>
+                <li><code>main/component/meshx/elements/src/meshx_element_class.cpp</code> - Implemented on_model_cb with new signature</li>
+                <li><code>main/component/meshx/elements/inc/variants/meshx_root_element.hpp</code> - Minor updates</li>
+                <li><code>main/component/meshx/elements/src/variants/meshx_root_element.cpp</code> - Implemented element_state_change_notify</li>
+                <li><code>main/component/meshx/elements/inc/variants/meshx_relay_element.hpp</code> - Minor updates</li>
+                <li><code>main/component/meshx/elements/src/variants/meshx_relay_element.cpp</code> - Minor updates</li>
+                <li><code>main/component/meshx/elements/inc/variants/meshx_cwww_element.hpp</code> - Minor updates</li>
+                <li><code>main/component/meshx/elements/src/variants/meshx_cwww_element.cpp</code> - Minor updates</li>
+            </ul>
+            <p><strong>Other Files:</strong></p>
+            <ul>
+                <li><code>main/component/meshx/inc/meshx_fwd_decl.hpp</code> - Updated forward declarations</li>
+                <li><code>main/component/meshx/inc/module_id.h</code> - Updated module IDs</li>
+                <li><code>main/component/meshx/inc/interface/ble_mesh/client/meshx_ble_mesh_gen_cli.h</code> - Minor updates</li>
+                <li><code>main/component/meshx/elements_c/client/src/meshx_light_cwww_client.c</code> - Minor updates</li>
+                <li><code>.gitignore</code> - Updated ignore patterns</li>
+                <li><code>docs/doxygen-awesome-css</code> - Deleted</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            },
+            classDiagram: {
+                useMaxWidth: true,
+                htmlLabels: true
+            }
+        });
+    </script>
+</body>
+</html>
