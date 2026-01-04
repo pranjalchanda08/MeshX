@@ -15,7 +15,6 @@
  */
 
 #include <generic_model/meshx_model_def_trans_time.hpp>
-#include <meshx_element_class.hpp>
 
 #if CONFIG_ENABLE_GEN_DEF_TRANS_TIME_CLIENT
 /**
@@ -44,8 +43,8 @@ meshx_err_t meshXGenericDefTransTimeClientModel MESHX_GEN_DEF_TRANS_TIME_CLIENT_
 
     model_state.trans_time = param->status.def_trans_time_status.trans_time;
 
-    meshx_def_trans_time_cli_el_msg_t def_trans_time_param =
-    {
+    // Store the message in member variable for later use by prepare_element_msg
+    element_msg = {
         .header = {
             .err_code               = param->err_code,
             .model                  = param->model,
@@ -54,26 +53,31 @@ meshx_err_t meshXGenericDefTransTimeClientModel MESHX_GEN_DEF_TRANS_TIME_CLIENT_
         },
         .state                  = model_state,
     };
-    /* Send the state change event to the respective Element */
-    if (this->get_parent_element())
+
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Prepare message for element notification
+ * @details Returns pointer to the stored element message
+ *
+ * @param[out] msg_ptr   Pointer to message structure (output parameter)
+ * @param[out] msg_size  Size of the message structure (output parameter)
+ * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
+ */
+MESHX_GEN_DEF_TRANS_TIME_CLIENT_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericDefTransTimeClientModel MESHX_GEN_DEF_TRANS_TIME_CLIENT_MODEL_TEMPLATE_PARAMS
+    :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
+{
+    if (!msg_ptr || !msg_size)
     {
-        if(this->get_parent_element_state())
-        {
-            def_trans_time_param.header.element_state_change = this->element_state_change_handle();
-        }
-        else
-        {
-            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Parent element state is null");
-            def_trans_time_param.header.element_state_change = MESHX_NOT_FOUND;
-        }
-        return this->get_parent_element()->on_model_cb(&def_trans_time_param, sizeof(def_trans_time_param));
-    }
-    else
-    {
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Parent element is null");
+        return MESHX_INVALID_ARG;
     }
 
-    return MESHX_INVALID_STATE;
+    *msg_ptr = &element_msg;
+    *msg_size = sizeof(element_msg);
+
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -130,6 +134,7 @@ meshx_err_t meshXGenericDefTransTimeClientModel MESHX_GEN_DEF_TRANS_TIME_CLIENT_
         dev_struct_t *p_dev,
         control_task_msg_evt_t model_id,
         meshx_ptr_t params)
+)
 {
     if(!params || !p_dev)
     {
@@ -263,7 +268,11 @@ if (!params|| !params->model || !params->ctx)
  */
 MESHX_GEN_DEF_TRANS_TIME_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericDefTransTimeServerModel MESHX_GEN_DEF_TRANS_TIME_SERVER_MODEL_TEMPLATE_PARAMS
-    :: model_from_ble_cb(dev_struct_t *p_dev, control_task_msg_evt_t model_id, meshx_ptr_t params)
+    :: model_from_ble_cb(
+        dev_struct_t *p_dev,
+        control_task_msg_evt_t model_id,
+        meshx_ptr_t params)
+)
 {
     if(!params || !p_dev)
     {
@@ -277,17 +286,87 @@ meshx_err_t meshXGenericDefTransTimeServerModel MESHX_GEN_DEF_TRANS_TIME_SERVER_
     }
 
     auto *param = static_cast<meshx_gen_srv_cb_param_t *>(params);
-    meshx_def_trans_time_srv_el_msg_t msg = {
-        .model = &param->model,
-        .trans_time = param->state_change.def_trans_time_set.trans_time
+
+    // Store the message in member variable for later use by prepare_element_msg
+    element_msg = {
+        .header = {
+            .model                  = param->model,
+            .element_state_change   = MESHX_SUCCESS,
+        },
+        .state = {
+            .trans_time = param->state_change.def_trans_time_set.trans_time
+        }
     };
 
-    if (this->get_parent_element()) {
-        return this->get_parent_element()->on_model_cb(&msg);
+    element_msg_prepared = true;
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Prepare message for element notification
+ * @details Returns pointer to the stored element message if it has been prepared
+ *
+ * @param[out] msg_ptr   Pointer to message structure (output parameter)
+ * @param[out] msg_size  Size of the message structure (output parameter)
+ * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
+ */
+MESHX_GEN_DEF_TRANS_TIME_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericDefTransTimeServerModel MESHX_GEN_DEF_TRANS_TIME_SERVER_MODEL_TEMPLATE_PARAMS
+    :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
+{
+    if (!msg_ptr || !msg_size)
+    {
+        return MESHX_INVALID_ARG;
     }
 
-    MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
-    return MESHX_INVALID_STATE;
+    if (!element_msg_prepared)
+    {
+        return MESHX_NOT_SUPPORTED;
+    }
+
+    *msg_ptr = &element_msg;
+    *msg_size = sizeof(element_msg);
+
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Handle state change request from element.
+ *
+ * This function is called by the parent element when a state change request
+ * is received. It validates the request and returns a result to the element.
+ * Note: The actual state is maintained in the element layer, not the model layer.
+ *
+ * @return
+ *     - MESHX_SUCCESS: State change handled successfully
+ *     - MESHX_INVALID_ARG: Invalid parameter
+ *     - MESHX_INVALID_STATE: No state change detected
+ */
+MESHX_GEN_DEF_TRANS_TIME_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericDefTransTimeServerModel MESHX_GEN_DEF_TRANS_TIME_SERVER_MODEL_TEMPLATE_PARAMS
+    :: element_state_change_handle(void)
+{
+    auto *el_state =
+        static_cast<meshx_gen_def_trans_time_model_state_t*>(this->get_parent_element_state());
+
+    if (!el_state) {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid parameter in element_state_change_handle");
+        return MESHX_INVALID_ARG;
+    }
+
+    if(memcmp(&model_state, el_state, sizeof(meshx_gen_def_trans_time_model_state_t)) != 0)
+    {
+        MESHX_LOGI(MODULE_ID_MODEL_SERVER,
+            "Def Trans Time state change request: trans_time=%d",
+            el_state->trans_time);
+        // Update the model state
+        *el_state = model_state;
+    }
+    else
+    {
+        return MESHX_INVALID_STATE;
+    }
+    return MESHX_SUCCESS;
 }
 
 /**

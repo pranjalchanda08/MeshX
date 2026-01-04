@@ -4,7 +4,6 @@
  */
 
 #include <common_model/meshx_model_config.hpp>
-#include <meshx_element_class.hpp>
 
 #if CONFIG_ENABLE_CONFIG_SERVER
 
@@ -127,27 +126,45 @@ meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::model_fr
         return MESHX_SUCCESS;
     }
 
-    auto *param = static_cast<meshx_config_srv_cb_param_t *>(params);
+    auto const *param = static_cast<meshx_config_srv_cb_param_t *>(params);
 
     MESHX_LOGD(MODULE_ID_MODEL_SERVER, "op|src|dst:%04" PRIx32 "|%04x|%04x",
                param->ctx.opcode, param->ctx.src_addr, param->ctx.dst_addr);
 
-    // Create a parameter structure for the element callback
-    meshx_config_srv_el_msg_t srv_config_param = {
+    // Store the message in member variable for later use by prepare_element_msg
+    element_msg = {
         .header = {
             .model                  = param->model,
             .element_state_change   = MESHX_SUCCESS,
         },
-        .state = param->state_change
+        .state = { .state_change = param->state_change }
     };
 
-    // Send the state change event to the respective Element
-    if (this->get_parent_element()) {
-        return this->get_parent_element()->on_model_cb(&srv_config_param, sizeof(srv_config_param));
-    } else {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
-        return MESHX_INVALID_STATE;
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Prepare message for element notification
+ * @details Returns pointer to the stored element message
+ *
+ * @param[out] msg_ptr   Pointer to message structure (output parameter)
+ * @param[out] msg_size  Size of the message structure (output parameter)
+ * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
+ */
+MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::prepare_element_msg(
+    meshx_ptr_t *msg_ptr,
+    size_t *msg_size)
+{
+    if (!msg_ptr || !msg_size)
+    {
+        return MESHX_INVALID_ARG;
     }
+
+    *msg_ptr = &element_msg;
+    *msg_size = sizeof(element_msg);
+
+    return MESHX_SUCCESS;
 }
 
 /**

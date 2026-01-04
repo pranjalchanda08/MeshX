@@ -34,7 +34,7 @@
 /**
  * @brief Structure to hold the Location model state.
  */
-typedef struct meshx_gen_location_model_state
+struct meshx_gen_location_model_state
 {
     // Global location data
     int32_t global_latitude;  /**< Global latitude (-90 to 90 degrees) */
@@ -46,7 +46,8 @@ typedef struct meshx_gen_location_model_state
     int16_t local_altitude; /**< Local altitude */
     uint8_t floor_number;   /**< Floor number */
     uint16_t uncertainty;   /**< Uncertainty of the location */
-}meshx_gen_location_model_state_t;
+};
+using meshx_gen_location_model_state_t = struct meshx_gen_location_model_state;
 
 /**
  * @brief Structure to hold the parameters for sending a Generic Location message.
@@ -90,12 +91,16 @@ private:
     /* New or updated model state from BLE layer */
     meshx_gen_location_model_state_t model_state;
 
+    /* Message to be sent to parent element */
+    meshx_location_cli_el_msg_t element_msg;
+
     meshx_err_t meshx_state_change_notify   (const meshx_gen_cli_cb_param_t *param, uint8_t status);
     meshx_err_t element_state_change_handle (void) override;
 
 public:
     meshx_err_t model_send          (meshx_gen_location_send_params_t *params) override;
     meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t prepare_element_msg (meshx_ptr_t *msg_ptr, size_t *msg_size) override;
 
     meshXGenericLocationClientModel(
         meshXElementIF *parent_element = nullptr,
@@ -136,12 +141,19 @@ private:
     /* New or updated model state from BLE layer */
     meshx_gen_location_model_state_t model_state;
 
+    /* Message to be sent to parent element */
+    meshx_location_srv_el_msg_t element_msg;
+
+    /* Flag to indicate if element message has been prepared */
+    bool element_msg_prepared = false;
+
     meshx_err_t plat_model_create   (void) override;
     meshx_err_t plat_model_delete   (void) override;
 
 public:
     meshx_err_t model_send          (meshx_gen_location_send_params_t *params) override;
     meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t prepare_element_msg (meshx_ptr_t *msg_ptr, size_t *msg_size) override;
 
     // Virtual method implementation from meshXModelIF
     meshx_err_t element_state_change_handle (void) override;
@@ -166,9 +178,17 @@ public:
 MESHX_GEN_LOCATION_SETUP_SERVER_MODEL_TEMPLATE_PROTO
 class meshXGenericLocationSetupServerModel : public meshXServerModel<meshXBaseGenericServerModel, meshx_gen_location_send_params_t>
 {
+private:
+    /* Message to be sent to parent element */
+    meshx_location_srv_el_msg_t element_msg;
+
+    /* Flag to indicate if element message has been prepared */
+    bool element_msg_prepared = false;
+
 public:
     meshx_err_t model_send          (meshx_gen_location_send_params_t *params) override;
     meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t prepare_element_msg (meshx_ptr_t *msg_ptr, size_t *msg_size) override;
 
     meshXGenericLocationSetupServerModel(
         meshXElementIF *parent_element = nullptr,

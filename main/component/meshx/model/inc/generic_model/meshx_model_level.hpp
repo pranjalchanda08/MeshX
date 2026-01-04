@@ -30,12 +30,13 @@
 /**
  * @brief Structure to hold the Level model state.
  */
-typedef struct meshx_gen_level_model_state
+struct meshx_gen_level_model_state
 {
     int16_t present_level;  /**< The present value of Generic Level state */
     int16_t target_level;   /**< The target value of Generic Level state (optional) */
     uint8_t remaining_time; /**< Remaining transition time (optional) */
-}meshx_gen_level_model_state_t;
+};
+using meshx_gen_level_model_state_t = struct meshx_gen_level_model_state;
 
 /**
  * @brief Structure to hold the parameters for sending a Generic Level message.
@@ -81,12 +82,16 @@ private:
     /* New or updated model state from BLE layer */
     meshx_gen_level_model_state_t model_state;
 
+    /* Message to send to parent element - stored as member to persist */
+    meshx_level_cli_el_msg_t element_msg;
+
     meshx_err_t meshx_state_change_notify   (const meshx_gen_cli_cb_param_t *param, uint8_t status);
     meshx_err_t element_state_change_handle (void) override;
 
 public:
     meshx_err_t model_send          (meshx_gen_level_send_params_t *params) override;
     meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t prepare_element_msg (meshx_ptr_t *msg_ptr, size_t *msg_size) override;
 
     meshXGenericLevelClientModel(
         meshXElementIF *parent_element = nullptr,
@@ -121,12 +126,19 @@ private:
     /* New or updated model state from BLE layer */
     meshx_gen_level_model_state_t model_state;
 
+    /* Message to send to parent element - stored as member to persist */
+    meshx_level_srv_el_msg_t element_msg;
+
+    /* Flag to indicate if message was prepared for element notification */
+    bool element_msg_prepared;
+
     meshx_err_t plat_model_create   (void) override;
     meshx_err_t plat_model_delete   (void) override;
 
 public:
     meshx_err_t model_send          (meshx_gen_level_send_params_t *params) override;
     meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t prepare_element_msg (meshx_ptr_t *msg_ptr, size_t *msg_size) override;
 
     // Virtual method implementation from meshXModelIF
     meshx_err_t element_state_change_handle (void) override;

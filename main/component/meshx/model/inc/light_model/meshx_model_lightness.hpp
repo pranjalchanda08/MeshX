@@ -31,7 +31,7 @@
 /**
  * @brief Structure to hold the Light Lightness model state.
  */
-typedef struct meshx_light_lightness_model_state
+struct meshx_light_lightness_model_state
 {
     uint16_t present_lightness;    /**< Present lightness value */
     uint16_t target_lightness;     /**< Target lightness value */
@@ -39,7 +39,9 @@ typedef struct meshx_light_lightness_model_state
     uint16_t lightness_default;    /**< Default lightness value */
     uint16_t range_min;            /**< Minimum range value */
     uint16_t range_max;            /**< Maximum range value */
-}meshx_light_lightness_model_state_t;
+};
+
+using meshx_light_lightness_model_state_t = struct meshx_light_lightness_model_state;
 
 /**
  * @brief Structure to hold the parameters for sending a Light Lightness message.
@@ -49,7 +51,7 @@ struct meshx_light_lightness_send_params
     meshx_model_t                      *model;  /**< Pointer to the Light Lightness client model. */
     meshx_ctx_t                        *ctx;    /**< The context of the message. */
     uint8_t                             tid;    /**< Transaction ID of the message. Only used by Client */
-    meshx_light_lightness_model_state_t   state;  /**< The state of the message. */
+    meshx_light_lightness_model_state_t state;  /**< The state of the message. */
 };
 
 using meshx_light_lightness_send_params_t = struct meshx_light_lightness_send_params;
