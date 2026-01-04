@@ -29,10 +29,11 @@
 class meshXModelIF
 {
 private:
-    MESHX_MODEL *p_plat_model;      /**< Pointer to the platform model */
-    meshx_ptr_t p_plat_pub;         /**< publication structures */
-    meshx_ptr_t p_plat_gen;         /**< generic structures */
-    meshXElementIF *parent_element; /**< Pointer to the parent element interface */
+    MESHX_MODEL     *p_plat_model;               /**< Pointer to the platform model */
+    meshx_ptr_t      p_plat_pub;                 /**< publication structures */
+    meshx_ptr_t      p_plat_gen;                 /**< generic structures */
+    meshXElementIF  *parent_element;             /**< Pointer to the parent element interface */
+    meshx_ptr_t      p_parent_element_state;     /**< Pointer to the parent element state */
 public:
 
     /***********************************************************
@@ -55,6 +56,16 @@ public:
      *          model cleanup to release resources associated with the model.
      */
     virtual meshx_err_t plat_model_delete(void) = 0;
+
+    /**
+     * @brief Handle state change request from element
+     * @details Pure virtual function that derived classes must implement to handle
+     *          state change requests from the parent element. The model validates
+     *          the request, updates its internal state, and returns the result.
+     *
+     * @return MESHX_SUCCESS on success, error code otherwise
+     */
+    virtual meshx_err_t element_state_change_handle(void) = 0;
 
     /***********************************************************
      * Accessor Functions
@@ -107,6 +118,17 @@ public:
      */
     meshXElementIF * get_parent_element(void) const { return parent_element; }
 
+    /**
+     * @brief Set the parent element state pointer
+     * @param[in] state Pointer to the parent element state
+     */
+    void set_parent_element_state(meshx_ptr_t state) { p_parent_element_state = state; }
+    /**
+     * @brief Get the parent element state pointer
+     * @return Pointer to the parent element state
+     */
+    meshx_ptr_t get_parent_element_state(void) const { return p_parent_element_state; }
+
     meshXModelIF() = default;
     explicit meshXModelIF(MESHX_MODEL *p_plat_model) : p_plat_model(p_plat_model) { }
     virtual ~meshXModelIF() = default;
@@ -121,10 +143,9 @@ class meshXModel : public meshXModelIF
 {
 private:
     /* private members */
-    meshxBaseModel_t *base_model;   /*<! Pointer to the base model */
-
-    meshx_err_t status;        /*<! Status of the model */
-
+    meshxBaseModel_t    *base_model;   /*<! Pointer to the base model */
+    meshx_err_t         status;        /*<! Status of the model */
+    uint16_t            model_id;      /*<! Model identifier */
 public:
     /***********************************************************
      * Virtual Functions
@@ -155,6 +176,17 @@ public:
     /***********************************************************
      * Accessor Functions
      ***********************************************************/
+    /**
+     * @brief Get the model identifier
+     * @return Model ID value
+     */
+    uint16_t get_model_id(void) const { return model_id; }
+
+    /**
+     * @brief Set the model identifier
+     * @param[in] id Model ID to set
+     */
+    void set_model_id(uint16_t id) { model_id = id; }
     /**
      * @brief Get the model initialization status
      * @return Status code indicating success or failure of initialization
@@ -194,6 +226,16 @@ public:
 /*********************************************************************************
  * meshXServerModel
  *********************************************************************************/
+
+/**
+ * @brief Structure for server model send parameters
+ */
+typedef struct meshx_srv_model_send_param_header
+{
+    meshx_model_t   model;                  /**< Server model Pointer */
+    meshx_err_t     element_state_change;   /**< Return value from element_state_change_handle */
+}meshx_srv_model_send_param_header_t;
+
 /**
  * @class meshXServerModel
  * @brief Base class for all server models in MeshX
@@ -208,13 +250,20 @@ class meshXServerModel : public meshXModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS
 public:
     /**
      * @brief Construct a new Server Model
-     * @param[in] p_plat_model Platform-specific model instance
-     * @param[in] model_id Unique identifier for this model
-     * @param[in] parent_element Parent element interface (optional)
+     * @param[in] p_plat_model              Platform-specific model instance
+     * @param[in] model_id                  Unique identifier for this model
+     * @param[in] parent_element            Parent element interface (optional)
+     * @param[in] parent_element_state      Parent element state pointer (optional)
+     *
      * @details Initializes a server model with platform-specific implementation
      *          and associates it with an optional parent element
      */
-    meshXServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
+    meshXServerModel(
+        MESHX_MODEL     *p_plat_model,
+        uint32_t        model_id,
+        meshXElementIF *parent_element = nullptr,
+        meshx_ptr_t     parent_element_state = nullptr
+    );
 
     /**
      * @brief Deleted default constructor
@@ -226,6 +275,15 @@ public:
 /*********************************************************************************
  * meshXClientModel
  *********************************************************************************/
+
+typedef struct meshx_cli_model_send_param_header
+{
+    uint8_t          err_code;               /**< Error code */
+    meshx_model_t    model;                  /**< Generic OnOff Server model */
+    meshx_ctx_t      ctx;                    /**< Context of the message */
+    meshx_err_t      element_state_change;   /**< Return value from element_state_change_handle */
+}meshx_cli_model_send_param_header_t;
+
 /**
  * @class meshXClientModel
  * @brief Base class for all client models in the mesh network
@@ -260,11 +318,17 @@ public:
 
     /**
      * @brief Construct a new meshXClientModel
-     * @param[in] p_plat_model Platform model instance
-     * @param[in] model_id Model identifier
-     * @param[in] parent_element Parent element interface (optional)
+     * @param[in] p_plat_model          Platform model instance
+     * @param[in] model_id              Model identifier
+     * @param[in] parent_element        Parent element interface (optional)
+     * @param[in] parent_element_state  Parent element state pointer (optional)
      */
-    meshXClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
+    meshXClientModel(
+        MESHX_MODEL *p_plat_model,
+        uint32_t model_id,
+        meshXElementIF *parent_element = nullptr,
+        meshx_ptr_t parent_element_state = nullptr
+    );
 
     meshXClientModel() = delete;
 };

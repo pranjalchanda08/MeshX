@@ -16,6 +16,16 @@
 #include <ranges>
 #include <vector>
 
+#include <generic_model/meshx_model_onoff.hpp>
+#include <generic_model/meshx_model_level.hpp>
+#include <generic_model/meshx_model_location.hpp>
+#include <generic_model/meshx_model_battery.hpp>
+#include <generic_model/meshx_model_power_level.hpp>
+
+#include <light_model/meshx_model_ctl.hpp>
+#include <light_model/meshx_model_hsl.hpp>
+#include <light_model/meshx_model_lightness.hpp>
+
 /*****************************************************************************************************
  * meshXElement
  *****************************************************************************************************/
@@ -213,4 +223,67 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
     }
 
     return result;
+}
+
+/**
+ * @brief Handle model callback from child models.
+ *
+ * This function is called by child models when a state change occurs.
+ * It handles the state change by storing in element context, saving to NVS,
+ * and notifying the application.
+ * @param[in] param Pointer to the model callback parameter
+ * @return
+ *     - MESHX_SUCCESS: State change handled successfully
+ *     - MESHX_INVALID_ARG: Invalid parameter
+ */
+MESHX_ELEMENT_TEMPLATE_PROTO
+meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    :: on_model_cb(meshx_ptr_t param, size_t param_size)
+{
+    if (param == nullptr)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "Invalid parameter in on_model_cb");
+        return MESHX_INVALID_ARG;
+    }
+    meshx_err_t err = MESHX_SUCCESS;
+
+    meshx_model_send_param_header_t *msg_header = static_cast<meshx_model_send_param_header_t *>(param);
+
+    if(!msg_header)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "Invalid message header in on_model_cb");
+        return MESHX_INVALID_ARG;
+    }
+
+    meshx_ptr_t meshx_ctx = this->get_element_ctx();
+    if(!meshx_ctx)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "Mesh context is null in on_model_cb");
+        return MESHX_INVALID_STATE;
+    }
+
+    size_t meshx_ctx_size  = this->get_element_ctx_size();
+    if(meshx_ctx_size == 0)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "Mesh context size is zero in on_model_cb");
+        return MESHX_INVALID_STATE;
+    }
+
+    if(msg_header->element_state_change == MESHX_SUCCESS)
+    {
+        /* Notify the element of the state change to derived class (if defined) */
+        err = this->element_state_change_notify(param, param_size);
+        if(err != MESHX_SUCCESS)
+        {
+            MESHX_LOGE(MODULE_ID_COMMON, "Element state change notify failed in on_model_cb");
+            return err;
+        }
+        // Update the NVS and notify application as needed
+    }
+    else
+    {
+        MESHX_DO_NOTHING;
+    }
+
+    return MESHX_SUCCESS;
 }

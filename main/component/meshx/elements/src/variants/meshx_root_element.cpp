@@ -62,3 +62,33 @@ uint8_t meshXRootElement :: list_ven_models()
 {
     return 0;
 }
+
+/**
+ * @brief Handle model callback from child models.
+ *
+ * This function is called by child models when a state change occurs.
+ * It handles the state change by logging the event.
+ * The root element only has a Configuration Server model.
+ *
+ * @param[in] param Pointer to the model callback parameter
+ * @return
+ *     - MESHX_SUCCESS: State change handled successfully
+ *     - MESHX_INVALID_ARG: Invalid parameter
+ */
+meshx_err_t meshXRootElement :: element_state_change_notify(meshx_ptr_t param, size_t param_size)
+{
+    if (!param) {
+        MESHX_LOGE(MODULE_ID_ELEMENT_ROOT, "Invalid parameter in element_state_change_notify");
+        return MESHX_INVALID_ARG;
+    }
+
+    // Root element currently only has Config Server model
+    // Config model events are logged but not processed further
+    MESHX_LOGI(MODULE_ID_ELEMENT_ROOT,
+        "Root element received model callback");
+
+    // TODO: Handle config model specific events if needed
+    // For now, just log the event and return success
+
+    return MESHX_SUCCESS;
+}
