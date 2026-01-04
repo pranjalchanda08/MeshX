@@ -28,14 +28,22 @@
 #define MESHX_GEN_DEF_TRANS_TIME_SERVER_MODEL_TEMPLATE_PARAMS
 
 /**
+ * @brief Structure to hold the Default Transition Time model state.
+ */
+typedef struct meshx_gen_def_trans_time_model_state
+{
+    uint8_t trans_time;   /**< The Default Transition Time value. */
+}meshx_gen_def_trans_time_model_state_t;
+
+/**
  * @brief Structure to hold the parameters for sending a Generic Default Transition Time message.
  */
 struct meshx_gen_def_trans_time_send_params
 {
-    meshx_model_t *model; /**< Pointer to the Default Transition Time client model. */
-    meshx_ctx_t *ctx;     /**< The context of the message. */
-    uint8_t trans_time;   /**< The Default Transition Time value. */
-    uint8_t tid;          /**< The transaction ID of the message. Only used by Client*/
+    meshx_model_t                          *model;  /**< Pointer to the Default Transition Time client model. */
+    meshx_ctx_t                            *ctx;    /**< The context of the message. */
+    uint8_t                                 tid;    /**< The transaction ID of the message. Only used by Client*/
+    meshx_gen_def_trans_time_model_state_t state;  /**< The state of the message. */
 };
 
 using meshx_gen_def_trans_time_send_params_t = struct meshx_gen_def_trans_time_send_params;
@@ -48,10 +56,8 @@ using meshx_gen_def_trans_time_send_params_t = struct meshx_gen_def_trans_time_s
  */
 struct meshx_def_trans_time_cli_el_msg
 {
-    uint8_t err_code;    /**< Error code */
-    meshx_model_t model; /**< Generic Default Transition Time Server model */
-    meshx_ctx_t ctx;     /**< Context of the message */
-    uint8_t trans_time;  /**< The present value of Generic Default Transition Time state */
+    meshx_cli_model_send_param_header_t header; /**< Client model send param header */
+    meshx_gen_def_trans_time_model_state_t state;  /**< The state of the message. */
 };
 
 using meshx_def_trans_time_cli_el_msg_t = struct meshx_def_trans_time_cli_el_msg;
@@ -68,13 +74,20 @@ MESHX_GEN_DEF_TRANS_TIME_CLIENT_MODEL_TEMPLATE_PROTO
 class meshXGenericDefTransTimeClientModel : public meshXClientModel<meshXBaseGenericClientModel, meshx_gen_def_trans_time_send_params_t>
 {
 private:
-    meshx_err_t meshx_state_change_notify(const meshx_gen_cli_cb_param_t *param, uint8_t status) const;
+    /* New or updated model state from BLE layer */
+    meshx_gen_def_trans_time_model_state_t model_state;
+
+    meshx_err_t meshx_state_change_notify   (const meshx_gen_cli_cb_param_t *param, uint8_t status);
+    meshx_err_t element_state_change_handle (void) override;
 
 public:
-    meshx_err_t model_send(meshx_gen_def_trans_time_send_params_t *params) override;
-    meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t model_send          (meshx_gen_def_trans_time_send_params_t *params) override;
+    meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXGenericDefTransTimeClientModel(meshXElementIF *parent_element = nullptr);
+    meshXGenericDefTransTimeClientModel(
+        meshXElementIF *parent_element = nullptr,
+        meshx_ptr_t     parent_element_state = nullptr
+    );
     ~meshXGenericDefTransTimeClientModel() = default;
 };
 
@@ -88,8 +101,8 @@ public:
  */
 struct meshx_def_trans_time_srv_el_msg
 {
-    meshx_model_t *model; /**< Generic Default Transition Time Server model */
-    uint8_t trans_time;   /**< The present value of Generic Default Transition Time state */
+    meshx_srv_model_send_param_header_t header; /**< Server model send param header */
+    meshx_gen_def_trans_time_model_state_t state;  /**< The state of the message. */
 };
 
 using meshx_def_trans_time_srv_el_msg_t = struct meshx_def_trans_time_srv_el_msg;
@@ -107,13 +120,23 @@ MESHX_GEN_DEF_TRANS_TIME_SERVER_MODEL_TEMPLATE_PROTO
 class meshXGenericDefTransTimeServerModel : public meshXServerModel<meshXBaseGenericServerModel, meshx_gen_def_trans_time_send_params_t>
 {
 private:
-    meshx_err_t plat_model_create(void) override;
-    meshx_err_t plat_model_delete(void) override;
-public:
-    meshx_err_t model_send(meshx_gen_def_trans_time_send_params_t *params) override;
-    meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    /* New or updated model state from BLE layer */
+    meshx_gen_def_trans_time_model_state_t model_state;
 
-    meshXGenericDefTransTimeServerModel(meshXElementIF *parent_element = nullptr);
+    meshx_err_t plat_model_create   (void) override;
+    meshx_err_t plat_model_delete   (void) override;
+
+public:
+    meshx_err_t model_send          (meshx_gen_def_trans_time_send_params_t *params) override;
+    meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+
+    // Virtual method implementation from meshXModelIF
+    meshx_err_t element_state_change_handle (void) override;
+
+    meshXGenericDefTransTimeServerModel(
+        meshXElementIF *parent_element = nullptr,
+        meshx_ptr_t     parent_element_state = nullptr
+    );
     ~meshXGenericDefTransTimeServerModel() = default;
 };
 #endif /* CONFIG_ENABLE_GEN_DEF_TRANS_TIME_SERVER */

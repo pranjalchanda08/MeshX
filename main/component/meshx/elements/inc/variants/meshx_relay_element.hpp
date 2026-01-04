@@ -21,6 +21,8 @@
 #define MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
 #define MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
 
+#if CONFIG_RELAY_SERVER_COUNT > 0
+
 /**
  * @brief Relay server element context structure
  * @details This structure contains the state context for the relay server element,
@@ -37,7 +39,6 @@ struct meshx_relay_srv_el_ctx_t
 
 using meshx_relay_srv_el_ctx_t = struct meshx_relay_srv_el_ctx_t;
 
-#if CONFIG_RELAY_SERVER_COUNT > 0
 /*********************************************************************************
  * meshXRelayServerElement
  *********************************************************************************/
@@ -51,16 +52,17 @@ private:
     uint8_t list_sig_models (void) override;
     uint8_t list_ven_models (void) override;
 public:
+
     /**
      * @brief Constructs a new meshXRelayServerElement instance.
      * The meshXRelayServerElement represents a relay element in the MeshX BLE mesh network.
      * It automatically initializes and configures all required SIG models for the relay element.
+     *
+     * @param element_idx The index of the element within the node.
      */
-    meshXRelayServerElement (void) = default;
+    meshXRelayServerElement (uint16_t element_idx);
 
-    meshXRelayServerElement (uint16_t element_idx)
-        : meshXElementServer(element_idx) { };
-
+    meshXRelayServerElement (void) = delete;
 };
 
 #endif /* CONFIG_RELAY_SERVER_COUNT */
@@ -99,8 +101,12 @@ public:
      * @brief Constructs a new meshXRelayClientElement instance.
      * The meshXRelayClientElement represents a relay client element in the MeshX BLE mesh network.
      * It automatically initializes and configures all required SIG models for the relay client element.
+     *
+     * @param element_idx The index of the element within the node.
      */
-    meshXRelayClientElement (void);
+    meshXRelayClientElement (uint16_t element_idx);
+
+    meshXRelayClientElement (void) = delete;
 };
 #endif /* CONFIG_RELAY_CLIENT_COUNT */
 
