@@ -134,9 +134,11 @@ meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::model_fr
 
     // Create a parameter structure for the element callback
     meshx_config_srv_el_msg_t srv_config_param = {
-        .model = param->model,
-        .ctx = param->ctx,
-        .state_change = param->state_change
+        .header = {
+            .model                  = param->model,
+            .element_state_change   = MESHX_SUCCESS,
+        },
+        .state = param->state_change
     };
 
     // Send the state change event to the respective Element
@@ -153,8 +155,10 @@ meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::model_fr
  *
  * @param[in]   parent_element  Pointer to parent element
  */
-meshXConfigModel::meshXConfigModel(meshXElementIF *parent_element)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_CONFIG_SRV, parent_element)
+meshXConfigModel::meshXConfigModel(
+        meshXElementIF *parent_element,
+        meshx_ptr_t     parent_element_state)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_CONFIG_SRV, parent_element, parent_element_state)
 {
     // Constructor body can be empty; initialization done in base class.
 }

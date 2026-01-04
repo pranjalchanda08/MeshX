@@ -36,28 +36,83 @@
  */
 MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericLevelClientModel MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_PARAMS
-    :: meshx_state_change_notify(const meshx_gen_cli_cb_param_t *param, uint8_t status) const
+    :: meshx_state_change_notify(const meshx_gen_cli_cb_param_t *param, uint8_t status)
 {
     if (!param){
         return MESHX_INVALID_ARG;
     }
 
-    meshx_level_cli_el_msg_t level_param = {
-        .err_code = status,
-        .model = param->model,
-        .ctx = param->ctx,
-        .present_level = param->status.level_status.present_level,
-        .target_level = param->status.level_status.target_level,
-        .remaining_time = param->status.level_status.remain_time
+    model_state.present_level = param->status.level_status.present_level;
+    model_state.target_level = param->status.level_status.target_level;
+    model_state.remaining_time = param->status.level_status.remain_time;
+
+    meshx_level_cli_el_msg_t level_param =
+    {
+        .header = {
+            .err_code               = param->err_code,
+            .model                  = param->model,
+            .ctx                    = param->ctx,
+            .element_state_change   = MESHX_SUCCESS,
+        },
+        .state                  = model_state,
     };
     /* Send the state change event to the respective Element */
-    if (this->get_parent_element()) {
-        return this->get_parent_element()->on_model_cb(&level_param);
-    } else {
+    if (this->get_parent_element())
+    {
+        if(this->get_parent_element_state())
+        {
+            level_param.header.element_state_change = this->element_state_change_handle();
+        }
+        else
+        {
+            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Parent element state is null");
+            level_param.header.element_state_change = MESHX_NOT_FOUND;
+        }
+        return this->get_parent_element()->on_model_cb(&level_param, sizeof(level_param));
+    }
+    else
+    {
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Parent element is null");
     }
 
     return MESHX_INVALID_STATE;
+}
+
+/**
+ * @brief Handle state change request from element.
+ *
+ * This function is called by the parent element when a state change request
+ * is received. It validates the request and returns a result to the element.
+ * Note: The actual state is maintained in the element layer, not the model layer.
+ *
+ * @param[in] curr_el_state Pointer to meshx_gen_level_model_state_t containing the new state
+ * @return
+ *     - MESHX_SUCCESS: State change handled successfully
+ *     - MESHX_INVALID_ARG: Invalid parameter
+ */
+MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericLevelClientModel MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_PARAMS
+    :: element_state_change_handle()
+{
+    meshx_gen_level_model_state_t *el_state =
+        static_cast<meshx_gen_level_model_state_t*>(this->get_parent_element_state());
+    if(!el_state)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid parameter in element_state_change_handle");
+        return MESHX_INVALID_ARG;
+    }
+    if(memcmp(&model_state, el_state, sizeof(meshx_gen_level_model_state_t)) != 0)
+    {
+        MESHX_LOGI(MODULE_ID_MODEL_SERVER,
+            "Level state change request: present=%d target=%d remaining=%d",
+            el_state->present_level, el_state->target_level, el_state->remaining_time);
+        model_state = *el_state;
+    }
+    else
+    {
+        return MESHX_INVALID_STATE;
+    }
+    return MESHX_SUCCESS;
 }
 /**
  * @brief Creates a meshXGenericLevelClientModel instance based on a BLE device
@@ -182,8 +237,10 @@ meshx_err_t meshXGenericLevelClientModel MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_P
  */
 MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericLevelClientModel MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_PARAMS
-    ::meshXGenericLevelClientModel(meshXElementIF *parent_element)
-    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_LEVEL_CLI, parent_element) {/* Used only for initialization of Parent Class */}
+    ::meshXGenericLevelClientModel(
+        meshXElementIF *parent_element,
+        meshx_ptr_t     parent_element_state)
+    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_LEVEL_CLI, parent_element, parent_element_state) {/* Used only for initialization of Parent Class */}
 
 #endif /* CONFIG_ENABLE_GEN_LEVEL_CLIENT */
 /*******************************************************************************************************************/
@@ -264,8 +321,10 @@ meshx_err_t meshXGenericLevelServerModel MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_P
  */
 MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericLevelServerModel MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
-    ::meshXGenericLevelServerModel(meshXElementIF *parent_element)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_LEVEL_SRV, parent_element) {}
+    ::meshXGenericLevelServerModel(
+        meshXElementIF *parent_element,
+        meshx_ptr_t     parent_element_state)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_LEVEL_SRV, parent_element, parent_element_state) {}
 
 /**
  * @brief Creates and initializes a server model instance for Generic Level Server.

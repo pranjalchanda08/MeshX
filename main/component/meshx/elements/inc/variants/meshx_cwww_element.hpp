@@ -14,12 +14,16 @@
 #define __MESHX_CWWW_ELEMENT_HPP__
 
 #include <meshx_element_class.hpp>
+#include <generic_model/meshx_model_onoff.hpp>
+#include <light_model/meshx_model_ctl.hpp>
 
 #define MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
 #define MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
 
 #define MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
 #define MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
+
+#if CONFIG_LIGHT_CWWW_SRV_COUNT > 0
 
 /**
  * @brief CWWW server element context structure
@@ -30,22 +34,17 @@
  */
 struct meshx_cwww_srv_el_ctx_t
 {
-    // OnOff state
-    uint8_t on_off_state;  /**< Current OnOff state (0=OFF, 1=ON) */
-
-    // CTL state
-    int16_t delta_uv;          /**< Current delta UV value (-32768-32767) */
-    uint16_t lightness;        /**< Current lightness value (0-65535) */
-    uint16_t temperature;      /**< Current color temperature value (800-20000) */
-    uint16_t temp_range_min;   /**< Minimum temperature range */
-    uint16_t temp_range_max;   /**< Maximum temperature range */
-
     // Publication and app binding
     uint8_t app_id;        /**< Application key ID for publication */
     uint16_t pub_addr;     /**< Publication address */
+    // Generic OnOff state
+    meshx_gen_onoff_model_state_t   gen_on_off_state;   /**< Current OnOff state (0=OFF, 1=ON) */
+    // Light CTL state
+    meshx_light_ctl_model_state_t   light_ctl_state;    /**< Current Light CTL state */
 };
 
-#if CONFIG_LIGHT_CWWW_SRV_COUNT > 0
+using meshx_cwww_srv_el_ctx_t = struct meshx_cwww_srv_el_ctx_t;
+
 /*********************************************************************************
  * meshXCWWWServerElement
  *********************************************************************************/
@@ -64,6 +63,8 @@ MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
 class meshXCWWWServerElement : public meshXElementServer MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
 {
 private:
+    meshx_cwww_srv_el_ctx_t element_ctx;
+
     uint8_t list_sig_models() override;
     uint8_t list_ven_models() override;
 public:
@@ -72,11 +73,12 @@ public:
      * The meshXCWWWServerElement represents a CWWW server element in the MeshX BLE mesh network.
      * It automatically initializes and configures all required SIG models for the CWWW element.
      * The CWWW element combines Generic OnOff and Light CTL server models.
+     *
+     * @param element_idx The index of the element within the node.
      */
-    meshXCWWWServerElement() = default;
+    meshXCWWWServerElement(uint16_t element_idx);
 
-    meshXCWWWServerElement(uint16_t element_idx)
-        : meshXElementServer(element_idx) { };
+    meshXCWWWServerElement() = delete;
 };
 
 #endif /* CONFIG_LIGHT_CWWW_SRV_COUNT */
@@ -86,6 +88,25 @@ public:
  * meshXCWWWClientElement
  *********************************************************************************/
 
+/**
+ * @brief CWWW client element context structure
+ * @details This structure contains the state context for the CWWW client element,
+ *          including OnOff state, CTL state, and publication/app binding information.
+ *          This matches the C implementation pattern where state is maintained
+ *          in the element layer (el_ctx) for NVS persistence.
+ */
+struct meshx_cwww_cli_el_ctx_t
+{
+    // Publication and app binding
+    uint8_t app_id;        /**< Application key ID for publication */
+    uint16_t pub_addr;     /**< Publication address */
+    // Generic OnOff state
+    meshx_gen_onoff_model_state_t   gen_on_off_state;   /**< Current OnOff state (0=OFF, 1=ON) */
+    // Light CTL state
+    meshx_light_ctl_model_state_t   light_ctl_state;    /**< Current Light CTL state */
+};
+
+using meshx_cwww_srv_el_ctx_t = struct meshx_cwww_srv_el_ctx_t;
 /**
  * @brief Enumeration of CWWW SIG model IDs for client element.
  */
@@ -100,6 +121,7 @@ MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
 class meshXCWWWClientElement : public meshXElementClient MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
 {
 private:
+    meshx_cwww_cli_el_ctx_t element_ctx;
     uint8_t list_sig_models() override;
     uint8_t list_ven_models() override;
 public:
@@ -108,11 +130,11 @@ public:
      * The meshXCWWWClientElement represents a CWWW client element in the MeshX BLE mesh network.
      * It automatically initializes and configures all required SIG models for the CWWW element.
      * The CWWW element combines Generic OnOff and Light CTL client models.
+     *
+     * @param element_idx The index of the element within the node.
      */
-    meshXCWWWClientElement() = default;
-
-    meshXCWWWClientElement(uint16_t element_idx)
-        : meshXElementClient(element_idx) { };
+    meshXCWWWClientElement(uint16_t element_idx);
+    meshXCWWWClientElement() = delete;
 };
 #endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */
 

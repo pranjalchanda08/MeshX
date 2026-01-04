@@ -37,55 +37,123 @@
  */
 MESHX_GEN_PROPERTY_CLIENT_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericPropertyClientModel MESHX_GEN_PROPERTY_CLIENT_MODEL_TEMPLATE_PARAMS
-    :: meshx_state_change_notify(const meshx_gen_cli_cb_param_t *param, uint8_t status) const
+    :: meshx_state_change_notify(const meshx_gen_cli_cb_param_t *param, uint8_t status)
 {
     if (!param){
         return MESHX_INVALID_ARG;
     }
 
-    meshx_property_cli_el_msg_t property_param = {
-        .err_code = status,
-        .model = param->model,
-        .ctx = param->ctx,
-        .property_id = 0, // Property ID will be determined by context
-        .property_value = nullptr,
-        .access = 0
-    };
-
     // Handle different property status types based on opcode
     switch(param->ctx.opcode) {
         case MESHX_MODEL_OP_GEN_USER_PROPERTIES_STATUS:
+            model_state.property_id = 0;
+            model_state.property_value = nullptr;
+            model_state.access = 0;
             break;
         case MESHX_MODEL_OP_GEN_USER_PROPERTY_STATUS:
-            property_param.property_id = param->status.user_property_status.property_id;
-            property_param.access = param->status.user_property_status.user_access;
+            model_state.property_id = param->status.user_property_status.property_id;
+            model_state.property_value = nullptr;
+            model_state.access = param->status.user_property_status.user_access;
             break;
         case MESHX_MODEL_OP_GEN_ADMIN_PROPERTIES_STATUS:
+            model_state.property_id = 0;
+            model_state.property_value = nullptr;
+            model_state.access = 0;
             break;
         case MESHX_MODEL_OP_GEN_ADMIN_PROPERTY_STATUS:
-            property_param.property_id = param->status.admin_property_status.property_id;
-            property_param.access = param->status.admin_property_status.user_access;
+            model_state.property_id = param->status.admin_property_status.property_id;
+            model_state.property_value = nullptr;
+            model_state.access = param->status.admin_property_status.user_access;
             break;
         case MESHX_MODEL_OP_GEN_MANUFACTURER_PROPERTIES_STATUS:
+            model_state.property_id = 0;
+            model_state.property_value = nullptr;
+            model_state.access = 0;
             break;
         case MESHX_MODEL_OP_GEN_MANUFACTURER_PROPERTY_STATUS:
-            property_param.property_id = param->status.manufacturer_property_status.property_id;
-            property_param.access = param->status.manufacturer_property_status.user_access;
+            model_state.property_id = param->status.manufacturer_property_status.property_id;
+            model_state.property_value = nullptr;
+            model_state.access = param->status.manufacturer_property_status.user_access;
             break;
         case MESHX_MODEL_OP_GEN_CLIENT_PROPERTIES_STATUS:
+            model_state.property_id = 0;
+            model_state.property_value = nullptr;
+            model_state.access = 0;
             break;
         default:
+            model_state.property_id = 0;
+            model_state.property_value = nullptr;
+            model_state.access = 0;
             break;
     }
 
+    meshx_property_cli_el_msg_t property_param =
+    {
+        .header = {
+            .err_code               = param->err_code,
+            .model                  = param->model,
+            .ctx                    = param->ctx,
+            .element_state_change   = MESHX_SUCCESS,
+        },
+        .state                  = model_state,
+    };
+
     /* Send the state change event to the respective Element */
-    if (this->get_parent_element()) {
-        return this->get_parent_element()->on_model_cb(&property_param);
-    } else {
+    if (this->get_parent_element())
+    {
+        if(this->get_parent_element_state())
+        {
+            property_param.header.element_state_change = this->element_state_change_handle();
+        }
+        else
+        {
+            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Parent element state is null");
+            property_param.header.element_state_change = MESHX_NOT_FOUND;
+        }
+        return this->get_parent_element()->on_model_cb(&property_param, sizeof(property_param));
+    }
+    else
+    {
         MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Parent element is null");
     }
 
     return MESHX_INVALID_STATE;
+}
+
+/**
+ * @brief Handle state change request from element.
+ *
+ * This function is called by the parent element when a state change request
+ * is received. It validates the request and returns a result to the element.
+ * Note: The actual state is maintained in the element layer, not the model layer.
+ *
+ * @param[in] curr_el_state Pointer to meshx_gen_property_model_state_t containing the new state
+ * @return
+ *     - MESHX_SUCCESS: State change handled successfully
+ *     - MESHX_INVALID_ARG: Invalid parameter
+ */
+MESHX_GEN_PROPERTY_CLIENT_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericPropertyClientModel MESHX_GEN_PROPERTY_CLIENT_MODEL_TEMPLATE_PARAMS
+    :: element_state_change_handle()
+{
+    meshx_gen_property_model_state_t *el_state =
+        static_cast<meshx_gen_property_model_state_t*>(this->get_parent_element_state());
+    if(!el_state)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid parameter in element_state_change_handle");
+        return MESHX_INVALID_ARG;
+    }
+    if(el_state->property_id != model_state.property_id)
+    {
+        el_state->property_id = model_state.property_id;
+    }
+    if(el_state->access != model_state.access)
+    {
+        el_state->access = model_state.access;
+    }
+    // Note: property_value is a pointer and should be handled carefully
+    // The actual value management is typically done at the element level
+    return MESHX_SUCCESS;
 }
 /**
  * @brief Creates a meshXGenericPropertyClientModel instance based on a BLE device
@@ -206,8 +274,10 @@ meshx_err_t meshXGenericPropertyClientModel MESHX_GEN_PROPERTY_CLIENT_MODEL_TEMP
  */
 MESHX_GEN_PROPERTY_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericPropertyClientModel MESHX_GEN_PROPERTY_CLIENT_MODEL_TEMPLATE_PARAMS
-    ::meshXGenericPropertyClientModel(meshXElementIF *parent_element)
-    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_PROP_CLI, parent_element) {/* Used only for initialization of Parent Class */}
+    ::meshXGenericPropertyClientModel(
+        meshXElementIF *parent_element,
+        meshx_ptr_t     parent_element_state)
+    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_PROP_CLI, parent_element, parent_element_state) {/* Used only for initialization of Parent Class */}
 
 #endif /* CONFIG_ENABLE_GEN_PROPERTY_CLIENT */
 /*******************************************************************************************************************/
@@ -292,8 +362,10 @@ meshx_err_t meshXGenericAdminPropertyServerModel MESHX_GEN_ADMIN_PROPERTY_SERVER
  */
 MESHX_GEN_ADMIN_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericAdminPropertyServerModel MESHX_GEN_ADMIN_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
-    ::meshXGenericAdminPropertyServerModel(meshXElementIF *parent_element)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_ADMIN_PROP_SRV, parent_element) {}
+    ::meshXGenericAdminPropertyServerModel(
+        meshXElementIF *parent_element,
+        meshx_ptr_t     parent_element_state)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_ADMIN_PROP_SRV, parent_element, parent_element_state) {}
 
 /**
  * @brief Creates and initializes a server model instance for Generic Admin Property Server.
@@ -441,8 +513,10 @@ meshx_err_t meshXGenericManufacturerPropertyServerModel MESHX_GEN_MANUFACTURER_P
  */
 MESHX_GEN_MANUFACTURER_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericManufacturerPropertyServerModel MESHX_GEN_MANUFACTURER_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
-    ::meshXGenericManufacturerPropertyServerModel(meshXElementIF *parent_element)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_MANUFACTURER_PROP_SRV, parent_element) {}
+    ::meshXGenericManufacturerPropertyServerModel(
+        meshXElementIF *parent_element,
+        meshx_ptr_t     parent_element_state)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_MANUFACTURER_PROP_SRV, parent_element, parent_element_state) {}
 
 /**
  * @brief Creates and initializes a server model instance for Generic Manufacturer Property Server.
@@ -590,8 +664,10 @@ meshx_err_t meshXGenericUserPropertyServerModel MESHX_GEN_USER_PROPERTY_SERVER_M
  */
 MESHX_GEN_USER_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericUserPropertyServerModel MESHX_GEN_USER_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
-    ::meshXGenericUserPropertyServerModel(meshXElementIF *parent_element)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_USER_PROP_SRV, parent_element) {}
+    ::meshXGenericUserPropertyServerModel(
+        meshXElementIF *parent_element,
+        meshx_ptr_t     parent_element_state)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_USER_PROP_SRV, parent_element, parent_element_state) {}
 
 /**
  * @brief Creates and initializes a server model instance for Generic User Property Server.
@@ -697,8 +773,10 @@ if (!params|| !params->model || !params->ctx)
  */
 MESHX_GEN_CLIENT_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericClientPropertyServerModel MESHX_GEN_CLIENT_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
-    ::meshXGenericClientPropertyServerModel(meshXElementIF *parent_element)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_CLIENT_PROP_SRV, parent_element) {}
+    ::meshXGenericClientPropertyServerModel(
+        meshXElementIF *parent_element,
+        meshx_ptr_t     parent_element_state)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_CLIENT_PROP_SRV, parent_element, parent_element_state) {}
 
 /**
  * @brief Callback function for handling BLE mesh events for Generic Client Property Server Model
