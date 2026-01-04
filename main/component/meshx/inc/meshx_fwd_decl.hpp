@@ -50,11 +50,101 @@ MESHX_BASE_TEMPLATE_PROTO class meshXBaseModel;
 MESHX_BASE_SERVER_TEMPLATE_PROTO class meshXBaseServerModel;
 MESHX_BASE_CLIENT_TEMPLATE_PROTO class meshXBaseClientModel;
 
+class meshXModelIF;
 MESHX_MODEL_TEMPLATE_PROTO class meshXModel;
 MESHX_SERVER_MODEL_TEMPLATE_PROTO class meshXServerModel;
 MESHX_CLIENT_MODEL_TEMPLATE_PROTO class meshXClientModel;
 
-class meshXElementIF;
+/*********************************************************************************
+ * meshXElementIF
+ *********************************************************************************/
+enum class meshxElementType
+{
+    MESHX_ELEMENT_TYPE_SERVER = 0,
+    MESHX_ELEMENT_TYPE_CLIENT = 1
+};
+
+/**
+ * @class meshXElementIF
+ * @brief Interface class for MeshX elements
+ * @details This is an interface class defining the base functionality for mesh elements.
+ */
+
+using meshxElementType_t = enum meshxElementType;
+
+class meshXElementIF
+{
+private:
+    uint16_t element_idx;
+public:
+    /**
+     * @brief Handle model callback from child models.
+     *
+     * This is a pure virtual function that must be implemented by derived classes.
+     * It is called when a model event occurs, allowing the element to handle the event.
+     *
+     * @param[in] param      Pointer to the model event parameters.
+     * @param[in] param_size Size of the parameter structure.
+     * @return MESHX_SUCCESS on success, error code otherwise.
+     */
+    virtual meshx_err_t on_model_cb(meshx_ptr_t param, size_t param_size) = 0;
+
+    void set_element_idx(uint16_t idx) { element_idx = idx; }
+    uint16_t get_element_idx(void) const { return element_idx; }
+
+    /**
+     * @brief Get the element type
+     * @return Element type (server or client)
+     */
+    virtual meshxElementType_t get_element_type(void) const = 0;
+
+    /**
+     * @brief Get the number of SIG models supported by the element
+     * @return Number of SIG models
+     */
+    virtual uint8_t get_no_of_sig_models(void) const = 0;
+
+    /**
+     * @brief Get the number of Vendor models supported by the element
+     * @return Number of Vendor models
+     */
+    virtual uint8_t get_no_of_ven_models(void) const = 0;
+
+    /**
+     * @brief Get the SIG models vector
+     * @return Reference to the SIG models vector
+     */
+    virtual std::vector<std::unique_ptr<meshXModelIF>>& get_sig_models(void) = 0;
+
+    /**
+     * @brief Get the Vendor models vector
+     * @return Reference to the Vendor models vector
+     */
+    virtual std::vector<std::unique_ptr<meshXModelIF>>& get_ven_models(void) = 0;
+
+    /**
+     * @brief Initialize the element
+     * @return MESHX_SUCCESS on success, error code otherwise
+     */
+    virtual meshx_err_t initialize(void) = 0;
+
+    /**
+     * @brief Reset the element
+     * @return MESHX_SUCCESS on success, error code otherwise
+     */
+    virtual meshx_err_t reset(void) = 0;
+
+    /**
+     * @brief Check if the element is initialized
+     * @return true if initialized, false otherwise
+     */
+    virtual bool is_initialized(void) const = 0;
+
+    meshXElementIF() = delete;
+    explicit meshXElementIF(uint16_t element_idx) : element_idx(element_idx) { }
+    virtual ~meshXElementIF() = default;
+};
+
 MESHX_ELEMENT_TEMPLATE_PROTO        class meshXElement;
 MESHX_SERVER_ELEMENT_TEMPLATE_PROTO class meshXElementServer;
 MESHX_CLIENT_ELEMENT_TEMPLATE_PROTO class meshXElementClient;
