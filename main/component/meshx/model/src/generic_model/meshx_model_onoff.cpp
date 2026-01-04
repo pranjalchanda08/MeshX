@@ -242,7 +242,8 @@ meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
 ::meshXGenericOnOffServerModel(
         meshXElementIF *parent_element,
         meshx_ptr_t parent_element_state)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_ONOFF_SRV, parent_element, parent_element_state) {}
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_ONOFF_SRV, parent_element, parent_element_state)
+{}
 
 /**
  * @brief Creates and initializes a server model instance.

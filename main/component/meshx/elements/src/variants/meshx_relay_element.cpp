@@ -22,6 +22,23 @@
  *********************************************************************************/
 
 /**
+ * @brief Constructs a new meshXRelayServerElement instance.
+ * The meshXRelayServerElement represents a relay element in the MeshX BLE mesh network.
+ * It automatically initializes and configures all required SIG models for the relay element.
+ *
+ * @param element_idx The index of the element within the node.
+ */
+MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PROTO
+meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
+    :: meshXRelayServerElement(uint16_t element_idx)
+    : meshXElementServer(element_idx)
+{
+    this->register_element_ctx(
+        &element_ctx,
+        sizeof(meshx_relay_srv_el_ctx_t)
+    );
+}
+/**
  * @brief Lists and initializes SIG models for Relay Server Element
  *
  * This function creates and adds the Generic OnOff Server model
@@ -63,6 +80,23 @@ uint8_t meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
  * meshXRelayClientElement
  *********************************************************************************/
 
+/**
+ * @brief Constructs a new meshXRelayClientElement instance.
+ * The meshXRelayClientElement represents a relay client element in the MeshX BLE mesh network.
+ * It automatically initializes and configures all required SIG models for the relay client element.
+ *
+ * @param element_idx The index of the element within the node.
+ */
+MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
+meshXRelayClientElement MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
+    :: meshXRelayClientElement(uint16_t element_idx)
+    : meshXElementClient(element_idx)
+{
+    this->register_element_ctx(
+        &element_ctx,
+        sizeof(meshx_relay_cli_el_ctx_t)
+    );
+}
 /**
  * @brief Lists and initializes SIG models for Relay Client Element
  *

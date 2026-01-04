@@ -259,7 +259,7 @@ public:
      *          and associates it with an optional parent element
      */
     meshXServerModel(
-        MESHX_MODEL     *p_plat_model,
+        MESHX_MODEL    *p_plat_model,
         uint32_t        model_id,
         meshXElementIF *parent_element = nullptr,
         meshx_ptr_t     parent_element_state = nullptr

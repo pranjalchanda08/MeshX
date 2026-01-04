@@ -29,16 +29,27 @@
 #define MESHX_LIGHT_LIGHTNESS_SERVER_MODEL_TEMPLATE_PARAMS
 
 /**
+ * @brief Structure to hold the Light Lightness model state.
+ */
+typedef struct meshx_light_lightness_model_state
+{
+    uint16_t present_lightness;    /**< Present lightness value */
+    uint16_t target_lightness;     /**< Target lightness value */
+    uint16_t lightness_last;       /**< Last lightness value */
+    uint16_t lightness_default;    /**< Default lightness value */
+    uint16_t range_min;            /**< Minimum range value */
+    uint16_t range_max;            /**< Maximum range value */
+}meshx_light_lightness_model_state_t;
+
+/**
  * @brief Structure to hold the parameters for sending a Light Lightness message.
  */
 struct meshx_light_lightness_send_params
 {
-    meshx_model_t *model;      /**< Pointer to the Light Lightness client model. */
-    meshx_ctx_t *ctx;          /**< The context of the message. */
-    uint16_t lightness;        /**< Lightness value (0-65535) */
-    uint16_t range_min;        /**< Range minimum value (used for range set) */
-    uint16_t range_max;        /**< Range maximum value (used for range set) */
-    uint8_t tid;               /**< Transaction ID of the message. Only used by Client */
+    meshx_model_t                      *model;  /**< Pointer to the Light Lightness client model. */
+    meshx_ctx_t                        *ctx;    /**< The context of the message. */
+    uint8_t                             tid;    /**< Transaction ID of the message. Only used by Client */
+    meshx_light_lightness_model_state_t   state;  /**< The state of the message. */
 };
 
 using meshx_light_lightness_send_params_t = struct meshx_light_lightness_send_params;
@@ -50,16 +61,8 @@ using meshx_light_lightness_send_params_t = struct meshx_light_lightness_send_pa
  */
 struct meshx_light_lightness_cli_el_msg
 {
-    int err_code;              /**< Error code */
-    meshx_model_t model;       /**< Light Lightness Client model */
-    meshx_ctx_t ctx;           /**< Context */
-    uint16_t present_lightness;    /**< Present lightness value */
-    uint16_t target_lightness;     /**< Target lightness value */
-    uint16_t lightness_last;       /**< Last lightness value */
-    uint16_t lightness_default;    /**< Default lightness value */
-    uint16_t range_min;            /**< Minimum range value */
-    uint16_t range_max;            /**< Maximum range value */
-    uint8_t status_code;           /**< Status code for range operations */
+    meshx_cli_model_send_param_header_t header; /**< Client model send param header */
+    meshx_light_lightness_model_state_t       state;  /**< The state of the message. */
 };
 
 using meshx_light_lightness_cli_el_msg_t = struct meshx_light_lightness_cli_el_msg;
@@ -78,13 +81,24 @@ class meshXLightLightnessClientModel MESHX_LIGHT_LIGHTNESS_CLIENT_MODEL_TEMPLATE
     : public meshXClientModel<meshXBaseLightClientModel, meshx_light_lightness_send_params_t>
 {
 private:
-    meshx_err_t meshx_state_change_notify(const meshx_gen_light_cli_cb_param_t *param, uint8_t status) const;
+    /* New or updated model state from BLE layer */
+    meshx_light_lightness_model_state_t model_state;
+
+    meshx_err_t meshx_state_change_notify   (
+        const meshx_gen_light_cli_cb_param_t *param,
+        uint8_t status
+    );
+
+    meshx_err_t element_state_change_handle (void) override;
 
 public:
-    meshx_err_t model_send(meshx_light_lightness_send_params_t *params) override;
-    meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t model_send          (meshx_light_lightness_send_params_t *params) override;
+    meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXLightLightnessClientModel(meshXElementIF *parent_element = nullptr);
+    meshXLightLightnessClientModel(
+        meshXElementIF *parent_element = nullptr,
+        meshx_ptr_t     parent_element_state = nullptr
+    );
     ~meshXLightLightnessClientModel() = default;
 };
 
@@ -98,8 +112,8 @@ public:
  */
 struct meshx_light_lightness_srv_el_msg
 {
-    meshx_model_t model;       /**< Light Lightness Server model */
-    uint16_t lightness;        /**< Present lightness value */
+    meshx_srv_model_send_param_header_t header; /**< Server model send param header */
+    meshx_light_lightness_model_state_t       state;  /**< The state of the message. */
 };
 
 using meshx_light_lightness_srv_el_msg_t = struct meshx_light_lightness_srv_el_msg;
@@ -118,14 +132,21 @@ class meshXLightLightnessServerModel MESHX_LIGHT_LIGHTNESS_SERVER_MODEL_TEMPLATE
     : public meshXServerModel<meshXBaseLightServerModel, meshx_light_lightness_send_params_t>
 {
 private:
-    meshx_err_t plat_model_create(void) override;
-    meshx_err_t plat_model_delete(void) override;
+    /* New or updated model state from BLE layer */
+    meshx_light_lightness_model_state_t model_state;
+
+    meshx_err_t plat_model_create   (void) override;
+    meshx_err_t plat_model_delete   (void) override;
+    meshx_err_t element_state_change_handle (void) override;
 
 public:
-    meshx_err_t model_send(meshx_light_lightness_send_params_t *params) override;
-    meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t model_send          (meshx_light_lightness_send_params_t *params) override;
+    meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXLightLightnessServerModel(meshXElementIF *parent_element = nullptr);
+    meshXLightLightnessServerModel(
+        meshXElementIF *parent_element = nullptr,
+        meshx_ptr_t     parent_element_state = nullptr
+    );
     ~meshXLightLightnessServerModel() = default;
 };
 

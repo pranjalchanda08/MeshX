@@ -28,16 +28,26 @@
 #define MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
 
 /**
+ * @brief Structure to hold the Level model state.
+ */
+typedef struct meshx_gen_level_model_state
+{
+    int16_t present_level;  /**< The present value of Generic Level state */
+    int16_t target_level;   /**< The target value of Generic Level state (optional) */
+    uint8_t remaining_time; /**< Remaining transition time (optional) */
+}meshx_gen_level_model_state_t;
+
+/**
  * @brief Structure to hold the parameters for sending a Generic Level message.
  */
 struct meshx_gen_level_send_params
 {
-    meshx_model_t *model;    /**< Pointer to the Level client model. */
-    meshx_ctx_t *ctx;        /**< The context of the message. */
-    int16_t level;           /**< The level value of the message. */
-    uint8_t tid;             /**< The transaction ID of the message. Only used by Client*/
-    uint8_t transition_time; /**< Transition time (optional). */
-    uint8_t delay;           /**< Delay (optional). */
+    meshx_model_t               *model;  /**< Pointer to the Level client model. */
+    meshx_ctx_t                 *ctx;    /**< The context of the message. */
+    uint8_t                      tid;    /**< The transaction ID of the message. Only used by Client*/
+    uint8_t                      transition_time; /**< Transition time (optional). */
+    uint8_t                      delay;   /**< Delay (optional). */
+    meshx_gen_level_model_state_t state;  /**< The state of the message. */
 };
 
 using meshx_gen_level_send_params_t = struct meshx_gen_level_send_params;
@@ -50,12 +60,8 @@ using meshx_gen_level_send_params_t = struct meshx_gen_level_send_params;
  */
 struct meshx_level_cli_el_msg
 {
-    uint8_t err_code;       /**< Error code */
-    meshx_model_t model;    /**< Generic Level Server model */
-    meshx_ctx_t ctx;        /**< Context of the message */
-    int16_t present_level;  /**< The present value of Generic Level state */
-    int16_t target_level;   /**< The target value of Generic Level state (optional) */
-    uint8_t remaining_time; /**< Remaining transition time (optional) */
+    meshx_cli_model_send_param_header_t header; /**< Client model send param header */
+    meshx_gen_level_model_state_t       state;  /**< The state of the message. */
 };
 
 using meshx_level_cli_el_msg_t = struct meshx_level_cli_el_msg;
@@ -72,13 +78,20 @@ MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_PROTO
 class meshXGenericLevelClientModel : public meshXClientModel<meshXBaseGenericClientModel, meshx_gen_level_send_params_t>
 {
 private:
-    meshx_err_t meshx_state_change_notify(const meshx_gen_cli_cb_param_t *param, uint8_t status) const;
+    /* New or updated model state from BLE layer */
+    meshx_gen_level_model_state_t model_state;
+
+    meshx_err_t meshx_state_change_notify   (const meshx_gen_cli_cb_param_t *param, uint8_t status);
+    meshx_err_t element_state_change_handle (void) override;
 
 public:
-    meshx_err_t model_send(meshx_gen_level_send_params_t *params) override;
-    meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t model_send          (meshx_gen_level_send_params_t *params) override;
+    meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXGenericLevelClientModel(meshXElementIF *parent_element = nullptr);
+    meshXGenericLevelClientModel(
+        meshXElementIF *parent_element = nullptr,
+        meshx_ptr_t     parent_element_state = nullptr
+    );
     ~meshXGenericLevelClientModel() = default;
 };
 
@@ -88,8 +101,8 @@ public:
 
 using meshx_level_srv_el_msg_t = struct meshx_level_srv_el_msg
 {
-    meshx_model_t *model; /**< Generic Level Server model */
-    int16_t level;        /**< The current level value */
+    meshx_srv_model_send_param_header_t header; /**< Server model send param header */
+    meshx_gen_level_model_state_t       state;  /**< The state of the message. */
 };
 
 /**
@@ -105,13 +118,23 @@ MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PROTO
 class meshXGenericLevelServerModel : public meshXServerModel<meshXBaseGenericServerModel, meshx_gen_level_send_params_t>
 {
 private:
-    meshx_err_t plat_model_create(void) override;
-    meshx_err_t plat_model_delete(void) override;
-public:
-    meshx_err_t model_send(meshx_gen_level_send_params_t *params) override;
-    meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    /* New or updated model state from BLE layer */
+    meshx_gen_level_model_state_t model_state;
 
-    meshXGenericLevelServerModel(meshXElementIF *parent_element = nullptr);
+    meshx_err_t plat_model_create   (void) override;
+    meshx_err_t plat_model_delete   (void) override;
+
+public:
+    meshx_err_t model_send          (meshx_gen_level_send_params_t *params) override;
+    meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+
+    // Virtual method implementation from meshXModelIF
+    meshx_err_t element_state_change_handle (void) override;
+
+    meshXGenericLevelServerModel(
+        meshXElementIF *parent_element = nullptr,
+        meshx_ptr_t     parent_element_state = nullptr
+    );
     ~meshXGenericLevelServerModel() = default;
 };
 #endif /* CONFIG_ENABLE_GEN_LEVEL_SERVER */

@@ -29,20 +29,31 @@
 #define MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAMS
 
 /**
+ * @brief Structure to hold the Light HSL model state.
+ */
+typedef struct meshx_light_hsl_model_state
+{
+    uint16_t lightness;        /**< Present lightness value */
+    uint16_t hue;              /**< Present hue value */
+    uint16_t saturation;       /**< Present saturation value */
+    uint16_t target_lightness; /**< Target lightness value */
+    uint16_t target_hue;       /**< Target hue value */
+    uint16_t target_saturation;/**< Target saturation value */
+    uint16_t hue_range_min;    /**< Hue range minimum */
+    uint16_t hue_range_max;    /**< Hue range maximum */
+    uint16_t sat_range_min;    /**< Saturation range minimum */
+    uint16_t sat_range_max;    /**< Saturation range maximum */
+}meshx_light_hsl_model_state_t;
+
+/**
  * @brief Structure to hold the parameters for sending a Light HSL message.
  */
 struct meshx_light_hsl_send_params
 {
-    meshx_model_t *model;      /**< Pointer to the Light HSL client model. */
-    meshx_ctx_t *ctx;          /**< The context of the message. */
-    uint16_t lightness;        /**< Lightness value (0-65535) */
-    uint16_t hue;              /**< Hue value (0-65535) */
-    uint16_t saturation;       /**< Saturation value (0-65535) */
-    uint16_t hue_range_min;    /**< Hue range minimum (for range operations) */
-    uint16_t hue_range_max;    /**< Hue range maximum (for range operations) */
-    uint16_t sat_range_min;    /**< Saturation range minimum (for range operations) */
-    uint16_t sat_range_max;    /**< Saturation range maximum (for range operations) */
-    uint8_t tid;               /**< Transaction ID of the message. Only used by Client */
+    meshx_model_t                *model;  /**< Pointer to the Light HSL client model. */
+    meshx_ctx_t                  *ctx;    /**< The context of the message. */
+    uint8_t                       tid;    /**< Transaction ID of the message. Only used by Client */
+    meshx_light_hsl_model_state_t state;  /**< The state of the message. */
 };
 
 using meshx_light_hsl_send_params_t = struct meshx_light_hsl_send_params;
@@ -54,20 +65,8 @@ using meshx_light_hsl_send_params_t = struct meshx_light_hsl_send_params;
  */
 struct meshx_light_hsl_cli_el_msg
 {
-    int err_code;              /**< Error code */
-    meshx_model_t model;       /**< Light HSL Client model */
-    meshx_ctx_t ctx;           /**< Context */
-    uint16_t lightness;        /**< Present lightness value */
-    uint16_t hue;              /**< Present hue value */
-    uint16_t saturation;       /**< Present saturation value */
-    uint16_t target_lightness; /**< Target lightness value */
-    uint16_t target_hue;       /**< Target hue value */
-    uint16_t target_saturation;/**< Target saturation value */
-    uint16_t hue_range_min;    /**< Hue range minimum */
-    uint16_t hue_range_max;    /**< Hue range maximum */
-    uint16_t sat_range_min;    /**< Saturation range minimum */
-    uint16_t sat_range_max;    /**< Saturation range maximum */
-    uint8_t status_code;       /**< Status code */
+    meshx_cli_model_send_param_header_t header; /**< Client model send param header */
+    meshx_light_hsl_model_state_t       state;  /**< The state of the message. */
 };
 
 using meshx_light_hsl_cli_el_msg_t = struct meshx_light_hsl_cli_el_msg;
@@ -86,13 +85,24 @@ class meshXLightHSLClientModel MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAMS
     : public meshXClientModel<meshXBaseLightClientModel, meshx_light_hsl_send_params_t>
 {
 private:
-    meshx_err_t meshx_state_change_notify(const meshx_gen_light_cli_cb_param_t *param, uint8_t status) const;
+    /* New or updated model state from BLE layer */
+    meshx_light_hsl_model_state_t model_state;
+
+    meshx_err_t meshx_state_change_notify   (
+        const meshx_gen_light_cli_cb_param_t *param,
+        uint8_t status
+    );
+
+    meshx_err_t element_state_change_handle (void) override;
 
 public:
-    meshx_err_t model_send(meshx_light_hsl_send_params_t *params) override;
-    meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t model_send          (meshx_light_hsl_send_params_t *params) override;
+    meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXLightHSLClientModel(meshXElementIF *parent_element = nullptr);
+    meshXLightHSLClientModel(
+        meshXElementIF *parent_element = nullptr,
+        meshx_ptr_t     parent_element_state = nullptr
+    );
     ~meshXLightHSLClientModel() = default;
 };
 
@@ -106,10 +116,8 @@ public:
  */
 struct meshx_light_hsl_srv_el_msg
 {
-    meshx_model_t model;       /**< Light HSL Server model */
-    uint16_t lightness;        /**< Present lightness value */
-    uint16_t hue;              /**< Present hue value */
-    uint16_t saturation;       /**< Present saturation value */
+    meshx_srv_model_send_param_header_t header; /**< Server model send param header */
+    meshx_light_hsl_model_state_t       state;  /**< The state of the message. */
 };
 
 using meshx_light_hsl_srv_el_msg_t = struct meshx_light_hsl_srv_el_msg;
@@ -128,14 +136,21 @@ class meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAMS
     : public meshXServerModel<meshXBaseLightServerModel, meshx_light_hsl_send_params_t>
 {
 private:
-    meshx_err_t plat_model_create(void) override;
-    meshx_err_t plat_model_delete(void) override;
+    /* New or updated model state from BLE layer */
+    meshx_light_hsl_model_state_t model_state;
+
+    meshx_err_t plat_model_create   (void) override;
+    meshx_err_t plat_model_delete   (void) override;
+    meshx_err_t element_state_change_handle (void) override;
 
 public:
-    meshx_err_t model_send(meshx_light_hsl_send_params_t *params) override;
-    meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t model_send          (meshx_light_hsl_send_params_t *params) override;
+    meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXLightHSLServerModel(meshXElementIF *parent_element = nullptr);
+    meshXLightHSLServerModel(
+        meshXElementIF *parent_element = nullptr,
+        meshx_ptr_t     parent_element_state = nullptr
+    );
     ~meshXLightHSLServerModel() = default;
 };
 

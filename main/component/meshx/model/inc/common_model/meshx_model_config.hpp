@@ -27,13 +27,22 @@
 #define MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS
 
 /**
+ * @brief Structure to hold the Config model state.
+ */
+typedef struct meshx_config_model_state
+{
+    meshx_cfg_srv_state_change_t state_change; /**< State change information. */
+}meshx_config_model_state_t;
+
+/**
  * @brief Structure to hold the parameters for sending a Generic OnOff message.
  */
 struct meshx_config_send_params
 {
-    meshx_model_t *model; /**< Pointer to the On/Off client model. */
-    meshx_ctx_t *ctx;     /**< The context of the message. */
-    uint8_t stub;         /**< No Params to send hence placing a stub */
+    meshx_model_t               *model;  /**< Pointer to the On/Off client model. */
+    meshx_ctx_t                 *ctx;    /**< The context of the message. */
+    uint8_t                      stub;   /**< No Params to send hence placing a stub */
+    meshx_config_model_state_t   state;  /**< The state of the message. */
 };
 
 using meshx_config_send_params_t = struct meshx_config_send_params;
@@ -43,9 +52,8 @@ using meshx_config_send_params_t = struct meshx_config_send_params;
  */
 struct meshx_config_srv_el_msg
 {
-    meshx_model_t model;           /**< Config server model information. */
-    meshx_ctx_t ctx;              /**< Message context. */
-    meshx_cfg_srv_state_change_t state_change; /**< State change information. */
+    meshx_srv_model_send_param_header_t header; /**< Server model send param header */
+    meshx_config_model_state_t          state;  /**< The state of the message. */
 };
 
 using meshx_config_srv_el_msg_t = struct meshx_config_srv_el_msg;
@@ -54,19 +62,25 @@ MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PROTO
 class meshXConfigModel : public meshXServerModel<meshXBaseConfigServerModel, meshx_config_send_params_t>
 {
 private:
-    meshx_err_t plat_model_create(void) override;
-    meshx_err_t plat_model_delete(void) override;
-    meshx_err_t element_state_change_handle(void) override
+    /* New or updated model state from BLE layer */
+    meshx_config_model_state_t model_state;
+
+    meshx_err_t plat_model_create   (void) override;
+    meshx_err_t plat_model_delete   (void) override;
+    meshx_err_t element_state_change_handle (void) override
     {
         /* Nothing to do here */
         return MESHX_SUCCESS;
     };
 
 public:
-    meshx_err_t model_send(meshx_config_send_params_t *params) override;
-    meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t model_send          (meshx_config_send_params_t *params) override;
+    meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXConfigModel(meshXElementIF *parent_element = nullptr);
+    meshXConfigModel(
+        meshXElementIF *parent_element = nullptr,
+        meshx_ptr_t     parent_element_state = nullptr
+    );
     ~meshXConfigModel() override = default;
     // Configuration model related members and methods would be defined here.
 };
