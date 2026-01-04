@@ -1,7 +1,7 @@
 /**
  * @file meshx_model_ctl.cpp
  * @brief Implementation of Light CTL Model classes for MeshX.
- *        This file contains the implementation of the Light CTL Server and Client models
+ *        This file contains the implementation of Light CTL Server and Client models
  *        for the MeshX BLE mesh framework.
  *
  * Key Features:
@@ -15,11 +15,10 @@
  */
 
 #include <light_model/meshx_model_ctl.hpp>
-#include <meshx_element_class.hpp>
 
 #if CONFIG_ENABLE_LIGHT_CTL_CLIENT
 /**
- * @brief Handle Light CTL state change notifications from the MeshX stack.
+ * @brief Handle Light CTL state change notifications from MeshX stack.
  *
  * This function is responsible for handling Light CTL state change notifications
  * from the MeshX stack. It is called when the MeshX stack receives a state
@@ -51,35 +50,55 @@ meshx_err_t meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAM
         .temp_range_max = 0
     };
 
-    meshx_light_ctl_cli_el_msg_t ctl_param =
+    // Prepare the message (store in member variable)
+    element_msg =
     {
         .err_code             = status,
         .model                = param->model,
         .ctx                  = param->ctx,
-        .element_state_change = MESHX_SUCCESS,
+        .element_state_change   = MESHX_SUCCESS,  // Will be set by base layer
         .state                = model_state,
     };
 
-    /* Send the state change event to the respective Element */
-    if (this->get_parent_element())
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Handle state change request from element.
+ *
+ * This function is called by the parent element when a state change request
+ * is received. It validates the request and returns a result to the element.
+ * Note: The actual state is maintained in the element layer, not the model layer.
+ *
+ * @param[in] curr_el_state Pointer to meshx_light_ctl_model_state_t containing the new state
+ * @return
+ *     - MESHX_SUCCESS: State change handled successfully
+ *     - MESHX_INVALID_ARG: Invalid parameter
+ */
+MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAMS
+    :: element_state_change_handle()
+{
+    auto *msg = static_cast<meshx_light_ctl_model_state_t*>(this->get_parent_element_state());
+
+    if (!msg) {
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid parameter in element_state_change_handle");
+        return MESHX_INVALID_ARG;
+    }
+
+    if(memcmp(&model_state, msg, sizeof(meshx_light_ctl_model_state_t)) != 0)
     {
-        if(this->get_parent_element_state())
-        {
-            ctl_param.element_state_change = this->element_state_change_handle();
-        }
-        else
-        {
-            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Parent element state is null");
-            ctl_param.element_state_change = MESHX_NOT_FOUND;
-        }
-        return this->get_parent_element()->on_model_cb(&ctl_param, sizeof(ctl_param));
+        MESHX_LOGI(MODULE_ID_MODEL_CLIENT,
+            "CTL state change request: L=%d T=%d UV=%d",
+            msg->lightness, msg->temperature, msg->delta_uv);
+        // Update the model state
+        *msg = model_state;
     }
     else
     {
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Parent element is null");
+        return MESHX_INVALID_STATE;
     }
-
-    return MESHX_INVALID_STATE;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -112,6 +131,29 @@ meshx_err_t meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAM
     return std::to_underlying(param->evt) == std::to_underlying(meshx_base_cli_evt::MESHX_BASE_CLI_TIMEOUT) ?
         meshx_state_change_notify(param, MESHX_TIMEOUT) :
         meshx_state_change_notify(param, MESHX_SUCCESS);
+}
+
+/**
+ * @brief Prepare message for element notification
+ * @details Returns pointer to the stored element message
+ *
+ * @param[out] msg_ptr   Pointer to message structure (output parameter)
+ * @param[out] msg_size  Size of the message structure (output parameter)
+ * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
+ */
+MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAMS
+    :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
+{
+    if (!msg_ptr || !msg_size)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    *msg_ptr = &element_msg;
+    *msg_size = sizeof(element_msg);
+
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -202,49 +244,9 @@ meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAMS
     /* Used only for initialization of Parent Class */
 }
 
-
-/**
- * @brief Handle state change request from element.
- *
- * This function is called by the parent element when a state change request
- * is received. It validates the request and returns a result to the element.
- * Note: The actual state is maintained in the element layer, not the model layer.
- *
- * @param[in] param Pointer to meshx_light_ctl_srv_el_msg_t containing the new state
- * @return
- *     - MESHX_SUCCESS: State change handled successfully
- *     - MESHX_INVALID_ARG: Invalid parameter
- */
-MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PROTO
-meshx_err_t meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAMS
-    :: element_state_change_handle(void)
-{
-    meshx_light_ctl_model_state_t *msg =
-        static_cast<meshx_light_ctl_model_state_t*>(this->get_parent_element_state());
-
-    if (!msg) {
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid parameter in element_state_change_handle");
-        return MESHX_INVALID_ARG;
-    }
-
-    if(memcmp(&model_state, msg, sizeof(meshx_light_ctl_model_state_t)) != 0)
-    {
-        MESHX_LOGI(MODULE_ID_MODEL_CLIENT,
-            "CTL state change request: L=%d T=%d UV=%d",
-            msg->lightness, msg->temperature, msg->delta_uv);
-        // Update the model state
-        model_state = *msg;
-    }
-    else
-    {
-        return MESHX_INVALID_STATE;
-    }
-    return MESHX_SUCCESS;
-}
-
 #endif /* CONFIG_ENABLE_LIGHT_CTL_CLIENT */
 
-/*******************************************************************************************************************/
+/***************************************************************************************************/
 #if CONFIG_ENABLE_LIGHT_CTL_SERVER
 
 /**
@@ -396,18 +398,16 @@ meshx_err_t meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAM
         .temp_range_max = 0
     };
 
-    meshx_light_ctl_srv_el_msg_t srv_ctl_param = {
-        .header = {
-            .model = param->model,
-            .element_state_change = MESHX_SUCCESS
-        },
-        .state = model_state,
-    };
+    // Initialize flag - message not prepared yet
+    element_msg_prepared = false;
+
     bool send_reply = (param->ctx.opcode != MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK);
     switch (param->ctx.opcode)
     {
         case MESHX_MODEL_OP_LIGHT_CTL_GET:
-            break;
+            // GET opcode - no state change, no element notification needed
+            // Return error so base layer doesn't send uninitialized message
+            return MESHX_NOT_SUPPORTED;
         case MESHX_MODEL_OP_LIGHT_CTL_SET:
         case MESHX_MODEL_OP_LIGHT_CTL_SET_UNACK:
         {
@@ -416,36 +416,31 @@ meshx_err_t meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAM
                 || (MESHX_ADDR_IS_GROUP(param->ctx.dst_addr)
                 && (MESHX_SUCCESS == meshx_is_group_subscribed(&param->model, param->ctx.dst_addr))))
             {
-                // Notify the parent element - state is maintained in the element layer
-                if (this->get_parent_element())
-                {
-                    if(this->get_parent_element_state())
-                    {
-                        srv_ctl_param.header.element_state_change = this->element_state_change_handle();
-                    }
-                    else
-                    {
-                        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element state is null");
-                        srv_ctl_param.header.element_state_change = MESHX_NOT_FOUND;
-                    }
-                    return this->get_parent_element()->on_model_cb(&srv_ctl_param, sizeof(srv_ctl_param));
-                }
-                else
-                {
-                    MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
-                }
+                // Prepare the message (store in member variable)
+                element_msg = {
+                    .header = {
+                        .model = param->model,
+                        .element_state_change = MESHX_SUCCESS,  // Will be set by base layer
+                    },
+                    .state = model_state,
+                };
+                element_msg_prepared = true;
             }
             break;
         }
         case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_GET:
-            break;
+            // GET opcode - no state change, no element notification needed
+            // Return error so base layer doesn't send uninitialized message
+            return MESHX_NOT_SUPPORTED;
         case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET:
         case MESHX_MODEL_OP_LIGHT_CTL_TEMPERATURE_RANGE_SET_UNACK:
             // Handle temperature range operations
             break;
         default:
-            break;
+            // Unknown opcode - return error
+            return MESHX_NOT_SUPPORTED;
     }
+
     if (send_reply
         /* This is meant to notify the respective publish client */
         || param->ctx.src_addr != param->model.pub_addr)
@@ -464,6 +459,44 @@ meshx_err_t meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAM
 
         return this->model_send(&send_params);
     }
+
+    // If we reach here, message was not prepared for element notification
+    // Return error so base layer doesn't send uninitialized message
+    if (!element_msg_prepared)
+    {
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "No element notification needed for opcode: %04x", param->ctx.opcode);
+        return MESHX_NOT_SUPPORTED;
+    }
+
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Prepare message for element notification
+ * @details Returns pointer to the stored element message if it has been prepared
+ *
+ * @param[out] msg_ptr   Pointer to message structure (output parameter)
+ * @param[out] msg_size  Size of the message structure (output parameter)
+ * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
+ */
+MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAMS
+    :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
+{
+    if (!msg_ptr || !msg_size)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    if (!element_msg_prepared)
+    {
+        // Message was not prepared, return error
+        return MESHX_NOT_SUPPORTED;
+    }
+
+    *msg_ptr = &element_msg;
+    *msg_size = sizeof(element_msg);
+
     return MESHX_SUCCESS;
 }
 
@@ -497,7 +530,7 @@ MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAMS
     :: element_state_change_handle(void)
 {
-    meshx_light_ctl_model_state_t *msg =
+    auto *msg =
         static_cast<meshx_light_ctl_model_state_t*>(this->get_parent_element_state());
 
     if (!msg) {
@@ -511,7 +544,7 @@ meshx_err_t meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAM
             "CTL state change request: L=%d T=%d UV=%d",
             msg->lightness, msg->temperature, msg->delta_uv);
         // Update the model state
-        model_state = *msg;
+        *msg = model_state;
     }
     else
     {

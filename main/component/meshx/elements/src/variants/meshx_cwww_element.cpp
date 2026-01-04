@@ -63,7 +63,7 @@ uint8_t meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
     auto ctl_model = std::make_unique<meshXLightCTLServerModel>(this, &this->element_ctx.light_ctl_state);
     this->get_sig_models().push_back(std::move(ctl_model));
 
-    return this->get_sig_models().size();
+    return (uint8_t)this->get_sig_models().size();
 }
 
 /**
@@ -128,7 +128,7 @@ uint8_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
     auto ctl_model = std::make_unique<meshXLightCTLClientModel>(this, &this->element_ctx.light_ctl_state);
     this->get_sig_models().push_back(std::move(ctl_model));
 
-    return this->get_sig_models().size();
+    return (uint8_t)this->get_sig_models().size();
 }
 
 /**

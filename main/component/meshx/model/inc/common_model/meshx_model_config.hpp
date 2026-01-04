@@ -10,7 +10,7 @@
  * @copyright Copyright 2024 - 2025 MeshX
  */
 
-#ifndef _MESHX_MODEL_CONFIG_HPP__
+#ifndef _MESHX_MODEL_CONFIG_HPP_
 #define _MESHX_MODEL_CONFIG_HPP_
 
 #include <meshx_fwd_decl.hpp>
@@ -29,10 +29,11 @@
 /**
  * @brief Structure to hold the Config model state.
  */
-typedef struct meshx_config_model_state
+struct meshx_config_model_state
 {
     meshx_cfg_srv_state_change_t state_change; /**< State change information. */
-}meshx_config_model_state_t;
+};
+using meshx_config_model_state_t = struct meshx_config_model_state;
 
 /**
  * @brief Structure to hold the parameters for sending a Generic OnOff message.
@@ -65,6 +66,9 @@ private:
     /* New or updated model state from BLE layer */
     meshx_config_model_state_t model_state;
 
+    /* Message to be sent to parent element */
+    meshx_config_srv_el_msg_t element_msg;
+
     meshx_err_t plat_model_create   (void) override;
     meshx_err_t plat_model_delete   (void) override;
     meshx_err_t element_state_change_handle (void) override
@@ -76,8 +80,9 @@ private:
 public:
     meshx_err_t model_send          (meshx_config_send_params_t *params) override;
     meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t prepare_element_msg (meshx_ptr_t *msg_ptr, size_t *msg_size) override;
 
-    meshXConfigModel(
+    explicit meshXConfigModel(
         meshXElementIF *parent_element = nullptr,
         meshx_ptr_t     parent_element_state = nullptr
     );
@@ -87,4 +92,4 @@ public:
 
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
-#endif /* _MESHX_MODEL_CONFIG_HPP__ */
+#endif /* _MESHX_MODEL_CONFIG_HPP_ */

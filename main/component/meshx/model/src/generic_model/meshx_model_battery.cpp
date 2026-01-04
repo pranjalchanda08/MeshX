@@ -15,7 +15,6 @@
  */
 
 #include <generic_model/meshx_model_battery.hpp>
-#include <meshx_element_class.hpp>
 
 #if CONFIG_ENABLE_GEN_BATTERY_CLIENT
 /**
@@ -42,15 +41,15 @@ meshx_err_t meshXGenericBatteryClientModel MESHX_GEN_BATTERY_CLIENT_MODEL_TEMPLA
         return MESHX_INVALID_ARG;
     }
 
-    model_state.battery_level = param->status.battery_status.battery_level;
-    model_state.time_to_discharge = param->status.battery_status.time_to_discharge;
-    model_state.time_to_charge = param->status.battery_status.time_to_charge;
-    model_state.presence = param->status.battery_status.presence;
-    model_state.charge_level = param->status.battery_status.charge_level;
-    model_state.charge_type = param->status.battery_status.charge_type;
+    model_state.battery_level       = param->status.battery_status.battery_level;
+    model_state.time_to_discharge   = param->status.battery_status.time_to_discharge;
+    model_state.time_to_charge      = param->status.battery_status.time_to_charge;
+    model_state.presence            = param->status.battery_status.presence;
+    model_state.charge_level        = param->status.battery_status.charge_level;
+    model_state.charge_type         = param->status.battery_status.charge_type;
 
-    meshx_battery_cli_el_msg_t battery_param =
-    {
+    // Store the message in member variable for later use by prepare_element_msg
+    element_msg = {
         .header = {
             .err_code               = param->err_code,
             .model                  = param->model,
@@ -59,26 +58,31 @@ meshx_err_t meshXGenericBatteryClientModel MESHX_GEN_BATTERY_CLIENT_MODEL_TEMPLA
         },
         .state                  = model_state,
     };
-    /* Send to state change event to respective Element */
-    if (this->get_parent_element())
+
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Prepare message for element notification
+ * @details Returns pointer to the stored element message
+ *
+ * @param[out] msg_ptr   Pointer to message structure (output parameter)
+ * @param[out] msg_size  Size of the message structure (output parameter)
+ * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
+ */
+MESHX_GEN_BATTERY_CLIENT_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericBatteryClientModel MESHX_GEN_BATTERY_CLIENT_MODEL_TEMPLATE_PARAMS
+    :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
+{
+    if (!msg_ptr || !msg_size)
     {
-        if(this->get_parent_element_state())
-        {
-            battery_param.header.element_state_change = this->element_state_change_handle();
-        }
-        else
-        {
-            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Parent element state is null");
-            battery_param.header.element_state_change = MESHX_NOT_FOUND;
-        }
-        return this->get_parent_element()->on_model_cb(&battery_param, sizeof(battery_param));
-    }
-    else
-    {
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Parent element is null");
+        return MESHX_INVALID_ARG;
     }
 
-    return MESHX_INVALID_STATE;
+    *msg_ptr = &element_msg;
+    *msg_size = sizeof(element_msg);
+
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -136,6 +140,7 @@ meshx_err_t meshXGenericBatteryClientModel MESHX_GEN_BATTERY_CLIENT_MODEL_TEMPLA
         dev_struct_t *p_dev,
         control_task_msg_evt_t model_id,
         meshx_ptr_t params)
+)
 {
     if(!params || !p_dev)
     {
@@ -258,7 +263,10 @@ meshx_err_t meshXGenericBatteryServerModel MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLA
  */
 MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericBatteryServerModel MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLATE_PARAMS
-    :: model_from_ble_cb(dev_struct_t *p_dev, control_task_msg_evt_t model_id, meshx_ptr_t params)
+    :: model_from_ble_cb(
+        dev_struct_t *p_dev,
+        control_task_msg_evt_t model_id,
+        meshx_ptr_t params)
 {
     if(!params || !p_dev)
     {
@@ -271,26 +279,93 @@ meshx_err_t meshXGenericBatteryServerModel MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLA
         return MESHX_SUCCESS;
     }
 
-#if 0
     auto *param = static_cast<meshx_gen_srv_cb_param_t *>(params);
-    meshx_battery_srv_el_msg_t msg = {
-        .model = &param->model,
-        .ctx = param->ctx,
-        .battery_level = param->state_change.battery_status.battery_level,
-        .time_to_discharge = param->state_change.battery_status.time_to_discharge,
-        .time_to_charge = param->state_change.battery_status.time_to_charge,
-        .presence = param->state_change.battery_status.presence,
-        .charge_level = param->state_change.battery_status.charge_level,
-        .charge_type = param->state_change.battery_status.charge_type,
+
+    // Store the message in member variable for later use by prepare_element_msg
+    element_msg = {
+        .header = {
+            .model                  = param->model,
+            .element_state_change   = MESHX_SUCCESS,
+        },
+        .state = {
+            .battery_level       = param->state_change.battery_status.battery_level,
+            .time_to_discharge   = param->state_change.battery_status.time_to_discharge,
+            .time_to_charge      = param->state_change.battery_status.time_to_charge,
+            .presence            = param->state_change.battery_status.presence,
+            .charge_level        = param->state_change.battery_status.charge_level,
+            .charge_type         = param->state_change.battery_status.charge_type,
+        }
     };
 
-    if (this->get_parent_element()) {
-        return this->get_parent_element()->on_model_cb(&msg);
+    element_msg_prepared = true;
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Prepare message for element notification
+ * @details Returns pointer to the stored element message if it has been prepared
+ *
+ * @param[out] msg_ptr   Pointer to message structure (output parameter)
+ * @param[out] msg_size  Size of the message structure (output parameter)
+ * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
+ */
+MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericBatteryServerModel MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLATE_PARAMS
+    :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
+{
+    if (!msg_ptr || !msg_size)
+    {
+        return MESHX_INVALID_ARG;
     }
 
-    MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
-#endif
-    return MESHX_NOT_SUPPORTED;
+    if (!element_msg_prepared)
+    {
+        return MESHX_NOT_SUPPORTED;
+    }
+
+    *msg_ptr = &element_msg;
+    *msg_size = sizeof(element_msg);
+
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Handle state change request from element.
+ *
+ * This function is called by the parent element when a state change request
+ * is received. It validates the request and returns a result to the element.
+ * Note: The actual state is maintained in the element layer, not the model layer.
+ *
+ * @return
+ *     - MESHX_SUCCESS: State change handled successfully
+ *     - MESHX_INVALID_ARG: Invalid parameter
+ *     - MESHX_INVALID_STATE: No state change detected
+ */
+MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericBatteryServerModel MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLATE_PARAMS
+    :: element_state_change_handle(void)
+{
+    auto *el_state =
+        static_cast<meshx_gen_battery_model_state_t*>(this->get_parent_element_state());
+
+    if (!el_state) {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid parameter in element_state_change_handle");
+        return MESHX_INVALID_ARG;
+    }
+
+    if(memcmp(&model_state, el_state, sizeof(meshx_gen_battery_model_state_t)) != 0)
+    {
+        MESHX_LOGI(MODULE_ID_MODEL_SERVER,
+            "Battery state change request: level=%d discharge=%d charge=%d",
+            el_state->battery_level, el_state->time_to_discharge, el_state->time_to_charge);
+        // Update the model state
+        *el_state = model_state;
+    }
+    else
+    {
+        return MESHX_INVALID_STATE;
+    }
+    return MESHX_SUCCESS;
 }
 
 /**

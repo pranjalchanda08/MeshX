@@ -33,7 +33,7 @@
 /**
  * @brief Structure to hold the Power Level model state.
  */
-typedef struct meshx_gen_power_level_model_state
+struct meshx_gen_power_level_model_state
 {
     uint16_t present_power; /**< The present value of Generic Power Level state */
     uint16_t target_power;  /**< The target value of Generic Power Level state (optional) */
@@ -44,19 +44,21 @@ typedef struct meshx_gen_power_level_model_state
         uint16_t range_min; /**< Minimum value of Generic Power Level state */
         uint16_t range_max; /**< Maximum value of Generic Power Level state */
     } range;                /**< Power level range parameters */
-}meshx_gen_power_level_model_state_t;
+};
+
+using meshx_gen_power_level_model_state_t = struct meshx_gen_power_level_model_state;
 
 /**
  * @brief Structure to hold the parameters for sending a Generic Power Level message.
  */
 struct meshx_gen_power_level_send_params
 {
-    meshx_model_t                    *model;  /**< Pointer to the Power Level client model. */
-    meshx_ctx_t                      *ctx;    /**< The context of the message. */
-    uint8_t                           tid;    /**< The transaction ID of the message. Only used by Client*/
-    uint8_t                           transition_time;  /**< Transition time (optional). */
-    uint8_t                           delay;   /**< Delay (optional). */
-    meshx_gen_power_level_model_state_t state;  /**< The state of the message. */
+    meshx_model_t                      *model;              /**< Pointer to the Power Level client model. */
+    meshx_ctx_t                        *ctx;                /**< The context of the message. */
+    uint8_t                             tid;                /**< The transaction ID of the message. Only used by Client*/
+    uint8_t                             transition_time;    /**< Transition time (optional). */
+    uint8_t                             delay;              /**< Delay (optional). */
+    meshx_gen_power_level_model_state_t state;              /**< The state of the message. */
 };
 
 using meshx_gen_power_level_send_params_t = struct meshx_gen_power_level_send_params;
@@ -90,12 +92,16 @@ private:
     /* New or updated model state from BLE layer */
     meshx_gen_power_level_model_state_t model_state;
 
+    /* Message to be sent to parent element */
+    meshx_power_level_cli_el_msg_t element_msg;
+
     meshx_err_t meshx_state_change_notify   (const meshx_gen_cli_cb_param_t *param, uint8_t status);
     meshx_err_t element_state_change_handle (void) override;
 
 public:
     meshx_err_t model_send          (meshx_gen_power_level_send_params_t *params) override;
     meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t prepare_element_msg (meshx_ptr_t *msg_ptr, size_t *msg_size) override;
 
     meshXGenericPowerLevelClientModel(
         meshXElementIF *parent_element = nullptr,
@@ -137,12 +143,19 @@ private:
     /* New or updated model state from BLE layer */
     meshx_gen_power_level_model_state_t model_state;
 
+    /* Message to be sent to parent element */
+    meshx_power_level_srv_el_msg_t element_msg;
+
+    /* Flag to indicate if element message has been prepared */
+    bool element_msg_prepared = false;
+
     meshx_err_t plat_model_create   (void) override;
     meshx_err_t plat_model_delete   (void) override;
 
 public:
     meshx_err_t model_send          (meshx_gen_power_level_send_params_t *params) override;
     meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t prepare_element_msg (meshx_ptr_t *msg_ptr, size_t *msg_size) override;
 
     // Virtual method implementation from meshXModelIF
     meshx_err_t element_state_change_handle (void) override;
@@ -167,9 +180,17 @@ public:
 MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_TEMPLATE_PROTO
 class meshXGenericPowerLevelSetupServerModel : public meshXServerModel<meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t>
 {
+private:
+    /* Message to be sent to parent element */
+    meshx_power_level_srv_el_msg_t element_msg;
+
+    /* Flag to indicate if element message has been prepared */
+    bool element_msg_prepared = false;
+
 public:
     meshx_err_t model_send          (meshx_gen_power_level_send_params_t *params) override;
     meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t prepare_element_msg (meshx_ptr_t *msg_ptr, size_t *msg_size) override;
 
     meshXGenericPowerLevelSetupServerModel(
         meshXElementIF *parent_element = nullptr,

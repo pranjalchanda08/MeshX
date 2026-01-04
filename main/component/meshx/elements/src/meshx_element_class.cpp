@@ -204,14 +204,14 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
     meshx_err_t result = MESHX_SUCCESS;
 
     // Add SIG models
-    meshx_err_t sig_result = add_sig_models();
-    if (sig_result != MESHX_SUCCESS && sig_result != MESHX_NOT_SUPPORTED)
+
+    if (meshx_err_t sig_result = add_sig_models(); sig_result != MESHX_SUCCESS && sig_result != MESHX_NOT_SUPPORTED)
     {
         return sig_result;
     }
     // Add Vendor models
-    meshx_err_t ven_result = add_ven_models();
-    if (ven_result != MESHX_SUCCESS && ven_result != MESHX_NOT_SUPPORTED)
+
+    if (meshx_err_t ven_result = add_ven_models(); ven_result != MESHX_SUCCESS && ven_result != MESHX_NOT_SUPPORTED)
     {
         return ven_result;
     }
@@ -247,7 +247,7 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
     }
     meshx_err_t err = MESHX_SUCCESS;
 
-    meshx_model_send_param_header_t *msg_header = static_cast<meshx_model_send_param_header_t *>(param);
+    auto *msg_header = static_cast<meshx_model_send_param_header_t *>(param);
 
     if(!msg_header)
     {
@@ -255,15 +255,15 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
         return MESHX_INVALID_ARG;
     }
 
-    meshx_ptr_t meshx_ctx = this->get_element_ctx();
-    if(!meshx_ctx)
+
+    if(meshx_cptr_t meshx_ctx = this->get_element_ctx(); !meshx_ctx)
     {
         MESHX_LOGE(MODULE_ID_COMMON, "Mesh context is null in on_model_cb");
         return MESHX_INVALID_STATE;
     }
 
-    size_t meshx_ctx_size  = this->get_element_ctx_size();
-    if(meshx_ctx_size == 0)
+
+    if(size_t meshx_ctx_size  = this->get_element_ctx_size(); meshx_ctx_size == 0)
     {
         MESHX_LOGE(MODULE_ID_COMMON, "Mesh context size is zero in on_model_cb");
         return MESHX_INVALID_STATE;
