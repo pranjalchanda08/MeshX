@@ -15,7 +15,6 @@
  */
 
 #include <light_model/meshx_model_hsl.hpp>
-#include <meshx_element_class.hpp>
 
 #if CONFIG_ENABLE_LIGHT_HSL_CLIENT
 /**
@@ -111,7 +110,7 @@ meshx_err_t meshXLightHSLClientModel MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAM
         MESHX_LOGI(MODULE_ID_MODEL_SERVER,
             "HSL state change request: hue=%d lightness=%d saturation=%d",
             el_state->hue, el_state->lightness, el_state->saturation);
-        model_state = *el_state;
+        *el_state = model_state;
     }
     else
     {
@@ -133,6 +132,7 @@ meshx_err_t meshXLightHSLClientModel MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAM
         dev_struct_t *p_dev,
         control_task_msg_evt_t model_id,
         meshx_ptr_t params)
+)
 {
     if(!params || !p_dev)
     {
@@ -372,6 +372,7 @@ meshx_err_t meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAM
         dev_struct_t *p_dev,
         control_task_msg_evt_t model_id,
         meshx_ptr_t params)
+)
 {
     if(!params || !p_dev)
     {
@@ -463,6 +464,45 @@ meshx_err_t meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAM
         };
 
         return this->model_send(&send_params);
+    }
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Handle state change request from element.
+ *
+ * This function is called by the parent element when a state change request
+ * is received. It validates the request and returns a result to the element.
+ * Note: The actual state is maintained in the element layer, not the model layer.
+ *
+ * @return
+ *     - MESHX_SUCCESS: State change handled successfully
+ *     - MESHX_INVALID_ARG: Invalid parameter
+ *     - MESHX_INVALID_STATE: No state change detected
+ */
+MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAMS
+    :: element_state_change_handle(void)
+{
+    auto *el_state =
+        static_cast<meshx_light_hsl_model_state_t*>(this->get_parent_element_state());
+
+    if (!el_state) {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid parameter in element_state_change_handle");
+        return MESHX_INVALID_ARG;
+    }
+
+    if(memcmp(&model_state, el_state, sizeof(meshx_light_hsl_model_state_t)) != 0)
+    {
+        MESHX_LOGI(MODULE_ID_MODEL_SERVER,
+            "HSL state change request: hue=%d lightness=%d saturation=%d",
+            el_state->hue, el_state->lightness, el_state->saturation);
+        // Update the model state
+        *el_state = model_state;
+    }
+    else
+    {
+        return MESHX_INVALID_STATE;
     }
     return MESHX_SUCCESS;
 }

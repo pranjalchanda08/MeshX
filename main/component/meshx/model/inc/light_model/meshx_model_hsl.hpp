@@ -31,7 +31,7 @@
 /**
  * @brief Structure to hold the Light HSL model state.
  */
-typedef struct meshx_light_hsl_model_state
+struct meshx_light_hsl_model_state
 {
     uint16_t lightness;        /**< Present lightness value */
     uint16_t hue;              /**< Present hue value */
@@ -43,7 +43,9 @@ typedef struct meshx_light_hsl_model_state
     uint16_t hue_range_max;    /**< Hue range maximum */
     uint16_t sat_range_min;    /**< Saturation range minimum */
     uint16_t sat_range_max;    /**< Saturation range maximum */
-}meshx_light_hsl_model_state_t;
+};
+
+using meshx_light_hsl_model_state_t = struct meshx_light_hsl_model_state;
 
 /**
  * @brief Structure to hold the parameters for sending a Light HSL message.

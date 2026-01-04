@@ -47,7 +47,7 @@ uint8_t meshXRootElement :: list_sig_models()
     auto config_model = std::make_unique<meshXConfigModel>(this);
     this->get_sig_models().push_back(std::move(config_model));
 
-    return this->get_sig_models().size();
+    return (uint8_t)this->get_sig_models().size();
 }
 
 /**
@@ -87,7 +87,6 @@ meshx_err_t meshXRootElement :: element_state_change_notify(meshx_ptr_t param, s
     MESHX_LOGI(MODULE_ID_ELEMENT_ROOT,
         "Root element received model callback");
 
-    // TODO: Handle config model specific events if needed
     // For now, just log the event and return success
 
     return MESHX_SUCCESS;

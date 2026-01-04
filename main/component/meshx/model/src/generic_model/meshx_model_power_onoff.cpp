@@ -15,7 +15,6 @@
  */
 
 #include <generic_model/meshx_model_power_onoff.hpp>
-#include <meshx_element_class.hpp>
 
 #if CONFIG_ENABLE_GEN_POWER_ONOFF_CLIENT
 /**
@@ -130,6 +129,7 @@ meshx_err_t meshXGenericPowerOnOffClientModel MESHX_GEN_POWER_ONOFF_CLIENT_MODEL
         dev_struct_t *p_dev,
         control_task_msg_evt_t model_id,
         meshx_ptr_t params)
+)
 {
     if(!params || !p_dev)
     {
@@ -263,7 +263,10 @@ if (!params|| !params->model || !params->ctx)
  */
 MESHX_GEN_POWER_ONOFF_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericPowerOnOffServerModel MESHX_GEN_POWER_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
-    :: model_from_ble_cb(dev_struct_t *p_dev, control_task_msg_evt_t model_id, meshx_ptr_t params)
+    :: model_from_ble_cb(
+        dev_struct_t *p_dev,
+        control_task_msg_evt_t model_id,
+        meshx_ptr_t params)
 {
     if(!params || !p_dev)
     {
@@ -277,17 +280,87 @@ meshx_err_t meshXGenericPowerOnOffServerModel MESHX_GEN_POWER_ONOFF_SERVER_MODEL
     }
 
     auto *param = static_cast<meshx_gen_srv_cb_param_t *>(params);
-    meshx_power_onoff_srv_el_msg_t msg = {
-        .model = &param->model,
-        .on_power_up = param->state_change.onpowerup_set.onpowerup
+
+    // Store the message in member variable for later use by prepare_element_msg
+    element_msg = {
+        .header = {
+            .model                  = param->model,
+            .element_state_change   = MESHX_SUCCESS,
+        },
+        .state = {
+            .on_power_up = param->state_change.onpowerup_set.onpowerup
+        }
     };
 
-    if (this->get_parent_element()) {
-        return this->get_parent_element()->on_model_cb(&msg);
+    element_msg_prepared = true;
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Prepare message for element notification
+ * @details Returns pointer to the stored element message if it has been prepared
+ *
+ * @param[out] msg_ptr   Pointer to message structure (output parameter)
+ * @param[out] msg_size  Size of the message structure (output parameter)
+ * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
+ */
+MESHX_GEN_POWER_ONOFF_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericPowerOnOffServerModel MESHX_GEN_POWER_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
+    :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
+{
+    if (!msg_ptr || !msg_size)
+    {
+        return MESHX_INVALID_ARG;
     }
 
-    MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
-    return MESHX_INVALID_STATE;
+    if (!element_msg_prepared)
+    {
+        return MESHX_NOT_SUPPORTED;
+    }
+
+    *msg_ptr = &element_msg;
+    *msg_size = sizeof(element_msg);
+
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Handle state change request from element.
+ *
+ * This function is called by the parent element when a state change request
+ * is received. It validates the request and returns a result to the element.
+ * Note: The actual state is maintained in the element layer, not the model layer.
+ *
+ * @return
+ *     - MESHX_SUCCESS: State change handled successfully
+ *     - MESHX_INVALID_ARG: Invalid parameter
+ *     - MESHX_INVALID_STATE: No state change detected
+ */
+MESHX_GEN_POWER_ONOFF_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericPowerOnOffServerModel MESHX_GEN_POWER_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
+    :: element_state_change_handle(void)
+{
+    auto *el_state =
+        static_cast<meshx_gen_power_onoff_model_state_t*>(this->get_parent_element_state());
+
+    if (!el_state) {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid parameter in element_state_change_handle");
+        return MESHX_INVALID_ARG;
+    }
+
+    if(memcmp(&model_state, el_state, sizeof(meshx_gen_power_onoff_model_state_t)) != 0)
+    {
+        MESHX_LOGI(MODULE_ID_MODEL_SERVER,
+            "Power OnOff state change request: on_power_up=%d",
+            el_state->on_power_up);
+        // Update the model state
+        *el_state = model_state;
+    }
+    else
+    {
+        return MESHX_INVALID_STATE;
+    }
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -423,7 +496,10 @@ meshXGenericPowerOnOffSetupServerModel MESHX_GEN_POWER_ONOFF_SETUP_SERVER_MODEL_
  */
 MESHX_GEN_POWER_ONOFF_SETUP_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericPowerOnOffSetupServerModel MESHX_GEN_POWER_ONOFF_SETUP_SERVER_MODEL_TEMPLATE_PARAMS
-    :: model_from_ble_cb(dev_struct_t *p_dev, control_task_msg_evt_t model_id, meshx_ptr_t params)
+    :: model_from_ble_cb(
+        dev_struct_t *p_dev,
+        control_task_msg_evt_t model_id,
+        meshx_ptr_t params)
 {
     if(!params || !p_dev)
     {
@@ -437,17 +513,47 @@ meshx_err_t meshXGenericPowerOnOffSetupServerModel MESHX_GEN_POWER_ONOFF_SETUP_S
     }
 
     auto *param = static_cast<meshx_gen_srv_cb_param_t *>(params);
-    // Setup server forwards state changes to its base server model
-    meshx_power_onoff_srv_el_msg_t msg = {
-        .model = &param->model,
-        .on_power_up = param->state_change.onpowerup_set.onpowerup
+
+    // Store the message in member variable for later use by prepare_element_msg
+    element_msg = {
+        .header = {
+            .model                  = param->model,
+            .element_state_change   = MESHX_SUCCESS,
+        },
+        .state = {
+            .on_power_up = param->state_change.onpowerup_set.onpowerup
+        }
     };
 
-    if (this->get_parent_element()) {
-        return this->get_parent_element()->on_model_cb(&msg);
+    element_msg_prepared = true;
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Prepare message for element notification
+ * @details Returns pointer to the stored element message if it has been prepared
+ *
+ * @param[out] msg_ptr   Pointer to message structure (output parameter)
+ * @param[out] msg_size  Size of the message structure (output parameter)
+ * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
+ */
+MESHX_GEN_POWER_ONOFF_SETUP_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericPowerOnOffSetupServerModel MESHX_GEN_POWER_ONOFF_SETUP_SERVER_MODEL_TEMPLATE_PARAMS
+    :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
+{
+    if (!msg_ptr || !msg_size)
+    {
+        return MESHX_INVALID_ARG;
     }
 
-    MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
-    return MESHX_INVALID_STATE;
+    if (!element_msg_prepared)
+    {
+        return MESHX_NOT_SUPPORTED;
+    }
+
+    *msg_ptr = &element_msg;
+    *msg_size = sizeof(element_msg);
+
+    return MESHX_SUCCESS;
 }
 #endif /* CONFIG_ENABLE_GEN_POWER_ONOFF_SETUP_SERVER */

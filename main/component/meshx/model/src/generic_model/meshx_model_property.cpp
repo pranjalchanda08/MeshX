@@ -16,7 +16,6 @@
  */
 
 #include <generic_model/meshx_model_property.hpp>
-#include <meshx_element_class.hpp>
 
 #if CONFIG_ENABLE_GEN_PROPERTY_CLIENT
 /**
@@ -87,8 +86,8 @@ meshx_err_t meshXGenericPropertyClientModel MESHX_GEN_PROPERTY_CLIENT_MODEL_TEMP
             break;
     }
 
-    meshx_property_cli_el_msg_t property_param =
-    {
+    // Store the message in member variable for later use by prepare_element_msg
+    element_msg = {
         .header = {
             .err_code               = param->err_code,
             .model                  = param->model,
@@ -98,26 +97,30 @@ meshx_err_t meshXGenericPropertyClientModel MESHX_GEN_PROPERTY_CLIENT_MODEL_TEMP
         .state                  = model_state,
     };
 
-    /* Send the state change event to the respective Element */
-    if (this->get_parent_element())
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Prepare message for element notification
+ * @details Returns pointer to the stored element message
+ *
+ * @param[out] msg_ptr   Pointer to message structure (output parameter)
+ * @param[out] msg_size  Size of the message structure (output parameter)
+ * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
+ */
+MESHX_GEN_PROPERTY_CLIENT_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericPropertyClientModel MESHX_GEN_PROPERTY_CLIENT_MODEL_TEMPLATE_PARAMS
+    :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
+{
+    if (!msg_ptr || !msg_size)
     {
-        if(this->get_parent_element_state())
-        {
-            property_param.header.element_state_change = this->element_state_change_handle();
-        }
-        else
-        {
-            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Parent element state is null");
-            property_param.header.element_state_change = MESHX_NOT_FOUND;
-        }
-        return this->get_parent_element()->on_model_cb(&property_param, sizeof(property_param));
-    }
-    else
-    {
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Parent element is null");
+        return MESHX_INVALID_ARG;
     }
 
-    return MESHX_INVALID_STATE;
+    *msg_ptr = &element_msg;
+    *msg_size = sizeof(element_msg);
+
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -173,6 +176,7 @@ meshx_err_t meshXGenericPropertyClientModel MESHX_GEN_PROPERTY_CLIENT_MODEL_TEMP
         dev_struct_t *p_dev,
         control_task_msg_evt_t model_id,
         meshx_ptr_t params)
+)
 {
     if(!params || !p_dev)
     {
@@ -326,7 +330,11 @@ if (!params|| !params->model || !params->ctx)
  */
 MESHX_GEN_ADMIN_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericAdminPropertyServerModel MESHX_GEN_ADMIN_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
-    :: model_from_ble_cb(dev_struct_t *p_dev, control_task_msg_evt_t model_id, meshx_ptr_t params)
+    :: model_from_ble_cb(
+        dev_struct_t *p_dev,
+        control_task_msg_evt_t model_id,
+        meshx_ptr_t params)
+)
 {
     if(!params || !p_dev)
     {
@@ -340,19 +348,87 @@ meshx_err_t meshXGenericAdminPropertyServerModel MESHX_GEN_ADMIN_PROPERTY_SERVER
     }
 
     auto *param = static_cast<meshx_gen_srv_cb_param_t *>(params);
-    meshx_property_srv_el_msg_t msg = {
-        .model = &param->model,
-        .property_id = param->state_change.admin_property_set.id,
-        .property_value = param->state_change.admin_property_set.value,
-        .access = param->state_change.admin_property_set.access
+
+    // Store the message in member variable for later use by prepare_element_msg
+    element_msg = {
+        .header = {
+            .model                  = param->model,
+            .element_state_change   = MESHX_SUCCESS,
+        },
+        .state = {
+            .property_id = param->state_change.admin_property_set.id,
+            .property_value = param->state_change.admin_property_set.value,
+            .access = param->state_change.admin_property_set.access
+        }
     };
 
-    if (this->get_parent_element()) {
-        return this->get_parent_element()->on_model_cb(&msg);
+    element_msg_prepared = true;
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Prepare message for element notification
+ * @details Returns pointer to the stored element message if it has been prepared
+ *
+ * @param[out] msg_ptr   Pointer to message structure (output parameter)
+ * @param[out] msg_size  Size of the message structure (output parameter)
+ * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
+ */
+MESHX_GEN_ADMIN_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericAdminPropertyServerModel MESHX_GEN_ADMIN_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
+    :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
+{
+    if (!msg_ptr || !msg_size)
+    {
+        return MESHX_INVALID_ARG;
     }
 
-    MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
-    return MESHX_INVALID_STATE;
+    if (!element_msg_prepared)
+    {
+        return MESHX_NOT_SUPPORTED;
+    }
+
+    *msg_ptr = &element_msg;
+    *msg_size = sizeof(element_msg);
+
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Handle state change request from element.
+ *
+ * This function is called by the parent element when a state change request
+ * is received. It validates the request and returns a result to the element.
+ * Note: The actual state is maintained in the element layer, not the model layer.
+ *
+ * @return
+ *     - MESHX_SUCCESS: State change handled successfully
+ *     - MESHX_INVALID_ARG: Invalid parameter
+ *     - MESHX_INVALID_STATE: No state change detected
+ */
+MESHX_GEN_ADMIN_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericAdminPropertyServerModel MESHX_GEN_ADMIN_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
+    :: element_state_change_handle(void)
+{
+    auto *el_state =
+        static_cast<meshx_gen_property_model_state_t*>(this->get_parent_element_state());
+
+    if (!el_state) {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid parameter in element_state_change_handle");
+        return MESHX_INVALID_ARG;
+    }
+
+    if(el_state->property_id != model_state.property_id)
+    {
+        el_state->property_id = model_state.property_id;
+    }
+    if(el_state->access != model_state.access)
+    {
+        el_state->access = model_state.access;
+    }
+    // Note: property_value is a pointer and should be handled carefully
+    // The actual value management is typically done at the element level
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -478,7 +554,11 @@ if (!params|| !params->model || !params->ctx)
  */
 MESHX_GEN_MANUFACTURER_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericManufacturerPropertyServerModel MESHX_GEN_MANUFACTURER_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
-    :: model_from_ble_cb(dev_struct_t *p_dev, control_task_msg_evt_t model_id, meshx_ptr_t params)
+    :: model_from_ble_cb(
+        dev_struct_t *p_dev,
+        control_task_msg_evt_t model_id,
+        meshx_ptr_t params)
+)
 {
     if(!params || !p_dev)
     {
@@ -492,18 +572,87 @@ meshx_err_t meshXGenericManufacturerPropertyServerModel MESHX_GEN_MANUFACTURER_P
     }
 
     auto *param = static_cast<meshx_gen_srv_cb_param_t *>(params);
-    meshx_property_srv_el_msg_t msg;
 
-    msg.model = &param->model;
-    msg.access = param->state_change.manu_property_set.access;
-    msg.property_id = param->state_change.manu_property_set.id;
+    // Store the message in member variable for later use by prepare_element_msg
+    element_msg = {
+        .header = {
+            .model                  = param->model,
+            .element_state_change   = MESHX_SUCCESS,
+        },
+        .state = {
+            .property_id = param->state_change.manu_property_set.id,
+            .property_value = nullptr,
+            .access = param->state_change.manu_property_set.access
+        }
+    };
 
-    if (this->get_parent_element()) {
-        return this->get_parent_element()->on_model_cb(&msg);
+    element_msg_prepared = true;
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Prepare message for element notification
+ * @details Returns pointer to the stored element message if it has been prepared
+ *
+ * @param[out] msg_ptr   Pointer to message structure (output parameter)
+ * @param[out] msg_size  Size of the message structure (output parameter)
+ * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
+ */
+MESHX_GEN_MANUFACTURER_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericManufacturerPropertyServerModel MESHX_GEN_MANUFACTURER_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
+    :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
+{
+    if (!msg_ptr || !msg_size)
+    {
+        return MESHX_INVALID_ARG;
     }
 
-    MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
-    return MESHX_INVALID_STATE;
+    if (!element_msg_prepared)
+    {
+        return MESHX_NOT_SUPPORTED;
+    }
+
+    *msg_ptr = &element_msg;
+    *msg_size = sizeof(element_msg);
+
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Handle state change request from element.
+ *
+ * This function is called by the parent element when a state change request
+ * is received. It validates the request and returns a result to the element.
+ * Note: The actual state is maintained in the element layer, not the model layer.
+ *
+ * @return
+ *     - MESHX_SUCCESS: State change handled successfully
+ *     - MESHX_INVALID_ARG: Invalid parameter
+ *     - MESHX_INVALID_STATE: No state change detected
+ */
+MESHX_GEN_MANUFACTURER_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericManufacturerPropertyServerModel MESHX_GEN_MANUFACTURER_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
+    :: element_state_change_handle(void)
+{
+    auto *el_state =
+        static_cast<meshx_gen_property_model_state_t*>(this->get_parent_element_state());
+
+    if (!el_state) {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid parameter in element_state_change_handle");
+        return MESHX_INVALID_ARG;
+    }
+
+    if(el_state->property_id != model_state.property_id)
+    {
+        el_state->property_id = model_state.property_id;
+    }
+    if(el_state->access != model_state.access)
+    {
+        el_state->access = model_state.access;
+    }
+    // Note: property_value is a pointer and should be handled carefully
+    // The actual value management is typically done at the element level
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -629,7 +778,11 @@ if (!params|| !params->model || !params->ctx)
  */
 MESHX_GEN_USER_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericUserPropertyServerModel MESHX_GEN_USER_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
-    :: model_from_ble_cb(dev_struct_t *p_dev, control_task_msg_evt_t model_id, meshx_ptr_t params)
+    :: model_from_ble_cb(
+        dev_struct_t *p_dev,
+        control_task_msg_evt_t model_id,
+        meshx_ptr_t params)
+)
 {
     if(!params || !p_dev)
     {
@@ -643,18 +796,87 @@ meshx_err_t meshXGenericUserPropertyServerModel MESHX_GEN_USER_PROPERTY_SERVER_M
     }
 
     auto *param = static_cast<meshx_gen_srv_cb_param_t *>(params);
-    meshx_property_srv_el_msg_t msg;
 
-    msg.model = &param->model;
-    msg.property_id = param->state_change.user_property_set.id;
-    msg.property_value = param->state_change.user_property_set.value;
+    // Store the message in member variable for later use by prepare_element_msg
+    element_msg = {
+        .header = {
+            .model                  = param->model,
+            .element_state_change   = MESHX_SUCCESS,
+        },
+        .state = {
+            .property_id = param->state_change.user_property_set.id,
+            .property_value = param->state_change.user_property_set.value,
+            .access = 0
+        }
+    };
 
-    if (this->get_parent_element()) {
-        return this->get_parent_element()->on_model_cb(&msg);
+    element_msg_prepared = true;
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Prepare message for element notification
+ * @details Returns pointer to the stored element message if it has been prepared
+ *
+ * @param[out] msg_ptr   Pointer to message structure (output parameter)
+ * @param[out] msg_size  Size of the message structure (output parameter)
+ * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
+ */
+MESHX_GEN_USER_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericUserPropertyServerModel MESHX_GEN_USER_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
+    :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
+{
+    if (!msg_ptr || !msg_size)
+    {
+        return MESHX_INVALID_ARG;
     }
 
-    MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
-    return MESHX_INVALID_STATE;
+    if (!element_msg_prepared)
+    {
+        return MESHX_NOT_SUPPORTED;
+    }
+
+    *msg_ptr = &element_msg;
+    *msg_size = sizeof(element_msg);
+
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Handle state change request from element.
+ *
+ * This function is called by the parent element when a state change request
+ * is received. It validates the request and returns a result to the element.
+ * Note: The actual state is maintained in the element layer, not the model layer.
+ *
+ * @return
+ *     - MESHX_SUCCESS: State change handled successfully
+ *     - MESHX_INVALID_ARG: Invalid parameter
+ *     - MESHX_INVALID_STATE: No state change detected
+ */
+MESHX_GEN_USER_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericUserPropertyServerModel MESHX_GEN_USER_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
+    :: element_state_change_handle(void)
+{
+    auto *el_state =
+        static_cast<meshx_gen_property_model_state_t*>(this->get_parent_element_state());
+
+    if (!el_state) {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid parameter in element_state_change_handle");
+        return MESHX_INVALID_ARG;
+    }
+
+    if(el_state->property_id != model_state.property_id)
+    {
+        el_state->property_id = model_state.property_id;
+    }
+    if(el_state->access != model_state.access)
+    {
+        el_state->access = model_state.access;
+    }
+    // Note: property_value is a pointer and should be handled carefully
+    // The actual value management is typically done at the element level
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -788,7 +1010,11 @@ meshXGenericClientPropertyServerModel MESHX_GEN_CLIENT_PROPERTY_SERVER_MODEL_TEM
  */
 MESHX_GEN_CLIENT_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericClientPropertyServerModel MESHX_GEN_CLIENT_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
-    :: model_from_ble_cb(dev_struct_t *p_dev, control_task_msg_evt_t model_id, meshx_ptr_t params)
+    :: model_from_ble_cb(
+        dev_struct_t *p_dev,
+        control_task_msg_evt_t model_id,
+        meshx_ptr_t params)
+)
 {
     if(!params || !p_dev)
     {
@@ -802,19 +1028,50 @@ meshx_err_t meshXGenericClientPropertyServerModel MESHX_GEN_CLIENT_PROPERTY_SERV
     }
 
     auto *param = static_cast<meshx_gen_srv_cb_param_t *>(params);
-    meshx_property_srv_el_msg_t msg;
 
-    msg.model = &param->model;
-    msg.property_id = param->state_change.manu_property_set.id;
-    msg.property_value = nullptr; // Client properties don't have values
-    msg.access = 0; // Client properties have fixed access permissions
+    // Store the message in member variable for later use by prepare_element_msg
+    element_msg = {
+        .header = {
+            .model                  = param->model,
+            .element_state_change   = MESHX_SUCCESS,
+        },
+        .state = {
+            .property_id = 0,
+            .property_value = nullptr,
+            .access = 0
+        }
+    };
 
-    if (this->get_parent_element()) {
-        return this->get_parent_element()->on_model_cb(&msg);
+    element_msg_prepared = true;
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Prepare message for element notification
+ * @details Returns pointer to the stored element message if it has been prepared
+ *
+ * @param[out] msg_ptr   Pointer to message structure (output parameter)
+ * @param[out] msg_size  Size of the message structure (output parameter)
+ * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
+ */
+MESHX_GEN_CLIENT_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericClientPropertyServerModel MESHX_GEN_CLIENT_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
+    :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
+{
+    if (!msg_ptr || !msg_size)
+    {
+        return MESHX_INVALID_ARG;
     }
 
-    MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
-    return MESHX_INVALID_STATE;
+    if (!element_msg_prepared)
+    {
+        return MESHX_NOT_SUPPORTED;
+    }
+
+    *msg_ptr = &element_msg;
+    *msg_size = sizeof(element_msg);
+
+    return MESHX_SUCCESS;
 }
 
 #endif /* CONFIG_ENABLE_GEN_CLIENT_PROPERTY_SERVER */

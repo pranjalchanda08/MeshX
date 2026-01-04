@@ -31,14 +31,15 @@
 /**
  * @brief Structure to hold the Light CTL model state.
  */
-typedef struct meshx_light_ctl_model_state
+struct meshx_light_ctl_model_state
 {
     uint16_t lightness;      /**< The lightness value of the message. */
     uint16_t temperature;    /**< The color temperature value of the message. */
     int16_t  delta_uv;       /**< The delta UV value of the message. */
     uint16_t temp_range_min; /**< Minimum temperature range */
     uint16_t temp_range_max; /**< Maximum temperature range */
-}meshx_light_ctl_model_state_t;
+};
+using meshx_light_ctl_model_state_t = struct meshx_light_ctl_model_state;
 
 /**
  * @brief Structure to hold the parameters for sending a Light CTL message.
@@ -85,6 +86,9 @@ class meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAMS
 private:
     meshx_light_ctl_model_state_t model_state;
 
+    /* Message to send to parent element - stored as member to persist */
+    meshx_light_ctl_cli_el_msg_t element_msg;
+
     meshx_err_t meshx_state_change_notify   (
         const meshx_gen_light_cli_cb_param_t *param,
         uint8_t status
@@ -95,11 +99,12 @@ private:
 public:
     meshx_err_t model_send          (meshx_light_ctl_send_params_t *params) override;
     meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t prepare_element_msg (meshx_ptr_t *msg_ptr, size_t *msg_size) override;
 
-    meshXLightCTLClientModel    (
+    explicit meshXLightCTLClientModel    (
         meshXElementIF *parent_element = nullptr,
         meshx_ptr_t     parent_element_state = nullptr
-    );
+        );
 };
 
 #endif /* CONFIG_ENABLE_LIGHT_CTL_CLIENT */
@@ -133,6 +138,13 @@ class meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAMS
 {
 private:
     meshx_light_ctl_model_state_t model_state;
+
+    /* Message to send to parent element - stored as member to persist */
+    meshx_light_ctl_srv_el_msg_t element_msg;
+
+    /* Flag to indicate if message was prepared for element notification */
+    bool element_msg_prepared;
+
     meshx_err_t plat_model_create   (void) override;
     meshx_err_t plat_model_delete   (void) override;
     meshx_err_t element_state_change_handle (void) override;
@@ -140,11 +152,12 @@ private:
 public:
     meshx_err_t model_send          (meshx_light_ctl_send_params_t *params) override;
     meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t prepare_element_msg (meshx_ptr_t *msg_ptr, size_t *msg_size) override;
 
-    meshXLightCTLServerModel    (
+    explicit meshXLightCTLServerModel    (
         meshXElementIF *parent_element = nullptr,
         meshx_ptr_t     parent_element_state = nullptr
-    );
+        );
 };
 
 #endif /* CONFIG_ENABLE_LIGHT_CTL_SERVER */

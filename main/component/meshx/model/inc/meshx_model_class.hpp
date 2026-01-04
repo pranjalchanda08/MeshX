@@ -67,6 +67,18 @@ public:
      */
     virtual meshx_err_t element_state_change_handle(void) = 0;
 
+    /**
+     * @brief Prepare message for element notification
+     * @details Pure virtual function that derived classes must implement to prepare
+     *          a message structure that will be sent to the parent element.
+     *          The message must persist after this function returns.
+     *
+     * @param[out] msg_ptr   Pointer to message structure (output parameter)
+     * @param[out] msg_size  Size of the message structure (output parameter)
+     * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
+     */
+    virtual meshx_err_t prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size) = 0;
+
     /***********************************************************
      * Accessor Functions
      ***********************************************************/
@@ -146,6 +158,33 @@ private:
     meshxBaseModel_t    *base_model;   /*<! Pointer to the base model */
     meshx_err_t         status;        /*<! Status of the model */
     uint16_t            model_id;      /*<! Model identifier */
+
+    /**
+     * @brief Handle upstream BLE Mesh events
+     * @details Static callback function that routes messages and events coming from the BLE Mesh network
+     *          to the appropriate model instance. This function extracts the model instance from the
+     *          device structure and invokes the instance's model_from_ble_cb method.
+     * @param[in] p_dev     Device structure containing sender information
+     * @param[in] model_id  Event type indicating the nature of the message
+     * @param[in] params    Event-specific data payload
+     * @return MESHX_SUCCESS if event handled successfully, error code otherwise
+     */
+    meshx_err_t model_handle_from_ble_cb(
+        dev_struct_t *p_dev,
+        control_task_msg_evt_t model_id,
+        meshx_ptr_t params);
+
+protected:
+    /**
+     * @brief Update element_state_change field in message header
+     * @details Protected virtual method that derived classes (meshXClientModel, meshXServerModel)
+     *          must implement to handle type-specific header casting. This method is called by
+     *          send_to_parent_element to update the element_state_change field.
+     *
+     * @param[in] element_state_change Result from element_state_change_handle()
+     * @param[in] msg_ptr  Pointer to the message structure
+     */
+    virtual void update_element_state_change_header(meshx_err_t element_state_change, meshx_ptr_t msg_ptr) = 0;
 public:
     /***********************************************************
      * Virtual Functions
@@ -156,12 +195,15 @@ public:
      *          messages and events coming from the BLE Mesh network. The implementation
      *          will be automatically registered with base_model->base_client_model_cb_list.
      *
-     * @param[in] dev Device structure containing sender information
-     * @param[in] evt Event type indicating the nature of the message
-     * @param[in] data Event-specific data payload
+     * @param[in] dev       Device structure containing sender information
+     * @param[in] evt       Event type indicating the nature of the message
+     * @param[in] data      Event-specific data payload
      * @return MESHX_SUCCESS if event handled successfully, error code otherwise
      */
-    virtual meshx_err_t model_from_ble_cb(dev_struct_t *dev, control_task_msg_evt_t evt, meshx_ptr_t data) = 0;
+    virtual meshx_err_t model_from_ble_cb(
+        dev_struct_t *dev,
+        control_task_msg_evt_t evt,
+        meshx_ptr_t data) = 0;
 
     /**
      * @brief Send message through the model
@@ -172,6 +214,19 @@ public:
      * @return MESHX_SUCCESS if message sent successfully, error code otherwise
      */
     virtual meshx_err_t model_send(meshx_send_packet_params_t *params) = 0;
+
+    /**
+     * @brief Send message to parent element
+     * @details Common implementation for sending messages to the parent element.
+     *          This handles the common pattern of checking parent element,
+     *          calling element_state_change_handle(), and calling on_model_cb().
+     *          Type-specific header casting is delegated to update_element_state_change_header().
+     *
+     * @param[in] msg_ptr  Pointer to the message structure
+     * @param[in] msg_size Size of the message structure
+     * @return MESHX_SUCCESS if message sent successfully, error code otherwise
+     */
+    meshx_err_t send_to_parent_element(meshx_ptr_t msg_ptr, size_t msg_size);
 
     /***********************************************************
      * Accessor Functions
@@ -220,7 +275,7 @@ public:
      * @details Cleans up resources associated with the model, including
      *          calling the platform-specific model deletion function.
      */
-    ~meshXModel(void);
+    ~meshXModel(void) override;
 };
 
 /*********************************************************************************
@@ -230,11 +285,13 @@ public:
 /**
  * @brief Structure for server model send parameters
  */
-typedef struct meshx_srv_model_send_param_header
+struct meshx_srv_model_send_param_header
 {
     meshx_model_t   model;                  /**< Server model Pointer */
     meshx_err_t     element_state_change;   /**< Return value from element_state_change_handle */
-}meshx_srv_model_send_param_header_t;
+};
+
+using meshx_srv_model_send_param_header_t = struct meshx_srv_model_send_param_header;
 
 /**
  * @class meshXServerModel
@@ -247,6 +304,17 @@ typedef struct meshx_srv_model_send_param_header
 MESHX_SERVER_MODEL_TEMPLATE_PROTO
 class meshXServerModel : public meshXModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS
 {
+protected:
+    /**
+     * @brief Update element_state_change field in server message header
+     * @details Overrides base class implementation to handle server-specific header structure
+     *          (meshx_srv_model_send_param_header_t) which doesn't include err_code and ctx.
+     *
+     * @param[in] element_state_change Result from element_state_change_handle()
+     * @param[in] msg_ptr  Pointer to the message structure
+     */
+    void update_element_state_change_header(meshx_err_t element_state_change, meshx_ptr_t msg_ptr) override;
+
 public:
     /**
      * @brief Construct a new Server Model
@@ -276,13 +344,15 @@ public:
  * meshXClientModel
  *********************************************************************************/
 
-typedef struct meshx_cli_model_send_param_header
+struct meshx_cli_model_send_param_header
 {
     uint8_t          err_code;               /**< Error code */
     meshx_model_t    model;                  /**< Generic OnOff Server model */
     meshx_ctx_t      ctx;                    /**< Context of the message */
     meshx_err_t      element_state_change;   /**< Return value from element_state_change_handle */
-}meshx_cli_model_send_param_header_t;
+};
+
+using meshx_cli_model_send_param_header_t = struct meshx_cli_model_send_param_header;
 
 /**
  * @class meshXClientModel
@@ -314,6 +384,18 @@ private:
      *          and cannot be overridden by derived classes.
      */
     meshx_err_t plat_model_delete(void) final;
+
+protected:
+    /**
+     * @brief Update element_state_change field in client message header
+     * @details Overrides base class implementation to handle client-specific header structure
+     *          (meshx_cli_model_send_param_header_t) which includes err_code and ctx fields.
+     *
+     * @param[in] element_state_change Result from element_state_change_handle()
+     * @param[in] msg_ptr  Pointer to the message structure
+     */
+    void update_element_state_change_header(meshx_err_t element_state_change, meshx_ptr_t msg_ptr) override;
+
 public:
 
     /**

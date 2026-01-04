@@ -15,7 +15,6 @@
  */
 
 #include <generic_model/meshx_model_power_level.hpp>
-#include <meshx_element_class.hpp>
 
 #if CONFIG_ENABLE_GEN_POWER_LEVEL_CLIENT
 /**
@@ -46,8 +45,8 @@ meshx_err_t meshXGenericPowerLevelClientModel MESHX_GEN_POWER_LEVEL_CLIENT_MODEL
     model_state.target_power = param->status.power_level_status.target_power;
     model_state.remain_time = param->status.power_level_status.remain_time;
 
-    meshx_power_level_cli_el_msg_t power_level_param =
-    {
+    // Store the message in member variable for later use by prepare_element_msg
+    element_msg = {
         .header = {
             .err_code               = param->err_code,
             .model                  = param->model,
@@ -56,26 +55,31 @@ meshx_err_t meshXGenericPowerLevelClientModel MESHX_GEN_POWER_LEVEL_CLIENT_MODEL
         },
         .state                  = model_state,
     };
-    /* Send the state change event to the respective Element */
-    if (this->get_parent_element())
+
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Prepare message for element notification
+ * @details Returns pointer to the stored element message
+ *
+ * @param[out] msg_ptr   Pointer to message structure (output parameter)
+ * @param[out] msg_size  Size of the message structure (output parameter)
+ * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
+ */
+MESHX_GEN_POWER_LEVEL_CLIENT_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericPowerLevelClientModel MESHX_GEN_POWER_LEVEL_CLIENT_MODEL_TEMPLATE_PARAMS
+    :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
+{
+    if (!msg_ptr || !msg_size)
     {
-        if(this->get_parent_element_state())
-        {
-            power_level_param.header.element_state_change = this->element_state_change_handle();
-        }
-        else
-        {
-            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Parent element state is null");
-            power_level_param.header.element_state_change = MESHX_NOT_FOUND;
-        }
-        return this->get_parent_element()->on_model_cb(&power_level_param, sizeof(power_level_param));
-    }
-    else
-    {
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Parent element is null");
+        return MESHX_INVALID_ARG;
     }
 
-    return MESHX_INVALID_STATE;
+    *msg_ptr = &element_msg;
+    *msg_size = sizeof(element_msg);
+
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -313,22 +317,95 @@ meshx_err_t meshXGenericPowerLevelServerModel MESHX_GEN_POWER_LEVEL_SERVER_MODEL
     }
 
     auto *param = static_cast<meshx_gen_srv_cb_param_t *>(params);
-    meshx_power_level_srv_el_msg_t msg = {
-        .model = &param->model,
-        .power_default = param->state_change.power_default_set.power,
-        .range = {
-            .range_min = param->state_change.power_range_set.range_min,
-            .range_max = param->state_change.power_range_set.range_max
+
+    // Store the message in member variable for later use by prepare_element_msg
+    element_msg = {
+        .header = {
+            .model                  = param->model,
+            .element_state_change   = MESHX_SUCCESS,
         },
+        .state = {
+            .present_power = param->state_change.power_level_set.power,
+            .target_power = 0,
+            .remain_time = 0,
+            .power_default = param->state_change.power_default_set.power,
+            .range = {
+                .range_min = param->state_change.power_range_set.range_min,
+                .range_max = param->state_change.power_range_set.range_max
+            }
+        }
     };
 
-    if (this->get_parent_element()) {
-        return this->get_parent_element()->on_model_cb(&msg);
+    element_msg_prepared = true;
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Prepare message for element notification
+ * @details Returns pointer to the stored element message if it has been prepared
+ *
+ * @param[out] msg_ptr   Pointer to message structure (output parameter)
+ * @param[out] msg_size  Size of the message structure (output parameter)
+ * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
+ */
+MESHX_GEN_POWER_LEVEL_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericPowerLevelServerModel MESHX_GEN_POWER_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
+    :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
+{
+    if (!msg_ptr || !msg_size)
+    {
+        return MESHX_INVALID_ARG;
     }
 
-    MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
-    return MESHX_INVALID_STATE;
+    if (!element_msg_prepared)
+    {
+        return MESHX_NOT_SUPPORTED;
+    }
+
+    *msg_ptr = &element_msg;
+    *msg_size = sizeof(element_msg);
+
+    return MESHX_SUCCESS;
 }
+/**
+ * @brief Handle state change request from element.
+ *
+ * This function is called by the parent element when a state change request
+ * is received. It validates the request and returns a result to the element.
+ * Note: The actual state is maintained in the element layer, not the model layer.
+ *
+ * @return
+ *     - MESHX_SUCCESS: State change handled successfully
+ *     - MESHX_INVALID_ARG: Invalid parameter
+ *     - MESHX_INVALID_STATE: No state change detected
+ */
+MESHX_GEN_POWER_LEVEL_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericPowerLevelServerModel MESHX_GEN_POWER_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
+    :: element_state_change_handle(void)
+{
+    auto *el_state =
+        static_cast<meshx_gen_power_level_model_state_t*>(this->get_parent_element_state());
+
+    if (!el_state) {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid parameter in element_state_change_handle");
+        return MESHX_INVALID_ARG;
+    }
+
+    if(memcmp(&model_state, el_state, sizeof(meshx_gen_power_level_model_state_t)) != 0)
+    {
+        MESHX_LOGI(MODULE_ID_MODEL_SERVER,
+            "Power Level state change request: present=%d target=%d remaining=%d",
+            el_state->present_power, el_state->target_power, el_state->remain_time);
+        // Update the model state
+        *el_state = model_state;
+    }
+    else
+    {
+        return MESHX_INVALID_STATE;
+    }
+    return MESHX_SUCCESS;
+}
+
 /**
  * @brief Constructor for Generic Power Level Server Model
  *
@@ -486,21 +563,54 @@ meshx_err_t meshXGenericPowerLevelSetupServerModel MESHX_GEN_POWER_LEVEL_SETUP_S
     }
 
     auto *param = static_cast<meshx_gen_srv_cb_param_t *>(params);
-    // Setup server forwards state changes to its base server model
-    meshx_power_level_srv_el_msg_t msg = {
-        .model = &param->model,
-        .power_default = param->state_change.power_default_set.power,
-        .range = {
-            .range_min = param->state_change.power_range_set.range_min,
-            .range_max = param->state_change.power_range_set.range_max
+
+    // Store the message in member variable for later use by prepare_element_msg
+    element_msg = {
+        .header = {
+            .model                  = param->model,
+            .element_state_change   = MESHX_SUCCESS,
         },
+        .state = {
+            .present_power = 0,
+            .target_power = 0,
+            .remain_time = 0,
+            .power_default = param->state_change.power_default_set.power,
+            .range = {
+                .range_min = param->state_change.power_range_set.range_min,
+                .range_max = param->state_change.power_range_set.range_max
+            }
+        }
     };
 
-    if (this->get_parent_element()) {
-        return this->get_parent_element()->on_model_cb(&msg);
+    element_msg_prepared = true;
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Prepare message for element notification
+ * @details Returns pointer to the stored element message if it has been prepared
+ *
+ * @param[out] msg_ptr   Pointer to message structure (output parameter)
+ * @param[out] msg_size  Size of the message structure (output parameter)
+ * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
+ */
+MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericPowerLevelSetupServerModel MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_TEMPLATE_PARAMS
+    :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
+{
+    if (!msg_ptr || !msg_size)
+    {
+        return MESHX_INVALID_ARG;
     }
 
-    MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
-    return MESHX_INVALID_STATE;
+    if (!element_msg_prepared)
+    {
+        return MESHX_NOT_SUPPORTED;
+    }
+
+    *msg_ptr = &element_msg;
+    *msg_size = sizeof(element_msg);
+
+    return MESHX_SUCCESS;
 }
 #endif /* CONFIG_ENABLE_GEN_POWER_LEVEL_SETUP_SERVER */
