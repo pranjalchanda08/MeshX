@@ -14,14 +14,36 @@
 #define __MESHX_CWWW_ELEMENT_HPP__
 
 #include <meshx_element_class.hpp>
-#include <generic_model/meshx_model_onoff.hpp>
-#include <light_model/meshx_model_ctl.hpp>
 
 #define MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
 #define MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
 
 #define MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
 #define MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
+
+/**
+ * @brief CWWW server element context structure
+ * @details This structure contains the state context for the CWWW server element,
+ *          including OnOff state, CTL state, and publication/app binding information.
+ *          This matches the C implementation pattern where state is maintained
+ *          in the element layer (el_ctx) for NVS persistence.
+ */
+struct meshx_cwww_srv_el_ctx_t
+{
+    // OnOff state
+    uint8_t on_off_state;  /**< Current OnOff state (0=OFF, 1=ON) */
+
+    // CTL state
+    int16_t delta_uv;          /**< Current delta UV value (-32768-32767) */
+    uint16_t lightness;        /**< Current lightness value (0-65535) */
+    uint16_t temperature;      /**< Current color temperature value (800-20000) */
+    uint16_t temp_range_min;   /**< Minimum temperature range */
+    uint16_t temp_range_max;   /**< Maximum temperature range */
+
+    // Publication and app binding
+    uint8_t app_id;        /**< Application key ID for publication */
+    uint16_t pub_addr;     /**< Publication address */
+};
 
 #if CONFIG_LIGHT_CWWW_SRV_COUNT > 0
 /*********************************************************************************

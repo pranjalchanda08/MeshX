@@ -29,16 +29,26 @@
 #define MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAMS
 
 /**
+ * @brief Structure to hold the Light CTL model state.
+ */
+typedef struct meshx_light_ctl_model_state
+{
+    uint16_t lightness;      /**< The lightness value of the message. */
+    uint16_t temperature;    /**< The color temperature value of the message. */
+    int16_t  delta_uv;       /**< The delta UV value of the message. */
+    uint16_t temp_range_min; /**< Minimum temperature range */
+    uint16_t temp_range_max; /**< Maximum temperature range */
+}meshx_light_ctl_model_state_t;
+
+/**
  * @brief Structure to hold the parameters for sending a Light CTL message.
  */
 struct meshx_light_ctl_send_params
 {
-    meshx_model_t *model;      /**< Pointer to the Light CTL client model. */
-    meshx_ctx_t *ctx;          /**< The context of the message. */
-    uint16_t lightness;        /**< Lightness value (0-65535) */
-    uint16_t temperature;      /**< Color temperature value (800-20000) */
-    int16_t delta_uv;          /**< Delta UV value (-32768-32767) */
-    uint8_t tid;               /**< Transaction ID of the message. Only used by Client */
+    meshx_model_t                   *model;  /**< Pointer to the Light CTL client model. */
+    meshx_ctx_t                     *ctx;    /**< The context of the message. */
+    uint8_t                          tid;    /**< Transaction ID of the message. Only used by Client */
+    meshx_light_ctl_model_state_t    state;  /**< The state of the message. */
 };
 
 using meshx_light_ctl_send_params_t = struct meshx_light_ctl_send_params;
@@ -50,14 +60,11 @@ using meshx_light_ctl_send_params_t = struct meshx_light_ctl_send_params;
  */
 struct meshx_light_ctl_cli_el_msg
 {
-    int err_code;              /**< Error code */
-    meshx_model_t model;       /**< Light CTL Client model */
-    meshx_ctx_t ctx;           /**< Context */
-    uint16_t lightness;        /**< Present lightness value */
-    uint16_t temperature;      /**< Present color temperature value */
-    int16_t delta_uv;          /**< Present delta UV value */
-    uint16_t temp_range_min;   /**< Minimum temperature range */
-    uint16_t temp_range_max;   /**< Maximum temperature range */
+    int                             err_code;               /**< Error code */
+    meshx_model_t                   model;                  /**< Light CTL Client model */
+    meshx_ctx_t                     ctx;                    /**< Context */
+    meshx_err_t                     element_state_change;   /**< Return value from element_state_change_handle */
+    meshx_light_ctl_model_state_t   state;                  /**< The state of the message. */
 };
 
 using meshx_light_ctl_cli_el_msg_t = struct meshx_light_ctl_cli_el_msg;
@@ -76,13 +83,23 @@ class meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAMS
     : public meshXClientModel<meshXBaseLightClientModel, meshx_light_ctl_send_params_t>
 {
 private:
-    meshx_err_t meshx_state_change_notify(const meshx_gen_light_cli_cb_param_t *param, uint8_t status) const;
+    meshx_light_ctl_model_state_t model_state;
+
+    meshx_err_t meshx_state_change_notify   (
+        const meshx_gen_light_cli_cb_param_t *param,
+        uint8_t status
+    );
+
+    meshx_err_t element_state_change_handle (void) override;
 
 public:
-    meshx_err_t model_send(meshx_light_ctl_send_params_t *params) override;
-    meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t model_send          (meshx_light_ctl_send_params_t *params) override;
+    meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXLightCTLClientModel(meshXElementIF *parent_element = nullptr);
+    meshXLightCTLClientModel    (
+        meshXElementIF *parent_element = nullptr,
+        meshx_ptr_t     parent_element_state = nullptr
+    );
 };
 
 #endif /* CONFIG_ENABLE_LIGHT_CTL_CLIENT */
@@ -95,10 +112,8 @@ public:
  */
 struct meshx_light_ctl_srv_el_msg
 {
-    meshx_model_t model;       /**< Light CTL Server model */
-    uint16_t lightness;        /**< Present lightness value */
-    uint16_t temperature;      /**< Present color temperature value */
-    int16_t delta_uv;          /**< Present delta UV value */
+    meshx_srv_model_send_param_header_t header; /**< Server model send param header */
+    meshx_light_ctl_model_state_t       state;  /**< The state of the message. */
 };
 
 using meshx_light_ctl_srv_el_msg_t = struct meshx_light_ctl_srv_el_msg;
@@ -117,14 +132,19 @@ class meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAMS
     : public meshXServerModel<meshXBaseLightServerModel, meshx_light_ctl_send_params_t>
 {
 private:
-    meshx_err_t plat_model_create(void) override;
-    meshx_err_t plat_model_delete(void) override;
+    meshx_light_ctl_model_state_t model_state;
+    meshx_err_t plat_model_create   (void) override;
+    meshx_err_t plat_model_delete   (void) override;
+    meshx_err_t element_state_change_handle (void) override;
 
 public:
-    meshx_err_t model_send(meshx_light_ctl_send_params_t *params) override;
-    meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t model_send          (meshx_light_ctl_send_params_t *params) override;
+    meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXLightCTLServerModel(meshXElementIF *parent_element = nullptr);
+    meshXLightCTLServerModel    (
+        meshXElementIF *parent_element = nullptr,
+        meshx_ptr_t     parent_element_state = nullptr
+    );
 };
 
 #endif /* CONFIG_ENABLE_LIGHT_CTL_SERVER */

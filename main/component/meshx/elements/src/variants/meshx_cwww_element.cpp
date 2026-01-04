@@ -15,6 +15,8 @@
  */
 
 #include <variants/meshx_cwww_element.hpp>
+#include <generic_model/meshx_model_onoff.hpp>
+#include <light_model/meshx_model_ctl.hpp>
 
 #if CONFIG_LIGHT_CWWW_SRV_COUNT > 0
 /*********************************************************************************

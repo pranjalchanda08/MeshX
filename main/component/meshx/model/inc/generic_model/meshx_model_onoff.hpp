@@ -27,15 +27,21 @@
 
 #define MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PROTO
 #define MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
+
+typedef struct meshx_gen_onoff_model_state
+{
+    uint8_t on_off;        /**< The onoff state of the message. */
+}meshx_gen_onoff_model_state_t;
+
 /**
  * @brief Structure to hold the parameters for sending a Generic OnOff message.
  */
 struct meshx_gen_onoff_send_params
 {
-    meshx_model_t *model; /**< Pointer to the On/Off client model. */
-    meshx_ctx_t *ctx;     /**< The context of the message. */
-    uint8_t state;        /**< The state of the message. */
-    uint8_t tid;          /**< The transaction ID of the message. Only sed by Client*/
+    meshx_model_t                  *model;  /**< Pointer to the On/Off client model. */
+    meshx_ctx_t                    *ctx;    /**< The context of the message. */
+    meshx_gen_onoff_model_state_t   state;  /**< The state of the message. */
+    uint8_t                         tid;    /**< The transaction ID of the message. Only sed by Client*/
 };
 
 using meshx_gen_onoff_send_params_t = struct meshx_gen_onoff_send_params;
@@ -48,10 +54,8 @@ using meshx_gen_onoff_send_params_t = struct meshx_gen_onoff_send_params;
  */
 struct meshx_on_off_cli_el_msg
 {
-    uint8_t err_code;     /**< Error code */
-    meshx_model_t model;  /**< Generic OnOff Server model */
-    meshx_ctx_t ctx;      /**< Context of the message */
-    uint8_t on_off_state; /**< The present value of Generic OnOff state */
+    meshx_cli_model_send_param_header_t header; /**< Client model send param header */
+    meshx_gen_onoff_model_state_t       state;  /**< The present value of Generic OnOff state */
 };
 
 using meshx_on_off_cli_el_msg_t = struct meshx_on_off_cli_el_msg;
@@ -68,13 +72,19 @@ MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PROTO
 class meshXGenericOnOffClientModel : public meshXClientModel<meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t>
 {
 private:
-    meshx_err_t meshx_state_change_notify(const meshx_gen_cli_cb_param_t *param, uint8_t status) const;
+    /* New or updated model state from BLE layer */
+    meshx_gen_onoff_model_state_t model_state;
 
+    meshx_err_t meshx_state_change_notify   (const meshx_gen_cli_cb_param_t *param, uint8_t status);
+    meshx_err_t element_state_change_handle (void) override;
 public:
-    meshx_err_t model_send(meshx_gen_onoff_send_params_t *params) override;
-    meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t model_send          (meshx_gen_onoff_send_params_t *params) override;
+    meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
 
-    meshXGenericOnOffClientModel(meshXElementIF *parent_element = nullptr);
+    meshXGenericOnOffClientModel(
+        meshXElementIF *parent_element = nullptr,
+        meshx_ptr_t     parent_element_state = nullptr
+    );
     ~meshXGenericOnOffClientModel() override = default;
 };
 
@@ -87,8 +97,8 @@ public:
  */
 struct meshx_on_off_srv_el_msg
 {
-    meshx_model_t model;  /**< Generic OnOff Server model */
-    uint8_t on_off_state; /**< The present value of Generic OnOff state */
+    meshx_srv_model_send_param_header_t header; /**< Server model send param header */
+    meshx_gen_onoff_model_state_t       state;  /**< The present value of Generic OnOff state */
 };
 
 using meshx_on_off_srv_el_msg_t = struct meshx_on_off_srv_el_msg;
@@ -105,13 +115,23 @@ MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PROTO
 class meshXGenericOnOffServerModel : public meshXServerModel<meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t>
 {
 private:
-    meshx_err_t plat_model_create(void) override;
-    meshx_err_t plat_model_delete(void) override;
-public:
-    meshx_err_t model_send(meshx_gen_onoff_send_params_t *params) override;
-    meshx_err_t model_from_ble_cb(dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    /* New or updated model state from BLE layer */
+    meshx_gen_onoff_model_state_t model_state;
 
-    meshXGenericOnOffServerModel(meshXElementIF *parent_element = nullptr);
+    meshx_err_t plat_model_create   (void) override;
+    meshx_err_t plat_model_delete   (void) override;
+
+public:
+    meshx_err_t model_send          (meshx_gen_onoff_send_params_t *params) override;
+    meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+
+    // Virtual method implementation from meshXModelIF
+    meshx_err_t element_state_change_handle (void) override;
+
+    meshXGenericOnOffServerModel(
+        meshXElementIF *parent_element = nullptr,
+        meshx_ptr_t     parent_element_state = nullptr
+    );
 
     ~meshXGenericOnOffServerModel() override = default;
 };
