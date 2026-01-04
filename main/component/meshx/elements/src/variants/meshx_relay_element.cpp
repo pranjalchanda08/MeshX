@@ -4,9 +4,10 @@
  *        This file contains the implementation of the MeshX Relay Element class,
  *        which represents a relay element in the MeshX BLE mesh network.
  * Key Features:
- * - Implements relay element functionality
- * - Inherits from meshXElementServer
- * - Automatically initializes required SIG models for relay elements
+ *  - Implements relay element functionality
+ *  - Inherits from meshXElementServer
+ *  - Automatically initializes required SIG models for relay elements
+ *  - Maintains state context for NVS persistence (similar to C el_ctx)
  *
  * @author Pranjal Chanda
  * @date 2024-2025
@@ -23,9 +24,9 @@
 /**
  * @brief Lists and initializes SIG models for Relay Server Element
  *
- * This function creates and adds the Generic OnOff Server model to the element's
- * SIG models list. The Relay Server element requires the Generic OnOff model
- * for proper operation in the BLE mesh network.
+ * This function creates and adds the Generic OnOff Server model
+ * to the element's SIG models list. The Relay Server element requires
+ * the Generic OnOff model for proper operation in the BLE mesh network.
  *
  * @return uint8_t Number of SIG models added to the element
  */
@@ -34,7 +35,7 @@ uint8_t meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
     :: list_sig_models()
 {
     // Create Relay Server model
-    auto relay_model = std::make_unique<meshXGenericOnOffServerModel>(this);
+    auto relay_model = std::make_unique<meshXGenericOnOffServerModel>(this, &element_ctx.gen_on_off_state);
     this->get_sig_models().push_back(std::move(relay_model));
 
     return this->get_sig_models().size();
@@ -65,9 +66,9 @@ uint8_t meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
 /**
  * @brief Lists and initializes SIG models for Relay Client Element
  *
- * This function creates and adds the Generic OnOff Client model to the element's
- * SIG models list. The Relay Client element requires the Generic OnOff model
- * for proper operation in the BLE mesh network.
+ * This function creates and adds the Generic OnOff Client model
+ * to the element's SIG models list. The Relay Client element requires
+ * the Generic OnOff model for proper operation in the BLE mesh network.
  *
  * @return uint8_t Number of SIG models added to the element
  */
@@ -76,7 +77,7 @@ uint8_t meshXRelayClientElement MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
     :: list_sig_models()
 {
     // Create Relay Client model
-    auto relay_model = std::make_unique<meshXGenericOnOffClientModel>(this);
+    auto relay_model = std::make_unique<meshXGenericOnOffClientModel>(this, &element_ctx.gen_on_off_state);
     this->get_sig_models().push_back(std::move(relay_model));
     return this->get_sig_models().size();
 }

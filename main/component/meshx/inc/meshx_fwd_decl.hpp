@@ -35,8 +35,8 @@
 #define MESHX_CLIENT_MODEL_TEMPLATE_PROTO   template <typename meshxBaseClientModel_t, typename meshx_send_packet_params_t>
 #define MESHX_CLIENT_MODEL_TEMPLATE_PARAMS           <meshxBaseClientModel_t, meshx_send_packet_params_t>
 
-#define MESHX_ELEMENT_TEMPLATE_PROTO
-#define MESHX_ELEMENT_TEMPLATE_PARAMS
+#define MESHX_ELEMENT_TEMPLATE_PROTO        template <typename meshx_model_send_param_header_t>
+#define MESHX_ELEMENT_TEMPLATE_PARAMS                <meshx_model_send_param_header_t>
 #define MESHX_SERVER_ELEMENT_TEMPLATE_PROTO
 #define MESHX_SERVER_ELEMENT_TEMPLATE_PARAMS
 #define MESHX_CLIENT_ELEMENT_TEMPLATE_PROTO

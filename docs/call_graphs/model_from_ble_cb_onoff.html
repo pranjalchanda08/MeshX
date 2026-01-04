@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call Graph: model_from_ble_cb - Generic OnOff Model</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .diagram-container {
+            overflow-x: auto;
+            padding: 20px;
+            background-color: #fafafa;
+            border-radius: 5px;
+            border: 1px solid #e0e0e0;
+        }
+        .legend {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #3498db;
+        }
+        .legend h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .legend ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .legend li {
+            margin: 8px 0;
+            padding: 5px 0;
+        }
+        .legend .client {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .legend .server {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .legend .common {
+            color: #3498db;
+            font-weight: bold;
+        }
+        .file-info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff3cd;
+            border-radius: 5px;
+            border-left: 4px solid #ffc107;
+            font-size: 13px;
+        }
+        .file-info code {
+            background-color: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Call Graph: model_from_ble_cb</h1>
+        <p class="subtitle">Generic OnOff Model - MeshX BLE Mesh Framework</p>
+
+        <div class="diagram-container">
+            <div class="mermaid">
+flowchart TD
+    Start([model_from_ble_cb Entry Point]) --> ValidateParams{Validate params and p_dev}
+
+    ValidateParams -->|Client Model| CheckModelID_Client{model_id equals MESHX_MODEL_ID_GEN_ONOFF_CLI}
+    CheckModelID_Client -->|No| ReturnSuccess_Client[Return MESHX_SUCCESS]
+    CheckModelID_Client -->|Yes| CastParams_Client[Cast params to meshx_gen_cli_cb_param_t]
+    CastParams_Client --> CheckEvent{Check Event Type}
+    CheckEvent -->|TIMEOUT| StateNotify_Timeout[meshx_state_change_notify status MESHX_TIMEOUT]
+    CheckEvent -->|SUCCESS| StateNotify_Success[meshx_state_change_notify status MESHX_SUCCESS]
+
+    StateNotify_Timeout --> UpdateModelState_Client[Update model_state.on_off]
+    StateNotify_Success --> UpdateModelState_Client
+    UpdateModelState_Client --> CreateCliMsg[Create meshx_on_off_cli_el_msg_t]
+    CreateCliMsg --> GetParentElement_Client{get_parent_element not null}
+    GetParentElement_Client -->|No| LogError_Client[Log Parent element is null Return MESHX_INVALID_STATE]
+    GetParentElement_Client -->|Yes| GetParentState_Client{get_parent_element_state not null}
+    GetParentState_Client -->|No| LogStateNull[Log Parent element state is null Set element_state_change MESHX_NOT_FOUND]
+    GetParentState_Client -->|Yes| ElementStateHandle_Client[element_state_change_handle Update parent element state]
+    LogStateNull --> OnModelCb_Client[get_parent_element on_model_cb cli_onoff_param]
+    ElementStateHandle_Client --> OnModelCb_Client
+
+    ValidateParams -->|Server Model| CheckModelID_Server{model_id equals MESHX_MODEL_ID_GEN_ONOFF_SRV}
+    CheckModelID_Server -->|No| ReturnSuccess_Server[Return MESHX_SUCCESS]
+    CheckModelID_Server -->|Yes| CastParams_Server[Cast params to meshx_gen_srv_cb_param_t]
+    CastParams_Server --> LogOpcode[Log opcode src dst]
+    LogOpcode --> UpdateModelState_Server[Update model_state.on_off]
+    UpdateModelState_Server --> CreateSrvMsg[Create meshx_on_off_srv_el_msg_t]
+    CreateSrvMsg --> CheckSendReply{send_reply equals opcode not SET_UNACK}
+    CreateSrvMsg --> SwitchOpcode{Switch on opcode}
+
+    SwitchOpcode -->|GET| BreakGet[Break No action]
+    SwitchOpcode -->|SET| ValidateAddr{Validate Address Unicast OR Broadcast OR Subscribed Group}
+    SwitchOpcode -->|SET_UNACK| ValidateAddr
+    SwitchOpcode -->|Default| BreakDefault[Break No action]
+
+    ValidateAddr -->|Invalid| BreakAddr[Break No action]
+    ValidateAddr -->|Valid| GetParentElement_Server{get_parent_element not null}
+    GetParentElement_Server -->|No| LogError_Server[Log Parent element is null]
+    GetParentElement_Server -->|Yes| GetParentState_Server{get_parent_element_state not null}
+    GetParentState_Server -->|No| LogStateNull_Server[Log Parent element state is null Set element_state_change MESHX_NOT_FOUND]
+    GetParentState_Server -->|Yes| ElementStateHandle_Server[element_state_change_handle Update parent element state]
+    LogStateNull_Server --> OnModelCb_Server[get_parent_element on_model_cb srv_onoff_param]
+    ElementStateHandle_Server --> OnModelCb_Server
+
+    CheckSendReply -->|True| CheckSrcAddr{src_addr not equal pub_addr}
+    CheckSendReply -->|False| ReturnSuccess_Final[Return MESHX_SUCCESS]
+    CheckSrcAddr -->|No| ReturnSuccess_Final
+    CheckSrcAddr -->|Yes| LogPub[Log PUB src pub]
+    LogPub --> SetDstAddr[Set dst_addr equals pub_addr]
+    SetDstAddr --> CreateSendParams[Create meshx_gen_onoff_send_params_t]
+    CreateSendParams --> ModelSend[model_send send_params]
+
+    ModelSend --> SetOpcode[Set ctx opcode equals MESHX_MODEL_OP_GEN_ONOFF_STATUS]
+    SetOpcode --> CreateServerParams[Create meshx_gen_server_send_params_t]
+    CreateServerParams --> GetBaseModel[get_base_model plat_send_msg send_params]
+
+    GetBaseModel --> ValidateServerParams{Validate params p_model p_ctx data_len dst_addr}
+    ValidateServerParams -->|Invalid| ReturnInvalidArg[Return MESHX_INVALID_ARG]
+    ValidateServerParams -->|Valid| ValidateOpcode{validate_server_status_opcode opcode}
+    ValidateOpcode -->|Invalid| ReturnInvalidArg
+    ValidateOpcode -->|Valid| PlatGenSrvSend[meshx_plat_gen_srv_send_status Send status message]
+    PlatGenSrvSend --> ReturnSuccess_Final
+
+    classDef client fill:#ffebee,stroke:#e74c3c,stroke-width:2px;
+    classDef server fill:#e8f5e9,stroke:#27ae60,stroke-width:2px;
+    classDef common fill:#e3f2fd,stroke:#3498db,stroke-width:2px;
+    classDef decision fill:#fff9c4,stroke:#f39c12,stroke-width:2px;
+    classDef terminal fill:#f5f5f5,stroke:#7f8c8d,stroke-width:2px;
+
+    class Start,ReturnSuccess_Client,ReturnSuccess_Server,ReturnSuccess_Final,ReturnInvalidArg terminal;
+    class CheckModelID_Client,CastParams_Client,CheckEvent,StateNotify_Timeout,StateNotify_Success,UpdateModelState_Client,CreateCliMsg,GetParentElement_Client,GetParentState_Client,ElementStateHandle_Client,OnModelCb_Client,LogError_Client,LogStateNull client;
+    class CheckModelID_Server,CastParams_Server,LogOpcode,UpdateModelState_Server,CreateSrvMsg,CheckSendReply,SwitchOpcode,BreakGet,ValidateAddr,BreakAddr,GetParentElement_Server,GetParentState_Server,ElementStateHandle_Server,OnModelCb_Server,LogError_Server,LogStateNull_Server,BreakDefault,CheckSrcAddr,LogPub,SetDstAddr,CreateSendParams,ModelSend,SetOpcode,CreateServerParams,GetBaseModel server;
+    class ValidateParams,ValidateServerParams,ValidateOpcode,PlatGenSrvSend common;
+    class ValidateParams,CheckModelID_Client,CheckModelID_Server,CheckEvent,GetParentElement_Client,GetParentState_Client,GetParentElement_Server,GetParentState_Server,ValidateAddr,CheckSendReply,CheckSrcAddr,ValidateServerParams,ValidateOpcode decision;
+            </div>
+        </div>
+
+        <div class="legend">
+            <h3>Legend</h3>
+            <ul>
+                <li><span class="client">Client Model Functions</span> - Functions specific to Generic OnOff Client model</li>
+                <li><span class="server">Server Model Functions</span> - Functions specific to Generic OnOff Server model</li>
+                <li><span class="common">Common Functions</span> - Shared functions used by both models</li>
+                <li><span style="color: #f39c12; font-weight: bold;">Diamond Shapes</span> - Decision points / Conditional checks</li>
+                <li><span style="color: #7f8c8d; font-weight: bold;">Rounded Rectangles</span> - Terminal nodes / Return points</li>
+            </ul>
+        </div>
+
+        <div class="file-info">
+            <h3>Source Files</h3>
+            <p><strong>Main Implementation:</strong> <code>main/component/meshx/model/src/generic_model/meshx_model_onoff.cpp</code></p>
+            <p><strong>Header:</strong> <code>main/component/meshx/model/inc/generic_model/meshx_model_onoff.hpp</code></p>
+            <p><strong>Base Model:</strong> <code>main/component/meshx/base_model/src/meshx_base_model_generic.cpp</code></p>
+            <p><strong>Element Class:</strong> <code>main/component/meshx/elements/inc/meshx_element_class.hpp</code></p>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+</html>
