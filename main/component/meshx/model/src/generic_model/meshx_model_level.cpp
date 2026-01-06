@@ -112,7 +112,7 @@ meshx_err_t meshXGenericLevelClientModel MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_P
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
         control_task_msg_evt_t model_id,
-        meshx_ptr_t params)
+        meshx_ptr_t params
 )
 {
     if(!params || !p_dev)
@@ -244,8 +244,12 @@ MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericLevelClientModel MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_PARAMS
     ::meshXGenericLevelClientModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_LEVEL_CLI, parent_element, parent_element_state) {/* Used only for initialization of Parent Class */}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id)
+    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_LEVEL_CLI, parent_element, parent_element_state, model_func_id)
+{
+    /* Used only for initialization of Parent Class */
+}
 
 #endif /* CONFIG_ENABLE_GEN_LEVEL_CLIENT */
 /*******************************************************************************************************************/
@@ -295,7 +299,7 @@ meshx_err_t meshXGenericLevelServerModel MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_P
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
         control_task_msg_evt_t model_id,
-        meshx_ptr_t params)
+        meshx_ptr_t params
 )
 {
     if(!params || !p_dev)
@@ -406,8 +410,11 @@ MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericLevelServerModel MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
     ::meshXGenericLevelServerModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_LEVEL_SRV, parent_element, parent_element_state) {}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id
+    )
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_LEVEL_SRV, parent_element, parent_element_state, model_func_id)
+{}
 
 /**
  * @brief Creates and initializes a server model instance for Generic Level Server.

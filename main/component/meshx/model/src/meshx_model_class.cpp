@@ -34,20 +34,22 @@
  * model ID, and optional parent element. It sets up the base model and model interface
  * for BLE mesh communication.
  *
- * @param[in] p_plat_model  Pointer to the platform model instance
- * @param[in] model_id      Unique identifier for this model
+ * @param[in] p_plat_model   Pointer to the platform model instance
+ * @param[in] model_id       Unique identifier for this model
  * @param[in] parent_element Optional pointer to the parent element
+ * @param[in] model_func_id  Optional model function ID within the element
  *
  * @note The constructor allocates memory for the base model and model interface.
  *       If memory allocation fails, the status will be set to MESHX_NO_MEM.
  */
 MESHX_MODEL_TEMPLATE_PROTO
 meshXModel MESHX_MODEL_TEMPLATE_PARAMS
-    ::meshXModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element)
+    ::meshXModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element, uint16_t model_func_id)
     : meshXModelIF(p_plat_model)
 {
+    this->set_plat_model(p_plat_model);
+    this->set_model_func_id(model_func_id);
     this->set_parent_element(parent_element);
-    this->p_plat_model = p_plat_model;
     /* base_model needs to be used logically by the element composition */
     base_model = std::make_unique<meshxBaseModel_t>(model_id, model_handle_from_ble_cb);
 
@@ -156,8 +158,8 @@ meshXModel MESHX_MODEL_TEMPLATE_PARAMS
  */
 MESHX_SERVER_MODEL_TEMPLATE_PROTO
 meshXServerModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS
-    ::meshXServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element, meshx_ptr_t parent_element_state)
-    : meshXModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS (p_plat_model, model_id, parent_element)
+    ::meshXServerModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element, meshx_ptr_t parent_element_state, uint16_t model_func_id)
+    : meshXModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS (p_plat_model, model_id, parent_element, model_func_id)
 {
     this->set_parent_element_state(parent_element_state);
 }
@@ -181,8 +183,8 @@ meshXServerModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS
  */
 MESHX_CLIENT_MODEL_TEMPLATE_PROTO
 meshXClientModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
-    ::meshXClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element, meshx_ptr_t parent_element_state)
-    : meshXModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS (p_plat_model, model_id, parent_element)
+    ::meshXClientModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element, meshx_ptr_t parent_element_state, uint16_t model_func_id)
+    : meshXModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS (p_plat_model, model_id, parent_element, model_func_id)
 {
     this->set_parent_element_state(parent_element_state);
 }

@@ -89,7 +89,8 @@ public:
 
     explicit meshXGenericOnOffClientModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
     ~meshXGenericOnOffClientModel() override = default;
 };
@@ -143,7 +144,8 @@ public:
 
     explicit meshXGenericOnOffServerModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
 
     ~meshXGenericOnOffServerModel() override = default;

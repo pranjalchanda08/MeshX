@@ -241,8 +241,12 @@ MESHX_GEN_LOCATION_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericLocationClientModel MESHX_GEN_LOCATION_CLIENT_MODEL_TEMPLATE_PARAMS
     ::meshXGenericLocationClientModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_LOCATION_CLI, parent_element, parent_element_state) {/* Used only for initialization of Parent Class */}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id)
+    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_LOCATION_CLI, parent_element, parent_element_state, model_func_id)
+{
+    /* Used only for initialization of Parent Class */
+}
 
 #endif /* CONFIG_ENABLE_GEN_LOCATION_CLIENT */
 /*******************************************************************************************************************/
@@ -409,8 +413,11 @@ MESHX_GEN_LOCATION_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericLocationServerModel MESHX_GEN_LOCATION_SERVER_MODEL_TEMPLATE_PARAMS
     ::meshXGenericLocationServerModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_LOCATION_SRV, parent_element, parent_element_state) {}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id
+    )
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_LOCATION_SRV, parent_element, parent_element_state, model_func_id)
+{}
 
 /**
  * @brief Creates and initializes a server model instance for Generic Location Server.
@@ -522,8 +529,11 @@ MESHX_GEN_LOCATION_SETUP_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericLocationSetupServerModel MESHX_GEN_LOCATION_SETUP_SERVER_MODEL_TEMPLATE_PARAMS
     ::meshXGenericLocationSetupServerModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_LOCATION_SETUP_SRV, parent_element, parent_element_state) {}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id
+    )
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_LOCATION_SETUP_SRV, parent_element, parent_element_state, model_func_id)
+{}
 
 /**
  * @brief Callback function for handling BLE mesh events for Generic Location Setup Server Model

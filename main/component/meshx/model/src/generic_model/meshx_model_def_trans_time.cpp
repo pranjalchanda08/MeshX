@@ -133,7 +133,7 @@ meshx_err_t meshXGenericDefTransTimeClientModel MESHX_GEN_DEF_TRANS_TIME_CLIENT_
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
         control_task_msg_evt_t model_id,
-        meshx_ptr_t params)
+        meshx_ptr_t params
 )
 {
     if(!params || !p_dev)
@@ -220,8 +220,13 @@ MESHX_GEN_DEF_TRANS_TIME_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericDefTransTimeClientModel MESHX_GEN_DEF_TRANS_TIME_CLIENT_MODEL_TEMPLATE_PARAMS
     ::meshXGenericDefTransTimeClientModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_DEF_TRANS_TIME_CLI, parent_element, parent_element_state) {/* Used only for initialization of Parent Class */}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id
+    )
+    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_DEF_TRANS_TIME_CLI, parent_element, parent_element_state, model_func_id)
+{
+    /* Used only for initialization of Parent Class */
+}
 
 #endif /* CONFIG_ENABLE_GEN_DEF_TRANS_TIME_CLIENT */
 /*******************************************************************************************************************/
@@ -378,8 +383,11 @@ MESHX_GEN_DEF_TRANS_TIME_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericDefTransTimeServerModel MESHX_GEN_DEF_TRANS_TIME_SERVER_MODEL_TEMPLATE_PARAMS
     ::meshXGenericDefTransTimeServerModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_DEF_TRANS_TIME_SRV, parent_element, parent_element_state) {}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id
+    )
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_DEF_TRANS_TIME_SRV, parent_element, parent_element_state, model_func_id)
+{}
 
 /**
  * @brief Creates and initializes a server model instance for Generic Default Transition Time Server.

@@ -43,6 +43,12 @@ using meshx_relay_srv_el_ctx_t = struct meshx_relay_srv_el_ctx_t;
  * meshXRelayServerElement
  *********************************************************************************/
 
+enum class meshxRelayServerElementComposition : uint8_t
+{
+    MESHX_RELAY_SERVER_ELEMENT_COMP_GENERIC_ONOFF_SERVER = 0,
+    MESHX_RELAY_SERVER_ELEMENT_COMP_MAX,
+};
+
 MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PROTO
 class meshXRelayServerElement : public meshXElementServer MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
 {
@@ -60,7 +66,7 @@ public:
      *
      * @param element_idx The index of the element within the node.
      */
-    meshXRelayServerElement (uint16_t element_idx);
+    explicit meshXRelayServerElement (uint16_t element_idx);
 
     meshXRelayServerElement (void) = delete;
 };
@@ -71,6 +77,12 @@ public:
 /*********************************************************************************
  * meshXRelayClientElement
  *********************************************************************************/
+enum class meshxRelayClientElementComposition : uint8_t
+{
+    MESHX_RELAY_CLIENT_ELEMENT_COMP_GENERIC_ONOFF_CLIENT = 0,
+    MESHX_RELAY_CLIENT_ELEMENT_COMP_MAX,
+};
+
 /**
  * @brief Relay client element context structure
  * @details This structure contains state context for relay client element,
@@ -104,7 +116,7 @@ public:
      *
      * @param element_idx The index of the element within the node.
      */
-    meshXRelayClientElement (uint16_t element_idx);
+    explicit meshXRelayClientElement (uint16_t element_idx);
 
     meshXRelayClientElement (void) = delete;
 };

@@ -95,7 +95,8 @@ public:
 
     meshXGenericLevelClientModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
     ~meshXGenericLevelClientModel() = default;
 };
@@ -145,7 +146,8 @@ public:
 
     meshXGenericLevelServerModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
     ~meshXGenericLevelServerModel() = default;
 };

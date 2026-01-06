@@ -83,8 +83,9 @@ public:
     meshx_err_t prepare_element_msg (meshx_ptr_t *msg_ptr, size_t *msg_size) override;
 
     explicit meshXConfigModel(
-        meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshXElementIF *parent_element,
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id
     );
     ~meshXConfigModel() override = default;
     // Configuration model related members and methods would be defined here.

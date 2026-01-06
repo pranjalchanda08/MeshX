@@ -49,15 +49,12 @@ using meshx_cwww_srv_el_ctx_t = struct meshx_cwww_srv_el_ctx_t;
  * meshXCWWWServerElement
  *********************************************************************************/
 
-/**
- * @brief Enumeration of CWWW SIG model IDs for server element.
- */
-typedef enum
+enum class meshxCWWWServerElementComposition : uint8_t
 {
-    CWWW_SRV_SIG_ONOFF_MODEL_ID, /**< On/Off model ID */
-    CWWW_SRV_SIG_L_CTL_MODEL_ID, /**< Light CTL model ID */
-    CWWW_SRV_SIG_ID_MAX          /**< Maximum number of model IDs */
-} cwww_srv_sig_id_t;
+    MESHX_CWWW_SERVER_ELEMENT_COMP_GENERIC_ONOFF_SERVER = 0,
+    MESHX_CWWW_SERVER_ELEMENT_COMP_LIGHT_CTL_SERVER,
+    MESHX_CWWW_SERVER_ELEMENT_COMP_MAX,
+};
 
 MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
 class meshXCWWWServerElement : public meshXElementServer MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
@@ -76,7 +73,7 @@ public:
      *
      * @param element_idx The index of the element within the node.
      */
-    meshXCWWWServerElement(uint16_t element_idx);
+    explicit meshXCWWWServerElement(uint16_t element_idx);
 
     meshXCWWWServerElement() = delete;
 };
@@ -107,15 +104,13 @@ struct meshx_cwww_cli_el_ctx_t
 };
 
 using meshx_cwww_srv_el_ctx_t = struct meshx_cwww_srv_el_ctx_t;
-/**
- * @brief Enumeration of CWWW SIG model IDs for client element.
- */
-typedef enum
+
+enum class meshxCWWWClientElementComposition : uint8_t
 {
-    CWWW_CLI_SIG_ONOFF_MODEL_ID, /**< On/Off model ID */
-    CWWW_CLI_SIG_L_CTL_MODEL_ID, /**< Light CTL model ID */
-    CWWW_CLI_SIG_ID_MAX          /**< Maximum number of model IDs */
-} cwww_cli_sig_id_t;
+    MESHX_CWWW_CLIENT_ELEMENT_COMP_GENERIC_ONOFF_CLIENT = 0,
+    MESHX_CWWW_CLIENT_ELEMENT_COMP_LIGHT_CTL_CLIENT,
+    MESHX_CWWW_CLIENT_ELEMENT_COMP_MAX,
+};
 
 MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
 class meshXCWWWClientElement : public meshXElementClient MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
@@ -133,7 +128,7 @@ public:
      *
      * @param element_idx The index of the element within the node.
      */
-    meshXCWWWClientElement(uint16_t element_idx);
+    explicit meshXCWWWClientElement(uint16_t element_idx);
     meshXCWWWClientElement() = delete;
 };
 #endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */

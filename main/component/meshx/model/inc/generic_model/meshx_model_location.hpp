@@ -104,7 +104,8 @@ public:
 
     meshXGenericLocationClientModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
     ~meshXGenericLocationClientModel() = default;
 };
@@ -160,7 +161,8 @@ public:
 
     meshXGenericLocationServerModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
     ~meshXGenericLocationServerModel() = default;
 };
@@ -192,7 +194,8 @@ public:
 
     meshXGenericLocationSetupServerModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
     ~meshXGenericLocationSetupServerModel() = default;
 };

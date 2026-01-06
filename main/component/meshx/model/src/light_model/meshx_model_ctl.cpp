@@ -50,14 +50,16 @@ meshx_err_t meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAM
         .temp_range_max = 0
     };
 
-    // Prepare the message (store in member variable)
+    // Store the message in member variable for later use by prepare_element_msg
     element_msg =
     {
-        .err_code             = status,
-        .model                = param->model,
-        .ctx                  = param->ctx,
-        .element_state_change   = MESHX_SUCCESS,  // Will be set by base layer
-        .state                = model_state,
+        .header = {
+            .err_code               = status,
+            .model                  = param->model,
+            .ctx                    = param->ctx,
+            .element_state_change   = MESHX_SUCCESS,
+        },
+        .state  = model_state
     };
 
     return MESHX_SUCCESS;
@@ -238,8 +240,11 @@ meshx_err_t meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAM
  */
 MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PROTO
 meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAMS
-    ::meshXLightCTLClientModel(meshXElementIF *parent_element, meshx_ptr_t parent_element_state)
-    : meshXClientModel(nullptr, MESHX_MODEL_ID_LIGHT_CTL_CLI, parent_element, parent_element_state)
+    ::meshXLightCTLClientModel(
+        meshXElementIF *parent_element,
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id)
+    : meshXClientModel(nullptr, MESHX_MODEL_ID_LIGHT_CTL_CLI, parent_element, parent_element_state, model_func_id)
 {
     /* Used only for initialization of Parent Class */
 }
@@ -508,8 +513,12 @@ meshx_err_t meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAM
  */
 MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PROTO
 meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAMS
-    ::meshXLightCTLServerModel(meshXElementIF *parent_element, meshx_ptr_t parent_element_state)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_LIGHT_CTL_SRV, parent_element, parent_element_state)
+    ::meshXLightCTLServerModel(
+        meshXElementIF *parent_element,
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id
+    )
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_LIGHT_CTL_SRV, parent_element, parent_element_state, model_func_id)
 {
     /* Used only for initialization of Parent Class */
 }

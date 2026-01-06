@@ -19,6 +19,12 @@
 /*********************************************************************************
  * meshXRootElement
  *********************************************************************************/
+enum class meshxRootElementComposition : uint8_t
+{
+    MESHX_ROOT_ELEMENT_COMP_CONFIG_SERVER = 0,
+    MESHX_ROOT_ELEMENT_COMP_MAX,
+};
+
 /**
  * @class meshXRootElement
  * @brief Derived class for the root element
