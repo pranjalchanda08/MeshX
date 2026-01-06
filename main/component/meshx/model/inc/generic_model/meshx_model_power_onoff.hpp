@@ -96,7 +96,8 @@ public:
 
     meshXGenericPowerOnOffClientModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
     ~meshXGenericPowerOnOffClientModel() = default;
 };
@@ -153,7 +154,8 @@ public:
 
     meshXGenericPowerOnOffServerModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
     ~meshXGenericPowerOnOffServerModel() = default;
 };
@@ -185,7 +187,8 @@ public:
 
     meshXGenericPowerOnOffSetupServerModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
     ~meshXGenericPowerOnOffSetupServerModel() = default;
 };

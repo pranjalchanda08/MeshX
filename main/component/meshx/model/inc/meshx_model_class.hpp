@@ -158,6 +158,7 @@ private:
     meshxBaseModel_t    *base_model;   /*<! Pointer to the base model */
     meshx_err_t         status;        /*<! Status of the model */
     uint16_t            model_id;      /*<! Model identifier */
+    uint16_t            model_func_id; /*<! Model function identifier. This is the function ID of the model within an element */
 
     /**
      * @brief Handle upstream BLE Mesh events
@@ -232,6 +233,17 @@ public:
      * Accessor Functions
      ***********************************************************/
     /**
+     * @brief Get the model function identifier
+     * @return Model function ID value
+     */
+    uint16_t get_model_func_id(void) const { return model_func_id; }
+
+    /**
+     * @brief Set the model function identifier
+     * @param[in] func_id Model function ID to set
+     */
+    void set_model_func_id(uint16_t func_id) { model_func_id = func_id; }
+    /**
      * @brief Get the model identifier
      * @return Model ID value
      */
@@ -261,14 +273,20 @@ public:
      * model ID, and optional parent element. It sets up the base model and model interface
      * for BLE mesh communication.
      *
-     * @param[in] p_plat_model  Pointer to the platform model instance
-     * @param[in] model_id      Unique identifier for this model
+     * @param[in] p_plat_model   Pointer to the platform model instance
+     * @param[in] model_id       Unique identifier for this model
      * @param[in] parent_element Optional pointer to the parent element
+     * @param[in] model_func_id  Optional model function ID within the element
      *
      * @note The constructor allocates memory for the base model and model interface.
      *       If memory allocation fails, the status will be set to MESHX_NO_MEM.
      */
-    meshXModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element = nullptr);
+    meshXModel(
+        MESHX_MODEL *p_plat_model,
+        uint32_t model_id,
+        meshXElementIF *parent_element = nullptr,
+        uint16_t model_func_id = 0
+    );
 
     /**
      * @brief Destroy the meshXModel
@@ -322,6 +340,7 @@ public:
      * @param[in] model_id                  Unique identifier for this model
      * @param[in] parent_element            Parent element interface (optional)
      * @param[in] parent_element_state      Parent element state pointer (optional)
+     * @param[in] model_func_id             Model function ID within the element (optional)
      *
      * @details Initializes a server model with platform-specific implementation
      *          and associates it with an optional parent element
@@ -330,7 +349,8 @@ public:
         MESHX_MODEL    *p_plat_model,
         uint32_t        model_id,
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
 
     /**
@@ -404,12 +424,14 @@ public:
      * @param[in] model_id              Model identifier
      * @param[in] parent_element        Parent element interface (optional)
      * @param[in] parent_element_state  Parent element state pointer (optional)
+     * @param[in] model_func_id         Model function ID within the element (optional)
      */
     meshXClientModel(
-        MESHX_MODEL *p_plat_model,
-        uint32_t model_id,
+        MESHX_MODEL    *p_plat_model,
+        uint32_t        model_id,
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
 
     meshXClientModel() = delete;

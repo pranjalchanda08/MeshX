@@ -105,7 +105,8 @@ public:
 
     meshXGenericPowerLevelClientModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
     ~meshXGenericPowerLevelClientModel() = default;
 };
@@ -162,7 +163,8 @@ public:
 
     meshXGenericPowerLevelServerModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
     ~meshXGenericPowerLevelServerModel() = default;
 };
@@ -194,7 +196,8 @@ public:
 
     meshXGenericPowerLevelSetupServerModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
     ~meshXGenericPowerLevelSetupServerModel() = default;
 };

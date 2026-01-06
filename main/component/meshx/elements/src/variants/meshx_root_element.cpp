@@ -44,7 +44,11 @@ meshXRootElement
 uint8_t meshXRootElement :: list_sig_models()
 {
     // Create Configuration Server model (always required)
-    auto config_model = std::make_unique<meshXConfigModel>(this);
+    auto config_model = std::make_unique<meshXConfigModel>(
+        this,
+        nullptr,
+        (uint16_t) std::to_underlying(meshxRootElementComposition::MESHX_ROOT_ELEMENT_COMP_CONFIG_SERVER)
+    );
     this->get_sig_models().push_back(std::move(config_model));
 
     return (uint8_t)this->get_sig_models().size();

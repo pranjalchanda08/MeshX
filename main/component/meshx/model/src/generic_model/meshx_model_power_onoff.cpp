@@ -215,8 +215,12 @@ MESHX_GEN_POWER_ONOFF_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericPowerOnOffClientModel MESHX_GEN_POWER_ONOFF_CLIENT_MODEL_TEMPLATE_PARAMS
     ::meshXGenericPowerOnOffClientModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_POWER_ONOFF_CLI, parent_element, parent_element_state) {/* Used only for initialization of Parent Class */}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id)
+    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_POWER_ONOFF_CLI, parent_element, parent_element_state, model_func_id)
+{
+    /* Used only for initialization of Parent Class */
+}
 
 #endif /* CONFIG_ENABLE_GEN_POWER_ONOFF_CLIENT */
 /*******************************************************************************************************************/
@@ -372,8 +376,11 @@ MESHX_GEN_POWER_ONOFF_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericPowerOnOffServerModel MESHX_GEN_POWER_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
     ::meshXGenericPowerOnOffServerModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_POWER_ONOFF_SRV, parent_element, parent_element_state) {}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id
+    )
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_POWER_ONOFF_SRV, parent_element, parent_element_state, model_func_id)
+{}
 
 /**
  * @brief Creates and initializes a server model instance for Generic Power OnOff Server.
@@ -483,8 +490,11 @@ MESHX_GEN_POWER_ONOFF_SETUP_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericPowerOnOffSetupServerModel MESHX_GEN_POWER_ONOFF_SETUP_SERVER_MODEL_TEMPLATE_PARAMS
     ::meshXGenericPowerOnOffSetupServerModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_POWER_ONOFF_SETUP_SRV, parent_element, parent_element_state) {}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id
+    )
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_POWER_ONOFF_SETUP_SRV, parent_element, parent_element_state, model_func_id)
+{}
 
 /**
  * @brief Callback function for handling BLE mesh events for Generic Power OnOff Setup Server Model
