@@ -61,11 +61,8 @@ using meshx_light_ctl_send_params_t = struct meshx_light_ctl_send_params;
  */
 struct meshx_light_ctl_cli_el_msg
 {
-    int                             err_code;               /**< Error code */
-    meshx_model_t                   model;                  /**< Light CTL Client model */
-    meshx_ctx_t                     ctx;                    /**< Context */
-    meshx_err_t                     element_state_change;   /**< Return value from element_state_change_handle */
-    meshx_light_ctl_model_state_t   state;                  /**< The state of the message. */
+    meshx_cli_model_send_param_header_t header; /**< Client model send param header */
+    meshx_light_ctl_model_state_t       state;  /**< The state of the message. */
 };
 
 using meshx_light_ctl_cli_el_msg_t = struct meshx_light_ctl_cli_el_msg;
@@ -103,7 +100,8 @@ public:
 
     explicit meshXLightCTLClientModel    (
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
         );
 };
 
@@ -156,7 +154,8 @@ public:
 
     explicit meshXLightCTLServerModel    (
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
         );
 };
 

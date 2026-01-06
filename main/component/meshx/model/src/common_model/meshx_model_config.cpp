@@ -174,8 +174,10 @@ meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::prepare_
  */
 meshXConfigModel::meshXConfigModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_CONFIG_SRV, parent_element, parent_element_state)
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id
+    )
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_CONFIG_SRV, parent_element, parent_element_state, model_func_id)
 {
     // Constructor body can be empty; initialization done in base class.
 }

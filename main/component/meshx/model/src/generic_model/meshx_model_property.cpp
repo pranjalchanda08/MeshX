@@ -280,8 +280,12 @@ MESHX_GEN_PROPERTY_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericPropertyClientModel MESHX_GEN_PROPERTY_CLIENT_MODEL_TEMPLATE_PARAMS
     ::meshXGenericPropertyClientModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_PROP_CLI, parent_element, parent_element_state) {/* Used only for initialization of Parent Class */}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id)
+    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_PROP_CLI, parent_element, parent_element_state, model_func_id)
+{
+    /* Used only for initialization of Parent Class */
+}
 
 #endif /* CONFIG_ENABLE_GEN_PROPERTY_CLIENT */
 /*******************************************************************************************************************/
@@ -440,8 +444,11 @@ MESHX_GEN_ADMIN_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericAdminPropertyServerModel MESHX_GEN_ADMIN_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
     ::meshXGenericAdminPropertyServerModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_ADMIN_PROP_SRV, parent_element, parent_element_state) {}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id
+    )
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_ADMIN_PROP_SRV, parent_element, parent_element_state, model_func_id)
+{}
 
 /**
  * @brief Creates and initializes a server model instance for Generic Admin Property Server.
@@ -664,8 +671,11 @@ MESHX_GEN_MANUFACTURER_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericManufacturerPropertyServerModel MESHX_GEN_MANUFACTURER_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
     ::meshXGenericManufacturerPropertyServerModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_MANUFACTURER_PROP_SRV, parent_element, parent_element_state) {}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id
+    )
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_MANUFACTURER_PROP_SRV, parent_element, parent_element_state, model_func_id)
+{}
 
 /**
  * @brief Creates and initializes a server model instance for Generic Manufacturer Property Server.
@@ -888,8 +898,11 @@ MESHX_GEN_USER_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericUserPropertyServerModel MESHX_GEN_USER_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
     ::meshXGenericUserPropertyServerModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_USER_PROP_SRV, parent_element, parent_element_state) {}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id
+    )
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_USER_PROP_SRV, parent_element, parent_element_state, model_func_id)
+{}
 
 /**
  * @brief Creates and initializes a server model instance for Generic User Property Server.
@@ -997,8 +1010,11 @@ MESHX_GEN_CLIENT_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericClientPropertyServerModel MESHX_GEN_CLIENT_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
     ::meshXGenericClientPropertyServerModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_CLIENT_PROP_SRV, parent_element, parent_element_state) {}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id
+    )
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_CLIENT_PROP_SRV, parent_element, parent_element_state, model_func_id)
+{}
 
 /**
  * @brief Callback function for handling BLE mesh events for Generic Client Property Server Model

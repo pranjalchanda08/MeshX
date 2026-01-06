@@ -250,8 +250,12 @@ MESHX_GEN_POWER_LEVEL_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericPowerLevelClientModel MESHX_GEN_POWER_LEVEL_CLIENT_MODEL_TEMPLATE_PARAMS
     ::meshXGenericPowerLevelClientModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_POWER_LEVEL_CLI, parent_element, parent_element_state) {/* Used only for initialization of Parent Class */}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id)
+    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_POWER_LEVEL_CLI, parent_element, parent_element_state, model_func_id)
+{
+    /* Used only for initialization of Parent Class */
+}
 
 #endif /* CONFIG_ENABLE_GEN_POWER_LEVEL_CLIENT */
 /*******************************************************************************************************************/
@@ -415,8 +419,11 @@ MESHX_GEN_POWER_LEVEL_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericPowerLevelServerModel MESHX_GEN_POWER_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
     ::meshXGenericPowerLevelServerModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_POWER_LEVEL_SRV, parent_element, parent_element_state) {}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id
+    )
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_POWER_LEVEL_SRV, parent_element, parent_element_state, model_func_id)
+{}
 
 /**
  * @brief Creates and initializes a server model instance for Generic Power Level Server.
@@ -494,8 +501,11 @@ MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericPowerLevelSetupServerModel MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_TEMPLATE_PARAMS
     ::meshXGenericPowerLevelSetupServerModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_POWER_LEVEL_SETUP_SRV, parent_element, parent_element_state) {}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id
+    )
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_POWER_LEVEL_SETUP_SRV, parent_element, parent_element_state, model_func_id)
+{}
 
 /**
  * @brief Send a packet to the MeshX stack based on the given parameters
@@ -536,8 +546,13 @@ if (!params|| !params->model || !params->ctx)
  */
 MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericPowerLevelSetupServerModel MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_TEMPLATE_PARAMS
-    ::meshXGenericPowerLevelSetupServerModel(meshXElementIF *parent_element)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_POWER_LEVEL_SETUP_SRV, parent_element) {}
+    ::meshXGenericPowerLevelSetupServerModel(
+        meshXElementIF *parent_element,
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id
+    )
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_POWER_LEVEL_SETUP_SRV, parent_element, parent_element_state, model_func_id)
+{}
 
 /**
  * @brief Callback function for handling BLE mesh events for Generic Power Level Setup Server Model

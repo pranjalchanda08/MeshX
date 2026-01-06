@@ -91,7 +91,8 @@ public:
 
     meshXGenericDefTransTimeClientModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
     ~meshXGenericDefTransTimeClientModel() = default;
 };
@@ -147,7 +148,8 @@ public:
 
     meshXGenericDefTransTimeServerModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
     ~meshXGenericDefTransTimeServerModel() = default;
 };

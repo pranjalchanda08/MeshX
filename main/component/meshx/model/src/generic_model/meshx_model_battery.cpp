@@ -218,8 +218,12 @@ MESHX_GEN_BATTERY_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericBatteryClientModel MESHX_GEN_BATTERY_CLIENT_MODEL_TEMPLATE_PARAMS
     ::meshXGenericBatteryClientModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_BATTERY_CLI, parent_element, parent_element_state) {/* Used only for initialization of Parent Class */}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id)
+    : meshXClientModel(nullptr, MESHX_MODEL_ID_GEN_BATTERY_CLI, parent_element, parent_element_state, model_func_id)
+{
+    /* Used only for initialization of Parent Class */
+}
 
 #endif /* CONFIG_ENABLE_GEN_BATTERY_CLIENT */
 /*******************************************************************************************************************/
@@ -377,8 +381,11 @@ MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericBatteryServerModel MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLATE_PARAMS
     ::meshXGenericBatteryServerModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_BATTERY_SRV, parent_element, parent_element_state) {}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id
+    )
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_BATTERY_SRV, parent_element, parent_element_state, model_func_id)
+{}
 
 /**
  * @brief Creates and initializes a server model instance for the Generic Battery Server.

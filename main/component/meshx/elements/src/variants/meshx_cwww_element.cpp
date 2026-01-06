@@ -56,11 +56,19 @@ uint8_t meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
     :: list_sig_models()
 {
     // Create Generic OnOff Server model
-    auto onoff_model = std::make_unique<meshXGenericOnOffServerModel>(this, &this->element_ctx.gen_on_off_state);
+    auto onoff_model = std::make_unique<meshXGenericOnOffServerModel>(
+        this,
+        &this->element_ctx.gen_on_off_state,
+        (uint16_t) std::to_underlying(meshxCWWWServerElementComposition::MESHX_CWWW_SERVER_ELEMENT_COMP_GENERIC_ONOFF_SERVER)
+    );
     this->get_sig_models().push_back(std::move(onoff_model));
 
     // Create Light CTL Server model
-    auto ctl_model = std::make_unique<meshXLightCTLServerModel>(this, &this->element_ctx.light_ctl_state);
+    auto ctl_model = std::make_unique<meshXLightCTLServerModel>(
+        this,
+        &this->element_ctx.light_ctl_state,
+        (uint16_t) std::to_underlying(meshxCWWWServerElementComposition::MESHX_CWWW_SERVER_ELEMENT_COMP_LIGHT_CTL_SERVER)
+    );
     this->get_sig_models().push_back(std::move(ctl_model));
 
     return (uint8_t)this->get_sig_models().size();
@@ -121,11 +129,19 @@ uint8_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
     :: list_sig_models()
 {
     // Create Generic OnOff Client model
-    auto onoff_model = std::make_unique<meshXGenericOnOffClientModel>(this, &this->element_ctx.gen_on_off_state);
+    auto onoff_model = std::make_unique<meshXGenericOnOffClientModel>(
+        this,
+        &this->element_ctx.gen_on_off_state,
+        (uint16_t) std::to_underlying(meshxCWWWClientElementComposition::MESHX_CWWW_CLIENT_ELEMENT_COMP_GENERIC_ONOFF_CLIENT)
+    );
     this->get_sig_models().push_back(std::move(onoff_model));
 
     // Create Light CTL Client model
-    auto ctl_model = std::make_unique<meshXLightCTLClientModel>(this, &this->element_ctx.light_ctl_state);
+    auto ctl_model = std::make_unique<meshXLightCTLClientModel>(
+        this,
+        &this->element_ctx.light_ctl_state,
+        (uint16_t) std::to_underlying(meshxCWWWClientElementComposition::MESHX_CWWW_CLIENT_ELEMENT_COMP_LIGHT_CTL_CLIENT)
+    );
     this->get_sig_models().push_back(std::move(ctl_model));
 
     return (uint8_t)this->get_sig_models().size();

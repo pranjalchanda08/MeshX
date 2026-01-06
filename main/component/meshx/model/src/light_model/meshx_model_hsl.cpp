@@ -50,7 +50,8 @@ meshx_err_t meshXLightHSLClientModel MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAM
     model_state.sat_range_max = 0;
     model_state.status_code = 0;
 
-    meshx_light_hsl_cli_el_msg_t hsl_param =
+    // Store the message in member variable for later use by prepare_element_msg
+    element_msg =
     {
         .header = {
             .err_code               = param->err_code,
@@ -60,26 +61,8 @@ meshx_err_t meshXLightHSLClientModel MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAM
         },
         .state                  = model_state,
     };
-    /* Send the state change event to the respective Element */
-    if (this->get_parent_element())
-    {
-        if(this->get_parent_element_state())
-        {
-            hsl_param.header.element_state_change = this->element_state_change_handle();
-        }
-        else
-        {
-            MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Parent element state is null");
-            hsl_param.header.element_state_change = MESHX_NOT_FOUND;
-        }
-        return this->get_parent_element()->on_model_cb(&hsl_param, sizeof(hsl_param));
-    }
-    else
-    {
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Parent element is null");
-    }
 
-    return MESHX_INVALID_STATE;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -132,7 +115,6 @@ meshx_err_t meshXLightHSLClientModel MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAM
         dev_struct_t *p_dev,
         control_task_msg_evt_t model_id,
         meshx_ptr_t params)
-)
 {
     if(!params || !p_dev)
     {
@@ -149,6 +131,29 @@ meshx_err_t meshXLightHSLClientModel MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAM
     return std::to_underlying(param->evt) == std::to_underlying(meshx_base_cli_evt::MESHX_BASE_CLI_TIMEOUT) ?
         meshx_state_change_notify(param, MESHX_TIMEOUT) :
         meshx_state_change_notify(param, MESHX_SUCCESS);
+}
+
+/**
+ * @brief Prepare message for element notification
+ * @details Returns pointer to the stored element message
+ *
+ * @param[out] msg_ptr   Pointer to message structure (output parameter)
+ * @param[out] msg_size  Size of the message structure (output parameter)
+ * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
+ */
+MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXLightHSLClientModel MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAMS
+    :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
+{
+    if (!msg_ptr || !msg_size)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    *msg_ptr = &element_msg;
+    *msg_size = sizeof(element_msg);
+
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -243,8 +248,12 @@ MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PROTO
 meshXLightHSLClientModel MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAMS
     ::meshXLightHSLClientModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXClientModel(nullptr, MESHX_MODEL_ID_LIGHT_HSL_CLI, parent_element, parent_element_state) {/* Used only for initialization of Parent Class */}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id)
+    : meshXClientModel(nullptr, MESHX_MODEL_ID_LIGHT_HSL_CLI, parent_element, parent_element_state, model_func_id)
+{
+    /* Used only for initialization of Parent Class */
+}
 #endif /* CONFIG_ENABLE_LIGHT_HSL_CLIENT */
 
 #if CONFIG_ENABLE_LIGHT_HSL_SERVER
@@ -516,7 +525,12 @@ MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PROTO
 meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAMS
     ::meshXLightHSLServerModel(
         meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state)
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_LIGHT_HSL_SRV, parent_element, parent_element_state) {/* Used only for initialization of Parent Class */}
+        meshx_ptr_t     parent_element_state,
+        uint16_t        model_func_id
+    )
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_LIGHT_HSL_SRV, parent_element, parent_element_state, model_func_id)
+{
+    /* Used only for initialization of Parent Class */
+}
 
 #endif /* CONFIG_ENABLE_LIGHT_HSL_SERVER */

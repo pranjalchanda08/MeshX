@@ -52,7 +52,11 @@ uint8_t meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
     :: list_sig_models()
 {
     // Create Relay Server model
-    auto relay_model = std::make_unique<meshXGenericOnOffServerModel>(this, &element_ctx.gen_on_off_state);
+    auto relay_model = std::make_unique<meshXGenericOnOffServerModel>(
+        this,
+        &element_ctx.gen_on_off_state.on_off,
+        (uint16_t)std::to_underlying(meshxRelayServerElementComposition::MESHX_RELAY_SERVER_ELEMENT_COMP_GENERIC_ONOFF_SERVER)
+    );
     this->get_sig_models().push_back(std::move(relay_model));
 
     return (uint8_t)this->get_sig_models().size();
@@ -111,7 +115,11 @@ uint8_t meshXRelayClientElement MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
     :: list_sig_models()
 {
     // Create Relay Client model
-    auto relay_model = std::make_unique<meshXGenericOnOffClientModel>(this, &element_ctx.gen_on_off_state);
+    auto relay_model = std::make_unique<meshXGenericOnOffClientModel>(
+        this,
+        &element_ctx.gen_on_off_state.on_off,
+        (uint16_t)std::to_underlying(meshxRelayClientElementComposition::MESHX_RELAY_CLIENT_ELEMENT_COMP_GENERIC_ONOFF_CLIENT)
+    );
     this->get_sig_models().push_back(std::move(relay_model));
     return (uint8_t)this->get_sig_models().size();
 }

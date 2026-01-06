@@ -103,7 +103,8 @@ public:
 
     meshXGenericPropertyClientModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
     ~meshXGenericPropertyClientModel() = default;
 };
@@ -160,7 +161,8 @@ public:
 
     meshXGenericAdminPropertyServerModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
     ~meshXGenericAdminPropertyServerModel() = default;
 };
@@ -202,7 +204,8 @@ public:
 
     meshXGenericManufacturerPropertyServerModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
     ~meshXGenericManufacturerPropertyServerModel() = default;
 };
@@ -244,7 +247,8 @@ public:
 
     meshXGenericUserPropertyServerModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
     ~meshXGenericUserPropertyServerModel() = default;
 };
@@ -277,7 +281,8 @@ public:
 
     meshXGenericClientPropertyServerModel(
         meshXElementIF *parent_element = nullptr,
-        meshx_ptr_t     parent_element_state = nullptr
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
     );
     ~meshXGenericClientPropertyServerModel() = default;
 };
