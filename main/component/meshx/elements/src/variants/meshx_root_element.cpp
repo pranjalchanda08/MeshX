@@ -55,19 +55,6 @@ uint8_t meshXRootElement :: list_sig_models()
 }
 
 /**
- * @brief Lists vendor-specific models for Root Element
- *
- * This function returns the count of vendor-specific models for the Root Element.
- * Currently, no vendor-specific models are supported for root elements.
- *
- * @return uint8_t Number of vendor models (always 0)
- */
-uint8_t meshXRootElement :: list_ven_models()
-{
-    return 0;
-}
-
-/**
  * @brief Handle model callback from child models.
  *
  * This function is called by child models when a state change occurs.
@@ -88,8 +75,7 @@ meshx_err_t meshXRootElement :: element_state_change_notify(meshx_ptr_t param, s
 
     // Root element currently only has Config Server model
     // Config model events are logged but not processed further
-    MESHX_LOGI(MODULE_ID_ELEMENT_ROOT,
-        "Root element received model callback");
+    MESHX_LOGI(MODULE_ID_ELEMENT_ROOT, "Root element received model callback");
 
     // For now, just log the event and return success
 
