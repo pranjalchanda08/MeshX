@@ -62,21 +62,6 @@ uint8_t meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
     return (uint8_t)this->get_sig_models().size();
 }
 
-/**
- * @brief Lists vendor-specific models for Relay Server Element
- *
- * This function returns the count of vendor-specific models for the Relay Server element.
- * Currently, no vendor-specific models are supported for relay elements.
- *
- * @return uint8_t Number of vendor models (always 0)
- */
-MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PROTO
-uint8_t meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
-    :: list_ven_models()
-{
-    return 0;
-}
-
 #endif /* CONFIG_RELAY_SERVER_COUNT */
 
 #if CONFIG_RELAY_CLIENT_COUNT > 0
@@ -122,21 +107,6 @@ uint8_t meshXRelayClientElement MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
     );
     this->get_sig_models().push_back(std::move(relay_model));
     return (uint8_t)this->get_sig_models().size();
-}
-
-/**
- * @brief Lists vendor-specific models for Relay Client Element
- *
- * This function returns the count of vendor-specific models for the Relay Client element.
- * Currently, no vendor-specific models are supported for relay elements.
- *
- * @return uint8_t Number of vendor models (always 0)
- */
-MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
-uint8_t meshXRelayClientElement MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
-    :: list_ven_models()
-{
-    return 0;
 }
 
 #endif /* CONFIG_RELAY_CLIENT_COUNT */

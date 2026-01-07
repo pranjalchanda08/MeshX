@@ -42,28 +42,28 @@ meshx_err_t meshXGenericLocationClientModel MESHX_GEN_LOCATION_CLIENT_MODEL_TEMP
     }
 
     // Initialize model_state with default values
-    model_state.global_latitude = 0;
-    model_state.global_longitude = 0;
-    model_state.global_altitude = 0;
-    model_state.local_north = 0;
-    model_state.local_east = 0;
-    model_state.local_altitude = 0;
-    model_state.floor_number = 0;
-    model_state.uncertainty = 0;
+    model_state.global_latitude     = 0;
+    model_state.global_longitude    = 0;
+    model_state.global_altitude     = 0;
+    model_state.local_north         = 0;
+    model_state.local_east          = 0;
+    model_state.local_altitude      = 0;
+    model_state.floor_number        = 0;
+    model_state.uncertainty         = 0;
 
     // Handle different location status types based on opcode
     switch(param->ctx.opcode) {
         case MESHX_MODEL_OP_GEN_LOC_GLOBAL_STATUS:
-            model_state.global_latitude = param->status.location_global_status.global_latitude;
-            model_state.global_longitude = param->status.location_global_status.global_longitude;
-            model_state.global_altitude = param->status.location_global_status.global_altitude;
+            model_state.global_latitude     = param->status.location_global_status.global_latitude;
+            model_state.global_longitude    = param->status.location_global_status.global_longitude;
+            model_state.global_altitude     = param->status.location_global_status.global_altitude;
             break;
         case MESHX_MODEL_OP_GEN_LOC_LOCAL_STATUS:
-            model_state.local_north = param->status.location_local_status.local_north;
-            model_state.local_east = param->status.location_local_status.local_east;
-            model_state.local_altitude = param->status.location_local_status.local_altitude;
-            model_state.floor_number = param->status.location_local_status.floor_number;
-            model_state.uncertainty = param->status.location_local_status.uncertainty;
+            model_state.local_north         = param->status.location_local_status.local_north;
+            model_state.local_east          = param->status.location_local_status.local_east;
+            model_state.local_altitude      = param->status.location_local_status.local_altitude;
+            model_state.floor_number        = param->status.location_local_status.floor_number;
+            model_state.uncertainty         = param->status.location_local_status.uncertainty;
             break;
         default:
             break;
@@ -157,10 +157,9 @@ meshx_err_t meshXGenericLocationClientModel MESHX_GEN_LOCATION_CLIENT_MODEL_TEMP
 MESHX_GEN_LOCATION_CLIENT_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericLocationClientModel MESHX_GEN_LOCATION_CLIENT_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
-        dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
-        meshx_ptr_t params)
-)
+        dev_struct_t  *p_dev,
+        evt_model_id_t model_id,
+        meshx_ptr_t    params)
 {
     if(!params || !p_dev)
     {
@@ -273,16 +272,16 @@ if (!params|| !params->model || !params->ctx)
     params->ctx->opcode = MESHX_MODEL_OP_GEN_LOC_GLOBAL_STATUS;
     meshx_gen_srv_state_change_t state_change = {
         .loc_global_set = {
-            .latitude = params->global_latitude,
-            .longitude = params->global_longitude,
-            .altitude = params->global_altitude
+            .latitude   = params->global_latitude,
+            .longitude  = params->global_longitude,
+            .altitude   = params->global_altitude
         }
     };
     meshx_gen_server_send_params_t send_params = {
-        .p_model = params->model,
-        .p_ctx = params->ctx,
-        .state_change = state_change,
-        .data_len = sizeof(meshx_state_change_gen_loc_global_set_t)
+        .p_model        = params->model,
+        .p_ctx          = params->ctx,
+        .state_change   = state_change,
+        .data_len       = sizeof(meshx_state_change_gen_loc_global_set_t)
     };
     return this->get_base_model()->plat_send_msg(&send_params);
 }
@@ -299,7 +298,7 @@ MESHX_GEN_LOCATION_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericLocationServerModel MESHX_GEN_LOCATION_SERVER_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
+        evt_model_id_t model_id,
         meshx_ptr_t params)
 {
     if(!params || !p_dev)
@@ -322,14 +321,14 @@ meshx_err_t meshXGenericLocationServerModel MESHX_GEN_LOCATION_SERVER_MODEL_TEMP
             .element_state_change   = MESHX_SUCCESS,
         },
         .state = {
-            .global_latitude = param->state_change.loc_global_set.latitude,
-            .global_longitude = param->state_change.loc_global_set.longitude,
-            .global_altitude = param->state_change.loc_global_set.altitude,
-            .local_north = param->state_change.loc_local_set.north,
-            .local_east = param->state_change.loc_local_set.east,
-            .local_altitude = param->state_change.loc_local_set.altitude,
-            .floor_number = param->state_change.loc_local_set.floor_number,
-            .uncertainty = param->state_change.loc_local_set.uncertainty
+            .global_latitude    = param->state_change.loc_global_set.latitude,
+            .global_longitude   = param->state_change.loc_global_set.longitude,
+            .global_altitude    = param->state_change.loc_global_set.altitude,
+            .local_north        = param->state_change.loc_local_set.north,
+            .local_east         = param->state_change.loc_local_set.east,
+            .local_altitude     = param->state_change.loc_local_set.altitude,
+            .floor_number       = param->state_change.loc_local_set.floor_number,
+            .uncertainty        = param->state_change.loc_local_set.uncertainty
         }
     };
 
@@ -359,7 +358,7 @@ meshx_err_t meshXGenericLocationServerModel MESHX_GEN_LOCATION_SERVER_MODEL_TEMP
         return MESHX_NOT_SUPPORTED;
     }
 
-    *msg_ptr = &element_msg;
+    *msg_ptr  = &element_msg;
     *msg_size = sizeof(element_msg);
 
     return MESHX_SUCCESS;
@@ -506,14 +505,14 @@ if (!params|| !params->model || !params->ctx)
     params->ctx->opcode = MESHX_MODEL_OP_GEN_LOC_GLOBAL_STATUS;
     meshx_gen_srv_state_change_t state_change = {
         .loc_global_set = {
-            .latitude = params->global_latitude,
-            .longitude = params->global_longitude,
-            .altitude = params->global_altitude
+            .latitude   = params->global_latitude,
+            .longitude  = params->global_longitude,
+            .altitude   = params->global_altitude
         }
     };
     meshx_gen_server_send_params_t send_params = {
-        .p_model = params->model,
-        .p_ctx = params->ctx,
+        .p_model      = params->model,
+        .p_ctx        = params->ctx,
         .state_change = state_change,
         .data_len = sizeof(meshx_state_change_gen_loc_global_set_t)
     };
@@ -547,7 +546,7 @@ MESHX_GEN_LOCATION_SETUP_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericLocationSetupServerModel MESHX_GEN_LOCATION_SETUP_SERVER_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
+        evt_model_id_t model_id,
         meshx_ptr_t params)
 {
     if(!params || !p_dev)
@@ -570,14 +569,14 @@ meshx_err_t meshXGenericLocationSetupServerModel MESHX_GEN_LOCATION_SETUP_SERVER
             .element_state_change   = MESHX_SUCCESS,
         },
         .state = {
-            .global_latitude = param->state_change.loc_global_set.latitude,
-            .global_longitude = param->state_change.loc_global_set.longitude,
-            .global_altitude = param->state_change.loc_global_set.altitude,
-            .local_north = param->state_change.loc_local_set.north,
-            .local_east = param->state_change.loc_local_set.east,
-            .local_altitude = param->state_change.loc_local_set.altitude,
-            .floor_number = param->state_change.loc_local_set.floor_number,
-            .uncertainty = param->state_change.loc_local_set.uncertainty
+            .global_latitude    = param->state_change.loc_global_set.latitude,
+            .global_longitude   = param->state_change.loc_global_set.longitude,
+            .global_altitude    = param->state_change.loc_global_set.altitude,
+            .local_north        = param->state_change.loc_local_set.north,
+            .local_east         = param->state_change.loc_local_set.east,
+            .local_altitude     = param->state_change.loc_local_set.altitude,
+            .floor_number       = param->state_change.loc_local_set.floor_number,
+            .uncertainty        = param->state_change.loc_local_set.uncertainty
         }
     };
 

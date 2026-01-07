@@ -26,6 +26,8 @@
  * meshXModel
  *********************************************************************************/
 
+using evt_model_id_t = control_task_msg_evt_t;
+
 class meshXModelIF
 {
 private:
@@ -165,15 +167,15 @@ private:
      * @details Static callback function that routes messages and events coming from the BLE Mesh network
      *          to the appropriate model instance. This function extracts the model instance from the
      *          device structure and invokes the instance's model_from_ble_cb method.
-     * @param[in] p_dev     Device structure containing sender information
-     * @param[in] model_id  Event type indicating the nature of the message
-     * @param[in] params    Event-specific data payload
+     * @param[in] p_dev         Device structure containing sender information
+     * @param[in] evt_model_id  Event type indicating the nature of the message
+     * @param[in] params        Event-specific data payload
      * @return MESHX_SUCCESS if event handled successfully, error code otherwise
      */
     meshx_err_t model_handle_from_ble_cb(
-        dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
-        meshx_ptr_t params);
+        dev_struct_t  *p_dev,
+        evt_model_id_t evt_model_id,
+        meshx_ptr_t    params);
 
 protected:
     /**

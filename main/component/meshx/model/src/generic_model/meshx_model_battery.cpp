@@ -79,7 +79,7 @@ meshx_err_t meshXGenericBatteryClientModel MESHX_GEN_BATTERY_CLIENT_MODEL_TEMPLA
         return MESHX_INVALID_ARG;
     }
 
-    *msg_ptr = &element_msg;
+    *msg_ptr  = &element_msg;
     *msg_size = sizeof(element_msg);
 
     return MESHX_SUCCESS;
@@ -138,8 +138,8 @@ MESHX_GEN_BATTERY_CLIENT_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericBatteryClientModel MESHX_GEN_BATTERY_CLIENT_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
-        meshx_ptr_t params)
+        evt_model_id_t model_id,
+        meshx_ptr_t params
 )
 {
     if(!params || !p_dev)
@@ -269,7 +269,7 @@ MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericBatteryServerModel MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
+        evt_model_id_t model_id,
         meshx_ptr_t params)
 {
     if(!params || !p_dev)
@@ -327,7 +327,7 @@ meshx_err_t meshXGenericBatteryServerModel MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLA
         return MESHX_NOT_SUPPORTED;
     }
 
-    *msg_ptr = &element_msg;
+    *msg_ptr  = &element_msg;
     *msg_size = sizeof(element_msg);
 
     return MESHX_SUCCESS;
