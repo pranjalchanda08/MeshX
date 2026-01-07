@@ -115,7 +115,7 @@ MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
+        evt_model_id_t model_id,
         meshx_ptr_t params)
 {
     if(!params || !p_dev)
@@ -376,7 +376,7 @@ MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
+        evt_model_id_t model_id,
         meshx_ptr_t params)
 {
     if(!params || !p_dev)
@@ -499,7 +499,7 @@ meshx_err_t meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAM
         return MESHX_NOT_SUPPORTED;
     }
 
-    *msg_ptr = &element_msg;
+    *msg_ptr  = &element_msg;
     *msg_size = sizeof(element_msg);
 
     return MESHX_SUCCESS;

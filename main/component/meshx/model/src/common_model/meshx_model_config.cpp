@@ -83,10 +83,10 @@ meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::model_se
     // For config server, we use the base model's send functionality
     // The config server send params structure is minimal (just a stub)
     meshx_config_server_send_params_t send_params = {
-        .p_model = params->model,
-        .p_ctx = params->ctx,
-        .p_data = &params->stub,  // Use stub field as data
-        .data_len = sizeof(params->stub)
+        .p_model   = params->model,
+        .p_ctx     = params->ctx,
+        .p_data    = &params->stub,  // Use stub field as data
+        .data_len  = sizeof(params->stub)
     };
 
     return this->get_base_model()->plat_send_msg(&send_params);
@@ -112,7 +112,7 @@ meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::model_se
 MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::model_from_ble_cb(
     dev_struct_t *p_dev,
-    control_task_msg_evt_t model_id,
+    evt_model_id_t model_id,
     meshx_ptr_t params)
 {
     if(!params || !p_dev)
@@ -161,7 +161,7 @@ meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::prepare_
         return MESHX_INVALID_ARG;
     }
 
-    *msg_ptr = &element_msg;
+    *msg_ptr  = &element_msg;
     *msg_size = sizeof(element_msg);
 
     return MESHX_SUCCESS;

@@ -44,7 +44,12 @@
  */
 MESHX_MODEL_TEMPLATE_PROTO
 meshXModel MESHX_MODEL_TEMPLATE_PARAMS
-    ::meshXModel(MESHX_MODEL *p_plat_model, uint32_t model_id, meshXElementIF *parent_element, uint16_t model_func_id)
+    ::meshXModel(
+        MESHX_MODEL     *p_plat_model,
+        uint32_t         model_id,
+        meshXElementIF  *parent_element,
+        uint16_t         model_func_id
+)
     : meshXModelIF(p_plat_model)
 {
     this->set_plat_model(p_plat_model);
@@ -59,6 +64,16 @@ meshXModel MESHX_MODEL_TEMPLATE_PARAMS
     status = MESHX_SUCCESS;
 }
 
+/**
+ * @brief Send message to parent element
+ * @details Common implementation to send a message to the parent element.
+ *          This method checks for valid parameters, invokes the element's
+ *          on_model_cb method, and handles state change updates.
+ *
+ * @param[in] msg_ptr  Pointer to the message structure
+ * @param[in] msg_size Size of the message structure
+ * @return MESHX_SUCCESS if message sent successfully, error code otherwise
+ */
 MESHX_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXModel MESHX_MODEL_TEMPLATE_PARAMS
     ::send_to_parent_element(meshx_ptr_t msg_ptr, size_t msg_size)
@@ -97,17 +112,33 @@ meshx_err_t meshXModel MESHX_MODEL_TEMPLATE_PARAMS
     return MESHX_INVALID_STATE;
 }
 
+/**
+ * @brief Callback function invoked when a BLE event is received for the model.
+ *
+ * This function is called when a BLE event is received for the model. It
+ * delegates the processing of the event to the derived class implementation
+ * and then prepares a message to send to the parent element.
+ *
+ * @param[in] p_dev         Pointer to the device structure
+ * @param[in] evt_model_id  The BLE event model_id type
+ * @param[in] params        Pointer to additional parameters for the event
+ *
+ * @return meshx_err_t Returns an error code indicating the result of the operation.
+ *         - MESHX_SUCCESS on successful processing and message sending
+ *         - Other error codes for failures in derived class processing or message preparation
+ */
 MESHX_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXModel MESHX_MODEL_TEMPLATE_PARAMS
     ::model_handle_from_ble_cb(
-        dev_struct_t *p_dev,
-        control_task_msg_evt_t evt,
-        meshx_ptr_t params)
+        dev_struct_t    *p_dev,
+        evt_model_id_t   evt_model_id,
+        meshx_ptr_t      params
+)
 {
     meshx_err_t err = MESHX_SUCCESS;
 
     // Call derived class implementation
-    err = this->model_from_ble_cb(p_dev, evt, params);
+    err = this->model_from_ble_cb(p_dev, evt_model_id, params);
     if(err)
     {
         MESHX_LOGE(MODULE_ID_COMMON, "Error in model_from_ble_cb: %d", err);
@@ -269,6 +300,14 @@ void meshXClientModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
  * meshXServerModel
  **************************************************************************************************/
 
+/**
+ * @brief Update element_state_change field in server message header
+ * @details Overrides base class implementation to handle server-specific header structure
+ *          (meshx_srv_model_send_param_header_t) which doesn't include err_code and ctx.
+ *
+ * @param[in] element_state_change  Result from element_state_change_handle()
+ * @param[in] msg_ptr               Pointer to the message structure
+ */
 MESHX_SERVER_MODEL_TEMPLATE_PROTO
 void meshXServerModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS
     ::update_element_state_change_header(meshx_err_t element_state_change, meshx_ptr_t msg_ptr)

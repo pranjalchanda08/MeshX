@@ -113,7 +113,7 @@ MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXLightHSLClientModel MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
+        evt_model_id_t model_id,
         meshx_ptr_t params)
 {
     if(!params || !p_dev)
@@ -379,8 +379,8 @@ meshx_err_t meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAM
 meshx_err_t meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
-        meshx_ptr_t params)
+        evt_model_id_t model_id,
+        meshx_ptr_t params
 )
 {
     if(!params || !p_dev)

@@ -45,44 +45,44 @@ meshx_err_t meshXGenericPropertyClientModel MESHX_GEN_PROPERTY_CLIENT_MODEL_TEMP
     // Handle different property status types based on opcode
     switch(param->ctx.opcode) {
         case MESHX_MODEL_OP_GEN_USER_PROPERTIES_STATUS:
-            model_state.property_id = 0;
-            model_state.property_value = nullptr;
-            model_state.access = 0;
+            model_state.property_id     = 0;
+            model_state.property_value  = nullptr;
+            model_state.access          = 0;
             break;
         case MESHX_MODEL_OP_GEN_USER_PROPERTY_STATUS:
-            model_state.property_id = param->status.user_property_status.property_id;
-            model_state.property_value = nullptr;
-            model_state.access = param->status.user_property_status.user_access;
+            model_state.property_id     = param->status.user_property_status.property_id;
+            model_state.property_value  = nullptr;
+            model_state.access          = param->status.user_property_status.user_access;
             break;
         case MESHX_MODEL_OP_GEN_ADMIN_PROPERTIES_STATUS:
-            model_state.property_id = 0;
-            model_state.property_value = nullptr;
-            model_state.access = 0;
+            model_state.property_id     = 0;
+            model_state.property_value  = nullptr;
+            model_state.access          = 0;
             break;
         case MESHX_MODEL_OP_GEN_ADMIN_PROPERTY_STATUS:
-            model_state.property_id = param->status.admin_property_status.property_id;
-            model_state.property_value = nullptr;
-            model_state.access = param->status.admin_property_status.user_access;
+            model_state.property_id     = param->status.admin_property_status.property_id;
+            model_state.property_value  = nullptr;
+            model_state.access          = param->status.admin_property_status.user_access;
             break;
         case MESHX_MODEL_OP_GEN_MANUFACTURER_PROPERTIES_STATUS:
-            model_state.property_id = 0;
-            model_state.property_value = nullptr;
-            model_state.access = 0;
+            model_state.property_id     = 0;
+            model_state.property_value  = nullptr;
+            model_state.access          = 0;
             break;
         case MESHX_MODEL_OP_GEN_MANUFACTURER_PROPERTY_STATUS:
-            model_state.property_id = param->status.manufacturer_property_status.property_id;
-            model_state.property_value = nullptr;
-            model_state.access = param->status.manufacturer_property_status.user_access;
+            model_state.property_id     = param->status.manufacturer_property_status.property_id;
+            model_state.property_value  = nullptr;
+            model_state.access          = param->status.manufacturer_property_status.user_access;
             break;
         case MESHX_MODEL_OP_GEN_CLIENT_PROPERTIES_STATUS:
-            model_state.property_id = 0;
-            model_state.property_value = nullptr;
-            model_state.access = 0;
+            model_state.property_id     = 0;
+            model_state.property_value  = nullptr;
+            model_state.access          = 0;
             break;
         default:
-            model_state.property_id = 0;
-            model_state.property_value = nullptr;
-            model_state.access = 0;
+            model_state.property_id     = 0;
+            model_state.property_value  = nullptr;
+            model_state.access          = 0;
             break;
     }
 
@@ -173,10 +173,10 @@ meshx_err_t meshXGenericPropertyClientModel MESHX_GEN_PROPERTY_CLIENT_MODEL_TEMP
 MESHX_GEN_PROPERTY_CLIENT_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericPropertyClientModel MESHX_GEN_PROPERTY_CLIENT_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
-        dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
-        meshx_ptr_t params)
-)
+        dev_struct_t  *p_dev,
+        evt_model_id_t model_id,
+        meshx_ptr_t    params
+    )
 {
     if(!params || !p_dev)
     {
@@ -336,8 +336,8 @@ MESHX_GEN_ADMIN_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericAdminPropertyServerModel MESHX_GEN_ADMIN_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
-        meshx_ptr_t params)
+        evt_model_id_t model_id,
+        meshx_ptr_t params
 )
 {
     if(!params || !p_dev)
@@ -392,7 +392,7 @@ meshx_err_t meshXGenericAdminPropertyServerModel MESHX_GEN_ADMIN_PROPERTY_SERVER
         return MESHX_NOT_SUPPORTED;
     }
 
-    *msg_ptr = &element_msg;
+    *msg_ptr  = &element_msg;
     *msg_size = sizeof(element_msg);
 
     return MESHX_SUCCESS;
@@ -538,15 +538,15 @@ if (!params|| !params->model || !params->ctx)
     params->ctx->opcode = MESHX_MODEL_OP_GEN_MANUFACTURER_PROPERTY_STATUS;
     meshx_gen_srv_state_change_t state_change = {
         .manu_property_set = {
-            .id = params->property_id,
+            .id     = params->property_id,
             .access = params->access
         }
     };
     meshx_gen_server_send_params_t send_params = {
-        .p_model = params->model,
-        .p_ctx = params->ctx,
+        .p_model      = params->model,
+        .p_ctx        = params->ctx,
         .state_change = state_change,
-        .data_len = sizeof(meshx_state_change_gen_manu_property_set_t)
+        .data_len     = sizeof(meshx_state_change_gen_manu_property_set_t)
     };
     return this->get_base_model()->plat_send_msg(&send_params);
 }
@@ -563,9 +563,9 @@ MESHX_GEN_MANUFACTURER_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericManufacturerPropertyServerModel MESHX_GEN_MANUFACTURER_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
-        meshx_ptr_t params)
-)
+        evt_model_id_t model_id,
+        meshx_ptr_t params
+    )
 {
     if(!params || !p_dev)
     {
@@ -587,9 +587,9 @@ meshx_err_t meshXGenericManufacturerPropertyServerModel MESHX_GEN_MANUFACTURER_P
             .element_state_change   = MESHX_SUCCESS,
         },
         .state = {
-            .property_id = param->state_change.manu_property_set.id,
+            .property_id    = param->state_change.manu_property_set.id,
             .property_value = nullptr,
-            .access = param->state_change.manu_property_set.access
+            .access         = param->state_change.manu_property_set.access
         }
     };
 
@@ -770,10 +770,10 @@ if (!params|| !params->model || !params->ctx)
         }
     };
     meshx_gen_server_send_params_t send_params = {
-        .p_model = params->model,
-        .p_ctx = params->ctx,
-        .state_change = state_change,
-        .data_len = sizeof(meshx_state_change_gen_user_property_set_t)
+        .p_model        = params->model,
+        .p_ctx          = params->ctx,
+        .state_change   = state_change,
+        .data_len       = sizeof(meshx_state_change_gen_user_property_set_t)
     };
     return this->get_base_model()->plat_send_msg(&send_params);
 }
@@ -790,9 +790,9 @@ MESHX_GEN_USER_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericUserPropertyServerModel MESHX_GEN_USER_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
-        meshx_ptr_t params)
-)
+        evt_model_id_t model_id,
+        meshx_ptr_t params
+    )
 {
     if(!params || !p_dev)
     {
@@ -814,9 +814,9 @@ meshx_err_t meshXGenericUserPropertyServerModel MESHX_GEN_USER_PROPERTY_SERVER_M
             .element_state_change   = MESHX_SUCCESS,
         },
         .state = {
-            .property_id = param->state_change.user_property_set.id,
+            .property_id    = param->state_change.user_property_set.id,
             .property_value = param->state_change.user_property_set.value,
-            .access = 0
+            .access         = 0
         }
     };
 
@@ -846,7 +846,7 @@ meshx_err_t meshXGenericUserPropertyServerModel MESHX_GEN_USER_PROPERTY_SERVER_M
         return MESHX_NOT_SUPPORTED;
     }
 
-    *msg_ptr = &element_msg;
+    *msg_ptr  = &element_msg;
     *msg_size = sizeof(element_msg);
 
     return MESHX_SUCCESS;
@@ -993,10 +993,10 @@ if (!params|| !params->model || !params->ctx)
     // Client Property Server doesn't modify state, just responds with available properties
     meshx_gen_srv_state_change_t state_change = {0}; // Empty state change for client properties
     meshx_gen_server_send_params_t send_params = {
-        .p_model = params->model,
-        .p_ctx = params->ctx,
-        .state_change = state_change,
-        .data_len = 0  // No state data for client properties status
+        .p_model        = params->model,
+        .p_ctx          = params->ctx,
+        .state_change   = state_change,
+        .data_len       = 0  // No state data for client properties status
     };
     return this->get_base_model()->plat_send_msg(&send_params);
 }
@@ -1028,9 +1028,9 @@ MESHX_GEN_CLIENT_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericClientPropertyServerModel MESHX_GEN_CLIENT_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
-        meshx_ptr_t params)
-)
+        evt_model_id_t model_id,
+        meshx_ptr_t params
+    )
 {
     if(!params || !p_dev)
     {
