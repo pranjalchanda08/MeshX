@@ -131,9 +131,9 @@ meshx_err_t meshXGenericDefTransTimeClientModel MESHX_GEN_DEF_TRANS_TIME_CLIENT_
 MESHX_GEN_DEF_TRANS_TIME_CLIENT_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericDefTransTimeClientModel MESHX_GEN_DEF_TRANS_TIME_CLIENT_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
-        dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
-        meshx_ptr_t params
+        dev_struct_t   *p_dev,
+        evt_model_id_t  model_id,
+        meshx_ptr_t     params
 )
 {
     if(!params || !p_dev)
@@ -275,9 +275,9 @@ MESHX_GEN_DEF_TRANS_TIME_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericDefTransTimeServerModel MESHX_GEN_DEF_TRANS_TIME_SERVER_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
-        meshx_ptr_t params)
-)
+        evt_model_id_t model_id,
+        meshx_ptr_t params
+    )
 {
     if(!params || !p_dev)
     {

@@ -41,9 +41,9 @@ meshx_err_t meshXGenericLevelClientModel MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_P
         return MESHX_INVALID_ARG;
     }
 
-    model_state.present_level = param->status.level_status.present_level;
-    model_state.target_level = param->status.level_status.target_level;
-    model_state.remaining_time = param->status.level_status.remain_time;
+    model_state.present_level   = param->status.level_status.present_level;
+    model_state.target_level    = param->status.level_status.target_level;
+    model_state.remaining_time  = param->status.level_status.remain_time;
 
     // Prepare the message (store in member variable)
     element_msg = {
@@ -111,7 +111,7 @@ MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericLevelClientModel MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
+        evt_model_id_t model_id,
         meshx_ptr_t params
 )
 {
@@ -149,7 +149,7 @@ meshx_err_t meshXGenericLevelClientModel MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_P
         return MESHX_INVALID_ARG;
     }
 
-    *msg_ptr = &element_msg;
+    *msg_ptr  = &element_msg;
     *msg_size = sizeof(element_msg);
 
     return MESHX_SUCCESS;
@@ -192,20 +192,20 @@ meshx_err_t meshXGenericLevelClientModel MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_P
     else if (params->ctx->opcode == MESHX_MODEL_OP_GEN_LEVEL_SET ||
              params->ctx->opcode == MESHX_MODEL_OP_GEN_LEVEL_SET_UNACK)
     {
-        set.level_set.level = params->level;
-        set.level_set.tid = params->tid;
+        set.level_set.level      = params->level;
+        set.level_set.tid        = params->tid;
         set.level_set.trans_time = params->transition_time;
-        set.level_set.delay = params->delay;
+        set.level_set.delay      = params->delay;
 
         err = this->get_base_model()->plat_send_msg(&send_params);
     }
     else if (params->ctx->opcode == MESHX_MODEL_OP_GEN_DELTA_SET ||
              params->ctx->opcode == MESHX_MODEL_OP_GEN_DELTA_SET_UNACK)
     {
-        set.delta_set.level = params->level; // Using level field for delta value
-        set.delta_set.tid = params->tid;
+        set.delta_set.level      = params->level; // Using level field for delta value
+        set.delta_set.tid        = params->tid;
         set.delta_set.trans_time = params->transition_time;
-        set.delta_set.delay = params->delay;
+        set.delta_set.delay      = params->delay;
 
         err = this->get_base_model()->plat_send_msg(&send_params);
     }
@@ -213,9 +213,9 @@ meshx_err_t meshXGenericLevelClientModel MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_P
              params->ctx->opcode == MESHX_MODEL_OP_GEN_MOVE_SET_UNACK)
     {
         set.move_set.delta_level = params->level; // Using level field for move delta
-        set.move_set.tid = params->tid;
-        set.move_set.trans_time = params->transition_time;
-        set.move_set.delay = params->delay;
+        set.move_set.tid         = params->tid;
+        set.move_set.trans_time  = params->transition_time;
+        set.move_set.delay       = params->delay;
 
         err = this->get_base_model()->plat_send_msg(&send_params);
     }
@@ -278,10 +278,10 @@ if (!params|| !params->model || !params->ctx)
         }
     };
     meshx_gen_server_send_params_t send_params = {
-        .p_model = params->model,
-        .p_ctx = params->ctx,
-        .state_change = state_change,
-        .data_len = sizeof(meshx_state_change_gen_level_set_t)
+        .p_model        = params->model,
+        .p_ctx          = params->ctx,
+        .state_change   = state_change,
+        .data_len       = sizeof(meshx_state_change_gen_level_set_t)
     };
     return this->get_base_model()->plat_send_msg(&send_params);
 }
@@ -298,7 +298,7 @@ MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericLevelServerModel MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
+        evt_model_id_t model_id,
         meshx_ptr_t params
 )
 {
@@ -356,7 +356,7 @@ meshx_err_t meshXGenericLevelServerModel MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_P
         return MESHX_NOT_SUPPORTED;
     }
 
-    *msg_ptr = &element_msg;
+    *msg_ptr  = &element_msg;
     *msg_size = sizeof(element_msg);
 
     return MESHX_SUCCESS;

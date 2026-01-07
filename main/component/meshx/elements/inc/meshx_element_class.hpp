@@ -62,16 +62,16 @@ private:
 public:
 
     void set_element_type(meshxElementType_t type) { element_type = type; }
-    meshxElementType_t get_element_type(void) const { return element_type; }
+    meshxElementType_t get_element_type(void) const final { return element_type; }
 
     void set_no_of_sig_models(uint8_t cnt) { no_of_sig_models = cnt; }
-    uint8_t get_no_of_sig_models(void) const { return no_of_sig_models; }
+    uint8_t get_no_of_sig_models(void) const final { return no_of_sig_models; }
 
     void set_no_of_ven_models(uint8_t cnt) { no_of_ven_models = cnt; }
-    uint8_t get_no_of_ven_models(void) const { return no_of_ven_models; }
+    uint8_t get_no_of_ven_models(void) const final { return no_of_ven_models; }
 
-    std::vector<std::unique_ptr<meshXModelIF>>& get_sig_models(void) { return sig_models; }
-    std::vector<std::unique_ptr<meshXModelIF>>& get_ven_models(void) { return ven_models; }
+    std::vector<std::unique_ptr<meshXModelIF>>& get_sig_models(void) final { return sig_models; }
+    std::vector<std::unique_ptr<meshXModelIF>>& get_ven_models(void) final { return ven_models; }
 
     /**
      * @brief Lists and creates all required SIG models for the element.
@@ -84,7 +84,7 @@ public:
      *
      * @return uint8_t The total number of SIG models created and added to the root_sig_models vector
      */
-    virtual uint8_t list_sig_models(void);
+    virtual uint8_t list_sig_models(void) { return 0; };
     /**
      * @brief Lists and creates all required Vendor models for the element.
      *
@@ -96,7 +96,7 @@ public:
      *
      * @return uint8_t The total number of Vendor models created and added to the root_sig_models vector
      */
-    virtual uint8_t list_ven_models(void);
+    virtual uint8_t list_ven_models(void) { return 0; };
 
     /**
      * @brief Notify element about state change

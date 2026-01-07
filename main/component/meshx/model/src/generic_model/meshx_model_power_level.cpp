@@ -42,8 +42,8 @@ meshx_err_t meshXGenericPowerLevelClientModel MESHX_GEN_POWER_LEVEL_CLIENT_MODEL
     }
 
     model_state.present_power = param->status.power_level_status.present_power;
-    model_state.target_power = param->status.power_level_status.target_power;
-    model_state.remain_time = param->status.power_level_status.remain_time;
+    model_state.target_power  = param->status.power_level_status.target_power;
+    model_state.remain_time   = param->status.power_level_status.remain_time;
 
     // Store the message in member variable for later use by prepare_element_msg
     element_msg = {
@@ -76,7 +76,7 @@ meshx_err_t meshXGenericPowerLevelClientModel MESHX_GEN_POWER_LEVEL_CLIENT_MODEL
         return MESHX_INVALID_ARG;
     }
 
-    *msg_ptr = &element_msg;
+    *msg_ptr  = &element_msg;
     *msg_size = sizeof(element_msg);
 
     return MESHX_SUCCESS;
@@ -134,7 +134,7 @@ MESHX_GEN_POWER_LEVEL_CLIENT_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericPowerLevelClientModel MESHX_GEN_POWER_LEVEL_CLIENT_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
+        evt_model_id_t model_id,
         meshx_ptr_t params)
 {
     if(!params || !p_dev)
@@ -203,10 +203,10 @@ meshx_err_t meshXGenericPowerLevelClientModel MESHX_GEN_POWER_LEVEL_CLIENT_MODEL
     else if (params->ctx->opcode == MESHX_MODEL_OP_GEN_POWER_LEVEL_SET ||
              params->ctx->opcode == MESHX_MODEL_OP_GEN_POWER_LEVEL_SET_UNACK)
     {
-        set.power_level_set.power = params->power_level;
-        set.power_level_set.tid = params->tid;
-        set.power_level_set.trans_time = params->transition_time;
-        set.power_level_set.delay = params->delay;
+        set.power_level_set.power       = params->power_level;
+        set.power_level_set.tid         = params->tid;
+        set.power_level_set.trans_time  = params->transition_time;
+        set.power_level_set.delay       = params->delay;
 
         err = this->get_base_model()->plat_send_msg(&send_params);
     }
@@ -284,10 +284,10 @@ if (!params|| !params->model || !params->ctx)
         }
     };
     meshx_gen_server_send_params_t send_params = {
-        .p_model = params->model,
-        .p_ctx = params->ctx,
-        .state_change = state_change,
-        .data_len = sizeof(meshx_state_change_gen_power_level_set_t)
+        .p_model        = params->model,
+        .p_ctx          = params->ctx,
+        .state_change   = state_change,
+        .data_len       = sizeof(meshx_state_change_gen_power_level_set_t)
     };
     return this->get_base_model()->plat_send_msg(&send_params);
 }
@@ -307,7 +307,7 @@ if (!params|| !params->model || !params->ctx)
  */
 MESHX_GEN_POWER_LEVEL_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericPowerLevelServerModel MESHX_GEN_POWER_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
-    :: model_from_ble_cb(dev_struct_t *p_dev, control_task_msg_evt_t model_id, meshx_ptr_t params)
+    :: model_from_ble_cb(dev_struct_t *p_dev, evt_model_id_t model_id, meshx_ptr_t params)
 {
     if(!params || !p_dev)
     {
@@ -329,10 +329,10 @@ meshx_err_t meshXGenericPowerLevelServerModel MESHX_GEN_POWER_LEVEL_SERVER_MODEL
             .element_state_change   = MESHX_SUCCESS,
         },
         .state = {
-            .present_power = param->state_change.power_level_set.power,
-            .target_power = 0,
-            .remain_time = 0,
-            .power_default = param->state_change.power_default_set.power,
+            .present_power  = param->state_change.power_level_set.power,
+            .target_power   = 0,
+            .remain_time    = 0,
+            .power_default  = param->state_change.power_default_set.power,
             .range = {
                 .range_min = param->state_change.power_range_set.range_min,
                 .range_max = param->state_change.power_range_set.range_max
@@ -366,7 +366,7 @@ meshx_err_t meshXGenericPowerLevelServerModel MESHX_GEN_POWER_LEVEL_SERVER_MODEL
         return MESHX_NOT_SUPPORTED;
     }
 
-    *msg_ptr = &element_msg;
+    *msg_ptr  = &element_msg;
     *msg_size = sizeof(element_msg);
 
     return MESHX_SUCCESS;
@@ -531,10 +531,10 @@ if (!params|| !params->model || !params->ctx)
         }
     };
     meshx_gen_server_send_params_t send_params = {
-        .p_model = params->model,
-        .p_ctx = params->ctx,
-        .state_change = state_change,
-        .data_len = sizeof(meshx_state_change_gen_power_level_set_t)
+        .p_model        = params->model,
+        .p_ctx          = params->ctx,
+        .state_change   = state_change,
+        .data_len       = sizeof(meshx_state_change_gen_power_level_set_t)
     };
     return this->get_base_model()->plat_send_msg(&send_params);
 }
@@ -564,7 +564,7 @@ meshXGenericPowerLevelSetupServerModel MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_
  */
 MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericPowerLevelSetupServerModel MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_TEMPLATE_PARAMS
-    :: model_from_ble_cb(dev_struct_t *p_dev, control_task_msg_evt_t model_id, meshx_ptr_t params)
+    :: model_from_ble_cb(dev_struct_t *p_dev, evt_model_id_t model_id, meshx_ptr_t params)
 {
     if(!params || !p_dev)
     {
@@ -586,10 +586,10 @@ meshx_err_t meshXGenericPowerLevelSetupServerModel MESHX_GEN_POWER_LEVEL_SETUP_S
             .element_state_change   = MESHX_SUCCESS,
         },
         .state = {
-            .present_power = 0,
-            .target_power = 0,
-            .remain_time = 0,
-            .power_default = param->state_change.power_default_set.power,
+            .present_power  = 0,
+            .target_power   = 0,
+            .remain_time    = 0,
+            .power_default  = param->state_change.power_default_set.power,
             .range = {
                 .range_min = param->state_change.power_range_set.range_min,
                 .range_max = param->state_change.power_range_set.range_max
@@ -623,7 +623,7 @@ meshx_err_t meshXGenericPowerLevelSetupServerModel MESHX_GEN_POWER_LEVEL_SETUP_S
         return MESHX_NOT_SUPPORTED;
     }
 
-    *msg_ptr = &element_msg;
+    *msg_ptr  = &element_msg;
     *msg_size = sizeof(element_msg);
 
     return MESHX_SUCCESS;

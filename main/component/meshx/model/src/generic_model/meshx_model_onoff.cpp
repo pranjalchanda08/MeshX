@@ -107,7 +107,7 @@ MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
+        evt_model_id_t model_id,
         meshx_ptr_t params)
 {
     if(!params || !p_dev)
@@ -127,6 +127,18 @@ meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_P
         meshx_state_change_notify(param, MESHX_SUCCESS);
 }
 
+/**
+ * @brief Prepare message for element notification
+ *
+ * This function prepares a message structure that will be sent to the parent element.
+ * The message must persist after this function returns, so it is stored as a member variable.
+ *
+ * @param[out] msg_ptr   Pointer to message structure (output parameter)
+ * @param[out] msg_size  Size of the message structure (output parameter)
+ * @return
+ *     - MESHX_SUCCESS: Message prepared successfully
+ *     - MESHX_INVALID_ARG: Invalid parameter
+ */
 MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PARAMS
     :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
@@ -136,7 +148,7 @@ meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_P
         return MESHX_INVALID_ARG;
     }
 
-    *msg_ptr = &element_msg;
+    *msg_ptr  = &element_msg;
     *msg_size = sizeof(element_msg);
 
     return MESHX_SUCCESS;
@@ -403,9 +415,9 @@ meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_P
  */
 meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
-        dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
-        meshx_ptr_t params)
+        dev_struct_t    *p_dev,
+        evt_model_id_t   model_id,
+        meshx_ptr_t      params)
 {
     if(!params || !p_dev)
     {
@@ -490,6 +502,21 @@ meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_P
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Prepare the element message for notification.
+ *
+ * This function prepares the element message for notification by setting the
+ * message pointer and size. It checks if the message was prepared for element
+ * notification and returns an error if not.
+ *
+ * @param[out] msg_ptr  Pointer to store the message pointer.
+ * @param[out] msg_size Pointer to store the message size.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Message prepared successfully.
+ *     - MESHX_INVALID_ARG: Invalid argument.
+ *     - MESHX_NOT_SUPPORTED: Message was not prepared for element notification.
+ */
 MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
     :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
@@ -505,7 +532,7 @@ meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_P
         return MESHX_NOT_SUPPORTED;
     }
 
-    *msg_ptr = &element_msg;
+    *msg_ptr  = &element_msg;
     *msg_size = sizeof(element_msg);
 
     return MESHX_SUCCESS;

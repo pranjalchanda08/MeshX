@@ -127,9 +127,9 @@ MESHX_GEN_POWER_ONOFF_CLIENT_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericPowerOnOffClientModel MESHX_GEN_POWER_ONOFF_CLIENT_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
-        meshx_ptr_t params)
-)
+        evt_model_id_t model_id,
+        meshx_ptr_t params
+    )
 {
     if(!params || !p_dev)
     {
@@ -249,10 +249,10 @@ if (!params|| !params->model || !params->ctx)
         }
     };
     meshx_gen_server_send_params_t send_params = {
-        .p_model = params->model,
-        .p_ctx = params->ctx,
-        .state_change = state_change,
-        .data_len = sizeof(meshx_state_change_gen_onpowerup_set_t)
+        .p_model        = params->model,
+        .p_ctx          = params->ctx,
+        .state_change   = state_change,
+        .data_len       = sizeof(meshx_state_change_gen_onpowerup_set_t)
     };
     return this->get_base_model()->plat_send_msg(&send_params);
 }
@@ -269,7 +269,7 @@ MESHX_GEN_POWER_ONOFF_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericPowerOnOffServerModel MESHX_GEN_POWER_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
+        evt_model_id_t model_id,
         meshx_ptr_t params)
 {
     if(!params || !p_dev)
@@ -473,10 +473,10 @@ if (!params|| !params->model || !params->ctx)
         }
     };
     meshx_gen_server_send_params_t send_params = {
-        .p_model = params->model,
-        .p_ctx = params->ctx,
-        .state_change = state_change,
-        .data_len = sizeof(meshx_state_change_gen_onpowerup_set_t)
+        .p_model        = params->model,
+        .p_ctx          = params->ctx,
+        .state_change   = state_change,
+        .data_len       = sizeof(meshx_state_change_gen_onpowerup_set_t)
     };
     return this->get_base_model()->plat_send_msg(&send_params);
 }
@@ -508,7 +508,7 @@ MESHX_GEN_POWER_ONOFF_SETUP_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericPowerOnOffSetupServerModel MESHX_GEN_POWER_ONOFF_SETUP_SERVER_MODEL_TEMPLATE_PARAMS
     :: model_from_ble_cb(
         dev_struct_t *p_dev,
-        control_task_msg_evt_t model_id,
+        evt_model_id_t model_id,
         meshx_ptr_t params)
 {
     if(!params || !p_dev)
@@ -561,7 +561,7 @@ meshx_err_t meshXGenericPowerOnOffSetupServerModel MESHX_GEN_POWER_ONOFF_SETUP_S
         return MESHX_NOT_SUPPORTED;
     }
 
-    *msg_ptr = &element_msg;
+    *msg_ptr  = &element_msg;
     *msg_size = sizeof(element_msg);
 
     return MESHX_SUCCESS;

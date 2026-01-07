@@ -74,21 +74,6 @@ uint8_t meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
     return (uint8_t)this->get_sig_models().size();
 }
 
-/**
- * @brief Lists vendor-specific models for CWWW Server Element
- *
- * This function returns the count of vendor-specific models for the CWWW Server element.
- * Currently, no vendor-specific models are supported for CWWW elements.
- *
- * @return uint8_t Number of vendor models (always 0)
- */
-MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
-uint8_t meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
-    :: list_ven_models()
-{
-    return 0;
-}
-
 #endif /* CONFIG_LIGHT_CWWW_SRV_COUNT */
 
 #if CONFIG_LIGHT_CWWW_CLIENT_COUNT > 0
@@ -145,21 +130,6 @@ uint8_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
     this->get_sig_models().push_back(std::move(ctl_model));
 
     return (uint8_t)this->get_sig_models().size();
-}
-
-/**
- * @brief Lists vendor-specific models for CWWW Client Element
- *
- * This function returns the count of vendor-specific models for the CWWW Client element.
- * Currently, no vendor-specific models are supported for CWWW elements.
- *
- * @return uint8_t Number of vendor models (always 0)
- */
-MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
-uint8_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
-    :: list_ven_models()
-{
-    return 0;
 }
 
 #endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */
