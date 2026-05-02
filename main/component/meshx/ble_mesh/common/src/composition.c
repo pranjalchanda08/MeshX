@@ -19,19 +19,19 @@
 #include "interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h"
 
 #if CONFIG_RELAY_SERVER_COUNT
-#include "meshx_relay_server_element.h"
+meshx_err_t create_relay_server_elements_cpp(dev_struct_t *pdev, uint16_t element_cnt);
 #endif /* CONFIG_RELAY_SERVER_COUNT */
 
 #if CONFIG_RELAY_CLIENT_COUNT
-#include "meshx_relay_client_element.h"
+meshx_err_t create_relay_client_elements_cpp(dev_struct_t *pdev, uint16_t element_cnt);
 #endif /* CONFIG_RELAY_CLIENT_COUNT */
 
 #if CONFIG_LIGHT_CWWW_SRV_COUNT
-#include "meshx_cwww_server_element.h"
+meshx_err_t create_cwww_server_elements_cpp(dev_struct_t *pdev, uint16_t element_cnt);
 #endif /* CONFIG_LIGHT_CWWW_SRV_COUNT */
 
 #if CONFIG_LIGHT_CWWW_CLIENT_COUNT
-#include "meshx_light_cwww_client_element.h"
+meshx_err_t create_cwww_client_elements_cpp(dev_struct_t *pdev, uint16_t element_cnt);
 #endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */
 
 #if CONFIG_SECTION_ENABLE_ELEMENT_TABLE
@@ -45,17 +45,17 @@ extern element_comp_table_t MESHX_ELEMENT_COMP_TABLE_STOP;
 
 element_comp_fn_t element_comp_fn [MESHX_ELEMENT_TYPE_MAX] = {
 #if CONFIG_RELAY_SERVER_COUNT
-    [MESHX_ELEMENT_TYPE_RELAY_SERVER]       = &meshx_create_relay_elements,
+    [MESHX_ELEMENT_TYPE_RELAY_SERVER]       = &create_relay_server_elements_cpp,
 #endif /* CONFIG_RELAY_SERVER_COUNT */
 #if CONFIG_RELAY_CLIENT_COUNT
-    [MESHX_ELEMENT_TYPE_RELAY_CLIENT]       = &create_relay_client_elements,
+    [MESHX_ELEMENT_TYPE_RELAY_CLIENT]       = &create_relay_client_elements_cpp,
 #endif /* CONFIG_RELAY_CLIENT_COUNT */
 #if CONFIG_LIGHT_CWWW_SRV_COUNT
-    [MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER]  = &meshx_create_cwww_elements,
-#endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */
-#if CONFIG_LIGHT_CWWW_CLIENT_COUNT
-    [MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT]  = &create_cwww_client_elements,
+    [MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER]  = &create_cwww_server_elements_cpp,
 #endif /* CONFIG_LIGHT_CWWW_SRV_COUNT */
+#if CONFIG_LIGHT_CWWW_CLIENT_COUNT
+    [MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT]  = &create_cwww_client_elements_cpp,
+#endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */
 };
 
 #endif /* CONFIG_SECTION_ENABLE_ELEMENT_TABLE */

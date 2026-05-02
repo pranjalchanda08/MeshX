@@ -12,8 +12,9 @@
 /***************************************************************************************************************************************
  * Includes
  ***************************************************************************************************************************************/
+#include <meshx_api.h>
+#include <vector>
 #include <memory>
-#include <utility>
 #include <functional>
 #include <forward_list>
 #include <meshx_c_header.h>
@@ -97,6 +98,12 @@ public:
      * @return Element type (server or client)
      */
     virtual meshxElementType_t get_element_type(void) const = 0;
+ 
+    /**
+     * @brief Get the element variant
+     * @return Element variant (meshx_element_type_t)
+     */
+    virtual meshx_element_type_t get_element_variant(void) const = 0;
 
     /**
      * @brief Get the number of SIG models supported by the element
@@ -139,6 +146,12 @@ public:
      * @return true if initialized, false otherwise
      */
     virtual bool is_initialized(void) const = 0;
+
+    /**
+     * @brief Restore the element's context from NVS.
+     * @return MESHX_SUCCESS on success, error code otherwise.
+     */
+    virtual meshx_err_t restore_nvs_context(void) = 0;
 
     meshXElementIF() = delete;
     explicit meshXElementIF(uint16_t element_idx) : element_idx(element_idx) { }

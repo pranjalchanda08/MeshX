@@ -102,9 +102,9 @@ using meshx_config_server_restore_params_t = struct meshx_config_server_restore_
  * @see meshx_config_server_restore_params_t for restore parameter structure.
  */
 MESHX_BASE_CONFIG_SERVER_TEMPLATE_PROTO
-class meshXBaseConfigServerModel : private meshXBaseServerModel<meshXBaseConfigServerModel, meshx_config_server_send_params_t, meshx_config_server_restore_params_t>
+class meshXBaseConfigServerModel : public meshXBaseServerModel<meshXBaseConfigServerModel, meshx_config_server_send_params_t, meshx_config_server_restore_params_t>
 {
-private:
+public:
     /**
      * @brief Initialize platform-specific config server model
      * @return MESHX_SUCCESS on successful initialization, error code otherwise

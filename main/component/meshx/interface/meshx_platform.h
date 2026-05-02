@@ -12,6 +12,10 @@
 #include "meshx_err.h"
 #include "meshx_platform_ble_mesh.h"
 #include "interface/ble_mesh/meshx_ble_mesh_cmn_def.h"
+ 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * @brief Initializes the MeshX platform.
@@ -30,4 +34,8 @@ meshx_err_t meshx_platform_init(void);
 
 __attribute__((noreturn)) void meshx_platform_reset(void);
 
+#ifdef __cplusplus
+}
+#endif
+ 
 #endif /* __MESHX_PLATFORM_H__ */

@@ -16,6 +16,10 @@
 #include "meshx_control_task.h"
 #include "meshx_os_timer.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define MESHX_NVS_TIMER_PERIOD_DEF  1000
 
 #ifndef MESHX_NVS_TIMER_PERIOD
@@ -179,5 +183,8 @@ meshx_err_t meshx_nvs_element_ctx_set(uint16_t element_id, const void *blob, siz
  */
 meshx_err_t meshx_nvs_element_ctx_remove(uint16_t element_id);
 
-#endif /* __MESHX_NVS_H__ */
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
+#endif /* __MESHX_NVS_H__ */

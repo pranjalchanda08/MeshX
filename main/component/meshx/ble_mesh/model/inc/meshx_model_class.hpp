@@ -30,6 +30,11 @@ using evt_model_id_t = control_task_msg_evt_t;
 
 class meshXModelIF
 {
+public:
+    meshXModelIF() = default;
+    explicit meshXModelIF(MESHX_MODEL *p_plat_model) : p_plat_model(p_plat_model) { }
+    virtual ~meshXModelIF() = default;
+
 private:
     MESHX_MODEL     *p_plat_model;               /**< Pointer to the platform model */
     meshx_ptr_t      p_plat_pub;                 /**< publication structures */
@@ -142,10 +147,6 @@ public:
      * @return Pointer to the parent element state
      */
     meshx_ptr_t get_parent_element_state(void) const { return p_parent_element_state; }
-
-    meshXModelIF() = default;
-    explicit meshXModelIF(MESHX_MODEL *p_plat_model) : p_plat_model(p_plat_model) { }
-    virtual ~meshXModelIF() = default;
 };
 
 /**
@@ -219,6 +220,13 @@ public:
     virtual meshx_err_t model_send(meshx_send_packet_params_t *params) = 0;
 
     /**
+     * @brief Destructor for meshXModel
+     * @details Virtual destructor to ensure proper cleanup of derived classes
+     *          and the base_model member.
+     */
+    virtual ~meshXModel();
+
+    /**
      * @brief Send message to parent element
      * @details Common implementation for sending messages to the parent element.
      *          This handles the common pattern of checking parent element,
@@ -290,12 +298,6 @@ public:
         uint16_t model_func_id = 0
     );
 
-    /**
-     * @brief Destroy the meshXModel
-     * @details Cleans up resources associated with the model, including
-     *          calling the platform-specific model deletion function.
-     */
-    ~meshXModel(void) override;
 };
 
 /*********************************************************************************

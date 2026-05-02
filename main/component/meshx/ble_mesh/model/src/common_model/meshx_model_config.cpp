@@ -179,7 +179,7 @@ meshXConfigModel::meshXConfigModel(
     )
     : meshXServerModel(nullptr, MESHX_MODEL_ID_CONFIG_SRV, parent_element, parent_element_state, model_func_id)
 {
-    // Constructor body can be empty; initialization done in base class.
+    this->plat_model_create();
 }
 
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */

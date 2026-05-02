@@ -102,9 +102,9 @@ using meshx_light_client_msg_ctx_t = struct meshx_light_client_msg_ctx
  * @see meshx_gen_light_client_send_params_t for send parameter structure.
  */
 MESHX_BASE_LIGHT_CLIENT_TEMPLATE_PROTO
-class meshXBaseLightClientModel : private meshXBaseClientModel <meshXBaseLightClientModel, meshx_gen_light_client_send_params_t, meshx_gen_light_cli_cb_param_t>
+class meshXBaseLightClientModel : public meshXBaseClientModel <meshXBaseLightClientModel, meshx_gen_light_client_send_params_t, meshx_gen_light_cli_cb_param_t>
 {
-private:
+public:
     /* @copydoc meshXBaseClientModel::plat_model_init */
     meshx_err_t plat_model_init(void) override;
 
@@ -164,9 +164,9 @@ using meshx_light_server_restore_params_t = struct meshx_light_server_restore_pa
 };
 
 MESHX_BASE_LIGHT_SERVER_TEMPLATE_PROTO
-class meshXBaseLightServerModel : private meshXBaseServerModel<meshXBaseLightServerModel, meshx_light_server_send_params_t, meshx_light_server_restore_params_t>
+class meshXBaseLightServerModel : public meshXBaseServerModel<meshXBaseLightServerModel, meshx_light_server_send_params_t, meshx_light_server_restore_params_t>
 {
-private:
+public:
     meshx_err_t plat_model_init(void) override;
     meshx_err_t validate_server_status_opcode(uint16_t opcode) override;
 public:

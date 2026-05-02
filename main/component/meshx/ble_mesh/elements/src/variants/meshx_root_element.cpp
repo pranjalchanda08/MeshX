@@ -47,7 +47,7 @@ uint8_t meshXRootElement :: list_sig_models()
     auto config_model = std::make_unique<meshXConfigModel>(
         this,
         nullptr,
-        (uint16_t) std::to_underlying(meshxRootElementComposition::MESHX_ROOT_ELEMENT_COMP_CONFIG_SERVER)
+        (uint16_t) static_cast<int>(meshxRootElementComposition::MESHX_ROOT_ELEMENT_COMP_CONFIG_SERVER)
     );
     this->get_sig_models().push_back(std::move(config_model));
 

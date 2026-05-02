@@ -20,6 +20,13 @@
  */
 
 #include "meshx_base_model_class.hpp"
+#include "meshx_base_model_generic.hpp"
+#include "meshx_base_model_light.hpp"
+#include "meshx_base_model_common.hpp"
+
+template <typename modelDerived_t, typename modelSendParams_t, typename modelRestoreParams_t>
+std::forward_list<typename meshXBaseServerModel<modelDerived_t, modelSendParams_t, modelRestoreParams_t>::base_server_model_cb_reg_t>
+meshXBaseServerModel<modelDerived_t, modelSendParams_t, modelRestoreParams_t>::base_server_model_cb_list;
 
 constexpr uint32_t MESHX_CLIENT_INIT_MAGIC_NO = 0x1121;
 
@@ -30,7 +37,7 @@ constexpr uint32_t MESHX_CLIENT_INIT_MAGIC_NO = 0x1121;
  * @param[in] model_type Type of the model (server/client)
  */
 MESHX_BASE_TEMPLATE_PROTO
-meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::meshXBaseModel(uint32_t model_id, const control_msg_cb& from_ble_cb, meshXBaseModelType_t model_type)
+meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::meshXBaseModel(uint32_t model_id, control_task_msg_handle_t from_ble_cb, meshXBaseModelType_t model_type)
     : model_id(model_id), model_type(model_type), from_ble_cb(from_ble_cb)
 {
     if(from_ble_cb == nullptr)
@@ -70,7 +77,7 @@ meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS ::~meshXBaseModel()
 MESHX_BASE_TEMPLATE_PROTO
 meshx_err_t meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::from_ble_reg_cb(void) const
 {
-    return control_task_msg_subscribe(CONTROL_TASK_MSG_CODE_FRM_BLE, model_id, (control_task_msg_handle_t)from_ble_cb);
+    return control_task_msg_subscribe(CONTROL_TASK_MSG_CODE_FRM_BLE, model_id, from_ble_cb);
 }
 
 /**
@@ -85,7 +92,7 @@ meshx_err_t meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::from_ble_reg_cb(void) con
 MESHX_BASE_TEMPLATE_PROTO
 meshx_err_t meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::from_ble_dereg_cb(void) const
 {
-    return control_task_msg_unsubscribe(CONTROL_TASK_MSG_CODE_FRM_BLE, model_id, (control_task_msg_handle_t)from_ble_cb);
+    return control_task_msg_unsubscribe(CONTROL_TASK_MSG_CODE_FRM_BLE, model_id, from_ble_cb);
 }
 
 /*********************************************************************************************************
@@ -105,7 +112,50 @@ uint16_t meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::plat_server_ini
  */
 MESHX_BASE_SERVER_TEMPLATE_PROTO
 meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::meshXBaseServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
-    : meshXBaseModel<ble_mesh_send_msg_params_t>(model_id, from_ble_cb, meshXBaseModelType::MESHX_BASE_MODEL_TYPE_SERVER) { }
+    : meshXBaseModel<ble_mesh_send_msg_params_t>(model_id, base_from_ble_msg_handle, meshXBaseModelType::MESHX_BASE_MODEL_TYPE_SERVER)
+{
+    if (!from_ble_cb)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid callback for model_id: %04x", model_id);
+        this->status = MESHX_INVALID_ARG;
+        return;
+    }
+
+    static_cast<baseServerModelDerived_t*>(this)->plat_model_init();
+    base_server_model_cb_list.push_front({(uint16_t)model_id, from_ble_cb});
+    this->status = MESHX_SUCCESS;
+}
+
+/**
+ * @brief Sends a BLE message from a server model.
+ *
+ * @param[in] pdev Pointer to the device structure.
+ * @param[in] evt  The event type associated with the message.
+ * @param[in] params Pointer to the parameters of the message.
+ * @return meshx_err_t Returns an error code indicating the result of the send operation.
+ */
+MESHX_BASE_SERVER_TEMPLATE_PROTO
+meshx_err_t meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::base_from_ble_msg_handle(
+    dev_struct_t *pdev, control_task_msg_evt_t evt, meshx_ptr_t params)
+{
+    if (pdev == nullptr || params == nullptr)
+        return MESHX_INVALID_ARG;
+
+    bool cb_invoked = false;
+    for (auto &node : base_server_model_cb_list)
+    {
+        if ((uint16_t)evt == node.model_id)
+        {
+            if (node.cb)
+            {
+                node.cb(pdev, evt, params);
+                cb_invoked = true;
+            }
+        }
+    }
+
+    return cb_invoked ? MESHX_SUCCESS : MESHX_FAIL;
+}
 
 /*********************************************************************************************************
  * meshXBaseClientModel
@@ -167,7 +217,7 @@ meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::meshXBaseClientModel(uin
 
     static_cast <baseClientModelDerived_t*>(this)->plat_model_init(); // call the Derived platform specific model initialization function
 
-    base_client_model_cb_list.push_front({model_id, from_ble_cb});
+    base_client_model_cb_list.push_front({(uint16_t)model_id, from_ble_cb});
     this->status = MESHX_SUCCESS;
 }
 
@@ -201,7 +251,8 @@ MESHX_BASE_CLIENT_TEMPLATE_PROTO
 meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_txcm_handle_resend(uint16_t model_id, const ble_mesh_plat_model_cb_params_t *param)
 {
     base_client_model_resend_ctx_t ctx = {
-        .model_id = model_id
+        .model_id = model_id,
+        .param = {}
     };
     memcpy(&ctx.param, param, sizeof(ble_mesh_plat_model_cb_params_t));
 
@@ -257,7 +308,7 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_txcm_ha
  */
 MESHX_BASE_CLIENT_TEMPLATE_PROTO
 meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_from_ble_msg_handle(
-    dev_struct_t *pdev, control_task_msg_evt_t evt, ble_mesh_plat_model_cb_params_t *params)
+    dev_struct_t *pdev, control_task_msg_evt_t evt, meshx_ptr_t params)
 {
     if (pdev == nullptr || params == nullptr)
     {
@@ -267,7 +318,7 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_from_bl
 
     // Enhanced logging with template type identification
     MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "[%s] Handling message for model_id: %04x",
-               get_client_type_name(), params->model_id);
+               get_client_type_name(), (uint32_t)evt);
 
     meshx_err_t err = MESHX_SUCCESS;
     auto *param = static_cast<ble_mesh_plat_model_cb_params_t*>(params);
@@ -275,7 +326,7 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_from_bl
 
     for (auto &node : base_client_model_cb_list)
     {
-        if (param->model_id == node.model_id)
+        if ((uint16_t)evt == node.model_id)
         {
             MESHX_LOGD(MODULE_ID_MODEL_CLIENT,
                        "[%s] op|src|dst:%04" PRIx32 "|%04x|%04x",
@@ -288,7 +339,7 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_from_bl
                 continue;
             }
 
-            if (param->evt == meshx_base_cli_evt::MESHX_BASE_CLI_TIMEOUT || param->err_code != MESHX_SUCCESS)
+            if (param->evt == static_cast<decltype(param->evt)>(meshx_base_cli_evt::MESHX_BASE_CLI_TIMEOUT) || param->err_code != MESHX_SUCCESS)
             {
                 MESHX_LOGW(MODULE_ID_MODEL_CLIENT, "[%s] Message timeout or error, retrying...", get_client_type_name());
                 err = base_txcm_handle_resend(node.model_id, param);
@@ -309,7 +360,7 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_from_bl
     }
 
     if (!cb_invoked)
-        MESHX_LOGW(MODULE_ID_MODEL_CLIENT, "[%s] No registered client handled model_id=%04x", get_client_type_name(), param->model_id);
+        MESHX_LOGW(MODULE_ID_MODEL_CLIENT, "[%s] No registered client handled model_id=%04x", get_client_type_name(), (uint32_t)evt);
 
     return err;
 }
@@ -366,7 +417,7 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_handle_
         if (param->model_id == node.model_id)
         {
             param->param.err_code   = MESHX_TIMEOUT;
-            param->param.evt        = meshx_base_cli_evt::MESHX_BASE_CLI_TIMEOUT;
+            param->param.evt        = static_cast<decltype(param->param.evt)>(meshx_base_cli_evt::MESHX_BASE_CLI_TIMEOUT);
             if(node.cb == nullptr)
             {
                 MESHX_LOGW(MODULE_ID_MODEL_CLIENT, "[%s] Callback is NULL for model_id: %04x", get_client_type_name(), node.model_id);
@@ -385,3 +436,41 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_handle_
 
     return err;
 }
+
+
+/* Explicit template instantiations to ensure the linker can find the template method bodies
+ * defined in this .cpp file.
+ */
+
+#if CONFIG_ENABLE_GEN_CLIENT
+// meshXBaseModel instantiations
+template class meshXBaseModel<meshx_gen_client_send_params_t>;
+// meshXBaseClientModel instantiations
+template class meshXBaseClientModel<meshXBaseGenericClientModel, meshx_gen_client_send_params_t, meshx_gen_cli_cb_param_t>;
+#endif
+
+#if CONFIG_ENABLE_GEN_SERVER
+// meshXBaseModel instantiations
+template class meshXBaseModel<meshx_gen_server_send_params_t>;
+// meshXBaseServerModel instantiations
+template class meshXBaseServerModel<meshXBaseGenericServerModel, meshx_gen_server_send_params_t, meshx_gen_server_restore_params_t>;
+#endif
+
+#if CONFIG_ENABLE_LIGHT_CLIENT
+// meshXBaseModel instantiations
+template class meshXBaseModel<meshx_gen_light_client_send_params_t>;
+// meshXBaseClientModel instantiations
+template class meshXBaseClientModel<meshXBaseLightClientModel, meshx_gen_light_client_send_params_t, meshx_gen_light_cli_cb_param_t>;
+#endif
+
+#if CONFIG_ENABLE_LIGHT_SERVER
+// meshXBaseModel instantiations
+template class meshXBaseModel<meshx_light_server_send_params_t>;
+// meshXBaseServerModel instantiations
+template class meshXBaseServerModel<meshXBaseLightServerModel, meshx_light_server_send_params_t, meshx_light_server_restore_params_t>;
+#endif
+
+#if CONFIG_ENABLE_CONFIG_SERVER
+// meshXBaseServerModel instantiations
+template class meshXBaseServerModel<meshXBaseConfigServerModel, meshx_config_server_send_params_t, meshx_config_server_restore_params_t>;
+#endif

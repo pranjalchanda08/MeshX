@@ -17,6 +17,10 @@
 #include <meshx_elements.h>
 #include <meshx_control_task.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define MESHX_APP_API_MSG_MAX_SIZE  sizeof(meshx_data_payload_t)
 
 /* MeshX Function ID Relay Server */
@@ -251,5 +255,9 @@ meshx_err_t meshx_app_reg_element_callback(meshx_app_data_cb_t cb);
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
 meshx_err_t meshx_app_reg_system_events_callback(meshx_app_ctrl_cb_t cb);
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /* __MESHX_API_H__ */

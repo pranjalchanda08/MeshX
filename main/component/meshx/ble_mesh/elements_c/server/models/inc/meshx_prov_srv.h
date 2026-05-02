@@ -16,6 +16,10 @@
 #include "interface/meshx_platform.h"
 #include "interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #if CONFIG_ENABLE_PROVISIONING
 
 /**
@@ -62,4 +66,9 @@ meshx_err_t meshx_prov_srv_reg_el_client_cb(prov_srv_cb_t cb);
 meshx_err_t meshx_prov_srv_reg_el_server_cb(prov_srv_cb_t cb);
 
 #endif /* CONFIG_ENABLE_PROVISIONING */
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
+
 #endif /* __MESHX_PROV__ */
