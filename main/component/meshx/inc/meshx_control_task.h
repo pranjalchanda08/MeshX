@@ -20,6 +20,10 @@
 #include "interface/rtos/meshx_msg_q.h"
 #include "interface/rtos/meshx_rtos_utils.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief Control task name configuration.
  */
@@ -244,5 +248,9 @@ meshx_err_t control_task_msg_unsubscribe(control_task_msg_code_t msg_code, contr
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
 meshx_err_t control_task_msg_publish(control_task_msg_code_t msg_code, control_task_msg_evt_t msg_evt, const void *msg_evt_params, size_t sizeof_msg_evt_params);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __MESHX_CONTROL_TASK__ */
