@@ -173,7 +173,7 @@ meshx_err_t meshXGenericLocationClientModel MESHX_GEN_LOCATION_CLIENT_MODEL_TEMP
     }
     const auto *param = static_cast<const meshx_gen_cli_cb_param_t *>(params);
 
-    return std::to_underlying(param->evt) == std::to_underlying(meshx_base_cli_evt::MESHX_BASE_CLI_TIMEOUT) ?
+    return static_cast<int>(param->evt) == static_cast<int>(meshx_base_cli_evt::MESHX_BASE_CLI_TIMEOUT) ?
         meshx_state_change_notify(param, MESHX_TIMEOUT) :
         meshx_state_change_notify(param, MESHX_SUCCESS);
 }

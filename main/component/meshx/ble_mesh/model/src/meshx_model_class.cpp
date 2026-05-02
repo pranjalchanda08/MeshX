@@ -23,6 +23,22 @@
  */
 
 #include <meshx_model_class.hpp>
+#include <meshx_base_model_generic.hpp>
+#include <meshx_base_model_light.hpp>
+#include <meshx_base_model_common.hpp>
+
+#include <generic_model/meshx_model_onoff.hpp>
+#include <generic_model/meshx_model_level.hpp>
+#include <generic_model/meshx_model_battery.hpp>
+#include <generic_model/meshx_model_power_onoff.hpp>
+#include <generic_model/meshx_model_power_level.hpp>
+#include <generic_model/meshx_model_property.hpp>
+#include <generic_model/meshx_model_def_trans_time.hpp>
+#include <generic_model/meshx_model_location.hpp>
+#include <light_model/meshx_model_ctl.hpp>
+#include <light_model/meshx_model_hsl.hpp>
+#include <light_model/meshx_model_lightness.hpp>
+#include <common_model/meshx_model_config.hpp>
 
 /*****************************************************************************************************
  * meshXModel
@@ -56,12 +72,25 @@ meshXModel MESHX_MODEL_TEMPLATE_PARAMS
     this->set_model_func_id(model_func_id);
     this->set_parent_element(parent_element);
     /* base_model needs to be used logically by the element composition */
-    base_model = std::make_unique<meshxBaseModel_t>(model_id, model_handle_from_ble_cb);
+    base_model = new meshxBaseModel_t(model_id,
+        [this](dev_struct_t *dev, control_task_msg_evt_t evt, meshx_ptr_t param) -> meshx_err_t {
+            return this->model_handle_from_ble_cb(dev, evt, param);
+        });
 
-    /* Create logical model instance */
-    this->plat_model_create();
-
+    /* Create logical model instance is now handled by derived classes or post-construction */
     status = MESHX_SUCCESS;
+}
+
+MESHX_MODEL_TEMPLATE_PROTO
+meshXModel MESHX_MODEL_TEMPLATE_PARAMS
+    ::~meshXModel()
+{
+    /* Delete logical model instance is now handled by derived classes */
+    if (base_model)
+    {
+        delete base_model;
+        base_model = nullptr;
+    }
 }
 
 /**
@@ -159,17 +188,6 @@ meshx_err_t meshXModel MESHX_MODEL_TEMPLATE_PARAMS
     return this->send_to_parent_element(msg_ptr, msg_size);
 }
 
-/**
- * @brief Destructor for meshXModel
- * @details Releases any allocated resources (base model and model interface) and
- *          calls the platform-specific model deletion function.
- */
-MESHX_MODEL_TEMPLATE_PROTO
-meshXModel MESHX_MODEL_TEMPLATE_PARAMS
-    :: ~meshXModel()
-{
-    this->plat_model_delete();
-}
 
 /****************************************************************************************************
  * meshXServerModel
@@ -218,6 +236,8 @@ meshXClientModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
     : meshXModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS (p_plat_model, model_id, parent_element, model_func_id)
 {
     this->set_parent_element_state(parent_element_state);
+    /* Create logical model instance */
+    this->plat_model_create();
 }
 
 /**
@@ -281,10 +301,21 @@ MESHX_CLIENT_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXClientModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
     ::plat_model_delete()
 {
-    return meshx_plat_client_delete(
+    meshx_ptr_t p_pub = this->get_pub_struct();
+    meshx_ptr_t p_gen = this->get_gen_struct();
+
+    meshx_err_t err = meshx_plat_client_delete(
         this->get_plat_model(),
-        &this->get_pub_struct(),
-        &this->get_gen_struct());
+        &p_pub,
+        &p_gen);
+
+    if (err == MESHX_SUCCESS)
+    {
+        this->set_pub_struct(p_pub);
+        this->set_gen_struct(p_gen);
+    }
+
+    return err;
 }
 
 MESHX_CLIENT_MODEL_TEMPLATE_PROTO
@@ -320,3 +351,116 @@ void meshXServerModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS
 /**
  * @}
  */
+
+/*****************************************************************************************************
+ * Explicit template instantiations
+ *
+ * Because template method bodies live in this .cpp file (not in the header), the linker
+ * cannot find them when other TUs use the templates.  Explicit instantiation directives
+ * instruct the compiler to emit all member definitions for each listed specialization in
+ * this translation unit, making them available to the linker.
+ *
+ * Add a new line here whenever a new <meshxBaseXxxModel, meshx_xxx_send_params_t> combination
+ * is introduced in the codebase.
+ *****************************************************************************************************/
+#include <meshx_base_model_generic.hpp>
+#include <meshx_base_model_light.hpp>
+#include <generic_model/meshx_model_onoff.hpp>
+#include <generic_model/meshx_model_level.hpp>
+#include <generic_model/meshx_model_battery.hpp>
+#include <generic_model/meshx_model_power_onoff.hpp>
+#include <generic_model/meshx_model_power_level.hpp>
+#include <generic_model/meshx_model_property.hpp>
+#include <generic_model/meshx_model_def_trans_time.hpp>
+#include <generic_model/meshx_model_location.hpp>
+#include <light_model/meshx_model_ctl.hpp>
+#include <light_model/meshx_model_hsl.hpp>
+#include <light_model/meshx_model_lightness.hpp>
+
+/* Explicit member-function instantiations
+ *
+ * We only instantiate the specific template methods that the linker cannot find,
+ * rather than the full class. This avoids forcing buggy/unimplemented code paths
+ * (e.g., plat_model_delete, get_pub_struct by value) to be instantiated.
+ *
+ * The missing symbols were:
+ *   meshXServerModel<T,U>::update_element_state_change_header()
+ *   meshXClientModel<T,U>::update_element_state_change_header()
+ *   meshXServerModel<T,U>::meshXServerModel() [constructor]
+ *****************************************************************************************************/
+#if CONFIG_ENABLE_GEN_SERVER
+template class meshXServerModel<meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t>;
+template class meshXServerModel<meshXBaseGenericServerModel, meshx_gen_level_send_params_t>;
+template class meshXServerModel<meshXBaseGenericServerModel, meshx_gen_battery_send_params_t>;
+template class meshXServerModel<meshXBaseGenericServerModel, meshx_gen_power_onoff_send_params_t>;
+template class meshXServerModel<meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t>;
+template class meshXServerModel<meshXBaseGenericServerModel, meshx_gen_property_send_params_t>;
+template class meshXServerModel<meshXBaseGenericServerModel, meshx_gen_def_trans_time_send_params_t>;
+template class meshXServerModel<meshXBaseGenericServerModel, meshx_gen_location_send_params_t>;
+#endif
+
+#if CONFIG_ENABLE_GEN_CLIENT
+template class meshXClientModel<meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t>;
+template class meshXClientModel<meshXBaseGenericClientModel, meshx_gen_level_send_params_t>;
+template class meshXClientModel<meshXBaseGenericClientModel, meshx_gen_battery_send_params_t>;
+template class meshXClientModel<meshXBaseGenericClientModel, meshx_gen_power_onoff_send_params_t>;
+template class meshXClientModel<meshXBaseGenericClientModel, meshx_gen_power_level_send_params_t>;
+template class meshXClientModel<meshXBaseGenericClientModel, meshx_gen_property_send_params_t>;
+template class meshXClientModel<meshXBaseGenericClientModel, meshx_gen_def_trans_time_send_params_t>;
+template class meshXClientModel<meshXBaseGenericClientModel, meshx_gen_location_send_params_t>;
+#endif
+
+#if CONFIG_ENABLE_LIGHT_SERVER
+template class meshXServerModel<meshXBaseLightServerModel, meshx_light_ctl_send_params_t>;
+template class meshXServerModel<meshXBaseLightServerModel, meshx_light_hsl_send_params_t>;
+template class meshXServerModel<meshXBaseLightServerModel, meshx_light_lightness_send_params_t>;
+#endif
+
+#if CONFIG_ENABLE_LIGHT_CLIENT
+template class meshXClientModel<meshXBaseLightClientModel, meshx_light_ctl_send_params_t>;
+template class meshXClientModel<meshXBaseLightClientModel, meshx_light_hsl_send_params_t>;
+template class meshXClientModel<meshXBaseLightClientModel, meshx_light_lightness_send_params_t>;
+#endif
+
+#if CONFIG_ENABLE_CONFIG_SERVER
+template class meshXServerModel<meshXBaseConfigServerModel, meshx_config_send_params_t>;
+#endif
+
+/* meshXModel base class instantiations */
+#if CONFIG_ENABLE_GEN_SERVER
+template class meshXModel<meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t>;
+template class meshXModel<meshXBaseGenericServerModel, meshx_gen_level_send_params_t>;
+template class meshXModel<meshXBaseGenericServerModel, meshx_gen_battery_send_params_t>;
+template class meshXModel<meshXBaseGenericServerModel, meshx_gen_power_onoff_send_params_t>;
+template class meshXModel<meshXBaseGenericServerModel, meshx_gen_power_level_send_params_t>;
+template class meshXModel<meshXBaseGenericServerModel, meshx_gen_property_send_params_t>;
+template class meshXModel<meshXBaseGenericServerModel, meshx_gen_def_trans_time_send_params_t>;
+template class meshXModel<meshXBaseGenericServerModel, meshx_gen_location_send_params_t>;
+#endif
+
+#if CONFIG_ENABLE_GEN_CLIENT
+template class meshXModel<meshXBaseGenericClientModel, meshx_gen_onoff_send_params_t>;
+template class meshXModel<meshXBaseGenericClientModel, meshx_gen_level_send_params_t>;
+template class meshXModel<meshXBaseGenericClientModel, meshx_gen_battery_send_params_t>;
+template class meshXModel<meshXBaseGenericClientModel, meshx_gen_power_onoff_send_params_t>;
+template class meshXModel<meshXBaseGenericClientModel, meshx_gen_power_level_send_params_t>;
+template class meshXModel<meshXBaseGenericClientModel, meshx_gen_property_send_params_t>;
+template class meshXModel<meshXBaseGenericClientModel, meshx_gen_def_trans_time_send_params_t>;
+template class meshXModel<meshXBaseGenericClientModel, meshx_gen_location_send_params_t>;
+#endif
+
+#if CONFIG_ENABLE_LIGHT_SERVER
+template class meshXModel<meshXBaseLightServerModel, meshx_light_ctl_send_params_t>;
+template class meshXModel<meshXBaseLightServerModel, meshx_light_hsl_send_params_t>;
+template class meshXModel<meshXBaseLightServerModel, meshx_light_lightness_send_params_t>;
+#endif
+
+#if CONFIG_ENABLE_LIGHT_CLIENT
+template class meshXModel<meshXBaseLightClientModel, meshx_light_ctl_send_params_t>;
+template class meshXModel<meshXBaseLightClientModel, meshx_light_hsl_send_params_t>;
+template class meshXModel<meshXBaseLightClientModel, meshx_light_lightness_send_params_t>;
+#endif
+
+#if CONFIG_ENABLE_CONFIG_SERVER
+template class meshXModel<meshXBaseConfigServerModel, meshx_config_send_params_t>;
+#endif

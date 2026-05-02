@@ -7,13 +7,15 @@
  * @copyright Copyright 2024 - 2025 MeshX
  */
 
-#include <variants/meshx_cwww_element.hpp>
-#include <generic_model/meshx_model_onoff.hpp>
-#include <light_model/meshx_model_ctl.hpp>
-#include <meshx_nvs.h>
-#include <meshx_api.h>
-#include <interface/ble_mesh/meshx_ble_mesh_cmn.h>
 #include <cstring>
+#include <meshx_api.h>
+#include <meshx_nvs.h>
+#include <meshx_element_factory.hpp>
+#include <meshx_element_registry.hpp>
+#include <variants/meshx_cwww_element.hpp>
+#include <light_model/meshx_model_ctl.hpp>
+#include <generic_model/meshx_model_onoff.hpp>
+#include <interface/ble_mesh/meshx_ble_mesh_cmn.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -53,20 +55,12 @@ typedef struct meshx_light_ctl_cli_msg {
 #define MESHX_GEN_ON_OFF_CLI_MSG_ACK    1
 #define MESHX_GEN_ON_OFF_CLI_MSG_NO_ACK 0
 
-static inline uint16_t cwww_get_base_el_id()
-{
-    uint16_t base = 0;
-    meshx_get_base_element_id(&base);
-    return base;
-}
 
 /************************************************************************************
  * meshXCWWWServerElement
  ************************************************************************************/
 #if CONFIG_LIGHT_CWWW_SRV_COUNT > 0
 
-std::array<meshXCWWWServerElement *, CONFIG_LIGHT_CWWW_SRV_COUNT>
-    meshXCWWWServerElement::s_instances{};
 std::once_flag meshXCWWWServerElement::s_callbacks_registered;
 
 void meshXCWWWServerElement::register_class_callbacks()
@@ -99,11 +93,7 @@ meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
     : meshXElementServer(element_idx)
 {
     this->register_element_ctx(&element_ctx, sizeof(meshx_cwww_srv_el_ctx_t));
-
-    uint16_t base = cwww_get_base_el_id();
-    if (element_idx >= base && (element_idx - base) < CONFIG_LIGHT_CWWW_SRV_COUNT)
-        s_instances[element_idx - base] = this;
-
+    this->set_element_variant(MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER);
     std::call_once(s_callbacks_registered, register_class_callbacks);
 }
 
@@ -113,17 +103,28 @@ uint8_t meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
 {
     auto onoff_model = std::make_unique<meshXGenericOnOffServerModel>(
         this, &element_ctx.gen_on_off_state,
-        (uint16_t)std::to_underlying(
+        (uint16_t)static_cast<int>(
             meshxCWWWServerElementComposition::MESHX_CWWW_SERVER_ELEMENT_COMP_GENERIC_ONOFF_SERVER));
     this->get_sig_models().push_back(std::move(onoff_model));
 
+
     auto ctl_model = std::make_unique<meshXLightCTLServerModel>(
         this, &element_ctx.light_ctl_state,
-        (uint16_t)std::to_underlying(
+        (uint16_t)static_cast<int>(
             meshxCWWWServerElementComposition::MESHX_CWWW_SERVER_ELEMENT_COMP_LIGHT_CTL_SERVER));
     this->get_sig_models().push_back(std::move(ctl_model));
 
     return (uint8_t)this->get_sig_models().size();
+}
+
+/**
+ * @brief Lists Vendor models for CWWW Server Element (none required)
+ */
+MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
+uint8_t meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
+    ::list_ven_models()
+{
+    return 0; /* No vendor models for CWWW server */
 }
 
 /* Task A+B: state notify — discriminate by model_id, update ctx, NVS, app notify */
@@ -189,35 +190,42 @@ meshx_err_t meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
     MESHX_UNUSED(pdev);
     if (!params) return MESHX_INVALID_ARG;
 
-    uint16_t base   = cwww_get_base_el_id();
-    uint16_t rel_id = 0;
+    uint16_t element_id = 0;
     bool     save   = false;
 
     switch (evt)
     {
     case CONTROL_TASK_MSG_EVT_APP_KEY_BIND:
-        rel_id = params->state_change.mod_app_bind.element_addr - base;
-        if (rel_id >= CONFIG_LIGHT_CWWW_SRV_COUNT || !s_instances[rel_id]) break;
-        s_instances[rel_id]->element_ctx.app_id = params->state_change.mod_app_bind.app_idx;
-        save = true;
+        element_id = params->state_change.mod_app_bind.element_addr;
         break;
     case CONTROL_TASK_MSG_EVT_PUB_ADD:
     case CONTROL_TASK_MSG_EVT_PUB_DEL:
-        rel_id = params->state_change.mod_pub_set.element_addr - base;
-        if (rel_id >= CONFIG_LIGHT_CWWW_SRV_COUNT || !s_instances[rel_id]) break;
-        s_instances[rel_id]->element_ctx.pub_addr =
-            (evt == CONTROL_TASK_MSG_EVT_PUB_ADD)
-            ? params->state_change.mod_pub_set.pub_addr : MESHX_ADDR_UNASSIGNED;
-        s_instances[rel_id]->element_ctx.app_id = params->state_change.mod_pub_set.app_idx;
-        save = true;
+        element_id = params->state_change.mod_pub_set.element_addr;
         break;
     default: break;
     }
 
-    if (save && s_instances[rel_id])
+    auto *el = meshXElementRegistry::get_instance().find_and_cast<meshXCWWWServerElement>(
+        element_id, MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER);
+    if (!el) return MESHX_SUCCESS;
+
+    if (evt == CONTROL_TASK_MSG_EVT_APP_KEY_BIND)
     {
-        uint16_t abs_id = rel_id + base;
-        meshx_nvs_element_ctx_set(abs_id, &s_instances[rel_id]->element_ctx,
+        el->element_ctx.app_id = params->state_change.mod_app_bind.app_idx;
+        save = true;
+    }
+    else if (evt == CONTROL_TASK_MSG_EVT_PUB_ADD || evt == CONTROL_TASK_MSG_EVT_PUB_DEL)
+    {
+        el->element_ctx.pub_addr =
+            (evt == CONTROL_TASK_MSG_EVT_PUB_ADD)
+            ? params->state_change.mod_pub_set.pub_addr : MESHX_ADDR_UNASSIGNED;
+        el->element_ctx.app_id = params->state_change.mod_pub_set.app_idx;
+        save = true;
+    }
+
+    if (save)
+    {
+        meshx_nvs_element_ctx_set(element_id, &el->element_ctx,
                                    sizeof(meshx_cwww_srv_el_ctx_t));
     }
     return MESHX_SUCCESS;
@@ -235,13 +243,13 @@ meshx_err_t meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
 
     if (evt == CONTROL_TASK_MSG_EVT_EN_NODE_PROV)
     {
-        uint16_t base = cwww_get_base_el_id();
-        for (uint16_t i = 0; i < CONFIG_LIGHT_CWWW_SRV_COUNT; i++)
+        auto elements = meshXElementRegistry::get_instance().get_all_elements();
+        for (auto const& [abs_id, base_el] : elements)
         {
-            meshXCWWWServerElement *el = s_instances[i];
-            if (!el || el->element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED) continue;
+            if (!base_el || base_el->get_element_variant() != MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER) continue;
+            auto *el = static_cast<meshXCWWWServerElement *>(base_el);
+            if (el->element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED) continue;
 
-            uint16_t abs_id = base + i;
             auto &models = el->get_sig_models();
             auto *onoff  = static_cast<meshXGenericOnOffServerModel *>(models[0].get());
             auto *ctl    = static_cast<meshXLightCTLServerModel *>(models[1].get());
@@ -299,8 +307,6 @@ meshx_err_t meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
  ************************************************************************************/
 #if CONFIG_LIGHT_CWWW_CLIENT_COUNT > 0
 
-std::array<meshXCWWWClientElement *, CONFIG_LIGHT_CWWW_CLIENT_COUNT>
-    meshXCWWWClientElement::s_instances{};
 std::once_flag meshXCWWWClientElement::s_callbacks_registered;
 
 void meshXCWWWClientElement::register_class_callbacks()
@@ -333,11 +339,7 @@ meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
     : meshXElementClient(element_idx)
 {
     this->register_element_ctx(&element_ctx, sizeof(meshx_cwww_cli_el_ctx_t));
-
-    uint16_t base = cwww_get_base_el_id();
-    if (element_idx >= base && (element_idx - base) < CONFIG_LIGHT_CWWW_CLIENT_COUNT)
-        s_instances[element_idx - base] = this;
-
+    this->set_element_variant(MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT);
     std::call_once(s_callbacks_registered, register_class_callbacks);
 }
 
@@ -347,17 +349,28 @@ uint8_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
 {
     auto onoff_model = std::make_unique<meshXGenericOnOffClientModel>(
         this, &element_ctx.gen_on_off_state,
-        (uint16_t)std::to_underlying(
+        (uint16_t)static_cast<int>(
             meshxCWWWClientElementComposition::MESHX_CWWW_CLIENT_ELEMENT_COMP_GENERIC_ONOFF_CLIENT));
     this->get_sig_models().push_back(std::move(onoff_model));
 
+
     auto ctl_model = std::make_unique<meshXLightCTLClientModel>(
         this, &element_ctx.light_ctl_state,
-        (uint16_t)std::to_underlying(
+        (uint16_t)static_cast<int>(
             meshxCWWWClientElementComposition::MESHX_CWWW_CLIENT_ELEMENT_COMP_LIGHT_CTL_CLIENT));
     this->get_sig_models().push_back(std::move(ctl_model));
 
     return (uint8_t)this->get_sig_models().size();
+}
+
+/**
+ * @brief Lists Vendor models for CWWW Client Element (none required)
+ */
+MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
+uint8_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
+    ::list_ven_models()
+{
+    return 0; /* No vendor models for CWWW client */
 }
 
 /* Task A+B: state notify — discriminate by model_id, notify app */
@@ -415,35 +428,42 @@ meshx_err_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
     MESHX_UNUSED(pdev);
     if (!params) return MESHX_INVALID_ARG;
 
-    uint16_t base   = cwww_get_base_el_id();
-    uint16_t rel_id = 0;
+    uint16_t element_id = 0;
     bool     save   = false;
 
     switch (evt)
     {
     case CONTROL_TASK_MSG_EVT_APP_KEY_BIND:
-        rel_id = params->state_change.mod_app_bind.element_addr - base;
-        if (rel_id >= CONFIG_LIGHT_CWWW_CLIENT_COUNT || !s_instances[rel_id]) break;
-        s_instances[rel_id]->element_ctx.app_id = params->state_change.mod_app_bind.app_idx;
-        save = true;
+        element_id = params->state_change.mod_app_bind.element_addr;
         break;
     case CONTROL_TASK_MSG_EVT_PUB_ADD:
     case CONTROL_TASK_MSG_EVT_PUB_DEL:
-        rel_id = params->state_change.mod_pub_set.element_addr - base;
-        if (rel_id >= CONFIG_LIGHT_CWWW_CLIENT_COUNT || !s_instances[rel_id]) break;
-        s_instances[rel_id]->element_ctx.pub_addr =
-            (evt == CONTROL_TASK_MSG_EVT_PUB_ADD)
-            ? params->state_change.mod_pub_set.pub_addr : MESHX_ADDR_UNASSIGNED;
-        s_instances[rel_id]->element_ctx.app_id = params->state_change.mod_pub_set.app_idx;
-        save = true;
+        element_id = params->state_change.mod_pub_set.element_addr;
         break;
     default: break;
     }
 
-    if (save && s_instances[rel_id])
+    auto *el = meshXElementRegistry::get_instance().find_and_cast<meshXCWWWClientElement>(
+        element_id, MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT);
+    if (!el) return MESHX_SUCCESS;
+
+    if (evt == CONTROL_TASK_MSG_EVT_APP_KEY_BIND)
     {
-        uint16_t abs_id = rel_id + base;
-        meshx_nvs_element_ctx_set(abs_id, &s_instances[rel_id]->element_ctx,
+        el->element_ctx.app_id = params->state_change.mod_app_bind.app_idx;
+        save = true;
+    }
+    else if (evt == CONTROL_TASK_MSG_EVT_PUB_ADD || evt == CONTROL_TASK_MSG_EVT_PUB_DEL)
+    {
+        el->element_ctx.pub_addr =
+            (evt == CONTROL_TASK_MSG_EVT_PUB_ADD)
+            ? params->state_change.mod_pub_set.pub_addr : MESHX_ADDR_UNASSIGNED;
+        el->element_ctx.app_id = params->state_change.mod_pub_set.app_idx;
+        save = true;
+    }
+
+    if (save)
+    {
+        meshx_nvs_element_ctx_set(element_id, &el->element_ctx,
                                    sizeof(meshx_cwww_cli_el_ctx_t));
     }
     return MESHX_SUCCESS;
@@ -459,22 +479,50 @@ meshx_err_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
     MESHX_UNUSED(params);
     if (!pdev) return MESHX_INVALID_ARG;
 
-    if (evt == CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT)
+    if (evt == CONTROL_TASK_MSG_EVT_EN_NODE_PROV)
     {
-        uint16_t base = cwww_get_base_el_id();
-        for (uint16_t i = 0; i < CONFIG_LIGHT_CWWW_CLIENT_COUNT; i++)
+        auto elements = meshXElementRegistry::get_instance().get_all_elements();
+        for (auto const& [abs_id, base_el] : elements)
         {
-            meshXCWWWClientElement *el = s_instances[i];
-            if (!el) continue;
+            if (!base_el || base_el->get_element_variant() != MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT) continue;
+            auto *el = static_cast<meshXCWWWClientElement *>(base_el);
+            if (!el || el->element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED) continue;
 
-            uint16_t abs_id = base + i;
-            meshx_gen_on_off_cli_msg_t msg = {
-                .element_id = abs_id,
-                .ack        = MESHX_GEN_ON_OFF_CLI_MSG_ACK,
-                .set_get    = MESHX_GEN_ON_OFF_CLI_MSG_GET
-            };
-            control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE,
-                CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF, &msg, sizeof(msg));
+            auto &models = el->get_sig_models();
+            auto *onoff  = static_cast<meshXGenericOnOffClientModel *>(models[0].get());
+            auto *ctl    = static_cast<meshXLightCTLClientModel *>(models[1].get());
+
+            meshx_model_t model_ref = { .el_id    = abs_id,
+                                        .model_id = 0,
+                                        .pub_addr = el->element_ctx.pub_addr,
+                                        .p_model  = nullptr };
+            meshx_ctx_t ctx = { .app_idx  = el->element_ctx.app_id,
+                                .net_idx  = pdev->meshx_store.net_key_id,
+                                .opcode   = MESHX_MODEL_OP_GEN_ONOFF_GET,
+                                .src_addr = 0,
+                                .dst_addr = el->element_ctx.pub_addr,
+                                .p_ctx    = nullptr };
+            meshx_gen_onoff_send_params_t sp = {
+                .model = &model_ref, .ctx = &ctx,
+                .state = { .on_off = el->element_ctx.gen_on_off_state.on_off },
+                .tid = 0 };
+            onoff->model_send(&sp);
+
+            meshx_ctx_t ctl_ctx = { .app_idx  = el->element_ctx.app_id,
+                                    .net_idx  = pdev->meshx_store.net_key_id,
+                                    .opcode   = MESHX_MODEL_OP_LIGHT_CTL_GET,
+                                    .src_addr = 0,
+                                    .dst_addr = el->element_ctx.pub_addr,
+                                    .p_ctx    = nullptr };
+            meshx_light_ctl_send_params_t cp = {
+                .model = &model_ref, .ctx = &ctl_ctx,
+                .tid = 0,
+                .state = { .lightness   = el->element_ctx.light_ctl_state.lightness,
+                           .temperature = el->element_ctx.light_ctl_state.temperature,
+                           .delta_uv    = el->element_ctx.light_ctl_state.delta_uv,
+                           .temp_range_min = 0,
+                           .temp_range_max = 0 } };
+            ctl->model_send(&cp);
         }
     }
     return MESHX_SUCCESS;
@@ -488,16 +536,13 @@ meshx_err_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
 {
     if (!pdev || !params) return MESHX_INVALID_ARG;
 
-    uint16_t base = cwww_get_base_el_id();
-
     if (evt == CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF)
     {
         const auto *msg = static_cast<const meshx_gen_on_off_cli_msg_t *>(params);
-        uint16_t rel_id = msg->element_id - base;
-        if (rel_id >= CONFIG_LIGHT_CWWW_CLIENT_COUNT || !s_instances[rel_id])
-            return MESHX_SUCCESS;
+        auto *el = meshXElementRegistry::get_instance().find_and_cast<meshXCWWWClientElement>(
+            msg->element_id, MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT);
+        if (!el) return MESHX_SUCCESS;
 
-        meshXCWWWClientElement *el = s_instances[rel_id];
         if (el->element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED)
             return MESHX_INVALID_STATE;
 
@@ -527,11 +572,10 @@ meshx_err_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
     else if (evt == CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL)
     {
         const auto *msg = static_cast<const meshx_light_ctl_cli_msg_t *>(params);
-        uint16_t rel_id = msg->element_id - base;
-        if (rel_id >= CONFIG_LIGHT_CWWW_CLIENT_COUNT || !s_instances[rel_id])
-            return MESHX_SUCCESS;
+        auto *el = meshXElementRegistry::get_instance().find_and_cast<meshXCWWWClientElement>(
+            msg->element_id, MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT);
+        if (!el) return MESHX_SUCCESS;
 
-        meshXCWWWClientElement *el = s_instances[rel_id];
         if (el->element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED)
             return MESHX_INVALID_STATE;
 
@@ -562,3 +606,64 @@ meshx_err_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
 }
 
 #endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */
+
+/************************************************************************************
+ * C-linkage factory functions — used by composition.c dispatch table
+ * These replace the legacy meshx_create_cwww_elements / create_cwww_client_elements
+ * from the elements_c/ path.
+ ************************************************************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#if CONFIG_LIGHT_CWWW_SRV_COUNT > 0
+/**
+ * @brief C++ factory for CWWW Server elements.
+ *
+ * Constructs CONFIG_LIGHT_CWWW_SRV_COUNT meshXCWWWServerElement objects and
+ * registers each with the platform BLE Mesh composition.
+ *
+ * @param pdev         Pointer to the device structure.
+ * @param element_cnt  Number of light CWWW server elements to create.
+ *                     Capped by CONFIG_LIGHT_CWWW_SRV_COUNT.
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t create_cwww_server_elements_cpp(dev_struct_t *pdev, uint16_t element_cnt)
+{
+    return meshx_element_factory_helper<meshXCWWWServerElement, meshx_cwww_srv_el_ctx_t>(
+        pdev,
+        element_cnt,
+        CONFIG_LIGHT_CWWW_SRV_COUNT,
+        MODULE_ID_ELEMENT_LIGHT_CWWW_SERVER,
+        "CWWW Srv"
+    );
+}
+#endif /* CONFIG_LIGHT_CWWW_SRV_COUNT > 0 */
+
+#if CONFIG_LIGHT_CWWW_CLIENT_COUNT > 0
+/**
+ * @brief C++ factory for CWWW Client elements.
+ *
+ * Constructs CONFIG_LIGHT_CWWW_CLIENT_COUNT meshXCWWWClientElement objects and
+ * registers each with the platform BLE Mesh composition.
+ *
+ * @param pdev         Pointer to the device structure.
+ * @param element_cnt  Number of light CWWW client elements to create.
+ *                     Capped by CONFIG_LIGHT_CWWW_CLI_COUNT.
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t create_cwww_client_elements_cpp(dev_struct_t *pdev, uint16_t element_cnt)
+{
+    return meshx_element_factory_helper<meshXCWWWClientElement, meshx_cwww_cli_el_ctx_t>(
+        pdev,
+        element_cnt,
+        CONFIG_LIGHT_CWWW_CLIENT_COUNT,
+        MODULE_ID_ELEMENT_LIGHT_CWWW_CLIENT,
+        "CWWW Cli"
+    );
+}
+#endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT > 0 */
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif

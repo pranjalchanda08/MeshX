@@ -42,6 +42,7 @@ private:
     std::vector<std::unique_ptr<meshXModelIF>> sig_models;
     std::vector<std::unique_ptr<meshXModelIF>> ven_models;
     meshxElementType_t element_type;
+    meshx_element_type_t element_variant;
 
     meshx_ptr_t element_ctx;        /**< Pointer to element context structure */
     size_t      element_ctx_size;   /**< Size of the element context structure */
@@ -63,6 +64,9 @@ public:
 
     void set_element_type(meshxElementType_t type) { element_type = type; }
     meshxElementType_t get_element_type(void) const final { return element_type; }
+ 
+    void set_element_variant(meshx_element_type_t variant) { element_variant = variant; }
+    meshx_element_type_t get_element_variant(void) const final { return element_variant; }
 
     void set_no_of_sig_models(uint8_t cnt) { no_of_sig_models = cnt; }
     uint8_t get_no_of_sig_models(void) const final { return no_of_sig_models; }
@@ -280,7 +284,12 @@ public:
      */
     meshXElement(uint16_t element_idx, meshxElementType_t type, uint8_t no_of_sig_models, uint8_t no_of_ven_models);
 
-    ~meshXElement() override = default;
+    meshx_err_t initialize(void) override;
+    meshx_err_t reset(void) override;
+    bool is_initialized(void) const override;
+    meshx_err_t restore_nvs_context(void) override;
+
+    ~meshXElement() override;
 };
 
 /***********************************************************************************************************

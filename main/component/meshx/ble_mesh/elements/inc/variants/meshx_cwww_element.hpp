@@ -99,7 +99,6 @@ private:
     /*-----------------------------------------------------------------
      * Instance registry
      *----------------------------------------------------------------*/
-    static std::array<meshXCWWWServerElement *, CONFIG_LIGHT_CWWW_SRV_COUNT> s_instances;
     static std::once_flag s_callbacks_registered;
     static void register_class_callbacks();
 
@@ -192,7 +191,6 @@ private:
     /*-----------------------------------------------------------------
      * Instance registry
      *----------------------------------------------------------------*/
-    static std::array<meshXCWWWClientElement *, CONFIG_LIGHT_CWWW_CLIENT_COUNT> s_instances;
     static std::once_flag s_callbacks_registered;
     static void register_class_callbacks();
 
