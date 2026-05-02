@@ -47,10 +47,11 @@ MESHX_BASE_TEMPLATE_PROTO
 class meshXBaseModel {
 private:
     uint32_t model_id;
-    control_msg_cb from_ble_cb;
     meshXBaseModelType_t model_type;
-    /* meshx_err_t status to be used where return value is not used */
+    control_task_msg_handle_t from_ble_cb;
+protected:
     meshx_err_t status = MESHX_SUCCESS;
+private:
     /**
      * @brief Register BLE message callback for this model
      * @details Automatically called during model initialization to register a callback
@@ -123,7 +124,7 @@ public:
      * @brief Get the BLE message callback function
      * @return Callback function for handling BLE messages
      */
-    control_msg_cb get_from_ble_cb(void) const { return from_ble_cb; }
+    control_task_msg_handle_t get_from_ble_cb(void) const { return from_ble_cb; }
 
     /**
      * @brief Get the model type (server/client)
@@ -147,7 +148,7 @@ public:
      * @brief Set the BLE message callback function
      * @param[in] cb Callback function for handling BLE messages
      */
-    void set_from_ble_cb(const control_msg_cb& cb) { from_ble_cb = cb; }
+    void set_from_ble_cb(control_task_msg_handle_t cb) { from_ble_cb = cb; }
 
     /**
      * @brief Set the model type
@@ -161,7 +162,7 @@ public:
      * @param[in] from_ble_cb Callback for handling BLE messages
      * @param[in] model_type Type of the model (server/client)
      */
-    meshXBaseModel(uint32_t model_id, const control_msg_cb &from_ble_cb, meshXBaseModelType_t model_type);
+    meshXBaseModel(uint32_t model_id, control_task_msg_handle_t from_ble_cb, meshXBaseModelType_t model_type);
     meshXBaseModel() = delete;
 
     /**
@@ -176,8 +177,19 @@ public:
  **************************************************************************************************************************************************************/
 MESHX_BASE_SERVER_TEMPLATE_PROTO
     class meshXBaseServerModel : public meshXBaseModel<ble_mesh_send_msg_params_t> {
+private:
+    using base_server_model_cb_reg_t = struct base_server_model_cb_reg
+    {
+        uint16_t model_id;   /**< Model ID associated with the registration. */
+        control_msg_cb cb;   /**< Callback function associated with the registration. */
+    };
+
 protected:
     static uint16_t plat_server_init;
+    static std::forward_list<base_server_model_cb_reg_t> base_server_model_cb_list;
+    static meshx_err_t base_from_ble_msg_handle(dev_struct_t *pdev, control_task_msg_evt_t evt, meshx_ptr_t params);
+
+    /* Model validation function - to be implemented by derived classes */
     virtual meshx_err_t validate_server_status_opcode(uint16_t opcode) = 0;
 public:
     virtual meshx_err_t server_state_restore(ble_mesh_plat_restore_params_t* param) = 0;
@@ -235,7 +247,7 @@ protected:
     /* Per instance template based static functions */
     static meshx_err_t base_txcm_handle_ack     (uint16_t src_addr);
     static meshx_err_t base_txcm_handle_resend  (uint16_t model_id, const ble_mesh_plat_model_cb_params_t *param);
-    static meshx_err_t base_from_ble_msg_handle (dev_struct_t *pdev, control_task_msg_evt_t evt, ble_mesh_plat_model_cb_params_t *params);
+    static meshx_err_t base_from_ble_msg_handle (dev_struct_t *pdev, control_task_msg_evt_t evt, meshx_ptr_t params);
     static meshx_err_t base_handle_txcm_msg     (dev_struct_t *pdev, control_task_msg_evt_t evt, base_client_model_resend_ctx_t *param);
 public:
 

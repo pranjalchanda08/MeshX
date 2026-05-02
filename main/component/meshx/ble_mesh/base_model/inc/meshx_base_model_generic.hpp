@@ -102,9 +102,9 @@ using meshx_gen_client_msg_ctx_t = struct meshx_gen_client_msg_ctx
  * @see meshx_gen_client_send_params_t for send parameter structure.
  */
 MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PROTO
-class meshXBaseGenericClientModel : private meshXBaseClientModel<meshXBaseGenericClientModel, meshx_gen_client_send_params_t, meshx_gen_cli_cb_param_t>
+class meshXBaseGenericClientModel : public meshXBaseClientModel<meshXBaseGenericClientModel, meshx_gen_client_send_params_t, meshx_gen_cli_cb_param_t>
 {
-private:
+public:
     /* @copydoc meshXBaseClientModel::plat_model_init */
     meshx_err_t plat_model_init(void) override;
 
@@ -179,9 +179,9 @@ using meshx_gen_server_restore_params_t = struct meshx_gen_server_restore_params
  * @see meshx_gen_server_send_params_t for send parameter structure.
  */
 MESHX_BASE_GENERIC_SERVER_TEMPLATE_PROTO
-class meshXBaseGenericServerModel : private meshXBaseServerModel<meshXBaseGenericServerModel, meshx_gen_server_send_params_t, meshx_gen_server_restore_params_t>
+class meshXBaseGenericServerModel : public meshXBaseServerModel<meshXBaseGenericServerModel, meshx_gen_server_send_params_t, meshx_gen_server_restore_params_t>
 {
-private:
+public:
     meshx_err_t plat_model_init(void) override;
     meshx_err_t validate_server_status_opcode(uint16_t opcode) override;
 public:

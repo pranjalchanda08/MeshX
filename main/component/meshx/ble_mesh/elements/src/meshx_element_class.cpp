@@ -15,6 +15,8 @@
 #include <memory>
 #include <ranges>
 #include <vector>
+#include <meshx_element_registry.hpp>
+#include <meshx_nvs.h>
 
 #include <generic_model/meshx_model_onoff.hpp>
 #include <generic_model/meshx_model_level.hpp>
@@ -46,6 +48,38 @@ meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
 
     // Add all root models to the element
     this->add_models();
+
+    // Register instance in global registry
+    meshXElementRegistry::get_instance().register_element(this);
+}
+
+/**
+ * @brief Construct meshXElement with explicit element index, type, and model counts.
+ *
+ * This constructor is used by meshXElementServer/meshXElementClient to set the
+ * element type and pre-size the model arrays at construction time rather than
+ * relying on the virtual list_sig_models()/list_ven_models() dispatch.
+ *
+ * @param[in] element_idx      Index of the element in the mesh network
+ * @param[in] type             Server or client element type
+ * @param[in] no_of_sig_models Number of SIG models
+ * @param[in] no_of_ven_models Number of vendor models
+ */
+MESHX_ELEMENT_TEMPLATE_PROTO
+meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::meshXElement(uint16_t element_idx, meshxElementType_t type,
+                   uint8_t no_of_sig_models, uint8_t no_of_ven_models)
+    : meshXElementIF(element_idx)
+{
+    this->set_element_type(type);
+    this->set_no_of_sig_models(no_of_sig_models);
+    this->set_no_of_ven_models(no_of_ven_models);
+
+    this->sig_plat_model_array_allocate();
+    this->ven_plat_model_array_allocate();
+
+    // Register instance in global registry
+    meshXElementRegistry::get_instance().register_element(this);
 }
 
 MESHX_ELEMENT_TEMPLATE_PROTO
@@ -70,6 +104,20 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
         return MESHX_SUCCESS;
     }
     return MESHX_NOT_SUPPORTED;
+}
+
+MESHX_ELEMENT_TEMPLATE_PROTO
+MESHX_MODEL* meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::get_sig_plat_model_array(void)
+{
+    return sig_model_array.empty() ? nullptr : sig_model_array.data();
+}
+
+MESHX_ELEMENT_TEMPLATE_PROTO
+MESHX_MODEL* meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::get_ven_plat_model_array(void)
+{
+    return ven_model_array.empty() ? nullptr : ven_model_array.data();
 }
 
 /*****************************************************************************************************
@@ -287,3 +335,67 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
 
     return MESHX_SUCCESS;
 }
+
+/*****************************************************************************************************
+ * Lifecycle stub implementations
+ * These provide default no-op implementations of the pure virtual lifecycle methods declared in
+ * meshXElementIF. Concrete element subclasses (Relay, CWWW, etc.) are fully instantiable without
+ * overriding these; override when lifecycle management is needed in the future.
+ *****************************************************************************************************/
+MESHX_ELEMENT_TEMPLATE_PROTO
+meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::initialize(void)
+{
+    /* Default: element is ready immediately after construction */
+    return MESHX_SUCCESS;
+}
+
+MESHX_ELEMENT_TEMPLATE_PROTO
+meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::reset(void)
+{
+    /* Default: reset is a no-op */
+    return MESHX_SUCCESS;
+}
+
+MESHX_ELEMENT_TEMPLATE_PROTO
+bool meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::is_initialized(void) const
+{
+    /* Default: always report initialized */
+    return true;
+}
+
+MESHX_ELEMENT_TEMPLATE_PROTO
+meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::restore_nvs_context(void)
+{
+    if (element_ctx && element_ctx_size > 0)
+    {
+        return meshx_nvs_element_ctx_get(get_element_idx(), element_ctx, element_ctx_size);
+    }
+    return MESHX_SUCCESS;
+}
+
+MESHX_ELEMENT_TEMPLATE_PROTO
+meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::~meshXElement()
+{
+    meshXElementRegistry::get_instance().unregister_element(get_element_idx());
+}
+
+/*****************************************************************************************************
+ * Explicit template instantiations for meshXElement
+ *
+ * meshXElement is templated on the model send-param header type.
+ * Two specializations are used:
+ *   - meshx_srv_model_send_param_header_t  → server elements
+ *   - meshx_cli_model_send_param_header_t  → client elements
+ *
+ * Note: meshXElementServer and meshXElementClient expand to non-template classes (the macros
+ *       MESHX_SERVER_ELEMENT_TEMPLATE_PROTO / MESHX_CLIENT_ELEMENT_TEMPLATE_PROTO are empty)
+ *       so only meshXElement<> needs explicit instantiation.
+ *****************************************************************************************************/
+template class meshXElement<meshx_srv_model_send_param_header_t>;
+template class meshXElement<meshx_cli_model_send_param_header_t>;
+

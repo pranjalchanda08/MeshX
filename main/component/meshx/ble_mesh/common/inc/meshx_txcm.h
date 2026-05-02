@@ -108,6 +108,10 @@ typedef struct meshx_txcm_request
     meshx_txcm_fn_model_send_t send_fn; /**< Function pointer to the model-specific send function */
 } meshx_txcm_request_t;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief Initializes the MeshX Tx Control Module.
  *
@@ -160,5 +164,9 @@ meshx_err_t meshx_txcm_request_send(
  *      - Error code (meshx_err_t) if registration fails.
  */
 meshx_err_t meshx_txcm_event_cb_reg(meshx_txcm_cb_t event_cb);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __MESHX_TXCM_H__ */

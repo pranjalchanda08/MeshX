@@ -23,6 +23,10 @@
 #include "meshx_err.h"
 #include "meshx_ble_mesh_cmn_def.h"
 #include "interface/meshx_platform.h"
+ 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*
  * @brief Structure to hold UUID and address information.
@@ -244,4 +248,8 @@ meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, meshx_
  */
 meshx_err_t meshx_get_base_element_id(uint16_t *base_el_id);
 
+#ifdef __cplusplus
+}
+#endif
+ 
 #endif /* __MESHX_PLAT_SRV_CMN_H__ */

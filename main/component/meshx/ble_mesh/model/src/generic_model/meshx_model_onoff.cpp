@@ -122,7 +122,7 @@ meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_P
     }
     const auto *param = static_cast<const meshx_gen_cli_cb_param_t *>(params);
 
-    return std::to_underlying(param->evt) == std::to_underlying(meshx_base_cli_evt::MESHX_BASE_CLI_TIMEOUT) ?
+    return static_cast<int>(param->evt) == static_cast<int>(meshx_base_cli_evt::MESHX_BASE_CLI_TIMEOUT) ?
         meshx_state_change_notify(param, MESHX_TIMEOUT) :
         meshx_state_change_notify(param, MESHX_SUCCESS);
 }
@@ -259,7 +259,9 @@ meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
         uint16_t        model_func_id
     )
     : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_ONOFF_SRV, parent_element, parent_element_state, model_func_id)
-{}
+{
+    this->plat_model_create();
+}
 
 /**
  * @brief Creates and initializes a server model instance.
