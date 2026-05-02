@@ -20,6 +20,7 @@
 #include <meshx_config_server.h>
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
+#ifndef __cplusplus
 #if CONFIG_RELAY_SERVER_COUNT
 #include <meshx_relay_server_element.h>
 #endif /* CONFIG_RELAY_SERVER_COUNT */
@@ -35,3 +36,4 @@
 #if CONFIG_LIGHT_CWWW_CLIENT_COUNT
 #include <meshx_light_cwww_client_element.h>
 #endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */
+#endif /* __cplusplus */
