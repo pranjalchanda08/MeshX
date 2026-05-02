@@ -16,6 +16,8 @@
 #include <meshx_element_class.hpp>
 #include <generic_model/meshx_model_onoff.hpp>
 #include <light_model/meshx_model_ctl.hpp>
+#include <mutex>
+#include <array>
 
 #define MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
 #define MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
@@ -64,6 +66,43 @@ private:
 
     uint8_t list_sig_models() override;
     uint8_t list_ven_models() override;
+
+    /**
+     * @brief Notify element of state change from child model.
+     * @details Discriminates ONOFF vs CTL via header->model.model_id.
+     *          Updates element_ctx, saves to NVS, notifies app.
+     */
+    meshx_err_t element_state_change_notify(meshx_ptr_t param, size_t param_size) override;
+
+    /*-----------------------------------------------------------------
+     * Static class-level callbacks (registered once via once_flag)
+     *----------------------------------------------------------------*/
+#if CONFIG_ENABLE_CONFIG_SERVER
+    static meshx_err_t s_config_srv_cb(
+        const dev_struct_t              *pdev,
+        control_task_msg_evt_t           evt,
+        const meshx_config_srv_cb_param_t *params);
+#endif
+
+#if CONFIG_ENABLE_PROVISIONING
+    static meshx_err_t s_prov_cb(
+        const dev_struct_t      *pdev,
+        control_task_msg_evt_t   evt,
+        const void              *params);
+#endif
+
+    static meshx_err_t s_to_ble_cb(
+        const dev_struct_t      *pdev,
+        control_task_msg_evt_t   evt,
+        const void              *params);
+
+    /*-----------------------------------------------------------------
+     * Instance registry
+     *----------------------------------------------------------------*/
+    static std::array<meshXCWWWServerElement *, CONFIG_LIGHT_CWWW_SRV_COUNT> s_instances;
+    static std::once_flag s_callbacks_registered;
+    static void register_class_callbacks();
+
 public:
     /**
      * @brief Constructs a new meshXCWWWServerElement instance.
@@ -117,8 +156,46 @@ class meshXCWWWClientElement : public meshXElementClient MESHX_CWWW_CLIENT_ELEME
 {
 private:
     meshx_cwww_cli_el_ctx_t element_ctx;
+
     uint8_t list_sig_models() override;
     uint8_t list_ven_models() override;
+
+    /**
+     * @brief Notify element of state change from child model.
+     * @details Discriminates ONOFF vs CTL via header->model.model_id.
+     *          Updates element_ctx and notifies app.
+     */
+    meshx_err_t element_state_change_notify(meshx_ptr_t param, size_t param_size) override;
+
+    /*-----------------------------------------------------------------
+     * Static class-level callbacks (registered once via once_flag)
+     *----------------------------------------------------------------*/
+#if CONFIG_ENABLE_CONFIG_SERVER
+    static meshx_err_t s_config_srv_cb(
+        const dev_struct_t              *pdev,
+        control_task_msg_evt_t           evt,
+        const meshx_config_srv_cb_param_t *params);
+#endif
+
+#if CONFIG_ENABLE_PROVISIONING
+    static meshx_err_t s_prov_cb(
+        const dev_struct_t      *pdev,
+        control_task_msg_evt_t   evt,
+        const void              *params);
+#endif
+
+    static meshx_err_t s_to_ble_cb(
+        const dev_struct_t      *pdev,
+        control_task_msg_evt_t   evt,
+        const void              *params);
+
+    /*-----------------------------------------------------------------
+     * Instance registry
+     *----------------------------------------------------------------*/
+    static std::array<meshXCWWWClientElement *, CONFIG_LIGHT_CWWW_CLIENT_COUNT> s_instances;
+    static std::once_flag s_callbacks_registered;
+    static void register_class_callbacks();
+
 public:
     /**
      * @brief Constructs a new meshXCWWWClientElement instance.
