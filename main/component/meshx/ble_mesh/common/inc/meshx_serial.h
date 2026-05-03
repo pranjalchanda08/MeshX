@@ -22,9 +22,11 @@ extern "C" {
 #define MXSP_PAYLOAD_MAX_SIZE 255
 
 typedef enum {
-    MXSP_MSG_TYPE_DATA        = 0x01,
-    MXSP_MSG_TYPE_CTRL        = 0x02,
-    MXSP_MSG_TYPE_HOSTED_MODE = 0x03,
+    MXSP_MSG_TYPE_SYS_EVT_NOTIFY  = 0xB1, // Engine -> Host (Control Path)
+    MXSP_MSG_TYPE_DATA_EVT_NOTIFY = 0xB2, // Engine -> Host (Data Path)
+    MXSP_MSG_TYPE_EL_CMD_SEND     = 0xC1, // Host -> Engine (Command Path)
+    MXSP_MSG_TYPE_SYS_CMD_SEND    = 0xC2, // Host -> Engine (System Command)
+    MXSP_MSG_TYPE_HOSTED_MODE     = 0x03, // Internal/Setup
 } mxsp_msg_type_t;
 
 /**
