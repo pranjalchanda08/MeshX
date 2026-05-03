@@ -15,8 +15,6 @@
 #include <meshx_api.h>
 #include <vector>
 #include <memory>
-#include <functional>
-#include <forward_list>
 #include <meshx_c_header.h>
 
 /***************************************************************************************************************************************
@@ -94,11 +92,17 @@ public:
     uint16_t get_element_idx(void) const { return element_idx; }
 
     /**
+     * @brief Called when the composition is baked to update the element's index.
+     * @param index The final platform index of this element.
+     */
+    virtual void on_baked(uint16_t index) = 0;
+
+    /**
      * @brief Get the element type
      * @return Element type (server or client)
      */
     virtual meshxElementType_t get_element_type(void) const = 0;
- 
+
     /**
      * @brief Get the element variant
      * @return Element variant (meshx_element_type_t)
@@ -116,6 +120,16 @@ public:
      * @return Number of Vendor models
      */
     virtual uint8_t get_no_of_ven_models(void) const = 0;
+    
+    /**
+     * @brief Lists and creates all required SIG models for the element.
+     */
+    virtual uint8_t list_sig_models(void) = 0;
+
+    /**
+     * @brief Lists and creates all required Vendor models for the element.
+     */
+    virtual uint8_t list_ven_models(void) = 0;
 
     /**
      * @brief Get the SIG models vector

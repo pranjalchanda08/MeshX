@@ -111,8 +111,7 @@ void meshXRelayServerElement::register_class_callbacks()
  * @brief Constructs a new meshXRelayServerElement instance.
  */
 MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PROTO
-meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
-    ::meshXRelayServerElement (uint16_t element_idx)
+meshXRelayServerElement::meshXRelayServerElement (uint16_t element_idx)
     : meshXElementServer(element_idx)
 {
     this->register_element_ctx(&element_ctx, sizeof(meshx_relay_srv_el_ctx_t));
@@ -124,8 +123,7 @@ meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
  * @brief Lists and initializes SIG models for Relay Server Element
  */
 MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PROTO
-uint8_t meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
-    ::list_sig_models()
+uint8_t meshXRelayServerElement::list_sig_models()
 {
     auto relay_model = std::make_unique<meshXGenericOnOffServerModel>(
         this,
@@ -141,16 +139,14 @@ uint8_t meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
  * @brief Lists Vendor models for Relay Server Element (none required)
  */
 MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PROTO
-uint8_t meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
-    ::list_ven_models()
+uint8_t meshXRelayServerElement::list_ven_models()
 {
     return 0; /* No vendor models for relay server */
 }
 
 /* Task A+B — element_state_change_notify: NVS save + app notify */
 MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
-    ::element_state_change_notify(meshx_ptr_t param, size_t param_size)
+meshx_err_t meshXRelayServerElement::element_state_change_notify(meshx_ptr_t param, size_t param_size)
 {
     if (!param)
         return MESHX_INVALID_ARG;
@@ -185,8 +181,7 @@ meshx_err_t meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
 /* Task C — Config server callback (appkey bind + publication address) */
 #if CONFIG_ENABLE_CONFIG_SERVER
 MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
-    ::s_config_srv_cb(
+meshx_err_t meshXRelayServerElement::s_config_srv_cb(
         const dev_struct_t              *pdev,
         control_task_msg_evt_t           evt,
         const meshx_config_srv_cb_param_t *params)
@@ -239,8 +234,7 @@ meshx_err_t meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
 /* Task D — Provisioning server callback (re-publish state after provisioning) */
 #if CONFIG_ENABLE_PROVISIONING
 MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
-    ::s_prov_cb(
+meshx_err_t meshXRelayServerElement::s_prov_cb(
         const dev_struct_t      *pdev,
         control_task_msg_evt_t   evt,
         const void              *params)
@@ -291,8 +285,7 @@ meshx_err_t meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
 
 /* Task E — TO_BLE server handler (app triggers a publish of current state to BLE) */
 MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXRelayServerElement MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PARAMS
-    ::s_to_ble_cb(
+meshx_err_t meshXRelayServerElement::s_to_ble_cb(
         const dev_struct_t      *pdev,
         control_task_msg_evt_t   evt,
         const void              *params)
@@ -358,8 +351,7 @@ void meshXRelayClientElement::register_class_callbacks()
  * @brief Constructs a new meshXRelayClientElement instance.
  */
 MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
-meshXRelayClientElement MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
-    ::meshXRelayClientElement (uint16_t element_idx)
+meshXRelayClientElement::meshXRelayClientElement (uint16_t element_idx)
     : meshXElementClient(element_idx)
 {
     this->register_element_ctx(&element_ctx, sizeof(meshx_relay_cli_el_ctx_t));
@@ -371,8 +363,7 @@ meshXRelayClientElement MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
  * @brief Lists and initializes SIG models for Relay Client Element
  */
 MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
-uint8_t meshXRelayClientElement MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
-    ::list_sig_models()
+uint8_t meshXRelayClientElement::list_sig_models()
 {
     auto relay_model = std::make_unique<meshXGenericOnOffClientModel>(
         this,
@@ -388,16 +379,14 @@ uint8_t meshXRelayClientElement MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
  * @brief Lists Vendor models for Relay Client Element (none required)
  */
 MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
-uint8_t meshXRelayClientElement MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
-    ::list_ven_models()
+uint8_t meshXRelayClientElement::list_ven_models()
 {
     return 0; /* No vendor models for relay client */
 }
 
 /* Task A+B — element_state_change_notify: app notify (NVS not required for client state) */
 MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXRelayClientElement MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
-    ::element_state_change_notify(meshx_ptr_t param, size_t param_size)
+meshx_err_t meshXRelayClientElement::element_state_change_notify(meshx_ptr_t param, size_t param_size)
 {
     if (!param)
         return MESHX_INVALID_ARG;
@@ -424,8 +413,7 @@ meshx_err_t meshXRelayClientElement MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
 /* Task C — Config server callback */
 #if CONFIG_ENABLE_CONFIG_SERVER
 MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXRelayClientElement MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
-    ::s_config_srv_cb(
+meshx_err_t meshXRelayClientElement::s_config_srv_cb(
         const dev_struct_t              *pdev,
         control_task_msg_evt_t           evt,
         const meshx_config_srv_cb_param_t *params)
@@ -478,8 +466,7 @@ meshx_err_t meshXRelayClientElement MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
 /* Task D — Provisioning client callback (send GET to refresh state on fresh boot) */
 #if CONFIG_ENABLE_PROVISIONING
 MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXRelayClientElement MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
-    ::s_prov_cb(
+meshx_err_t meshXRelayClientElement::s_prov_cb(
         const dev_struct_t      *pdev,
         control_task_msg_evt_t   evt,
         const void              *params)
@@ -519,8 +506,7 @@ meshx_err_t meshXRelayClientElement MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
 
 /* Task E — TO_BLE client handler: receives app command, sends OnOff via model */
 MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXRelayClientElement MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
-    ::s_to_ble_cb(
+meshx_err_t meshXRelayClientElement::s_to_ble_cb(
         const dev_struct_t      *pdev,
         control_task_msg_evt_t   evt,
         const void              *params)
