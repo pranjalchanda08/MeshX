@@ -159,7 +159,7 @@ meshx_err_t meshXRelayServerElement::element_state_change_notify(meshx_ptr_t par
 
     /* Task B — NVS persistence */
     meshx_err_t err = meshx_nvs_element_ctx_set(
-        element_id, &element_ctx, sizeof(element_ctx));
+        element_id, get_element_variant(), &element_ctx, sizeof(element_ctx));
     if (err)
     {
         MESHX_LOGW(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER,
@@ -224,7 +224,7 @@ meshx_err_t meshXRelayServerElement::s_config_srv_cb(
 
     if (save)
     {
-        meshx_nvs_element_ctx_set(element_id, &el->element_ctx,
+        meshx_nvs_element_ctx_set(element_id, MESHX_ELEMENT_TYPE_RELAY_SERVER, &el->element_ctx,
                                    sizeof(meshx_relay_srv_el_ctx_t));
     }
     return MESHX_SUCCESS;
@@ -456,7 +456,7 @@ meshx_err_t meshXRelayClientElement::s_config_srv_cb(
 
     if (save)
     {
-        meshx_nvs_element_ctx_set(element_id, &el->element_ctx,
+        meshx_nvs_element_ctx_set(element_id, MESHX_ELEMENT_TYPE_RELAY_CLIENT, &el->element_ctx,
                                    sizeof(meshx_relay_cli_el_ctx_t));
     }
     return MESHX_SUCCESS;

@@ -13,6 +13,7 @@
 #define __MESHX_NVS_H__
 
 #include <stdint.h>
+#include <meshx_common.h>
 #include "meshx_control_task.h"
 #include "meshx_os_timer.h"
 
@@ -143,45 +144,39 @@ meshx_err_t meshx_nvs_set(char const* key, void const* blob, uint16_t blob_size,
 /**
  * @brief Retrieve the context of a specific element from NVS.
  *
- * This function fetches the stored context of a given element identified by its ID from
- * the Non-Volatile Storage (NVS).
- *
- * @param[in]   element_id  The ID of the element whose context is to be retrieved.
- * @param[out]  blob        Pointer to the buffer where the retrieved context will be stored.
- * @param[in]   blob_size   Size of the buffer provided to store the context.
+ * @param[in]   element_id   The ID of the element whose context is to be retrieved.
+ * @param[in]   element_type The type of the element.
+ * @param[out]  blob         Pointer to the buffer where the retrieved context will be stored.
+ * @param[in]   blob_size    Size of the buffer provided to store the context.
  *
  * @return
  *     - MESHX_SUCCESS: Successfully retrieved the context.
  */
-meshx_err_t meshx_nvs_element_ctx_get(uint16_t element_id, void *blob, size_t blob_size);
+meshx_err_t meshx_nvs_element_ctx_get(uint16_t element_id, meshx_element_type_t element_type, void *blob, size_t blob_size);
 
 /**
  * @brief Store the context of a specific element to NVS.
  *
- * This function saves the context of a given element identified by its ID to
- * the Non-Volatile Storage (NVS).
- *
  * @param[in] element_id    The ID of the element whose context is to be stored.
+ * @param[in] element_type  The type of the element.
  * @param[in] blob          Pointer to the buffer containing the context to be stored.
  * @param[in] blob_size     Size of the buffer containing the context.
  *
  * @return
  *     - MESHX_SUCCESS: Successfully stored the context.
  */
-meshx_err_t meshx_nvs_element_ctx_set(uint16_t element_id, const void *blob, size_t blob_size);
+meshx_err_t meshx_nvs_element_ctx_set(uint16_t element_id, meshx_element_type_t element_type, const void *blob, size_t blob_size);
 
 /**
  * @brief Remove the context of a specific element from NVS.
  *
- * This function deletes the stored context of a given element identified by its ID from
- * the Non-Volatile Storage (NVS).
- *
- * @param[in] element_id The ID of the element whose context is to be removed.
+ * @param[in] element_id   The ID of the element whose context is to be removed.
+ * @param[in] element_type The type of the element.
  *
  * @return
  *     - MESHX_SUCCESS: Successfully removed the context.
  */
-meshx_err_t meshx_nvs_element_ctx_remove(uint16_t element_id);
+meshx_err_t meshx_nvs_element_ctx_remove(uint16_t element_id, meshx_element_type_t element_type);
 
 #ifdef __cplusplus
 } /* extern "C" */

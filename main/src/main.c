@@ -53,6 +53,7 @@ void CONFIG_APP_MAIN(void)
 {
     meshx_err_t err;
 
+    /* Initialize MeshX */
     err = meshx_init(&meshx_config);
     if (err)
     {
@@ -64,6 +65,9 @@ static meshx_err_t meshx_app_data_cb(const meshx_app_element_msg_header_t *msg_h
 {
     if (!msg_hdr || !data_payload_u)
         return MESHX_INVALID_ARG;
+
+    /* Forward to Serial Host if enabled */
+    mxsp_send_data_event(msg_hdr, data_payload_u);
 
     switch (msg_hdr->element_type)
     {
@@ -116,5 +120,13 @@ static meshx_err_t meshx_app_data_cb(const meshx_app_element_msg_header_t *msg_h
 
 static meshx_err_t meshx_app_ctrl_cb(const meshx_ctrl_msg_header_t *msg_hdr, const meshx_ctrl_payload_t *msg)
 {
+    if (!msg_hdr || !msg)
+        return MESHX_INVALID_ARG;
+
+    MESHX_LOGI(MODULE_ID_COMMON, "Control Event Received: ID %d", msg_hdr->evt_id);
+
+    /* Forward to Serial Host if enabled */
+    mxsp_send_ctrl_event(msg_hdr, msg);
+
     return MESHX_SUCCESS;
 }
