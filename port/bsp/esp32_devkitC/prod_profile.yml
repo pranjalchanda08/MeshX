@@ -29,3 +29,13 @@ prod:
               - switch_relay_server: 1
               - light_cwww_server: 1
               - light_cwww_client: 1
+
+        - name: sensor_node
+          pid: 0x0005
+          elements:
+              - sensor_server: 1
+
+        - name: rgb_lamp
+          pid: 0x0007
+          elements:
+              - rgb_server: 1

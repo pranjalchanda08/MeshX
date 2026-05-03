@@ -33,6 +33,23 @@ elements:
         models:
             - light_ctl_client: 1
             - gen_onoff_client: 1
+
+    sensor_server:
+        path: "elements/server/sensor_server"
+        macros:
+            - def: "CONFIG_SENSOR_SERVER_COUNT"
+              value: 0
+        models:
+            - sensor_server: 1
+
+    rgb_server:
+        path: "elements/server/rgb_server"
+        macros:
+            - def: "CONFIG_RGB_SERVER_COUNT"
+              value: 0
+        models:
+            - light_hsl_server: 1
+            - gen_onoff_server: 1
 # Models Build registration
 models:
     server_common:
@@ -223,6 +240,15 @@ models:
             - def: "CONFIG_ENABLE_LIGHT_HSL_SERVER"
               value: false
         base_model: "light_server"
+
+    sensor_server:
+        path: "elements/server/models/sensor_server"
+        type: "server"
+        default: false
+        macros:
+            - def: "CONFIG_ENABLE_SENSOR_SERVER"
+              value: false
+        base_model: "gen_server"
 
     light_ctl_client:
         path: "elements/client/models/light_ctl_client"
