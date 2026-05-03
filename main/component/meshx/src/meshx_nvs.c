@@ -11,6 +11,7 @@
  *
  */
 #include "meshx_nvs.h"
+#include "unit_test.h"
 #include "interface/utils/meshx_nvs_interface.h"
 
 #define MESHX_NVS_INIT_MAGIC        0x5489

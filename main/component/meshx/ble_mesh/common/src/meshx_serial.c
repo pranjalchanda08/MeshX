@@ -103,7 +103,7 @@ meshx_err_t mxsp_send_ctrl_event(const meshx_ctrl_msg_header_t *evt_header, cons
     memcpy(&buff[len], payload, sizeof(meshx_ctrl_payload_t));
     len += sizeof(meshx_ctrl_payload_t);
 
-    return mxsp_send_frame(MXSP_MSG_TYPE_CTRL, buff, len);
+    return mxsp_send_frame(MXSP_MSG_TYPE_SYS_EVT_NOTIFY, buff, len);
 }
 
 meshx_err_t mxsp_send_data_event(const meshx_app_element_msg_header_t *msg_hdr, const meshx_data_payload_t *payload)
@@ -120,7 +120,7 @@ meshx_err_t mxsp_send_data_event(const meshx_app_element_msg_header_t *msg_hdr, 
     memcpy(&buff[len], payload, sizeof(meshx_data_payload_t));
     len += sizeof(meshx_data_payload_t);
 
-    return mxsp_send_frame(MXSP_MSG_TYPE_DATA, buff, len);
+    return mxsp_send_frame(MXSP_MSG_TYPE_DATA_EVT_NOTIFY, buff, len);
 }
 
 void meshx_serial_parse_byte(uint8_t data)
@@ -157,7 +157,7 @@ void meshx_serial_parse_byte(uint8_t data)
         case STATE_EOF:
             if (data == MXSP_EOF) {
                 if (calculate_checksum(mxsp_ctx.rx_frame.len, mxsp_ctx.rx_frame.type, mxsp_ctx.rx_frame.payload) == mxsp_ctx.rx_frame.checksum) {
-                    if (mxsp_ctx.rx_frame.type == MXSP_MSG_TYPE_DATA) {
+                    if (mxsp_ctx.rx_frame.type == MXSP_MSG_TYPE_EL_CMD_SEND) {
                         meshx_app_element_msg_header_t hdr;
                         if (mxsp_ctx.rx_frame.len >= sizeof(hdr)) {
                             memcpy(&hdr, mxsp_ctx.rx_frame.payload, sizeof(hdr));
@@ -165,9 +165,7 @@ void meshx_serial_parse_byte(uint8_t data)
                                                     mxsp_ctx.rx_frame.len - sizeof(hdr),
                                                     &mxsp_ctx.rx_frame.payload[sizeof(hdr)]);
                         }
-                    } else if (mxsp_ctx.rx_frame.type == MXSP_MSG_TYPE_CTRL) {
-                        // Handle control commands from Host to Engine
-                        // e.g. Trigger Reset
+                    } else if (mxsp_ctx.rx_frame.type == MXSP_MSG_TYPE_SYS_CMD_SEND) {
                         meshx_ctrl_msg_header_t hdr;
                         if (mxsp_ctx.rx_frame.len >= sizeof(hdr)) {
                             memcpy(&hdr, mxsp_ctx.rx_frame.payload, sizeof(hdr));
