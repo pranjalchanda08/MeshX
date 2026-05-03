@@ -28,6 +28,7 @@
 #include "esp_ble_mesh_config_model_api.h"
 #include "esp_ble_mesh_generic_model_api.h"
 #include "esp_ble_mesh_lighting_model_api.h"
+#include "esp_ble_mesh_sensor_model_api.h"
 #pragma GCC diagnostic pop
 
 /**
@@ -100,5 +101,11 @@
 #define MESHX_GEN_LIGHT_CLI_CB          esp_ble_mesh_light_client_cb_t
 #define MESHX_GEN_LIGHT_CLI_CB_EVT      esp_ble_mesh_light_client_cb_event_t
 #define MESHX_GEN_LIGHT_CLI_CB_PARAM    esp_ble_mesh_light_client_cb_param_t
+
+#define MESHX_SENSOR_SRV_CB             esp_ble_mesh_sensor_server_cb_t
+#define MESHX_SENSOR_SRV_CB_EVT         esp_ble_mesh_sensor_server_cb_event_t
+#define MESHX_SENSOR_SRV_CB_PARAM       esp_ble_mesh_sensor_server_cb_param_t
+#define MESHX_SENSOR_SRV                esp_ble_mesh_sensor_srv_t
+#define MESHX_SENSOR_STATE              esp_ble_mesh_sensor_state_t
 
 #endif /* __MESHX_BLE_MESH__ */
