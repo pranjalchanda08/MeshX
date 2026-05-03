@@ -166,7 +166,7 @@ meshx_err_t meshXCWWWServerElement::element_state_change_notify(meshx_ptr_t para
         return MESHX_INVALID_ARG;
     }
 
-    meshx_err_t err = meshx_nvs_element_ctx_set(el_id, &element_ctx, sizeof(element_ctx));
+    meshx_err_t err = meshx_nvs_element_ctx_set(el_id, get_element_variant(), &element_ctx, sizeof(element_ctx));
     if (err)
         MESHX_LOGW(MODULE_ID_ELEMENT_LIGHT_CWWW_SERVER, "CWWW Srv [%d]: NVS save failed: %d", el_id, err);
 
@@ -220,7 +220,7 @@ meshx_err_t meshXCWWWServerElement::s_config_srv_cb(
 
     if (save)
     {
-        meshx_nvs_element_ctx_set(element_id, &el->element_ctx,
+        meshx_nvs_element_ctx_set(element_id, MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER, &el->element_ctx,
                                    sizeof(meshx_cwww_srv_el_ctx_t));
     }
     return MESHX_SUCCESS;
@@ -451,7 +451,7 @@ meshx_err_t meshXCWWWClientElement::s_config_srv_cb(
 
     if (save)
     {
-        meshx_nvs_element_ctx_set(element_id, &el->element_ctx,
+        meshx_nvs_element_ctx_set(element_id, MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT, &el->element_ctx,
                                    sizeof(meshx_cwww_cli_el_ctx_t));
     }
     return MESHX_SUCCESS;
