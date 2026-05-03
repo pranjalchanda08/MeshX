@@ -21,6 +21,8 @@
 #endif /* CONFIG_TXCM_ENABLE */
 #include <interface/meshx_platform.h>
 
+#include <meshx_builder_api.h>
+
 #if CONFIG_ENABLE_UNIT_TEST
 #include <unit_test.h>
 #endif /* CONFIG_ENABLE_UNIT_TEST */
@@ -61,6 +63,7 @@ typedef struct meshx_config
 {
     uint16_t cid;                       /**< Company ID */
     uint16_t pid;                       /**< Product ID */
+    uint16_t vid;                       /**< Version ID */
     char *product_name;                 /**< Product name */
     uint32_t meshx_nvs_save_period;     /**< NVS save period */
     uint16_t element_comp_arr_len;      /**< Length of the element composition array */

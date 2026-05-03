@@ -289,6 +289,12 @@ public:
     bool is_initialized(void) const override;
     meshx_err_t restore_nvs_context(void) override;
 
+    void on_baked(uint16_t index) override {
+        this->set_element_idx(index);
+        for (auto& m : sig_models) m->on_baked();
+        for (auto& m : ven_models) m->on_baked();
+    }
+
     ~meshXElement() override;
 };
 
