@@ -152,6 +152,12 @@ public:
      * @return Pointer to the parent element state
      */
     meshx_ptr_t get_parent_element_state(void) const { return p_parent_element_state; }
+
+    /**
+     * @brief Get the model identifier
+     * @return Model ID value
+     */
+    virtual uint16_t get_model_id(void) const = 0;
 };
 
 /**
@@ -262,7 +268,7 @@ public:
      * @brief Get the model identifier
      * @return Model ID value
      */
-    uint16_t get_model_id(void) const { return model_id; }
+    uint16_t get_model_id(void) const override { return model_id; }
 
     /**
      * @brief Set the model identifier

@@ -16,6 +16,7 @@
 #include "unit_test.h"
 #include <meshx_common.h>
 #include <meshx_control_task.h>
+#include <interface/ble_mesh/server/meshx_ble_mesh_sensor_srv.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,9 +31,17 @@ extern "C" {
 #define MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_ONN_OFF     0x00
 #define MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_CTL         0x01
 
-/* MeshX Function ID Light CWWW Server */
+/* MeshX Function ID Light HSL Server */
+#define MESHX_ELEMENT_FUNC_ID_LIGHT_HSL_SERVER_ONN_OFF      0x00
+#define MESHX_ELEMENT_FUNC_ID_LIGHT_HSL_SERVER_HSL          0x01
+
+/* MeshX Function ID Light CWWW Client */
 #define MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_CLIENT_ONN_OFF     0x00
 #define MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_CLIENT_CTL         0x01
+
+/* MeshX Function ID Sensor Server */
+#define MESHX_ELEMENT_FUNC_ID_SENSOR_SERVER_DATA            0x00
+
 /**
  * @brief Enumeration of BLE Mesh application API message types.
  */
@@ -72,6 +81,36 @@ typedef struct meshx_api_light_cwww_server_evt
         }ctl;
     }state_change;
 }meshx_api_light_cwww_server_evt_t;
+
+/**
+ * @brief Structure defines the payload for MESHX_ELEMENT_TYPE_LIGHT_HSL_SERVER
+ */
+typedef struct meshx_api_light_hsl_server_evt
+{
+    union
+    {
+        struct
+        {
+            uint8_t state;
+        }on_off;
+        struct
+        {
+            uint16_t lightness;
+            uint16_t hue;
+            uint16_t saturation;
+        }hsl;
+    }state_change;
+}meshx_api_light_hsl_server_evt_t;
+
+/**
+ * @brief Structure defines the payload for MESHX_ELEMENT_TYPE_SENSOR_SERVER
+ */
+typedef struct meshx_api_sensor_server_evt
+{
+    union {
+        meshx_sensor_srv_status_t sensor_status;
+    } state_change;
+}meshx_api_sensor_server_evt_t;
 
 /**
  * @brief Structure defines the payload for MESHX_ELEMENT_TYPE_RELAY_CLIENT
@@ -116,6 +155,8 @@ typedef union meshx_data_payload
     meshx_api_relay_server_evt_t relay_server_evt;
     meshx_api_light_cwww_client_evt_t light_cwww_client_evt;
     meshx_api_light_cwww_server_evt_t light_cwww_server_evt;
+    meshx_api_light_hsl_server_evt_t light_hsl_server_evt;
+    meshx_api_sensor_server_evt_t sensor_server_evt;
 } meshx_data_payload_t;
 
 /**

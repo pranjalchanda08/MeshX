@@ -82,6 +82,14 @@
 
 
 /**
+ * @brief Sensor Server Counts
+ */
+#ifndef CONFIG_SENSOR_SERVER_COUNT
+#define CONFIG_SENSOR_SERVER_COUNT              1
+#endif /* CONFIG_SENSOR_SERVER_COUNT */
+
+
+/**
  * @brief Gen OnOff Server Counts
  */
 #ifndef CONFIG_ENABLE_GEN_ONOFF_CLIENT
@@ -278,6 +286,13 @@
 #endif /* CONFIG_ENABLE_LIGHT_CLIENT */
 
 /**
+ * @brief Sensor Server Enable
+ */
+#ifndef CONFIG_ENABLE_SENSOR_SERVER
+#define CONFIG_ENABLE_SENSOR_SERVER             1
+#endif /* CONFIG_ENABLE_SENSOR_SERVER */
+
+/**
  * @brief Enable Unit Test
  */
 #ifndef CONFIG_ENABLE_UNIT_TEST
@@ -319,6 +334,12 @@
     #error "Enable this to use CWWW Client Element"
     #endif
 #endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */
+
+#if CONFIG_SENSOR_SERVER_COUNT
+    #if !CONFIG_ENABLE_SENSOR_SERVER
+    #error "Enable this to use Sensor Server Element"
+    #endif
+#endif /* CONFIG_SENSOR_SERVER_COUNT */
 
 /**
  * @brief Model Level Config Check
@@ -429,6 +450,7 @@
 
 #define CONFIG_TXCM_ENABLE \
         CONFIG_RELAY_CLIENT_COUNT \
-    ||  CONFIG_LIGHT_CWWW_CLIENT_COUNT
+    ||  CONFIG_LIGHT_CWWW_CLIENT_COUNT \
+    ||  CONFIG_SENSOR_SERVER_COUNT
 
 #endif /* __MESHX_CONFIG_INTERNAL_H__ */
