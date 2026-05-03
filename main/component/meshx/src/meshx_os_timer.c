@@ -11,6 +11,7 @@
  */
 
 #include "meshx_os_timer.h"
+#include "unit_test.h"
 
 #define OS_TIMER_INIT_MAGIC 0x3892
 /**
