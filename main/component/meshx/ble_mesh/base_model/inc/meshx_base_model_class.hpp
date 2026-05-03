@@ -13,6 +13,8 @@
 #define _MESHX_BASE_MODEL_CLASS_H_
 
 #include <meshx_fwd_decl.hpp>
+#include <functional>
+#include <forward_list>
 
 /**************************************************************************************************************************************************************
  * meshXBaseModel

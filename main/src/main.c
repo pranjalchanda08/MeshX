@@ -56,8 +56,7 @@ void CONFIG_APP_MAIN(void)
     err = meshx_init(&meshx_config);
     if (err)
     {
-        MESHX_LOGE(MODULE_ID_COMMON, "MeshX Init failed (err: 0x%x)", err);
-        return;
+        MESHX_LOGE(MODULE_ID_COMMON, "MeshX Init failed: 0x%x", err);
     }
 }
 

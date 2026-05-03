@@ -67,6 +67,10 @@ extern meshx_ptr_t get_root_sig_models(void);
 extern meshx_ptr_t get_root_ven_models(void);
 extern meshx_err_t meshx_create_element_composition(dev_struct_t *p_dev, meshx_config_t const *config);
 
+#include <meshx_builder_api.h>
+
+static MESHX_ELEMENT g_legacy_elements[MAX_ELE_CNT];
+
 /**
  * @brief Initializes BLE Mesh elements.
  *
@@ -81,6 +85,25 @@ static meshx_err_t meshx_element_init(dev_struct_t *p_dev, meshx_config_t const 
         return MESHX_INVALID_STATE;
 
     meshx_err_t err = MESHX_SUCCESS;
+
+    /**
+     * @brief Detect if Dynamic Composition Builder was used
+     * @note If the builder is active, we bake the dynamic composition and skip legacy init
+     */
+    if (meshx_builder_is_active()) {
+        MESHX_LOGI(MODULE_ID_COMMON, "Dynamic Composition detected. Baking...");
+        err = meshx_builder_bake(p_dev, config->cid, config->pid, config->vid);
+        if (err != MESHX_SUCCESS) return err;
+        
+        // Dynamic comp already initialized plat composition and models
+        return MESHX_SUCCESS;
+    }
+
+    /* Legacy Fallback Path */
+    p_dev->elements = g_legacy_elements;
+    p_dev->element_cnt = MAX_ELE_CNT;
+    memset(g_legacy_elements, 0, sizeof(g_legacy_elements));
+
     meshx_ptr_t meshx_sig_root_model_arr = NULL;
     meshx_ptr_t meshx_ven_root_model_arr = NULL;
 
@@ -238,6 +261,25 @@ meshx_err_t meshx_init(meshx_config_t const *config)
 
     /* Copy the configuration to the global config structure */
     memcpy(&g_config, config, sizeof(meshx_config_t));
+
+    /**
+     * @brief OOB Dynamic Composition Automation
+     * If the configuration provides an element composition array, 
+     * we automatically trigger the dynamic builder.
+     */
+    if (config->element_comp_arr && config->element_comp_arr_len > 0)
+    {
+        meshx_builder_begin();
+        for (uint16_t i = 0; i < config->element_comp_arr_len; i++)
+        {
+            if (config->element_comp_arr[i].element_cnt > 0)
+            {
+                meshx_builder_add_element(config->element_comp_arr[i].type, 
+                                          config->element_comp_arr[i].element_cnt);
+            }
+        }
+        meshx_builder_commit();
+    }
 
     meshx_logging_t logging_cfg;
 

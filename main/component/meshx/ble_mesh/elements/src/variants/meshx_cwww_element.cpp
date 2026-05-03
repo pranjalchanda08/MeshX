@@ -88,8 +88,7 @@ void meshXCWWWServerElement::register_class_callbacks()
 }
 
 MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
-meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
-    ::meshXCWWWServerElement(uint16_t element_idx)
+meshXCWWWServerElement::meshXCWWWServerElement(uint16_t element_idx)
     : meshXElementServer(element_idx)
 {
     this->register_element_ctx(&element_ctx, sizeof(meshx_cwww_srv_el_ctx_t));
@@ -98,8 +97,7 @@ meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
 }
 
 MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
-uint8_t meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
-    ::list_sig_models()
+uint8_t meshXCWWWServerElement::list_sig_models()
 {
     auto onoff_model = std::make_unique<meshXGenericOnOffServerModel>(
         this, &element_ctx.gen_on_off_state,
@@ -121,16 +119,14 @@ uint8_t meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
  * @brief Lists Vendor models for CWWW Server Element (none required)
  */
 MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
-uint8_t meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
-    ::list_ven_models()
+uint8_t meshXCWWWServerElement::list_ven_models()
 {
     return 0; /* No vendor models for CWWW server */
 }
 
 /* Task A+B: state notify — discriminate by model_id, update ctx, NVS, app notify */
 MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
-    ::element_state_change_notify(meshx_ptr_t param, size_t param_size)
+meshx_err_t meshXCWWWServerElement::element_state_change_notify(meshx_ptr_t param, size_t param_size)
 {
     if (!param) return MESHX_INVALID_ARG;
 
@@ -181,8 +177,7 @@ meshx_err_t meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
 /* Task C: config server callback */
 #if CONFIG_ENABLE_CONFIG_SERVER
 MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
-    ::s_config_srv_cb(
+meshx_err_t meshXCWWWServerElement::s_config_srv_cb(
         const dev_struct_t              *pdev,
         control_task_msg_evt_t           evt,
         const meshx_config_srv_cb_param_t *params)
@@ -235,8 +230,7 @@ meshx_err_t meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
 /* Task D: provisioning callback — re-publish OnOff + CTL after provisioning */
 #if CONFIG_ENABLE_PROVISIONING
 MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
-    ::s_prov_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+meshx_err_t meshXCWWWServerElement::s_prov_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
 {
     MESHX_UNUSED(params);
     if (!pdev) return MESHX_INVALID_ARG;
@@ -293,8 +287,7 @@ meshx_err_t meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
 
 /* Task E: TO_BLE server — no-op; app-driven sends go via client elements */
 MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXCWWWServerElement MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PARAMS
-    ::s_to_ble_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+meshx_err_t meshXCWWWServerElement::s_to_ble_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
 {
     MESHX_UNUSED(pdev); MESHX_UNUSED(evt); MESHX_UNUSED(params);
     return MESHX_SUCCESS;
@@ -334,8 +327,7 @@ void meshXCWWWClientElement::register_class_callbacks()
 }
 
 MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
-meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
-    ::meshXCWWWClientElement(uint16_t element_idx)
+meshXCWWWClientElement::meshXCWWWClientElement(uint16_t element_idx)
     : meshXElementClient(element_idx)
 {
     this->register_element_ctx(&element_ctx, sizeof(meshx_cwww_cli_el_ctx_t));
@@ -344,8 +336,7 @@ meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
 }
 
 MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
-uint8_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
-    ::list_sig_models()
+uint8_t meshXCWWWClientElement::list_sig_models()
 {
     auto onoff_model = std::make_unique<meshXGenericOnOffClientModel>(
         this, &element_ctx.gen_on_off_state,
@@ -367,16 +358,14 @@ uint8_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
  * @brief Lists Vendor models for CWWW Client Element (none required)
  */
 MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
-uint8_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
-    ::list_ven_models()
+uint8_t meshXCWWWClientElement::list_ven_models()
 {
     return 0; /* No vendor models for CWWW client */
 }
 
 /* Task A+B: state notify — discriminate by model_id, notify app */
 MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
-    ::element_state_change_notify(meshx_ptr_t param, size_t param_size)
+meshx_err_t meshXCWWWClientElement::element_state_change_notify(meshx_ptr_t param, size_t param_size)
 {
     if (!param) return MESHX_INVALID_ARG;
 
@@ -419,8 +408,7 @@ meshx_err_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
 /* Task C: config server callback */
 #if CONFIG_ENABLE_CONFIG_SERVER
 MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
-    ::s_config_srv_cb(
+meshx_err_t meshXCWWWClientElement::s_config_srv_cb(
         const dev_struct_t              *pdev,
         control_task_msg_evt_t           evt,
         const meshx_config_srv_cb_param_t *params)
@@ -473,8 +461,7 @@ meshx_err_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
 /* Task D: provisioning client callback — send GET to refresh server state */
 #if CONFIG_ENABLE_PROVISIONING
 MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
-    ::s_prov_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+meshx_err_t meshXCWWWClientElement::s_prov_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
 {
     MESHX_UNUSED(params);
     if (!pdev) return MESHX_INVALID_ARG;
@@ -531,8 +518,7 @@ meshx_err_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
 
 /* Task E: TO_BLE client handler */
 MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXCWWWClientElement MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
-    ::s_to_ble_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+meshx_err_t meshXCWWWClientElement::s_to_ble_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
 {
     if (!pdev || !params) return MESHX_INVALID_ARG;
 

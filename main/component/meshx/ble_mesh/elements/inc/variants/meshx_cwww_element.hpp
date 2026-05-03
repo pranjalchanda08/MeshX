@@ -25,8 +25,6 @@
 #define MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
 #define MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PARAMS
 
-#if CONFIG_LIGHT_CWWW_SRV_COUNT > 0
-
 /**
  * @brief CWWW server element context structure
  * @details This structure contains the state context for the CWWW server element,
@@ -116,9 +114,6 @@ public:
     meshXCWWWServerElement() = delete;
 };
 
-#endif /* CONFIG_LIGHT_CWWW_SRV_COUNT */
-
-#if CONFIG_LIGHT_CWWW_CLIENT_COUNT > 0
 /*********************************************************************************
  * meshXCWWWClientElement
  *********************************************************************************/
@@ -140,8 +135,6 @@ struct meshx_cwww_cli_el_ctx_t
     // Light CTL state
     meshx_light_ctl_model_state_t   light_ctl_state;    /**< Current Light CTL state */
 };
-
-using meshx_cwww_srv_el_ctx_t = struct meshx_cwww_srv_el_ctx_t;
 
 enum class meshxCWWWClientElementComposition : uint8_t
 {
@@ -206,6 +199,5 @@ public:
     explicit meshXCWWWClientElement(uint16_t element_idx);
     meshXCWWWClientElement() = delete;
 };
-#endif /* CONFIG_LIGHT_CWWW_CLIENT_COUNT */
 
 #endif /* __MESHX_CWWW_ELEMENT_HPP__ */
