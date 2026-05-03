@@ -23,8 +23,6 @@
 #define MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
 #define MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
 
-#if CONFIG_RELAY_SERVER_COUNT > 0
-
 /**
  * @brief Relay server element context structure
  * @details This structure contains the state context for the relay server element,
@@ -108,9 +106,6 @@ public:
     meshXRelayServerElement (void) = delete;
 };
 
-#endif /* CONFIG_RELAY_SERVER_COUNT */
-
-#if CONFIG_RELAY_CLIENT_COUNT > 0
 /*********************************************************************************
  * meshXRelayClientElement
  *********************************************************************************/
@@ -192,6 +187,5 @@ public:
 
     meshXRelayClientElement (void) = delete;
 };
-#endif /* CONFIG_RELAY_CLIENT_COUNT */
 
 #endif /* __MESHX_RELAY_ELEMENT_HPP__ */

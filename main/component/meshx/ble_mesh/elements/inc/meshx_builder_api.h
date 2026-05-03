@@ -1,0 +1,53 @@
+/**
+ * @file meshx_builder_api.h
+ * @brief C-compatible API for the MeshX Composition Builder.
+ * 
+ * This header provides a bridge for C code (like main.c and meshx.c) to 
+ * interact with the C++ fluent builder pattern.
+ * 
+ * @author Pranjal Chanda
+ * @date 2024-2025
+ */
+
+#ifndef __MESHX_BUILDER_API_H__
+#define __MESHX_BUILDER_API_H__
+
+#include <meshx_common.h>
+#include <stdbool.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/**
+ * @brief Checks if a dynamic composition has been built.
+ * @return true if elements have been added via the builder, false otherwise.
+ */
+bool meshx_builder_is_active(void);
+
+/**
+ * @param cid Company ID.
+ * @param pid Product ID.
+ * @param vid Version ID.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_builder_bake(dev_struct_t *pdev, uint16_t cid, uint16_t pid, uint16_t vid);
+
+/**
+ * @brief Adds elements of a specific type to the composition.
+ * @param type The type of element to add.
+ * @param count The number of elements of this type to add.
+ */
+void meshx_builder_add_element(meshx_element_type_t type, uint16_t count);
+
+/**
+ * @brief C-friendly builder lifecycle functions
+ */
+void meshx_builder_begin(void);
+void meshx_builder_commit(void);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __MESHX_BUILDER_API_H__ */

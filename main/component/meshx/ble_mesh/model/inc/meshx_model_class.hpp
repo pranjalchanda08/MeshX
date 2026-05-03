@@ -85,6 +85,11 @@ public:
      * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
      */
     virtual meshx_err_t prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size) = 0;
+    
+    /**
+     * @brief Called when the model's parent element is baked.
+     */
+    virtual void on_baked(void) {}
 
     /***********************************************************
      * Accessor Functions

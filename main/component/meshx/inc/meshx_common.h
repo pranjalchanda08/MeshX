@@ -54,7 +54,8 @@ typedef struct dev_struct
     uint8_t uuid[16];                          /**< Device UUID */
     size_t element_idx;                        /**< Index of the current element */
     void *composition;                         /**< Device composition */
-    MESHX_ELEMENT elements[MAX_ELE_CNT];       /**< Array of elements */
+    MESHX_ELEMENT *elements;                   /**< Pointer to array of elements */
+    size_t element_cnt;                        /**< Total number of elements */
     meshx_app_store_t meshx_store;             /**< Mesh application store */
 } dev_struct_t;
 
