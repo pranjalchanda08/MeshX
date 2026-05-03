@@ -23,6 +23,7 @@
 #include "meshx_base_model_generic.hpp"
 #include "meshx_base_model_light.hpp"
 #include "meshx_base_model_common.hpp"
+#include "meshx_base_model_sensor.hpp"
 
 template <typename modelDerived_t, typename modelSendParams_t, typename modelRestoreParams_t>
 std::forward_list<typename meshXBaseServerModel<modelDerived_t, modelSendParams_t, modelRestoreParams_t>::base_server_model_cb_reg_t>
@@ -473,4 +474,11 @@ template class meshXBaseServerModel<meshXBaseLightServerModel, meshx_light_serve
 #if CONFIG_ENABLE_CONFIG_SERVER
 // meshXBaseServerModel instantiations
 template class meshXBaseServerModel<meshXBaseConfigServerModel, meshx_config_server_send_params_t, meshx_config_server_restore_params_t>;
+#endif
+
+#if CONFIG_ENABLE_SENSOR_SERVER
+// meshXBaseModel instantiations
+template class meshXBaseModel<meshx_sensor_server_send_params_t>;
+// meshXBaseServerModel instantiations
+template class meshXBaseServerModel<meshXBaseSensorServerModel, meshx_sensor_server_send_params_t, meshx_sensor_server_restore_params_t>;
 #endif

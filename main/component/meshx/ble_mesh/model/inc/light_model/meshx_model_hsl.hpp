@@ -112,8 +112,6 @@ public:
 #endif /* CONFIG_ENABLE_LIGHT_HSL_CLIENT */
 
 /********************************************************************************************************************************** */
-#if CONFIG_ENABLE_LIGHT_HSL_SERVER
-
 /**
  * @brief Structure to hold the Light HSL Server to element message.
  */
@@ -124,6 +122,8 @@ struct meshx_light_hsl_srv_el_msg
 };
 
 using meshx_light_hsl_srv_el_msg_t = struct meshx_light_hsl_srv_el_msg;
+
+#if CONFIG_ENABLE_LIGHT_HSL_SERVER
 
 /**
  * @class meshXLightHSLServerModel
@@ -141,10 +141,13 @@ class meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAMS
 private:
     /* New or updated model state from BLE layer */
     meshx_light_hsl_model_state_t model_state;
+    meshx_light_hsl_srv_el_msg_t element_msg;
+    bool element_msg_prepared;
 
     meshx_err_t plat_model_create   (void) override;
     meshx_err_t plat_model_delete   (void) override;
     meshx_err_t element_state_change_handle (void) override;
+    meshx_err_t prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size) override;
 
 public:
     meshx_err_t model_send          (meshx_light_hsl_send_params_t *params) override;

@@ -38,6 +38,8 @@
 #include <light_model/meshx_model_ctl.hpp>
 #include <light_model/meshx_model_hsl.hpp>
 #include <light_model/meshx_model_lightness.hpp>
+#include <sensor_model/meshx_model_sensor.hpp>
+#include <meshx_base_model_sensor.hpp>
 #include <common_model/meshx_model_config.hpp>
 
 /*****************************************************************************************************
@@ -426,6 +428,10 @@ template class meshXClientModel<meshXBaseLightClientModel, meshx_light_lightness
 template class meshXServerModel<meshXBaseConfigServerModel, meshx_config_send_params_t>;
 #endif
 
+#if CONFIG_ENABLE_SENSOR_SERVER
+template class meshXServerModel<meshXBaseSensorServerModel, meshx_sensor_server_send_params_t>;
+#endif
+
 /* meshXModel base class instantiations */
 #if CONFIG_ENABLE_GEN_SERVER
 template class meshXModel<meshXBaseGenericServerModel, meshx_gen_onoff_send_params_t>;
@@ -463,4 +469,8 @@ template class meshXModel<meshXBaseLightClientModel, meshx_light_lightness_send_
 
 #if CONFIG_ENABLE_CONFIG_SERVER
 template class meshXModel<meshXBaseConfigServerModel, meshx_config_send_params_t>;
+#endif
+
+#if CONFIG_ENABLE_SENSOR_SERVER
+template class meshXModel<meshXBaseSensorServerModel, meshx_sensor_server_send_params_t>;
 #endif

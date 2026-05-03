@@ -105,6 +105,7 @@ typedef enum __packed control_task_msg_evt_to_ble
     /* To server events */
     CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV  = MESHX_BIT(16),/**< Event to send out on/off status */
     CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV     = MESHX_BIT(17),/**< Event to send out CTL status */
+    CONTROL_TASK_MSG_EVT_TO_BLE_SENSOR_SRV      = MESHX_BIT(18),/**< Event to send out Sensor status */
     CONTROL_TASK_MSG_EVT_TO_BLE_MAX                     /**< Maximum BLE event value. */
 } control_task_msg_evt_to_ble_t;
 

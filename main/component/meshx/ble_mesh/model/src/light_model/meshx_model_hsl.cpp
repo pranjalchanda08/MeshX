@@ -141,9 +141,7 @@ meshx_err_t meshXLightHSLClientModel MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAM
  * @param[out] msg_size  Size of the message structure (output parameter)
  * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
  */
-MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PROTO
-meshx_err_t meshXLightHSLClientModel MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAMS
-    :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
+meshx_err_t meshXLightHSLClientModel::prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
 {
     if (!msg_ptr || !msg_size)
     {
@@ -195,40 +193,40 @@ meshx_err_t meshXLightHSLClientModel MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAM
     else if (params->ctx->opcode == MESHX_MODEL_OP_LIGHT_HSL_SET ||
              params->ctx->opcode == MESHX_MODEL_OP_LIGHT_HSL_SET_UNACK)
     {
-        set.hsl_set.hsl_lightness = params->lightness;
-        set.hsl_set.hsl_hue = params->hue;
-        set.hsl_set.hsl_saturation = params->saturation;
+        set.hsl_set.hsl_lightness = params->state.lightness;
+        set.hsl_set.hsl_hue = params->state.hue;
+        set.hsl_set.hsl_saturation = params->state.saturation;
         set.hsl_set.tid = params->tid;
         set.hsl_set.op_en = false;
     }
     else if (params->ctx->opcode == MESHX_MODEL_OP_LIGHT_HSL_HUE_SET ||
              params->ctx->opcode == MESHX_MODEL_OP_LIGHT_HSL_HUE_SET_UNACK)
     {
-        set.hsl_hue_set.hue = params->hue;
+        set.hsl_hue_set.hue = params->state.hue;
         set.hsl_hue_set.tid = params->tid;
         set.hsl_hue_set.op_en = false;
     }
     else if (params->ctx->opcode == MESHX_MODEL_OP_LIGHT_HSL_SATURATION_SET ||
              params->ctx->opcode == MESHX_MODEL_OP_LIGHT_HSL_SATURATION_SET_UNACK)
     {
-        set.hsl_saturation_set.saturation = params->saturation;
+        set.hsl_saturation_set.saturation = params->state.saturation;
         set.hsl_saturation_set.tid = params->tid;
         set.hsl_saturation_set.op_en = false;
     }
     else if (params->ctx->opcode == MESHX_MODEL_OP_LIGHT_HSL_DEFAULT_SET ||
              params->ctx->opcode == MESHX_MODEL_OP_LIGHT_HSL_DEFAULT_SET_UNACK)
     {
-        set.hsl_default_set.lightness = params->lightness;
-        set.hsl_default_set.hue = params->hue;
-        set.hsl_default_set.saturation = params->saturation;
+        set.hsl_default_set.lightness = params->state.lightness;
+        set.hsl_default_set.hue = params->state.hue;
+        set.hsl_default_set.saturation = params->state.saturation;
     }
     else if (params->ctx->opcode == MESHX_MODEL_OP_LIGHT_HSL_RANGE_SET ||
              params->ctx->opcode == MESHX_MODEL_OP_LIGHT_HSL_RANGE_SET_UNACK)
     {
-        set.hsl_range_set.hue_range_min = params->hue_range_min;
-        set.hsl_range_set.hue_range_max = params->hue_range_max;
-        set.hsl_range_set.saturation_range_min = params->sat_range_min;
-        set.hsl_range_set.saturation_range_max = params->sat_range_max;
+        set.hsl_range_set.hue_range_min = params->state.hue_range_min;
+        set.hsl_range_set.hue_range_max = params->state.hue_range_max;
+        set.hsl_range_set.saturation_range_min = params->state.sat_range_min;
+        set.hsl_range_set.saturation_range_max = params->state.sat_range_max;
     }
     else
     {
@@ -250,7 +248,8 @@ meshXLightHSLClientModel MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAMS
         meshXElementIF *parent_element,
         meshx_ptr_t     parent_element_state,
         uint16_t        model_func_id)
-    : meshXClientModel(nullptr, MESHX_MODEL_ID_LIGHT_HSL_CLI, parent_element, parent_element_state, model_func_id)
+    : meshXClientModel(nullptr, MESHX_MODEL_ID_LIGHT_HSL_CLI, parent_element, parent_element_state, model_func_id),
+      element_msg_prepared(false)
 {
     /* Used only for initialization of Parent Class */
 }
@@ -346,9 +345,9 @@ meshx_err_t meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAM
     params->ctx->opcode = MESHX_MODEL_OP_LIGHT_HSL_STATUS;
     meshx_lighting_server_state_change_t state_change = {
         .hsl_set = {
-            .lightness = params->lightness,
-            .hue = params->hue,
-            .saturation = params->saturation
+            .lightness = params->state.lightness,
+            .hue = params->state.hue,
+            .saturation = params->state.saturation
         }
     };
     meshx_light_server_send_params_t send_params = {
@@ -399,12 +398,13 @@ meshx_err_t meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAM
     MESHX_LOGD(MODULE_ID_MODEL_SERVER, "op|src|dst:%04" PRIx32 "|%04x|%04x",
                param->ctx.opcode, param->ctx.src_addr, param->ctx.dst_addr);
 
-    meshx_light_hsl_srv_el_msg_t srv_hsl_param = {
-        .model = param->model,
-        .lightness = param->state_change.hsl_set.lightness,
-        .hue = param->state_change.hsl_set.hue,
-        .saturation = param->state_change.hsl_set.saturation
-    };
+    model_state.lightness = param->state_change.hsl_set.lightness;
+    model_state.hue = param->state_change.hsl_set.hue;
+    model_state.saturation = param->state_change.hsl_set.saturation;
+
+    // Initialize flag - message not prepared yet
+    element_msg_prepared = false;
+
     bool send_reply = (param->ctx.opcode != MESHX_MODEL_OP_LIGHT_HSL_SET_UNACK &&
                        param->ctx.opcode != MESHX_MODEL_OP_LIGHT_HSL_HUE_SET_UNACK &&
                        param->ctx.opcode != MESHX_MODEL_OP_LIGHT_HSL_SATURATION_SET_UNACK);
@@ -430,14 +430,11 @@ meshx_err_t meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAM
             || (MESHX_ADDR_IS_GROUP(param->ctx.dst_addr)
             && (MESHX_SUCCESS == meshx_is_group_subscribed(&param->model, param->ctx.dst_addr))))
             {
-                if (this->get_parent_element())
-                {
-                    return this->get_parent_element()->on_model_cb(&srv_hsl_param);
-                }
-                else
-                {
-                    MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Parent element is null");
-                }
+                // Prepare the message (store in member variable)
+                element_msg.header.model = param->model;
+                element_msg.header.element_state_change = MESHX_SUCCESS; // Will be set by base layer
+                element_msg.state = model_state;
+                element_msg_prepared = true;
             }
             break;
         }
@@ -462,18 +459,32 @@ meshx_err_t meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAM
         meshx_light_hsl_send_params_t send_params = {
             .model = &param->model,
             .ctx = &param->ctx,
-            .lightness = param->state_change.hsl_set.lightness,
-            .hue = param->state_change.hsl_set.hue,
-            .saturation = param->state_change.hsl_set.saturation,
-            .hue_range_min = 0,
-            .hue_range_max = 0,
-            .sat_range_min = 0,
-            .sat_range_max = 0,
-            .tid = 0
+            .tid = 0,
+            .state = {
+                .lightness = param->state_change.hsl_set.lightness,
+                .hue = param->state_change.hsl_set.hue,
+                .saturation = param->state_change.hsl_set.saturation,
+                .target_lightness = 0,
+                .target_hue = 0,
+                .target_saturation = 0,
+                .hue_range_min = 0,
+                .hue_range_max = 0,
+                .sat_range_min = 0,
+                .sat_range_max = 0
+            }
         };
 
         return this->model_send(&send_params);
     }
+
+    // If we reach here, message was not prepared for element notification
+    // Return error so base layer doesn't send uninitialized message
+    if (!element_msg_prepared)
+    {
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "No element notification needed for opcode: %04x", param->ctx.opcode);
+        return MESHX_NOT_SUPPORTED;
+    }
+
     return MESHX_SUCCESS;
 }
 
@@ -489,6 +500,26 @@ meshx_err_t meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAM
  *     - MESHX_INVALID_ARG: Invalid parameter
  *     - MESHX_INVALID_STATE: No state change detected
  */
+MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAMS
+    :: prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size)
+{
+    if (!msg_ptr || !msg_size)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    if (!element_msg_prepared)
+    {
+        return MESHX_NOT_SUPPORTED;
+    }
+
+    *msg_ptr = &element_msg;
+    *msg_size = sizeof(element_msg);
+
+    return MESHX_SUCCESS;
+}
+
 MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAMS
     :: element_state_change_handle(void)
@@ -528,9 +559,10 @@ meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAMS
         meshx_ptr_t     parent_element_state,
         uint16_t        model_func_id
     )
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_LIGHT_HSL_SRV, parent_element, parent_element_state, model_func_id)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_LIGHT_HSL_SRV, parent_element, parent_element_state, model_func_id),
+      element_msg_prepared(false)
 {
-    /* Used only for initialization of Parent Class */
+    this->plat_model_create();
 }
 
 #endif /* CONFIG_ENABLE_LIGHT_HSL_SERVER */

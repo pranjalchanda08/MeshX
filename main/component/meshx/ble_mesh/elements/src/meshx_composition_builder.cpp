@@ -10,6 +10,8 @@
 #include <meshx_composition.hpp>
 #include <variants/meshx_relay_element.hpp>
 #include <variants/meshx_cwww_element.hpp>
+#include <variants/meshx_sensor_element.hpp>
+#include <variants/meshx_rgb_element.hpp>
 
 // Removed std::map for embedded footprint and performance
 
@@ -57,6 +59,24 @@ meshXCompositionBuilder& meshXCompositionBuilder::add_cwww_client() {
     return *this;
 }
 
+meshXCompositionBuilder& meshXCompositionBuilder::add_sensor_server() {
+#if CONFIG_SENSOR_SERVER_COUNT > 0
+    auto& comp = meshXComposition::get_instance();
+    uint16_t next_idx = (uint16_t)(comp.get_elements().size() + 1);
+    comp.get_elements().push_back(std::make_unique<meshXSensorElement>(next_idx));
+#endif
+    return *this;
+}
+
+meshXCompositionBuilder& meshXCompositionBuilder::add_rgb_server() {
+#if CONFIG_RGB_SERVER_COUNT > 0
+    auto& comp = meshXComposition::get_instance();
+    uint16_t next_idx = (uint16_t)(comp.get_elements().size() + 1);
+    comp.get_elements().push_back(std::make_unique<meshXRGBServerElement>(next_idx));
+#endif
+    return *this;
+}
+
 meshXCompositionBuilder& meshXCompositionBuilder::commit() {
     /* Currently just a marker, bake() happens during meshx_init */
     return *this;
@@ -99,6 +119,16 @@ void meshx_builder_add_element(meshx_element_type_t type, uint16_t count) {
 #if CONFIG_LIGHT_CWWW_CLIENT_COUNT > 0
         case MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT:
             for(uint16_t i=0; i<count; ++i) builder.add_cwww_client();
+            break;
+#endif
+#if CONFIG_SENSOR_SERVER_COUNT > 0
+        case MESHX_ELEMENT_TYPE_SENSOR_SERVER:
+            for(uint16_t i=0; i<count; ++i) builder.add_sensor_server();
+            break;
+#endif
+#if CONFIG_RGB_SERVER_COUNT > 0
+        case MESHX_ELEMENT_TYPE_LIGHT_HSL_SERVER:
+            for(uint16_t i=0; i<count; ++i) builder.add_rgb_server();
             break;
 #endif
         default:
