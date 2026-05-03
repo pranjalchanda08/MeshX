@@ -1,9 +1,20 @@
+/**
+ * @file meshx_composition_builder.hpp
+ * @brief Header file for the BLE Mesh composition builder.
+ *
+ * This file contains the meshXCompositionBuilder class definition which provides
+ * a fluent API for building the mesh composition.
+ *
+ * @author Pranjal Chanda
+ * @date 2024-2025
+ * @copyright Copyright 2024 - 2025 MeshX
+ */
+
 #ifndef __MESHX_COMPOSITION_BUILDER_HPP__
 #define __MESHX_COMPOSITION_BUILDER_HPP__
 
 #include <meshx_fwd_decl.hpp>
 #include <meshx_composition.hpp>
-#include <memory>
 
 /**
  * @class meshXCompositionBuilder

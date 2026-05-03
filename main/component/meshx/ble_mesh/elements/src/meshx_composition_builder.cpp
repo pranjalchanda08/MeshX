@@ -11,36 +11,7 @@
 #include <variants/meshx_relay_element.hpp>
 #include <variants/meshx_cwww_element.hpp>
 
-#include <map>
-#include <functional>
-#include <memory>
-
-/**
- * @brief Internal dispatch table for element addition
- */
-using ElementAddFn = std::function<void(uint16_t count)>;
-
-static const std::map<meshx_element_type_t, ElementAddFn> element_dispatch_table = {
-#if CONFIG_RELAY_SERVER_COUNT > 0
-    {MESHX_ELEMENT_TYPE_RELAY_SERVER, [](uint16_t count) {
-        meshXCompositionBuilder builder;
-        for(uint16_t i=0; i<count; ++i) builder.add_relay_server();
-    }},
-#endif
-#if CONFIG_RELAY_CLIENT_COUNT > 0
-    {MESHX_ELEMENT_TYPE_RELAY_CLIENT, [](uint16_t count) {
-        meshXCompositionBuilder builder;
-        for(uint16_t i=0; i<count; ++i) builder.add_relay_client();
-    }},
-#endif
-#if CONFIG_LIGHT_CWWW_SRV_COUNT > 0
-    {MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER, [](uint16_t count) {
-        meshXCompositionBuilder builder;
-        for(uint16_t i=0; i<count; ++i) builder.add_cwww_server();
-    }},
-#endif
-    /* Add other types as they are implemented */
-};
+// Removed std::map for embedded footprint and performance
 
 /**
  * @brief Fluent API Implementation
@@ -77,6 +48,15 @@ meshXCompositionBuilder& meshXCompositionBuilder::add_cwww_server() {
     return *this;
 }
 
+meshXCompositionBuilder& meshXCompositionBuilder::add_cwww_client() {
+#if CONFIG_LIGHT_CWWW_CLIENT_COUNT > 0
+    auto& comp = meshXComposition::get_instance();
+    uint16_t next_idx = (uint16_t)(comp.get_elements().size() + 1);
+    comp.get_elements().push_back(std::make_unique<meshXCWWWClientElement>(next_idx));
+#endif
+    return *this;
+}
+
 meshXCompositionBuilder& meshXCompositionBuilder::commit() {
     /* Currently just a marker, bake() happens during meshx_init */
     return *this;
@@ -99,11 +79,31 @@ meshx_err_t meshx_builder_bake(dev_struct_t *pdev, uint16_t cid, uint16_t pid, u
 }
 
 void meshx_builder_add_element(meshx_element_type_t type, uint16_t count) {
-    auto it = element_dispatch_table.find(type);
-    if (it != element_dispatch_table.end()) {
-        it->second(count);
-    } else {
-        MESHX_LOGW(MODULE_ID_COMMON, "Builder: No dispatch function for element type %d", type);
+    meshXCompositionBuilder builder;
+    switch(type) {
+#if CONFIG_RELAY_SERVER_COUNT > 0
+        case MESHX_ELEMENT_TYPE_RELAY_SERVER:
+            for(uint16_t i=0; i<count; ++i) builder.add_relay_server();
+            break;
+#endif
+#if CONFIG_RELAY_CLIENT_COUNT > 0
+        case MESHX_ELEMENT_TYPE_RELAY_CLIENT:
+            for(uint16_t i=0; i<count; ++i) builder.add_relay_client();
+            break;
+#endif
+#if CONFIG_LIGHT_CWWW_SRV_COUNT > 0
+        case MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER:
+            for(uint16_t i=0; i<count; ++i) builder.add_cwww_server();
+            break;
+#endif
+#if CONFIG_LIGHT_CWWW_CLIENT_COUNT > 0
+        case MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT:
+            for(uint16_t i=0; i<count; ++i) builder.add_cwww_client();
+            break;
+#endif
+        default:
+            MESHX_LOGW(MODULE_ID_COMMON, "Builder: No implementation for element type %d", type);
+            break;
     }
 }
 

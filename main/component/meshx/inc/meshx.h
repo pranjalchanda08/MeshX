@@ -16,6 +16,7 @@
 #include <meshx_err.h>
 #include <meshx_os_timer.h>
 #include <meshx_elements.h>
+#include "meshx_serial.h"
 #if CONFIG_TXCM_ENABLE
 #include <meshx_txcm.h>
 #endif /* CONFIG_TXCM_ENABLE */
