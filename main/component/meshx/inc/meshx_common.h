@@ -20,7 +20,36 @@
 #include <meshx_config_internal.h>
 #include <interface/logging/meshx_log.h>
 #include "interface/meshx_platform.h"
-#include "unit_test.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/**
+ * @brief Enumeration of BLE Mesh application API message types.
+ */
+typedef enum meshx_element_type
+{
+    MESHX_ELEMENT_TYPE_RELAY_SERVER,
+    MESHX_ELEMENT_TYPE_RELAY_CLIENT,
+    MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER,
+    MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT,
+    MESHX_ELEMENT_TYPE_MAX,
+    MESHX_ELEMENT_TYPE_ALL = 0xFF
+}meshx_element_type_t;
+
+/**
+ * @brief Enumeration for the BLE Mesh application control event.
+ */
+typedef enum {
+    MESHX_CTRL_EVT_NODE_RESET = 0x01,    /* Node Reset */
+    MESHX_CTRL_EVT_PROV_COMP,           /* Provisioning Completed */
+    MESHX_CTRL_EVT_PROV_FAILED,         /* Provisioning Failed */
+    MESHX_CTRL_EVT_PROV_START,          /* Provisioning Started */
+    MESHX_CTRL_EVT_IDENTIFY_START,      /* Identification Started */
+    MESHX_CTRL_EVT_IDENTIFY_STOP,       /* Identification Stopped */
+} meshx_ctrl_evt_t;
+
 
 /*********************************************************************
  *      FEATURE CONFIGURATION
@@ -124,3 +153,7 @@ typedef struct element_comp_table
 #define REG_MESHX_ELEMENT_FN(_name, _type, _fn)
 
 #endif /* CONFIG_SECTION_ENABLE_ELEMENT_TABLE */
+
+#ifdef __cplusplus
+}
+#endif

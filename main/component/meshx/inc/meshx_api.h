@@ -13,8 +13,8 @@
 #ifndef __MESHX_API_H__
 #define __MESHX_API_H__
 
+#include "unit_test.h"
 #include <meshx_common.h>
-#include <meshx_elements.h>
 #include <meshx_control_task.h>
 
 #ifdef __cplusplus
@@ -42,17 +42,6 @@ typedef enum meshx_api_type
     MESHX_API_TYPE_CTRL = CONTROL_TASK_MSG_EVT_CTRL,        /**< Control message : All msg related to System control */
 } meshx_api_type_t;
 
-/**
- * @brief Enumeration of BLE Mesh application API message types.
- */
-typedef enum meshx_element_type
-{
-    MESHX_ELEMENT_TYPE_RELAY_SERVER,
-    MESHX_ELEMENT_TYPE_RELAY_CLIENT,
-    MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER,
-    MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT,
-    MESHX_ELEMENT_TYPE_MAX
-}meshx_element_type_t;
 
 /**
  * @brief Structure defines the payload for MESHX_ELEMENT_TYPE_RELAY_SERVER
@@ -134,14 +123,20 @@ typedef union meshx_data_payload
  */
 typedef union meshx_ctrl_payload
 {
+    struct {
+        uint16_t net_idx;
+        uint16_t addr;
+        uint8_t device_uuid[16];
+    } prov_comp;
+    struct {
+        uint8_t reason;
+    } prov_failed;
     uint32_t reserved;
 } meshx_ctrl_payload_t;
 
+
 /**
  * @brief Structure for the BLE Mesh application element message header.
- *
- * This structure defines the header for BLE Mesh application element messages.
- *
  */
 typedef struct meshx_app_element_msg_header
 {
@@ -159,7 +154,7 @@ typedef struct meshx_app_element_msg_header
  */
 typedef struct meshx_ctrl_msg_header
 {
-    uint16_t evt;                   /* Event */
+    uint16_t evt_id;                /* Event */
     uint16_t reserved;              /* Reserved */
 }meshx_ctrl_msg_header_t;
 
@@ -218,6 +213,19 @@ typedef meshx_err_t (*meshx_app_ctrl_cb_t)(const meshx_ctrl_msg_header_t *msg_hd
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
 meshx_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg);
+
+/**
+ * @brief Sends a control message to the BLE Mesh application.
+ *
+ * This function sends a control message to the BLE Mesh application.
+ *
+ * @param[in] evt       The event ID.
+ * @param[in] msg_len   The message length.
+ * @param[in] msg       Pointer to the message.
+ *
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_send_ctrl_msg_to_app(meshx_ctrl_evt_t evt, uint16_t msg_len, const void *msg);
 
 /**
  * @brief Sends a message to the element

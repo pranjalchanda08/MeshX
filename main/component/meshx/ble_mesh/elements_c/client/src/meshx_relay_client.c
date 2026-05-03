@@ -15,6 +15,7 @@
 #include "meshx_control_task.h"
 #include "meshx_nvs.h"
 #include "meshx_api.h"
+#include "meshx_prov_srv.h"
 
 #if CONFIG_RELAY_CLIENT_COUNT > 0
 #include "meshx_relay_client_element.h"
@@ -202,6 +203,7 @@ static meshx_err_t meshx_add_relay_cli_model_to_element_list(
         }
         err = meshx_nvs_element_ctx_get(
             i,
+            MESHX_ELEMENT_TYPE_RELAY_CLIENT,
             RELAY_CLI_EL(i - *start_idx).cli_ctx,
             sizeof(meshx_relay_client_model_ctx_t));
         if (err != MESHX_SUCCESS)
@@ -271,7 +273,7 @@ static meshx_err_t relay_client_config_cli_cb(
     }
     if (nvs_save)
     {
-        meshx_err_t err = meshx_nvs_element_ctx_set(element_id, el_ctx, sizeof(meshx_relay_client_model_ctx_t));
+        meshx_err_t err = meshx_nvs_element_ctx_set(element_id, MESHX_ELEMENT_TYPE_RELAY_CLIENT, el_ctx, sizeof(meshx_relay_client_model_ctx_t));
         if (err != MESHX_SUCCESS)
         {
             MESHX_LOGE(MOD_SRC, "Failed to set relay element context: (%d)", err);
@@ -435,7 +437,7 @@ static meshx_err_t meshx_relay_client_element_state_change_handler(
     }
     if (nvs_save)
     {
-        err = meshx_nvs_element_ctx_set(element_id, el_ctx, sizeof(meshx_relay_client_model_ctx_t));
+        err = meshx_nvs_element_ctx_set(element_id, MESHX_ELEMENT_TYPE_RELAY_CLIENT, el_ctx, sizeof(meshx_relay_client_model_ctx_t));
         if (err != MESHX_SUCCESS)
         {
             MESHX_LOGE(MOD_SRC, "Failed to set Relay element context: (%d)", err);

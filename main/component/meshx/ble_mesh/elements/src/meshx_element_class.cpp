@@ -303,20 +303,6 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
         return MESHX_INVALID_ARG;
     }
 
-
-    if(meshx_cptr_t meshx_ctx = this->get_element_ctx(); !meshx_ctx)
-    {
-        MESHX_LOGE(MODULE_ID_COMMON, "Mesh context is null in on_model_cb");
-        return MESHX_INVALID_STATE;
-    }
-
-
-    if(size_t meshx_ctx_size  = this->get_element_ctx_size(); meshx_ctx_size == 0)
-    {
-        MESHX_LOGE(MODULE_ID_COMMON, "Mesh context size is zero in on_model_cb");
-        return MESHX_INVALID_STATE;
-    }
-
     if(msg_header->element_state_change == MESHX_SUCCESS)
     {
         /* Notify the element of the state change to derived class (if defined) */
@@ -326,14 +312,19 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
             MESHX_LOGE(MODULE_ID_COMMON, "Element state change notify failed in on_model_cb");
             return err;
         }
-        // Update the NVS and notify application as needed
-    }
-    else
-    {
-        MESHX_DO_NOTHING;
+
+        /* Save updated context to NVS if it exists */
+        if (element_ctx && element_ctx_size > 0)
+        {
+            err = meshx_nvs_element_ctx_set(get_element_idx(), get_element_variant(), element_ctx, element_ctx_size);
+            if(err)
+            {
+                MESHX_LOGE(MODULE_ID_BLE_MESH_ELEMENT, "meshx_nvs_element_ctx_set failed: %d", err);
+            }
+        }
     }
 
-    return MESHX_SUCCESS;
+    return err;
 }
 
 /*****************************************************************************************************
@@ -372,10 +363,11 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
 {
     if (element_ctx && element_ctx_size > 0)
     {
-        return meshx_nvs_element_ctx_get(get_element_idx(), element_ctx, element_ctx_size);
+        return meshx_nvs_element_ctx_get(get_element_idx(), get_element_variant(), element_ctx, element_ctx_size);
     }
     return MESHX_SUCCESS;
 }
+
 
 MESHX_ELEMENT_TEMPLATE_PROTO
 meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS

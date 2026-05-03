@@ -25,6 +25,7 @@
 #include "meshx_control_task.h"
 #include "meshx_nvs.h"
 #include "meshx_api.h"
+#include "meshx_prov_srv.h"
 
 #if CONFIG_LIGHT_CWWW_CLIENT_COUNT > 0
 #include "meshx_light_cwww_client_element.h"
@@ -203,7 +204,7 @@ static meshx_err_t meshx_cwww_client_element_state_change_handler(
     }
     if(err == MESHX_SUCCESS)
     {
-        err = meshx_nvs_element_ctx_set(element_id, CWWW_CLI_EL(GET_RELATIVE_EL_IDX(element_id)).cwww_cli_ctx, sizeof(meshx_cwww_client_model_ctx_t));
+        err = meshx_nvs_element_ctx_set(element_id, MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT, CWWW_CLI_EL(GET_RELATIVE_EL_IDX(element_id)).cwww_cli_ctx, sizeof(meshx_cwww_client_model_ctx_t));
         if (err != MESHX_SUCCESS)
         {
             MESHX_LOGE(MOD_LCC, "Failed to set cwww client element context: (%d)", err);
@@ -265,7 +266,7 @@ static meshx_err_t cwww_client_config_srv_cb (
     }
     if (nvs_save)
     {
-        meshx_err_t err = meshx_nvs_element_ctx_set(element_id, el_ctx, sizeof(meshx_cwww_client_model_ctx_t));
+        meshx_err_t err = meshx_nvs_element_ctx_set(element_id, MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT, el_ctx, sizeof(meshx_cwww_client_model_ctx_t));
         if (err != MESHX_SUCCESS)
         {
             MESHX_LOGE(MOD_LCC, "Failed to set cwww client element context: (%d)", err);
@@ -882,6 +883,7 @@ static meshx_err_t meshx_add_cwww_cli_model_to_element_list(dev_struct_t *pdev, 
             return err;
         }
         err = meshx_nvs_element_ctx_get(i,
+                                        MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT,
                                         CWWW_CLI_EL(i - *start_idx).cwww_cli_ctx,
                                         sizeof(meshx_cwww_client_model_ctx_t));
         if (err != MESHX_SUCCESS)

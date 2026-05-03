@@ -70,12 +70,44 @@ static meshx_err_t meshx_prepare_data_message(uint16_t element_id, uint16_t elem
 
     MESSAGE_BUFF_CLEAR(meshx_api_ctrl.msg_buff);
 
-    meshx_api_ctrl.msg_buff.msg_type_u.element_msg.func_id = func_id;
-    meshx_api_ctrl.msg_buff.msg_type_u.element_msg.msg_len = msg_len;
-    meshx_api_ctrl.msg_buff.msg_type_u.element_msg.element_id = element_id;
+    meshx_api_ctrl.msg_buff.msg_type_u.element_msg.func_id      = func_id;
+    meshx_api_ctrl.msg_buff.msg_type_u.element_msg.msg_len      = msg_len;
+    meshx_api_ctrl.msg_buff.msg_type_u.element_msg.element_id   = element_id;
     meshx_api_ctrl.msg_buff.msg_type_u.element_msg.element_type = element_type;
 
-    memcpy(meshx_api_ctrl.msg_buff.data, msg, msg_len);
+    if (msg && msg_len > 0)
+    {
+        memcpy(meshx_api_ctrl.msg_buff.data, msg, msg_len);
+    }
+
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Prepares a control message to be sent to the BLE Mesh application.
+ *
+ * This function prepares a control message to be sent to the BLE Mesh application.
+ *
+ * @param[in] evt       The event ID.
+ * @param[in] msg_len   The message length.
+ * @param[in] msg       Pointer to the message.
+ *
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+static meshx_err_t meshx_prepare_ctrl_message(meshx_ctrl_evt_t evt, uint16_t msg_len, const void *msg)
+{
+    if (msg_len > MESHX_APP_API_MSG_MAX_SIZE)
+        return MESHX_INVALID_ARG;
+
+    MESSAGE_BUFF_CLEAR(meshx_api_ctrl.msg_buff);
+
+    meshx_api_ctrl.msg_buff.msg_type_u.ctrl_msg.evt_id = evt;
+    meshx_api_ctrl.msg_buff.msg_type_u.ctrl_msg.reserved = 0;
+
+    if (msg && msg_len > 0)
+    {
+        memcpy(meshx_api_ctrl.msg_buff.data, msg, msg_len);
+    }
 
     return MESHX_SUCCESS;
 }
@@ -104,6 +136,32 @@ meshx_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, ui
     err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_APP, CONTROL_TASK_MSG_EVT_DATA, &meshx_api_ctrl.msg_buff, sizeof(meshx_app_api_msg_t));
     if(err)
         MESHX_LOGE(MODULE_ID_COMMON, "Failed to send message to app: (0x%x)", err);
+
+    return err;
+}
+
+/**
+ * @brief Sends a control message to the BLE Mesh application.
+ *
+ * This function sends a control message to the BLE Mesh application.
+ *
+ * @param[in] evt       The event ID.
+ * @param[in] msg_len   The message length.
+ * @param[in] msg       Pointer to the message.
+ *
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_send_ctrl_msg_to_app(meshx_ctrl_evt_t evt, uint16_t msg_len, const void *msg)
+{
+    meshx_err_t err = MESHX_SUCCESS;
+
+    err = meshx_prepare_ctrl_message(evt, msg_len, msg);
+    if(err)
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to create ctrl message: (0x%x)", err);
+
+    err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_APP, CONTROL_TASK_MSG_EVT_CTRL, &meshx_api_ctrl.msg_buff, sizeof(meshx_app_api_msg_t));
+    if(err)
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to send ctrl message to app: (0x%x)", err);
 
     return err;
 }

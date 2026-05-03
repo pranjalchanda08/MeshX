@@ -94,7 +94,7 @@ static meshx_err_t meshx_element_init(dev_struct_t *p_dev, meshx_config_t const 
         MESHX_LOGI(MODULE_ID_COMMON, "Dynamic Composition detected. Baking...");
         err = meshx_builder_bake(p_dev, config->cid, config->pid, config->vid);
         if (err != MESHX_SUCCESS) return err;
-        
+
         // Dynamic comp already initialized plat composition and models
         return MESHX_SUCCESS;
     }
@@ -264,7 +264,7 @@ meshx_err_t meshx_init(meshx_config_t const *config)
 
     /**
      * @brief OOB Dynamic Composition Automation
-     * If the configuration provides an element composition array, 
+     * If the configuration provides an element composition array,
      * we automatically trigger the dynamic builder.
      */
     if (config->element_comp_arr && config->element_comp_arr_len > 0)
@@ -274,7 +274,7 @@ meshx_err_t meshx_init(meshx_config_t const *config)
         {
             if (config->element_comp_arr[i].element_cnt > 0)
             {
-                meshx_builder_add_element(config->element_comp_arr[i].type, 
+                meshx_builder_add_element(config->element_comp_arr[i].type,
                                           config->element_comp_arr[i].element_cnt);
             }
         }
@@ -316,6 +316,10 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     /* Initialize the Bluetooth Mesh Subsystem */
     err = meshx_ble_mesh_init(&g_config);
     MESHX_ERR_PRINT_RET("Bluetooth mesh init failed", err);
+
+    /* Initialize Hosted Serial Protocol */
+    err = meshx_serial_init();
+    MESHX_ERR_PRINT_RET("Serial init failed", err);
 
     /* Print the MeshX banner */
     CONFIG_MESHX_LOG_PRINTF(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_CYAN) "%s" LOG_ANSI_COLOR_RESET, meshX_banner);

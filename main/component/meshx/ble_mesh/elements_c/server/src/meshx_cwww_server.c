@@ -13,6 +13,7 @@
 #include <meshx_cwww_server_element.h>
 #include <meshx_nvs.h>
 #include <meshx_api.h>
+#include <meshx_prov_srv.h>
 
 #if CONFIG_LIGHT_CWWW_SRV_COUNT > 0
 
@@ -98,7 +99,7 @@ static meshx_err_t cwww_server_config_srv_cb(
     }
     if (nvs_save)
     {
-        meshx_err_t err = meshx_nvs_element_ctx_set(element_id, el_ctx, sizeof(meshx_cwww_server_ctx_t));
+        meshx_err_t err = meshx_nvs_element_ctx_set(element_id, MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER, el_ctx, sizeof(meshx_cwww_server_ctx_t));
         if (err != MESHX_SUCCESS)
         {
             MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to set cwww server element context: (%d)", err);
@@ -326,6 +327,7 @@ static meshx_err_t meshx_add_cwww_srv_model_to_element_list(dev_struct_t *pdev, 
 
         err = meshx_nvs_element_ctx_get(
             i,
+            MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER,
             CWWW_SRV_EL(i - *start_idx).srv_ctx,
             sizeof(meshx_cwww_server_ctx_t));
         if (err != MESHX_SUCCESS)
@@ -427,7 +429,7 @@ static meshx_err_t meshx_api_control_task_handler(const dev_struct_t *pdev, cons
         break;
     }
 
-    err = meshx_nvs_element_ctx_set(element_id, el_ctx, sizeof(meshx_cwww_server_ctx_t));
+    err = meshx_nvs_element_ctx_set(element_id, MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER, el_ctx, sizeof(meshx_cwww_server_ctx_t));
     if (err != MESHX_SUCCESS)
         MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Failed to set relay element context: (%d)", err);
 

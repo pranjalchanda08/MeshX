@@ -10,7 +10,7 @@
  * @author Pranjal Chanda
  */
 
-#include "string.h"
+#include "meshx_api.h"
 #include "meshx_nvs.h"
 #include "meshx_os_timer.h"
 #include "meshx_control_task.h"
@@ -155,12 +155,16 @@ static void meshx_handle_node_reset(dev_struct_t *pdev)
 
     for(uint16_t i = 1; i < pdev->element_idx; i++)
     {
-        meshx_err_t err = meshx_nvs_element_ctx_remove(i);
+        meshx_err_t err = meshx_nvs_element_ctx_remove(i, MESHX_ELEMENT_TYPE_ALL);
         if(err != MESHX_SUCCESS)
         {
             MESHX_LOGE(MODULE_ID_COMMON, "Failed to erase element context (%d): (%d)", i, err);
         }
     }
+
+    /* Notify application about node reset */
+    meshx_send_ctrl_msg_to_app(MESHX_CTRL_EVT_NODE_RESET, 0, NULL);
+
     /* Reset the MCU */
     meshx_platform_reset();
 }
