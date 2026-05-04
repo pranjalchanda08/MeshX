@@ -397,6 +397,62 @@ meshx_err_t meshx_plat_def_trans_time_gen_srv_create(void* p_model, void** p_pub
 }
 
 /**
+ * @brief Creates a Generic Power OnOff Server model and its publication context.
+ *
+ * This function initializes the Generic Power OnOff Server model, its publication
+ * context, and allocates memory for the server instance. It checks for
+ * invalid arguments and handles memory allocation failures.
+ *
+ * @param[out] p_model Pointer to the model structure to be created.
+ * @param[out] p_pub Pointer to the publication context to be created.
+ * @param[out] p_power_onoff_srv Pointer to the Power OnOff server instance to be allocated.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully created the model and publication context.
+ *     - MESHX_INVALID_ARG: One or more arguments are invalid.
+ *     - MESHX_NO_MEM: Memory allocation failed.
+ */
+meshx_err_t meshx_plat_power_onoff_gen_srv_create(void* p_model, void** p_pub, void** p_power_onoff_srv)
+{
+    if(!p_model || !p_pub || !p_power_onoff_srv)
+        return MESHX_INVALID_ARG;
+
+    /* SIG Power OnOff Server initialisation */
+    uint16_t model_id = ESP_BLE_MESH_MODEL_ID_GEN_POWER_ONOFF_SRV;
+    memcpy((meshx_ptr_t) &(((MESHX_MODEL*)p_model)->model_id), &model_id, sizeof(model_id));
+
+    return meshx_plat_gen_srv_create(p_model, p_pub, p_power_onoff_srv);
+}
+
+/**
+ * @brief Creates a Generic Power OnOff Setup Server model and its publication context.
+ *
+ * This function initializes the Generic Power OnOff Setup Server model, its publication
+ * context, and allocates memory for the server instance. It checks for
+ * invalid arguments and handles memory allocation failures.
+ *
+ * @param[out] p_model Pointer to the model structure to be created.
+ * @param[out] p_pub Pointer to the publication context to be created.
+ * @param[out] p_power_onoff_setup_srv Pointer to the Power OnOff setup server instance to be allocated.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully created the model and publication context.
+ *     - MESHX_INVALID_ARG: One or more arguments are invalid.
+ *     - MESHX_NO_MEM: Memory allocation failed.
+ */
+meshx_err_t meshx_plat_power_onoff_setup_gen_srv_create(void* p_model, void** p_pub, void** p_power_onoff_setup_srv)
+{
+    if(!p_model || !p_pub || !p_power_onoff_setup_srv)
+        return MESHX_INVALID_ARG;
+
+    /* SIG Power OnOff Setup Server initialisation */
+    uint16_t model_id = ESP_BLE_MESH_MODEL_ID_GEN_POWER_ONOFF_SETUP_SRV;
+    memcpy((meshx_ptr_t) &(((MESHX_MODEL*)p_model)->model_id), &model_id, sizeof(model_id));
+
+    return meshx_plat_gen_srv_create(p_model, p_pub, p_power_onoff_setup_srv);
+}
+
+/**
  * @brief Deletes the Generic OnOff Server model and its associated resources.
  *
  * This function frees the memory allocated for the Generic OnOff Server

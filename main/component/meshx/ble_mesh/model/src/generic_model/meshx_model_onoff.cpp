@@ -260,7 +260,6 @@ meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
     )
     : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_ONOFF_SRV, parent_element, parent_element_state, model_func_id)
 {
-    this->plat_model_create();
 }
 
 /**
@@ -278,13 +277,24 @@ meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
  */
 MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
-    :: plat_model_create(void)
+    :: plat_model_create(MESHX_MODEL* p_plat_model_ptr)
 {
+    if (p_plat_model_ptr) {
+        this->set_plat_model(p_plat_model_ptr);
+    }
+
     meshx_ptr_t p_pub = this->get_pub_struct();
     meshx_ptr_t p_gen = this->get_gen_struct();
     meshx_err_t err = MESHX_SUCCESS;
 
-    err = meshx_plat_on_off_gen_srv_create( this->get_plat_model(), &p_pub, &p_gen );
+    MESHX_MODEL* p_use = (MESHX_MODEL*)this->get_plat_model();
+    if (!p_use)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "No platform model pointer available");
+        return MESHX_INVALID_STATE;
+    }
+
+    err = meshx_plat_on_off_gen_srv_create( p_use, &p_pub, &p_gen );
     if(err)
     {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to create Generic OnOff Server Model");

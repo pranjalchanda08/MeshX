@@ -12,6 +12,10 @@
 #ifndef MODULE_ID_H
 #define MODULE_ID_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @enum module_id_t
  * @brief Enumeration of module IDs.
@@ -35,6 +39,10 @@ typedef enum {
     MODULE_ID_BLE_MESH_ELEMENT              = 0x0B,
     MODULE_ID_MAX
 } module_id_t;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // MODULE_ID_H
 

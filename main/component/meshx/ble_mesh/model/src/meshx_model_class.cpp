@@ -238,8 +238,6 @@ meshXClientModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
     : meshXModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS (p_plat_model, model_id, parent_element, model_func_id)
 {
     this->set_parent_element_state(parent_element_state);
-    /* Create logical model instance */
-    this->plat_model_create();
 }
 
 /**
@@ -261,14 +259,25 @@ meshXClientModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
  */
 MESHX_CLIENT_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXClientModel MESHX_CLIENT_MODEL_TEMPLATE_PARAMS
-    ::plat_model_create()
+    ::plat_model_create(MESHX_MODEL* p_plat_model_ptr)
 {
     meshx_err_t err = MESHX_SUCCESS;
 
     meshx_ptr_t p_pub = this->get_pub_struct();
     meshx_ptr_t p_gen = this->get_gen_struct();
 
-    err = meshx_plat_client_create(this->get_plat_model(), &p_pub, &p_gen, this->get_model_id());
+    if (p_plat_model_ptr) {
+        this->set_plat_model(p_plat_model_ptr);
+    }
+
+    MESHX_MODEL* p_use = (MESHX_MODEL*)this->get_plat_model();
+    if (!p_use)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "No platform model pointer available");
+        return MESHX_INVALID_STATE;
+    }
+
+    err = meshx_plat_client_create(p_use, &p_pub, &p_gen, this->get_model_id());
     if (err)
     {
         MESHX_LOGE(MODULE_ID_COMMON, "Failed to create client model");

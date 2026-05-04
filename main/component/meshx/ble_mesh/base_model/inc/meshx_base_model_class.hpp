@@ -53,15 +53,17 @@ private:
     control_task_msg_handle_t from_ble_cb;
 protected:
     meshx_err_t status = MESHX_SUCCESS;
-private:
+public:
     /**
      * @brief Register BLE message callback for this model
      * @details Automatically called during model initialization to register a callback
      *          function that handles BLE messages for this model's ID.
-     * @return MESHX_SUCCESS if registration successful, error code otherwise
+     *
+     * @return MESHX_SUCCESS on success, error code otherwise
      */
     meshx_err_t from_ble_reg_cb(void) const;
 
+private:
     /**
      * @brief Deregister BLE message callback for this model
      * @details Automatically called during model destruction to remove the callback

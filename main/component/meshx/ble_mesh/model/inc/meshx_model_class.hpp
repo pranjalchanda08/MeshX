@@ -54,7 +54,7 @@ public:
      *
      * @return MESHX_SUCCESS if model created successfully, error code otherwise
      */
-    virtual meshx_err_t plat_model_create(void) = 0;
+    virtual meshx_err_t plat_model_create(MESHX_MODEL* p_plat_model_ptr = nullptr) = 0;
 
     /**
      * @brief Delete logical model instance
@@ -229,6 +229,18 @@ public:
      * @return MESHX_SUCCESS if message sent successfully, error code otherwise
      */
     virtual meshx_err_t model_send(meshx_send_packet_params_t *params) = 0;
+
+    /**
+     * @brief Called when the model's parent element is baked.
+     * @details Overridden to perform deferred registration of callbacks.
+     */
+    void on_baked(void) override
+    {
+        if (base_model)
+        {
+            base_model->from_ble_reg_cb();
+        }
+    }
 
     /**
      * @brief Destructor for meshXModel
@@ -410,7 +422,7 @@ private:
      * @return MESHX_SUCCESS on successful model creation and initialization,
      *         error code otherwise
      */
-    meshx_err_t plat_model_create(void) final;
+    meshx_err_t plat_model_create(MESHX_MODEL* p_plat_model_ptr = nullptr) final;
 
     /**
      * @brief Delete platform-specific client model instance
