@@ -11,6 +11,10 @@
 #include "module_id.h"
 #include "meshx_err.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief Macro to define printf function
  * @note this can be overriden by compile time Macro def
@@ -152,5 +156,9 @@ meshx_err_t meshx_logging_init(const meshx_logging_t *config);
  */
 MESHX_WEEK void meshx_log_printf(module_id_t module_id, meshx_log_level_t log_level,
                       const char *func, int line_no, const char *fmt, ...);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* MESHX_LOG_H */

@@ -465,8 +465,9 @@ meshXGenericAdminPropertyServerModel MESHX_GEN_ADMIN_PROPERTY_SERVER_MODEL_TEMPL
  */
 MESHX_GEN_ADMIN_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericAdminPropertyServerModel MESHX_GEN_ADMIN_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
-    :: plat_model_create(void)
+    :: plat_model_create(MESHX_MODEL* p_plat_model_ptr)
 {
+    this->set_plat_model(p_plat_model_ptr);
     meshx_ptr_t p_pub = this->get_pub_struct();
     meshx_ptr_t p_gen = this->get_gen_struct();
     meshx_err_t err = MESHX_SUCCESS;
@@ -692,8 +693,9 @@ meshXGenericManufacturerPropertyServerModel MESHX_GEN_MANUFACTURER_PROPERTY_SERV
  */
 MESHX_GEN_MANUFACTURER_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericManufacturerPropertyServerModel MESHX_GEN_MANUFACTURER_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
-    :: plat_model_create(void)
+    :: plat_model_create(MESHX_MODEL* p_plat_model_ptr)
 {
+    this->set_plat_model(p_plat_model_ptr);
     meshx_ptr_t p_pub = this->get_pub_struct();
     meshx_ptr_t p_gen = this->get_gen_struct();
     meshx_err_t err = MESHX_SUCCESS;
@@ -919,8 +921,9 @@ meshXGenericUserPropertyServerModel MESHX_GEN_USER_PROPERTY_SERVER_MODEL_TEMPLAT
  */
 MESHX_GEN_USER_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericUserPropertyServerModel MESHX_GEN_USER_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
-    :: plat_model_create(void)
+    :: plat_model_create(MESHX_MODEL* p_plat_model_ptr)
 {
+    this->set_plat_model(p_plat_model_ptr);
     meshx_ptr_t p_pub = this->get_pub_struct();
     meshx_ptr_t p_gen = this->get_gen_struct();
     meshx_err_t err = MESHX_SUCCESS;
@@ -1088,6 +1091,55 @@ meshx_err_t meshXGenericClientPropertyServerModel MESHX_GEN_CLIENT_PROPERTY_SERV
     *msg_size = sizeof(element_msg);
 
     return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Creates and initializes a server model instance for Generic Client Property Server.
+ */
+MESHX_GEN_CLIENT_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericClientPropertyServerModel MESHX_GEN_CLIENT_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
+    :: plat_model_create(MESHX_MODEL* p_plat_model_ptr)
+{
+    this->set_plat_model(p_plat_model_ptr);
+    meshx_ptr_t p_pub = this->get_pub_struct();
+    meshx_ptr_t p_gen = this->get_gen_struct();
+    meshx_err_t err = MESHX_SUCCESS;
+
+    // Client Property Server uses the same platform creation as other property servers but with its own model ID
+    err = meshx_plat_gen_srv_create(this->get_plat_model(), &p_pub, &p_gen);
+    if(err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to create Generic Client Property Server Model");
+    }
+    else
+    {
+        this->set_pub_struct(p_pub);
+        this->set_gen_struct(p_gen);
+    }
+    return err;
+}
+
+/**
+ * @brief Deletes the Generic Client Property Server model.
+ */
+MESHX_GEN_CLIENT_PROPERTY_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXGenericClientPropertyServerModel MESHX_GEN_CLIENT_PROPERTY_SERVER_MODEL_TEMPLATE_PARAMS
+    :: plat_model_delete(void)
+{
+    meshx_ptr_t p_pub = this->get_pub_struct();
+    meshx_ptr_t p_gen = this->get_gen_struct();
+
+    meshx_err_t err = meshx_plat_gen_srv_delete(&p_pub, &p_gen);
+    if (err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to delete Generic Client Property Server Model");
+    }
+    else
+    {
+        this->set_pub_struct(nullptr);
+        this->set_gen_struct(nullptr);
+    }
+    return err;
 }
 
 #endif /* CONFIG_ENABLE_GEN_CLIENT_PROPERTY_SERVER */

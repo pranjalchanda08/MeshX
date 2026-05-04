@@ -59,6 +59,12 @@ meshx_err_t meshXBaseSensorServerModel::server_state_restore(meshx_sensor_server
 meshXBaseSensorServerModel::meshXBaseSensorServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
     : meshXBaseServerModel<meshXBaseSensorServerModel, meshx_sensor_server_send_params_t, meshx_sensor_server_restore_params_t>(model_id, from_ble_cb)
 {
+    set_status(meshXBaseSensorServerModel::plat_model_init());
+    if (get_status() != MESHX_SUCCESS)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "plat_model_init failed");
+        return;
+    }
 }
 
 #endif /* CONFIG_ENABLE_SENSOR_SERVER */

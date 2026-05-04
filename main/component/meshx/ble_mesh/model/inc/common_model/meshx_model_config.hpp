@@ -69,7 +69,7 @@ private:
     /* Message to be sent to parent element */
     meshx_config_srv_el_msg_t element_msg;
 
-    meshx_err_t plat_model_create   (void) override;
+    meshx_err_t plat_model_create   (MESHX_MODEL* p_plat_model_ptr = nullptr) override;
     meshx_err_t plat_model_delete   (void) override;
     meshx_err_t element_state_change_handle (void) override
     {

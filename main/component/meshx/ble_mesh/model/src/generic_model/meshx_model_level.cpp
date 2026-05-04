@@ -415,7 +415,7 @@ meshXGenericLevelServerModel MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
     )
     : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_LEVEL_SRV, parent_element, parent_element_state, model_func_id)
 {
-    this->plat_model_create();
+    /* Note: plat_model_create() is now called explicitly during composition bake */
 }
 
 /**
@@ -423,6 +423,8 @@ meshXGenericLevelServerModel MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
  *
  * This function handles the platform-specific model creation process for Generic Level Server models.
  * It initializes server-specific features and cannot be overridden by derived classes.
+ *
+ * @param[in] p_plat_model_ptr Optional pointer to a pre-allocated platform model structure.
  *
  * @return meshx_err_t Returns an error code indicating the result of the operation.
  *         - MESHX_SUCCESS on successful model creation and initialization
@@ -433,8 +435,12 @@ meshXGenericLevelServerModel MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
  */
 MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXGenericLevelServerModel MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
-    :: plat_model_create(void)
+    :: plat_model_create(MESHX_MODEL* p_plat_model_ptr)
 {
+    if (p_plat_model_ptr) {
+        this->set_plat_model(p_plat_model_ptr);
+    }
+
     meshx_ptr_t p_pub = this->get_pub_struct();
     meshx_ptr_t p_gen = this->get_gen_struct();
     meshx_err_t err = MESHX_SUCCESS;

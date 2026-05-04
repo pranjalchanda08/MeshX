@@ -78,8 +78,8 @@ static root_model_getfn_t meshx_sig_root_model_getfn[] = {
 
 static root_model_getfn_t meshx_ven_root_model_getfn[] = {};
 
-static uint16_t meshx_sig_root_model_arr_len = MESHX_ARRAY_SIZE(meshx_sig_root_model_getfn);
-static uint16_t meshx_ven_root_model_arr_len = MESHX_ARRAY_SIZE(meshx_ven_root_model_getfn);
+static uint16_t meshx_sig_root_model_arr_len = 0;
+static uint16_t meshx_ven_root_model_arr_len = 0;
 
 /**
  * @brief Returns the root models for BLE Mesh elements.
@@ -89,31 +89,37 @@ static uint16_t meshx_ven_root_model_arr_len = MESHX_ARRAY_SIZE(meshx_ven_root_m
 MESHX_MODEL * get_root_sig_models(void)
 {
     meshx_err_t err;
-    static MESHX_MODEL temp_model;
-    if(meshx_sig_root_model_arr == NULL && meshx_sig_root_model_arr_len)
+    MESHX_MODEL temp_model;
+    if(meshx_sig_root_model_arr == NULL)
     {
-        meshx_sig_root_model_arr = (MESHX_MODEL *) MESHX_MALLOC(sizeof(MESHX_MODEL) * meshx_sig_root_model_arr_len);
+        uint16_t max_len = MESHX_ARRAY_SIZE(meshx_sig_root_model_getfn);
+        if (max_len == 0) return NULL;
+
+        meshx_sig_root_model_arr = (MESHX_MODEL *) MESHX_MALLOC(sizeof(MESHX_MODEL) * max_len);
         if(meshx_sig_root_model_arr == NULL)
         {
             MESHX_LOGE(MODULE_ID_COMMON, "Failed to allocate memory for root models");
             return NULL;
         }
-        memset(meshx_sig_root_model_arr, 0, sizeof(MESHX_MODEL) * meshx_sig_root_model_arr_len);
+        memset(meshx_sig_root_model_arr, 0, sizeof(MESHX_MODEL) * max_len);
 
-        for(uint16_t i = 0; i < meshx_sig_root_model_arr_len; i++)
+        uint16_t actual_cnt = 0;
+        for(uint16_t i = 0; i < max_len; i++)
         {
             if(meshx_sig_root_model_getfn[i] == NULL)
             {
                 continue;
             }
-            err = meshx_sig_root_model_getfn[i]((void**)&temp_model);
+            err = meshx_sig_root_model_getfn[i](&temp_model);
             if (err != MESHX_SUCCESS)
             {
-                MESHX_LOGE(MODULE_ID_COMMON, "Failed to get root model (%p) (%d)", meshx_sig_root_model_getfn[i], err);
-                return NULL;
+                MESHX_LOGW(MODULE_ID_COMMON, "Root SIG model (%p) not available yet, skipping (%d)", meshx_sig_root_model_getfn[i], err);
+                continue;
             }
-            memcpy(&meshx_sig_root_model_arr[i], &temp_model, sizeof(MESHX_MODEL));
+            memcpy(&meshx_sig_root_model_arr[actual_cnt++], &temp_model, sizeof(MESHX_MODEL));
         }
+        meshx_sig_root_model_arr_len = actual_cnt;
+        MESHX_LOGI(MODULE_ID_COMMON, "Root SIG models baked: %d/%d", actual_cnt, max_len);
     }
     return meshx_sig_root_model_arr;
 }
@@ -125,26 +131,38 @@ MESHX_MODEL * get_root_sig_models(void)
  */
 MESHX_MODEL * get_root_ven_models(void)
 {
-    static MESHX_MODEL temp_model;
-    if(meshx_ven_root_model_arr == NULL && meshx_ven_root_model_arr_len)
+    meshx_err_t err;
+    MESHX_MODEL temp_model;
+    if(meshx_ven_root_model_arr == NULL)
     {
-        meshx_ven_root_model_arr = (MESHX_MODEL *) MESHX_MALLOC(sizeof(MESHX_MODEL) * meshx_ven_root_model_arr_len);
+        uint16_t max_len = MESHX_ARRAY_SIZE(meshx_ven_root_model_getfn);
+        if (max_len == 0) return NULL;
+
+        meshx_ven_root_model_arr = (MESHX_MODEL *) MESHX_MALLOC(sizeof(MESHX_MODEL) * max_len);
         if(meshx_ven_root_model_arr == NULL)
         {
-            MESHX_LOGE(MODULE_ID_COMMON, "Failed to allocate memory for root models");
+            MESHX_LOGE(MODULE_ID_COMMON, "Failed to allocate memory for root vendor models");
             return NULL;
         }
-        memset(meshx_ven_root_model_arr, 0, sizeof(MESHX_MODEL) * meshx_ven_root_model_arr_len);
+        memset(meshx_ven_root_model_arr, 0, sizeof(MESHX_MODEL) * max_len);
 
-        for(uint16_t i = 0; i < meshx_ven_root_model_arr_len; i++)
+        uint16_t actual_cnt = 0;
+        for(uint16_t i = 0; i < max_len; i++)
         {
             if(meshx_ven_root_model_getfn[i] == NULL)
             {
                 continue;
             }
-            meshx_ven_root_model_getfn[i]((void**)&temp_model);
-            memcpy(&meshx_ven_root_model_arr[i], &temp_model, sizeof(MESHX_MODEL));
+            err = meshx_ven_root_model_getfn[i](&temp_model);
+            if (err != MESHX_SUCCESS)
+            {
+                MESHX_LOGW(MODULE_ID_COMMON, "Root Vendor model (%p) not available yet, skipping (%d)", meshx_ven_root_model_getfn[i], err);
+                continue;
+            }
+            memcpy(&meshx_ven_root_model_arr[actual_cnt++], &temp_model, sizeof(MESHX_MODEL));
         }
+        meshx_ven_root_model_arr_len = actual_cnt;
+        MESHX_LOGI(MODULE_ID_COMMON, "Root Vendor models baked: %d/%d", actual_cnt, max_len);
     }
     return meshx_ven_root_model_arr;
 }
@@ -155,7 +173,11 @@ MESHX_MODEL * get_root_ven_models(void)
  */
 size_t get_root_sig_models_count(void)
 {
-    return meshx_sig_root_model_arr_len;
+    if (meshx_sig_root_model_arr == NULL)
+    {
+        get_root_sig_models();
+    }
+    return (size_t)meshx_sig_root_model_arr_len;
 }
 
 /**
@@ -165,7 +187,11 @@ size_t get_root_sig_models_count(void)
  */
 size_t get_root_ven_models_count(void)
 {
-    return meshx_ven_root_model_arr_len;
+    if (meshx_ven_root_model_arr == NULL)
+    {
+        get_root_ven_models();
+    }
+    return (size_t)meshx_ven_root_model_arr_len;
 }
 
 /**
@@ -182,7 +208,7 @@ size_t get_root_ven_models_count(void)
 meshx_err_t meshx_create_element_composition(dev_struct_t *p_dev, meshx_config_t const *config)
 {
 #if CONFIG_MAX_ELEMENT_COUNT > 0
-    meshx_err_t err;
+    meshx_err_t err = MESHX_SUCCESS;
 #if CONFIG_SECTION_ENABLE_ELEMENT_TABLE
     element_comp_table_t *element_comp_table;
 #endif /* CONFIG_SECTION_ENABLE_ELEMENT_TABLE */

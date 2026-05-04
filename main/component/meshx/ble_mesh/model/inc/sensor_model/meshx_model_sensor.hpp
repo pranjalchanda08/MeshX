@@ -44,7 +44,7 @@ private:
     /* New or updated model state from BLE layer */
     meshx_sensor_server_state_change_t model_state;
 
-    meshx_err_t plat_model_create   (void) override;
+    meshx_err_t plat_model_create   (MESHX_MODEL* p_plat_model_ptr = nullptr) override;
     meshx_err_t plat_model_delete   (void) override;
     meshx_err_t element_state_change_handle (void) override;
     meshx_err_t prepare_element_msg (meshx_ptr_t *msg_ptr, size_t *msg_size) override;

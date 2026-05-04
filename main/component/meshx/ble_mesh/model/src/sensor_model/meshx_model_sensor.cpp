@@ -17,10 +17,14 @@
  */
 MESHX_SENSOR_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXSensorServerModel MESHX_SENSOR_SERVER_MODEL_TEMPLATE_PARAMS
-    :: plat_model_create(void)
+    :: plat_model_create(MESHX_MODEL* p_plat_model_ptr)
 {
     meshx_ptr_t p_pub = nullptr;
     meshx_ptr_t p_srv = nullptr;
+
+    if (p_plat_model_ptr) {
+        this->set_plat_model(p_plat_model_ptr);
+    }
 
     meshx_err_t err = meshx_plat_sensor_srv_create((meshx_model_t*)this->get_plat_model(), &p_pub, &p_srv);
     if (err)

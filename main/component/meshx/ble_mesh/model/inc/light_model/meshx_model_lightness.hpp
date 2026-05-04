@@ -138,7 +138,7 @@ private:
     /* New or updated model state from BLE layer */
     meshx_light_lightness_model_state_t model_state;
 
-    meshx_err_t plat_model_create   (void) override;
+    meshx_err_t plat_model_create   (MESHX_MODEL* p_plat_model_ptr = nullptr) override;
     meshx_err_t plat_model_delete   (void) override;
     meshx_err_t element_state_change_handle (void) override;
 
