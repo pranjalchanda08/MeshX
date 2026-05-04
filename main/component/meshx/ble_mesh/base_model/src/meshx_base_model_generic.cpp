@@ -211,6 +211,13 @@ meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS
     ::meshXBaseGenericClientModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
     : meshXBaseClientModel(model_id, from_ble_cb)
 {
+    if (validate_client_model_id(model_id) != MESHX_SUCCESS)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid model_id: %08" PRIx32, model_id);
+        set_status(MESHX_INVALID_ARG);
+        return;
+    }
+
     set_status(meshXBaseGenericClientModel::plat_model_init());
     if (get_status() != MESHX_SUCCESS)
     {

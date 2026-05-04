@@ -19,13 +19,24 @@
  *         - Other error codes for platform-specific failures
  */
 MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PROTO
-meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::plat_model_create(void)
+meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::plat_model_create(MESHX_MODEL* p_plat_model_ptr)
 {
     meshx_err_t err = MESHX_SUCCESS;
+    
+    if (p_plat_model_ptr) {
+        this->set_plat_model(p_plat_model_ptr);
+    }
+
+    MESHX_MODEL* p_use = (MESHX_MODEL*)this->get_plat_model();
+    if (!p_use)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "No platform model pointer available");
+        return MESHX_INVALID_STATE;
+    }
 
     // For config server, we use the platform's get_config_srv_model function
     // to get the model instance since there's no specific create function
-    err = meshx_plat_get_config_srv_model(this->get_plat_model());
+    err = meshx_plat_get_config_srv_model(p_use);
     if (err)
     {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to get Config Server Model");
@@ -179,7 +190,6 @@ meshXConfigModel::meshXConfigModel(
     )
     : meshXServerModel(nullptr, MESHX_MODEL_ID_CONFIG_SRV, parent_element, parent_element_state, model_func_id)
 {
-    this->plat_model_create();
 }
 
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */

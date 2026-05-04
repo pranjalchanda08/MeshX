@@ -1,7 +1,7 @@
 /**
  * @file meshx_composition.cpp
  * @brief Implementation of MeshX Dynamic Composition Manager.
- * 
+ *
  * @author Pranjal Chanda
  * @date 2024-2025
  */
@@ -46,7 +46,7 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
     MESHX_LOGI(MODULE_ID_COMMON, "Baking composition with CID: 0x%04x, PID: 0x%04x, VID: 0x%04x, dynamic elements: %zu", cid, pid, vid, elements.size());
 
     size_t total_elements = elements.size() + 1; // +1 for root (index 0)
-    
+
     /* Allocate and initialize platform structures */
     baked_elements.resize(total_elements * sizeof(MESHX_ELEMENT));
     memset(baked_elements.data(), 0, baked_elements.size());
@@ -96,7 +96,7 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
     for (size_t i = 0; i < elements.size(); ++i) {
         size_t plat_idx = i + 1;
         auto& el = elements[i];
-        
+
         /* Ensure models are listed and objects created */
         el->list_sig_models();
         el->list_ven_models();
@@ -108,18 +108,42 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
         baked_sig_model_arrays[plat_idx].resize(sig_models.size() * sizeof(MESHX_MODEL));
         for (size_t m_idx = 0; m_idx < sig_models.size(); ++m_idx) {
             auto& m = sig_models[m_idx];
-            m->plat_model_create();
-            void* dst = &baked_sig_model_arrays[plat_idx][m_idx * sizeof(MESHX_MODEL)];
-            memcpy(dst, m->get_plat_model(), sizeof(MESHX_MODEL));
+            m->set_parent_element(el.get());
+
+            /* Get pointer to the baked slot for this model */
+            MESHX_MODEL* p_baked = (MESHX_MODEL*)&baked_sig_model_arrays[plat_idx][m_idx * sizeof(MESHX_MODEL)];
+
+            /* Create the platform model directly into the baked slot */
+            if (m->plat_model_create(p_baked) != MESHX_SUCCESS) {
+                MESHX_LOGW(MODULE_ID_BLE_MESH_ELEMENT, "Failed to create platform model for SIG model %d in element %d", (int)m_idx, (int)plat_idx);
+                continue;
+            }
+
+            if (m->get_plat_model() == NULL) {
+                MESHX_LOGE(MODULE_ID_BLE_MESH_ELEMENT, "get_plat_model() returned NULL for SIG model %d after creation", (int)m_idx);
+                continue;
+            }
         }
 
         /* Populate Vendor models */
         baked_ven_model_arrays[plat_idx].resize(ven_models.size() * sizeof(MESHX_MODEL));
         for (size_t m_idx = 0; m_idx < ven_models.size(); ++m_idx) {
             auto& m = ven_models[m_idx];
-            m->plat_model_create();
-            void* dst = &baked_ven_model_arrays[plat_idx][m_idx * sizeof(MESHX_MODEL)];
-            memcpy(dst, m->get_plat_model(), sizeof(MESHX_MODEL));
+            m->set_parent_element(el.get());
+
+            /* Get pointer to the baked slot for this vendor model */
+            MESHX_MODEL* p_baked = (MESHX_MODEL*)&baked_ven_model_arrays[plat_idx][m_idx * sizeof(MESHX_MODEL)];
+
+            /* Create the platform model directly into the baked slot */
+            if (m->plat_model_create(p_baked) != MESHX_SUCCESS) {
+                MESHX_LOGW(MODULE_ID_BLE_MESH_ELEMENT, "Failed to create platform model for Vendor model %d in element %d", (int)m_idx, (int)plat_idx);
+                continue;
+            }
+
+            if (m->get_plat_model() == NULL) {
+                MESHX_LOGE(MODULE_ID_BLE_MESH_ELEMENT, "get_plat_model() returned NULL for Vendor model %d after creation", (int)m_idx);
+                continue;
+            }
         }
 
         /* Finalize platform element structure */
@@ -135,8 +159,8 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
         memcpy((void*)&e->vnd_model_count, &ven_cnt, sizeof(e->vnd_model_count));
         memcpy((void*)&e->sig_models, &sig_ptr, sizeof(e->sig_models));
         memcpy((void*)&e->vnd_models, &ven_ptr, sizeof(e->vnd_models));
-        
-        /* 
+
+        /*
          * CRITICAL: Point the C++ model wrappers to the baked arrays.
          * The BLE Mesh stack will update these structures (e.g., handles, publication state),
          * and our C++ logic must see those updates.
@@ -149,22 +173,22 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
             void* ptr = &baked_ven_model_arrays[plat_idx][m_idx * sizeof(MESHX_MODEL)];
             ven_models[m_idx]->set_plat_model(reinterpret_cast<MESHX_MODEL*>(ptr));
         }
-        
+
         /* Register in registry for runtime callbacks/lookups */
         el->on_baked(plat_idx);
         meshXElementRegistry::get_instance().register_element(el.get());
     }
 
     /* 4. Finalize Composition Object */
-    baked_comp.cid = cid; 
-    baked_comp.pid = pid; 
+    baked_comp.cid = cid;
+    baked_comp.pid = pid;
     baked_comp.vid = vid;
     baked_comp.element_count = total_elements;
     baked_comp.elements = p_elements;
 
     baked_comp_ptr = &baked_comp;
     is_baked = true;
-    
+
     /* Update the device structure with the baked data */
     pdev->elements = p_elements;
     pdev->element_cnt = total_elements;

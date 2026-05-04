@@ -5,7 +5,7 @@
             "type": "gdbtarget",
             "request": "attach",
             "name": "Eclipse CDT GDB Adapter",
-            "program": "${workspaceFolder}/build/${command:espIdf.getProjectName}.elf",
+            "program": "${workspaceFolder}/build/xiao_c3/Debug/all_in_one/meshx_build_xiao_c3.elf",
             "initCommands": [
                 "set remote hardware-watchpoint-limit 4",
                 "mon reset halt",
@@ -24,10 +24,9 @@
             "type": "gdb",
             "request": "attach",
             "name": "Native GDB",
-            "executable": "${workspaceFolder}/build/${command:espIdf.getProjectName}.elf",
+            "executable": "${workspaceFolder}/build/xiao_c3/Debug/all_in_one/meshx_build_xiao_c3.elf",
             "gdbpath": "/home/pranjal/.espressif/tools/riscv32-esp-elf-gdb/14.2_20240403/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb",
-            "target": ":3333",
-            "remote": true,
+            "target": "extended-remote :3333",
             "cwd": "${workspaceRoot}",
             "valuesFormatting": "parseText",
             "autorun": [
@@ -41,25 +40,26 @@
             "type": "cppdbg",
             "request": "launch",
             "MIMode": "gdb",
-            "miDebuggerPath": "/home/pranjal/.espressif/tools/riscv32-esp-elf-gdb/16.2_20250324/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb",
-            "program": "${workspaceFolder}/build/${command:espIdf.getProjectName}.elf",
-            "windows": {
-                "program": "${workspaceFolder}\\build\\switch_relay.elf"
-            },
+            "miDebuggerPath": "/home/pchanda/.espressif/tools/riscv32-esp-elf-gdb/14.2_20240403/riscv32-esp-elf-gdb/bin/riscv32-esp-elf-gdb",
+            "program": "${workspaceFolder}/build/xiao_c3/Debug/all_in_one/meshx_build_xiao_c3.elf",
             "cwd": "${workspaceFolder}",
+            "miDebuggerServerAddress": "localhost:3333",
+            "useExtendedRemote": true,
             "setupCommands": [
                 {
-                    "text": "target remote :3333"
+                    "text": "set remotetimeout 20"
+                }
+            ],
+            "postRemoteConnectCommands": [
+                {
+                    "text": "mon reset halt"
                 },
                 {
-                    "text": "monitor reset halt"
+                    "text": "maintenance flush register-cache"
                 },
-                {
-                    "text": "flushregs"
-                },
-                {
-                    "text": "b app_main"
-                },
+                // {
+                //     "text": "thb app_main"
+                // }
             ],
             "externalConsole": false,
             "logging": {

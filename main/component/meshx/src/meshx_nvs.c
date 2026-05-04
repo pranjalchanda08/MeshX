@@ -124,6 +124,8 @@ static meshx_err_t meshx_nvs_erase_prod_init(uint16_t cid, uint16_t pid)
         return err;
     }
 
+    meshx_nvs_commit();
+
     return err;
 }
 
@@ -206,14 +208,17 @@ meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_m
             &(meshx_nvs_inst.cid),
         sizeof(meshx_nvs_inst.cid));
 
-    err += meshx_nvs_get(
-        MESHX_NVS_NAMESPACE_PID,
-            &(meshx_nvs_inst.pid),
-        sizeof(meshx_nvs_inst.pid));
+    if (err == MESHX_SUCCESS)
+    {
+        err = meshx_nvs_get(
+            MESHX_NVS_NAMESPACE_PID,
+                &(meshx_nvs_inst.pid),
+            sizeof(meshx_nvs_inst.pid));
+    }
 
     if(err != MESHX_SUCCESS)
     {
-        MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_NVS, "Product ID not found in NVS reinitializing MeshX NVS");
+        MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_NVS, "Product ID not found in NVS reinitializing MeshX NVS (err: 0x%x)", err);
         err = meshx_nvs_erase_prod_init(cid, pid);
     }
 
@@ -225,7 +230,7 @@ meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_m
         }
         else
         {
-            MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_NVS, "Product ID mismatch: %x|%x", meshx_nvs_inst.pid, meshx_nvs_inst.cid);
+            MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_NVS, "Product ID mismatch: %x|%x (Expected: %x|%x)", meshx_nvs_inst.pid, meshx_nvs_inst.cid, pid, cid);
             err = meshx_nvs_erase_prod_init(cid, pid);
         }
     }

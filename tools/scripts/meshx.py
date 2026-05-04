@@ -346,7 +346,7 @@ def build(args, build_root = "build"):
 if __name__ == "__main__":
     for bsp in os.listdir(BSP_PATH):
         if os.path.isdir(os.path.join(BSP_PATH, bsp)):
-            if bsp.startswith('.') or os.path.exists(os.path.join(BSP_PATH, bsp, "bsp.cmake")) == False:
+            if bsp.startswith('.') or not os.path.exists(os.path.join(BSP_PATH, bsp, "bsp.cmake")):
                 continue
             BSP_LIST.append(bsp)
 
@@ -418,7 +418,7 @@ if __name__ == "__main__":
         # port/bsp directory listing
         for bsp in os.listdir(BSP_PATH):
             if os.path.isdir(os.path.join(BSP_PATH, bsp)):
-                if bsp.startswith('.') or os.path.exists(os.path.join(BSP_PATH, bsp, "bsp.cmake")) == False:
+                if bsp.startswith('.') or not os.path.exists(os.path.join(BSP_PATH, bsp, "bsp.cmake")):
                     continue
                 print(f" - {bsp}")
         sys.exit(0)

@@ -47,12 +47,8 @@ meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::meshXBaseModel(uint32_t model_id, con
         status = MESHX_INVALID_ARG;
         return;
     }
-    status = from_ble_reg_cb();
-    if (status != MESHX_SUCCESS)
-    {
-        MESHX_LOGE(MODULE_ID_COMMON, "from_ble_reg_cb failed");
-        return;
-    }
+    // Callback registration is deferred to meshx_composition to avoid early-boot race conditions
+    status = MESHX_SUCCESS;
 }
 
 /**
@@ -78,6 +74,12 @@ meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS ::~meshXBaseModel()
 MESHX_BASE_TEMPLATE_PROTO
 meshx_err_t meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::from_ble_reg_cb(void) const
 {
+    if (from_ble_cb == nullptr)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "meshXBaseModel[%08" PRIx32 "] from_ble_reg_cb: Invalid state (cb=NULL)", model_id);
+        return MESHX_FAIL;
+    }
+    MESHX_LOGD(MODULE_ID_COMMON, "meshXBaseModel[%08" PRIx32 "] Registering callback %p", model_id, from_ble_cb);
     return control_task_msg_subscribe(CONTROL_TASK_MSG_CODE_FRM_BLE, model_id, from_ble_cb);
 }
 
@@ -122,7 +124,6 @@ meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::meshXBaseServerModel(uin
         return;
     }
 
-    static_cast<baseServerModelDerived_t*>(this)->plat_model_init();
     base_server_model_cb_list.push_front({(uint16_t)model_id, from_ble_cb});
     this->status = MESHX_SUCCESS;
 }
@@ -205,9 +206,9 @@ meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::meshXBaseClientModel(uin
     : meshXBaseModel<ble_mesh_send_msg_params_t>(model_id, base_from_ble_msg_handle, meshXBaseModelType::MESHX_BASE_MODEL_TYPE_CLIENT)
 {
     // Validate model ID and callback - consistent with C implementation
-    if (!from_ble_cb || static_cast<baseClientModelDerived_t*>(this)->validate_client_model_id(model_id) != MESHX_SUCCESS)
+    if (!from_ble_cb)
     {
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "[%s] Invalid model_id (%08" PRIx32 ") or callback", get_client_type_name(), model_id);
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "[%s] Invalid callback", get_client_type_name());
         this->status = MESHX_INVALID_ARG;
         return;
     }
@@ -215,8 +216,6 @@ meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::meshXBaseClientModel(uin
     if (plat_client_init == MESHX_CLIENT_INIT_MAGIC_NO)
         this->status = MESHX_SUCCESS;
     plat_client_init = MESHX_CLIENT_INIT_MAGIC_NO;
-
-    static_cast <baseClientModelDerived_t*>(this)->plat_model_init(); // call the Derived platform specific model initialization function
 
     base_client_model_cb_list.push_front({(uint16_t)model_id, from_ble_cb});
     this->status = MESHX_SUCCESS;

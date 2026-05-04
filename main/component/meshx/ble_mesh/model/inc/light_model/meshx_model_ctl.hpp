@@ -143,7 +143,7 @@ private:
     /* Flag to indicate if message was prepared for element notification */
     bool element_msg_prepared;
 
-    meshx_err_t plat_model_create   (void) override;
+    meshx_err_t plat_model_create   (MESHX_MODEL* p_plat_model_ptr = nullptr) override;
     meshx_err_t plat_model_delete   (void) override;
     meshx_err_t element_state_change_handle (void) override;
 
