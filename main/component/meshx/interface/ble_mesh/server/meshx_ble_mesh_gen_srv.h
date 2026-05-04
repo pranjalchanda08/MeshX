@@ -294,6 +294,42 @@ meshx_err_t meshx_plat_battery_gen_srv_create(void* p_model, void** p_pub, void*
 meshx_err_t meshx_plat_location_gen_srv_create(void* p_model, void** p_pub, void** p_location_srv);
 
 /**
+ * @brief Creates a Generic Power OnOff Server model and its publication context.
+ *
+ * This function initializes the Generic Power OnOff Server model, its publication
+ * context, and allocates memory for the server instance. It checks for
+ * invalid arguments and handles memory allocation failures.
+ *
+ * @param[out] p_model Pointer to the model structure to be created.
+ * @param[out] p_pub Pointer to the publication context to be created.
+ * @param[out] p_power_onoff_srv Pointer to the Power OnOff server instance to be allocated.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully created the model and publication context.
+ *     - MESHX_INVALID_ARG: One or more arguments are invalid.
+ *     - MESHX_NO_MEM: Memory allocation failed.
+ */
+meshx_err_t meshx_plat_power_onoff_gen_srv_create(void* p_model, void** p_pub, void** p_power_onoff_srv);
+
+/**
+ * @brief Creates a Generic Power OnOff Setup Server model and its publication context.
+ *
+ * This function initializes the Generic Power OnOff Setup Server model, its publication
+ * context, and allocates memory for the server instance. It checks for
+ * invalid arguments and handles memory allocation failures.
+ *
+ * @param[out] p_model Pointer to the model structure to be created.
+ * @param[out] p_pub Pointer to the publication context to be created.
+ * @param[out] p_power_onoff_setup_srv Pointer to the Power OnOff setup server instance to be allocated.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully created the model and publication context.
+ *     - MESHX_INVALID_ARG: One or more arguments are invalid.
+ *     - MESHX_NO_MEM: Memory allocation failed.
+ */
+meshx_err_t meshx_plat_power_onoff_setup_gen_srv_create(void* p_model, void** p_pub, void** p_power_onoff_setup_srv);
+
+/**
  * @brief Creates a Generic Power Level Server model and its publication context.
  *
  * This function initializes the Generic Power Level Server model, its publication

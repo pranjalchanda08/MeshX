@@ -144,7 +144,7 @@ private:
     meshx_light_hsl_srv_el_msg_t element_msg;
     bool element_msg_prepared;
 
-    meshx_err_t plat_model_create   (void) override;
+    meshx_err_t plat_model_create   (MESHX_MODEL* p_plat_model_ptr = nullptr) override;
     meshx_err_t plat_model_delete   (void) override;
     meshx_err_t element_state_change_handle (void) override;
     meshx_err_t prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size) override;

@@ -19,6 +19,10 @@
 #include "meshx_err.h"
 #include "stddef.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @brief Retrieves the current system time in milliseconds.
  *
@@ -117,6 +121,10 @@ size_t meshx_rtos_get_free_heap(void);
  *       calling this function.
  */
 meshx_err_t meshx_rtos_get_curr_task_id_prio(unsigned int *task_id);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __MESHX_RTOS_UTILS_H__ */
 

@@ -12,6 +12,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define MESHX_UNUSED(x) ((void)(x))
 
 #define MESHX_DO_NOTHING    do {} while(0)
@@ -48,5 +52,9 @@ typedef enum
     MESHX_TIMEOUT,       /**< Timeout */
     MESHX_ERR_MAX        /**< Maximum Error */
 } meshx_err_t;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __MESHX_ERR_H__ */
