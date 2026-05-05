@@ -20,6 +20,14 @@ set(PLATFORM_TEST_SUPPORTED ON CACHE INTERNAL "Testing supported in platform")
 
 add_definitions(-DMESHX_BUILD_TYPE=${MESHX_BUILD_TYPE})
 
+# Add extra definitions from command line via meshx.py
+if(MESHX_EXTRA_DEFS)
+    foreach(def ${MESHX_EXTRA_DEFS})
+        message(STATUS "Adding extra definition: ${def}")
+        add_compile_definitions(${def})
+    endforeach()
+endif()
+
 if(MESHX_BUILD_TYPE STREQUAL "Debug")
     option(ENABLE_TESTS "Enable building unit tests" ON)
     # add_definitions(-DDEBUG)
