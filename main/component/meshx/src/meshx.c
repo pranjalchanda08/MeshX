@@ -226,13 +226,13 @@ static meshx_err_t meshx_ble_mesh_init(meshx_config_t *config)
     meshx_err_t err;
     g_prov_cfg.node_name = (uint8_t *)config->product_name;
 
-    err = meshx_platform_bt_init(config->meshx_uuid_addr);
-    MESHX_ERR_PRINT_RET("Platform BT init failed", err);
-
     /* Copy the UUID to the global device structure for visualization and management */
     memcpy(g_dev.uuid, config->meshx_uuid_addr, sizeof(g_dev.uuid));
 
-    g_prov_cfg.uuid = config->meshx_uuid_addr;
+    err = meshx_platform_bt_init(g_dev.uuid);
+    MESHX_ERR_PRINT_RET("Platform BT init failed", err);
+
+    g_prov_cfg.uuid = g_dev.uuid;
     g_prov_cfg.freshboot_timeout_ms = FRESHBOOT_TIMEOUT_MS;
 
     meshx_dev_restore(&g_dev, config);

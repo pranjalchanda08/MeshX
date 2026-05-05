@@ -236,6 +236,11 @@ meshx_err_t meshXCWWWServerElement::s_prov_cb(const dev_struct_t *pdev, control_
 
     if (evt == CONTROL_TASK_MSG_EVT_EN_NODE_PROV)
     {
+        if (!meshx_prov_srv_is_provisioned())
+        {
+            return MESHX_SUCCESS;
+        }
+
         auto elements = meshXElementRegistry::get_instance().get_all_elements();
         for (auto const& [abs_id, base_el] : elements)
         {

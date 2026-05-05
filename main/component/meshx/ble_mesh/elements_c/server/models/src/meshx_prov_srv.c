@@ -24,10 +24,12 @@
  * This macro defines a mask that combines multiple control task message events
  * related to provisioning.
  */
-#define CONTROL_TASK_PROV_EVT_MASK CONTROL_TASK_MSG_EVT_IDENTIFY_START \
-                                 | CONTROL_TASK_MSG_EVT_PROVISION_STOP \
-                                 | CONTROL_TASK_MSG_EVT_IDENTIFY_STOP \
-                                 | CONTROL_TASK_MSG_EVT_NODE_RESET
+#define CONTROL_TASK_PROV_EVT_MASK ( CONTROL_TASK_MSG_EVT_IDENTIFY_START |  \
+                                     CONTROL_TASK_MSG_EVT_IDENTIFY_STOP  |  \
+                                     CONTROL_TASK_MSG_EVT_PROVISION_STOP |  \
+                                     CONTROL_TASK_MSG_EVT_NODE_RESET     |  \
+                                     CONTROL_TASK_MSG_EVT_SET_NAME_COMP  |  \
+                                     CONTROL_TASK_MSG_EVT_EN_NODE_PROV )
 
 #define MESHX_PROV_SRV_CLIENT_EVENT_BMAP    CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT
 #define MESHX_PROV_SRV_SERVER_EVENT_BMAP    CONTROL_TASK_MSG_EVT_EN_NODE_PROV
@@ -54,6 +56,8 @@ typedef struct prov_cb_evt_ctrl_task_evt_table
  * representation of the event and the corresponding control task event.
  */
 static prov_cb_evt_ctrl_task_evt_table_t prov_cb_evt_ctrl_task_evt_table[MESHX_PROV_EVT_MAX] = {
+    [MESHX_PROV_REGISTER_COMP_EVT]          = {"MESHX_PROV_REGISTER_COMP_EVT",          CONTROL_TASK_MSG_EVT_PROV_REG_COMP},
+    [MESHX_NODE_SET_UPROV_NAME_COMP_EVT]    = {"MESHX_NODE_SET_UPROV_NAME_COMP_EVT",    CONTROL_TASK_MSG_EVT_SET_NAME_COMP},
     [MESHX_NODE_PROV_RESET_EVT]             = {"MESHX_NODE_PROV_RESET_EVT",             CONTROL_TASK_MSG_EVT_NODE_RESET},
     [MESHX_NODE_PROV_COMPLETE_EVT]          = {"MESHX_NODE_PROV_COMPLETE_EVT",          CONTROL_TASK_MSG_EVT_PROVISION_STOP},
     [MESHX_NODE_PROV_LINK_OPEN_EVT]         = {"MESHX_NODE_PROV_LINK_OPEN_EVT",         CONTROL_TASK_MSG_EVT_IDENTIFY_START},
@@ -71,6 +75,8 @@ static prov_cb_evt_ctrl_task_evt_table_t prov_cb_evt_ctrl_task_evt_table[MESHX_P
  * representation of the event and the corresponding control task event.
  */
 static prov_cb_evt_ctrl_task_evt_table_t prov_cb_evt_ctrl_task_evt_table[MESHX_PROV_EVT_MAX] = {
+    [MESHX_PROV_REGISTER_COMP_EVT]          = {CONTROL_TASK_MSG_EVT_PROV_REG_COMP},
+    [MESHX_NODE_SET_UPROV_NAME_COMP_EVT]    = {CONTROL_TASK_MSG_EVT_SET_NAME_COMP},
     [MESHX_NODE_PROV_RESET_EVT]             = {CONTROL_TASK_MSG_EVT_NODE_RESET},
     [MESHX_NODE_PROV_COMPLETE_EVT]          = {CONTROL_TASK_MSG_EVT_PROVISION_STOP},
     [MESHX_NODE_PROV_LINK_OPEN_EVT]         = {CONTROL_TASK_MSG_EVT_IDENTIFY_START},
@@ -101,7 +107,7 @@ static meshx_err_t meshx_prov_srv_control_task_handler(
     {
         return MESHX_INVALID_ARG;
     }
-    prov_evt_t prov_evt = CONTROL_TASK_MSG_EVT_PROVISION_ALL;
+    prov_evt_t prov_evt = 0;
     if(evt != CONTROL_TASK_MSG_EVT_PROVISION_ALL)
     {
         return MESHX_INVALID_ARG;
@@ -122,9 +128,9 @@ static meshx_err_t meshx_prov_srv_control_task_handler(
         MESHX_LOGI(MODULE_ID_MODEL_SERVER, "net_idx: 0x%04x, addr: 0x%04x", params->param.node_prov_complete.net_idx, params->param.node_prov_complete.addr);
         MESHX_LOGI(MODULE_ID_MODEL_SERVER, "flags: 0x%02x, iv_index: 0x%08" PRIx32, params->param.node_prov_complete.flags, params->param.node_prov_complete.iv_index);
     }
-    if (prov_evt == CONTROL_TASK_MSG_EVT_PROVISION_ALL)
+    if (prov_evt == 0)
     {
-        return MESHX_INVALID_ARG;
+        return MESHX_SUCCESS; // Ignore unmapped events silently or after logging
     }
 
     /* Publish the event */
@@ -199,6 +205,10 @@ static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_t
         case CONTROL_TASK_MSG_EVT_NODE_RESET:
             MESHX_LOGW(MODULE_ID_COMMON, "Node Reset Event");
             meshx_handle_node_reset(pdev);
+            break;
+        case CONTROL_TASK_MSG_EVT_SET_NAME_COMP:
+        case CONTROL_TASK_MSG_EVT_EN_NODE_PROV:
+            /* Benign events during boot, handled to silence warnings */
             break;
         default:
             break;
@@ -295,7 +305,7 @@ static meshx_err_t meshx_init_freshboot_timer(dev_struct_t *p_dev, uint16_t time
 static meshx_err_t meshx_prov_srv_reg_from_ble_cb(void)
 {
     return control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_FRM_BLE,
+        CONTROL_TASK_MSG_CODE_PROV_PLAT,
         CONTROL_TASK_MSG_EVT_PROVISION_ALL,
         (prov_srv_cb_t)&meshx_prov_srv_control_task_handler
     );
@@ -411,11 +421,21 @@ meshx_err_t meshx_prov_srv_notify_plat_event(meshx_prov_srv_param_t *param)
     }
 
     return control_task_msg_publish(
-        CONTROL_TASK_MSG_CODE_FRM_BLE,
+        CONTROL_TASK_MSG_CODE_PROV_PLAT,
         CONTROL_TASK_MSG_EVT_PROVISION_ALL,
         param,
         sizeof(meshx_prov_srv_param_t)
     );
+}
+
+bool meshx_prov_srv_is_provisioned(void)
+{
+    uint16_t primary_addr = 0;
+    if (MESHX_SUCCESS == meshx_get_base_element_id(&primary_addr))
+    {
+        return (primary_addr != MESHX_ADDR_UNASSIGNED);
+    }
+    return false;
 }
 
 #endif /* CONFIG_ENABLE_PROVISIONING */
