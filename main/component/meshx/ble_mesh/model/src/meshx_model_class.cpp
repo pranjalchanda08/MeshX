@@ -73,6 +73,9 @@ meshXModel MESHX_MODEL_TEMPLATE_PARAMS
     this->set_plat_model(p_plat_model);
     this->set_model_func_id(model_func_id);
     this->set_parent_element(parent_element);
+    this->model_id = (uint16_t)model_id;
+    this->status = MESHX_SUCCESS;
+
     /* base_model needs to be used logically by the element composition */
     base_model = new meshxBaseModel_t(model_id,
         [this](dev_struct_t *dev, control_task_msg_evt_t evt, meshx_ptr_t param) -> meshx_err_t {

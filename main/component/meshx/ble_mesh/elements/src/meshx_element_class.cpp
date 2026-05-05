@@ -34,50 +34,23 @@
 MESHX_ELEMENT_TEMPLATE_PROTO
 meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
     ::meshXElement(uint16_t element_idx)
-    : meshXElementIF(element_idx)
+    : meshXElementIF(element_idx), no_of_sig_models(0), no_of_ven_models(0), element_type(meshxElementType_t::MESHX_ELEMENT_TYPE_SERVER), 
+      element_variant(MESHX_ELEMENT_TYPE_MAX), element_ctx(nullptr), element_ctx_size(0)
 {
-    // Create vector to hold all required root models
-    uint8_t num_sig_models = this->list_sig_models();
-    uint8_t num_ven_models = this->list_ven_models();
-
-    this->set_no_of_sig_models(num_sig_models);
-    this->set_no_of_ven_models(num_ven_models);
-
-    this->sig_plat_model_array_allocate();
-    this->ven_plat_model_array_allocate();
-
-    // Add all root models to the element
-    this->add_models();
-
     // Register instance in global registry
     meshXElementRegistry::get_instance().register_element(this);
 }
 
 /**
  * @brief Construct meshXElement with explicit element index, type, and model counts.
- *
- * This constructor is used by meshXElementServer/meshXElementClient to set the
- * element type and pre-size the model arrays at construction time rather than
- * relying on the virtual list_sig_models()/list_ven_models() dispatch.
- *
- * @param[in] element_idx      Index of the element in the mesh network
- * @param[in] type             Server or client element type
- * @param[in] no_of_sig_models Number of SIG models
- * @param[in] no_of_ven_models Number of vendor models
  */
 MESHX_ELEMENT_TEMPLATE_PROTO
 meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
     ::meshXElement(uint16_t element_idx, meshxElementType_t type,
                    uint8_t no_of_sig_models, uint8_t no_of_ven_models)
-    : meshXElementIF(element_idx)
+    : meshXElementIF(element_idx), no_of_sig_models(no_of_sig_models), no_of_ven_models(no_of_ven_models),
+      element_type(type), element_variant(MESHX_ELEMENT_TYPE_MAX), element_ctx(nullptr), element_ctx_size(0)
 {
-    this->set_element_type(type);
-    this->set_no_of_sig_models(no_of_sig_models);
-    this->set_no_of_ven_models(no_of_ven_models);
-
-    this->sig_plat_model_array_allocate();
-    this->ven_plat_model_array_allocate();
-
     // Register instance in global registry
     meshXElementRegistry::get_instance().register_element(this);
 }
@@ -88,7 +61,7 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
 {
     if (no_of_sig_models > 0)
     {
-        sig_model_array.reserve(no_of_sig_models);
+        sig_model_array.resize(no_of_sig_models * sizeof(MESHX_MODEL));
         return MESHX_SUCCESS;
     }
     return MESHX_NOT_SUPPORTED;
@@ -100,7 +73,7 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
 {
     if (no_of_ven_models > 0)
     {
-        ven_model_array.reserve(no_of_ven_models);
+        ven_model_array.resize(no_of_ven_models * sizeof(MESHX_MODEL));
         return MESHX_SUCCESS;
     }
     return MESHX_NOT_SUPPORTED;
@@ -110,14 +83,14 @@ MESHX_ELEMENT_TEMPLATE_PROTO
 MESHX_MODEL* meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
     ::get_sig_plat_model_array(void)
 {
-    return sig_model_array.empty() ? nullptr : sig_model_array.data();
+    return sig_model_array.empty() ? nullptr : reinterpret_cast<MESHX_MODEL*>(sig_model_array.data());
 }
 
 MESHX_ELEMENT_TEMPLATE_PROTO
 MESHX_MODEL* meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
     ::get_ven_plat_model_array(void)
 {
-    return ven_model_array.empty() ? nullptr : ven_model_array.data();
+    return ven_model_array.empty() ? nullptr : reinterpret_cast<MESHX_MODEL*>(ven_model_array.data());
 }
 
 /*****************************************************************************************************
@@ -172,7 +145,7 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
         }
 
         // Set the platform model for the model
-        model->set_plat_model(&this->sig_model_array[index]);
+        model->set_plat_model(reinterpret_cast<MESHX_MODEL*>(&this->sig_model_array[index * sizeof(MESHX_MODEL)]));
         // Set the parent element for the model
         model->set_parent_element(this);
 
@@ -233,7 +206,7 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
         }
 
         // Set the platform model for the model
-        model->set_plat_model(&this->ven_model_array[index]);
+        model->set_plat_model(reinterpret_cast<MESHX_MODEL*>(&this->ven_model_array[index * sizeof(MESHX_MODEL)]));
         // Set the parent element for the model
         model->set_parent_element(this);
 
@@ -337,7 +310,34 @@ MESHX_ELEMENT_TEMPLATE_PROTO
 meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
     ::initialize(void)
 {
-    /* Default: element is ready immediately after construction */
+    /* Restoration from NVS should happen before model initialization if needed */
+    this->restore_nvs_context();
+
+    /* 
+     * If platform model pointers are already set (e.g. by meshx_composition_bake),
+     * we skip re-allocation and re-adding to maintain pointer stability.
+     */
+    bool already_initialized = false;
+    if (!this->get_sig_models().empty() && this->get_sig_models()[0]->get_plat_model() != nullptr) {
+        already_initialized = true;
+    }
+
+    if (!already_initialized) {
+        uint8_t num_sig = this->list_sig_models();
+        uint8_t num_ven = this->list_ven_models();
+
+        this->set_no_of_sig_models(num_sig);
+        this->set_no_of_ven_models(num_ven);
+
+        this->sig_plat_model_array_allocate();
+        this->ven_plat_model_array_allocate();
+
+        /* Add all models to the element (this populates the platform model pointers) */
+        this->add_models();
+    } else {
+        MESHX_LOGI(MODULE_ID_BLE_MESH_ELEMENT, "Element %d already has platform pointers set, skipping re-init", get_element_idx());
+    }
+
     return MESHX_SUCCESS;
 }
 
@@ -376,6 +376,23 @@ meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
     meshXElementRegistry::get_instance().unregister_element(get_element_idx());
 }
 
+MESHX_ELEMENT_TEMPLATE_PROTO
+bool meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::has_model(uint16_t model_id) const
+{
+    // Check SIG models
+    for (const auto& m : sig_models) {
+        if (m && m->get_model_id() == model_id) return true;
+    }
+ 
+    // Check Vendor models
+    for (const auto& m : ven_models) {
+        if (m && m->get_model_id() == model_id) return true;
+    }
+ 
+    return false;
+}
+ 
 /*****************************************************************************************************
  * Explicit template instantiations for meshXElement
  *

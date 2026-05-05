@@ -36,8 +36,8 @@ private:
     uint8_t no_of_sig_models;
     uint8_t no_of_ven_models;
 
-    std::vector<MESHX_MODEL> sig_model_array;
-    std::vector<MESHX_MODEL> ven_model_array;
+    std::vector<uint8_t> sig_model_array;
+    std::vector<uint8_t> ven_model_array;
 
     std::vector<std::unique_ptr<meshXModelIF>> sig_models;
     std::vector<std::unique_ptr<meshXModelIF>> ven_models;
@@ -166,13 +166,13 @@ public:
      * @brief Get the SIG model array
      * @return Reference to the SIG model array
      */
-    std::vector<MESHX_MODEL>& get_sig_model_array(void) { return sig_model_array; }
+    std::vector<uint8_t>& get_sig_model_array(void) { return sig_model_array; }
 
     /**
      * @brief Get the Vendor model array
      * @return Reference to the Vendor model array
      */
-    std::vector<MESHX_MODEL>& get_ven_model_array(void) { return ven_model_array; }
+    std::vector<uint8_t>& get_ven_model_array(void) { return ven_model_array; }
 
     /**
      * @brief Add a SIG model to the element
@@ -288,6 +288,8 @@ public:
     meshx_err_t reset(void) override;
     bool is_initialized(void) const override;
     meshx_err_t restore_nvs_context(void) override;
+
+    bool has_model(uint16_t model_id) const override;
 
     void on_baked(uint16_t index) override {
         this->set_element_idx(index);

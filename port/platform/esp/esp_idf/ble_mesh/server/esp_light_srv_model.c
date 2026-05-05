@@ -412,6 +412,9 @@ meshx_err_t meshx_plat_light_ctl_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_
 
     meshx_err_t err = MESHX_SUCCESS;
 
+    MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "C: MESHX_MODEL size: %d, pub offset: %d", (int)sizeof(MESHX_MODEL), (int)offsetof(MESHX_MODEL, pub));
+    MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "C: MESHX_MODEL_PUB size: %d", (int)sizeof(MESHX_MODEL_PUB));
+
     err = meshx_plat_create_model_pub(p_pub, 1);
     if (err)
         return meshx_plat_del_model_pub(p_pub);

@@ -16,6 +16,10 @@
 
 #define MESHX_ROOT_ELEMENT_TEMPLATE_PROTO
 #define MESHX_ROOT_ELEMENT_TEMPLATE_PARAMS
+
+#define MESHX_ROOT_DEPENDENCY_RESOLVER_TEMPLATE_PROTO  template <typename ModelT>
+#define MESHX_ROOT_DEPENDENCY_RESOLVER_TEMPLATE_PARAMS <ModelT>
+
 /*********************************************************************************
  * meshXRootElement
  *********************************************************************************/
@@ -36,6 +40,10 @@ private:
     uint8_t list_sig_models() override;
     uint8_t list_ven_models() override;
     meshx_err_t element_state_change_notify(meshx_ptr_t param, size_t param_size) override;
+
+    MESHX_ROOT_DEPENDENCY_RESOLVER_TEMPLATE_PROTO
+    void add_sig_model_if_present(uint16_t trigger_model_id, const char* log_name);
+
 public:
     /**
      * @brief Constructs a new meshXRootElement instance.

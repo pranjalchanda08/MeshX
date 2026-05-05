@@ -14,7 +14,6 @@
 #include <meshx_api.h>
 #include <meshx_nvs.h>
 #include <sensor_model/meshx_model_sensor.hpp>
-#include <interface/ble_mesh/meshx_ble_mesh_cmn.h>
 #include <cstring>
 #include <algorithm>
 

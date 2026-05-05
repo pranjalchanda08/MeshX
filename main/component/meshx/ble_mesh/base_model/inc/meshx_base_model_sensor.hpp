@@ -7,7 +7,6 @@
 #define _MESHX_BASE_MODEL_SENSOR_H_
 
 #include <meshx_base_model_class.hpp>
-#include "interface/ble_mesh/server/meshx_ble_mesh_sensor_srv.h"
 
 #define MESHX_BASE_SENSOR_SERVER_TEMPLATE_PROTO
 #define MESHX_BASE_SENSOR_SERVER_TEMPLATE_PARAMS

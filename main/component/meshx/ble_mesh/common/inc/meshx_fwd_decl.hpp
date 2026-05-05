@@ -167,6 +167,13 @@ public:
      */
     virtual meshx_err_t restore_nvs_context(void) = 0;
 
+    /**
+     * @brief Check if the element contains a specific model by ID
+     * @param model_id The model ID to check for
+     * @return true if the model exists in this element, false otherwise
+     */
+    virtual bool has_model(uint16_t model_id) const = 0;
+
     meshXElementIF() = delete;
     explicit meshXElementIF(uint16_t element_idx) : element_idx(element_idx) { }
     virtual ~meshXElementIF() = default;

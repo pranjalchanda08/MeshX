@@ -413,7 +413,8 @@ meshXGenericLevelServerModel MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
         meshx_ptr_t     parent_element_state,
         uint16_t        model_func_id
     )
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_LEVEL_SRV, parent_element, parent_element_state, model_func_id)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_LEVEL_SRV, parent_element, parent_element_state, model_func_id),
+      element_msg_prepared(false)
 {
     /* Note: plat_model_create() is now called explicitly during composition bake */
 }
@@ -444,6 +445,19 @@ meshx_err_t meshXGenericLevelServerModel MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_P
     meshx_ptr_t p_pub = this->get_pub_struct();
     meshx_ptr_t p_gen = this->get_gen_struct();
     meshx_err_t err = MESHX_SUCCESS;
+
+    // If already created, skip platform creation to avoid memory leaks
+    if (p_pub != nullptr || p_gen != nullptr)
+    {
+        MESHX_MODEL* p_use = this->get_plat_model();
+        if (p_use) {
+            uint16_t model_id = MESHX_MODEL_ID_GEN_LEVEL_SRV;
+            memcpy((void*)&p_use->model_id, &model_id, sizeof(model_id));
+            memcpy((void*)&p_use->pub, &p_pub, sizeof(p_pub));
+            memcpy((void*)&p_use->user_data, &p_gen, sizeof(p_gen));
+        }
+        return MESHX_SUCCESS;
+    }
 
     err = meshx_plat_level_gen_srv_create(this->get_plat_model(), &p_pub, &p_gen);
     if(err)

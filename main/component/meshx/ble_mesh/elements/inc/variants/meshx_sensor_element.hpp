@@ -8,7 +8,6 @@
 
 #include <meshx_element_class.hpp>
 #include <mutex>
-#include <interface/ble_mesh/server/meshx_ble_mesh_sensor_srv.h>
 
 #if CONFIG_ENABLE_SENSOR_SERVER
 

@@ -243,7 +243,7 @@ static meshx_err_t meshx_light_ctl_setup_server_delete(void)
  *
  * @return meshx_err_t Returns MESHX_OK on success, or an appropriate error code on failure.
  */
-static meshx_err_t meshx_light_ctl_setup_server_create(void)
+meshx_err_t meshx_light_ctl_setup_server_create(void)
 {
     meshx_err_t err = MESHX_SUCCESS;
     if  (   g_meshx_light_ctl_srv.ctl_setup_server.meshx_srv_model != NULL
