@@ -220,7 +220,7 @@ static meshx_err_t control_task_msg_dispatch(
         ptr = ptr->next;
     }
     if (!evt_handled)
-        MESHX_LOGD(MODULE_ID_COMMON, "No handler reg for EVT %p", (void *)evt);
+        MESHX_LOGW(MODULE_ID_COMMON, "No handler reg for EVT %p", (void *)evt);
 
     return MESHX_SUCCESS;
 }
