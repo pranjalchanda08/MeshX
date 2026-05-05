@@ -34,6 +34,18 @@ public:
     std::vector<std::unique_ptr<meshXElementIF>>& get_elements() { return elements; }
 
     /**
+     * @brief Check if any element in the composition contains a specific model.
+     * @param model_id The model ID to search for.
+     * @return true if found, false otherwise.
+     */
+    bool has_model(uint16_t model_id) const {
+        for (const auto& el : elements) {
+            if (el && el->has_model(model_id)) return true;
+        }
+        return false;
+    }
+ 
+    /**
      * @brief Check if there are any elements
      */
     bool has_elements() const { return !elements.empty(); }

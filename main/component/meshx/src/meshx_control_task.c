@@ -193,9 +193,10 @@ static meshx_err_t control_task_msg_dispatch(
     dev_struct_t *pdev,
     control_task_msg_code_t msg_code,
     control_task_msg_evt_t evt,
-    void *params)
+    const void *params
+)
 {
-    if (!pdev)
+    if (!pdev || msg_code >= CONTROL_TASK_MSG_CODE_MAX)
         return MESHX_INVALID_ARG;
 
     control_task_evt_cb_reg_t *ptr = control_task_msg_code_list_heads[msg_code];
@@ -213,10 +214,10 @@ static meshx_err_t control_task_msg_dispatch(
     {
         if (((evt == 0x00) || (evt & ptr->msg_evt_bmap)) && (ptr->cb != NULL))
         {
-            ptr->cb(pdev, evt, params); // Call the registered callback
+            ptr->cb(pdev, evt, (void*)params); // Call the registered callback
             evt_handled = true;
         }
-        ptr = ptr->next; // Move to the next registration
+        ptr = ptr->next;
     }
     if (!evt_handled)
         MESHX_LOGD(MODULE_ID_COMMON, "No handler reg for EVT %p", (void *)evt);

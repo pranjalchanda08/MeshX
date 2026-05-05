@@ -23,7 +23,6 @@
 #include <new>
 #include <meshx_nvs.h>
 #include <meshx_api.h>
-#include <interface/ble_mesh/meshx_ble_mesh_cmn.h>
 
 #ifdef __cplusplus
 extern "C" {

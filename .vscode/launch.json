@@ -57,9 +57,9 @@
                 {
                     "text": "maintenance flush register-cache"
                 },
-                // {
-                //     "text": "thb app_main"
-                // }
+                {
+                    "text": "b app_main"
+                }
             ],
             "externalConsole": false,
             "logging": {

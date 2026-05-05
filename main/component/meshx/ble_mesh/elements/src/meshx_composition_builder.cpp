@@ -8,10 +8,12 @@
 
 #include <meshx_composition_builder.hpp>
 #include <meshx_composition.hpp>
+#include <meshx_device.hpp>
 #include <variants/meshx_relay_element.hpp>
 #include <variants/meshx_cwww_element.hpp>
 #include <variants/meshx_sensor_element.hpp>
 #include <variants/meshx_rgb_element.hpp>
+#include <variants/meshx_root_element.hpp>
 
 // Removed std::map for embedded footprint and performance
 
@@ -19,7 +21,12 @@
  * @brief Fluent API Implementation
  */
 meshXCompositionBuilder& meshXCompositionBuilder::begin() {
-    meshXComposition::get_instance().clear_elements();
+    auto& comp = meshXComposition::get_instance();
+    comp.clear_elements();
+    
+    // All compositions must start with a Root Element at Index 0
+    comp.get_elements().push_back(std::make_unique<meshXRootElement>());
+    
     return *this;
 }
 
@@ -94,8 +101,19 @@ bool meshx_builder_is_active(void) {
 }
 
 meshx_err_t meshx_builder_bake(dev_struct_t *pdev, uint16_t cid, uint16_t pid, uint16_t vid) {
+    // 1. Initialize the C++ Device wrapper
+    meshXDevice::get_instance().init(pdev);
+ 
+    // 2. Perform the bake
     meshXComposition::get_instance().set_device_struct(pdev);
-    return meshXComposition::get_instance().bake(cid, pid, vid);
+    meshx_err_t err = meshXComposition::get_instance().bake(cid, pid, vid);
+ 
+    // 3. Visualize the result
+    if (err == MESHX_SUCCESS) {
+        meshXDevice::get_instance().visualize_status();
+    }
+ 
+    return err;
 }
 
 void meshx_builder_add_element(meshx_element_type_t type, uint16_t count) {

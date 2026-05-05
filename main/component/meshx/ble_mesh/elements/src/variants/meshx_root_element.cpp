@@ -11,6 +11,10 @@
 
 #include <variants/meshx_root_element.hpp>
 #include <common_model/meshx_model_config.hpp>
+#include <light_model/meshx_model_ctl.hpp>
+#include <meshx_composition.hpp>
+ 
+extern "C" meshx_err_t meshx_init_config_server(void);
 
 constexpr uint16_t MESHX_ROOT_ELEMENT_INDEX = 0;
 /*********************************************************************************
@@ -43,16 +47,45 @@ meshXRootElement
  */
 uint8_t meshXRootElement :: list_sig_models()
 {
-    // Create Configuration Server model (always required)
+    // 1. Initialize platform Config Server
+    meshx_init_config_server();
+ 
+    // 2. Create Configuration Server model (always required)
     auto config_model = std::make_unique<meshXConfigModel>(
         this,
         nullptr,
         (uint16_t) static_cast<int>(meshxRootElementComposition::MESHX_ROOT_ELEMENT_COMP_CONFIG_SERVER)
     );
     this->get_sig_models().push_back(std::move(config_model));
-
+ 
+#if CONFIG_ENABLE_LIGHT_CTL_SERVER
+    add_sig_model_if_present<meshXLightCTLSetupServerModel>(MESHX_MODEL_ID_LIGHT_CTL_SRV, "CTL");
+#endif
+ 
     return (uint8_t)this->get_sig_models().size();
 }
+ 
+uint8_t meshXRootElement::list_ven_models() {
+    return 0; // Root element usually has no vendor models
+}
+ 
+MESHX_ROOT_DEPENDENCY_RESOLVER_TEMPLATE_PROTO
+void meshXRootElement::add_sig_model_if_present(uint16_t trigger_model_id, const char* log_name) {
+    if (meshXComposition::get_instance().has_model(trigger_model_id)) {
+        MESHX_LOGI(MODULE_ID_BLE_MESH_ELEMENT, "Root: %s dependency detected. Adding Setup Server.", log_name);
+        this->get_sig_models().push_back(std::make_unique<ModelT>(this, nullptr, 0));
+    }
+}
+ 
+/**
+ * @brief Explicit template instantiations for dependent models
+ */
+#define MESHX_ROOT_DEPENDENCY_RESOLVER_INST(ModelT) \
+    template void meshXRootElement::add_sig_model_if_present<ModelT>(uint16_t, const char*)
+ 
+#if CONFIG_ENABLE_LIGHT_CTL_SERVER
+MESHX_ROOT_DEPENDENCY_RESOLVER_INST(meshXLightCTLSetupServerModel);
+#endif
 
 /**
  * @brief Handle model callback from child models.

@@ -139,6 +139,9 @@ meshx_err_t meshx_plat_add_element_to_composition(
         return MESHX_INVALID_ARG;
     }
 
+    MESHX_LOGI(MODULE_ID_BLE_MESH_ELEMENT, "Plat Add Element [%d]: SIG=%d (ptr=%p), VEN=%d (ptr=%p)", 
+               index, sig_cnt, p_sig_models, ven_cnt, p_ven_models);
+
     MESHX_ELEMENT* element = (MESHX_ELEMENT*)(p_element_list) + index;
     element->sig_models = p_sig_models;
     element->vnd_models = p_ven_models;

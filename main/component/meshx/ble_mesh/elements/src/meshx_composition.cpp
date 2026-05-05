@@ -6,6 +6,10 @@
  * @date 2024-2025
  */
 
+extern "C" {
+#include <meshx_light_ctl_srv.h>
+#include <meshx_config_server.h>
+}
 #include <meshx_composition.hpp>
 #include <meshx_element_factory.hpp>
 #include <meshx_element_class.hpp>
@@ -18,13 +22,8 @@ extern "C" {
 #endif
 #include <meshx_api.h>
 #include <meshx_common.h>
-#include <interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h>
 
-/** Forward declarations for legacy root model accessors */
-MESHX_MODEL* get_root_sig_models(void);
-MESHX_MODEL* get_root_ven_models(void);
-size_t get_root_sig_models_count(void);
-size_t get_root_ven_models_count(void);
+/** Forward declarations for legacy platform initialization */
 meshx_err_t meshx_init_config_server(void);
 
 #ifdef __cplusplus
@@ -43,113 +42,120 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
         return MESHX_INVALID_STATE;
     }
 
-    MESHX_LOGI(MODULE_ID_COMMON, "Baking composition with CID: 0x%04x, PID: 0x%04x, VID: 0x%04x, dynamic elements: %zu", cid, pid, vid, elements.size());
+    MESHX_LOGI(MODULE_ID_BLE_MESH_ELEMENT, "Baking composition with CID: 0x%04x, PID: 0x%04x, VID: 0x%04x, elements: %zu", 
+               cid, pid, vid, elements.size());
+    MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "MESHX_MODEL size: %d, pub offset: %d", (int)sizeof(MESHX_MODEL), (int)offsetof(MESHX_MODEL, pub));
+    MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "MESHX_MODEL_PUB size: %d", (int)sizeof(MESHX_MODEL_PUB));
 
-    size_t total_elements = elements.size() + 1; // +1 for root (index 0)
+    /* Compile-time check for structural alignment */
+    static_assert(sizeof(MESHX_MODEL) >= 40, "MESHX_MODEL size is too small!");
+
+    size_t total_elements = elements.size();
 
     /* Allocate and initialize platform structures */
-    baked_elements.resize(total_elements * sizeof(MESHX_ELEMENT));
-    memset(baked_elements.data(), 0, baked_elements.size());
+    baked_elements.assign(total_elements * sizeof(MESHX_ELEMENT), 0);
     baked_sig_model_arrays.resize(total_elements);
     baked_ven_model_arrays.resize(total_elements);
 
     MESHX_ELEMENT* p_elements = reinterpret_cast<MESHX_ELEMENT*>(baked_elements.data());
 
-    /* 1. Initialize Config Server (Legacy dependency) */
-    meshx_err_t err = meshx_init_config_server();
-    if (err != MESHX_SUCCESS) {
-        MESHX_LOGE(MODULE_ID_COMMON, "Failed to init config server: %d", err);
-        return err;
-    }
-
-    /* 2. Bake Root Element (Index 0) */
-    size_t root_sig_cnt = get_root_sig_models_count();
-    size_t root_ven_cnt = get_root_ven_models_count();
-    MESHX_MODEL* root_sig_ptr = get_root_sig_models();
-    MESHX_MODEL* root_ven_ptr = get_root_ven_models();
-
-    if (root_sig_cnt > 0 && root_sig_ptr) {
-        baked_sig_model_arrays[0].resize(root_sig_cnt * sizeof(MESHX_MODEL));
-        memcpy(baked_sig_model_arrays[0].data(), root_sig_ptr, root_sig_cnt * sizeof(MESHX_MODEL));
-    }
-    if (root_ven_cnt > 0 && root_ven_ptr) {
-        baked_ven_model_arrays[0].resize(root_ven_cnt * sizeof(MESHX_MODEL));
-        memcpy(baked_ven_model_arrays[0].data(), root_ven_ptr, root_ven_cnt * sizeof(MESHX_MODEL));
-    }
-
-    {
-        uint16_t loc = 0;
-        uint8_t sig_cnt = (uint8_t)root_sig_cnt;
-        uint8_t ven_cnt = (uint8_t)root_ven_cnt;
-        esp_ble_mesh_model_t* sig_ptr = (root_sig_cnt > 0) ? reinterpret_cast<esp_ble_mesh_model_t*>(baked_sig_model_arrays[0].data()) : nullptr;
-        esp_ble_mesh_model_t* ven_ptr = (root_ven_cnt > 0) ? reinterpret_cast<esp_ble_mesh_model_t*>(baked_ven_model_arrays[0].data()) : nullptr;
-
-        MESHX_ELEMENT* e = &p_elements[0];
-        memcpy((void*)&e->location, &loc, sizeof(e->location));
-        memcpy((void*)&e->sig_model_count, &sig_cnt, sizeof(e->sig_model_count));
-        memcpy((void*)&e->vnd_model_count, &ven_cnt, sizeof(e->vnd_model_count));
-        memcpy((void*)&e->sig_models, &sig_ptr, sizeof(e->sig_models));
-        memcpy((void*)&e->vnd_models, &ven_ptr, sizeof(e->vnd_models));
-    }
-
-    /* 3. Bake Dynamic Elements (Indices 1 to N) */
+    /* Bake all Elements (Index 0 to N) */
     for (size_t i = 0; i < elements.size(); ++i) {
-        size_t plat_idx = i + 1;
+        size_t plat_idx = i;
         auto& el = elements[i];
 
-        /* Ensure models are listed and objects created */
+        /* Clear and refresh model lists to prevent duplicates if bake is re-called */
+        el->get_sig_models().clear();
+        el->get_ven_models().clear();
         el->list_sig_models();
         el->list_ven_models();
 
         auto& sig_models = el->get_sig_models();
         auto& ven_models = el->get_ven_models();
 
-        /* Populate SIG models */
-        baked_sig_model_arrays[plat_idx].resize(sig_models.size() * sizeof(MESHX_MODEL));
-        for (size_t m_idx = 0; m_idx < sig_models.size(); ++m_idx) {
-            auto& m = sig_models[m_idx];
+        /* 1. Pre-calculate counts after filtering */
+        size_t actual_sig_cnt = 0;
+        for (auto& m : sig_models) {
+            if (m->get_model_id() == MESHX_MODEL_ID_CONFIG_SRV && plat_idx > 0) continue;
+            actual_sig_cnt++;
+        }
+        size_t actual_ven_cnt = ven_models.size();
+
+        /* 2. Resize and Zero-Initialize model arrays ONCE to ensure pointer stability */
+        baked_sig_model_arrays[plat_idx].assign(actual_sig_cnt * sizeof(MESHX_MODEL), 0);
+        baked_ven_model_arrays[plat_idx].assign(actual_ven_cnt * sizeof(MESHX_MODEL), 0);
+
+        MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "Baking Element %d: SIG models: %zu, Vendor models: %zu (Model Size: %zu)",
+                   (int)plat_idx, actual_sig_cnt, actual_ven_cnt, sizeof(MESHX_MODEL));
+
+        /* 3. Populate SIG models */
+        size_t baked_sig_idx = 0;
+        for (auto& m : sig_models) {
             m->set_parent_element(el.get());
 
+            /* Skip Config Server if not primary element to satisfy ESP-IDF requirements */
+            if (m->get_model_id() == MESHX_MODEL_ID_CONFIG_SRV && plat_idx > 0) {
+                MESHX_LOGW(MODULE_ID_COMMON, "  Skipping Config Server (0x0000) on non-primary element %d", (int)plat_idx);
+                continue;
+            }
+
             /* Get pointer to the baked slot for this model */
-            MESHX_MODEL* p_baked = (MESHX_MODEL*)&baked_sig_model_arrays[plat_idx][m_idx * sizeof(MESHX_MODEL)];
+            MESHX_MODEL* p_baked_base = reinterpret_cast<MESHX_MODEL*>(baked_sig_model_arrays[plat_idx].data());
+            MESHX_MODEL* p_baked = p_baked_base + baked_sig_idx;
+
+            /* Explicitly zero the slot again before calling platform create to prevent garbage */
+            memset(static_cast<void*>(p_baked), 0, sizeof(MESHX_MODEL));
 
             /* Create the platform model directly into the baked slot */
-            if (m->plat_model_create(p_baked) != MESHX_SUCCESS) {
-                MESHX_LOGW(MODULE_ID_BLE_MESH_ELEMENT, "Failed to create platform model for SIG model %d in element %d", (int)m_idx, (int)plat_idx);
+            meshx_err_t m_err = m->plat_model_create(p_baked);
+            if (m_err != MESHX_SUCCESS) {
+                MESHX_LOGE(MODULE_ID_BLE_MESH_ELEMENT, "Failed to create platform model for SIG model 0x%04x in element %d (err: %d)",
+                           m->get_model_id(), (int)plat_idx, m_err);
                 continue;
             }
 
-            if (m->get_plat_model() == NULL) {
-                MESHX_LOGE(MODULE_ID_BLE_MESH_ELEMENT, "get_plat_model() returned NULL for SIG model %d after creation", (int)m_idx);
-                continue;
+            /* Link the C++ object to the platform struct */
+            m->set_plat_model(p_baked);
+
+            // Debug: Verify the baked model state and check for garbage pointers
+            MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "  Model %zu ID: 0x%04x, Pub: %p, Slot Addr: %p", 
+                       baked_sig_idx, p_baked->model_id, (void*)p_baked->pub, (void*)p_baked);
+            
+            if (p_baked->pub) {
+                uint32_t pub_ptr_val = (uint32_t)p_baked->pub;
+                if (pub_ptr_val < 0x3f000000 || pub_ptr_val > 0x3fffffff) {
+                    MESHX_LOGE(MODULE_ID_BLE_MESH_ELEMENT, "  CRITICAL: Garbage Pub pointer detected: %p at %p", (void*)p_baked->pub, (void*)&p_baked->pub);
+                }
             }
+
+            baked_sig_idx++;
         }
 
-        /* Populate Vendor models */
-        baked_ven_model_arrays[plat_idx].resize(ven_models.size() * sizeof(MESHX_MODEL));
-        for (size_t m_idx = 0; m_idx < ven_models.size(); ++m_idx) {
-            auto& m = ven_models[m_idx];
+        /* 4. Populate Vendor models */
+        size_t baked_ven_idx = 0;
+        for (auto& m : ven_models) {
             m->set_parent_element(el.get());
 
             /* Get pointer to the baked slot for this vendor model */
-            MESHX_MODEL* p_baked = (MESHX_MODEL*)&baked_ven_model_arrays[plat_idx][m_idx * sizeof(MESHX_MODEL)];
+            MESHX_MODEL* p_baked = reinterpret_cast<MESHX_MODEL*>(baked_ven_model_arrays[plat_idx].data()) + baked_ven_idx;
+            memset(static_cast<void*>(p_baked), 0, sizeof(MESHX_MODEL));
 
             /* Create the platform model directly into the baked slot */
-            if (m->plat_model_create(p_baked) != MESHX_SUCCESS) {
-                MESHX_LOGW(MODULE_ID_BLE_MESH_ELEMENT, "Failed to create platform model for Vendor model %d in element %d", (int)m_idx, (int)plat_idx);
+            meshx_err_t m_err = m->plat_model_create(p_baked);
+            if (m_err != MESHX_SUCCESS) {
+                MESHX_LOGE(MODULE_ID_BLE_MESH_ELEMENT, "Failed to create platform model for Vendor model 0x%04x in element %d (err: %d)",
+                           m->get_model_id(), (int)plat_idx, m_err);
                 continue;
             }
 
-            if (m->get_plat_model() == NULL) {
-                MESHX_LOGE(MODULE_ID_BLE_MESH_ELEMENT, "get_plat_model() returned NULL for Vendor model %d after creation", (int)m_idx);
-                continue;
-            }
+            m->set_plat_model(p_baked);
+            baked_ven_idx++;
         }
 
-        /* Finalize platform element structure */
+        /* 5. Finalize platform element structure */
         uint16_t loc = 0;
-        uint8_t sig_cnt = (uint8_t)sig_models.size();
-        uint8_t ven_cnt = (uint8_t)ven_models.size();
+        uint8_t sig_cnt = (uint8_t)actual_sig_cnt;
+        uint8_t ven_cnt = (uint8_t)baked_ven_idx;
         esp_ble_mesh_model_t* sig_ptr = (sig_cnt > 0) ? reinterpret_cast<esp_ble_mesh_model_t*>(baked_sig_model_arrays[plat_idx].data()) : nullptr;
         esp_ble_mesh_model_t* ven_ptr = (ven_cnt > 0) ? reinterpret_cast<esp_ble_mesh_model_t*>(baked_ven_model_arrays[plat_idx].data()) : nullptr;
 
@@ -160,20 +166,6 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
         memcpy((void*)&e->sig_models, &sig_ptr, sizeof(e->sig_models));
         memcpy((void*)&e->vnd_models, &ven_ptr, sizeof(e->vnd_models));
 
-        /*
-         * CRITICAL: Point the C++ model wrappers to the baked arrays.
-         * The BLE Mesh stack will update these structures (e.g., handles, publication state),
-         * and our C++ logic must see those updates.
-         */
-        for (size_t m_idx = 0; m_idx < sig_models.size(); ++m_idx) {
-            void* ptr = &baked_sig_model_arrays[plat_idx][m_idx * sizeof(MESHX_MODEL)];
-            sig_models[m_idx]->set_plat_model(reinterpret_cast<MESHX_MODEL*>(ptr));
-        }
-        for (size_t m_idx = 0; m_idx < ven_models.size(); ++m_idx) {
-            void* ptr = &baked_ven_model_arrays[plat_idx][m_idx * sizeof(MESHX_MODEL)];
-            ven_models[m_idx]->set_plat_model(reinterpret_cast<MESHX_MODEL*>(ptr));
-        }
-
         /* Register in registry for runtime callbacks/lookups */
         el->on_baked(plat_idx);
         meshXElementRegistry::get_instance().register_element(el.get());
@@ -183,7 +175,7 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
     baked_comp.cid = cid;
     baked_comp.pid = pid;
     baked_comp.vid = vid;
-    baked_comp.element_count = total_elements;
+    baked_comp.element_count = (uint16_t)total_elements;
     baked_comp.elements = p_elements;
 
     baked_comp_ptr = &baked_comp;
@@ -191,10 +183,34 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
 
     /* Update the device structure with the baked data */
     pdev->elements = p_elements;
-    pdev->element_cnt = total_elements;
-    pdev->element_idx = total_elements;
+    pdev->element_cnt = (uint16_t)total_elements;
+    pdev->element_idx = (uint16_t)total_elements;
+    pdev->composition = baked_comp_ptr;
 
-    MESHX_LOGI(MODULE_ID_COMMON, "Composition baked successfully. Total elements: %zu", total_elements);
+    /* 5. Verification Logging */
+    MESHX_LOGD(MODULE_ID_COMMON, "Composition baked successfully. Elements: %d", (int)total_elements);
+    for (size_t i = 0; i < total_elements; ++i) {
+        MESHX_ELEMENT* e = &p_elements[i];
+        MESHX_LOGD(MODULE_ID_COMMON, "Element %zu (Addr: %p): SIG models: %d, Vendor models: %d",
+                   i, (void*)e, e->sig_model_count, e->vnd_model_count);
+
+        if (e->sig_models && e->sig_model_count > 0) {
+            for (uint8_t j = 0; j < e->sig_model_count; ++j) {
+                esp_ble_mesh_model_t* m = &e->sig_models[j];
+                uint16_t mid = m->model_id;
+                uint16_t p_addr = (m->pub ? m->pub->publish_addr : 0);
+                MESHX_LOGD(MODULE_ID_COMMON, "  SIG Model[%d]: ID 0x%04x, PubAddr: 0x%04x", j, mid, p_addr);
+            }
+        }
+        if (e->vnd_models && e->vnd_model_count > 0) {
+            for (uint8_t j = 0; j < e->vnd_model_count; ++j) {
+                esp_ble_mesh_model_t* m = &e->vnd_models[j];
+                MESHX_LOGI(MODULE_ID_COMMON, "  VND Model[%d]: CID 0x%04x, ID 0x%04x",
+                           j, m->vnd.company_id, m->vnd.model_id);
+            }
+        }
+    }
 
     return MESHX_SUCCESS;
+
 }

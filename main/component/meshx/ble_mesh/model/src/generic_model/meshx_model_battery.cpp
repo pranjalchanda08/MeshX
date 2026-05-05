@@ -416,6 +416,19 @@ meshx_err_t meshXGenericBatteryServerModel MESHX_GEN_BATTERY_SERVER_MODEL_TEMPLA
     meshx_ptr_t p_gen = this->get_gen_struct();
     meshx_err_t err = MESHX_SUCCESS;
 
+    // If already created, skip platform creation to avoid memory leaks
+    if (p_pub != nullptr || p_gen != nullptr)
+    {
+        MESHX_MODEL* p_use = this->get_plat_model();
+        if (p_use) {
+            uint16_t model_id = MESHX_MODEL_ID_GEN_BATTERY_SRV;
+            memcpy((void*)&p_use->model_id, &model_id, sizeof(model_id));
+            memcpy((void*)&p_use->pub, &p_pub, sizeof(p_pub));
+            memcpy((void*)&p_use->user_data, &p_gen, sizeof(p_gen));
+        }
+        return MESHX_SUCCESS;
+    }
+
     err = meshx_plat_battery_gen_srv_create(this->get_plat_model(), &p_pub, &p_gen);
     if(err)
     {
