@@ -20,6 +20,10 @@
 #include "../meshx_ble_mesh_cmn.h"
 #include "meshx_control_task.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef control_task_msg_handle_t prov_srv_cb_t;
 typedef control_task_msg_evt_provision_t prov_evt_t;
 
@@ -63,12 +67,12 @@ typedef union
         int err_code;     /*!< Indicate the result of BLE Mesh initialization */
     } prov_register_comp; /*!< Event parameter of MESHX_PROV_REGISTER_COMP_EVT */
     /**
-     * @brief MESHX_NODE_SET_UNPROV_DEV_NAME_COMP_EVT
+     * @brief MESHX_NODE_SET_UPROV_NAME_COMP_EVT
      */
     struct meshx_set_unprov_dev_name_comp_param
     {
         int err_code;                /*!< Indicate the result of setting BLE Mesh device name */
-    } node_set_unprov_dev_name_comp; /*!< Event parameter of MESHX_NODE_SET_UNPROV_DEV_NAME_COMP_EVT */
+    } node_set_unprov_dev_name_comp; /*!< Event parameter of MESHX_NODE_SET_UPROV_NAME_COMP_EVT */
     /**
      * @brief MESHX_NODE_PROV_ENABLE_COMP_EVT
      */
@@ -896,5 +900,18 @@ meshx_err_t meshx_plat_init_prov(const uint8_t *uuid);
  * @return Pointer to the global provisioning parameters.
  */
 meshx_ptr_t meshx_plat_get_prov(void);
+
+/**
+ * @brief Checks if the device is provisioned.
+ *
+ * This function returns whether the device has been provisioned.
+ *
+ * @return bool true if provisioned, false otherwise.
+ */
+bool meshx_prov_srv_is_provisioned(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __MESHX_BLE_MESH_PROV_SRV_H__ */

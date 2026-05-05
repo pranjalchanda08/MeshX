@@ -61,6 +61,7 @@ typedef enum control_task_msg_code
     CONTROL_TASK_MSG_CODE_FRM_BLE,      /**< Message code from BLE layer. */
     CONTROL_TASK_MSG_CODE_CONFIG,       /**< Message code for Config Server events */
     CONTROL_TASK_MSG_CODE_PROVISION,    /**< Message code for provisioning events. */
+    CONTROL_TASK_MSG_CODE_PROV_PLAT,    /**< Internal message code for platform provisioning events. */
     CONTROL_TASK_MSG_CODE_TO_APP,       /**< Message code for application events. */
     CONTROL_TASK_MSG_CODE_TO_MESHX,     /**< Message code for meshX events from app */
     CONTROL_TASK_MSG_CODE_TXCM,         /**< Message code for TXCM events */
@@ -146,14 +147,16 @@ typedef enum __packed control_task_msg_evt_config
  */
 typedef enum __packed control_task_msg_evt_provision
 {
-    CONTROL_TASK_MSG_EVT_PROVISION_STOP         = MESHX_BIT(1), /**< ESP_BLE_MESH_NODE_PROV_COMPLETE_EVT */
-    CONTROL_TASK_MSG_EVT_IDENTIFY_START         = MESHX_BIT(2), /**< EESP_BLE_MESH_NODE_PROV_LINK_OPEN_EVT */
-    CONTROL_TASK_MSG_EVT_IDENTIFY_STOP          = MESHX_BIT(3), /**< ESP_BLE_MESH_NODE_PROV_LINK_CLOSE_EVT */
-    CONTROL_TASK_MSG_EVT_NODE_RESET             = MESHX_BIT(4), /**< CONTROL_TASK_MSG_EVT_NODE_RESET */
-    CONTROL_TASK_MSG_EVT_PROXY_CONNECT          = MESHX_BIT(5), /**< ESP_BLE_MESH_PROXY_SERVER_CONNECTED_EVT */
-    CONTROL_TASK_MSG_EVT_PROXY_DISCONN          = MESHX_BIT(6), /**< ESP_BLE_MESH_PROXY_SERVER_DISCONNECTED_EVT */
-    CONTROL_TASK_MSG_EVT_EN_NODE_PROV           = MESHX_BIT(7), /**< ESP_BLE_MESH_NODE_PROV_ENABLE_COMP_EVT */
-    CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT      = MESHX_BIT(8), /**< Event to indicate fresh boot */
+    CONTROL_TASK_MSG_EVT_PROV_REG_COMP          = MESHX_BIT(0), /**< ESP_BLE_MESH_PROV_REGISTER_COMP_EVT */
+    CONTROL_TASK_MSG_EVT_SET_NAME_COMP          = MESHX_BIT(1), /**< ESP_BLE_MESH_NODE_SET_UNPROV_DEV_NAME_COMP_EVT */
+    CONTROL_TASK_MSG_EVT_PROVISION_STOP         = MESHX_BIT(2), /**< ESP_BLE_MESH_NODE_PROV_COMPLETE_EVT */
+    CONTROL_TASK_MSG_EVT_IDENTIFY_START         = MESHX_BIT(3), /**< EESP_BLE_MESH_NODE_PROV_LINK_OPEN_EVT */
+    CONTROL_TASK_MSG_EVT_IDENTIFY_STOP          = MESHX_BIT(4), /**< ESP_BLE_MESH_NODE_PROV_LINK_CLOSE_EVT */
+    CONTROL_TASK_MSG_EVT_NODE_RESET             = MESHX_BIT(5), /**< CONTROL_TASK_MSG_EVT_NODE_RESET */
+    CONTROL_TASK_MSG_EVT_PROXY_CONNECT          = MESHX_BIT(6), /**< ESP_BLE_MESH_PROXY_SERVER_CONNECTED_EVT */
+    CONTROL_TASK_MSG_EVT_PROXY_DISCONN          = MESHX_BIT(7), /**< ESP_BLE_MESH_PROXY_SERVER_DISCONNECTED_EVT */
+    CONTROL_TASK_MSG_EVT_EN_NODE_PROV           = MESHX_BIT(8), /**< ESP_BLE_MESH_NODE_PROV_ENABLE_COMP_EVT */
+    CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT      = MESHX_BIT(9), /**< Event to indicate fresh boot */
     CONTROL_TASK_MSG_EVT_PROVISION_ALL          = 0xFFFF, /**< Maximum provisioning event value. */
 } control_task_msg_evt_provision_t;
 

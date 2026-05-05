@@ -493,7 +493,7 @@
 /*!< This enum value is the event of node/provisioner/fast provisioning */
 typedef enum {
     MESHX_PROV_REGISTER_COMP_EVT,                        /*!< Initialize BLE Mesh provisioning capabilities and internal data information completion event */
-    MESHX_NODE_SET_UNPROV_DEV_NAME_COMP_EVT,             /*!< Set the unprovisioned device name completion event */
+    MESHX_NODE_SET_UPROV_NAME_COMP_EVT,                  /*!< Set the unprovisioned device name completion event */
     MESHX_NODE_PROV_ENABLE_COMP_EVT,                     /*!< Enable node provisioning functionality completion event */
     MESHX_NODE_PROV_DISABLE_COMP_EVT,                    /*!< Disable node provisioning functionality completion event */
     MESHX_NODE_PROV_LINK_OPEN_EVT,                       /*!< Establish a BLE Mesh link event */
