@@ -109,6 +109,14 @@ meshx_err_t meshx_light_ctl_server_init(void);
 meshx_err_t meshx_get_ctl_setup_srv_model(meshx_ptr_t p_model);
 
 /**
+ * @brief Create and initialize the CTL Setup Server model.
+ * 
+ * @return MESHX_SUCCESS on success, an error code otherwise.
+ */
+meshx_err_t meshx_light_ctl_setup_server_create(void);
+
+
+/**
  * @brief Send the Light CTL status message.
  *
  * This function sends the Light CTL status message to the specified context.

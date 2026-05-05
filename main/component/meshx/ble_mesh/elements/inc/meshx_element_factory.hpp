@@ -61,15 +61,21 @@ meshx_err_t meshx_element_factory_helper(
             return MESHX_NO_MEM;
         }
 
-        /* Restore NVS context if available */
-        meshx_err_t nvs_err = el->restore_nvs_context();
-        if (nvs_err != MESHX_SUCCESS)
+        /* Initialize element (lists models, allocates platform arrays, adds models) */
+        err = el->initialize();
+        if (err != MESHX_SUCCESS)
         {
-            MESHX_LOGW(module_id,
-                       "%s [%d]: NVS restore skipped: 0x%x", log_name, abs_idx, nvs_err);
+            MESHX_LOGE(module_id, "%s [%d]: initialization failed: 0x%x", log_name, abs_idx, err);
+            return err;
         }
 
+        /* Restore NVS context if available (initialize already calls this, but we can keep it explicit if preferred or rely on initialize) */
+        /* For consistency, we rely on initialize() to handle the full setup including NVS restore */
+
         /* Add element to composition */
+        MESHX_LOGI(module_id, "%s [%d]: Registering Element with SIG=%d, VEN=%d models", 
+                   log_name, abs_idx, el->get_no_of_sig_models(), el->get_no_of_ven_models());
+
         err = meshx_plat_add_element_to_composition(
             abs_idx,
             pdev->elements,

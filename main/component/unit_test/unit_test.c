@@ -42,7 +42,7 @@ static meshx_err_t ut_command_handler(int argc, char **argv) {
     int cmd_id = UT_GET_ARG(2, uint16_t, argv);
     int parsed_argc = UT_GET_ARG(3, uint16_t, argv);
     module_id_t module_id = UT_GET_ARG(1, uint16_t, argv);
-    MESHX_LOGD(MODULE_ID_COMMON, , "Unit Test: Params -> argc: %d, Module: %d, cmd_id: %d", parsed_argc, cmd_id , module_id);
+    MESHX_LOGD(MODULE_ID_COMMON, "Unit Test: Params -> argc: %d, Module: %d, cmd_id: %d", parsed_argc, cmd_id , module_id);
     if (parsed_argc > (argc - UT_CMD_MIN_ARGS))
     {
         MESHX_LOGE(MODULE_ID_COMMON, "Insufficient module arguments");
@@ -51,7 +51,7 @@ static meshx_err_t ut_command_handler(int argc, char **argv) {
 
     for (size_t i = 0; i < parsed_argc; i++)
     {
-        MESHX_LOGD("argv[%d]: %s", i, argv[i + UT_CMD_MIN_ARGS]);
+        MESHX_LOGD(MODULE_ID_COMMON, "argv[%d]: %s", i, argv[i + UT_CMD_MIN_ARGS]);
     }
 
     if (module_id >= MODULE_ID_MAX) {
