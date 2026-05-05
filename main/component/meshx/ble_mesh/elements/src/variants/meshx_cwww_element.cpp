@@ -15,7 +15,6 @@
 #include <variants/meshx_cwww_element.hpp>
 #include <light_model/meshx_model_ctl.hpp>
 #include <generic_model/meshx_model_onoff.hpp>
-#include <interface/ble_mesh/meshx_ble_mesh_cmn.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -248,10 +247,11 @@ meshx_err_t meshXCWWWServerElement::s_prov_cb(const dev_struct_t *pdev, control_
             auto *onoff  = static_cast<meshXGenericOnOffServerModel *>(models[0].get());
             auto *ctl    = static_cast<meshXLightCTLServerModel *>(models[1].get());
 
-            meshx_model_t model_ref = { .el_id    = abs_id,
-                                        .model_id = 0,
-                                        .pub_addr = el->element_ctx.pub_addr,
-                                        .p_model  = nullptr };
+            meshx_model_t model_ref_onoff = { .el_id    = abs_id,
+                                              .model_id = onoff->get_model_id(),
+                                              .pub_addr = el->element_ctx.pub_addr,
+                                              .p_model  = (MESHX_MODEL*)onoff->get_plat_model() };
+
             meshx_ctx_t ctx = { .app_idx  = el->element_ctx.app_id,
                                 .net_idx  = pdev->meshx_store.net_key_id,
                                 .opcode   = MESHX_MODEL_OP_GEN_ONOFF_STATUS,
@@ -259,10 +259,15 @@ meshx_err_t meshXCWWWServerElement::s_prov_cb(const dev_struct_t *pdev, control_
                                 .dst_addr = el->element_ctx.pub_addr,
                                 .p_ctx    = nullptr };
             meshx_gen_onoff_send_params_t sp = {
-                .model = &model_ref, .ctx = &ctx,
+                .model = &model_ref_onoff, .ctx = &ctx,
                 .state = { .on_off = el->element_ctx.gen_on_off_state.on_off },
                 .tid = 0 };
             onoff->model_send(&sp);
+
+            meshx_model_t model_ref_ctl = { .el_id    = abs_id,
+                                            .model_id = ctl->get_model_id(),
+                                            .pub_addr = el->element_ctx.pub_addr,
+                                            .p_model  = (MESHX_MODEL*)ctl->get_plat_model() };
 
             meshx_ctx_t ctl_ctx = { .app_idx  = el->element_ctx.app_id,
                                     .net_idx  = pdev->meshx_store.net_key_id,
@@ -271,7 +276,7 @@ meshx_err_t meshXCWWWServerElement::s_prov_cb(const dev_struct_t *pdev, control_
                                     .dst_addr = el->element_ctx.pub_addr,
                                     .p_ctx    = nullptr };
             meshx_light_ctl_send_params_t cp = {
-                .model = &model_ref, .ctx = &ctl_ctx,
+                .model = &model_ref_ctl, .ctx = &ctl_ctx,
                 .tid = 0,
                 .state = { .lightness   = el->element_ctx.light_ctl_state.lightness,
                            .temperature = el->element_ctx.light_ctl_state.temperature,

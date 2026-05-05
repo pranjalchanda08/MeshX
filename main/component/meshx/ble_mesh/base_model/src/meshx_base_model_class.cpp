@@ -208,7 +208,7 @@ meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::meshXBaseClientModel(uin
     // Validate model ID and callback - consistent with C implementation
     if (!from_ble_cb)
     {
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "[%s] Invalid callback", get_client_type_name());
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid callback");
         this->status = MESHX_INVALID_ARG;
         return;
     }
@@ -312,13 +312,12 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_from_bl
 {
     if (pdev == nullptr || params == nullptr)
     {
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "[%s] Invalid parameters", get_client_type_name());
+        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid parameters");
         return MESHX_INVALID_ARG;
     }
 
     // Enhanced logging with template type identification
-    MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "[%s] Handling message for model_id: %04x",
-               get_client_type_name(), (uint32_t)evt);
+    MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "Handling message for model_id: %04x", (uint32_t)evt);
 
     meshx_err_t err = MESHX_SUCCESS;
     auto *param = static_cast<ble_mesh_plat_model_cb_params_t*>(params);
@@ -329,28 +328,27 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_from_bl
         if ((uint16_t)evt == node.model_id)
         {
             MESHX_LOGD(MODULE_ID_MODEL_CLIENT,
-                       "[%s] op|src|dst:%04" PRIx32 "|%04x|%04x",
-                       get_client_type_name(),
+                       "op|src|dst:%04" PRIx32 "|%04x|%04x",
                        param->ctx.opcode, param->ctx.src_addr, param->ctx.dst_addr);
 
             if (node.cb == nullptr)
             {
-                MESHX_LOGW(MODULE_ID_MODEL_CLIENT, "[%s] Callback is NULL for model_id: %04x", get_client_type_name(), node.model_id);
+                MESHX_LOGW(MODULE_ID_MODEL_CLIENT, "Callback is NULL for model_id: %04x", node.model_id);
                 continue;
             }
 
             if (param->evt == static_cast<decltype(param->evt)>(meshx_base_cli_evt::MESHX_BASE_CLI_TIMEOUT) || param->err_code != MESHX_SUCCESS)
             {
-                MESHX_LOGW(MODULE_ID_MODEL_CLIENT, "[%s] Message timeout or error, retrying...", get_client_type_name());
+                MESHX_LOGW(MODULE_ID_MODEL_CLIENT, "Message timeout or error, retrying...");
                 err = base_txcm_handle_resend(node.model_id, param);
                 if (err != MESHX_SUCCESS)
-                    MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "[%s] Resend failed: %d", get_client_type_name(), err);
+                    MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Resend failed: %d", err);
             }
             else
             {
                 err = base_txcm_handle_ack(param->ctx.src_addr);
                 if (err != MESHX_SUCCESS)
-                    MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "[%s] Ack failed: %d", get_client_type_name(), err);
+                    MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Ack failed: %d", err);
 
                 err = node.cb(pdev, evt, param);
             }
@@ -360,7 +358,7 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_from_bl
     }
 
     if (!cb_invoked)
-        MESHX_LOGW(MODULE_ID_MODEL_CLIENT, "[%s] No registered client handled model_id=%04x", get_client_type_name(), (uint32_t)evt);
+        MESHX_LOGW(MODULE_ID_MODEL_CLIENT, "No registered client handled model_id=%04x", (uint32_t)evt);
 
     return err;
 }
@@ -420,7 +418,7 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_handle_
             param->param.evt        = static_cast<decltype(param->param.evt)>(meshx_base_cli_evt::MESHX_BASE_CLI_TIMEOUT);
             if(node.cb == nullptr)
             {
-                MESHX_LOGW(MODULE_ID_MODEL_CLIENT, "[%s] Callback is NULL for model_id: %04x", get_client_type_name(), node.model_id);
+                MESHX_LOGW(MODULE_ID_MODEL_CLIENT, "Callback is NULL for model_id: %04x", node.model_id);
                 continue;
             }
             err = node.cb(pdev, param->model_id, &param->param);
@@ -430,7 +428,7 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_handle_
 
     if (!cb_invoked)
     {
-        MESHX_LOGW(MODULE_ID_MODEL_CLIENT, "[%s] No registered client handled model_id=%04x", get_client_type_name(), param->model_id);
+        MESHX_LOGW(MODULE_ID_MODEL_CLIENT, "No registered client handled model_id=%04x", param->model_id);
         return MESHX_SUCCESS; // Consistent with C implementation - graceful handling
     }
 
@@ -471,6 +469,8 @@ template class meshXBaseServerModel<meshXBaseLightServerModel, meshx_light_serve
 #endif
 
 #if CONFIG_ENABLE_CONFIG_SERVER
+// meshXBaseModel instantiations
+template class meshXBaseModel<meshx_config_server_send_params_t>;
 // meshXBaseServerModel instantiations
 template class meshXBaseServerModel<meshXBaseConfigServerModel, meshx_config_server_send_params_t, meshx_config_server_restore_params_t>;
 #endif

@@ -8,7 +8,6 @@
  */
 
 #include "sensor_model/meshx_model_sensor.hpp"
-#include "interface/ble_mesh/server/meshx_ble_mesh_sensor_srv.h"
 
 #if CONFIG_ENABLE_SENSOR_SERVER
 

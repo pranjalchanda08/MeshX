@@ -159,6 +159,30 @@ public:
         );
 };
 
+/**
+ * @class meshXLightCTLSetupServerModel
+ * @brief A class for creating Light CTL Setup Server models.
+ */
+class meshXLightCTLSetupServerModel
+    : public meshXServerModel<meshXBaseLightServerModel, meshx_light_ctl_send_params_t>
+{
+private:
+    meshx_err_t plat_model_create   (MESHX_MODEL* p_plat_model_ptr = nullptr) override;
+    meshx_err_t plat_model_delete   (void) override;
+ 
+public:
+    meshx_err_t model_send          (meshx_light_ctl_send_params_t *params) override { return MESHX_NOT_SUPPORTED; }
+    meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t prepare_element_msg (meshx_ptr_t *msg_ptr, size_t *msg_size) override { return MESHX_NOT_SUPPORTED; }
+    meshx_err_t element_state_change_handle(void) override { return MESHX_SUCCESS; }
+ 
+    explicit meshXLightCTLSetupServerModel(
+        meshXElementIF *parent_element = nullptr,
+        meshx_ptr_t     parent_element_state = nullptr,
+        uint16_t        model_func_id = 0
+    );
+};
+ 
 #endif /* CONFIG_ENABLE_LIGHT_CTL_SERVER */
 
 #endif /* _MESHX_MODEL_CTL_HPP_ */

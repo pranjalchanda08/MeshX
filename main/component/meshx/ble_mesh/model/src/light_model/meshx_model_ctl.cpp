@@ -15,6 +15,10 @@
  */
 
 #include <light_model/meshx_model_ctl.hpp>
+ 
+extern "C" {
+#include "meshx_light_ctl_srv.h"
+}
 
 #if CONFIG_ENABLE_LIGHT_CTL_CLIENT
 /**
@@ -281,6 +285,19 @@ meshx_err_t meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAM
     meshx_ptr_t p_gen = this->get_gen_struct();
     meshx_err_t err = MESHX_SUCCESS;
 
+    // If already created, skip platform creation to avoid memory leaks
+    if (p_pub != nullptr || p_gen != nullptr)
+    {
+        MESHX_MODEL* p_use = this->get_plat_model();
+        if (p_use) {
+            uint16_t model_id = MESHX_MODEL_ID_LIGHT_CTL_SRV;
+            memcpy((void*)&p_use->model_id, &model_id, sizeof(model_id));
+            memcpy((void*)&p_use->pub, &p_pub, sizeof(p_pub));
+            memcpy((void*)&p_use->user_data, &p_gen, sizeof(p_gen));
+        }
+        return MESHX_SUCCESS;
+    }
+
     err = meshx_plat_light_ctl_srv_create( this->get_plat_model(), &p_pub, &p_gen );
     if(err)
     {
@@ -524,7 +541,8 @@ meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAMS
         meshx_ptr_t     parent_element_state,
         uint16_t        model_func_id
     )
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_LIGHT_CTL_SRV, parent_element, parent_element_state, model_func_id)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_LIGHT_CTL_SRV, parent_element, parent_element_state, model_func_id),
+      element_msg_prepared(false)
 {
     /* Used only for initialization of Parent Class */
 }
@@ -566,6 +584,53 @@ meshx_err_t meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAM
         return MESHX_INVALID_STATE;
     }
     return MESHX_SUCCESS;
+}
+
+/***************************************************************************************************/
+
+meshx_err_t meshXLightCTLSetupServerModel::plat_model_create(MESHX_MODEL* p_plat_model_ptr)
+{
+    if (p_plat_model_ptr) {
+        this->set_plat_model(p_plat_model_ptr);
+    }
+
+    meshx_err_t err = meshx_light_ctl_setup_server_create();
+    if (err != MESHX_SUCCESS) {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to create CTL Setup Server (C-layer)");
+        return err;
+    }
+
+    MESHX_MODEL* p_use = this->get_plat_model();
+    if (p_use) {
+        err = meshx_get_ctl_setup_srv_model(p_use);
+        if (err != MESHX_SUCCESS) {
+            MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to get CTL Setup Server Model");
+            return err;
+        }
+    }
+
+    return MESHX_SUCCESS;
+}
+
+meshx_err_t meshXLightCTLSetupServerModel::plat_model_delete(void)
+{
+    // C-layer cleanup if necessary
+    return MESHX_SUCCESS;
+}
+
+meshx_err_t meshXLightCTLSetupServerModel::model_from_ble_cb(dev_struct_t *p_dev, evt_model_id_t model_id, meshx_ptr_t params)
+{
+    if (model_id != MESHX_MODEL_ID_LIGHT_CTL_SETUP_SRV) return MESHX_SUCCESS;
+    // Implementation for setup callbacks...
+    return MESHX_SUCCESS;
+}
+
+meshXLightCTLSetupServerModel::meshXLightCTLSetupServerModel(
+    meshXElementIF *parent_element,
+    meshx_ptr_t     parent_element_state,
+    uint16_t        model_func_id
+) : meshXServerModel(nullptr, MESHX_MODEL_ID_LIGHT_CTL_SETUP_SRV, parent_element, parent_element_state, model_func_id)
+{
 }
 
 #endif /* CONFIG_ENABLE_LIGHT_CTL_SERVER */

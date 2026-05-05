@@ -31,8 +31,8 @@ using evt_model_id_t = control_task_msg_evt_t;
 class meshXModelIF
 {
 public:
-    meshXModelIF() = default;
-    explicit meshXModelIF(MESHX_MODEL *p_plat_model) : p_plat_model(p_plat_model) { }
+    meshXModelIF() : p_plat_model(nullptr), p_plat_pub(nullptr), p_plat_gen(nullptr), parent_element(nullptr), p_parent_element_state(nullptr) { }
+    explicit meshXModelIF(MESHX_MODEL *p_plat_model) : p_plat_model(p_plat_model), p_plat_pub(nullptr), p_plat_gen(nullptr), parent_element(nullptr), p_parent_element_state(nullptr) { }
     virtual ~meshXModelIF() = default;
 
 private:
@@ -158,6 +158,12 @@ public:
      * @return Model ID value
      */
     virtual uint16_t get_model_id(void) const = 0;
+ 
+    /**
+     * @brief Check if the model is successfully initialized.
+     * @return true if initialized, false otherwise.
+     */
+    virtual bool is_initialized(void) const = 0;
 };
 
 /**
@@ -281,6 +287,12 @@ public:
      * @return Model ID value
      */
     uint16_t get_model_id(void) const override { return model_id; }
+ 
+    /**
+     * @brief Check if the model is successfully initialized.
+     * @return true if initialized, false otherwise.
+     */
+    bool is_initialized(void) const override { return status == MESHX_SUCCESS; }
 
     /**
      * @brief Set the model identifier

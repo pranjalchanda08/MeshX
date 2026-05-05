@@ -8,7 +8,6 @@
 #include "meshx_element_registry.hpp"
 #include <meshx_nvs.h>
 #include <meshx_api.h>
-#include <interface/ble_mesh/meshx_ble_mesh_cmn.h>
 #include <light_model/meshx_model_hsl.hpp>
 
 #ifdef __cplusplus

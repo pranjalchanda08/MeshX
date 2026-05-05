@@ -258,7 +258,8 @@ meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
         meshx_ptr_t     parent_element_state,
         uint16_t        model_func_id
     )
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_ONOFF_SRV, parent_element, parent_element_state, model_func_id)
+    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_ONOFF_SRV, parent_element, parent_element_state, model_func_id),
+      element_msg_prepared(false)
 {
 }
 
@@ -292,6 +293,17 @@ meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_P
     {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "No platform model pointer available");
         return MESHX_INVALID_STATE;
+    }
+
+    // If already created, skip platform creation to avoid memory leaks
+    if (p_pub != nullptr || p_gen != nullptr)
+    {
+        // Still need to initialize the platform struct fields in the new slot
+        uint16_t model_id = MESHX_MODEL_ID_GEN_ONOFF_SRV;
+        memcpy((void*)&p_use->model_id, &model_id, sizeof(model_id));
+        memcpy((void*)&p_use->pub, &p_pub, sizeof(p_pub));
+        memcpy((void*)&p_use->user_data, &p_gen, sizeof(p_gen));
+        return MESHX_SUCCESS;
     }
 
     err = meshx_plat_on_off_gen_srv_create( p_use, &p_pub, &p_gen );
