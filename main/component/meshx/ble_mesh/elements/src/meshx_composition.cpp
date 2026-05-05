@@ -42,7 +42,7 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
         return MESHX_INVALID_STATE;
     }
 
-    MESHX_LOGI(MODULE_ID_BLE_MESH_ELEMENT, "Baking composition with CID: 0x%04x, PID: 0x%04x, VID: 0x%04x, elements: %zu", 
+    MESHX_LOGI(MODULE_ID_BLE_MESH_ELEMENT, "Baking composition with CID: 0x%04x, PID: 0x%04x, VID: 0x%04x, elements: %zu",
                cid, pid, vid, elements.size());
     MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "MESHX_MODEL size: %d, pub offset: %d", (int)sizeof(MESHX_MODEL), (int)offsetof(MESHX_MODEL, pub));
     MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "MESHX_MODEL_PUB size: %d", (int)sizeof(MESHX_MODEL_PUB));
@@ -118,9 +118,9 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
             m->set_plat_model(p_baked);
 
             // Debug: Verify the baked model state and check for garbage pointers
-            MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "  Model %zu ID: 0x%04x, Pub: %p, Slot Addr: %p", 
+            MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "  Model %zu ID: 0x%04x, Pub: %p, Slot Addr: %p",
                        baked_sig_idx, p_baked->model_id, (void*)p_baked->pub, (void*)p_baked);
-            
+
             if (p_baked->pub) {
                 uint32_t pub_ptr_val = (uint32_t)p_baked->pub;
                 if (pub_ptr_val < 0x3f000000 || pub_ptr_val > 0x3fffffff) {
@@ -195,12 +195,14 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
                    i, (void*)e, e->sig_model_count, e->vnd_model_count);
 
         if (e->sig_models && e->sig_model_count > 0) {
+#if CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO
             for (uint8_t j = 0; j < e->sig_model_count; ++j) {
                 esp_ble_mesh_model_t* m = &e->sig_models[j];
                 uint16_t mid = m->model_id;
                 uint16_t p_addr = (m->pub ? m->pub->publish_addr : 0);
                 MESHX_LOGD(MODULE_ID_COMMON, "  SIG Model[%d]: ID 0x%04x, PubAddr: 0x%04x", j, mid, p_addr);
             }
+#endif /* CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO */
         }
         if (e->vnd_models && e->vnd_model_count > 0) {
             for (uint8_t j = 0; j < e->vnd_model_count; ++j) {

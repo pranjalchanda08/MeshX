@@ -335,6 +335,11 @@ def build(args, build_root = "build"):
                             f"-DPROD_PROFILE={args.prod_profile}",
                             f"-DELF='meshx_build_{args.bsp}'"
                         ]
+
+        if args.define:
+            # We pass these as a semicolon-separated list to MESHX_EXTRA_DEFS
+            cmake_command.append(f"-DMESHX_EXTRA_DEFS={';'.join(args.define)}")
+
         print("Running CMake command:", " ".join(cmake_command))
         # run cmake command
         subprocess.run(cmake_command, check=True)
@@ -391,6 +396,7 @@ if __name__ == "__main__":
     build_config_group.add_argument("-B", "--bsp",          choices=BSP_LIST,       default=BSP_LIST[0], help=f"Specify the BSP to use. Default is {BSP_LIST[0]}")
     build_config_group.add_argument("-N", "--prod-name",    nargs='+',              default=[],   help="Specify the product name. Defaults to all Product specified in PROD_PROFILE")
     build_config_group.add_argument("-pp", "--prod-profile",default=None,           help="Specify the product profile. Defaults to bsp_path/prod_profile.yml")
+    build_config_group.add_argument("-D", "--define",       action="append",        default=[],            help="Add compile-time definitions (e.g., -DDEBUG or -DLEVEL=5)")
     build_config_group.add_argument("--build-type",         choices=BUILD_TYPE,     default=BUILD_TYPE[0], help= "Specify the build type. Default is Debug.")
 
     target_group = parser.add_argument_group("Target Options")
