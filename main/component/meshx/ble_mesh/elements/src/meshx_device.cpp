@@ -25,7 +25,11 @@ void meshXDevice::visualize_status() {
     MESHX_LOGI(MODULE_ID_COMMON, "==================================================");
     MESHX_LOGI(MODULE_ID_COMMON, "   MESHX DEVICE STATUS VISUALIZATION");
     MESHX_LOGI(MODULE_ID_COMMON, "==================================================");
-    MESHX_LOGI(MODULE_ID_COMMON, "Device UUID: %02x%02x...%02x", pdev->uuid[0], pdev->uuid[1], pdev->uuid[15]);
+    MESHX_LOGI(MODULE_ID_COMMON, "Device UUID: %02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+               pdev->uuid[0], pdev->uuid[1], pdev->uuid[2], pdev->uuid[3],
+               pdev->uuid[4], pdev->uuid[5], pdev->uuid[6], pdev->uuid[7],
+               pdev->uuid[8], pdev->uuid[9], pdev->uuid[10], pdev->uuid[11],
+               pdev->uuid[12], pdev->uuid[13], pdev->uuid[14], pdev->uuid[15]);
     MESHX_LOGI(MODULE_ID_COMMON, "Total Elements: %zu", pdev->element_cnt);
     MESHX_LOGI(MODULE_ID_COMMON, "--------------------------------------------------");
 
