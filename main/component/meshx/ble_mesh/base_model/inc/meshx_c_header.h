@@ -39,8 +39,8 @@ extern "C" {
 #include <interface/ble_mesh/server/meshx_ble_mesh_gen_srv.h>
 #include <interface/ble_mesh/server/meshx_ble_mesh_light_srv.h>
 #include <interface/ble_mesh/server/meshx_ble_mesh_sensor_srv.h>
-#include "interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h"
-#include "interface/logging/meshx_log.h"
+#include <interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h>
+#include <interface/logging/meshx_log.h>
 
 #ifdef __cplusplus
 }
