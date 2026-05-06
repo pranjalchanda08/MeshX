@@ -58,6 +58,30 @@ meshx_err_t meshx_platform_serial_init(void);
  */
 int32_t meshx_platform_serial_read(uint8_t *data, uint16_t len);
 
+/**
+ * @brief Writes data to the console interface.
+ *
+ * @param[in] data Pointer to the data buffer.
+ * @param[in] len Length of the data to write.
+ */
+void meshx_platform_console_write(const char *data, uint16_t len);
+
+/**
+ * @brief Reads data from the console interface.
+ *
+ * @param[out] data Pointer to the data buffer.
+ * @param[in] len Length of the data to read.
+ * @return int32_t Number of bytes read, or negative error code.
+ */
+int32_t meshx_platform_console_read(uint8_t *data, uint16_t len);
+
+/**
+ * @brief Initializes the console interface.
+ * 
+ * @return meshx_err_t Returns MESHX_OK on success, or an appropriate error code.
+ */
+meshx_err_t meshx_platform_console_init(void);
+
 #ifdef __cplusplus
 }
 #endif

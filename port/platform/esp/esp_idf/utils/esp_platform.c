@@ -15,6 +15,16 @@
 #include "nvs_flash.h"
 #include "driver/uart.h"
 
+#if CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG
+#include "driver/usb_serial_jtag.h"
+#include "driver/usb_serial_jtag_vfs.h"
+#include "esp_vfs_dev.h"
+#endif
+
+#ifndef CONFIG_MESHX_CONSOLE_UART_PORT
+#define CONFIG_MESHX_CONSOLE_UART_PORT UART_NUM_0
+#endif
+
 /* UART Configuration Macros */
 #ifndef CONFIG_MXSP_UART_PORT
 #define CONFIG_MXSP_UART_PORT UART_NUM_1
@@ -137,4 +147,61 @@ void meshx_platform_serial_write(const uint8_t *data, uint16_t len)
 int32_t meshx_platform_serial_read(uint8_t *data, uint16_t len)
 {
     return uart_read_bytes(CONFIG_MXSP_UART_PORT, data, len, 20 / portTICK_PERIOD_MS);
+}
+
+meshx_err_t meshx_platform_console_init(void)
+{
+#if CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG
+    /* Disable buffering on stdin and stdout */
+    setvbuf(stdin, NULL, _IONBF, 0);
+    setvbuf(stdout, NULL, _IONBF, 0);
+
+    /* Install USB-SERIAL-JTAG driver for interrupt-driven reads */
+    usb_serial_jtag_driver_config_t usb_serial_jtag_config = USB_SERIAL_JTAG_DRIVER_CONFIG_DEFAULT();
+    esp_err_t ret = usb_serial_jtag_driver_install(&usb_serial_jtag_config);
+    if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) return MESHX_ERR_PLAT;
+
+    /* Tell VFS to use USB-SERIAL-JTAG driver */
+    usb_serial_jtag_vfs_use_driver();
+    ESP_LOGD("MESHX_PLAT", "Console initialized via USB Serial JTAG");
+
+#elif CONFIG_ESP_CONSOLE_UART
+    if (!uart_is_driver_installed(CONFIG_MESHX_CONSOLE_UART_PORT)) {
+        uart_config_t uart_config = {
+            .baud_rate = 115200,
+            .data_bits = UART_DATA_8_BITS,
+            .parity    = UART_PARITY_DISABLE,
+            .stop_bits = UART_STOP_BITS_1,
+            .flow_ctrl = UART_HW_FLOWCTRL_DISABLE,
+            .source_clk = UART_SCLK_DEFAULT,
+        };
+        ESP_ERROR_CHECK(uart_driver_install(CONFIG_MESHX_CONSOLE_UART_PORT, 1024, 0, 0, NULL, 0));
+        ESP_ERROR_CHECK(uart_param_config(CONFIG_MESHX_CONSOLE_UART_PORT, &uart_config));
+        ESP_LOGD("MESHX_PLAT", "Console initialized via UART%d", CONFIG_MESHX_CONSOLE_UART_PORT);
+    }
+#endif
+    return MESHX_SUCCESS;
+}
+
+void meshx_platform_console_write(const char *data, uint16_t len)
+{
+#if CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG
+    usb_serial_jtag_write_bytes(data, len, portMAX_DELAY);
+#elif CONFIG_ESP_CONSOLE_UART
+    uart_write_bytes(CONFIG_MESHX_CONSOLE_UART_PORT, data, len);
+#else
+    // Fallback to standard printf/fwrite if needed
+    fwrite(data, 1, len, stdout);
+#endif
+}
+
+int32_t meshx_platform_console_read(uint8_t *data, uint16_t len)
+{
+#if CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG
+    return usb_serial_jtag_read_bytes(data, len, 10 / portTICK_PERIOD_MS);
+#elif CONFIG_ESP_CONSOLE_UART
+    return uart_read_bytes(CONFIG_MESHX_CONSOLE_UART_PORT, data, len, 10 / portTICK_PERIOD_MS);
+#else
+    return -1;
+#endif
 }
