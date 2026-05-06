@@ -26,6 +26,7 @@
 #define MESHX_ADDR_BROADCAST(_addr)    (_addr == 0xFFFF)
 #define MESHX_ADDR_IS_GROUP(_addr)     ((_addr) >= 0xC000 && (_addr) <= 0xFF00)
 
+#define MESHX_ADDR_GROUP_START  0xC000
 #define MESHX_ADDR_UNASSIGNED   0x0000
 #define MESHX_KEY_UNUSED        0XFFFF
 

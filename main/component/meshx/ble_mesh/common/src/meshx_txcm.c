@@ -10,8 +10,6 @@
  *
  */
 #include "meshx.h"
-#include "sys/queue.h"
-#include "string.h"
 #include "meshx_txcm.h"
 
 #if CONFIG_TXCM_ENABLE
@@ -78,8 +76,6 @@ typedef struct {
  ****************************************************************************/
 static meshx_err_t meshx_tx_queue_is_full(const meshx_tx_queue_t *q);
 static meshx_err_t meshx_tx_queue_is_empty(const meshx_tx_queue_t *q);
-static meshx_err_t meshx_tx_queue_dequeue(meshx_tx_queue_t *q, meshx_txcm_tx_q_t *item);
-static meshx_err_t meshx_tx_queue_peek(const meshx_tx_queue_t *q, meshx_txcm_tx_q_t *item);
 static meshx_err_t meshx_tx_queue_enqueue(meshx_tx_queue_t *q, const meshx_txcm_tx_q_t *item);
 static meshx_err_t meshx_tx_queue_enqueue_front(meshx_tx_queue_t *q, const meshx_txcm_tx_q_t *item);
 
@@ -240,20 +236,6 @@ static meshx_err_t meshx_tx_queue_enqueue_front(meshx_tx_queue_t *q, const meshx
  *
  * @return meshx_err_t
  */
-static meshx_err_t meshx_tx_queue_peek(const meshx_tx_queue_t *q, meshx_txcm_tx_q_t *item)
-{
-    meshx_err_t err = MESHX_SUCCESS;
-    err = meshx_tx_queue_is_empty(q);
-    if (err == MESHX_SUCCESS)
-    {
-        return MESHX_INVALID_STATE;
-    }
-
-    // Copy the entire item structure from the q_param.
-    memcpy(item, q->q_param + q->head, sizeof(meshx_txcm_tx_q_t));
-
-    return MESHX_SUCCESS;
-}
 
 /**
  * @brief Searches for a parameter in the transmission queue.
@@ -272,6 +254,7 @@ static meshx_err_t meshx_tx_queue_peek(const meshx_tx_queue_t *q, meshx_txcm_tx_
 static meshx_err_t meshx_tx_queue_search(
     const meshx_tx_queue_t *q,
     const uint8_t *param,
+    uint16_t param_len,
     uint16_t dest_addr)
 {
     meshx_err_t err = MESHX_SUCCESS;
@@ -289,8 +272,9 @@ static meshx_err_t meshx_tx_queue_search(
         // Move tail back
         tail = (tail - 1 + MESHX_TXCM_TX_Q_LEN) % MESHX_TXCM_TX_Q_LEN;
         // compare param with q_param[tail]
-        if (strcmp((const char*)param, (const char*)q->q_param[tail].msg_param) == 0
-            && q->q_param[tail].dest_addr == dest_addr)
+        if (q->q_param[tail].msg_param_len == param_len &&
+            memcmp(param, q->q_param[tail].msg_param, param_len) == 0 &&
+            q->q_param[tail].dest_addr == dest_addr)
         {
             MESHX_LOGD(MODULE_ID_TXCM, "Found param in queue");
             return MESHX_SUCCESS;
@@ -310,22 +294,33 @@ static meshx_err_t meshx_tx_queue_search(
  *
  * @return meshx_err_t
  */
-static meshx_err_t meshx_tx_queue_dequeue(meshx_tx_queue_t *q, meshx_txcm_tx_q_t *item)
+static meshx_err_t meshx_tx_queue_dequeue_at(meshx_tx_queue_t *q, int16_t index, meshx_txcm_tx_q_t *item)
 {
-    meshx_err_t err = meshx_tx_queue_peek(q, item);
-    if (err != MESHX_SUCCESS)
+    if (q->count == 0) return MESHX_INVALID_STATE;
+
+    if (item) memcpy(item, &q->q_param[index], sizeof(meshx_txcm_tx_q_t));
+
+    // If it's the head, just use standard dequeue logic
+    if (index == q->head)
     {
-        return err;
+        q->head = (q->head + 1) % MESHX_TXCM_TX_Q_LEN;
     }
-
-    // Move head forward
-    q->head = (q->head + 1) % MESHX_TXCM_TX_Q_LEN;
-
-    // Decrement count
+    else
+    {
+        // Shift elements to fill the gap
+        int16_t current = index;
+        while (current != q->head)
+        {
+            int16_t prev = (current - 1 + MESHX_TXCM_TX_Q_LEN) % MESHX_TXCM_TX_Q_LEN;
+            memcpy(&q->q_param[current], &q->q_param[prev], sizeof(meshx_txcm_tx_q_t));
+            current = prev;
+        }
+        q->head = (q->head + 1) % MESHX_TXCM_TX_Q_LEN;
+    }
     q->count--;
-
     return MESHX_SUCCESS;
 }
+
 
 /**
  * @brief Tickles the Tx Control module to process the front of the transmission queue.
@@ -338,69 +333,84 @@ static meshx_err_t meshx_tx_queue_dequeue(meshx_tx_queue_t *q, meshx_txcm_tx_q_t
  *
  * @return meshx_err_t
  */
-static meshx_err_t meshx_txcm_msg_q_front_try_send(bool resend)
+static meshx_err_t meshx_txcm_msg_q_try_send(bool resend, uint16_t target_addr)
 {
     meshx_err_t err = MESHX_SUCCESS;
-    meshx_txcm_tx_q_t front_tx =
-    {
-        .msg_state = MESHX_TXCM_MSG_STATE_MAX
-    };
+    int16_t current = g_txcm.txcm_tx_queue.head;
+    int16_t count = g_txcm.txcm_tx_queue.count;
 
-    MESHX_LOGD(MODULE_ID_TXCM, "TXCM_Q Stat: %x|%x|%x", g_txcm.txcm_tx_queue.head, g_txcm.txcm_tx_queue.tail, g_txcm.txcm_tx_queue.count);
-    if (resend == false && (meshx_tx_queue_peek(&g_txcm.txcm_tx_queue, &front_tx) != MESHX_SUCCESS))
-    {
-        return MESHX_SUCCESS;
-    }
+    // Destinations currently waiting for ACKs
+    uint16_t blocked_addrs[MESHX_TXCM_TX_Q_LEN];
+    uint8_t blocked_count = 0;
 
-    if (!(resend || front_tx.msg_state == MESHX_TXCM_MSG_STATE_NEW))
+    for (int i = 0; i < count; i++)
     {
-        return MESHX_SUCCESS;
-    }
-    if(resend)
-    {
-        MESHX_LOGD(MODULE_ID_TXCM, "Try to send message from Tx Control Tx Queue resend|state:%d|%d", resend,front_tx.msg_state);
-    }
-    err = meshx_tx_queue_dequeue(&g_txcm.txcm_tx_queue, &front_tx);
-    if (err)
-    {
-        MESHX_LOGE(MODULE_ID_TXCM, "Failed to receive message from Tx Control Tx Queue: %p", (void *)err);
-        return err;
-    }
-
-    if ((int16_t)front_tx.retry_cnt-- <= 0)
-    {
-        front_tx.msg_state = MESHX_TXCM_MSG_STATE_NACK;
-        return MESHX_TIMEOUT;
-    }
-
-    front_tx.msg_state = MESHX_TXCM_MSG_STATE_SENDING;
-    if (front_tx.send_fn != NULL)
-    {
-        err = front_tx.send_fn(front_tx.msg_param, front_tx.msg_param_len);
-        if(err != MESHX_SUCCESS)
+        meshx_txcm_tx_q_t *item = &g_txcm.txcm_tx_queue.q_param[current];
+        if (item->msg_state == MESHX_TXCM_MSG_STATE_WAITING_ACK || item->msg_state == MESHX_TXCM_MSG_STATE_SENDING)
         {
-            front_tx.msg_state = MESHX_TXCM_MSG_STATE_NACK;
-            return err;
+            blocked_addrs[blocked_count++] = item->dest_addr;
         }
+        current = (current + 1) % MESHX_TXCM_TX_Q_LEN;
     }
 
-    if (front_tx.msg_type == MESHX_TXCM_MSG_TYPE_ACKED)
+    current = g_txcm.txcm_tx_queue.head;
+    for (int i = 0; i < count; i++)
     {
-        /* Requeue to TX Front as we are waiting for Ack */
-        front_tx.msg_state = MESHX_TXCM_MSG_STATE_WAITING_ACK;
-        err = meshx_tx_queue_enqueue_front(&g_txcm.txcm_tx_queue, &front_tx);
-        if (err)
+        meshx_txcm_tx_q_t *item = &g_txcm.txcm_tx_queue.q_param[current];
+        bool is_resend_match = resend && (item->dest_addr == target_addr && item->msg_state == MESHX_TXCM_MSG_STATE_WAITING_ACK);
+        bool is_new_runnable = !resend && (item->msg_state == MESHX_TXCM_MSG_STATE_NEW);
+
+        if (is_resend_match || is_new_runnable)
         {
-            MESHX_LOGE(MODULE_ID_TXCM, "Failed to send message to Tx Control Tx Queue: %p", (void *)err);
-            return err;
+            // Check if destination is blocked (only for NEW messages)
+            bool blocked = false;
+            if (is_new_runnable)
+            {
+                for (uint8_t b = 0; b < blocked_count; b++)
+                {
+                    if (blocked_addrs[b] == item->dest_addr) { blocked = true; break; }
+                }
+            }
+
+            if (!blocked)
+            {
+                meshx_txcm_tx_q_t active_tx;
+                err = meshx_tx_queue_dequeue_at(&g_txcm.txcm_tx_queue, current, &active_tx);
+
+                if (active_tx.retry_cnt-- <= 0)
+                {
+                    MESHX_LOGW(MODULE_ID_TXCM, "Message exhausted retries for 0x%X", active_tx.dest_addr);
+                    return MESHX_TIMEOUT;
+                }
+
+                active_tx.msg_state = MESHX_TXCM_MSG_STATE_SENDING;
+                if (active_tx.send_fn != NULL)
+                {
+                    err = active_tx.send_fn(active_tx.msg_param, active_tx.msg_param_len);
+                    if (err != MESHX_SUCCESS)
+                    {
+                        active_tx.msg_state = MESHX_TXCM_MSG_STATE_NACK;
+                        return err;
+                    }
+                }
+
+                if (active_tx.msg_type == MESHX_TXCM_MSG_TYPE_ACKED)
+                {
+                    active_tx.msg_state = MESHX_TXCM_MSG_STATE_WAITING_ACK;
+                    meshx_tx_queue_enqueue_front(&g_txcm.txcm_tx_queue, &active_tx);
+                }
+                return MESHX_SUCCESS;
+            }
         }
+        current = (current + 1) % MESHX_TXCM_TX_Q_LEN;
     }
-    else
-    {
-        /* Un-Acked msg need not to be retained */
-        MESHX_DO_NOTHING;
-    }
-    return err;
+
+    return MESHX_SUCCESS;
+}
+
+static meshx_err_t meshx_txcm_msg_q_front_try_send(bool resend)
+{
+    return meshx_txcm_msg_q_try_send(resend, 0xFFFF);
 }
 
 /**
@@ -421,7 +431,7 @@ static meshx_err_t meshx_txcm_proccess_request_msg(
     meshx_txcm_msg_type_t msg_type)
 {
     meshx_err_t err = MESHX_SUCCESS;
-    static meshx_txcm_tx_q_t new_tx;
+    meshx_txcm_tx_q_t new_tx;
 
     if (   request == NULL
         || request->send_fn == NULL
@@ -434,7 +444,7 @@ static meshx_err_t meshx_txcm_proccess_request_msg(
 
     MESHX_LOGD(MODULE_ID_TXCM, "Processing a new request");
 
-    err = meshx_tx_queue_search(&g_txcm.txcm_tx_queue, request->msg_param, request->dest_addr);
+    err = meshx_tx_queue_search(&g_txcm.txcm_tx_queue, request->msg_param, request->msg_param_len, request->dest_addr);
     if (err == MESHX_SUCCESS)
     {
         MESHX_LOGD(MODULE_ID_TXCM, "Message already in queue");
@@ -513,14 +523,13 @@ static meshx_err_t meshx_txcm_sig_direct_send(meshx_txcm_request_t *request)
  */
 static meshx_err_t meshx_txcm_sig_resend(meshx_txcm_request_t *request)
 {
-    MESHX_UNUSED(request);
     meshx_err_t err = MESHX_SUCCESS;
 
-    MESHX_LOGD(MODULE_ID_TXCM, "Processing a retry");
-    err = meshx_txcm_msg_q_front_try_send(true);
+    MESHX_LOGD(MODULE_ID_TXCM, "Processing a retry for 0x%X", request->dest_addr);
+    err = meshx_txcm_msg_q_try_send(true, request->dest_addr);
     if(err == MESHX_TIMEOUT)
     {
-        MESHX_LOGD(MODULE_ID_TXCM, "Timeout");
+        MESHX_LOGD(MODULE_ID_TXCM, "Timeout for 0x%X", request->dest_addr);
         err = control_task_msg_publish(
             CONTROL_TASK_MSG_CODE_TXCM,
             CONTROL_TASK_MSG_EVT_TXCM_MSG_TIMEOUT,
@@ -529,7 +538,7 @@ static meshx_err_t meshx_txcm_sig_resend(meshx_txcm_request_t *request)
         );
         if(err)
         {
-            MESHX_LOGE(MODULE_ID_TXCM, "Failed to process front of Tx Control Tx Queue: %p", (void *)err);
+            MESHX_LOGE(MODULE_ID_TXCM, "Failed to publish timeout: %p", (void *)err);
         }
         err = meshx_txcm_msg_q_front_try_send(false);
     }
@@ -549,30 +558,32 @@ static meshx_err_t meshx_txcm_sig_resend(meshx_txcm_request_t *request)
  */
 static meshx_err_t meshx_txcm_sig_ack(const meshx_txcm_request_t *request)
 {
-    MESHX_UNUSED(request);
     meshx_err_t err = MESHX_SUCCESS;
 
-    MESHX_LOGD(MODULE_ID_TXCM, "Processing an ack");
-    meshx_txcm_tx_q_t front_tx;
-    if(meshx_tx_queue_peek(&g_txcm.txcm_tx_queue, &front_tx) == MESHX_SUCCESS)
+    MESHX_LOGD(MODULE_ID_TXCM, "Processing an ack for 0x%X", request->dest_addr);
+
+    // Search the queue for the message matching this destination that is WAITING_ACK
+    int16_t current = g_txcm.txcm_tx_queue.head;
+    int16_t count = g_txcm.txcm_tx_queue.count;
+    bool found = false;
+
+    for (int i = 0; i < count; i++)
     {
-        if(front_tx.dest_addr == request->dest_addr)
+        meshx_txcm_tx_q_t *item = &g_txcm.txcm_tx_queue.q_param[current];
+        if (item->dest_addr == request->dest_addr && item->msg_state == MESHX_TXCM_MSG_STATE_WAITING_ACK)
         {
-            err = meshx_tx_queue_dequeue(&g_txcm.txcm_tx_queue, &front_tx);
-            if (err)
-            {
-                MESHX_LOGE(MODULE_ID_TXCM, "Failed to receive message from Tx Control Tx Queue: %p", (void *)err);
-                return err;
-            }
-            MESHX_LOGD(MODULE_ID_TXCM, "Received message from Tx Control Tx Queue");
-            front_tx.msg_state = MESHX_TXCM_MSG_STATE_ACK;
+            meshx_tx_queue_dequeue_at(&g_txcm.txcm_tx_queue, current, NULL);
+            found = true;
+            break;
         }
-        else
-        {
-            MESHX_LOGW(MODULE_ID_TXCM, "Async status received from address 0x%X", front_tx.dest_addr);
-            MESHX_DO_NOTHING;
-        }
+        current = (current + 1) % MESHX_TXCM_TX_Q_LEN;
     }
+
+    if (!found)
+    {
+        MESHX_LOGW(MODULE_ID_TXCM, "ACK received for unknown/non-pending address 0x%X", request->dest_addr);
+    }
+
     err = meshx_rtos_free(request->msg_param);
     if (err)
     {
@@ -687,7 +698,7 @@ meshx_err_t meshx_txcm_request_send(
 )
 {
     meshx_err_t err = MESHX_SUCCESS;
-    static meshx_txcm_request_t new_req;
+    meshx_txcm_request_t new_req;
     memset(&new_req, 0, sizeof(meshx_txcm_request_t));
 
     /* Prepare request message */
@@ -695,6 +706,13 @@ meshx_err_t meshx_txcm_request_send(
     new_req.send_fn       = send_fn;
     new_req.request_type  = request_type;
     new_req.msg_param_len = msg_param_len;
+
+    /* Auto-downgrade Group/Broadcast addresses to DIRECT_SEND */
+    if (dest_addr >= MESHX_ADDR_GROUP_START && new_req.request_type == MESHX_TXCM_SIG_ENQ_SEND)
+    {
+        MESHX_LOGW(MODULE_ID_TXCM, "Auto-downgrading multicast/broadcast (0x%X) to DIRECT_SEND", dest_addr);
+        new_req.request_type = MESHX_TXCM_SIG_DIRECT_SEND;
+    }
 
     if(msg_param_len != 0 && msg_param != NULL)
     {
