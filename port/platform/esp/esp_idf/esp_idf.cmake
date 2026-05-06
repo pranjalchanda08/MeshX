@@ -1,4 +1,5 @@
 set(ESP_COMMON_DIR "${CMAKE_SOURCE_DIR}/port/platform/esp/esp_idf")
+set(PARTITION_TABLE_CSV "${ESP_COMMON_DIR}/partitions.csv" CACHE STRING "partition table path")
 
 set(SDKCONFIG_DEFAULTS ${SDKCONFIG_DEFAULTS} "${ESP_COMMON_DIR}/sdkconfig.defaults.ble_mesh")
 
