@@ -51,10 +51,9 @@ typedef struct callback_node {
 } unit_test_callback_t;
 
 /**
- * @brief Registers the unit test (ut) command with the ESP console.
+ * @brief Registers the unit test (ut) command with the MeshX shell.
  *
- * This function creates a new console command "ut" which is used for running unit tests.
- * The command is registered with the ESP console using the esp_console_cmd_register function.
+ * This function creates a new shell command "ut" which is used for running unit tests.
  *
  * @return
  *     - MESHX_SUCCESS: Success
@@ -63,9 +62,9 @@ typedef struct callback_node {
 meshx_err_t register_ut_command();
 
 /**
- * @brief Initialize the production console.
+ * @brief Initialize the unit test console.
  *
- * This function initializes the production console for the application.
+ * This function initializes the unit test console for the application using the underlying shell.
  *
  * @return
  *    - MESHX_SUCCESS: Success
