@@ -11,7 +11,7 @@
 
 #include "unit_test.h"
 #include "interface/logging/meshx_log.h"
-#include "esp_console.h"
+#include "interface/utils/meshx_shell.h"
 
 #if CONFIG_ENABLE_UNIT_TEST
 
@@ -33,7 +33,7 @@ static unit_test_callback_t callback_list[MODULE_ID_MAX];
  *      - MESHX_INVALID_ARG: If the number of arguments is insufficient.
  *      - MESHX_NOT_FOUND: If no unit test is registered for the specified module ID.
  */
-static meshx_err_t ut_command_handler(int argc, char **argv) {
+static int ut_command_handler(int argc, char **argv) {
     if (argc < UT_CMD_MIN_ARGS) {
         MESHX_LOGE(MODULE_ID_COMMON, "Insufficient arguments");
         return MESHX_INVALID_ARG;
@@ -69,69 +69,45 @@ static meshx_err_t ut_command_handler(int argc, char **argv) {
 }
 
 /**
- * @brief Registers the unit test (ut) command with the ESP console.
+ * @brief Registers the unit test (ut) command with the MeshX shell.
  *
  * This function creates a new console command "ut" which is used for running unit tests.
- * The command is registered with the ESP console using the esp_console_cmd_register function.
  *
  * @return
  *     - MESHX_SUCCESS: Success
  *     - Other error codes: Failure
  */
 meshx_err_t register_ut_command() {
-    const esp_console_cmd_t cmd = {
+    const meshx_shell_cmd_t cmd = {
         .command = "ut",
         .help = "Run unit tests",
         .hint = NULL,
-        .func = (esp_console_cmd_func_t)&ut_command_handler,
+        .func = ut_command_handler,
     };
-    return esp_console_cmd_register(&cmd);
+    return meshx_shell_register_command(&cmd);
 }
 
- /* @brief Registers the unit test (ut) command with the ESP console.
- *
- * This function creates a new console command "ut" which is used for running unit tests.
- * The command is registered with the ESP console using the esp_console_cmd_register function.
+/**
+ * @brief Initializes the unit test console using the platform shell.
  *
  * @return
  *     - MESHX_SUCCESS: Success
  *     - Other error codes: Failure
  */
 meshx_err_t init_unit_test_console() {
-    // Initialize the console
-    meshx_err_t err = MESHX_SUCCESS;
-    esp_console_repl_t *repl = NULL;
-    esp_console_repl_config_t repl_config = ESP_CONSOLE_REPL_CONFIG_DEFAULT();
+    meshx_err_t err = meshx_shell_init();
+    if (err != MESHX_SUCCESS) {
+        return err;
+    }
 
-    repl_config.prompt = "X>";
-
-    // install console REPL environment
-#if CONFIG_ESP_CONSOLE_UART
-    esp_console_dev_uart_config_t uart_config = ESP_CONSOLE_DEV_UART_CONFIG_DEFAULT();
-    ESP_ERROR_CHECK(esp_console_new_repl_uart(&uart_config, &repl_config, &repl));
-#endif
-#if CONFIG_ESP_CONSOLE_USB_CDC
-    esp_console_dev_usb_cdc_config_t cdc_config = ESP_CONSOLE_DEV_CDC_CONFIG_DEFAULT();
-    ESP_ERROR_CHECK(esp_console_new_repl_usb_cdc(&cdc_config, &repl_config, &repl));
-#endif
-#if CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG
-    esp_console_dev_usb_serial_jtag_config_t usbjtag_config = ESP_CONSOLE_DEV_USB_SERIAL_JTAG_CONFIG_DEFAULT();
-    ESP_ERROR_CHECK(esp_console_new_repl_usb_serial_jtag(&usbjtag_config, &repl_config, &repl));
-#endif
-
-    // Register the unit test command
     err = register_ut_command();
     if (err != MESHX_SUCCESS) {
         return err;
     }
 
-    err = esp_console_start_repl(repl);
-    if (err != MESHX_SUCCESS) {
-        return err;
-    }
-
-    return MESHX_SUCCESS;
+    return meshx_shell_start();
 }
+
 
 /**
  * @brief Register a unit test for a specific module.
