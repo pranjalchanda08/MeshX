@@ -50,6 +50,7 @@ typedef enum
     MESHX_NOT_FOUND,     /**< Not Found */
     MESHX_NOT_SUPPORTED, /**< Not Supported */
     MESHX_TIMEOUT,       /**< Timeout */
+    MESHX_ERR_NOT_INIT,  /**< Not Initialized */
     MESHX_ERR_MAX        /**< Maximum Error */
 } meshx_err_t;
 

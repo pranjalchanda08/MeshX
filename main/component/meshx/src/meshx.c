@@ -332,13 +332,9 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     CONFIG_MESHX_LOG_PRINTF(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_CYAN) "%s" LOG_ANSI_COLOR_RESET, meshX_banner);
 
 #if CONFIG_ENABLE_UNIT_TEST
-    /* Register unit test command */
-    err = register_ut_command();
-    MESHX_ERR_PRINT_RET("Failed to register unit test command", err);
-
-    /* Initialize unit test console */
+    /* Initialize unit test console (this also registers the 'ut' command) */
     err = init_unit_test_console();
-    MESHX_ERR_PRINT_RET("Failed to initialize production console", err);
+    MESHX_ERR_PRINT_RET("Failed to initialize unit test console", err);
 #endif /* CONFIG_ENABLE_UNIT_TEST */
 
     return err;
