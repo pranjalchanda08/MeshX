@@ -13,6 +13,10 @@
 
 #include <meshx_control_task.h>
 
+#ifndef CONFIG_CT_DEBUG_LOG
+#define CONFIG_CT_DEBUG_LOG 0
+#endif /* CONFIG_CT_DEBUG_LOG */
+
 static void control_task_handler(void *args);
 
 /**
@@ -74,10 +78,12 @@ meshx_err_t control_task_msg_publish(control_task_msg_code_t msg_code,
         MESHX_LOGE(MODULE_ID_COMMON, "Invalid message code or event");
         return MESHX_INVALID_ARG;
     }
+#if CONFIG_CT_DEBUG_LOG
 #if CONFIG_MESHX_DEFAULT_LOG_LEVEL <= MESHX_LOG_DEBUG
     void *caller_addr0 = __builtin_return_address(0);
 #endif /* CONFIG_MESHX_DEFAULT_LOG_LEVEL <= MESHX_LOG_DEBUG */
     MESHX_LOGD(MODULE_ID_COMMON, "fn_address|msg|evt: %p|%p|%p", caller_addr0, (void *)msg_code, (void *)msg_evt);
+#endif /* CONFIG_CT_DEBUG_LOG */
 
     if (sizeof_msg_evt_params != 0)
     {
@@ -208,7 +214,9 @@ static meshx_err_t control_task_msg_dispatch(
         return MESHX_INVALID_STATE;
     }
 
+#if CONFIG_CT_DEBUG_LOG
     MESHX_LOGD(MODULE_ID_COMMON, "msg|evt: %p|%p", (void *)msg_code, (void *)evt);
+#endif /* CONFIG_CT_DEBUG_LOG */
 
     while (ptr)
     {

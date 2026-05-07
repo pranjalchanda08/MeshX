@@ -15,10 +15,7 @@
  */
 
 #include <light_model/meshx_model_ctl.hpp>
- 
-extern "C" {
-#include "meshx_light_ctl_srv.h"
-}
+
 
 #if CONFIG_ENABLE_LIGHT_CTL_CLIENT
 /**

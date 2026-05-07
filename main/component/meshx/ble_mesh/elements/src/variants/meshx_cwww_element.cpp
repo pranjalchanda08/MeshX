@@ -8,8 +8,6 @@
  */
 
 #include <cstring>
-#include <meshx_api.h>
-#include <meshx_nvs.h>
 #include <meshx_element_factory.hpp>
 #include <meshx_element_registry.hpp>
 #include <variants/meshx_cwww_element.hpp>
@@ -20,29 +18,18 @@
 extern "C" {
 #endif
 #if CONFIG_ENABLE_CONFIG_SERVER
-#include "meshx_config_server.h"
 #define CONFIG_SERVER_CB_MASK   \
     CONTROL_TASK_MSG_EVT_PUB_ADD  \
   | CONTROL_TASK_MSG_EVT_PUB_DEL  \
   | CONTROL_TASK_MSG_EVT_APP_KEY_BIND
 #endif
 #if CONFIG_ENABLE_PROVISIONING
-#include "meshx_prov_srv.h"
 #endif
 #ifdef __cplusplus
 }
 #endif
 
-typedef enum {
-    MESHX_GEN_ON_OFF_CLI_MSG_SET = 0,
-    MESHX_GEN_ON_OFF_CLI_MSG_GET
-} meshx_gen_on_off_cli_msg_type_t;
 
-typedef struct meshx_gen_on_off_cli_msg {
-    uint16_t element_id;
-    bool ack;
-    meshx_gen_on_off_cli_msg_type_t set_get;
-} meshx_gen_on_off_cli_msg_t;
 
 typedef struct meshx_light_ctl_cli_msg {
     uint16_t element_id;
@@ -60,31 +47,6 @@ typedef struct meshx_light_ctl_cli_msg {
  ************************************************************************************/
 #if CONFIG_LIGHT_CWWW_SRV_COUNT > 0
 
-std::once_flag meshXCWWWServerElement::s_callbacks_registered;
-
-void meshXCWWWServerElement::register_class_callbacks()
-{
-    meshx_err_t err;
-#if CONFIG_ENABLE_CONFIG_SERVER
-    err = meshx_config_server_cb_reg(
-        (config_srv_cb_t)&meshXCWWWServerElement::s_config_srv_cb,
-        CONFIG_SERVER_CB_MASK);
-    if (err)
-        MESHX_LOGE(MODULE_ID_ELEMENT_LIGHT_CWWW_SERVER, "CWWW Srv: cfg cb reg failed: %d", err);
-#endif
-#if CONFIG_ENABLE_PROVISIONING
-    err = meshx_prov_srv_reg_el_server_cb(
-        (prov_srv_cb_t)&meshXCWWWServerElement::s_prov_cb);
-    if (err)
-        MESHX_LOGE(MODULE_ID_ELEMENT_LIGHT_CWWW_SERVER, "CWWW Srv: prov cb reg failed: %d", err);
-#endif
-    err = control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_TO_BLE,
-        (CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV | CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV),
-        (control_task_msg_handle_t)&meshXCWWWServerElement::s_to_ble_cb);
-    if (err)
-        MESHX_LOGE(MODULE_ID_ELEMENT_LIGHT_CWWW_SERVER, "CWWW Srv: to_ble cb reg failed: %d", err);
-}
 
 MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
 meshXCWWWServerElement::meshXCWWWServerElement(uint16_t element_idx)
@@ -92,7 +54,12 @@ meshXCWWWServerElement::meshXCWWWServerElement(uint16_t element_idx)
 {
     this->register_element_ctx(&element_ctx, sizeof(meshx_cwww_srv_el_ctx_t));
     this->set_element_variant(MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER);
-    std::call_once(s_callbacks_registered, register_class_callbacks);
+
+    /* Subscribe to BLE events for this element type */
+    control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_TO_BLE,
+        (CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV | CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL_SRV),
+        (control_task_msg_handle_t)&meshXCWWWServerElement::s_to_ble_cb);
 }
 
 MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
@@ -173,131 +140,66 @@ meshx_err_t meshXCWWWServerElement::element_state_change_notify(meshx_ptr_t para
                                  func_id, sizeof(app_evt), &app_evt);
 }
 
-/* Task C: config server callback */
-#if CONFIG_ENABLE_CONFIG_SERVER
-MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXCWWWServerElement::s_config_srv_cb(
-        const dev_struct_t              *pdev,
-        control_task_msg_evt_t           evt,
-        const meshx_config_srv_cb_param_t *params)
+void meshXCWWWServerElement::sync(control_task_msg_evt_t evt)
 {
-    MESHX_UNUSED(pdev);
-    if (!params) return MESHX_INVALID_ARG;
-
-    uint16_t element_id = 0;
-    bool     save   = false;
-
-    switch (evt)
-    {
-    case CONTROL_TASK_MSG_EVT_APP_KEY_BIND:
-        element_id = params->state_change.mod_app_bind.element_addr;
-        break;
-    case CONTROL_TASK_MSG_EVT_PUB_ADD:
-    case CONTROL_TASK_MSG_EVT_PUB_DEL:
-        element_id = params->state_change.mod_pub_set.element_addr;
-        break;
-    default: break;
-    }
-
-    auto *el = meshXElementRegistry::get_instance().find_and_cast<meshXCWWWServerElement>(
-        element_id, MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER);
-    if (!el) return MESHX_SUCCESS;
-
-    if (evt == CONTROL_TASK_MSG_EVT_APP_KEY_BIND)
-    {
-        el->element_ctx.app_id = params->state_change.mod_app_bind.app_idx;
-        save = true;
-    }
-    else if (evt == CONTROL_TASK_MSG_EVT_PUB_ADD || evt == CONTROL_TASK_MSG_EVT_PUB_DEL)
-    {
-        el->element_ctx.pub_addr =
-            (evt == CONTROL_TASK_MSG_EVT_PUB_ADD)
-            ? params->state_change.mod_pub_set.pub_addr : MESHX_ADDR_UNASSIGNED;
-        el->element_ctx.app_id = params->state_change.mod_pub_set.app_idx;
-        save = true;
-    }
-
-    if (save)
-    {
-        meshx_nvs_element_ctx_set(element_id, MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER, &el->element_ctx,
-                                   sizeof(meshx_cwww_srv_el_ctx_t));
-    }
-    return MESHX_SUCCESS;
-}
-#endif
-
-/* Task D: provisioning callback — re-publish OnOff + CTL after provisioning */
-#if CONFIG_ENABLE_PROVISIONING
-MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXCWWWServerElement::s_prov_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
-{
-    MESHX_UNUSED(params);
-    if (!pdev) return MESHX_INVALID_ARG;
-
+    MESHX_LOGD(MODULE_ID_ELEMENT_LIGHT_CWWW_SERVER, "CWWW Srv [%d] sync event: %d", get_element_idx(), evt);
     if (evt == CONTROL_TASK_MSG_EVT_SYSTEM_STACK_READY)
     {
-        if (!meshx_prov_srv_is_provisioned())
-        {
-            return MESHX_SUCCESS;
-        }
+        if (!meshx_prov_srv_is_provisioned()) return;
+        if (element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED) return;
 
-        auto elements = meshXElementRegistry::get_instance().get_all_elements();
-        for (auto const& [abs_id, base_el] : elements)
-        {
-            if (!base_el || base_el->get_element_variant() != MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER) continue;
-            auto *el = static_cast<meshXCWWWServerElement *>(base_el);
-            if (el->element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED) continue;
-
-            auto &models = el->get_sig_models();
+        auto &models = this->get_sig_models();
 
 #if CONFIG_ENABLE_GEN_ONOFF_SERVER
-            auto *onoff  = static_cast<meshXGenericOnOffServerModel *>(models[0].get());
-            meshx_model_t model_ref = { .el_id    = abs_id,
-                                        .model_id = (uint16_t)onoff->get_model_id(),
-                                        .pub_addr = el->element_ctx.pub_addr,
-                                        .p_model  = (MESHX_MODEL*)onoff->get_plat_model() };
+        auto *onoff  = static_cast<meshXGenericOnOffServerModel *>(models[0].get());
+        meshx_model_t model_ref = { .el_id    = this->get_element_idx(),
+                                    .model_id = (uint16_t)onoff->get_model_id(),
+                                    .pub_addr = element_ctx.pub_addr,
+                                    .p_model  = (MESHX_MODEL*)onoff->get_plat_model() };
 
-            meshx_ctx_t ctx = { .app_idx  = el->element_ctx.app_id,
-                                .net_idx  = pdev->meshx_store.net_key_id,
-                                .opcode   = MESHX_MODEL_OP_GEN_ONOFF_STATUS,
-                                .src_addr = 0,
-                                .dst_addr = el->element_ctx.pub_addr,
-                                .p_ctx    = nullptr };
-            meshx_gen_onoff_send_params_t sp = {
-                .model = &model_ref, .ctx = &ctx,
-                .state = { .on_off = el->element_ctx.gen_on_off_state.on_off },
-                .tid = 0 };
-            onoff->model_send(&sp);
+        meshx_ctx_t ctx = { .app_idx  = element_ctx.app_id,
+                            .net_idx  = meshx_get_net_key_id(),
+                            .opcode   = MESHX_MODEL_OP_GEN_ONOFF_STATUS,
+                            .src_addr = 0,
+                            .dst_addr = element_ctx.pub_addr,
+                            .p_ctx    = nullptr };
+        meshx_gen_onoff_send_params_t sp = {
+            .model = &model_ref, .ctx = &ctx,
+            .state = { .on_off = element_ctx.gen_on_off_state.on_off },
+            .tid = 0 };
+        onoff->model_send(&sp);
 #endif
 
 #if CONFIG_ENABLE_LIGHT_CTL_SERVER
-            auto *ctl = static_cast<meshXLightCTLServerModel *>(models[1].get());
-            meshx_model_t model_ref_ctl = { .el_id    = abs_id,
-                                            .model_id = ctl->get_model_id(),
-                                            .pub_addr = el->element_ctx.pub_addr,
-                                            .p_model  = (MESHX_MODEL*)ctl->get_plat_model() };
+        auto *ctl = static_cast<meshXLightCTLServerModel *>(models[1].get());
+        meshx_model_t model_ref_ctl = { .el_id    = this->get_element_idx(),
+                                        .model_id = ctl->get_model_id(),
+                                        .pub_addr = element_ctx.pub_addr,
+                                        .p_model  = (MESHX_MODEL*)ctl->get_plat_model() };
 
-            meshx_ctx_t ctl_ctx = { .app_idx  = el->element_ctx.app_id,
-                                    .net_idx  = pdev->meshx_store.net_key_id,
-                                    .opcode   = MESHX_MODEL_OP_LIGHT_CTL_STATUS,
-                                    .src_addr = 0,
-                                    .dst_addr = el->element_ctx.pub_addr,
-                                    .p_ctx    = nullptr };
-            meshx_light_ctl_send_params_t cp = {
-                .model = &model_ref_ctl, .ctx = &ctl_ctx,
-                .tid = 0,
-                .state = { .lightness   = el->element_ctx.light_ctl_state.lightness,
-                           .temperature = el->element_ctx.light_ctl_state.temperature,
-                           .delta_uv    = el->element_ctx.light_ctl_state.delta_uv,
-                           .temp_range_min = 0,
-                           .temp_range_max = 0 } };
-            ctl->model_send(&cp);
+        meshx_ctx_t ctl_ctx = { .app_idx  = element_ctx.app_id,
+                                .net_idx  = meshx_get_net_key_id(),
+                                .opcode   = MESHX_MODEL_OP_LIGHT_CTL_STATUS,
+                                .src_addr = 0,
+                                .dst_addr = element_ctx.pub_addr,
+                                .p_ctx    = nullptr };
+        meshx_light_ctl_send_params_t cp = {
+            .model = &model_ref_ctl, .ctx = &ctl_ctx,
+            .tid = 0,
+            .state = { .lightness   = element_ctx.light_ctl_state.lightness,
+                       .temperature = element_ctx.light_ctl_state.temperature,
+                       .delta_uv    = element_ctx.light_ctl_state.delta_uv,
+                       .temp_range_min = 0,
+                       .temp_range_max = 0 } };
+        ctl->model_send(&cp);
 #endif
-        }
     }
-    return MESHX_SUCCESS;
 }
-#endif
+
+void meshXCWWWServerElement::handle_config(control_task_msg_evt_t evt, const meshx_config_srv_cb_param_t *params)
+{
+    MESHX_LOGD(MODULE_ID_ELEMENT_LIGHT_CWWW_SERVER, "CWWW Server [%d] Config Evt: %d", get_element_idx(), evt);
+}
 
 /* Task E: TO_BLE server — no-op; app-driven sends go via client elements */
 MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
@@ -314,31 +216,6 @@ meshx_err_t meshXCWWWServerElement::s_to_ble_cb(const dev_struct_t *pdev, contro
  ************************************************************************************/
 #if CONFIG_LIGHT_CWWW_CLIENT_COUNT > 0
 
-std::once_flag meshXCWWWClientElement::s_callbacks_registered;
-
-void meshXCWWWClientElement::register_class_callbacks()
-{
-    meshx_err_t err;
-#if CONFIG_ENABLE_CONFIG_SERVER
-    err = meshx_config_server_cb_reg(
-        (config_srv_cb_t)&meshXCWWWClientElement::s_config_srv_cb,
-        CONFIG_SERVER_CB_MASK);
-    if (err)
-        MESHX_LOGE(MODULE_ID_ELEMENT_LIGHT_CWWW_CLIENT, "CWWW Cli: cfg cb reg failed: %d", err);
-#endif
-#if CONFIG_ENABLE_PROVISIONING
-    err = meshx_prov_srv_reg_el_client_cb(
-        (prov_srv_cb_t)&meshXCWWWClientElement::s_prov_cb);
-    if (err)
-        MESHX_LOGE(MODULE_ID_ELEMENT_LIGHT_CWWW_CLIENT, "CWWW Cli: prov cb reg failed: %d", err);
-#endif
-    err = control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_TO_BLE,
-        CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF | CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL,
-        (control_task_msg_handle_t)&meshXCWWWClientElement::s_to_ble_cb);
-    if (err)
-        MESHX_LOGE(MODULE_ID_ELEMENT_LIGHT_CWWW_CLIENT, "CWWW Cli: to_ble cb reg failed: %d", err);
-}
 
 MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
 meshXCWWWClientElement::meshXCWWWClientElement(uint16_t element_idx)
@@ -346,7 +223,12 @@ meshXCWWWClientElement::meshXCWWWClientElement(uint16_t element_idx)
 {
     this->register_element_ctx(&element_ctx, sizeof(meshx_cwww_cli_el_ctx_t));
     this->set_element_variant(MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT);
-    std::call_once(s_callbacks_registered, register_class_callbacks);
+
+    /* Subscribe to BLE events for this element type */
+    control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_TO_BLE,
+        CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF | CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL,
+        (control_task_msg_handle_t)&meshXCWWWClientElement::s_to_ble_cb);
 }
 
 MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
@@ -419,120 +301,60 @@ meshx_err_t meshXCWWWClientElement::element_state_change_notify(meshx_ptr_t para
                                  func_id, sizeof(app_evt), &app_evt);
 }
 
-/* Task C: config server callback */
-#if CONFIG_ENABLE_CONFIG_SERVER
-MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXCWWWClientElement::s_config_srv_cb(
-        const dev_struct_t              *pdev,
-        control_task_msg_evt_t           evt,
-        const meshx_config_srv_cb_param_t *params)
+void meshXCWWWClientElement::sync(control_task_msg_evt_t evt)
 {
-    MESHX_UNUSED(pdev);
-    if (!params) return MESHX_INVALID_ARG;
-
-    uint16_t element_id = 0;
-    bool     save   = false;
-
-    switch (evt)
-    {
-    case CONTROL_TASK_MSG_EVT_APP_KEY_BIND:
-        element_id = params->state_change.mod_app_bind.element_addr;
-        break;
-    case CONTROL_TASK_MSG_EVT_PUB_ADD:
-    case CONTROL_TASK_MSG_EVT_PUB_DEL:
-        element_id = params->state_change.mod_pub_set.element_addr;
-        break;
-    default: break;
-    }
-
-    auto *el = meshXElementRegistry::get_instance().find_and_cast<meshXCWWWClientElement>(
-        element_id, MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT);
-    if (!el) return MESHX_SUCCESS;
-
-    if (evt == CONTROL_TASK_MSG_EVT_APP_KEY_BIND)
-    {
-        el->element_ctx.app_id = params->state_change.mod_app_bind.app_idx;
-        save = true;
-    }
-    else if (evt == CONTROL_TASK_MSG_EVT_PUB_ADD || evt == CONTROL_TASK_MSG_EVT_PUB_DEL)
-    {
-        el->element_ctx.pub_addr =
-            (evt == CONTROL_TASK_MSG_EVT_PUB_ADD)
-            ? params->state_change.mod_pub_set.pub_addr : MESHX_ADDR_UNASSIGNED;
-        el->element_ctx.app_id = params->state_change.mod_pub_set.app_idx;
-        save = true;
-    }
-
-    if (save)
-    {
-        meshx_nvs_element_ctx_set(element_id, MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT, &el->element_ctx,
-                                   sizeof(meshx_cwww_cli_el_ctx_t));
-    }
-    return MESHX_SUCCESS;
-}
-#endif
-
-/* Task D: provisioning client callback — send GET to refresh server state */
-#if CONFIG_ENABLE_PROVISIONING
-MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXCWWWClientElement::s_prov_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
-{
-    MESHX_UNUSED(params);
-    if (!pdev) return MESHX_INVALID_ARG;
-
     if (evt == CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT)
     {
-        auto elements = meshXElementRegistry::get_instance().get_all_elements();
-        for (auto const& [abs_id, base_el] : elements)
-        {
-            if (!base_el || base_el->get_element_variant() != MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT) continue;
-            auto *el = static_cast<meshXCWWWClientElement *>(base_el);
-            if (!el || el->element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED) continue;
+        if (!meshx_prov_srv_is_provisioned()) return;
+        if (element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED) return;
 
-            auto &models = el->get_sig_models();
-            auto *onoff  = static_cast<meshXGenericOnOffClientModel *>(models[0].get());
-            auto *ctl    = static_cast<meshXLightCTLClientModel *>(models[1].get());
+        auto &models = this->get_sig_models();
+        auto *onoff  = static_cast<meshXGenericOnOffClientModel *>(models[0].get());
+        auto *ctl    = static_cast<meshXLightCTLClientModel *>(models[1].get());
+
+        meshx_model_t model_ref = { .el_id    = this->get_element_idx(),
+                                    .model_id = 0,
+                                    .pub_addr = element_ctx.pub_addr,
+                                    .p_model  = nullptr };
 
 #if CONFIG_ENABLE_GEN_ONOFF_CLIENT
-            meshx_model_t model_ref = { .el_id    = abs_id,
-                                        .model_id = 0,
-                                        .pub_addr = el->element_ctx.pub_addr,
-                                        .p_model  = nullptr };
-            meshx_ctx_t ctx = { .app_idx  = el->element_ctx.app_id,
-                                .net_idx  = pdev->meshx_store.net_key_id,
-                                .opcode   = MESHX_MODEL_OP_GEN_ONOFF_GET,
-                                .src_addr = 0,
-                                .dst_addr = el->element_ctx.pub_addr,
-                                .p_ctx    = nullptr };
-            meshx_gen_onoff_send_params_t sp = {
-                .model = &model_ref, .ctx = &ctx,
-                .state = { .on_off = el->element_ctx.gen_on_off_state.on_off },
-                .tid = 0 };
-            onoff->model_send(&sp);
+        meshx_ctx_t ctx = { .app_idx  = element_ctx.app_id,
+                            .net_idx  = meshx_get_net_key_id(),
+                            .opcode   = MESHX_MODEL_OP_GEN_ONOFF_GET,
+                            .src_addr = 0,
+                            .dst_addr = element_ctx.pub_addr,
+                            .p_ctx    = nullptr };
+        meshx_gen_onoff_send_params_t sp = {
+            .model = &model_ref, .ctx = &ctx,
+            .state = { .on_off = element_ctx.gen_on_off_state.on_off },
+            .tid = 0 };
+        onoff->model_send(&sp);
 #endif
 
 #if CONFIG_ENABLE_LIGHT_CTL_CLIENT
-            meshx_ctx_t ctl_ctx = { .app_idx  = el->element_ctx.app_id,
-                                    .net_idx  = pdev->meshx_store.net_key_id,
-                                    .opcode   = MESHX_MODEL_OP_LIGHT_CTL_GET,
-                                    .src_addr = 0,
-                                    .dst_addr = el->element_ctx.pub_addr,
-                                    .p_ctx    = nullptr };
-            meshx_light_ctl_send_params_t cp = {
-                .model = &model_ref, .ctx = &ctl_ctx,
-                .tid = 0,
-                .state = { .lightness   = el->element_ctx.light_ctl_state.lightness,
-                           .temperature = el->element_ctx.light_ctl_state.temperature,
-                           .delta_uv    = el->element_ctx.light_ctl_state.delta_uv,
-                           .temp_range_min = 0,
-                           .temp_range_max = 0 } };
-            ctl->model_send(&cp);
+        meshx_ctx_t ctl_ctx = { .app_idx  = element_ctx.app_id,
+                                .net_idx  = meshx_get_net_key_id(),
+                                .opcode   = MESHX_MODEL_OP_LIGHT_CTL_GET,
+                                .src_addr = 0,
+                                .dst_addr = element_ctx.pub_addr,
+                                .p_ctx    = nullptr };
+        meshx_light_ctl_send_params_t cp = {
+            .model = &model_ref, .ctx = &ctl_ctx,
+            .tid = 0,
+            .state = { .lightness   = element_ctx.light_ctl_state.lightness,
+                       .temperature = element_ctx.light_ctl_state.temperature,
+                       .delta_uv    = element_ctx.light_ctl_state.delta_uv,
+                       .temp_range_min = 0,
+                       .temp_range_max = 0 } };
+        ctl->model_send(&cp);
 #endif
-        }
     }
-    return MESHX_SUCCESS;
 }
-#endif
+
+void meshXCWWWClientElement::handle_config(control_task_msg_evt_t evt, const meshx_config_srv_cb_param_t *params)
+{
+    MESHX_LOGD(MODULE_ID_ELEMENT_LIGHT_CWWW_CLIENT, "CWWW Client [%d] Config Evt: %d", get_element_idx(), evt);
+}
 
 /* Task E: TO_BLE client handler */
 MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO

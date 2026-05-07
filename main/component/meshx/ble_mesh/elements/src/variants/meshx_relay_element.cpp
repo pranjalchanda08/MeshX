@@ -21,8 +21,6 @@
 #include "meshx_element_factory.hpp"
 #include "meshx_element_registry.hpp"
 #include <new>
-#include <meshx_nvs.h>
-#include <meshx_api.h>
 
 #if CONFIG_ENABLE_UNIT_TEST
 extern "C" {
@@ -36,16 +34,13 @@ extern "C" {
 #ifdef __cplusplus
 extern "C" {
 #endif
-#include "meshx_gen_client.h"
 #if CONFIG_ENABLE_CONFIG_SERVER
-#include "meshx_config_server.h"
 #define CONFIG_SERVER_CB_MASK   \
     CONTROL_TASK_MSG_EVT_PUB_ADD  \
   | CONTROL_TASK_MSG_EVT_PUB_DEL  \
   | CONTROL_TASK_MSG_EVT_APP_KEY_BIND
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
 #if CONFIG_ENABLE_PROVISIONING
-#include "meshx_prov_srv.h"
 #endif /* CONFIG_ENABLE_PROVISIONING */
 #ifdef __cplusplus
 }
@@ -61,50 +56,9 @@ extern "C" {
  ************************************************************************************/
 #if CONFIG_RELAY_SERVER_COUNT > 0
 
-std::once_flag meshXRelayServerElement::s_callbacks_registered;
-
 /**
  * @brief Register class-level callbacks (called exactly once via once_flag).
  */
-void meshXRelayServerElement::register_class_callbacks()
-{
-    meshx_err_t err;
-
-#if CONFIG_ENABLE_CONFIG_SERVER
-    err = meshx_config_server_cb_reg(
-        (config_srv_cb_t)&meshXRelayServerElement::s_config_srv_cb,
-        CONFIG_SERVER_CB_MASK);
-    if (err)
-    {
-        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER,
-                   "Relay Srv: config server cb reg failed: %d", err);
-    }
-#endif
-
-#if CONFIG_ENABLE_PROVISIONING
-    err = meshx_prov_srv_reg_el_server_cb(
-        (prov_srv_cb_t)&meshXRelayServerElement::s_prov_cb);
-    if (err)
-    {
-        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER,
-                   "Relay Srv: prov cb reg failed: %d", err);
-    }
-#endif
-
-    err = control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_TO_BLE,
-        RELAY_SRV_TO_BLE_EVT_MASK,
-        (control_task_msg_handle_t)&meshXRelayServerElement::s_to_ble_cb);
-    if (err)
-    {
-        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER,
-                   "Relay Srv: to_ble cb reg failed: %d", err);
-    }
-
-#if CONFIG_ENABLE_UNIT_TEST
-    register_unit_test(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, relay_srv_ut_handler);
-#endif
-}
 
 /**
  * @brief Constructs a new meshXRelayServerElement instance.
@@ -121,7 +75,15 @@ meshXRelayServerElement::meshXRelayServerElement (uint16_t element_idx)
 
     this->register_element_ctx(&element_ctx, sizeof(meshx_relay_srv_el_ctx_t));
     this->set_element_variant(MESHX_ELEMENT_TYPE_RELAY_SERVER);
-    std::call_once(s_callbacks_registered, register_class_callbacks);
+
+    control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_TO_BLE,
+        RELAY_SRV_TO_BLE_EVT_MASK,
+        (control_task_msg_handle_t)&meshXRelayServerElement::s_to_ble_cb);
+
+#if CONFIG_ENABLE_UNIT_TEST
+    register_unit_test(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, relay_srv_ut_handler);
+#endif
 }
 
 /**
@@ -184,118 +146,40 @@ meshx_err_t meshXRelayServerElement::element_state_change_notify(meshx_ptr_t par
         &app_evt);
 }
 
-/* Task C — Config server callback (appkey bind + publication address) */
-#if CONFIG_ENABLE_CONFIG_SERVER
-MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXRelayServerElement::s_config_srv_cb(
-        const dev_struct_t              *pdev,
-        control_task_msg_evt_t           evt,
-        const meshx_config_srv_cb_param_t *params)
+void meshXRelayServerElement::handle_config(control_task_msg_evt_t evt, const meshx_config_srv_cb_param_t *params)
 {
-    MESHX_UNUSED(pdev);
-    if (!params) return MESHX_INVALID_ARG;
-
-    uint16_t element_id = 0;
-    bool     save   = false;
-
-    switch (evt)
-    {
-    case CONTROL_TASK_MSG_EVT_APP_KEY_BIND:
-        element_id = params->state_change.mod_app_bind.element_addr;
-        break;
-    case CONTROL_TASK_MSG_EVT_PUB_ADD:
-    case CONTROL_TASK_MSG_EVT_PUB_DEL:
-        element_id = params->state_change.mod_pub_set.element_addr;
-        break;
-    default: break;
-    }
-
-    auto *el = meshXElementRegistry::get_instance().find_and_cast<meshXRelayServerElement>(
-        element_id, MESHX_ELEMENT_TYPE_RELAY_SERVER);
-    if (!el) return MESHX_SUCCESS;
-
-    if (evt == CONTROL_TASK_MSG_EVT_APP_KEY_BIND)
-    {
-        el->element_ctx.app_id = params->state_change.mod_app_bind.app_idx;
-        save = true;
-    }
-    else if (evt == CONTROL_TASK_MSG_EVT_PUB_ADD || evt == CONTROL_TASK_MSG_EVT_PUB_DEL)
-    {
-        el->element_ctx.pub_addr =
-            (evt == CONTROL_TASK_MSG_EVT_PUB_ADD)
-            ? params->state_change.mod_pub_set.pub_addr : MESHX_ADDR_UNASSIGNED;
-        el->element_ctx.app_id = params->state_change.mod_pub_set.app_idx;
-        save = true;
-    }
-
-    if (save)
-    {
-        meshx_nvs_element_ctx_set(element_id, MESHX_ELEMENT_TYPE_RELAY_SERVER, &el->element_ctx,
-                                   sizeof(meshx_relay_srv_el_ctx_t));
-    }
-    return MESHX_SUCCESS;
+    MESHX_LOGD(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Relay Server [%d] Config Evt: %d", get_element_idx(), evt);
 }
-#endif /* CONFIG_ENABLE_CONFIG_SERVER */
 
-/* Task D — Provisioning server callback (re-publish state after provisioning) */
-#if CONFIG_ENABLE_PROVISIONING
-MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXRelayServerElement::s_prov_cb(
-        const dev_struct_t      *pdev,
-        control_task_msg_evt_t   evt,
-        const void              *params)
+void meshXRelayServerElement::sync(control_task_msg_evt_t evt)
 {
-    MESHX_UNUSED(params);
-    if (!pdev) return MESHX_INVALID_ARG;
-
-    switch (evt)
+    MESHX_LOGD(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Relay Server [%d] sync event: %d", get_element_idx(), evt);
+    if (evt == CONTROL_TASK_MSG_EVT_SYSTEM_STACK_READY)
     {
-        case CONTROL_TASK_MSG_EVT_SYSTEM_STACK_READY:
-        {
-            if (!meshx_prov_srv_is_provisioned())
-            {
-                return MESHX_SUCCESS;
-            }
+        if (!meshx_prov_srv_is_provisioned()) return;
+        if (element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED) return;
 
-            auto elements = meshXElementRegistry::get_instance().get_all_elements();
-            for (auto const& [abs_id, base_el] : elements)
-            {
-                if (!base_el || base_el->get_element_variant() != MESHX_ELEMENT_TYPE_RELAY_SERVER) continue;
-                auto *el = static_cast<meshXRelayServerElement *>(base_el);
-                if (!el || el->element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED) continue;
+        auto &models = this->get_sig_models();
+        auto *onoff  = static_cast<meshXGenericOnOffServerModel *>(models[0].get());
 
-                auto &models = el->get_sig_models();
-                auto *onoff  = static_cast<meshXGenericOnOffServerModel *>(models[0].get());
+        meshx_model_t model_ref = { .el_id    = this->get_element_idx(),
+                                    .model_id = (uint16_t)onoff->get_model_id(),
+                                    .pub_addr = element_ctx.pub_addr,
+                                    .p_model  = (MESHX_MODEL*)onoff->get_plat_model() };
 
-                meshx_model_t model_ref = { .el_id    = abs_id,
-                                            .model_id = (uint16_t)onoff->get_model_id(),
-                                            .pub_addr = el->element_ctx.pub_addr,
-                                            .p_model  = (MESHX_MODEL*)onoff->get_plat_model() };
-                meshx_ctx_t ctx = { .app_idx  = el->element_ctx.app_id,
-                                    .net_idx  = pdev->meshx_store.net_key_id,
-                                    .opcode   = MESHX_MODEL_OP_GEN_ONOFF_STATUS,
-                                    .src_addr = 0,
-                                    .dst_addr = el->element_ctx.pub_addr,
-                                    .p_ctx    = nullptr };
-                meshx_gen_onoff_send_params_t sp = {
-                    .model = &model_ref, .ctx = &ctx,
-                    .state = { .on_off = el->element_ctx.gen_on_off_state.on_off },
-                    .tid = 0 };
-                onoff->model_send(&sp);
-            }
-            break;
-        }
-        case CONTROL_TASK_MSG_EVT_EN_NODE_PROV:
-            /* Benchmarked: Handled at system level or ignore if no immediate action needed */
-            break;
-        default:
-            MESHX_LOGW(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER,
-                    "Relay Srv: unhandled prov evt: %p", (void *)evt);
-            break;
+        meshx_ctx_t ctx = { .app_idx  = element_ctx.app_id,
+                            .net_idx  = meshx_get_net_key_id(),
+                            .opcode   = MESHX_MODEL_OP_GEN_ONOFF_STATUS,
+                            .src_addr = 0,
+                            .dst_addr = element_ctx.pub_addr,
+                            .p_ctx    = nullptr };
+        meshx_gen_onoff_send_params_t sp = {
+            .model = &model_ref, .ctx = &ctx,
+            .state = { .on_off = element_ctx.gen_on_off_state.on_off },
+            .tid = 0 };
+        onoff->model_send(&sp);
     }
-    return MESHX_SUCCESS;
 }
-#endif /* CONFIG_ENABLE_PROVISIONING */
 
 /* Task E — TO_BLE server handler (app triggers a publish of current state to BLE) */
 MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PROTO
@@ -320,49 +204,39 @@ meshx_err_t meshXRelayServerElement::s_to_ble_cb(
  ************************************************************************************/
 #if CONFIG_RELAY_CLIENT_COUNT > 0
 
-std::once_flag meshXRelayClientElement::s_callbacks_registered;
-
 /**
  * @brief Register class-level callbacks (called exactly once via once_flag).
  */
-void meshXRelayClientElement::register_class_callbacks()
+void meshXRelayClientElement::sync(control_task_msg_evt_t evt)
 {
-    meshx_err_t err;
-
-#if CONFIG_ENABLE_CONFIG_SERVER
-    err = meshx_config_server_cb_reg(
-        (config_srv_cb_t)&meshXRelayClientElement::s_config_srv_cb,
-        CONFIG_SERVER_CB_MASK);
-    if (err)
+    MESHX_LOGD(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "Relay Client [%d] sync event: %d", get_element_idx(), evt);
+    if (evt == CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT)
     {
-        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT,
-                   "Relay Cli: config server cb reg failed: %d", err);
-    }
-#endif
+        if (!meshx_prov_srv_is_provisioned()) return;
+        if (element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED) return;
 
-#if CONFIG_ENABLE_PROVISIONING
-    err = meshx_prov_srv_reg_el_client_cb(
-        (prov_srv_cb_t)&meshXRelayClientElement::s_prov_cb);
-    if (err)
-    {
-        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT,
-                   "Relay Cli: prov cb reg failed: %d", err);
-    }
-#endif
+        auto &models = this->get_sig_models();
+        auto *onoff  = static_cast<meshXGenericOnOffClientModel *>(models[0].get());
 
-    err = control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_TO_BLE,
-        RELAY_CLI_TO_BLE_EVT_MASK,
-        (control_task_msg_handle_t)&meshXRelayClientElement::s_to_ble_cb);
-    if (err)
-    {
-        MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT,
-                   "Relay Cli: to_ble cb reg failed: %d", err);
-    }
+        meshx_model_t model_ref = { .el_id    = this->get_element_idx(),
+                                    .model_id = (uint16_t)onoff->get_model_id(),
+                                    .pub_addr = element_ctx.pub_addr,
+                                    .p_model  = (MESHX_MODEL*)onoff->get_plat_model() };
 
-#if CONFIG_ENABLE_UNIT_TEST
-    register_unit_test(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, relay_cli_ut_handler);
-#endif
+        meshx_ctx_t ctx = { .app_idx  = element_ctx.app_id,
+                            .net_idx  = meshx_get_net_key_id(),
+                            .opcode   = MESHX_MODEL_OP_GEN_ONOFF_GET,
+                            .src_addr = 0,
+                            .dst_addr = element_ctx.pub_addr,
+                            .p_ctx    = nullptr };
+        meshx_gen_onoff_send_params_t sp = { .model = &model_ref, .ctx = &ctx, .state = {0}, .tid = 0 };
+        onoff->model_send(&sp);
+    }
+}
+
+void meshXRelayClientElement::handle_config(control_task_msg_evt_t evt, const meshx_config_srv_cb_param_t *params)
+{
+    MESHX_LOGD(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "Relay Client [%d] Config Evt: %d", get_element_idx(), evt);
 }
 
 /**
@@ -380,7 +254,15 @@ meshXRelayClientElement::meshXRelayClientElement (uint16_t element_idx)
 
     this->register_element_ctx(&element_ctx, sizeof(meshx_relay_cli_el_ctx_t));
     this->set_element_variant(MESHX_ELEMENT_TYPE_RELAY_CLIENT);
-    std::call_once(s_callbacks_registered, register_class_callbacks);
+
+    control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_TO_BLE,
+        RELAY_CLI_TO_BLE_EVT_MASK,
+        (control_task_msg_handle_t)&meshXRelayClientElement::s_to_ble_cb);
+
+#if CONFIG_ENABLE_UNIT_TEST
+    register_unit_test(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, relay_cli_ut_handler);
+#endif
 }
 
 /**
@@ -434,100 +316,7 @@ meshx_err_t meshXRelayClientElement::element_state_change_notify(meshx_ptr_t par
         &app_evt);
 }
 
-/* Task C — Config server callback */
-#if CONFIG_ENABLE_CONFIG_SERVER
-MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXRelayClientElement::s_config_srv_cb(
-        const dev_struct_t              *pdev,
-        control_task_msg_evt_t           evt,
-        const meshx_config_srv_cb_param_t *params)
-{
-    MESHX_UNUSED(pdev);
-    if (!params) return MESHX_INVALID_ARG;
 
-    uint16_t element_id = 0;
-    bool     save   = false;
-
-    switch (evt)
-    {
-    case CONTROL_TASK_MSG_EVT_APP_KEY_BIND:
-        element_id = params->state_change.mod_app_bind.element_addr;
-        break;
-    case CONTROL_TASK_MSG_EVT_PUB_ADD:
-    case CONTROL_TASK_MSG_EVT_PUB_DEL:
-        element_id = params->state_change.mod_pub_set.element_addr;
-        break;
-    default: break;
-    }
-
-    auto *el = meshXElementRegistry::get_instance().find_and_cast<meshXRelayClientElement>(
-        element_id, MESHX_ELEMENT_TYPE_RELAY_CLIENT);
-    if (!el) return MESHX_SUCCESS;
-
-    if (evt == CONTROL_TASK_MSG_EVT_APP_KEY_BIND)
-    {
-        el->element_ctx.app_id = params->state_change.mod_app_bind.app_idx;
-        save = true;
-    }
-    else if (evt == CONTROL_TASK_MSG_EVT_PUB_ADD || evt == CONTROL_TASK_MSG_EVT_PUB_DEL)
-    {
-        el->element_ctx.pub_addr =
-            (evt == CONTROL_TASK_MSG_EVT_PUB_ADD)
-            ? params->state_change.mod_pub_set.pub_addr : MESHX_ADDR_UNASSIGNED;
-        el->element_ctx.app_id = params->state_change.mod_pub_set.app_idx;
-        save = true;
-    }
-
-    if (save)
-    {
-        meshx_nvs_element_ctx_set(element_id, MESHX_ELEMENT_TYPE_RELAY_CLIENT, &el->element_ctx,
-                                   sizeof(meshx_relay_cli_el_ctx_t));
-    }
-    return MESHX_SUCCESS;
-}
-#endif /* CONFIG_ENABLE_CONFIG_SERVER */
-
-/* Task D — Provisioning client callback (send GET to refresh state on fresh boot) */
-#if CONFIG_ENABLE_PROVISIONING
-MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
-meshx_err_t meshXRelayClientElement::s_prov_cb(
-        const dev_struct_t      *pdev,
-        control_task_msg_evt_t   evt,
-        const void              *params)
-{
-    MESHX_UNUSED(params);
-    if (!pdev) return MESHX_INVALID_ARG;
-
-    switch (evt)
-    {
-    case CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT:
-    {
-        auto elements = meshXElementRegistry::get_instance().get_all_elements();
-        for (auto const& [abs_id, base_el] : elements)
-        {
-            if (!base_el || base_el->get_element_variant() != MESHX_ELEMENT_TYPE_RELAY_CLIENT) continue;
-            auto *el = static_cast<meshXRelayClientElement *>(base_el);
-            if (!el) continue;
-
-            meshx_gen_on_off_cli_msg_t msg = {
-                .ack        = MESHX_GEN_ON_OFF_CLI_MSG_ACK,
-                .set_get    = MESHX_GEN_ON_OFF_CLI_MSG_GET,
-                .reserved   = 0,
-                .element_id = abs_id
-            };
-            control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE,
-                CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF, &msg, sizeof(msg));
-        }
-    }
-    break;
-    default:
-        MESHX_LOGW(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT,
-                   "Relay Cli: unhandled prov evt: %p", (void *)evt);
-        break;
-    }
-    return MESHX_SUCCESS;
-}
-#endif /* CONFIG_ENABLE_PROVISIONING */
 
 /* Task E — TO_BLE client handler: receives app command, sends OnOff via model */
 MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO

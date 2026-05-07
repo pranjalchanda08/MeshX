@@ -288,6 +288,26 @@ public:
     meshx_err_t reset(void) override;
     bool is_initialized(void) const override;
     meshx_err_t restore_nvs_context(void) override;
+    
+    /**
+     * @brief Global static provisioning callback for Server elements
+     */
+    static meshx_err_t static_prov_srv_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params);
+
+    /**
+     * @brief Global static provisioning callback for Client elements
+     */
+    static meshx_err_t static_prov_cli_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params);
+
+    /**
+     * @brief Global static configuration callback
+     */
+    static meshx_err_t static_config_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const meshx_config_srv_cb_param_t *params);
+
+    /**
+     * @brief Register the global callbacks with the provisioning server.
+     */
+    static void register_global_callbacks(void);
 
     bool has_model(uint16_t model_id) const override;
 

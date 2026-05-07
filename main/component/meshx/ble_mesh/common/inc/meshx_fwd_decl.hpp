@@ -12,7 +12,6 @@
 /***************************************************************************************************************************************
  * Includes
  ***************************************************************************************************************************************/
-#include <meshx_api.h>
 #include <vector>
 #include <memory>
 #include <meshx_c_header.h>
@@ -70,6 +69,14 @@ enum class meshxElementType
  */
 
 using meshxElementType_t = enum meshxElementType;
+
+/**
+ * @brief Common element context structure for base handling.
+ */
+typedef struct {
+    uint8_t  app_id;
+    uint16_t pub_addr;
+} meshx_element_common_ctx_t;
 
 class meshXElementIF
 {
@@ -185,6 +192,19 @@ public:
      * @return Size of the element context structure
      */
     virtual size_t get_element_ctx_size(void) const = 0;
+
+    /**
+     * @brief Synchronize element state (Status broadcast or GET request)
+     * @param evt The event trigger (STACK_READY or FRESH_BOOT)
+     */
+    virtual void sync(control_task_msg_evt_t evt) = 0;
+
+    /**
+     * @brief Handle configuration server events (AppKey bind, Publication, etc.)
+     * @param evt The configuration event code
+     * @param params Pointer to the configuration parameters
+     */
+    virtual void handle_config(control_task_msg_evt_t evt, const meshx_config_srv_cb_param_t *params) = 0;
 
     meshXElementIF() = delete;
     explicit meshXElementIF(uint16_t element_idx) : element_idx(element_idx) { }

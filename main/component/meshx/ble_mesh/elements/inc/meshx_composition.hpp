@@ -2,7 +2,6 @@
 #define __MESHX_COMPOSITION_HPP__
 
 #include <meshx_fwd_decl.hpp>
-#include <meshx_platform_ble_mesh.h>
 #include <vector>
 #include <memory>
 
@@ -44,7 +43,7 @@ public:
         }
         return false;
     }
- 
+
     /**
      * @brief Check if there are any elements
      */
@@ -86,8 +85,8 @@ public:
     /**
      * @brief Get the baked elements array
      */
-    MESHX_ELEMENT* get_baked_elements() { 
-        return reinterpret_cast<MESHX_ELEMENT*>(baked_elements.data()); 
+    MESHX_ELEMENT* get_baked_elements() {
+        return reinterpret_cast<MESHX_ELEMENT*>(baked_elements.data());
     }
 
     /**
@@ -111,7 +110,7 @@ private:
 
     // Dynamic storage using byte vectors to bypass const-member assignment issues
     std::vector<uint8_t> baked_elements;
-    
+
     // Contiguous model arrays for each element
     // Index 0 is for root element, 1+ for dynamic elements
     // Using vector<uint8_t> to avoid C++ constructor/copy issues with platform structs

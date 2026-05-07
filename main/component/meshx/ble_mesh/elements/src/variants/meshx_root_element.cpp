@@ -114,3 +114,13 @@ meshx_err_t meshXRootElement :: element_state_change_notify(meshx_ptr_t param, s
 
     return MESHX_SUCCESS;
 }
+
+void meshXRootElement::sync(control_task_msg_evt_t evt)
+{
+    MESHX_LOGD(MODULE_ID_ELEMENT_ROOT, "Root Element sync event: %d", evt);
+}
+
+void meshXRootElement::handle_config(control_task_msg_evt_t evt, const meshx_config_srv_cb_param_t *params)
+{
+    MESHX_LOGD(MODULE_ID_ELEMENT_ROOT, "Root Element config event: %d", evt);
+}

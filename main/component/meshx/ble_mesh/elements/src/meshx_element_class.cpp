@@ -12,11 +12,7 @@
  */
 
 #include <meshx_element_class.hpp>
-#include <memory>
-#include <ranges>
-#include <vector>
 #include <meshx_element_registry.hpp>
-#include <meshx_nvs.h>
 
 #include <generic_model/meshx_model_onoff.hpp>
 #include <generic_model/meshx_model_level.hpp>
@@ -34,11 +30,13 @@
 MESHX_ELEMENT_TEMPLATE_PROTO
 meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
     ::meshXElement(uint16_t element_idx)
-    : meshXElementIF(element_idx), no_of_sig_models(0), no_of_ven_models(0), element_type(meshxElementType_t::MESHX_ELEMENT_TYPE_SERVER), 
+    : meshXElementIF(element_idx), no_of_sig_models(0), no_of_ven_models(0), element_type(meshxElementType_t::MESHX_ELEMENT_TYPE_SERVER),
       element_variant(MESHX_ELEMENT_TYPE_MAX), element_ctx(nullptr), element_ctx_size(0)
 {
     // Register instance in global registry
     meshXElementRegistry::get_instance().register_element(this);
+    // Register global callbacks
+    this->register_global_callbacks();
 }
 
 /**
@@ -53,6 +51,8 @@ meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
 {
     // Register instance in global registry
     meshXElementRegistry::get_instance().register_element(this);
+    // Register global callbacks
+    this->register_global_callbacks();
 }
 
 MESHX_ELEMENT_TEMPLATE_PROTO
@@ -137,7 +137,8 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
         return MESHX_NO_MEM;
     }
 
-    for (auto [index, model] : std::views::enumerate(models))
+    uint8_t index = 0;
+    for (auto& model : models)
     {
         if (model == nullptr)
         {
@@ -152,6 +153,7 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
         // Add the model to the sig_models vector
         // Since sig_models is a vector of unique_ptr, we need to transfer ownership
         sig_models.emplace_back(std::move(model));
+        index++;
     }
 
     return MESHX_SUCCESS;
@@ -198,7 +200,8 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
         return MESHX_NO_MEM;
     }
 
-    for (auto [index, model] : std::views::enumerate(models))
+    uint8_t index = 0;
+    for (auto& model : models)
     {
         if (model == nullptr)
         {
@@ -213,6 +216,7 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
         // Add the model to the ven_models vector
         // Since ven_models is a vector of unique_ptr, we need to transfer ownership
         ven_models.emplace_back(std::move(model));
+        index++;
     }
 
     return MESHX_SUCCESS;
@@ -313,7 +317,7 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
     /* Restoration from NVS should happen before model initialization if needed */
     this->restore_nvs_context();
 
-    /* 
+    /*
      * If platform model pointers are already set (e.g. by meshx_composition_bake),
      * we skip re-allocation and re-adding to maintain pointer stability.
      */
@@ -384,15 +388,132 @@ bool meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
     for (const auto& m : sig_models) {
         if (m && m->get_model_id() == model_id) return true;
     }
- 
+
     // Check Vendor models
     for (const auto& m : ven_models) {
         if (m && m->get_model_id() == model_id) return true;
     }
- 
+
     return false;
 }
- 
+
+
+
+/*****************************************************************************************************
+ * Global Static Callbacks
+ *****************************************************************************************************/
+MESHX_ELEMENT_TEMPLATE_PROTO
+meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::static_prov_srv_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+{
+    MESHX_UNUSED(pdev); MESHX_UNUSED(params);
+
+    // Iterate through all elements and call sync only for server elements
+    auto elements = meshXElementRegistry::get_instance().get_all_elements();
+    for (auto const& [abs_id, base_el] : elements)
+    {
+        if (base_el && base_el->get_element_type() == meshxElementType_t::MESHX_ELEMENT_TYPE_SERVER)
+        {
+            base_el->sync(evt);
+        }
+    }
+    return MESHX_SUCCESS;
+}
+
+MESHX_ELEMENT_TEMPLATE_PROTO
+meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::static_prov_cli_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+{
+    MESHX_UNUSED(pdev); MESHX_UNUSED(params);
+
+    // Iterate through all elements and call sync only for client elements
+    auto elements = meshXElementRegistry::get_instance().get_all_elements();
+    for (auto const& [abs_id, base_el] : elements)
+    {
+        if (base_el && base_el->get_element_type() == meshxElementType_t::MESHX_ELEMENT_TYPE_CLIENT)
+        {
+            base_el->sync(evt);
+        }
+    }
+    return MESHX_SUCCESS;
+}
+
+MESHX_ELEMENT_TEMPLATE_PROTO
+meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::static_config_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const meshx_config_srv_cb_param_t *params)
+{
+    MESHX_UNUSED(pdev);
+    if (!params) return MESHX_INVALID_ARG;
+
+    uint16_t element_addr = 0;
+
+    if (evt == CONTROL_TASK_MSG_EVT_APP_KEY_BIND)
+    {
+        element_addr = params->state_change.mod_app_bind.element_addr;
+    }
+    else if (evt == CONTROL_TASK_MSG_EVT_PUB_ADD || evt == CONTROL_TASK_MSG_EVT_PUB_DEL)
+    {
+        element_addr = params->state_change.mod_pub_set.element_addr;
+    }
+    else
+    {
+        return MESHX_SUCCESS; // Not an event we handle context for directly
+    }
+
+    // Find element by address (abs_id)
+    auto *el = meshXElementRegistry::get_instance().find_element(element_addr);
+    if (el)
+    {
+        // Update common context first (pattern matching)
+        auto *ctx = static_cast<meshx_element_common_ctx_t *>(el->get_element_ctx());
+        if (ctx)
+        {
+            bool save = false;
+            if (evt == CONTROL_TASK_MSG_EVT_APP_KEY_BIND)
+            {
+                ctx->app_id = params->state_change.mod_app_bind.app_idx;
+                save = true;
+            }
+            else if (evt == CONTROL_TASK_MSG_EVT_PUB_ADD || evt == CONTROL_TASK_MSG_EVT_PUB_DEL)
+            {
+                if (evt == CONTROL_TASK_MSG_EVT_PUB_ADD) {
+                    ctx->pub_addr = params->state_change.mod_pub_set.pub_addr;
+                    ctx->app_id   = params->state_change.mod_pub_set.app_idx;
+                } else {
+                    ctx->pub_addr = MESHX_ADDR_UNASSIGNED;
+                }
+                save = true;
+            }
+
+            if (save)
+            {
+                meshx_nvs_element_ctx_set(el->get_element_idx(), el->get_element_variant(),
+                                         el->get_element_ctx(), el->get_element_ctx_size());
+            }
+        }
+
+        // Notify element for any specialized handling
+        el->handle_config(evt, params);
+    }
+    return MESHX_SUCCESS;
+}
+
+MESHX_ELEMENT_TEMPLATE_PROTO
+void meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::register_global_callbacks(void)
+{
+    static std::once_flag registered;
+    std::call_once(registered, [](){
+#if CONFIG_ENABLE_CONFIG_SERVER
+        meshx_config_server_cb_reg((config_srv_cb_t)static_config_cb, 0xFF); // Subscribe to all
+#endif
+#if CONFIG_ENABLE_PROVISIONING
+        meshx_prov_srv_reg_el_server_cb((prov_srv_cb_t)static_prov_srv_cb);
+        meshx_prov_srv_reg_el_client_cb((prov_srv_cb_t)static_prov_cli_cb);
+#endif
+    });
+}
+
 /*****************************************************************************************************
  * Explicit template instantiations for meshXElement
  *
