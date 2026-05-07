@@ -61,19 +61,20 @@ private:
      */
     meshx_err_t element_state_change_notify(meshx_ptr_t param, size_t param_size) override;
 
+    /**
+     * @brief Synchronize element state (Status broadcast)
+     */
+    void sync(control_task_msg_evt_t evt) override;
+
+    /**
+     * @brief Handle configuration server events
+     */
+    void handle_config(control_task_msg_evt_t evt, const meshx_config_srv_cb_param_t *params) override;
+
     static meshx_err_t s_to_ble_cb(
         const dev_struct_t      *pdev,
         control_task_msg_evt_t   evt,
         const void              *params);
-
-    static meshx_err_t s_prov_cb(
-        const dev_struct_t      *pdev,
-        control_task_msg_evt_t   evt,
-        const void              *params);
-
-    /* Instance registry — maps element_id → this pointer */
-    static std::once_flag s_callbacks_registered;
-    static void register_class_callbacks();
 
 public:
     /**

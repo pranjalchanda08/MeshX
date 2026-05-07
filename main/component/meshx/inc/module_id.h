@@ -37,6 +37,10 @@ typedef enum {
     MODULE_ID_TXCM                          = 0x09,
     MODULE_ID_ELEMENT_ROOT                  = 0x0A,
     MODULE_ID_BLE_MESH_ELEMENT              = 0x0B,
+    MODULE_ID_ELEMENT_SENSOR_SERVER         = 0x0C,
+    MODULE_ID_ELEMENT_SENSOR_CLIENT         = 0x0D,
+    MODULE_ID_ELEMENT_LIGHT_HSL_SERVER      = 0x0E,
+    MODULE_ID_ELEMENT_LIGHT_HSL_CLIENT      = 0x0F,
     MODULE_ID_MAX
 } module_id_t;
 

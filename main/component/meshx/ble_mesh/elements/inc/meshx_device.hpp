@@ -9,7 +9,6 @@
 #ifndef __MESHX_DEVICE_HPP__
 #define __MESHX_DEVICE_HPP__
 
-#include <meshx_common.h>
 #include <meshx_fwd_decl.hpp>
 
 /**

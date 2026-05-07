@@ -10,35 +10,12 @@
 #include <variants/meshx_sensor_element.hpp>
 #include <meshx_element_factory.hpp>
 #include <meshx_element_registry.hpp>
-#include <meshx_control_task.h>
-#include <meshx_api.h>
-#include <meshx_nvs.h>
 #include <sensor_model/meshx_model_sensor.hpp>
 #include <cstring>
-#include <algorithm>
 
 #if CONFIG_ENABLE_SENSOR_SERVER
 
 #define SENSOR_SRV_TO_BLE_EVT_MASK   CONTROL_TASK_MSG_EVT_TO_BLE_SENSOR_SRV
-
-std::once_flag meshXSensorElement::s_callbacks_registered;
-
-/**
- * @brief Register class-level callbacks (called exactly once via once_flag).
- */
-void meshXSensorElement::register_class_callbacks()
-{
-    /* Subscribe to BLE events for this element type */
-    control_task_msg_subscribe(
-        CONTROL_TASK_MSG_CODE_TO_BLE,
-        SENSOR_SRV_TO_BLE_EVT_MASK,
-        (control_task_msg_handle_t)&meshXSensorElement::s_to_ble_cb);
-
-#if CONFIG_ENABLE_PROVISIONING
-    meshx_prov_srv_reg_el_server_cb(
-        (prov_srv_cb_t)&meshXSensorElement::s_prov_cb);
-#endif
-}
 
 /**
  * @brief Constructs a new meshXSensorElement instance.
@@ -49,7 +26,12 @@ meshXSensorElement::meshXSensorElement(uint16_t element_id)
     memset(&element_ctx, 0, sizeof(element_ctx));
     this->register_element_ctx(&element_ctx, sizeof(element_ctx));
     this->set_element_variant(MESHX_ELEMENT_TYPE_SENSOR_SERVER);
-    std::call_once(s_callbacks_registered, register_class_callbacks);
+
+    /* Subscribe to BLE events for this element type */
+    control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_TO_BLE,
+        SENSOR_SRV_TO_BLE_EVT_MASK,
+        (control_task_msg_handle_t)&meshXSensorElement::s_to_ble_cb);
 }
 
 /**
@@ -152,7 +134,7 @@ meshx_err_t meshXSensorElement::s_to_ble_cb(
 
         meshx_ctx_t ctx = {
             .app_idx  = el->element_ctx.app_id,
-            .net_idx  = pdev->meshx_store.net_key_id, 
+            .net_idx  = pdev->meshx_store.net_key_id,
             .opcode   = MESHX_MODEL_OP_SENSOR_STATUS,
             .src_addr = 0,
             .dst_addr = el->element_ctx.pub_addr,
@@ -179,60 +161,48 @@ meshx_err_t meshXSensorElement::s_to_ble_cb(
     return MESHX_SUCCESS;
 }
 
-#if CONFIG_ENABLE_CONFIG_SERVER
-meshx_err_t meshXSensorElement::s_config_srv_cb(
-    const dev_struct_t              *pdev,
-    control_task_msg_evt_t           evt,
-    const meshx_config_srv_cb_param_t *params)
+void meshXSensorElement::sync(control_task_msg_evt_t evt)
 {
-    /* To be implemented if needed */
-    return MESHX_SUCCESS;
-}
-#endif
-
-#if CONFIG_ENABLE_PROVISIONING
-meshx_err_t meshXSensorElement::s_prov_cb(
-    const dev_struct_t      *pdev,
-    control_task_msg_evt_t   evt,
-    const void              *params)
-{
-    MESHX_UNUSED(params);
-    if (!pdev) return MESHX_INVALID_ARG;
-
     if (evt == CONTROL_TASK_MSG_EVT_SYSTEM_STACK_READY)
     {
-        if (!meshx_prov_srv_is_provisioned()) return MESHX_SUCCESS;
+        if (!meshx_prov_srv_is_provisioned()) return;
+        if (element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED) return;
 
-        auto elements = meshXElementRegistry::get_instance().get_all_elements();
-        for (auto const& [abs_id, base_el] : elements)
-        {
-            if (!base_el || base_el->get_element_variant() != MESHX_ELEMENT_TYPE_SENSOR_SERVER) continue;
-            auto *el = static_cast<meshXSensorElement *>(base_el);
-            if (!el || el->element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED) continue;
+        auto &models = this->get_sig_models();
+        auto *sensor = static_cast<meshXSensorServerModel *>(models[0].get());
 
-            auto &models = el->get_sig_models();
-            auto *sensor = static_cast<meshXSensorServerModel *>(models[0].get());
+        meshx_model_t model_ref = { .el_id    = this->get_element_idx(),
+                                    .model_id = (uint16_t)sensor->get_model_id(),
+                                    .pub_addr = element_ctx.pub_addr,
+                                    .p_model  = (MESHX_MODEL*)sensor->get_plat_model() };
 
-            meshx_model_t model_ref = { .el_id    = abs_id,
-                                        .model_id = (uint16_t)sensor->get_model_id(),
-                                        .pub_addr = el->element_ctx.pub_addr,
-                                        .p_model  = (MESHX_MODEL*)sensor->get_plat_model() };
-            meshx_ctx_t ctx = { .app_idx  = el->element_ctx.app_id,
-                                .net_idx  = pdev->meshx_store.net_key_id,
-                                .opcode   = 0, // Not used for sensor status broadcast
-                                .src_addr = 0,
-                                .dst_addr = el->element_ctx.pub_addr,
-                                .p_ctx    = nullptr };
-            meshx_sensor_server_send_params_t sp = {
-                .model = &model_ref, .ctx = &ctx,
-                .state = { .sensor_data = el->element_ctx.sensor_state.sensor_data,
-                           .data_len    = el->element_ctx.sensor_state.data_len }
-            };
-            sensor->model_send(&sp);
-        }
+        meshx_ctx_t ctx = { .app_idx  = element_ctx.app_id,
+                            .net_idx  = meshx_get_net_key_id(),
+                            .opcode   = MESHX_MODEL_OP_SENSOR_STATUS,
+                            .src_addr = 0,
+                            .dst_addr = element_ctx.pub_addr,
+                            .p_ctx    = nullptr };
+
+        meshx_sensor_server_send_params_t sp = {
+            .model = &model_ref, .ctx = &ctx,
+            .state = {
+                .sensor_status = {
+                    .property_id = element_ctx.sensor_srv_state.property_id,
+                    .data_len    = element_ctx.sensor_srv_state.data_len,
+                    .data        = {0}
+                }
+            }
+        };
+        memcpy(sp.state.sensor_status.data, element_ctx.sensor_srv_state.data,
+               std::min((uint16_t)sizeof(sp.state.sensor_status.data), element_ctx.sensor_srv_state.data_len));
+
+        sensor->model_send(&sp);
     }
-    return MESHX_SUCCESS;
 }
-#endif
+
+void meshXSensorElement::handle_config(control_task_msg_evt_t evt, const meshx_config_srv_cb_param_t *params)
+{
+    MESHX_LOGD(MODULE_ID_ELEMENT_SENSOR_SERVER, "Sensor Server [%d] Config Evt: %d", get_element_idx(), evt);
+}
 
 #endif /* CONFIG_ENABLE_SENSOR_SERVER */

@@ -121,7 +121,7 @@ meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::model_se
  *    - MESHX_FAIL: Other failures
  */
 #include <meshx_element_registry.hpp>
-#include <meshx_nvs.h>
+
 #include <variants/meshx_relay_element.hpp>
 
 MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PROTO

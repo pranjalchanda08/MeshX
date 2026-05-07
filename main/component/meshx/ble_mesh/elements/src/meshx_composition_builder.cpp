@@ -23,10 +23,10 @@
 meshXCompositionBuilder& meshXCompositionBuilder::begin() {
     auto& comp = meshXComposition::get_instance();
     comp.clear_elements();
-    
+
     // All compositions must start with a Root Element at Index 0
     comp.get_elements().push_back(std::make_unique<meshXRootElement>());
-    
+
     return *this;
 }
 
@@ -94,7 +94,6 @@ meshXCompositionBuilder& meshXCompositionBuilder::commit() {
  */
 extern "C" {
 
-#include <meshx_api.h>
 
 bool meshx_builder_is_active(void) {
     return meshXComposition::get_instance().has_elements();
@@ -103,16 +102,16 @@ bool meshx_builder_is_active(void) {
 meshx_err_t meshx_builder_bake(dev_struct_t *pdev, uint16_t cid, uint16_t pid, uint16_t vid) {
     // 1. Initialize the C++ Device wrapper
     meshXDevice::get_instance().init(pdev);
- 
+
     // 2. Perform the bake
     meshXComposition::get_instance().set_device_struct(pdev);
     meshx_err_t err = meshXComposition::get_instance().bake(cid, pid, vid);
- 
+
     // 3. Visualize the result
     if (err == MESHX_SUCCESS) {
         meshXDevice::get_instance().visualize_status();
     }
- 
+
     return err;
 }
 

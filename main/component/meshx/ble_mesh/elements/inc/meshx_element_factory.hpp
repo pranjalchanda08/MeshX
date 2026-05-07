@@ -14,8 +14,6 @@
 #define __MESHX_ELEMENT_FACTORY_HPP__
 
 #include <meshx_element_class.hpp>
-#include <meshx_nvs.h>
-#include <meshx_api.h>
 #include <new>
 
 /**

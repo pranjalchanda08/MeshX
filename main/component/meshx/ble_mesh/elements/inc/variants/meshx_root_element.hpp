@@ -41,6 +41,9 @@ private:
     uint8_t list_ven_models() override;
     meshx_err_t element_state_change_notify(meshx_ptr_t param, size_t param_size) override;
 
+    void sync(control_task_msg_evt_t evt) override;
+    void handle_config(control_task_msg_evt_t evt, const meshx_config_srv_cb_param_t *params) override;
+
     MESHX_ROOT_DEPENDENCY_RESOLVER_TEMPLATE_PROTO
     void add_sig_model_if_present(uint16_t trigger_model_id, const char* log_name);
 

@@ -27,7 +27,6 @@
  * @copyright Copyright © 2024 - 2025 MeshX
  */
 
-#include "meshx_txcm.h"
 #include "meshx_base_model_light.hpp"
 
 /*********************************************************************************************************
