@@ -19,6 +19,10 @@ extern "C" {
 #include "meshx_common.h"
 #include "meshx_txcm.h"
 #include "meshx_control_task.h"
+#include "meshx_api.h"
+#include "meshx_nvs.h"
+#include "meshx_platform_ble_mesh.h"
+#include "meshx_relay_msg_defs.h"
 
 /*************************************************************
  * MESHX Model Common Header
@@ -28,6 +32,10 @@ extern "C" {
 #include "meshx_gen_light_cli.h"
 
 #include "meshx_light_server.h"
+#include "meshx_light_ctl_srv.h"
+
+#include "meshx_config_server.h"
+#include "meshx_prov_srv.h"
 /*************************************************************
  * Interface Header
  *************************************************************/

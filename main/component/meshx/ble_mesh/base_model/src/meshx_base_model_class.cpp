@@ -246,7 +246,7 @@ meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::meshXBaseClientModel(uin
     }
 
     std::call_once(plat_client_init_flag, [this]() {
-        MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "First-time initialization for client template: %s", get_client_type_name());
+        MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "First-time initialization for client template");
     });
 
     base_client_model_cb_list.push_front({(uint16_t)model_id, p_plat_model, from_ble_cb});

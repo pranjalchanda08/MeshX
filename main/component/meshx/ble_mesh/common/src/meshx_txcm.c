@@ -20,7 +20,7 @@
 /**
  * @brief Stack size for the Tx Control task in bytes.
  */
-#define MESHX_TXCM_TASK_STACK_SIZE  2048
+#define MESHX_TXCM_TASK_STACK_SIZE  4096
 /**
  * @brief Priority level for the Tx Control task.
  */

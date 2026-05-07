@@ -344,3 +344,8 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     return err;
 }
 
+uint16_t meshx_get_net_key_id(void)
+{
+    return g_dev.meshx_store.net_key_id;
+}
+

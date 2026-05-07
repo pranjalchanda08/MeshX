@@ -7,8 +7,6 @@
  */
 
 extern "C" {
-#include <meshx_light_ctl_srv.h>
-#include <meshx_config_server.h>
 }
 #include <meshx_composition.hpp>
 #include <meshx_element_factory.hpp>
@@ -20,8 +18,6 @@ extern "C" {
 #ifdef __cplusplus
 extern "C" {
 #endif
-#include <meshx_api.h>
-#include <meshx_common.h>
 
 /** Forward declarations for legacy platform initialization */
 meshx_err_t meshx_init_config_server(void);
@@ -188,6 +184,7 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
     pdev->composition = baked_comp_ptr;
 
     /* 5. Verification Logging */
+#if CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO
     MESHX_LOGD(MODULE_ID_COMMON, "Composition baked successfully. Elements: %d", (int)total_elements);
     for (size_t i = 0; i < total_elements; ++i) {
         MESHX_ELEMENT* e = &p_elements[i];
@@ -195,14 +192,12 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
                    i, (void*)e, e->sig_model_count, e->vnd_model_count);
 
         if (e->sig_models && e->sig_model_count > 0) {
-#if CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO
             for (uint8_t j = 0; j < e->sig_model_count; ++j) {
                 esp_ble_mesh_model_t* m = &e->sig_models[j];
                 uint16_t mid = m->model_id;
                 uint16_t p_addr = (m->pub ? m->pub->publish_addr : 0);
                 MESHX_LOGD(MODULE_ID_COMMON, "  SIG Model[%d]: ID 0x%04x, PubAddr: 0x%04x", j, mid, p_addr);
             }
-#endif /* CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO */
         }
         if (e->vnd_models && e->vnd_model_count > 0) {
             for (uint8_t j = 0; j < e->vnd_model_count; ++j) {
@@ -211,6 +206,7 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
                            j, m->vnd.company_id, m->vnd.model_id);
             }
         }
+#endif /* CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO */
     }
 
     return MESHX_SUCCESS;

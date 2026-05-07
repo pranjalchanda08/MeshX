@@ -305,6 +305,12 @@ meshx_err_t meshx_app_reg_element_callback(meshx_app_data_cb_t cb);
  */
 meshx_err_t meshx_app_reg_system_events_callback(meshx_app_ctrl_cb_t cb);
 
+/**
+ * @brief Get the network key identifier.
+ * @return uint16_t The network key identifier.
+ */
+uint16_t meshx_get_net_key_id(void);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif

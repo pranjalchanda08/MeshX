@@ -6,16 +6,12 @@
 #include <variants/meshx_rgb_element.hpp>
 #include "meshx_element_factory.hpp"
 #include "meshx_element_registry.hpp"
-#include <meshx_nvs.h>
-#include <meshx_api.h>
 #include <light_model/meshx_model_hsl.hpp>
 #include <light_model/meshx_model_ctl.hpp>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-#include "meshx_gen_client.h"
-#include "meshx_prov_srv.h"
 #ifdef __cplusplus
 }
 #endif
@@ -24,22 +20,15 @@ extern "C" {
  * meshXRGBServerElement
  ************************************************************************************/
 
-std::once_flag meshXRGBServerElement::s_callbacks_registered;
+/************************************************************************************
+ * meshXRGBServerElement
+ ************************************************************************************/
 
-void meshXRGBServerElement::register_class_callbacks()
-{
-#if CONFIG_ENABLE_PROVISIONING
-    meshx_prov_srv_reg_el_server_cb(
-        (prov_srv_cb_t)&meshXRGBServerElement::s_prov_cb);
-#endif
-}
 
 meshXRGBServerElement::meshXRGBServerElement(uint16_t element_idx)
     : meshXElementServer(element_idx)
 {
     set_element_variant(MESHX_ELEMENT_TYPE_LIGHT_HSL_SERVER);
-
-    std::call_once(s_callbacks_registered, register_class_callbacks);
 
     element_ctx.app_id = 0;
     element_ctx.pub_addr = MESHX_ADDR_UNASSIGNED;
@@ -207,86 +196,79 @@ meshx_err_t meshXRGBServerElement::s_to_ble_cb(
 
     return MESHX_SUCCESS;
 }
-#if CONFIG_ENABLE_PROVISIONING
-meshx_err_t meshXRGBServerElement::s_prov_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+void meshXRGBServerElement::sync(control_task_msg_evt_t evt)
 {
-    MESHX_UNUSED(params);
-    if (!pdev) return MESHX_INVALID_ARG;
-
+    MESHX_LOGD(MODULE_ID_ELEMENT_LIGHT_HSL_SERVER, "RGB Server [%d] sync event: %d", get_element_idx(), evt);
     if (evt == CONTROL_TASK_MSG_EVT_SYSTEM_STACK_READY)
     {
-        if (!meshx_prov_srv_is_provisioned()) return MESHX_SUCCESS;
+        if (!meshx_prov_srv_is_provisioned()) return;
+        if (element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED) return;
 
-        auto elements = meshXElementRegistry::get_instance().get_all_elements();
-        for (auto const& [abs_id, base_el] : elements)
+        for (auto& m : this->get_sig_models())
         {
-            if (!base_el || base_el->get_element_variant() != MESHX_ELEMENT_TYPE_LIGHT_HSL_SERVER) continue;
-            auto *el = static_cast<meshXRGBServerElement *>(base_el);
-            if (!el || el->element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED) continue;
-
-            for (auto& m : el->get_sig_models())
-            {
 #if CONFIG_ENABLE_LIGHT_HSL_SERVER
-                if (m->get_model_id() == MESHX_MODEL_ID_LIGHT_HSL_SRV)
-                {
-                    auto* hsl_srv = static_cast<meshXLightHSLServerModel*>(m.get());
-                    meshx_model_t model_ref = {
-                        .el_id = abs_id,
-                        .model_id = (uint16_t)hsl_srv->get_model_id(),
-                        .pub_addr = el->element_ctx.pub_addr,
-                        .p_model = hsl_srv->get_plat_model()
-                    };
+            if (m->get_model_id() == MESHX_MODEL_ID_LIGHT_HSL_SRV)
+            {
+                auto* hsl_srv = static_cast<meshXLightHSLServerModel*>(m.get());
+                meshx_model_t model_ref = {
+                    .el_id = this->get_element_idx(),
+                    .model_id = (uint16_t)hsl_srv->get_model_id(),
+                    .pub_addr = element_ctx.pub_addr,
+                    .p_model = hsl_srv->get_plat_model()
+                };
 
-                    meshx_ctx_t ctx = {
-                        .app_idx = el->element_ctx.app_id,
-                        .net_idx = pdev->meshx_store.net_key_id,
-                        .opcode = MESHX_MODEL_OP_LIGHT_HSL_STATUS,
-                        .src_addr = 0,
-                        .dst_addr = el->element_ctx.pub_addr,
-                        .p_ctx = hsl_srv->get_pub_struct()
-                    };
+                meshx_ctx_t ctx = {
+                    .app_idx = element_ctx.app_id,
+                    .net_idx = meshx_get_net_key_id(),
+                    .opcode = MESHX_MODEL_OP_LIGHT_HSL_STATUS,
+                    .src_addr = 0,
+                    .dst_addr = element_ctx.pub_addr,
+                    .p_ctx = hsl_srv->get_pub_struct()
+                };
 
-                    meshx_light_hsl_send_params_t send_params = {
-                        .model = &model_ref,
-                        .ctx = &ctx,
-                        .tid = 0,
-                        .state = el->element_ctx.light_hsl_state
-                    };
-                    hsl_srv->model_send(&send_params);
-                }
+                meshx_light_hsl_send_params_t send_params = {
+                    .model = &model_ref,
+                    .ctx = &ctx,
+                    .tid = 0,
+                    .state = element_ctx.light_hsl_state
+                };
+                hsl_srv->model_send(&send_params);
+            }
 #endif
 #if CONFIG_ENABLE_GEN_ONOFF_SERVER
-                if (m->get_model_id() == MESHX_MODEL_ID_GEN_ONOFF_SRV)
-                {
-                    auto* onoff = static_cast<meshXGenericOnOffServerModel*>(m.get());
-                    meshx_model_t onoff_ref = {
-                        .el_id = abs_id,
-                        .model_id = (uint16_t)onoff->get_model_id(),
-                        .pub_addr = el->element_ctx.pub_addr,
-                        .p_model = onoff->get_plat_model()
-                    };
+            if (m->get_model_id() == MESHX_MODEL_ID_GEN_ONOFF_SRV)
+            {
+                auto* onoff = static_cast<meshXGenericOnOffServerModel*>(m.get());
+                meshx_model_t onoff_ref = {
+                    .el_id = this->get_element_idx(),
+                    .model_id = (uint16_t)onoff->get_model_id(),
+                    .pub_addr = element_ctx.pub_addr,
+                    .p_model = onoff->get_plat_model()
+                };
 
-                    meshx_ctx_t ctx = {
-                        .app_idx = el->element_ctx.app_id,
-                        .net_idx = pdev->meshx_store.net_key_id,
-                        .opcode = MESHX_MODEL_OP_GEN_ONOFF_STATUS,
-                        .src_addr = 0,
-                        .dst_addr = el->element_ctx.pub_addr,
-                        .p_ctx = nullptr
-                    };
+                meshx_ctx_t ctx = {
+                    .app_idx = element_ctx.app_id,
+                    .net_idx = meshx_get_net_key_id(),
+                    .opcode = MESHX_MODEL_OP_GEN_ONOFF_STATUS,
+                    .src_addr = 0,
+                    .dst_addr = element_ctx.pub_addr,
+                    .p_ctx = nullptr
+                };
 
-                    meshx_gen_onoff_send_params_t sp = {
-                        .model = &onoff_ref,
-                        .ctx = &ctx,
-                        .state = { .on_off = el->element_ctx.gen_on_off_state.on_off },
-                        .tid = 0
-                    };
-                    onoff->model_send(&sp);
-                }
-#endif
+                meshx_gen_onoff_send_params_t sp = {
+                    .model = &onoff_ref,
+                    .ctx = &ctx,
+                    .state = { .on_off = element_ctx.gen_on_off_state.on_off },
+                    .tid = 0
+                };
+                onoff->model_send(&sp);
             }
+#endif
         }
     }
-    return MESHX_SUCCESS;
 }
-#endif
+
+void meshXRGBServerElement::handle_config(control_task_msg_evt_t evt, const meshx_config_srv_cb_param_t *params)
+{
+    MESHX_LOGD(MODULE_ID_ELEMENT_LIGHT_HSL_SERVER, "RGB Server [%d] Config Evt: %d", get_element_idx(), evt);
+}
