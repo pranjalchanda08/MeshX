@@ -35,7 +35,7 @@
  ********************************************************************************************************/
 #if CONFIG_ENABLE_LIGHT_CLIENT
 
-constexpr uint32_t MESHX_CLIENT_INIT_MAGIC_NO = 0x4309;
+// MESHX_CLIENT_INIT_MAGIC_NO replaced by std::once_flag
 
 /**
  * @brief Validates if the given model ID corresponds to a supported Light Client model.
@@ -185,8 +185,8 @@ meshx_err_t meshXBaseLightClientModel::meshx_light_client_txcm_fn_model_send(mes
  * @param[in] model_id The model ID for the light client model
  * @param[in] from_ble_cb Control task message callback function
  */
-meshXBaseLightClientModel::meshXBaseLightClientModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
-    : meshXBaseClientModel(model_id, from_ble_cb)
+meshXBaseLightClientModel::meshXBaseLightClientModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb& from_ble_cb)
+    : meshXBaseClientModel(model_id, p_plat_model, from_ble_cb)
 {
     if (validate_client_model_id(model_id) != MESHX_SUCCESS)
     {
@@ -215,19 +215,15 @@ meshXBaseLightClientModel::meshXBaseLightClientModel(uint32_t model_id, const co
  */
 meshx_err_t meshXBaseLightClientModel::plat_model_init(void)
 {
-    if(plat_client_init == MESHX_CLIENT_INIT_MAGIC_NO)
-    {
-        return MESHX_SUCCESS;
-    }
-    plat_client_init = MESHX_CLIENT_INIT_MAGIC_NO;
+    meshx_err_t err = MESHX_SUCCESS;
+    std::call_once(plat_client_init_flag, [&]() {
+        err = meshx_txcm_event_cb_reg((meshx_txcm_cb_t) &base_handle_txcm_msg);
+        if (err == MESHX_SUCCESS) {
+            err = meshx_plat_gen_light_client_init();
+        }
+    });
 
-    if(meshx_err_t err = meshx_txcm_event_cb_reg((meshx_txcm_cb_t) &base_handle_txcm_msg);
-        err != MESHX_SUCCESS
-    ){
-
-        return err;
-    }
-    return meshx_plat_gen_light_client_init();
+    return err;
 }
 
 /**
@@ -284,7 +280,7 @@ meshx_err_t meshXBaseLightClientModel::plat_send_msg(meshx_gen_light_client_send
  ********************************************************************************************************/
 #if CONFIG_ENABLE_LIGHT_SERVER
 
-constexpr uint32_t MESHX_LIGHT_SERVER_INIT_MAGIC_NO = 0x2483;
+// MESHX_LIGHT_SERVER_INIT_MAGIC_NO replaced by std::once_flag
 
 /**
  * @brief Constructor for the meshXBaseLightServerModel class.
@@ -299,8 +295,8 @@ constexpr uint32_t MESHX_LIGHT_SERVER_INIT_MAGIC_NO = 0x2483;
  * @note The constructor will log an error if platform model initialization fails.
  *       The status can be checked using get_status() after construction.
  */
-meshXBaseLightServerModel::meshXBaseLightServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
-    : meshXBaseServerModel(model_id, from_ble_cb)
+meshXBaseLightServerModel::meshXBaseLightServerModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb& from_ble_cb)
+    : meshXBaseServerModel(model_id, p_plat_model, from_ble_cb)
 {
     set_status(meshXBaseLightServerModel::plat_model_init());
     if (get_status() != MESHX_SUCCESS)
@@ -321,12 +317,11 @@ meshXBaseLightServerModel::meshXBaseLightServerModel(uint32_t model_id, const co
  */
 meshx_err_t meshXBaseLightServerModel::plat_model_init(void)
 {
-    if(plat_server_init == MESHX_LIGHT_SERVER_INIT_MAGIC_NO)
-    {
-        return MESHX_SUCCESS;
-    }
-    plat_server_init = MESHX_LIGHT_SERVER_INIT_MAGIC_NO;
-    return meshx_plat_light_srv_init();
+    meshx_err_t err = MESHX_SUCCESS;
+    std::call_once(plat_server_init_flag, [&]() {
+        err = meshx_plat_light_srv_init();
+    });
+    return err;
 }
 
 /**

@@ -77,7 +77,7 @@ meshXModel MESHX_MODEL_TEMPLATE_PARAMS
     this->status = MESHX_SUCCESS;
 
     /* base_model needs to be used logically by the element composition */
-    base_model = new meshxBaseModel_t(model_id,
+    base_model = new meshxBaseModel_t(model_id, p_plat_model,
         [this](dev_struct_t *dev, control_task_msg_evt_t evt, meshx_ptr_t param) -> meshx_err_t {
             return this->model_handle_from_ble_cb(dev, evt, param);
         });
@@ -123,13 +123,13 @@ meshx_err_t meshXModel MESHX_MODEL_TEMPLATE_PARAMS
     {
         meshx_err_t state_change_result = MESHX_SUCCESS;
 
-        if(this->get_parent_element_state())
+        if(this->get_parent_element_state() || this->get_model_id() == MESHX_MODEL_ID_CONFIG_SRV)
         {
             state_change_result = this->element_state_change_handle();
         }
         else
         {
-            MESHX_LOGE(MODULE_ID_COMMON, "Parent element state is null");
+            MESHX_LOGE(MODULE_ID_COMMON, "Parent element state is null for model_id: %04x", this->get_model_id());
             state_change_result = MESHX_NOT_FOUND;
         }
 

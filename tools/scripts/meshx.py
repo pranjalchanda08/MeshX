@@ -206,6 +206,13 @@ class Target(ABC):
         """
         pass
 
+    @abstractmethod
+    def reset(self, args, build_root):
+        """
+        Abstract method to hard-reset the target.
+        """
+        pass
+
 class ESPTarget(Target):
     def __init__(self, port, baud):
         """
@@ -235,6 +242,14 @@ class ESPTarget(Target):
 
         build_dir = f"{build_root}/{args.prod_name[0]}"
         subprocess.run(["ninja", "-C", build_dir, "menuconfig"], check=True)
+
+    def reset(self, args, build_root):
+        if args.port is None:
+            raise TargetFlashException("Please provide a port for reset")
+        print(f"Hard-resetting ESP target on port: {args.port}")
+        # We use esptool's ability to trigger a reset sequence
+        cmd = ["esptool.py", "--port", args.port, "--before", "default_reset", "--after", "hard_reset", "read_mac"]
+        subprocess.run(cmd, check=True)
 
     def flash(self, args, build_root = "build"):
         if len(args.prod_name) != 1:
@@ -348,7 +363,7 @@ def build(args, build_root = "build"):
         build_command = ["ninja", "-C", build_dir]
         subprocess.run(build_command, check=True)
 
-if __name__ == "__main__":
+def main():
     for bsp in os.listdir(BSP_PATH):
         if os.path.isdir(os.path.join(BSP_PATH, bsp)):
             if bsp.startswith('.') or not os.path.exists(os.path.join(BSP_PATH, bsp, "bsp.cmake")):
@@ -366,73 +381,61 @@ if __name__ == "__main__":
         raise EnvironmentError("This script can only be run on Linux systems.")
 
     # Ensure python version is 3.6 or higher
-    import sys
     if sys.version_info < (3, 6):
         raise EnvironmentError("This script requires Python 3.6 or higher.")
 
     # Ensure required tools are installed
-    def expand_path(path):
-        return os.path.expanduser(path) if path else None
-
     required_tools = ['cmake', 'ninja', 'git']
     for tool in required_tools:
         check_tool_installed(tool)
 
     # Parse command-line arguments
-    parser = argparse.ArgumentParser(description="Build MeshX project.")
+    parser = argparse.ArgumentParser(description="MeshX build and target management tool.")
 
     parser.add_argument("-v","--version",        action="store_true",    help="Get the version details of meshx.py")
-    # Load an arg file. Set as positional argument to ensure it is parsed before other arguments. Required=False
-
     parser.add_argument('-m', '--meshx-args', type=str, help="Directory path to meshx.args (Optional)")
-    build_group = parser.add_argument_group("Build Options")
 
+    build_group = parser.add_argument_group("Build Options")
     build_group.add_argument("-b", "--build",    action="store_true",    help="Build respecective BSP.")
     build_group.add_argument("-c", "--clean",    action="store_true",    help="Clean the build directory before building.")
     build_group.add_argument("--list-bsp",       action="store_true",    help="List available BSPs and exit.")
 
-    # Add a group for build configuration
     build_config_group = parser.add_argument_group("Build Configuration")
-    build_config_group.add_argument("-B", "--bsp",          choices=BSP_LIST,       default=BSP_LIST[0], help=f"Specify the BSP to use. Default is {BSP_LIST[0]}")
-    build_config_group.add_argument("-N", "--prod-name",    nargs='+',              default=[],   help="Specify the product name. Defaults to all Product specified in PROD_PROFILE")
-    build_config_group.add_argument("-pp", "--prod-profile",default=None,           help="Specify the product profile. Defaults to bsp_path/prod_profile.yml")
-    build_config_group.add_argument("-D", "--define",       action="append",        default=[],            help="Add compile-time definitions (e.g., -DDEBUG or -DLEVEL=5)")
-    build_config_group.add_argument("--build-type",         choices=BUILD_TYPE,     default=BUILD_TYPE[0], help= "Specify the build type. Default is Debug.")
+    build_config_group.add_argument("-B", "--bsp",          choices=BSP_LIST,       default=BSP_LIST[0] if BSP_LIST else None, help="Specify the BSP to use.")
+    build_config_group.add_argument("-N", "--prod-name",    nargs='+',              default=[],   help="Specify the product name.")
+    build_config_group.add_argument("-pp", "--prod-profile",default=None,           help="Specify the product profile.")
+    build_config_group.add_argument("-D", "--define",       action="append",        default=[],            help="Add compile-time definitions.")
+    build_config_group.add_argument("--build-type",         choices=BUILD_TYPE,     default=BUILD_TYPE[0], help= "Specify the build type.")
 
     target_group = parser.add_argument_group("Target Options")
-    target_group.add_argument("-H", "--host",   choices=PLAT_LIST,      default=PLAT_LIST[0], help=f"Target host. Default is {PLAT_LIST[0]}")
+    target_group.add_argument("-H", "--host",   choices=PLAT_LIST,      default=PLAT_LIST[0] if PLAT_LIST else None, help="Target host.")
     target_group.add_argument("-P", "--port",   type=str, default=None, help="Target port")
     target_group.add_argument("-C", "--config", action="store_true", help="target configs")
     target_group.add_argument("-F", "--flash",  action="store_true", help="flash ESP target")
     target_group.add_argument("-E", "--erase",  choices=["firmware", "chip"], default=None, help="Erase target")
     target_group.add_argument("-R", "--run",    action="store_true", help="Run target")
-    target_group.add_argument("--baud",         type=int, default=115200, help="Serial baudrate. Default is 115200")
+    target_group.add_argument("-HR", "--reset",  action="store_true", help="Hard reset target")
+    target_group.add_argument("--baud",         type=int, default=115200, help="Serial baudrate.")
 
     args = parser.parse_args()
 
     if args.meshx_args:
-        # Load arguments from a file. Do not override existing arguments
         parser.set_defaults(**vars(args))
         file_args = os.path.join(args.meshx_args, "meshx.args")
         if not os.path.exists(file_args):
             raise FileNotFoundError(f"meshx.args file not found at {file_args}")
-
         with open(file_args, 'r') as f:
             args = parser.parse_args(f.read().split())
+
     if args.list_bsp:
         print("Available BSPs:")
-        # port/bsp directory listing
-        for bsp in os.listdir(BSP_PATH):
-            if os.path.isdir(os.path.join(BSP_PATH, bsp)):
-                if bsp.startswith('.') or not os.path.exists(os.path.join(BSP_PATH, bsp, "bsp.cmake")):
-                    continue
-                print(f" - {bsp}")
+        for bsp in BSP_LIST:
+            print(f" - {bsp}")
         sys.exit(0)
 
     if args.prod_profile is None:
         args.prod_profile = f"port/bsp/{args.bsp}/prod_profile.yml"
 
-    # Print the parsed arguments
     print(f"meshx.py Version: {VERSION_STRING}")
     if args.version:
         sys.exit(0)
@@ -442,52 +445,43 @@ if __name__ == "__main__":
     print(f"Product Profile: {args.prod_profile}")
 
     if args.prod_name != []:
-        # Load product names from args.prod_profile eg: tools/scripts/prod_profile.ci.yml
         if not os.path.exists(args.prod_profile):
             raise FileNotFoundError(f"Product profile '{args.prod_profile}' not found.")
-
-        # Check if all product names are available in the profile
         with open(args.prod_profile, 'r') as f:
             profile_data = yaml.safe_load(f)
         try:
             available_products = [prod['name'] for prod in profile_data['prod'].get('products', [])]
             for prod in args.prod_name:
                 if prod not in available_products:
-                    raise ValueError(f"Product name '{prod}' not found in profile '{args.prod_profile}'. Available products: {', '.join(available_products)}")
+                    raise ValueError(f"Product name '{prod}' not found. Available: {', '.join(available_products)}")
         except (KeyError, TypeError):
             raise ValueError(f"Product profile '{args.prod_profile}' is not valid.")
     else:
-        # If no product name is specified, use all products from the profile
         with open(args.prod_profile, 'r') as f:
             profile_data = yaml.safe_load(f)
         args.prod_name = [prod['name'] for prod in profile_data['prod'].get('products', [])]
-        print(f"No product name specified. Using all products from profile: {args.prod_name}")
-
-    print(f"Final Product Names: {args.prod_name}")
 
     build_root = f"build/{args.bsp}/{args.build_type}"
-
     target_sel = None
     if args.host == "esp":
         target_sel = ESPTarget(args.port, args.baud)
     else:
         raise TargetFlashException(f"Unsupported target host: {args.host}")
 
-    # All Target process Stages
     if args.config:
         target_sel.configure(build_root)
-
-    # All Build process Stages
     if args.clean:
         clean(args, build_root)
-
     if args.build:
         build(args, build_root)
-
-    # All Tartget process Stages
     if args.erase:
         target_sel.erase(args, build_root)
     if args.flash:
         target_sel.flash(args, build_root)
+    if args.reset:
+        target_sel.reset(args, build_root)
     if args.run:
         target_sel.run(args, build_root)
+
+if __name__ == "__main__":
+    main()

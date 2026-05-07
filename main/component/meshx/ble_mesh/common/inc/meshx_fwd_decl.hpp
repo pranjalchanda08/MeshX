@@ -24,8 +24,8 @@
 #define MESHX_BASE_TEMPLATE_PARAMS                  <ble_mesh_send_msg_params_t>
 #define MESHX_BASE_CLIENT_TEMPLATE_PROTO   template <typename baseClientModelDerived_t, typename ble_mesh_send_msg_params_t, typename ble_mesh_plat_model_cb_params_t>
 #define MESHX_BASE_CLIENT_TEMPLATE_PARAMS           <baseClientModelDerived_t, ble_mesh_send_msg_params_t, ble_mesh_plat_model_cb_params_t>
-#define MESHX_BASE_SERVER_TEMPLATE_PROTO   template <typename baseServerModelDerived_t, typename ble_mesh_send_msg_params_t, typename ble_mesh_plat_restore_params_t>
-#define MESHX_BASE_SERVER_TEMPLATE_PARAMS           <baseServerModelDerived_t, ble_mesh_send_msg_params_t, ble_mesh_plat_restore_params_t>
+#define MESHX_BASE_SERVER_TEMPLATE_PROTO   template <typename baseServerModelDerived_t, typename ble_mesh_send_msg_params_t, typename ble_mesh_plat_restore_params_t, typename ble_mesh_plat_cb_params_t>
+#define MESHX_BASE_SERVER_TEMPLATE_PARAMS           <baseServerModelDerived_t, ble_mesh_send_msg_params_t, ble_mesh_plat_restore_params_t, ble_mesh_plat_cb_params_t>
 
 #define MESHX_MODEL_TEMPLATE_PROTO          template <typename meshxBaseModel_t, typename meshx_send_packet_params_t>
 #define MESHX_MODEL_TEMPLATE_PARAMS                  <meshxBaseModel_t, meshx_send_packet_params_t>
@@ -173,6 +173,18 @@ public:
      * @return true if the model exists in this element, false otherwise
      */
     virtual bool has_model(uint16_t model_id) const = 0;
+
+    /**
+     * @brief Get the element context structure
+     * @return Pointer to the element context structure
+     */
+    virtual meshx_ptr_t get_element_ctx(void) const = 0;
+
+    /**
+     * @brief Get the size of the element context structure
+     * @return Size of the element context structure
+     */
+    virtual size_t get_element_ctx_size(void) const = 0;
 
     meshXElementIF() = delete;
     explicit meshXElementIF(uint16_t element_idx) : element_idx(element_idx) { }

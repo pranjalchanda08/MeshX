@@ -78,23 +78,41 @@ static meshx_err_t meshx_handle_gen_onoff_msg(const dev_struct_t *pdev, control_
     case MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK:
         meshx_state_change_notify(param);
         break;
+    case MESHX_MODEL_OP_GEN_ONOFF_STATUS:
+        // Servers may receive their own status messages in some platform event flows; ignore silently
+        return MESHX_SUCCESS;
     default:
         break;
     }
-    if (send_reply
-        /* This is meant to notify the respective publish client */
-        || param->ctx.src_addr != param->model.pub_addr)
-    {
-        /* Here the message was received from unregistered source and mention the state to the respective client */
-        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "PUB: src|pub %x|%x", param->ctx.src_addr, param->model.pub_addr);
-        param->ctx.opcode = MESHX_MODEL_OP_GEN_ONOFF_STATUS;
-        param->ctx.dst_addr = param->model.pub_addr;
 
-        return meshx_gen_srv_send_msg_to_ble(
+    meshx_err_t send_err = MESHX_SUCCESS;
+    if (send_reply)
+    {
+        /* Response to the requester */
+        meshx_gen_srv_cb_param_t reply_param = *param;
+        reply_param.ctx.opcode = MESHX_MODEL_OP_GEN_ONOFF_STATUS;
+        reply_param.ctx.dst_addr = param->ctx.src_addr;
+
+        send_err = meshx_gen_srv_send_msg_to_ble(
             CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV,
-            param);
+            &reply_param);
     }
-    return MESHX_SUCCESS;
+
+    /* Publish to the configured publication address if present */
+    if (param->model.pub_addr != MESHX_ADDR_UNASSIGNED && param->ctx.src_addr != param->model.pub_addr)
+    {
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "PUB: src|pub %x|%x", param->ctx.src_addr, param->model.pub_addr);
+        meshx_gen_srv_cb_param_t pub_param = *param;
+        pub_param.ctx.opcode = MESHX_MODEL_OP_GEN_ONOFF_STATUS;
+        pub_param.ctx.dst_addr = param->model.pub_addr;
+
+        meshx_err_t pub_err = meshx_gen_srv_send_msg_to_ble(
+            CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV,
+            &pub_param);
+        if (send_err == MESHX_SUCCESS) send_err = pub_err;
+    }
+
+    return send_err;
 }
 
 /**

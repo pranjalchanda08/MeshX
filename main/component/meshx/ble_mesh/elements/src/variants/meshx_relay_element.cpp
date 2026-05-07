@@ -24,6 +24,15 @@
 #include <meshx_nvs.h>
 #include <meshx_api.h>
 
+#if CONFIG_ENABLE_UNIT_TEST
+extern "C" {
+    meshx_err_t relay_cli_ut_handler(int cmd_id, int argc, char **argv);
+    meshx_err_t relay_srv_ut_handler(int cmd_id, int argc, char **argv);
+    meshx_err_t meshx_relay_el_set_state(uint16_t el_id, bool ack);
+    meshx_err_t meshx_relay_el_get_state(uint16_t el_id);
+}
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -42,19 +51,6 @@ extern "C" {
 }
 #endif
 
-typedef enum {
-    MESHX_GEN_ON_OFF_CLI_MSG_SET = 0,
-    MESHX_GEN_ON_OFF_CLI_MSG_GET
-} meshx_gen_on_off_cli_msg_type_t;
-
-typedef struct meshx_gen_on_off_cli_msg {
-    uint16_t element_id;
-    bool ack;
-    meshx_gen_on_off_cli_msg_type_t set_get;
-} meshx_gen_on_off_cli_msg_t;
-
-#define MESHX_GEN_ON_OFF_CLI_MSG_ACK    1
-#define MESHX_GEN_ON_OFF_CLI_MSG_NO_ACK 0
 
 #define RELAY_SRV_TO_BLE_EVT_MASK   CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF_SRV
 #define RELAY_CLI_TO_BLE_EVT_MASK   CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF
@@ -104,6 +100,10 @@ void meshXRelayServerElement::register_class_callbacks()
         MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER,
                    "Relay Srv: to_ble cb reg failed: %d", err);
     }
+
+#if CONFIG_ENABLE_UNIT_TEST
+    register_unit_test(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, relay_srv_ut_handler);
+#endif
 }
 
 /**
@@ -113,6 +113,12 @@ MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PROTO
 meshXRelayServerElement::meshXRelayServerElement (uint16_t element_idx)
     : meshXElementServer(element_idx)
 {
+    memset(&element_ctx, 0, sizeof(meshx_relay_srv_el_ctx_t));
+    element_ctx.pub_addr = MESHX_ADDR_UNASSIGNED;
+
+    /* Restore from NVS if available */
+    meshx_nvs_element_ctx_get(element_idx, MESHX_ELEMENT_TYPE_RELAY_SERVER, &element_ctx, sizeof(meshx_relay_srv_el_ctx_t));
+
     this->register_element_ctx(&element_ctx, sizeof(meshx_relay_srv_el_ctx_t));
     this->set_element_variant(MESHX_ELEMENT_TYPE_RELAY_SERVER);
     std::call_once(s_callbacks_registered, register_class_callbacks);
@@ -169,6 +175,7 @@ meshx_err_t meshXRelayServerElement::element_state_change_notify(meshx_ptr_t par
     meshx_api_relay_server_evt_t app_evt = {
         .on_off = element_ctx.gen_on_off_state.on_off
     };
+    MESHX_LOGD(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Relay state changed to: %d", app_evt.on_off);
     return meshx_send_msg_to_app(
         element_id,
         MESHX_ELEMENT_TYPE_RELAY_SERVER,
@@ -349,6 +356,10 @@ void meshXRelayClientElement::register_class_callbacks()
         MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT,
                    "Relay Cli: to_ble cb reg failed: %d", err);
     }
+
+#if CONFIG_ENABLE_UNIT_TEST
+    register_unit_test(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, relay_cli_ut_handler);
+#endif
 }
 
 /**
@@ -358,6 +369,12 @@ MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
 meshXRelayClientElement::meshXRelayClientElement (uint16_t element_idx)
     : meshXElementClient(element_idx)
 {
+    memset(&element_ctx, 0, sizeof(meshx_relay_cli_el_ctx_t));
+    element_ctx.pub_addr = MESHX_ADDR_UNASSIGNED;
+
+    /* Restore from NVS if available */
+    meshx_nvs_element_ctx_get(element_idx, MESHX_ELEMENT_TYPE_RELAY_CLIENT, &element_ctx, sizeof(meshx_relay_cli_el_ctx_t));
+
     this->register_element_ctx(&element_ctx, sizeof(meshx_relay_cli_el_ctx_t));
     this->set_element_variant(MESHX_ELEMENT_TYPE_RELAY_CLIENT);
     std::call_once(s_callbacks_registered, register_class_callbacks);
@@ -490,9 +507,10 @@ meshx_err_t meshXRelayClientElement::s_prov_cb(
             if (!el) continue;
 
             meshx_gen_on_off_cli_msg_t msg = {
-                .element_id = abs_id,
                 .ack        = MESHX_GEN_ON_OFF_CLI_MSG_ACK,
-                .set_get    = MESHX_GEN_ON_OFF_CLI_MSG_GET
+                .set_get    = MESHX_GEN_ON_OFF_CLI_MSG_GET,
+                .reserved   = 0,
+                .element_id = abs_id
             };
             control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_BLE,
                 CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF, &msg, sizeof(msg));
@@ -515,14 +533,27 @@ meshx_err_t meshXRelayClientElement::s_to_ble_cb(
         control_task_msg_evt_t   evt,
         const void              *params)
 {
+    MESHX_LOGD(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "Entering C++ Relay Client TO_BLE Callback: evt=0x%x", (unsigned int)evt);
     if (!pdev || !params) return MESHX_INVALID_ARG;
 
     if (evt == CONTROL_TASK_MSG_EVT_TO_BLE_SET_ON_OFF)
     {
         const auto *msg = static_cast<const meshx_gen_on_off_cli_msg_t *>(params);
+        MESHX_LOGD(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "Entering C++ Relay Client TO_BLE Callback: target_el_id=%d", msg->element_id);
+
         auto *el = meshXElementRegistry::get_instance().find_and_cast<meshXRelayClientElement>(
             msg->element_id, MESHX_ELEMENT_TYPE_RELAY_CLIENT);
-        if (!el) return MESHX_SUCCESS;
+        if (!el) {
+            MESHX_LOGW(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "Relay Client [%d] not found in registry!", msg->element_id);
+            auto all = meshXElementRegistry::get_instance().get_all_elements();
+            for (auto const& [id, ptr] : all) {
+                MESHX_LOGI(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "  Registry contains ID [%d], variant %d", id, ptr->get_element_variant());
+            }
+            return MESHX_SUCCESS;
+        }
+
+        MESHX_LOGI(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "Relay Cli [%d]: pub_addr=0x%04x, app_id=%d",
+                   msg->element_id, el->element_ctx.pub_addr, el->element_ctx.app_id);
 
         if (el->element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED)
         {
@@ -624,6 +655,46 @@ meshx_err_t create_relay_client_elements_cpp(dev_struct_t *pdev, uint16_t elemen
     );
 }
 #endif /* CONFIG_RELAY_CLIENT_COUNT > 0 */
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#if CONFIG_ENABLE_UNIT_TEST
+meshx_err_t relay_cli_ut_handler(int cmd_id, int argc, char **argv)
+{
+    MESHX_LOGI(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "Entering C++ Relay Client UT Handler: cmd_id=%d, argc=%d", cmd_id, argc);
+    if (argc < 1) return MESHX_INVALID_ARG;
+    uint16_t el_id = UT_GET_ARG(0, uint16_t, argv);
+
+    if (cmd_id == 0x01) { // SET
+        return meshx_relay_el_set_state(el_id, true);
+    } else if (cmd_id == 0x02) { // SET UNACK
+        return meshx_relay_el_set_state(el_id, false);
+    } else { // GET
+        return meshx_relay_el_get_state(el_id);
+    }
+}
+
+extern "C" meshx_err_t relay_srv_ut_handler(int cmd_id, int argc, char **argv)
+{
+    MESHX_LOGI(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Entering C++ Relay Server UT Handler: cmd_id=%d, argc=%d", cmd_id, argc);
+    // Server UT can be used to query local state
+    if (argc < 1) return MESHX_INVALID_ARG;
+    uint16_t el_id = UT_GET_ARG(0, uint16_t, argv);
+
+    auto *el = meshXElementRegistry::get_instance().find_and_cast<meshXRelayServerElement>(
+        el_id, MESHX_ELEMENT_TYPE_RELAY_SERVER);
+    if (!el) return MESHX_NOT_FOUND;
+
+    MESHX_LOGI(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Relay Server [%d] state: %d", el_id, el->get_state());
+    return MESHX_SUCCESS;
+}
+#endif
 
 #ifdef __cplusplus
 } /* extern "C" */

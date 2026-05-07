@@ -102,7 +102,7 @@ using meshx_config_server_restore_params_t = struct meshx_config_server_restore_
  * @see meshx_config_server_restore_params_t for restore parameter structure.
  */
 MESHX_BASE_CONFIG_SERVER_TEMPLATE_PROTO
-class meshXBaseConfigServerModel : public meshXBaseServerModel<meshXBaseConfigServerModel, meshx_config_server_send_params_t, meshx_config_server_restore_params_t>
+class meshXBaseConfigServerModel : public meshXBaseServerModel<meshXBaseConfigServerModel, meshx_config_server_send_params_t, meshx_config_server_restore_params_t, meshx_config_srv_cb_param_t>
 {
 public:
     /**
@@ -138,7 +138,7 @@ public:
      * @param[in] model_id Model identifier for the config server
      * @param[in] from_ble_cb Callback function for handling BLE messages
      */
-    meshXBaseConfigServerModel(uint32_t model_id, const control_msg_cb &from_ble_cb);
+    meshXBaseConfigServerModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb &from_ble_cb);
 
     /**
      * @brief Delete default constructor

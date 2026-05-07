@@ -13,6 +13,7 @@
 #include "meshx_nvs.h"
 #include "unit_test.h"
 #include "interface/utils/meshx_nvs_interface.h"
+#include "meshx_control_task.h"
 
 #define MESHX_NVS_INIT_MAGIC        0x5489
 
@@ -52,10 +53,15 @@ meshx_nvs_write_list_t *meshx_nvs_write_list_head = NULL;
 static meshx_err_t meshx_nvs_unit_test_cb_handler(int cmd_id, int argc, char **argv);
 #endif
 
-/**
- * @brief: MeshX NVS Instance
- */
 static meshx_nvs_t meshx_nvs_inst;
+
+static meshx_err_t meshx_nvs_control_msg_handler(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)
+{
+    if (evt & CONTROL_TASK_MSG_EVT_SYSTEM_NVS_COMMIT) {
+        meshx_nvs_commit();
+    }
+    return MESHX_SUCCESS;
+}
 
 #if MESHX_NVS_TIMER_PERIOD
 /**
@@ -67,12 +73,9 @@ static meshx_nvs_t meshx_nvs_inst;
 static void meshx_nvs_os_timer_cb(const meshx_os_timer_t *p_timer)
 {
     MESHX_UNUSED(p_timer);
-    meshx_err_t err = MESHX_SUCCESS;
-    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_NVS, "%s fire", OS_TMER_GET_TIMER_NAME(p_timer));
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_NVS, "%s fire -> Offloading commit to control task", OS_TMER_GET_TIMER_NAME(p_timer));
 
-    err = meshx_nvs_commit();
-    if (err)
-        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "meshx_nvs_commit %p", (void *)err);
+    control_task_msg_publish(CONTROL_TASK_MSG_CODE_SYSTEM, CONTROL_TASK_MSG_EVT_SYSTEM_NVS_COMMIT, NULL, 0);
 }
 #endif /* MESHX_NVS_TIMER_PERIOD */
 
@@ -146,6 +149,14 @@ meshx_err_t meshx_nvs_init(void)
         return err;
     }
 #endif /* CONFIG_ENABLE_UNIT_TEST */
+
+    err = control_task_msg_subscribe(CONTROL_TASK_MSG_CODE_SYSTEM, CONTROL_TASK_MSG_EVT_SYSTEM_NVS_COMMIT, &meshx_nvs_control_msg_handler);
+    if (err)
+    {
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "control_task_msg_subscribe failed: (%d)", err);
+        return err;
+    }
+
     return err;
 }
 
@@ -270,6 +281,10 @@ meshx_err_t meshx_nvs_commit(void)
     meshx_err_t err = MESHX_SUCCESS;
     meshx_nvs_write_list_t *cur = meshx_nvs_write_list_head;
     meshx_nvs_write_list_t *prev;
+
+    if (!cur) return MESHX_SUCCESS;
+
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_NVS, "Committing pending NVS writes...");
 
     while (cur) {
         err = meshx_nvs_plat_write(meshx_nvs_inst.meshx_nvs_handle, cur->key, cur->data, cur->len);
@@ -406,8 +421,12 @@ restart_timer:
 #if MESHX_NVS_TIMER_PERIOD
         meshx_err_t err = meshx_os_timer_restart(meshx_nvs_inst.meshx_nvs_commit_tmr);
         if (err)
-            MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "os_timer_restart err: %p", (void*)err);
-#endif
+        {
+            MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "meshx_os_timer_restart failed: (%d)", err);
+        }
+#else
+        meshx_nvs_commit();
+#endif /* MESHX_NVS_TIMER_PERIOD */
     }
 
     return MESHX_SUCCESS;
@@ -428,6 +447,7 @@ meshx_err_t meshx_nvs_element_ctx_get(uint16_t element_id, meshx_element_type_t 
 {
     char key[MESHX_KEY_NAME_MAX_SIZE];
     snprintf(key, MESHX_KEY_NAME_MAX_SIZE, MESHX_NVS_ELEMENT_CTX, (uint8_t)element_type, element_id);
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_NVS, "meshx_nvs_element_ctx_get: key=%s, size=%d", key, (int)blob_size);
     return meshx_nvs_get(key, blob, blob_size);
 }
 

@@ -368,6 +368,7 @@ static meshx_err_t meshx_api_control_task_handler(dev_struct_t const *pdev, cont
     el_ctx = RELAY_SRV_EL(rel_el_id).srv_ctx;
 
     el_ctx->state.on_off = p_onoff_srv->on_off_state;
+    MESHX_LOGI(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Relay state changed to: %d", el_ctx->state.on_off);
 
     err = meshx_nvs_element_ctx_set(element_id, MESHX_ELEMENT_TYPE_RELAY_SERVER, el_ctx, sizeof(meshx_relay_srv_model_ctx_t));
     if (err != MESHX_SUCCESS)

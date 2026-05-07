@@ -119,7 +119,7 @@ public:
     meshx_err_t plat_send_msg(meshx_gen_client_send_params_t *params) override;
 
     meshXBaseGenericClientModel() = delete;
-    meshXBaseGenericClientModel(uint32_t model_id, const control_msg_cb &from_ble_cb);
+    meshXBaseGenericClientModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb &from_ble_cb);
 
     virtual ~meshXBaseGenericClientModel() = default;
 };
@@ -179,7 +179,7 @@ using meshx_gen_server_restore_params_t = struct meshx_gen_server_restore_params
  * @see meshx_gen_server_send_params_t for send parameter structure.
  */
 MESHX_BASE_GENERIC_SERVER_TEMPLATE_PROTO
-class meshXBaseGenericServerModel : public meshXBaseServerModel<meshXBaseGenericServerModel, meshx_gen_server_send_params_t, meshx_gen_server_restore_params_t>
+class meshXBaseGenericServerModel : public meshXBaseServerModel<meshXBaseGenericServerModel, meshx_gen_server_send_params_t, meshx_gen_server_restore_params_t, meshx_gen_srv_cb_param_t>
 {
 public:
     meshx_err_t plat_model_init(void) override;
@@ -187,7 +187,7 @@ public:
 public:
     meshx_err_t server_state_restore(meshx_gen_server_restore_params_t* param) override;
     meshx_err_t plat_send_msg(meshx_gen_server_send_params_t *params) override;
-    meshXBaseGenericServerModel(uint32_t model_id, const control_msg_cb &from_ble_cb);
+    meshXBaseGenericServerModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb &from_ble_cb);
     meshXBaseGenericServerModel() = delete;
     ~meshXBaseGenericServerModel() final = default;
 };

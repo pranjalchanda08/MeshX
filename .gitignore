@@ -63,3 +63,5 @@ doxygen
 tags
 plans
 .agents
+
+__pycache__

@@ -80,20 +80,42 @@ meshx_err_t meshx_kv_engine_init(const meshx_fal_partition_t *part)
             break;
         }
 
+        if (header.key_len > KV_MAX_KEY_LEN || header.val_len > 256) {
+            MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "KV Init: Invalid lengths at pos %u (key:%d, val:%d)", kv_write_pos, header.key_len, header.val_len);
+            break;
+        }
+
         if (header.seq_id >= kv_next_seq_id) {
             kv_next_seq_id = header.seq_id + 1;
         }
 
+        char kbuf[KV_MAX_KEY_LEN];
+        meshx_fal_read(kv_part, kv_write_pos + sizeof(header), kbuf, header.key_len < KV_MAX_KEY_LEN ? header.key_len : KV_MAX_KEY_LEN-1);
+        kbuf[header.key_len < KV_MAX_KEY_LEN ? header.key_len : KV_MAX_KEY_LEN-1] = '\0';
+#ifdef KV_DEBUG_EN
+        MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_NVS, "  Found Record: key=%s, seq=%u, pos=%u", kbuf, header.seq_id, kv_write_pos);
+#endif /* KV_DEBUG_EN */
         kv_write_pos += kv_align(sizeof(header) + header.key_len + header.val_len);
     }
 
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "KV Engine Init: Pos=%d, SeqID=%d", kv_write_pos, kv_next_seq_id);
+    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "KV Engine Init: Pos=%u, SeqID=%u", kv_write_pos, kv_next_seq_id);
     return MESHX_SUCCESS;
 }
 
 meshx_err_t meshx_kv_engine_read(const char *key, void *buf, uint16_t len)
 {
     if (!kv_part || !key || !buf) return MESHX_INVALID_ARG;
+
+    // Check pending writes first (most recent)
+    kv_pending_t *pending = pending_list;
+    while (pending) {
+        if (strncmp(pending->key, key, KV_MAX_KEY_LEN - 1) == 0) {
+            uint16_t to_copy = (len < pending->len) ? len : pending->len;
+            memcpy(buf, pending->data, to_copy);
+            return MESHX_SUCCESS;
+        }
+        pending = pending->next;
+    }
 
     uint32_t pos = 0;
     kv_header_t header;
@@ -124,9 +146,11 @@ meshx_err_t meshx_kv_engine_read(const char *key, void *buf, uint16_t len)
         kv_header_t h;
         meshx_fal_read(kv_part, best_pos, &h, sizeof(h));
         meshx_fal_read(kv_part, best_pos + sizeof(h) + h.key_len, buf, to_read);
+        MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_NVS, "KV Read Success: key=%s, seq=%u, len=%d", key, max_seq, to_read);
         return MESHX_SUCCESS;
     }
 
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_NVS, "KV Read Not Found: key=%s", key);
     return MESHX_NOT_FOUND;
 }
 
@@ -177,6 +201,14 @@ meshx_err_t meshx_kv_engine_commit(void)
         meshx_fal_write(kv_part, kv_write_pos + sizeof(header), cur->key, header.key_len);
         meshx_fal_write(kv_part, kv_write_pos + sizeof(header) + header.key_len, cur->data, header.val_len);
 
+        // Verification
+        kv_header_t v_header;
+        meshx_fal_read(kv_part, kv_write_pos, &v_header, sizeof(v_header));
+        if (v_header.magic != KV_MAGIC) {
+            MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "KV Verify FAILED at pos %u! (read: 0x%04x)", kv_write_pos, v_header.magic);
+        }
+
+        MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_NVS, "KV Commit: key=%s, seq=%u, pos=%u", cur->key, header.seq_id, kv_write_pos);
         kv_write_pos += size;
 
         kv_pending_t *prev = cur;

@@ -212,7 +212,19 @@ static meshx_err_t control_task_msg_dispatch(
 
     while (ptr)
     {
-        if (((evt == 0x00) || (evt & ptr->msg_evt_bmap)) && (ptr->cb != NULL))
+        bool is_match = false;
+        if (msg_code == CONTROL_TASK_MSG_CODE_FRM_BLE)
+        {
+            /* For messages from BLE, the event is the Model ID (value), not a bitmap */
+            is_match = (evt == ptr->msg_evt_bmap);
+        }
+        else
+        {
+            /* Other codes use bitmaps or 0x00 as wildcard */
+            is_match = ((evt == 0x00) || (evt & ptr->msg_evt_bmap));
+        }
+
+        if (is_match && (ptr->cb != NULL))
         {
             ptr->cb(pdev, evt, (void*)params); // Call the registered callback
             evt_handled = true;

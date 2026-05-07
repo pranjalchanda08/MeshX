@@ -30,7 +30,7 @@ using meshx_sensor_server_send_params_t = struct meshx_sensor_server_send_params
 
 
 MESHX_BASE_SENSOR_SERVER_TEMPLATE_PROTO
-class meshXBaseSensorServerModel : public meshXBaseServerModel<meshXBaseSensorServerModel, meshx_sensor_server_send_params_t, meshx_sensor_server_restore_params_t>
+class meshXBaseSensorServerModel : public meshXBaseServerModel<meshXBaseSensorServerModel, meshx_sensor_server_send_params_t, meshx_sensor_server_restore_params_t, meshx_sensor_server_cb_param_t>
 {
 public:
     meshx_err_t plat_model_init(void) override;
@@ -38,7 +38,7 @@ public:
 public:
     meshx_err_t server_state_restore(meshx_sensor_server_restore_params_t* param) override;
     meshx_err_t plat_send_msg(meshx_sensor_server_send_params_t *params) override;
-    meshXBaseSensorServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb);
+    meshXBaseSensorServerModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb& from_ble_cb);
 
     meshXBaseSensorServerModel() = delete;
     ~meshXBaseSensorServerModel() override = default;

@@ -25,11 +25,14 @@
 #include "meshx_base_model_common.hpp"
 #include "meshx_base_model_sensor.hpp"
 
-template <typename modelDerived_t, typename modelSendParams_t, typename modelRestoreParams_t>
-std::forward_list<typename meshXBaseServerModel<modelDerived_t, modelSendParams_t, modelRestoreParams_t>::base_server_model_cb_reg_t>
-meshXBaseServerModel<modelDerived_t, modelSendParams_t, modelRestoreParams_t>::base_server_model_cb_list;
+MESHX_BASE_SERVER_TEMPLATE_PROTO
+std::forward_list<typename meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::base_server_model_cb_reg_t>
+    meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::base_server_model_cb_list = { };
 
-constexpr uint32_t MESHX_CLIENT_INIT_MAGIC_NO = 0x1121;
+MESHX_BASE_SERVER_TEMPLATE_PROTO
+std::once_flag meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::plat_server_init_flag;
+
+// MESHX_CLIENT_INIT_MAGIC_NO replaced by std::once_flag
 
 /**
  * @brief Construct a new meshXBaseModel object
@@ -102,8 +105,7 @@ meshx_err_t meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::from_ble_dereg_cb(void) c
  * meshXBaseServerModel
  ********************************************************************************************************/
 
-MESHX_BASE_SERVER_TEMPLATE_PROTO
-uint16_t meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::plat_server_init = 0;
+
 
 /**
  * @brief Constructor for the meshXBaseServerModel class.
@@ -114,9 +116,10 @@ uint16_t meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::plat_server_ini
  * @param[in] from_ble_cb  The callback function to be registered for the model.
  */
 MESHX_BASE_SERVER_TEMPLATE_PROTO
-meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::meshXBaseServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
+meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::meshXBaseServerModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb& from_ble_cb)
     : meshXBaseModel<ble_mesh_send_msg_params_t>(model_id, base_from_ble_msg_handle, meshXBaseModelType::MESHX_BASE_MODEL_TYPE_SERVER)
 {
+    this->p_plat_model = p_plat_model;
     if (!from_ble_cb)
     {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid callback for model_id: %04x", model_id);
@@ -124,7 +127,7 @@ meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::meshXBaseServerModel(uin
         return;
     }
 
-    base_server_model_cb_list.push_front({(uint16_t)model_id, from_ble_cb});
+    base_server_model_cb_list.push_front({(uint16_t)model_id, p_plat_model, from_ble_cb});
     this->status = MESHX_SUCCESS;
 }
 
@@ -143,11 +146,20 @@ meshx_err_t meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::base_from_bl
     if (pdev == nullptr || params == nullptr)
         return MESHX_INVALID_ARG;
 
+    auto *param = static_cast<ble_mesh_plat_cb_params_t*>(params);
+    meshx_ptr_t plat_model = param->model.p_model;
+
     bool cb_invoked = false;
     for (auto &node : base_server_model_cb_list)
     {
         if ((uint16_t)evt == node.model_id)
         {
+            /* Only invoke if the platform model matches this instance */
+            if (node.p_plat_model != nullptr && node.p_plat_model != plat_model)
+            {
+                continue;
+            }
+
             if (node.cb)
             {
                 node.cb(pdev, evt, params);
@@ -156,7 +168,26 @@ meshx_err_t meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::base_from_bl
         }
     }
 
+    if (!cb_invoked)
+    {
+        MESHX_LOGW(MODULE_ID_MODEL_SERVER, "No registered server handled model_id=%04" PRIx32, (uint32_t)evt);
+    }
+
     return cb_invoked ? MESHX_SUCCESS : MESHX_FAIL;
+}
+
+MESHX_BASE_SERVER_TEMPLATE_PROTO
+meshx_err_t meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::from_ble_dereg_cb(void) const
+{
+    // First, unsubscribe from control task
+    meshx_err_t err = control_task_msg_unsubscribe(CONTROL_TASK_MSG_CODE_FRM_BLE, (control_task_msg_evt_t)this->model_id, this->from_ble_cb);
+
+    // Then, remove from our static callback list to prevent dangling pointers
+    base_server_model_cb_list.remove_if([this](const base_server_model_cb_reg_t& node) {
+        return node.p_plat_model == this->p_plat_model;
+    });
+
+    return err;
 }
 
 /*********************************************************************************************************
@@ -167,7 +198,7 @@ std::forward_list<typename meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAM
     meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_client_model_cb_list = { };
 
 MESHX_BASE_CLIENT_TEMPLATE_PROTO
-uint16_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::plat_client_init = 0;
+std::once_flag meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::plat_client_init_flag;
 
 /**
  * @brief Constructor for the meshXBaseClientModel template class.
@@ -202,9 +233,10 @@ uint16_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::plat_client_ini
  * @see base_from_ble_msg_handle() for the static message handling mechanism.
  */
 MESHX_BASE_CLIENT_TEMPLATE_PROTO
-meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::meshXBaseClientModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
+meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::meshXBaseClientModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb& from_ble_cb)
     : meshXBaseModel<ble_mesh_send_msg_params_t>(model_id, base_from_ble_msg_handle, meshXBaseModelType::MESHX_BASE_MODEL_TYPE_CLIENT)
 {
+    this->p_plat_model = p_plat_model;
     // Validate model ID and callback - consistent with C implementation
     if (!from_ble_cb)
     {
@@ -213,11 +245,11 @@ meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::meshXBaseClientModel(uin
         return;
     }
 
-    if (plat_client_init == MESHX_CLIENT_INIT_MAGIC_NO)
-        this->status = MESHX_SUCCESS;
-    plat_client_init = MESHX_CLIENT_INIT_MAGIC_NO;
+    std::call_once(plat_client_init_flag, [this]() {
+        MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "First-time initialization for client template: %s", get_client_type_name());
+    });
 
-    base_client_model_cb_list.push_front({(uint16_t)model_id, from_ble_cb});
+    base_client_model_cb_list.push_front({(uint16_t)model_id, p_plat_model, from_ble_cb});
     this->status = MESHX_SUCCESS;
 }
 
@@ -321,12 +353,19 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_from_bl
 
     meshx_err_t err = MESHX_SUCCESS;
     auto *param = static_cast<ble_mesh_plat_model_cb_params_t*>(params);
+    meshx_ptr_t plat_model = param->model.p_model;
     bool cb_invoked = false;
 
     for (auto &node : base_client_model_cb_list)
     {
         if ((uint16_t)evt == node.model_id)
         {
+            /* Only invoke if the platform model matches this instance */
+            if (node.p_plat_model != nullptr && node.p_plat_model != plat_model)
+            {
+                continue;
+            }
+
             MESHX_LOGD(MODULE_ID_MODEL_CLIENT,
                        "op|src|dst:%04" PRIx32 "|%04x|%04x",
                        param->ctx.opcode, param->ctx.src_addr, param->ctx.dst_addr);
@@ -358,7 +397,7 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_from_bl
     }
 
     if (!cb_invoked)
-        MESHX_LOGW(MODULE_ID_MODEL_CLIENT, "No registered client handled model_id=%04x", (uint32_t)evt);
+        MESHX_LOGW(MODULE_ID_MODEL_CLIENT, "No registered client handled model_id=%04" PRIx32, (uint32_t)evt);
 
     return err;
 }
@@ -410,10 +449,16 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_handle_
     MESHX_UNUSED(evt);
     meshx_err_t err = MESHX_SUCCESS;
     bool cb_invoked = false;
-    for (base_client_model_cb_reg_t node : base_client_model_cb_list)
+    for (auto &node : base_client_model_cb_list)
     {
         if (param->model_id == node.model_id)
         {
+            /* Only invoke if the platform model matches this instance */
+            if (node.p_plat_model != nullptr && node.p_plat_model != param->param.model.p_model)
+            {
+                continue;
+            }
+
             param->param.err_code   = MESHX_TIMEOUT;
             param->param.evt        = static_cast<decltype(param->param.evt)>(meshx_base_cli_evt::MESHX_BASE_CLI_TIMEOUT);
             if(node.cb == nullptr)
@@ -435,6 +480,20 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_handle_
     return err;
 }
 
+MESHX_BASE_CLIENT_TEMPLATE_PROTO
+meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::from_ble_dereg_cb(void) const
+{
+    // First, unsubscribe from control task
+    meshx_err_t err = control_task_msg_unsubscribe(CONTROL_TASK_MSG_CODE_FRM_BLE, (control_task_msg_evt_t)this->model_id, this->from_ble_cb);
+
+    // Then, remove from our static callback list to prevent dangling pointers
+    base_client_model_cb_list.remove_if([this](const base_client_model_cb_reg_t& node) {
+        return node.p_plat_model == this->p_plat_model;
+    });
+
+    return err;
+}
+
 
 /* Explicit template instantiations to ensure the linker can find the template method bodies
  * defined in this .cpp file.
@@ -451,7 +510,7 @@ template class meshXBaseClientModel<meshXBaseGenericClientModel, meshx_gen_clien
 // meshXBaseModel instantiations
 template class meshXBaseModel<meshx_gen_server_send_params_t>;
 // meshXBaseServerModel instantiations
-template class meshXBaseServerModel<meshXBaseGenericServerModel, meshx_gen_server_send_params_t, meshx_gen_server_restore_params_t>;
+template class meshXBaseServerModel<meshXBaseGenericServerModel, meshx_gen_server_send_params_t, meshx_gen_server_restore_params_t, meshx_gen_srv_cb_param_t>;
 #endif
 
 #if CONFIG_ENABLE_LIGHT_CLIENT
@@ -465,19 +524,19 @@ template class meshXBaseClientModel<meshXBaseLightClientModel, meshx_gen_light_c
 // meshXBaseModel instantiations
 template class meshXBaseModel<meshx_light_server_send_params_t>;
 // meshXBaseServerModel instantiations
-template class meshXBaseServerModel<meshXBaseLightServerModel, meshx_light_server_send_params_t, meshx_light_server_restore_params_t>;
+template class meshXBaseServerModel<meshXBaseLightServerModel, meshx_light_server_send_params_t, meshx_light_server_restore_params_t, meshx_lighting_server_cb_param_t>;
 #endif
 
 #if CONFIG_ENABLE_CONFIG_SERVER
 // meshXBaseModel instantiations
 template class meshXBaseModel<meshx_config_server_send_params_t>;
 // meshXBaseServerModel instantiations
-template class meshXBaseServerModel<meshXBaseConfigServerModel, meshx_config_server_send_params_t, meshx_config_server_restore_params_t>;
+template class meshXBaseServerModel<meshXBaseConfigServerModel, meshx_config_server_send_params_t, meshx_config_server_restore_params_t, meshx_config_srv_cb_param_t>;
 #endif
 
 #if CONFIG_ENABLE_SENSOR_SERVER
 // meshXBaseModel instantiations
 template class meshXBaseModel<meshx_sensor_server_send_params_t>;
 // meshXBaseServerModel instantiations
-template class meshXBaseServerModel<meshXBaseSensorServerModel, meshx_sensor_server_send_params_t, meshx_sensor_server_restore_params_t>;
+template class meshXBaseServerModel<meshXBaseSensorServerModel, meshx_sensor_server_send_params_t, meshx_sensor_server_restore_params_t, meshx_sensor_server_cb_param_t>;
 #endif

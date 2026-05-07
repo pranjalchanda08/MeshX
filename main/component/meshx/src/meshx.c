@@ -235,8 +235,6 @@ static meshx_err_t meshx_ble_mesh_init(meshx_config_t *config)
     g_prov_cfg.uuid = g_dev.uuid;
     g_prov_cfg.freshboot_timeout_ms = FRESHBOOT_TIMEOUT_MS;
 
-    meshx_dev_restore(&g_dev, config);
-
     err = meshx_element_init(&g_dev, config);
     MESHX_ERR_PRINT_RET("Failed to initialize BLE Elements", err);
 
@@ -269,6 +267,29 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     /* Copy the configuration to the global config structure */
     memcpy(&g_config, config, sizeof(meshx_config_t));
 
+    meshx_logging_t logging_cfg;
+    logging_cfg.def_log_level = config->meshx_log_level == MESHX_LOG_VERBOSE ?
+        CONFIG_MESHX_DEFAULT_LOG_LEVEL : config->meshx_log_level;
+
+    err = meshx_logging_init(&logging_cfg);
+    MESHX_ERR_PRINT_RET("Logging init failed", err);
+
+    /* Initialise Platform deps */
+    err = meshx_platform_init();
+    MESHX_ERR_PRINT_RET("Platform init failed", err);
+
+    /* Initialize OS timer */
+    err = meshx_os_timer_init();
+    MESHX_ERR_PRINT_RET("OS Timer Init failed", err);
+
+    /* Initialize MeshX NVS */
+    err = meshx_nvs_init();
+    MESHX_ERR_PRINT_RET("MeshX NVS Init failed", err);
+
+    /* Restore the device state and open NVS (Required before element constructors run) */
+    err = meshx_dev_restore(&g_dev, config);
+    MESHX_ERR_PRINT_RET("Device restore failed", err);
+
     /**
      * @brief OOB Dynamic Composition Automation
      * If the configuration provides an element composition array,
@@ -287,26 +308,6 @@ meshx_err_t meshx_init(meshx_config_t const *config)
         }
         meshx_builder_commit();
     }
-
-    meshx_logging_t logging_cfg;
-
-    logging_cfg.def_log_level = config->meshx_log_level == MESHX_LOG_VERBOSE ?
-        CONFIG_MESHX_DEFAULT_LOG_LEVEL : config->meshx_log_level;
-
-    err = meshx_logging_init(&logging_cfg);
-    MESHX_ERR_PRINT_RET("Logging init failed", err);
-
-    /* Initialise Platform deps */
-    err = meshx_platform_init();
-    MESHX_ERR_PRINT_RET("Platform init failed", err);
-
-    /* Initialize OS timer */
-    err = meshx_os_timer_init();
-    MESHX_ERR_PRINT_RET("OS Timer Init failed", err);
-
-    /* Initialize MeshX NVS */
-    err = meshx_nvs_init();
-    MESHX_ERR_PRINT_RET("MeshX NVS Init failed", err);
 
     /* Initialize application tasks */
     err = meshx_tasks_init(&g_dev);
