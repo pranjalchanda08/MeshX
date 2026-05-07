@@ -158,6 +158,7 @@ typedef enum __packed control_task_msg_evt_provision
     CONTROL_TASK_MSG_EVT_PROXY_DISCONN          = MESHX_BIT(7), /**< ESP_BLE_MESH_PROXY_SERVER_DISCONNECTED_EVT */
     CONTROL_TASK_MSG_EVT_EN_NODE_PROV           = MESHX_BIT(8), /**< ESP_BLE_MESH_NODE_PROV_ENABLE_COMP_EVT */
     CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT      = MESHX_BIT(9), /**< Event to indicate fresh boot */
+    CONTROL_TASK_MSG_EVT_SYSTEM_STACK_READY     = MESHX_BIT(10),/**< Event to indicate stack is ready for TX */
     CONTROL_TASK_MSG_EVT_PROVISION_ALL          = 0xFFFF, /**< Maximum provisioning event value. */
 } control_task_msg_evt_provision_t;
 

@@ -66,6 +66,11 @@ private:
         control_task_msg_evt_t   evt,
         const void              *params);
 
+    static meshx_err_t s_prov_cb(
+        const dev_struct_t      *pdev,
+        control_task_msg_evt_t   evt,
+        const void              *params);
+
     /* Instance registry — maps element_id → this pointer */
     static std::once_flag s_callbacks_registered;
     static void register_class_callbacks();

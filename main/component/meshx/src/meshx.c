@@ -244,6 +244,9 @@ static meshx_err_t meshx_ble_mesh_init(meshx_config_t *config)
     err = meshx_plat_ble_mesh_init(&g_prov_cfg, g_dev.composition);
     MESHX_ERR_PRINT_RET("Failed to initialize BLE Mesh stack", err);
 
+    /* Publish system ready event to notify lower layers */
+    control_task_msg_publish(CONTROL_TASK_MSG_CODE_PROVISION, CONTROL_TASK_MSG_EVT_SYSTEM_STACK_READY, NULL, 0);
+
     return MESHX_SUCCESS;
 }
 
