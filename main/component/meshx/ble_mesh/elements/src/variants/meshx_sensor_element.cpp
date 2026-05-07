@@ -33,6 +33,11 @@ void meshXSensorElement::register_class_callbacks()
         CONTROL_TASK_MSG_CODE_TO_BLE,
         SENSOR_SRV_TO_BLE_EVT_MASK,
         (control_task_msg_handle_t)&meshXSensorElement::s_to_ble_cb);
+
+#if CONFIG_ENABLE_PROVISIONING
+    meshx_prov_srv_reg_el_server_cb(
+        (prov_srv_cb_t)&meshXSensorElement::s_prov_cb);
+#endif
 }
 
 /**
@@ -191,7 +196,41 @@ meshx_err_t meshXSensorElement::s_prov_cb(
     control_task_msg_evt_t   evt,
     const void              *params)
 {
-    /* To be implemented if needed */
+    MESHX_UNUSED(params);
+    if (!pdev) return MESHX_INVALID_ARG;
+
+    if (evt == CONTROL_TASK_MSG_EVT_SYSTEM_STACK_READY)
+    {
+        if (!meshx_prov_srv_is_provisioned()) return MESHX_SUCCESS;
+
+        auto elements = meshXElementRegistry::get_instance().get_all_elements();
+        for (auto const& [abs_id, base_el] : elements)
+        {
+            if (!base_el || base_el->get_element_variant() != MESHX_ELEMENT_TYPE_SENSOR_SERVER) continue;
+            auto *el = static_cast<meshXSensorElement *>(base_el);
+            if (!el || el->element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED) continue;
+
+            auto &models = el->get_sig_models();
+            auto *sensor = static_cast<meshXSensorServerModel *>(models[0].get());
+
+            meshx_model_t model_ref = { .el_id    = abs_id,
+                                        .model_id = (uint16_t)sensor->get_model_id(),
+                                        .pub_addr = el->element_ctx.pub_addr,
+                                        .p_model  = (MESHX_MODEL*)sensor->get_plat_model() };
+            meshx_ctx_t ctx = { .app_idx  = el->element_ctx.app_id,
+                                .net_idx  = pdev->meshx_store.net_key_id,
+                                .opcode   = 0, // Not used for sensor status broadcast
+                                .src_addr = 0,
+                                .dst_addr = el->element_ctx.pub_addr,
+                                .p_ctx    = nullptr };
+            meshx_sensor_server_send_params_t sp = {
+                .model = &model_ref, .ctx = &ctx,
+                .state = { .sensor_data = el->element_ctx.sensor_state.sensor_data,
+                           .data_len    = el->element_ctx.sensor_state.data_len }
+            };
+            sensor->model_send(&sp);
+        }
+    }
     return MESHX_SUCCESS;
 }
 #endif

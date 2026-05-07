@@ -234,7 +234,7 @@ meshx_err_t meshXCWWWServerElement::s_prov_cb(const dev_struct_t *pdev, control_
     MESHX_UNUSED(params);
     if (!pdev) return MESHX_INVALID_ARG;
 
-    if (evt == CONTROL_TASK_MSG_EVT_EN_NODE_PROV)
+    if (evt == CONTROL_TASK_MSG_EVT_SYSTEM_STACK_READY)
     {
         if (!meshx_prov_srv_is_provisioned())
         {
@@ -249,13 +249,13 @@ meshx_err_t meshXCWWWServerElement::s_prov_cb(const dev_struct_t *pdev, control_
             if (el->element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED) continue;
 
             auto &models = el->get_sig_models();
-            auto *onoff  = static_cast<meshXGenericOnOffServerModel *>(models[0].get());
-            auto *ctl    = static_cast<meshXLightCTLServerModel *>(models[1].get());
 
-            meshx_model_t model_ref_onoff = { .el_id    = abs_id,
-                                              .model_id = onoff->get_model_id(),
-                                              .pub_addr = el->element_ctx.pub_addr,
-                                              .p_model  = (MESHX_MODEL*)onoff->get_plat_model() };
+#if CONFIG_ENABLE_GEN_ONOFF_SERVER
+            auto *onoff  = static_cast<meshXGenericOnOffServerModel *>(models[0].get());
+            meshx_model_t model_ref = { .el_id    = abs_id,
+                                        .model_id = (uint16_t)onoff->get_model_id(),
+                                        .pub_addr = el->element_ctx.pub_addr,
+                                        .p_model  = (MESHX_MODEL*)onoff->get_plat_model() };
 
             meshx_ctx_t ctx = { .app_idx  = el->element_ctx.app_id,
                                 .net_idx  = pdev->meshx_store.net_key_id,
@@ -264,11 +264,14 @@ meshx_err_t meshXCWWWServerElement::s_prov_cb(const dev_struct_t *pdev, control_
                                 .dst_addr = el->element_ctx.pub_addr,
                                 .p_ctx    = nullptr };
             meshx_gen_onoff_send_params_t sp = {
-                .model = &model_ref_onoff, .ctx = &ctx,
+                .model = &model_ref, .ctx = &ctx,
                 .state = { .on_off = el->element_ctx.gen_on_off_state.on_off },
                 .tid = 0 };
             onoff->model_send(&sp);
+#endif
 
+#if CONFIG_ENABLE_LIGHT_CTL_SERVER
+            auto *ctl = static_cast<meshXLightCTLServerModel *>(models[1].get());
             meshx_model_t model_ref_ctl = { .el_id    = abs_id,
                                             .model_id = ctl->get_model_id(),
                                             .pub_addr = el->element_ctx.pub_addr,
@@ -289,6 +292,7 @@ meshx_err_t meshXCWWWServerElement::s_prov_cb(const dev_struct_t *pdev, control_
                            .temp_range_min = 0,
                            .temp_range_max = 0 } };
             ctl->model_send(&cp);
+#endif
         }
     }
     return MESHX_SUCCESS;
@@ -476,7 +480,7 @@ meshx_err_t meshXCWWWClientElement::s_prov_cb(const dev_struct_t *pdev, control_
     MESHX_UNUSED(params);
     if (!pdev) return MESHX_INVALID_ARG;
 
-    if (evt == CONTROL_TASK_MSG_EVT_EN_NODE_PROV)
+    if (evt == CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT)
     {
         auto elements = meshXElementRegistry::get_instance().get_all_elements();
         for (auto const& [abs_id, base_el] : elements)
@@ -489,6 +493,7 @@ meshx_err_t meshXCWWWClientElement::s_prov_cb(const dev_struct_t *pdev, control_
             auto *onoff  = static_cast<meshXGenericOnOffClientModel *>(models[0].get());
             auto *ctl    = static_cast<meshXLightCTLClientModel *>(models[1].get());
 
+#if CONFIG_ENABLE_GEN_ONOFF_CLIENT
             meshx_model_t model_ref = { .el_id    = abs_id,
                                         .model_id = 0,
                                         .pub_addr = el->element_ctx.pub_addr,
@@ -504,7 +509,9 @@ meshx_err_t meshXCWWWClientElement::s_prov_cb(const dev_struct_t *pdev, control_
                 .state = { .on_off = el->element_ctx.gen_on_off_state.on_off },
                 .tid = 0 };
             onoff->model_send(&sp);
+#endif
 
+#if CONFIG_ENABLE_LIGHT_CTL_CLIENT
             meshx_ctx_t ctl_ctx = { .app_idx  = el->element_ctx.app_id,
                                     .net_idx  = pdev->meshx_store.net_key_id,
                                     .opcode   = MESHX_MODEL_OP_LIGHT_CTL_GET,
@@ -520,6 +527,7 @@ meshx_err_t meshXCWWWClientElement::s_prov_cb(const dev_struct_t *pdev, control_
                            .temp_range_min = 0,
                            .temp_range_max = 0 } };
             ctl->model_send(&cp);
+#endif
         }
     }
     return MESHX_SUCCESS;
