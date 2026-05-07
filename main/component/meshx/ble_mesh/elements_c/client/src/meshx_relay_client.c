@@ -489,7 +489,7 @@ static meshx_err_t meshx_relay_client_to_ble_handler(
     return err;
 }
 
-#if CONFIG_ENABLE_UNIT_TEST
+#if CONFIG_ENABLE_UNIT_TEST && 0
 typedef enum
 {
     RELAY_CLI_CMD_GET = 0x00,
@@ -681,6 +681,7 @@ meshx_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cn
         MESHX_LOGE(MOD_SRC, "Relay Client element state change callback reg failed: (%d)", err);
         return err;
     }
+#if 0 // Moving to C++ path
 #if CONFIG_ENABLE_UNIT_TEST
     err = register_unit_test(MOD_SRC, &relay_cli_unit_test_cb_handler);
     if (err)
@@ -689,6 +690,7 @@ meshx_err_t create_relay_client_elements(dev_struct_t *pdev, uint16_t element_cn
         return err;
     }
 #endif /* CONFIG_ENABLE_UNIT_TEST */
+#endif
 
     err = meshx_on_off_client_init();
     if (err)

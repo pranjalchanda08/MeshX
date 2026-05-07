@@ -38,6 +38,8 @@
  * @brief BLE Mesh models related Model ID and Opcode definitions
  */
 
+#define MESHX_MODEL_ID_SIG_START                             0x1000
+
 /*!< Foundation Models */
 #define MESHX_MODEL_ID_CONFIG_SRV                            0x0000
 #define MESHX_MODEL_ID_CONFIG_CLI                            0x0001

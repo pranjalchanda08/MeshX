@@ -29,7 +29,9 @@
                                      CONTROL_TASK_MSG_EVT_PROVISION_STOP |  \
                                      CONTROL_TASK_MSG_EVT_NODE_RESET     |  \
                                      CONTROL_TASK_MSG_EVT_SET_NAME_COMP  |  \
-                                     CONTROL_TASK_MSG_EVT_EN_NODE_PROV )
+                                     CONTROL_TASK_MSG_EVT_EN_NODE_PROV   |  \
+                                     CONTROL_TASK_MSG_EVT_PROXY_CONNECT  |  \
+                                     CONTROL_TASK_MSG_EVT_PROXY_DISCONN )
 
 #define MESHX_PROV_SRV_CLIENT_EVENT_BMAP    CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT
 #define MESHX_PROV_SRV_SERVER_EVENT_BMAP    CONTROL_TASK_MSG_EVT_EN_NODE_PROV

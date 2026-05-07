@@ -33,7 +33,7 @@ meshXCompositionBuilder& meshXCompositionBuilder::begin() {
 meshXCompositionBuilder& meshXCompositionBuilder::add_relay_server() {
 #if CONFIG_RELAY_SERVER_COUNT > 0
     auto& comp = meshXComposition::get_instance();
-    uint16_t next_idx = (uint16_t)(comp.get_elements().size() + 1);
+    uint16_t next_idx = (uint16_t)(comp.get_elements().size());
     comp.get_elements().push_back(std::make_unique<meshXRelayServerElement>(next_idx));
 #endif
     return *this;
@@ -42,7 +42,7 @@ meshXCompositionBuilder& meshXCompositionBuilder::add_relay_server() {
 meshXCompositionBuilder& meshXCompositionBuilder::add_relay_client() {
 #if CONFIG_RELAY_CLIENT_COUNT > 0
     auto& comp = meshXComposition::get_instance();
-    uint16_t next_idx = (uint16_t)(comp.get_elements().size() + 1);
+    uint16_t next_idx = (uint16_t)(comp.get_elements().size());
     comp.get_elements().push_back(std::make_unique<meshXRelayClientElement>(next_idx));
 #endif
     return *this;
@@ -51,7 +51,7 @@ meshXCompositionBuilder& meshXCompositionBuilder::add_relay_client() {
 meshXCompositionBuilder& meshXCompositionBuilder::add_cwww_server() {
 #if CONFIG_LIGHT_CWWW_SRV_COUNT > 0
     auto& comp = meshXComposition::get_instance();
-    uint16_t next_idx = (uint16_t)(comp.get_elements().size() + 1);
+    uint16_t next_idx = (uint16_t)(comp.get_elements().size());
     comp.get_elements().push_back(std::make_unique<meshXCWWWServerElement>(next_idx));
 #endif
     return *this;
@@ -60,7 +60,7 @@ meshXCompositionBuilder& meshXCompositionBuilder::add_cwww_server() {
 meshXCompositionBuilder& meshXCompositionBuilder::add_cwww_client() {
 #if CONFIG_LIGHT_CWWW_CLIENT_COUNT > 0
     auto& comp = meshXComposition::get_instance();
-    uint16_t next_idx = (uint16_t)(comp.get_elements().size() + 1);
+    uint16_t next_idx = (uint16_t)(comp.get_elements().size());
     comp.get_elements().push_back(std::make_unique<meshXCWWWClientElement>(next_idx));
 #endif
     return *this;
@@ -69,7 +69,7 @@ meshXCompositionBuilder& meshXCompositionBuilder::add_cwww_client() {
 meshXCompositionBuilder& meshXCompositionBuilder::add_sensor_server() {
 #if CONFIG_SENSOR_SERVER_COUNT > 0
     auto& comp = meshXComposition::get_instance();
-    uint16_t next_idx = (uint16_t)(comp.get_elements().size() + 1);
+    uint16_t next_idx = (uint16_t)(comp.get_elements().size());
     comp.get_elements().push_back(std::make_unique<meshXSensorElement>(next_idx));
 #endif
     return *this;
@@ -78,7 +78,7 @@ meshXCompositionBuilder& meshXCompositionBuilder::add_sensor_server() {
 meshXCompositionBuilder& meshXCompositionBuilder::add_rgb_server() {
 #if CONFIG_RGB_SERVER_COUNT > 0
     auto& comp = meshXComposition::get_instance();
-    uint16_t next_idx = (uint16_t)(comp.get_elements().size() + 1);
+    uint16_t next_idx = (uint16_t)(comp.get_elements().size());
     comp.get_elements().push_back(std::make_unique<meshXRGBServerElement>(next_idx));
 #endif
     return *this;

@@ -100,7 +100,7 @@ meshx_err_t meshx_rtos_calloc(void **ptr, size_t num, size_t size)
         return MESHX_INVALID_ARG; // Invalid input
     }
 
-    *ptr = pvPortMalloc(size);
+    *ptr = pvPortMalloc(num * size);
     if (*ptr == NULL)
     {
         return MESHX_NO_MEM; // Memory allocation failed

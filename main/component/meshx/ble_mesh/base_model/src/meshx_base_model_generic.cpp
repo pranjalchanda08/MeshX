@@ -36,7 +36,7 @@
  ********************************************************************************************************/
 #if CONFIG_ENABLE_GEN_CLIENT
 
-constexpr uint32_t MESHX_CLIENT_INIT_MAGIC_NO = 0x1121;
+// MESHX_CLIENT_INIT_MAGIC_NO replaced by std::once_flag
 
 /**
  * @brief Validates if the given model ID corresponds to a supported Generic Client model.
@@ -208,8 +208,8 @@ meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAM
  */
 MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PROTO
 meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS
-    ::meshXBaseGenericClientModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
-    : meshXBaseClientModel(model_id, from_ble_cb)
+    ::meshXBaseGenericClientModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb& from_ble_cb)
+    : meshXBaseClientModel(model_id, p_plat_model, from_ble_cb)
 {
     if (validate_client_model_id(model_id) != MESHX_SUCCESS)
     {
@@ -240,19 +240,15 @@ MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PROTO
 meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS
     :: plat_model_init(void)
 {
-    if(plat_client_init == MESHX_CLIENT_INIT_MAGIC_NO)
-    {
-        return MESHX_SUCCESS;
-    }
-    plat_client_init = MESHX_CLIENT_INIT_MAGIC_NO;
+    meshx_err_t err = MESHX_SUCCESS;
+    std::call_once(plat_client_init_flag, [&]() {
+        err = meshx_txcm_event_cb_reg((meshx_txcm_cb_t) &base_handle_txcm_msg);
+        if (err == MESHX_SUCCESS) {
+            err = meshx_plat_gen_cli_init();
+        }
+    });
 
-    if(meshx_err_t err = meshx_txcm_event_cb_reg((meshx_txcm_cb_t) &base_handle_txcm_msg);
-        err != MESHX_SUCCESS
-    ){
-
-        return err;
-    }
-    return meshx_plat_gen_cli_init();
+    return err;
 }
 
 /**
@@ -311,7 +307,7 @@ meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAM
  ********************************************************************************************************/
 #if CONFIG_ENABLE_GEN_SERVER
 
-constexpr uint32_t MESHX_SERVER_INIT_MAGIC_NO = 0x1121;
+// MESHX_SERVER_INIT_MAGIC_NO replaced by std::once_flag
 /**
  * @brief Constructor for the meshXBaseGenericServerModel class.
  *
@@ -324,8 +320,8 @@ constexpr uint32_t MESHX_SERVER_INIT_MAGIC_NO = 0x1121;
  */
 MESHX_BASE_GENERIC_SERVER_TEMPLATE_PROTO
 meshXBaseGenericServerModel MESHX_BASE_GENERIC_SERVER_TEMPLATE_PARAMS
-    :: meshXBaseGenericServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
-    : meshXBaseServerModel(model_id, from_ble_cb)
+    :: meshXBaseGenericServerModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb& from_ble_cb)
+    : meshXBaseServerModel(model_id, p_plat_model, from_ble_cb)
 {
     set_status(meshXBaseGenericServerModel::plat_model_init());
     if (get_status() != MESHX_SUCCESS)
@@ -349,12 +345,11 @@ MESHX_BASE_GENERIC_SERVER_TEMPLATE_PROTO
 meshx_err_t meshXBaseGenericServerModel MESHX_BASE_GENERIC_SERVER_TEMPLATE_PARAMS
     ::plat_model_init(void)
 {
-    if(plat_server_init == MESHX_SERVER_INIT_MAGIC_NO)
-    {
-        return MESHX_SUCCESS;
-    }
-    plat_server_init = MESHX_SERVER_INIT_MAGIC_NO;
-    return meshx_plat_gen_srv_init();
+    meshx_err_t err = MESHX_SUCCESS;
+    std::call_once(plat_server_init_flag, [&]() {
+        err = meshx_plat_gen_srv_init();
+    });
+    return err;
 }
 
 /**

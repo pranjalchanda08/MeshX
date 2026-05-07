@@ -135,12 +135,12 @@ public:
      * @brief Get the element context structure
      * @return Pointer to the element context structure
      */
-    meshx_ptr_t get_element_ctx(void) const { return element_ctx; }
+    meshx_ptr_t get_element_ctx(void) const override { return element_ctx; }
     /**
      * @brief Get the size of the element context structure
      * @return Size of the element context structure
      */
-    size_t get_element_ctx_size(void) const { return element_ctx_size; }
+    size_t get_element_ctx_size(void) const override { return element_ctx_size; }
 
     /**
      * @brief Allocate memory for SIG model platform array

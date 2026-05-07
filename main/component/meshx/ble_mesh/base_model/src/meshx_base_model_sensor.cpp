@@ -56,8 +56,8 @@ meshx_err_t meshXBaseSensorServerModel::server_state_restore(meshx_sensor_server
     return MESHX_SUCCESS;
 }
 
-meshXBaseSensorServerModel::meshXBaseSensorServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb)
-    : meshXBaseServerModel<meshXBaseSensorServerModel, meshx_sensor_server_send_params_t, meshx_sensor_server_restore_params_t>(model_id, from_ble_cb)
+meshXBaseSensorServerModel::meshXBaseSensorServerModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb& from_ble_cb)
+    : meshXBaseServerModel<meshXBaseSensorServerModel, meshx_sensor_server_send_params_t, meshx_sensor_server_restore_params_t>(model_id, p_plat_model, from_ble_cb)
 {
     set_status(meshXBaseSensorServerModel::plat_model_init());
     if (get_status() != MESHX_SUCCESS)

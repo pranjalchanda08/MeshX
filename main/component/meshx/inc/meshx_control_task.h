@@ -40,7 +40,7 @@ extern "C" {
  * @brief Control task stack size configuration.
  */
 #ifndef CONFIG_CONTROL_TASK_STACK_SIZE
-#define CONFIG_CONTROL_TASK_STACK_SIZE  4096
+#define CONFIG_CONTROL_TASK_STACK_SIZE  8192
 #endif
 
 /**
@@ -121,6 +121,7 @@ typedef enum __packed control_task_msg_evt_system
     CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_DISARM = MESHX_BIT(3),    /**< Event to stop an OS Timer */
     CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_FIRE   = MESHX_BIT(4),    /**< Event to fire timedout OS Timer */
     CONTROL_TASK_MSG_EVT_SYSTEM_TIMER_PERIOD = MESHX_BIT(5),    /**< Event to set timedout OS Timer */
+    CONTROL_TASK_MSG_EVT_SYSTEM_NVS_COMMIT   = MESHX_BIT(6),    /**< Event for NVS commit operation */
     CONTROL_TASK_MSG_EVT_SYSTEM_MAX,                    /**< Maximum system event value. */
 } control_task_msg_evt_system_t;
 
