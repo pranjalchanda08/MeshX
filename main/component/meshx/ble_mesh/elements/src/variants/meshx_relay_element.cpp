@@ -250,45 +250,48 @@ meshx_err_t meshXRelayServerElement::s_prov_cb(
 
     switch (evt)
     {
-    case CONTROL_TASK_MSG_EVT_EN_NODE_PROV:
-    {
-        if (!meshx_prov_srv_is_provisioned())
+        case CONTROL_TASK_MSG_EVT_SYSTEM_STACK_READY:
         {
-            return MESHX_SUCCESS;
+            if (!meshx_prov_srv_is_provisioned())
+            {
+                return MESHX_SUCCESS;
+            }
+
+            auto elements = meshXElementRegistry::get_instance().get_all_elements();
+            for (auto const& [abs_id, base_el] : elements)
+            {
+                if (!base_el || base_el->get_element_variant() != MESHX_ELEMENT_TYPE_RELAY_SERVER) continue;
+                auto *el = static_cast<meshXRelayServerElement *>(base_el);
+                if (!el || el->element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED) continue;
+
+                auto &models = el->get_sig_models();
+                auto *onoff  = static_cast<meshXGenericOnOffServerModel *>(models[0].get());
+
+                meshx_model_t model_ref = { .el_id    = abs_id,
+                                            .model_id = (uint16_t)onoff->get_model_id(),
+                                            .pub_addr = el->element_ctx.pub_addr,
+                                            .p_model  = (MESHX_MODEL*)onoff->get_plat_model() };
+                meshx_ctx_t ctx = { .app_idx  = el->element_ctx.app_id,
+                                    .net_idx  = pdev->meshx_store.net_key_id,
+                                    .opcode   = MESHX_MODEL_OP_GEN_ONOFF_STATUS,
+                                    .src_addr = 0,
+                                    .dst_addr = el->element_ctx.pub_addr,
+                                    .p_ctx    = nullptr };
+                meshx_gen_onoff_send_params_t sp = {
+                    .model = &model_ref, .ctx = &ctx,
+                    .state = { .on_off = el->element_ctx.gen_on_off_state.on_off },
+                    .tid = 0 };
+                onoff->model_send(&sp);
+            }
+            break;
         }
-
-        auto elements = meshXElementRegistry::get_instance().get_all_elements();
-        for (auto const& [abs_id, base_el] : elements)
-        {
-            if (!base_el || base_el->get_element_variant() != MESHX_ELEMENT_TYPE_RELAY_SERVER) continue;
-            auto *el = static_cast<meshXRelayServerElement *>(base_el);
-            if (!el || el->element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED) continue;
-
-            auto &models = el->get_sig_models();
-            auto *onoff  = static_cast<meshXGenericOnOffServerModel *>(models[0].get());
-
-            meshx_model_t model_ref = { .el_id    = abs_id,
-                                        .model_id = 0,
-                                        .pub_addr = el->element_ctx.pub_addr,
-                                        .p_model  = nullptr };
-            meshx_ctx_t ctx = { .app_idx  = el->element_ctx.app_id,
-                                .net_idx  = pdev->meshx_store.net_key_id,
-                                .opcode   = MESHX_MODEL_OP_GEN_ONOFF_STATUS,
-                                .src_addr = 0,
-                                .dst_addr = el->element_ctx.pub_addr,
-                                .p_ctx    = nullptr };
-            meshx_gen_onoff_send_params_t sp = {
-                .model = &model_ref, .ctx = &ctx,
-                .state = { .on_off = el->element_ctx.gen_on_off_state.on_off },
-                .tid = 0 };
-            onoff->model_send(&sp);
-        }
-        break;
-    }
-    default:
-        MESHX_LOGW(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER,
-                   "Relay Srv: unhandled prov evt: %p", (void *)evt);
-        break;
+        case CONTROL_TASK_MSG_EVT_EN_NODE_PROV:
+            /* Benchmarked: Handled at system level or ignore if no immediate action needed */
+            break;
+        default:
+            MESHX_LOGW(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER,
+                    "Relay Srv: unhandled prov evt: %p", (void *)evt);
+            break;
     }
     return MESHX_SUCCESS;
 }
