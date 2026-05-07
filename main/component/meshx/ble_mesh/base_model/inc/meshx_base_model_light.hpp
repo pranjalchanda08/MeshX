@@ -118,7 +118,7 @@ public:
     meshx_err_t plat_send_msg(meshx_gen_light_client_send_params_t *params) override;
 
     meshXBaseLightClientModel() = delete;
-    meshXBaseLightClientModel(uint32_t model_id, const control_msg_cb& from_ble_cb);
+    meshXBaseLightClientModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb& from_ble_cb);
 
     virtual ~meshXBaseLightClientModel() = default;
 };
@@ -164,7 +164,7 @@ using meshx_light_server_restore_params_t = struct meshx_light_server_restore_pa
 };
 
 MESHX_BASE_LIGHT_SERVER_TEMPLATE_PROTO
-class meshXBaseLightServerModel : public meshXBaseServerModel<meshXBaseLightServerModel, meshx_light_server_send_params_t, meshx_light_server_restore_params_t>
+class meshXBaseLightServerModel : public meshXBaseServerModel<meshXBaseLightServerModel, meshx_light_server_send_params_t, meshx_light_server_restore_params_t, meshx_lighting_server_cb_param_t>
 {
 public:
     meshx_err_t plat_model_init(void) override;
@@ -172,7 +172,7 @@ public:
 public:
     meshx_err_t server_state_restore(meshx_light_server_restore_params_t* param) override;
     meshx_err_t plat_send_msg(meshx_light_server_send_params_t *params) override;
-    meshXBaseLightServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb);
+    meshXBaseLightServerModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb& from_ble_cb);
 
     meshXBaseLightServerModel() = delete;
     ~meshXBaseLightServerModel() final = default;

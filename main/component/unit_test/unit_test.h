@@ -20,6 +20,10 @@
 #include "module_id.h"
 #include "meshx_err.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #if CONFIG_ENABLE_UNIT_TEST
 /**
  * @brief Macro to extract an argument from the argument list.
@@ -88,4 +92,9 @@ meshx_err_t init_unit_test_console(void);
 meshx_err_t register_unit_test(module_id_t module_id, module_callback_t callback);
 
 #endif /* CONFIG_ENABLE_UNIT_TEST */
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* __MESHX_UNIT_TEST_H__ */

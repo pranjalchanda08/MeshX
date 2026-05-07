@@ -104,6 +104,12 @@ public:
     explicit meshXRelayServerElement (uint16_t element_idx);
 
     meshXRelayServerElement (void) = delete;
+
+    /**
+     * @brief Get the current OnOff state of the relay server.
+     * @return uint8_t 0 for OFF, 1 for ON.
+     */
+    uint8_t get_state() const { return element_ctx.gen_on_off_state.on_off; }
 };
 
 /*********************************************************************************
@@ -130,6 +136,8 @@ struct meshx_relay_cli_el_ctx_t
 };
 
 using meshx_relay_cli_el_ctx_t = struct meshx_relay_cli_el_ctx_t;
+
+#include <meshx_relay_msg_defs.h>
 
 MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
 class meshXRelayClientElement : public meshXElementClient MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PARAMS
@@ -186,6 +194,12 @@ public:
     explicit meshXRelayClientElement (uint16_t element_idx);
 
     meshXRelayClientElement (void) = delete;
+
+    /**
+     * @brief Get the current OnOff state of the relay client.
+     * @return uint8_t 0 for OFF, 1 for ON.
+     */
+    uint8_t get_state() const { return element_ctx.gen_on_off_state.on_off; }
 };
 
 #endif /* __MESHX_RELAY_ELEMENT_HPP__ */

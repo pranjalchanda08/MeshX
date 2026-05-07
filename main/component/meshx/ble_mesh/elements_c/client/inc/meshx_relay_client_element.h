@@ -23,7 +23,16 @@
 #define __RELAY_CLIENT_MODEL_H__
 
 #include "meshx_common.h"
+#include <meshx_relay_msg_defs.h>
+
+#ifdef __cplusplus
+/* Use C++ model types to avoid redefinition conflicts with meshx_onoff_client.h */
+#include <generic_model/meshx_model_onoff.hpp>
+typedef meshx_gen_onoff_model_state_t meshx_on_off_cli_state_t;
+typedef meshx_model_interface_t meshx_onoff_client_model_t;
+#else
 #include "meshx_onoff_client.h"
+#endif
 
 #if CONFIG_RELAY_CLIENT_COUNT > 0
 
@@ -44,16 +53,7 @@ typedef enum
     RELAY_CLI_SIG_MAX_ID,           /**< Maximum model ID */
 } relay_cli_sig_id_t;
 
-/**
- * @brief Structure to hold the relay client message.
- */
-typedef struct meshx_gen_on_off_cli_msg
-{
-    uint8_t ack;         /**< Acknowledgment flag */
-    uint8_t set_get;     /**< Set/Get flag */
-    uint8_t reserved;    /**< Reserved for future use */
-    uint16_t element_id; /**< Element ID */
-} meshx_gen_on_off_cli_msg_t;
+/* meshx_gen_on_off_cli_msg_t is now provided by meshx_relay_msg_defs.h */
 
 /**
  * @brief Structure to hold the context of the relay client.

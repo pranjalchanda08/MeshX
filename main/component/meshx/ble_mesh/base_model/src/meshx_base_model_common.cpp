@@ -16,12 +16,12 @@
 
 #if CONFIG_ENABLE_CONFIG_SERVER
 
-constexpr uint32_t MESHX_CONFIG_SERVER_INIT_MAGIC_NO = 0x2307;
+// MESHX_CONFIG_SERVER_INIT_MAGIC_NO replaced by std::once_flag
 
 MESHX_BASE_CONFIG_SERVER_TEMPLATE_PROTO
 meshXBaseConfigServerModel MESHX_BASE_CONFIG_SERVER_TEMPLATE_PARAMS
-    ::meshXBaseConfigServerModel(uint32_t model_id, const control_msg_cb &from_ble_cb)
-    : meshXBaseServerModel(model_id, from_ble_cb)
+    ::meshXBaseConfigServerModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb &from_ble_cb)
+    : meshXBaseServerModel(model_id, p_plat_model, from_ble_cb)
 {
     set_status(meshXBaseConfigServerModel::plat_model_init());
     if (get_status() != MESHX_SUCCESS)
@@ -35,13 +35,11 @@ MESHX_BASE_CONFIG_SERVER_TEMPLATE_PROTO
 meshx_err_t meshXBaseConfigServerModel MESHX_BASE_CONFIG_SERVER_TEMPLATE_PARAMS
     ::plat_model_init(void)
 {
-    if (plat_server_init == MESHX_CONFIG_SERVER_INIT_MAGIC_NO)
-    {
-        return MESHX_SUCCESS;
-    }
-
-    plat_server_init = MESHX_CONFIG_SERVER_INIT_MAGIC_NO;
-    return meshx_plat_config_srv_init();
+    meshx_err_t err = MESHX_SUCCESS;
+    std::call_once(plat_server_init_flag, [&]() {
+        err = meshx_plat_config_srv_init();
+    });
+    return err;
 }
 
 MESHX_BASE_CONFIG_SERVER_TEMPLATE_PROTO

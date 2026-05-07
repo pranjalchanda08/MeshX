@@ -491,29 +491,48 @@ meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_P
             }
             break;
         }
+        case MESHX_MODEL_OP_GEN_ONOFF_STATUS:
+            // Servers may receive their own status messages in some platform event flows; ignore silently
+            return MESHX_SUCCESS;
         default:
             // Unknown opcode - return error
             return MESHX_NOT_SUPPORTED;
     }
 
-    if (send_reply
-        /* This is meant to notify the respective publish client */
-        || param->ctx.src_addr != param->model.pub_addr)
+    meshx_err_t send_err = MESHX_SUCCESS;
+    if (send_reply)
     {
-        /* Here the message was received from unregistered source and mention the state to the respective client */
-        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "PUB: src|pub %x|%x", param->ctx.src_addr, param->model.pub_addr);
-        param->ctx.dst_addr = param->model.pub_addr;
+        /* Response to the requester */
+        meshx_ctx_t reply_ctx = param->ctx;
+        reply_ctx.dst_addr = param->ctx.src_addr;
 
-        // Create a parameter structure for sending the response
         meshx_gen_onoff_send_params_t send_params = {
             .model  = &param->model,
-            .ctx    = &param->ctx,
+            .ctx    = &reply_ctx,
             .state  = {.on_off = param->state_change.onoff_set.onoff},
-            .tid    = 0  // TID not used in server response
+            .tid    = 0
         };
-
-        return this->model_send(&send_params);
+        send_err = this->model_send(&send_params);
     }
+
+    /* Publish to the configured publication address if present */
+    if (param->model.pub_addr != MESHX_ADDR_UNASSIGNED && param->ctx.src_addr != param->model.pub_addr)
+    {
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "PUB: src|pub %x|%x", param->ctx.src_addr, param->model.pub_addr);
+        meshx_ctx_t pub_ctx = param->ctx;
+        pub_ctx.dst_addr = param->model.pub_addr;
+
+        meshx_gen_onoff_send_params_t send_params = {
+            .model  = &param->model,
+            .ctx    = &pub_ctx,
+            .state  = {.on_off = param->state_change.onoff_set.onoff},
+            .tid    = 0
+        };
+        meshx_err_t pub_err = this->model_send(&send_params);
+        if (send_err == MESHX_SUCCESS) send_err = pub_err;
+    }
+
+    return send_err;
 
     // If we reach here, message was not prepared for element notification
     // Return error so base layer doesn't send uninitialized message

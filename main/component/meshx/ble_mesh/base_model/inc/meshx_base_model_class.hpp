@@ -15,6 +15,7 @@
 #include <meshx_fwd_decl.hpp>
 #include <functional>
 #include <forward_list>
+#include <mutex>
 
 /**************************************************************************************************************************************************************
  * meshXBaseModel
@@ -47,11 +48,10 @@ using control_msg_cb = std::function<meshx_err_t(dev_struct_t *, control_task_ms
  */
 MESHX_BASE_TEMPLATE_PROTO
 class meshXBaseModel {
-private:
+protected:
     uint32_t model_id;
     meshXBaseModelType_t model_type;
     control_task_msg_handle_t from_ble_cb;
-protected:
     meshx_err_t status = MESHX_SUCCESS;
 public:
     /**
@@ -63,14 +63,14 @@ public:
      */
     meshx_err_t from_ble_reg_cb(void) const;
 
-private:
+protected:
     /**
      * @brief Deregister BLE message callback for this model
      * @details Automatically called during model destruction to remove the callback
      *          function that handles BLE messages for this model's ID.
      * @return MESHX_SUCCESS if deregistration successful, error code otherwise
      */
-    meshx_err_t from_ble_dereg_cb(void) const;
+    virtual meshx_err_t from_ble_dereg_cb(void) const;
 
 public:
     /**
@@ -179,17 +179,23 @@ public:
  * meshXBaseServerModel
  * @brief This class is used for the meshXBaseServerModel.
  **************************************************************************************************************************************************************/
+
+
 MESHX_BASE_SERVER_TEMPLATE_PROTO
     class meshXBaseServerModel : public meshXBaseModel<ble_mesh_send_msg_params_t> {
+public:
+    using meshXBaseModel<ble_mesh_send_msg_params_t>::from_ble_reg_cb;
 private:
     using base_server_model_cb_reg_t = struct base_server_model_cb_reg
     {
         uint16_t model_id;   /**< Model ID associated with the registration. */
+        meshx_ptr_t p_plat_model; /**< Platform model pointer for instance verification. */
         control_msg_cb cb;   /**< Callback function associated with the registration. */
     };
 
 protected:
-    static uint16_t plat_server_init;
+    meshx_ptr_t p_plat_model;
+    static std::once_flag plat_server_init_flag;
     static std::forward_list<base_server_model_cb_reg_t> base_server_model_cb_list;
     static meshx_err_t base_from_ble_msg_handle(dev_struct_t *pdev, control_task_msg_evt_t evt, meshx_ptr_t params);
 
@@ -199,7 +205,8 @@ public:
     virtual meshx_err_t server_state_restore(ble_mesh_plat_restore_params_t* param) = 0;
     meshXBaseServerModel() = delete;
     virtual ~meshXBaseServerModel() = default;
-    meshXBaseServerModel(uint32_t model_id, const control_msg_cb& from_ble_cb);
+    meshXBaseServerModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb& from_ble_cb);
+    meshx_err_t from_ble_dereg_cb(void) const override;
 };
 
 /**************************************************************************************************************************************************************
@@ -224,10 +231,13 @@ using meshx_base_cli_evt_t = enum meshx_base_cli_evt;
 
 MESHX_BASE_CLIENT_TEMPLATE_PROTO
     class meshXBaseClientModel : public meshXBaseModel<ble_mesh_send_msg_params_t> {
+public:
+    using meshXBaseModel<ble_mesh_send_msg_params_t>::from_ble_reg_cb;
 private:
     using base_client_model_cb_reg_t = struct base_client_model_cb_reg
     {
         uint16_t model_id;   /**< Model ID associated with the registration. */
+        meshx_ptr_t p_plat_model; /**< Platform model pointer for instance verification. */
         control_msg_cb cb;   /**< Callback function associated with the registration. */
     };
     using base_client_model_resend_ctx_t = struct base_client_model_resend_ctx
@@ -236,8 +246,9 @@ private:
         ble_mesh_plat_model_cb_params_t param; /**< Params received from Platform callback */
     };
 protected:
+    meshx_ptr_t p_plat_model;
     /* Re-initialization protection by multiple client objects */
-    static uint16_t plat_client_init;
+    static std::once_flag plat_client_init_flag;
     static std::forward_list<base_client_model_cb_reg_t> base_client_model_cb_list;
 
     /* Template type identification for debugging (RTTI-free) */
@@ -257,7 +268,8 @@ public:
 
     meshXBaseClientModel() = delete;
     ~meshXBaseClientModel() = default;
-    meshXBaseClientModel(uint32_t model_id, const control_msg_cb& from_ble_cb);
+    meshXBaseClientModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb& from_ble_cb);
+    meshx_err_t from_ble_dereg_cb(void) const override;
 };
 
 #endif /* _MESHX_BASE_MODEL_CLASS_H_ */

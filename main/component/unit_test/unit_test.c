@@ -34,6 +34,10 @@ static unit_test_callback_t callback_list[MODULE_ID_MAX];
  *      - MESHX_NOT_FOUND: If no unit test is registered for the specified module ID.
  */
 static int ut_command_handler(int argc, char **argv) {
+    for (int i = 0; i < argc; i++) {
+        MESHX_LOGD(MODULE_ID_COMMON, "Raw argv[%d]: %s", i, argv[i]);
+    }
+
     if (argc < UT_CMD_MIN_ARGS) {
         MESHX_LOGE(MODULE_ID_COMMON, "Insufficient arguments");
         return MESHX_INVALID_ARG;
@@ -42,7 +46,7 @@ static int ut_command_handler(int argc, char **argv) {
     int cmd_id = UT_GET_ARG(2, uint16_t, argv);
     int parsed_argc = UT_GET_ARG(3, uint16_t, argv);
     module_id_t module_id = UT_GET_ARG(1, uint16_t, argv);
-    MESHX_LOGD(MODULE_ID_COMMON, "Unit Test: Params -> argc: %d, Module: %d, cmd_id: %d", parsed_argc, cmd_id , module_id);
+    MESHX_LOGD(MODULE_ID_COMMON, "Unit Test: Params -> argc: %d, Module: %d, cmd_id: %d", parsed_argc, module_id , cmd_id);
     if (parsed_argc > (argc - UT_CMD_MIN_ARGS))
     {
         MESHX_LOGE(MODULE_ID_COMMON, "Insufficient module arguments");
