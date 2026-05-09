@@ -105,6 +105,7 @@ MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PROTO
 class meshXBaseGenericClientModel : public meshXBaseClientModel<meshXBaseGenericClientModel, meshx_gen_client_send_params_t, meshx_gen_cli_cb_param_t>
 {
 public:
+    using meshXBaseClientModel<meshXBaseGenericClientModel, meshx_gen_client_send_params_t, meshx_gen_cli_cb_param_t>::from_ble_reg_cb;
     /* @copydoc meshXBaseClientModel::plat_model_init */
     meshx_err_t plat_model_init(void) override;
 
@@ -182,6 +183,7 @@ MESHX_BASE_GENERIC_SERVER_TEMPLATE_PROTO
 class meshXBaseGenericServerModel : public meshXBaseServerModel<meshXBaseGenericServerModel, meshx_gen_server_send_params_t, meshx_gen_server_restore_params_t, meshx_gen_srv_cb_param_t>
 {
 public:
+    using meshXBaseServerModel<meshXBaseGenericServerModel, meshx_gen_server_send_params_t, meshx_gen_server_restore_params_t, meshx_gen_srv_cb_param_t>::from_ble_reg_cb;
     meshx_err_t plat_model_init(void) override;
     meshx_err_t validate_server_status_opcode(uint16_t opcode) override;
 public:

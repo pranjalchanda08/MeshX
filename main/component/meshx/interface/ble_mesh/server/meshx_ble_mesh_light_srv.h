@@ -406,6 +406,8 @@ meshx_err_t meshx_plat_light_srv_restore(meshx_ptr_t p_model, const meshx_lighti
  *                       - Appropriate error code otherwise
  */
 meshx_err_t meshx_plat_light_ctl_setup_srv_create(meshx_ptr_t p_model, meshx_ptr_t *p_pub, meshx_ptr_t *p_ctl_srv);
+meshx_err_t meshx_plat_get_ctl_setup_srv_model(meshx_ptr_t p_model);
+meshx_err_t meshx_get_ctl_setup_srv_model(meshx_ptr_t p_model);
 
 /**
  * @brief Create a Light CTL Server instance.
@@ -556,5 +558,20 @@ meshx_err_t meshx_plat_light_ctl_srv_restore(meshx_ptr_t p_model,
 meshx_err_t meshx_plat_gen_light_srv_send_status(const meshx_model_t *p_model,
                                                  const meshx_ctx_t *p_ctx,
                                                  const meshx_lighting_server_state_change_t *state_change);
+
+#if CONFIG_ENABLE_LIGHT_SERVER
+typedef control_task_msg_handle_t meshx_lighting_server_cb;
+
+/**
+ * @brief Light Server send parameters.
+ * Used by meshXBaseLightServerModel::plat_send_msg to forward state change events.
+ */
+typedef struct meshx_light_server_send_params
+{
+    meshx_model_t *p_model;                          /**< Pointer to the server model. */
+    meshx_ctx_t *p_ctx;                              /**< Pointer to the context. */
+    meshx_lighting_server_state_change_t *state_change; /**< State change information. */
+} meshx_light_server_send_params_t;
+#endif /* CONFIG_ENABLE_LIGHT_SERVER */
 
 #endif /* __MESHX_BLE_MESH_LIGHT_SRV_H__ */

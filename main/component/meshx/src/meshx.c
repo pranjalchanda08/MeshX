@@ -69,7 +69,9 @@ extern meshx_err_t meshx_create_element_composition(dev_struct_t *p_dev, meshx_c
 
 #include <meshx_builder_api.h>
 
+#if 0
 static MESHX_ELEMENT g_legacy_elements[MAX_ELE_CNT];
+#endif /* 0 */
 
 /**
  * @brief Initializes BLE Mesh elements.
@@ -98,7 +100,7 @@ static meshx_err_t meshx_element_init(dev_struct_t *p_dev, meshx_config_t const 
         // Dynamic comp already initialized plat composition and models
         return MESHX_SUCCESS;
     }
-
+#if 0
     /* Legacy Fallback Path */
     p_dev->elements = g_legacy_elements;
     p_dev->element_cnt = MAX_ELE_CNT;
@@ -161,6 +163,7 @@ static meshx_err_t meshx_element_init(dev_struct_t *p_dev, meshx_config_t const 
         MESHX_LOGE(MODULE_ID_COMMON, "Failed to add element to composition: (%d)", err);
         return err;
     }
+#endif /* 0 */
     return MESHX_SUCCESS;
 }
 

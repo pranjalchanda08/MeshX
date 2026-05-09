@@ -168,7 +168,7 @@ meshx_err_t meshx_plat_gen_srv_send_status(
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Mesh Model msg send failed (err: 0x%x)", err);
         return MESHX_ERR_PLAT;
     }
-    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Mesh Model msg sent (opcode: 0x%04x)", p_ctx->opcode);
+    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Mesh Model msg sent (opcode: 0x%04x, dst: 0x%04x)", p_ctx->opcode, ctx.addr);
     return MESHX_SUCCESS;
 }
 

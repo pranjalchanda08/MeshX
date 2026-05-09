@@ -209,6 +209,31 @@ meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::model_fr
         .state = { .state_change = param->state_change }
     };
 
+    /* Map opcode to legacy config event for publishing */
+    config_evt_t config_evt = CONTROL_TASK_MSG_EVT_CONFIG_ALL;
+    switch (param->ctx.opcode)
+    {
+        case MESHX_MODEL_OP_APP_KEY_ADD:    config_evt = CONTROL_TASK_MSG_EVT_APP_KEY_ADD; break;
+        case MESHX_MODEL_OP_NET_KEY_ADD:    config_evt = CONTROL_TASK_MSG_EVT_NET_KEY_ADD; break;
+        case MESHX_MODEL_OP_MODEL_SUB_ADD:  config_evt = CONTROL_TASK_MSG_EVT_SUB_ADD; break;
+        case MESHX_MODEL_OP_MODEL_PUB_SET:  config_evt = CONTROL_TASK_MSG_EVT_PUB_ADD; break;
+        case MESHX_MODEL_OP_MODEL_APP_BIND: config_evt = CONTROL_TASK_MSG_EVT_APP_KEY_BIND; break;
+        case MESHX_MODEL_OP_NET_KEY_DELETE: config_evt = CONTROL_TASK_MSG_EVT_NET_KEY_DEL; break;
+        case MESHX_MODEL_OP_APP_KEY_DELETE: config_evt = CONTROL_TASK_MSG_EVT_APP_KEY_DEL; break;
+        case MESHX_MODEL_OP_MODEL_SUB_DELETE: config_evt = CONTROL_TASK_MSG_EVT_SUB_DEL; break;
+        case MESHX_MODEL_OP_MODEL_APP_UNBIND: config_evt = CONTROL_TASK_MSG_EVT_APP_KEY_UNBIND; break;
+        default: break;
+    }
+
+    if (config_evt != CONTROL_TASK_MSG_EVT_CONFIG_ALL)
+    {
+        control_task_msg_publish(
+            CONTROL_TASK_MSG_CODE_CONFIG,
+            config_evt,
+            param,
+            sizeof(meshx_config_srv_cb_param_t));
+    }
+
     return MESHX_SUCCESS;
 }
 
@@ -251,3 +276,37 @@ meshXConfigModel::meshXConfigModel(
 }
 
 #endif /* CONFIG_ENABLE_CONFIG_SERVER */
+
+/**
+ * Legacy support for Config Server initialization and callback registration.
+ * These are provided to support the transition away from elements_c.
+ */
+extern "C" meshx_err_t meshx_init_config_server(void)
+{
+#if CONFIG_ENABLE_CONFIG_SERVER
+    /* In the new architecture, the config server is initialized as part of the root element models.
+     * We just need to ensure the platform layer is initialized.
+     */
+    return meshx_plat_config_srv_init();
+#else
+    return MESHX_NOT_SUPPORTED;
+#endif
+}
+
+extern "C" meshx_err_t meshx_config_server_cb_reg(config_srv_cb_t cb, uint32_t config_evt_bmap)
+{
+    if (cb == NULL || config_evt_bmap == 0)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    return control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_CONFIG,
+        config_evt_bmap,
+        (control_task_msg_handle_t)cb);
+}
+
+extern "C" meshx_err_t meshx_get_config_srv_model(meshx_ptr_t p_model)
+{
+    return meshx_plat_get_config_srv_model(p_model);
+}

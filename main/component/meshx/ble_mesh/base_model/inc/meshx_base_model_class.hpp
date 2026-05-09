@@ -63,6 +63,10 @@ public:
      */
     meshx_err_t from_ble_reg_cb(void) const;
 
+private:
+    struct reg_info { uint32_t id; int count; };
+    static std::forward_list<reg_info> registrations;
+
 protected:
     /**
      * @brief Deregister BLE message callback for this model
@@ -191,6 +195,7 @@ private:
         uint16_t model_id;   /**< Model ID associated with the registration. */
         meshx_ptr_t p_plat_model; /**< Platform model pointer for instance verification. */
         control_msg_cb cb;   /**< Callback function associated with the registration. */
+        meshXBaseServerModel *instance; /**< Instance pointer for registration management. */
     };
 
 protected:
@@ -207,6 +212,12 @@ public:
     virtual ~meshXBaseServerModel() = default;
     meshXBaseServerModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb& from_ble_cb);
     meshx_err_t from_ble_dereg_cb(void) const override;
+
+    /**
+     * @brief Set the platform model pointer and update the registration list.
+     * @param[in] p_model Pointer to the platform model instance.
+     */
+    void set_plat_model_ptr(meshx_ptr_t p_model);
 };
 
 /**************************************************************************************************************************************************************
@@ -239,6 +250,7 @@ private:
         uint16_t model_id;   /**< Model ID associated with the registration. */
         meshx_ptr_t p_plat_model; /**< Platform model pointer for instance verification. */
         control_msg_cb cb;   /**< Callback function associated with the registration. */
+        meshXBaseClientModel *instance; /**< Instance pointer for registration management. */
     };
     using base_client_model_resend_ctx_t = struct base_client_model_resend_ctx
     {
@@ -270,6 +282,12 @@ public:
     ~meshXBaseClientModel() = default;
     meshXBaseClientModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb& from_ble_cb);
     meshx_err_t from_ble_dereg_cb(void) const override;
+
+    /**
+     * @brief Set the platform model pointer and update the registration list.
+     * @param[in] p_model Pointer to the platform model instance.
+     */
+    void set_plat_model_ptr(meshx_ptr_t p_model);
 };
 
 #endif /* _MESHX_BASE_MODEL_CLASS_H_ */

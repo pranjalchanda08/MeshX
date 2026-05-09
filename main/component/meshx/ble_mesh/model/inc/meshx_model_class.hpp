@@ -85,7 +85,7 @@ public:
      * @return MESHX_SUCCESS if message prepared successfully, error code otherwise
      */
     virtual meshx_err_t prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size) = 0;
-    
+
     /**
      * @brief Called when the model's parent element is baked.
      */
@@ -98,7 +98,7 @@ public:
      * @brief Set the platform-specific model instance
      * @param[in] p_model Pointer to the platform model instance
      */
-    void set_plat_model(MESHX_MODEL *p_model) { p_plat_model = p_model; }
+    virtual void set_plat_model(MESHX_MODEL *p_model) { p_plat_model = p_model; }
 
     /**
      * @brief Get the platform-specific model instance
@@ -158,7 +158,7 @@ public:
      * @return Model ID value
      */
     virtual uint16_t get_model_id(void) const = 0;
- 
+
     /**
      * @brief Check if the model is successfully initialized.
      * @return true if initialized, false otherwise.
@@ -175,10 +175,13 @@ class meshXModel : public meshXModelIF
 {
 private:
     /* private members */
-    meshxBaseModel_t    *base_model;   /*<! Pointer to the base model */
+    meshxBaseModel_t    *base_model = nullptr;   /*<! Pointer to the base model */
     meshx_err_t         status;        /*<! Status of the model */
     uint16_t            model_id;      /*<! Model identifier */
     uint16_t            model_func_id; /*<! Model function identifier. This is the function ID of the model within an element */
+
+public:
+    void set_plat_model(MESHX_MODEL *p_model) override;
 
     /**
      * @brief Handle upstream BLE Mesh events
@@ -287,7 +290,7 @@ public:
      * @return Model ID value
      */
     uint16_t get_model_id(void) const override { return model_id; }
- 
+
     /**
      * @brief Check if the model is successfully initialized.
      * @return true if initialized, false otherwise.

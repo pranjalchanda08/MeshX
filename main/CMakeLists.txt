@@ -1,11 +1,15 @@
 cmake_minimum_required(VERSION 3.16)
 
-# Recursively collect sources
+# Recursively collect sources, excluding elements_c
 file(GLOB_RECURSE MESHX_SRC
     "${CMAKE_SOURCE_DIR}/main/component/meshx/**/*.c"
     "${CMAKE_SOURCE_DIR}/main/component/meshx/**/*.cpp"
     "${CMAKE_SOURCE_DIR}/main/src/*.c"
 )
+
+# Exclude legacy elements_c from sources
+list(FILTER MESHX_SRC EXCLUDE REGEX "main/component/meshx/ble_mesh/elements_c/")
+
 message(STATUS "MESHX_SRC: ${MESHX_SRC}")
 
 # Recursively collect include dirs
@@ -18,7 +22,10 @@ set(MESHX_FINAL_INC "" CACHE STRING "MeshX include directories")
 
 foreach(dir ${MESHX_INC_DIRS})
     if(IS_DIRECTORY ${dir} AND dir MATCHES "(/inc$|/include$)")
-        list(APPEND MESHX_FINAL_INC "${dir}")
+        # Exclude legacy elements_c from includes
+        if(NOT dir MATCHES "main/component/meshx/ble_mesh/elements_c/")
+            list(APPEND MESHX_FINAL_INC "${dir}")
+        endif()
     endif()
 endforeach()
 list(REMOVE_DUPLICATES MESHX_FINAL_INC)
