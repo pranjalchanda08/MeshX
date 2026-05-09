@@ -66,6 +66,8 @@ meshXRelayServerElement::meshXRelayServerElement (uint16_t element_idx)
 {
     memset(&element_ctx, 0, sizeof(meshx_relay_srv_el_ctx_t));
     element_ctx.pub_addr = MESHX_ADDR_UNASSIGNED;
+    element_ctx.gen_on_off_state.on_off = 0;
+    element_ctx.gen_on_off_state.next_on_off = 1;
 
     /* Restore from NVS if available */
     meshx_nvs_element_ctx_get(element_idx, MESHX_ELEMENT_TYPE_RELAY_SERVER, &element_ctx, sizeof(meshx_relay_srv_el_ctx_t));
@@ -119,7 +121,7 @@ meshx_err_t meshXRelayServerElement::element_state_change_notify(meshx_ptr_t par
     uint16_t element_id = msg->header.model.el_id;
 
     /* Update local context */
-    element_ctx.gen_on_off_state.on_off = msg->state.on_off;
+    element_ctx.gen_on_off_state = msg->state;
 
     /* Task B — NVS persistence */
     meshx_err_t err = meshx_nvs_element_ctx_set(
@@ -158,23 +160,7 @@ void meshXRelayServerElement::sync(control_task_msg_evt_t evt)
 
         auto &models = this->get_sig_models();
         auto *onoff  = static_cast<meshXGenericOnOffServerModel *>(models[0].get());
-
-        meshx_model_t model_ref = { .el_id    = this->get_element_idx(),
-                                    .model_id = (uint16_t)onoff->get_model_id(),
-                                    .pub_addr = element_ctx.pub_addr,
-                                    .p_model  = (MESHX_MODEL*)onoff->get_plat_model() };
-
-        meshx_ctx_t ctx = { .app_idx  = element_ctx.app_id,
-                            .net_idx  = meshx_get_net_key_id(),
-                            .opcode   = MESHX_MODEL_OP_GEN_ONOFF_STATUS,
-                            .src_addr = 0,
-                            .dst_addr = element_ctx.pub_addr,
-                            .p_ctx    = nullptr };
-        meshx_gen_onoff_send_params_t sp = {
-            .model = &model_ref, .ctx = &ctx,
-            .state = { .on_off = element_ctx.gen_on_off_state.on_off },
-            .tid = 0 };
-        onoff->model_send(&sp);
+        onoff->request_status();
     }
 }
 
@@ -214,20 +200,13 @@ void meshXRelayClientElement::sync(control_task_msg_evt_t evt)
 
         auto &models = this->get_sig_models();
         auto *onoff  = static_cast<meshXGenericOnOffClientModel *>(models[0].get());
-
-        meshx_model_t model_ref = { .el_id    = this->get_element_idx(),
-                                    .model_id = (uint16_t)onoff->get_model_id(),
-                                    .pub_addr = element_ctx.pub_addr,
-                                    .p_model  = (MESHX_MODEL*)onoff->get_plat_model() };
-
-        meshx_ctx_t ctx = { .app_idx  = element_ctx.app_id,
-                            .net_idx  = meshx_get_net_key_id(),
-                            .opcode   = MESHX_MODEL_OP_GEN_ONOFF_GET,
-                            .src_addr = 0,
-                            .dst_addr = element_ctx.pub_addr,
-                            .p_ctx    = nullptr };
-        meshx_gen_onoff_send_params_t sp = { .model = &model_ref, .ctx = &ctx, .state = {0}, .tid = 0 };
-        onoff->model_send(&sp);
+        meshx_gen_on_off_cli_msg_t msg = {
+            .ack        = 1,
+            .set_get    = MESHX_GEN_ON_OFF_CLI_MSG_GET,
+            .reserved   = 0,
+            .element_id = this->get_element_idx()
+        };
+        onoff->request_onoff(&msg);
     }
 }
 
@@ -245,6 +224,8 @@ meshXRelayClientElement::meshXRelayClientElement (uint16_t element_idx)
 {
     memset(&element_ctx, 0, sizeof(meshx_relay_cli_el_ctx_t));
     element_ctx.pub_addr = MESHX_ADDR_UNASSIGNED;
+    element_ctx.gen_on_off_state.on_off = 0;
+    element_ctx.gen_on_off_state.next_on_off = 1;
 
     /* Restore from NVS if available */
     meshx_nvs_element_ctx_get(element_idx, MESHX_ELEMENT_TYPE_RELAY_CLIENT, &element_ctx, sizeof(meshx_relay_cli_el_ctx_t));
@@ -298,7 +279,7 @@ meshx_err_t meshXRelayClientElement::element_state_change_notify(meshx_ptr_t par
     uint16_t element_id = msg->header.model.el_id;
 
     /* Update local context */
-    element_ctx.gen_on_off_state.on_off = msg->state.on_off;
+    element_ctx.gen_on_off_state = msg->state;
 
     /* App notification */
     meshx_api_relay_client_evt_t app_evt = {
@@ -351,37 +332,12 @@ meshx_err_t meshXRelayClientElement::s_to_ble_cb(
             return MESHX_INVALID_STATE;
         }
 
-        /* Route through the model's model_send to leverage the C++ model stack */
+        /* Route through the model's request_onoff to leverage the centralized logic */
         auto &models = el->get_sig_models();
         if (models.empty()) return MESHX_INVALID_STATE;
 
         auto *onoff_model = static_cast<meshXGenericOnOffClientModel *>(models[0].get());
-
-        uint16_t opcode = (msg->set_get == MESHX_GEN_ON_OFF_CLI_MSG_GET)
-            ? MESHX_MODEL_OP_GEN_ONOFF_GET
-            : (msg->ack ? MESHX_MODEL_OP_GEN_ONOFF_SET : MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK);
-
-        meshx_model_t model_ref = {
-            .el_id    = msg->element_id,
-            .model_id = (uint16_t)onoff_model->get_model_id(),
-            .pub_addr = el->element_ctx.pub_addr,
-            .p_model  = (MESHX_MODEL*)onoff_model->get_plat_model()
-        };
-        meshx_ctx_t ctx = {
-            .app_idx  = el->element_ctx.app_id,
-            .net_idx  = pdev->meshx_store.net_key_id,
-            .opcode   = opcode,
-            .src_addr = 0,
-            .dst_addr = el->element_ctx.pub_addr,
-            .p_ctx    = nullptr
-        };
-        meshx_gen_onoff_send_params_t send_params = {
-            .model = &model_ref,
-            .ctx   = &ctx,
-            .state = { .on_off = el->element_ctx.gen_on_off_state.on_off },
-            .tid   = 0
-        };
-        return onoff_model->model_send(&send_params);
+        return onoff_model->request_onoff(msg);
     }
     return MESHX_SUCCESS;
 }
