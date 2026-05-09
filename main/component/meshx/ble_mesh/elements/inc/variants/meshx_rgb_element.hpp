@@ -28,7 +28,7 @@
  */
 struct meshx_rgb_srv_el_ctx_t
 {
-    uint8_t                         app_id;             /**< Application key ID for publication */
+    uint16_t                        app_id;             /**< Application key ID for publication */
     uint16_t                        pub_addr;           /**< Publication address */
     meshx_gen_onoff_model_state_t   gen_on_off_state;   /**< Current OnOff state */
     meshx_light_hsl_model_state_t   light_hsl_state;    /**< Current HSL state */

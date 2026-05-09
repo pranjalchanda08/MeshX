@@ -22,7 +22,7 @@ MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::plat_model_create(MESHX_MODEL* p_plat_model_ptr)
 {
     meshx_err_t err = MESHX_SUCCESS;
-    
+
     if (p_plat_model_ptr) {
         this->set_plat_model(p_plat_model_ptr);
     }
@@ -152,13 +152,13 @@ meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::model_fr
     uint16_t new_app_idx = 0;
     bool sync_required = false;
 
-    if (param->ctx.opcode == MESHX_MODEL_OP_MODEL_PUB_SET) 
+    if (param->ctx.opcode == MESHX_MODEL_OP_MODEL_PUB_SET)
     {
         target_addr  = param->state_change.mod_pub_set.element_addr;
         new_pub_addr = param->state_change.mod_pub_set.pub_addr;
         new_app_idx  = param->state_change.mod_pub_set.app_idx;
         sync_required = true;
-        MESHX_LOGI(MODULE_ID_MODEL_SERVER, "  Syncing PubAddr: el_addr=0x%04x -> pub=0x%04x, app_idx=%d", 
+        MESHX_LOGI(MODULE_ID_MODEL_SERVER, "  Syncing PubAddr: el_addr=0x%04x -> pub=0x%04x, app_idx=%d",
                    target_addr, new_pub_addr, new_app_idx);
     }
     else if (param->ctx.opcode == MESHX_MODEL_OP_MODEL_APP_BIND)
@@ -166,7 +166,7 @@ meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::model_fr
         target_addr  = param->state_change.mod_app_bind.element_addr;
         new_app_idx  = param->state_change.mod_app_bind.app_idx;
         sync_required = true;
-        MESHX_LOGI(MODULE_ID_MODEL_SERVER, "  Syncing AppBind: el_addr=0x%04x -> app_idx=%d", 
+        MESHX_LOGI(MODULE_ID_MODEL_SERVER, "  Syncing AppBind: el_addr=0x%04x -> app_idx=%d",
                    target_addr, new_app_idx);
     }
     else if (param->ctx.opcode == MESHX_MODEL_OP_MODEL_APP_UNBIND)
@@ -174,7 +174,7 @@ meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::model_fr
         target_addr  = param->state_change.mod_app_unbind.element_addr;
         new_app_idx  = param->state_change.mod_app_unbind.app_idx;
         sync_required = true;
-        MESHX_LOGI(MODULE_ID_MODEL_SERVER, "  Syncing AppUnbind: el_addr=0x%04x -> app_idx=%d", 
+        MESHX_LOGI(MODULE_ID_MODEL_SERVER, "  Syncing AppUnbind: el_addr=0x%04x -> app_idx=%d",
                    target_addr, new_app_idx);
     }
 
@@ -185,18 +185,16 @@ meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::model_fr
         if (el && el->get_element_ctx())
         {
             meshx_element_type_t variant = el->get_element_variant();
-            if (variant == MESHX_ELEMENT_TYPE_RELAY_CLIENT || variant == MESHX_ELEMENT_TYPE_RELAY_SERVER) {
-                // Relay Client and Server contexts share the same header structure for pub/app fields
-                auto *ctx = static_cast<meshx_relay_cli_el_ctx_t*>(el->get_element_ctx());
-                if (param->ctx.opcode == MESHX_MODEL_OP_MODEL_PUB_SET) {
-                    ctx->pub_addr = new_pub_addr;
-                }
-                ctx->app_id = new_app_idx;
-                
-                meshx_nvs_element_ctx_set(el_id, variant, ctx, el->get_element_ctx_size());
-                meshx_nvs_commit(); // Force immediate commit for critical config changes
-                MESHX_LOGI(MODULE_ID_MODEL_SERVER, "  Element [%d] context updated and committed to NVS (variant: %d)", el_id, variant);
+            // All element contexts in MeshX start with meshx_element_common_ctx_t (app_id and pub_addr)
+            auto *ctx = static_cast<meshx_element_common_ctx_t*>(el->get_element_ctx());
+            if (param->ctx.opcode == MESHX_MODEL_OP_MODEL_PUB_SET) {
+                ctx->pub_addr = new_pub_addr;
             }
+            ctx->app_id = new_app_idx;
+
+            meshx_nvs_element_ctx_set(el_id, variant, ctx, el->get_element_ctx_size());
+            meshx_nvs_commit(); // Force immediate commit for critical config changes
+            MESHX_LOGI(MODULE_ID_MODEL_SERVER, "  Element [%d] context updated and committed to NVS (variant: %d)", el_id, variant);
         }
     }
 

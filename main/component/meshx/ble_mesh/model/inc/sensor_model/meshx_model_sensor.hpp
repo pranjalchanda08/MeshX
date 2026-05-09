@@ -52,6 +52,7 @@ private:
 public:
     meshx_err_t model_send          (meshx_sensor_server_send_params_t *params) override;
     meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t request_status      (void);
 
     meshXSensorServerModel(
         meshXElementIF *parent_element = nullptr,

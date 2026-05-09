@@ -74,7 +74,7 @@ using meshxElementType_t = enum meshxElementType;
  * @brief Common element context structure for base handling.
  */
 typedef struct {
-    uint8_t  app_id;
+    uint16_t app_id;
     uint16_t pub_addr;
 } meshx_element_common_ctx_t;
 

@@ -30,7 +30,7 @@
  */
 struct meshx_relay_srv_el_ctx_t
 {
-    uint8_t                         app_id;             /**< Application key ID for publication */
+    uint16_t                        app_id;             /**< Application key ID for publication */
     uint16_t                        pub_addr;           /**< Publication address */
     meshx_gen_onoff_model_state_t   gen_on_off_state;   /**< Current OnOff state (0=OFF, 1=ON) */
 };
@@ -115,7 +115,7 @@ enum class meshxRelayClientElementComposition : uint8_t
  */
 struct meshx_relay_cli_el_ctx_t
 {
-    uint8_t                         app_id;             /**< Application key ID for publication */
+    uint16_t                        app_id;             /**< Application key ID for publication */
     uint16_t                        pub_addr;           /**< Publication address */
     meshx_gen_onoff_model_state_t   gen_on_off_state;   /**< Current OnOff state (0=OFF, 1=ON) */
 };

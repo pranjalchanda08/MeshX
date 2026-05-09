@@ -171,32 +171,7 @@ void meshXSensorElement::sync(control_task_msg_evt_t evt)
         auto &models = this->get_sig_models();
         auto *sensor = static_cast<meshXSensorServerModel *>(models[0].get());
 
-        meshx_model_t model_ref = { .el_id    = this->get_element_idx(),
-                                    .model_id = (uint16_t)sensor->get_model_id(),
-                                    .pub_addr = element_ctx.pub_addr,
-                                    .p_model  = (MESHX_MODEL*)sensor->get_plat_model() };
-
-        meshx_ctx_t ctx = { .app_idx  = element_ctx.app_id,
-                            .net_idx  = meshx_get_net_key_id(),
-                            .opcode   = MESHX_MODEL_OP_SENSOR_STATUS,
-                            .src_addr = 0,
-                            .dst_addr = element_ctx.pub_addr,
-                            .p_ctx    = nullptr };
-
-        meshx_sensor_server_send_params_t sp = {
-            .model = &model_ref, .ctx = &ctx,
-            .state = {
-                .sensor_status = {
-                    .property_id = element_ctx.sensor_srv_state.property_id,
-                    .data_len    = element_ctx.sensor_srv_state.data_len,
-                    .data        = {0}
-                }
-            }
-        };
-        memcpy(sp.state.sensor_status.data, element_ctx.sensor_srv_state.data,
-               std::min((uint16_t)sizeof(sp.state.sensor_status.data), element_ctx.sensor_srv_state.data_len));
-
-        sensor->model_send(&sp);
+        sensor->request_status();
     }
 }
 
