@@ -28,16 +28,14 @@ extern "C" {
 meshXRGBServerElement::meshXRGBServerElement(uint16_t element_idx)
     : meshXElementServer(element_idx)
 {
-    set_element_variant(MESHX_ELEMENT_TYPE_LIGHT_HSL_SERVER);
-
-    element_ctx.app_id = 0;
+    memset(&element_ctx, 0, sizeof(element_ctx));
     element_ctx.pub_addr = MESHX_ADDR_UNASSIGNED;
-    element_ctx.gen_on_off_state.on_off = 0;
-    element_ctx.light_hsl_state.lightness = 0;
-    element_ctx.light_hsl_state.hue = 0;
-    element_ctx.light_hsl_state.saturation = 0;
+
+    /* Restore from NVS if available */
+    meshx_nvs_element_ctx_get(element_idx, MESHX_ELEMENT_TYPE_LIGHT_HSL_SERVER, &element_ctx, sizeof(element_ctx));
 
     register_element_ctx(&element_ctx, sizeof(element_ctx));
+    set_element_variant(MESHX_ELEMENT_TYPE_LIGHT_HSL_SERVER);
 
     /* Add models:
        1. Generic OnOff Server (mapped to HSL OnOff)
@@ -211,29 +209,7 @@ void meshXRGBServerElement::sync(control_task_msg_evt_t evt)
             if (m->get_model_id() == MESHX_MODEL_ID_LIGHT_HSL_SRV)
             {
                 auto* hsl_srv = static_cast<meshXLightHSLServerModel*>(m.get());
-                meshx_model_t model_ref = {
-                    .el_id = this->get_element_idx(),
-                    .model_id = (uint16_t)hsl_srv->get_model_id(),
-                    .pub_addr = element_ctx.pub_addr,
-                    .p_model = hsl_srv->get_plat_model()
-                };
-
-                meshx_ctx_t ctx = {
-                    .app_idx = element_ctx.app_id,
-                    .net_idx = meshx_get_net_key_id(),
-                    .opcode = MESHX_MODEL_OP_LIGHT_HSL_STATUS,
-                    .src_addr = 0,
-                    .dst_addr = element_ctx.pub_addr,
-                    .p_ctx = hsl_srv->get_pub_struct()
-                };
-
-                meshx_light_hsl_send_params_t send_params = {
-                    .model = &model_ref,
-                    .ctx = &ctx,
-                    .tid = 0,
-                    .state = element_ctx.light_hsl_state
-                };
-                hsl_srv->model_send(&send_params);
+                hsl_srv->request_status();
             }
 #endif
 #if CONFIG_ENABLE_GEN_ONOFF_SERVER

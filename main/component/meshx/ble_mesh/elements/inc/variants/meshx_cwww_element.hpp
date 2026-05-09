@@ -35,7 +35,7 @@
 struct meshx_cwww_srv_el_ctx_t
 {
     // Publication and app binding
-    uint8_t app_id;        /**< Application key ID for publication */
+    uint16_t app_id;        /**< Application key ID for publication */
     uint16_t pub_addr;     /**< Publication address */
     // Generic OnOff state
     meshx_gen_onoff_model_state_t   gen_on_off_state;   /**< Current OnOff state (0=OFF, 1=ON) */
@@ -115,7 +115,7 @@ public:
 struct meshx_cwww_cli_el_ctx_t
 {
     // Publication and app binding
-    uint8_t app_id;        /**< Application key ID for publication */
+    uint16_t app_id;        /**< Application key ID for publication */
     uint16_t pub_addr;     /**< Publication address */
     // Generic OnOff state
     meshx_gen_onoff_model_state_t   gen_on_off_state;   /**< Current OnOff state (0=OFF, 1=ON) */

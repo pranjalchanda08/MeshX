@@ -19,7 +19,7 @@ enum class meshXSensorElementComposition : uint8_t
 
 struct meshx_sensor_srv_el_ctx_t
 {
-    uint8_t                     app_id;             /**< Application key ID for publication */
+    uint16_t                    app_id;             /**< Application key ID for publication */
     uint16_t                    pub_addr;           /**< Publication address */
     meshx_sensor_srv_status_t   sensor_srv_state;   /**< Current sensor server state */
 };

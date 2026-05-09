@@ -155,4 +155,43 @@ meshXSensorServerModel MESHX_SENSOR_SERVER_MODEL_TEMPLATE_PARAMS
 {
 }
 
+MESHX_SENSOR_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXSensorServerModel MESHX_SENSOR_SERVER_MODEL_TEMPLATE_PARAMS
+    :: request_status(void)
+{
+    auto *el_state = static_cast<meshx_sensor_srv_status_t*>(this->get_parent_element_state());
+    auto *el = this->get_parent_element();
+    if (!el || !el_state) return MESHX_INVALID_STATE;
+
+    auto *common_ctx = static_cast<meshx_element_common_ctx_t*>(el->get_element_ctx());
+    if (!common_ctx) return MESHX_INVALID_STATE;
+
+    meshx_model_t model_ref = {
+        .el_id    = el->get_element_idx(),
+        .model_id = (uint16_t)this->get_model_id(),
+        .pub_addr = common_ctx->pub_addr,
+        .p_model  = (MESHX_MODEL*)this->get_plat_model()
+    };
+
+    meshx_ctx_t ctx = {
+        .app_idx  = common_ctx->app_id,
+        .net_idx  = meshx_get_net_key_id(),
+        .opcode   = MESHX_MODEL_OP_SENSOR_STATUS,
+        .src_addr = 0,
+        .dst_addr = common_ctx->pub_addr,
+        .p_ctx    = nullptr
+    };
+
+    meshx_sensor_server_send_params_t sp = {
+        .model = &model_ref,
+        .ctx   = &ctx,
+        .state = {
+            .sensor_status = *el_state
+        }
+    };
+
+    return this->model_send(&sp);
+}
+
 #endif /* CONFIG_ENABLE_SENSOR_SERVER */
+

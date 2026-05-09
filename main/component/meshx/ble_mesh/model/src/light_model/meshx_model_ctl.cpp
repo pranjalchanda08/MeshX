@@ -219,9 +219,48 @@ meshx_err_t meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAM
     else
     {
         err = MESHX_INVALID_ARG; // Invalid opcode
-        MESHX_LOGE(MODULE_ID_MODEL_CLIENT, "Invalid opcode for Light CTL Client: %04x", params->ctx->opcode);
     }
     return err;
+}
+
+MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAMS
+    :: request_ctl(uint16_t lightness, uint16_t temperature, int16_t delta_uv, uint8_t tid)
+{
+    auto *el = this->get_parent_element();
+    if (!el) return MESHX_INVALID_STATE;
+
+    auto *common_ctx = static_cast<meshx_element_common_ctx_t*>(el->get_element_ctx());
+    if (!common_ctx) return MESHX_INVALID_STATE;
+
+    meshx_model_t model_ref = {
+        .el_id    = el->get_element_idx(),
+        .model_id = (uint16_t)this->get_model_id(),
+        .pub_addr = common_ctx->pub_addr,
+        .p_model  = (MESHX_MODEL*)this->get_plat_model()
+    };
+
+    meshx_ctx_t ctx = {
+        .app_idx  = common_ctx->app_id,
+        .net_idx  = meshx_get_net_key_id(),
+        .opcode   = MESHX_MODEL_OP_LIGHT_CTL_SET,
+        .src_addr = 0,
+        .dst_addr = common_ctx->pub_addr,
+        .p_ctx    = nullptr
+    };
+
+    meshx_light_ctl_send_params_t sp = {
+        .model = &model_ref,
+        .ctx   = &ctx,
+        .tid   = tid,
+        .state = {
+            .lightness   = lightness,
+            .temperature = temperature,
+            .delta_uv    = delta_uv
+        }
+    };
+
+    return this->model_send(&sp);
 }
 
 /**
@@ -630,6 +669,43 @@ meshXLightCTLSetupServerModel::meshXLightCTLSetupServerModel(
 extern "C" meshx_err_t meshx_get_ctl_setup_srv_model(meshx_ptr_t p_model)
 {
     return meshx_plat_get_ctl_setup_srv_model(p_model);
+}
+
+MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PROTO
+meshx_err_t meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAMS
+    :: request_status(uint16_t dst_addr)
+{
+    auto *el_state = static_cast<meshx_light_ctl_model_state_t*>(this->get_parent_element_state());
+    auto *el = this->get_parent_element();
+    if (!el || !el_state) return MESHX_INVALID_STATE;
+
+    auto *common_ctx = static_cast<meshx_element_common_ctx_t*>(el->get_element_ctx());
+    if (!common_ctx) return MESHX_INVALID_STATE;
+
+    meshx_model_t model_ref = {
+        .el_id    = el->get_element_idx(),
+        .model_id = (uint16_t)this->get_model_id(),
+        .pub_addr = common_ctx->pub_addr,
+        .p_model  = (MESHX_MODEL*)this->get_plat_model()
+    };
+
+    meshx_ctx_t ctx = {
+        .app_idx  = common_ctx->app_id,
+        .net_idx  = meshx_get_net_key_id(),
+        .opcode   = MESHX_MODEL_OP_LIGHT_CTL_STATUS,
+        .src_addr = 0,
+        .dst_addr = (dst_addr == 0) ? common_ctx->pub_addr : dst_addr,
+        .p_ctx    = nullptr
+    };
+
+    meshx_light_ctl_send_params_t sp = {
+        .model = &model_ref,
+        .ctx   = &ctx,
+        .tid   = 0,
+        .state = *el_state
+    };
+
+    return this->model_send(&sp);
 }
 
 #endif /* CONFIG_ENABLE_LIGHT_CTL_SERVER */
