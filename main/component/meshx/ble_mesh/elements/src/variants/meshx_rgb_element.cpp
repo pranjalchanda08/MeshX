@@ -240,29 +240,7 @@ void meshXRGBServerElement::sync(control_task_msg_evt_t evt)
             if (m->get_model_id() == MESHX_MODEL_ID_GEN_ONOFF_SRV)
             {
                 auto* onoff = static_cast<meshXGenericOnOffServerModel*>(m.get());
-                meshx_model_t onoff_ref = {
-                    .el_id = this->get_element_idx(),
-                    .model_id = (uint16_t)onoff->get_model_id(),
-                    .pub_addr = element_ctx.pub_addr,
-                    .p_model = onoff->get_plat_model()
-                };
-
-                meshx_ctx_t ctx = {
-                    .app_idx = element_ctx.app_id,
-                    .net_idx = meshx_get_net_key_id(),
-                    .opcode = MESHX_MODEL_OP_GEN_ONOFF_STATUS,
-                    .src_addr = 0,
-                    .dst_addr = element_ctx.pub_addr,
-                    .p_ctx = nullptr
-                };
-
-                meshx_gen_onoff_send_params_t sp = {
-                    .model = &onoff_ref,
-                    .ctx = &ctx,
-                    .state = { .on_off = element_ctx.gen_on_off_state.on_off },
-                    .tid = 0
-                };
-                onoff->model_send(&sp);
+                onoff->request_status();
             }
 #endif
         }
