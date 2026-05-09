@@ -105,6 +105,7 @@ MESHX_BASE_CONFIG_SERVER_TEMPLATE_PROTO
 class meshXBaseConfigServerModel : public meshXBaseServerModel<meshXBaseConfigServerModel, meshx_config_server_send_params_t, meshx_config_server_restore_params_t, meshx_config_srv_cb_param_t>
 {
 public:
+    using meshXBaseServerModel<meshXBaseConfigServerModel, meshx_config_server_send_params_t, meshx_config_server_restore_params_t, meshx_config_srv_cb_param_t>::from_ble_reg_cb;
     /**
      * @brief Initialize platform-specific config server model
      * @return MESHX_SUCCESS on successful initialization, error code otherwise

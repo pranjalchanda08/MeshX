@@ -456,7 +456,8 @@ meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_P
 
     auto *param = static_cast<meshx_gen_srv_cb_param_t *>(params);
 
-    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "op|src|dst:%04" PRIx32 "|%04x|%04x",
+    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "[EL %d] op|src|dst:%04" PRIx32 "|%04x|%04x",
+               this->get_parent_element()->get_element_idx(),
                param->ctx.opcode, param->ctx.src_addr, param->ctx.dst_addr);
 
     model_state.on_off = param->state_change.onoff_set.onoff;

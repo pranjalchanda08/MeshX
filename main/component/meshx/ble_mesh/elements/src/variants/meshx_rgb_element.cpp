@@ -206,6 +206,7 @@ void meshXRGBServerElement::sync(control_task_msg_evt_t evt)
 
         for (auto& m : this->get_sig_models())
         {
+            (void)m;
 #if CONFIG_ENABLE_LIGHT_HSL_SERVER
             if (m->get_model_id() == MESHX_MODEL_ID_LIGHT_HSL_SRV)
             {

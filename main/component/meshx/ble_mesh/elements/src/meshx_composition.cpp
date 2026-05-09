@@ -206,8 +206,8 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
                            j, m->vnd.company_id, m->vnd.model_id);
             }
         }
-#endif /* CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO */
     }
+#endif /* CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO */
 
     return MESHX_SUCCESS;
 

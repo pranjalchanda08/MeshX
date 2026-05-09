@@ -516,4 +516,19 @@ meshx_err_t meshx_plat_light_client_send_msg(
     bool is_get_opcode
 );
 
+#if CONFIG_ENABLE_LIGHT_CLIENT
+/**
+ * @brief Generic Light Client Model send parameters.
+ */
+typedef struct meshx_gen_light_client_send_params
+{
+    meshx_ptr_t model;                      /**< Model context associated with the message. */
+    uint16_t opcode;                        /**< Opcode associated with the message. */
+    uint16_t addr;                          /**< Destination address associated with the message. */
+    uint16_t net_idx;                       /**< Network index associated with the message. */
+    uint16_t app_idx;                       /**< Application key index associated with the message. */
+    meshx_light_client_set_state_t *state;  /**< State parameters associated with the message. */
+} meshx_gen_light_client_send_params_t;
+#endif /* CONFIG_ENABLE_LIGHT_CLIENT */
+
 #endif /* MESHX_BLE_MESH_LIGHT_CLI_H */

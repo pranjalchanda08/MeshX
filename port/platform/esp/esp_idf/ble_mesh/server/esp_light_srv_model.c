@@ -738,3 +738,10 @@ meshx_err_t meshx_plat_light_ctl_srv_restore(meshx_ptr_t p_model,
         temp_range_min
     );
 }
+
+meshx_err_t meshx_plat_get_ctl_setup_srv_model(meshx_ptr_t p_model)
+{
+    if (!p_model) return MESHX_INVALID_ARG;
+    memcpy(p_model, &light_ctl_setup_sig_template, sizeof(MESHX_MODEL));
+    return MESHX_SUCCESS;
+}
