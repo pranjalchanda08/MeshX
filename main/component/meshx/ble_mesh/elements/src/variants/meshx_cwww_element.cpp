@@ -152,22 +152,7 @@ void meshXCWWWServerElement::sync(control_task_msg_evt_t evt)
 
 #if CONFIG_ENABLE_GEN_ONOFF_SERVER
         auto *onoff  = static_cast<meshXGenericOnOffServerModel *>(models[0].get());
-        meshx_model_t model_ref = { .el_id    = this->get_element_idx(),
-                                    .model_id = (uint16_t)onoff->get_model_id(),
-                                    .pub_addr = element_ctx.pub_addr,
-                                    .p_model  = (MESHX_MODEL*)onoff->get_plat_model() };
-
-        meshx_ctx_t ctx = { .app_idx  = element_ctx.app_id,
-                            .net_idx  = meshx_get_net_key_id(),
-                            .opcode   = MESHX_MODEL_OP_GEN_ONOFF_STATUS,
-                            .src_addr = 0,
-                            .dst_addr = element_ctx.pub_addr,
-                            .p_ctx    = nullptr };
-        meshx_gen_onoff_send_params_t sp = {
-            .model = &model_ref, .ctx = &ctx,
-            .state = { .on_off = element_ctx.gen_on_off_state.on_off },
-            .tid = 0 };
-        onoff->model_send(&sp);
+        onoff->request_status();
 #endif
 
 #if CONFIG_ENABLE_LIGHT_CTL_SERVER
@@ -318,17 +303,13 @@ void meshXCWWWClientElement::sync(control_task_msg_evt_t evt)
                                     .p_model  = nullptr };
 
 #if CONFIG_ENABLE_GEN_ONOFF_CLIENT
-        meshx_ctx_t ctx = { .app_idx  = element_ctx.app_id,
-                            .net_idx  = meshx_get_net_key_id(),
-                            .opcode   = MESHX_MODEL_OP_GEN_ONOFF_GET,
-                            .src_addr = 0,
-                            .dst_addr = element_ctx.pub_addr,
-                            .p_ctx    = nullptr };
-        meshx_gen_onoff_send_params_t sp = {
-            .model = &model_ref, .ctx = &ctx,
-            .state = { .on_off = element_ctx.gen_on_off_state.on_off },
-            .tid = 0 };
-        onoff->model_send(&sp);
+        meshx_gen_on_off_cli_msg_t msg = {
+            .ack        = 1,
+            .set_get    = MESHX_GEN_ON_OFF_CLI_MSG_GET,
+            .reserved   = 0,
+            .element_id = this->get_element_idx()
+        };
+        onoff->request_onoff(&msg);
 #endif
 
 #if CONFIG_ENABLE_LIGHT_CTL_CLIENT
@@ -372,28 +353,14 @@ meshx_err_t meshXCWWWClientElement::s_to_ble_cb(const dev_struct_t *pdev, contro
         if (el->element_ctx.pub_addr == MESHX_ADDR_UNASSIGNED)
             return MESHX_INVALID_STATE;
 
+        /* Route through the model's request_onoff to leverage the centralized logic */
         auto &models = el->get_sig_models();
+#if CONFIG_ENABLE_GEN_ONOFF_CLIENT
         auto *onoff  = static_cast<meshXGenericOnOffClientModel *>(models[0].get());
-
-        uint16_t opcode = (msg->set_get == MESHX_GEN_ON_OFF_CLI_MSG_GET)
-            ? MESHX_MODEL_OP_GEN_ONOFF_GET
-            : (msg->ack ? MESHX_MODEL_OP_GEN_ONOFF_SET : MESHX_MODEL_OP_GEN_ONOFF_SET_UNACK);
-
-        meshx_model_t model_ref = { .el_id    = msg->element_id,
-                                    .model_id = 0,
-                                    .pub_addr = el->element_ctx.pub_addr,
-                                    .p_model  = nullptr };
-        meshx_ctx_t ctx = { .app_idx  = el->element_ctx.app_id,
-                            .net_idx  = pdev->meshx_store.net_key_id,
-                            .opcode   = opcode,
-                            .src_addr = 0,
-                            .dst_addr = el->element_ctx.pub_addr,
-                            .p_ctx    = nullptr };
-        meshx_gen_onoff_send_params_t sp = {
-            .model = &model_ref, .ctx = &ctx,
-            .state = { .on_off = el->element_ctx.gen_on_off_state.on_off },
-            .tid = 0 };
-        return onoff->model_send(&sp);
+        return onoff->request_onoff(msg);
+#else
+        return MESHX_SUCCESS;
+#endif
     }
     else if (evt == CONTROL_TASK_MSG_EVT_TO_BLE_SET_CTL)
     {
@@ -406,7 +373,11 @@ meshx_err_t meshXCWWWClientElement::s_to_ble_cb(const dev_struct_t *pdev, contro
             return MESHX_INVALID_STATE;
 
         auto &models = el->get_sig_models();
+#if CONFIG_ENABLE_LIGHT_CTL_CLIENT
         auto *ctl    = static_cast<meshXLightCTLClientModel *>(models[1].get());
+#else
+        return MESHX_SUCCESS;
+#endif
 
         meshx_model_t model_ref = { .el_id    = msg->element_id,
                                     .model_id = 0,

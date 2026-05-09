@@ -31,6 +31,8 @@
 struct meshx_gen_onoff_model_state
 {
     uint8_t on_off;        /**< The onoff state of the message. */
+    uint8_t next_on_off;   /**< The next suggested onoff state (e.g. for toggle). */
+    uint8_t tid;           /**< The transaction ID of the message. */
 };
 
 using meshx_gen_onoff_model_state_t = struct meshx_gen_onoff_model_state;
@@ -86,6 +88,7 @@ public:
     meshx_err_t model_send          (meshx_gen_onoff_send_params_t *params) override;
     meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
     meshx_err_t prepare_element_msg (meshx_ptr_t *msg_ptr, size_t *msg_size) override;
+    meshx_err_t request_onoff       (const meshx_gen_on_off_cli_msg_t *msg);
 
     explicit meshXGenericOnOffClientModel(
         meshXElementIF *parent_element = nullptr,
@@ -138,6 +141,7 @@ public:
     meshx_err_t model_send          (meshx_gen_onoff_send_params_t *params) override;
     meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
     meshx_err_t prepare_element_msg (meshx_ptr_t *msg_ptr, size_t *msg_size) override;
+    meshx_err_t request_status      (uint16_t dst_addr = 0);
 
     // Virtual method implementation from meshXModelIF
     meshx_err_t element_state_change_handle (void) override;
