@@ -97,6 +97,7 @@ public:
     meshx_err_t model_send          (meshx_light_ctl_send_params_t *params) override;
     meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
     meshx_err_t prepare_element_msg (meshx_ptr_t *msg_ptr, size_t *msg_size) override;
+    meshx_err_t request_ctl         (uint16_t lightness, uint16_t temperature, int16_t delta_uv, uint8_t tid);
 
     explicit meshXLightCTLClientModel    (
         meshXElementIF *parent_element = nullptr,
@@ -151,6 +152,7 @@ public:
     meshx_err_t model_send          (meshx_light_ctl_send_params_t *params) override;
     meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
     meshx_err_t prepare_element_msg (meshx_ptr_t *msg_ptr, size_t *msg_size) override;
+    meshx_err_t request_status      (uint16_t dst_addr = 0);
 
     explicit meshXLightCTLServerModel    (
         meshXElementIF *parent_element = nullptr,

@@ -100,6 +100,7 @@ private:
 public:
     meshx_err_t model_send          (meshx_light_hsl_send_params_t *params) override;
     meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t request_hsl         (uint16_t lightness, uint16_t hue, uint16_t saturation, uint8_t tid);
 
     meshXLightHSLClientModel(
         meshXElementIF *parent_element = nullptr,
@@ -152,6 +153,7 @@ private:
 public:
     meshx_err_t model_send          (meshx_light_hsl_send_params_t *params) override;
     meshx_err_t model_from_ble_cb   (dev_struct_t *, control_task_msg_evt_t, meshx_ptr_t) override;
+    meshx_err_t request_status      (uint16_t dst_addr = 0);
 
     meshXLightHSLServerModel(
         meshXElementIF *parent_element = nullptr,

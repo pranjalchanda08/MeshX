@@ -52,6 +52,12 @@ MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
 meshXCWWWServerElement::meshXCWWWServerElement(uint16_t element_idx)
     : meshXElementServer(element_idx)
 {
+    memset(&element_ctx, 0, sizeof(meshx_cwww_srv_el_ctx_t));
+    element_ctx.pub_addr = MESHX_ADDR_UNASSIGNED;
+
+    /* Restore from NVS if available */
+    meshx_nvs_element_ctx_get(element_idx, MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER, &element_ctx, sizeof(meshx_cwww_srv_el_ctx_t));
+
     this->register_element_ctx(&element_ctx, sizeof(meshx_cwww_srv_el_ctx_t));
     this->set_element_variant(MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER);
 
@@ -157,26 +163,7 @@ void meshXCWWWServerElement::sync(control_task_msg_evt_t evt)
 
 #if CONFIG_ENABLE_LIGHT_CTL_SERVER
         auto *ctl = static_cast<meshXLightCTLServerModel *>(models[1].get());
-        meshx_model_t model_ref_ctl = { .el_id    = this->get_element_idx(),
-                                        .model_id = ctl->get_model_id(),
-                                        .pub_addr = element_ctx.pub_addr,
-                                        .p_model  = (MESHX_MODEL*)ctl->get_plat_model() };
-
-        meshx_ctx_t ctl_ctx = { .app_idx  = element_ctx.app_id,
-                                .net_idx  = meshx_get_net_key_id(),
-                                .opcode   = MESHX_MODEL_OP_LIGHT_CTL_STATUS,
-                                .src_addr = 0,
-                                .dst_addr = element_ctx.pub_addr,
-                                .p_ctx    = nullptr };
-        meshx_light_ctl_send_params_t cp = {
-            .model = &model_ref_ctl, .ctx = &ctl_ctx,
-            .tid = 0,
-            .state = { .lightness   = element_ctx.light_ctl_state.lightness,
-                       .temperature = element_ctx.light_ctl_state.temperature,
-                       .delta_uv    = element_ctx.light_ctl_state.delta_uv,
-                       .temp_range_min = 0,
-                       .temp_range_max = 0 } };
-        ctl->model_send(&cp);
+        ctl->request_status();
 #endif
     }
 }
@@ -206,6 +193,12 @@ MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
 meshXCWWWClientElement::meshXCWWWClientElement(uint16_t element_idx)
     : meshXElementClient(element_idx)
 {
+    memset(&element_ctx, 0, sizeof(meshx_cwww_cli_el_ctx_t));
+    element_ctx.pub_addr = MESHX_ADDR_UNASSIGNED;
+
+    /* Restore from NVS if available */
+    meshx_nvs_element_ctx_get(element_idx, MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT, &element_ctx, sizeof(meshx_cwww_cli_el_ctx_t));
+
     this->register_element_ctx(&element_ctx, sizeof(meshx_cwww_cli_el_ctx_t));
     this->set_element_variant(MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT);
 
