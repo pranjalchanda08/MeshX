@@ -289,7 +289,25 @@ typedef struct meshx_gen_cli_cb_param
     meshx_gen_client_status_cb_t status;        /**< Value of the received Generic Messages */
 } meshx_gen_cli_cb_param_t;
 
+/**
+ * @brief Generic Client Model send parameters.
+ */
+typedef struct meshx_gen_client_send_params
+{
+    meshx_ptr_t model;              /**< Model context associated with the message. */
+    uint16_t opcode;                /**< Opcode associated with the message. */
+    uint16_t addr;                  /**< Destination address associated with the message. */
+    uint16_t net_idx;               /**< Network index associated with the message. */
+    uint16_t app_idx;               /**< Application key index associated with the message. */
+    meshx_gen_cli_set_t *state;     /**< State parameters associated with the message. */
+} meshx_gen_client_send_params_t;
+
 typedef control_task_msg_handle_t meshx_gen_client_cb_t;
+
+/**
+ * @brief Sends a Generic Client message over BLE Mesh.
+ */
+meshx_err_t meshx_gen_cli_send_msg(meshx_gen_client_send_params_t *params);
 
 /**
  * @brief Creates a Generic OnOff client model and its publication context.

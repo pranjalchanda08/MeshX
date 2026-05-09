@@ -75,6 +75,10 @@ meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS ::~meshXBaseModel()
  *                     Possible values include success or specific error codes.
  */
 MESHX_BASE_TEMPLATE_PROTO
+std::forward_list<typename meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::reg_info> 
+    meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::registrations = { };
+
+MESHX_BASE_TEMPLATE_PROTO
 meshx_err_t meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::from_ble_reg_cb(void) const
 {
     if (from_ble_cb == nullptr)
@@ -82,7 +86,19 @@ meshx_err_t meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::from_ble_reg_cb(void) con
         MESHX_LOGE(MODULE_ID_COMMON, "meshXBaseModel[%08" PRIx32 "] from_ble_reg_cb: Invalid state (cb=NULL)", model_id);
         return MESHX_FAIL;
     }
-    MESHX_LOGD(MODULE_ID_COMMON, "meshXBaseModel[%08" PRIx32 "] Registering callback %p", model_id, from_ble_cb);
+
+    for (auto &reg : registrations)
+    {
+        if (reg.id == model_id)
+        {
+            reg.count++;
+            MESHX_LOGD(MODULE_ID_COMMON, "meshXBaseModel[%08" PRIx32 "] Already registered, incrementing count to %d", model_id, reg.count);
+            return MESHX_SUCCESS;
+        }
+    }
+
+    registrations.push_front({model_id, 1});
+    MESHX_LOGD(MODULE_ID_COMMON, "meshXBaseModel[%08" PRIx32 "] First registration, subscribing callback %p", model_id, from_ble_cb);
     return control_task_msg_subscribe(CONTROL_TASK_MSG_CODE_FRM_BLE, model_id, from_ble_cb);
 }
 
@@ -98,7 +114,23 @@ meshx_err_t meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::from_ble_reg_cb(void) con
 MESHX_BASE_TEMPLATE_PROTO
 meshx_err_t meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::from_ble_dereg_cb(void) const
 {
-    return control_task_msg_unsubscribe(CONTROL_TASK_MSG_CODE_FRM_BLE, model_id, from_ble_cb);
+    for (auto it = registrations.begin(); it != registrations.end(); ++it)
+    {
+        if (it->id == model_id)
+        {
+            if (--it->count == 0)
+            {
+                MESHX_LOGD(MODULE_ID_COMMON, "meshXBaseModel[%08" PRIx32 "] Last instance, unsubscribing callback %p", model_id, from_ble_cb);
+                meshx_err_t err = control_task_msg_unsubscribe(CONTROL_TASK_MSG_CODE_FRM_BLE, (control_task_msg_evt_t)model_id, from_ble_cb);
+                registrations.remove_if([this](const reg_info& reg) { return reg.id == model_id; });
+                return err;
+            }
+            MESHX_LOGD(MODULE_ID_COMMON, "meshXBaseModel[%08" PRIx32 "] Decrementing count to %d", model_id, it->count);
+            return MESHX_SUCCESS;
+        }
+    }
+
+    return MESHX_SUCCESS;
 }
 
 /*********************************************************************************************************
@@ -127,7 +159,7 @@ meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::meshXBaseServerModel(uin
         return;
     }
 
-    base_server_model_cb_list.push_front({(uint16_t)model_id, p_plat_model, from_ble_cb});
+    base_server_model_cb_list.push_front({(uint16_t)model_id, p_plat_model, from_ble_cb, this});
     this->status = MESHX_SUCCESS;
 }
 
@@ -155,7 +187,7 @@ meshx_err_t meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::base_from_bl
         if ((uint16_t)evt == node.model_id)
         {
             /* Only invoke if the platform model matches this instance */
-            if (node.p_plat_model != nullptr && node.p_plat_model != plat_model)
+            if (node.p_plat_model != plat_model)
             {
                 continue;
             }
@@ -188,6 +220,20 @@ meshx_err_t meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::from_ble_der
     });
 
     return err;
+}
+
+MESHX_BASE_SERVER_TEMPLATE_PROTO
+void meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::set_plat_model_ptr(meshx_ptr_t p_model)
+{
+    this->p_plat_model = p_model;
+    for (auto &node : base_server_model_cb_list)
+    {
+        if (node.instance == this)
+        {
+            node.p_plat_model = p_model;
+            break;
+        }
+    }
 }
 
 /*********************************************************************************************************
@@ -249,7 +295,7 @@ meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::meshXBaseClientModel(uin
         MESHX_LOGD(MODULE_ID_MODEL_CLIENT, "First-time initialization for client template");
     });
 
-    base_client_model_cb_list.push_front({(uint16_t)model_id, p_plat_model, from_ble_cb});
+    base_client_model_cb_list.push_front({(uint16_t)model_id, p_plat_model, from_ble_cb, this});
     this->status = MESHX_SUCCESS;
 }
 
@@ -361,7 +407,7 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_from_bl
         if ((uint16_t)evt == node.model_id)
         {
             /* Only invoke if the platform model matches this instance */
-            if (node.p_plat_model != nullptr && node.p_plat_model != plat_model)
+            if (node.p_plat_model != plat_model)
             {
                 continue;
             }
@@ -492,6 +538,20 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::from_ble_der
     });
 
     return err;
+}
+
+MESHX_BASE_CLIENT_TEMPLATE_PROTO
+void meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::set_plat_model_ptr(meshx_ptr_t p_model)
+{
+    this->p_plat_model = p_model;
+    for (auto &node : base_client_model_cb_list)
+    {
+        if (node.instance == this)
+        {
+            node.p_plat_model = p_model;
+            break;
+        }
+    }
 }
 
 

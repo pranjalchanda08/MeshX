@@ -539,6 +539,7 @@ meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAMS
         uint16_t        model_func_id
     )
     : meshXServerModel(nullptr, MESHX_MODEL_ID_LIGHT_CTL_SRV, parent_element, parent_element_state, model_func_id),
+      model_state{},
       element_msg_prepared(false)
 {
     /* Used only for initialization of Parent Class */
@@ -583,28 +584,23 @@ meshx_err_t meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAM
     return MESHX_SUCCESS;
 }
 
-/***************************************************************************************************/
-
 meshx_err_t meshXLightCTLSetupServerModel::plat_model_create(MESHX_MODEL* p_plat_model_ptr)
 {
     if (p_plat_model_ptr) {
         this->set_plat_model(p_plat_model_ptr);
     }
 
-    meshx_err_t err = meshx_light_ctl_setup_server_create();
+    meshx_ptr_t p_pub = nullptr;
+    meshx_ptr_t p_gen = nullptr;
+
+    meshx_err_t err = meshx_plat_light_ctl_setup_srv_create(p_plat_model_ptr, &p_pub, &p_gen);
     if (err != MESHX_SUCCESS) {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to create CTL Setup Server (C-layer)");
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to create CTL Setup Server (Plat)");
         return err;
     }
 
-    MESHX_MODEL* p_use = this->get_plat_model();
-    if (p_use) {
-        err = meshx_get_ctl_setup_srv_model(p_use);
-        if (err != MESHX_SUCCESS) {
-            MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to get CTL Setup Server Model");
-            return err;
-        }
-    }
+    this->set_pub_struct(p_pub);
+    this->set_gen_struct(p_gen);
 
     return MESHX_SUCCESS;
 }
@@ -628,6 +624,12 @@ meshXLightCTLSetupServerModel::meshXLightCTLSetupServerModel(
     uint16_t        model_func_id
 ) : meshXServerModel(nullptr, MESHX_MODEL_ID_LIGHT_CTL_SETUP_SRV, parent_element, parent_element_state, model_func_id)
 {
+}
+
+
+extern "C" meshx_err_t meshx_get_ctl_setup_srv_model(meshx_ptr_t p_model)
+{
+    return meshx_plat_get_ctl_setup_srv_model(p_model);
 }
 
 #endif /* CONFIG_ENABLE_LIGHT_CTL_SERVER */

@@ -70,7 +70,6 @@ meshXModel MESHX_MODEL_TEMPLATE_PARAMS
 )
     : meshXModelIF(p_plat_model)
 {
-    this->set_plat_model(p_plat_model);
     this->set_model_func_id(model_func_id);
     this->set_parent_element(parent_element);
     this->model_id = (uint16_t)model_id;
@@ -82,8 +81,21 @@ meshXModel MESHX_MODEL_TEMPLATE_PARAMS
             return this->model_handle_from_ble_cb(dev, evt, param);
         });
 
+    this->set_plat_model(p_plat_model);
+
     /* Create logical model instance is now handled by derived classes or post-construction */
     status = MESHX_SUCCESS;
+}
+
+MESHX_MODEL_TEMPLATE_PROTO
+void meshXModel MESHX_MODEL_TEMPLATE_PARAMS
+    ::set_plat_model(MESHX_MODEL *p_model)
+{
+    meshXModelIF::set_plat_model(p_model);
+    if (base_model)
+    {
+        base_model->set_plat_model_ptr((meshx_ptr_t)p_model);
+    }
 }
 
 MESHX_MODEL_TEMPLATE_PROTO

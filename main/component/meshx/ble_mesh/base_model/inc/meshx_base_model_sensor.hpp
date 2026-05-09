@@ -33,6 +33,7 @@ MESHX_BASE_SENSOR_SERVER_TEMPLATE_PROTO
 class meshXBaseSensorServerModel : public meshXBaseServerModel<meshXBaseSensorServerModel, meshx_sensor_server_send_params_t, meshx_sensor_server_restore_params_t, meshx_sensor_server_cb_param_t>
 {
 public:
+    using meshXBaseServerModel<meshXBaseSensorServerModel, meshx_sensor_server_send_params_t, meshx_sensor_server_restore_params_t, meshx_sensor_server_cb_param_t>::from_ble_reg_cb;
     meshx_err_t plat_model_init(void) override;
     meshx_err_t validate_server_status_opcode(uint16_t opcode) override;
 public:
