@@ -31,17 +31,23 @@ class RelayInterface:
         self.node = node
         self.logger = logging.getLogger(f"{node.name}.Relay")
 
-    def send_on(self, element_id=2):
-        # ut 0 1 1 <elem>
+    def configure_pub(self, element_id, pub_addr, app_id=0):
+        # ut 0 3 <argc> <elem> <pub_addr> <app_id>
+        return self.node.send_command(f"ut 0 3 3 {element_id} {pub_addr} {app_id}")
+
+    def toggle(self, element_id=2):
+        # ut 0 1 <argc> <elem>
         return self.node.send_command(f"ut 0 1 1 {element_id}")
 
-    def send_off(self, element_id=2):
-        # ut 0 1 0 <elem>
-        return self.node.send_command(f"ut 0 1 0 {element_id}")
-
-    def wait_for_state(self, state, timeout=10):
-        pattern = f"State changed to {state}"
+    def wait_for_state(self, element_id, state, timeout=10):
+        # Wait for the machine readable log from the server
+        pattern = f"Relay Server \\[{element_id}\\] state: {state}"
         return self.node.expect(pattern, timeout=timeout)
+
+    def check_state(self, element_id, expected_state):
+        # ut 4 1 <argc> <elem> <expected_state>
+        self.node.send_command(f"ut 4 1 2 {element_id} {expected_state}")
+        return self.node.expect(f"Relay Server \\[{element_id}\\] state: {expected_state}, expected: {expected_state}", timeout=2)
 
 class MeshXDevice:
     """
@@ -53,7 +59,7 @@ class MeshXDevice:
         self.name = node.name
         self.nvs = NVSInterface(node)
         self.relay = RelayInterface(node)
-        
+
     def reboot(self):
         self.node.send_command("reboot", wait_for_prompt=False)
         time.sleep(2)

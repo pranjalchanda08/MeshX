@@ -284,6 +284,10 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     err = meshx_platform_init();
     MESHX_ERR_PRINT_RET("Platform init failed", err);
 
+    /* Initialise Control Task messaging early (required for NVS and OS Timers) */
+    err = control_task_init();
+    MESHX_ERR_PRINT_RET("Control Task Init failed", err);
+
     /* Initialize OS timer */
     err = meshx_os_timer_init();
     MESHX_ERR_PRINT_RET("OS Timer Init failed", err);
