@@ -201,6 +201,16 @@ typedef struct control_task_evt_cb_reg
 } control_task_evt_cb_reg_t;
 
 /**
+ * @brief Initialize the control task messaging system.
+ *
+ * This function initializes the message queue used by the control task.
+ * It must be called before any component attempts to publish messages.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
+ */
+meshx_err_t control_task_init(void);
+
+/**
  * @brief Create the control task.
  *
  * This function creates a FreeRTOS task to handle control events.

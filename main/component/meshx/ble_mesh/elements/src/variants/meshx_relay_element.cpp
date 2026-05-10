@@ -442,6 +442,23 @@ meshx_err_t relay_cli_ut_handler(int cmd_id, int argc, char **argv)
         return meshx_relay_el_set_state(el_id, true);
     } else if (cmd_id == 0x02) { // SET UNACK
         return meshx_relay_el_set_state(el_id, false);
+    } else if (cmd_id == 0x03) { // CONFIGURE pub_addr + app_id
+        if (argc < 3) {
+            MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "CONFIGURE needs: el_id pub_addr app_id");
+            return MESHX_INVALID_ARG;
+        }
+        uint16_t pub_addr = UT_GET_ARG(1, uint16_t, argv);
+        uint16_t app_id   = UT_GET_ARG(2, uint16_t, argv);
+        auto *el = meshXElementRegistry::get_instance().find_and_cast<meshXRelayClientElement>(
+            el_id, MESHX_ELEMENT_TYPE_RELAY_CLIENT);
+        if (!el) {
+            MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "Relay Client [%d] not found", el_id);
+            return MESHX_NOT_FOUND;
+        }
+        el->configure_pub(pub_addr, app_id);
+        MESHX_LOGI(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT,
+                   "Relay Cli [%d]: configured pub_addr=0x%04x app_id=%d", el_id, pub_addr, app_id);
+        return MESHX_SUCCESS;
     } else { // GET
         return meshx_relay_el_get_state(el_id);
     }
@@ -457,6 +474,13 @@ meshx_err_t relay_srv_ut_handler(int cmd_id, int argc, char **argv)
     auto *el = meshXElementRegistry::get_instance().find_and_cast<meshXRelayServerElement>(
         el_id, MESHX_ELEMENT_TYPE_RELAY_SERVER);
     if (!el) return MESHX_NOT_FOUND;
+
+    if (cmd_id == 0x01) {
+        uint8_t expected = UT_GET_ARG(1, uint8_t, argv);
+        uint8_t actual = el->get_state();
+        MESHX_LOGI(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Relay Server [%d] state: %d, expected: %d", el_id, actual, expected);
+        return (actual == expected) ? MESHX_SUCCESS : MESHX_FAIL;
+    }
 
     MESHX_LOGI(MODULE_ID_ELEMENT_SWITCH_RELAY_SERVER, "Relay Server [%d] state: %d", el_id, el->get_state());
     return MESHX_SUCCESS;
