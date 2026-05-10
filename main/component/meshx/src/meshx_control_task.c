@@ -18,6 +18,7 @@
 #endif /* CONFIG_CT_DEBUG_LOG */
 
 static void control_task_handler(void *args);
+static meshx_err_t create_control_task_msg_q(void);
 
 /**
  * @brief Queue handle for control task messages.
@@ -32,6 +33,19 @@ static meshx_msg_q_t control_task_queue =
  * @brief Linked list heads for registered callbacks per message code.
  */
 static control_task_evt_cb_reg_t *control_task_msg_code_list_heads[CONTROL_TASK_MSG_CODE_MAX];
+
+/**
+ * @brief Initialize the control task messaging system.
+ *
+ * This function initializes the message queue used by the control task.
+ * It must be called before any component attempts to publish messages.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
+ */
+meshx_err_t control_task_init(void)
+{
+    return create_control_task_msg_q();
+}
 
 /**
  * @brief Create the control task.
@@ -272,9 +286,7 @@ static void control_task_handler(void *args)
     dev_struct_t *pdev = (dev_struct_t *)args;
 
     MESHX_LOGI(MODULE_ID_COMMON, "Control Task Initialised");
-    err = create_control_task_msg_q();
-    if (err)
-        MESHX_LOGE(MODULE_ID_COMMON, "Failed to initialise Control Task Msg Q Err: 0x%x", err);
+    MESHX_UNUSED(err);
 
     while (true)
     {
