@@ -11,6 +11,8 @@
  *
  */
 #include "meshx.h"
+#include <stdio.h>
+#include <string.h>
 
 /**
  * @def ROOT_ELEMENT_IDX
@@ -31,7 +33,7 @@
  * the MeshX component. This banner is used for display purposes to indicate
  * the presence of the MeshX component in the application.
  */
-static const char meshX_banner[] = {
+static const char meshX_banner_art[] =
 "*********************************************************************************************************************\n"
 "* MMMMMMMM               MMMMMMMM                                     hhhhhhh                 XXXXXXX       XXXXXXX *\n"
 "* M:::::::M             M:::::::M                                     h:::::h                 X:::::X       X:::::X *\n"
@@ -48,9 +50,40 @@ static const char meshX_banner[] = {
 "* M::::::M               M::::::Me::::::::e          s:::::ssss::::::sh:::::h     h:::::h     X::::::X     X::::::X *\n"
 "* M::::::M               M::::::M e::::::::eeeeeeee  s::::::::::::::s h:::::h     h:::::h     X:::::X       X:::::X *\n"
 "* M::::::M               M::::::M  ee:::::::::::::e   s:::::::::::ss  h:::::h     h:::::h     X:::::X       X:::::X *\n"
-"* MMMMMMMM               MMMMMMMM    eeeeeeeeeeeeee    sssssssssss    hhhhhhh     hhhhhhh     XXXXXXX       XXXXXXX *\n"
-"*********************************************************************************************************************\n"
-};
+"* MMMMMMMM               MMMMMMMM    eeeeeeeeeeeeee    sssssssssss    hhhhhhh     hhhhhhh     XXXXXXX       XXXXXXX *\n";
+
+static const char meshX_banner_border[] =
+"*********************************************************************************************************************\n";
+
+static void meshx_banner_print(void)
+{
+    char version_text[64];
+    char version_line[128];
+    const int total_width = 117;
+    const int padding_width = total_width - 2;
+
+    snprintf(version_text, sizeof(version_text), "Version: %s", MESHX_VERSION);
+    int text_len = strlen(version_text);
+    int left_padding = (padding_width - text_len) / 2;
+    int right_padding = padding_width - text_len - left_padding;
+
+    int pos = 0;
+    version_line[pos++] = '*';
+    for (int i = 0; i < left_padding; i++) version_line[pos++] = ' ';
+    memcpy(&version_line[pos], version_text, text_len);
+    pos += text_len;
+    for (int i = 0; i < right_padding; i++) version_line[pos++] = ' ';
+    version_line[pos++] = '*';
+    version_line[pos++] = '\n';
+    version_line[pos++] = '\0';
+
+    CONFIG_MESHX_LOG_PRINTF(MESHX_LOG_COLOR_CYAN);
+    CONFIG_MESHX_LOG_PRINTF("%s", meshX_banner_art);
+    CONFIG_MESHX_LOG_PRINTF("*%*s*\n", padding_width, ""); // Blank line
+    CONFIG_MESHX_LOG_PRINTF("%s", version_line);
+    CONFIG_MESHX_LOG_PRINTF("%s", meshX_banner_border);
+    CONFIG_MESHX_LOG_PRINTF(MESHX_LOG_COLOR_RESET);
+}
 
 static dev_struct_t g_dev;
 
@@ -217,7 +250,7 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     MESHX_ERR_PRINT_RET("Logging init failed", err);
 
     /* Print the MeshX banner */
-    CONFIG_MESHX_LOG_PRINTF(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_CYAN) "%s" LOG_ANSI_COLOR_RESET, meshX_banner);
+    meshx_banner_print();
 
     /* Initialise Platform deps */
     err = meshx_platform_init();

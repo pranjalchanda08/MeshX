@@ -38,7 +38,7 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
         return MESHX_INVALID_STATE;
     }
 
-    MESHX_LOGI(MODULE_ID_BLE_MESH_ELEMENT, "Baking composition with CID: 0x%04x, PID: 0x%04x, VID: 0x%04x, elements: %zu",
+    MESHX_LOGI(MODULE_ID_BLE_MESH_ELEMENT, "C|P|V|E: 0x%04x|0x%04x|0x%04x|%zu",
                cid, pid, vid, elements.size());
     MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "MESHX_MODEL size: %d, pub offset: %d", (int)sizeof(MESHX_MODEL), (int)offsetof(MESHX_MODEL, pub));
     MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "MESHX_MODEL_PUB size: %d", (int)sizeof(MESHX_MODEL_PUB));
