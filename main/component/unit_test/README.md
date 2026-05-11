@@ -5,14 +5,15 @@
 **Module** : `Switch Relay Client`
 **Module ID** : `0x00`
 
-| Command                 | Cmd ID | UT Command          | Description                                  | Status |
-| ----------------------- | ------ | ------------------- | -------------------------------------------- | ------ |
-| RELAY_CLI_CMD_GET       | 0x00   | ut 0 0 1  `[el_id]` | Send Relay ONOFF GET msg to element_id       | PASS   |
-| RELAY_CLI_CMD_SET       | 0x01   | ut 0 1 1  `[el_id]` | Send Relay ONOFF SET msg to element_id       | PASS   |
-| RELAY_CLI_CMD_SET_UNACK | 0x02   | ut 0 2 1  `[el_id]` | Send Relay ONOFF SET UNACK msg to element_id | PASS   |
+| Command                 | Cmd ID | UT Command                  | Description                               | Status |
+| ----------------------- | ------ | --------------------------- | ----------------------------------------- | ------ |
+| RELAY_CLI_CMD_GET       | 0x00   | ut 0 0 1  `[el_id]`         | Send Relay ONOFF GET msg to element_id    | PASS   |
+| RELAY_CLI_CMD_SET       | 0x01   | ut 0 1 1  `[el_id]`         | Send Relay ONOFF SET msg to element_id    | PASS   |
+| RELAY_CLI_CMD_SET_UNACK | 0x02   | ut 0 2 1  `[el_id]`         | Send Relay ONOFF SET UNACK msg to element_id | PASS   |
+| RELAY_CLI_CMD_CONFIG    | 0x03   | ut 0 3 3  `[el_id]` `[pub_addr]` `[app_id]` | Configure publication address and app key | PASS   |
 
 
-**Module** : `Light CWWW Client `
+**Module** : `Light CWWW Client`
 **Module ID** : `0x01`
 
 | Command                               | Cmd ID | UT Command                                               | Description                                                     | Status |
@@ -20,7 +21,7 @@
 | CWWW_CLI_UT_CMD_ONOFF_GET             | 0x00   | ut 1 0 1  `[el_id]`                                      | Send CWWW ONOFF GET msg to element_id                           | PASS   |
 | CWWW_CLI_UT_CMD_ONOFF_SET             | 0x01   | ut 1 1 1  `[el_id]`                                      | Send CWWW ONOFF SET msg to element_id                           | PASS   |
 | CWWW_CLI_UT_CMD_ONOFF_SET_UNACK       | 0x02   | ut 1 2 1  `[el_id]`                                      | Send CWWW ONOFF SET UNACK msg to element_id                     | PASS   |
-| CWWW_CLI_UT_CMD_CTL_GET               | 0x03   | ut 1 3 1  `[el_id]`                                      | Send CWWW CTL GET Command to element_id                         | PASS   |
+| CWWW_CLI_UT_CMD_CONFIG                | 0x03   | ut 1 3 3  `[el_id]` `[pub_addr]` `[app_id]`              | Configure publication address and app key                       | PASS   |
 | CWWW_CLI_UT_CMD_CTL_SET               | 0x04   | ut 1 4 4  `[el_id]` `[temp]` `[brightness]` `[delta_uv]` | Send CWWW CTL SET Command to element_id                         | PASS   |
 | CWWW_CLI_UT_CMD_CTL_SET_UNACK         | 0x05   | ut 1 5 4  `[el_id]` `[temp]` `[brightness]` `[delta_uv]` | Send CWWW CTL SET UNACK Command to element_id                   | PASS   |
 | CWWW_CLI_UT_CMD_LIGHTNESS_SET         | 0x06   | ut 1 6 2  `[el_id]` `[brigntness]`                       | Send CWWW LIGHTNESS SET Command to element_id                   | PASS   |
@@ -56,3 +57,18 @@
 | MESHX_NVS_CLI_CMD_REMOVE | 0x04   | ut 3 4 0                      | MeshX NVS remove MeshX UT key          | PASS   |
 | MESHX_NVS_CLI_CMD_ERASE  | 0x05   | ut 3 5 0                      | MeshX NVS erase all from MeshX UT key  | PASS   |
 | MESHX_NVS_CLI_CMD_CLOSE  | 0x06   | ut 3 6 0                      | MeshX NVS close driver                 | PASS   |
+
+**Module** : `Switch Relay Server`
+**Module ID** : `0x04`
+
+| Command                   | Cmd ID | UT Command                  | Description                        | Status |
+| ------------------------- | ------ | --------------------------- | ---------------------------------- | ------ |
+| RELAY_SRV_CMD_CHECK_STATE | 0x01   | ut 4 1 2 `[el_id]` `[state]` | Verify local Relay state (0 or 1) | PASS   |
+
+**Module** : `Light CWWW Server`
+**Module ID** : `0x05`
+
+| Command                   | Cmd ID | UT Command                            | Description                            | Status |
+| ------------------------- | ------ | ------------------------------------- | -------------------------------------- | ------ |
+| CWWW_SRV_CMD_CHECK_ONOFF  | 0x01   | ut 5 1 2 `[el_id]` `[state]`          | Verify local CWWW OnOff state (0 or 1) | PASS   |
+| CWWW_SRV_CMD_CHECK_CTL    | 0x02   | ut 5 2 3 `[el_id]` `[light]` `[temp]` | Verify local CWWW CTL state            | PASS   |

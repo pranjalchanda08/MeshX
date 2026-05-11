@@ -18,40 +18,27 @@ class TestRelayCommunication(TestBase):
         device.relay.configure_pub(element_id=2, pub_addr=0xC000, app_id=0)
         time.sleep(1)
         
-        # 1. Trigger First Toggle from Client
-        self.log_info("Triggering Relay Toggle from Client...")
-        device.relay.toggle(element_id=2)
+        # 1. Trigger ON from Client
+        self.log_info("Triggering Relay ON from Client...")
+        device.relay.set_onoff(element_id=2, state=1)
 
         # 2. Verify on Server
-        self.log_info("Waiting for Server to receive toggled state...")
+        self.log_info("Waiting for Server to receive ON state...")
         time.sleep(2)
         
-        # Let's check the state. It should be 1 if it started at 0, or 0 if it started at 1.
-        self.log_info("Checking Server state...")
-        is_on = False
-        if device.relay.check_state(element_id=1, expected_state=1):
-             self.log_info("Relay ON received successfully")
-             is_on = True
-        elif device.relay.check_state(element_id=1, expected_state=0):
-             self.log_info("Relay OFF received successfully")
-             is_on = False
-        else:
-             self.log_error("Relay state mismatch on first toggle")
+        if not device.relay.check_state(element_id=1, expected_state=1):
+             self.log_error("Relay ON failed")
              return False
 
-        # 3. Trigger Second Toggle from Client
-        self.log_info("Triggering Relay Toggle again from Client...")
-        device.relay.toggle(element_id=2)
+        # 3. Trigger OFF from Client
+        self.log_info("Triggering Relay OFF from Client...")
+        device.relay.set_onoff(element_id=2, state=0)
         time.sleep(2)
 
-        # 4. Verify opposite state
-        self.log_info("Checking Server state again...")
-        expected_second_state = 0 if is_on else 1
-        
-        if device.relay.check_state(element_id=1, expected_state=expected_second_state):
-            self.log_info("Relay toggled successfully to opposite state")
-        else:
-            self.log_error(f"Relay state mismatch: expected {expected_second_state}")
+        # 4. Verify OFF state
+        self.log_info("Checking Server state for OFF...")
+        if not device.relay.check_state(element_id=1, expected_state=0):
+            self.log_error("Relay OFF failed")
             return False
 
         return True

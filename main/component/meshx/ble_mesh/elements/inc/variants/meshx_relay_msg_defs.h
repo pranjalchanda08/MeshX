@@ -19,6 +19,7 @@ extern "C" {
 typedef struct meshx_gen_on_off_cli_msg {
     uint8_t ack;
     uint8_t set_get;
+    uint8_t on_off;
     uint8_t reserved;
     uint16_t element_id;
 } meshx_gen_on_off_cli_msg_t;

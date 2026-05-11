@@ -143,7 +143,7 @@ class Target(ABC):
         pass
 
     @abstractmethod
-    def configure(self, build_dir):
+    def configure(self, args, build_root):
         """
         Abstract method to configure the target.
 
@@ -236,7 +236,7 @@ class ESPTarget(Target):
         python_tool = ['esp_idf_monitor']
         for p in python_tool:
             check_python_tool_installed(p)
-    def configure(self, build_root):
+    def configure(self, args, build_root):
         if len(args.prod_name) != 1:
             raise InvalidProductNameException()
 
@@ -469,7 +469,7 @@ def main():
         raise TargetFlashException(f"Unsupported target host: {args.host}")
 
     if args.config:
-        target_sel.configure(build_root)
+        target_sel.configure(args, build_root)
     if args.clean:
         clean(args, build_root)
     if args.build:

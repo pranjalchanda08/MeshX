@@ -185,7 +185,7 @@ meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_P
 
     if (msg->set_get != MESHX_GEN_ON_OFF_CLI_MSG_GET)
     {
-        sp.state.on_off = el_state->next_on_off;
+        sp.state.on_off = msg->on_off;
         sp.tid = ++el_state->tid;
 
         /* Update local model state as well for consistency */

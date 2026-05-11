@@ -203,6 +203,7 @@ void meshXRelayClientElement::sync(control_task_msg_evt_t evt)
         meshx_gen_on_off_cli_msg_t msg = {
             .ack        = 1,
             .set_get    = MESHX_GEN_ON_OFF_CLI_MSG_GET,
+            .on_off     = 0,
             .reserved   = 0,
             .element_id = this->get_element_idx()
         };
@@ -294,8 +295,6 @@ meshx_err_t meshXRelayClientElement::element_state_change_notify(meshx_ptr_t par
         &app_evt);
 }
 
-
-
 /* Task E — TO_BLE client handler: receives app command, sends OnOff via model */
 MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
 meshx_err_t meshXRelayClientElement::s_to_ble_cb(
@@ -314,10 +313,13 @@ meshx_err_t meshXRelayClientElement::s_to_ble_cb(
         auto *el = meshXElementRegistry::get_instance().find_and_cast<meshXRelayClientElement>(
             msg->element_id, MESHX_ELEMENT_TYPE_RELAY_CLIENT);
         if (!el) {
-            MESHX_LOGW(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "Relay Client [%d] not found in registry!", msg->element_id);
-            auto all = meshXElementRegistry::get_instance().get_all_elements();
-            for (auto const& [id, ptr] : all) {
-                MESHX_LOGI(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "  Registry contains ID [%d], variant %d", id, ptr->get_element_variant());
+            // Check if the element exists at all but is of a different variant
+            if (!meshXElementRegistry::get_instance().find_element(msg->element_id)) {
+                MESHX_LOGW(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "Relay Client [%d] not found in registry!", msg->element_id);
+                auto all = meshXElementRegistry::get_instance().get_all_elements();
+                for (auto const& [id, ptr] : all) {
+                    MESHX_LOGI(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "  Registry contains ID [%d], variant %d", id, ptr->get_element_variant());
+                }
             }
             return MESHX_SUCCESS;
         }
@@ -399,16 +401,29 @@ meshx_err_t create_relay_client_elements_cpp(dev_struct_t *pdev, uint16_t elemen
         "Relay Cli"
     );
 }
+REG_MESHX_ELEMENT_FN(relay_cli_el, MESHX_ELEMENT_TYPE_RELAY_CLIENT, create_relay_client_elements_cpp);
 #endif /* CONFIG_RELAY_CLIENT_COUNT > 0 */
+
+#if CONFIG_RELAY_SERVER_COUNT > 0
+REG_MESHX_ELEMENT_FN(relay_srv_el, MESHX_ELEMENT_TYPE_RELAY_SERVER, create_relay_server_elements_cpp);
+#endif
 
 #if CONFIG_ENABLE_UNIT_TEST
 meshx_err_t meshx_relay_el_set_state(uint16_t el_id, bool ack)
 {
+    auto *el = meshXElementRegistry::get_instance().find_and_cast<meshXRelayClientElement>(
+        el_id, MESHX_ELEMENT_TYPE_RELAY_CLIENT);
+    if (!el) return MESHX_NOT_FOUND;
+
     meshx_gen_on_off_cli_msg_t msg = {};
     msg.ack        = (uint8_t)(ack ? 1 : 0);
     msg.set_get    = MESHX_GEN_ON_OFF_CLI_MSG_SET;
     msg.reserved   = 0;
     msg.element_id = el_id;
+
+    // We use the model's next_on_off state internally as the target for the SET operation.
+    // This allows the UT command to set the target state in the context before triggering.
+    msg.on_off     = el->get_ctx().gen_on_off_state.next_on_off;
 
     return control_task_msg_publish(
             CONTROL_TASK_MSG_CODE_TO_BLE,
@@ -442,23 +457,6 @@ meshx_err_t relay_cli_ut_handler(int cmd_id, int argc, char **argv)
         return meshx_relay_el_set_state(el_id, true);
     } else if (cmd_id == 0x02) { // SET UNACK
         return meshx_relay_el_set_state(el_id, false);
-    } else if (cmd_id == 0x03) { // CONFIGURE pub_addr + app_id
-        if (argc < 3) {
-            MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "CONFIGURE needs: el_id pub_addr app_id");
-            return MESHX_INVALID_ARG;
-        }
-        uint16_t pub_addr = UT_GET_ARG(1, uint16_t, argv);
-        uint16_t app_id   = UT_GET_ARG(2, uint16_t, argv);
-        auto *el = meshXElementRegistry::get_instance().find_and_cast<meshXRelayClientElement>(
-            el_id, MESHX_ELEMENT_TYPE_RELAY_CLIENT);
-        if (!el) {
-            MESHX_LOGE(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT, "Relay Client [%d] not found", el_id);
-            return MESHX_NOT_FOUND;
-        }
-        el->configure_pub(pub_addr, app_id);
-        MESHX_LOGI(MODULE_ID_ELEMENT_SWITCH_RELAY_CLIENT,
-                   "Relay Cli [%d]: configured pub_addr=0x%04x app_id=%d", el_id, pub_addr, app_id);
-        return MESHX_SUCCESS;
     } else { // GET
         return meshx_relay_el_get_state(el_id);
     }

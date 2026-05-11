@@ -6,14 +6,36 @@ set(SDKCONFIG_DEFAULTS ${SDKCONFIG_DEFAULTS} "${ESP_COMMON_DIR}/sdkconfig.defaul
 # Filter out sdkconfig.defaults.old
 list(REMOVE_ITEM SDKCONFIG_DEFAULTS "${CMAKE_SOURCE_DIR}/sdkconfig.defaults.old")
 
-message(STATUS "ESP_TARGET: ${ESP_TARGET}")
-message(STATUS "IDF_PATH: $ENV{IDF_PATH}")
-message(STATUS "SDKCONFIG_DEFAULTS: ${SDKCONFIG_DEFAULTS}")
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
 # Library registration function for ESP-IDF
 function(register_component SRC INC LIBS)
+    message(STATUS "SRC_FILES:")
+    foreach(_file ${SRC})
+        if(IS_ABSOLUTE "${_file}")
+            file(RELATIVE_PATH _rel_file "${CMAKE_SOURCE_DIR}" "${_file}")
+            message(STATUS "  - ${_rel_file}")
+        else()
+            message(STATUS "  - ${_file}")
+        endif()
+    endforeach()
+
+    message(STATUS "INC_FILES:")
+    foreach(_file ${INC})
+        if(IS_ABSOLUTE "${_file}")
+            file(RELATIVE_PATH _rel_file "${CMAKE_SOURCE_DIR}" "${_file}")
+            message(STATUS "  - ${_rel_file}")
+        else()
+            message(STATUS "  - ${_file}")
+        endif()
+    endforeach()
+
+    message(STATUS "PLAT_LIBS:")
+    foreach(_lib ${LIBS})
+        message(STATUS "  - ${_lib}")
+    endforeach()
+
     idf_component_register(
         SRCS ${SRC}
         INCLUDE_DIRS ${INC}
@@ -38,8 +60,6 @@ file(GLOB_RECURSE ESP_INC_DIRS
 # Use a regular expression to filter for directories ending with /inc or /include.
 list(FILTER ESP_INC_DIRS INCLUDE REGEX "[/\\](inc|include)$")
 
-message(STATUS "ESP_SRC: ${ESP_SRC}")
-message(STATUS "ESP_INC: ${ESP_INC_DIRS}")
 
 # Remove duplicates from the filtered list.
 list(REMOVE_DUPLICATES ESP_INC_DIRS)

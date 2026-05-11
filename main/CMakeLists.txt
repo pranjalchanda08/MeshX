@@ -10,7 +10,6 @@ file(GLOB_RECURSE MESHX_SRC
 # Exclude legacy elements_c from sources
 list(FILTER MESHX_SRC EXCLUDE REGEX "main/component/meshx/ble_mesh/elements_c/")
 
-message(STATUS "MESHX_SRC: ${MESHX_SRC}")
 
 # Recursively collect include dirs
 file(GLOB_RECURSE MESHX_INC_DIRS
@@ -38,15 +37,11 @@ set(INC_FILES
     "${CMAKE_SOURCE_DIR}/main/component/unit_test"
 )
 
-message(STATUS "INC_FILES: ${INC_FILES}")
 
 # ------------------------------------------------------------------------------
 # Unit Tests
 # ------------------------------------------------------------------------------
 if(ENABLE_TESTS AND PLATFORM_TEST_SUPPORTED)
-    message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
-    message(STATUS ">>>>>>>>> Unit tests enabled <<<<<<<<<")
-    message(STATUS ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     # Set the compile definition for complete project
     add_definitions(-DCONFIG_ENABLE_UNIT_TEST=1)
     include_directories("${CMAKE_SOURCE_DIR}/main/component/unit_test")
@@ -54,7 +49,6 @@ if(ENABLE_TESTS AND PLATFORM_TEST_SUPPORTED)
 endif()
 
 set(SRC_FILES ${SRC_FILES} ${MESHX_SRC})
-message(STATUS "SRC_FILES: ${SRC_FILES}")
 
 #-----------------------------------------------------------------------------
 
@@ -65,8 +59,6 @@ register_component("${SRC_FILES}" "${INC_FILES}" "${PLAT_LIBS}")
 # Create a meshx.py args file like app-flash-args
 set(ARGSTRING "-N ${PROD_NAME} -B ${BSP} --build-type ${MESHX_BUILD_TYPE} -H esp")
 
-message(STATUS "ARGSTRING: ${ARGSTRING}")
-message(STATUS "CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}/meshx.args")
 file(WRITE ${CMAKE_BINARY_DIR}/meshx.args "${ARGSTRING}")
 
 #-----------------------------------------------------------------------------
