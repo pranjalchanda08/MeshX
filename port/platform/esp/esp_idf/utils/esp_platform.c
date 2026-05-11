@@ -124,11 +124,6 @@ meshx_err_t meshx_platform_serial_init(void)
 
 /**
  * @brief Writes data to the serial interface.
- *
- * This function writes the given data to the serial interface.
- *
- * @param data Pointer to the data to be written.
- * @param len Length of the data to be written.
  */
 void meshx_platform_serial_write(const uint8_t *data, uint16_t len)
 {
@@ -137,12 +132,6 @@ void meshx_platform_serial_write(const uint8_t *data, uint16_t len)
 
 /**
  * @brief Reads data from the serial interface.
- *
- * This function reads data from the serial interface.
- *
- * @param data Pointer to the buffer to store the read data.
- * @param len Maximum number of bytes to read.
- * @return int32_t Number of bytes read, or -1 if an error occurred.
  */
 int32_t meshx_platform_serial_read(uint8_t *data, uint16_t len)
 {

@@ -72,7 +72,7 @@ meshx_err_t meshXLightHSLClientModel MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAM
  * is received. It validates the request and returns a result to the element.
  * Note: The actual state is maintained in the element layer, not the model layer.
  *
- * @param[in] curr_el_state Pointer to meshx_light_hsl_model_state_t containing the new state
+ *
  * @return
  *     - MESHX_SUCCESS: State change handled successfully
  *     - MESHX_INVALID_ARG: Invalid parameter
@@ -281,6 +281,8 @@ meshx_err_t meshXLightHSLClientModel MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAM
  * @brief Constructor for Light HSL Client Model
  *
  * @param[in] parent_element A pointer to the parent element (meshXElementIF).
+ * @param[in] parent_element_state  Pointer to the parent element's state structure.
+ * @param[in] model_func_id         Functional ID for the model instance.
  */
 MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PROTO
 meshXLightHSLClientModel MESHX_LIGHT_HSL_CLIENT_MODEL_TEMPLATE_PARAMS
@@ -597,6 +599,8 @@ meshx_err_t meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAM
  * @brief Constructor for Light HSL Server Model
  *
  * @param[in] parent_element Pointer to the parent element (meshXElementIF)
+ * @param[in] parent_element_state  Pointer to the parent element's state structure.
+ * @param[in] model_func_id         Functional ID for the model instance.
  */
 MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PROTO
 meshXLightHSLServerModel MESHX_LIGHT_HSL_SERVER_MODEL_TEMPLATE_PARAMS

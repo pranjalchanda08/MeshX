@@ -89,7 +89,7 @@ meshx_err_t meshXGenericPowerLevelClientModel MESHX_GEN_POWER_LEVEL_CLIENT_MODEL
  * is received. It validates the request and returns a result to the element.
  * Note: The actual state is maintained in the element layer, not the model layer.
  *
- * @param[in] curr_el_state Pointer to meshx_gen_power_level_model_state_t containing the new state
+ *
  * @return
  *     - MESHX_SUCCESS: State change handled successfully
  *     - MESHX_INVALID_ARG: Invalid parameter
@@ -245,6 +245,8 @@ meshx_err_t meshXGenericPowerLevelClientModel MESHX_GEN_POWER_LEVEL_CLIENT_MODEL
  * for sending packets.
  *
  * @param[in] parent_element A pointer to the parent element (meshXElementIF).
+ * @param[in] parent_element_state Pointer to the parent element's state structure.
+ * @param[in] model_func_id Functional ID for the model instance.
  */
 MESHX_GEN_POWER_LEVEL_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericPowerLevelClientModel MESHX_GEN_POWER_LEVEL_CLIENT_MODEL_TEMPLATE_PARAMS
@@ -414,6 +416,8 @@ meshx_err_t meshXGenericPowerLevelServerModel MESHX_GEN_POWER_LEVEL_SERVER_MODEL
  * @brief Constructor for Generic Power Level Server Model
  *
  * @param[in] parent_element Pointer to the parent element (meshXElementIF)
+ * @param[in] parent_element_state Pointer to the parent element's state structure.
+ * @param[in] model_func_id Functional ID for the model instance.
  */
 MESHX_GEN_POWER_LEVEL_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericPowerLevelServerModel MESHX_GEN_POWER_LEVEL_SERVER_MODEL_TEMPLATE_PARAMS
@@ -499,6 +503,8 @@ meshx_err_t meshXGenericPowerLevelServerModel MESHX_GEN_POWER_LEVEL_SERVER_MODEL
  * @brief Constructor for Generic Power Level Setup Server Model
  *
  * @param[in] parent_element Pointer to the parent element (meshXElementIF)
+ * @param[in] parent_element_state Pointer to the parent element's state structure.
+ * @param[in] model_func_id Functional ID for the model instance.
  */
 MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericPowerLevelSetupServerModel MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_TEMPLATE_PARAMS
@@ -542,20 +548,7 @@ if (!params|| !params->model || !params->ctx)
     return this->get_base_model()->plat_send_msg(&send_params);
 }
 
-/**
- * @brief Constructor for Generic Power Level Setup Server Model
- *
- * @param[in] parent_element Pointer to the parent element (meshXElementIF)
- */
-MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_TEMPLATE_PROTO
-meshXGenericPowerLevelSetupServerModel MESHX_GEN_POWER_LEVEL_SETUP_SERVER_MODEL_TEMPLATE_PARAMS
-    ::meshXGenericPowerLevelSetupServerModel(
-        meshXElementIF *parent_element,
-        meshx_ptr_t     parent_element_state,
-        uint16_t        model_func_id
-    )
-    : meshXServerModel(nullptr, MESHX_MODEL_ID_GEN_POWER_LEVEL_SETUP_SRV, parent_element, parent_element_state, model_func_id)
-{}
+
 
 /**
  * @brief Callback function for handling BLE mesh events for Generic Power Level Setup Server Model

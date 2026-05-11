@@ -66,7 +66,7 @@ meshx_err_t meshXGenericLevelClientModel MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_P
  * is received. It validates the request and returns a result to the element.
  * Note: The actual state is maintained in the element layer, not the model layer.
  *
- * @param[in] curr_el_state Pointer to meshx_gen_level_model_state_t containing the new state
+ *
  * @return
  *     - MESHX_SUCCESS: State change handled successfully
  *     - MESHX_INVALID_ARG: Invalid parameter
@@ -239,6 +239,8 @@ meshx_err_t meshXGenericLevelClientModel MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_P
  * for sending packets.
  *
  * @param[in] parent_element A pointer to the parent element (meshXElementIF).
+ * @param[in] parent_element_state Pointer to the parent element's state structure.
+ * @param[in] model_func_id Functional ID for the model instance.
  */
 MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericLevelClientModel MESHX_GEN_LEVEL_CLIENT_MODEL_TEMPLATE_PARAMS
@@ -363,12 +365,8 @@ meshx_err_t meshXGenericLevelServerModel MESHX_GEN_LEVEL_SERVER_MODEL_TEMPLATE_P
 }
 
 /**
- * @brief Constructor for Generic Level Server Model
- *
- * @param[in] parent_element Pointer to the parent element (meshXElementIF)
- */
-/**
  * @brief Handle state change request from element.
+ */
  *
  * This function is called by the parent element when a state change request
  * is received. It validates the request and returns a result to the element.

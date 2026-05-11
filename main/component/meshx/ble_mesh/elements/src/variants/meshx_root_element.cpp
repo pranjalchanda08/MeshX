@@ -100,6 +100,7 @@ MESHX_ROOT_DEPENDENCY_RESOLVER_INST(meshXLightCTLSetupServerModel);
  * The root element only has a Configuration Server model.
  *
  * @param[in] param Pointer to the model callback parameter
+ * @param[in] param_size Size of the parameter structure
  * @return
  *     - MESHX_SUCCESS: State change handled successfully
  *     - MESHX_INVALID_ARG: Invalid parameter

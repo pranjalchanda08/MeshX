@@ -113,7 +113,7 @@ meshx_err_t meshXGenericLocationClientModel MESHX_GEN_LOCATION_CLIENT_MODEL_TEMP
  * is received. It validates the request and returns a result to the element.
  * Note: The actual state is maintained in the element layer, not the model layer.
  *
- * @param[in] curr_el_state Pointer to meshx_gen_location_model_state_t containing the new state
+ *
  * @return
  *     - MESHX_SUCCESS: State change handled successfully
  *     - MESHX_INVALID_ARG: Invalid parameter
@@ -235,6 +235,8 @@ meshx_err_t meshXGenericLocationClientModel MESHX_GEN_LOCATION_CLIENT_MODEL_TEMP
  * for sending packets.
  *
  * @param[in] parent_element  A pointer to the parent element (meshXElementIF).
+ * @param[in] parent_element_state Pointer to the parent element's state structure.
+ * @param[in] model_func_id Functional ID for the model instance.
  */
 MESHX_GEN_LOCATION_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericLocationClientModel MESHX_GEN_LOCATION_CLIENT_MODEL_TEMPLATE_PARAMS
@@ -407,6 +409,8 @@ meshx_err_t meshXGenericLocationServerModel MESHX_GEN_LOCATION_SERVER_MODEL_TEMP
  * @brief Constructor for Generic Location Server Model
  *
  * @param[in] parent_element Pointer to the parent element (meshXElementIF)
+ * @param[in] parent_element_state Pointer to the parent element's state structure.
+ * @param[in] model_func_id Functional ID for the model instance.
  */
 MESHX_GEN_LOCATION_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericLocationServerModel MESHX_GEN_LOCATION_SERVER_MODEL_TEMPLATE_PARAMS
@@ -526,6 +530,8 @@ if (!params|| !params->model || !params->ctx)
  * @brief Constructor for Generic Location Setup Server Model
  *
  * @param[in] parent_element Pointer to the parent element (meshXElementIF)
+ * @param[in] parent_element_state Pointer to the parent element's state structure.
+ * @param[in] model_func_id Functional ID for the model instance.
  */
 MESHX_GEN_LOCATION_SETUP_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericLocationSetupServerModel MESHX_GEN_LOCATION_SETUP_SERVER_MODEL_TEMPLATE_PARAMS

@@ -262,7 +262,9 @@ meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::prepare_
 /**
  * @brief Constructor for meshXConfigModel class
  *
- * @param[in]   parent_element  Pointer to parent element
+ * @param[in] parent_element        Pointer to the parent element (meshXElementIF)
+ * @param[in] parent_element_state  Pointer to the parent element's state structure.
+ * @param[in] model_func_id         Functional ID for the model instance.
  */
 meshXConfigModel::meshXConfigModel(
         meshXElementIF *parent_element,

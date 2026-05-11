@@ -111,13 +111,6 @@ meshx_err_t meshx_init_config_server()
 
 /**
  * @brief Registers a configuration server callback for specific events.
- *
- * Adds a new callback registration to the linked list for dispatching events.
- *
- * @param[in] cb Callback function to register.
- * @param[in] config_evt_bmap Bitmap of events the callback is interested in.
- *
- * @return MESHX_SUCCESS on success, an error code otherwise.
  */
 meshx_err_t meshx_config_server_cb_reg(config_srv_cb_t cb, uint32_t config_evt_bmap)
 {
@@ -135,18 +128,6 @@ meshx_err_t meshx_config_server_cb_reg(config_srv_cb_t cb, uint32_t config_evt_b
 
 /**
  * @brief Retrieves the instance of the MeshX configuration server.
- *
- * This function provides access to the configuration server instance
- * used in the MeshX framework. The configuration server is responsible
- * for managing and storing configuration settings for the mesh network.
- *
- * @param[out] p_conf_srv Pointer to a variable where the configuration
- *                        server instance will be stored. The pointer
- *                        must be of type `void**`.
- *
- * @return
- * - `MESHX_SUCCESS` on successful retrieval of the configuration server instance.
- * - An appropriate error code of type `meshx_err_t` on failure.
  */
 meshx_err_t meshx_get_config_srv_instance(void** p_conf_srv)
 {
@@ -155,18 +136,6 @@ meshx_err_t meshx_get_config_srv_instance(void** p_conf_srv)
 
 /**
  * @brief Retrieves the configuration server model for the MeshX framework.
- *
- * This function provides access to the configuration server model used in the
- * MeshX implementation. The retrieved model can be used for configuring and
- * managing the mesh network.
- *
- * @param[out] p_model Pointer to a variable where the address of the
- *                     configuration server model will be stored. The caller
- *                     must ensure that the pointer is valid.
- *
- * @return
- * - `MESHX_SUCCESS` on success.
- * - An appropriate error code of type `meshx_err_t` on failure.
  */
 meshx_err_t meshx_get_config_srv_model(meshx_ptr_t p_model)
 {
