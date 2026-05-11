@@ -112,7 +112,7 @@ static meshx_err_t meshx_prov_srv_control_task_handler(
     if (params->prov_evt == MESHX_NODE_PROV_COMPLETE_EVT)
     {
         MESHX_LOGI(MODULE_ID_MODEL_SERVER, "net_idx: 0x%04x, addr: 0x%04x", params->param.node_prov_complete.net_idx, params->param.node_prov_complete.addr);
-        MESHX_LOGI(MODULE_ID_MODEL_SERVER, "flags: 0x%02x, iv_index: 0x%08" PRIx32, params->param.node_prov_complete.flags, params->param.node_prov_complete.iv_index);
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "flags: 0x%02x, iv_index: 0x%08" PRIx32, params->param.node_prov_complete.flags, params->param.node_prov_complete.iv_index);
     }
     if (prov_evt == 0)
     {
@@ -197,7 +197,7 @@ extern "C" meshx_err_t meshx_prov_srv_meshx_reg_cb(void)
 static void meshx_init_freshboot_timer_trigger_cb(const meshx_os_timer_t* p_timer)
 {
     MESHX_UNUSED(p_timer);
-    MESHX_LOGI(MODULE_ID_COMMON, "Fresh Boot Timer Expired");
+    MESHX_LOGD(MODULE_ID_COMMON, "Fresh Boot Timer Expired");
 
     meshx_err_t err = control_task_msg_publish(
         CONTROL_TASK_MSG_CODE_PROVISION,

@@ -77,6 +77,8 @@ public:
     std::vector<std::unique_ptr<meshXModelIF>>& get_sig_models(void) final { return sig_models; }
     std::vector<std::unique_ptr<meshXModelIF>>& get_ven_models(void) final { return ven_models; }
 
+    const char* get_element_name(void) const override;
+
     /**
      * @brief Lists and creates all required SIG models for the element.
      *

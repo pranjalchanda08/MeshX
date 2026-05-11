@@ -56,6 +56,11 @@ uint8_t meshXSensorElement::list_ven_models()
     return 0;
 }
 
+const char* meshXSensorElement::get_element_name(void) const
+{
+    return "Sensor Server";
+}
+
 /**
  * @brief Notify element of state change from child model.
  * @details Overrides base class stub. Updates element_ctx, saves to NVS,

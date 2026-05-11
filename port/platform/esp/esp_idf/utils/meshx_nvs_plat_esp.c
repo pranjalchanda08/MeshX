@@ -36,7 +36,7 @@ meshx_err_t meshx_nvs_plat_open(uintptr_t *p_nvs_handle)
     nvs_part.size = part->size;
     nvs_part.priv = (void *)part;
 
-    MESHX_LOGI(MODULE_ID_PLATFORM_NVS, "Found partition '%s' at 0x%lx, size %d", 
+    MESHX_LOGD(MODULE_ID_PLATFORM_NVS, "Found partition '%s' at 0x%lx, size %d", 
                nvs_part.name, part->address, part->size);
 
     meshx_err_t err = meshx_kv_engine_init(&nvs_part);

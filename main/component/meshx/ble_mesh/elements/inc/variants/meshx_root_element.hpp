@@ -39,6 +39,7 @@ class meshXRootElement : public meshXElementServer MESHX_ROOT_ELEMENT_TEMPLATE_P
 private:
     uint8_t list_sig_models() override;
     uint8_t list_ven_models() override;
+    const char* get_element_name(void) const override;
     meshx_err_t element_state_change_notify(meshx_ptr_t param, size_t param_size) override;
 
     void sync(control_task_msg_evt_t evt) override;

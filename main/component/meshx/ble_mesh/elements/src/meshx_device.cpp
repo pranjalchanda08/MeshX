@@ -16,26 +16,12 @@ meshXDevice& meshXDevice::get_instance() {
     return instance;
 }
 
-static const char* meshx_element_type_to_str(meshx_element_type_t type) {
-    switch (type) {
-        case MESHX_ELEMENT_TYPE_RELAY_SERVER:      return "Relay Server";
-        case MESHX_ELEMENT_TYPE_RELAY_CLIENT:      return "Relay Client";
-        case MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER: return "CWWW Server";
-        case MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT: return "CWWW Client";
-        case MESHX_ELEMENT_TYPE_LIGHT_HSL_SERVER:  return "HSL Server";
-        case MESHX_ELEMENT_TYPE_LIGHT_HSL_CLIENT:  return "HSL Client";
-        case MESHX_ELEMENT_TYPE_SENSOR_SERVER:     return "Sensor Server";
-        case MESHX_ELEMENT_TYPE_SENSOR_CLIENT:     return "Sensor Client";
-        default:                                   return "Unknown";
-    }
-}
-
 void meshXDevice::visualize_status() {
     if (!pdev) {
         MESHX_LOGW(MODULE_ID_COMMON, "Device not initialized, cannot visualize status");
         return;
     }
-
+#if CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO
     MESHX_LOGI(MODULE_ID_COMMON, "==================================================");
     MESHX_LOGI(MODULE_ID_COMMON, "   MESHX DEVICE STATUS VISUALIZATION");
     MESHX_LOGI(MODULE_ID_COMMON, "==================================================");
@@ -53,8 +39,7 @@ void meshXDevice::visualize_status() {
         meshXElementIF* el = registry.find_element((uint16_t)i);
 
         if (el) {
-            const char* type_str = (i == 0) ? "Root Element" : meshx_element_type_to_str(el->get_element_variant());
-            MESHX_LOGI(MODULE_ID_COMMON, "Element [%zu]: (%s)", i, type_str);
+            MESHX_LOGI(MODULE_ID_COMMON, "Element [%zu]: (%s)", i, el->get_element_name());
 
             // List SIG Models
             auto& sig_models = el->get_sig_models();
@@ -73,4 +58,5 @@ void meshXDevice::visualize_status() {
         }
     }
     MESHX_LOGI(MODULE_ID_COMMON, "==================================================");
+#endif /* CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO */
 }
