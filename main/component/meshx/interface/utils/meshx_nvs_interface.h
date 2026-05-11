@@ -1,7 +1,7 @@
 /**
  * Copyright © 2024 - 2025 MeshX
  *
- * @file esp_nvs.c
+ * @file meshx_nvs_interface.h
  * @brief Implementation for Non-Volatile Storage (NVS) drivers Insterface APIs
  *
  * @author Pranjal Chanda

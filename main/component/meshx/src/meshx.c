@@ -28,10 +28,8 @@
 
 
 /**
- * @var meshX_banner
- * A static constant character array that contains the banner information for
- * the MeshX component. This banner is used for display purposes to indicate
- * the presence of the MeshX component in the application.
+ * @var meshX_banner_art
+ * A static constant character array containing the ASCII art portion of the MeshX banner.
  */
 static const char meshX_banner_art[] =
 "*********************************************************************************************************************\n"
@@ -52,6 +50,10 @@ static const char meshX_banner_art[] =
 "* M::::::M               M::::::M  ee:::::::::::::e   s:::::::::::ss  h:::::h     h:::::h     X:::::X       X:::::X *\n"
 "* MMMMMMMM               MMMMMMMM    eeeeeeeeeeeeee    sssssssssss    hhhhhhh     hhhhhhh     XXXXXXX       XXXXXXX *\n";
 
+/**
+ * @var meshX_banner_border
+ * A static constant character array containing the border for the MeshX banner.
+ */
 static const char meshX_banner_border[] =
 "*********************************************************************************************************************\n";
 

@@ -67,7 +67,7 @@ meshx_err_t meshXLightLightnessClientModel MESHX_LIGHT_LIGHTNESS_CLIENT_MODEL_TE
  * is received. It validates the request and returns a result to the element.
  * Note: The actual state is maintained in the element layer, not the model layer.
  *
- * @param[in] curr_el_state Pointer to meshx_light_lightness_model_state_t containing the new state
+ *
  * @return
  *     - MESHX_SUCCESS: State change handled successfully
  *     - MESHX_INVALID_ARG: Invalid parameter
@@ -277,6 +277,8 @@ meshx_err_t meshXLightLightnessClientModel MESHX_LIGHT_LIGHTNESS_CLIENT_MODEL_TE
  * element layer.
  *
  * @param[in] parent_element A pointer to the parent element (meshXElementIF).
+ * @param[in] parent_element_state  Pointer to the parent element's state structure.
+ * @param[in] model_func_id         Functional ID for the model instance.
  */
 MESHX_LIGHT_LIGHTNESS_CLIENT_MODEL_TEMPLATE_PROTO
 meshXLightLightnessClientModel MESHX_LIGHT_LIGHTNESS_CLIENT_MODEL_TEMPLATE_PARAMS
@@ -543,6 +545,8 @@ meshx_err_t meshXLightLightnessServerModel MESHX_LIGHT_LIGHTNESS_SERVER_MODEL_TE
  * @brief Constructor for Light Lightness Server Model
  *
  * @param[in] parent_element Pointer to the parent element (meshXElementIF)
+ * @param[in] parent_element_state  Pointer to the parent element's state structure.
+ * @param[in] model_func_id         Functional ID for the model instance.
  */
 MESHX_LIGHT_LIGHTNESS_SERVER_MODEL_TEMPLATE_PROTO
 meshXLightLightnessServerModel MESHX_LIGHT_LIGHTNESS_SERVER_MODEL_TEMPLATE_PARAMS

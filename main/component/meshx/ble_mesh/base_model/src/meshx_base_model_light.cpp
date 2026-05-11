@@ -179,9 +179,8 @@ meshx_err_t meshXBaseLightClientModel::meshx_light_client_txcm_fn_model_send(mes
 
 /**
  * @brief Constructor for the meshXBaseLightClientModel class.
- * @tparam MESHX_BASE_T Template parameter for base model customization
- * @tparam MSG_PARAMS_T BLE mesh message parameters type
  * @param[in] model_id The model ID for the light client model
+ * @param[in] p_plat_model Pointer to the platform-specific model structure.
  * @param[in] from_ble_cb Control task message callback function
  */
 meshXBaseLightClientModel::meshXBaseLightClientModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb& from_ble_cb)
@@ -284,15 +283,9 @@ meshx_err_t meshXBaseLightClientModel::plat_send_msg(meshx_gen_light_client_send
 /**
  * @brief Constructor for the meshXBaseLightServerModel class.
  *
- * This constructor initializes a meshXBaseLightServerModel object with the given
- * model ID and control message callback function. It sets up the base server model
- * and initializes the platform-specific components.
- *
  * @param[in] model_id The unique identifier for the Light Server model.
+ * @param[in] p_plat_model Pointer to the platform-specific model structure.
  * @param[in] from_ble_cb Callback function for handling incoming BLE messages.
- *
- * @note The constructor will log an error if platform model initialization fails.
- *       The status can be checked using get_status() after construction.
  */
 meshXBaseLightServerModel::meshXBaseLightServerModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb& from_ble_cb)
     : meshXBaseServerModel(model_id, p_plat_model, from_ble_cb)

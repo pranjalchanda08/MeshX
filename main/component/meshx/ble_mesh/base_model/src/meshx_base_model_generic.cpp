@@ -199,11 +199,9 @@ meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAM
 /**
  * @brief Constructor for the meshXBaseGenericClientModel class.
  *
- * This constructor is responsible for initializing a meshXBaseGenericClientModel
- * object with the given model ID and control task message handle.
- *
- * @param model_id The model ID associated with the generic client model
- * @param from_ble_cb The control task message handle associated with the generic client model
+ * @param[in] model_id      The model ID associated with the generic client model
+ * @param[in] p_plat_model  Pointer to the platform model instance
+ * @param[in] from_ble_cb   The control task message handle associated with the generic client model
  */
 MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PROTO
 meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAMS
@@ -310,11 +308,9 @@ meshx_err_t meshXBaseGenericClientModel MESHX_BASE_GENERIC_CLIENT_TEMPLATE_PARAM
 /**
  * @brief Constructor for the meshXBaseGenericServerModel class.
  *
- * This constructor initializes a meshXBaseGenericServerModel object with the given
- * model ID and control task message handle.
- *
- * @param model_id The model ID associated with the generic server model.
- * @param from_ble_cb The control task message handle associated with the generic server model.
+ * @param[in] model_id      The model ID associated with the generic server model.
+ * @param[in] p_plat_model  Pointer to the platform model instance
+ * @param[in] from_ble_cb   The control task message handle associated with the generic server model.
  *
  */
 MESHX_BASE_GENERIC_SERVER_TEMPLATE_PROTO

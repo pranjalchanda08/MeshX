@@ -259,14 +259,6 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
 
 /**
  * @brief Handle model callback from child models.
- *
- * This function is called by child models when a state change occurs.
- * It handles the state change by storing in element context, saving to NVS,
- * and notifying the application.
- * @param[in] param Pointer to the model callback parameter
- * @return
- *     - MESHX_SUCCESS: State change handled successfully
- *     - MESHX_INVALID_ARG: Invalid parameter
  */
 MESHX_ELEMENT_TEMPLATE_PROTO
 meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
