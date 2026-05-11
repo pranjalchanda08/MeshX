@@ -4,7 +4,6 @@ file(GLOB_RECURSE OSAL_SRC
     "${CMAKE_SOURCE_DIR}/port/os/${OS}/*.c"
 )
 
-message(STATUS "${OS}: ${OSAL_SRC}")
 
 set(OSAL_INC_DIR "${CMAKE_SOURCE_DIR}/main/component/meshx"
             "${CMAKE_SOURCE_DIR}/main/component/meshx/inc"

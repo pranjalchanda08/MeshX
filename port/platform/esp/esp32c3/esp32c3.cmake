@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.12)
 
 set(ESP_TARGET esp32c3 CACHE STRING "ESP target (e.g., esp32, esp32c3)")
 
-message(STATUS CMAKE_SORCE_DIR: ${CMAKE_SOURCE_DIR})
 
 set(PLATFORM_TEST_SUPPORTED ON)
 set(IDF_TARGET ${ESP_TARGET})

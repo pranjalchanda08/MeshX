@@ -97,8 +97,10 @@ public:
      * @param element_idx The index of the element within the node.
      */
     explicit meshXCWWWServerElement(uint16_t element_idx);
-
     meshXCWWWServerElement() = delete;
+
+    uint8_t get_onoff() { return element_ctx.gen_on_off_state.on_off; }
+    meshx_light_ctl_model_state_t& get_ctl() { return element_ctx.light_ctl_state; }
 };
 
 /*********************************************************************************
@@ -121,6 +123,7 @@ struct meshx_cwww_cli_el_ctx_t
     meshx_gen_onoff_model_state_t   gen_on_off_state;   /**< Current OnOff state (0=OFF, 1=ON) */
     // Light CTL state
     meshx_light_ctl_model_state_t   light_ctl_state;    /**< Current Light CTL state */
+    uint8_t                         ctl_tid;            /**< Transaction ID for CTL messages */
 };
 
 enum class meshxCWWWClientElementComposition : uint8_t
@@ -172,6 +175,11 @@ public:
      */
     explicit meshXCWWWClientElement(uint16_t element_idx);
     meshXCWWWClientElement() = delete;
+
+
+    uint8_t get_onoff() { return element_ctx.gen_on_off_state.on_off; }
+    meshx_light_ctl_model_state_t& get_ctl() { return element_ctx.light_ctl_state; }
+    meshx_cwww_cli_el_ctx_t& get_ctx() { return element_ctx; }
 };
 
 #endif /* __MESHX_CWWW_ELEMENT_HPP__ */

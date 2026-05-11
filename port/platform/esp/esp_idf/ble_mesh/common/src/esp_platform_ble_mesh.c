@@ -20,6 +20,7 @@
 #include "interface/logging/meshx_log.h"
 #include "interface/ble_mesh/meshx_ble_mesh_cmn.h"
 #include "interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h"
+#include "meshx_platform_ble_mesh.h"
 
 meshx_err_t meshx_is_group_subscribed(meshx_model_t *p_model, uint16_t addr)
 {
@@ -183,6 +184,7 @@ meshx_err_t meshx_get_base_element_id(uint16_t *base_el_id)
 
     return MESHX_SUCCESS;
 }
+
 
 meshx_err_t meshx_platform_bt_init(meshx_uuid_addr_t uuid)
 {

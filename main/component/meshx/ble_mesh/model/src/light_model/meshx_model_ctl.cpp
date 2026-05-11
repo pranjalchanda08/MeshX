@@ -254,11 +254,17 @@ meshx_err_t meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAM
         .ctx   = &ctx,
         .tid   = tid,
         .state = {
-            .lightness   = lightness,
-            .temperature = temperature,
-            .delta_uv    = delta_uv
+            .lightness      = lightness,
+            .temperature    = temperature,
+            .delta_uv       = delta_uv,
+            .temp_range_min = 0,
+            .temp_range_max = 0
         }
     };
+
+    // If tid is 0, we should ideally increment it from context.
+    // For now, if it's 0, we'll let model_send or the caller handle it.
+    // In CWWW, we'll update the element callback to provide it.
 
     return this->model_send(&sp);
 }
@@ -610,9 +616,9 @@ meshx_err_t meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAM
 
     if(memcmp(&model_state, msg, sizeof(meshx_light_ctl_model_state_t)) != 0)
     {
-        MESHX_LOGI(MODULE_ID_MODEL_SERVER,
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER,
             "CTL state change request: L=%d T=%d UV=%d",
-            msg->lightness, msg->temperature, msg->delta_uv);
+            model_state.lightness, model_state.temperature, model_state.delta_uv);
         // Update the model state
         *msg = model_state;
     }

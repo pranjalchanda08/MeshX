@@ -54,6 +54,7 @@ Contributions that add BSPs or improve portability are welcome. Please follow re
 | BSP name      | Board / Notes                    | Location (CMake)                        |
 |---------------|----------------------------------|-----------------------------------------|
 | weact_c3      | WeAct ESP32-C3 development board | `port/bsp/weact_c3/bsp.cmake`           |
+| xiao_c3       | WeAct ESP32-C3 development board | `port/bsp/xiao_c3/bsp.cmake`            |
 | esp32-devkitC | ESP32 WROOM Development board    | `port/bsp/esp32_devkitC/bsp.cmake`      |
 
 ### MCU families / targets
@@ -65,7 +66,7 @@ Contributions that add BSPs or improve portability are welcome. Please follow re
 
 ### SDKs / Integrations
 
-| SDK       | Integration notes                                        | Required env / file                         |
+| SDK       | Integration notes                                         | Required env / file                        |
 |-----------|-----------------------------------------------------------|--------------------------------------------|
 | ESP-IDF   | ESP-IDF integration via `port/platform/esp/esp_idf/esp_idf.cmake`. Uses `idf_component_register` under the hood. | `IDF_PATH` environment variable; run `$IDF_PATH/export.sh` |
 

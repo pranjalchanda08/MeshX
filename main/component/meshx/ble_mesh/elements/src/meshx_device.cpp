@@ -16,6 +16,20 @@ meshXDevice& meshXDevice::get_instance() {
     return instance;
 }
 
+static const char* meshx_element_type_to_str(meshx_element_type_t type) {
+    switch (type) {
+        case MESHX_ELEMENT_TYPE_RELAY_SERVER:      return "Relay Server";
+        case MESHX_ELEMENT_TYPE_RELAY_CLIENT:      return "Relay Client";
+        case MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER: return "CWWW Server";
+        case MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT: return "CWWW Client";
+        case MESHX_ELEMENT_TYPE_LIGHT_HSL_SERVER:  return "HSL Server";
+        case MESHX_ELEMENT_TYPE_LIGHT_HSL_CLIENT:  return "HSL Client";
+        case MESHX_ELEMENT_TYPE_SENSOR_SERVER:     return "Sensor Server";
+        case MESHX_ELEMENT_TYPE_SENSOR_CLIENT:     return "Sensor Client";
+        default:                                   return "Unknown";
+    }
+}
+
 void meshXDevice::visualize_status() {
     if (!pdev) {
         MESHX_LOGW(MODULE_ID_COMMON, "Device not initialized, cannot visualize status");
@@ -34,20 +48,21 @@ void meshXDevice::visualize_status() {
     MESHX_LOGI(MODULE_ID_COMMON, "--------------------------------------------------");
 
     auto& registry = meshXElementRegistry::get_instance();
-    
+
     for (size_t i = 0; i < pdev->element_cnt; ++i) {
         meshXElementIF* el = registry.find_element((uint16_t)i);
-        
+
         if (el) {
-            MESHX_LOGI(MODULE_ID_COMMON, "Element [%zu]: (Addr: %p)", i, (void*)el);
-            
+            const char* type_str = (i == 0) ? "Root Element" : meshx_element_type_to_str(el->get_element_variant());
+            MESHX_LOGI(MODULE_ID_COMMON, "Element [%zu]: (%s)", i, type_str);
+
             // List SIG Models
             auto& sig_models = el->get_sig_models();
             for (auto& m : sig_models) {
-                MESHX_LOGI(MODULE_ID_COMMON, "  - SIG Model: 0x%04x (%s)", 
+                MESHX_LOGI(MODULE_ID_COMMON, "  - SIG Model: 0x%04x (%s)",
                            m->get_model_id(), m->is_initialized() ? "Active" : "Idle");
             }
-            
+
             // List Vendor Models
             auto& ven_models = el->get_ven_models();
             for (auto& m : ven_models) {

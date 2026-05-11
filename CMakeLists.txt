@@ -23,7 +23,6 @@ add_definitions(-DMESHX_BUILD_TYPE=${MESHX_BUILD_TYPE})
 # Add extra definitions from command line via meshx.py
 if(MESHX_EXTRA_DEFS)
     foreach(def ${MESHX_EXTRA_DEFS})
-        message(STATUS "Adding extra definition: ${def}")
         add_compile_definitions(${def})
     endforeach()
 endif()
@@ -44,8 +43,7 @@ list(REMOVE_DUPLICATES INC_FILES)
 # ------------------------------------------------------------------------------
 include_directories(${INC_FILES})
 
-message(STATUS "     >>>> INC_FILES: ${INC_FILES}")
-message(STATUS "     >>>> PLAT_LIBS: ${PLAT_LIBS}")
+# ------------------------------------------------------------------------------
 
 project(${ELF}
         VERSION ${MESHX_VERSION}

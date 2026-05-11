@@ -206,6 +206,7 @@ public:
      */
     virtual void handle_config(control_task_msg_evt_t evt, const meshx_config_srv_cb_param_t *params) = 0;
 
+
     meshXElementIF() = delete;
     explicit meshXElementIF(uint16_t element_idx) : element_idx(element_idx) { }
     virtual ~meshXElementIF() = default;

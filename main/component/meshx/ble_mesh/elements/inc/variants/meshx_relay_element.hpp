@@ -173,15 +173,15 @@ public:
     uint8_t get_state() const { return element_ctx.gen_on_off_state.on_off; }
 
     /**
-     * @brief Configure the publication address and application key ID (UT use only).
-     * @param pub_addr Publication group address (e.g. 0xC000).
-     * @param app_id   Application key index bound to this element.
+     * @brief Set the target OnOff state for the next publication.
+     * @param on_off 0 for OFF, 1 for ON.
      */
-    void configure_pub(uint16_t pub_addr, uint16_t app_id)
-    {
-        element_ctx.pub_addr = pub_addr;
-        element_ctx.app_id   = app_id;
-    }
+    void set_target_onoff(uint8_t on_off) { element_ctx.gen_on_off_state.next_on_off = on_off; }
+
+    /**
+     * @brief Get the element context (Internal use).
+     */
+    meshx_relay_cli_el_ctx_t& get_ctx() { return element_ctx; }
 };
 
 #endif /* __MESHX_RELAY_ELEMENT_HPP__ */
