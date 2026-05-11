@@ -39,6 +39,8 @@
  */
 
 #define MESHX_MODEL_ID_SIG_START                             0x1000
+#define MESHX_CID_SIG                                        0xFFFF
+#define MESHX_VND_MODEL_CID_MESHX                            0x02E5 // Example MeshX CID
 
 /*!< Foundation Models */
 #define MESHX_MODEL_ID_CONFIG_SRV                            0x0000

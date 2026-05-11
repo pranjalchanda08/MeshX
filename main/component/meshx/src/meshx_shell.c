@@ -67,7 +67,7 @@ static void shell_process_line(char *line) {
         if (strcmp(argv[0], shell_ctx.commands[i].command) == 0) {
             int ret = shell_ctx.commands[i].func(argc, argv);
             if (ret != 0) {
-                meshx_shell_printf("Command returned error: %d\n", ret);
+                MESHX_LOGE(MODULE_ID_COMMON, "Command %s returned error: %d\n", argv[0], ret);
             }
             return;
         }
@@ -110,8 +110,8 @@ meshx_err_t meshx_shell_init(void) {
     if (shell_ctx.initialized) return MESHX_SUCCESS;
 
     memset(&shell_ctx, 0, sizeof(shell_ctx));
-    MESHX_LOGI(MODULE_ID_COMMON, "Initializing MeshX Shell...");
-    
+    MESHX_LOGD(MODULE_ID_COMMON, "Initializing MeshX Shell...");
+
     meshx_err_t err = meshx_platform_console_init();
     if (err != MESHX_SUCCESS) {
         MESHX_LOGE(MODULE_ID_COMMON, "Platform console init failed: %d", err);
@@ -119,7 +119,7 @@ meshx_err_t meshx_shell_init(void) {
     }
 
     shell_ctx.initialized = true;
-    MESHX_LOGI(MODULE_ID_COMMON, "MeshX Shell Initialized");
+    MESHX_LOGD(MODULE_ID_COMMON, "MeshX Shell Initialized");
     return MESHX_SUCCESS;
 }
 

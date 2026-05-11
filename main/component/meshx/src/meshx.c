@@ -100,70 +100,6 @@ static meshx_err_t meshx_element_init(dev_struct_t *p_dev, meshx_config_t const 
         // Dynamic comp already initialized plat composition and models
         return MESHX_SUCCESS;
     }
-#if 0
-    /* Legacy Fallback Path */
-    p_dev->elements = g_legacy_elements;
-    p_dev->element_cnt = MAX_ELE_CNT;
-    memset(g_legacy_elements, 0, sizeof(g_legacy_elements));
-
-    meshx_ptr_t meshx_sig_root_model_arr = NULL;
-    meshx_ptr_t meshx_ven_root_model_arr = NULL;
-
-    err = meshx_create_plat_composition(&p_dev->composition);
-    if (err)
-    {
-        MESHX_LOGE(MODULE_ID_COMMON, "Failed to create platform composition: (%d)", err);
-        return err;
-    }
-
-    /* Start with element index 1 as 0 is root element */
-    p_dev->element_idx = 1;
-
-    err = meshx_create_element_composition(p_dev, config);
-    if(err)
-    {
-        MESHX_LOGE(MODULE_ID_COMMON, "Failed to create BLE Mesh Element Composition: (%d)", err);
-        return err;
-    }
-    err = meshx_plat_composition_init(
-        p_dev->composition,
-        p_dev->elements,
-        config->cid,
-        config->pid,
-        (uint16_t)p_dev->element_idx
-    );
-    if(err)
-    {
-        MESHX_LOGE(MODULE_ID_COMMON, "Failed to initialise MeshX Composition: (%d)", err);
-        return err;
-    }
-
-    meshx_sig_root_model_arr = get_root_sig_models();
-    if(meshx_sig_root_model_arr == NULL)
-    {
-        MESHX_LOGE(MODULE_ID_COMMON, "Failed to get root SIG models");
-        return MESHX_FAIL;
-    }
-
-    /**
-     * @brief Initialise the root element
-     * @note We initialise the root element later as root element's models needs
-     *       to be choosen based on the composition of the other elements
-     */
-    err = meshx_plat_add_element_to_composition(
-        ROOT_ELEMENT_IDX,
-        p_dev->elements,
-        meshx_sig_root_model_arr,
-        meshx_ven_root_model_arr,
-        (uint8_t) get_root_sig_models_count(),
-        (uint8_t) get_root_ven_models_count()
-    );
-    if(err)
-    {
-        MESHX_LOGE(MODULE_ID_COMMON, "Failed to add element to composition: (%d)", err);
-        return err;
-    }
-#endif /* 0 */
     return MESHX_SUCCESS;
 }
 
@@ -280,6 +216,9 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     err = meshx_logging_init(&logging_cfg);
     MESHX_ERR_PRINT_RET("Logging init failed", err);
 
+    /* Print the MeshX banner */
+    CONFIG_MESHX_LOG_PRINTF(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_CYAN) "%s" LOG_ANSI_COLOR_RESET, meshX_banner);
+
     /* Initialise Platform deps */
     err = meshx_platform_init();
     MESHX_ERR_PRINT_RET("Platform init failed", err);
@@ -338,9 +277,6 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     /* Initialize Hosted Serial Protocol */
     err = meshx_serial_init();
     MESHX_ERR_PRINT_RET("Serial init failed", err);
-
-    /* Print the MeshX banner */
-    CONFIG_MESHX_LOG_PRINTF(LOG_ANSI_COLOR_REGULAR(LOG_ANSI_COLOR_CYAN) "%s" LOG_ANSI_COLOR_RESET, meshX_banner);
 
 #if CONFIG_ENABLE_UNIT_TEST
     /* Initialize unit test console (this also registers the 'ut' command) */
