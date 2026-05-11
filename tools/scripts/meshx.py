@@ -344,6 +344,7 @@ def build(args, build_root = "build"):
         os.makedirs(build_dir, exist_ok=True)
         cmake_command =    ["cmake",
                             "-S", ".", "-B", build_dir, "-G", "Ninja",
+                            "-DCCACHE_ENABLE=1",
                             f"-DBSP={args.bsp}",
                             f"-DPROD_NAME={prod}",
                             f"-DMESHX_BUILD_TYPE={args.build_type}",
@@ -385,7 +386,7 @@ def main():
         raise EnvironmentError("This script requires Python 3.6 or higher.")
 
     # Ensure required tools are installed
-    required_tools = ['cmake', 'ninja', 'git']
+    required_tools = ['cmake', 'ninja', 'git', 'ccache']
     for tool in required_tools:
         check_tool_installed(tool)
 

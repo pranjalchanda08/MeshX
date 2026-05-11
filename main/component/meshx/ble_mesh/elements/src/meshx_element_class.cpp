@@ -93,6 +93,13 @@ MESHX_MODEL* meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
     return ven_model_array.empty() ? nullptr : reinterpret_cast<MESHX_MODEL*>(ven_model_array.data());
 }
 
+MESHX_ELEMENT_TEMPLATE_PROTO
+const char* meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
+    ::get_element_name(void) const
+{
+    return "Unknown Element";
+}
+
 /*****************************************************************************************************
  * meshXElement - Template Functions
  *****************************************************************************************************/

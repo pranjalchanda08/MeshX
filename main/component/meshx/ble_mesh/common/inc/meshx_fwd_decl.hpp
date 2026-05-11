@@ -200,6 +200,12 @@ public:
     virtual void sync(control_task_msg_evt_t evt) = 0;
 
     /**
+     * @brief Get the name of the element.
+     * @return String literal representing the element name.
+     */
+    virtual const char* get_element_name(void) const = 0;
+
+    /**
      * @brief Handle configuration server events (AppKey bind, Publication, etc.)
      * @param evt The configuration event code
      * @param params Pointer to the configuration parameters

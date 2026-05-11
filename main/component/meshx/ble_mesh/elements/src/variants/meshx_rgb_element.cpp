@@ -75,6 +75,11 @@ uint8_t meshXRGBServerElement::list_ven_models()
     return 0;
 }
 
+const char* meshXRGBServerElement::get_element_name(void) const
+{
+    return "HSL Server";
+}
+
 meshx_err_t meshXRGBServerElement::element_state_change_notify(meshx_ptr_t param, size_t param_size)
 {
     MESHX_UNUSED(param_size);

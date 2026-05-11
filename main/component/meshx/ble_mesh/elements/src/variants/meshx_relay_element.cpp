@@ -110,6 +110,12 @@ uint8_t meshXRelayServerElement::list_ven_models()
     return 0; /* No vendor models for relay server */
 }
 
+MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PROTO
+const char* meshXRelayServerElement::get_element_name(void) const
+{
+    return "Relay Server";
+}
+
 /* Task A+B — element_state_change_notify: NVS save + app notify */
 MESHX_RELAY_SERVER_ELEMENT_TEMPLATE_PROTO
 meshx_err_t meshXRelayServerElement::element_state_change_notify(meshx_ptr_t param, size_t param_size)
@@ -267,6 +273,12 @@ MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
 uint8_t meshXRelayClientElement::list_ven_models()
 {
     return 0; /* No vendor models for relay client */
+}
+
+MESHX_RELAY_CLIENT_ELEMENT_TEMPLATE_PROTO
+const char* meshXRelayClientElement::get_element_name(void) const
+{
+    return "Relay Client";
 }
 
 /* Task A+B — element_state_change_notify: app notify (NVS not required for client state) */

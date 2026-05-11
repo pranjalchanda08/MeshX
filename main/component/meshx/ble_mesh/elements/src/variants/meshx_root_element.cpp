@@ -68,6 +68,11 @@ uint8_t meshXRootElement :: list_sig_models()
 uint8_t meshXRootElement::list_ven_models() {
     return 0; // Root element usually has no vendor models
 }
+
+const char* meshXRootElement::get_element_name(void) const
+{
+    return "Root Element";
+}
  
 MESHX_ROOT_DEPENDENCY_RESOLVER_TEMPLATE_PROTO
 void meshXRootElement::add_sig_model_if_present(uint16_t trigger_model_id, const char* log_name) {

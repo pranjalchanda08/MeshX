@@ -285,7 +285,7 @@ static void control_task_handler(void *args)
     static control_task_msg_t recv_msg;
     dev_struct_t *pdev = (dev_struct_t *)args;
 
-    MESHX_LOGI(MODULE_ID_COMMON, "Control Task Initialised");
+    MESHX_LOGD(MODULE_ID_COMMON, "Control Task Initialised");
     MESHX_UNUSED(err);
 
     while (true)

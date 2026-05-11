@@ -98,7 +98,7 @@ meshx_err_t meshx_kv_engine_init(const meshx_fal_partition_t *part)
         kv_write_pos += kv_align(sizeof(header) + header.key_len + header.val_len);
     }
 
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "KV Engine Init: Pos=%u, SeqID=%u", kv_write_pos, kv_next_seq_id);
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_NVS, "KV Engine Init: Pos=%u, SeqID=%u", kv_write_pos, kv_next_seq_id);
     return MESHX_SUCCESS;
 }
 
