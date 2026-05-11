@@ -113,6 +113,12 @@ uint8_t meshXCWWWServerElement::list_ven_models()
     return 0; /* No vendor models for CWWW server */
 }
 
+MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
+const char* meshXCWWWServerElement::get_element_name(void) const
+{
+    return "CWWW Server";
+}
+
 /* Task A+B: state notify — discriminate by model_id, update ctx, NVS, app notify */
 MESHX_CWWW_SERVER_ELEMENT_TEMPLATE_PROTO
 meshx_err_t meshXCWWWServerElement::element_state_change_notify(meshx_ptr_t param, size_t param_size)
@@ -252,6 +258,12 @@ MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
 uint8_t meshXCWWWClientElement::list_ven_models()
 {
     return 0; /* No vendor models for CWWW client */
+}
+
+MESHX_CWWW_CLIENT_ELEMENT_TEMPLATE_PROTO
+const char* meshXCWWWClientElement::get_element_name(void) const
+{
+    return "CWWW Client";
 }
 
 /* Task A+B: state notify — discriminate by model_id, notify app */

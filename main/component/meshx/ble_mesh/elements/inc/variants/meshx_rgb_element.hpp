@@ -55,6 +55,7 @@ private:
 
     uint8_t list_sig_models (void) override;
     uint8_t list_ven_models (void) override;
+    const char* get_element_name(void) const override;
 
     /**
      * @brief Notify element of state change from child model.

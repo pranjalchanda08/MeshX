@@ -608,7 +608,7 @@ static meshx_err_t meshx_txcm_sig_ack(const meshx_txcm_request_t *request)
 static void meshx_txcm_task_handler(const dev_struct_t *args)
 {
     MESHX_UNUSED(args);
-    MESHX_LOGI(MODULE_ID_TXCM, "MeshX Tx Control Task started");
+    MESHX_LOGD(MODULE_ID_TXCM, "MeshX Tx Control Task started");
     meshx_err_t err = MESHX_SUCCESS;
 
     while(true)
@@ -647,7 +647,7 @@ static void meshx_txcm_task_handler(const dev_struct_t *args)
  */
 meshx_err_t meshx_txcm_init(dev_struct_t *pdev)
 {
-    MESHX_LOGI(MODULE_ID_TXCM, "Initializing MeshX Tx Control Module");
+    MESHX_LOGD(MODULE_ID_TXCM, "Initializing MeshX Tx Control Module");
     if(g_txcm.init_magic == MESHX_TXCM_INIT_MAGIC)
     {
         return MESHX_SUCCESS;

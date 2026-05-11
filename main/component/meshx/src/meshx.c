@@ -93,7 +93,7 @@ static meshx_err_t meshx_element_init(dev_struct_t *p_dev, meshx_config_t const 
      * @note If the builder is active, we bake the dynamic composition and skip legacy init
      */
     if (meshx_builder_is_active()) {
-        MESHX_LOGI(MODULE_ID_COMMON, "Dynamic Composition detected. Baking...");
+        MESHX_LOGD(MODULE_ID_COMMON, "Dynamic Composition detected. Baking...");
         err = meshx_builder_bake(p_dev, config->cid, config->pid, config->vid);
         if (err != MESHX_SUCCESS) return err;
 

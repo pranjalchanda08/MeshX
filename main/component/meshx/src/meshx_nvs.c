@@ -237,7 +237,7 @@ meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_m
     {
         if (meshx_nvs_inst.cid == cid && meshx_nvs_inst.pid == pid)
         {
-            MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "Product ID match: %x|%x", meshx_nvs_inst.pid, meshx_nvs_inst.cid);
+            MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_NVS, "Product ID match: %x|%x", meshx_nvs_inst.pid, meshx_nvs_inst.cid);
         }
         else
         {
