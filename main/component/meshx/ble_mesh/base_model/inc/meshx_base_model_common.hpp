@@ -136,8 +136,9 @@ public:
 
     /**
      * @brief Construct a new meshXBaseConfigServerModel object
-     * @param[in] model_id Model identifier for the config server
-     * @param[in] from_ble_cb Callback function for handling BLE messages
+     * @param[in] model_id      Model identifier for the config server
+     * @param[in] p_plat_model  Pointer to the platform model instance
+     * @param[in] from_ble_cb   Callback function for handling BLE messages
      */
     meshXBaseConfigServerModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb &from_ble_cb);
 

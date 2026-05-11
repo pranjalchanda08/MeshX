@@ -73,7 +73,7 @@ meshx_err_t meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAM
  * is received. It validates the request and returns a result to the element.
  * Note: The actual state is maintained in the element layer, not the model layer.
  *
- * @param[in] curr_el_state Pointer to meshx_light_ctl_model_state_t containing the new state
+ *
  * @return
  *     - MESHX_SUCCESS: State change handled successfully
  *     - MESHX_INVALID_ARG: Invalid parameter
@@ -283,6 +283,7 @@ meshx_err_t meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAM
  *
  * @param[in] parent_element        A pointer to the parent element (meshXElementIF).
  * @param[in] parent_element_state  A pointer to the parent element state.
+ * @param[in] model_func_id         Functional ID for the model instance.
  */
 MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PROTO
 meshXLightCTLClientModel MESHX_LIGHT_CTL_CLIENT_MODEL_TEMPLATE_PARAMS
@@ -575,6 +576,7 @@ meshx_err_t meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAM
  *
  * @param[in] parent_element        Pointer to the parent element (meshXElementIF)
  * @param[in] parent_element_state  Pointer to the parent element state
+ * @param[in] model_func_id         Functional ID for the model instance.
  */
 MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PROTO
 meshXLightCTLServerModel MESHX_LIGHT_CTL_SERVER_MODEL_TEMPLATE_PARAMS
@@ -663,6 +665,13 @@ meshx_err_t meshXLightCTLSetupServerModel::model_from_ble_cb(dev_struct_t *p_dev
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Constructor for Light CTL Setup Server Model
+ *
+ * @param[in] parent_element        Pointer to the parent element (meshXElementIF)
+ * @param[in] parent_element_state  Pointer to the parent element state
+ * @param[in] model_func_id         Functional ID for the model instance.
+ */
 meshXLightCTLSetupServerModel::meshXLightCTLSetupServerModel(
     meshXElementIF *parent_element,
     meshx_ptr_t     parent_element_state,

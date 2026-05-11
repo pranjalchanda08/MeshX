@@ -113,12 +113,6 @@ meshXModel MESHX_MODEL_TEMPLATE_PARAMS
 /**
  * @brief Send message to parent element
  * @details Common implementation to send a message to the parent element.
- *          This method checks for valid parameters, invokes the element's
- *          on_model_cb method, and handles state change updates.
- *
- * @param[in] msg_ptr  Pointer to the message structure
- * @param[in] msg_size Size of the message structure
- * @return MESHX_SUCCESS if message sent successfully, error code otherwise
  */
 MESHX_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXModel MESHX_MODEL_TEMPLATE_PARAMS
@@ -160,18 +154,6 @@ meshx_err_t meshXModel MESHX_MODEL_TEMPLATE_PARAMS
 
 /**
  * @brief Callback function invoked when a BLE event is received for the model.
- *
- * This function is called when a BLE event is received for the model. It
- * delegates the processing of the event to the derived class implementation
- * and then prepares a message to send to the parent element.
- *
- * @param[in] p_dev         Pointer to the device structure
- * @param[in] evt_model_id  The BLE event model_id type
- * @param[in] params        Pointer to additional parameters for the event
- *
- * @return meshx_err_t Returns an error code indicating the result of the operation.
- *         - MESHX_SUCCESS on successful processing and message sending
- *         - Other error codes for failures in derived class processing or message preparation
  */
 MESHX_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXModel MESHX_MODEL_TEMPLATE_PARAMS
@@ -211,15 +193,6 @@ meshx_err_t meshXModel MESHX_MODEL_TEMPLATE_PARAMS
  ****************************************************************************************************/
 /**
  * @brief Constructs a new meshXServerModel instance.
- *
- * This constructor initializes a server model with the given platform model,
- * model ID, and optional parent element. It sets up the base server model
- * functionality.
- *
- * @tparam MESHX_MODEL Platform-specific model type
- * @tparam meshxBaseModel_t Base model implementation type
- * @tparam meshx_send_packet_params_t Type for send packet parameters
- *
  * @note This constructor delegates to the base meshXModel constructor.
  */
 MESHX_SERVER_MODEL_TEMPLATE_PROTO
@@ -235,15 +208,6 @@ meshXServerModel MESHX_SERVER_MODEL_TEMPLATE_PARAMS
  **************************************************************************************************/
 /**
  * @brief Constructs a new meshXClientModel instance.
- *
- * This constructor initializes a client model with the given platform model,
- * model ID, and optional parent element. It sets up the base client model
- * functionality and creates the logical model for the client model and its derivatives.
- *
- * @tparam MESHX_MODEL Platform-specific model type
- * @tparam meshxBaseModel_t Base model implementation type
- * @tparam meshx_send_packet_params_t Type for send packet parameters
- *
  * @note This constructor delegates to the base meshXModel constructor.
  *       Derived client models should use this constructor to ensure proper initialization.
  */

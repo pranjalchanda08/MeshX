@@ -65,7 +65,7 @@ meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_P
  * is received. It validates the request and returns a result to the element.
  * Note: The actual state is maintained in the element layer, not the model layer.
  *
- * @param[in] curr_el_state Pointer to meshx_gen_onoff_model_state_t containing the new state
+ *
  * @return
  *     - MESHX_SUCCESS: State change handled successfully
  *     - MESHX_INVALID_ARG: Invalid parameter
@@ -306,6 +306,8 @@ meshx_err_t meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_P
  * for sending packets.
  *
  * @param[in] parent_element A pointer to the parent element (meshXElementIF).
+ * @param[in] parent_element_state Pointer to the parent element's state structure.
+ * @param[in] model_func_id Functional ID for the model instance.
  */
 MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PROTO
 meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PARAMS
@@ -336,6 +338,8 @@ meshXGenericOnOffClientModel MESHX_GEN_ONOFF_CLIENT_MODEL_TEMPLATE_PARAMS
  * for sending packets.
  *
  * @param[in] parent_element A pointer to the parent element (meshXElementIF).
+ * @param[in] parent_element_state Pointer to the parent element's state structure.
+ * @param[in] model_func_id Functional ID for the model instance.
  */
 MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PROTO
 meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_PARAMS
@@ -447,7 +451,7 @@ meshx_err_t meshXGenericOnOffServerModel MESHX_GEN_ONOFF_SERVER_MODEL_TEMPLATE_P
  * is received. It validates the request and returns a result to the element.
  * Note: The actual state is maintained in the element layer, not the model layer.
  *
- * @param[in] param Pointer to meshx_on_off_srv_el_msg_t containing the new state
+ *
  * @return
  *     - MESHX_SUCCESS: State change handled successfully
  *     - MESHX_INVALID_ARG: Invalid parameter

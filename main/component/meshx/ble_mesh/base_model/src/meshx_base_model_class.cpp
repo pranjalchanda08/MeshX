@@ -145,6 +145,7 @@ meshx_err_t meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::from_ble_dereg_cb(void) c
  * This constructor initializes the meshXBaseServerModel class with the given model ID and callback function.
  *
  * @param[in] model_id  The unique identifier of the generic server model.
+ * @param[in] p_plat_model Pointer to the platform-specific model structure.
  * @param[in] from_ble_cb  The callback function to be registered for the model.
  */
 MESHX_BASE_SERVER_TEMPLATE_PROTO
@@ -249,34 +250,9 @@ std::once_flag meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::plat_clie
 /**
  * @brief Constructor for the meshXBaseClientModel template class.
  *
- * This constructor initializes a template-based Generic Client model instance with
- * comprehensive validation, callback registration, and platform-specific initialization.
- * It provides enhanced type safety and debugging capabilities compared to the C implementation.
- *
- * Key Initialization Steps:
- * 1. Validates the model ID against supported Generic Client models
- * 2. Validates the callback function is not null
- * 3. Calls the base class constructor with static message handler
- * 4. Performs platform-specific model initialization via derived class
- * 5. Registers the callback in the template-specific callback list
- * 6. Sets up initialization protection using magic number
- *
- * @tparam baseClientModelDerived_t The derived client model class type
- * @tparam ble_mesh_plat_model_cb_params_t Platform-specific callback parameter type
- * @tparam ble_mesh_send_msg_params_t Platform-specific send message parameter type
- *
  * @param[in] model_id The unique 32-bit identifier of the Generic Client model.
- *                     Must be a supported model ID (see validate_client_model_id()).
+ * @param[in] p_plat_model Pointer to the platform-specific model structure.
  * @param[in] from_ble_cb The callback function to handle BLE mesh messages.
- *                        Must not be null/empty.
- *
- * @post If successful, this->status == MESHX_SUCCESS and the model is ready for use.
- * @post If validation fails, this->status == MESHX_INVALID_ARG and initialization is aborted.
- *
- * @note Each template instantiation maintains its own static callback list and message handler.
- * @note The constructor calls the derived class's plat_model_init() for platform setup.
- * @see validate_client_model_id() for supported model IDs.
- * @see base_from_ble_msg_handle() for the static message handling mechanism.
  */
 MESHX_BASE_CLIENT_TEMPLATE_PROTO
 meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::meshXBaseClientModel(uint32_t model_id, meshx_ptr_t p_plat_model, const control_msg_cb& from_ble_cb)

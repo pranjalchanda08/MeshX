@@ -55,6 +55,7 @@ private:
      * It handles the state change by storing in element context, saving to NVS,
      * and notifying the application.
      * @param[in] param Pointer to the model callback parameter
+     * @param[in] param_size Size of the parameter structure
      * @return
      *     - MESHX_SUCCESS: State change handled successfully
      *     - MESHX_INVALID_ARG: Invalid parameter

@@ -26,6 +26,8 @@ extern "C" {
 bool meshx_builder_is_active(void);
 
 /**
+ * @brief Bakes the dynamic composition into the device structure.
+ * @param pdev Pointer to the device structure.
  * @param cid Company ID.
  * @param pid Product ID.
  * @param vid Version ID.

@@ -143,6 +143,10 @@ meshx_err_t meshXSensorServerModel MESHX_SENSOR_SERVER_MODEL_TEMPLATE_PARAMS
 
 /**
  * @brief Constructor for Sensor Server Model.
+ *
+ * @param[in] parent_element Pointer to the parent element (meshXElementIF)
+ * @param[in] parent_element_state Pointer to the parent element's state structure.
+ * @param[in] model_func_id Functional ID for the model instance.
  */
 MESHX_SENSOR_SERVER_MODEL_TEMPLATE_PROTO
 meshXSensorServerModel MESHX_SENSOR_SERVER_MODEL_TEMPLATE_PARAMS

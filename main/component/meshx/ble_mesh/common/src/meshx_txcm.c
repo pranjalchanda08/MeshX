@@ -224,32 +224,15 @@ static meshx_err_t meshx_tx_queue_enqueue_front(meshx_tx_queue_t *q, const meshx
 
     return MESHX_SUCCESS;
 }
-/**
- * @brief Returns the item at the front of the transmission queue without removing it.
- *
- * This function checks if the transmission queue is empty and if so, returns an error.
- * If not empty, it copies the item at the front of the transmission queue into the provided
- * item pointer.
- *
- * @param[in] q Pointer to the transmission queue structure to peek from.
- * @param[out] item Pointer to the meshx_txcm_tx_q_t structure to store the peeked item.
- *
- * @return meshx_err_t
- */
 
 /**
  * @brief Searches for a parameter in the transmission queue.
  *
- * This function searches for a parameter in the transmission queue. The parameter is a pointer to
- * a uint8_t array with a length of param_len. The function searches the queue from the tail
- * to the head and returns MESHX_SUCCESS if the parameter is found. If not found, it returns
- * MESHX_NOT_FOUND.
- *
  * @param[in] q Pointer to the transmission queue structure to search in.
  * @param[in] param Pointer to the uint8_t array to search for.
+ * @param[in] param_len Length of the parameter array.
  * @param[in] dest_addr Destination address associated with the parameter.
- *
- * @return meshx_err_t
+ * @return MESHX_SUCCESS if found, MESHX_NOT_FOUND otherwise.
  */
 static meshx_err_t meshx_tx_queue_search(
     const meshx_tx_queue_t *q,
@@ -290,6 +273,7 @@ static meshx_err_t meshx_tx_queue_search(
  * meshx_txcm_tx_q_t structure to be removed.
  *
  * @param[in] q Pointer to the transmission queue structure to remove the item from.
+ * @param[in] index Index of the item to dequeue.
  * @param[out] item Pointer to the meshx_txcm_tx_q_t structure to store the removed item.
  *
  * @return meshx_err_t
@@ -323,15 +307,11 @@ static meshx_err_t meshx_tx_queue_dequeue_at(meshx_tx_queue_t *q, int16_t index,
 
 
 /**
- * @brief Tickles the Tx Control module to process the front of the transmission queue.
+ * @brief Attempts to send messages from the transmission queue.
  *
- * This function checks if the front message in the transmission queue is ready to be sent.
- * If the message state is 'NEW', it processes the send function and updates the message state
- * to 'WAITING_ACK' before requeuing the message to the front of the transmission queue.
- *
- * @param[in] resend    Is resend
- *
- * @return meshx_err_t
+ * @param[in] resend True if this is a resend attempt.
+ * @param[in] target_addr Target address for the message.
+ * @return MESHX_SUCCESS on success.
  */
 static meshx_err_t meshx_txcm_msg_q_try_send(bool resend, uint16_t target_addr)
 {
