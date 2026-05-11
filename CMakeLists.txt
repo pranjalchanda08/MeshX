@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20)
 # ------------------------------------------------------------------------------
 # Options
 # ------------------------------------------------------------------------------
-set(MESHX_VERSION "0.4" CACHE STRING "MESHX Build Version")
+set(MESHX_VERSION "0.5.0" CACHE STRING "MESHX Build Version")
 set(BSP "weact_c3" CACHE STRING "BSP Selection")
 set(ELF meshx_build CACHE STRING "Name of the final executable")
 set(PROD_PROFILE "port/bsp/${BSP}/prod_profile.yml" CACHE STRING "Path to the product profile YAML file")
@@ -19,6 +19,7 @@ set(MESHX_BUILD_TYPE "Release" CACHE INTERNAL "MeshX build type")
 set(PLATFORM_TEST_SUPPORTED ON CACHE INTERNAL "Testing supported in platform")
 
 add_definitions(-DMESHX_BUILD_TYPE=${MESHX_BUILD_TYPE})
+add_definitions(-DMESHX_VERSION="${MESHX_VERSION}")
 
 # Add extra definitions from command line via meshx.py
 if(MESHX_EXTRA_DEFS)
