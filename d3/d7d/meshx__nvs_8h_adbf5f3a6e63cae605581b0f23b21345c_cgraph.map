@@ -1,7 +1,0 @@
-<map id="meshx_nvs_commit" name="meshx_nvs_commit">
-<area shape="rect" id="Node000001" title="Commit changes to the NVS." alt="" coords="5,31,143,56"/>
-<area shape="rect" id="Node000002" href="$dc/d28/esp__nvs_8c.html#a5dd0ef1876320dd92b9c102574e08435" title="Commit changes to the non&#45;volatile storage." alt="" coords="191,5,356,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="143,32,175,28,176,33,143,37"/>
-<area shape="rect" id="Node000003" href="$dc/d28/esp__nvs_8c.html#a486367a843345efbb5edb7267a706eb3" title="Write a blob value to the non&#45;volatile storage with a given key and namespace." alt="" coords="198,55,348,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="143,49,183,54,183,59,143,54"/>
-</map>

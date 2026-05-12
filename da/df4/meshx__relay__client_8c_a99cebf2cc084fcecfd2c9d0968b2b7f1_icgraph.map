@@ -1,9 +1,0 @@
-<map id="meshx_relay_client_element_state_change_handler" name="meshx_relay_client_element_state_change_handler">
-<area shape="rect" id="Node000001" title="Handles the relay client element message." alt="" coords="626,5,786,61"/>
-<area shape="rect" id="Node000002" href="$da/df4/meshx__relay__client_8c.html#ad3d68068ef603baf6bf7d01ed3c7a9e3" title="Registers a callback for relay element state change events." alt="" coords="426,13,578,54"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="610,36,579,36,579,30,610,30"/>
-<area shape="rect" id="Node000003" href="$da/df4/meshx__relay__client_8c.html#a78912dcce7e42851d05867d83e61ce9d" title="Create Dynamic Relay Model Elements." alt="" coords="249,13,378,54"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="410,36,378,36,378,30,410,30"/>
-<area shape="rect" id="Node000004" href="$da/df4/meshx__relay__client_8c.html#a6714b32ec5f1113fae863457f0cfe653" title=" " alt="" coords="5,20,201,46"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="233,36,201,36,201,30,233,30"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="meshx_sem.h" name="meshx_sem.h">
-<area shape="rect" id="Node000001" title="MeshX Semaphore Interface." alt="" coords="5,5,107,31"/>
-<area shape="rect" id="Node000002" href="$df/d02/meshx__sem_8c.html" title="Implementation of MeshX Semaphore APIs using FreeRTOS. This file provides functions to create,..." alt="" coords="5,79,107,105"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="59,46,59,79,53,79,53,46"/>
-</map>

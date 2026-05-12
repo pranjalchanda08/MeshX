@@ -1,7 +1,0 @@
-<map id="meshx_gen_client_txcm_fn_model_send" name="meshx_gen_client_txcm_fn_model_send">
-<area shape="rect" id="Node000001" title="Transmit callback handler for sending Generic Client model messages." alt="" coords="5,39,166,79"/>
-<area shape="rect" id="Node000002" href="$d0/dbc/meshx__gen__client_8c.html#ad10690ea7ebf40a033b3353726f01345" title="Checks if the given opcode corresponds to a GET request in the Generic Client group." alt="" coords="214,5,363,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,43,198,38,199,43,166,48"/>
-<area shape="rect" id="Node000003" href="$d0/de1/esp__gen__cli__model_8c.html#a9a7f82b22f4472ddaca488e202f5bad5" title="Sends a Generic Client message over BLE Mesh." alt="" coords="221,71,356,111"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,69,206,75,205,81,166,74"/>
-</map>

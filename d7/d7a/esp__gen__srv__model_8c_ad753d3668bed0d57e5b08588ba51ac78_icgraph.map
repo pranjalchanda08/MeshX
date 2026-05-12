@@ -1,7 +1,0 @@
-<map id="esp_ble_mesh_generic_server_cb" name="esp_ble_mesh_generic_server_cb">
-<area shape="rect" id="Node000001" title="Callback function for BLE Mesh Generic Server events." alt="" coords="402,5,556,46"/>
-<area shape="rect" id="Node000002" href="$d7/d7a/esp__gen__srv__model_8c.html#a68e99996766c69c3bafe264441a53e58" title="Initialize the generic server model platform." alt="" coords="190,13,354,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="386,28,355,28,355,23,386,23"/>
-<area shape="rect" id="Node000003" href="$da/dcb/meshx__gen__server_8c.html#a1cd76cc20812de97cc26f6f41c1e64b9" title="Initialize the meshxuction generic server." alt="" coords="5,13,142,38"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="174,28,142,28,142,23,174,23"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="meshx_plat_light_client_delete" name="meshx_plat_light_client_delete">
-<area shape="rect" id="Node000001" title="Deletes the Light client instance and its associated publication context." alt="" coords="203,5,359,46"/>
-<area shape="rect" id="Node000002" href="$d8/d93/meshx__light__ctl__client_8c.html#a3ac7674b97a0b1ca819a783677bfc974" title="Delete the Light client model instance." alt="" coords="5,5,155,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="187,28,155,28,155,23,187,23"/>
-</map>

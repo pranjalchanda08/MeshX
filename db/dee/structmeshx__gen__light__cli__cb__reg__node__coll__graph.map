@@ -1,6 +1,0 @@
-<map id="meshx_gen_light_cli_cb_reg_node" name="meshx_gen_light_cli_cb_reg_node">
-<area shape="rect" id="Node000001" title="Structure containing a node in the linked list of registered callbacks." alt="" coords="5,170,133,251"/>
-<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="133,195,152,199,160,211,151,222,147,218,154,211,149,204,132,200"/>
-<area shape="rect" id="Node000002" href="$d7/d5a/structmeshx__gen__light__cli__cb__reg.html" title="Structure containing the model ID and callback function for generic client model registrations." alt="" coords="5,5,133,107"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="72,107,72,153,66,153,66,107"/>
-</map>

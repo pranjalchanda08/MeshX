@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['get_5froot_5fsig_5fmodels_0',['get_root_sig_models',['../d2/d6b/composition_8c.html#a341817f6f87ef8d6f5673f1d13b8f7ca',1,'get_root_sig_models(void):&#160;composition.c'],['../d9/d05/meshx_8c.html#ae7719b590342b2a5ca112e4d00f368f5',1,'get_root_sig_models(void):&#160;composition.c']]],
-  ['get_5froot_5fsig_5fmodels_5fcount_1',['get_root_sig_models_count',['../d2/d6b/composition_8c.html#ac59f6ae1acf72f1cf67bbff1df68e1a0',1,'get_root_sig_models_count(void):&#160;composition.c'],['../d9/d05/meshx_8c.html#ac59f6ae1acf72f1cf67bbff1df68e1a0',1,'get_root_sig_models_count(void):&#160;composition.c']]],
-  ['get_5froot_5fven_5fmodels_2',['get_root_ven_models',['../d2/d6b/composition_8c.html#ac7e52935585239c70edd322d00c2bb4f',1,'get_root_ven_models(void):&#160;composition.c'],['../d9/d05/meshx_8c.html#a9919d63a57b344949ba8bd5cc6754690',1,'get_root_ven_models(void):&#160;composition.c']]],
-  ['get_5froot_5fven_5fmodels_5fcount_3',['get_root_ven_models_count',['../d2/d6b/composition_8c.html#a5e1bda274f01ae047df2fd8515637beb',1,'get_root_ven_models_count(void):&#160;composition.c'],['../d9/d05/meshx_8c.html#a5e1bda274f01ae047df2fd8515637beb',1,'get_root_ven_models_count(void):&#160;composition.c']]]
+  ['find_5fand_5fcast_0',['find_and_cast',['../db/d7b/classmeshXElementRegistry.html#a2156957ac277540d7afa53fd843ba95e',1,'meshXElementRegistry']]],
+  ['find_5felement_1',['find_element',['../db/d7b/classmeshXElementRegistry.html#a7db0d4bfcf948dcbee4d06e2ba2fcd30',1,'meshXElementRegistry']]],
+  ['from_5fble_5fdereg_5fcb_2',['from_ble_dereg_cb',['../de/dac/classmeshXBaseModel.html#aa595537c9debd5c12323c79e4d655cef',1,'meshXBaseModel::from_ble_dereg_cb()'],['../d8/d9b/classmeshXBaseServerModel.html#a9be40bc80e9dfe45a07a0ba8d7649189',1,'meshXBaseServerModel::from_ble_dereg_cb()'],['../d5/d42/classmeshXBaseClientModel.html#af171ec57438b2b60ae90ab1af9baed64',1,'meshXBaseClientModel::from_ble_dereg_cb()']]],
+  ['from_5fble_5freg_5fcb_3',['from_ble_reg_cb',['../de/dac/classmeshXBaseModel.html#a0d10a330203edb4bfca3dd2e67f1b59a',1,'meshXBaseModel']]]
 ];

@@ -1,9 +1,0 @@
-<map id="meshx_element_struct_init" name="meshx_element_struct_init">
-<area shape="rect" id="Node000001" title="Initialize the mesh element structure by allocating memory for various components." alt="" coords="645,13,822,38"/>
-<area shape="rect" id="Node000002" href="$d1/df4/meshx__relay__server_8c.html#aa35344ba836c00abe4d8ba1f34bcec0d" title="Create relay model space." alt="" coords="433,5,597,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="630,28,598,28,598,23,630,23"/>
-<area shape="rect" id="Node000003" href="$d1/df4/meshx__relay__server_8c.html#af1332e2c64515cfa728a8b529abdc00b" title="Create Dynamic Relay Model Elements." alt="" coords="249,5,385,46"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="417,28,385,28,385,23,417,23"/>
-<area shape="rect" id="Node000004" href="$d1/df4/meshx__relay__server_8c.html#a4f078550e7f2f704da32b4d524bc266d" title=" " alt="" coords="5,13,201,38"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="233,28,201,28,201,23,233,23"/>
-</map>

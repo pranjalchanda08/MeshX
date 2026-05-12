@@ -1,5 +1,0 @@
-<map id="meshx_plat_ble_mesh_init" name="meshx_plat_ble_mesh_init">
-<area shape="rect" id="Node000001" title="Initializes the BLE Mesh stack with the given provisioning parameters." alt="" coords="5,5,180,31"/>
-<area shape="rect" id="Node000002" href="$d9/d31/esp__prov__srv__model_8c.html#abae1983bb7292ae3f77ebeb5276c2344" title="Get the provisioning parameters." alt="" coords="228,5,372,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="180,16,212,16,212,21,180,21"/>
-</map>

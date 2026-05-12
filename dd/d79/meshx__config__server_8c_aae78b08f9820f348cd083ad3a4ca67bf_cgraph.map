@@ -1,5 +1,0 @@
-<map id="meshx_get_config_srv_model" name="meshx_get_config_srv_model">
-<area shape="rect" id="Node000001" title="Retrieves the configuration server model for the MeshX framework." alt="" coords="5,5,156,46"/>
-<area shape="rect" id="Node000002" href="$dc/d28/esp__cfg__srv__model_8c.html#adea412cba99b217b17654a0ac0749634" title="Retrieves the configuration server model for the BLE Mesh." alt="" coords="204,5,357,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,23,188,23,188,28,156,28"/>
-</map>

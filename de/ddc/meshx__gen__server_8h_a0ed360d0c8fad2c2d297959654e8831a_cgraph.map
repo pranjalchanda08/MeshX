@@ -1,7 +1,0 @@
-<map id="meshx_gen_srv_reg_cb" name="meshx_gen_srv_reg_cb">
-<area shape="rect" id="Node000001" title="Registers a callback function for a specific generic server model." alt="" coords="5,5,164,31"/>
-<area shape="rect" id="Node000002" href="$df/d7e/meshx__control__task_8c.html#af31decf28c19d825be2987e5dca60b20" title="Subscribe to a control task message." alt="" coords="212,5,399,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="164,16,196,16,196,21,164,21"/>
-<area shape="rect" id="Node000003" href="$d3/df5/meshx__utils_8c.html#a9c92540cc0fdce9abf97534c500497b2" title="Allocates memory dynamically in a thread&#45;safe manner using FreeRTOS." alt="" coords="447,5,580,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="399,16,431,16,431,21,399,21"/>
-</map>

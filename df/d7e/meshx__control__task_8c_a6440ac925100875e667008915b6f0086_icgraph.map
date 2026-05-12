@@ -1,7 +1,0 @@
-<map id="control_task_msg_unsubscribe" name="control_task_msg_unsubscribe">
-<area shape="rect" id="Node000001" title="Deregister a callback for a specific message code and event bitmap." alt="" coords="226,35,427,60"/>
-<area shape="rect" id="Node000002" href="$da/dcb/meshx__gen__server_8c.html#a021667336ce41ccb249c2648fe325393" title="Callback function to deregister a generic server model." alt="" coords="5,5,178,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="210,36,178,32,179,26,210,30"/>
-<area shape="rect" id="Node000003" href="$d5/d98/meshx__light__server_8c.html#a4839b27a753dba5a2a400fe04a8cfff0" title="Callback function to deregister a lighting server model." alt="" coords="25,55,158,96"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="211,64,158,70,158,65,210,59"/>
-</map>

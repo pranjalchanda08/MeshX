@@ -1,5 +1,0 @@
-<map id="ble_mesh_plat_init.h" name="ble_mesh_plat_init.h">
-<area shape="rect" id="Node000001" title="Header file for BLE Mesh example initialization functions and definitions. This file contains declara..." alt="" coords="20,5,160,31"/>
-<area shape="rect" id="Node000002" href="$dc/d96/esp__platform__ble__mesh_8c.html" title="This file contains platform&#45;specific implementations for BLE Mesh functionality on the ESP32 using th..." alt="" coords="5,79,175,105"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,46,93,79,87,79,87,46"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="meshx_gen_light_send_msg" name="meshx_gen_light_send_msg">
-<area shape="rect" id="Node000001" title="Send a message using the generic client model." alt="" coords="241,78,426,104"/>
-<area shape="rect" id="Node000002" href="$d8/d93/meshx__light__ctl__client_8c.html#ae95db4bc247ab143853876d3ac375ae9" title="Sends a Light CTL (Color Temperature Lightness) message from the Light CTL Client model." alt="" coords="24,5,174,46"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="269,76,173,49,175,44,271,71"/>
-<area shape="rect" id="Node000003" href="$d8/d93/meshx__light__ctl__client_8c.html#ae84366ab4200bbf6f39715b0705ea453" title="Sends a Light CTL Temperature Range message from the client model." alt="" coords="16,71,182,111"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="225,94,182,94,182,88,225,88"/>
-<area shape="rect" id="Node000004" href="$d8/d93/meshx__light__ctl__client_8c.html#ab5a9d633ee4068249adf64aeb449880e" title="Sends a Light CTL Temperature message from the client model." alt="" coords="5,136,193,177"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="271,111,175,138,174,133,269,106"/>
-</map>

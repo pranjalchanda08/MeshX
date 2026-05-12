@@ -1,5 +1,0 @@
-<map id="meshx_gen_cli_handle_ack" name="meshx_gen_cli_handle_ack">
-<area shape="rect" id="Node000001" title="Handles ack request for generic client messages." alt="" coords="5,5,186,31"/>
-<area shape="rect" id="Node000002" href="$df/d06/meshx__txcm_8h.html#a1800870a4a78392cd7f7116d2f683a7d" title="Sends a request to the Tx Control module." alt="" coords="234,5,413,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="186,16,218,16,218,21,186,21"/>
-</map>
