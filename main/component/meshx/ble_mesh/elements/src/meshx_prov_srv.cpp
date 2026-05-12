@@ -138,12 +138,12 @@ static void meshx_handle_node_reset(dev_struct_t *pdev)
         return;
     }
 
-    for(uint16_t i = 1; i < pdev->element_idx; i++)
+    for(size_t i = 1; i < pdev->element_idx; ++i)
     {
-        meshx_err_t err = meshx_nvs_element_ctx_remove(i, MESHX_ELEMENT_TYPE_ALL);
+        meshx_err_t err = meshx_nvs_element_ctx_remove(static_cast<uint16_t>(i), MESHX_ELEMENT_TYPE_ALL);
         if(err != MESHX_SUCCESS)
         {
-            MESHX_LOGE(MODULE_ID_COMMON, "Failed to erase element context (%d): (%d)", i, err);
+            MESHX_LOGE(MODULE_ID_COMMON, "Failed to erase element context (%zu): (%d)", i, err);
         }
     }
 
