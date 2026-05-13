@@ -51,6 +51,22 @@ typedef enum
     MESHX_NOT_SUPPORTED, /**< Not Supported */
     MESHX_TIMEOUT,       /**< Timeout */
     MESHX_ERR_NOT_INIT,  /**< Not Initialized */
+
+    /* GPIO Error Codes (Base: 0x5000) */
+    MESHX_ERR_GPIO_BASE = 0x5000,          /**< GPIO error base */
+    MESHX_ERR_GPIO_INVALID_PIN,            /**< Invalid GPIO pin number */
+    MESHX_ERR_GPIO_INVALID_MODE,           /**< Invalid GPIO mode for operation */
+    MESHX_ERR_GPIO_INVALID_LEVEL,          /**< Invalid GPIO level value */
+    MESHX_ERR_GPIO_INTR_NOT_SUPPORTED,     /**< Interrupt not supported on pin */
+    MESHX_ERR_GPIO_INTR_ALREADY_REGISTERED,/**< Interrupt already registered */
+    MESHX_ERR_GPIO_PWM_NOT_SUPPORTED,      /**< PWM not supported on pin */
+    MESHX_ERR_GPIO_PWM_INVALID_PARAM,      /**< Invalid PWM parameter */
+    MESHX_ERR_GPIO_NOT_INITIALIZED,        /**< GPIO subsystem not initialized */
+    MESHX_ERR_GPIO_CONFIG_INVALID,         /**< Invalid GPIO configuration */
+    MESHX_ERR_GPIO_HOSTED_MODE,            /**< Operation not allowed in hosted mode */
+    MESHX_ERR_GPIO_KV_STORAGE,             /**< KV Engine storage error */
+    MESHX_ERR_GPIO_SERIALIZATION,          /**< Configuration serialization error */
+
     MESHX_ERR_MAX        /**< Maximum Error */
 } meshx_err_t;
 

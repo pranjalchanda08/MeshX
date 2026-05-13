@@ -41,6 +41,13 @@ typedef enum {
     MODULE_ID_ELEMENT_SENSOR_CLIENT         = 0x0D,
     MODULE_ID_ELEMENT_LIGHT_HSL_SERVER      = 0x0E,
     MODULE_ID_ELEMENT_LIGHT_HSL_CLIENT      = 0x0F,
+    MODULE_ID_COMPONENT_MESHX_GPIO          = 0x10,
+    MODULE_ID_GPIO_UNIT_TEST                = 0x11,
+    MODULE_ID_GPIO_PROPERTY_TEST            = 0x12,
+    MODULE_ID_GPIO_INTEGRATION_TEST         = 0x13,
+    MODULE_ID_PWM_PROPERTY_TEST             = 0x14,
+    MODULE_ID_GPIO_PLATFORM_TEST            = 0x15,
+    MODULE_ID_GPIO_ELEMENT_TEST             = 0x16,
     MODULE_ID_MAX
 } module_id_t;
 
