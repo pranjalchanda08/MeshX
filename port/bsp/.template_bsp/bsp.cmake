@@ -17,4 +17,11 @@ include(${CMAKE_SOURCE_DIR}/port/platform/${MCU_FAMILY}/${BOARD_MCU}/${BOARD_MCU
 set(PLATFORM_INC
     ${PLATFORM_INC}
     "${CMAKE_SOURCE_DIR}/port/bsp/${BSP}"
+    "${CMAKE_SOURCE_DIR}/port/bsp/${BSP}/gpio"
+)
+
+# Add BSP-specific GPIO source files
+set(SRC_FILES
+    ${SRC_FILES}
+    "${CMAKE_SOURCE_DIR}/port/bsp/${BSP}/gpio/gpio_constraints.c"
 )

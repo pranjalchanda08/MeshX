@@ -91,6 +91,8 @@ meshx_err_t register_ut_command() {
     return meshx_shell_register_command(&cmd);
 }
 
+#include "gpio_test_registry.h"
+
 /**
  * @brief Initializes the unit test console using the platform shell.
  *
@@ -105,6 +107,12 @@ meshx_err_t init_unit_test_console() {
     }
 
     err = register_ut_command();
+    if (err != MESHX_SUCCESS) {
+        return err;
+    }
+
+    // Register all GPIO subsystem tests
+    err = register_all_gpio_tests();
     if (err != MESHX_SUCCESS) {
         return err;
     }
