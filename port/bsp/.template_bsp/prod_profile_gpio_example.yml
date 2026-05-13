@@ -1,0 +1,73 @@
+prod:
+    cid: 0x7908
+    products:
+        - name: relay_panel_with_gpio
+          pid: 0x0008
+          elements:
+              - switch_relay_server: 2
+          gpio:
+            pins:
+              - name: "RELAY_1"
+                logical_pin: 0
+                physical_pin: 4
+                mode: "output"
+                pull: "none"
+                drive_strength: "medium"
+                initial_level: 0
+                signal_inversion: false
+
+              - name: "RELAY_2"
+                logical_pin: 1
+                physical_pin: 5
+                mode: "output"
+                pull: "none"
+                drive_strength: "medium"
+                initial_level: 0
+                signal_inversion: false
+
+              - name: "BUTTON_1"
+                logical_pin: 2
+                physical_pin: 6
+                mode: "input"
+                pull: "pull_up"
+                interrupt:
+                  trigger: "negative_edge"
+                  task_priority: 5
+                  task_stack_size: 2048
+
+              - name: "LED_PWM"
+                logical_pin: 3
+                physical_pin: 7
+                mode: "pwm_output"
+                pull: "none"
+                drive_strength: "medium"
+                pwm:
+                  frequency: 1000
+                  duty_cycle: 50
+                  resolution: 10
+                  channel: 0
+
+        - name: sensor_node_with_gpio
+          pid: 0x0009
+          elements:
+              - sensor_server: 1
+          gpio:
+            pins:
+              - name: "SENSOR_POWER"
+                logical_pin: 0
+                physical_pin: 8
+                mode: "output"
+                pull: "none"
+                drive_strength: "strong"
+                initial_level: 1
+                signal_inversion: false
+
+              - name: "SENSOR_DATA"
+                logical_pin: 1
+                physical_pin: 9
+                mode: "input"
+                pull: "pull_up"
+                interrupt:
+                  trigger: "any_edge"
+                  task_priority: 3
+                  task_stack_size: 4096

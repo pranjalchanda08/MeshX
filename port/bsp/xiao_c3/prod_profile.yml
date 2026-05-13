@@ -39,3 +39,41 @@ prod:
           pid: 0x0007
           elements:
               - rgb_server: 1
+        - name: relay_panel_with_gpio
+          pid: 0x0008
+          elements:
+              - switch_relay_server: 2
+          components:
+              - gpio: 1
+              - pwm: 1
+              - gpio_runtime: 1
+              - io_abstraction: 1
+          gpio:
+              pins:
+                  - name: "RELAY_1"
+                    logical_pin: 0
+                    physical_pin: 4
+                    mode: "output"
+                    pull: "none"
+                    initial_level: 0
+                    signal_inversion: false
+
+                  - name: "BUTTON_1"
+                    logical_pin: 1
+                    physical_pin: 5
+                    mode: "input"
+                    pull: "pull_up"
+                    interrupt:
+                        trigger: "negative_edge"
+                        task_priority: 5
+                        task_stack_size: 2048
+
+                  - name: "LED_PWM"
+                    logical_pin: 2
+                    physical_pin: 6
+                    mode: "pwm_output"
+                    pwm:
+                        frequency: 1000
+                        resolution: 10
+                        duty_cycle: 50
+                        channel: 0

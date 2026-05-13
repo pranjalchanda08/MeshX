@@ -44,8 +44,12 @@ set(INC_FILES
 if(ENABLE_TESTS AND PLATFORM_TEST_SUPPORTED)
     # Set the compile definition for complete project
     add_definitions(-DCONFIG_ENABLE_UNIT_TEST=1)
-    include_directories("${CMAKE_SOURCE_DIR}/main/component/unit_test")
-    set(MESHX_SRC ${MESHX_SRC} "${CMAKE_SOURCE_DIR}/main/component/unit_test/unit_test.c")
+    include_directories("${CMAKE_SOURCE_DIR}/main/component/unit_test/inc")
+
+    # Collect all unit test source files
+    file(GLOB UNIT_TEST_SRC "${CMAKE_SOURCE_DIR}/main/component/unit_test/src/*.c")
+
+    set(MESHX_SRC ${MESHX_SRC} ${UNIT_TEST_SRC})
 endif()
 
 set(SRC_FILES ${SRC_FILES} ${MESHX_SRC})
