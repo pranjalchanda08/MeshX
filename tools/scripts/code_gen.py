@@ -524,6 +524,18 @@ class CodeGen(CodeGenException):
             config.product.pid = self.pid
             config.product.name = self.target[:32]
 
+            uuid_str = self.product.get('uuid')
+            print(f"DEBUG: Found UUID string in profile: {uuid_str}")
+            if uuid_str:
+                try:
+                    uuid_bytes = bytes.fromhex(uuid_str.replace(':', '').replace('-', ''))
+                    if len(uuid_bytes) == 16:
+                        config.product.uuid = uuid_bytes
+                    else:
+                        print(f"Warning: UUID '{uuid_str}' is not 16 bytes. Skipping.")
+                except ValueError:
+                    print(f"Warning: UUID '{uuid_str}' is not valid hex. Skipping.")
+
         # Type 0x02: Element Composition
         if self.product is not None and 'elements' in self.product:
             # Dynamically generate element type map from model profile indices

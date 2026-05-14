@@ -24,13 +24,18 @@ extern "C" {
  * CRC-16-CCITT checksums of the header and payload, decodes the Protobuf
  * payload using nanopb, and applies the configuration (e.g., global IDs, 
  * element composition, and GPIO bindings).
+ * 
+ * If the loaded UUID is all zeros (or missing), the system should fall back
+ * to the legacy UUID generation method (e.g., based on device MAC).
+ *
  * @param[out] cid Pointer to store the loaded Company ID.
  * @param[out] pid Pointer to store the loaded Product ID.
  * @param[out] product_name Buffer to store the loaded product name.
  * @param[in]  name_max_len Maximum length of the product_name buffer.
+ * @param[out] uuid Buffer to store the loaded 16-byte UUID.
  * @return meshx_err_t MESHX_SUCCESS on success, or an error code on failure.
  */
-meshx_err_t meshx_ro_cfg_init(uint16_t *cid, uint16_t *pid, char *product_name, size_t name_max_len);
+meshx_err_t meshx_ro_cfg_init(uint16_t *cid, uint16_t *pid, char *product_name, size_t name_max_len, uint8_t *uuid);
 
 #ifdef __cplusplus
 }
