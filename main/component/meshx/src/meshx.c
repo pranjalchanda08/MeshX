@@ -93,6 +93,7 @@ static void meshx_banner_print(void)
 static dev_struct_t g_dev;
 
 static meshx_config_t g_config;
+static char g_product_name[32];
 
 meshx_prov_params_t g_prov_cfg = {
     .uuid = MESHX_UUID_EMPTY,  /**< UUID for the provisioning device */
@@ -261,6 +262,17 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     err = meshx_platform_init();
     MESHX_ERR_PRINT_RET("Platform init failed", err);
 
+    uint16_t loaded_cid = 0xFFFF;
+    uint16_t loaded_pid = 0xFFFF;
+
+    /* Load Persistent Read-Only Configuration */
+    err = meshx_ro_cfg_init(&loaded_cid, &loaded_pid, g_product_name, sizeof(g_product_name));
+    MESHX_ERR_PRINT_RET("Failed to load read-only configuration", err);
+
+    g_config.cid = loaded_cid;
+    g_config.pid = loaded_pid;
+    g_config.product_name = g_product_name;
+
     /* Initialise Control Task messaging early (required for NVS and OS Timers) */
     err = control_task_init();
     MESHX_ERR_PRINT_RET("Control Task Init failed", err);
@@ -274,18 +286,8 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     MESHX_ERR_PRINT_RET("MeshX NVS Init failed", err);
 
     /* Restore the device state and open NVS (Required before element constructors run) */
-    err = meshx_dev_restore(&g_dev, config);
+    err = meshx_dev_restore(&g_dev, &g_config);
     MESHX_ERR_PRINT_RET("Device restore failed", err);
-
-    uint16_t loaded_cid = 0xFFFF;
-    uint16_t loaded_pid = 0xFFFF;
-
-    /* Load Persistent Read-Only Configuration */
-    err = meshx_ro_cfg_init(&loaded_cid, &loaded_pid);
-    MESHX_ERR_PRINT_RET("Failed to load read-only configuration", err);
-
-    g_config.cid = loaded_cid;
-    g_config.pid = loaded_pid;
 
     /* Initialize application tasks */
     err = meshx_tasks_init(&g_dev);
