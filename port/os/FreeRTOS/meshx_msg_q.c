@@ -187,3 +187,28 @@ meshx_err_t meshx_msg_q_peek(meshx_msg_q_t *msg_q_handle, void *msg, uint32_t de
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Get the number of messages in a MeshX Message Queue
+ *
+ * This function gets the number of messages in a MeshX Message Queue.
+ *
+ * @param[in] msg_q_handle Message Queue Handle
+ *
+ * @return Number of messages
+ */
+int meshx_msg_q_get_count(meshx_msg_q_t *msg_q_handle)
+{
+    if (msg_q_handle == NULL || msg_q_handle->__msg_q_handle == NULL)
+    {
+        return 0;
+    }
+
+    if (xPortInIsrContext())
+    {
+        return (int)uxQueueMessagesWaitingFromISR(msg_q_handle->__msg_q_handle);
+    }
+    else
+    {
+        return (int)uxQueueMessagesWaiting(msg_q_handle->__msg_q_handle);
+    }
+}

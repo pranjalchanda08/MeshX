@@ -101,4 +101,15 @@ meshx_err_t meshx_msg_q_recv(meshx_msg_q_t *msg_q_handle, void *msg, uint32_t de
  */
 meshx_err_t meshx_msg_q_peek(meshx_msg_q_t *msg_q_handle, void *msg, uint32_t delay_ms);
 
+/**
+ * @brief Get the number of messages in a MeshX Message Queue
+ *
+ * This function gets the number of messages in a MeshX Message Queue.
+ *
+ * @param[in] msg_q_handle Message Queue Handle
+ *
+ * @return Number of messages
+ */
+int meshx_msg_q_get_count(meshx_msg_q_t *msg_q_handle);
+
 #endif /* __MESHX_MSG_Q_H */

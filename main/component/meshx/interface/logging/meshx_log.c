@@ -33,8 +33,40 @@
 #include "meshx_log.h"
 #include "module_id.h"
 #include "interface/rtos/meshx_rtos_utils.h"
+#include "interface/rtos/meshx_msg_q.h"
+#include "interface/rtos/meshx_task.h"
 #include <stdio.h>
 #include <stdarg.h>
+#include <string.h>
+
+#if CONFIG_MESHX_LOG_THREADED
+#include "meshx_control_task.h"
+
+typedef struct {
+    char log_buf[CONFIG_MESHX_LOG_BUF_SIZE];
+} meshx_log_msg_t;
+
+static meshx_msg_q_t log_msg_q = {
+    .max_msg_depth = sizeof(meshx_log_msg_t),
+    .max_msg_length = CONFIG_MESHX_LOG_QUEUE_LEN
+};
+
+static bool log_threaded_init_done = false;
+
+static void meshx_log_task_handler(void *args)
+{
+    meshx_log_msg_t recv_msg;
+    (void)args;
+
+    while (true)
+    {
+        if (meshx_msg_q_recv(&log_msg_q, &recv_msg, UINT32_MAX) == MESHX_SUCCESS)
+        {
+            CONFIG_MESHX_LOG_PRINTF("%s", recv_msg.log_buf);
+        }
+    }
+}
+#endif
 
 static meshx_log_level_t module_log_level[MODULE_ID_MAX];
 
@@ -68,6 +100,28 @@ meshx_err_t meshx_logging_init(const meshx_logging_t *config)
     {
         module_log_level[i] = CONFIG_MESHX_DEFAULT_LOG_LEVEL;
     }
+
+#if CONFIG_MESHX_LOG_THREADED
+    if (!log_threaded_init_done)
+    {
+        meshx_err_t err = meshx_msg_q_create(&log_msg_q);
+        if (err != MESHX_SUCCESS)
+            return err;
+
+        static meshx_task_t log_task;
+        log_task.task_cb = meshx_log_task_handler;
+        log_task.task_name = "meshx_log_task";
+        log_task.stack_size = CONFIG_MESHX_LOG_STACK_SIZE;
+        log_task.priority = CONFIG_MESHX_LOG_TASK_PRIO;
+        log_task.arg = NULL;
+
+        err = meshx_task_create(&log_task);
+        if (err != MESHX_SUCCESS)
+            return err;
+
+        log_threaded_init_done = true;
+    }
+#endif
 
     return MESHX_SUCCESS;
 }
@@ -117,12 +171,57 @@ void meshx_log_printf(module_id_t module_id, meshx_log_level_t log_level,
     unsigned int millis;
     unsigned int task_id;
 
-    meshx_rtos_get_sys_time(&millis);
-    meshx_rtos_get_curr_task_id_prio(&task_id);
+    meshx_err_t err_time = meshx_rtos_get_sys_time(&millis);
+    meshx_err_t err_task = meshx_rtos_get_curr_task_id_prio(&task_id);
+    
+    if (err_time != MESHX_SUCCESS) millis = 0;
+    if (err_task != MESHX_SUCCESS) task_id = 0;
+
     /* Get log level color */
     const char *color = MESHX_LOG_LEVEL_COLOR(log_level);
 
-    /* Print timestamp and log */
+#if CONFIG_MESHX_LOG_THREADED
+    if (log_threaded_init_done)
+    {
+        meshx_log_msg_t msg;
+        int len = snprintf(msg.log_buf, sizeof(msg.log_buf), "\r%s[%s][%08u][%03x][%25s:%04d]\t", color, log_lvl_str[log_level], millis, task_id, func, line_no);
+        
+        if (len < (int)sizeof(msg.log_buf))
+        {
+            va_list args;
+            va_start(args, fmt);
+            len += vsnprintf(msg.log_buf + len, sizeof(msg.log_buf) - len, fmt, args);
+            va_end(args);
+        }
+
+        if (len < (int)sizeof(msg.log_buf))
+        {
+            snprintf(msg.log_buf + len, sizeof(msg.log_buf) - len, "%s\n", MESHX_LOG_COLOR_RESET);
+        }
+        else
+        {
+            /* Truncated, but at least ensure reset color and newline if possible */
+            msg.log_buf[sizeof(msg.log_buf) - 2] = '\n';
+            msg.log_buf[sizeof(msg.log_buf) - 1] = '\0';
+        }
+
+        uint32_t wait_ms = 0;
+        /* If queue count is above watermark, wait for space to avoid log miss */
+        if (meshx_msg_q_get_count(&log_msg_q) >= CONFIG_MESHX_LOG_HIGH_WATERMARK)
+        {
+            wait_ms = UINT32_MAX; /* Block until space is available */
+        }
+
+        meshx_err_t send_err = meshx_msg_q_send(&log_msg_q, &msg, sizeof(msg), wait_ms);
+        if (send_err == MESHX_SUCCESS)
+        {
+            return;
+        }
+        /* If send_err is not success (e.g. timeout or other failure), fallback to direct print */
+    }
+#endif
+
+    /* Fallback to direct print if threaded mode is not enabled or not initialized yet */
     CONFIG_MESHX_LOG_PRINTF("\r%s[%s][%08u][%03x][%25s:%04d]\t", color, log_lvl_str[log_level], millis, task_id, func, line_no);
 
     /* Process variable arguments */
