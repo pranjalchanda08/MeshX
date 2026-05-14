@@ -15,31 +15,12 @@
 static meshx_err_t meshx_app_data_cb(const meshx_app_element_msg_header_t *msg_hdr, const meshx_data_payload_t *data_payload_u);
 static meshx_err_t meshx_app_ctrl_cb(const meshx_ctrl_msg_header_t *msg_hdr, const meshx_ctrl_payload_t *msg);
 /**
- * @brief Array of element components with their respective types and counts.
- *
- * This array holds the configuration for different types of elements in the MeshX application.
- * Each entry in the array consists of an element type and the corresponding count defined in the configuration.
- *
- */
-static element_comp_t element_comp_arr[] = {
-    {MESHX_ELEMENT_TYPE_RELAY_SERVER,       CONFIG_RELAY_SERVER_COUNT},
-    {MESHX_ELEMENT_TYPE_RELAY_CLIENT,       CONFIG_RELAY_CLIENT_COUNT},
-    {MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER,  CONFIG_LIGHT_CWWW_SRV_COUNT},
-    {MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT,  CONFIG_LIGHT_CWWW_CLIENT_COUNT}
-};
-
-/**
  * @brief Configuration for the MeshX library.
  */
 static const meshx_config_t meshx_config = {
-    .cid                    = CONFIG_CID_ID,
-    .pid                    = CONFIG_PID_ID,
-    .product_name           = CONFIG_PRODUCT_NAME,
     .app_ctrl_cb            = &meshx_app_ctrl_cb,
     .app_element_cb         = &meshx_app_data_cb,
     .meshx_uuid_addr        = MESHX_UUID_EMPTY,   /* UUID address to be filled internally for MeshX */
-    .element_comp_arr       = element_comp_arr,
-    .element_comp_arr_len   = ARRAY_SIZE(element_comp_arr),
     .meshx_nvs_save_period  = CONFIG_MESHX_NVS_SAVE_PERIOD_MS,
 };
 

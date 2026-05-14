@@ -21,7 +21,6 @@ void meshXDevice::visualize_status() {
         MESHX_LOGW(MODULE_ID_COMMON, "Device not initialized, cannot visualize status");
         return;
     }
-#if CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO
     MESHX_LOGI(MODULE_ID_COMMON, "==================================================");
     MESHX_LOGI(MODULE_ID_COMMON, "   MESHX DEVICE STATUS VISUALIZATION");
     MESHX_LOGI(MODULE_ID_COMMON, "==================================================");
@@ -58,5 +57,4 @@ void meshXDevice::visualize_status() {
         }
     }
     MESHX_LOGI(MODULE_ID_COMMON, "==================================================");
-#endif /* CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO */
 }
