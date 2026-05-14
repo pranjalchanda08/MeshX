@@ -114,7 +114,7 @@ void meshx_log_printf(module_id_t module_id, meshx_log_level_t log_level,
         return;
 
     /* Get timestamp */
-        unsigned int millis;
+    unsigned int millis;
     unsigned int task_id;
 
     meshx_rtos_get_sys_time(&millis);
