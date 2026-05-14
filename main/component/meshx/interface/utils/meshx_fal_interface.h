@@ -67,6 +67,16 @@ meshx_err_t meshx_fal_write(const meshx_fal_partition_t *part, uint32_t offset, 
  */
 meshx_err_t meshx_fal_erase(const meshx_fal_partition_t *part, uint32_t offset, size_t len);
 
+/**
+ * @brief Find a flash partition by name.
+ *
+ * @param[in]  name    Name of the partition to find.
+ * @param[out] part    Pointer to the partition structure to populate.
+ *
+ * @return meshx_err_t MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_fal_find_partition(const char *name, meshx_fal_partition_t *part);
+
 #ifdef __cplusplus
 }
 #endif

@@ -26,27 +26,10 @@ extern "C" {
 #endif
 
 /**
- * @brief Enumeration of BLE Mesh application API message types.
- */
-typedef enum meshx_element_type
-{
-    MESHX_ELEMENT_TYPE_RELAY_SERVER,
-    MESHX_ELEMENT_TYPE_RELAY_CLIENT,
-    MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER,
-    MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT,
-    MESHX_ELEMENT_TYPE_LIGHT_HSL_SERVER,
-    MESHX_ELEMENT_TYPE_LIGHT_HSL_CLIENT,
-    MESHX_ELEMENT_TYPE_SENSOR_SERVER,
-    MESHX_ELEMENT_TYPE_SENSOR_CLIENT,
-    MESHX_ELEMENT_TYPE_MAX,
-    MESHX_ELEMENT_TYPE_ALL = 0xFF
-}meshx_element_type_t;
-
-/**
  * @brief Enumeration for the BLE Mesh application control event.
  */
 typedef enum {
-    MESHX_CTRL_EVT_NODE_RESET = 0x01,    /* Node Reset */
+    MESHX_CTRL_EVT_NODE_RESET = 0x01,   /* Node Reset */
     MESHX_CTRL_EVT_PROV_COMP,           /* Provisioning Completed */
     MESHX_CTRL_EVT_PROV_FAILED,         /* Provisioning Failed */
     MESHX_CTRL_EVT_PROV_START,          /* Provisioning Started */
