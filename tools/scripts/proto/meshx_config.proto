@@ -5,6 +5,7 @@ message ProductInfo {
   uint32 cid = 1;
   uint32 pid = 2;
   string name = 3;
+  optional bytes uuid = 4;
 }
 
 // Element Composition
