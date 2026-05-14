@@ -10,7 +10,10 @@
  * @author Pranjal Chanda
  *
  */
-#include "meshx.h"
+#include "interface/meshx_platform.h"
+#include <meshx.h>
+#include <meshx_serial.h>
+#include <meshx_ro_cfg.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -274,24 +277,15 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     err = meshx_dev_restore(&g_dev, config);
     MESHX_ERR_PRINT_RET("Device restore failed", err);
 
-    /**
-     * @brief OOB Dynamic Composition Automation
-     * If the configuration provides an element composition array,
-     * we automatically trigger the dynamic builder.
-     */
-    if (config->element_comp_arr && config->element_comp_arr_len > 0)
-    {
-        meshx_builder_begin();
-        for (uint16_t i = 0; i < config->element_comp_arr_len; i++)
-        {
-            if (config->element_comp_arr[i].element_cnt > 0)
-            {
-                meshx_builder_add_element(config->element_comp_arr[i].type,
-                                          config->element_comp_arr[i].element_cnt);
-            }
-        }
-        meshx_builder_commit();
-    }
+    uint16_t loaded_cid = 0xFFFF;
+    uint16_t loaded_pid = 0xFFFF;
+
+    /* Load Persistent Read-Only Configuration */
+    err = meshx_ro_cfg_init(&loaded_cid, &loaded_pid);
+    MESHX_ERR_PRINT_RET("Failed to load read-only configuration", err);
+
+    g_config.cid = loaded_cid;
+    g_config.pid = loaded_pid;
 
     /* Initialize application tasks */
     err = meshx_tasks_init(&g_dev);
