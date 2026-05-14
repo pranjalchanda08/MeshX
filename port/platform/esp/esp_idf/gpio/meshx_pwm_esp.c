@@ -12,6 +12,7 @@
 
 #include "interface/gpio/meshx_gpio_platform.h"
 #include "interface/logging/meshx_log.h"
+#include "esp_log.h"
 #include "driver/ledc.h"
 #include "esp_err.h"
 #include <string.h>
@@ -195,6 +196,9 @@ meshx_err_t meshx_pwm_platform_init(void)
 
     // Initialize PWM channel states
     memset(esp_pwm_channels, 0, sizeof(esp_pwm_channels));
+
+    // Suppress ledc driver warnings (e.g., "GPIO X is not usable")
+    esp_log_level_set("ledc", ESP_LOG_ERROR);
 
     pwm_initialized = true;
     MESHX_LOGD(MODULE_ID_PLATFORM_PWM, "PWM platform initialized");

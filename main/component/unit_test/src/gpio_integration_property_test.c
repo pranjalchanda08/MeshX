@@ -28,7 +28,7 @@
  */
 static meshx_err_t test_property_io_bridge_dispatch(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Testing Property 6.1: IO Bridge Function Dispatch");
+    MESHX_LOGD(MODULE_ID_COMMON, "Testing Property 6.1: IO Bridge Function Dispatch");
 
     // Initialize subsystems
     meshx_err_t err = meshx_gpio_init();
@@ -100,7 +100,7 @@ static meshx_err_t test_property_io_bridge_dispatch(void)
  */
 static meshx_err_t run_gpio_integration_property_tests(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Starting GPIO Integration Property Tests (Property 6)");
+    MESHX_LOGD(MODULE_ID_COMMON, "Starting GPIO Integration Property Tests (Property 6)");
     
     meshx_err_t result;
     
