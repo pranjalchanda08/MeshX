@@ -28,7 +28,7 @@
  */
 static meshx_err_t test_property_platform_interface_adherence(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Testing Property 8.1: Platform Interface Adherence");
+    MESHX_LOGD(MODULE_ID_COMMON, "Testing Property 8.1: Platform Interface Adherence");
 
     // Test platform initialization
     meshx_err_t err = meshx_gpio_platform_init();
@@ -77,7 +77,7 @@ static meshx_err_t test_property_platform_interface_adherence(void)
  */
 static meshx_err_t test_property_platform_interrupt_support(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Testing Property 8.2: Platform Interrupt Support");
+    MESHX_LOGD(MODULE_ID_COMMON, "Testing Property 8.2: Platform Interrupt Support");
 
     uint8_t physical_pin = 5; // Use another pin for interrupt test
     
@@ -125,7 +125,7 @@ static meshx_err_t test_property_platform_interrupt_support(void)
  */
 static meshx_err_t run_gpio_platform_property_tests(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Starting GPIO Platform Property Tests (Property 8)");
+    MESHX_LOGD(MODULE_ID_COMMON, "Starting GPIO Platform Property Tests (Property 8)");
     
     meshx_err_t result;
     
