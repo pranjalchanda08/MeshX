@@ -26,21 +26,6 @@ typedef struct {
 } meshx_cfg_header_t;
 #pragma pack(pop)
 
-typedef struct {
-    char *buffer;
-    size_t max_len;
-} string_decode_ctx_t;
-
-static bool string_decode_cb(pb_istream_t *stream, const pb_field_iter_t *field, void **arg) {
-    string_decode_ctx_t *ctx = (string_decode_ctx_t *)*arg;
-    size_t len = stream->bytes_left;
-    if (len >= ctx->max_len) len = ctx->max_len - 1;
-
-    if (!pb_read(stream, (pb_byte_t *)ctx->buffer, len)) return false;
-    ctx->buffer[len] = '\0';
-    return true;
-}
-
 // CRC-16-CCITT (Polynomial 0x1021, Initial 0xFFFF)
 static uint16_t calc_crc16_ccitt(const uint8_t *data, size_t len) {
     uint16_t crc = 0xFFFF;
@@ -87,7 +72,7 @@ static bool bindings_decode_cb(pb_istream_t *stream, const pb_field_iter_t *fiel
     return true;
 }
 
-meshx_err_t meshx_ro_cfg_init(uint16_t *cid, uint16_t *pid, char *product_name, size_t name_max_len) {
+meshx_err_t meshx_ro_cfg_init(uint16_t *cid, uint16_t *pid, char *product_name, size_t name_max_len, uint8_t *uuid) {
     meshx_fal_partition_t part;
     if (meshx_fal_find_partition("meshx_cfg", &part) != MESHX_SUCCESS) {
         MESHX_LOGI(MODULE_ID_RO_CFG, "No meshx_cfg partition found");
@@ -140,12 +125,6 @@ meshx_err_t meshx_ro_cfg_init(uint16_t *cid, uint16_t *pid, char *product_name, 
     config.gpio.funcs.decode = gpio_decode_cb;
     config.bindings.funcs.decode = bindings_decode_cb;
 
-    string_decode_ctx_t name_ctx = {product_name, name_max_len};
-    if (product_name && name_max_len > 0) {
-        config.product.name.funcs.decode = string_decode_cb;
-        config.product.name.arg = &name_ctx;
-    }
-
     pb_istream_t stream = pb_istream_from_buffer(payload, payload_len);
 
     meshx_builder_begin();
@@ -161,8 +140,16 @@ meshx_err_t meshx_ro_cfg_init(uint16_t *cid, uint16_t *pid, char *product_name, 
     if (config.has_product) {
         if (cid) *cid = config.product.cid;
         if (pid) *pid = config.product.pid;
-        MESHX_LOGI(MODULE_ID_RO_CFG, "Loaded Config: CID 0x%04X, PID 0x%04X, Name: %s", 
-                 config.product.cid, config.product.pid, product_name ? product_name : "N/A");
+        if (product_name) {
+            strncpy(product_name, config.product.name, name_max_len - 1);
+            product_name[name_max_len - 1] = '\0';
+        }
+        if (uuid && config.product.has_uuid) {
+            memcpy(uuid, config.product.uuid, 16);
+            MESHX_LOGD(MODULE_ID_RO_CFG, "Loaded UUID: %02X%02X%02X%02X...", uuid[0], uuid[1], uuid[2], uuid[3]);
+        }
+        MESHX_LOGI(MODULE_ID_RO_CFG, "Loaded Config: CID 0x%04X, PID 0x%04X, Name: %s",
+                 config.product.cid, config.product.pid, config.product.name);
     }
 
     free(payload);

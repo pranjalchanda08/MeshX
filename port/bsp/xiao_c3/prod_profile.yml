@@ -24,6 +24,7 @@ prod:
 
         - name: all_in_one
           pid: 0x0004
+          uuid: 9a7261593ae84b9384129a14fabb4213
           elements:
               - relay_client: 1
               - relay_server: 1
