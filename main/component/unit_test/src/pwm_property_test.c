@@ -83,7 +83,7 @@ static void init_test_state(void)
  */
 static meshx_err_t test_property_pwm_initialization(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Testing Property 4.1: PWM initialization based on configuration");
+    MESHX_LOGD(MODULE_ID_COMMON, "Testing Property 4.1: PWM initialization based on configuration");
 
     // Test PWM subsystem initialization
     meshx_err_t result = meshx_pwm_init();
@@ -93,7 +93,7 @@ static meshx_err_t test_property_pwm_initialization(void)
     }
 
     test_state.pwm_initialized = true;
-    MESHX_LOGI(MODULE_ID_COMMON, "PASS: Property 4.1 - PWM initialization based on configuration");
+    MESHX_LOGD(MODULE_ID_COMMON, "PASS: Property 4.1 - PWM initialization based on configuration");
     return MESHX_SUCCESS;
 }
 
@@ -104,14 +104,14 @@ static meshx_err_t test_property_pwm_initialization(void)
  */
 static meshx_err_t test_property_pwm_start_stop(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Testing Property 4.2: PWM start and stop operations");
+    MESHX_LOGD(MODULE_ID_COMMON, "Testing Property 4.2: PWM start and stop operations");
 
     if (!test_state.pwm_initialized) {
         MESHX_LOGE(MODULE_ID_COMMON, "FAIL: PWM not initialized");
         return MESHX_ERR_GPIO_NOT_INITIALIZED;
     }
 
-    uint8_t test_pin = 50;
+    uint8_t test_pin = 6; // Use safe Xiao C3 pin
     uint32_t test_frequency = 1000; // 1kHz
     uint8_t test_duty_cycle = 50;   // 50%
     uint8_t test_resolution = 10;   // 10-bit resolution
@@ -149,7 +149,7 @@ static meshx_err_t test_property_pwm_start_stop(void)
         return MESHX_FAIL;
     }
 
-    MESHX_LOGI(MODULE_ID_COMMON, "PASS: Property 4.2 - PWM start and stop operations");
+    MESHX_LOGD(MODULE_ID_COMMON, "PASS: Property 4.2 - PWM start and stop operations");
     return MESHX_SUCCESS;
 }
 
@@ -160,14 +160,15 @@ static meshx_err_t test_property_pwm_start_stop(void)
  */
 static meshx_err_t test_property_duty_cycle_accuracy(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Testing Property 4.3: Duty cycle accuracy");
+    MESHX_LOGD(MODULE_ID_COMMON, "Testing Property 4.3: Duty cycle accuracy");
 
     if (!test_state.pwm_initialized) {
         MESHX_LOGE(MODULE_ID_COMMON, "FAIL: PWM not initialized");
         return MESHX_ERR_GPIO_NOT_INITIALIZED;
     }
 
-    uint8_t test_pin = 51;
+    uint8_t test_pin = 6;
+    meshx_pwm_start(test_pin);
     test_state.pwm_started[test_pin] = true;
 
     // Test valid duty cycle values
@@ -222,7 +223,8 @@ static meshx_err_t test_property_duty_cycle_accuracy(void)
         }
     }
 
-    MESHX_LOGI(MODULE_ID_COMMON, "PASS: Property 4.3 - Duty cycle accuracy");
+    MESHX_LOGD(MODULE_ID_COMMON, "PASS: Property 4.3 - Duty cycle accuracy");
+    meshx_pwm_stop(test_pin);
     return MESHX_SUCCESS;
 }
 
@@ -233,14 +235,15 @@ static meshx_err_t test_property_duty_cycle_accuracy(void)
  */
 static meshx_err_t test_property_frequency_accuracy(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Testing Property 4.4: Frequency accuracy");
+    MESHX_LOGD(MODULE_ID_COMMON, "Testing Property 4.4: Frequency accuracy");
 
     if (!test_state.pwm_initialized) {
         MESHX_LOGE(MODULE_ID_COMMON, "FAIL: PWM not initialized");
         return MESHX_ERR_GPIO_NOT_INITIALIZED;
     }
 
-    uint8_t test_pin = 52;
+    uint8_t test_pin = 6;
+    meshx_pwm_start(test_pin);
     test_state.pwm_started[test_pin] = true;
 
     // Test valid frequency values (typical PWM frequencies)
@@ -290,7 +293,8 @@ static meshx_err_t test_property_frequency_accuracy(void)
         return MESHX_FAIL;
     }
 
-    MESHX_LOGI(MODULE_ID_COMMON, "PASS: Property 4.4 - Frequency accuracy");
+    MESHX_LOGD(MODULE_ID_COMMON, "PASS: Property 4.4 - Frequency accuracy");
+    meshx_pwm_stop(test_pin);
     return MESHX_SUCCESS;
 }
 
@@ -301,14 +305,15 @@ static meshx_err_t test_property_frequency_accuracy(void)
  */
 static meshx_err_t test_property_parameter_validation(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Testing Property 4.5: Parameter validation against hardware limits");
+    MESHX_LOGD(MODULE_ID_COMMON, "Testing Property 4.5: Parameter validation against hardware limits");
 
     if (!test_state.pwm_initialized) {
         MESHX_LOGE(MODULE_ID_COMMON, "FAIL: PWM not initialized");
         return MESHX_ERR_GPIO_NOT_INITIALIZED;
     }
 
-    uint8_t test_pin = 53;
+    uint8_t test_pin = 6;
+    meshx_pwm_start(test_pin);
     test_state.pwm_started[test_pin] = true;
 
     // Test resolution parameter validation
@@ -349,7 +354,8 @@ static meshx_err_t test_property_parameter_validation(void)
         return MESHX_FAIL;
     }
 
-    MESHX_LOGI(MODULE_ID_COMMON, "PASS: Property 4.5 - Parameter validation against hardware limits");
+    MESHX_LOGD(MODULE_ID_COMMON, "PASS: Property 4.5 - Parameter validation against hardware limits");
+    meshx_pwm_stop(test_pin);
     return MESHX_SUCCESS;
 }
 
@@ -360,7 +366,7 @@ static meshx_err_t test_property_parameter_validation(void)
  */
 static meshx_err_t test_property_channel_allocation(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Testing Property 4.6: Hardware channel allocation and conflict handling");
+    MESHX_LOGD(MODULE_ID_COMMON, "Testing Property 4.6: Hardware channel allocation and conflict handling");
 
     if (!test_state.pwm_initialized) {
         MESHX_LOGE(MODULE_ID_COMMON, "FAIL: PWM not initialized");
@@ -368,7 +374,7 @@ static meshx_err_t test_property_channel_allocation(void)
     }
 
     // Test multiple pins can be configured (implementation may handle channel allocation)
-    const uint8_t test_pins[] = {60, 61, 62, 63};
+    const uint8_t test_pins[] = {3, 4, 5};
 
     for (size_t i = 0; i < sizeof(test_pins) / sizeof(test_pins[0]); i++) {
         meshx_err_t result = meshx_pwm_start(test_pins[i]);
@@ -426,7 +432,7 @@ static meshx_err_t test_property_channel_allocation(void)
         test_state.pwm_started[test_pins[i]] = false;
     }
 
-    MESHX_LOGI(MODULE_ID_COMMON, "PASS: Property 4.6 - Hardware channel allocation and conflict handling");
+    MESHX_LOGD(MODULE_ID_COMMON, "PASS: Property 4.6 - Hardware channel allocation and conflict handling");
     return MESHX_SUCCESS;
 }
 
@@ -437,14 +443,15 @@ static meshx_err_t test_property_channel_allocation(void)
  */
 static meshx_err_t test_property_state_maintenance(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Testing Property 4.7: PWM state maintenance");
+    MESHX_LOGD(MODULE_ID_COMMON, "Testing Property 4.7: PWM state maintenance");
 
     if (!test_state.pwm_initialized) {
         MESHX_LOGE(MODULE_ID_COMMON, "FAIL: PWM not initialized");
         return MESHX_ERR_GPIO_NOT_INITIALIZED;
     }
 
-    uint8_t test_pin = 70;
+    uint8_t test_pin = 6;
+    meshx_pwm_start(test_pin);
     test_state.pwm_started[test_pin] = true;
 
     // Test state persistence across multiple operations
@@ -535,7 +542,7 @@ static meshx_err_t test_property_state_maintenance(void)
 
     test_state.pwm_started[test_pin] = false;
 
-    MESHX_LOGI(MODULE_ID_COMMON, "PASS: Property 4.7 - PWM state maintenance");
+    MESHX_LOGD(MODULE_ID_COMMON, "PASS: Property 4.7 - PWM state maintenance");
     return MESHX_SUCCESS;
 }
 
@@ -546,7 +553,7 @@ static meshx_err_t test_property_state_maintenance(void)
  */
 static meshx_err_t test_property_deinit_cleanup(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Testing Property 4.8: Deinitialization and resource cleanup");
+    MESHX_LOGD(MODULE_ID_COMMON, "Testing Property 4.8: Deinitialization and resource cleanup");
 
     if (!test_state.pwm_initialized) {
         MESHX_LOGE(MODULE_ID_COMMON, "FAIL: PWM not initialized");
@@ -565,7 +572,7 @@ static meshx_err_t test_property_deinit_cleanup(void)
     // Verify PWM operations fail after deinitialization
     // (This depends on implementation - may return MESHX_ERR_GPIO_NOT_INITIALIZED
     //  or may re-initialize automatically)
-    result = meshx_pwm_start(80);
+    result = meshx_pwm_start(200); // Definitely invalid (> 128)
     if (result != MESHX_SUCCESS && result != MESHX_ERR_GPIO_NOT_INITIALIZED) {
         MESHX_LOGE(MODULE_ID_COMMON,
                   "FAIL: Unexpected error after deinitialization: %d", result);
@@ -582,8 +589,8 @@ static meshx_err_t test_property_deinit_cleanup(void)
     test_state.pwm_initialized = true;
 
     // Verify PWM can be used again after re-initialization
-    meshx_gpio_test_set_pin_mode(81, MESHX_GPIO_MODE_PWM_OUTPUT);
-    result = meshx_pwm_start(81);
+    meshx_gpio_test_set_pin_mode(7, MESHX_GPIO_MODE_PWM_OUTPUT);
+    result = meshx_pwm_start(7);
     if (result != MESHX_SUCCESS) {
         MESHX_LOGE(MODULE_ID_COMMON,
                   "FAIL: Cannot use PWM after re-initialization: %d", result);
@@ -591,13 +598,13 @@ static meshx_err_t test_property_deinit_cleanup(void)
     }
 
     // Clean up
-    result = meshx_pwm_stop(81);
+    result = meshx_pwm_stop(7);
     if (result != MESHX_SUCCESS) {
         MESHX_LOGE(MODULE_ID_COMMON, "FAIL: Failed to stop PWM after test: %d", result);
         return result;
     }
 
-    MESHX_LOGI(MODULE_ID_COMMON, "PASS: Property 4.8 - Deinitialization and resource cleanup");
+    MESHX_LOGD(MODULE_ID_COMMON, "PASS: Property 4.8 - Deinitialization and resource cleanup");
     return MESHX_SUCCESS;
 }
 
@@ -608,9 +615,9 @@ static meshx_err_t test_property_deinit_cleanup(void)
  */
 static meshx_err_t run_pwm_property_tests(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Starting PWM Property Tests");
-    MESHX_LOGI(MODULE_ID_COMMON, "Property 4: PWM Subsystem Correctness");
-    MESHX_LOGI(MODULE_ID_COMMON, "Validates: Requirements 4.1-4.10");
+    MESHX_LOGD(MODULE_ID_COMMON, "Starting PWM Property Tests");
+    MESHX_LOGD(MODULE_ID_COMMON, "Property 4: PWM Subsystem Correctness");
+    MESHX_LOGD(MODULE_ID_COMMON, "Validates: Requirements 4.1-4.10");
 
     init_test_state();
 
@@ -679,7 +686,7 @@ static meshx_err_t pwm_property_test_handler(int cmd_id, int argc, char **argv)
     (void)argc;
     (void)argv;
 
-    MESHX_LOGI(MODULE_ID_COMMON, "PWM Property Test Handler - Command ID: %d", cmd_id);
+    MESHX_LOGD(MODULE_ID_COMMON, "[DEBUG] PWM Property Test Handler - Command ID: %d", cmd_id);
 
     switch (cmd_id) {
         case 0:

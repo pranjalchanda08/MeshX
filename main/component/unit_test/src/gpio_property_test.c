@@ -77,7 +77,7 @@ static void init_test_state(void)
  */
 static meshx_err_t test_property_mode_specific_operations(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Testing Property 2.1: Mode-specific operation validity");
+    MESHX_LOGD(MODULE_ID_COMMON, "Testing Property 2.1: Mode-specific operation validity");
 
     // Test cases for different modes and operations
     const struct {
@@ -162,7 +162,7 @@ static meshx_err_t test_property_mode_specific_operations(void)
         }
     }
 
-    MESHX_LOGI(MODULE_ID_COMMON, "PASS: Property 2.1 - Mode-specific operation validity");
+    MESHX_LOGD(MODULE_ID_COMMON, "PASS: Property 2.1 - Mode-specific operation validity");
     return MESHX_SUCCESS;
 }
 
@@ -173,7 +173,7 @@ static meshx_err_t test_property_mode_specific_operations(void)
  */
 static meshx_err_t test_property_error_codes(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Testing Property 2.2: Appropriate error codes");
+    MESHX_LOGD(MODULE_ID_COMMON, "Testing Property 2.2: Appropriate error codes");
 
     // Test invalid pin number (out of range)
     meshx_err_t result = meshx_gpio_set_level(255, 1); // 255 is valid (0-255)
@@ -221,7 +221,7 @@ static meshx_err_t test_property_error_codes(void)
         return MESHX_FAIL;
     }
 
-    MESHX_LOGI(MODULE_ID_COMMON, "PASS: Property 2.2 - Appropriate error codes");
+    MESHX_LOGD(MODULE_ID_COMMON, "PASS: Property 2.2 - Appropriate error codes");
     return MESHX_SUCCESS;
 }
 
@@ -232,7 +232,7 @@ static meshx_err_t test_property_error_codes(void)
  */
 static meshx_err_t test_property_operation_isolation(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Testing Property 2.3: Operation isolation");
+    MESHX_LOGD(MODULE_ID_COMMON, "Testing Property 2.3: Operation isolation");
 
     // Configure multiple pins with different initial states
     const uint8_t pins[] = {20, 21, 22, 23};
@@ -272,7 +272,7 @@ static meshx_err_t test_property_operation_isolation(void)
         }
     }
 
-    MESHX_LOGI(MODULE_ID_COMMON, "PASS: Property 2.3 - Operation isolation");
+    MESHX_LOGD(MODULE_ID_COMMON, "PASS: Property 2.3 - Operation isolation");
     return MESHX_SUCCESS;
 }
 
@@ -283,7 +283,7 @@ static meshx_err_t test_property_operation_isolation(void)
  */
 static meshx_err_t test_property_state_tracking(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Testing Property 2.4: Consistent pin state tracking");
+    MESHX_LOGD(MODULE_ID_COMMON, "Testing Property 2.4: Consistent pin state tracking");
 
     uint8_t test_pin = 30;
     test_state.pin_modes[test_pin] = MESHX_GPIO_MODE_OUTPUT;
@@ -361,7 +361,7 @@ static meshx_err_t test_property_state_tracking(void)
         return MESHX_FAIL;
     }
 
-    MESHX_LOGI(MODULE_ID_COMMON, "PASS: Property 2.4 - Consistent pin state tracking");
+    MESHX_LOGD(MODULE_ID_COMMON, "PASS: Property 2.4 - Consistent pin state tracking");
     return MESHX_SUCCESS;
 }
 
@@ -372,7 +372,7 @@ static meshx_err_t test_property_state_tracking(void)
  */
 static meshx_err_t test_property_init_deinit(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Testing Property 2.5: Initialization and deinitialization");
+    MESHX_LOGD(MODULE_ID_COMMON, "Testing Property 2.5: Initialization and deinitialization");
 
     // Test initialization
     meshx_err_t result = meshx_gpio_init();
@@ -425,7 +425,7 @@ static meshx_err_t test_property_init_deinit(void)
         return MESHX_FAIL;
     }
 
-    MESHX_LOGI(MODULE_ID_COMMON, "PASS: Property 2.5 - Initialization and deinitialization");
+    MESHX_LOGD(MODULE_ID_COMMON, "PASS: Property 2.5 - Initialization and deinitialization");
     return MESHX_SUCCESS;
 }
 
@@ -436,9 +436,9 @@ static meshx_err_t test_property_init_deinit(void)
  */
 static meshx_err_t run_gpio_property_tests(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Starting GPIO Property Tests");
-    MESHX_LOGI(MODULE_ID_COMMON, "Property 2: Mode-Aware GPIO Operation Validity");
-    MESHX_LOGI(MODULE_ID_COMMON, "Validates: Requirements 2.1-2.5, 2.8-2.10, 8.1-8.3, 8.9-8.10");
+    MESHX_LOGD(MODULE_ID_COMMON, "Starting GPIO Property Tests");
+    MESHX_LOGD(MODULE_ID_COMMON, "Property 2: Mode-Aware GPIO Operation Validity");
+    MESHX_LOGD(MODULE_ID_COMMON, "Validates: Requirements 2.1-2.5, 2.8-2.10, 8.1-8.3, 8.9-8.10");
 
     init_test_state();
 
@@ -488,8 +488,6 @@ static meshx_err_t gpio_property_test_handler(int cmd_id, int argc, char **argv)
 {
     (void)argc;
     (void)argv;
-
-    MESHX_LOGI(MODULE_ID_COMMON, "GPIO Property Test Handler - Command ID: %d", cmd_id);
 
     switch (cmd_id) {
         case 0:

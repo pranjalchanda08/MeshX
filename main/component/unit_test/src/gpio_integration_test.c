@@ -220,7 +220,7 @@ static void cleanup_integration_test(void)
  */
 static meshx_err_t test_io_interface_creation(void)
 {
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: IO interface creation");
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: IO interface creation");
 
     /* Initialize GPIO subsystem */
     meshx_err_t err = meshx_gpio_init();
@@ -283,7 +283,7 @@ static meshx_err_t test_io_interface_creation(void)
  */
 static meshx_err_t test_element_state_change(void)
 {
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: Element state change integration");
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: Element state change integration");
 
     if (!intg_state.gpio_initialized) {
         meshx_err_t err = meshx_gpio_init();
@@ -363,7 +363,7 @@ static meshx_err_t test_element_state_change(void)
  */
 static meshx_err_t test_io_function_execution(void)
 {
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: IO function execution");
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: IO function execution");
 
     if (!intg_state.gpio_initialized) {
         meshx_err_t err = meshx_gpio_init();
@@ -446,7 +446,7 @@ static meshx_err_t test_io_function_execution(void)
  */
 static meshx_err_t test_hosted_mode_switching(void)
 {
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: Hosted mode switching");
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: Hosted mode switching");
 
     if (!intg_state.gpio_initialized) {
         meshx_err_t err = meshx_gpio_init();
@@ -520,7 +520,7 @@ static meshx_err_t test_hosted_mode_switching(void)
  */
 static meshx_err_t test_gpio_operations_in_hosted_mode(void)
 {
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: GPIO operations in hosted mode");
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: GPIO operations in hosted mode");
 
     if (!intg_state.gpio_initialized) {
         meshx_err_t err = meshx_gpio_init();
@@ -578,7 +578,7 @@ static meshx_err_t test_gpio_operations_in_hosted_mode(void)
  */
 static meshx_err_t test_hosted_interrupt_processing(void)
 {
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: Hosted interrupt processing");
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: Hosted interrupt processing");
 
     if (!intg_state.gpio_initialized) {
         meshx_err_t err = meshx_gpio_init();
@@ -635,7 +635,7 @@ static meshx_err_t test_hosted_interrupt_processing(void)
  */
 static meshx_err_t test_kv_engine_init(void)
 {
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: KV Engine initialization");
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: KV Engine initialization");
 
     /* Initialize GPIO KV persistence */
     meshx_err_t err = meshx_gpio_kv_init(&mock_kv_partition, "test_product");
@@ -665,7 +665,7 @@ static meshx_err_t test_kv_engine_init(void)
  */
 static meshx_err_t test_kv_config_save(void)
 {
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: KV config save");
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: KV config save");
 
     /* Initialize KV if needed */
     if (!intg_state.kv_initialized) {
@@ -707,7 +707,7 @@ static meshx_err_t test_kv_config_save(void)
  */
 static meshx_err_t test_kv_config_load(void)
 {
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: KV config load");
+    MESHX_LOGD(MODULE_ID_COMMON, "Test: KV config load");
 
     if (!intg_state.kv_initialized) {
         MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_GPIO, "KV not initialized");
@@ -764,7 +764,7 @@ static meshx_err_t test_kv_config_load(void)
  */
 static meshx_err_t test_kv_config_round_trip(void)
 {
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: KV config round-trip");
+    MESHX_LOGD(MODULE_ID_COMMON, "Test: KV config round-trip");
 
     /* Initialize KV if needed */
     if (!intg_state.kv_initialized) {
@@ -826,7 +826,7 @@ static meshx_err_t test_kv_config_round_trip(void)
  */
 static meshx_err_t test_kv_pin_state_persistence(void)
 {
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: KV pin state persistence");
+    MESHX_LOGD(MODULE_ID_COMMON, "Test: KV pin state persistence");
 
     if (!intg_state.kv_initialized) {
         meshx_err_t err = meshx_gpio_kv_init(&mock_kv_partition, "test_product");
@@ -878,7 +878,7 @@ static meshx_err_t test_kv_pin_state_persistence(void)
  */
 static meshx_err_t test_kv_config_export_import(void)
 {
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: KV config export/import");
+    MESHX_LOGD(MODULE_ID_COMMON, "Test: KV config export/import");
 
     if (!intg_state.kv_initialized) {
         meshx_err_t err = meshx_gpio_kv_init(&mock_kv_partition, "test_product");
@@ -948,7 +948,7 @@ static meshx_err_t test_kv_config_export_import(void)
  */
 static meshx_err_t test_kv_corruption_recovery(void)
 {
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: KV corruption recovery");
+    MESHX_LOGD(MODULE_ID_COMMON, "Test: KV corruption recovery");
 
     if (!intg_state.kv_initialized) {
         meshx_err_t err = meshx_gpio_kv_init(&mock_kv_partition, "test_product");
@@ -1004,7 +1004,7 @@ static meshx_err_t test_kv_corruption_recovery(void)
  */
 static meshx_err_t test_gpio_logging_integration(void)
 {
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: GPIO logging integration");
+    MESHX_LOGD(MODULE_ID_COMMON, "Test: GPIO logging integration");
 
     /* Initialize GPIO subsystem */
     if (!intg_state.gpio_initialized) {
@@ -1040,7 +1040,7 @@ static meshx_err_t test_gpio_logging_integration(void)
  */
 static meshx_err_t test_full_gpio_lifecycle(void)
 {
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Test: Full GPIO lifecycle");
+    MESHX_LOGD(MODULE_ID_COMMON, "Test: Full GPIO lifecycle");
 
     /* Phase 1: Initialize all subsystems */
     meshx_err_t err = meshx_gpio_init();

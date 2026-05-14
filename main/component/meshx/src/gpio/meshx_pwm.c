@@ -1,6 +1,6 @@
 /**
  * @file meshx_pwm.c
- * @brief MeshX PWM Runtime Implementation
+ * @brief MeshX PWM Runtime Implementation (Updated to reduce log verbosity)
  *
  * This file implements the PWM runtime subsystem for MeshX.
  * It provides the runtime API for PWM operations with parameter validation,
@@ -68,7 +68,7 @@ static meshx_pwm_state_t test_pwm_states[128];
  */
 meshx_err_t meshx_pwm_init(void)
 {
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Initializing PWM subsystem");
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Initializing PWM subsystem");
 
     if (pwm_runtime.initialized) {
         MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_GPIO, "PWM already initialized");
@@ -104,7 +104,7 @@ meshx_err_t meshx_pwm_init(void)
         test_pwm_configs[i].resolution = 10;
     }
 #endif
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "PWM subsystem initialized");
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "PWM subsystem initialized");
     return MESHX_SUCCESS;
 }
 
@@ -118,7 +118,7 @@ meshx_err_t meshx_pwm_init(void)
  */
 meshx_err_t meshx_pwm_deinit(void)
 {
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Deinitializing PWM subsystem");
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Deinitializing PWM subsystem");
 
     if (!pwm_runtime.initialized) {
         MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_GPIO, "PWM not initialized");
@@ -148,7 +148,7 @@ meshx_err_t meshx_pwm_deinit(void)
     pwm_runtime.allocated_channels = 0;
 
     pwm_runtime.initialized = false;
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "PWM subsystem deinitialized");
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "PWM subsystem deinitialized");
     return MESHX_SUCCESS;
 }
 
@@ -294,7 +294,7 @@ static meshx_err_t allocate_pwm_channel(uint8_t logical_pin, uint8_t* channel)
  */
 meshx_err_t meshx_pwm_start(uint8_t logical_pin)
 {
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Starting PWM on pin %u", logical_pin);
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Starting PWM on pin %u", logical_pin);
 
     // Validate pin
     meshx_err_t err = validate_pwm_logical_pin(logical_pin);
@@ -358,7 +358,7 @@ meshx_err_t meshx_pwm_start(uint8_t logical_pin)
         pwm_runtime.pwm_states[logical_pin].resolution = resolution;
     }
 
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO,
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO,
                "PWM started on pin %u: %u Hz, %u%%, %u-bit",
                logical_pin, frequency, duty_cycle, resolution);
     return MESHX_SUCCESS;
@@ -372,7 +372,7 @@ meshx_err_t meshx_pwm_start(uint8_t logical_pin)
  */
 meshx_err_t meshx_pwm_stop(uint8_t logical_pin)
 {
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Stopping PWM on pin %u", logical_pin);
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Stopping PWM on pin %u", logical_pin);
 
     // Validate pin
     meshx_err_t err = validate_pwm_logical_pin(logical_pin);
@@ -419,7 +419,7 @@ meshx_err_t meshx_pwm_stop(uint8_t logical_pin)
     // Update runtime state
     pwm_runtime.pwm_states[logical_pin].started = false;
 
-    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "PWM stopped on pin %u", logical_pin);
+    MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "PWM stopped on pin %u", logical_pin);
     return MESHX_SUCCESS;
 }
 

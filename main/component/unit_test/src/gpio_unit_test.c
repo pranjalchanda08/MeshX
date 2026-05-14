@@ -97,7 +97,7 @@ static meshx_err_t test_gpio_init(void)
         return MESHX_FAIL;
     }
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: GPIO initialization");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: GPIO initialization");
     return MESHX_SUCCESS;
 }
 
@@ -124,7 +124,7 @@ static meshx_err_t test_gpio_deinit(void)
         return MESHX_FAIL;
     }
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: GPIO deinitialization");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: GPIO deinitialization");
     return MESHX_SUCCESS;
 }
 
@@ -145,7 +145,7 @@ static meshx_err_t test_gpio_reinit(void)
     }
 
     test_state.gpio_initialized = true;
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: GPIO re-initialization");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: GPIO re-initialization");
     return MESHX_SUCCESS;
 }
 
@@ -190,7 +190,7 @@ static meshx_err_t test_set_level_valid(void)
         }
     }
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: set_level valid inputs");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: set_level valid inputs");
     return MESHX_SUCCESS;
 }
 
@@ -258,7 +258,7 @@ static meshx_err_t test_set_level_invalid(void)
     // Restore pin count for subsequent tests
     meshx_gpio_test_set_pin_count(128);
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: set_level invalid inputs");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: set_level invalid inputs");
     return MESHX_SUCCESS;
 }
 
@@ -308,7 +308,7 @@ static meshx_err_t test_set_level_all_modes(void)
         }
     }
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: set_level all modes");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: set_level all modes");
     return MESHX_SUCCESS;
 }
 
@@ -354,7 +354,7 @@ static meshx_err_t test_get_level_valid(void)
         }
     }
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: get_level valid inputs");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: get_level valid inputs");
     return MESHX_SUCCESS;
 }
 
@@ -378,7 +378,7 @@ static meshx_err_t test_get_level_invalid(void)
         return MESHX_FAIL;
     }
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: get_level invalid inputs");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: get_level invalid inputs");
     return MESHX_SUCCESS;
 }
 
@@ -415,7 +415,7 @@ static meshx_err_t test_toggle_valid(void)
         return MESHX_FAIL;
     }
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: toggle valid");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: toggle valid");
     return MESHX_SUCCESS;
 }
 
@@ -440,7 +440,7 @@ static meshx_err_t test_toggle_invalid_mode(void)
         return MESHX_FAIL;
     }
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: toggle invalid mode");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: toggle invalid mode");
     return MESHX_SUCCESS;
 }
 
@@ -473,7 +473,7 @@ static meshx_err_t test_interrupt_register(void)
     test_state.interrupt_registered[pin] = true;
     meshx_gpio_unregister_intr(pin);
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: interrupt register");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: interrupt register");
     return MESHX_SUCCESS;
 }
 
@@ -504,7 +504,7 @@ static meshx_err_t test_interrupt_register_invalid(void)
         return MESHX_FAIL;
     }
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: interrupt register invalid");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: interrupt register invalid");
     return MESHX_SUCCESS;
 }
 
@@ -540,7 +540,7 @@ static meshx_err_t test_interrupt_enable_disable(void)
     }
 
     meshx_gpio_unregister_intr(pin);
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: interrupt enable/disable");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: interrupt enable/disable");
     return MESHX_SUCCESS;
 }
 
@@ -576,7 +576,7 @@ static meshx_err_t test_all_interrupt_types(void)
         meshx_gpio_unregister_intr(pin);
     }
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: all interrupt types");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: all interrupt types");
     return MESHX_SUCCESS;
 }
 
@@ -608,7 +608,7 @@ static meshx_err_t test_execute_function_set_level(void)
         return MESHX_FAIL;
     }
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: execute_function SET_LEVEL");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: execute_function SET_LEVEL");
     return MESHX_SUCCESS;
 }
 
@@ -636,7 +636,7 @@ static meshx_err_t test_execute_function_toggle(void)
         return MESHX_FAIL;
     }
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: execute_function TOGGLE");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: execute_function TOGGLE");
     return MESHX_SUCCESS;
 }
 
@@ -664,7 +664,7 @@ static meshx_err_t test_execute_function_pwm_duty(void)
         return MESHX_FAIL;
     }
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: execute_function SET_PWM_DUTY");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: execute_function SET_PWM_DUTY");
     return MESHX_SUCCESS;
 }
 
@@ -691,7 +691,7 @@ static meshx_err_t test_execute_function_pwm_frequency(void)
         return MESHX_FAIL;
     }
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: execute_function SET_PWM_FREQUENCY");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: execute_function SET_PWM_FREQUENCY");
     return MESHX_SUCCESS;
 }
 
@@ -717,7 +717,7 @@ static meshx_err_t test_execute_function_multi_args(void)
     /* CUSTOM function may or may not be supported - just verify it doesn't crash */
     (void)result;
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: execute_function multiple arguments");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: execute_function multiple arguments");
     return MESHX_SUCCESS;
 }
 
@@ -763,7 +763,7 @@ static meshx_err_t test_hosted_mode_set_get(void)
         return MESHX_FAIL;
     }
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: hosted mode set/get");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: hosted mode set/get");
     return MESHX_SUCCESS;
 }
 
@@ -795,7 +795,7 @@ static meshx_err_t test_hosted_mode_operations(void)
     /* Restore non-hosted mode */
     meshx_gpio_set_hosted_mode(MESHX_GPIO_MODE_NON_HOSTED);
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: hosted mode operations");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: hosted mode operations");
     return MESHX_SUCCESS;
 }
 
@@ -828,7 +828,7 @@ static meshx_err_t test_error_recovery_after_invalid_input(void)
         return MESHX_FAIL;
     }
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: error recovery after invalid input");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: error recovery after invalid input");
     return MESHX_SUCCESS;
 }
 
@@ -861,7 +861,7 @@ static meshx_err_t test_error_recovery_after_mode_mismatch(void)
         return MESHX_FAIL;
     }
 
-    MESHX_LOGD(MODULE_ID_COMMON, "PASS: error recovery after mode mismatch");
+    MESHX_LOGI(MODULE_ID_COMMON, "PASS: error recovery after mode mismatch");
     return MESHX_SUCCESS;
 }
 
