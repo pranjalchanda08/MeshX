@@ -65,3 +65,9 @@ plans
 .agents
 
 __pycache__
+tools/scripts/proto/meshx_config.pb.c
+tools/scripts/proto/meshx_config.pb.h
+tools/scripts/proto/meshx_config_pb2.py
+port/bsp/xiao_c3/meshx_cfg.bin
+*.code_spec.json
+*.config.kiro

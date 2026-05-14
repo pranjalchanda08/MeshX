@@ -213,6 +213,20 @@ class Target(ABC):
         """
         pass
 
+    @abstractmethod
+    def flash_cfg(self, args, build_root):
+        """
+        Abstract method to flash configuration partition.
+        """
+        pass
+
+    @abstractmethod
+    def erase_cfg(self, args, build_root):
+        """
+        Abstract method to erase configuration partition.
+        """
+        pass
+
 class ESPTarget(Target):
     def __init__(self, port, baud):
         """
@@ -257,11 +271,6 @@ class ESPTarget(Target):
 
         if args.port is None:
             raise TargetFlashException("Please provide a port")
-        else:
-            print(f"Using port: {args.port}")
-            # Check if port is valid
-            if not os.path.exists(args.port):
-                raise TargetFlashException(f"Port {args.port} does not exist")
 
         build_dir = f"{build_root}/{args.prod_name[0]}"
         esp_tool_cmd = [
@@ -277,6 +286,8 @@ class ESPTarget(Target):
     def erase(self, args, build_root = "build"):
         if len(args.prod_name) != 1:
             raise InvalidProductNameException()
+        if args.port is None:
+            raise TargetFlashException("Please provide a port")
 
         build_dir = f"{build_root}/{args.prod_name[0]}"
         esp_tool_cmd = [
@@ -288,6 +299,63 @@ class ESPTarget(Target):
             "erase_flash",
         ]
         self.proc_run(esp_tool_cmd, cwd=build_dir)
+
+    def flash_cfg(self, args, build_root = "build"):
+        if len(args.prod_name) != 1:
+            raise InvalidProductNameException()
+        if args.port is None:
+            raise TargetFlashException("Please provide a port")
+
+        build_dir = f"{build_root}/{args.prod_name[0]}"
+        # Get offset dynamically using parttool.py
+        try:
+            partition_table = os.path.join(build_dir, "partition_table/partition-table.bin")
+            offset = subprocess.check_output(
+                ["parttool.py", "--quiet", "--partition-table-file", partition_table, "get_partition_info", "--partition-name", "meshx_cfg", "--info", "offset"],
+                text=True
+            ).strip()
+            if not offset:
+                raise Exception("Empty offset returned")
+        except Exception as e:
+            raise TargetFlashException(f"Failed to get meshx_cfg partition offset: {e}. Is ESP-IDF activated?")
+
+        esp_tool_cmd = [
+            "esptool.py",
+            "--chip", "auto",
+            "--port", args.port,
+            "--before", "default_reset",
+            "--after", "hard_reset",
+            "write_flash", offset, os.path.abspath(f"port/bsp/{args.bsp}/meshx_cfg.bin")
+        ]
+        self.proc_run(esp_tool_cmd, cwd=build_dir)
+
+    def erase_cfg(self, args, build_root = "build"):
+        if args.port is None:
+            raise TargetFlashException("Please provide a port")
+
+        build_dir = f"{build_root}/{args.prod_name[0]}"
+        try:
+            partition_table = os.path.join(build_dir, "partition_table/partition-table.bin")
+            offset = subprocess.check_output(
+                ["parttool.py", "--quiet", "--partition-table-file", partition_table, "get_partition_info", "--partition-name", "meshx_cfg", "--info", "offset"],
+                text=True
+            ).strip()
+            size = subprocess.check_output(
+                ["parttool.py", "--quiet", "--partition-table-file", partition_table, "get_partition_info", "--partition-name", "meshx_cfg", "--info", "size"],
+                text=True
+            ).strip()
+        except Exception as e:
+            raise TargetFlashException(f"Failed to get meshx_cfg partition info: {e}. Is ESP-IDF activated?")
+
+        esp_tool_cmd = [
+            "esptool.py",
+            "--chip", "auto",
+            "--port", args.port,
+            "--before", "default_reset",
+            "--after", "hard_reset",
+            "erase_region", offset, size
+        ]
+        self.proc_run(esp_tool_cmd)
 
     def run(self, args, build_root = "build"):
         if len(args.prod_name) != 1:
@@ -412,8 +480,8 @@ def main():
     target_group.add_argument("-H", "--host",   choices=PLAT_LIST,      default=PLAT_LIST[0] if PLAT_LIST else None, help="Target host.")
     target_group.add_argument("-P", "--port",   type=str, default=None, help="Target port")
     target_group.add_argument("-C", "--config", action="store_true", help="target configs")
-    target_group.add_argument("-F", "--flash",  action="store_true", help="flash ESP target")
-    target_group.add_argument("-E", "--erase",  choices=["firmware", "chip"], default=None, help="Erase target")
+    target_group.add_argument("-F", "--flash",  choices=["firmware", "cfg", "all"], nargs='?', const="firmware", default=None, help="flash ESP target")
+    target_group.add_argument("-E", "--erase",  choices=["firmware", "chip", "cfg", "all"], default=None, help="Erase target")
     target_group.add_argument("-R", "--run",    action="store_true", help="Run target")
     target_group.add_argument("-HR", "--reset",  action="store_true", help="Hard reset target")
     target_group.add_argument("--baud",         type=int, default=115200, help="Serial baudrate.")
@@ -476,9 +544,15 @@ def main():
     if args.build:
         build(args, build_root)
     if args.erase:
-        target_sel.erase(args, build_root)
+        if args.erase in ["firmware", "chip", "all"]:
+            target_sel.erase(args, build_root)
+        if args.erase in ["cfg", "all"]:
+            target_sel.erase_cfg(args, build_root)
     if args.flash:
-        target_sel.flash(args, build_root)
+        if args.flash in ["firmware", "all"]:
+            target_sel.flash(args, build_root)
+        if args.flash in ["cfg", "all"]:
+            target_sel.flash_cfg(args, build_root)
     if args.reset:
         target_sel.reset(args, build_root)
     if args.run:

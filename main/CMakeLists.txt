@@ -10,6 +10,14 @@ file(GLOB_RECURSE MESHX_SRC
 # Exclude legacy elements_c from sources
 list(FILTER MESHX_SRC EXCLUDE REGEX "main/component/meshx/ble_mesh/elements_c/")
 
+# Add nanopb core sources and generated protobuf C files
+set(NANOPB_SRC 
+    "${CMAKE_SOURCE_DIR}/third_party/nanopb/pb_common.c"
+    "${CMAKE_SOURCE_DIR}/third_party/nanopb/pb_decode.c"
+    "${CMAKE_SOURCE_DIR}/tools/scripts/proto/meshx_config.pb.c"
+)
+set(MESHX_SRC ${MESHX_SRC} ${NANOPB_SRC})
+
 
 # Recursively collect include dirs
 file(GLOB_RECURSE MESHX_INC_DIRS
@@ -28,6 +36,10 @@ foreach(dir ${MESHX_INC_DIRS})
     endif()
 endforeach()
 list(REMOVE_DUPLICATES MESHX_FINAL_INC)
+
+# Add nanopb include paths
+list(APPEND MESHX_FINAL_INC "${CMAKE_SOURCE_DIR}/third_party/nanopb")
+list(APPEND MESHX_FINAL_INC "${CMAKE_SOURCE_DIR}/tools/scripts/proto")
 
 set(MESHX_FINAL_INC ${MESHX_FINAL_INC} ${PLATFORM_INC})
 

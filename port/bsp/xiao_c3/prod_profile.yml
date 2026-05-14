@@ -4,18 +4,18 @@ prod:
         - name: 4_relay_panel
           pid: 0x0001
           elements:
-              - switch_relay_server: 4
+              - relay_server: 4
 
         - name: 4_relay_sw
           pid: 0x0006
           elements:
-              - switch_relay_client: 4
+              - relay_client: 4
 
         - name: 4x4_Relay_Switch_Pannel
           pid: 0x0002
           elements:
-              - switch_relay_client: 4
-              - switch_relay_server: 4
+              - relay_client: 4
+              - relay_server: 4
 
         - name: CTL_light_strip
           pid: 0x0003
@@ -25,8 +25,8 @@ prod:
         - name: all_in_one
           pid: 0x0004
           elements:
-              - switch_relay_client: 1
-              - switch_relay_server: 1
+              - relay_client: 1
+              - relay_server: 1
               - light_cwww_server: 1
               - light_cwww_client: 1
 
@@ -38,11 +38,11 @@ prod:
         - name: rgb_lamp
           pid: 0x0007
           elements:
-              - rgb_server: 1
+              - light_hsl_server: 1
         - name: relay_panel_with_gpio
           pid: 0x0008
           elements:
-              - switch_relay_server: 2
+              - relay_server: 2
           components:
               - gpio: 1
               - pwm: 1
