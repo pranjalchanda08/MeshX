@@ -12,7 +12,7 @@ else()
 endif()
 
 # run python script
-execute_process(COMMAND python3 ${CMAKE_SOURCE_DIR}/tools/scripts/code_gen.py --config port/bsp/${BSP} --profile ${PROD_PROFILE} ${PROD_NAME}
+execute_process(COMMAND python3 ${CMAKE_SOURCE_DIR}/tools/scripts/code_gen.py --config port/bsp/${BSP} --profile ${PROD_PROFILE} --max-size 4096 ${PROD_NAME}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     RESULT_VARIABLE result
 )

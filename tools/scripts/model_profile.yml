@@ -1,6 +1,6 @@
 # Elements Build registration
 elements:
-    switch_relay_server:
+    relay_server:
         path: "elements/server/switch_relay_server"
         macros:
             - def: "CONFIG_RELAY_SERVER_COUNT"
@@ -8,7 +8,7 @@ elements:
         models:
             - gen_onoff_server: 1
 
-    switch_relay_client:
+    relay_client:
         path: "elements/client/switch_relay_client"
         macros:
             - def: "CONFIG_RELAY_CLIENT_COUNT"
@@ -34,6 +34,24 @@ elements:
             - light_ctl_client: 1
             - gen_onoff_client: 1
 
+    light_hsl_server:
+        path: "elements/server/rgb_server"
+        macros:
+            - def: "CONFIG_RGB_SERVER_COUNT"
+              value: 0
+        models:
+            - light_hsl_server: 1
+            - gen_onoff_server: 1
+
+    light_hsl_client:
+        path: "elements/client/rgb_client"
+        macros:
+            - def: "CONFIG_RGB_CLIENT_COUNT"
+              value: 0
+        models:
+            - light_hsl_client: 1
+            - gen_onoff_client: 1
+
     sensor_server:
         path: "elements/server/sensor_server"
         macros:
@@ -42,14 +60,13 @@ elements:
         models:
             - sensor_server: 1
 
-    rgb_server:
-        path: "elements/server/rgb_server"
+    sensor_client:
+        path: "elements/client/sensor_client"
         macros:
-            - def: "CONFIG_RGB_SERVER_COUNT"
+            - def: "CONFIG_SENSOR_CLIENT_COUNT"
               value: 0
         models:
-            - light_hsl_server: 1
-            - gen_onoff_server: 1
+            - sensor_client: 1
 # Models Build registration
 models:
     server_common:

@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+// Product Identification
+message ProductInfo {
+  uint32 cid = 1;
+  uint32 pid = 2;
+  string name = 3;
+}
+
+// Element Composition
+message ElementConfig {
+  uint32 type = 1; // e.g. 0 for Relay Server, 1 for Relay Client, etc.
+  uint32 count = 2;
+}
+
+// Global GPIO Hardware Configuration
+message GpioConfig {
+  uint32 logical_pin = 1;
+  uint32 physical_pin = 2;
+  uint32 mode = 3;
+  uint32 pull = 4;
+  uint32 drive_strength = 5;
+}
+
+// Element-IO Binding
+message IoBinding {
+  uint32 element_id = 1;
+  uint32 logical_pin = 2;
+  uint32 usage = 3;
+}
+
+// Root Configuration Message
+message MeshXConfig {
+  ProductInfo product = 1;
+  repeated ElementConfig elements = 2;
+  repeated GpioConfig gpio = 3;
+  repeated IoBinding bindings = 4;
+}
