@@ -229,6 +229,69 @@ static meshx_err_t meshx_ble_mesh_init(meshx_config_t *config)
 }
 
 /**
+ * @brief Load persistent read-only configuration from flash and apply it.
+ *
+ * This function attempts to load product identification (CID, PID, Name) and
+ * device UUID from the `meshx_cfg` partition. If the partition is missing or
+ * the data is invalid, it falls back to the defaults provided in the config struct.
+ *
+ * @param config Pointer to the initial configuration provided by the application.
+ * @return meshx_err_t MESHX_SUCCESS on success, or an error code on fatal failure.
+ */
+static meshx_err_t meshx_load_persistent_config(meshx_config_t const *config)
+{
+    meshx_err_t err;
+    uint16_t loaded_cid = 0xFFFF;
+    uint16_t loaded_pid = 0xFFFF;
+    uint8_t loaded_uuid[16] = {0};
+
+    /* Load Persistent Read-Only Configuration */
+    err = meshx_ro_cfg_init(&loaded_cid, &loaded_pid, g_product_name, sizeof(g_product_name), loaded_uuid);
+    if (err != MESHX_SUCCESS) {
+        if (err == MESHX_NOT_FOUND || err == MESHX_ERR_FORMAT) {
+            MESHX_LOGW(MODULE_ID_COMMON, "No valid read-only config found (err 0x%x). Using legacy defaults.", err);
+
+            // Fallback product name if not loaded from partition
+            if (g_product_name[0] == '\0' && config->product_name) {
+                strncpy(g_product_name, config->product_name, sizeof(g_product_name) - 1);
+                g_product_name[sizeof(g_product_name)-1] = '\0';
+            }
+
+            // Also fallback CID/PID to what was provided in config
+            loaded_cid = config->cid;
+            loaded_pid = config->pid;
+        } else {
+            return err;
+        }
+    }
+
+    g_config.cid = loaded_cid;
+    g_config.pid = loaded_pid;
+    g_config.product_name = g_product_name;
+
+    // Check if UUID was loaded (if it's not all zeros)
+    bool uuid_loaded = false;
+    for (int i = 0; i < 16; i++) {
+        if (loaded_uuid[i] != 0) {
+            uuid_loaded = true;
+            break;
+        }
+    }
+
+    if (uuid_loaded) {
+        memcpy(g_config.meshx_uuid_addr, loaded_uuid, 16);
+        MESHX_LOGD(MODULE_ID_COMMON, "Using Persistent UUID from config");
+    } else {
+        /* Fallback to legacy way: use the UUID from the passed configuration (which might be all zeros) */
+        memcpy(g_config.meshx_uuid_addr, config->meshx_uuid_addr, 16);
+        MESHX_LOGI(MODULE_ID_COMMON, "Using Legacy UUID generation");
+    }
+
+    return MESHX_SUCCESS;
+}
+
+
+/**
  * @brief MeshX initialisation function
  *
  * This function initialises the MeshX stack with the given configuration.
@@ -262,16 +325,9 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     err = meshx_platform_init();
     MESHX_ERR_PRINT_RET("Platform init failed", err);
 
-    uint16_t loaded_cid = 0xFFFF;
-    uint16_t loaded_pid = 0xFFFF;
-
-    /* Load Persistent Read-Only Configuration */
-    err = meshx_ro_cfg_init(&loaded_cid, &loaded_pid, g_product_name, sizeof(g_product_name));
-    MESHX_ERR_PRINT_RET("Failed to load read-only configuration", err);
-
-    g_config.cid = loaded_cid;
-    g_config.pid = loaded_pid;
-    g_config.product_name = g_product_name;
+    /* Load Persistent Configuration and apply UUID/Product Info */
+    err = meshx_load_persistent_config(config);
+    MESHX_ERR_PRINT_RET("Failed to load persistent configuration", err);
 
     /* Initialise Control Task messaging early (required for NVS and OS Timers) */
     err = control_task_init();
