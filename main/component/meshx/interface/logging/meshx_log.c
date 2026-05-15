@@ -6,31 +6,10 @@
  * application. It provides functions to initialize the logging system, set
  * logging levels for specific modules, and log formatted messages with
  * different log levels and colors.
- *
- * The logging system supports different modules identified by module IDs,
- * and each module can have its own logging level. The log levels determine
- * the verbosity of the log messages. The system also supports colored log
- * messages for different log levels.
- *
- * The logging system requires a configuration structure to be initialized,
- * which includes a default log level and a callback function to retrieve
- * the current time in milliseconds.
- *
- * The main functions provided are:
- * - meshx_logging_init: Initializes the logging system with the provided
- *   configuration.
- * - meshx_module_set_log_level: Sets the logging level for a specified
- *   module.
- * - meshx_log_printf: Logs a formatted message for a specified module and
- *   log level.
- *
- * The file also defines macros for logging messages at different levels,
- * such as error, warning, info, and debug.
- *
- * @author Pranjal Chanda
  */
 
 #include "meshx_log.h"
+#include "interface/meshx_platform.h"
 #include "module_id.h"
 #include "interface/rtos/meshx_rtos_utils.h"
 #include "interface/rtos/meshx_msg_q.h"
@@ -38,12 +17,22 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
+#include <ctype.h>
+
+#ifndef CONFIG_MESHX_LOG_PRINTF
+#define CONFIG_MESHX_LOG_PRINTF printf
+#endif
+
+#ifndef CONFIG_MESHX_LOG_BUF_SIZE
+#define CONFIG_MESHX_LOG_BUF_SIZE 128
+#endif
 
 #if CONFIG_MESHX_LOG_THREADED
 #include "meshx_control_task.h"
 
 typedef struct {
-    char log_buf[CONFIG_MESHX_LOG_BUF_SIZE];
+    uint8_t data[CONFIG_MESHX_LOG_BUF_SIZE];
+    uint16_t len;
 } meshx_log_msg_t;
 
 static meshx_msg_q_t log_msg_q = {
@@ -58,38 +47,44 @@ static void meshx_log_task_handler(void *args)
     meshx_log_msg_t recv_msg;
     (void)args;
 
+    // CONFIG_MESHX_LOG_PRINTF("[LOG] Log task started\n");
+
     while (true)
     {
         if (meshx_msg_q_recv(&log_msg_q, &recv_msg, UINT32_MAX) == MESHX_SUCCESS)
         {
-            CONFIG_MESHX_LOG_PRINTF("%s", recv_msg.log_buf);
+            /* Check for sync word 0xDEAD (LE: 0xAD, 0xDE) */
+            if (recv_msg.len >= 2 && recv_msg.data[0] == 0xAD && recv_msg.data[1] == 0xDE)
+            {
+                /* Raw binary output for host decoder */
+                meshx_platform_console_write((const char*)recv_msg.data, recv_msg.len);
+            }
+            else
+            {
+                /* Fallback for legacy strings if any */
+                CONFIG_MESHX_LOG_PRINTF("%s", (char*)recv_msg.data);
+            }
         }
     }
 }
 #endif
 
 static meshx_log_level_t module_log_level[MODULE_ID_MAX];
-
-static const char * log_lvl_str [MESHX_LOG_MAX] =
-{
-    "", "D", "I", "W", "E"
-};
-
 static meshx_logging_t meshx_logging_ctrl;
 
 /**
- * @brief Initializes the MeshX logging system with the provided configuration.
- *
- * This function sets up the logging system by assigning the default log level
- * and the callback function for retrieving the current time in milliseconds.
- * It validates the configuration parameters and returns an error if they are
- * invalid.
- *
- * @param[in] config Pointer to the logging configuration structure.
- *
- * @return MESHX_SUCCESS on successful initialization, MESHX_INVALID_ARG if
- *         the configuration is invalid.
+ * @brief Calculates XOR parity for a buffer
  */
+static uint8_t calculate_xor_parity(const uint8_t *data, uint16_t len)
+{
+    uint8_t parity = 0;
+    for (uint16_t i = 0; i < len; i++)
+    {
+        parity ^= data[i];
+    }
+    return parity;
+}
+
 meshx_err_t meshx_logging_init(const meshx_logging_t *config)
 {
     if (!config)
@@ -98,7 +93,7 @@ meshx_err_t meshx_logging_init(const meshx_logging_t *config)
     meshx_logging_ctrl.def_log_level = config->def_log_level;
     for (size_t i = 0; i < MODULE_ID_MAX; i++)
     {
-        module_log_level[i] = CONFIG_MESHX_DEFAULT_LOG_LEVEL;
+        module_log_level[i] = config->def_log_level;
     }
 
 #if CONFIG_MESHX_LOG_THREADED
@@ -126,109 +121,117 @@ meshx_err_t meshx_logging_init(const meshx_logging_t *config)
     return MESHX_SUCCESS;
 }
 
-/**
- * @brief Sets the logging level for a specified module.
- *
- * This function assigns a new logging level to a given module
- * identified by its module ID. The logging level determines
- * the verbosity of log messages for that module.
- *
- * @param[in] module_id The ID of the module whose log level is to be set.
- * @param[in] log_level The new logging level to be assigned to the module.
- */
 void meshx_module_set_log_level(module_id_t module_id, meshx_log_level_t log_level)
 {
-    module_log_level[module_id] = log_level;
+    if (module_id < MODULE_ID_MAX)
+    {
+        module_log_level[module_id] = log_level;
+    }
 }
 
-/**
- * @brief Logs a formatted message for a specified module and log level.
- *
- * @note This is a weak function, can be redefined to override in app layer
- *
- * This function checks if the provided module ID and log level are valid
- * and above the current global and module-specific log levels. If valid,
- * it processes the variable arguments to format and log the message.
- *
- * @note This is a weak function defination and can be overriden by any other version
- *       of defination required as per platform
- *
- * @param[in] module_id     The ID of the module for which the log is generated.
- * @param[in] log_level     The log level of the message.
- * @param[in] func          The name of the function where the log is called.
- * @param[in] line_no       The line number in the source code where the log is called.
- * @param[in] fmt           The format string for the log message.
- * @param[in] ...           Additional arguments for the format string.
- */
-void meshx_log_printf(module_id_t module_id, meshx_log_level_t log_level,
-                      const char *func, int line_no, const char *fmt, ...)
+static void vmeshx_log_packet(module_id_t module_id, meshx_log_level_t log_level,
+                              const char *file, int line_no, const char *fmt, va_list args)
 {
-    /* Validate module ID */
-    if (module_id > MODULE_ID_MAX || log_level < meshx_logging_ctrl.def_log_level || module_log_level[module_id] < meshx_logging_ctrl.def_log_level)
+    /* Validate module ID and log level */
+    if (module_id >= MODULE_ID_MAX || log_level < meshx_logging_ctrl.def_log_level ||
+        module_log_level[module_id] < log_level)
+    {
         return;
+    }
 
-    /* Get timestamp */
-    unsigned int millis;
-    unsigned int task_id;
+#if CONFIG_MESHX_LOG_THREADED
+    meshx_log_msg_t msg;
+    memset(&msg, 0, sizeof(msg));
+    meshx_log_packet_t *pkt = (meshx_log_packet_t *)msg.data;
+    msg.len = sizeof(meshx_log_packet_t);
+#else
+    uint8_t buf[sizeof(meshx_log_packet_t)];
+    meshx_log_packet_t *pkt = (meshx_log_packet_t *)buf;
+    memset(buf, 0, sizeof(buf));
+#endif
 
-    meshx_err_t err_time = meshx_rtos_get_sys_time(&millis);
-    meshx_err_t err_task = meshx_rtos_get_curr_task_id_prio(&task_id);
-    
-    if (err_time != MESHX_SUCCESS) millis = 0;
-    if (err_task != MESHX_SUCCESS) task_id = 0;
+    unsigned int timestamp = 0;
+    meshx_rtos_get_sys_time(&timestamp);
 
-    /* Get log level color */
-    const char *color = MESHX_LOG_LEVEL_COLOR(log_level);
+    pkt->sync = MESHX_LOG_SYNC_WORD;
+    pkt->level = (uint8_t)log_level;
+    pkt->module_id = (uint8_t)module_id;
+    pkt->timestamp = (uint32_t)timestamp;
+    pkt->fmt_addr = (uint32_t)fmt;
+    pkt->file_addr = (uint32_t)file;
+    pkt->line_no = (uint16_t)line_no;
+
+    /* Pack arguments */
+    va_list args_copy;
+    va_copy(args_copy, args);
+    for (int i = 0; i < 16; i++) {
+        pkt->args[i] = va_arg(args_copy, uint32_t);
+    }
+    va_end(args_copy);
+
+    /* Simple scan for %s to support dynamic string inlining */
+    const char *p = fmt;
+    int arg_idx = 0;
+    bool found_s = false;
+    while (*p) {
+        if (*p == '%' && *(p+1) != '%') {
+            p++;
+            // Basic skip of common modifiers
+            while (*p && (isdigit((int)*p) || strchr("-+ #.0123456789", *p))) p++;
+            while (*p && strchr("lhjzL", *p)) p++;
+            
+            if (*p == 's') {
+                found_s = true;
+                break;
+            }
+            arg_idx++;
+            if (arg_idx >= 16) break;
+        }
+        p++;
+    }
+
+    if (found_s && arg_idx < 16) {
+        uint32_t str_ptr = pkt->args[arg_idx];
+        /* Check if pointer is likely in RAM (ESP32-C3 DRAM: 0x3FC80000 - 0x3FCE0000) */
+        /* Note: This is a heuristic. In a full system, use platform-specific RAM checks. */
+        if (str_ptr >= 0x3FC00000 && str_ptr < 0x40000000) {
+            strncpy(pkt->inline_str, (const char *)str_ptr, sizeof(pkt->inline_str) - 1);
+            pkt->inline_str[sizeof(pkt->inline_str) - 1] = '\0';
+        }
+    }
+
+    pkt->len = sizeof(meshx_log_packet_t) - 3; // Length excluding sync and len
+
+    pkt->parity = calculate_xor_parity((uint8_t *)pkt, sizeof(meshx_log_packet_t) - 1);
 
 #if CONFIG_MESHX_LOG_THREADED
     if (log_threaded_init_done)
     {
-        meshx_log_msg_t msg;
-        int len = snprintf(msg.log_buf, sizeof(msg.log_buf), "\r%s[%s][%08u][%03x][%25s:%04d]\t", color, log_lvl_str[log_level], millis, task_id, func, line_no);
-        
-        if (len < (int)sizeof(msg.log_buf))
-        {
-            va_list args;
-            va_start(args, fmt);
-            len += vsnprintf(msg.log_buf + len, sizeof(msg.log_buf) - len, fmt, args);
-            va_end(args);
-        }
-
-        if (len < (int)sizeof(msg.log_buf))
-        {
-            snprintf(msg.log_buf + len, sizeof(msg.log_buf) - len, "%s\n", MESHX_LOG_COLOR_RESET);
-        }
-        else
-        {
-            /* Truncated, but at least ensure reset color and newline if possible */
-            msg.log_buf[sizeof(msg.log_buf) - 2] = '\n';
-            msg.log_buf[sizeof(msg.log_buf) - 1] = '\0';
-        }
-
-        uint32_t wait_ms = 0;
-        /* If queue count is above watermark, wait for space to avoid log miss */
-        if (meshx_msg_q_get_count(&log_msg_q) >= CONFIG_MESHX_LOG_HIGH_WATERMARK)
-        {
-            wait_ms = UINT32_MAX; /* Block until space is available */
-        }
-
-        meshx_err_t send_err = meshx_msg_q_send(&log_msg_q, &msg, sizeof(msg), wait_ms);
-        if (send_err == MESHX_SUCCESS)
-        {
+        /* Use a small wait to avoid dropping logs if queue is momentarily full */
+        if (meshx_msg_q_send(&log_msg_q, &msg, sizeof(msg), 10) == MESHX_SUCCESS) {
             return;
         }
-        /* If send_err is not success (e.g. timeout or other failure), fallback to direct print */
     }
 #endif
 
-    /* Fallback to direct print if threaded mode is not enabled or not initialized yet */
-    CONFIG_MESHX_LOG_PRINTF("\r%s[%s][%08u][%03x][%25s:%04d]\t", color, log_lvl_str[log_level], millis, task_id, func, line_no);
+    /* Fallback: direct output if not threaded or queue full/not ready */
+    meshx_platform_console_write((const char *)pkt, sizeof(meshx_log_packet_t));
+}
 
-    /* Process variable arguments */
+void meshx_log_packet(module_id_t module_id, meshx_log_level_t log_level,
+                      const char *file, int line_no, const char *fmt, ...)
+{
     va_list args;
     va_start(args, fmt);
-    vprintf(fmt, args);
+    vmeshx_log_packet(module_id, log_level, file, line_no, fmt, args);
     va_end(args);
-    /* Reset color and add newline */
-    CONFIG_MESHX_LOG_PRINTF("%s\n", MESHX_LOG_COLOR_RESET);
+}
+
+void meshx_log_printf(module_id_t module_id, meshx_log_level_t log_level,
+                      const char *func, int line_no, const char *fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+    vmeshx_log_packet(module_id, log_level, func, line_no, fmt, args);
+    va_end(args);
 }

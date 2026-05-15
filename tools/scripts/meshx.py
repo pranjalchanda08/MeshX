@@ -96,17 +96,19 @@ class TargetFlashException(Exception):
         super().__init__(self.message)
 
 class Target(ABC):
-    def __init__(self, sdk, port):
+    def __init__(self, sdk, port, baud=115200):
         """
         Initializes a Target object.
 
         Args:
             sdk (str): The software development kit for the target.
             port (str): The serial port to use for communication with the target.
+            baud (int): The baud rate for the serial port.
 
         """
         self.sdk = sdk
         self.port = port
+        self.baud = baud
         self.toolcheck()
 
     def __str__(self):
@@ -189,20 +191,35 @@ class Target(ABC):
         """
         pass
 
+    def run(self, args, build_root="build"):
+        if len(args.prod_name) != 1:
+            raise InvalidProductNameException()
+
+        build_dir = f"{build_root}/{args.prod_name[0]}"
+
+        if args.decode:
+            # Resolve ELF path
+            elf_name = f"meshx_build_{args.bsp}.elf"
+            elf_path = os.path.abspath(os.path.join(build_dir, elf_name))
+
+            # Call host_decoder
+            decoder_script = os.path.join(os.path.dirname(__file__), "host_decoder.py")
+            cmd = [
+                "python3", decoder_script,
+                "--elf", elf_path,
+                "--port", args.port,
+                "--baud", str(self.baud)
+            ]
+            print(f"Running TLV decoder: {' '.join(cmd)}")
+            # Use execvp to replace the current process with the decoder
+            os.execvp("python3", cmd)
+        else:
+            self.run_fallback(args, build_dir)
+
     @abstractmethod
-    def run(self, args, build_root):
+    def run_fallback(self, args, build_dir):
         """
-        Abstract method to run the target.
-
-        This method should be overridden by subclasses to perform any necessary
-        steps to run the target using the provided arguments and build root.
-
-        Args:
-            args (list): A list of arguments to pass to the running tool.
-            build_root (str): The path to the build root directory.
-
-        Returns:
-            None
+        Abstract method to run the target-specific monitor or fallback tool.
         """
         pass
 
@@ -239,8 +256,7 @@ class ESPTarget(Target):
         Returns:
             None
         """
-        super().__init__("esp", port)
-        self.baud = baud
+        super().__init__("esp", port, baud)
 
     def toolcheck(self):
         print("Checking ESP tools...")
@@ -319,13 +335,13 @@ class ESPTarget(Target):
             raise TargetFlashException("Please provide a port")
 
         build_dir = f"{build_root}/{args.prod_name[0]}"
-        
+
         # Priority: 1. Build directory (generated), 2. Static BSP directory (fallback)
         generated_cfg = os.path.abspath(os.path.join(build_dir, "esp-idf/main/meshx_cfg.mxc"))
         static_cfg = os.path.abspath(f"port/bsp/{args.bsp}/meshx_cfg.mxc")
-        
+
         cfg_to_flash = generated_cfg if os.path.exists(generated_cfg) else static_cfg
-        
+
         print(f"Flashing configuration binary: {cfg_to_flash}")
 
         # Get offset dynamically using parttool.py
@@ -378,20 +394,17 @@ class ESPTarget(Target):
         ]
         self.proc_run(esp_tool_cmd)
 
-    def run(self, args, build_root = "build"):
-        if len(args.prod_name) != 1:
-            raise InvalidProductNameException()
-
-        build_dir = f"{build_root}/{args.prod_name[0]}"
+    def run_fallback(self, args, build_dir):
         esp_tool_cmd = [
             "python", "-m", "esp_idf_monitor",
             "--port", args.port,
             "--baud", str(self.baud),
         ]
-        self.proc_run(esp_tool_cmd, cwd=build_dir)
+        # Change directory to build_dir before exec
+        os.chdir(build_dir)
+        os.execvp("python", esp_tool_cmd)
 class NRFTarget(Target):
-    def __init__(self, sdk, port):
-        super().__init__(sdk, port)
+    def run_fallback(self, args, build_dir):
         raise TargetFlashException("Not implemented yet")
 
 def clean(args, build_root = "build"):
@@ -519,6 +532,7 @@ def main():
     target_group.add_argument("-F", "--flash",  choices=["firmware", "cfg", "all"], nargs='?', const="firmware", default=None, help="flash ESP target")
     target_group.add_argument("-E", "--erase",  choices=["firmware", "chip", "cfg", "all"], default=None, help="Erase target")
     target_group.add_argument("-R", "--run",    action="store_true", help="Run target")
+    target_group.add_argument("--decode",      action="store_true", help="Decode TLV logs from target")
     target_group.add_argument("-HR", "--reset",  action="store_true", help="Hard reset target")
     target_group.add_argument("--baud",         type=int, default=115200, help="Serial baudrate.")
 
@@ -595,4 +609,7 @@ def main():
         target_sel.run(args, build_root)
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        pass

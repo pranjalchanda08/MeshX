@@ -11,35 +11,13 @@ include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
 # Library registration function for ESP-IDF
 function(register_component SRC INC LIBS)
-    message(STATUS "SRC_FILES:")
-    foreach(_file ${SRC})
-        if(IS_ABSOLUTE "${_file}")
-            file(RELATIVE_PATH _rel_file "${CMAKE_SOURCE_DIR}" "${_file}")
-            message(STATUS "  - ${_rel_file}")
-        else()
-            message(STATUS "  - ${_file}")
-        endif()
-    endforeach()
-
-    message(STATUS "INC_FILES:")
-    foreach(_file ${INC})
-        if(IS_ABSOLUTE "${_file}")
-            file(RELATIVE_PATH _rel_file "${CMAKE_SOURCE_DIR}" "${_file}")
-            message(STATUS "  - ${_rel_file}")
-        else()
-            message(STATUS "  - ${_file}")
-        endif()
-    endforeach()
-
-    message(STATUS "PLAT_LIBS:")
-    foreach(_lib ${LIBS})
-        message(STATUS "  - ${_lib}")
-    endforeach()
-
+    set(LDFRAGS "${ESP_COMMON_DIR}/meshx.lf")
+    
     idf_component_register(
         SRCS ${SRC}
         INCLUDE_DIRS ${INC}
         REQUIRES ${LIBS}
+        LDFRAGMENTS ${LDFRAGS}
     )
 endfunction()
 

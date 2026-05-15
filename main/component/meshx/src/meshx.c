@@ -311,6 +311,10 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     /* Copy the configuration to the global config structure */
     memcpy(&g_config, config, sizeof(meshx_config_t));
 
+    /* Initialise Platform deps */
+    err = meshx_platform_init();
+    MESHX_ERR_PRINT_RET("Platform init failed", err);
+
     meshx_logging_t logging_cfg;
     logging_cfg.def_log_level = config->meshx_log_level == MESHX_LOG_VERBOSE ?
         CONFIG_MESHX_DEFAULT_LOG_LEVEL : config->meshx_log_level;
@@ -318,12 +322,7 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     err = meshx_logging_init(&logging_cfg);
     MESHX_ERR_PRINT_RET("Logging init failed", err);
 
-    /* Print the MeshX banner */
-    meshx_banner_print();
-
-    /* Initialise Platform deps */
-    err = meshx_platform_init();
-    MESHX_ERR_PRINT_RET("Platform init failed", err);
+    MESHX_LOGI(MODULE_ID_COMMON, "MeshX Logging Initialized successfully");
 
     /* Load Persistent Configuration and apply UUID/Product Info */
     err = meshx_load_persistent_config(config);
