@@ -772,10 +772,8 @@ meshx_err_t meshx_gpio_set_hosted_mode(meshx_gpio_hosted_mode_t mode)
             }
         }
     }
-#if CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO
     /* Complete the transition */
     meshx_gpio_hosted_mode_t old_mode = (meshx_gpio_hosted_mode_t)gpio_runtime.hosted_mode;
-#endif /* CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO */
     gpio_runtime.hosted_mode = mode;
 
     MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Hosted mode set to %d (was %d)", mode, (int)old_mode);

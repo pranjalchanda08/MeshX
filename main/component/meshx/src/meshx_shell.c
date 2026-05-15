@@ -16,7 +16,7 @@
 
 #define SHELL_MAX_LINE_LEN 256
 #define SHELL_MAX_ARGS     16
-#define SHELL_PROMPT       "MeshX> "
+#define SHELL_PROMPT       ""
 
 static struct {
     meshx_shell_cmd_t commands[MESHX_SHELL_MAX_COMMANDS];
@@ -83,7 +83,6 @@ static void shell_task(void *pvParameters) {
     while (1) {
         if (meshx_platform_console_read(&c, 1) > 0) {
             if (c == '\r' || c == '\n') {
-                meshx_shell_printf("\n");
                 shell_ctx.line_buffer[shell_ctx.line_ptr] = '\0';
                 if (shell_ctx.line_ptr > 0) {
                     shell_process_line(shell_ctx.line_buffer);
@@ -93,12 +92,10 @@ static void shell_task(void *pvParameters) {
             } else if (c == '\b' || c == 0x7F) { // Backspace
                 if (shell_ctx.line_ptr > 0) {
                     shell_ctx.line_ptr--;
-                    meshx_shell_printf("\b \b");
                 }
             } else if (shell_ctx.line_ptr < SHELL_MAX_LINE_LEN - 1) {
                 if (isprint(c)) {
                     shell_ctx.line_buffer[shell_ctx.line_ptr++] = c;
-                    meshx_platform_console_write((const char *)&c, 1);
                 }
             }
         }

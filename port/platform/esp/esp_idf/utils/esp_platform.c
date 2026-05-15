@@ -73,6 +73,9 @@ meshx_err_t meshx_platform_init(void)
     /* Initialize Serial interface by default */
     meshx_platform_serial_init();
 
+    /* Initialize Console interface by default for early logging */
+    meshx_platform_console_init();
+
     /* Set log level for BLE Mesh */
     esp_log_level_set("BLE_MESH", ESP_LOG_ERROR);
 

@@ -7,90 +7,107 @@
 #define MESHX_LOG_H
 
 #include <stdio.h>
-#include "meshx_config_internal.h"
-#include "module_id.h"
+#include <stdarg.h>
+#include <stdint.h>
+#include <stdbool.h>
 #include "meshx_err.h"
+#include "module_id.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/**
- * @brief Macro to define printf function
- * @note this can be overriden by compile time Macro def
- */
-#ifndef CONFIG_MESHX_LOG_PRINTF
-#define CONFIG_MESHX_LOG_PRINTF printf
-#endif /* CONFIG_MESHX_LOG_PRINTF */
+#ifndef CONFIG_MESHX_LOG_THREADED
+#define CONFIG_MESHX_LOG_THREADED 0
+#endif
+
+/* Log levels matching esp_log.h levels for compatibility where needed */
+#define MESHX_LOG_NONE    0
+#define MESHX_LOG_ERROR   1
+#define MESHX_LOG_WARN    2
+#define MESHX_LOG_INFO    3
+#define MESHX_LOG_DEBUG   4
+#define MESHX_LOG_VERBOSE 5
+#define MESHX_LOG_MAX     6
+
+typedef uint8_t meshx_log_level_t;
+
+/* Logging control structure */
+typedef struct {
+    meshx_log_level_t def_log_level;
+} meshx_logging_t;
+
+/* Color codes for console output (used by host decoder or fallback) */
+#define MESHX_LOG_COLOR_BLACK   "30"
+#define MESHX_LOG_COLOR_RED     "31"
+#define MESHX_LOG_COLOR_GREEN   "32"
+#define MESHX_LOG_COLOR_BROWN   "33"
+#define MESHX_LOG_COLOR_BLUE    "34"
+#define MESHX_LOG_COLOR_PURPLE  "35"
+#define MESHX_LOG_COLOR_CYAN    "36"
+#define MESHX_LOG_COLOR_WHITE   "37"
+#define MESHX_LOG_COLOR_RESET   "\033[0m"
+#define MESHX_LOG_COLOR(COLOR)  "\033[0;" COLOR "m"
+
+#define MESHX_LOG_COLOR_E       MESHX_LOG_COLOR(MESHX_LOG_COLOR_RED)
+#define MESHX_LOG_COLOR_W       MESHX_LOG_COLOR(MESHX_LOG_COLOR_BROWN)
+#define MESHX_LOG_COLOR_I       MESHX_LOG_COLOR(MESHX_LOG_COLOR_GREEN)
+#define MESHX_LOG_COLOR_D       MESHX_LOG_COLOR(MESHX_LOG_COLOR_BLUE)
+#define MESHX_LOG_COLOR_V       MESHX_LOG_COLOR(MESHX_LOG_COLOR_RESET)
+
+#define MESHX_LOG_GET_COLOR(level) ((level) == MESHX_LOG_ERROR ? MESHX_LOG_COLOR_E : \
+                                    (level) == MESHX_LOG_WARN  ? MESHX_LOG_COLOR_W : \
+                                    (level) == MESHX_LOG_INFO  ? MESHX_LOG_COLOR_I : \
+                                    (level) == MESHX_LOG_DEBUG ? MESHX_LOG_COLOR_BLUE : \
+                                    MESHX_LOG_COLOR_RESET)
 
 #ifndef CONFIG_MESHX_DEFAULT_LOG_LEVEL
 #define CONFIG_MESHX_DEFAULT_LOG_LEVEL MESHX_LOG_INFO
-#endif /* CONFIG_MESHX_DEFAULT_LOG_LEVEL */
+#endif
+
+#define MESHX_LOG_STR_ATTR __attribute__((section(".meshx_log_str"), used))
+#define MESHX_LOG_SYNC_WORD 0xDEAD
+
+#define MESHX_LOG_CONCAT_INNER(a, b) a ## b
+#define MESHX_LOG_CONCAT(a, b) MESHX_LOG_CONCAT_INNER(a, b)
+
+#ifdef __COUNTER__
+#define MESHX_LOG_UNIQUE_ID __COUNTER__
+#else
+#define MESHX_LOG_UNIQUE_ID __LINE__
+#endif
 
 /**
- * @brief Threaded logging configuration
+ * @brief TLV Log Packet structure
+ * @note Packed for transmission efficiency
  */
-#ifndef CONFIG_MESHX_LOG_THREADED
-#define CONFIG_MESHX_LOG_THREADED 1
-#endif /* CONFIG_MESHX_LOG_THREADED */
+typedef struct {
+    uint16_t sync;      /* 0xDEAD */
+    uint8_t  len;       /* Length of payload (everything after this field) */
+    uint8_t  level;     /* Log level */
+    uint8_t  module_id; /* Module ID */
+    uint32_t timestamp; /* System time in ms */
+    uint32_t fmt_addr;  /* Address of format string in ELF */
+    uint32_t file_addr; /* Address of file name in ELF */
+    uint16_t line_no;   /* Line number */
+    uint32_t args[16];  /* 16 variadic arguments */
+    char     inline_str[32]; /* Space for one dynamic string (up to 32 chars) */
+    uint8_t  parity;    /* XOR parity at the end */
+} __attribute__((packed)) meshx_log_packet_t;
 
-#if CONFIG_MESHX_LOG_THREADED
-#ifndef CONFIG_MESHX_LOG_QUEUE_LEN
-#define CONFIG_MESHX_LOG_QUEUE_LEN 50
-#endif /* CONFIG_MESHX_LOG_QUEUE_LEN */
+#define MESHX_LOG(module_id, level, format, ...) \
+    MESHX_LOG_INTERNAL(MESHX_LOG_UNIQUE_ID, module_id, level, format, ##__VA_ARGS__, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
-#ifndef CONFIG_MESHX_LOG_BUF_SIZE
-#define CONFIG_MESHX_LOG_BUF_SIZE 256
-#endif /* CONFIG_MESHX_LOG_BUF_SIZE */
+#define MESHX_STR_INNER(x) #x
+#define MESHX_STR(x) MESHX_STR_INNER(x)
 
-#ifndef CONFIG_MESHX_LOG_HIGH_WATERMARK
-#define CONFIG_MESHX_LOG_HIGH_WATERMARK (CONFIG_MESHX_LOG_QUEUE_LEN * 8 / 10)
-#endif /* CONFIG_MESHX_LOG_HIGH_WATERMARK */
-
-#ifndef CONFIG_MESHX_LOG_STACK_SIZE
-#define CONFIG_MESHX_LOG_STACK_SIZE 4096
-#endif /* CONFIG_MESHX_LOG_STACK_SIZE */
-#endif /* CONFIG_MESHX_LOG_THREADED */
-
-/* ANSI Color Codes */
-#define MESHX_LOG_COLOR_BLACK "\033[0;30m"
-#define MESHX_LOG_COLOR_RED "\033[0;31m"
-#define MESHX_LOG_COLOR_GREEN "\033[0;32m"
-#define MESHX_LOG_COLOR_YELLOW "\033[0;33m"
-#define MESHX_LOG_COLOR_BLUE "\033[0;34m"
-#define MESHX_LOG_COLOR_PURPLE "\033[0;35m"
-#define MESHX_LOG_COLOR_CYAN "\033[0;36m"
-#define MESHX_LOG_COLOR_WHITE "\033[0;37m"
-#define MESHX_LOG_COLOR_RESET "\033[0m"
-
-/* Log levels */
-
-#define MESHX_LOG_VERBOSE 0 /* White */
-#define MESHX_LOG_DEBUG 1   /* Blue */
-#define MESHX_LOG_INFO 2    /* Green */
-#define MESHX_LOG_WARN 3    /* Yellow */
-#define MESHX_LOG_ERROR 4   /* Red */
-#define MESHX_LOG_NONE 5    /* Blue */
-#define MESHX_LOG_MAX 6
-
-typedef unsigned meshx_log_level_t;
-
-typedef unsigned int (*millis_t)(void);
-
-typedef struct meshx_logging
-{
-    unsigned def_log_level;
-} meshx_logging_t;
-
-/* Get color for log level */
-#define MESHX_LOG_LEVEL_COLOR(level) (                                                                    \
-    (level) == MESHX_LOG_ERROR ? MESHX_LOG_COLOR_RED : (level) == MESHX_LOG_WARN ? MESHX_LOG_COLOR_YELLOW \
-                                                   : (level) == MESHX_LOG_INFO   ? MESHX_LOG_COLOR_GREEN  \
-                                                   : (level) == MESHX_LOG_DEBUG  ? MESHX_LOG_COLOR_BLUE   \
-                                                                                 : MESHX_LOG_COLOR_RESET)
-
-/* Logging macro with colors */
-#define MESHX_LOG(module_id, level, format, ...) meshx_log_printf(module_id, level, __FILENAME__, __LINE__, format, ##__VA_ARGS__)
+#define MESHX_LOG_INTERNAL(id, module_id, level, format, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, ...) \
+    do                                                                \
+    {                                                                 \
+        static const char MESHX_LOG_CONCAT(_fmt, id)[] __attribute__((section(".meshx_log_str." MESHX_STR(id)), used)) = format; \
+        static const char MESHX_LOG_CONCAT(_file, id)[] __attribute__((section(".meshx_log_str." MESHX_STR(id)), used)) = __FILE__; \
+        meshx_log_packet(module_id, level, MESHX_LOG_CONCAT(_file, id), __LINE__, MESHX_LOG_CONCAT(_fmt, id), arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15); \
+    } while (0)
 
 #if CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_MAX
 #define MESHX_LOGE(module_id, format, ...)                            \
@@ -98,89 +115,59 @@ typedef struct meshx_logging
     {                                                                 \
         MESHX_LOG(module_id, MESHX_LOG_ERROR, format, ##__VA_ARGS__); \
     } while (0)
-#else
-#define MESHX_LOGE(module_id, format, ...) \
-    do                                     \
-    {                                      \
-    } while (0) // Prevent empty macro expansion warning
 
-#endif
+#define MESHX_LOGW(module_id, format, ...)                            \
+    do                                                                \
+    {                                                                 \
+        MESHX_LOG(module_id, MESHX_LOG_WARN, format, ##__VA_ARGS__);  \
+    } while (0)
 
-#if CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_ERROR
-#define MESHX_LOGW(module_id, format, ...)                           \
-    do                                                               \
-    {                                                                \
-        MESHX_LOG(module_id, MESHX_LOG_WARN, format, ##__VA_ARGS__); \
+#define MESHX_LOGI(module_id, format, ...)                            \
+    do                                                                \
+    {                                                                 \
+        MESHX_LOG(module_id, MESHX_LOG_INFO, format, ##__VA_ARGS__);  \
     } while (0)
-#else
-#define MESHX_LOGW(module_id, format, ...) \
-    do                                     \
-    {                                      \
-    } while (0)
-#endif
 
-#if CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_WARN
-#define MESHX_LOGI(module_id, format, ...)                           \
-    do                                                               \
-    {                                                                \
-        MESHX_LOG(module_id, MESHX_LOG_INFO, format, ##__VA_ARGS__); \
-    } while (0)
-#else
-#define MESHX_LOGI(module_id, format, ...) \
-    do                                     \
-    {                                      \
-    } while (0)
-#endif
-
-#if CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO
 #define MESHX_LOGD(module_id, format, ...)                            \
     do                                                                \
     {                                                                 \
         MESHX_LOG(module_id, MESHX_LOG_DEBUG, format, ##__VA_ARGS__); \
     } while (0)
-#else
-#define MESHX_LOGD(module_id, format, ...) \
-    do                                     \
-    {                                      \
+
+#define MESHX_LOGV(module_id, format, ...)                            \
+    do                                                                \
+    {                                                                 \
+        MESHX_LOG(module_id, MESHX_LOG_VERBOSE, format, ##__VA_ARGS__);\
     } while (0)
+
+#else
+#define MESHX_LOGE(module_id, format, ...) do {} while (0)
+#define MESHX_LOGW(module_id, format, ...) do {} while (0)
+#define MESHX_LOGI(module_id, format, ...) do {} while (0)
+#define MESHX_LOGD(module_id, format, ...) do {} while (0)
+#define MESHX_LOGV(module_id, format, ...) do {} while (0)
 #endif
 
-/**
- * @brief Initializes the MeshX logging system with the provided configuration.
- *
- * This function sets up the logging system by assigning the default log level
- * and the callback function for retrieving the current time in milliseconds.
- * It validates the configuration parameters and returns an error if they are
- * invalid.
- *
- * @param[in] config Pointer to the logging configuration structure.
- *
- * @return MESHX_SUCCESS on successful initialization, MESHX_INVALID_ARG if
- *         the configuration is invalid.
- */
+/* Exported functions */
 meshx_err_t meshx_logging_init(const meshx_logging_t *config);
+void meshx_module_set_log_level(module_id_t module_id, meshx_log_level_t log_level);
 
 /**
- * @brief Logs a formatted message for a specified module and log level.
- *
- * @note This is a weak function, can be redefined to override in app layer
- *
- * This function checks if the provided module ID and log level are valid
- * and above the current global and module-specific log levels. If valid,
- * it processes the variable arguments to format and log the message.
- *
- * @note This is a weak function defination and can be overriden by any other version
- *       of defination required as per platform
- *
- * @param[in] module_id     The ID of the module for which the log is generated.
- * @param[in] log_level     The log level of the message.
- * @param[in] func          The name of the function where the log is called.
- * @param[in] line_no       The line number in the source code where the log is called.
- * @param[in] fmt           The format string for the log message.
- * @param[in] ...           Additional arguments for the format string.
+ * @brief Logs a packetized binary log message.
+ * @note This is called by the MESHX_LOG macro.
  */
-MESHX_WEEK void meshx_log_printf(module_id_t module_id, meshx_log_level_t log_level,
+void meshx_log_packet(module_id_t module_id, meshx_log_level_t log_level,
+                      const char *file, int line_no, const char *fmt, ...);
+
+/**
+ * @brief Legacy printf-style logging for external components.
+ */
+void meshx_log_printf(module_id_t module_id, meshx_log_level_t log_level,
                       const char *func, int line_no, const char *fmt, ...);
+
+#ifndef CONFIG_MESHX_LOG_PRINTF
+#define CONFIG_MESHX_LOG_PRINTF printf
+#endif
 
 #ifdef __cplusplus
 }
