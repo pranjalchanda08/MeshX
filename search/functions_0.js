@@ -12,5 +12,6 @@ var searchData=
   ['add_5fsig_5fmodel_5fif_5fpresent_9',['add_sig_model_if_present',['../d9/d25/classmeshXRootElement.html#ac8cda04c01fb718fd42cf7c357c4e2ee',1,'meshXRootElement']]],
   ['add_5fsig_5fmodels_10',['add_sig_models',['../de/dfb/classmeshXElement.html#af243f4ba3a0bf3e7f6406fb20b8d0b78',1,'meshXElement']]],
   ['add_5fven_5fmodel_11',['add_ven_model',['../de/dfb/classmeshXElement.html#af4fd0ed4199f2be5f5f74b2feb8686d8',1,'meshXElement']]],
-  ['add_5fven_5fmodels_12',['add_ven_models',['../de/dfb/classmeshXElement.html#a72136185033fddf2f0ca4496c5687926',1,'meshXElement']]]
+  ['add_5fven_5fmodels_12',['add_ven_models',['../de/dfb/classmeshXElement.html#a72136185033fddf2f0ca4496c5687926',1,'meshXElement']]],
+  ['allocate_5fpwm_5fchannel_13',['allocate_pwm_channel',['../d1/d17/meshx__pwm_8c.html#a5728b9d65b9fb87d87254b71212b0a9c',1,'meshx_pwm.c']]]
 ];

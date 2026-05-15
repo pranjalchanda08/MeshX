@@ -95,6 +95,12 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
+<tr class="memitem:mxsp_5Fgpio_5Fcmd_5Fpayload_5Ft" id="r_mxsp_5Fgpio_5Fcmd_5Fpayload_5Ft"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="../../df/d22/structmxsp__gpio__cmd__payload__t.html">mxsp_gpio_cmd_payload_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">GPIO Command Payload (Host -&gt; Engine).  <a href="../../df/d22/structmxsp__gpio__cmd__payload__t.html#details">More...</a><br /></td></tr>
+<tr class="memitem:mxsp_5Fgpio_5Frsp_5Fpayload_5Ft" id="r_mxsp_5Fgpio_5Frsp_5Fpayload_5Ft"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="../../df/d82/structmxsp__gpio__rsp__payload__t.html">mxsp_gpio_rsp_payload_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">GPIO Response Payload (Engine -&gt; Host).  <a href="../../df/d82/structmxsp__gpio__rsp__payload__t.html#details">More...</a><br /></td></tr>
+<tr class="memitem:mxsp_5Fgpio_5Fevt_5Fpayload_5Ft" id="r_mxsp_5Fgpio_5Fevt_5Fpayload_5Ft"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="../../d8/d13/structmxsp__gpio__evt__payload__t.html">mxsp_gpio_evt_payload_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">GPIO Event Payload (Engine -&gt; Host, async).  <a href="../../d8/d13/structmxsp__gpio__evt__payload__t.html#details">More...</a><br /></td></tr>
 <tr class="memitem:mxsp_5Fframe_5Ft" id="r_mxsp_5Fframe_5Ft"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="../../d5/db9/structmxsp__frame__t.html">mxsp_frame_t</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">MXSP Frame structure.  <a href="../../d5/db9/structmxsp__frame__t.html#details">More...</a><br /></td></tr>
 </table><table class="memberdecls">
@@ -116,8 +122,46 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="#a5ecc3cb058739536c1d8ee03f068256cad25e29fa4ccd24ee4a40e5bbe469c6bc">MXSP_MSG_TYPE_SYS_CMD_SEND</a> = 0xC2
 , <br />
 &#160;&#160;<a class="el" href="#a5ecc3cb058739536c1d8ee03f068256cafa815f11b4548bf93dc2b26b26498837">MXSP_MSG_TYPE_HOSTED_MODE</a> = 0x03
+, <br />
+&#160;&#160;<a class="el" href="#a5ecc3cb058739536c1d8ee03f068256ca7653728437c45a79c0f8db30bff6d982">MXSP_MSG_TYPE_GPIO_CMD</a> = 0xD1
+, <br />
+&#160;&#160;<a class="el" href="#a5ecc3cb058739536c1d8ee03f068256cafa60750d7741de91aa4eacdde640118b">MXSP_MSG_TYPE_GPIO_RSP</a> = 0xD2
+, <br />
+&#160;&#160;<a class="el" href="#a5ecc3cb058739536c1d8ee03f068256ca4854f546250827a1b9269f6cdd86d5c2">MXSP_MSG_TYPE_GPIO_EVT</a> = 0xD3
 <br />
  }</td></tr>
+<tr class="memitem:a23979b9e94f4c5c6592a35d544c5a96e" id="r_a23979b9e94f4c5c6592a35d544c5a96e"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#a23979b9e94f4c5c6592a35d544c5a96e">mxsp_gpio_cmd_t</a> { <br />
+&#160;&#160;<a class="el" href="#a23979b9e94f4c5c6592a35d544c5a96eacdc877cf732aec9d00d98b0aed5a9500">MXSP_GPIO_CMD_SET_LEVEL</a> = 0x01
+, <br />
+&#160;&#160;<a class="el" href="#a23979b9e94f4c5c6592a35d544c5a96ead4b66529950e883dcedd0417a13f223c">MXSP_GPIO_CMD_GET_LEVEL</a> = 0x02
+, <br />
+&#160;&#160;<a class="el" href="#a23979b9e94f4c5c6592a35d544c5a96ea9f7cb4205ae00acaa63042ccf5542333">MXSP_GPIO_CMD_TOGGLE</a> = 0x03
+, <br />
+&#160;&#160;<a class="el" href="#a23979b9e94f4c5c6592a35d544c5a96eaf02baf58a6adc21c1e6a4bf32a3712a8">MXSP_GPIO_CMD_SET_PWM_DUTY</a> = 0x04
+, <br />
+&#160;&#160;<a class="el" href="#a23979b9e94f4c5c6592a35d544c5a96ea3d71816975cbf393c0a4002f365abecc">MXSP_GPIO_CMD_SET_PWM_FREQ</a> = 0x05
+, <br />
+&#160;&#160;<a class="el" href="#a23979b9e94f4c5c6592a35d544c5a96ea704e50d01294318d6d72ff932d615483">MXSP_GPIO_CMD_INTR_ENABLE</a> = 0x06
+, <br />
+&#160;&#160;<a class="el" href="#a23979b9e94f4c5c6592a35d544c5a96eae98baa11cd159b43bd24c2238d9c4673">MXSP_GPIO_CMD_INTR_DISABLE</a> = 0x07
+, <br />
+&#160;&#160;<a class="el" href="#a23979b9e94f4c5c6592a35d544c5a96ea5b679ece813301eabb4b19e91c2273ff">MXSP_GPIO_CMD_GET_CONFIG</a> = 0x08
+, <br />
+&#160;&#160;<a class="el" href="#a23979b9e94f4c5c6592a35d544c5a96ea5f8ef1f8dc3ae0ff07c980dad2b423ed">MXSP_GPIO_CMD_GET_STATE</a> = 0x09
+<br />
+ }</td></tr>
+<tr class="memdesc:a23979b9e94f4c5c6592a35d544c5a96e"><td class="mdescLeft">&#160;</td><td class="mdescRight">GPIO Command Types (Host -&gt; Engine).  <a href="#a23979b9e94f4c5c6592a35d544c5a96e">More...</a><br /></td></tr>
+<tr class="memitem:a888c45f8c2d669adef531ee6195a3c92" id="r_a888c45f8c2d669adef531ee6195a3c92"><td class="memItemLeft">enum &#160;</td><td class="memItemRight"><a class="el" href="#a888c45f8c2d669adef531ee6195a3c92">mxsp_gpio_evt_t</a> { <br />
+&#160;&#160;<a class="el" href="#a888c45f8c2d669adef531ee6195a3c92ab6193e209526df5cd32b9d01515e451e">MXSP_GPIO_EVT_LEVEL_CHANGE</a> = 0x01
+, <br />
+&#160;&#160;<a class="el" href="#a888c45f8c2d669adef531ee6195a3c92a9412492f4ea0bf7505e8ab8c528aa4f8">MXSP_GPIO_EVT_INTERRUPT</a> = 0x02
+, <br />
+&#160;&#160;<a class="el" href="#a888c45f8c2d669adef531ee6195a3c92a13630c68475ecc91c608d7a500279dc3">MXSP_GPIO_EVT_MODE_CHANGE</a> = 0x03
+, <br />
+&#160;&#160;<a class="el" href="#a888c45f8c2d669adef531ee6195a3c92aa7abf1287d09060f7e499fdebceaa6f4">MXSP_GPIO_EVT_ERROR</a> = 0xFF
+<br />
+ }</td></tr>
+<tr class="memdesc:a888c45f8c2d669adef531ee6195a3c92"><td class="mdescLeft">&#160;</td><td class="mdescRight">GPIO Event Types (Engine -&gt; Host, async).  <a href="#a888c45f8c2d669adef531ee6195a3c92">More...</a><br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -133,6 +177,10 @@ Functions</h2></td></tr>
 <tr class="memdesc:a9304219c1945badc5d252fcea22d099f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a control event via MXSP.  <br /></td></tr>
 <tr class="memitem:acdb04c4f92a835fae85f363d821f50b2" id="r_acdb04c4f92a835fae85f363d821f50b2"><td class="memItemLeft"><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>&#160;</td><td class="memItemRight"><a class="el" href="#acdb04c4f92a835fae85f363d821f50b2">mxsp_send_data_event</a> (const <a class="el" href="../../db/d2f/meshx__api_8h.html#a55812317789748e2606ccea2fca7f056">meshx_app_element_msg_header_t</a> *msg_hdr, const <a class="el" href="../../db/d2f/meshx__api_8h.html#a00b4894819c8bf05a33474d25723b046">meshx_data_payload_t</a> *payload)</td></tr>
 <tr class="memdesc:acdb04c4f92a835fae85f363d821f50b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send data event via MXSP.  <br /></td></tr>
+<tr class="memitem:a70015dc613151a880d45e55d09d6c8df" id="r_a70015dc613151a880d45e55d09d6c8df"><td class="memItemLeft"><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>&#160;</td><td class="memItemRight"><a class="el" href="#a70015dc613151a880d45e55d09d6c8df">mxsp_send_gpio_rsp</a> (uint8_t cmd, uint8_t logical_pin, uint8_t status, const uint8_t *response, uint8_t response_len)</td></tr>
+<tr class="memdesc:a70015dc613151a880d45e55d09d6c8df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send GPIO response via MXSP.  <br /></td></tr>
+<tr class="memitem:ab13d8b11fb0f0a0f51f7e4be70a0164b" id="r_ab13d8b11fb0f0a0f51f7e4be70a0164b"><td class="memItemLeft"><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>&#160;</td><td class="memItemRight"><a class="el" href="#ab13d8b11fb0f0a0f51f7e4be70a0164b">mxsp_send_gpio_evt</a> (uint8_t event_type, uint8_t logical_pin, uint8_t value)</td></tr>
+<tr class="memdesc:ab13d8b11fb0f0a0f51f7e4be70a0164b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send GPIO async event via MXSP.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>MeshX Serial Protocol (MXSP) Definitions. </p>
@@ -181,6 +229,100 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Enumeration Type Documentation</h2>
+<a id="a23979b9e94f4c5c6592a35d544c5a96e" name="a23979b9e94f4c5c6592a35d544c5a96e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23979b9e94f4c5c6592a35d544c5a96e">&#9670;&#160;</a></span>mxsp_gpio_cmd_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#a23979b9e94f4c5c6592a35d544c5a96e">mxsp_gpio_cmd_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>GPIO Command Types (Host -&gt; Engine). </p>
+<table class="fieldtable">
+<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a23979b9e94f4c5c6592a35d544c5a96eacdc877cf732aec9d00d98b0aed5a9500" name="a23979b9e94f4c5c6592a35d544c5a96eacdc877cf732aec9d00d98b0aed5a9500"></a>MXSP_GPIO_CMD_SET_LEVEL&#160;</td><td class="fieldinit">0x01&#160;</td><td class="fielddoc"><p>Set GPIO pin level </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a23979b9e94f4c5c6592a35d544c5a96ead4b66529950e883dcedd0417a13f223c" name="a23979b9e94f4c5c6592a35d544c5a96ead4b66529950e883dcedd0417a13f223c"></a>MXSP_GPIO_CMD_GET_LEVEL&#160;</td><td class="fieldinit">0x02&#160;</td><td class="fielddoc"><p>Get GPIO pin level </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a23979b9e94f4c5c6592a35d544c5a96ea9f7cb4205ae00acaa63042ccf5542333" name="a23979b9e94f4c5c6592a35d544c5a96ea9f7cb4205ae00acaa63042ccf5542333"></a>MXSP_GPIO_CMD_TOGGLE&#160;</td><td class="fieldinit">0x03&#160;</td><td class="fielddoc"><p>Toggle GPIO pin </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a23979b9e94f4c5c6592a35d544c5a96eaf02baf58a6adc21c1e6a4bf32a3712a8" name="a23979b9e94f4c5c6592a35d544c5a96eaf02baf58a6adc21c1e6a4bf32a3712a8"></a>MXSP_GPIO_CMD_SET_PWM_DUTY&#160;</td><td class="fieldinit">0x04&#160;</td><td class="fielddoc"><p>Set PWM duty cycle </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a23979b9e94f4c5c6592a35d544c5a96ea3d71816975cbf393c0a4002f365abecc" name="a23979b9e94f4c5c6592a35d544c5a96ea3d71816975cbf393c0a4002f365abecc"></a>MXSP_GPIO_CMD_SET_PWM_FREQ&#160;</td><td class="fieldinit">0x05&#160;</td><td class="fielddoc"><p>Set PWM frequency </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a23979b9e94f4c5c6592a35d544c5a96ea704e50d01294318d6d72ff932d615483" name="a23979b9e94f4c5c6592a35d544c5a96ea704e50d01294318d6d72ff932d615483"></a>MXSP_GPIO_CMD_INTR_ENABLE&#160;</td><td class="fieldinit">0x06&#160;</td><td class="fielddoc"><p>Enable/disable interrupt </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a23979b9e94f4c5c6592a35d544c5a96eae98baa11cd159b43bd24c2238d9c4673" name="a23979b9e94f4c5c6592a35d544c5a96eae98baa11cd159b43bd24c2238d9c4673"></a>MXSP_GPIO_CMD_INTR_DISABLE&#160;</td><td class="fieldinit">0x07&#160;</td><td class="fielddoc"><p>Disable interrupt </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a23979b9e94f4c5c6592a35d544c5a96ea5b679ece813301eabb4b19e91c2273ff" name="a23979b9e94f4c5c6592a35d544c5a96ea5b679ece813301eabb4b19e91c2273ff"></a>MXSP_GPIO_CMD_GET_CONFIG&#160;</td><td class="fieldinit">0x08&#160;</td><td class="fielddoc"><p>Get pin configuration </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a23979b9e94f4c5c6592a35d544c5a96ea5f8ef1f8dc3ae0ff07c980dad2b423ed" name="a23979b9e94f4c5c6592a35d544c5a96ea5f8ef1f8dc3ae0ff07c980dad2b423ed"></a>MXSP_GPIO_CMD_GET_STATE&#160;</td><td class="fieldinit">0x09&#160;</td><td class="fielddoc"><p>Get pin state </p>
+</td></tr>
+</table>
+<div class="fragment"><div class="line"><span class="lineno">   53</span>             {</div>
+<div class="line"><span class="lineno">   54</span>    <a class="code hl_enumvalue" href="#a23979b9e94f4c5c6592a35d544c5a96eacdc877cf732aec9d00d98b0aed5a9500">MXSP_GPIO_CMD_SET_LEVEL</a>       = 0x01, <span class="comment">/**&lt; Set GPIO pin level */</span></div>
+<div class="line"><span class="lineno">   55</span>    <a class="code hl_enumvalue" href="#a23979b9e94f4c5c6592a35d544c5a96ead4b66529950e883dcedd0417a13f223c">MXSP_GPIO_CMD_GET_LEVEL</a>       = 0x02, <span class="comment">/**&lt; Get GPIO pin level */</span></div>
+<div class="line"><span class="lineno">   56</span>    <a class="code hl_enumvalue" href="#a23979b9e94f4c5c6592a35d544c5a96ea9f7cb4205ae00acaa63042ccf5542333">MXSP_GPIO_CMD_TOGGLE</a>          = 0x03, <span class="comment">/**&lt; Toggle GPIO pin */</span></div>
+<div class="line"><span class="lineno">   57</span>    <a class="code hl_enumvalue" href="#a23979b9e94f4c5c6592a35d544c5a96eaf02baf58a6adc21c1e6a4bf32a3712a8">MXSP_GPIO_CMD_SET_PWM_DUTY</a>    = 0x04, <span class="comment">/**&lt; Set PWM duty cycle */</span></div>
+<div class="line"><span class="lineno">   58</span>    <a class="code hl_enumvalue" href="#a23979b9e94f4c5c6592a35d544c5a96ea3d71816975cbf393c0a4002f365abecc">MXSP_GPIO_CMD_SET_PWM_FREQ</a>    = 0x05, <span class="comment">/**&lt; Set PWM frequency */</span></div>
+<div class="line"><span class="lineno">   59</span>    <a class="code hl_enumvalue" href="#a23979b9e94f4c5c6592a35d544c5a96ea704e50d01294318d6d72ff932d615483">MXSP_GPIO_CMD_INTR_ENABLE</a>     = 0x06, <span class="comment">/**&lt; Enable/disable interrupt */</span></div>
+<div class="line"><span class="lineno">   60</span>    <a class="code hl_enumvalue" href="#a23979b9e94f4c5c6592a35d544c5a96eae98baa11cd159b43bd24c2238d9c4673">MXSP_GPIO_CMD_INTR_DISABLE</a>    = 0x07, <span class="comment">/**&lt; Disable interrupt */</span></div>
+<div class="line"><span class="lineno">   61</span>    <a class="code hl_enumvalue" href="#a23979b9e94f4c5c6592a35d544c5a96ea5b679ece813301eabb4b19e91c2273ff">MXSP_GPIO_CMD_GET_CONFIG</a>      = 0x08, <span class="comment">/**&lt; Get pin configuration */</span></div>
+<div class="line"><span class="lineno">   62</span>    <a class="code hl_enumvalue" href="#a23979b9e94f4c5c6592a35d544c5a96ea5f8ef1f8dc3ae0ff07c980dad2b423ed">MXSP_GPIO_CMD_GET_STATE</a>       = 0x09, <span class="comment">/**&lt; Get pin state */</span></div>
+<div class="line"><span class="lineno">   63</span>} <a class="code hl_enumeration" href="#a23979b9e94f4c5c6592a35d544c5a96e">mxsp_gpio_cmd_t</a>;</div>
+<div class="ttc" id="ameshx__serial_8h_html_a23979b9e94f4c5c6592a35d544c5a96e"><div class="ttname"><a href="#a23979b9e94f4c5c6592a35d544c5a96e">mxsp_gpio_cmd_t</a></div><div class="ttdeci">mxsp_gpio_cmd_t</div><div class="ttdoc">GPIO Command Types (Host -&gt; Engine).</div><div class="ttdef"><b>Definition</b> meshx_serial.h:53</div></div>
+<div class="ttc" id="ameshx__serial_8h_html_a23979b9e94f4c5c6592a35d544c5a96ea3d71816975cbf393c0a4002f365abecc"><div class="ttname"><a href="#a23979b9e94f4c5c6592a35d544c5a96ea3d71816975cbf393c0a4002f365abecc">MXSP_GPIO_CMD_SET_PWM_FREQ</a></div><div class="ttdeci">@ MXSP_GPIO_CMD_SET_PWM_FREQ</div><div class="ttdef"><b>Definition</b> meshx_serial.h:58</div></div>
+<div class="ttc" id="ameshx__serial_8h_html_a23979b9e94f4c5c6592a35d544c5a96ea5b679ece813301eabb4b19e91c2273ff"><div class="ttname"><a href="#a23979b9e94f4c5c6592a35d544c5a96ea5b679ece813301eabb4b19e91c2273ff">MXSP_GPIO_CMD_GET_CONFIG</a></div><div class="ttdeci">@ MXSP_GPIO_CMD_GET_CONFIG</div><div class="ttdef"><b>Definition</b> meshx_serial.h:61</div></div>
+<div class="ttc" id="ameshx__serial_8h_html_a23979b9e94f4c5c6592a35d544c5a96ea5f8ef1f8dc3ae0ff07c980dad2b423ed"><div class="ttname"><a href="#a23979b9e94f4c5c6592a35d544c5a96ea5f8ef1f8dc3ae0ff07c980dad2b423ed">MXSP_GPIO_CMD_GET_STATE</a></div><div class="ttdeci">@ MXSP_GPIO_CMD_GET_STATE</div><div class="ttdef"><b>Definition</b> meshx_serial.h:62</div></div>
+<div class="ttc" id="ameshx__serial_8h_html_a23979b9e94f4c5c6592a35d544c5a96ea704e50d01294318d6d72ff932d615483"><div class="ttname"><a href="#a23979b9e94f4c5c6592a35d544c5a96ea704e50d01294318d6d72ff932d615483">MXSP_GPIO_CMD_INTR_ENABLE</a></div><div class="ttdeci">@ MXSP_GPIO_CMD_INTR_ENABLE</div><div class="ttdef"><b>Definition</b> meshx_serial.h:59</div></div>
+<div class="ttc" id="ameshx__serial_8h_html_a23979b9e94f4c5c6592a35d544c5a96ea9f7cb4205ae00acaa63042ccf5542333"><div class="ttname"><a href="#a23979b9e94f4c5c6592a35d544c5a96ea9f7cb4205ae00acaa63042ccf5542333">MXSP_GPIO_CMD_TOGGLE</a></div><div class="ttdeci">@ MXSP_GPIO_CMD_TOGGLE</div><div class="ttdef"><b>Definition</b> meshx_serial.h:56</div></div>
+<div class="ttc" id="ameshx__serial_8h_html_a23979b9e94f4c5c6592a35d544c5a96eacdc877cf732aec9d00d98b0aed5a9500"><div class="ttname"><a href="#a23979b9e94f4c5c6592a35d544c5a96eacdc877cf732aec9d00d98b0aed5a9500">MXSP_GPIO_CMD_SET_LEVEL</a></div><div class="ttdeci">@ MXSP_GPIO_CMD_SET_LEVEL</div><div class="ttdef"><b>Definition</b> meshx_serial.h:54</div></div>
+<div class="ttc" id="ameshx__serial_8h_html_a23979b9e94f4c5c6592a35d544c5a96ead4b66529950e883dcedd0417a13f223c"><div class="ttname"><a href="#a23979b9e94f4c5c6592a35d544c5a96ead4b66529950e883dcedd0417a13f223c">MXSP_GPIO_CMD_GET_LEVEL</a></div><div class="ttdeci">@ MXSP_GPIO_CMD_GET_LEVEL</div><div class="ttdef"><b>Definition</b> meshx_serial.h:55</div></div>
+<div class="ttc" id="ameshx__serial_8h_html_a23979b9e94f4c5c6592a35d544c5a96eae98baa11cd159b43bd24c2238d9c4673"><div class="ttname"><a href="#a23979b9e94f4c5c6592a35d544c5a96eae98baa11cd159b43bd24c2238d9c4673">MXSP_GPIO_CMD_INTR_DISABLE</a></div><div class="ttdeci">@ MXSP_GPIO_CMD_INTR_DISABLE</div><div class="ttdef"><b>Definition</b> meshx_serial.h:60</div></div>
+<div class="ttc" id="ameshx__serial_8h_html_a23979b9e94f4c5c6592a35d544c5a96eaf02baf58a6adc21c1e6a4bf32a3712a8"><div class="ttname"><a href="#a23979b9e94f4c5c6592a35d544c5a96eaf02baf58a6adc21c1e6a4bf32a3712a8">MXSP_GPIO_CMD_SET_PWM_DUTY</a></div><div class="ttdeci">@ MXSP_GPIO_CMD_SET_PWM_DUTY</div><div class="ttdef"><b>Definition</b> meshx_serial.h:57</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a888c45f8c2d669adef531ee6195a3c92" name="a888c45f8c2d669adef531ee6195a3c92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a888c45f8c2d669adef531ee6195a3c92">&#9670;&#160;</a></span>mxsp_gpio_evt_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="#a888c45f8c2d669adef531ee6195a3c92">mxsp_gpio_evt_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>GPIO Event Types (Engine -&gt; Host, async). </p>
+<table class="fieldtable">
+<tr><th colspan="3">Enumerator</th></tr><tr><td class="fieldname"><a id="a888c45f8c2d669adef531ee6195a3c92ab6193e209526df5cd32b9d01515e451e" name="a888c45f8c2d669adef531ee6195a3c92ab6193e209526df5cd32b9d01515e451e"></a>MXSP_GPIO_EVT_LEVEL_CHANGE&#160;</td><td class="fieldinit">0x01&#160;</td><td class="fielddoc"><p>Pin level changed </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a888c45f8c2d669adef531ee6195a3c92a9412492f4ea0bf7505e8ab8c528aa4f8" name="a888c45f8c2d669adef531ee6195a3c92a9412492f4ea0bf7505e8ab8c528aa4f8"></a>MXSP_GPIO_EVT_INTERRUPT&#160;</td><td class="fieldinit">0x02&#160;</td><td class="fielddoc"><p>Interrupt triggered </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a888c45f8c2d669adef531ee6195a3c92a13630c68475ecc91c608d7a500279dc3" name="a888c45f8c2d669adef531ee6195a3c92a13630c68475ecc91c608d7a500279dc3"></a>MXSP_GPIO_EVT_MODE_CHANGE&#160;</td><td class="fieldinit">0x03&#160;</td><td class="fielddoc"><p>Mode changed </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a888c45f8c2d669adef531ee6195a3c92aa7abf1287d09060f7e499fdebceaa6f4" name="a888c45f8c2d669adef531ee6195a3c92aa7abf1287d09060f7e499fdebceaa6f4"></a>MXSP_GPIO_EVT_ERROR&#160;</td><td class="fieldinit">0xFF&#160;</td><td class="fielddoc"><p>Error event </p>
+</td></tr>
+</table>
+<div class="fragment"><div class="line"><span class="lineno">   68</span>             {</div>
+<div class="line"><span class="lineno">   69</span>    <a class="code hl_enumvalue" href="#a888c45f8c2d669adef531ee6195a3c92ab6193e209526df5cd32b9d01515e451e">MXSP_GPIO_EVT_LEVEL_CHANGE</a>    = 0x01, <span class="comment">/**&lt; Pin level changed */</span></div>
+<div class="line"><span class="lineno">   70</span>    <a class="code hl_enumvalue" href="#a888c45f8c2d669adef531ee6195a3c92a9412492f4ea0bf7505e8ab8c528aa4f8">MXSP_GPIO_EVT_INTERRUPT</a>       = 0x02, <span class="comment">/**&lt; Interrupt triggered */</span></div>
+<div class="line"><span class="lineno">   71</span>    <a class="code hl_enumvalue" href="#a888c45f8c2d669adef531ee6195a3c92a13630c68475ecc91c608d7a500279dc3">MXSP_GPIO_EVT_MODE_CHANGE</a>     = 0x03, <span class="comment">/**&lt; Mode changed */</span></div>
+<div class="line"><span class="lineno">   72</span>    <a class="code hl_enumvalue" href="#a888c45f8c2d669adef531ee6195a3c92aa7abf1287d09060f7e499fdebceaa6f4">MXSP_GPIO_EVT_ERROR</a>           = 0xFF, <span class="comment">/**&lt; Error event */</span></div>
+<div class="line"><span class="lineno">   73</span>} <a class="code hl_enumeration" href="#a888c45f8c2d669adef531ee6195a3c92">mxsp_gpio_evt_t</a>;</div>
+<div class="ttc" id="ameshx__serial_8h_html_a888c45f8c2d669adef531ee6195a3c92"><div class="ttname"><a href="#a888c45f8c2d669adef531ee6195a3c92">mxsp_gpio_evt_t</a></div><div class="ttdeci">mxsp_gpio_evt_t</div><div class="ttdoc">GPIO Event Types (Engine -&gt; Host, async).</div><div class="ttdef"><b>Definition</b> meshx_serial.h:68</div></div>
+<div class="ttc" id="ameshx__serial_8h_html_a888c45f8c2d669adef531ee6195a3c92a13630c68475ecc91c608d7a500279dc3"><div class="ttname"><a href="#a888c45f8c2d669adef531ee6195a3c92a13630c68475ecc91c608d7a500279dc3">MXSP_GPIO_EVT_MODE_CHANGE</a></div><div class="ttdeci">@ MXSP_GPIO_EVT_MODE_CHANGE</div><div class="ttdef"><b>Definition</b> meshx_serial.h:71</div></div>
+<div class="ttc" id="ameshx__serial_8h_html_a888c45f8c2d669adef531ee6195a3c92a9412492f4ea0bf7505e8ab8c528aa4f8"><div class="ttname"><a href="#a888c45f8c2d669adef531ee6195a3c92a9412492f4ea0bf7505e8ab8c528aa4f8">MXSP_GPIO_EVT_INTERRUPT</a></div><div class="ttdeci">@ MXSP_GPIO_EVT_INTERRUPT</div><div class="ttdef"><b>Definition</b> meshx_serial.h:70</div></div>
+<div class="ttc" id="ameshx__serial_8h_html_a888c45f8c2d669adef531ee6195a3c92aa7abf1287d09060f7e499fdebceaa6f4"><div class="ttname"><a href="#a888c45f8c2d669adef531ee6195a3c92aa7abf1287d09060f7e499fdebceaa6f4">MXSP_GPIO_EVT_ERROR</a></div><div class="ttdeci">@ MXSP_GPIO_EVT_ERROR</div><div class="ttdef"><b>Definition</b> meshx_serial.h:72</div></div>
+<div class="ttc" id="ameshx__serial_8h_html_a888c45f8c2d669adef531ee6195a3c92ab6193e209526df5cd32b9d01515e451e"><div class="ttname"><a href="#a888c45f8c2d669adef531ee6195a3c92ab6193e209526df5cd32b9d01515e451e">MXSP_GPIO_EVT_LEVEL_CHANGE</a></div><div class="ttdeci">@ MXSP_GPIO_EVT_LEVEL_CHANGE</div><div class="ttdef"><b>Definition</b> meshx_serial.h:69</div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="a5ecc3cb058739536c1d8ee03f068256c" name="a5ecc3cb058739536c1d8ee03f068256c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5ecc3cb058739536c1d8ee03f068256c">&#9670;&#160;</a></span>mxsp_msg_type_t</h2>
 
@@ -198,6 +340,9 @@ Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="a5ecc3cb058739536c1d8ee03f068256cae1ed56791b0e5f777b75ad79706e214d" name="a5ecc3cb058739536c1d8ee03f068256cae1ed56791b0e5f777b75ad79706e214d"></a>MXSP_MSG_TYPE_EL_CMD_SEND&#160;</td><td class="fieldinit">0xC1&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a5ecc3cb058739536c1d8ee03f068256cad25e29fa4ccd24ee4a40e5bbe469c6bc" name="a5ecc3cb058739536c1d8ee03f068256cad25e29fa4ccd24ee4a40e5bbe469c6bc"></a>MXSP_MSG_TYPE_SYS_CMD_SEND&#160;</td><td class="fieldinit">0xC2&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a5ecc3cb058739536c1d8ee03f068256cafa815f11b4548bf93dc2b26b26498837" name="a5ecc3cb058739536c1d8ee03f068256cafa815f11b4548bf93dc2b26b26498837"></a>MXSP_MSG_TYPE_HOSTED_MODE&#160;</td><td class="fieldinit">0x03&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5ecc3cb058739536c1d8ee03f068256ca7653728437c45a79c0f8db30bff6d982" name="a5ecc3cb058739536c1d8ee03f068256ca7653728437c45a79c0f8db30bff6d982"></a>MXSP_MSG_TYPE_GPIO_CMD&#160;</td><td class="fieldinit">0xD1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5ecc3cb058739536c1d8ee03f068256cafa60750d7741de91aa4eacdde640118b" name="a5ecc3cb058739536c1d8ee03f068256cafa60750d7741de91aa4eacdde640118b"></a>MXSP_MSG_TYPE_GPIO_RSP&#160;</td><td class="fieldinit">0xD2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5ecc3cb058739536c1d8ee03f068256ca4854f546250827a1b9269f6cdd86d5c2" name="a5ecc3cb058739536c1d8ee03f068256ca4854f546250827a1b9269f6cdd86d5c2"></a>MXSP_MSG_TYPE_GPIO_EVT&#160;</td><td class="fieldinit">0xD3&#160;</td><td class="fielddoc"></td></tr>
 </table>
 <div class="fragment"><div class="line"><span class="lineno">   24</span>             {</div>
 <div class="line"><span class="lineno">   25</span>    <a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256ca681fbf76935877597d7f538e57bbcf29">MXSP_MSG_TYPE_SYS_EVT_NOTIFY</a>  = 0xB1, <span class="comment">// Engine -&gt; Host (Control Path)</span></div>
@@ -205,12 +350,19 @@ Functions</h2></td></tr>
 <div class="line"><span class="lineno">   27</span>    <a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256cae1ed56791b0e5f777b75ad79706e214d">MXSP_MSG_TYPE_EL_CMD_SEND</a>     = 0xC1, <span class="comment">// Host -&gt; Engine (Command Path)</span></div>
 <div class="line"><span class="lineno">   28</span>    <a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256cad25e29fa4ccd24ee4a40e5bbe469c6bc">MXSP_MSG_TYPE_SYS_CMD_SEND</a>    = 0xC2, <span class="comment">// Host -&gt; Engine (System Command)</span></div>
 <div class="line"><span class="lineno">   29</span>    <a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256cafa815f11b4548bf93dc2b26b26498837">MXSP_MSG_TYPE_HOSTED_MODE</a>     = 0x03, <span class="comment">// Internal/Setup</span></div>
-<div class="line"><span class="lineno">   30</span>} <a class="code hl_enumeration" href="#a5ecc3cb058739536c1d8ee03f068256c">mxsp_msg_type_t</a>;</div>
+<div class="line"><span class="lineno">   30</span>    <span class="comment">/* GPIO Hosted Mode Message Types */</span></div>
+<div class="line"><span class="lineno">   31</span>    <a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256ca7653728437c45a79c0f8db30bff6d982">MXSP_MSG_TYPE_GPIO_CMD</a>        = 0xD1, <span class="comment">// Host -&gt; Engine (GPIO Command)</span></div>
+<div class="line"><span class="lineno">   32</span>    <a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256cafa60750d7741de91aa4eacdde640118b">MXSP_MSG_TYPE_GPIO_RSP</a>        = 0xD2, <span class="comment">// Engine -&gt; Host (GPIO Response)</span></div>
+<div class="line"><span class="lineno">   33</span>    <a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256ca4854f546250827a1b9269f6cdd86d5c2">MXSP_MSG_TYPE_GPIO_EVT</a>        = 0xD3, <span class="comment">// Engine -&gt; Host (GPIO Event - async)</span></div>
+<div class="line"><span class="lineno">   34</span>} <a class="code hl_enumeration" href="#a5ecc3cb058739536c1d8ee03f068256c">mxsp_msg_type_t</a>;</div>
 <div class="ttc" id="ameshx__serial_8h_html_a5ecc3cb058739536c1d8ee03f068256c"><div class="ttname"><a href="#a5ecc3cb058739536c1d8ee03f068256c">mxsp_msg_type_t</a></div><div class="ttdeci">mxsp_msg_type_t</div><div class="ttdef"><b>Definition</b> meshx_serial.h:24</div></div>
+<div class="ttc" id="ameshx__serial_8h_html_a5ecc3cb058739536c1d8ee03f068256ca4854f546250827a1b9269f6cdd86d5c2"><div class="ttname"><a href="#a5ecc3cb058739536c1d8ee03f068256ca4854f546250827a1b9269f6cdd86d5c2">MXSP_MSG_TYPE_GPIO_EVT</a></div><div class="ttdeci">@ MXSP_MSG_TYPE_GPIO_EVT</div><div class="ttdef"><b>Definition</b> meshx_serial.h:33</div></div>
 <div class="ttc" id="ameshx__serial_8h_html_a5ecc3cb058739536c1d8ee03f068256ca681fbf76935877597d7f538e57bbcf29"><div class="ttname"><a href="#a5ecc3cb058739536c1d8ee03f068256ca681fbf76935877597d7f538e57bbcf29">MXSP_MSG_TYPE_SYS_EVT_NOTIFY</a></div><div class="ttdeci">@ MXSP_MSG_TYPE_SYS_EVT_NOTIFY</div><div class="ttdef"><b>Definition</b> meshx_serial.h:25</div></div>
+<div class="ttc" id="ameshx__serial_8h_html_a5ecc3cb058739536c1d8ee03f068256ca7653728437c45a79c0f8db30bff6d982"><div class="ttname"><a href="#a5ecc3cb058739536c1d8ee03f068256ca7653728437c45a79c0f8db30bff6d982">MXSP_MSG_TYPE_GPIO_CMD</a></div><div class="ttdeci">@ MXSP_MSG_TYPE_GPIO_CMD</div><div class="ttdef"><b>Definition</b> meshx_serial.h:31</div></div>
 <div class="ttc" id="ameshx__serial_8h_html_a5ecc3cb058739536c1d8ee03f068256cab356ad748f92331595980c31a4a76669"><div class="ttname"><a href="#a5ecc3cb058739536c1d8ee03f068256cab356ad748f92331595980c31a4a76669">MXSP_MSG_TYPE_DATA_EVT_NOTIFY</a></div><div class="ttdeci">@ MXSP_MSG_TYPE_DATA_EVT_NOTIFY</div><div class="ttdef"><b>Definition</b> meshx_serial.h:26</div></div>
 <div class="ttc" id="ameshx__serial_8h_html_a5ecc3cb058739536c1d8ee03f068256cad25e29fa4ccd24ee4a40e5bbe469c6bc"><div class="ttname"><a href="#a5ecc3cb058739536c1d8ee03f068256cad25e29fa4ccd24ee4a40e5bbe469c6bc">MXSP_MSG_TYPE_SYS_CMD_SEND</a></div><div class="ttdeci">@ MXSP_MSG_TYPE_SYS_CMD_SEND</div><div class="ttdef"><b>Definition</b> meshx_serial.h:28</div></div>
 <div class="ttc" id="ameshx__serial_8h_html_a5ecc3cb058739536c1d8ee03f068256cae1ed56791b0e5f777b75ad79706e214d"><div class="ttname"><a href="#a5ecc3cb058739536c1d8ee03f068256cae1ed56791b0e5f777b75ad79706e214d">MXSP_MSG_TYPE_EL_CMD_SEND</a></div><div class="ttdeci">@ MXSP_MSG_TYPE_EL_CMD_SEND</div><div class="ttdef"><b>Definition</b> meshx_serial.h:27</div></div>
+<div class="ttc" id="ameshx__serial_8h_html_a5ecc3cb058739536c1d8ee03f068256cafa60750d7741de91aa4eacdde640118b"><div class="ttname"><a href="#a5ecc3cb058739536c1d8ee03f068256cafa60750d7741de91aa4eacdde640118b">MXSP_MSG_TYPE_GPIO_RSP</a></div><div class="ttdeci">@ MXSP_MSG_TYPE_GPIO_RSP</div><div class="ttdef"><b>Definition</b> meshx_serial.h:32</div></div>
 <div class="ttc" id="ameshx__serial_8h_html_a5ecc3cb058739536c1d8ee03f068256cafa815f11b4548bf93dc2b26b26498837"><div class="ttname"><a href="#a5ecc3cb058739536c1d8ee03f068256cafa815f11b4548bf93dc2b26b26498837">MXSP_MSG_TYPE_HOSTED_MODE</a></div><div class="ttdeci">@ MXSP_MSG_TYPE_HOSTED_MODE</div><div class="ttdef"><b>Definition</b> meshx_serial.h:29</div></div>
 </div><!-- fragment -->
 </div>
@@ -235,28 +387,33 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6" title="MeshX Error Codes.">meshx_err_t</a> MESHX_SUCCESS on success</dd></dl>
 <p>Initialize the MeshX Serial Protocol handler.</p>
 <dl class="section return"><dt>Returns</dt><dd>MESHX_SUCCESS on success, error code otherwise </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">  219</span>{</div>
-<div class="line"><span class="lineno">  220</span>    memset(&amp;<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>, 0, <span class="keyword">sizeof</span>(<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>));</div>
-<div class="line"><span class="lineno">  221</span>    <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.state = <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da63624cdcbbc33c8179e8924f5de71def">STATE_SOF</a>;</div>
-<div class="line"><span class="lineno">  222</span>    <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.hosted_mode_enabled = <span class="keyword">false</span>;</div>
-<div class="line"><span class="lineno">  223</span> </div>
-<div class="line"><span class="lineno">  224</span>    <a class="code hl_typedef" href="../../da/d79/meshx__task_8h.html#a4e259d2a8257d3d541b853570e76f8e7">meshx_task_t</a> uart_rx_task;</div>
-<div class="line"><span class="lineno">  225</span>    uart_rx_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#aad50101db8e166aa04da529650c6e6c5">task_cb</a>        = <a class="code hl_function" href="../../d8/da0/meshx__serial_8c.html#aea6242e07003587b9d8d717d7c461c6d">mxsp_uart_rx_task</a>;</div>
-<div class="line"><span class="lineno">  226</span>    uart_rx_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#a47022b1832ed0ed43726bbc45f2dbe34">task_name</a>      = <span class="stringliteral">&quot;mxsp_uart_rx&quot;</span>;</div>
-<div class="line"><span class="lineno">  227</span>    uart_rx_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#a4d6d8d73711e5f445c6e39e928002688">stack_size</a>     = <a class="code hl_define" href="../../d8/da0/meshx__serial_8c.html#ab9e95c718aca2d3c9bf31e4290d79084">MESHX_UART_RX_TASK_STACK_SIZE</a>;</div>
-<div class="line"><span class="lineno">  228</span>    uart_rx_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#a7e248a074928ca102c168ef1d223ef20">priority</a>       = <a class="code hl_define" href="../../d8/da0/meshx__serial_8c.html#af91aba9134e3937d3da95b0cd6eb17c3">MESHX_UART_RX_TASK_PRIO</a>;</div>
-<div class="line"><span class="lineno">  229</span>    uart_rx_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#aa448c1fc0cd2c0a39d2e52db1a99da67">arg</a>            = NULL;</div>
-<div class="line"><span class="lineno">  230</span>    <span class="comment">/* Create UART RX Task */</span></div>
-<div class="line"><span class="lineno">  231</span>    <a class="code hl_function" href="../../da/d79/meshx__task_8h.html#ad9da426e4904251ffbf803de09d05e57">meshx_task_create</a>(&amp;uart_rx_task);</div>
-<div class="line"><span class="lineno">  232</span> </div>
-<div class="line"><span class="lineno">  233</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  234</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  518</span>{</div>
+<div class="line"><span class="lineno">  519</span>    memset(&amp;<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>, 0, <span class="keyword">sizeof</span>(<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>));</div>
+<div class="line"><span class="lineno">  520</span>    <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.state = <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da63624cdcbbc33c8179e8924f5de71def">STATE_SOF</a>;</div>
+<div class="line"><span class="lineno">  521</span>    <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.hosted_mode_enabled = <span class="keyword">false</span>;</div>
+<div class="line"><span class="lineno">  522</span> </div>
+<div class="line"><span class="lineno">  523</span>    <a class="code hl_typedef" href="../../da/d79/meshx__task_8h.html#a4e259d2a8257d3d541b853570e76f8e7">meshx_task_t</a> uart_rx_task;</div>
+<div class="line"><span class="lineno">  524</span>    uart_rx_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#aad50101db8e166aa04da529650c6e6c5">task_cb</a>        = <a class="code hl_function" href="../../d8/da0/meshx__serial_8c.html#aea6242e07003587b9d8d717d7c461c6d">mxsp_uart_rx_task</a>;</div>
+<div class="line"><span class="lineno">  525</span>    uart_rx_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#a47022b1832ed0ed43726bbc45f2dbe34">task_name</a>      = <span class="stringliteral">&quot;mxsp_uart_rx&quot;</span>;</div>
+<div class="line"><span class="lineno">  526</span>    uart_rx_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#a4d6d8d73711e5f445c6e39e928002688">stack_size</a>     = <a class="code hl_define" href="../../d8/da0/meshx__serial_8c.html#ab9e95c718aca2d3c9bf31e4290d79084">MESHX_UART_RX_TASK_STACK_SIZE</a>;</div>
+<div class="line"><span class="lineno">  527</span>    uart_rx_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#a7e248a074928ca102c168ef1d223ef20">priority</a>       = <a class="code hl_define" href="../../d8/da0/meshx__serial_8c.html#af91aba9134e3937d3da95b0cd6eb17c3">MESHX_UART_RX_TASK_PRIO</a>;</div>
+<div class="line"><span class="lineno">  528</span>    uart_rx_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#aa448c1fc0cd2c0a39d2e52db1a99da67">arg</a>            = NULL;</div>
+<div class="line"><span class="lineno">  529</span>    <span class="comment">/* Create UART RX Task */</span></div>
+<div class="line"><span class="lineno">  530</span>    <a class="code hl_function" href="../../da/d79/meshx__task_8h.html#ad9da426e4904251ffbf803de09d05e57">meshx_task_create</a>(&amp;uart_rx_task);</div>
+<div class="line"><span class="lineno">  531</span> </div>
+<div class="line"><span class="lineno">  532</span>    <span class="comment">/* Register GPIO hosted event callback */</span></div>
+<div class="line"><span class="lineno">  533</span>    <a class="code hl_function" href="../../df/d72/meshx__gpio_8h.html#a1ea2d42982b24761e80548fbb753c61e">meshx_gpio_register_hosted_event_cb</a>(<a class="code hl_function" href="../../d8/da0/meshx__serial_8c.html#a6ea6dd589937ff0acd2d35afb603c33d">meshx_gpio_hosted_event_handler</a>);</div>
+<div class="line"><span class="lineno">  534</span> </div>
+<div class="line"><span class="lineno">  535</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  536</span>}</div>
+<div class="ttc" id="ameshx__gpio_8h_html_a1ea2d42982b24761e80548fbb753c61e"><div class="ttname"><a href="../../df/d72/meshx__gpio_8h.html#a1ea2d42982b24761e80548fbb753c61e">meshx_gpio_register_hosted_event_cb</a></div><div class="ttdeci">meshx_err_t meshx_gpio_register_hosted_event_cb(meshx_gpio_hosted_event_cb_t callback)</div><div class="ttdoc">Register callback function for hosted mode events.</div><div class="ttdef"><b>Definition</b> meshx_gpio.c:804</div></div>
 <div class="ttc" id="ameshx__model__level_8cpp_html_a781c2ae7a10a8be9b9436b090dded5fc"><div class="ttname"><a href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a></div><div class="ttdeci">**This function is called by the parent element when a state change request *is received It validates the request and returns a result to the element not the model layer **return * MESHX_SUCCESS</div><div class="ttdef"><b>Definition</b> meshx_model_level.cpp:385</div></div>
-<div class="ttc" id="ameshx__serial_8c_html_a2888075d239c8eb252a3c063defd2a0da63624cdcbbc33c8179e8924f5de71def"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da63624cdcbbc33c8179e8924f5de71def">STATE_SOF</a></div><div class="ttdeci">@ STATE_SOF</div><div class="ttdef"><b>Definition</b> meshx_serial.c:43</div></div>
+<div class="ttc" id="ameshx__serial_8c_html_a2888075d239c8eb252a3c063defd2a0da63624cdcbbc33c8179e8924f5de71def"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da63624cdcbbc33c8179e8924f5de71def">STATE_SOF</a></div><div class="ttdeci">@ STATE_SOF</div><div class="ttdef"><b>Definition</b> meshx_serial.c:46</div></div>
 <div class="ttc" id="ameshx__serial_8c_html_a39d774d904007dfcc7244cb70957e2de"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a></div><div class="ttdeci">static struct @217313375257260000277136332076024345071273230342 mxsp_ctx</div></div>
-<div class="ttc" id="ameshx__serial_8c_html_ab9e95c718aca2d3c9bf31e4290d79084"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#ab9e95c718aca2d3c9bf31e4290d79084">MESHX_UART_RX_TASK_STACK_SIZE</a></div><div class="ttdeci">#define MESHX_UART_RX_TASK_STACK_SIZE</div><div class="ttdef"><b>Definition</b> meshx_serial.c:27</div></div>
-<div class="ttc" id="ameshx__serial_8c_html_aea6242e07003587b9d8d717d7c461c6d"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#aea6242e07003587b9d8d717d7c461c6d">mxsp_uart_rx_task</a></div><div class="ttdeci">static void mxsp_uart_rx_task(void *pvParameters)</div><div class="ttdoc">UART RX task to parse incoming MXSP frames.</div><div class="ttdef"><b>Definition</b> meshx_serial.c:203</div></div>
-<div class="ttc" id="ameshx__serial_8c_html_af91aba9134e3937d3da95b0cd6eb17c3"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#af91aba9134e3937d3da95b0cd6eb17c3">MESHX_UART_RX_TASK_PRIO</a></div><div class="ttdeci">#define MESHX_UART_RX_TASK_PRIO</div><div class="ttdoc">Priority level for the UART RX task.</div><div class="ttdef"><b>Definition</b> meshx_serial.c:32</div></div>
+<div class="ttc" id="ameshx__serial_8c_html_a6ea6dd589937ff0acd2d35afb603c33d"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#a6ea6dd589937ff0acd2d35afb603c33d">meshx_gpio_hosted_event_handler</a></div><div class="ttdeci">static void meshx_gpio_hosted_event_handler(const meshx_gpio_hosted_event_t *event)</div><div class="ttdoc">GPIO hosted mode event callback.</div><div class="ttdef"><b>Definition</b> meshx_serial.c:481</div></div>
+<div class="ttc" id="ameshx__serial_8c_html_ab9e95c718aca2d3c9bf31e4290d79084"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#ab9e95c718aca2d3c9bf31e4290d79084">MESHX_UART_RX_TASK_STACK_SIZE</a></div><div class="ttdeci">#define MESHX_UART_RX_TASK_STACK_SIZE</div><div class="ttdef"><b>Definition</b> meshx_serial.c:30</div></div>
+<div class="ttc" id="ameshx__serial_8c_html_aea6242e07003587b9d8d717d7c461c6d"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#aea6242e07003587b9d8d717d7c461c6d">mxsp_uart_rx_task</a></div><div class="ttdeci">static void mxsp_uart_rx_task(void *pvParameters)</div><div class="ttdoc">UART RX task to parse incoming MXSP frames.</div><div class="ttdef"><b>Definition</b> meshx_serial.c:462</div></div>
+<div class="ttc" id="ameshx__serial_8c_html_af91aba9134e3937d3da95b0cd6eb17c3"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#af91aba9134e3937d3da95b0cd6eb17c3">MESHX_UART_RX_TASK_PRIO</a></div><div class="ttdeci">#define MESHX_UART_RX_TASK_PRIO</div><div class="ttdoc">Priority level for the UART RX task.</div><div class="ttdef"><b>Definition</b> meshx_serial.c:35</div></div>
 <div class="ttc" id="ameshx__task_8h_html_a4e259d2a8257d3d541b853570e76f8e7"><div class="ttname"><a href="../../da/d79/meshx__task_8h.html#a4e259d2a8257d3d541b853570e76f8e7">meshx_task_t</a></div><div class="ttdeci">struct meshx_task meshx_task_t</div><div class="ttdoc">MeshX Task Structure.</div></div>
 <div class="ttc" id="ameshx__task_8h_html_ad9da426e4904251ffbf803de09d05e57"><div class="ttname"><a href="../../da/d79/meshx__task_8h.html#ad9da426e4904251ffbf803de09d05e57">meshx_task_create</a></div><div class="ttdeci">meshx_err_t meshx_task_create(meshx_task_t *task_handle)</div><div class="ttdoc">Create a MeshX Task.</div></div>
 <div class="ttc" id="astructmeshx__task_html_a47022b1832ed0ed43726bbc45f2dbe34"><div class="ttname"><a href="../../db/d8e/structmeshx__task.html#a47022b1832ed0ed43726bbc45f2dbe34">meshx_task::task_name</a></div><div class="ttdeci">const char * task_name</div><div class="ttdef"><b>Definition</b> meshx_task.h:34</div></div>
@@ -284,9 +441,9 @@ Functions</h2></td></tr>
 
 <p>Check if hosted mode is enabled. </p>
 <dl class="section return"><dt>Returns</dt><dd>true if enabled, false otherwise </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">  196</span>{</div>
-<div class="line"><span class="lineno">  197</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.hosted_mode_enabled;</div>
-<div class="line"><span class="lineno">  198</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  455</span>{</div>
+<div class="line"><span class="lineno">  456</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.hosted_mode_enabled;</div>
+<div class="line"><span class="lineno">  457</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -312,80 +469,106 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<div class="fragment"><div class="line"><span class="lineno">  127</span>{</div>
-<div class="line"><span class="lineno">  128</span>    <span class="keywordflow">switch</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.state) {</div>
-<div class="line"><span class="lineno">  129</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da63624cdcbbc33c8179e8924f5de71def">STATE_SOF</a>:</div>
-<div class="line"><span class="lineno">  130</span>            <span class="keywordflow">if</span> (data == <a class="code hl_define" href="#aa4221fc1c9641efe9dd2a00395db40f1">MXSP_SOF</a>) {</div>
-<div class="line"><span class="lineno">  131</span>                <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.state = <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da52b378cdd4166bbefc819947139bef56">STATE_LEN</a>;</div>
-<div class="line"><span class="lineno">  132</span>                <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_ptr = 0;</div>
-<div class="line"><span class="lineno">  133</span>            }</div>
-<div class="line"><span class="lineno">  134</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  135</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da52b378cdd4166bbefc819947139bef56">STATE_LEN</a>:</div>
-<div class="line"><span class="lineno">  136</span>            <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.len = data;</div>
-<div class="line"><span class="lineno">  137</span>            <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.state = <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da6218cb68a8c7cd996ca1464fc40197d8">STATE_TYPE</a>;</div>
-<div class="line"><span class="lineno">  138</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  139</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da6218cb68a8c7cd996ca1464fc40197d8">STATE_TYPE</a>:</div>
-<div class="line"><span class="lineno">  140</span>            <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.type = data;</div>
-<div class="line"><span class="lineno">  141</span>            <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.len == 0) {</div>
-<div class="line"><span class="lineno">  142</span>                <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.state = <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da19b1bdf252c940ed5d46eedb4f6278f3">STATE_CHECKSUM</a>;</div>
-<div class="line"><span class="lineno">  143</span>            } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  144</span>                <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.state = <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da2e6b4f5e66a3f2cabc44f28b8e273871">STATE_PAYLOAD</a>;</div>
-<div class="line"><span class="lineno">  145</span>            }</div>
-<div class="line"><span class="lineno">  146</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  147</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da2e6b4f5e66a3f2cabc44f28b8e273871">STATE_PAYLOAD</a>:</div>
-<div class="line"><span class="lineno">  148</span>            <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.payload[<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_ptr++] = data;</div>
-<div class="line"><span class="lineno">  149</span>            <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_ptr &gt;= <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.len) {</div>
-<div class="line"><span class="lineno">  150</span>                <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.state = <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da19b1bdf252c940ed5d46eedb4f6278f3">STATE_CHECKSUM</a>;</div>
-<div class="line"><span class="lineno">  151</span>            }</div>
-<div class="line"><span class="lineno">  152</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  153</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da19b1bdf252c940ed5d46eedb4f6278f3">STATE_CHECKSUM</a>:</div>
-<div class="line"><span class="lineno">  154</span>            <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.checksum = data;</div>
-<div class="line"><span class="lineno">  155</span>            <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.state = <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da9f3f0f3bc2ba0831b14c93278ed61e46">STATE_EOF</a>;</div>
-<div class="line"><span class="lineno">  156</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  157</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da9f3f0f3bc2ba0831b14c93278ed61e46">STATE_EOF</a>:</div>
-<div class="line"><span class="lineno">  158</span>            <span class="keywordflow">if</span> (data == <a class="code hl_define" href="#ae89a96c1432f81702f85fce2cf76ab07">MXSP_EOF</a>) {</div>
-<div class="line"><span class="lineno">  159</span>                <span class="keywordflow">if</span> (<a class="code hl_function" href="../../d8/da0/meshx__serial_8c.html#a0e1f289d90008903114609440dbe164b">calculate_checksum</a>(<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.len, <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.type, <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.payload) == <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.checksum) {</div>
-<div class="line"><span class="lineno">  160</span>                    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.type == <a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256cae1ed56791b0e5f777b75ad79706e214d">MXSP_MSG_TYPE_EL_CMD_SEND</a>) {</div>
-<div class="line"><span class="lineno">  161</span>                        <a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a55812317789748e2606ccea2fca7f056">meshx_app_element_msg_header_t</a> hdr;</div>
-<div class="line"><span class="lineno">  162</span>                        <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.len &gt;= <span class="keyword">sizeof</span>(hdr)) {</div>
-<div class="line"><span class="lineno">  163</span>                            memcpy(&amp;hdr, <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.payload, <span class="keyword">sizeof</span>(hdr));</div>
-<div class="line"><span class="lineno">  164</span>                            <a class="code hl_function" href="../../dc/d93/meshx__api_8c.html#a8c55b18a6ea8b0f0cde41c0e7dbadf75">meshx_send_msg_to_element</a>(hdr.<a class="code hl_variable" href="../../d1/d0e/structmeshx__app__element__msg__header.html#a3eae35f3c5a4470713979c9f22040667">element_id</a>, hdr.<a class="code hl_variable" href="../../d1/d0e/structmeshx__app__element__msg__header.html#aed1c0b898bc6f4b7c9d6ad27932e2c66">element_type</a>, hdr.<a class="code hl_variable" href="../../d1/d0e/structmeshx__app__element__msg__header.html#a4350b8b108f92903ad8e05c5e3defad9">func_id</a>,</div>
-<div class="line"><span class="lineno">  165</span>                                                    <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.len - <span class="keyword">sizeof</span>(hdr),</div>
-<div class="line"><span class="lineno">  166</span>                                                    &amp;<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.payload[<span class="keyword">sizeof</span>(hdr)]);</div>
-<div class="line"><span class="lineno">  167</span>                        }</div>
-<div class="line"><span class="lineno">  168</span>                    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.type == <a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256cad25e29fa4ccd24ee4a40e5bbe469c6bc">MXSP_MSG_TYPE_SYS_CMD_SEND</a>) {</div>
-<div class="line"><span class="lineno">  169</span>                        <a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a369490c10d594485919f534dae7b67a0">meshx_ctrl_msg_header_t</a> hdr;</div>
-<div class="line"><span class="lineno">  170</span>                        <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.len &gt;= <span class="keyword">sizeof</span>(hdr)) {</div>
-<div class="line"><span class="lineno">  171</span>                            memcpy(&amp;hdr, <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.payload, <span class="keyword">sizeof</span>(hdr));</div>
-<div class="line"><span class="lineno">  172</span>                            <span class="keywordflow">if</span> (hdr.<a class="code hl_variable" href="../../da/d44/structmeshx__ctrl__msg__header.html#a1b7c5e8ee9cf53fe529ff3d1fe0e83eb">evt_id</a> == <a class="code hl_enumvalue" href="../../d2/de3/meshx__common_8h.html#a34b0619e74381a0736f279483b1f7075ab4deed6da5fbd20a70ea4d0da95d813a">MESHX_CTRL_EVT_NODE_RESET</a>) {</div>
-<div class="line"><span class="lineno">  173</span>                                <a class="code hl_function" href="../../df/d96/meshx__platform_8h.html#ac9292fafb9df0803c55a8700fbd9f34d">meshx_platform_reset</a>();</div>
-<div class="line"><span class="lineno">  174</span>                            }</div>
-<div class="line"><span class="lineno">  175</span>                        }</div>
-<div class="line"><span class="lineno">  176</span>                    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.type == <a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256cafa815f11b4548bf93dc2b26b26498837">MXSP_MSG_TYPE_HOSTED_MODE</a>) {</div>
-<div class="line"><span class="lineno">  177</span>                        <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.len == 1) {</div>
-<div class="line"><span class="lineno">  178</span>                            <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.hosted_mode_enabled = (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.payload[0] != 0);</div>
-<div class="line"><span class="lineno">  179</span>                        }</div>
-<div class="line"><span class="lineno">  180</span>                    }</div>
-<div class="line"><span class="lineno">  181</span>                } <span class="keywordflow">else</span> {</div>
-<div class="line"><span class="lineno">  182</span>                    <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca294f5c4e583ed87401713ad84945e322">MODULE_ID_COMMON</a>, <span class="stringliteral">&quot;Invalid MXSP frame checksum&quot;</span>);</div>
-<div class="line"><span class="lineno">  183</span>                }</div>
-<div class="line"><span class="lineno">  184</span>            }</div>
-<div class="line"><span class="lineno">  185</span>            <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.state = <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da63624cdcbbc33c8179e8924f5de71def">STATE_SOF</a>;</div>
-<div class="line"><span class="lineno">  186</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  187</span>    }</div>
-<div class="line"><span class="lineno">  188</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  363</span>{</div>
+<div class="line"><span class="lineno">  364</span>    <span class="keywordflow">switch</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.state) {</div>
+<div class="line"><span class="lineno">  365</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da63624cdcbbc33c8179e8924f5de71def">STATE_SOF</a>:</div>
+<div class="line"><span class="lineno">  366</span>            <span class="keywordflow">if</span> (data == <a class="code hl_define" href="#aa4221fc1c9641efe9dd2a00395db40f1">MXSP_SOF</a>) {</div>
+<div class="line"><span class="lineno">  367</span>                <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.state = <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da52b378cdd4166bbefc819947139bef56">STATE_LEN</a>;</div>
+<div class="line"><span class="lineno">  368</span>                <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_ptr = 0;</div>
+<div class="line"><span class="lineno">  369</span>            }</div>
+<div class="line"><span class="lineno">  370</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  371</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da52b378cdd4166bbefc819947139bef56">STATE_LEN</a>:</div>
+<div class="line"><span class="lineno">  372</span>            <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.len = data;</div>
+<div class="line"><span class="lineno">  373</span>            <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.state = <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da6218cb68a8c7cd996ca1464fc40197d8">STATE_TYPE</a>;</div>
+<div class="line"><span class="lineno">  374</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  375</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da6218cb68a8c7cd996ca1464fc40197d8">STATE_TYPE</a>:</div>
+<div class="line"><span class="lineno">  376</span>            <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.type = data;</div>
+<div class="line"><span class="lineno">  377</span>            <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.len == 0) {</div>
+<div class="line"><span class="lineno">  378</span>                <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.state = <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da19b1bdf252c940ed5d46eedb4f6278f3">STATE_CHECKSUM</a>;</div>
+<div class="line"><span class="lineno">  379</span>            } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  380</span>                <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.state = <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da2e6b4f5e66a3f2cabc44f28b8e273871">STATE_PAYLOAD</a>;</div>
+<div class="line"><span class="lineno">  381</span>            }</div>
+<div class="line"><span class="lineno">  382</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  383</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da2e6b4f5e66a3f2cabc44f28b8e273871">STATE_PAYLOAD</a>:</div>
+<div class="line"><span class="lineno">  384</span>            <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.payload[<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_ptr++] = data;</div>
+<div class="line"><span class="lineno">  385</span>            <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_ptr &gt;= <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.len) {</div>
+<div class="line"><span class="lineno">  386</span>                <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.state = <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da19b1bdf252c940ed5d46eedb4f6278f3">STATE_CHECKSUM</a>;</div>
+<div class="line"><span class="lineno">  387</span>            }</div>
+<div class="line"><span class="lineno">  388</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  389</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da19b1bdf252c940ed5d46eedb4f6278f3">STATE_CHECKSUM</a>:</div>
+<div class="line"><span class="lineno">  390</span>            <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.checksum = data;</div>
+<div class="line"><span class="lineno">  391</span>            <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.state = <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da9f3f0f3bc2ba0831b14c93278ed61e46">STATE_EOF</a>;</div>
+<div class="line"><span class="lineno">  392</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  393</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da9f3f0f3bc2ba0831b14c93278ed61e46">STATE_EOF</a>:</div>
+<div class="line"><span class="lineno">  394</span>            <span class="keywordflow">if</span> (data == <a class="code hl_define" href="#ae89a96c1432f81702f85fce2cf76ab07">MXSP_EOF</a>) {</div>
+<div class="line"><span class="lineno">  395</span>                <span class="keywordflow">if</span> (<a class="code hl_function" href="../../d8/da0/meshx__serial_8c.html#a0e1f289d90008903114609440dbe164b">calculate_checksum</a>(<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.len, <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.type, <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.payload) == <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.checksum) {</div>
+<div class="line"><span class="lineno">  396</span>                    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.type == <a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256cae1ed56791b0e5f777b75ad79706e214d">MXSP_MSG_TYPE_EL_CMD_SEND</a>) {</div>
+<div class="line"><span class="lineno">  397</span>                        <a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a55812317789748e2606ccea2fca7f056">meshx_app_element_msg_header_t</a> hdr;</div>
+<div class="line"><span class="lineno">  398</span>                        <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.len &gt;= <span class="keyword">sizeof</span>(hdr)) {</div>
+<div class="line"><span class="lineno">  399</span>                            memcpy(&amp;hdr, <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.payload, <span class="keyword">sizeof</span>(hdr));</div>
+<div class="line"><span class="lineno">  400</span>                            <a class="code hl_function" href="../../dc/d93/meshx__api_8c.html#a8c55b18a6ea8b0f0cde41c0e7dbadf75">meshx_send_msg_to_element</a>(hdr.<a class="code hl_variable" href="../../d1/d0e/structmeshx__app__element__msg__header.html#a3eae35f3c5a4470713979c9f22040667">element_id</a>, hdr.<a class="code hl_variable" href="../../d1/d0e/structmeshx__app__element__msg__header.html#aed1c0b898bc6f4b7c9d6ad27932e2c66">element_type</a>, hdr.<a class="code hl_variable" href="../../d1/d0e/structmeshx__app__element__msg__header.html#a4350b8b108f92903ad8e05c5e3defad9">func_id</a>,</div>
+<div class="line"><span class="lineno">  401</span>                                                    <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.len - <span class="keyword">sizeof</span>(hdr),</div>
+<div class="line"><span class="lineno">  402</span>                                                    &amp;<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.payload[<span class="keyword">sizeof</span>(hdr)]);</div>
+<div class="line"><span class="lineno">  403</span>                        }</div>
+<div class="line"><span class="lineno">  404</span>                    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.type == <a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256cad25e29fa4ccd24ee4a40e5bbe469c6bc">MXSP_MSG_TYPE_SYS_CMD_SEND</a>) {</div>
+<div class="line"><span class="lineno">  405</span>                        <a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a369490c10d594485919f534dae7b67a0">meshx_ctrl_msg_header_t</a> hdr;</div>
+<div class="line"><span class="lineno">  406</span>                        <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.len &gt;= <span class="keyword">sizeof</span>(hdr)) {</div>
+<div class="line"><span class="lineno">  407</span>                            memcpy(&amp;hdr, <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.payload, <span class="keyword">sizeof</span>(hdr));</div>
+<div class="line"><span class="lineno">  408</span>                            <span class="keywordflow">if</span> (hdr.<a class="code hl_variable" href="../../da/d44/structmeshx__ctrl__msg__header.html#a1b7c5e8ee9cf53fe529ff3d1fe0e83eb">evt_id</a> == <a class="code hl_enumvalue" href="../../d2/de3/meshx__common_8h.html#a34b0619e74381a0736f279483b1f7075ab4deed6da5fbd20a70ea4d0da95d813a">MESHX_CTRL_EVT_NODE_RESET</a>) {</div>
+<div class="line"><span class="lineno">  409</span>                                <a class="code hl_function" href="../../d8/da0/meshx__serial_8c.html#ac9292fafb9df0803c55a8700fbd9f34d">meshx_platform_reset</a>();</div>
+<div class="line"><span class="lineno">  410</span>                            }</div>
+<div class="line"><span class="lineno">  411</span>                        }</div>
+<div class="line"><span class="lineno">  412</span>                    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.type == <a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256cafa815f11b4548bf93dc2b26b26498837">MXSP_MSG_TYPE_HOSTED_MODE</a>) {</div>
+<div class="line"><span class="lineno">  413</span>                        <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.len == 1) {</div>
+<div class="line"><span class="lineno">  414</span>                            <span class="keywordtype">bool</span> enabled = (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.payload[0] != 0);</div>
+<div class="line"><span class="lineno">  415</span>                            <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.hosted_mode_enabled = enabled;</div>
+<div class="line"><span class="lineno">  416</span> </div>
+<div class="line"><span class="lineno">  417</span>                            <span class="comment">/* Notify GPIO subsystem about hosted mode change */</span></div>
+<div class="line"><span class="lineno">  418</span>                            <a class="code hl_enumeration" href="../../dc/d67/meshx__gpio__types_8h.html#aa251f0e6bea21b40583f086e6265e076">meshx_gpio_hosted_mode_t</a> gpio_mode = enabled ?</div>
+<div class="line"><span class="lineno">  419</span>                                <a class="code hl_enumvalue" href="../../dc/d67/meshx__gpio__types_8h.html#aa251f0e6bea21b40583f086e6265e076a994ba5e2ffa57d5cd15944859a1dd7ca">MESHX_GPIO_MODE_HOSTED</a> : <a class="code hl_enumvalue" href="../../dc/d67/meshx__gpio__types_8h.html#aa251f0e6bea21b40583f086e6265e076a58580d19c3193f3782924fff43a06a97">MESHX_GPIO_MODE_NON_HOSTED</a>;</div>
+<div class="line"><span class="lineno">  420</span>                            <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_function" href="../../df/d72/meshx__gpio_8h.html#a7976ddd948832093fc4a38b3af2473a1">meshx_gpio_set_hosted_mode</a>(gpio_mode);</div>
+<div class="line"><span class="lineno">  421</span>                            <span class="keywordflow">if</span> (err != <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>) {</div>
+<div class="line"><span class="lineno">  422</span>                                <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca294f5c4e583ed87401713ad84945e322">MODULE_ID_COMMON</a>, <span class="stringliteral">&quot;Failed to set GPIO hosted mode: %d&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  423</span>                            }</div>
+<div class="line"><span class="lineno">  424</span> </div>
+<div class="line"><span class="lineno">  425</span>                            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a47d4a699f2997a758e0eca271b66cb48">MESHX_LOGI</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca294f5c4e583ed87401713ad84945e322">MODULE_ID_COMMON</a>, <span class="stringliteral">&quot;Hosted mode %s via API TLV command&quot;</span>,</div>
+<div class="line"><span class="lineno">  426</span>                                      enabled ? <span class="stringliteral">&quot;enabled&quot;</span> : <span class="stringliteral">&quot;disabled&quot;</span>);</div>
+<div class="line"><span class="lineno">  427</span>                        }</div>
+<div class="line"><span class="lineno">  428</span>                    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.type == <a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256ca7653728437c45a79c0f8db30bff6d982">MXSP_MSG_TYPE_GPIO_CMD</a>) {</div>
+<div class="line"><span class="lineno">  429</span>                        <span class="comment">/* Handle GPIO command from host */</span></div>
+<div class="line"><span class="lineno">  430</span>                        <a class="code hl_function" href="../../d8/da0/meshx__serial_8c.html#a9b266ec4a5c95c7cd74976979bf52ac5">mxsp_handle_gpio_cmd</a>(<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.payload, <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.len);</div>
+<div class="line"><span class="lineno">  431</span>                    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.type == <a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256ca4854f546250827a1b9269f6cdd86d5c2">MXSP_MSG_TYPE_GPIO_EVT</a>) {</div>
+<div class="line"><span class="lineno">  432</span>                        <span class="comment">/* Handle GPIO event from host (interrupt notification) */</span></div>
+<div class="line"><span class="lineno">  433</span>                        <a class="code hl_function" href="../../d8/da0/meshx__serial_8c.html#ab78755f358e8c45ffd3257041dc98b76">mxsp_handle_gpio_evt_from_host</a>(<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.payload, <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.rx_frame.len);</div>
+<div class="line"><span class="lineno">  434</span>                    }</div>
+<div class="line"><span class="lineno">  435</span>                } <span class="keywordflow">else</span> {</div>
+<div class="line"><span class="lineno">  436</span>                    <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca294f5c4e583ed87401713ad84945e322">MODULE_ID_COMMON</a>, <span class="stringliteral">&quot;Invalid MXSP frame checksum&quot;</span>);</div>
+<div class="line"><span class="lineno">  437</span>                }</div>
+<div class="line"><span class="lineno">  438</span>            }</div>
+<div class="line"><span class="lineno">  439</span>            <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.state = <a class="code hl_enumvalue" href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da63624cdcbbc33c8179e8924f5de71def">STATE_SOF</a>;</div>
+<div class="line"><span class="lineno">  440</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  441</span>    }</div>
+<div class="line"><span class="lineno">  442</span>}</div>
 <div class="ttc" id="ameshx__api_8c_html_a8c55b18a6ea8b0f0cde41c0e7dbadf75"><div class="ttname"><a href="../../dc/d93/meshx__api_8c.html#a8c55b18a6ea8b0f0cde41c0e7dbadf75">meshx_send_msg_to_element</a></div><div class="ttdeci">meshx_err_t meshx_send_msg_to_element(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg)</div><div class="ttdoc">Sends a message to the element.</div><div class="ttdef"><b>Definition</b> meshx_api.c:182</div></div>
 <div class="ttc" id="ameshx__api_8h_html_a369490c10d594485919f534dae7b67a0"><div class="ttname"><a href="../../db/d2f/meshx__api_8h.html#a369490c10d594485919f534dae7b67a0">meshx_ctrl_msg_header_t</a></div><div class="ttdeci">struct meshx_ctrl_msg_header meshx_ctrl_msg_header_t</div><div class="ttdoc">Structure for the BLE Mesh application control message header.</div></div>
 <div class="ttc" id="ameshx__api_8h_html_a55812317789748e2606ccea2fca7f056"><div class="ttname"><a href="../../db/d2f/meshx__api_8h.html#a55812317789748e2606ccea2fca7f056">meshx_app_element_msg_header_t</a></div><div class="ttdeci">struct meshx_app_element_msg_header meshx_app_element_msg_header_t</div><div class="ttdoc">Structure for the BLE Mesh application element message header.</div></div>
-<div class="ttc" id="ameshx__common_8h_html_a34b0619e74381a0736f279483b1f7075ab4deed6da5fbd20a70ea4d0da95d813a"><div class="ttname"><a href="../../d2/de3/meshx__common_8h.html#a34b0619e74381a0736f279483b1f7075ab4deed6da5fbd20a70ea4d0da95d813a">MESHX_CTRL_EVT_NODE_RESET</a></div><div class="ttdeci">@ MESHX_CTRL_EVT_NODE_RESET</div><div class="ttdef"><b>Definition</b> meshx_common.h:49</div></div>
-<div class="ttc" id="ameshx__log_8h_html_a56673888067cbe14c7a33b0856f46eb8"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a></div><div class="ttdeci">#define MESHX_LOGE(module_id, format,...)</div><div class="ttdef"><b>Definition</b> meshx_log.h:71</div></div>
-<div class="ttc" id="ameshx__platform_8h_html_ac9292fafb9df0803c55a8700fbd9f34d"><div class="ttname"><a href="../../df/d96/meshx__platform_8h.html#ac9292fafb9df0803c55a8700fbd9f34d">meshx_platform_reset</a></div><div class="ttdeci">void meshx_platform_reset(void)</div><div class="ttdoc">Resets the MeshX platform. This function performs a system reset, restarting the platform.</div><div class="ttdef"><b>Definition</b> esp_platform.c:86</div></div>
-<div class="ttc" id="ameshx__serial_8c_html_a0e1f289d90008903114609440dbe164b"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#a0e1f289d90008903114609440dbe164b">calculate_checksum</a></div><div class="ttdeci">static uint8_t calculate_checksum(uint8_t len, uint8_t type, const uint8_t *payload)</div><div class="ttdoc">Calculate checksum for a given frame.</div><div class="ttdef"><b>Definition</b> meshx_serial.c:60</div></div>
-<div class="ttc" id="ameshx__serial_8c_html_a2888075d239c8eb252a3c063defd2a0da19b1bdf252c940ed5d46eedb4f6278f3"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da19b1bdf252c940ed5d46eedb4f6278f3">STATE_CHECKSUM</a></div><div class="ttdeci">@ STATE_CHECKSUM</div><div class="ttdef"><b>Definition</b> meshx_serial.c:47</div></div>
-<div class="ttc" id="ameshx__serial_8c_html_a2888075d239c8eb252a3c063defd2a0da2e6b4f5e66a3f2cabc44f28b8e273871"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da2e6b4f5e66a3f2cabc44f28b8e273871">STATE_PAYLOAD</a></div><div class="ttdeci">@ STATE_PAYLOAD</div><div class="ttdef"><b>Definition</b> meshx_serial.c:46</div></div>
-<div class="ttc" id="ameshx__serial_8c_html_a2888075d239c8eb252a3c063defd2a0da52b378cdd4166bbefc819947139bef56"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da52b378cdd4166bbefc819947139bef56">STATE_LEN</a></div><div class="ttdeci">@ STATE_LEN</div><div class="ttdef"><b>Definition</b> meshx_serial.c:44</div></div>
-<div class="ttc" id="ameshx__serial_8c_html_a2888075d239c8eb252a3c063defd2a0da6218cb68a8c7cd996ca1464fc40197d8"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da6218cb68a8c7cd996ca1464fc40197d8">STATE_TYPE</a></div><div class="ttdeci">@ STATE_TYPE</div><div class="ttdef"><b>Definition</b> meshx_serial.c:45</div></div>
-<div class="ttc" id="ameshx__serial_8c_html_a2888075d239c8eb252a3c063defd2a0da9f3f0f3bc2ba0831b14c93278ed61e46"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da9f3f0f3bc2ba0831b14c93278ed61e46">STATE_EOF</a></div><div class="ttdeci">@ STATE_EOF</div><div class="ttdef"><b>Definition</b> meshx_serial.c:48</div></div>
+<div class="ttc" id="ameshx__common_8h_html_a34b0619e74381a0736f279483b1f7075ab4deed6da5fbd20a70ea4d0da95d813a"><div class="ttname"><a href="../../d2/de3/meshx__common_8h.html#a34b0619e74381a0736f279483b1f7075ab4deed6da5fbd20a70ea4d0da95d813a">MESHX_CTRL_EVT_NODE_RESET</a></div><div class="ttdeci">@ MESHX_CTRL_EVT_NODE_RESET</div><div class="ttdef"><b>Definition</b> meshx_common.h:32</div></div>
+<div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a></div><div class="ttdeci">meshx_err_t</div><div class="ttdoc">MeshX Error Codes.</div><div class="ttdef"><b>Definition</b> meshx_err.h:43</div></div>
+<div class="ttc" id="ameshx__gpio_8h_html_a7976ddd948832093fc4a38b3af2473a1"><div class="ttname"><a href="../../df/d72/meshx__gpio_8h.html#a7976ddd948832093fc4a38b3af2473a1">meshx_gpio_set_hosted_mode</a></div><div class="ttdeci">meshx_err_t meshx_gpio_set_hosted_mode(meshx_gpio_hosted_mode_t mode)</div><div class="ttdoc">Set hosted mode for GPIO subsystem.</div><div class="ttdef"><b>Definition</b> meshx_gpio.c:711</div></div>
+<div class="ttc" id="ameshx__gpio__types_8h_html_aa251f0e6bea21b40583f086e6265e076"><div class="ttname"><a href="../../dc/d67/meshx__gpio__types_8h.html#aa251f0e6bea21b40583f086e6265e076">meshx_gpio_hosted_mode_t</a></div><div class="ttdeci">meshx_gpio_hosted_mode_t</div><div class="ttdoc">Hosted Mode State.</div><div class="ttdef"><b>Definition</b> meshx_gpio_types.h:169</div></div>
+<div class="ttc" id="ameshx__gpio__types_8h_html_aa251f0e6bea21b40583f086e6265e076a58580d19c3193f3782924fff43a06a97"><div class="ttname"><a href="../../dc/d67/meshx__gpio__types_8h.html#aa251f0e6bea21b40583f086e6265e076a58580d19c3193f3782924fff43a06a97">MESHX_GPIO_MODE_NON_HOSTED</a></div><div class="ttdeci">@ MESHX_GPIO_MODE_NON_HOSTED</div><div class="ttdef"><b>Definition</b> meshx_gpio_types.h:170</div></div>
+<div class="ttc" id="ameshx__gpio__types_8h_html_aa251f0e6bea21b40583f086e6265e076a994ba5e2ffa57d5cd15944859a1dd7ca"><div class="ttname"><a href="../../dc/d67/meshx__gpio__types_8h.html#aa251f0e6bea21b40583f086e6265e076a994ba5e2ffa57d5cd15944859a1dd7ca">MESHX_GPIO_MODE_HOSTED</a></div><div class="ttdeci">@ MESHX_GPIO_MODE_HOSTED</div><div class="ttdef"><b>Definition</b> meshx_gpio_types.h:171</div></div>
+<div class="ttc" id="ameshx__log_8h_html_a47d4a699f2997a758e0eca271b66cb48"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a47d4a699f2997a758e0eca271b66cb48">MESHX_LOGI</a></div><div class="ttdeci">#define MESHX_LOGI(module_id, format,...)</div><div class="ttdef"><b>Definition</b> meshx_log.h:123</div></div>
+<div class="ttc" id="ameshx__log_8h_html_a56673888067cbe14c7a33b0856f46eb8"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a></div><div class="ttdeci">#define MESHX_LOGE(module_id, format,...)</div><div class="ttdef"><b>Definition</b> meshx_log.h:96</div></div>
+<div class="ttc" id="ameshx__serial_8c_html_a0e1f289d90008903114609440dbe164b"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#a0e1f289d90008903114609440dbe164b">calculate_checksum</a></div><div class="ttdeci">static uint8_t calculate_checksum(uint8_t len, uint8_t type, const uint8_t *payload)</div><div class="ttdoc">Calculate checksum for a given frame.</div><div class="ttdef"><b>Definition</b> meshx_serial.c:63</div></div>
+<div class="ttc" id="ameshx__serial_8c_html_a2888075d239c8eb252a3c063defd2a0da19b1bdf252c940ed5d46eedb4f6278f3"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da19b1bdf252c940ed5d46eedb4f6278f3">STATE_CHECKSUM</a></div><div class="ttdeci">@ STATE_CHECKSUM</div><div class="ttdef"><b>Definition</b> meshx_serial.c:50</div></div>
+<div class="ttc" id="ameshx__serial_8c_html_a2888075d239c8eb252a3c063defd2a0da2e6b4f5e66a3f2cabc44f28b8e273871"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da2e6b4f5e66a3f2cabc44f28b8e273871">STATE_PAYLOAD</a></div><div class="ttdeci">@ STATE_PAYLOAD</div><div class="ttdef"><b>Definition</b> meshx_serial.c:49</div></div>
+<div class="ttc" id="ameshx__serial_8c_html_a2888075d239c8eb252a3c063defd2a0da52b378cdd4166bbefc819947139bef56"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da52b378cdd4166bbefc819947139bef56">STATE_LEN</a></div><div class="ttdeci">@ STATE_LEN</div><div class="ttdef"><b>Definition</b> meshx_serial.c:47</div></div>
+<div class="ttc" id="ameshx__serial_8c_html_a2888075d239c8eb252a3c063defd2a0da6218cb68a8c7cd996ca1464fc40197d8"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da6218cb68a8c7cd996ca1464fc40197d8">STATE_TYPE</a></div><div class="ttdeci">@ STATE_TYPE</div><div class="ttdef"><b>Definition</b> meshx_serial.c:48</div></div>
+<div class="ttc" id="ameshx__serial_8c_html_a2888075d239c8eb252a3c063defd2a0da9f3f0f3bc2ba0831b14c93278ed61e46"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#a2888075d239c8eb252a3c063defd2a0da9f3f0f3bc2ba0831b14c93278ed61e46">STATE_EOF</a></div><div class="ttdeci">@ STATE_EOF</div><div class="ttdef"><b>Definition</b> meshx_serial.c:51</div></div>
+<div class="ttc" id="ameshx__serial_8c_html_a9b266ec4a5c95c7cd74976979bf52ac5"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#a9b266ec4a5c95c7cd74976979bf52ac5">mxsp_handle_gpio_cmd</a></div><div class="ttdeci">static void mxsp_handle_gpio_cmd(const uint8_t *payload, uint8_t len)</div><div class="ttdoc">Handle GPIO command from host.</div><div class="ttdef"><b>Definition</b> meshx_serial.c:198</div></div>
+<div class="ttc" id="ameshx__serial_8c_html_ab78755f358e8c45ffd3257041dc98b76"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#ab78755f358e8c45ffd3257041dc98b76">mxsp_handle_gpio_evt_from_host</a></div><div class="ttdeci">static void mxsp_handle_gpio_evt_from_host(const uint8_t *payload, uint8_t len)</div><div class="ttdoc">Handle GPIO event from host (interrupt notification).</div><div class="ttdef"><b>Definition</b> meshx_serial.c:345</div></div>
+<div class="ttc" id="ameshx__serial_8c_html_ac9292fafb9df0803c55a8700fbd9f34d"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#ac9292fafb9df0803c55a8700fbd9f34d">meshx_platform_reset</a></div><div class="ttdeci">void meshx_platform_reset(void)</div><div class="ttdoc">Resets the MeshX platform. This function performs a system reset, restarting the platform.</div><div class="ttdef"><b>Definition</b> esp_platform.c:86</div></div>
 <div class="ttc" id="ameshx__serial_8h_html_aa4221fc1c9641efe9dd2a00395db40f1"><div class="ttname"><a href="#aa4221fc1c9641efe9dd2a00395db40f1">MXSP_SOF</a></div><div class="ttdeci">#define MXSP_SOF</div><div class="ttdef"><b>Definition</b> meshx_serial.h:19</div></div>
 <div class="ttc" id="ameshx__serial_8h_html_ae89a96c1432f81702f85fce2cf76ab07"><div class="ttname"><a href="#ae89a96c1432f81702f85fce2cf76ab07">MXSP_EOF</a></div><div class="ttdeci">#define MXSP_EOF</div><div class="ttdef"><b>Definition</b> meshx_serial.h:20</div></div>
 <div class="ttc" id="amodule__id_8h_html_ac6141ce7b2d1d07b28553017c6a3aedca294f5c4e583ed87401713ad84945e322"><div class="ttname"><a href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca294f5c4e583ed87401713ad84945e322">MODULE_ID_COMMON</a></div><div class="ttdeci">@ MODULE_ID_COMMON</div><div class="ttdef"><b>Definition</b> module_id.h:36</div></div>
@@ -418,9 +601,14 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<div class="fragment"><div class="line"><span class="lineno">  191</span>{</div>
-<div class="line"><span class="lineno">  192</span>    <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.hosted_mode_enabled = enabled;</div>
-<div class="line"><span class="lineno">  193</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  445</span>{</div>
+<div class="line"><span class="lineno">  446</span>    <a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.hosted_mode_enabled = enabled;</div>
+<div class="line"><span class="lineno">  447</span> </div>
+<div class="line"><span class="lineno">  448</span>    <span class="comment">/* Also update GPIO subsystem hosted mode */</span></div>
+<div class="line"><span class="lineno">  449</span>    <a class="code hl_enumeration" href="../../dc/d67/meshx__gpio__types_8h.html#aa251f0e6bea21b40583f086e6265e076">meshx_gpio_hosted_mode_t</a> gpio_mode = enabled ?</div>
+<div class="line"><span class="lineno">  450</span>        <a class="code hl_enumvalue" href="../../dc/d67/meshx__gpio__types_8h.html#aa251f0e6bea21b40583f086e6265e076a994ba5e2ffa57d5cd15944859a1dd7ca">MESHX_GPIO_MODE_HOSTED</a> : <a class="code hl_enumvalue" href="../../dc/d67/meshx__gpio__types_8h.html#aa251f0e6bea21b40583f086e6265e076a58580d19c3193f3782924fff43a06a97">MESHX_GPIO_MODE_NON_HOSTED</a>;</div>
+<div class="line"><span class="lineno">  451</span>    <a class="code hl_function" href="../../df/d72/meshx__gpio_8h.html#a7976ddd948832093fc4a38b3af2473a1">meshx_gpio_set_hosted_mode</a>(gpio_mode);</div>
+<div class="line"><span class="lineno">  452</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -452,24 +640,24 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6" title="MeshX Error Codes.">meshx_err_t</a> MESHX_SUCCESS on success </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">   92</span>{</div>
-<div class="line"><span class="lineno">   93</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.hosted_mode_enabled) {</div>
-<div class="line"><span class="lineno">   94</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">   95</span>    }</div>
-<div class="line"><span class="lineno">   96</span>    uint8_t buff[<span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a369490c10d594485919f534dae7b67a0">meshx_ctrl_msg_header_t</a>) + <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a2720ac8e2e9a99760dc4e99f899bb5f3">meshx_ctrl_payload_t</a>)];</div>
-<div class="line"><span class="lineno">   97</span>    uint8_t len = 0;</div>
-<div class="line"><span class="lineno">   98</span> </div>
-<div class="line"><span class="lineno">   99</span>    memcpy(&amp;buff[len], evt_header, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a369490c10d594485919f534dae7b67a0">meshx_ctrl_msg_header_t</a>));</div>
-<div class="line"><span class="lineno">  100</span>    len += <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a369490c10d594485919f534dae7b67a0">meshx_ctrl_msg_header_t</a>);</div>
-<div class="line"><span class="lineno">  101</span> </div>
-<div class="line"><span class="lineno">  102</span>    <span class="comment">// For simplicity, we send the whole payload union. In optimization, we could send only active part.</span></div>
-<div class="line"><span class="lineno">  103</span>    memcpy(&amp;buff[len], payload, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a2720ac8e2e9a99760dc4e99f899bb5f3">meshx_ctrl_payload_t</a>));</div>
-<div class="line"><span class="lineno">  104</span>    len += <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a2720ac8e2e9a99760dc4e99f899bb5f3">meshx_ctrl_payload_t</a>);</div>
-<div class="line"><span class="lineno">  105</span> </div>
-<div class="line"><span class="lineno">  106</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d8/da0/meshx__serial_8c.html#acf500d239d681806f353a1f928f10447">mxsp_send_frame</a>(<a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256ca681fbf76935877597d7f538e57bbcf29">MXSP_MSG_TYPE_SYS_EVT_NOTIFY</a>, buff, len);</div>
-<div class="line"><span class="lineno">  107</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  119</span>{</div>
+<div class="line"><span class="lineno">  120</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.hosted_mode_enabled) {</div>
+<div class="line"><span class="lineno">  121</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  122</span>    }</div>
+<div class="line"><span class="lineno">  123</span>    uint8_t buff[<span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a369490c10d594485919f534dae7b67a0">meshx_ctrl_msg_header_t</a>) + <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a2720ac8e2e9a99760dc4e99f899bb5f3">meshx_ctrl_payload_t</a>)];</div>
+<div class="line"><span class="lineno">  124</span>    uint8_t len = 0;</div>
+<div class="line"><span class="lineno">  125</span> </div>
+<div class="line"><span class="lineno">  126</span>    memcpy(&amp;buff[len], evt_header, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a369490c10d594485919f534dae7b67a0">meshx_ctrl_msg_header_t</a>));</div>
+<div class="line"><span class="lineno">  127</span>    len += <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a369490c10d594485919f534dae7b67a0">meshx_ctrl_msg_header_t</a>);</div>
+<div class="line"><span class="lineno">  128</span> </div>
+<div class="line"><span class="lineno">  129</span>    <span class="comment">// For simplicity, we send the whole payload union. In optimization, we could send only active part.</span></div>
+<div class="line"><span class="lineno">  130</span>    memcpy(&amp;buff[len], payload, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a2720ac8e2e9a99760dc4e99f899bb5f3">meshx_ctrl_payload_t</a>));</div>
+<div class="line"><span class="lineno">  131</span>    len += <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a2720ac8e2e9a99760dc4e99f899bb5f3">meshx_ctrl_payload_t</a>);</div>
+<div class="line"><span class="lineno">  132</span> </div>
+<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d8/da0/meshx__serial_8c.html#acf500d239d681806f353a1f928f10447">mxsp_send_frame</a>(<a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256ca681fbf76935877597d7f538e57bbcf29">MXSP_MSG_TYPE_SYS_EVT_NOTIFY</a>, buff, len);</div>
+<div class="line"><span class="lineno">  134</span>}</div>
 <div class="ttc" id="ameshx__api_8h_html_a2720ac8e2e9a99760dc4e99f899bb5f3"><div class="ttname"><a href="../../db/d2f/meshx__api_8h.html#a2720ac8e2e9a99760dc4e99f899bb5f3">meshx_ctrl_payload_t</a></div><div class="ttdeci">union meshx_ctrl_payload meshx_ctrl_payload_t</div><div class="ttdoc">Structure defines the payload for meshx_ctrl_payload.</div></div>
-<div class="ttc" id="ameshx__serial_8c_html_acf500d239d681806f353a1f928f10447"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#acf500d239d681806f353a1f928f10447">mxsp_send_frame</a></div><div class="ttdeci">meshx_err_t mxsp_send_frame(mxsp_msg_type_t type, const uint8_t *payload, uint8_t len)</div><div class="ttdef"><b>Definition</b> meshx_serial.c:72</div></div>
+<div class="ttc" id="ameshx__serial_8c_html_acf500d239d681806f353a1f928f10447"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#acf500d239d681806f353a1f928f10447">mxsp_send_frame</a></div><div class="ttdeci">meshx_err_t mxsp_send_frame(mxsp_msg_type_t type, const uint8_t *payload, uint8_t len)</div><div class="ttdef"><b>Definition</b> meshx_serial.c:99</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -501,22 +689,155 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6" title="MeshX Error Codes.">meshx_err_t</a> MESHX_SUCCESS on success </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">  110</span>{</div>
-<div class="line"><span class="lineno">  111</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.hosted_mode_enabled) {</div>
-<div class="line"><span class="lineno">  112</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  113</span>    }</div>
-<div class="line"><span class="lineno">  114</span>    uint8_t buff[<span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a55812317789748e2606ccea2fca7f056">meshx_app_element_msg_header_t</a>) + <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a00b4894819c8bf05a33474d25723b046">meshx_data_payload_t</a>)];</div>
-<div class="line"><span class="lineno">  115</span>    uint8_t len = 0;</div>
-<div class="line"><span class="lineno">  116</span> </div>
-<div class="line"><span class="lineno">  117</span>    memcpy(&amp;buff[len], msg_hdr, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a55812317789748e2606ccea2fca7f056">meshx_app_element_msg_header_t</a>));</div>
-<div class="line"><span class="lineno">  118</span>    len += <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a55812317789748e2606ccea2fca7f056">meshx_app_element_msg_header_t</a>);</div>
-<div class="line"><span class="lineno">  119</span> </div>
-<div class="line"><span class="lineno">  120</span>    memcpy(&amp;buff[len], payload, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a00b4894819c8bf05a33474d25723b046">meshx_data_payload_t</a>));</div>
-<div class="line"><span class="lineno">  121</span>    len += <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a00b4894819c8bf05a33474d25723b046">meshx_data_payload_t</a>);</div>
-<div class="line"><span class="lineno">  122</span> </div>
-<div class="line"><span class="lineno">  123</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d8/da0/meshx__serial_8c.html#acf500d239d681806f353a1f928f10447">mxsp_send_frame</a>(<a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256cab356ad748f92331595980c31a4a76669">MXSP_MSG_TYPE_DATA_EVT_NOTIFY</a>, buff, len);</div>
-<div class="line"><span class="lineno">  124</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  137</span>{</div>
+<div class="line"><span class="lineno">  138</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.hosted_mode_enabled) {</div>
+<div class="line"><span class="lineno">  139</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  140</span>    }</div>
+<div class="line"><span class="lineno">  141</span>    uint8_t buff[<span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a55812317789748e2606ccea2fca7f056">meshx_app_element_msg_header_t</a>) + <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a00b4894819c8bf05a33474d25723b046">meshx_data_payload_t</a>)];</div>
+<div class="line"><span class="lineno">  142</span>    uint8_t len = 0;</div>
+<div class="line"><span class="lineno">  143</span> </div>
+<div class="line"><span class="lineno">  144</span>    memcpy(&amp;buff[len], msg_hdr, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a55812317789748e2606ccea2fca7f056">meshx_app_element_msg_header_t</a>));</div>
+<div class="line"><span class="lineno">  145</span>    len += <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a55812317789748e2606ccea2fca7f056">meshx_app_element_msg_header_t</a>);</div>
+<div class="line"><span class="lineno">  146</span> </div>
+<div class="line"><span class="lineno">  147</span>    memcpy(&amp;buff[len], payload, <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a00b4894819c8bf05a33474d25723b046">meshx_data_payload_t</a>));</div>
+<div class="line"><span class="lineno">  148</span>    len += <span class="keyword">sizeof</span>(<a class="code hl_typedef" href="../../db/d2f/meshx__api_8h.html#a00b4894819c8bf05a33474d25723b046">meshx_data_payload_t</a>);</div>
+<div class="line"><span class="lineno">  149</span> </div>
+<div class="line"><span class="lineno">  150</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d8/da0/meshx__serial_8c.html#acf500d239d681806f353a1f928f10447">mxsp_send_frame</a>(<a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256cab356ad748f92331595980c31a4a76669">MXSP_MSG_TYPE_DATA_EVT_NOTIFY</a>, buff, len);</div>
+<div class="line"><span class="lineno">  151</span>}</div>
 <div class="ttc" id="ameshx__api_8h_html_a00b4894819c8bf05a33474d25723b046"><div class="ttname"><a href="../../db/d2f/meshx__api_8h.html#a00b4894819c8bf05a33474d25723b046">meshx_data_payload_t</a></div><div class="ttdeci">union meshx_data_payload meshx_data_payload_t</div><div class="ttdoc">Structure for the BLE Mesh application control message.</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ab13d8b11fb0f0a0f51f7e4be70a0164b" name="ab13d8b11fb0f0a0f51f7e4be70a0164b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab13d8b11fb0f0a0f51f7e4be70a0164b">&#9670;&#160;</a></span>mxsp_send_gpio_evt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> mxsp_send_gpio_evt </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>event_type</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>logical_pin</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send GPIO async event via MXSP. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">event_type</td><td>Event type (<a class="el" href="#a888c45f8c2d669adef531ee6195a3c92" title="GPIO Event Types (Engine -&gt; Host, async).">mxsp_gpio_evt_t</a>) </td></tr>
+    <tr><td class="paramname">logical_pin</td><td>Logical pin number </td></tr>
+    <tr><td class="paramname">value</td><td>Event value </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6" title="MeshX Error Codes.">meshx_err_t</a> MESHX_SUCCESS on success </dd></dl>
+<div class="fragment"><div class="line"><span class="lineno">  175</span>{</div>
+<div class="line"><span class="lineno">  176</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.hosted_mode_enabled) {</div>
+<div class="line"><span class="lineno">  177</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  178</span>    }</div>
+<div class="line"><span class="lineno">  179</span> </div>
+<div class="line"><span class="lineno">  180</span>    <a class="code hl_struct" href="../../d8/d13/structmxsp__gpio__evt__payload__t.html">mxsp_gpio_evt_payload_t</a> evt;</div>
+<div class="line"><span class="lineno">  181</span>    memset(&amp;evt, 0, <span class="keyword">sizeof</span>(evt));</div>
+<div class="line"><span class="lineno">  182</span> </div>
+<div class="line"><span class="lineno">  183</span>    evt.<a class="code hl_variable" href="../../d8/d13/structmxsp__gpio__evt__payload__t.html#a10e6aa8ccff0fc3529f2171286256f6a">event_type</a> = event_type;</div>
+<div class="line"><span class="lineno">  184</span>    evt.<a class="code hl_variable" href="../../d8/d13/structmxsp__gpio__evt__payload__t.html#a14acbe5ba7a3d76c4cd36ca5b086da97">logical_pin</a> = logical_pin;</div>
+<div class="line"><span class="lineno">  185</span>    evt.<a class="code hl_variable" href="../../d8/d13/structmxsp__gpio__evt__payload__t.html#a5c9853c5347b20b20348c5890adb3ebf">value</a> = value;</div>
+<div class="line"><span class="lineno">  186</span>    evt.<a class="code hl_variable" href="../../d8/d13/structmxsp__gpio__evt__payload__t.html#ae708f84f80c72c89fe976fb11f54a284">reserved</a> = 0;</div>
+<div class="line"><span class="lineno">  187</span>    evt.<a class="code hl_variable" href="../../d8/d13/structmxsp__gpio__evt__payload__t.html#a37aaa4bf6a2b1a0a5f4dcfc1084e89e0">timestamp</a> = <a class="code hl_function" href="../../d8/da0/meshx__serial_8c.html#a9f25acb01f688afd1eacbba2363809c0">meshx_get_sys_time_ms</a>();</div>
+<div class="line"><span class="lineno">  188</span> </div>
+<div class="line"><span class="lineno">  189</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d8/da0/meshx__serial_8c.html#acf500d239d681806f353a1f928f10447">mxsp_send_frame</a>(<a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256ca4854f546250827a1b9269f6cdd86d5c2">MXSP_MSG_TYPE_GPIO_EVT</a>, (<span class="keyword">const</span> uint8_t*)&amp;evt, <span class="keyword">sizeof</span>(evt));</div>
+<div class="line"><span class="lineno">  190</span>}</div>
+<div class="ttc" id="ameshx__serial_8c_html_a9f25acb01f688afd1eacbba2363809c0"><div class="ttname"><a href="../../d8/da0/meshx__serial_8c.html#a9f25acb01f688afd1eacbba2363809c0">meshx_get_sys_time_ms</a></div><div class="ttdeci">static uint32_t meshx_get_sys_time_ms(void)</div><div class="ttdoc">Get system time in milliseconds.</div><div class="ttdef"><b>Definition</b> meshx_serial.c:92</div></div>
+<div class="ttc" id="astructmxsp__gpio__evt__payload__t_html"><div class="ttname"><a href="../../d8/d13/structmxsp__gpio__evt__payload__t.html">mxsp_gpio_evt_payload_t</a></div><div class="ttdoc">GPIO Event Payload (Engine -&gt; Host, async).</div><div class="ttdef"><b>Definition</b> meshx_serial.h:101</div></div>
+<div class="ttc" id="astructmxsp__gpio__evt__payload__t_html_a10e6aa8ccff0fc3529f2171286256f6a"><div class="ttname"><a href="../../d8/d13/structmxsp__gpio__evt__payload__t.html#a10e6aa8ccff0fc3529f2171286256f6a">mxsp_gpio_evt_payload_t::event_type</a></div><div class="ttdeci">uint8_t event_type</div><div class="ttdef"><b>Definition</b> meshx_serial.h:102</div></div>
+<div class="ttc" id="astructmxsp__gpio__evt__payload__t_html_a14acbe5ba7a3d76c4cd36ca5b086da97"><div class="ttname"><a href="../../d8/d13/structmxsp__gpio__evt__payload__t.html#a14acbe5ba7a3d76c4cd36ca5b086da97">mxsp_gpio_evt_payload_t::logical_pin</a></div><div class="ttdeci">uint8_t logical_pin</div><div class="ttdef"><b>Definition</b> meshx_serial.h:103</div></div>
+<div class="ttc" id="astructmxsp__gpio__evt__payload__t_html_a37aaa4bf6a2b1a0a5f4dcfc1084e89e0"><div class="ttname"><a href="../../d8/d13/structmxsp__gpio__evt__payload__t.html#a37aaa4bf6a2b1a0a5f4dcfc1084e89e0">mxsp_gpio_evt_payload_t::timestamp</a></div><div class="ttdeci">uint32_t timestamp</div><div class="ttdef"><b>Definition</b> meshx_serial.h:106</div></div>
+<div class="ttc" id="astructmxsp__gpio__evt__payload__t_html_a5c9853c5347b20b20348c5890adb3ebf"><div class="ttname"><a href="../../d8/d13/structmxsp__gpio__evt__payload__t.html#a5c9853c5347b20b20348c5890adb3ebf">mxsp_gpio_evt_payload_t::value</a></div><div class="ttdeci">uint8_t value</div><div class="ttdef"><b>Definition</b> meshx_serial.h:104</div></div>
+<div class="ttc" id="astructmxsp__gpio__evt__payload__t_html_ae708f84f80c72c89fe976fb11f54a284"><div class="ttname"><a href="../../d8/d13/structmxsp__gpio__evt__payload__t.html#ae708f84f80c72c89fe976fb11f54a284">mxsp_gpio_evt_payload_t::reserved</a></div><div class="ttdeci">uint8_t reserved</div><div class="ttdef"><b>Definition</b> meshx_serial.h:105</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a70015dc613151a880d45e55d09d6c8df" name="a70015dc613151a880d45e55d09d6c8df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70015dc613151a880d45e55d09d6c8df">&#9670;&#160;</a></span>mxsp_send_gpio_rsp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> mxsp_send_gpio_rsp </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>cmd</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>logical_pin</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>status</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint8_t *</td>          <td class="paramname"><span class="paramname"><em>response</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t</td>          <td class="paramname"><span class="paramname"><em>response_len</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send GPIO response via MXSP. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cmd</td><td>Original command type </td></tr>
+    <tr><td class="paramname">logical_pin</td><td>Logical pin number </td></tr>
+    <tr><td class="paramname">status</td><td>Status code (0 = success) </td></tr>
+    <tr><td class="paramname">response</td><td>Response data </td></tr>
+    <tr><td class="paramname">response_len</td><td>Response data length </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6" title="MeshX Error Codes.">meshx_err_t</a> MESHX_SUCCESS on success </dd></dl>
+<div class="fragment"><div class="line"><span class="lineno">  155</span>{</div>
+<div class="line"><span class="lineno">  156</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="../../d8/da0/meshx__serial_8c.html#a39d774d904007dfcc7244cb70957e2de">mxsp_ctx</a>.hosted_mode_enabled) {</div>
+<div class="line"><span class="lineno">  157</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  158</span>    }</div>
+<div class="line"><span class="lineno">  159</span> </div>
+<div class="line"><span class="lineno">  160</span>    <a class="code hl_struct" href="../../df/d82/structmxsp__gpio__rsp__payload__t.html">mxsp_gpio_rsp_payload_t</a> rsp;</div>
+<div class="line"><span class="lineno">  161</span>    memset(&amp;rsp, 0, <span class="keyword">sizeof</span>(rsp));</div>
+<div class="line"><span class="lineno">  162</span> </div>
+<div class="line"><span class="lineno">  163</span>    rsp.<a class="code hl_variable" href="../../df/d82/structmxsp__gpio__rsp__payload__t.html#ac13f09f6d4c99ba1f184e6f0461472d6">cmd</a> = cmd;</div>
+<div class="line"><span class="lineno">  164</span>    rsp.<a class="code hl_variable" href="../../df/d82/structmxsp__gpio__rsp__payload__t.html#a7d217b578870b24509d2d311966f30f0">logical_pin</a> = logical_pin;</div>
+<div class="line"><span class="lineno">  165</span>    rsp.<a class="code hl_variable" href="../../df/d82/structmxsp__gpio__rsp__payload__t.html#a3c90b1d7c4bd5af56c5d5554b08e90f4">status</a> = status;</div>
+<div class="line"><span class="lineno">  166</span>    rsp.<a class="code hl_variable" href="../../df/d82/structmxsp__gpio__rsp__payload__t.html#aff9c9d537a88cc6a11907aa3f4cebe93">response_len</a> = (response_len &gt; 8) ? 8 : response_len;</div>
+<div class="line"><span class="lineno">  167</span>    <span class="keywordflow">if</span> (response != NULL &amp;&amp; rsp.<a class="code hl_variable" href="../../df/d82/structmxsp__gpio__rsp__payload__t.html#aff9c9d537a88cc6a11907aa3f4cebe93">response_len</a> &gt; 0) {</div>
+<div class="line"><span class="lineno">  168</span>        memcpy(rsp.<a class="code hl_variable" href="../../df/d82/structmxsp__gpio__rsp__payload__t.html#a2ce5aa0b2215171f4ac9b6a5ab4eecbe">response</a>, response, rsp.<a class="code hl_variable" href="../../df/d82/structmxsp__gpio__rsp__payload__t.html#aff9c9d537a88cc6a11907aa3f4cebe93">response_len</a>);</div>
+<div class="line"><span class="lineno">  169</span>    }</div>
+<div class="line"><span class="lineno">  170</span> </div>
+<div class="line"><span class="lineno">  171</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../d8/da0/meshx__serial_8c.html#acf500d239d681806f353a1f928f10447">mxsp_send_frame</a>(<a class="code hl_enumvalue" href="#a5ecc3cb058739536c1d8ee03f068256cafa60750d7741de91aa4eacdde640118b">MXSP_MSG_TYPE_GPIO_RSP</a>, (<span class="keyword">const</span> uint8_t*)&amp;rsp, <span class="keyword">sizeof</span>(rsp));</div>
+<div class="line"><span class="lineno">  172</span>}</div>
+<div class="ttc" id="astructmxsp__gpio__rsp__payload__t_html"><div class="ttname"><a href="../../df/d82/structmxsp__gpio__rsp__payload__t.html">mxsp_gpio_rsp_payload_t</a></div><div class="ttdoc">GPIO Response Payload (Engine -&gt; Host).</div><div class="ttdef"><b>Definition</b> meshx_serial.h:90</div></div>
+<div class="ttc" id="astructmxsp__gpio__rsp__payload__t_html_a2ce5aa0b2215171f4ac9b6a5ab4eecbe"><div class="ttname"><a href="../../df/d82/structmxsp__gpio__rsp__payload__t.html#a2ce5aa0b2215171f4ac9b6a5ab4eecbe">mxsp_gpio_rsp_payload_t::response</a></div><div class="ttdeci">uint8_t response[8]</div><div class="ttdef"><b>Definition</b> meshx_serial.h:95</div></div>
+<div class="ttc" id="astructmxsp__gpio__rsp__payload__t_html_a3c90b1d7c4bd5af56c5d5554b08e90f4"><div class="ttname"><a href="../../df/d82/structmxsp__gpio__rsp__payload__t.html#a3c90b1d7c4bd5af56c5d5554b08e90f4">mxsp_gpio_rsp_payload_t::status</a></div><div class="ttdeci">uint8_t status</div><div class="ttdef"><b>Definition</b> meshx_serial.h:93</div></div>
+<div class="ttc" id="astructmxsp__gpio__rsp__payload__t_html_a7d217b578870b24509d2d311966f30f0"><div class="ttname"><a href="../../df/d82/structmxsp__gpio__rsp__payload__t.html#a7d217b578870b24509d2d311966f30f0">mxsp_gpio_rsp_payload_t::logical_pin</a></div><div class="ttdeci">uint8_t logical_pin</div><div class="ttdef"><b>Definition</b> meshx_serial.h:92</div></div>
+<div class="ttc" id="astructmxsp__gpio__rsp__payload__t_html_ac13f09f6d4c99ba1f184e6f0461472d6"><div class="ttname"><a href="../../df/d82/structmxsp__gpio__rsp__payload__t.html#ac13f09f6d4c99ba1f184e6f0461472d6">mxsp_gpio_rsp_payload_t::cmd</a></div><div class="ttdeci">uint8_t cmd</div><div class="ttdef"><b>Definition</b> meshx_serial.h:91</div></div>
+<div class="ttc" id="astructmxsp__gpio__rsp__payload__t_html_aff9c9d537a88cc6a11907aa3f4cebe93"><div class="ttname"><a href="../../df/d82/structmxsp__gpio__rsp__payload__t.html#aff9c9d537a88cc6a11907aa3f4cebe93">mxsp_gpio_rsp_payload_t::response_len</a></div><div class="ttdeci">uint8_t response_len</div><div class="ttdef"><b>Definition</b> meshx_serial.h:94</div></div>
 </div><!-- fragment -->
 </div>
 </div>

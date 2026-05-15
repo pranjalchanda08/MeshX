@@ -117,6 +117,8 @@ Functions</h2></td></tr>
 <tr class="memdesc:ade5ec72805eb237d065dd54953407fe1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receive a Message from a MeshX Message Queue.  <br /></td></tr>
 <tr class="memitem:a252923c533acaa114cb26fb77c68262d" id="r_a252923c533acaa114cb26fb77c68262d"><td class="memItemLeft"><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>&#160;</td><td class="memItemRight"><a class="el" href="#a252923c533acaa114cb26fb77c68262d">meshx_msg_q_peek</a> (<a class="el" href="#a786a89e91a7e9c4c5bca2ef3c0b0de5a">meshx_msg_q_t</a> *msg_q_handle, void *msg, uint32_t delay_ms)</td></tr>
 <tr class="memdesc:a252923c533acaa114cb26fb77c68262d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Peek a Message from a MeshX Message Queue.  <br /></td></tr>
+<tr class="memitem:a38f29fc22afcadd96f19efe519ad3743" id="r_a38f29fc22afcadd96f19efe519ad3743"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#a38f29fc22afcadd96f19efe519ad3743">meshx_msg_q_get_count</a> (<a class="el" href="#a786a89e91a7e9c4c5bca2ef3c0b0de5a">meshx_msg_q_t</a> *msg_q_handle)</td></tr>
+<tr class="memdesc:a38f29fc22afcadd96f19efe519ad3743"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of messages in a MeshX Message Queue.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>MeshX Message Queue Interface. </p>
@@ -191,6 +193,33 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a38f29fc22afcadd96f19efe519ad3743" name="a38f29fc22afcadd96f19efe519ad3743"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38f29fc22afcadd96f19efe519ad3743">&#9670;&#160;</a></span>meshx_msg_q_get_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int meshx_msg_q_get_count </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="#a786a89e91a7e9c4c5bca2ef3c0b0de5a">meshx_msg_q_t</a> *</td>          <td class="paramname"><span class="paramname"><em>msg_q_handle</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the number of messages in a MeshX Message Queue. </p>
+<p>This function gets the number of messages in a MeshX Message Queue.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">msg_q_handle</td><td>Message Queue Handle</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Number of messages </dd></dl>
 
 </div>
 </div>

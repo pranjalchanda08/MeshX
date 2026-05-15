@@ -115,7 +115,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a8efb72841f491fe03b83c96334c64ff8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the composition is baked to update the element's index.  <br /></td></tr>
 <tr class="memitem:afe9a285b8bd6f64d16d3594f3e7a1407" id="r_afe9a285b8bd6f64d16d3594f3e7a1407"><td class="memItemLeft">virtual <a class="el" href="../../de/de6/meshx__fwd__decl_8hpp.html#af879911766c94862efe9426d14959865">meshxElementType_t</a>&#160;</td><td class="memItemRight"><a class="el" href="#afe9a285b8bd6f64d16d3594f3e7a1407">get_element_type</a> (void) const =0</td></tr>
 <tr class="memdesc:afe9a285b8bd6f64d16d3594f3e7a1407"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the element type.  <br /></td></tr>
-<tr class="memitem:aeee0d36764d2400e79d0a8688eb9f763" id="r_aeee0d36764d2400e79d0a8688eb9f763"><td class="memItemLeft">virtual <a class="el" href="../../d2/de3/meshx__common_8h.html#a78cd6669664fddeabd00dfa96fe6667c">meshx_element_type_t</a>&#160;</td><td class="memItemRight"><a class="el" href="#aeee0d36764d2400e79d0a8688eb9f763">get_element_variant</a> (void) const =0</td></tr>
+<tr class="memitem:aeee0d36764d2400e79d0a8688eb9f763" id="r_aeee0d36764d2400e79d0a8688eb9f763"><td class="memItemLeft">virtual meshx_element_type_t&#160;</td><td class="memItemRight"><a class="el" href="#aeee0d36764d2400e79d0a8688eb9f763">get_element_variant</a> (void) const =0</td></tr>
 <tr class="memdesc:aeee0d36764d2400e79d0a8688eb9f763"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the element variant.  <br /></td></tr>
 <tr class="memitem:a3a74299ff42f7071836b501ba09e7839" id="r_a3a74299ff42f7071836b501ba09e7839"><td class="memItemLeft">virtual uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#a3a74299ff42f7071836b501ba09e7839">get_no_of_sig_models</a> (void) const =0</td></tr>
 <tr class="memdesc:a3a74299ff42f7071836b501ba09e7839"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of SIG models supported by the element.  <br /></td></tr>
@@ -395,7 +395,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="../../d2/de3/meshx__common_8h.html#a78cd6669664fddeabd00dfa96fe6667c">meshx_element_type_t</a> meshXElementIF::get_element_variant </td>
+          <td class="memname">virtual meshx_element_type_t meshXElementIF::get_element_variant </td>
           <td>(</td>
           <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -409,7 +409,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Get the element variant. </p>
-<dl class="section return"><dt>Returns</dt><dd>Element variant (<a class="el" href="../../d2/de3/meshx__common_8h.html#a78cd6669664fddeabd00dfa96fe6667c" title="Enumeration of BLE Mesh application API message types.">meshx_element_type_t</a>) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Element variant (meshx_element_type_t) </dd></dl>
 
 <p>Implemented in <a class="el" href="../../de/dfb/classmeshXElement.html#aedfe91be5fb389262d05ddf520029644">meshXElement&lt; meshx_model_send_param_header_t &gt;</a>, <a class="el" href="../../de/dfb/classmeshXElement.html#aedfe91be5fb389262d05ddf520029644">meshXElement&lt; meshx_cli_model_send_param_header_t &gt;</a>, and <a class="el" href="../../de/dfb/classmeshXElement.html#aedfe91be5fb389262d05ddf520029644">meshXElement&lt; meshx_srv_model_send_param_header_t &gt;</a>.</p>
 

@@ -5,5 +5,6 @@ var searchData=
   ['base_5fhandle_5ftxcm_5fmsg_2',['base_handle_txcm_msg',['../d5/d42/classmeshXBaseClientModel.html#a774e1160d3911fdfa42714cca949909c',1,'meshXBaseClientModel']]],
   ['base_5ftxcm_5fhandle_5fack_3',['base_txcm_handle_ack',['../d5/d42/classmeshXBaseClientModel.html#ac3915d4a2bfa90a43c2f700f44586f7a',1,'meshXBaseClientModel']]],
   ['base_5ftxcm_5fhandle_5fresend_4',['base_txcm_handle_resend',['../d5/d42/classmeshXBaseClientModel.html#a5b18e0e5f3b11314cbd1acac34d4d5af',1,'meshXBaseClientModel']]],
-  ['begin_5',['begin',['../de/dae/classmeshXCompositionBuilder.html#acc571ddea4f1bdfb4397438b7f5e10aa',1,'meshXCompositionBuilder']]]
+  ['begin_5',['begin',['../de/dae/classmeshXCompositionBuilder.html#acc571ddea4f1bdfb4397438b7f5e10aa',1,'meshXCompositionBuilder']]],
+  ['bindings_5fdecode_5fcb_6',['bindings_decode_cb',['../d9/d9f/meshx__ro__cfg_8c.html#aaedae3a1c9f180cfb0c833868e4d854d',1,'meshx_ro_cfg.c']]]
 ];

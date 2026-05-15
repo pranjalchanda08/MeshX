@@ -104,6 +104,8 @@ Functions</h2></td></tr>
 <tr class="memdesc:ae1e9723a20f67af686314a7fd218925e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write data to a flash partition.  <br /></td></tr>
 <tr class="memitem:a383bfd2a588b9c91339ac8dd535067e1" id="r_a383bfd2a588b9c91339ac8dd535067e1"><td class="memItemLeft"><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>&#160;</td><td class="memItemRight"><a class="el" href="#a383bfd2a588b9c91339ac8dd535067e1">meshx_fal_erase</a> (const <a class="el" href="../../de/d9f/structmeshx__fal__partition__t.html">meshx_fal_partition_t</a> *part, uint32_t offset, size_t len)</td></tr>
 <tr class="memdesc:a383bfd2a588b9c91339ac8dd535067e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Erase a range of a flash partition.  <br /></td></tr>
+<tr class="memitem:aa87284827d11da24fd436a03281ca873" id="r_aa87284827d11da24fd436a03281ca873"><td class="memItemLeft"><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>&#160;</td><td class="memItemRight"><a class="el" href="#aa87284827d11da24fd436a03281ca873">meshx_fal_find_partition</a> (const char *name, <a class="el" href="../../de/d9f/structmeshx__fal__partition__t.html">meshx_fal_partition_t</a> *part)</td></tr>
+<tr class="memdesc:aa87284827d11da24fd436a03281ca873"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a flash partition by name.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Flash Abstraction Layer (FAL) Interface for MeshX. </p>
@@ -141,6 +143,37 @@ Functions</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">part</td><td>Pointer to the partition structure. </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">offset</td><td>Offset from the start of the partition (must be sector aligned). </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">len</td><td>Number of bytes to erase (must be sector aligned).</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6" title="MeshX Error Codes.">meshx_err_t</a> MESHX_SUCCESS on success, or error code. </dd></dl>
+
+</div>
+</div>
+<a id="aa87284827d11da24fd436a03281ca873" name="aa87284827d11da24fd436a03281ca873"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa87284827d11da24fd436a03281ca873">&#9670;&#160;</a></span>meshx_fal_find_partition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> meshx_fal_find_partition </td>
+          <td>(</td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../de/d9f/structmeshx__fal__partition__t.html">meshx_fal_partition_t</a> *</td>          <td class="paramname"><span class="paramname"><em>part</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Find a flash partition by name. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">name</td><td>Name of the partition to find. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">part</td><td>Pointer to the partition structure to populate.</td></tr>
   </table>
   </dd>
 </dl>

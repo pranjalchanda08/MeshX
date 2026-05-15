@@ -28,11 +28,12 @@ var searchData=
   ['begin_25',['begin',['../de/dae/classmeshXCompositionBuilder.html#acc571ddea4f1bdfb4397438b7f5e10aa',1,'meshXCompositionBuilder']]],
   ['best_20practices_26',['Best Practices',['../db/de4/md_docs_2DEVELOPER__GUIDE__CUSTOM__MODELS__AND__ELEMENTS.html#best-practices',1,'']]],
   ['best_20practices_20deadlock_20prevention_27',['Best Practices &amp;amp; Deadlock Prevention',['../d6/df3/md_docs_2uml__diag_2meshx_2meshx__call__flow.html#best-practices--deadlock-prevention',1,'']]],
-  ['ble_20meash_20node_28',['BLE Meash Node',['../dir_0f244153cd6f17ec4fccdbe5c4748739.html#ble-meash-node',1,'']]],
-  ['ble_5fmesh_2felements_2finc_2fmeshx_5frelay_5fmsg_5fdefs_2eh_29',['meshx_relay_msg_defs.h',['../d9/d4e/ble__mesh_2elements_2inc_2meshx__relay__msg__defs_8h.html',1,'']]],
-  ['ble_5fmesh_2felements_2finc_2fvariants_2fmeshx_5frelay_5fmsg_5fdefs_2eh_30',['meshx_relay_msg_defs.h',['../df/dac/ble__mesh_2elements_2inc_2variants_2meshx__relay__msg__defs_8h.html',1,'']]],
-  ['bluez_20mesh_20provisioning_20planned_31',['BlueZ Mesh Provisioning (Planned)',['../dir_26b04ad0e2f7606f5a50a655af5faa20.html#bluez-mesh-provisioning-planned',1,'']]],
-  ['bsps_32',['BSPs',['../index.html#bsps',1,'']]],
-  ['build_20commands_33',['2. Build Commands',['../index.html#autotoc_md2-build-commands',1,'']]],
-  ['build_20system_20meshx_20py_34',['Build System (meshx.py)',['../index.html#build-system-meshxpy',1,'']]]
+  ['bindings_5fdecode_5fcb_28',['bindings_decode_cb',['../d9/d9f/meshx__ro__cfg_8c.html#aaedae3a1c9f180cfb0c833868e4d854d',1,'meshx_ro_cfg.c']]],
+  ['ble_20meash_20node_29',['BLE Meash Node',['../dir_0f244153cd6f17ec4fccdbe5c4748739.html#ble-meash-node',1,'']]],
+  ['ble_5fmesh_2felements_2finc_2fmeshx_5frelay_5fmsg_5fdefs_2eh_30',['meshx_relay_msg_defs.h',['../d9/d4e/ble__mesh_2elements_2inc_2meshx__relay__msg__defs_8h.html',1,'']]],
+  ['ble_5fmesh_2felements_2finc_2fvariants_2fmeshx_5frelay_5fmsg_5fdefs_2eh_31',['meshx_relay_msg_defs.h',['../df/dac/ble__mesh_2elements_2inc_2variants_2meshx__relay__msg__defs_8h.html',1,'']]],
+  ['bluez_20mesh_20provisioning_20planned_32',['BlueZ Mesh Provisioning (Planned)',['../dir_26b04ad0e2f7606f5a50a655af5faa20.html#bluez-mesh-provisioning-planned',1,'']]],
+  ['bsps_33',['BSPs',['../index.html#bsps',1,'']]],
+  ['build_20commands_34',['2. Build Commands',['../index.html#autotoc_md2-build-commands',1,'']]],
+  ['build_20system_20meshx_20py_35',['Build System (meshx.py)',['../index.html#build-system-meshxpy',1,'']]]
 ];
