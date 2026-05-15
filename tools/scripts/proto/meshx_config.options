@@ -1,0 +1,18 @@
+ProductInfo.cid             int_size:IS_16
+ProductInfo.pid             int_size:IS_16
+ProductInfo.name            max_size:32
+ProductInfo.uuid            max_size:16
+ProductInfo.uuid            fixed_length:true
+
+ElementConfig.type          int_size:IS_16
+ElementConfig.count         int_size:IS_8
+
+GpioConfig.logical_pin      int_size:IS_16
+GpioConfig.physical_pin     int_size:IS_8
+GpioConfig.mode             int_size:IS_8
+GpioConfig.pull             int_size:IS_8
+GpioConfig.drive_strength   int_size:IS_8
+
+IoBinding.element_id        int_size:IS_8
+IoBinding.logical_pin       int_size:IS_16
+IoBinding.usage             int_size:IS_8
