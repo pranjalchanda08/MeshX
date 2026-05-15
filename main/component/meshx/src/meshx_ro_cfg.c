@@ -13,18 +13,33 @@
 #include "meshx_builder_api.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stddef.h>
 
 #define MODULE_ID_RO_CFG MODULE_ID_COMMON
 
 #pragma pack(push, 1)
 typedef struct {
-    uint16_t magic;      // 0x4D58
+    uint32_t magic;      // 'MXC' -> 0x0043584D
     uint8_t  version;    // 0x01
-    uint16_t total_len;  // 9 + payload_len
+    uint32_t schema_id;  // Fingerprint of .proto + .options
+    uint16_t total_len;  // 15 + payload_len
     uint16_t header_crc;
     uint16_t payload_crc;
 } meshx_cfg_header_t;
 #pragma pack(pop)
+
+#define MESHX_CFG_MAGIC   0x0043584D
+#define MESHX_CFG_VERSION 0x01
+#define MESHX_HDR_SIZE    sizeof(meshx_cfg_header_t)
+
+// Ensure ProductInfo is using static buffers (char arrays) rather than callbacks.
+// If the .options file is ignored, this will fail at compile-time.
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+    static_assert(sizeof(ProductInfo) == 54,
+        "ProductInfo size mismatch! Ensure Nanopb is using meshx_config.options");
+    static_assert(offsetof(ProductInfo, pid) == 2,
+        "CID/PID alignment mismatch! Expected PID at offset 2.");
+#endif
 
 // CRC-16-CCITT (Polynomial 0x1021, Initial 0xFFFF)
 static uint16_t calc_crc16_ccitt(const uint8_t *data, size_t len) {
@@ -80,34 +95,38 @@ meshx_err_t meshx_ro_cfg_init(uint16_t *cid, uint16_t *pid, char *product_name, 
     }
 
     meshx_cfg_header_t header;
-    if (meshx_fal_read(&part, 0, &header, sizeof(header)) != MESHX_SUCCESS) {
-        MESHX_LOGE(MODULE_ID_RO_CFG, "Failed to read config header");
+    if (meshx_fal_read(&part, 0, (uint8_t *)&header, MESHX_HDR_SIZE) != MESHX_SUCCESS) {
         return MESHX_ERR_PLAT;
     }
 
-    if (header.magic != 0x4D58) {
-        // Not provisioned or empty
-        return MESHX_ERR_FORMAT;
+    if (header.magic != MESHX_CFG_MAGIC) {
+        MESHX_LOGE(MODULE_ID_RO_CFG, "Invalid config magic (0x%08X, exp: 0x%08X)", header.magic, MESHX_CFG_MAGIC);
+        return MESHX_ERR_RO_CFG_FORMAT;
     }
 
-    uint16_t expected_hdr_crc = calc_crc16_ccitt((const uint8_t*)&header, 5);
+    if (header.version != MESHX_CFG_VERSION) {
+        MESHX_LOGE(MODULE_ID_RO_CFG, "Unsupported config version (0x%02X)", header.version);
+        return MESHX_ERR_RO_CFG_VERSION;
+    }
+
+    if (header.schema_id != MESHX_SCHEMA_ID) {
+        MESHX_LOGE(MODULE_ID_RO_CFG, "Schema mismatch! Binary ID: 0x%08X, Firmware ID: 0x%08X",
+                   header.schema_id, MESHX_SCHEMA_ID);
+        return MESHX_ERR_RO_CFG_VERSION;
+    }
+
+    // Validate header CRC (all fields except header_crc and payload_crc)
+    uint16_t expected_hdr_crc = calc_crc16_ccitt((uint8_t *)&header, MESHX_HDR_SIZE - 4);
     if (header.header_crc != expected_hdr_crc) {
         MESHX_LOGE(MODULE_ID_RO_CFG, "Config header CRC mismatch (calc: 0x%04X, exp: 0x%04X)", expected_hdr_crc, header.header_crc);
-        return MESHX_ERR_CRC;
+        return MESHX_ERR_RO_CFG_CRC;
     }
 
-    size_t payload_len = header.total_len - 9;
-    if (payload_len == 0 || payload_len > part.size - 9) {
-        MESHX_LOGE(MODULE_ID_RO_CFG, "Invalid config payload length: %d", payload_len);
-        return MESHX_ERR_FORMAT;
-    }
-
+    size_t payload_len = header.total_len - MESHX_HDR_SIZE;
     uint8_t *payload = malloc(payload_len);
-    if (!payload) {
-        return MESHX_NO_MEM;
-    }
+    if (!payload) return MESHX_NO_MEM;
 
-    if (meshx_fal_read(&part, 9, payload, payload_len) != MESHX_SUCCESS) {
+    if (meshx_fal_read(&part, MESHX_HDR_SIZE, payload, payload_len) != MESHX_SUCCESS) {
         MESHX_LOGE(MODULE_ID_RO_CFG, "Failed to read config payload");
         free(payload);
         return MESHX_ERR_PLAT;
@@ -117,7 +136,7 @@ meshx_err_t meshx_ro_cfg_init(uint16_t *cid, uint16_t *pid, char *product_name, 
     if (header.payload_crc != expected_pld_crc) {
         MESHX_LOGE(MODULE_ID_RO_CFG, "Config payload CRC mismatch (calc: 0x%04X, exp: 0x%04X)", expected_pld_crc, header.payload_crc);
         free(payload);
-        return MESHX_ERR_CRC;
+        return MESHX_ERR_RO_CFG_CRC;
     }
 
     MeshXConfig config = MeshXConfig_init_zero;
@@ -132,7 +151,7 @@ meshx_err_t meshx_ro_cfg_init(uint16_t *cid, uint16_t *pid, char *product_name, 
     if (!pb_decode(&stream, MeshXConfig_fields, &config)) {
         MESHX_LOGE(MODULE_ID_RO_CFG, "Config protobuf decode failed");
         free(payload);
-        return MESHX_ERR_FORMAT;
+        return MESHX_ERR_RO_CFG_FORMAT;
     }
 
     meshx_builder_commit();

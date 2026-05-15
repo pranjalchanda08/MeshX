@@ -244,6 +244,18 @@ class ESPTarget(Target):
 
     def toolcheck(self):
         print("Checking ESP tools...")
+        # Check and install missing python dependencies into the current environment
+        required_packages = ["protobuf", "grpcio-tools", "pyyaml"]
+        for package in required_packages:
+            try:
+                if package == "grpcio-tools":
+                    import grpc_tools.protoc
+                else:
+                    __import__(package.replace("-", "_"))
+            except ImportError:
+                print(f"Installing missing python dependency: {package}...")
+                subprocess.check_call([sys.executable, "-m", "pip", "install", package, "--break-system-packages"])
+
         tool = ['esptool.py']
         for t in tool:
             check_tool_installed(t)
@@ -307,6 +319,15 @@ class ESPTarget(Target):
             raise TargetFlashException("Please provide a port")
 
         build_dir = f"{build_root}/{args.prod_name[0]}"
+        
+        # Priority: 1. Build directory (generated), 2. Static BSP directory (fallback)
+        generated_cfg = os.path.abspath(os.path.join(build_dir, "esp-idf/main/meshx_cfg.mxc"))
+        static_cfg = os.path.abspath(f"port/bsp/{args.bsp}/meshx_cfg.mxc")
+        
+        cfg_to_flash = generated_cfg if os.path.exists(generated_cfg) else static_cfg
+        
+        print(f"Flashing configuration binary: {cfg_to_flash}")
+
         # Get offset dynamically using parttool.py
         try:
             partition_table = os.path.join(build_dir, "partition_table/partition-table.bin")
@@ -325,7 +346,7 @@ class ESPTarget(Target):
             "--port", args.port,
             "--before", "default_reset",
             "--after", "hard_reset",
-            "write_flash", offset, os.path.abspath(f"port/bsp/{args.bsp}/meshx_cfg.bin")
+            "write_flash", offset, cfg_to_flash
         ]
         self.proc_run(esp_tool_cmd, cwd=build_dir)
 
@@ -457,6 +478,21 @@ def main():
     required_tools = ['cmake', 'ninja', 'git', 'ccache']
     for tool in required_tools:
         check_tool_installed(tool)
+
+    # Check if submodules are initialized (specifically nanopb)
+    nanopb_check_file = os.path.join("third_party", "nanopb", "pb_common.c")
+    if not os.path.exists(nanopb_check_file):
+        print("Warning: third_party/nanopb is not initialized. Attempting to initialize submodules...")
+        try:
+            subprocess.run(["git", "submodule", "update", "--init", "--recursive"], check=True)
+            if not os.path.exists(nanopb_check_file):
+                print("Error: Failed to initialize nanopb submodule. Please check your internet connection or run 'git submodule update --init --recursive' manually.")
+                sys.exit(1)
+            print("Successfully initialized submodules.")
+        except subprocess.CalledProcessError:
+            print("Error: 'git submodule' command failed. Please ensure submodules are initialized.")
+            sys.exit(1)
+
 
     # Parse command-line arguments
     parser = argparse.ArgumentParser(description="MeshX build and target management tool.")

@@ -91,12 +91,6 @@ meshx_err_t meshx_gpio_test_set_pin_mode(uint8_t logical_pin, uint8_t mode)
 
 /**
  * @brief Initialize GPIO subsystem
- *
- * This function initializes the GPIO subsystem based on compiled configuration.
- * It sets up pin mappings, initializes platform-specific GPIO hardware,
- * and configures all pins according to their YAML configuration.
- *
- * @return meshx_err_t MESHX_SUCCESS on success, error code on failure
  */
 meshx_err_t meshx_gpio_init(void)
 {
@@ -191,11 +185,6 @@ meshx_err_t meshx_gpio_init(void)
 
 /**
  * @brief Deinitialize GPIO subsystem
- *
- * This function deinitializes the GPIO subsystem and releases all resources.
- * It stops all GPIO operations, deconfigures pins, and cleans up platform resources.
- *
- * @return meshx_err_t MESHX_SUCCESS on success, error code on failure
  */
 meshx_err_t meshx_gpio_deinit(void)
 {
@@ -329,10 +318,6 @@ static meshx_err_t validate_pin_mode(uint8_t logical_pin, meshx_gpio_mode_t requ
 
 /**
  * @brief Set GPIO pin level
- *
- * @param logical_pin Logical pin number (0-255)
- * @param level Pin level (0 = low, 1 = high)
- * @return meshx_err_t MESHX_SUCCESS on success, error code on failure
  */
 meshx_err_t meshx_gpio_set_level(uint8_t logical_pin, uint8_t level)
 {
@@ -403,10 +388,6 @@ meshx_err_t meshx_gpio_set_level(uint8_t logical_pin, uint8_t level)
 
 /**
  * @brief Get GPIO pin level
- *
- * @param logical_pin Logical pin number (0-255)
- * @param[out] level Pointer to store pin level
- * @return meshx_err_t MESHX_SUCCESS on success, error code on failure
  */
 meshx_err_t meshx_gpio_get_level(uint8_t logical_pin, uint8_t* level)
 {
@@ -468,9 +449,6 @@ meshx_err_t meshx_gpio_get_level(uint8_t logical_pin, uint8_t* level)
 
 /**
  * @brief Toggle GPIO pin level
- *
- * @param logical_pin Logical pin number (0-255)
- * @return meshx_err_t MESHX_SUCCESS on success, error code on failure
  */
 meshx_err_t meshx_gpio_toggle(uint8_t logical_pin)
 {
@@ -506,12 +484,6 @@ meshx_err_t meshx_gpio_toggle(uint8_t logical_pin)
 
 /**
  * @brief Register GPIO interrupt handler
- *
- * @param logical_pin Logical pin number (0-255)
- * @param intr_type Interrupt trigger type
- * @param callback Interrupt callback function
- * @param user_data User data passed to callback
- * @return meshx_err_t MESHX_SUCCESS on success, error code on failure
  */
 meshx_err_t meshx_gpio_register_intr(uint8_t logical_pin,
                                      meshx_gpio_intr_type_t intr_type,
@@ -581,9 +553,6 @@ meshx_err_t meshx_gpio_register_intr(uint8_t logical_pin,
 
 /**
  * @brief Unregister GPIO interrupt handler
- *
- * @param logical_pin Logical pin number (0-255)
- * @return meshx_err_t MESHX_SUCCESS on success, error code on failure
  */
 meshx_err_t meshx_gpio_unregister_intr(uint8_t logical_pin)
 {
@@ -618,10 +587,6 @@ meshx_err_t meshx_gpio_unregister_intr(uint8_t logical_pin)
 
 /**
  * @brief Enable/disable GPIO interrupt
- *
- * @param logical_pin Logical pin number (0-255)
- * @param enable true to enable, false to disable
- * @return meshx_err_t MESHX_SUCCESS on success, error code on failure
  */
 meshx_err_t meshx_gpio_intr_enable(uint8_t logical_pin, bool enable)
 {
@@ -647,14 +612,6 @@ meshx_err_t meshx_gpio_intr_enable(uint8_t logical_pin, bool enable)
 
 /**
  * @brief Execute IO function on pin
- *
- * This is the function-based API for extensible IO operations.
- *
- * @param logical_pin Logical pin number (0-255)
- * @param function IO function to execute
- * @param args Function arguments vector
- * @param arg_count Number of arguments in the vector
- * @return meshx_err_t MESHX_SUCCESS on success, error code on failure
  */
 meshx_err_t meshx_gpio_execute_function(uint8_t logical_pin,
                                         meshx_io_function_t function,
@@ -750,12 +707,6 @@ meshx_err_t meshx_gpio_get_pin_state(uint8_t logical_pin, meshx_gpio_pin_state_t
 
 /**
  * @brief Set hosted mode for GPIO subsystem
- *
- * This function switches the GPIO subsystem between hosted and non-hosted modes.
- * It handles pin state transitions safely during mode switches.
- *
- * @param mode Hosted mode setting (MESHX_GPIO_MODE_HOSTED or MESHX_GPIO_MODE_NON_HOSTED)
- * @return meshx_err_t MESHX_SUCCESS on success, error code on failure
  */
 meshx_err_t meshx_gpio_set_hosted_mode(meshx_gpio_hosted_mode_t mode)
 {
@@ -833,8 +784,6 @@ meshx_err_t meshx_gpio_set_hosted_mode(meshx_gpio_hosted_mode_t mode)
 
 /**
  * @brief Get current hosted mode
- *
- * @return meshx_gpio_hosted_mode_t Current hosted mode
  */
 meshx_gpio_hosted_mode_t meshx_gpio_get_hosted_mode(void)
 {
@@ -843,8 +792,6 @@ meshx_gpio_hosted_mode_t meshx_gpio_get_hosted_mode(void)
 
 /**
  * @brief Check if GPIO subsystem is in hosted mode
- *
- * @return true if in hosted mode, false otherwise
  */
 bool meshx_gpio_is_hosted_mode(void)
 {
@@ -853,12 +800,6 @@ bool meshx_gpio_is_hosted_mode(void)
 
 /**
  * @brief Register callback for GPIO hosted mode events
- *
- * This callback is invoked when GPIO events need to be sent to the host MCU
- * in hosted mode.
- *
- * @param callback Callback function for hosted mode events
- * @return meshx_err_t MESHX_SUCCESS on success, error code on failure
  */
 meshx_err_t meshx_gpio_register_hosted_event_cb(meshx_gpio_hosted_event_cb_t callback)
 {
@@ -913,13 +854,6 @@ static meshx_err_t meshx_gpio_send_hosted_event(uint8_t event_type, uint8_t logi
 
 /**
  * @brief Process GPIO interrupt event from host (hosted mode)
- *
- * This function is called when the host sends an interrupt notification
- * for a GPIO pin that was registered for interrupts.
- *
- * @param logical_pin Logical pin number
- * @param value Interrupt value (trigger type or pin state)
- * @return meshx_err_t MESHX_SUCCESS on success, error code on failure
  */
 meshx_err_t meshx_gpio_process_hosted_interrupt(uint8_t logical_pin, uint8_t value)
 {
