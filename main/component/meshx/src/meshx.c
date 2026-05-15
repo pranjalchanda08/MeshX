@@ -248,7 +248,7 @@ static meshx_err_t meshx_load_persistent_config(meshx_config_t const *config)
     /* Load Persistent Read-Only Configuration */
     err = meshx_ro_cfg_init(&loaded_cid, &loaded_pid, g_product_name, sizeof(g_product_name), loaded_uuid);
     if (err != MESHX_SUCCESS) {
-        if (err == MESHX_NOT_FOUND || err == MESHX_ERR_FORMAT) {
+        if (err == MESHX_NOT_FOUND || err == MESHX_ERR_RO_CFG_FORMAT) {
             MESHX_LOGW(MODULE_ID_COMMON, "No valid read-only config found (err 0x%x). Using legacy defaults.", err);
 
             // Fallback product name if not loaded from partition

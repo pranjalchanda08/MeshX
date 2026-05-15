@@ -11,6 +11,7 @@
 
 #include "gpio_constraints.h"
 #include "gpio_pin_map.h"
+#include <stdbool.h>
 #include <string.h>
  
 /**

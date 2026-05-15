@@ -11,11 +11,9 @@ else()
     include(${CMAKE_SOURCE_DIR}/port/os/osal.cmake)
 endif()
 
-# run python script
-execute_process(COMMAND python3 ${CMAKE_SOURCE_DIR}/tools/scripts/code_gen.py --config port/bsp/${BSP} --profile ${PROD_PROFILE} --max-size 4096 ${PROD_NAME}
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    RESULT_VARIABLE result
-)
+# The product configuration is now generated at build time in main/CMakeLists.txt
+# to ensure all dependencies (like protobuf) are satisfied.
+
 
 set(PLATFORM_INC
     ${PLATFORM_INC}
