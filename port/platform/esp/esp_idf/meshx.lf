@@ -1,13 +1,23 @@
 [sections:element_table]
 entries:
-    .element_table              # means .element_table and .element_table.*
+    .element_table
+
+[sections:meshx_log_str]
+entries:
+    .meshx_log_str+
 
 [scheme:meshx_elements]
 entries:
     element_table -> flash_rodata
 
+[scheme:meshx_log]
+entries:
+    meshx_log_str -> flash_rodata
+
 [mapping:meshx]
-archive: libmeshx.a
+archive: *
 entries:
     * (meshx_elements);
         element_table -> flash_rodata KEEP() ALIGN(4) SURROUND(element_table)
+    * (meshx_log);
+        meshx_log_str -> flash_rodata KEEP() ALIGN(4)

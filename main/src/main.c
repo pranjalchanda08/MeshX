@@ -22,6 +22,7 @@ static const meshx_config_t meshx_config = {
     .app_element_cb         = &meshx_app_data_cb,
     .meshx_uuid_addr        = MESHX_UUID_EMPTY,   /* UUID address to be filled internally for MeshX */
     .meshx_nvs_save_period  = CONFIG_MESHX_NVS_SAVE_PERIOD_MS,
+    .meshx_log_level        = MESHX_LOG_INFO,
 };
 
 /**
