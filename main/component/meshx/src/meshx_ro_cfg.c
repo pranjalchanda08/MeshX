@@ -169,7 +169,7 @@ meshx_err_t meshx_ro_cfg_init(uint16_t *cid, uint16_t *pid, char *product_name, 
         }
         MESHX_LOGI(MODULE_ID_RO_CFG, "Loaded Config: CID 0x%04X, PID 0x%04X, Name: %s",
                  config.product.cid, config.product.pid, config.product.name);
-    }
+    }   
 
     free(payload);
     return MESHX_SUCCESS;
