@@ -51,8 +51,12 @@ typedef enum
     MESHX_NOT_SUPPORTED, /**< Not Supported */
     MESHX_TIMEOUT,       /**< Timeout */
     MESHX_ERR_NOT_INIT,  /**< Not Initialized */
-    MESHX_ERR_FORMAT,    /**< Invalid Format */
-    MESHX_ERR_CRC,       /**< CRC Error */
+
+    /* RO Config Error Codes (Base: 0x4000) */
+    MESHX_ERR_RO_CFG_BASE = 0x4000,          /**< RO Config error base */
+    MESHX_ERR_RO_CFG_FORMAT,   /**< Invalid Format */
+    MESHX_ERR_RO_CFG_VERSION,  /**< Invalid Version */
+    MESHX_ERR_RO_CFG_CRC,      /**< CRC Error */
 
     /* GPIO Error Codes (Base: 0x5000) */
     MESHX_ERR_GPIO_BASE = 0x5000,          /**< GPIO error base */

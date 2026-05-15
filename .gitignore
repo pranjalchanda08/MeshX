@@ -63,11 +63,13 @@ doxygen
 tags
 plans
 .agents
+AGENTS.md
+CLAUDE.md
 
 __pycache__
-tools/scripts/proto/meshx_config.pb.c
-tools/scripts/proto/meshx_config.pb.h
-tools/scripts/proto/meshx_config_pb2.py
-port/bsp/xiao_c3/meshx_cfg.bin
+meshx_config.pb.c
+meshx_config.pb.h
+meshx_config_pb2.py
+*meshx_cfg.mxc
 *.code_spec.json
 *.config.kiro

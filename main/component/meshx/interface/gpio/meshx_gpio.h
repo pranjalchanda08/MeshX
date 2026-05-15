@@ -203,10 +203,16 @@ bool meshx_gpio_is_hosted_mode(void);
  * This callback is invoked when GPIO events need to be sent to the host MCU
  * in hosted mode.
  *
+ * @param event GPIO hosted mode event
+ */
+typedef void (*meshx_gpio_hosted_event_cb_t)(const meshx_gpio_hosted_event_t *event);
+
+/**
+ * @brief Register callback function for hosted mode events
+ *
  * @param callback Callback function for hosted mode events
  * @return meshx_err_t MESHX_SUCCESS on success, error code on failure
  */
-typedef void (*meshx_gpio_hosted_event_cb_t)(const meshx_gpio_hosted_event_t *event);
 meshx_err_t meshx_gpio_register_hosted_event_cb(meshx_gpio_hosted_event_cb_t callback);
 
 /**

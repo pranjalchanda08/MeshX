@@ -11,9 +11,14 @@ The feature consists of a compilation-time serialization tool and a boot-time fi
 graph TD
     subgraph "Host (Compilation Time)"
         A[prod_profile.json/yml] --> B[Config Serializer Tool]
-        B --> C[meshx_cfg.bin]
+        S[meshx_config.proto/options] --> B
+        S --> H[Schema Fingerprint Generator]
+        H --> ID[Schema ID]
+        ID --> B
+        B --> C[meshx_cfg.mxc]
         D[CMake / build system] --> B
         D --> E[Partition Table Update]
+        ID --> F[Firmware Build Definition]
     end
 
     subgraph "Target (Boot Time)"
@@ -31,11 +36,12 @@ graph TD
 ### 3.1 Serialized Binary Format (v1)
 Protocol Buffers (Protobuf) via the `nanopb` library will be used for serialization to ensure scalability, type safety, and maintainability across both Python tooling and C firmware.
 
-**Header Structure:**
+**Header Structure (15 bytes):**
 | Field        | Size    | Description                 |
 | ------------ | ------- | --------------------------- |
-| Magic        | 2 bytes | `0x4D58` ('MX')             |
+| Magic        | 4 bytes | `0x0043584D` ('MXC\0')      |
 | Version      | 1 byte  | `0x01`                      |
+| Schema ID    | 4 bytes | CRC32 of proto/options files |
 | Total Length | 2 bytes | Total size of the binary    |
 | Header CRC   | 2 bytes | CRC-16 of the header fields |
 | Payload CRC  | 2 bytes | CRC-16 of the protobuf payload |
@@ -43,8 +49,11 @@ Protocol Buffers (Protobuf) via the `nanopb` library will be used for serializat
 **CRC Calculation Details:**
 - **Algorithm**: CRC-16-CCITT (Polynomial `0x1021`)
 - **Initial Value**: `0xFFFF`
-- **Header CRC**: Calculated over the first 5 bytes of the header (`Magic`, `Version`, `Total Length`).
+- **Header CRC**: Calculated over the first 11 bytes of the header (`Magic`, `Version`, `Schema ID`, `Total Length`).
 - **Payload CRC**: Calculated over the entire Protobuf payload.
+
+**Schema ID Generation:**
+The Schema ID is a CRC32 hash of the `meshx_config.proto` and `meshx_config.options` files (ignoring whitespace). This ID is embedded in both the `.mxc` binary and the firmware at compile-time to ensure binary-firmware compatibility.
 
 **Protobuf Payload:**
 The data payload following the 9-byte header will be a standard encoded Protocol Buffer message defined by a shared `meshx_config.proto` schema.
@@ -131,11 +140,12 @@ The processing logic leverages nanopb's generated C structures:
 ### 3.4 Tooling Updates
 
 #### 3.4.1 `code_gen.py` Extension
-- Add a new mode to generate `meshx_cfg.bin` from the YAML/JSON profile.
+- Add a new mode to generate `meshx_cfg.mxc` from the YAML/JSON profile.
+- Implement `generate_schema_id()` to create a unique fingerprint of the configuration schema.
 - This will be triggered by CMake during the build process.
 
 #### 3.4.2 `meshx.py` Enhancement
-- Add `--flash-cfg` command: Flashes `meshx_cfg.bin` to the specific partition.
+- Add `--flash-cfg` command: Flashes `meshx_cfg.mxc` to the specific partition.
 - Add `--erase-cfg` command: Erases the `meshx_cfg` partition.
 
 ### 3.5 Concrete TLV Binary Example
@@ -196,4 +206,68 @@ message MeshXConfig {
   repeated GpioConfig gpio = 3;
   repeated IoBinding bindings = 4;
 }
+```
+
+### 3.6 Build System Flow
+The following diagrams illustrate the automated generation and validation of the `.mxc` configuration binary during the firmware build process.
+
+#### 3.6.1 Data Flow Diagram
+```mermaid
+graph TD
+    subgraph "Input Source of Truth"
+        P[meshx_config.proto]
+        O[meshx_config.options]
+        Y[prod_profile.yml]
+    end
+
+    subgraph "Build System (CMake)"
+        C[CMakeLists.txt] -->|Step 1: Hash Schema| H[python3 -c binascii.crc32]
+        H -->|Generate| SID[MESHX_SCHEMA_ID]
+        SID -->|Compile Definition| FW[Firmware Source]
+        
+        C -->|Step 2: Code Gen| CG[code_gen.py]
+        P --> CG
+        O --> CG
+        Y --> CG
+        SID -.->|Check| CG
+        
+        CG -->|Output| MXC[meshx_cfg.mxc]
+        CG -->|Output| HDR[meshx_config.h]
+    end
+
+    subgraph "Flashing / Deployment"
+        MXC -->|meshx.py --flash-cfg| T[Target Device]
+        FW -->|meshx.py --flash-app| T
+    end
+
+    subgraph "Boot-time Validation"
+        T -->|Boot| BV[meshx_ro_cfg_init]
+        BV -->|Validate Magic 'MXC'| V1[Result]
+        BV -->|Check Schema ID| V2[Result]
+        V1 & V2 -->|Pass| LOAD[Load Config]
+        V1 & V2 -->|Fail| REJ[Reject Config]
+    end
+```
+
+#### 3.6.2 Execution Sequence
+```mermaid
+sequenceDiagram
+    participant Ninja as Ninja/Build System
+    participant CMake as CMakeLists.txt
+    participant Python as Python (One-liner)
+    participant CG as code_gen.py
+    participant GCC as C Compiler (GCC)
+    participant Bin as .mxc Binary
+
+    Ninja->>CMake: Execute build
+    CMake->>Python: Compute Schema ID (CRC32 of proto + options)
+    Python-->>CMake: 0x4FDD1965 (Example)
+    CMake->>GCC: Pass -DMESHX_SCHEMA_ID=0x4FDD1965
+    CMake->>CG: Run code_gen.py with prod_profile.yml
+    CG->>CG: Recalculate Schema ID (internal verification)
+    CG->>Bin: Pack Header (Magic 'MXC', Version, Schema ID, Length)
+    CG->>Bin: Append Serialized Protobuf Payload
+    CG-->>CMake: Output meshx_cfg.mxc & meshx_config.h
+    GCC-->>Ninja: Link firmware.bin (Schema ID baked in)
+    Note over Ninja, Bin: Failsafe: Binary and Firmware now share identical Schema Fingerprint
 ```
