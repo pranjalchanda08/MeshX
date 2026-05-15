@@ -13,6 +13,8 @@
 #define __WEACT_C3_GPIO_CONSTRAINTS_H
 
 #include <stdint.h>
+#include <stdbool.h>
+
 
 #ifdef __cplusplus
 extern "C" {

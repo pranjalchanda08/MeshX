@@ -28,8 +28,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pyyaml
-        sudo apt-get install -y ccache
+        pip install pyyaml protobuf grpcio-tools
+        sudo apt-get install -y ccache protobuf-compiler
 
     - name: Cache ccache
       uses: actions/cache@v3

@@ -9,6 +9,18 @@ import os
 import argparse
 import struct
 import sys
+import binascii
+
+def generate_schema_id(proto_path, options_path):
+    """Generates a CRC32 ID based on the content of the schema files."""
+    content = b""
+    for path in [proto_path, options_path]:
+        if os.path.exists(path):
+            with open(path, 'rb') as f:
+                # Strip whitespace to ignore formatting-only changes
+                content += b"".join(f.read().split())
+    
+    return binascii.crc32(content) & 0xFFFFFFFF
 
 # Add proto directory to path to import generated protobuf classes
 PROTO_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'proto')
@@ -80,8 +92,10 @@ class CodeGen(CodeGenException):
                  meshx_root,
                  config_path="components/meshx/default/inc",
                  prod_profile="tools/scripts/prod_profile.yml",
-                 model_profile="tools/scripts/model_profile.yml"
+                 model_profile=None
             ):
+        if model_profile is None:
+            model_profile = os.path.join(os.path.dirname(os.path.abspath(__file__)), "model_profile.yml")
         """
         Initialize the CodeGen class with product and model profiles in YAML format.
 
@@ -520,6 +534,7 @@ class CodeGen(CodeGenException):
 
         # Type 0x01: Product Identification
         if self.product is not None:
+            print(f"DEBUG: Serializing ProductInfo: CID=0x{self.cid:04X}, PID=0x{self.pid:04X}, Name={self.target}")
             config.product.cid = self.cid
             config.product.pid = self.pid
             config.product.name = self.target[:32]
@@ -571,11 +586,23 @@ class CodeGen(CodeGenException):
         payload = config.SerializeToString()
 
         # Header Generation
-        magic = 0x4D58
+        # Magic: 'MXC\0' -> 0x0043584D
+        magic = 0x0043584D
         version = 0x01
-        total_len = 9 + len(payload)
 
-        header_no_crc = struct.pack('<HBH', magic, version, total_len)
+        # Compute Schema ID
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        proto_dir = os.path.join(script_dir, "proto")
+        schema_id = generate_schema_id(
+            os.path.join(proto_dir, "meshx_config.proto"),
+            os.path.join(proto_dir, "meshx_config.options")
+        )
+
+        hdr_size = 15
+        total_len = hdr_size + len(payload)
+
+        # Pack header without CRCs: magic(I), version(B), schema_id(I), total_len(H)
+        header_no_crc = struct.pack('<IBIH', magic, version, schema_id, total_len)
         header_crc = crc16_ccitt(header_no_crc)
         payload_crc = crc16_ccitt(payload)
 
@@ -587,9 +614,12 @@ class CodeGen(CodeGenException):
         if len(full_bin) > max_size:
             raise CodeGenException(f"Error: Generated binary size ({len(full_bin)} bytes) exceeds the limit of {max_size} bytes!")
 
+        # Update filename to .mxc
+        self.genfile_bin = self.genfile_bin.replace(".bin", ".mxc")
         with open(self.genfile_bin, 'wb') as f:
             f.write(full_bin)
         print(f"Generated binary config: {self.genfile_bin} ({len(full_bin)} bytes)")
+        print(f"Schema ID: 0x{schema_id:08X}")
 
 if __name__ == '__main__':
     args = parser.parse_args()
