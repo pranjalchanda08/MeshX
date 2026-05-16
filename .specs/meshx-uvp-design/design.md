@@ -1,9 +1,9 @@
 # MeshX Unified Vendor Protocol (UVP) — Technical Reference Manual
 
-**Document Version:** 2.0  
-**Platform:** ESP32-C3 · ESP-IDF v5.4 · ESP-BLE-MESH  
-**Classification:** Internal Design Specification  
-**Status:** Active  
+**Document Version:** 2.0
+**Platform:** ESP32-C3 · ESP-IDF v5.4 · ESP-BLE-MESH
+**Classification:** Internal Design Specification
+**Status:** Active
 
 ---
 
@@ -19,21 +19,21 @@ This document is organized as a multi-page Technical Reference. Each page covers
 
 | # | Page | Topics Covered |
 |---|------|---------------|
-| 1 | [System Overview & Layered Architecture](./design/01_system_overview.md) | Node roles, stack diagram, data flow sequences |
-| 2 | [System Boot & Initialization Sequence](./design/02_boot_sequence.md) | `meshx_init()` phases, fresh vs. provisioned boot |
-| 3 | [C++ Class Architecture](./design/03_cpp_architecture.md) | Flat dispatcher pattern, class hierarchy, IO factory |
-| 4 | [Control Task — Central Message Bus](./design/04_control_task.md) | Pub-sub architecture, message codes, task config |
-| 5 | [TXCM — Transmission Control Module](./design/05_txcm.md) | Reliability, retry state machine, key functions |
-| 6 | [State Persistence Strategy](./design/06_state_persistence.md) | KV engine, NVS commit, key format, flash layout |
-| 7 | [Hardware Abstraction Layer (HAL)](./design/07_hal.md) | GPIO/PWM abstraction, hosted mode, IO class hierarchy |
-| 8 | [Protocol Design — TLV Engine](./design/08_tlv_protocol.md) | Frame format, tag namespace, TID mechanism, examples |
-| 9 | [Composition & Element Discovery](./design/09_composition.md) | Builder API, product profiles, EL_TYPE_ID discovery |
-| 10 | [Hosted Mode & MXSP Serial Protocol](./design/10_hosted_mode.md) | Co-processor mode, MXSP frame format, MSG_TYPEs |
-| 11 | [Read-Only Persistent Configuration](./design/11_ro_config.md) | meshx_cfg partition, Nanopb layout, fallback flow |
-| 12 | [Hardware Platform Reference](./design/12_hardware_platform.md) | ESP32-C3 specs, BSPs, memory budget, partition map |
-| 13 | [Decommissioning & Flash Reclamation](./design/13_decommissioning.md) | SIG models removed, template elimination analysis |
-| 14 | [Error Codes Reference](./design/14_error_codes.md) | All error codes by domain, error handling pattern |
-| 15 | [Configuration Reference](./design/15_configuration.md) | Compile-time macros, runtime config struct, NFR traceability |
+| 1 | [System Overview & Layered Architecture](../../docs/arch_diag/trm/01_system_overview.md) | Node roles, stack diagram, data flow sequences |
+| 2 | [System Boot & Initialization Sequence](../../docs/arch_diag/trm/02_boot_sequence.md) | `meshx_init()` phases, fresh vs. provisioned boot |
+| 3 | [C++ Class Architecture](../../docs/arch_diag/trm/03_cpp_architecture.md) | Flat dispatcher pattern, class hierarchy, IO factory |
+| 4 | [Control Task — Central Message Bus](../../docs/arch_diag/trm/04_control_task.md) | Pub-sub architecture, message codes, task config |
+| 5 | [TXCM — Transmission Control Module](../../docs/arch_diag/trm/05_txcm.md) | Reliability, retry state machine, key functions |
+| 6 | [State Persistence Strategy](../../docs/arch_diag/trm/06_state_persistence.md) | KV engine, NVS commit, key format, flash layout |
+| 7 | [Hardware Abstraction Layer (HAL)](../../docs/arch_diag/trm/07_hal.md) | GPIO/PWM abstraction, hosted mode, IO class hierarchy |
+| 8 | [Protocol Design — TLV Engine](../../docs/arch_diag/trm/08_tlv_protocol.md) | Frame format, tag namespace, TID mechanism, examples |
+| 9 | [Composition & Element Discovery](../../docs/arch_diag/trm/09_composition.md) | Builder API, product profiles, EL_TYPE_ID discovery |
+| 10 | [Hosted Mode & MXSP Serial Protocol](../../docs/arch_diag/trm/10_hosted_mode.md) | Co-processor mode, MXSP frame format, MSG_TYPEs |
+| 11 | [Read-Only Persistent Configuration](../../docs/arch_diag/trm/11_ro_config.md) | meshx_cfg partition, Nanopb layout, fallback flow |
+| 12 | [Hardware Platform Reference](../../docs/arch_diag/trm/12_hardware_platform.md) | ESP32-C3 specs, BSPs, memory budget, partition map |
+| 13 | [Decommissioning & Flash Reclamation](../../docs/arch_diag/trm/13_decommissioning.md) | SIG models removed, template elimination analysis |
+| 14 | [Error Codes Reference](../../docs/arch_diag/trm/14_error_codes.md) | All error codes by domain, error handling pattern |
+| 15 | [Configuration Reference](../../docs/arch_diag/trm/15_configuration.md) | Compile-time macros, runtime config struct, NFR traceability |
 
 ---
 
@@ -79,4 +79,4 @@ graph TD
 
 ---
 
-*Start reading: [Page 1 — System Overview →](./design/01_system_overview.md)*
+*Start reading: [Page 1 — System Overview →](../../docs/arch_diag/trm/01_system_overview.md)*

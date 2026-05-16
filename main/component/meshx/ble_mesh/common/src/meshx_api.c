@@ -24,13 +24,14 @@ static struct{
  *
  * This function handles BLE Mesh application messages.
  *
- * @param[in] pdev      Pointer to the device structure.
- * @param[in] evt       Event type.
- * @param[in] params    Pointer to the message parameters.
+ * @param[in] pdev       Pointer to the device structure.
+ * @param[in] evt        Event type.
+ * @param[in] params     Pointer to the message parameters.
+ * @param[in] params_len Length of the message parameters.
  *
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
-static meshx_err_t meshx_api_control_task_handler(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+static meshx_err_t meshx_api_control_task_handler(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params, uint16_t params_len)
 {
     const meshx_app_api_msg_t *msg = (const meshx_app_api_msg_t *)params;
 

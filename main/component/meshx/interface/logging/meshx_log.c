@@ -36,8 +36,8 @@ typedef struct {
 } meshx_log_msg_t;
 
 static meshx_msg_q_t log_msg_q = {
-    .max_msg_depth = sizeof(meshx_log_msg_t),
-    .max_msg_length = CONFIG_MESHX_LOG_QUEUE_LEN
+    .max_msg_depth = sizeof(meshx_log_msg_t),  /* Size of one message (bytes) */
+    .max_msg_length = CONFIG_MESHX_LOG_QUEUE_LEN /* Max number of messages in queue */
 };
 
 static bool log_threaded_init_done = false;
@@ -191,12 +191,22 @@ static void vmeshx_log_packet(module_id_t module_id, meshx_log_level_t log_level
     }
 
     if (found_s && arg_idx < 16) {
-        uint32_t str_ptr = pkt->args[arg_idx];
-        /* Check if pointer is likely in RAM (ESP32-C3 DRAM: 0x3FC80000 - 0x3FCE0000) */
-        /* Note: This is a heuristic. In a full system, use platform-specific RAM checks. */
-        if (str_ptr >= 0x3FC00000 && str_ptr < 0x40000000) {
+        uintptr_t str_ptr = (uintptr_t)pkt->args[arg_idx];
+        /* 
+         * ESP32-C3 Memory Map Check:
+         * DRAM: 0x3FC80000 - 0x3FCE0000
+         * DROM (Flash strings): 0x3C000000 - 0x3C800000
+         */
+        bool is_valid_ptr = (str_ptr >= 0x3FC80000 && str_ptr < 0x3FCE0000) || 
+                            (str_ptr >= 0x3C000000 && str_ptr < 0x3C800000);
+
+        if (is_valid_ptr) {
+            /* Safely copy the string, ensuring null termination */
             strncpy(pkt->inline_str, (const char *)str_ptr, sizeof(pkt->inline_str) - 1);
             pkt->inline_str[sizeof(pkt->inline_str) - 1] = '\0';
+        } else {
+            /* Not a valid string pointer or out of expected bounds */
+            strncpy(pkt->inline_str, "<invalid>", sizeof(pkt->inline_str) - 1);
         }
     }
 

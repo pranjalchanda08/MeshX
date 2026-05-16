@@ -99,6 +99,7 @@ meshx_err_t control_task_msg_publish(control_task_msg_code_t msg_code,
     MESHX_LOGD(MODULE_ID_COMMON, "fn_address|msg|evt: %p|%p|%p", caller_addr0, (void *)msg_code, (void *)msg_evt);
 #endif /* CONFIG_CT_DEBUG_LOG */
 
+    memset(&send_msg, 0, sizeof(send_msg));
     if (sizeof_msg_evt_params != 0)
     {
         meshx_err_t err = meshx_rtos_malloc(&send_msg.msg_evt_params, sizeof_msg_evt_params);
@@ -106,6 +107,7 @@ meshx_err_t control_task_msg_publish(control_task_msg_code_t msg_code,
             return err;
         /* Copy the params to allocated space */
         memcpy(send_msg.msg_evt_params, msg_evt_params, sizeof_msg_evt_params);
+        send_msg.msg_evt_params_len = (uint16_t)sizeof_msg_evt_params;
     }
     else
     {
@@ -117,6 +119,58 @@ meshx_err_t control_task_msg_publish(control_task_msg_code_t msg_code,
 
     meshx_err_t send_err = meshx_msg_q_send(&control_task_queue, &send_msg, sizeof(send_msg), UINT32_MAX);
     if (send_err != MESHX_SUCCESS && send_msg.msg_evt_params)
+    {
+        meshx_rtos_free(&send_msg.msg_evt_params);
+    }
+    return send_err;
+}
+
+/**
+ * @brief See meshx_control_task.h for details.
+ */
+meshx_err_t control_task_msg_publish_uvp(control_task_msg_code_t msg_code,
+                                       control_task_msg_evt_t msg_evt,
+                                       uint16_t src_addr,
+                                       meshx_uvp_header_t uvp_header,
+                                       const void *msg_evt_params,
+                                       size_t sizeof_msg_evt_params)
+{
+    control_task_msg_t send_msg;
+    if (msg_code >= CONTROL_TASK_MSG_CODE_MAX)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "Invalid message code or event");
+        return MESHX_INVALID_ARG;
+    }
+
+    memset(&send_msg, 0, sizeof(send_msg));
+    
+    /* 
+     * Prepend UVP Metadata header to the params buffer.
+     * total_size = sizeof(control_task_uvp_meta_t) + sizeof_msg_evt_params
+     */
+    size_t total_size = sizeof(control_task_uvp_meta_t) + sizeof_msg_evt_params;
+    meshx_err_t err = meshx_rtos_malloc(&send_msg.msg_evt_params, total_size);
+    if (err)
+        return err;
+
+    /* Fill the header */
+    control_task_uvp_meta_t *p_meta = (control_task_uvp_meta_t *)send_msg.msg_evt_params;
+    p_meta->src_addr = src_addr;
+    p_meta->uvp_header = uvp_header;
+
+    /* Copy the payload if it exists */
+    if (sizeof_msg_evt_params != 0 && msg_evt_params != NULL)
+    {
+        memcpy((uint8_t *)send_msg.msg_evt_params + sizeof(control_task_uvp_meta_t), 
+               msg_evt_params, sizeof_msg_evt_params);
+    }
+    
+    send_msg.msg_evt_params_len = (uint16_t)total_size;
+    send_msg.msg_code = msg_code;
+    send_msg.msg_evt = msg_evt;
+
+    meshx_err_t send_err = meshx_msg_q_send(&control_task_queue, &send_msg, sizeof(send_msg), UINT32_MAX);
+    if (send_err != MESHX_SUCCESS)
     {
         meshx_rtos_free(&send_msg.msg_evt_params);
     }
@@ -206,14 +260,16 @@ meshx_err_t control_task_msg_unsubscribe(control_task_msg_code_t msg_code,
  * @param[in] pdev      Pointer to the device structure (dev_struct_t).
  * @param[in] msg_code  The message code of the received message.
  * @param[in] evt       The event type of the received message.
- * @param[in] params    Pointer to the message parameters.
+ * @param[in] params     Pointer to the message parameters.
+ * @param[in] params_len Length of the message parameters.
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
 static meshx_err_t control_task_msg_dispatch(
     dev_struct_t *pdev,
     control_task_msg_code_t msg_code,
     control_task_msg_evt_t evt,
-    const void *params
+    const void *params,
+    uint16_t params_len
 )
 {
     if (!pdev || msg_code >= CONTROL_TASK_MSG_CODE_MAX)
@@ -248,7 +304,7 @@ static meshx_err_t control_task_msg_dispatch(
 
         if (is_match && (ptr->cb != NULL))
         {
-            ptr->cb(pdev, evt, (void*)params); // Call the registered callback
+            ptr->cb(pdev, evt, (void*)params, params_len); // Call the registered callback
             evt_handled = true;
         }
         ptr = ptr->next;
@@ -292,7 +348,7 @@ static void control_task_handler(void *args)
     {
         if (meshx_msg_q_recv(&control_task_queue, &recv_msg, UINT32_MAX) == MESHX_SUCCESS)
         {
-            err = control_task_msg_dispatch(pdev, recv_msg.msg_code, recv_msg.msg_evt, recv_msg.msg_evt_params);
+            err = control_task_msg_dispatch(pdev, recv_msg.msg_code, recv_msg.msg_evt, recv_msg.msg_evt_params, recv_msg.msg_evt_params_len);
             if (err)
                 MESHX_LOGE(MODULE_ID_COMMON, "Err: 0x%x", err);
             if (recv_msg.msg_evt_params)

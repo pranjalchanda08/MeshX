@@ -18,9 +18,7 @@
 #include <meshx_prov_srv.h>
 #include <meshx_config_server.h>
 #include "meshx_serial.h"
-#if CONFIG_TXCM_ENABLE
 #include <meshx_txcm.h>
-#endif /* CONFIG_TXCM_ENABLE */
 #include <interface/meshx_platform.h>
 
 #include <meshx_builder_api.h>
@@ -45,35 +43,12 @@
         return _err;                                              \
     }
 
-#define CID_ESP CONFIG_CID_ID
-
-/**
- * @struct element_comp
- * @brief Structure for element composition.
- */
-typedef struct element_comp
-{
-    meshx_element_type_t type;  /**< Element type */
-    uint16_t element_cnt;       /**< Number of elements */
-}element_comp_t;
-
-/**
- * @struct meshx_config
- * @brief Structure for MeshX configuration.
- */
 typedef struct meshx_config
 {
-    uint16_t cid;                       /**< Company ID */
-    uint16_t pid;                       /**< Product ID */
-    uint16_t vid;                       /**< Version ID */
-    char *product_name;                 /**< Product name */
     uint32_t meshx_nvs_save_period;     /**< NVS save period */
-    uint16_t element_comp_arr_len;      /**< Length of the element composition array */
-    element_comp_t *element_comp_arr;   /**< Element composition array */
     meshx_app_data_cb_t app_element_cb; /**< Application element callback */
     meshx_app_ctrl_cb_t app_ctrl_cb;    /**< Application control callback */
     unsigned meshx_log_level;           /**< MeshX log level */
-    meshx_uuid_addr_t meshx_uuid_addr;  /**< MeshX UUID address */
 }meshx_config_t;
 
 /**

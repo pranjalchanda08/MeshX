@@ -94,8 +94,18 @@ public:
      */
     MESHX_COMPOSITION* get_baked_composition() { return baked_comp_ptr; }
 
+    /**
+     * @brief Checks if TXCM (Transaction Control Manager) should be activated.
+     */
+    bool is_txcm_active(void) const { return txcm_active; }
+
+    /**
+     * @brief Manually activate TXCM.
+     */
+    void activate_txcm(void) { txcm_active = true; }
+
 private:
-    meshXComposition() : pdev(nullptr), is_baked(false), baked_comp_ptr(nullptr) {}
+    meshXComposition() : pdev(nullptr), is_baked(false), baked_comp_ptr(nullptr), txcm_active(false) {}
     ~meshXComposition() = default;
 
     // Delete copy/move to enforce singleton
@@ -119,6 +129,7 @@ private:
 
     MESHX_COMPOSITION baked_comp;
     MESHX_COMPOSITION* baked_comp_ptr;
+    bool txcm_active;
 };
 
 #endif /* __MESHX_COMPOSITION_HPP__ */

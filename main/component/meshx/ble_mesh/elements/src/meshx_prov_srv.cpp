@@ -84,12 +84,15 @@ static meshx_os_timer_t *g_boot_timer;
 static meshx_err_t meshx_prov_srv_control_task_handler(
     dev_struct_t *pdev,
     control_task_msg_evt_t evt,
-    meshx_prov_srv_param_t *params)
+    void *params,
+    uint16_t params_len)
 {
-    if (!pdev || !params)
+    meshx_prov_srv_param_t *p_params = (meshx_prov_srv_param_t *)params;
+    if (!pdev || !p_params)
     {
         return MESHX_INVALID_ARG;
     }
+    MESHX_UNUSED(params_len);
     init_prov_cb_table();
     control_task_msg_evt_provision_t prov_evt = (control_task_msg_evt_provision_t)0;
     if(evt != CONTROL_TASK_MSG_EVT_PROVISION_ALL)
@@ -97,33 +100,32 @@ static meshx_err_t meshx_prov_srv_control_task_handler(
         return MESHX_INVALID_ARG;
     }
 
-    if (params->prov_evt < MESHX_PROV_EVT_MAX && prov_cb_evt_ctrl_task_evt_table[params->prov_evt].ctrl_task_evt != 0)
+    if (p_params->prov_evt < MESHX_PROV_EVT_MAX && prov_cb_evt_ctrl_task_evt_table[p_params->prov_evt].ctrl_task_evt != 0)
     {
 #if CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO
         MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Provisioning event mapped: %s",
-                    prov_cb_evt_ctrl_task_evt_table[params->prov_evt].evt_str);
+                    prov_cb_evt_ctrl_task_evt_table[p_params->prov_evt].evt_str);
 #endif
-        prov_evt = prov_cb_evt_ctrl_task_evt_table[params->prov_evt].ctrl_task_evt;
+        prov_evt = prov_cb_evt_ctrl_task_evt_table[p_params->prov_evt].ctrl_task_evt;
     }
     else
     {
-        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Unhandled event: %d", params->prov_evt);
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Unhandled event: %d", p_params->prov_evt);
     }
-    if (params->prov_evt == MESHX_NODE_PROV_COMPLETE_EVT)
+    if (p_params->prov_evt == MESHX_NODE_PROV_COMPLETE_EVT)
     {
-        MESHX_LOGI(MODULE_ID_MODEL_SERVER, "net_idx: 0x%04x, addr: 0x%04x", params->param.node_prov_complete.net_idx, params->param.node_prov_complete.addr);
-        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "flags: 0x%02x, iv_index: 0x%08" PRIx32, params->param.node_prov_complete.flags, params->param.node_prov_complete.iv_index);
+        MESHX_LOGI(MODULE_ID_MODEL_SERVER, "net_idx: 0x%04x, addr: 0x%04x", p_params->param.node_prov_complete.net_idx, p_params->param.node_prov_complete.addr);
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "flags: 0x%02x, iv_index: 0x%08" PRIx32, p_params->param.node_prov_complete.flags, p_params->param.node_prov_complete.iv_index);
     }
     if (prov_evt == 0)
     {
         return MESHX_SUCCESS;
     }
 
-    /* Publish the event */
     return control_task_msg_publish(
         CONTROL_TASK_MSG_CODE_PROVISION,
         (control_task_msg_evt_t)prov_evt,
-        &params->param,
+        &p_params->param,
         sizeof(meshx_prov_cb_param_t));
 }
 
@@ -157,9 +159,10 @@ static void meshx_handle_node_reset(dev_struct_t *pdev)
 /**
  * @brief Handles provisioning control task events.
  */
-static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)
+static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params, uint16_t params_len)
 {
     const meshx_prov_cb_param_t *param = (meshx_prov_cb_param_t*) params;
+    MESHX_UNUSED(params_len);
 
     switch (evt)
     {
