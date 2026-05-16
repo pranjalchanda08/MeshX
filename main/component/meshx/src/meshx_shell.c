@@ -13,6 +13,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <ctype.h>
+#include "interface/utils/meshx_tiny_printf.h"
 
 #define SHELL_MAX_LINE_LEN 256
 #define SHELL_MAX_ARGS     16
@@ -27,15 +28,10 @@ static struct {
 } shell_ctx;
 
 void meshx_shell_printf(const char *fmt, ...) {
-    char buf[256];
     va_list args;
     va_start(args, fmt);
-    int len = vsnprintf(buf, sizeof(buf), fmt, args);
+    meshx_tiny_vprintf(fmt, args);
     va_end(args);
-
-    if (len > 0) {
-        meshx_platform_console_write(buf, (uint16_t)len);
-    }
 }
 
 static void shell_help_cmd(void) {
