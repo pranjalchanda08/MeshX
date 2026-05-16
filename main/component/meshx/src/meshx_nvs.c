@@ -56,7 +56,7 @@ static meshx_err_t meshx_nvs_unit_test_cb_handler(int cmd_id, int argc, char **a
 
 static meshx_nvs_t meshx_nvs_inst;
 
-static meshx_err_t meshx_nvs_control_msg_handler(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)
+static meshx_err_t meshx_nvs_control_msg_handler(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params, uint16_t params_len)
 {
     if (evt & CONTROL_TASK_MSG_EVT_SYSTEM_NVS_COMMIT) {
         meshx_nvs_commit();

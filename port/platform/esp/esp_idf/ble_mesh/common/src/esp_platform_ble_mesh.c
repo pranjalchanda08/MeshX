@@ -74,7 +74,7 @@ meshx_err_t meshx_plat_client_create(meshx_ptr_t p_model, meshx_ptr_t* p_pub, me
     }
 
     // Allocate memory for the generic client model
-    *p_cli = (MESHX_CLI *)MESHX_CALOC(1, sizeof(MESHX_CLI));
+    *p_cli = (MESHX_CLIENT *)MESHX_CALOC(1, sizeof(MESHX_CLIENT));
     if (!*p_cli)
     {
         return MESHX_NO_MEM; // Memory allocation failed
@@ -236,16 +236,33 @@ meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, meshx_
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize mesh stack");
         return err;
     }
+
+    /* Initialize Vendor Model UVP Pipeline */
+    err = meshx_plat_ven_srv_init();
+    if(err)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize vendor model pipeline");
+        return err;
+    }
+
+    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Setting device name: %s", prov_cfg->node_name);
     err = esp_ble_mesh_set_unprovisioned_device_name((char*)prov_cfg->node_name);
     if(err)
     {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to set device name");
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to set device name (err: %d)", err);
         return err;
     }
-    err = esp_ble_mesh_node_prov_enable((esp_ble_mesh_prov_bearer_t)(ESP_BLE_MESH_PROV_ADV | ESP_BLE_MESH_PROV_GATT));
+
+    esp_ble_mesh_prov_bearer_t bearers = ESP_BLE_MESH_PROV_ADV;
+#if defined(CONFIG_BLE_MESH_PB_GATT)
+    bearers = (esp_ble_mesh_prov_bearer_t)(bearers | ESP_BLE_MESH_PROV_GATT);
+#endif
+
+    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Enabling provisioning with bearers: 0x%02x", bearers);
+    err = esp_ble_mesh_node_prov_enable(bearers);
     if(err)
     {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to enable mesh node");
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to enable mesh node (err: %d)", err);
         return err;
     }
     MESHX_LOGD(MODULE_ID_MODEL_SERVER, "BLE Mesh Node initialized");

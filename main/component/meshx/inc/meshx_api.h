@@ -16,7 +16,7 @@
 #include "unit_test.h"
 #include <meshx_common.h>
 #include <meshx_control_task.h>
-#include <interface/ble_mesh/server/meshx_ble_mesh_sensor_srv.h>
+/* NOTE: meshx_ble_mesh_sensor_srv.h decommissioned in TASK-007 (UVP migration) */
 
 #ifdef __cplusplus
 extern "C" {
@@ -102,15 +102,8 @@ typedef struct meshx_api_light_hsl_server_evt
     }state_change;
 }meshx_api_light_hsl_server_evt_t;
 
-/**
- * @brief Structure defines the payload for MESHX_ELEMENT_TYPE_SENSOR_SERVER
- */
-typedef struct meshx_api_sensor_server_evt
-{
-    union {
-        meshx_sensor_srv_status_t sensor_status;
-    } state_change;
-}meshx_api_sensor_server_evt_t;
+/* meshx_api_sensor_server_evt_t removed: sensor model decommissioned in TASK-007 */
+
 
 /**
  * @brief Structure defines the payload for MESHX_ELEMENT_TYPE_RELAY_CLIENT
@@ -156,7 +149,6 @@ typedef union meshx_data_payload
     meshx_api_light_cwww_client_evt_t light_cwww_client_evt;
     meshx_api_light_cwww_server_evt_t light_cwww_server_evt;
     meshx_api_light_hsl_server_evt_t light_hsl_server_evt;
-    meshx_api_sensor_server_evt_t sensor_server_evt;
 } meshx_data_payload_t;
 
 /**
