@@ -14,6 +14,7 @@
 #include "unit_test.h"
 #include "interface/utils/meshx_nvs_interface.h"
 #include "meshx_control_task.h"
+#include "interface/utils/meshx_tiny_printf.h"
 
 #define MESHX_NVS_INIT_MAGIC        0x5489
 
@@ -446,7 +447,7 @@ restart_timer:
 meshx_err_t meshx_nvs_element_ctx_get(uint16_t element_id, meshx_element_type_t element_type, void *blob, size_t blob_size)
 {
     char key[MESHX_KEY_NAME_MAX_SIZE];
-    snprintf(key, MESHX_KEY_NAME_MAX_SIZE, MESHX_NVS_ELEMENT_CTX, (uint8_t)element_type, element_id);
+    meshx_tiny_snprintf(key, MESHX_KEY_NAME_MAX_SIZE, MESHX_NVS_ELEMENT_CTX, (uint8_t)element_type, element_id);
     MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_NVS, "meshx_nvs_element_ctx_get: key=%s, size=%d", key, (int)blob_size);
     return meshx_nvs_get(key, blob, blob_size);
 }
@@ -465,7 +466,7 @@ meshx_err_t meshx_nvs_element_ctx_get(uint16_t element_id, meshx_element_type_t 
 meshx_err_t meshx_nvs_element_ctx_set(uint16_t element_id, meshx_element_type_t element_type, const void *blob, size_t blob_size)
 {
     char key[MESHX_KEY_NAME_MAX_SIZE];
-    snprintf(key, MESHX_KEY_NAME_MAX_SIZE, MESHX_NVS_ELEMENT_CTX, (uint8_t)element_type, element_id);
+    meshx_tiny_snprintf(key, MESHX_KEY_NAME_MAX_SIZE, MESHX_NVS_ELEMENT_CTX, (uint8_t)element_type, element_id);
     return meshx_nvs_set(key, blob, (uint16_t) blob_size, MESHX_NVS_AUTO_COMMIT);
 }
 
@@ -496,6 +497,7 @@ meshx_err_t meshx_nvs_element_ctx_remove(uint16_t element_id, meshx_element_type
         return err;
     }
     snprintf(key, MESHX_KEY_NAME_MAX_SIZE, MESHX_NVS_ELEMENT_CTX, (uint8_t)element_type, element_id);
+    meshx_tiny_snprintf(key, MESHX_KEY_NAME_MAX_SIZE, MESHX_NVS_ELEMENT_CTX, (uint8_t)element_type, element_id);
     return meshx_nvs_remove(key);
 }
 
