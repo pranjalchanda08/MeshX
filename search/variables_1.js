@@ -23,6 +23,6 @@ var searchData=
   ['appkey_5fupdate_20',['appkey_update',['../de/da0/unionmeshx__cfg__srv__state__change__t.html#aee45eace16a7bc4e1dea940f64c44bff',1,'meshx_cfg_srv_state_change_t']]],
   ['arg_21',['arg',['../db/d8e/structmeshx__task.html#aa448c1fc0cd2c0a39d2e52db1a99da67',1,'meshx_task']]],
   ['arg_5fcount_22',['arg_count',['../dd/d1c/structmeshx__gpio__pin__config__t.html#a910ed706190e82c2017c423db5563409',1,'meshx_gpio_pin_config_t']]],
-  ['args_23',['args',['../dd/d1c/structmeshx__gpio__pin__config__t.html#a2b783888f95fc8b1da16218719b56602',1,'meshx_gpio_pin_config_t']]],
+  ['args_23',['args',['../dd/d1c/structmeshx__gpio__pin__config__t.html#a2b783888f95fc8b1da16218719b56602',1,'meshx_gpio_pin_config_t::args'],['../d4/d2e/structmeshx__log__packet__t.html#a478d0238be1cf547848e19bcfb5ea400',1,'meshx_log_packet_t::args']]],
   ['auto_5freload_24',['auto_reload',['../d5/dc1/structmeshx__rtos__timer.html#a5a681947bd2b1cedf404b545c9e9f274',1,'meshx_rtos_timer']]]
 ];

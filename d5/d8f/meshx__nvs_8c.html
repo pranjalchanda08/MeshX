@@ -94,6 +94,7 @@ $(function() {
 <code>#include &quot;<a class="el" href="../../d8/d5d/unit__test_8h_source.html">unit_test.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="../../da/d2d/meshx__nvs__interface_8h_source.html">interface/utils/meshx_nvs_interface.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="../../da/db3/meshx__control__task_8h_source.html">meshx_control_task.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d4/d50/meshx__tiny__printf_8h_source.html">interface/utils/meshx_tiny_printf.h</a>&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
@@ -365,25 +366,25 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="ae84b906d55a82e2e45aa8340f6ac8373a74c69a4b1503b401375a267df866d7d2" name="ae84b906d55a82e2e45aa8340f6ac8373a74c69a4b1503b401375a267df866d7d2"></a>MESHX_NVS_CLI_CMD_CLOSE&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="ae84b906d55a82e2e45aa8340f6ac8373a8923073d3b5967c5be7248fc3dbdc47e" name="ae84b906d55a82e2e45aa8340f6ac8373a8923073d3b5967c5be7248fc3dbdc47e"></a>MESHX_NVS_CLI_MAX&#160;</td><td class="fielddoc"></td></tr>
 </table>
-<div class="fragment"><div class="line"><span class="lineno">  507</span>                              {</div>
-<div class="line"><span class="lineno">  508</span>    <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373ac8e46d99a25f141abaa50293c680139c">MESHX_NVS_CLI_CMD_OPEN</a>,         <span class="comment">/* ut 3 0 0 */</span></div>
-<div class="line"><span class="lineno">  509</span>    <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a33bed74cc4eeb5830341d72252a370a7">MESHX_NVS_CLI_CMD_SET</a>,          <span class="comment">/* ut 3 1 1 [arm_timer?] */</span></div>
-<div class="line"><span class="lineno">  510</span>    <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373ad8bea953fe353c0d7798adfcd0eed54c">MESHX_NVS_CLI_CMD_GET</a>,          <span class="comment">/* ut 3 2 0 */</span></div>
-<div class="line"><span class="lineno">  511</span>    <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a73082d359ef7b6f3358f81bfd4e428ae">MESHX_NVS_CLI_CMD_COMMIT</a>,       <span class="comment">/* ut 3 3 0 */</span></div>
-<div class="line"><span class="lineno">  512</span>    <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a4a446a993ce93fe4b1a4d2061aa47f3f">MESHX_NVS_CLI_CMD_REMOVE</a>,       <span class="comment">/* ut 3 4 0 */</span></div>
-<div class="line"><span class="lineno">  513</span>    <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373ac610f1cdd32da32723526b7795a717be">MESHX_NVS_CLI_CMD_ERASE</a>,        <span class="comment">/* ut 3 5 0 */</span></div>
-<div class="line"><span class="lineno">  514</span>    <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a74c69a4b1503b401375a267df866d7d2">MESHX_NVS_CLI_CMD_CLOSE</a>,        <span class="comment">/* ut 3 6 0 */</span></div>
-<div class="line"><span class="lineno">  515</span>    <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a8923073d3b5967c5be7248fc3dbdc47e">MESHX_NVS_CLI_MAX</a></div>
-<div class="line"><span class="lineno">  516</span>}<a class="code hl_typedef" href="#a36242d232ab90cf43949e0bb70c32417">meshx_nvs_cli_cmd_t</a>;</div>
+<div class="fragment"><div class="line"><span class="lineno">  509</span>                              {</div>
+<div class="line"><span class="lineno">  510</span>    <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373ac8e46d99a25f141abaa50293c680139c">MESHX_NVS_CLI_CMD_OPEN</a>,         <span class="comment">/* ut 3 0 0 */</span></div>
+<div class="line"><span class="lineno">  511</span>    <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a33bed74cc4eeb5830341d72252a370a7">MESHX_NVS_CLI_CMD_SET</a>,          <span class="comment">/* ut 3 1 1 [arm_timer?] */</span></div>
+<div class="line"><span class="lineno">  512</span>    <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373ad8bea953fe353c0d7798adfcd0eed54c">MESHX_NVS_CLI_CMD_GET</a>,          <span class="comment">/* ut 3 2 0 */</span></div>
+<div class="line"><span class="lineno">  513</span>    <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a73082d359ef7b6f3358f81bfd4e428ae">MESHX_NVS_CLI_CMD_COMMIT</a>,       <span class="comment">/* ut 3 3 0 */</span></div>
+<div class="line"><span class="lineno">  514</span>    <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a4a446a993ce93fe4b1a4d2061aa47f3f">MESHX_NVS_CLI_CMD_REMOVE</a>,       <span class="comment">/* ut 3 4 0 */</span></div>
+<div class="line"><span class="lineno">  515</span>    <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373ac610f1cdd32da32723526b7795a717be">MESHX_NVS_CLI_CMD_ERASE</a>,        <span class="comment">/* ut 3 5 0 */</span></div>
+<div class="line"><span class="lineno">  516</span>    <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a74c69a4b1503b401375a267df866d7d2">MESHX_NVS_CLI_CMD_CLOSE</a>,        <span class="comment">/* ut 3 6 0 */</span></div>
+<div class="line"><span class="lineno">  517</span>    <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a8923073d3b5967c5be7248fc3dbdc47e">MESHX_NVS_CLI_MAX</a></div>
+<div class="line"><span class="lineno">  518</span>}<a class="code hl_typedef" href="#a36242d232ab90cf43949e0bb70c32417">meshx_nvs_cli_cmd_t</a>;</div>
 <div class="ttc" id="ameshx__nvs_8c_html_a36242d232ab90cf43949e0bb70c32417"><div class="ttname"><a href="#a36242d232ab90cf43949e0bb70c32417">meshx_nvs_cli_cmd_t</a></div><div class="ttdeci">enum meshx_nvs_cli_cmd meshx_nvs_cli_cmd_t</div><div class="ttdoc">MeshX NVS unit test command IDs.</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_ae84b906d55a82e2e45aa8340f6ac8373a33bed74cc4eeb5830341d72252a370a7"><div class="ttname"><a href="#ae84b906d55a82e2e45aa8340f6ac8373a33bed74cc4eeb5830341d72252a370a7">MESHX_NVS_CLI_CMD_SET</a></div><div class="ttdeci">@ MESHX_NVS_CLI_CMD_SET</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:509</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_ae84b906d55a82e2e45aa8340f6ac8373a4a446a993ce93fe4b1a4d2061aa47f3f"><div class="ttname"><a href="#ae84b906d55a82e2e45aa8340f6ac8373a4a446a993ce93fe4b1a4d2061aa47f3f">MESHX_NVS_CLI_CMD_REMOVE</a></div><div class="ttdeci">@ MESHX_NVS_CLI_CMD_REMOVE</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:512</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_ae84b906d55a82e2e45aa8340f6ac8373a73082d359ef7b6f3358f81bfd4e428ae"><div class="ttname"><a href="#ae84b906d55a82e2e45aa8340f6ac8373a73082d359ef7b6f3358f81bfd4e428ae">MESHX_NVS_CLI_CMD_COMMIT</a></div><div class="ttdeci">@ MESHX_NVS_CLI_CMD_COMMIT</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:511</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_ae84b906d55a82e2e45aa8340f6ac8373a74c69a4b1503b401375a267df866d7d2"><div class="ttname"><a href="#ae84b906d55a82e2e45aa8340f6ac8373a74c69a4b1503b401375a267df866d7d2">MESHX_NVS_CLI_CMD_CLOSE</a></div><div class="ttdeci">@ MESHX_NVS_CLI_CMD_CLOSE</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:514</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_ae84b906d55a82e2e45aa8340f6ac8373a8923073d3b5967c5be7248fc3dbdc47e"><div class="ttname"><a href="#ae84b906d55a82e2e45aa8340f6ac8373a8923073d3b5967c5be7248fc3dbdc47e">MESHX_NVS_CLI_MAX</a></div><div class="ttdeci">@ MESHX_NVS_CLI_MAX</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:515</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_ae84b906d55a82e2e45aa8340f6ac8373ac610f1cdd32da32723526b7795a717be"><div class="ttname"><a href="#ae84b906d55a82e2e45aa8340f6ac8373ac610f1cdd32da32723526b7795a717be">MESHX_NVS_CLI_CMD_ERASE</a></div><div class="ttdeci">@ MESHX_NVS_CLI_CMD_ERASE</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:513</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_ae84b906d55a82e2e45aa8340f6ac8373ac8e46d99a25f141abaa50293c680139c"><div class="ttname"><a href="#ae84b906d55a82e2e45aa8340f6ac8373ac8e46d99a25f141abaa50293c680139c">MESHX_NVS_CLI_CMD_OPEN</a></div><div class="ttdeci">@ MESHX_NVS_CLI_CMD_OPEN</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:508</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_ae84b906d55a82e2e45aa8340f6ac8373ad8bea953fe353c0d7798adfcd0eed54c"><div class="ttname"><a href="#ae84b906d55a82e2e45aa8340f6ac8373ad8bea953fe353c0d7798adfcd0eed54c">MESHX_NVS_CLI_CMD_GET</a></div><div class="ttdeci">@ MESHX_NVS_CLI_CMD_GET</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:510</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_ae84b906d55a82e2e45aa8340f6ac8373a33bed74cc4eeb5830341d72252a370a7"><div class="ttname"><a href="#ae84b906d55a82e2e45aa8340f6ac8373a33bed74cc4eeb5830341d72252a370a7">MESHX_NVS_CLI_CMD_SET</a></div><div class="ttdeci">@ MESHX_NVS_CLI_CMD_SET</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:511</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_ae84b906d55a82e2e45aa8340f6ac8373a4a446a993ce93fe4b1a4d2061aa47f3f"><div class="ttname"><a href="#ae84b906d55a82e2e45aa8340f6ac8373a4a446a993ce93fe4b1a4d2061aa47f3f">MESHX_NVS_CLI_CMD_REMOVE</a></div><div class="ttdeci">@ MESHX_NVS_CLI_CMD_REMOVE</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:514</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_ae84b906d55a82e2e45aa8340f6ac8373a73082d359ef7b6f3358f81bfd4e428ae"><div class="ttname"><a href="#ae84b906d55a82e2e45aa8340f6ac8373a73082d359ef7b6f3358f81bfd4e428ae">MESHX_NVS_CLI_CMD_COMMIT</a></div><div class="ttdeci">@ MESHX_NVS_CLI_CMD_COMMIT</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:513</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_ae84b906d55a82e2e45aa8340f6ac8373a74c69a4b1503b401375a267df866d7d2"><div class="ttname"><a href="#ae84b906d55a82e2e45aa8340f6ac8373a74c69a4b1503b401375a267df866d7d2">MESHX_NVS_CLI_CMD_CLOSE</a></div><div class="ttdeci">@ MESHX_NVS_CLI_CMD_CLOSE</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:516</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_ae84b906d55a82e2e45aa8340f6ac8373a8923073d3b5967c5be7248fc3dbdc47e"><div class="ttname"><a href="#ae84b906d55a82e2e45aa8340f6ac8373a8923073d3b5967c5be7248fc3dbdc47e">MESHX_NVS_CLI_MAX</a></div><div class="ttdeci">@ MESHX_NVS_CLI_MAX</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:517</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_ae84b906d55a82e2e45aa8340f6ac8373ac610f1cdd32da32723526b7795a717be"><div class="ttname"><a href="#ae84b906d55a82e2e45aa8340f6ac8373ac610f1cdd32da32723526b7795a717be">MESHX_NVS_CLI_CMD_ERASE</a></div><div class="ttdeci">@ MESHX_NVS_CLI_CMD_ERASE</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:515</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_ae84b906d55a82e2e45aa8340f6ac8373ac8e46d99a25f141abaa50293c680139c"><div class="ttname"><a href="#ae84b906d55a82e2e45aa8340f6ac8373ac8e46d99a25f141abaa50293c680139c">MESHX_NVS_CLI_CMD_OPEN</a></div><div class="ttdeci">@ MESHX_NVS_CLI_CMD_OPEN</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:510</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_ae84b906d55a82e2e45aa8340f6ac8373ad8bea953fe353c0d7798adfcd0eed54c"><div class="ttname"><a href="#ae84b906d55a82e2e45aa8340f6ac8373ad8bea953fe353c0d7798adfcd0eed54c">MESHX_NVS_CLI_CMD_GET</a></div><div class="ttdeci">@ MESHX_NVS_CLI_CMD_GET</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:512</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -409,29 +410,29 @@ Variables</h2></td></tr>
 <li>MESHX_SUCCESS: Success. </li>
 </ul>
 </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">  319</span>{</div>
-<div class="line"><span class="lineno">  320</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  321</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.init != <a class="code hl_define" href="#a51b36c822f93facc57ae18402884108f">MESHX_NVS_INIT_MAGIC</a>)</div>
-<div class="line"><span class="lineno">  322</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno">  323</span> </div>
-<div class="line"><span class="lineno">  324</span>    err = <a class="code hl_function" href="../../da/d2d/meshx__nvs__interface_8h.html#ad5a8b76fa8a5b7105ee6cac1edb47ec3">meshx_nvs_plat_close</a>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_handle);</div>
-<div class="line"><span class="lineno">  325</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno">  326</span>    {</div>
-<div class="line"><span class="lineno">  327</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;nvs_close %p&quot;</span>, (<span class="keywordtype">void</span> *)err);</div>
-<div class="line"><span class="lineno">  328</span>    }</div>
-<div class="line"><span class="lineno">  329</span> </div>
-<div class="line"><span class="lineno">  330</span><span class="preprocessor">#if MESHX_NVS_TIMER_PERIOD</span></div>
-<div class="line"><span class="lineno">  331</span>    err = <a class="code hl_function" href="../../d8/d03/meshx__os__timer_8h.html#a934420ed4dad831b215afe128d2cbcd6">meshx_os_timer_delete</a>(&amp;(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_commit_tmr));</div>
-<div class="line"><span class="lineno">  332</span><span class="preprocessor">#endif </span><span class="comment">/* MESHX_NVS_TIMER_PERIOD */</span><span class="preprocessor"></span></div>
-<div class="line"><span class="lineno">  333</span>    <a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.init = 0;</div>
-<div class="line"><span class="lineno">  334</span>    <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  335</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  320</span>{</div>
+<div class="line"><span class="lineno">  321</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  322</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.init != <a class="code hl_define" href="#a51b36c822f93facc57ae18402884108f">MESHX_NVS_INIT_MAGIC</a>)</div>
+<div class="line"><span class="lineno">  323</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno">  324</span> </div>
+<div class="line"><span class="lineno">  325</span>    err = <a class="code hl_function" href="../../da/d2d/meshx__nvs__interface_8h.html#ad5a8b76fa8a5b7105ee6cac1edb47ec3">meshx_nvs_plat_close</a>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_handle);</div>
+<div class="line"><span class="lineno">  326</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno">  327</span>    {</div>
+<div class="line"><span class="lineno">  328</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;nvs_close %p&quot;</span>, (<span class="keywordtype">void</span> *)err);</div>
+<div class="line"><span class="lineno">  329</span>    }</div>
+<div class="line"><span class="lineno">  330</span> </div>
+<div class="line"><span class="lineno">  331</span><span class="preprocessor">#if MESHX_NVS_TIMER_PERIOD</span></div>
+<div class="line"><span class="lineno">  332</span>    err = <a class="code hl_function" href="../../d8/d03/meshx__os__timer_8h.html#a934420ed4dad831b215afe128d2cbcd6">meshx_os_timer_delete</a>(&amp;(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_commit_tmr));</div>
+<div class="line"><span class="lineno">  333</span><span class="preprocessor">#endif </span><span class="comment">/* MESHX_NVS_TIMER_PERIOD */</span><span class="preprocessor"></span></div>
+<div class="line"><span class="lineno">  334</span>    <a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.init = 0;</div>
+<div class="line"><span class="lineno">  335</span>    <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  336</span>}</div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a></div><div class="ttdeci">meshx_err_t</div><div class="ttdoc">MeshX Error Codes.</div><div class="ttdef"><b>Definition</b> meshx_err.h:43</div></div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a></div><div class="ttdeci">@ MESHX_INVALID_STATE</div><div class="ttdef"><b>Definition</b> meshx_err.h:49</div></div>
-<div class="ttc" id="ameshx__log_8h_html_a56673888067cbe14c7a33b0856f46eb8"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a></div><div class="ttdeci">#define MESHX_LOGE(module_id, format,...)</div><div class="ttdef"><b>Definition</b> meshx_log.h:96</div></div>
+<div class="ttc" id="ameshx__log_8h_html_a56673888067cbe14c7a33b0856f46eb8"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a></div><div class="ttdeci">#define MESHX_LOGE(module_id, format,...)</div><div class="ttdef"><b>Definition</b> meshx_log.h:114</div></div>
 <div class="ttc" id="ameshx__model__level_8cpp_html_a781c2ae7a10a8be9b9436b090dded5fc"><div class="ttname"><a href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a></div><div class="ttdeci">**This function is called by the parent element when a state change request *is received It validates the request and returns a result to the element not the model layer **return * MESHX_SUCCESS</div><div class="ttdef"><b>Definition</b> meshx_model_level.cpp:385</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_a51b36c822f93facc57ae18402884108f"><div class="ttname"><a href="#a51b36c822f93facc57ae18402884108f">MESHX_NVS_INIT_MAGIC</a></div><div class="ttdeci">#define MESHX_NVS_INIT_MAGIC</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:18</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_aaa01c7f0be8d3218cc846e565c6b8e23"><div class="ttname"><a href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a></div><div class="ttdeci">static meshx_nvs_t meshx_nvs_inst</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:56</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_a51b36c822f93facc57ae18402884108f"><div class="ttname"><a href="#a51b36c822f93facc57ae18402884108f">MESHX_NVS_INIT_MAGIC</a></div><div class="ttdeci">#define MESHX_NVS_INIT_MAGIC</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:19</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_aaa01c7f0be8d3218cc846e565c6b8e23"><div class="ttname"><a href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a></div><div class="ttdeci">static meshx_nvs_t meshx_nvs_inst</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:57</div></div>
 <div class="ttc" id="ameshx__nvs__interface_8h_html_ad5a8b76fa8a5b7105ee6cac1edb47ec3"><div class="ttname"><a href="../../da/d2d/meshx__nvs__interface_8h.html#ad5a8b76fa8a5b7105ee6cac1edb47ec3">meshx_nvs_plat_close</a></div><div class="ttdeci">meshx_err_t meshx_nvs_plat_close(uintptr_t p_nvs_handle)</div><div class="ttdoc">Close the non-volatile storage handle.</div></div>
 <div class="ttc" id="ameshx__os__timer_8h_html_a934420ed4dad831b215afe128d2cbcd6"><div class="ttname"><a href="../../d8/d03/meshx__os__timer_8h.html#a934420ed4dad831b215afe128d2cbcd6">meshx_os_timer_delete</a></div><div class="ttdeci">meshx_err_t meshx_os_timer_delete(meshx_os_timer_t **timer_handle)</div><div class="ttdoc">Delete a timer.</div><div class="ttdef"><b>Definition</b> meshx_os_timer.c:419</div></div>
 <div class="ttc" id="amodule__id_8h_html_ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf"><div class="ttname"><a href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a></div><div class="ttdeci">@ MODULE_ID_COMPONENT_MESHX_NVS</div><div class="ttdef"><b>Definition</b> module_id.h:31</div></div>
@@ -459,46 +460,46 @@ Variables</h2></td></tr>
 <li>MESHX_SUCCESS: Success. </li>
 </ul>
 </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">  277</span>{</div>
-<div class="line"><span class="lineno">  278</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.init != <a class="code hl_define" href="#a51b36c822f93facc57ae18402884108f">MESHX_NVS_INIT_MAGIC</a>)</div>
-<div class="line"><span class="lineno">  279</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno">  280</span> </div>
-<div class="line"><span class="lineno">  281</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  282</span>    <a class="code hl_typedef" href="#ab07aa851c1eab788da9fc6594a17c8b1">meshx_nvs_write_list_t</a> *cur = <a class="code hl_variable" href="#ac95f13ed9cb5133d51c72830a7a860ca">meshx_nvs_write_list_head</a>;</div>
-<div class="line"><span class="lineno">  283</span>    <a class="code hl_typedef" href="#ab07aa851c1eab788da9fc6594a17c8b1">meshx_nvs_write_list_t</a> *prev;</div>
-<div class="line"><span class="lineno">  284</span> </div>
-<div class="line"><span class="lineno">  285</span>    <span class="keywordflow">if</span> (!cur) <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  286</span> </div>
-<div class="line"><span class="lineno">  287</span>    <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;Committing pending NVS writes...&quot;</span>);</div>
-<div class="line"><span class="lineno">  288</span> </div>
-<div class="line"><span class="lineno">  289</span>    <span class="keywordflow">while</span> (cur) {</div>
-<div class="line"><span class="lineno">  290</span>        err = <a class="code hl_function" href="../../da/d2d/meshx__nvs__interface_8h.html#a486367a843345efbb5edb7267a706eb3">meshx_nvs_plat_write</a>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_handle, cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#a31c7cdcc35a95eeb1aceb234aed01cbf">key</a>, cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#aed27c6422d4a11b6d1de31465802bf19">data</a>, cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#afaf0a745d11ed19da9dfe2d8d6b7d607">len</a>);</div>
-<div class="line"><span class="lineno">  291</span>        <span class="keywordflow">if</span> (err) {</div>
-<div class="line"><span class="lineno">  292</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;commit failed for key: %s&quot;</span>, cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#a31c7cdcc35a95eeb1aceb234aed01cbf">key</a>);</div>
-<div class="line"><span class="lineno">  293</span>        }</div>
-<div class="line"><span class="lineno">  294</span>        prev = cur;</div>
-<div class="line"><span class="lineno">  295</span>        cur = cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#a145b4b7296716b7d8912bfd603ad23b2">next</a>;</div>
-<div class="line"><span class="lineno">  296</span>        free(prev);</div>
-<div class="line"><span class="lineno">  297</span>    }</div>
-<div class="line"><span class="lineno">  298</span> </div>
-<div class="line"><span class="lineno">  299</span>    <a class="code hl_variable" href="#ac95f13ed9cb5133d51c72830a7a860ca">meshx_nvs_write_list_head</a> = NULL;</div>
-<div class="line"><span class="lineno">  300</span> </div>
-<div class="line"><span class="lineno">  301</span>    <span class="keywordflow">if</span> (err == <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>) {</div>
-<div class="line"><span class="lineno">  302</span>        <span class="comment">// Only commit to platform once, after all writes</span></div>
-<div class="line"><span class="lineno">  303</span>        err = <a class="code hl_function" href="../../da/d2d/meshx__nvs__interface_8h.html#a5dd0ef1876320dd92b9c102574e08435">meshx_nvs_plat_commit</a>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_handle);</div>
-<div class="line"><span class="lineno">  304</span>    }</div>
-<div class="line"><span class="lineno">  305</span> </div>
-<div class="line"><span class="lineno">  306</span>    <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  307</span>}</div>
-<div class="ttc" id="ameshx__log_8h_html_acb76057f2c8e23ca61edf04fd824818b"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a></div><div class="ttdeci">#define MESHX_LOGD(module_id, format,...)</div><div class="ttdef"><b>Definition</b> meshx_log.h:142</div></div>
+<div class="fragment"><div class="line"><span class="lineno">  278</span>{</div>
+<div class="line"><span class="lineno">  279</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.init != <a class="code hl_define" href="#a51b36c822f93facc57ae18402884108f">MESHX_NVS_INIT_MAGIC</a>)</div>
+<div class="line"><span class="lineno">  280</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno">  281</span> </div>
+<div class="line"><span class="lineno">  282</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  283</span>    <a class="code hl_typedef" href="#ab07aa851c1eab788da9fc6594a17c8b1">meshx_nvs_write_list_t</a> *cur = <a class="code hl_variable" href="#ac95f13ed9cb5133d51c72830a7a860ca">meshx_nvs_write_list_head</a>;</div>
+<div class="line"><span class="lineno">  284</span>    <a class="code hl_typedef" href="#ab07aa851c1eab788da9fc6594a17c8b1">meshx_nvs_write_list_t</a> *prev;</div>
+<div class="line"><span class="lineno">  285</span> </div>
+<div class="line"><span class="lineno">  286</span>    <span class="keywordflow">if</span> (!cur) <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  287</span> </div>
+<div class="line"><span class="lineno">  288</span>    <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;Committing pending NVS writes...&quot;</span>);</div>
+<div class="line"><span class="lineno">  289</span> </div>
+<div class="line"><span class="lineno">  290</span>    <span class="keywordflow">while</span> (cur) {</div>
+<div class="line"><span class="lineno">  291</span>        err = <a class="code hl_function" href="../../da/d2d/meshx__nvs__interface_8h.html#a486367a843345efbb5edb7267a706eb3">meshx_nvs_plat_write</a>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_handle, cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#a31c7cdcc35a95eeb1aceb234aed01cbf">key</a>, cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#aed27c6422d4a11b6d1de31465802bf19">data</a>, cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#afaf0a745d11ed19da9dfe2d8d6b7d607">len</a>);</div>
+<div class="line"><span class="lineno">  292</span>        <span class="keywordflow">if</span> (err) {</div>
+<div class="line"><span class="lineno">  293</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;commit failed for key: %s&quot;</span>, cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#a31c7cdcc35a95eeb1aceb234aed01cbf">key</a>);</div>
+<div class="line"><span class="lineno">  294</span>        }</div>
+<div class="line"><span class="lineno">  295</span>        prev = cur;</div>
+<div class="line"><span class="lineno">  296</span>        cur = cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#a145b4b7296716b7d8912bfd603ad23b2">next</a>;</div>
+<div class="line"><span class="lineno">  297</span>        free(prev);</div>
+<div class="line"><span class="lineno">  298</span>    }</div>
+<div class="line"><span class="lineno">  299</span> </div>
+<div class="line"><span class="lineno">  300</span>    <a class="code hl_variable" href="#ac95f13ed9cb5133d51c72830a7a860ca">meshx_nvs_write_list_head</a> = NULL;</div>
+<div class="line"><span class="lineno">  301</span> </div>
+<div class="line"><span class="lineno">  302</span>    <span class="keywordflow">if</span> (err == <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>) {</div>
+<div class="line"><span class="lineno">  303</span>        <span class="comment">// Only commit to platform once, after all writes</span></div>
+<div class="line"><span class="lineno">  304</span>        err = <a class="code hl_function" href="../../da/d2d/meshx__nvs__interface_8h.html#a5dd0ef1876320dd92b9c102574e08435">meshx_nvs_plat_commit</a>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_handle);</div>
+<div class="line"><span class="lineno">  305</span>    }</div>
+<div class="line"><span class="lineno">  306</span> </div>
+<div class="line"><span class="lineno">  307</span>    <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  308</span>}</div>
+<div class="ttc" id="ameshx__log_8h_html_acb76057f2c8e23ca61edf04fd824818b"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a></div><div class="ttdeci">#define MESHX_LOGD(module_id, format,...)</div><div class="ttdef"><b>Definition</b> meshx_log.h:132</div></div>
 <div class="ttc" id="ameshx__nvs_8c_html_ab07aa851c1eab788da9fc6594a17c8b1"><div class="ttname"><a href="#ab07aa851c1eab788da9fc6594a17c8b1">meshx_nvs_write_list_t</a></div><div class="ttdeci">struct meshx_nvs_write_list meshx_nvs_write_list_t</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_ac95f13ed9cb5133d51c72830a7a860ca"><div class="ttname"><a href="#ac95f13ed9cb5133d51c72830a7a860ca">meshx_nvs_write_list_head</a></div><div class="ttdeci">meshx_nvs_write_list_t * meshx_nvs_write_list_head</div><div class="ttdoc">Head of the linked list used to store key-value pairs that need to be written to NVS.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:48</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_ac95f13ed9cb5133d51c72830a7a860ca"><div class="ttname"><a href="#ac95f13ed9cb5133d51c72830a7a860ca">meshx_nvs_write_list_head</a></div><div class="ttdeci">meshx_nvs_write_list_t * meshx_nvs_write_list_head</div><div class="ttdoc">Head of the linked list used to store key-value pairs that need to be written to NVS.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:49</div></div>
 <div class="ttc" id="ameshx__nvs__interface_8h_html_a486367a843345efbb5edb7267a706eb3"><div class="ttname"><a href="../../da/d2d/meshx__nvs__interface_8h.html#a486367a843345efbb5edb7267a706eb3">meshx_nvs_plat_write</a></div><div class="ttdeci">meshx_err_t meshx_nvs_plat_write(uintptr_t p_nvs_handle, char const *key, uint8_t const *p_data, uint16_t len)</div><div class="ttdoc">Write a blob value to the non-volatile storage with a given key and namespace.</div></div>
 <div class="ttc" id="ameshx__nvs__interface_8h_html_a5dd0ef1876320dd92b9c102574e08435"><div class="ttname"><a href="../../da/d2d/meshx__nvs__interface_8h.html#a5dd0ef1876320dd92b9c102574e08435">meshx_nvs_plat_commit</a></div><div class="ttdeci">meshx_err_t meshx_nvs_plat_commit(uintptr_t p_nvs_handle)</div><div class="ttdoc">Commit changes to the non-volatile storage.</div></div>
-<div class="ttc" id="astructmeshx__nvs__write__list_html_a145b4b7296716b7d8912bfd603ad23b2"><div class="ttname"><a href="../../d1/d11/structmeshx__nvs__write__list.html#a145b4b7296716b7d8912bfd603ad23b2">meshx_nvs_write_list::next</a></div><div class="ttdeci">struct meshx_nvs_write_list * next</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:41</div></div>
-<div class="ttc" id="astructmeshx__nvs__write__list_html_a31c7cdcc35a95eeb1aceb234aed01cbf"><div class="ttname"><a href="../../d1/d11/structmeshx__nvs__write__list.html#a31c7cdcc35a95eeb1aceb234aed01cbf">meshx_nvs_write_list::key</a></div><div class="ttdeci">char key[16]</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:39</div></div>
-<div class="ttc" id="astructmeshx__nvs__write__list_html_aed27c6422d4a11b6d1de31465802bf19"><div class="ttname"><a href="../../d1/d11/structmeshx__nvs__write__list.html#aed27c6422d4a11b6d1de31465802bf19">meshx_nvs_write_list::data</a></div><div class="ttdeci">uint8_t data[256]</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:40</div></div>
-<div class="ttc" id="astructmeshx__nvs__write__list_html_afaf0a745d11ed19da9dfe2d8d6b7d607"><div class="ttname"><a href="../../d1/d11/structmeshx__nvs__write__list.html#afaf0a745d11ed19da9dfe2d8d6b7d607">meshx_nvs_write_list::len</a></div><div class="ttdeci">uint16_t len</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:38</div></div>
+<div class="ttc" id="astructmeshx__nvs__write__list_html_a145b4b7296716b7d8912bfd603ad23b2"><div class="ttname"><a href="../../d1/d11/structmeshx__nvs__write__list.html#a145b4b7296716b7d8912bfd603ad23b2">meshx_nvs_write_list::next</a></div><div class="ttdeci">struct meshx_nvs_write_list * next</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:42</div></div>
+<div class="ttc" id="astructmeshx__nvs__write__list_html_a31c7cdcc35a95eeb1aceb234aed01cbf"><div class="ttname"><a href="../../d1/d11/structmeshx__nvs__write__list.html#a31c7cdcc35a95eeb1aceb234aed01cbf">meshx_nvs_write_list::key</a></div><div class="ttdeci">char key[16]</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:40</div></div>
+<div class="ttc" id="astructmeshx__nvs__write__list_html_aed27c6422d4a11b6d1de31465802bf19"><div class="ttname"><a href="../../d1/d11/structmeshx__nvs__write__list.html#aed27c6422d4a11b6d1de31465802bf19">meshx_nvs_write_list::data</a></div><div class="ttdeci">uint8_t data[256]</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:41</div></div>
+<div class="ttc" id="astructmeshx__nvs__write__list_html_afaf0a745d11ed19da9dfe2d8d6b7d607"><div class="ttname"><a href="../../d1/d11/structmeshx__nvs__write__list.html#afaf0a745d11ed19da9dfe2d8d6b7d607">meshx_nvs_write_list::len</a></div><div class="ttdeci">uint16_t len</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:39</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -533,14 +534,14 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<div class="fragment"><div class="line"><span class="lineno">   59</span>{</div>
-<div class="line"><span class="lineno">   60</span>    <span class="keywordflow">if</span> (evt &amp; <a class="code hl_variable" href="../../da/db3/meshx__control__task_8h.html#a2b4f60d6aefe44102a242e06de26f4f6">CONTROL_TASK_MSG_EVT_SYSTEM_NVS_COMMIT</a>) {</div>
-<div class="line"><span class="lineno">   61</span>        <a class="code hl_function" href="#adbf5f3a6e63cae605581b0f23b21345c">meshx_nvs_commit</a>();</div>
-<div class="line"><span class="lineno">   62</span>    }</div>
-<div class="line"><span class="lineno">   63</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">   64</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">   60</span>{</div>
+<div class="line"><span class="lineno">   61</span>    <span class="keywordflow">if</span> (evt &amp; <a class="code hl_variable" href="../../da/db3/meshx__control__task_8h.html#a2b4f60d6aefe44102a242e06de26f4f6">CONTROL_TASK_MSG_EVT_SYSTEM_NVS_COMMIT</a>) {</div>
+<div class="line"><span class="lineno">   62</span>        <a class="code hl_function" href="#adbf5f3a6e63cae605581b0f23b21345c">meshx_nvs_commit</a>();</div>
+<div class="line"><span class="lineno">   63</span>    }</div>
+<div class="line"><span class="lineno">   64</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">   65</span>}</div>
 <div class="ttc" id="ameshx__control__task_8h_html_a2b4f60d6aefe44102a242e06de26f4f6"><div class="ttname"><a href="../../da/db3/meshx__control__task_8h.html#a2b4f60d6aefe44102a242e06de26f4f6">CONTROL_TASK_MSG_EVT_SYSTEM_NVS_COMMIT</a></div><div class="ttdeci">CONTROL_TASK_MSG_EVT_SYSTEM_NVS_COMMIT</div><div class="ttdef"><b>Definition</b> meshx_control_task.h:131</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_adbf5f3a6e63cae605581b0f23b21345c"><div class="ttname"><a href="#adbf5f3a6e63cae605581b0f23b21345c">meshx_nvs_commit</a></div><div class="ttdeci">meshx_err_t meshx_nvs_commit(void)</div><div class="ttdoc">Commit changes to the NVS.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:276</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_adbf5f3a6e63cae605581b0f23b21345c"><div class="ttname"><a href="#adbf5f3a6e63cae605581b0f23b21345c">meshx_nvs_commit</a></div><div class="ttdeci">meshx_err_t meshx_nvs_commit(void)</div><div class="ttdoc">Commit changes to the NVS.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:277</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -587,15 +588,16 @@ Variables</h2></td></tr>
 <li>MESHX_SUCCESS: Successfully retrieved the context. </li>
 </ul>
 </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">  447</span>{</div>
-<div class="line"><span class="lineno">  448</span>    <span class="keywordtype">char</span> key[<a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a>];</div>
-<div class="line"><span class="lineno">  449</span>    snprintf(key, <a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a>, <a class="code hl_define" href="#a9f63f1cec16a0c6a53073fc8e103f1de">MESHX_NVS_ELEMENT_CTX</a>, (uint8_t)element_type, element_id);</div>
-<div class="line"><span class="lineno">  450</span>    <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;meshx_nvs_element_ctx_get: key=%s, size=%d&quot;</span>, key, (<span class="keywordtype">int</span>)blob_size);</div>
-<div class="line"><span class="lineno">  451</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="#ae36588f5b4ae5e5ac771e1af86a71e5a">meshx_nvs_get</a>(key, blob, blob_size);</div>
-<div class="line"><span class="lineno">  452</span>}</div>
-<div class="ttc" id="ameshx__nvs_8c_html_a5016982913764b01e071a775c6dede36"><div class="ttname"><a href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a></div><div class="ttdeci">#define MESHX_KEY_NAME_MAX_SIZE</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:29</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_a9f63f1cec16a0c6a53073fc8e103f1de"><div class="ttname"><a href="#a9f63f1cec16a0c6a53073fc8e103f1de">MESHX_NVS_ELEMENT_CTX</a></div><div class="ttdeci">#define MESHX_NVS_ELEMENT_CTX</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:27</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_ae36588f5b4ae5e5ac771e1af86a71e5a"><div class="ttname"><a href="#ae36588f5b4ae5e5ac771e1af86a71e5a">meshx_nvs_get</a></div><div class="ttdeci">meshx_err_t meshx_nvs_get(char const *key, void *blob, uint16_t blob_size)</div><div class="ttdoc">Get a value from the NVS.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:367</div></div>
+<div class="fragment"><div class="line"><span class="lineno">  448</span>{</div>
+<div class="line"><span class="lineno">  449</span>    <span class="keywordtype">char</span> key[<a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a>];</div>
+<div class="line"><span class="lineno">  450</span>    <a class="code hl_function" href="../../d4/d50/meshx__tiny__printf_8h.html#afdcf1d79b9721c741427126b124f076f">meshx_tiny_snprintf</a>(key, <a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a>, <a class="code hl_define" href="#a9f63f1cec16a0c6a53073fc8e103f1de">MESHX_NVS_ELEMENT_CTX</a>, (uint8_t)element_type, element_id);</div>
+<div class="line"><span class="lineno">  451</span>    <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;meshx_nvs_element_ctx_get: key=%s, size=%d&quot;</span>, key, (<span class="keywordtype">int</span>)blob_size);</div>
+<div class="line"><span class="lineno">  452</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="#ae36588f5b4ae5e5ac771e1af86a71e5a">meshx_nvs_get</a>(key, blob, blob_size);</div>
+<div class="line"><span class="lineno">  453</span>}</div>
+<div class="ttc" id="ameshx__nvs_8c_html_a5016982913764b01e071a775c6dede36"><div class="ttname"><a href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a></div><div class="ttdeci">#define MESHX_KEY_NAME_MAX_SIZE</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:30</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_a9f63f1cec16a0c6a53073fc8e103f1de"><div class="ttname"><a href="#a9f63f1cec16a0c6a53073fc8e103f1de">MESHX_NVS_ELEMENT_CTX</a></div><div class="ttdeci">#define MESHX_NVS_ELEMENT_CTX</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:28</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_ae36588f5b4ae5e5ac771e1af86a71e5a"><div class="ttname"><a href="#ae36588f5b4ae5e5ac771e1af86a71e5a">meshx_nvs_get</a></div><div class="ttdeci">meshx_err_t meshx_nvs_get(char const *key, void *blob, uint16_t blob_size)</div><div class="ttdoc">Get a value from the NVS.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:368</div></div>
+<div class="ttc" id="ameshx__tiny__printf_8h_html_afdcf1d79b9721c741427126b124f076f"><div class="ttname"><a href="../../d4/d50/meshx__tiny__printf_8h.html#afdcf1d79b9721c741427126b124f076f">meshx_tiny_snprintf</a></div><div class="ttdeci">int meshx_tiny_snprintf(char *buf, size_t size, const char *fmt,...)</div><div class="ttdoc">Lightweight snprintf replacement.</div><div class="ttdef"><b>Definition</b> meshx_tiny_printf.c:149</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -630,27 +632,28 @@ Variables</h2></td></tr>
 <li>MESHX_SUCCESS: Successfully removed the context. </li>
 </ul>
 </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">  482</span>{</div>
-<div class="line"><span class="lineno">  483</span>    <span class="keywordtype">char</span> key[<a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a>];</div>
-<div class="line"><span class="lineno">  484</span>    <span class="keywordflow">if</span> (element_type == MESHX_ELEMENT_TYPE_ALL)</div>
-<div class="line"><span class="lineno">  485</span>    {</div>
-<div class="line"><span class="lineno">  486</span>        <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  487</span>        <span class="keywordflow">for</span> (uint8_t t = 0; t &lt; (uint8_t)MESHX_ELEMENT_TYPE_MAX; t++)</div>
-<div class="line"><span class="lineno">  488</span>        {</div>
-<div class="line"><span class="lineno">  489</span>            snprintf(key, <a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a>, <a class="code hl_define" href="#a9f63f1cec16a0c6a53073fc8e103f1de">MESHX_NVS_ELEMENT_CTX</a>, t, element_id);</div>
-<div class="line"><span class="lineno">  490</span>            <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> temp_err = <a class="code hl_function" href="#aa14948d7d45d83f3b6d9ca765a17cc58">meshx_nvs_remove</a>(key);</div>
-<div class="line"><span class="lineno">  491</span>            <span class="keywordflow">if</span> (temp_err != <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a> &amp;&amp; temp_err != <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ad1cff4751130570c3dd2cb071e84a2b3">MESHX_NOT_FOUND</a>)</div>
-<div class="line"><span class="lineno">  492</span>            {</div>
-<div class="line"><span class="lineno">  493</span>                err = temp_err;</div>
-<div class="line"><span class="lineno">  494</span>            }</div>
-<div class="line"><span class="lineno">  495</span>        }</div>
-<div class="line"><span class="lineno">  496</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  497</span>    }</div>
-<div class="line"><span class="lineno">  498</span>    snprintf(key, <a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a>, <a class="code hl_define" href="#a9f63f1cec16a0c6a53073fc8e103f1de">MESHX_NVS_ELEMENT_CTX</a>, (uint8_t)element_type, element_id);</div>
-<div class="line"><span class="lineno">  499</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="#aa14948d7d45d83f3b6d9ca765a17cc58">meshx_nvs_remove</a>(key);</div>
-<div class="line"><span class="lineno">  500</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  483</span>{</div>
+<div class="line"><span class="lineno">  484</span>    <span class="keywordtype">char</span> key[<a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a>];</div>
+<div class="line"><span class="lineno">  485</span>    <span class="keywordflow">if</span> (element_type == MESHX_ELEMENT_TYPE_ALL)</div>
+<div class="line"><span class="lineno">  486</span>    {</div>
+<div class="line"><span class="lineno">  487</span>        <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  488</span>        <span class="keywordflow">for</span> (uint8_t t = 0; t &lt; (uint8_t)MESHX_ELEMENT_TYPE_MAX; t++)</div>
+<div class="line"><span class="lineno">  489</span>        {</div>
+<div class="line"><span class="lineno">  490</span>            snprintf(key, <a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a>, <a class="code hl_define" href="#a9f63f1cec16a0c6a53073fc8e103f1de">MESHX_NVS_ELEMENT_CTX</a>, t, element_id);</div>
+<div class="line"><span class="lineno">  491</span>            <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> temp_err = <a class="code hl_function" href="#aa14948d7d45d83f3b6d9ca765a17cc58">meshx_nvs_remove</a>(key);</div>
+<div class="line"><span class="lineno">  492</span>            <span class="keywordflow">if</span> (temp_err != <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a> &amp;&amp; temp_err != <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ad1cff4751130570c3dd2cb071e84a2b3">MESHX_NOT_FOUND</a>)</div>
+<div class="line"><span class="lineno">  493</span>            {</div>
+<div class="line"><span class="lineno">  494</span>                err = temp_err;</div>
+<div class="line"><span class="lineno">  495</span>            }</div>
+<div class="line"><span class="lineno">  496</span>        }</div>
+<div class="line"><span class="lineno">  497</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  498</span>    }</div>
+<div class="line"><span class="lineno">  499</span>    snprintf(key, <a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a>, <a class="code hl_define" href="#a9f63f1cec16a0c6a53073fc8e103f1de">MESHX_NVS_ELEMENT_CTX</a>, (uint8_t)element_type, element_id);</div>
+<div class="line"><span class="lineno">  500</span>    <a class="code hl_function" href="../../d4/d50/meshx__tiny__printf_8h.html#afdcf1d79b9721c741427126b124f076f">meshx_tiny_snprintf</a>(key, <a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a>, <a class="code hl_define" href="#a9f63f1cec16a0c6a53073fc8e103f1de">MESHX_NVS_ELEMENT_CTX</a>, (uint8_t)element_type, element_id);</div>
+<div class="line"><span class="lineno">  501</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="#aa14948d7d45d83f3b6d9ca765a17cc58">meshx_nvs_remove</a>(key);</div>
+<div class="line"><span class="lineno">  502</span>}</div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6ad1cff4751130570c3dd2cb071e84a2b3"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ad1cff4751130570c3dd2cb071e84a2b3">MESHX_NOT_FOUND</a></div><div class="ttdeci">@ MESHX_NOT_FOUND</div><div class="ttdef"><b>Definition</b> meshx_err.h:50</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_aa14948d7d45d83f3b6d9ca765a17cc58"><div class="ttname"><a href="#aa14948d7d45d83f3b6d9ca765a17cc58">meshx_nvs_remove</a></div><div class="ttdeci">meshx_err_t meshx_nvs_remove(char const *key)</div><div class="ttdoc">Remove a key-value pair from the NVS.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:347</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_aa14948d7d45d83f3b6d9ca765a17cc58"><div class="ttname"><a href="#aa14948d7d45d83f3b6d9ca765a17cc58">meshx_nvs_remove</a></div><div class="ttdeci">meshx_err_t meshx_nvs_remove(char const *key)</div><div class="ttdoc">Remove a key-value pair from the NVS.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:348</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -697,12 +700,12 @@ Variables</h2></td></tr>
 <li>MESHX_SUCCESS: Successfully stored the context. </li>
 </ul>
 </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">  466</span>{</div>
-<div class="line"><span class="lineno">  467</span>    <span class="keywordtype">char</span> key[<a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a>];</div>
-<div class="line"><span class="lineno">  468</span>    snprintf(key, <a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a>, <a class="code hl_define" href="#a9f63f1cec16a0c6a53073fc8e103f1de">MESHX_NVS_ELEMENT_CTX</a>, (uint8_t)element_type, element_id);</div>
-<div class="line"><span class="lineno">  469</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="#ab9a39208cc2b067b0b5df0a85d7b4b03">meshx_nvs_set</a>(key, blob, (uint16_t) blob_size, <a class="code hl_define" href="../../d3/d7d/meshx__nvs_8h.html#ae2cd2375171764414a17dc9b5a62041d">MESHX_NVS_AUTO_COMMIT</a>);</div>
-<div class="line"><span class="lineno">  470</span>}</div>
-<div class="ttc" id="ameshx__nvs_8c_html_ab9a39208cc2b067b0b5df0a85d7b4b03"><div class="ttname"><a href="#ab9a39208cc2b067b0b5df0a85d7b4b03">meshx_nvs_set</a></div><div class="ttdeci">meshx_err_t meshx_nvs_set(char const *key, void const *blob, uint16_t blob_size, bool arm_timer)</div><div class="ttdoc">Set a value in the NVS.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:387</div></div>
+<div class="fragment"><div class="line"><span class="lineno">  467</span>{</div>
+<div class="line"><span class="lineno">  468</span>    <span class="keywordtype">char</span> key[<a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a>];</div>
+<div class="line"><span class="lineno">  469</span>    <a class="code hl_function" href="../../d4/d50/meshx__tiny__printf_8h.html#afdcf1d79b9721c741427126b124f076f">meshx_tiny_snprintf</a>(key, <a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a>, <a class="code hl_define" href="#a9f63f1cec16a0c6a53073fc8e103f1de">MESHX_NVS_ELEMENT_CTX</a>, (uint8_t)element_type, element_id);</div>
+<div class="line"><span class="lineno">  470</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="#ab9a39208cc2b067b0b5df0a85d7b4b03">meshx_nvs_set</a>(key, blob, (uint16_t) blob_size, <a class="code hl_define" href="../../d3/d7d/meshx__nvs_8h.html#ae2cd2375171764414a17dc9b5a62041d">MESHX_NVS_AUTO_COMMIT</a>);</div>
+<div class="line"><span class="lineno">  471</span>}</div>
+<div class="ttc" id="ameshx__nvs_8c_html_ab9a39208cc2b067b0b5df0a85d7b4b03"><div class="ttname"><a href="#ab9a39208cc2b067b0b5df0a85d7b4b03">meshx_nvs_set</a></div><div class="ttdeci">meshx_err_t meshx_nvs_set(char const *key, void const *blob, uint16_t blob_size, bool arm_timer)</div><div class="ttdoc">Set a value in the NVS.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:388</div></div>
 <div class="ttc" id="ameshx__nvs_8h_html_ae2cd2375171764414a17dc9b5a62041d"><div class="ttname"><a href="../../d3/d7d/meshx__nvs_8h.html#ae2cd2375171764414a17dc9b5a62041d">MESHX_NVS_AUTO_COMMIT</a></div><div class="ttdeci">#define MESHX_NVS_AUTO_COMMIT</div><div class="ttdef"><b>Definition</b> meshx_nvs.h:30</div></div>
 </div><!-- fragment -->
 </div>
@@ -728,12 +731,12 @@ Variables</h2></td></tr>
 <li>MESHX_SUCCESS: Success. </li>
 </ul>
 </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">  261</span>{</div>
-<div class="line"><span class="lineno">  262</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.init != <a class="code hl_define" href="#a51b36c822f93facc57ae18402884108f">MESHX_NVS_INIT_MAGIC</a>)</div>
-<div class="line"><span class="lineno">  263</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno">  264</span> </div>
-<div class="line"><span class="lineno">  265</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/d2d/meshx__nvs__interface_8h.html#ac07e3fa684f8bd4f45c595c237b98504">meshx_nvs_plat_erase</a>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_handle);</div>
-<div class="line"><span class="lineno">  266</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  262</span>{</div>
+<div class="line"><span class="lineno">  263</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.init != <a class="code hl_define" href="#a51b36c822f93facc57ae18402884108f">MESHX_NVS_INIT_MAGIC</a>)</div>
+<div class="line"><span class="lineno">  264</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno">  265</span> </div>
+<div class="line"><span class="lineno">  266</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/d2d/meshx__nvs__interface_8h.html#ac07e3fa684f8bd4f45c595c237b98504">meshx_nvs_plat_erase</a>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_handle);</div>
+<div class="line"><span class="lineno">  267</span>}</div>
 <div class="ttc" id="ameshx__nvs__interface_8h_html_ac07e3fa684f8bd4f45c595c237b98504"><div class="ttname"><a href="../../da/d2d/meshx__nvs__interface_8h.html#ac07e3fa684f8bd4f45c595c237b98504">meshx_nvs_plat_erase</a></div><div class="ttdeci">meshx_err_t meshx_nvs_plat_erase(uintptr_t p_nvs_handle)</div><div class="ttdoc">Erase all key-value pairs in the given namespace.</div></div>
 </div><!-- fragment -->
 </div>
@@ -778,49 +781,49 @@ Variables</h2></td></tr>
 <li>MESHX_SUCCESS: Success. </li>
 </ul>
 </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">   94</span>{</div>
-<div class="line"><span class="lineno">   95</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">   96</span>    err = <a class="code hl_function" href="#adedf15ddc47ab70982fa07092112ffd1">meshx_nvs_erase</a>();</div>
-<div class="line"><span class="lineno">   97</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno">   98</span>    {</div>
-<div class="line"><span class="lineno">   99</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;meshx_nvs_erase %p&quot;</span>, (<span class="keywordtype">void</span> *)err);</div>
-<div class="line"><span class="lineno">  100</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  101</span>    }</div>
-<div class="line"><span class="lineno">  102</span> </div>
-<div class="line"><span class="lineno">  103</span>    <a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.pid = pid;</div>
-<div class="line"><span class="lineno">  104</span>    <a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.cid = cid;</div>
-<div class="line"><span class="lineno">  105</span> </div>
-<div class="line"><span class="lineno">  106</span>    err = <a class="code hl_function" href="#ab9a39208cc2b067b0b5df0a85d7b4b03">meshx_nvs_set</a>(</div>
-<div class="line"><span class="lineno">  107</span>        <a class="code hl_define" href="#a769b5d9d50ec4ea248258b60c6655af3">MESHX_NVS_NAMESPACE_PID</a>,</div>
-<div class="line"><span class="lineno">  108</span>        &amp;(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.pid),</div>
-<div class="line"><span class="lineno">  109</span>        <span class="keyword">sizeof</span>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.pid),</div>
-<div class="line"><span class="lineno">  110</span>        <a class="code hl_define" href="../../d3/d7d/meshx__nvs_8h.html#a91f60107d8e88cde2a5d1ad7d1cde084">MESHX_NVS_NO_AUTO_COMMIT</a>);</div>
-<div class="line"><span class="lineno">  111</span> </div>
-<div class="line"><span class="lineno">  112</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno">  113</span>    {</div>
-<div class="line"><span class="lineno">  114</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;meshx_nvs_set %p&quot;</span>, (<span class="keywordtype">void</span> *)err);</div>
-<div class="line"><span class="lineno">  115</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  116</span>    }</div>
-<div class="line"><span class="lineno">  117</span> </div>
-<div class="line"><span class="lineno">  118</span>    err = <a class="code hl_function" href="#ab9a39208cc2b067b0b5df0a85d7b4b03">meshx_nvs_set</a>(</div>
-<div class="line"><span class="lineno">  119</span>        <a class="code hl_define" href="#a812a64b0c69f3d7c6b6efbc522b41c3b">MESHX_NVS_NAMESPACE_CID</a>,</div>
-<div class="line"><span class="lineno">  120</span>        &amp;(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.cid),</div>
-<div class="line"><span class="lineno">  121</span>        <span class="keyword">sizeof</span>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.cid),</div>
-<div class="line"><span class="lineno">  122</span>        <a class="code hl_define" href="../../d3/d7d/meshx__nvs_8h.html#ae2cd2375171764414a17dc9b5a62041d">MESHX_NVS_AUTO_COMMIT</a>);</div>
-<div class="line"><span class="lineno">  123</span> </div>
-<div class="line"><span class="lineno">  124</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno">  125</span>    {</div>
-<div class="line"><span class="lineno">  126</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;meshx_nvs_set %p&quot;</span>, (<span class="keywordtype">void</span> *)err);</div>
-<div class="line"><span class="lineno">  127</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  128</span>    }</div>
-<div class="line"><span class="lineno">  129</span> </div>
-<div class="line"><span class="lineno">  130</span>    <a class="code hl_function" href="#adbf5f3a6e63cae605581b0f23b21345c">meshx_nvs_commit</a>();</div>
-<div class="line"><span class="lineno">  131</span> </div>
-<div class="line"><span class="lineno">  132</span>    <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  133</span>}</div>
-<div class="ttc" id="ameshx__nvs_8c_html_a769b5d9d50ec4ea248258b60c6655af3"><div class="ttname"><a href="#a769b5d9d50ec4ea248258b60c6655af3">MESHX_NVS_NAMESPACE_PID</a></div><div class="ttdeci">#define MESHX_NVS_NAMESPACE_PID</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:24</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_a812a64b0c69f3d7c6b6efbc522b41c3b"><div class="ttname"><a href="#a812a64b0c69f3d7c6b6efbc522b41c3b">MESHX_NVS_NAMESPACE_CID</a></div><div class="ttdeci">#define MESHX_NVS_NAMESPACE_CID</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:25</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_adedf15ddc47ab70982fa07092112ffd1"><div class="ttname"><a href="#adedf15ddc47ab70982fa07092112ffd1">meshx_nvs_erase</a></div><div class="ttdeci">meshx_err_t meshx_nvs_erase(void)</div><div class="ttdoc">Erase all key-value pairs stored in the NVS.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:260</div></div>
+<div class="fragment"><div class="line"><span class="lineno">   95</span>{</div>
+<div class="line"><span class="lineno">   96</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">   97</span>    err = <a class="code hl_function" href="#adedf15ddc47ab70982fa07092112ffd1">meshx_nvs_erase</a>();</div>
+<div class="line"><span class="lineno">   98</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno">   99</span>    {</div>
+<div class="line"><span class="lineno">  100</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;meshx_nvs_erase %p&quot;</span>, (<span class="keywordtype">void</span> *)err);</div>
+<div class="line"><span class="lineno">  101</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  102</span>    }</div>
+<div class="line"><span class="lineno">  103</span> </div>
+<div class="line"><span class="lineno">  104</span>    <a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.pid = pid;</div>
+<div class="line"><span class="lineno">  105</span>    <a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.cid = cid;</div>
+<div class="line"><span class="lineno">  106</span> </div>
+<div class="line"><span class="lineno">  107</span>    err = <a class="code hl_function" href="#ab9a39208cc2b067b0b5df0a85d7b4b03">meshx_nvs_set</a>(</div>
+<div class="line"><span class="lineno">  108</span>        <a class="code hl_define" href="#a769b5d9d50ec4ea248258b60c6655af3">MESHX_NVS_NAMESPACE_PID</a>,</div>
+<div class="line"><span class="lineno">  109</span>        &amp;(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.pid),</div>
+<div class="line"><span class="lineno">  110</span>        <span class="keyword">sizeof</span>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.pid),</div>
+<div class="line"><span class="lineno">  111</span>        <a class="code hl_define" href="../../d3/d7d/meshx__nvs_8h.html#a91f60107d8e88cde2a5d1ad7d1cde084">MESHX_NVS_NO_AUTO_COMMIT</a>);</div>
+<div class="line"><span class="lineno">  112</span> </div>
+<div class="line"><span class="lineno">  113</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno">  114</span>    {</div>
+<div class="line"><span class="lineno">  115</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;meshx_nvs_set %p&quot;</span>, (<span class="keywordtype">void</span> *)err);</div>
+<div class="line"><span class="lineno">  116</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  117</span>    }</div>
+<div class="line"><span class="lineno">  118</span> </div>
+<div class="line"><span class="lineno">  119</span>    err = <a class="code hl_function" href="#ab9a39208cc2b067b0b5df0a85d7b4b03">meshx_nvs_set</a>(</div>
+<div class="line"><span class="lineno">  120</span>        <a class="code hl_define" href="#a812a64b0c69f3d7c6b6efbc522b41c3b">MESHX_NVS_NAMESPACE_CID</a>,</div>
+<div class="line"><span class="lineno">  121</span>        &amp;(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.cid),</div>
+<div class="line"><span class="lineno">  122</span>        <span class="keyword">sizeof</span>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.cid),</div>
+<div class="line"><span class="lineno">  123</span>        <a class="code hl_define" href="../../d3/d7d/meshx__nvs_8h.html#ae2cd2375171764414a17dc9b5a62041d">MESHX_NVS_AUTO_COMMIT</a>);</div>
+<div class="line"><span class="lineno">  124</span> </div>
+<div class="line"><span class="lineno">  125</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno">  126</span>    {</div>
+<div class="line"><span class="lineno">  127</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;meshx_nvs_set %p&quot;</span>, (<span class="keywordtype">void</span> *)err);</div>
+<div class="line"><span class="lineno">  128</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  129</span>    }</div>
+<div class="line"><span class="lineno">  130</span> </div>
+<div class="line"><span class="lineno">  131</span>    <a class="code hl_function" href="#adbf5f3a6e63cae605581b0f23b21345c">meshx_nvs_commit</a>();</div>
+<div class="line"><span class="lineno">  132</span> </div>
+<div class="line"><span class="lineno">  133</span>    <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  134</span>}</div>
+<div class="ttc" id="ameshx__nvs_8c_html_a769b5d9d50ec4ea248258b60c6655af3"><div class="ttname"><a href="#a769b5d9d50ec4ea248258b60c6655af3">MESHX_NVS_NAMESPACE_PID</a></div><div class="ttdeci">#define MESHX_NVS_NAMESPACE_PID</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:25</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_a812a64b0c69f3d7c6b6efbc522b41c3b"><div class="ttname"><a href="#a812a64b0c69f3d7c6b6efbc522b41c3b">MESHX_NVS_NAMESPACE_CID</a></div><div class="ttdeci">#define MESHX_NVS_NAMESPACE_CID</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:26</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_adedf15ddc47ab70982fa07092112ffd1"><div class="ttname"><a href="#adedf15ddc47ab70982fa07092112ffd1">meshx_nvs_erase</a></div><div class="ttdeci">meshx_err_t meshx_nvs_erase(void)</div><div class="ttdoc">Erase all key-value pairs stored in the NVS.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:261</div></div>
 <div class="ttc" id="ameshx__nvs_8h_html_a91f60107d8e88cde2a5d1ad7d1cde084"><div class="ttname"><a href="../../d3/d7d/meshx__nvs_8h.html#a91f60107d8e88cde2a5d1ad7d1cde084">MESHX_NVS_NO_AUTO_COMMIT</a></div><div class="ttdeci">#define MESHX_NVS_NO_AUTO_COMMIT</div><div class="ttdef"><b>Definition</b> meshx_nvs.h:31</div></div>
 </div><!-- fragment -->
 </div>
@@ -863,11 +866,11 @@ Variables</h2></td></tr>
 <li>MESHX_SUCCESS: Success. </li>
 </ul>
 </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">  368</span>{</div>
-<div class="line"><span class="lineno">  369</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.init != <a class="code hl_define" href="#a51b36c822f93facc57ae18402884108f">MESHX_NVS_INIT_MAGIC</a>)</div>
-<div class="line"><span class="lineno">  370</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno">  371</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/d2d/meshx__nvs__interface_8h.html#a01998c5a615417f7fd4c8e3e6aa06a61">meshx_nvs_plat_read</a>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_handle, key, blob, blob_size);</div>
-<div class="line"><span class="lineno">  372</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  369</span>{</div>
+<div class="line"><span class="lineno">  370</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.init != <a class="code hl_define" href="#a51b36c822f93facc57ae18402884108f">MESHX_NVS_INIT_MAGIC</a>)</div>
+<div class="line"><span class="lineno">  371</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno">  372</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/d2d/meshx__nvs__interface_8h.html#a01998c5a615417f7fd4c8e3e6aa06a61">meshx_nvs_plat_read</a>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_handle, key, blob, blob_size);</div>
+<div class="line"><span class="lineno">  373</span>}</div>
 <div class="ttc" id="ameshx__nvs__interface_8h_html_a01998c5a615417f7fd4c8e3e6aa06a61"><div class="ttname"><a href="../../da/d2d/meshx__nvs__interface_8h.html#a01998c5a615417f7fd4c8e3e6aa06a61">meshx_nvs_plat_read</a></div><div class="ttdeci">meshx_err_t meshx_nvs_plat_read(uintptr_t p_nvs_handle, char const *key, uint8_t *p_data, uint16_t len)</div><div class="ttdoc">Read blob value for given key from non-volatile storage.</div></div>
 </div><!-- fragment -->
 </div>
@@ -892,30 +895,30 @@ Variables</h2></td></tr>
 <li>MESHX_SUCCESS: Success. </li>
 </ul>
 </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">  142</span>{</div>
-<div class="line"><span class="lineno">  143</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  144</span><span class="preprocessor">#if CONFIG_ENABLE_UNIT_TEST</span></div>
-<div class="line"><span class="lineno">  145</span>    err = <a class="code hl_function" href="../../d8/d5d/unit__test_8h.html#a763886d5c865bfc15d5693604c5f5923">register_unit_test</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, &amp;<a class="code hl_function" href="#af877bf8456b6217ae4cd642f29e85be6">meshx_nvs_unit_test_cb_handler</a>);</div>
-<div class="line"><span class="lineno">  146</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno">  147</span>    {</div>
-<div class="line"><span class="lineno">  148</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;unit_test reg failed: (%d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  149</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  150</span>    }</div>
-<div class="line"><span class="lineno">  151</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_ENABLE_UNIT_TEST */</span><span class="preprocessor"></span></div>
-<div class="line"><span class="lineno">  152</span> </div>
-<div class="line"><span class="lineno">  153</span>    err = <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#af31decf28c19d825be2987e5dca60b20">control_task_msg_subscribe</a>(<a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fa68f019e75dccd79cdddbe058a786ea12">CONTROL_TASK_MSG_CODE_SYSTEM</a>, <a class="code hl_variable" href="../../da/db3/meshx__control__task_8h.html#a2b4f60d6aefe44102a242e06de26f4f6">CONTROL_TASK_MSG_EVT_SYSTEM_NVS_COMMIT</a>, &amp;<a class="code hl_function" href="#a583e41a0de794c16c3d6ec739aa6a33a">meshx_nvs_control_msg_handler</a>);</div>
-<div class="line"><span class="lineno">  154</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno">  155</span>    {</div>
-<div class="line"><span class="lineno">  156</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;control_task_msg_subscribe failed: (%d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  157</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  158</span>    }</div>
-<div class="line"><span class="lineno">  159</span> </div>
-<div class="line"><span class="lineno">  160</span>    <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  161</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  143</span>{</div>
+<div class="line"><span class="lineno">  144</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  145</span><span class="preprocessor">#if CONFIG_ENABLE_UNIT_TEST</span></div>
+<div class="line"><span class="lineno">  146</span>    err = <a class="code hl_function" href="../../d8/d5d/unit__test_8h.html#a763886d5c865bfc15d5693604c5f5923">register_unit_test</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, &amp;<a class="code hl_function" href="#af877bf8456b6217ae4cd642f29e85be6">meshx_nvs_unit_test_cb_handler</a>);</div>
+<div class="line"><span class="lineno">  147</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno">  148</span>    {</div>
+<div class="line"><span class="lineno">  149</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;unit_test reg failed: (%d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  150</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  151</span>    }</div>
+<div class="line"><span class="lineno">  152</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_ENABLE_UNIT_TEST */</span><span class="preprocessor"></span></div>
+<div class="line"><span class="lineno">  153</span> </div>
+<div class="line"><span class="lineno">  154</span>    err = <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#af31decf28c19d825be2987e5dca60b20">control_task_msg_subscribe</a>(<a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fa68f019e75dccd79cdddbe058a786ea12">CONTROL_TASK_MSG_CODE_SYSTEM</a>, <a class="code hl_variable" href="../../da/db3/meshx__control__task_8h.html#a2b4f60d6aefe44102a242e06de26f4f6">CONTROL_TASK_MSG_EVT_SYSTEM_NVS_COMMIT</a>, &amp;<a class="code hl_function" href="#a583e41a0de794c16c3d6ec739aa6a33a">meshx_nvs_control_msg_handler</a>);</div>
+<div class="line"><span class="lineno">  155</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno">  156</span>    {</div>
+<div class="line"><span class="lineno">  157</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;control_task_msg_subscribe failed: (%d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  158</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  159</span>    }</div>
+<div class="line"><span class="lineno">  160</span> </div>
+<div class="line"><span class="lineno">  161</span>    <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  162</span>}</div>
 <div class="ttc" id="ameshx__control__task_8h_html_a6c7510c6dd8d40d223d385ec01eb631fa68f019e75dccd79cdddbe058a786ea12"><div class="ttname"><a href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fa68f019e75dccd79cdddbe058a786ea12">CONTROL_TASK_MSG_CODE_SYSTEM</a></div><div class="ttdeci">@ CONTROL_TASK_MSG_CODE_SYSTEM</div><div class="ttdef"><b>Definition</b> meshx_control_task.h:66</div></div>
 <div class="ttc" id="ameshx__control__task_8h_html_af31decf28c19d825be2987e5dca60b20"><div class="ttname"><a href="../../da/db3/meshx__control__task_8h.html#af31decf28c19d825be2987e5dca60b20">control_task_msg_subscribe</a></div><div class="ttdeci">meshx_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code, control_task_msg_evt_t evt_bmap, control_task_msg_handle_t callback)</div><div class="ttdoc">Subscribe to a control task message.</div><div class="ttdef"><b>Definition</b> meshx_control_task.c:142</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_a583e41a0de794c16c3d6ec739aa6a33a"><div class="ttname"><a href="#a583e41a0de794c16c3d6ec739aa6a33a">meshx_nvs_control_msg_handler</a></div><div class="ttdeci">static meshx_err_t meshx_nvs_control_msg_handler(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:58</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_af877bf8456b6217ae4cd642f29e85be6"><div class="ttname"><a href="#af877bf8456b6217ae4cd642f29e85be6">meshx_nvs_unit_test_cb_handler</a></div><div class="ttdeci">static meshx_err_t meshx_nvs_unit_test_cb_handler(int cmd_id, int argc, char **argv)</div><div class="ttdoc">Callback handler for MeshX NVS unit test command.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:533</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_a583e41a0de794c16c3d6ec739aa6a33a"><div class="ttname"><a href="#a583e41a0de794c16c3d6ec739aa6a33a">meshx_nvs_control_msg_handler</a></div><div class="ttdeci">static meshx_err_t meshx_nvs_control_msg_handler(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:59</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_af877bf8456b6217ae4cd642f29e85be6"><div class="ttname"><a href="#af877bf8456b6217ae4cd642f29e85be6">meshx_nvs_unit_test_cb_handler</a></div><div class="ttdeci">static meshx_err_t meshx_nvs_unit_test_cb_handler(int cmd_id, int argc, char **argv)</div><div class="ttdoc">Callback handler for MeshX NVS unit test command.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:535</div></div>
 <div class="ttc" id="aunit__test_8h_html_a763886d5c865bfc15d5693604c5f5923"><div class="ttname"><a href="../../d8/d5d/unit__test_8h.html#a763886d5c865bfc15d5693604c5f5923">register_unit_test</a></div><div class="ttdeci">meshx_err_t register_unit_test(module_id_t module_id, module_callback_t callback)</div><div class="ttdoc">Register a unit test for a specific module.</div><div class="ttdef"><b>Definition</b> unit_test.c:137</div></div>
 </div><!-- fragment -->
 </div>
@@ -959,83 +962,83 @@ Variables</h2></td></tr>
 <li>MESHX_SUCCESS: Success. </li>
 </ul>
 </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">  180</span>{</div>
-<div class="line"><span class="lineno">  181</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.init == <a class="code hl_define" href="#a51b36c822f93facc57ae18402884108f">MESHX_NVS_INIT_MAGIC</a>)</div>
-<div class="line"><span class="lineno">  182</span>    {</div>
-<div class="line"><span class="lineno">  183</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno">  184</span>    }</div>
-<div class="line"><span class="lineno">  185</span> </div>
-<div class="line"><span class="lineno">  186</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err;</div>
-<div class="line"><span class="lineno">  187</span> </div>
-<div class="line"><span class="lineno">  188</span>    err = <a class="code hl_function" href="../../da/d2d/meshx__nvs__interface_8h.html#a15b34ee0dff883205fa21a0594fc0c7c">meshx_nvs_plat_open</a>(&amp;(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_handle));</div>
-<div class="line"><span class="lineno">  189</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno">  190</span>    {</div>
-<div class="line"><span class="lineno">  191</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;nvs_open %p&quot;</span>, (<span class="keywordtype">void</span> *)err);</div>
-<div class="line"><span class="lineno">  192</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  193</span>    }</div>
-<div class="line"><span class="lineno">  194</span> </div>
-<div class="line"><span class="lineno">  195</span><span class="preprocessor">#if MESHX_NVS_TIMER_PERIOD</span></div>
-<div class="line"><span class="lineno">  196</span>    <span class="keywordflow">if</span>(commit_timeout_ms == 0)</div>
-<div class="line"><span class="lineno">  197</span>    {</div>
-<div class="line"><span class="lineno">  198</span>        commit_timeout_ms = <a class="code hl_define" href="../../d3/d7d/meshx__nvs_8h.html#acdfadbd307065f6c5dd40b608f03cd65">MESHX_NVS_TIMER_PERIOD</a>;</div>
-<div class="line"><span class="lineno">  199</span>    }</div>
-<div class="line"><span class="lineno">  200</span>    err = <a class="code hl_function" href="../../d8/d03/meshx__os__timer_8h.html#a59d86249c9c97227b869567af3b2cade">meshx_os_timer_create</a>(</div>
-<div class="line"><span class="lineno">  201</span>        <a class="code hl_define" href="#a76fc1c567b7691651d2265edbdabf01a">MESHX_NVS_TIMER_NAME</a>,</div>
-<div class="line"><span class="lineno">  202</span>        commit_timeout_ms,</div>
-<div class="line"><span class="lineno">  203</span>        <a class="code hl_define" href="#a6a6c9e3b4a2ffc92fb3aa4592f9dc56d">MESHX_NVS_RELOAD_ONE_SHOT</a>,</div>
-<div class="line"><span class="lineno">  204</span>        &amp;<a class="code hl_function" href="#a011e105e9bbec62e491ffaf132b8cc4b">meshx_nvs_os_timer_cb</a>,</div>
-<div class="line"><span class="lineno">  205</span>        &amp;(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_commit_tmr));</div>
-<div class="line"><span class="lineno">  206</span>    <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno">  207</span>    {</div>
-<div class="line"><span class="lineno">  208</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;os_timer_create %p&quot;</span>, (<span class="keywordtype">void</span> *)err);</div>
-<div class="line"><span class="lineno">  209</span>        <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  210</span>    }</div>
-<div class="line"><span class="lineno">  211</span><span class="preprocessor">#else</span></div>
-<div class="line"><span class="lineno">  212</span>    <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#a2aa59bde3a822db7e022cc4b70429d4f">MESHX_UNUSED</a>(commit_timeout_ms);</div>
-<div class="line"><span class="lineno">  213</span><span class="preprocessor">#endif </span><span class="comment">/* MESHX_NVS_TIMER_PERIOD */</span><span class="preprocessor"></span></div>
-<div class="line"><span class="lineno">  214</span> </div>
-<div class="line"><span class="lineno">  215</span>    <a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.init = <a class="code hl_define" href="#a51b36c822f93facc57ae18402884108f">MESHX_NVS_INIT_MAGIC</a>;</div>
-<div class="line"><span class="lineno">  216</span> </div>
-<div class="line"><span class="lineno">  217</span>    err = <a class="code hl_function" href="#ae36588f5b4ae5e5ac771e1af86a71e5a">meshx_nvs_get</a>(</div>
-<div class="line"><span class="lineno">  218</span>        <a class="code hl_define" href="#a812a64b0c69f3d7c6b6efbc522b41c3b">MESHX_NVS_NAMESPACE_CID</a>,</div>
-<div class="line"><span class="lineno">  219</span>            &amp;(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.cid),</div>
-<div class="line"><span class="lineno">  220</span>        <span class="keyword">sizeof</span>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.cid));</div>
-<div class="line"><span class="lineno">  221</span> </div>
-<div class="line"><span class="lineno">  222</span>    <span class="keywordflow">if</span> (err == <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>)</div>
-<div class="line"><span class="lineno">  223</span>    {</div>
-<div class="line"><span class="lineno">  224</span>        err = <a class="code hl_function" href="#ae36588f5b4ae5e5ac771e1af86a71e5a">meshx_nvs_get</a>(</div>
-<div class="line"><span class="lineno">  225</span>            <a class="code hl_define" href="#a769b5d9d50ec4ea248258b60c6655af3">MESHX_NVS_NAMESPACE_PID</a>,</div>
-<div class="line"><span class="lineno">  226</span>                &amp;(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.pid),</div>
-<div class="line"><span class="lineno">  227</span>            <span class="keyword">sizeof</span>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.pid));</div>
-<div class="line"><span class="lineno">  228</span>    }</div>
-<div class="line"><span class="lineno">  229</span> </div>
-<div class="line"><span class="lineno">  230</span>    <span class="keywordflow">if</span>(err != <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>)</div>
-<div class="line"><span class="lineno">  231</span>    {</div>
-<div class="line"><span class="lineno">  232</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a3df9f46a0a08969094d8eef3581409e8">MESHX_LOGW</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;Product ID not found in NVS reinitializing MeshX NVS (err: 0x%x)&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  233</span>        err = <a class="code hl_function" href="#ae32d182aaba6ab32994ae22debaa1d6f">meshx_nvs_erase_prod_init</a>(cid, pid);</div>
-<div class="line"><span class="lineno">  234</span>    }</div>
-<div class="line"><span class="lineno">  235</span> </div>
-<div class="line"><span class="lineno">  236</span>    <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  237</span>    {</div>
-<div class="line"><span class="lineno">  238</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.cid == cid &amp;&amp; <a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.pid == pid)</div>
-<div class="line"><span class="lineno">  239</span>        {</div>
-<div class="line"><span class="lineno">  240</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;Product ID match: %x|%x&quot;</span>, <a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.pid, <a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.cid);</div>
-<div class="line"><span class="lineno">  241</span>        }</div>
-<div class="line"><span class="lineno">  242</span>        <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  243</span>        {</div>
-<div class="line"><span class="lineno">  244</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a3df9f46a0a08969094d8eef3581409e8">MESHX_LOGW</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;Product ID mismatch: %x|%x (Expected: %x|%x)&quot;</span>, <a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.pid, <a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.cid, pid, cid);</div>
-<div class="line"><span class="lineno">  245</span>            err = <a class="code hl_function" href="#ae32d182aaba6ab32994ae22debaa1d6f">meshx_nvs_erase_prod_init</a>(cid, pid);</div>
-<div class="line"><span class="lineno">  246</span>        }</div>
-<div class="line"><span class="lineno">  247</span>    }</div>
-<div class="line"><span class="lineno">  248</span> </div>
-<div class="line"><span class="lineno">  249</span>    <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  250</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  181</span>{</div>
+<div class="line"><span class="lineno">  182</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.init == <a class="code hl_define" href="#a51b36c822f93facc57ae18402884108f">MESHX_NVS_INIT_MAGIC</a>)</div>
+<div class="line"><span class="lineno">  183</span>    {</div>
+<div class="line"><span class="lineno">  184</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno">  185</span>    }</div>
+<div class="line"><span class="lineno">  186</span> </div>
+<div class="line"><span class="lineno">  187</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err;</div>
+<div class="line"><span class="lineno">  188</span> </div>
+<div class="line"><span class="lineno">  189</span>    err = <a class="code hl_function" href="../../da/d2d/meshx__nvs__interface_8h.html#a15b34ee0dff883205fa21a0594fc0c7c">meshx_nvs_plat_open</a>(&amp;(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_handle));</div>
+<div class="line"><span class="lineno">  190</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno">  191</span>    {</div>
+<div class="line"><span class="lineno">  192</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;nvs_open %p&quot;</span>, (<span class="keywordtype">void</span> *)err);</div>
+<div class="line"><span class="lineno">  193</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  194</span>    }</div>
+<div class="line"><span class="lineno">  195</span> </div>
+<div class="line"><span class="lineno">  196</span><span class="preprocessor">#if MESHX_NVS_TIMER_PERIOD</span></div>
+<div class="line"><span class="lineno">  197</span>    <span class="keywordflow">if</span>(commit_timeout_ms == 0)</div>
+<div class="line"><span class="lineno">  198</span>    {</div>
+<div class="line"><span class="lineno">  199</span>        commit_timeout_ms = <a class="code hl_define" href="../../d3/d7d/meshx__nvs_8h.html#acdfadbd307065f6c5dd40b608f03cd65">MESHX_NVS_TIMER_PERIOD</a>;</div>
+<div class="line"><span class="lineno">  200</span>    }</div>
+<div class="line"><span class="lineno">  201</span>    err = <a class="code hl_function" href="../../d8/d03/meshx__os__timer_8h.html#a59d86249c9c97227b869567af3b2cade">meshx_os_timer_create</a>(</div>
+<div class="line"><span class="lineno">  202</span>        <a class="code hl_define" href="#a76fc1c567b7691651d2265edbdabf01a">MESHX_NVS_TIMER_NAME</a>,</div>
+<div class="line"><span class="lineno">  203</span>        commit_timeout_ms,</div>
+<div class="line"><span class="lineno">  204</span>        <a class="code hl_define" href="#a6a6c9e3b4a2ffc92fb3aa4592f9dc56d">MESHX_NVS_RELOAD_ONE_SHOT</a>,</div>
+<div class="line"><span class="lineno">  205</span>        &amp;<a class="code hl_function" href="#a011e105e9bbec62e491ffaf132b8cc4b">meshx_nvs_os_timer_cb</a>,</div>
+<div class="line"><span class="lineno">  206</span>        &amp;(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_commit_tmr));</div>
+<div class="line"><span class="lineno">  207</span>    <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno">  208</span>    {</div>
+<div class="line"><span class="lineno">  209</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;os_timer_create %p&quot;</span>, (<span class="keywordtype">void</span> *)err);</div>
+<div class="line"><span class="lineno">  210</span>        <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  211</span>    }</div>
+<div class="line"><span class="lineno">  212</span><span class="preprocessor">#else</span></div>
+<div class="line"><span class="lineno">  213</span>    <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#a2aa59bde3a822db7e022cc4b70429d4f">MESHX_UNUSED</a>(commit_timeout_ms);</div>
+<div class="line"><span class="lineno">  214</span><span class="preprocessor">#endif </span><span class="comment">/* MESHX_NVS_TIMER_PERIOD */</span><span class="preprocessor"></span></div>
+<div class="line"><span class="lineno">  215</span> </div>
+<div class="line"><span class="lineno">  216</span>    <a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.init = <a class="code hl_define" href="#a51b36c822f93facc57ae18402884108f">MESHX_NVS_INIT_MAGIC</a>;</div>
+<div class="line"><span class="lineno">  217</span> </div>
+<div class="line"><span class="lineno">  218</span>    err = <a class="code hl_function" href="#ae36588f5b4ae5e5ac771e1af86a71e5a">meshx_nvs_get</a>(</div>
+<div class="line"><span class="lineno">  219</span>        <a class="code hl_define" href="#a812a64b0c69f3d7c6b6efbc522b41c3b">MESHX_NVS_NAMESPACE_CID</a>,</div>
+<div class="line"><span class="lineno">  220</span>            &amp;(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.cid),</div>
+<div class="line"><span class="lineno">  221</span>        <span class="keyword">sizeof</span>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.cid));</div>
+<div class="line"><span class="lineno">  222</span> </div>
+<div class="line"><span class="lineno">  223</span>    <span class="keywordflow">if</span> (err == <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>)</div>
+<div class="line"><span class="lineno">  224</span>    {</div>
+<div class="line"><span class="lineno">  225</span>        err = <a class="code hl_function" href="#ae36588f5b4ae5e5ac771e1af86a71e5a">meshx_nvs_get</a>(</div>
+<div class="line"><span class="lineno">  226</span>            <a class="code hl_define" href="#a769b5d9d50ec4ea248258b60c6655af3">MESHX_NVS_NAMESPACE_PID</a>,</div>
+<div class="line"><span class="lineno">  227</span>                &amp;(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.pid),</div>
+<div class="line"><span class="lineno">  228</span>            <span class="keyword">sizeof</span>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.pid));</div>
+<div class="line"><span class="lineno">  229</span>    }</div>
+<div class="line"><span class="lineno">  230</span> </div>
+<div class="line"><span class="lineno">  231</span>    <span class="keywordflow">if</span>(err != <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>)</div>
+<div class="line"><span class="lineno">  232</span>    {</div>
+<div class="line"><span class="lineno">  233</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a3df9f46a0a08969094d8eef3581409e8">MESHX_LOGW</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;Product ID not found in NVS reinitializing MeshX NVS (err: 0x%x)&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  234</span>        err = <a class="code hl_function" href="#ae32d182aaba6ab32994ae22debaa1d6f">meshx_nvs_erase_prod_init</a>(cid, pid);</div>
+<div class="line"><span class="lineno">  235</span>    }</div>
+<div class="line"><span class="lineno">  236</span> </div>
+<div class="line"><span class="lineno">  237</span>    <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  238</span>    {</div>
+<div class="line"><span class="lineno">  239</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.cid == cid &amp;&amp; <a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.pid == pid)</div>
+<div class="line"><span class="lineno">  240</span>        {</div>
+<div class="line"><span class="lineno">  241</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;Product ID match: %x|%x&quot;</span>, <a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.pid, <a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.cid);</div>
+<div class="line"><span class="lineno">  242</span>        }</div>
+<div class="line"><span class="lineno">  243</span>        <span class="keywordflow">else</span></div>
+<div class="line"><span class="lineno">  244</span>        {</div>
+<div class="line"><span class="lineno">  245</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a3df9f46a0a08969094d8eef3581409e8">MESHX_LOGW</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;Product ID mismatch: %x|%x (Expected: %x|%x)&quot;</span>, <a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.pid, <a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.cid, pid, cid);</div>
+<div class="line"><span class="lineno">  246</span>            err = <a class="code hl_function" href="#ae32d182aaba6ab32994ae22debaa1d6f">meshx_nvs_erase_prod_init</a>(cid, pid);</div>
+<div class="line"><span class="lineno">  247</span>        }</div>
+<div class="line"><span class="lineno">  248</span>    }</div>
+<div class="line"><span class="lineno">  249</span> </div>
+<div class="line"><span class="lineno">  250</span>    <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  251</span>}</div>
 <div class="ttc" id="ameshx__err_8h_html_a2aa59bde3a822db7e022cc4b70429d4f"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a2aa59bde3a822db7e022cc4b70429d4f">MESHX_UNUSED</a></div><div class="ttdeci">#define MESHX_UNUSED(x)</div><div class="ttdef"><b>Definition</b> meshx_err.h:19</div></div>
-<div class="ttc" id="ameshx__log_8h_html_a3df9f46a0a08969094d8eef3581409e8"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a3df9f46a0a08969094d8eef3581409e8">MESHX_LOGW</a></div><div class="ttdeci">#define MESHX_LOGW(module_id, format,...)</div><div class="ttdef"><b>Definition</b> meshx_log.h:110</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_a011e105e9bbec62e491ffaf132b8cc4b"><div class="ttname"><a href="#a011e105e9bbec62e491ffaf132b8cc4b">meshx_nvs_os_timer_cb</a></div><div class="ttdeci">static void meshx_nvs_os_timer_cb(const meshx_os_timer_t *p_timer)</div><div class="ttdoc">MeshX NVS Timer callback.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:73</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_a6a6c9e3b4a2ffc92fb3aa4592f9dc56d"><div class="ttname"><a href="#a6a6c9e3b4a2ffc92fb3aa4592f9dc56d">MESHX_NVS_RELOAD_ONE_SHOT</a></div><div class="ttdeci">#define MESHX_NVS_RELOAD_ONE_SHOT</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:28</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_a76fc1c567b7691651d2265edbdabf01a"><div class="ttname"><a href="#a76fc1c567b7691651d2265edbdabf01a">MESHX_NVS_TIMER_NAME</a></div><div class="ttdeci">#define MESHX_NVS_TIMER_NAME</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:26</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_ae32d182aaba6ab32994ae22debaa1d6f"><div class="ttname"><a href="#ae32d182aaba6ab32994ae22debaa1d6f">meshx_nvs_erase_prod_init</a></div><div class="ttdeci">static meshx_err_t meshx_nvs_erase_prod_init(uint16_t cid, uint16_t pid)</div><div class="ttdoc">Erase the NVS and set the product ID.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:93</div></div>
+<div class="ttc" id="ameshx__log_8h_html_a3df9f46a0a08969094d8eef3581409e8"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a3df9f46a0a08969094d8eef3581409e8">MESHX_LOGW</a></div><div class="ttdeci">#define MESHX_LOGW(module_id, format,...)</div><div class="ttdef"><b>Definition</b> meshx_log.h:120</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_a011e105e9bbec62e491ffaf132b8cc4b"><div class="ttname"><a href="#a011e105e9bbec62e491ffaf132b8cc4b">meshx_nvs_os_timer_cb</a></div><div class="ttdeci">static void meshx_nvs_os_timer_cb(const meshx_os_timer_t *p_timer)</div><div class="ttdoc">MeshX NVS Timer callback.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:74</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_a6a6c9e3b4a2ffc92fb3aa4592f9dc56d"><div class="ttname"><a href="#a6a6c9e3b4a2ffc92fb3aa4592f9dc56d">MESHX_NVS_RELOAD_ONE_SHOT</a></div><div class="ttdeci">#define MESHX_NVS_RELOAD_ONE_SHOT</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:29</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_a76fc1c567b7691651d2265edbdabf01a"><div class="ttname"><a href="#a76fc1c567b7691651d2265edbdabf01a">MESHX_NVS_TIMER_NAME</a></div><div class="ttdeci">#define MESHX_NVS_TIMER_NAME</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:27</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_ae32d182aaba6ab32994ae22debaa1d6f"><div class="ttname"><a href="#ae32d182aaba6ab32994ae22debaa1d6f">meshx_nvs_erase_prod_init</a></div><div class="ttdeci">static meshx_err_t meshx_nvs_erase_prod_init(uint16_t cid, uint16_t pid)</div><div class="ttdoc">Erase the NVS and set the product ID.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:94</div></div>
 <div class="ttc" id="ameshx__nvs_8h_html_acdfadbd307065f6c5dd40b608f03cd65"><div class="ttname"><a href="../../d3/d7d/meshx__nvs_8h.html#acdfadbd307065f6c5dd40b608f03cd65">MESHX_NVS_TIMER_PERIOD</a></div><div class="ttdeci">#define MESHX_NVS_TIMER_PERIOD</div><div class="ttdef"><b>Definition</b> meshx_nvs.h:27</div></div>
 <div class="ttc" id="ameshx__nvs__interface_8h_html_a15b34ee0dff883205fa21a0594fc0c7c"><div class="ttname"><a href="../../da/d2d/meshx__nvs__interface_8h.html#a15b34ee0dff883205fa21a0594fc0c7c">meshx_nvs_plat_open</a></div><div class="ttdeci">meshx_err_t meshx_nvs_plat_open(uintptr_t *p_nvs_handle)</div><div class="ttdoc">Open non-volatile storage with a given namespace from the default partition.</div></div>
 <div class="ttc" id="ameshx__os__timer_8h_html_a59d86249c9c97227b869567af3b2cade"><div class="ttname"><a href="../../d8/d03/meshx__os__timer_8h.html#a59d86249c9c97227b869567af3b2cade">meshx_os_timer_create</a></div><div class="ttdeci">meshx_err_t meshx_os_timer_create(const char *name, uint32_t period, bool reload, meshx_os_timer_cb_t cb, meshx_os_timer_t **timer_handle)</div><div class="ttdoc">Create a timer.</div><div class="ttdef"><b>Definition</b> meshx_os_timer.c:264</div></div>
@@ -1073,12 +1076,12 @@ Variables</h2></td></tr>
   </table>
   </dd>
 </dl>
-<div class="fragment"><div class="line"><span class="lineno">   74</span>{</div>
-<div class="line"><span class="lineno">   75</span>    <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#a2aa59bde3a822db7e022cc4b70429d4f">MESHX_UNUSED</a>(p_timer);</div>
-<div class="line"><span class="lineno">   76</span>    <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;%s fire -&gt; Offloading commit to control task&quot;</span>, <a class="code hl_define" href="../../d8/d03/meshx__os__timer_8h.html#adb0ba77bc857e8f6bfec9be2081d5370">OS_TMER_GET_TIMER_NAME</a>(p_timer));</div>
-<div class="line"><span class="lineno">   77</span> </div>
-<div class="line"><span class="lineno">   78</span>    <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#acc911e8c9467e5f4e224be56b1888e68">control_task_msg_publish</a>(<a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fa68f019e75dccd79cdddbe058a786ea12">CONTROL_TASK_MSG_CODE_SYSTEM</a>, <a class="code hl_variable" href="../../da/db3/meshx__control__task_8h.html#a2b4f60d6aefe44102a242e06de26f4f6">CONTROL_TASK_MSG_EVT_SYSTEM_NVS_COMMIT</a>, NULL, 0);</div>
-<div class="line"><span class="lineno">   79</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">   75</span>{</div>
+<div class="line"><span class="lineno">   76</span>    <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#a2aa59bde3a822db7e022cc4b70429d4f">MESHX_UNUSED</a>(p_timer);</div>
+<div class="line"><span class="lineno">   77</span>    <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;%s fire -&gt; Offloading commit to control task&quot;</span>, <a class="code hl_define" href="../../d8/d03/meshx__os__timer_8h.html#adb0ba77bc857e8f6bfec9be2081d5370">OS_TMER_GET_TIMER_NAME</a>(p_timer));</div>
+<div class="line"><span class="lineno">   78</span> </div>
+<div class="line"><span class="lineno">   79</span>    <a class="code hl_function" href="../../da/db3/meshx__control__task_8h.html#acc911e8c9467e5f4e224be56b1888e68">control_task_msg_publish</a>(<a class="code hl_enumvalue" href="../../da/db3/meshx__control__task_8h.html#a6c7510c6dd8d40d223d385ec01eb631fa68f019e75dccd79cdddbe058a786ea12">CONTROL_TASK_MSG_CODE_SYSTEM</a>, <a class="code hl_variable" href="../../da/db3/meshx__control__task_8h.html#a2b4f60d6aefe44102a242e06de26f4f6">CONTROL_TASK_MSG_EVT_SYSTEM_NVS_COMMIT</a>, NULL, 0);</div>
+<div class="line"><span class="lineno">   80</span>}</div>
 <div class="ttc" id="ameshx__control__task_8h_html_acc911e8c9467e5f4e224be56b1888e68"><div class="ttname"><a href="../../da/db3/meshx__control__task_8h.html#acc911e8c9467e5f4e224be56b1888e68">control_task_msg_publish</a></div><div class="ttdeci">meshx_err_t control_task_msg_publish(control_task_msg_code_t msg_code, control_task_msg_evt_t msg_evt, const void *msg_evt_params, size_t sizeof_msg_evt_params)</div><div class="ttdoc">Publish a control task message.</div><div class="ttdef"><b>Definition</b> meshx_control_task.c:84</div></div>
 <div class="ttc" id="ameshx__os__timer_8h_html_adb0ba77bc857e8f6bfec9be2081d5370"><div class="ttname"><a href="../../d8/d03/meshx__os__timer_8h.html#adb0ba77bc857e8f6bfec9be2081d5370">OS_TMER_GET_TIMER_NAME</a></div><div class="ttdeci">#define OS_TMER_GET_TIMER_NAME(timer)</div><div class="ttdoc">return timer registered name pointer</div><div class="ttdef"><b>Definition</b> meshx_os_timer.h:29</div></div>
 </div><!-- fragment -->
@@ -1111,12 +1114,12 @@ Variables</h2></td></tr>
 <li>MESHX_SUCCESS: Success. </li>
 </ul>
 </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">  348</span>{</div>
-<div class="line"><span class="lineno">  349</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.init != <a class="code hl_define" href="#a51b36c822f93facc57ae18402884108f">MESHX_NVS_INIT_MAGIC</a>)</div>
-<div class="line"><span class="lineno">  350</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno">  351</span> </div>
-<div class="line"><span class="lineno">  352</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/d2d/meshx__nvs__interface_8h.html#ac4731c0a5821db05dfc78f395caf73dd">meshx_nvs_plat_remove</a>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_handle, key);</div>
-<div class="line"><span class="lineno">  353</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  349</span>{</div>
+<div class="line"><span class="lineno">  350</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.init != <a class="code hl_define" href="#a51b36c822f93facc57ae18402884108f">MESHX_NVS_INIT_MAGIC</a>)</div>
+<div class="line"><span class="lineno">  351</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno">  352</span> </div>
+<div class="line"><span class="lineno">  353</span>    <span class="keywordflow">return</span> <a class="code hl_function" href="../../da/d2d/meshx__nvs__interface_8h.html#ac4731c0a5821db05dfc78f395caf73dd">meshx_nvs_plat_remove</a>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_handle, key);</div>
+<div class="line"><span class="lineno">  354</span>}</div>
 <div class="ttc" id="ameshx__nvs__interface_8h_html_ac4731c0a5821db05dfc78f395caf73dd"><div class="ttname"><a href="../../da/d2d/meshx__nvs__interface_8h.html#ac4731c0a5821db05dfc78f395caf73dd">meshx_nvs_plat_remove</a></div><div class="ttdeci">meshx_err_t meshx_nvs_plat_remove(uintptr_t p_nvs_handle, char const *key)</div><div class="ttdoc">Remove a key-value pair from the non-volatile storage with a given key and namespace.</div></div>
 </div><!-- fragment -->
 </div>
@@ -1165,55 +1168,55 @@ Variables</h2></td></tr>
 <li>MESHX_SUCCESS: Success. </li>
 </ul>
 </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">  388</span>{</div>
-<div class="line"><span class="lineno">  389</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.init != <a class="code hl_define" href="#a51b36c822f93facc57ae18402884108f">MESHX_NVS_INIT_MAGIC</a>)</div>
-<div class="line"><span class="lineno">  390</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
-<div class="line"><span class="lineno">  391</span> </div>
-<div class="line"><span class="lineno">  392</span>    <span class="keywordflow">if</span> (blob_size &gt; <a class="code hl_define" href="#aa31283cdee0da47b3779356c03ff794d">MESHX_KEY_VALUE_MAX_SIZE</a>)</div>
-<div class="line"><span class="lineno">  393</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
-<div class="line"><span class="lineno">  394</span> </div>
-<div class="line"><span class="lineno">  395</span>    <span class="comment">// Check if key already exists in list → overwrite instead of duplicate</span></div>
-<div class="line"><span class="lineno">  396</span>    <a class="code hl_typedef" href="#ab07aa851c1eab788da9fc6594a17c8b1">meshx_nvs_write_list_t</a> *cur = <a class="code hl_variable" href="#ac95f13ed9cb5133d51c72830a7a860ca">meshx_nvs_write_list_head</a>;</div>
-<div class="line"><span class="lineno">  397</span>    <span class="keywordflow">while</span> (cur) {</div>
-<div class="line"><span class="lineno">  398</span>        <span class="keywordflow">if</span> (strncmp(cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#a31c7cdcc35a95eeb1aceb234aed01cbf">key</a>, key, <a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a>-1) == 0)</div>
-<div class="line"><span class="lineno">  399</span>        {</div>
-<div class="line"><span class="lineno">  400</span>            cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#a31c7cdcc35a95eeb1aceb234aed01cbf">key</a>[<a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a> - 1] = <span class="charliteral">&#39;\0&#39;</span>;</div>
-<div class="line"><span class="lineno">  401</span>            memcpy(cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#aed27c6422d4a11b6d1de31465802bf19">data</a>, blob, blob_size);</div>
-<div class="line"><span class="lineno">  402</span>            cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#afaf0a745d11ed19da9dfe2d8d6b7d607">len</a> = blob_size;</div>
-<div class="line"><span class="lineno">  403</span>            <span class="keywordflow">goto</span> restart_timer;  <span class="comment">// skip new node alloc</span></div>
-<div class="line"><span class="lineno">  404</span>        }</div>
-<div class="line"><span class="lineno">  405</span>        cur = cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#a145b4b7296716b7d8912bfd603ad23b2">next</a>;</div>
-<div class="line"><span class="lineno">  406</span>    }</div>
-<div class="line"><span class="lineno">  407</span> </div>
-<div class="line"><span class="lineno">  408</span>    <span class="comment">// Allocate new node</span></div>
-<div class="line"><span class="lineno">  409</span>    <a class="code hl_typedef" href="#ab07aa851c1eab788da9fc6594a17c8b1">meshx_nvs_write_list_t</a> *node = malloc(<span class="keyword">sizeof</span>(<a class="code hl_typedef" href="#ab07aa851c1eab788da9fc6594a17c8b1">meshx_nvs_write_list_t</a>));</div>
-<div class="line"><span class="lineno">  410</span>    <span class="keywordflow">if</span> (!node) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ad805de8202860d5657dc396e4b00aefe">MESHX_NO_MEM</a>;</div>
-<div class="line"><span class="lineno">  411</span> </div>
-<div class="line"><span class="lineno">  412</span>    strncpy(node-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#a31c7cdcc35a95eeb1aceb234aed01cbf">key</a>, key, <a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a>);</div>
-<div class="line"><span class="lineno">  413</span>    memcpy(node-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#aed27c6422d4a11b6d1de31465802bf19">data</a>, blob, blob_size);</div>
-<div class="line"><span class="lineno">  414</span>    node-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#afaf0a745d11ed19da9dfe2d8d6b7d607">len</a> = blob_size;</div>
-<div class="line"><span class="lineno">  415</span>    node-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#a145b4b7296716b7d8912bfd603ad23b2">next</a> = <a class="code hl_variable" href="#ac95f13ed9cb5133d51c72830a7a860ca">meshx_nvs_write_list_head</a>;</div>
-<div class="line"><span class="lineno">  416</span>    <a class="code hl_variable" href="#ac95f13ed9cb5133d51c72830a7a860ca">meshx_nvs_write_list_head</a> = node;</div>
-<div class="line"><span class="lineno">  417</span> </div>
-<div class="line"><span class="lineno">  418</span>restart_timer:</div>
-<div class="line"><span class="lineno">  419</span>    <span class="keywordflow">if</span> (arm_timer)</div>
-<div class="line"><span class="lineno">  420</span>    {</div>
-<div class="line"><span class="lineno">  421</span><span class="preprocessor">#if MESHX_NVS_TIMER_PERIOD</span></div>
-<div class="line"><span class="lineno">  422</span>        <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_function" href="../../d8/d03/meshx__os__timer_8h.html#a63e6c1a15d1a30d41dc704c131a27062">meshx_os_timer_restart</a>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_commit_tmr);</div>
-<div class="line"><span class="lineno">  423</span>        <span class="keywordflow">if</span> (err)</div>
-<div class="line"><span class="lineno">  424</span>        {</div>
-<div class="line"><span class="lineno">  425</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;meshx_os_timer_restart failed: (%d)&quot;</span>, err);</div>
-<div class="line"><span class="lineno">  426</span>        }</div>
-<div class="line"><span class="lineno">  427</span><span class="preprocessor">#else</span></div>
-<div class="line"><span class="lineno">  428</span>        <a class="code hl_function" href="#adbf5f3a6e63cae605581b0f23b21345c">meshx_nvs_commit</a>();</div>
-<div class="line"><span class="lineno">  429</span><span class="preprocessor">#endif </span><span class="comment">/* MESHX_NVS_TIMER_PERIOD */</span><span class="preprocessor"></span></div>
-<div class="line"><span class="lineno">  430</span>    }</div>
-<div class="line"><span class="lineno">  431</span> </div>
-<div class="line"><span class="lineno">  432</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  433</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  389</span>{</div>
+<div class="line"><span class="lineno">  390</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.init != <a class="code hl_define" href="#a51b36c822f93facc57ae18402884108f">MESHX_NVS_INIT_MAGIC</a>)</div>
+<div class="line"><span class="lineno">  391</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ac6901494c24d156734f0069805b6cd72">MESHX_INVALID_STATE</a>;</div>
+<div class="line"><span class="lineno">  392</span> </div>
+<div class="line"><span class="lineno">  393</span>    <span class="keywordflow">if</span> (blob_size &gt; <a class="code hl_define" href="#aa31283cdee0da47b3779356c03ff794d">MESHX_KEY_VALUE_MAX_SIZE</a>)</div>
+<div class="line"><span class="lineno">  394</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<div class="line"><span class="lineno">  395</span> </div>
+<div class="line"><span class="lineno">  396</span>    <span class="comment">// Check if key already exists in list → overwrite instead of duplicate</span></div>
+<div class="line"><span class="lineno">  397</span>    <a class="code hl_typedef" href="#ab07aa851c1eab788da9fc6594a17c8b1">meshx_nvs_write_list_t</a> *cur = <a class="code hl_variable" href="#ac95f13ed9cb5133d51c72830a7a860ca">meshx_nvs_write_list_head</a>;</div>
+<div class="line"><span class="lineno">  398</span>    <span class="keywordflow">while</span> (cur) {</div>
+<div class="line"><span class="lineno">  399</span>        <span class="keywordflow">if</span> (strncmp(cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#a31c7cdcc35a95eeb1aceb234aed01cbf">key</a>, key, <a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a>-1) == 0)</div>
+<div class="line"><span class="lineno">  400</span>        {</div>
+<div class="line"><span class="lineno">  401</span>            cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#a31c7cdcc35a95eeb1aceb234aed01cbf">key</a>[<a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a> - 1] = <span class="charliteral">&#39;\0&#39;</span>;</div>
+<div class="line"><span class="lineno">  402</span>            memcpy(cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#aed27c6422d4a11b6d1de31465802bf19">data</a>, blob, blob_size);</div>
+<div class="line"><span class="lineno">  403</span>            cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#afaf0a745d11ed19da9dfe2d8d6b7d607">len</a> = blob_size;</div>
+<div class="line"><span class="lineno">  404</span>            <span class="keywordflow">goto</span> restart_timer;  <span class="comment">// skip new node alloc</span></div>
+<div class="line"><span class="lineno">  405</span>        }</div>
+<div class="line"><span class="lineno">  406</span>        cur = cur-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#a145b4b7296716b7d8912bfd603ad23b2">next</a>;</div>
+<div class="line"><span class="lineno">  407</span>    }</div>
+<div class="line"><span class="lineno">  408</span> </div>
+<div class="line"><span class="lineno">  409</span>    <span class="comment">// Allocate new node</span></div>
+<div class="line"><span class="lineno">  410</span>    <a class="code hl_typedef" href="#ab07aa851c1eab788da9fc6594a17c8b1">meshx_nvs_write_list_t</a> *node = malloc(<span class="keyword">sizeof</span>(<a class="code hl_typedef" href="#ab07aa851c1eab788da9fc6594a17c8b1">meshx_nvs_write_list_t</a>));</div>
+<div class="line"><span class="lineno">  411</span>    <span class="keywordflow">if</span> (!node) <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ad805de8202860d5657dc396e4b00aefe">MESHX_NO_MEM</a>;</div>
+<div class="line"><span class="lineno">  412</span> </div>
+<div class="line"><span class="lineno">  413</span>    strncpy(node-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#a31c7cdcc35a95eeb1aceb234aed01cbf">key</a>, key, <a class="code hl_define" href="#a5016982913764b01e071a775c6dede36">MESHX_KEY_NAME_MAX_SIZE</a>);</div>
+<div class="line"><span class="lineno">  414</span>    memcpy(node-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#aed27c6422d4a11b6d1de31465802bf19">data</a>, blob, blob_size);</div>
+<div class="line"><span class="lineno">  415</span>    node-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#afaf0a745d11ed19da9dfe2d8d6b7d607">len</a> = blob_size;</div>
+<div class="line"><span class="lineno">  416</span>    node-&gt;<a class="code hl_variable" href="../../d1/d11/structmeshx__nvs__write__list.html#a145b4b7296716b7d8912bfd603ad23b2">next</a> = <a class="code hl_variable" href="#ac95f13ed9cb5133d51c72830a7a860ca">meshx_nvs_write_list_head</a>;</div>
+<div class="line"><span class="lineno">  417</span>    <a class="code hl_variable" href="#ac95f13ed9cb5133d51c72830a7a860ca">meshx_nvs_write_list_head</a> = node;</div>
+<div class="line"><span class="lineno">  418</span> </div>
+<div class="line"><span class="lineno">  419</span>restart_timer:</div>
+<div class="line"><span class="lineno">  420</span>    <span class="keywordflow">if</span> (arm_timer)</div>
+<div class="line"><span class="lineno">  421</span>    {</div>
+<div class="line"><span class="lineno">  422</span><span class="preprocessor">#if MESHX_NVS_TIMER_PERIOD</span></div>
+<div class="line"><span class="lineno">  423</span>        <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_function" href="../../d8/d03/meshx__os__timer_8h.html#a63e6c1a15d1a30d41dc704c131a27062">meshx_os_timer_restart</a>(<a class="code hl_variable" href="#aaa01c7f0be8d3218cc846e565c6b8e23">meshx_nvs_inst</a>.meshx_nvs_commit_tmr);</div>
+<div class="line"><span class="lineno">  424</span>        <span class="keywordflow">if</span> (err)</div>
+<div class="line"><span class="lineno">  425</span>        {</div>
+<div class="line"><span class="lineno">  426</span>            <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;meshx_os_timer_restart failed: (%d)&quot;</span>, err);</div>
+<div class="line"><span class="lineno">  427</span>        }</div>
+<div class="line"><span class="lineno">  428</span><span class="preprocessor">#else</span></div>
+<div class="line"><span class="lineno">  429</span>        <a class="code hl_function" href="#adbf5f3a6e63cae605581b0f23b21345c">meshx_nvs_commit</a>();</div>
+<div class="line"><span class="lineno">  430</span><span class="preprocessor">#endif </span><span class="comment">/* MESHX_NVS_TIMER_PERIOD */</span><span class="preprocessor"></span></div>
+<div class="line"><span class="lineno">  431</span>    }</div>
+<div class="line"><span class="lineno">  432</span> </div>
+<div class="line"><span class="lineno">  433</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  434</span>}</div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a></div><div class="ttdeci">@ MESHX_INVALID_ARG</div><div class="ttdef"><b>Definition</b> meshx_err.h:46</div></div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6ad805de8202860d5657dc396e4b00aefe"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6ad805de8202860d5657dc396e4b00aefe">MESHX_NO_MEM</a></div><div class="ttdeci">@ MESHX_NO_MEM</div><div class="ttdef"><b>Definition</b> meshx_err.h:48</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_aa31283cdee0da47b3779356c03ff794d"><div class="ttname"><a href="#aa31283cdee0da47b3779356c03ff794d">MESHX_KEY_VALUE_MAX_SIZE</a></div><div class="ttdeci">#define MESHX_KEY_VALUE_MAX_SIZE</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:30</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_aa31283cdee0da47b3779356c03ff794d"><div class="ttname"><a href="#aa31283cdee0da47b3779356c03ff794d">MESHX_KEY_VALUE_MAX_SIZE</a></div><div class="ttdeci">#define MESHX_KEY_VALUE_MAX_SIZE</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:31</div></div>
 <div class="ttc" id="ameshx__os__timer_8h_html_a63e6c1a15d1a30d41dc704c131a27062"><div class="ttname"><a href="../../d8/d03/meshx__os__timer_8h.html#a63e6c1a15d1a30d41dc704c131a27062">meshx_os_timer_restart</a></div><div class="ttdeci">meshx_err_t meshx_os_timer_restart(const meshx_os_timer_t *timer_handle)</div><div class="ttdoc">Restart a timer.</div><div class="ttdef"><b>Definition</b> meshx_os_timer.c:340</div></div>
 </div><!-- fragment -->
 </div>
@@ -1266,59 +1269,59 @@ Variables</h2></td></tr>
 <li>Other error codes depending on the implementation </li>
 </ul>
 </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">  534</span>{</div>
-<div class="line"><span class="lineno">  535</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  536</span>    uint32_t ut_blob = 0xDEAD;</div>
-<div class="line"><span class="lineno">  537</span>    uint32_t ut_blob_get = 0x00;</div>
-<div class="line"><span class="lineno">  538</span>    <span class="keywordtype">bool</span> arm_timer;</div>
-<div class="line"><span class="lineno">  539</span> </div>
-<div class="line"><span class="lineno">  540</span>    <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#a2aa59bde3a822db7e022cc4b70429d4f">MESHX_UNUSED</a>(argc);</div>
-<div class="line"><span class="lineno">  541</span>    <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;argc|cmd_id: %d|%d&quot;</span>, argc, cmd_id);</div>
-<div class="line"><span class="lineno">  542</span>    <span class="keywordflow">if</span> (cmd_id &gt;= <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a8923073d3b5967c5be7248fc3dbdc47e">MESHX_NVS_CLI_MAX</a>)</div>
-<div class="line"><span class="lineno">  543</span>    {</div>
-<div class="line"><span class="lineno">  544</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;Invalid number of arguments&quot;</span>);</div>
-<div class="line"><span class="lineno">  545</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
-<div class="line"><span class="lineno">  546</span>    }</div>
-<div class="line"><span class="lineno">  547</span> </div>
-<div class="line"><span class="lineno">  548</span>    <span class="keywordflow">switch</span>(cmd_id)</div>
-<div class="line"><span class="lineno">  549</span>    {</div>
-<div class="line"><span class="lineno">  550</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373ac8e46d99a25f141abaa50293c680139c">MESHX_NVS_CLI_CMD_OPEN</a>:</div>
-<div class="line"><span class="lineno">  551</span>            <span class="comment">/* MeshX NVS Open uses defaut values */</span></div>
-<div class="line"><span class="lineno">  552</span>            err = <a class="code hl_function" href="#ab4e5c250438e810358991fbe0e6cd277">meshx_nvs_open</a>(<a class="code hl_define" href="../../df/d01/meshx__config__internal_8h.html#ad0c2bc56e223b9e73b5467acf93e0e83">CONFIG_CID_ID</a>, <a class="code hl_define" href="../../df/d01/meshx__config__internal_8h.html#a3c3419e674a10c521fcef919e41dface">CONFIG_PID_ID</a>, 0);</div>
-<div class="line"><span class="lineno">  553</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  554</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a33bed74cc4eeb5830341d72252a370a7">MESHX_NVS_CLI_CMD_SET</a>:</div>
-<div class="line"><span class="lineno">  555</span>            arm_timer = <a class="code hl_define" href="../../d8/d5d/unit__test_8h.html#a67c1dee05a40b80923f2cef7f4b3d6b7">UT_GET_ARG</a>(0, <span class="keywordtype">bool</span>, argv) == 0 ? <a class="code hl_define" href="../../d3/d7d/meshx__nvs_8h.html#a91f60107d8e88cde2a5d1ad7d1cde084">MESHX_NVS_NO_AUTO_COMMIT</a> : <a class="code hl_define" href="../../d3/d7d/meshx__nvs_8h.html#ae2cd2375171764414a17dc9b5a62041d">MESHX_NVS_AUTO_COMMIT</a>;</div>
-<div class="line"><span class="lineno">  556</span>            err = <a class="code hl_function" href="#ab9a39208cc2b067b0b5df0a85d7b4b03">meshx_nvs_set</a>(<a class="code hl_define" href="#a65bede97f6d999e2e685468e67479b02">MESHX_NVS_UNIT_TEST_KEY</a>, &amp;ut_blob, <span class="keyword">sizeof</span>(ut_blob), arm_timer);</div>
-<div class="line"><span class="lineno">  557</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  558</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373ad8bea953fe353c0d7798adfcd0eed54c">MESHX_NVS_CLI_CMD_GET</a>:</div>
-<div class="line"><span class="lineno">  559</span>            err = <a class="code hl_function" href="#ae36588f5b4ae5e5ac771e1af86a71e5a">meshx_nvs_get</a>(<a class="code hl_define" href="#a65bede97f6d999e2e685468e67479b02">MESHX_NVS_UNIT_TEST_KEY</a>, &amp;ut_blob_get, <span class="keyword">sizeof</span>(ut_blob_get));</div>
-<div class="line"><span class="lineno">  560</span>            <span class="keywordflow">if</span>(err == <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a> &amp;&amp; ut_blob != ut_blob_get)</div>
-<div class="line"><span class="lineno">  561</span>                <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;MESHX NVS Integrety Test Failed&quot;</span>);</div>
-<div class="line"><span class="lineno">  562</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  563</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a73082d359ef7b6f3358f81bfd4e428ae">MESHX_NVS_CLI_CMD_COMMIT</a>:</div>
-<div class="line"><span class="lineno">  564</span>            err = <a class="code hl_function" href="#adbf5f3a6e63cae605581b0f23b21345c">meshx_nvs_commit</a>();</div>
-<div class="line"><span class="lineno">  565</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  566</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a4a446a993ce93fe4b1a4d2061aa47f3f">MESHX_NVS_CLI_CMD_REMOVE</a>:</div>
-<div class="line"><span class="lineno">  567</span>            err = <a class="code hl_function" href="#aa14948d7d45d83f3b6d9ca765a17cc58">meshx_nvs_remove</a>(<a class="code hl_define" href="#a65bede97f6d999e2e685468e67479b02">MESHX_NVS_UNIT_TEST_KEY</a>);</div>
-<div class="line"><span class="lineno">  568</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  569</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373ac610f1cdd32da32723526b7795a717be">MESHX_NVS_CLI_CMD_ERASE</a>:</div>
-<div class="line"><span class="lineno">  570</span>            err = <a class="code hl_function" href="#adedf15ddc47ab70982fa07092112ffd1">meshx_nvs_erase</a>();</div>
-<div class="line"><span class="lineno">  571</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  572</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a74c69a4b1503b401375a267df866d7d2">MESHX_NVS_CLI_CMD_CLOSE</a>:</div>
-<div class="line"><span class="lineno">  573</span>            err = <a class="code hl_function" href="#a331ae59bfd5632726157f612d8b57b00">meshx_nvs_close</a>();</div>
-<div class="line"><span class="lineno">  574</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  575</span>        <span class="keywordflow">default</span>:</div>
-<div class="line"><span class="lineno">  576</span>            err = <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
-<div class="line"><span class="lineno">  577</span>            <span class="keywordflow">break</span>;</div>
-<div class="line"><span class="lineno">  578</span>    }</div>
-<div class="line"><span class="lineno">  579</span> </div>
-<div class="line"><span class="lineno">  580</span>    <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  581</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">  536</span>{</div>
+<div class="line"><span class="lineno">  537</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  538</span>    uint32_t ut_blob = 0xDEAD;</div>
+<div class="line"><span class="lineno">  539</span>    uint32_t ut_blob_get = 0x00;</div>
+<div class="line"><span class="lineno">  540</span>    <span class="keywordtype">bool</span> arm_timer;</div>
+<div class="line"><span class="lineno">  541</span> </div>
+<div class="line"><span class="lineno">  542</span>    <a class="code hl_define" href="../../da/d68/meshx__err_8h.html#a2aa59bde3a822db7e022cc4b70429d4f">MESHX_UNUSED</a>(argc);</div>
+<div class="line"><span class="lineno">  543</span>    <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;argc|cmd_id: %d|%d&quot;</span>, argc, cmd_id);</div>
+<div class="line"><span class="lineno">  544</span>    <span class="keywordflow">if</span> (cmd_id &gt;= <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a8923073d3b5967c5be7248fc3dbdc47e">MESHX_NVS_CLI_MAX</a>)</div>
+<div class="line"><span class="lineno">  545</span>    {</div>
+<div class="line"><span class="lineno">  546</span>        <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;Invalid number of arguments&quot;</span>);</div>
+<div class="line"><span class="lineno">  547</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<div class="line"><span class="lineno">  548</span>    }</div>
+<div class="line"><span class="lineno">  549</span> </div>
+<div class="line"><span class="lineno">  550</span>    <span class="keywordflow">switch</span>(cmd_id)</div>
+<div class="line"><span class="lineno">  551</span>    {</div>
+<div class="line"><span class="lineno">  552</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373ac8e46d99a25f141abaa50293c680139c">MESHX_NVS_CLI_CMD_OPEN</a>:</div>
+<div class="line"><span class="lineno">  553</span>            <span class="comment">/* MeshX NVS Open uses defaut values */</span></div>
+<div class="line"><span class="lineno">  554</span>            err = <a class="code hl_function" href="#ab4e5c250438e810358991fbe0e6cd277">meshx_nvs_open</a>(<a class="code hl_define" href="../../df/d01/meshx__config__internal_8h.html#ad0c2bc56e223b9e73b5467acf93e0e83">CONFIG_CID_ID</a>, <a class="code hl_define" href="../../df/d01/meshx__config__internal_8h.html#a3c3419e674a10c521fcef919e41dface">CONFIG_PID_ID</a>, 0);</div>
+<div class="line"><span class="lineno">  555</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  556</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a33bed74cc4eeb5830341d72252a370a7">MESHX_NVS_CLI_CMD_SET</a>:</div>
+<div class="line"><span class="lineno">  557</span>            arm_timer = <a class="code hl_define" href="../../d8/d5d/unit__test_8h.html#a67c1dee05a40b80923f2cef7f4b3d6b7">UT_GET_ARG</a>(0, <span class="keywordtype">bool</span>, argv) == 0 ? <a class="code hl_define" href="../../d3/d7d/meshx__nvs_8h.html#a91f60107d8e88cde2a5d1ad7d1cde084">MESHX_NVS_NO_AUTO_COMMIT</a> : <a class="code hl_define" href="../../d3/d7d/meshx__nvs_8h.html#ae2cd2375171764414a17dc9b5a62041d">MESHX_NVS_AUTO_COMMIT</a>;</div>
+<div class="line"><span class="lineno">  558</span>            err = <a class="code hl_function" href="#ab9a39208cc2b067b0b5df0a85d7b4b03">meshx_nvs_set</a>(<a class="code hl_define" href="#a65bede97f6d999e2e685468e67479b02">MESHX_NVS_UNIT_TEST_KEY</a>, &amp;ut_blob, <span class="keyword">sizeof</span>(ut_blob), arm_timer);</div>
+<div class="line"><span class="lineno">  559</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  560</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373ad8bea953fe353c0d7798adfcd0eed54c">MESHX_NVS_CLI_CMD_GET</a>:</div>
+<div class="line"><span class="lineno">  561</span>            err = <a class="code hl_function" href="#ae36588f5b4ae5e5ac771e1af86a71e5a">meshx_nvs_get</a>(<a class="code hl_define" href="#a65bede97f6d999e2e685468e67479b02">MESHX_NVS_UNIT_TEST_KEY</a>, &amp;ut_blob_get, <span class="keyword">sizeof</span>(ut_blob_get));</div>
+<div class="line"><span class="lineno">  562</span>            <span class="keywordflow">if</span>(err == <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a> &amp;&amp; ut_blob != ut_blob_get)</div>
+<div class="line"><span class="lineno">  563</span>                <a class="code hl_define" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(<a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca747903f485bc04baa312c2de946ed0bf">MODULE_ID_COMPONENT_MESHX_NVS</a>, <span class="stringliteral">&quot;MESHX NVS Integrety Test Failed&quot;</span>);</div>
+<div class="line"><span class="lineno">  564</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  565</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a73082d359ef7b6f3358f81bfd4e428ae">MESHX_NVS_CLI_CMD_COMMIT</a>:</div>
+<div class="line"><span class="lineno">  566</span>            err = <a class="code hl_function" href="#adbf5f3a6e63cae605581b0f23b21345c">meshx_nvs_commit</a>();</div>
+<div class="line"><span class="lineno">  567</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  568</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a4a446a993ce93fe4b1a4d2061aa47f3f">MESHX_NVS_CLI_CMD_REMOVE</a>:</div>
+<div class="line"><span class="lineno">  569</span>            err = <a class="code hl_function" href="#aa14948d7d45d83f3b6d9ca765a17cc58">meshx_nvs_remove</a>(<a class="code hl_define" href="#a65bede97f6d999e2e685468e67479b02">MESHX_NVS_UNIT_TEST_KEY</a>);</div>
+<div class="line"><span class="lineno">  570</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  571</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373ac610f1cdd32da32723526b7795a717be">MESHX_NVS_CLI_CMD_ERASE</a>:</div>
+<div class="line"><span class="lineno">  572</span>            err = <a class="code hl_function" href="#adedf15ddc47ab70982fa07092112ffd1">meshx_nvs_erase</a>();</div>
+<div class="line"><span class="lineno">  573</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  574</span>        <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="#ae84b906d55a82e2e45aa8340f6ac8373a74c69a4b1503b401375a267df866d7d2">MESHX_NVS_CLI_CMD_CLOSE</a>:</div>
+<div class="line"><span class="lineno">  575</span>            err = <a class="code hl_function" href="#a331ae59bfd5632726157f612d8b57b00">meshx_nvs_close</a>();</div>
+<div class="line"><span class="lineno">  576</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  577</span>        <span class="keywordflow">default</span>:</div>
+<div class="line"><span class="lineno">  578</span>            err = <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<div class="line"><span class="lineno">  579</span>            <span class="keywordflow">break</span>;</div>
+<div class="line"><span class="lineno">  580</span>    }</div>
+<div class="line"><span class="lineno">  581</span> </div>
+<div class="line"><span class="lineno">  582</span>    <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  583</span>}</div>
 <div class="ttc" id="ameshx__config__internal_8h_html_a3c3419e674a10c521fcef919e41dface"><div class="ttname"><a href="../../df/d01/meshx__config__internal_8h.html#a3c3419e674a10c521fcef919e41dface">CONFIG_PID_ID</a></div><div class="ttdeci">#define CONFIG_PID_ID</div><div class="ttdef"><b>Definition</b> meshx_config_internal.h:37</div></div>
 <div class="ttc" id="ameshx__config__internal_8h_html_ad0c2bc56e223b9e73b5467acf93e0e83"><div class="ttname"><a href="../../df/d01/meshx__config__internal_8h.html#ad0c2bc56e223b9e73b5467acf93e0e83">CONFIG_CID_ID</a></div><div class="ttdeci">#define CONFIG_CID_ID</div><div class="ttdoc">Application Main.</div><div class="ttdef"><b>Definition</b> meshx_config_internal.h:33</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_a331ae59bfd5632726157f612d8b57b00"><div class="ttname"><a href="#a331ae59bfd5632726157f612d8b57b00">meshx_nvs_close</a></div><div class="ttdeci">meshx_err_t meshx_nvs_close(void)</div><div class="ttdoc">Close the NVS handle.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:318</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_a65bede97f6d999e2e685468e67479b02"><div class="ttname"><a href="#a65bede97f6d999e2e685468e67479b02">MESHX_NVS_UNIT_TEST_KEY</a></div><div class="ttdeci">#define MESHX_NVS_UNIT_TEST_KEY</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:51</div></div>
-<div class="ttc" id="ameshx__nvs_8c_html_ab4e5c250438e810358991fbe0e6cd277"><div class="ttname"><a href="#ab4e5c250438e810358991fbe0e6cd277">meshx_nvs_open</a></div><div class="ttdeci">meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_ms)</div><div class="ttdoc">Open the NVS with a timeout.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:179</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_a331ae59bfd5632726157f612d8b57b00"><div class="ttname"><a href="#a331ae59bfd5632726157f612d8b57b00">meshx_nvs_close</a></div><div class="ttdeci">meshx_err_t meshx_nvs_close(void)</div><div class="ttdoc">Close the NVS handle.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:319</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_a65bede97f6d999e2e685468e67479b02"><div class="ttname"><a href="#a65bede97f6d999e2e685468e67479b02">MESHX_NVS_UNIT_TEST_KEY</a></div><div class="ttdeci">#define MESHX_NVS_UNIT_TEST_KEY</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:52</div></div>
+<div class="ttc" id="ameshx__nvs_8c_html_ab4e5c250438e810358991fbe0e6cd277"><div class="ttname"><a href="#ab4e5c250438e810358991fbe0e6cd277">meshx_nvs_open</a></div><div class="ttdeci">meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_ms)</div><div class="ttdoc">Open the NVS with a timeout.</div><div class="ttdef"><b>Definition</b> meshx_nvs.c:180</div></div>
 <div class="ttc" id="aunit__test_8h_html_a67c1dee05a40b80923f2cef7f4b3d6b7"><div class="ttname"><a href="../../d8/d5d/unit__test_8h.html#a67c1dee05a40b80923f2cef7f4b3d6b7">UT_GET_ARG</a></div><div class="ttdeci">#define UT_GET_ARG(_x, _type, _argv)</div><div class="ttdoc">Macro to extract an argument from the argument list.</div><div class="ttdef"><b>Definition</b> unit_test.h:31</div></div>
 </div><!-- fragment -->
 </div>

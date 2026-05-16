@@ -47,7 +47,7 @@ var searchData=
   ['architecture_20design_44',['🏗️ Architecture &amp;amp; Design',['../index.html#️-architecture--design',1,'']]],
   ['arg_45',['arg',['../db/d8e/structmeshx__task.html#aa448c1fc0cd2c0a39d2e52db1a99da67',1,'meshx_task']]],
   ['arg_5fcount_46',['arg_count',['../dd/d1c/structmeshx__gpio__pin__config__t.html#a910ed706190e82c2017c423db5563409',1,'meshx_gpio_pin_config_t']]],
-  ['args_47',['args',['../dd/d1c/structmeshx__gpio__pin__config__t.html#a2b783888f95fc8b1da16218719b56602',1,'meshx_gpio_pin_config_t']]],
+  ['args_47',['args',['../dd/d1c/structmeshx__gpio__pin__config__t.html#a2b783888f95fc8b1da16218719b56602',1,'meshx_gpio_pin_config_t::args'],['../d4/d2e/structmeshx__log__packet__t.html#a478d0238be1cf547848e19bcfb5ea400',1,'meshx_log_packet_t::args']]],
   ['auto_5freload_48',['auto_reload',['../d5/dc1/structmeshx__rtos__timer.html#a5a681947bd2b1cedf404b545c9e9f274',1,'meshx_rtos_timer']]],
   ['automated_20test_20suite_49',['MeshX Automated Test Suite',['../dir_26b04ad0e2f7606f5a50a655af5faa20.html#meshx-automated-test-suite',1,'']]]
 ];

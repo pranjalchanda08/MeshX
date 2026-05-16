@@ -3,7 +3,7 @@ var searchData=
   ['data_0',['data',['../d5/dbd/structmeshx__app__api__msg.html#a741dd44e47432941900d7491dd2e09eb',1,'meshx_app_api_msg::data'],['../df/d4b/structmeshx__sensor__srv__status__t.html#a92a8657646b4f8cc67926392e6cbda54',1,'meshx_sensor_srv_status_t::data'],['../d1/da2/structkv__pending__node.html#ac1cf7b66712248e616f52cf3cda1f6cf',1,'kv_pending_node::data'],['../d1/d11/structmeshx__nvs__write__list.html#aed27c6422d4a11b6d1de31465802bf19',1,'meshx_nvs_write_list::data']]],
   ['data_5flen_1',['data_len',['../df/d4b/structmeshx__sensor__srv__status__t.html#aeaf5372bbcb97ddcfab847f439c18e97',1,'meshx_sensor_srv_status_t']]],
   ['data_5fsize_2',['data_size',['../d2/d84/structmeshx__gpio__pin__state__t.html#a9cd114b48cf7aba7a62cf55a293db62b',1,'meshx_gpio_pin_state_t']]],
-  ['def_5flog_5flevel_3',['def_log_level',['../db/d0b/structmeshx__logging.html#a140b99328b305503577b5333d5504873',1,'meshx_logging']]],
+  ['def_5flog_5flevel_3',['def_log_level',['../d4/dac/structmeshx__logging__t.html#a1805b30cf930081360279c62def33764',1,'meshx_logging_t']]],
   ['def_5ftrans_5ftime_4',['def_trans_time',['../d8/df6/structmeshx__gen__server__state.html#a1726ed09e75a66a3dd6786607204a2ac',1,'meshx_gen_server_state']]],
   ['def_5ftrans_5ftime_5fset_5',['def_trans_time_set',['../d8/df2/unionmeshx__gen__cli__set__t.html#a7fff894af0f7cfacdd716ba1abd605cd',1,'meshx_gen_cli_set_t::def_trans_time_set'],['../d3/dbf/unionmeshx__gen__srv__state__change__t.html#adabd590f86ae574d0bd60975604b9cd3',1,'meshx_gen_srv_state_change_t::def_trans_time_set']]],
   ['def_5ftrans_5ftime_5fstatus_6',['def_trans_time_status',['../d0/d91/unionmeshx__gen__client__status__cb__t.html#a52cf613649644bc62ac9980f06d0591b',1,'meshx_gen_client_status_cb_t']]],

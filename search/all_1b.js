@@ -16,5 +16,6 @@ var searchData=
   ['version_13',['version',['../dd/d5e/structmeshx__gpio__config__header__kv__t.html#af26ff2d52c0e36b3b7dadde7d051edf9',1,'meshx_gpio_config_header_kv_t::version'],['../d8/d7f/structmeshx__gpio__config__header__t.html#a5567af76df7138cc99b50d2fd512c53c',1,'meshx_gpio_config_header_t::version'],['../dc/dbb/structmeshx__cfg__header__t.html#a08baadf32026dd1f385eac087e23d933',1,'meshx_cfg_header_t::version']]],
   ['vid_14',['vid',['../d5/d3e/structmeshx__config.html#a352ecc4f77091f79a222fe512a272c40',1,'meshx_config']]],
   ['virtual_20functions_15',['Key Virtual Functions',['../db/de4/md_docs_2DEVELOPER__GUIDE__CUSTOM__MODELS__AND__ELEMENTS.html#key-virtual-functions',1,'']]],
-  ['visualize_5fstatus_16',['visualize_status',['../da/d4a/classmeshXDevice.html#aa2f46bc2fb5c23eddb2600aa872d1d09',1,'meshXDevice']]]
+  ['visualize_5fstatus_16',['visualize_status',['../da/d4a/classmeshXDevice.html#aa2f46bc2fb5c23eddb2600aa872d1d09',1,'meshXDevice']]],
+  ['vmeshx_5flog_5fpacket_17',['vmeshx_log_packet',['../d0/dc9/meshx__log_8c.html#aca8baee48b56fa39cf13659f0b645a87',1,'meshx_log.c']]]
 ];

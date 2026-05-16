@@ -89,62 +89,76 @@ $(function() {
 <p>Logging interface for MeshX with color-coded output.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="../../df/d01/meshx__config__internal_8h_source.html">meshx_config_internal.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="../../d3/da1/module__id_8h_source.html">module_id.h</a>&quot;</code><br />
+<code>#include &lt;stdarg.h&gt;</code><br />
+<code>#include &lt;stdint.h&gt;</code><br />
+<code>#include &lt;stdbool.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="../../da/d68/meshx__err_8h_source.html">meshx_err.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d3/da1/module__id_8h_source.html">module_id.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="../../d4/d50/meshx__tiny__printf_8h_source.html">interface/utils/meshx_tiny_printf.h</a>&quot;</code><br />
 </div>
 <p><a href="../../d7/dcb/meshx__log_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Data Structures</h2></td></tr>
-<tr class="memitem:meshx_5Flogging" id="r_meshx_5Flogging"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="../../db/d0b/structmeshx__logging.html">meshx_logging</a></td></tr>
+<tr class="memitem:meshx_5Flogging_5Ft" id="r_meshx_5Flogging_5Ft"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="../../d4/dac/structmeshx__logging__t.html">meshx_logging_t</a></td></tr>
+<tr class="memitem:meshx_5Flog_5Fpacket_5Ft" id="r_meshx_5Flog_5Fpacket_5Ft"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="../../d4/d2e/structmeshx__log__packet__t.html">meshx_log_packet_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">TLV Log Packet structure.  <a href="../../d4/d2e/structmeshx__log__packet__t.html#details">More...</a><br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:aab871af326d6c21d6210c588f4a85dd1" id="r_aab871af326d6c21d6210c588f4a85dd1"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aab871af326d6c21d6210c588f4a85dd1">CONFIG_MESHX_LOG_PRINTF</a>&#160;&#160;&#160;printf</td></tr>
-<tr class="memdesc:aab871af326d6c21d6210c588f4a85dd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to define printf function.  <br /></td></tr>
-<tr class="memitem:a736ad74c6ead5d4e1c683216f0898781" id="r_a736ad74c6ead5d4e1c683216f0898781"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a736ad74c6ead5d4e1c683216f0898781">CONFIG_MESHX_DEFAULT_LOG_LEVEL</a>&#160;&#160;&#160;<a class="el" href="#a081cbffb2f246d1443ba585cb7f89a91">MESHX_LOG_INFO</a></td></tr>
-<tr class="memitem:a225df21758d8a88e9f5b6099a188fc6a" id="r_a225df21758d8a88e9f5b6099a188fc6a"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a225df21758d8a88e9f5b6099a188fc6a">CONFIG_MESHX_LOG_THREADED</a>&#160;&#160;&#160;1</td></tr>
-<tr class="memdesc:a225df21758d8a88e9f5b6099a188fc6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Threaded logging configuration.  <br /></td></tr>
-<tr class="memitem:a244c72b30ec2e7ed4767243cd4630e24" id="r_a244c72b30ec2e7ed4767243cd4630e24"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a244c72b30ec2e7ed4767243cd4630e24">CONFIG_MESHX_LOG_QUEUE_LEN</a>&#160;&#160;&#160;50</td></tr>
-<tr class="memitem:a3191b7c8f443bac0775457d85fe27a12" id="r_a3191b7c8f443bac0775457d85fe27a12"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a3191b7c8f443bac0775457d85fe27a12">CONFIG_MESHX_LOG_BUF_SIZE</a>&#160;&#160;&#160;256</td></tr>
-<tr class="memitem:a4ef89f13b7ea1d1b5c0ca90852142cb3" id="r_a4ef89f13b7ea1d1b5c0ca90852142cb3"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a4ef89f13b7ea1d1b5c0ca90852142cb3">CONFIG_MESHX_LOG_HIGH_WATERMARK</a>&#160;&#160;&#160;(<a class="el" href="#a244c72b30ec2e7ed4767243cd4630e24">CONFIG_MESHX_LOG_QUEUE_LEN</a> * 8 / 10)</td></tr>
-<tr class="memitem:ac9d52edebf1bc4a27dbc85b57dd24040" id="r_ac9d52edebf1bc4a27dbc85b57dd24040"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ac9d52edebf1bc4a27dbc85b57dd24040">CONFIG_MESHX_LOG_STACK_SIZE</a>&#160;&#160;&#160;4096</td></tr>
-<tr class="memitem:a8dac627e2fe191ab9b0bc88ba515c6b9" id="r_a8dac627e2fe191ab9b0bc88ba515c6b9"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a8dac627e2fe191ab9b0bc88ba515c6b9">MESHX_LOG_COLOR_BLACK</a>&#160;&#160;&#160;&quot;\033[0;30m&quot;</td></tr>
-<tr class="memitem:a986327e019c81798f993ce4b5beb5c8b" id="r_a986327e019c81798f993ce4b5beb5c8b"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a986327e019c81798f993ce4b5beb5c8b">MESHX_LOG_COLOR_RED</a>&#160;&#160;&#160;&quot;\033[0;31m&quot;</td></tr>
-<tr class="memitem:ac646236cab389357ec26a879f827e032" id="r_ac646236cab389357ec26a879f827e032"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ac646236cab389357ec26a879f827e032">MESHX_LOG_COLOR_GREEN</a>&#160;&#160;&#160;&quot;\033[0;32m&quot;</td></tr>
-<tr class="memitem:ae887818b14a1b93cc8c6da1a4982be48" id="r_ae887818b14a1b93cc8c6da1a4982be48"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ae887818b14a1b93cc8c6da1a4982be48">MESHX_LOG_COLOR_YELLOW</a>&#160;&#160;&#160;&quot;\033[0;33m&quot;</td></tr>
-<tr class="memitem:a9aa746a561a333446e13c33325fc8565" id="r_a9aa746a561a333446e13c33325fc8565"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a9aa746a561a333446e13c33325fc8565">MESHX_LOG_COLOR_BLUE</a>&#160;&#160;&#160;&quot;\033[0;34m&quot;</td></tr>
-<tr class="memitem:a9fd61076f120bb273a5534f8d94c2b06" id="r_a9fd61076f120bb273a5534f8d94c2b06"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a9fd61076f120bb273a5534f8d94c2b06">MESHX_LOG_COLOR_PURPLE</a>&#160;&#160;&#160;&quot;\033[0;35m&quot;</td></tr>
-<tr class="memitem:ac6b1b3976da12f60657fab36b06f1a95" id="r_ac6b1b3976da12f60657fab36b06f1a95"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ac6b1b3976da12f60657fab36b06f1a95">MESHX_LOG_COLOR_CYAN</a>&#160;&#160;&#160;&quot;\033[0;36m&quot;</td></tr>
-<tr class="memitem:aa3cc18467c8d47158c06b8c3790d0edb" id="r_aa3cc18467c8d47158c06b8c3790d0edb"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aa3cc18467c8d47158c06b8c3790d0edb">MESHX_LOG_COLOR_WHITE</a>&#160;&#160;&#160;&quot;\033[0;37m&quot;</td></tr>
-<tr class="memitem:a0c4d6862efe6c37fa66ecf0057c15845" id="r_a0c4d6862efe6c37fa66ecf0057c15845"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a0c4d6862efe6c37fa66ecf0057c15845">MESHX_LOG_COLOR_RESET</a>&#160;&#160;&#160;&quot;\033[0m&quot;</td></tr>
-<tr class="memitem:a4d2cb7b27cc324414a98b0aaa88fd2cf" id="r_a4d2cb7b27cc324414a98b0aaa88fd2cf"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a4d2cb7b27cc324414a98b0aaa88fd2cf">MESHX_LOG_VERBOSE</a>&#160;&#160;&#160;0 /* White */</td></tr>
-<tr class="memitem:a4a141c7b841c566af55bd50045ee4e90" id="r_a4a141c7b841c566af55bd50045ee4e90"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a4a141c7b841c566af55bd50045ee4e90">MESHX_LOG_DEBUG</a>&#160;&#160;&#160;1   /* Blue */</td></tr>
-<tr class="memitem:a081cbffb2f246d1443ba585cb7f89a91" id="r_a081cbffb2f246d1443ba585cb7f89a91"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a081cbffb2f246d1443ba585cb7f89a91">MESHX_LOG_INFO</a>&#160;&#160;&#160;2    /* Green */</td></tr>
-<tr class="memitem:aab45c3bbc9cb0d29d9828b8f85794aa5" id="r_aab45c3bbc9cb0d29d9828b8f85794aa5"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aab45c3bbc9cb0d29d9828b8f85794aa5">MESHX_LOG_WARN</a>&#160;&#160;&#160;3    /* Yellow */</td></tr>
-<tr class="memitem:abac72310c5c0e272dd1030d857f285b0" id="r_abac72310c5c0e272dd1030d857f285b0"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#abac72310c5c0e272dd1030d857f285b0">MESHX_LOG_ERROR</a>&#160;&#160;&#160;4   /* Red */</td></tr>
-<tr class="memitem:a4173c823294016adf0e114e9488bfcaa" id="r_a4173c823294016adf0e114e9488bfcaa"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a4173c823294016adf0e114e9488bfcaa">MESHX_LOG_NONE</a>&#160;&#160;&#160;5    /* Blue */</td></tr>
+<tr class="memitem:a225df21758d8a88e9f5b6099a188fc6a" id="r_a225df21758d8a88e9f5b6099a188fc6a"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a225df21758d8a88e9f5b6099a188fc6a">CONFIG_MESHX_LOG_THREADED</a>&#160;&#160;&#160;0</td></tr>
+<tr class="memitem:a4173c823294016adf0e114e9488bfcaa" id="r_a4173c823294016adf0e114e9488bfcaa"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a4173c823294016adf0e114e9488bfcaa">MESHX_LOG_NONE</a>&#160;&#160;&#160;0</td></tr>
+<tr class="memitem:abac72310c5c0e272dd1030d857f285b0" id="r_abac72310c5c0e272dd1030d857f285b0"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#abac72310c5c0e272dd1030d857f285b0">MESHX_LOG_ERROR</a>&#160;&#160;&#160;1</td></tr>
+<tr class="memitem:aab45c3bbc9cb0d29d9828b8f85794aa5" id="r_aab45c3bbc9cb0d29d9828b8f85794aa5"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aab45c3bbc9cb0d29d9828b8f85794aa5">MESHX_LOG_WARN</a>&#160;&#160;&#160;2</td></tr>
+<tr class="memitem:a081cbffb2f246d1443ba585cb7f89a91" id="r_a081cbffb2f246d1443ba585cb7f89a91"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a081cbffb2f246d1443ba585cb7f89a91">MESHX_LOG_INFO</a>&#160;&#160;&#160;3</td></tr>
+<tr class="memitem:a4a141c7b841c566af55bd50045ee4e90" id="r_a4a141c7b841c566af55bd50045ee4e90"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a4a141c7b841c566af55bd50045ee4e90">MESHX_LOG_DEBUG</a>&#160;&#160;&#160;4</td></tr>
+<tr class="memitem:a4d2cb7b27cc324414a98b0aaa88fd2cf" id="r_a4d2cb7b27cc324414a98b0aaa88fd2cf"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a4d2cb7b27cc324414a98b0aaa88fd2cf">MESHX_LOG_VERBOSE</a>&#160;&#160;&#160;5</td></tr>
 <tr class="memitem:a491d1fb4dfccd0cb83eb2e499ca25f27" id="r_a491d1fb4dfccd0cb83eb2e499ca25f27"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a491d1fb4dfccd0cb83eb2e499ca25f27">MESHX_LOG_MAX</a>&#160;&#160;&#160;6</td></tr>
-<tr class="memitem:a259f4064d426d7f4d31d307343c39f19" id="r_a259f4064d426d7f4d31d307343c39f19"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a259f4064d426d7f4d31d307343c39f19">MESHX_LOG_LEVEL_COLOR</a>(level)</td></tr>
+<tr class="memitem:a8dac627e2fe191ab9b0bc88ba515c6b9" id="r_a8dac627e2fe191ab9b0bc88ba515c6b9"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a8dac627e2fe191ab9b0bc88ba515c6b9">MESHX_LOG_COLOR_BLACK</a>&#160;&#160;&#160;&quot;30&quot;</td></tr>
+<tr class="memitem:a986327e019c81798f993ce4b5beb5c8b" id="r_a986327e019c81798f993ce4b5beb5c8b"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a986327e019c81798f993ce4b5beb5c8b">MESHX_LOG_COLOR_RED</a>&#160;&#160;&#160;&quot;31&quot;</td></tr>
+<tr class="memitem:ac646236cab389357ec26a879f827e032" id="r_ac646236cab389357ec26a879f827e032"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ac646236cab389357ec26a879f827e032">MESHX_LOG_COLOR_GREEN</a>&#160;&#160;&#160;&quot;32&quot;</td></tr>
+<tr class="memitem:a966c9b74233fd81d53076de92fdab386" id="r_a966c9b74233fd81d53076de92fdab386"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a966c9b74233fd81d53076de92fdab386">MESHX_LOG_COLOR_BROWN</a>&#160;&#160;&#160;&quot;33&quot;</td></tr>
+<tr class="memitem:a9aa746a561a333446e13c33325fc8565" id="r_a9aa746a561a333446e13c33325fc8565"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a9aa746a561a333446e13c33325fc8565">MESHX_LOG_COLOR_BLUE</a>&#160;&#160;&#160;&quot;34&quot;</td></tr>
+<tr class="memitem:a9fd61076f120bb273a5534f8d94c2b06" id="r_a9fd61076f120bb273a5534f8d94c2b06"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a9fd61076f120bb273a5534f8d94c2b06">MESHX_LOG_COLOR_PURPLE</a>&#160;&#160;&#160;&quot;35&quot;</td></tr>
+<tr class="memitem:ac6b1b3976da12f60657fab36b06f1a95" id="r_ac6b1b3976da12f60657fab36b06f1a95"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ac6b1b3976da12f60657fab36b06f1a95">MESHX_LOG_COLOR_CYAN</a>&#160;&#160;&#160;&quot;36&quot;</td></tr>
+<tr class="memitem:aa3cc18467c8d47158c06b8c3790d0edb" id="r_aa3cc18467c8d47158c06b8c3790d0edb"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aa3cc18467c8d47158c06b8c3790d0edb">MESHX_LOG_COLOR_WHITE</a>&#160;&#160;&#160;&quot;37&quot;</td></tr>
+<tr class="memitem:a0c4d6862efe6c37fa66ecf0057c15845" id="r_a0c4d6862efe6c37fa66ecf0057c15845"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a0c4d6862efe6c37fa66ecf0057c15845">MESHX_LOG_COLOR_RESET</a>&#160;&#160;&#160;&quot;\033[0m&quot;</td></tr>
+<tr class="memitem:a52d86e24726c38d5c164364acf077d83" id="r_a52d86e24726c38d5c164364acf077d83"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a52d86e24726c38d5c164364acf077d83">MESHX_LOG_COLOR</a>(COLOR)</td></tr>
+<tr class="memitem:aa65ff6518918e4d6a6c467421761a339" id="r_aa65ff6518918e4d6a6c467421761a339"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aa65ff6518918e4d6a6c467421761a339">MESHX_LOG_COLOR_E</a>&#160;&#160;&#160;<a class="el" href="#a52d86e24726c38d5c164364acf077d83">MESHX_LOG_COLOR</a>(<a class="el" href="#a986327e019c81798f993ce4b5beb5c8b">MESHX_LOG_COLOR_RED</a>)</td></tr>
+<tr class="memitem:a473400b8658d9d643d3cf829c69d2fc8" id="r_a473400b8658d9d643d3cf829c69d2fc8"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a473400b8658d9d643d3cf829c69d2fc8">MESHX_LOG_COLOR_W</a>&#160;&#160;&#160;<a class="el" href="#a52d86e24726c38d5c164364acf077d83">MESHX_LOG_COLOR</a>(<a class="el" href="#a966c9b74233fd81d53076de92fdab386">MESHX_LOG_COLOR_BROWN</a>)</td></tr>
+<tr class="memitem:a91c52703f2c58aef02cf891d1129285c" id="r_a91c52703f2c58aef02cf891d1129285c"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a91c52703f2c58aef02cf891d1129285c">MESHX_LOG_COLOR_I</a>&#160;&#160;&#160;<a class="el" href="#a52d86e24726c38d5c164364acf077d83">MESHX_LOG_COLOR</a>(<a class="el" href="#ac646236cab389357ec26a879f827e032">MESHX_LOG_COLOR_GREEN</a>)</td></tr>
+<tr class="memitem:ad61be124156ff166be877c6e2993992f" id="r_ad61be124156ff166be877c6e2993992f"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ad61be124156ff166be877c6e2993992f">MESHX_LOG_COLOR_D</a>&#160;&#160;&#160;<a class="el" href="#a52d86e24726c38d5c164364acf077d83">MESHX_LOG_COLOR</a>(<a class="el" href="#a9aa746a561a333446e13c33325fc8565">MESHX_LOG_COLOR_BLUE</a>)</td></tr>
+<tr class="memitem:a619c2ea451cc235d3135fddde741745f" id="r_a619c2ea451cc235d3135fddde741745f"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a619c2ea451cc235d3135fddde741745f">MESHX_LOG_COLOR_V</a>&#160;&#160;&#160;<a class="el" href="#a52d86e24726c38d5c164364acf077d83">MESHX_LOG_COLOR</a>(<a class="el" href="#a0c4d6862efe6c37fa66ecf0057c15845">MESHX_LOG_COLOR_RESET</a>)</td></tr>
+<tr class="memitem:a9f2ce795bcc8b28dd54c4ed86553f8b9" id="r_a9f2ce795bcc8b28dd54c4ed86553f8b9"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a9f2ce795bcc8b28dd54c4ed86553f8b9">MESHX_LOG_GET_COLOR</a>(level)</td></tr>
+<tr class="memitem:a736ad74c6ead5d4e1c683216f0898781" id="r_a736ad74c6ead5d4e1c683216f0898781"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a736ad74c6ead5d4e1c683216f0898781">CONFIG_MESHX_DEFAULT_LOG_LEVEL</a>&#160;&#160;&#160;<a class="el" href="#a081cbffb2f246d1443ba585cb7f89a91">MESHX_LOG_INFO</a></td></tr>
+<tr class="memitem:a356c832124628fcc2f92d264ce7f0eca" id="r_a356c832124628fcc2f92d264ce7f0eca"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a356c832124628fcc2f92d264ce7f0eca">MESHX_LOG_STR_ATTR</a>&#160;&#160;&#160;__attribute__((section(&quot;.meshx_log_str&quot;), used))</td></tr>
+<tr class="memitem:ab67c85b43e2b081e12fb9701ffee4b1f" id="r_ab67c85b43e2b081e12fb9701ffee4b1f"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ab67c85b43e2b081e12fb9701ffee4b1f">MESHX_LOG_SYNC_WORD</a>&#160;&#160;&#160;0xDEAD</td></tr>
+<tr class="memitem:ab17ce1dc80ff3646daa0324e520a525e" id="r_ab17ce1dc80ff3646daa0324e520a525e"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ab17ce1dc80ff3646daa0324e520a525e">MESHX_LOG_CONCAT_INNER</a>(a,  b)</td></tr>
+<tr class="memitem:a8b54c156e7b8471fe77026352f8a542f" id="r_a8b54c156e7b8471fe77026352f8a542f"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a8b54c156e7b8471fe77026352f8a542f">MESHX_LOG_CONCAT</a>(a,  b)</td></tr>
+<tr class="memitem:a8af95e2650f30c1699cb8b68605d7bb3" id="r_a8af95e2650f30c1699cb8b68605d7bb3"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a8af95e2650f30c1699cb8b68605d7bb3">MESHX_LOG_UNIQUE_ID</a>&#160;&#160;&#160;__LINE__</td></tr>
 <tr class="memitem:a4b5b6c33e3ebc4b69f92142a528195f7" id="r_a4b5b6c33e3ebc4b69f92142a528195f7"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a4b5b6c33e3ebc4b69f92142a528195f7">MESHX_LOG</a>(module_id,  level,  format, ...)</td></tr>
+<tr class="memitem:a37368a8d2f50947b39294ad35bed70a1" id="r_a37368a8d2f50947b39294ad35bed70a1"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a37368a8d2f50947b39294ad35bed70a1">MESHX_STR_INNER</a>(x)</td></tr>
+<tr class="memitem:abd90b0a1ae9a5d9631ae19067349860f" id="r_abd90b0a1ae9a5d9631ae19067349860f"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#abd90b0a1ae9a5d9631ae19067349860f">MESHX_STR</a>(x)</td></tr>
+<tr class="memitem:afbfc9bd176206ada02e68cdc26b0f87e" id="r_afbfc9bd176206ada02e68cdc26b0f87e"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#afbfc9bd176206ada02e68cdc26b0f87e">MESHX_LOG_INTERNAL</a>(id,  module_id,  level,  format,  arg0,  arg1,  arg2,  arg3,  arg4,  arg5,  arg6,  arg7,  arg8,  arg9,  arg10,  arg11,  arg12,  arg13,  arg14,  arg15, ...)</td></tr>
 <tr class="memitem:a56673888067cbe14c7a33b0856f46eb8" id="r_a56673888067cbe14c7a33b0856f46eb8"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a56673888067cbe14c7a33b0856f46eb8">MESHX_LOGE</a>(module_id,  format, ...)</td></tr>
 <tr class="memitem:a3df9f46a0a08969094d8eef3581409e8" id="r_a3df9f46a0a08969094d8eef3581409e8"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a3df9f46a0a08969094d8eef3581409e8">MESHX_LOGW</a>(module_id,  format, ...)</td></tr>
 <tr class="memitem:a47d4a699f2997a758e0eca271b66cb48" id="r_a47d4a699f2997a758e0eca271b66cb48"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a47d4a699f2997a758e0eca271b66cb48">MESHX_LOGI</a>(module_id,  format, ...)</td></tr>
 <tr class="memitem:acb76057f2c8e23ca61edf04fd824818b" id="r_acb76057f2c8e23ca61edf04fd824818b"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#acb76057f2c8e23ca61edf04fd824818b">MESHX_LOGD</a>(module_id,  format, ...)</td></tr>
+<tr class="memitem:a74c76963399db022b9ee6de29a416206" id="r_a74c76963399db022b9ee6de29a416206"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#a74c76963399db022b9ee6de29a416206">MESHX_LOGV</a>(module_id,  format, ...)</td></tr>
+<tr class="memitem:aab871af326d6c21d6210c588f4a85dd1" id="r_aab871af326d6c21d6210c588f4a85dd1"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#aab871af326d6c21d6210c588f4a85dd1">CONFIG_MESHX_LOG_PRINTF</a>&#160;&#160;&#160;<a class="el" href="../../d4/d50/meshx__tiny__printf_8h.html#a34b5e371bf2aa40ab5442036a8711bcc">meshx_tiny_printf</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a2bb5164357b270ea80733b70e7e0ee17" id="r_a2bb5164357b270ea80733b70e7e0ee17"><td class="memItemLeft">typedef unsigned&#160;</td><td class="memItemRight"><a class="el" href="#a2bb5164357b270ea80733b70e7e0ee17">meshx_log_level_t</a></td></tr>
-<tr class="memitem:adef7845289a24e0f4bfd4ac68af4ba6d" id="r_adef7845289a24e0f4bfd4ac68af4ba6d"><td class="memItemLeft">typedef unsigned int(*&#160;</td><td class="memItemRight"><a class="el" href="#adef7845289a24e0f4bfd4ac68af4ba6d">millis_t</a>) (void)</td></tr>
-<tr class="memitem:a7e75f09650fd33bcd03ea92acd58408f" id="r_a7e75f09650fd33bcd03ea92acd58408f"><td class="memItemLeft">typedef struct <a class="el" href="../../db/d0b/structmeshx__logging.html">meshx_logging</a>&#160;</td><td class="memItemRight"><a class="el" href="#a7e75f09650fd33bcd03ea92acd58408f">meshx_logging_t</a></td></tr>
+<tr class="memitem:aa6b3e50c8c6b727fd46249db2a643fc6" id="r_aa6b3e50c8c6b727fd46249db2a643fc6"><td class="memItemLeft">typedef uint8_t&#160;</td><td class="memItemRight"><a class="el" href="#aa6b3e50c8c6b727fd46249db2a643fc6">meshx_log_level_t</a></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2943545097e48060e29c8be20f92677f" id="r_a2943545097e48060e29c8be20f92677f"><td class="memItemLeft"><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>&#160;</td><td class="memItemRight"><a class="el" href="#a2943545097e48060e29c8be20f92677f">meshx_logging_init</a> (const <a class="el" href="#a7e75f09650fd33bcd03ea92acd58408f">meshx_logging_t</a> *config)</td></tr>
-<tr class="memdesc:a2943545097e48060e29c8be20f92677f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the MeshX logging system with the provided configuration.  <br /></td></tr>
-<tr class="memitem:ab47e09c155a1ce6f88a355797f495c53" id="r_ab47e09c155a1ce6f88a355797f495c53"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ab47e09c155a1ce6f88a355797f495c53">meshx_log_printf</a> (<a class="el" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedc">module_id_t</a> module_id, <a class="el" href="#a2bb5164357b270ea80733b70e7e0ee17">meshx_log_level_t</a> log_level, const char *func, int line_no, const char *fmt,...)</td></tr>
-<tr class="memdesc:ab47e09c155a1ce6f88a355797f495c53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs a formatted message for a specified module and log level.  <br /></td></tr>
+<tr class="memitem:a2943545097e48060e29c8be20f92677f" id="r_a2943545097e48060e29c8be20f92677f"><td class="memItemLeft"><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a>&#160;</td><td class="memItemRight"><a class="el" href="#a2943545097e48060e29c8be20f92677f">meshx_logging_init</a> (const <a class="el" href="../../d4/dac/structmeshx__logging__t.html">meshx_logging_t</a> *config)</td></tr>
+<tr class="memitem:a033915fe8c70de68a3da859035274436" id="r_a033915fe8c70de68a3da859035274436"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a033915fe8c70de68a3da859035274436">meshx_module_set_log_level</a> (<a class="el" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedc">module_id_t</a> module_id, <a class="el" href="#aa6b3e50c8c6b727fd46249db2a643fc6">meshx_log_level_t</a> log_level)</td></tr>
+<tr class="memitem:a41704f3ef1ab424f6709ba29d70cd8b4" id="r_a41704f3ef1ab424f6709ba29d70cd8b4"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a41704f3ef1ab424f6709ba29d70cd8b4">meshx_log_packet</a> (<a class="el" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedc">module_id_t</a> module_id, <a class="el" href="#aa6b3e50c8c6b727fd46249db2a643fc6">meshx_log_level_t</a> log_level, const char *file, int line_no, const char *fmt,...)</td></tr>
+<tr class="memdesc:a41704f3ef1ab424f6709ba29d70cd8b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logs a packetized binary log message.  <br /></td></tr>
+<tr class="memitem:ab47e09c155a1ce6f88a355797f495c53" id="r_ab47e09c155a1ce6f88a355797f495c53"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ab47e09c155a1ce6f88a355797f495c53">meshx_log_printf</a> (<a class="el" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedc">module_id_t</a> module_id, <a class="el" href="#aa6b3e50c8c6b727fd46249db2a643fc6">meshx_log_level_t</a> log_level, const char *func, int line_no, const char *fmt,...)</td></tr>
+<tr class="memdesc:ab47e09c155a1ce6f88a355797f495c53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Legacy printf-style logging for external components.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Logging interface for MeshX with color-coded output. </p>
@@ -163,34 +177,6 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a3191b7c8f443bac0775457d85fe27a12" name="a3191b7c8f443bac0775457d85fe27a12"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3191b7c8f443bac0775457d85fe27a12">&#9670;&#160;</a></span>CONFIG_MESHX_LOG_BUF_SIZE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define CONFIG_MESHX_LOG_BUF_SIZE&#160;&#160;&#160;256</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a4ef89f13b7ea1d1b5c0ca90852142cb3" name="a4ef89f13b7ea1d1b5c0ca90852142cb3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ef89f13b7ea1d1b5c0ca90852142cb3">&#9670;&#160;</a></span>CONFIG_MESHX_LOG_HIGH_WATERMARK</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define CONFIG_MESHX_LOG_HIGH_WATERMARK&#160;&#160;&#160;(<a class="el" href="#a244c72b30ec2e7ed4767243cd4630e24">CONFIG_MESHX_LOG_QUEUE_LEN</a> * 8 / 10)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="aab871af326d6c21d6210c588f4a85dd1" name="aab871af326d6c21d6210c588f4a85dd1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aab871af326d6c21d6210c588f4a85dd1">&#9670;&#160;</a></span>CONFIG_MESHX_LOG_PRINTF</h2>
 
@@ -198,38 +184,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CONFIG_MESHX_LOG_PRINTF&#160;&#160;&#160;printf</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Macro to define printf function. </p>
-<dl class="section note"><dt>Note</dt><dd>this can be overriden by compile time Macro def </dd></dl>
-
-</div>
-</div>
-<a id="a244c72b30ec2e7ed4767243cd4630e24" name="a244c72b30ec2e7ed4767243cd4630e24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a244c72b30ec2e7ed4767243cd4630e24">&#9670;&#160;</a></span>CONFIG_MESHX_LOG_QUEUE_LEN</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define CONFIG_MESHX_LOG_QUEUE_LEN&#160;&#160;&#160;50</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ac9d52edebf1bc4a27dbc85b57dd24040" name="ac9d52edebf1bc4a27dbc85b57dd24040"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac9d52edebf1bc4a27dbc85b57dd24040">&#9670;&#160;</a></span>CONFIG_MESHX_LOG_STACK_SIZE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define CONFIG_MESHX_LOG_STACK_SIZE&#160;&#160;&#160;4096</td>
+          <td class="memname">#define CONFIG_MESHX_LOG_PRINTF&#160;&#160;&#160;<a class="el" href="../../d4/d50/meshx__tiny__printf_8h.html#a34b5e371bf2aa40ab5442036a8711bcc">meshx_tiny_printf</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -243,12 +198,10 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CONFIG_MESHX_LOG_THREADED&#160;&#160;&#160;1</td>
+          <td class="memname">#define CONFIG_MESHX_LOG_THREADED&#160;&#160;&#160;0</td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Threaded logging configuration. </p>
 
 </div>
 </div>
@@ -280,8 +233,29 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><a class="code hl_function" href="../../d0/dc9/meshx__log_8c.html#ab47e09c155a1ce6f88a355797f495c53">meshx_log_printf</a>(module_id, level, __FILENAME__, __LINE__, format, ##__VA_ARGS__)</div>
-<div class="ttc" id="ameshx__log_8c_html_ab47e09c155a1ce6f88a355797f495c53"><div class="ttname"><a href="../../d0/dc9/meshx__log_8c.html#ab47e09c155a1ce6f88a355797f495c53">meshx_log_printf</a></div><div class="ttdeci">void meshx_log_printf(module_id_t module_id, meshx_log_level_t log_level, const char *func, int line_no, const char *fmt,...)</div><div class="ttdoc">Logs a formatted message for a specified module and log level.</div><div class="ttdef"><b>Definition</b> meshx_log.c:163</div></div>
+<b>Value:</b><div class="fragment"><div class="line"><a class="code hl_define" href="#afbfc9bd176206ada02e68cdc26b0f87e">MESHX_LOG_INTERNAL</a>(<a class="code hl_define" href="#a8af95e2650f30c1699cb8b68605d7bb3">MESHX_LOG_UNIQUE_ID</a>, module_id, level, format, ##__VA_ARGS__, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)</div>
+<div class="ttc" id="ameshx__log_8h_html_a8af95e2650f30c1699cb8b68605d7bb3"><div class="ttname"><a href="#a8af95e2650f30c1699cb8b68605d7bb3">MESHX_LOG_UNIQUE_ID</a></div><div class="ttdeci">#define MESHX_LOG_UNIQUE_ID</div><div class="ttdef"><b>Definition</b> meshx_log.h:78</div></div>
+<div class="ttc" id="ameshx__log_8h_html_afbfc9bd176206ada02e68cdc26b0f87e"><div class="ttname"><a href="#afbfc9bd176206ada02e68cdc26b0f87e">MESHX_LOG_INTERNAL</a></div><div class="ttdeci">#define MESHX_LOG_INTERNAL(id, module_id, level, format, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15,...)</div><div class="ttdef"><b>Definition</b> meshx_log.h:105</div></div>
+</div><!-- fragment --><div class="fragment"><div class="line"><span class="lineno">   99</span><span class="preprocessor">#define MESHX_LOG(module_id, level, format, ...) \</span></div>
+<div class="line"><span class="lineno">  100</span><span class="preprocessor">    MESHX_LOG_INTERNAL(MESHX_LOG_UNIQUE_ID, module_id, level, format, ##__VA_ARGS__, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)</span></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a52d86e24726c38d5c164364acf077d83" name="a52d86e24726c38d5c164364acf077d83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52d86e24726c38d5c164364acf077d83">&#9670;&#160;</a></span>MESHX_LOG_COLOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MESHX_LOG_COLOR</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>COLOR</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><span class="stringliteral">&quot;\033[0;&quot;</span> COLOR <span class="stringliteral">&quot;m&quot;</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -292,7 +266,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MESHX_LOG_COLOR_BLACK&#160;&#160;&#160;&quot;\033[0;30m&quot;</td>
+          <td class="memname">#define MESHX_LOG_COLOR_BLACK&#160;&#160;&#160;&quot;30&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -306,7 +280,21 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MESHX_LOG_COLOR_BLUE&#160;&#160;&#160;&quot;\033[0;34m&quot;</td>
+          <td class="memname">#define MESHX_LOG_COLOR_BLUE&#160;&#160;&#160;&quot;34&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a966c9b74233fd81d53076de92fdab386" name="a966c9b74233fd81d53076de92fdab386"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a966c9b74233fd81d53076de92fdab386">&#9670;&#160;</a></span>MESHX_LOG_COLOR_BROWN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MESHX_LOG_COLOR_BROWN&#160;&#160;&#160;&quot;33&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -320,7 +308,35 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MESHX_LOG_COLOR_CYAN&#160;&#160;&#160;&quot;\033[0;36m&quot;</td>
+          <td class="memname">#define MESHX_LOG_COLOR_CYAN&#160;&#160;&#160;&quot;36&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad61be124156ff166be877c6e2993992f" name="ad61be124156ff166be877c6e2993992f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad61be124156ff166be877c6e2993992f">&#9670;&#160;</a></span>MESHX_LOG_COLOR_D</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MESHX_LOG_COLOR_D&#160;&#160;&#160;<a class="el" href="#a52d86e24726c38d5c164364acf077d83">MESHX_LOG_COLOR</a>(<a class="el" href="#a9aa746a561a333446e13c33325fc8565">MESHX_LOG_COLOR_BLUE</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa65ff6518918e4d6a6c467421761a339" name="aa65ff6518918e4d6a6c467421761a339"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa65ff6518918e4d6a6c467421761a339">&#9670;&#160;</a></span>MESHX_LOG_COLOR_E</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MESHX_LOG_COLOR_E&#160;&#160;&#160;<a class="el" href="#a52d86e24726c38d5c164364acf077d83">MESHX_LOG_COLOR</a>(<a class="el" href="#a986327e019c81798f993ce4b5beb5c8b">MESHX_LOG_COLOR_RED</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -334,7 +350,21 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MESHX_LOG_COLOR_GREEN&#160;&#160;&#160;&quot;\033[0;32m&quot;</td>
+          <td class="memname">#define MESHX_LOG_COLOR_GREEN&#160;&#160;&#160;&quot;32&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a91c52703f2c58aef02cf891d1129285c" name="a91c52703f2c58aef02cf891d1129285c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91c52703f2c58aef02cf891d1129285c">&#9670;&#160;</a></span>MESHX_LOG_COLOR_I</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MESHX_LOG_COLOR_I&#160;&#160;&#160;<a class="el" href="#a52d86e24726c38d5c164364acf077d83">MESHX_LOG_COLOR</a>(<a class="el" href="#ac646236cab389357ec26a879f827e032">MESHX_LOG_COLOR_GREEN</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -348,7 +378,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MESHX_LOG_COLOR_PURPLE&#160;&#160;&#160;&quot;\033[0;35m&quot;</td>
+          <td class="memname">#define MESHX_LOG_COLOR_PURPLE&#160;&#160;&#160;&quot;35&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -362,7 +392,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MESHX_LOG_COLOR_RED&#160;&#160;&#160;&quot;\033[0;31m&quot;</td>
+          <td class="memname">#define MESHX_LOG_COLOR_RED&#160;&#160;&#160;&quot;31&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -383,6 +413,34 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a619c2ea451cc235d3135fddde741745f" name="a619c2ea451cc235d3135fddde741745f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a619c2ea451cc235d3135fddde741745f">&#9670;&#160;</a></span>MESHX_LOG_COLOR_V</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MESHX_LOG_COLOR_V&#160;&#160;&#160;<a class="el" href="#a52d86e24726c38d5c164364acf077d83">MESHX_LOG_COLOR</a>(<a class="el" href="#a0c4d6862efe6c37fa66ecf0057c15845">MESHX_LOG_COLOR_RESET</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a473400b8658d9d643d3cf829c69d2fc8" name="a473400b8658d9d643d3cf829c69d2fc8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a473400b8658d9d643d3cf829c69d2fc8">&#9670;&#160;</a></span>MESHX_LOG_COLOR_W</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MESHX_LOG_COLOR_W&#160;&#160;&#160;<a class="el" href="#a52d86e24726c38d5c164364acf077d83">MESHX_LOG_COLOR</a>(<a class="el" href="#a966c9b74233fd81d53076de92fdab386">MESHX_LOG_COLOR_BROWN</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aa3cc18467c8d47158c06b8c3790d0edb" name="aa3cc18467c8d47158c06b8c3790d0edb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa3cc18467c8d47158c06b8c3790d0edb">&#9670;&#160;</a></span>MESHX_LOG_COLOR_WHITE</h2>
 
@@ -390,25 +448,56 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MESHX_LOG_COLOR_WHITE&#160;&#160;&#160;&quot;\033[0;37m&quot;</td>
+          <td class="memname">#define MESHX_LOG_COLOR_WHITE&#160;&#160;&#160;&quot;37&quot;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="ae887818b14a1b93cc8c6da1a4982be48" name="ae887818b14a1b93cc8c6da1a4982be48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae887818b14a1b93cc8c6da1a4982be48">&#9670;&#160;</a></span>MESHX_LOG_COLOR_YELLOW</h2>
+<a id="a8b54c156e7b8471fe77026352f8a542f" name="a8b54c156e7b8471fe77026352f8a542f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b54c156e7b8471fe77026352f8a542f">&#9670;&#160;</a></span>MESHX_LOG_CONCAT</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MESHX_LOG_COLOR_YELLOW&#160;&#160;&#160;&quot;\033[0;33m&quot;</td>
+          <td class="memname">#define MESHX_LOG_CONCAT</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>a</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><a class="code hl_define" href="#ab17ce1dc80ff3646daa0324e520a525e">MESHX_LOG_CONCAT_INNER</a>(a, b)</div>
+<div class="ttc" id="ameshx__log_8h_html_ab17ce1dc80ff3646daa0324e520a525e"><div class="ttname"><a href="#ab17ce1dc80ff3646daa0324e520a525e">MESHX_LOG_CONCAT_INNER</a></div><div class="ttdeci">#define MESHX_LOG_CONCAT_INNER(a, b)</div><div class="ttdef"><b>Definition</b> meshx_log.h:72</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="ab17ce1dc80ff3646daa0324e520a525e" name="ab17ce1dc80ff3646daa0324e520a525e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab17ce1dc80ff3646daa0324e520a525e">&#9670;&#160;</a></span>MESHX_LOG_CONCAT_INNER</h2>
 
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MESHX_LOG_CONCAT_INNER</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>a</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>b</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">a ## b</div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a4a141c7b841c566af55bd50045ee4e90" name="a4a141c7b841c566af55bd50045ee4e90"></a>
@@ -418,7 +507,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MESHX_LOG_DEBUG&#160;&#160;&#160;1   /* Blue */</td>
+          <td class="memname">#define MESHX_LOG_DEBUG&#160;&#160;&#160;4</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -432,11 +521,47 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MESHX_LOG_ERROR&#160;&#160;&#160;4   /* Red */</td>
+          <td class="memname">#define MESHX_LOG_ERROR&#160;&#160;&#160;1</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
+</div>
+</div>
+<a id="a9f2ce795bcc8b28dd54c4ed86553f8b9" name="a9f2ce795bcc8b28dd54c4ed86553f8b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f2ce795bcc8b28dd54c4ed86553f8b9">&#9670;&#160;</a></span>MESHX_LOG_GET_COLOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MESHX_LOG_GET_COLOR</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>level</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">((level) == <a class="code hl_define" href="#abac72310c5c0e272dd1030d857f285b0">MESHX_LOG_ERROR</a> ? <a class="code hl_define" href="#aa65ff6518918e4d6a6c467421761a339">MESHX_LOG_COLOR_E</a> : \</div>
+<div class="line">(level) == <a class="code hl_define" href="#aab45c3bbc9cb0d29d9828b8f85794aa5">MESHX_LOG_WARN</a>  ? <a class="code hl_define" href="#a473400b8658d9d643d3cf829c69d2fc8">MESHX_LOG_COLOR_W</a> : \</div>
+<div class="line">(level) == <a class="code hl_define" href="#a081cbffb2f246d1443ba585cb7f89a91">MESHX_LOG_INFO</a>  ? <a class="code hl_define" href="#a91c52703f2c58aef02cf891d1129285c">MESHX_LOG_COLOR_I</a> : \</div>
+<div class="line">(level) == <a class="code hl_define" href="#a4a141c7b841c566af55bd50045ee4e90">MESHX_LOG_DEBUG</a> ? <a class="code hl_define" href="#a9aa746a561a333446e13c33325fc8565">MESHX_LOG_COLOR_BLUE</a> : \</div>
+<div class="line"><a class="code hl_define" href="#a0c4d6862efe6c37fa66ecf0057c15845">MESHX_LOG_COLOR_RESET</a>)</div>
+<div class="ttc" id="ameshx__log_8h_html_a081cbffb2f246d1443ba585cb7f89a91"><div class="ttname"><a href="#a081cbffb2f246d1443ba585cb7f89a91">MESHX_LOG_INFO</a></div><div class="ttdeci">#define MESHX_LOG_INFO</div><div class="ttdef"><b>Definition</b> meshx_log.h:29</div></div>
+<div class="ttc" id="ameshx__log_8h_html_a0c4d6862efe6c37fa66ecf0057c15845"><div class="ttname"><a href="#a0c4d6862efe6c37fa66ecf0057c15845">MESHX_LOG_COLOR_RESET</a></div><div class="ttdeci">#define MESHX_LOG_COLOR_RESET</div><div class="ttdef"><b>Definition</b> meshx_log.h:50</div></div>
+<div class="ttc" id="ameshx__log_8h_html_a473400b8658d9d643d3cf829c69d2fc8"><div class="ttname"><a href="#a473400b8658d9d643d3cf829c69d2fc8">MESHX_LOG_COLOR_W</a></div><div class="ttdeci">#define MESHX_LOG_COLOR_W</div><div class="ttdef"><b>Definition</b> meshx_log.h:54</div></div>
+<div class="ttc" id="ameshx__log_8h_html_a4a141c7b841c566af55bd50045ee4e90"><div class="ttname"><a href="#a4a141c7b841c566af55bd50045ee4e90">MESHX_LOG_DEBUG</a></div><div class="ttdeci">#define MESHX_LOG_DEBUG</div><div class="ttdef"><b>Definition</b> meshx_log.h:30</div></div>
+<div class="ttc" id="ameshx__log_8h_html_a91c52703f2c58aef02cf891d1129285c"><div class="ttname"><a href="#a91c52703f2c58aef02cf891d1129285c">MESHX_LOG_COLOR_I</a></div><div class="ttdeci">#define MESHX_LOG_COLOR_I</div><div class="ttdef"><b>Definition</b> meshx_log.h:55</div></div>
+<div class="ttc" id="ameshx__log_8h_html_a9aa746a561a333446e13c33325fc8565"><div class="ttname"><a href="#a9aa746a561a333446e13c33325fc8565">MESHX_LOG_COLOR_BLUE</a></div><div class="ttdeci">#define MESHX_LOG_COLOR_BLUE</div><div class="ttdef"><b>Definition</b> meshx_log.h:46</div></div>
+<div class="ttc" id="ameshx__log_8h_html_aa65ff6518918e4d6a6c467421761a339"><div class="ttname"><a href="#aa65ff6518918e4d6a6c467421761a339">MESHX_LOG_COLOR_E</a></div><div class="ttdeci">#define MESHX_LOG_COLOR_E</div><div class="ttdef"><b>Definition</b> meshx_log.h:53</div></div>
+<div class="ttc" id="ameshx__log_8h_html_aab45c3bbc9cb0d29d9828b8f85794aa5"><div class="ttname"><a href="#aab45c3bbc9cb0d29d9828b8f85794aa5">MESHX_LOG_WARN</a></div><div class="ttdeci">#define MESHX_LOG_WARN</div><div class="ttdef"><b>Definition</b> meshx_log.h:28</div></div>
+<div class="ttc" id="ameshx__log_8h_html_abac72310c5c0e272dd1030d857f285b0"><div class="ttname"><a href="#abac72310c5c0e272dd1030d857f285b0">MESHX_LOG_ERROR</a></div><div class="ttdeci">#define MESHX_LOG_ERROR</div><div class="ttdef"><b>Definition</b> meshx_log.h:27</div></div>
+</div><!-- fragment --><div class="fragment"><div class="line"><span class="lineno">   59</span><span class="preprocessor">#define MESHX_LOG_GET_COLOR(level) ((level) == MESHX_LOG_ERROR ? MESHX_LOG_COLOR_E : \</span></div>
+<div class="line"><span class="lineno">   60</span><span class="preprocessor">                                    (level) == MESHX_LOG_WARN  ? MESHX_LOG_COLOR_W : \</span></div>
+<div class="line"><span class="lineno">   61</span><span class="preprocessor">                                    (level) == MESHX_LOG_INFO  ? MESHX_LOG_COLOR_I : \</span></div>
+<div class="line"><span class="lineno">   62</span><span class="preprocessor">                                    (level) == MESHX_LOG_DEBUG ? MESHX_LOG_COLOR_BLUE : \</span></div>
+<div class="line"><span class="lineno">   63</span><span class="preprocessor">                                    MESHX_LOG_COLOR_RESET)</span></div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a081cbffb2f246d1443ba585cb7f89a91" name="a081cbffb2f246d1443ba585cb7f89a91"></a>
@@ -446,46 +571,141 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MESHX_LOG_INFO&#160;&#160;&#160;2    /* Green */</td>
+          <td class="memname">#define MESHX_LOG_INFO&#160;&#160;&#160;3</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a259f4064d426d7f4d31d307343c39f19" name="a259f4064d426d7f4d31d307343c39f19"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a259f4064d426d7f4d31d307343c39f19">&#9670;&#160;</a></span>MESHX_LOG_LEVEL_COLOR</h2>
+<a id="afbfc9bd176206ada02e68cdc26b0f87e" name="afbfc9bd176206ada02e68cdc26b0f87e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbfc9bd176206ada02e68cdc26b0f87e">&#9670;&#160;</a></span>MESHX_LOG_INTERNAL</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MESHX_LOG_LEVEL_COLOR</td>
+          <td class="memname">#define MESHX_LOG_INTERNAL</td>
           <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>level</em></span></td><td>)</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>id</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>module_id</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>level</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>format</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>arg0</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>arg1</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>arg2</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>arg3</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>arg4</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>arg5</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>arg6</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>arg7</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>arg8</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>arg9</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>arg10</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>arg11</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>arg12</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>arg13</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>arg14</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>arg15</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em></em></span>...&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">(                                                                    \</div>
-<div class="line">(level) == <a class="code hl_define" href="#abac72310c5c0e272dd1030d857f285b0">MESHX_LOG_ERROR</a> ? <a class="code hl_define" href="#a986327e019c81798f993ce4b5beb5c8b">MESHX_LOG_COLOR_RED</a> : (level) == <a class="code hl_define" href="#aab45c3bbc9cb0d29d9828b8f85794aa5">MESHX_LOG_WARN</a> ? <a class="code hl_define" href="#ae887818b14a1b93cc8c6da1a4982be48">MESHX_LOG_COLOR_YELLOW</a> \</div>
-<div class="line">                                               : (level) == <a class="code hl_define" href="#a081cbffb2f246d1443ba585cb7f89a91">MESHX_LOG_INFO</a>   ? <a class="code hl_define" href="#ac646236cab389357ec26a879f827e032">MESHX_LOG_COLOR_GREEN</a>  \</div>
-<div class="line">                                               : (level) == <a class="code hl_define" href="#a4a141c7b841c566af55bd50045ee4e90">MESHX_LOG_DEBUG</a>  ? <a class="code hl_define" href="#a9aa746a561a333446e13c33325fc8565">MESHX_LOG_COLOR_BLUE</a>   \</div>
-<div class="line">                                                                             : <a class="code hl_define" href="#a0c4d6862efe6c37fa66ecf0057c15845">MESHX_LOG_COLOR_RESET</a>)</div>
-<div class="ttc" id="ameshx__log_8h_html_a081cbffb2f246d1443ba585cb7f89a91"><div class="ttname"><a href="#a081cbffb2f246d1443ba585cb7f89a91">MESHX_LOG_INFO</a></div><div class="ttdeci">#define MESHX_LOG_INFO</div><div class="ttdef"><b>Definition</b> meshx_log.h:70</div></div>
-<div class="ttc" id="ameshx__log_8h_html_a0c4d6862efe6c37fa66ecf0057c15845"><div class="ttname"><a href="#a0c4d6862efe6c37fa66ecf0057c15845">MESHX_LOG_COLOR_RESET</a></div><div class="ttdeci">#define MESHX_LOG_COLOR_RESET</div><div class="ttdef"><b>Definition</b> meshx_log.h:64</div></div>
-<div class="ttc" id="ameshx__log_8h_html_a4a141c7b841c566af55bd50045ee4e90"><div class="ttname"><a href="#a4a141c7b841c566af55bd50045ee4e90">MESHX_LOG_DEBUG</a></div><div class="ttdeci">#define MESHX_LOG_DEBUG</div><div class="ttdef"><b>Definition</b> meshx_log.h:69</div></div>
-<div class="ttc" id="ameshx__log_8h_html_a986327e019c81798f993ce4b5beb5c8b"><div class="ttname"><a href="#a986327e019c81798f993ce4b5beb5c8b">MESHX_LOG_COLOR_RED</a></div><div class="ttdeci">#define MESHX_LOG_COLOR_RED</div><div class="ttdef"><b>Definition</b> meshx_log.h:57</div></div>
-<div class="ttc" id="ameshx__log_8h_html_a9aa746a561a333446e13c33325fc8565"><div class="ttname"><a href="#a9aa746a561a333446e13c33325fc8565">MESHX_LOG_COLOR_BLUE</a></div><div class="ttdeci">#define MESHX_LOG_COLOR_BLUE</div><div class="ttdef"><b>Definition</b> meshx_log.h:60</div></div>
-<div class="ttc" id="ameshx__log_8h_html_aab45c3bbc9cb0d29d9828b8f85794aa5"><div class="ttname"><a href="#aab45c3bbc9cb0d29d9828b8f85794aa5">MESHX_LOG_WARN</a></div><div class="ttdeci">#define MESHX_LOG_WARN</div><div class="ttdef"><b>Definition</b> meshx_log.h:71</div></div>
-<div class="ttc" id="ameshx__log_8h_html_abac72310c5c0e272dd1030d857f285b0"><div class="ttname"><a href="#abac72310c5c0e272dd1030d857f285b0">MESHX_LOG_ERROR</a></div><div class="ttdeci">#define MESHX_LOG_ERROR</div><div class="ttdef"><b>Definition</b> meshx_log.h:72</div></div>
-<div class="ttc" id="ameshx__log_8h_html_ac646236cab389357ec26a879f827e032"><div class="ttname"><a href="#ac646236cab389357ec26a879f827e032">MESHX_LOG_COLOR_GREEN</a></div><div class="ttdeci">#define MESHX_LOG_COLOR_GREEN</div><div class="ttdef"><b>Definition</b> meshx_log.h:58</div></div>
-<div class="ttc" id="ameshx__log_8h_html_ae887818b14a1b93cc8c6da1a4982be48"><div class="ttname"><a href="#ae887818b14a1b93cc8c6da1a4982be48">MESHX_LOG_COLOR_YELLOW</a></div><div class="ttdeci">#define MESHX_LOG_COLOR_YELLOW</div><div class="ttdef"><b>Definition</b> meshx_log.h:59</div></div>
-</div><!-- fragment --><div class="fragment"><div class="line"><span class="lineno">   86</span><span class="preprocessor">#define MESHX_LOG_LEVEL_COLOR(level) (                                                                    \</span></div>
-<div class="line"><span class="lineno">   87</span><span class="preprocessor">    (level) == MESHX_LOG_ERROR ? MESHX_LOG_COLOR_RED : (level) == MESHX_LOG_WARN ? MESHX_LOG_COLOR_YELLOW \</span></div>
-<div class="line"><span class="lineno">   88</span><span class="preprocessor">                                                   : (level) == MESHX_LOG_INFO   ? MESHX_LOG_COLOR_GREEN  \</span></div>
-<div class="line"><span class="lineno">   89</span><span class="preprocessor">                                                   : (level) == MESHX_LOG_DEBUG  ? MESHX_LOG_COLOR_BLUE   \</span></div>
-<div class="line"><span class="lineno">   90</span><span class="preprocessor">                                                                                 : MESHX_LOG_COLOR_RESET)</span></div>
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span>                                                                \</div>
+<div class="line">{                                                                 \</div>
+<div class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> <a class="code hl_define" href="#a8b54c156e7b8471fe77026352f8a542f">MESHX_LOG_CONCAT</a>(_fmt, <span class="keywordtype">id</span>)[] __attribute__((section(<span class="stringliteral">&quot;.meshx_log_str.&quot;</span> <a class="code hl_define" href="#abd90b0a1ae9a5d9631ae19067349860f">MESHX_STR</a>(<span class="keywordtype">id</span>)), used)) = format; \</div>
+<div class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">char</span> <a class="code hl_define" href="#a8b54c156e7b8471fe77026352f8a542f">MESHX_LOG_CONCAT</a>(_file, <span class="keywordtype">id</span>)[] __attribute__((section(<span class="stringliteral">&quot;.meshx_log_str.&quot;</span> <a class="code hl_define" href="#abd90b0a1ae9a5d9631ae19067349860f">MESHX_STR</a>(<span class="keywordtype">id</span>)), used)) = __FILE__; \</div>
+<div class="line">    meshx_log_packet(module_id, level, <a class="code hl_define" href="#a8b54c156e7b8471fe77026352f8a542f">MESHX_LOG_CONCAT</a>(_file, <span class="keywordtype">id</span>), __LINE__, <a class="code hl_define" href="#a8b54c156e7b8471fe77026352f8a542f">MESHX_LOG_CONCAT</a>(_fmt, <span class="keywordtype">id</span>), arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15); \</div>
+<div class="line">} <span class="keywordflow">while</span> (0)</div>
+<div class="ttc" id="ameshx__log_8h_html_a8b54c156e7b8471fe77026352f8a542f"><div class="ttname"><a href="#a8b54c156e7b8471fe77026352f8a542f">MESHX_LOG_CONCAT</a></div><div class="ttdeci">#define MESHX_LOG_CONCAT(a, b)</div><div class="ttdef"><b>Definition</b> meshx_log.h:73</div></div>
+<div class="ttc" id="ameshx__log_8h_html_abd90b0a1ae9a5d9631ae19067349860f"><div class="ttname"><a href="#abd90b0a1ae9a5d9631ae19067349860f">MESHX_STR</a></div><div class="ttdeci">#define MESHX_STR(x)</div><div class="ttdef"><b>Definition</b> meshx_log.h:103</div></div>
+</div><!-- fragment --><div class="fragment"><div class="line"><span class="lineno">  105</span><span class="preprocessor">#define MESHX_LOG_INTERNAL(id, module_id, level, format, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, ...) \</span></div>
+<div class="line"><span class="lineno">  106</span><span class="preprocessor">    do                                                                \</span></div>
+<div class="line"><span class="lineno">  107</span><span class="preprocessor">    {                                                                 \</span></div>
+<div class="line"><span class="lineno">  108</span><span class="preprocessor">        static const char MESHX_LOG_CONCAT(_fmt, id)[] __attribute__((section(&quot;.meshx_log_str.&quot; MESHX_STR(id)), used)) = format; \</span></div>
+<div class="line"><span class="lineno">  109</span><span class="preprocessor">        static const char MESHX_LOG_CONCAT(_file, id)[] __attribute__((section(&quot;.meshx_log_str.&quot; MESHX_STR(id)), used)) = __FILE__; \</span></div>
+<div class="line"><span class="lineno">  110</span><span class="preprocessor">        meshx_log_packet(module_id, level, MESHX_LOG_CONCAT(_file, id), __LINE__, MESHX_LOG_CONCAT(_fmt, id), arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15); \</span></div>
+<div class="line"><span class="lineno">  111</span><span class="preprocessor">    } while (0)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -510,7 +730,49 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MESHX_LOG_NONE&#160;&#160;&#160;5    /* Blue */</td>
+          <td class="memname">#define MESHX_LOG_NONE&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a356c832124628fcc2f92d264ce7f0eca" name="a356c832124628fcc2f92d264ce7f0eca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a356c832124628fcc2f92d264ce7f0eca">&#9670;&#160;</a></span>MESHX_LOG_STR_ATTR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MESHX_LOG_STR_ATTR&#160;&#160;&#160;__attribute__((section(&quot;.meshx_log_str&quot;), used))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab67c85b43e2b081e12fb9701ffee4b1f" name="ab67c85b43e2b081e12fb9701ffee4b1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab67c85b43e2b081e12fb9701ffee4b1f">&#9670;&#160;</a></span>MESHX_LOG_SYNC_WORD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MESHX_LOG_SYNC_WORD&#160;&#160;&#160;0xDEAD</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8af95e2650f30c1699cb8b68605d7bb3" name="a8af95e2650f30c1699cb8b68605d7bb3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8af95e2650f30c1699cb8b68605d7bb3">&#9670;&#160;</a></span>MESHX_LOG_UNIQUE_ID</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MESHX_LOG_UNIQUE_ID&#160;&#160;&#160;__LINE__</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -524,7 +786,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MESHX_LOG_VERBOSE&#160;&#160;&#160;0 /* White */</td>
+          <td class="memname">#define MESHX_LOG_VERBOSE&#160;&#160;&#160;5</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -538,7 +800,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define MESHX_LOG_WARN&#160;&#160;&#160;3    /* Yellow */</td>
+          <td class="memname">#define MESHX_LOG_WARN&#160;&#160;&#160;2</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -568,13 +830,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span>                                     \</div>
-<div class="line">{                                      \</div>
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span>                                                                \</div>
+<div class="line">{                                                                 \</div>
+<div class="line">    MESHX_LOG(module_id, <a class="code hl_define" href="#a4a141c7b841c566af55bd50045ee4e90">MESHX_LOG_DEBUG</a>, format, ##__VA_ARGS__); \</div>
 <div class="line">} <span class="keywordflow">while</span> (0)</div>
-</div><!-- fragment --><div class="fragment"><div class="line"><span class="lineno">  142</span><span class="preprocessor">#define MESHX_LOGD(module_id, format, ...) \</span></div>
-<div class="line"><span class="lineno">  143</span><span class="preprocessor">    do                                     \</span></div>
-<div class="line"><span class="lineno">  144</span><span class="preprocessor">    {                                      \</span></div>
-<div class="line"><span class="lineno">  145</span><span class="preprocessor">    } while (0)</span></div>
+</div><!-- fragment --><div class="fragment"><div class="line"><span class="lineno">  132</span><span class="preprocessor">#define MESHX_LOGD(module_id, format, ...)                            \</span></div>
+<div class="line"><span class="lineno">  133</span><span class="preprocessor">    do                                                                \</span></div>
+<div class="line"><span class="lineno">  134</span><span class="preprocessor">    {                                                                 \</span></div>
+<div class="line"><span class="lineno">  135</span><span class="preprocessor">        MESHX_LOG(module_id, MESHX_LOG_DEBUG, format, ##__VA_ARGS__); \</span></div>
+<div class="line"><span class="lineno">  136</span><span class="preprocessor">    } while (0)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -605,11 +869,11 @@ Functions</h2></td></tr>
 <div class="line">{                                                                 \</div>
 <div class="line">    MESHX_LOG(module_id, <a class="code hl_define" href="#abac72310c5c0e272dd1030d857f285b0">MESHX_LOG_ERROR</a>, format, ##__VA_ARGS__); \</div>
 <div class="line">} <span class="keywordflow">while</span> (0)</div>
-</div><!-- fragment --><div class="fragment"><div class="line"><span class="lineno">   96</span><span class="preprocessor">#define MESHX_LOGE(module_id, format, ...)                            \</span></div>
-<div class="line"><span class="lineno">   97</span><span class="preprocessor">    do                                                                \</span></div>
-<div class="line"><span class="lineno">   98</span><span class="preprocessor">    {                                                                 \</span></div>
-<div class="line"><span class="lineno">   99</span><span class="preprocessor">        MESHX_LOG(module_id, MESHX_LOG_ERROR, format, ##__VA_ARGS__); \</span></div>
-<div class="line"><span class="lineno">  100</span><span class="preprocessor">    } while (0)</span></div>
+</div><!-- fragment --><div class="fragment"><div class="line"><span class="lineno">  114</span><span class="preprocessor">#define MESHX_LOGE(module_id, format, ...)                            \</span></div>
+<div class="line"><span class="lineno">  115</span><span class="preprocessor">    do                                                                \</span></div>
+<div class="line"><span class="lineno">  116</span><span class="preprocessor">    {                                                                 \</span></div>
+<div class="line"><span class="lineno">  117</span><span class="preprocessor">        MESHX_LOG(module_id, MESHX_LOG_ERROR, format, ##__VA_ARGS__); \</span></div>
+<div class="line"><span class="lineno">  118</span><span class="preprocessor">    } while (0)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -636,15 +900,51 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span>                                                               \</div>
-<div class="line">{                                                                \</div>
-<div class="line">    MESHX_LOG(module_id, <a class="code hl_define" href="#a081cbffb2f246d1443ba585cb7f89a91">MESHX_LOG_INFO</a>, format, ##__VA_ARGS__); \</div>
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span>                                                                \</div>
+<div class="line">{                                                                 \</div>
+<div class="line">    MESHX_LOG(module_id, <a class="code hl_define" href="#a081cbffb2f246d1443ba585cb7f89a91">MESHX_LOG_INFO</a>, format, ##__VA_ARGS__);  \</div>
 <div class="line">} <span class="keywordflow">while</span> (0)</div>
-</div><!-- fragment --><div class="fragment"><div class="line"><span class="lineno">  123</span><span class="preprocessor">#define MESHX_LOGI(module_id, format, ...)                           \</span></div>
-<div class="line"><span class="lineno">  124</span><span class="preprocessor">    do                                                               \</span></div>
-<div class="line"><span class="lineno">  125</span><span class="preprocessor">    {                                                                \</span></div>
-<div class="line"><span class="lineno">  126</span><span class="preprocessor">        MESHX_LOG(module_id, MESHX_LOG_INFO, format, ##__VA_ARGS__); \</span></div>
-<div class="line"><span class="lineno">  127</span><span class="preprocessor">    } while (0)</span></div>
+</div><!-- fragment --><div class="fragment"><div class="line"><span class="lineno">  126</span><span class="preprocessor">#define MESHX_LOGI(module_id, format, ...)                            \</span></div>
+<div class="line"><span class="lineno">  127</span><span class="preprocessor">    do                                                                \</span></div>
+<div class="line"><span class="lineno">  128</span><span class="preprocessor">    {                                                                 \</span></div>
+<div class="line"><span class="lineno">  129</span><span class="preprocessor">        MESHX_LOG(module_id, MESHX_LOG_INFO, format, ##__VA_ARGS__);  \</span></div>
+<div class="line"><span class="lineno">  130</span><span class="preprocessor">    } while (0)</span></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a74c76963399db022b9ee6de29a416206" name="a74c76963399db022b9ee6de29a416206"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74c76963399db022b9ee6de29a416206">&#9670;&#160;</a></span>MESHX_LOGV</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MESHX_LOGV</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>module_id</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>format</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em></em></span>...&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span>                                                                \</div>
+<div class="line">{                                                                 \</div>
+<div class="line">    MESHX_LOG(module_id, <a class="code hl_define" href="#a4d2cb7b27cc324414a98b0aaa88fd2cf">MESHX_LOG_VERBOSE</a>, format, ##__VA_ARGS__);\</div>
+<div class="line">} <span class="keywordflow">while</span> (0)</div>
+<div class="ttc" id="ameshx__log_8h_html_a4d2cb7b27cc324414a98b0aaa88fd2cf"><div class="ttname"><a href="#a4d2cb7b27cc324414a98b0aaa88fd2cf">MESHX_LOG_VERBOSE</a></div><div class="ttdeci">#define MESHX_LOG_VERBOSE</div><div class="ttdef"><b>Definition</b> meshx_log.h:31</div></div>
+</div><!-- fragment --><div class="fragment"><div class="line"><span class="lineno">  138</span><span class="preprocessor">#define MESHX_LOGV(module_id, format, ...)                            \</span></div>
+<div class="line"><span class="lineno">  139</span><span class="preprocessor">    do                                                                \</span></div>
+<div class="line"><span class="lineno">  140</span><span class="preprocessor">    {                                                                 \</span></div>
+<div class="line"><span class="lineno">  141</span><span class="preprocessor">        MESHX_LOG(module_id, MESHX_LOG_VERBOSE, format, ##__VA_ARGS__);\</span></div>
+<div class="line"><span class="lineno">  142</span><span class="preprocessor">    } while (0)</span></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -671,55 +971,64 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span>                                                               \</div>
-<div class="line">{                                                                \</div>
-<div class="line">    MESHX_LOG(module_id, <a class="code hl_define" href="#aab45c3bbc9cb0d29d9828b8f85794aa5">MESHX_LOG_WARN</a>, format, ##__VA_ARGS__); \</div>
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordflow">do</span>                                                                \</div>
+<div class="line">{                                                                 \</div>
+<div class="line">    MESHX_LOG(module_id, <a class="code hl_define" href="#aab45c3bbc9cb0d29d9828b8f85794aa5">MESHX_LOG_WARN</a>, format, ##__VA_ARGS__);  \</div>
 <div class="line">} <span class="keywordflow">while</span> (0)</div>
-</div><!-- fragment --><div class="fragment"><div class="line"><span class="lineno">  110</span><span class="preprocessor">#define MESHX_LOGW(module_id, format, ...)                           \</span></div>
-<div class="line"><span class="lineno">  111</span><span class="preprocessor">    do                                                               \</span></div>
-<div class="line"><span class="lineno">  112</span><span class="preprocessor">    {                                                                \</span></div>
-<div class="line"><span class="lineno">  113</span><span class="preprocessor">        MESHX_LOG(module_id, MESHX_LOG_WARN, format, ##__VA_ARGS__); \</span></div>
-<div class="line"><span class="lineno">  114</span><span class="preprocessor">    } while (0)</span></div>
+</div><!-- fragment --><div class="fragment"><div class="line"><span class="lineno">  120</span><span class="preprocessor">#define MESHX_LOGW(module_id, format, ...)                            \</span></div>
+<div class="line"><span class="lineno">  121</span><span class="preprocessor">    do                                                                \</span></div>
+<div class="line"><span class="lineno">  122</span><span class="preprocessor">    {                                                                 \</span></div>
+<div class="line"><span class="lineno">  123</span><span class="preprocessor">        MESHX_LOG(module_id, MESHX_LOG_WARN, format, ##__VA_ARGS__);  \</span></div>
+<div class="line"><span class="lineno">  124</span><span class="preprocessor">    } while (0)</span></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="abd90b0a1ae9a5d9631ae19067349860f" name="abd90b0a1ae9a5d9631ae19067349860f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd90b0a1ae9a5d9631ae19067349860f">&#9670;&#160;</a></span>MESHX_STR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MESHX_STR</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><a class="code hl_define" href="#a37368a8d2f50947b39294ad35bed70a1">MESHX_STR_INNER</a>(x)</div>
+<div class="ttc" id="ameshx__log_8h_html_a37368a8d2f50947b39294ad35bed70a1"><div class="ttname"><a href="#a37368a8d2f50947b39294ad35bed70a1">MESHX_STR_INNER</a></div><div class="ttdeci">#define MESHX_STR_INNER(x)</div><div class="ttdef"><b>Definition</b> meshx_log.h:102</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a37368a8d2f50947b39294ad35bed70a1" name="a37368a8d2f50947b39294ad35bed70a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37368a8d2f50947b39294ad35bed70a1">&#9670;&#160;</a></span>MESHX_STR_INNER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MESHX_STR_INNER</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><span class="preprocessor">#x</span></div>
 </div><!-- fragment -->
 </div>
 </div>
 <a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Typedef Documentation</h2>
-<a id="a2bb5164357b270ea80733b70e7e0ee17" name="a2bb5164357b270ea80733b70e7e0ee17"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2bb5164357b270ea80733b70e7e0ee17">&#9670;&#160;</a></span>meshx_log_level_t</h2>
+<a id="aa6b3e50c8c6b727fd46249db2a643fc6" name="aa6b3e50c8c6b727fd46249db2a643fc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6b3e50c8c6b727fd46249db2a643fc6">&#9670;&#160;</a></span>meshx_log_level_t</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef unsigned <a class="el" href="#a2bb5164357b270ea80733b70e7e0ee17">meshx_log_level_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a7e75f09650fd33bcd03ea92acd58408f" name="a7e75f09650fd33bcd03ea92acd58408f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e75f09650fd33bcd03ea92acd58408f">&#9670;&#160;</a></span>meshx_logging_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef struct <a class="el" href="../../db/d0b/structmeshx__logging.html">meshx_logging</a> <a class="el" href="#a7e75f09650fd33bcd03ea92acd58408f">meshx_logging_t</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="adef7845289a24e0f4bfd4ac68af4ba6d" name="adef7845289a24e0f4bfd4ac68af4ba6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adef7845289a24e0f4bfd4ac68af4ba6d">&#9670;&#160;</a></span>millis_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef unsigned int(* millis_t) (void)</td>
+          <td class="memname">typedef uint8_t <a class="el" href="#aa6b3e50c8c6b727fd46249db2a643fc6">meshx_log_level_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -727,6 +1036,57 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a id="a41704f3ef1ab424f6709ba29d70cd8b4" name="a41704f3ef1ab424f6709ba29d70cd8b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41704f3ef1ab424f6709ba29d70cd8b4">&#9670;&#160;</a></span>meshx_log_packet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void meshx_log_packet </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedc">module_id_t</a></td>          <td class="paramname"><span class="paramname"><em>module_id</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#aa6b3e50c8c6b727fd46249db2a643fc6">meshx_log_level_t</a></td>          <td class="paramname"><span class="paramname"><em>log_level</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>file</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>line_no</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *</td>          <td class="paramname"><span class="paramname"><em>fmt</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>...</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Logs a packetized binary log message. </p>
+<dl class="section note"><dt>Note</dt><dd>This is called by the MESHX_LOG macro. </dd></dl>
+<div class="fragment"><div class="line"><span class="lineno">  223</span>{</div>
+<div class="line"><span class="lineno">  224</span>    va_list args;</div>
+<div class="line"><span class="lineno">  225</span>    va_start(args, fmt);</div>
+<div class="line"><span class="lineno">  226</span>    <a class="code hl_function" href="../../d0/dc9/meshx__log_8c.html#aca8baee48b56fa39cf13659f0b645a87">vmeshx_log_packet</a>(module_id, log_level, file, line_no, fmt, args);</div>
+<div class="line"><span class="lineno">  227</span>    va_end(args);</div>
+<div class="line"><span class="lineno">  228</span>}</div>
+<div class="ttc" id="ameshx__log_8c_html_aca8baee48b56fa39cf13659f0b645a87"><div class="ttname"><a href="../../d0/dc9/meshx__log_8c.html#aca8baee48b56fa39cf13659f0b645a87">vmeshx_log_packet</a></div><div class="ttdeci">static void vmeshx_log_packet(module_id_t module_id, meshx_log_level_t log_level, const char *file, int line_no, const char *fmt, va_list args)</div><div class="ttdef"><b>Definition</b> meshx_log.c:132</div></div>
+</div><!-- fragment -->
+</div>
+</div>
 <a id="ab47e09c155a1ce6f88a355797f495c53" name="ab47e09c155a1ce6f88a355797f495c53"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab47e09c155a1ce6f88a355797f495c53">&#9670;&#160;</a></span>meshx_log_printf()</h2>
 
@@ -741,7 +1101,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="#a2bb5164357b270ea80733b70e7e0ee17">meshx_log_level_t</a></td>          <td class="paramname"><span class="paramname"><em>log_level</em></span>, </td>
+          <td class="paramtype"><a class="el" href="#aa6b3e50c8c6b727fd46249db2a643fc6">meshx_log_level_t</a></td>          <td class="paramname"><span class="paramname"><em>log_level</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -766,108 +1126,13 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Logs a formatted message for a specified module and log level. </p>
-<dl class="section note"><dt>Note</dt><dd>This is a weak function, can be redefined to override in app layer</dd></dl>
-<p>This function checks if the provided module ID and log level are valid and above the current global and module-specific log levels. If valid, it processes the variable arguments to format and log the message.</p>
-<dl class="section note"><dt>Note</dt><dd>This is a weak function defination and can be overriden by any other version of defination required as per platform</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">module_id</td><td>The ID of the module for which the log is generated. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">log_level</td><td>The log level of the message. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">func</td><td>The name of the function where the log is called. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">line_no</td><td>The line number in the source code where the log is called. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">fmt</td><td>The format string for the log message. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">...</td><td>Additional arguments for the format string. </td></tr>
-  </table>
-  </dd>
-</dl>
-<div class="fragment"><div class="line"><span class="lineno">  165</span>{</div>
-<div class="line"><span class="lineno">  166</span>    <span class="comment">/* Validate module ID */</span></div>
-<div class="line"><span class="lineno">  167</span>    <span class="keywordflow">if</span> (module_id &gt; <a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca0bca37d26c7c9e2acb8232315686be7d">MODULE_ID_MAX</a> || log_level &lt; <a class="code hl_variable" href="../../d0/dc9/meshx__log_8c.html#a305b8079fcce435c2e419fa0b32c3ff4">meshx_logging_ctrl</a>.def_log_level || <a class="code hl_variable" href="../../d0/dc9/meshx__log_8c.html#a6c22e8307d5b8940f73e90dd3ad9078b">module_log_level</a>[module_id] &lt; <a class="code hl_variable" href="../../d0/dc9/meshx__log_8c.html#a305b8079fcce435c2e419fa0b32c3ff4">meshx_logging_ctrl</a>.def_log_level)</div>
-<div class="line"><span class="lineno">  168</span>        <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  169</span> </div>
-<div class="line"><span class="lineno">  170</span>    <span class="comment">/* Get timestamp */</span></div>
-<div class="line"><span class="lineno">  171</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> millis;</div>
-<div class="line"><span class="lineno">  172</span>    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> task_id;</div>
-<div class="line"><span class="lineno">  173</span> </div>
-<div class="line"><span class="lineno">  174</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err_time = <a class="code hl_function" href="../../d8/d39/meshx__rtos__utils_8h.html#a36747ae13d908654ff25903375211660">meshx_rtos_get_sys_time</a>(&amp;millis);</div>
-<div class="line"><span class="lineno">  175</span>    <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err_task = <a class="code hl_function" href="../../d8/d39/meshx__rtos__utils_8h.html#a6816e2e6131dc78da745ce5d815043e0">meshx_rtos_get_curr_task_id_prio</a>(&amp;task_id);</div>
-<div class="line"><span class="lineno">  176</span>    </div>
-<div class="line"><span class="lineno">  177</span>    <span class="keywordflow">if</span> (err_time != <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>) millis = 0;</div>
-<div class="line"><span class="lineno">  178</span>    <span class="keywordflow">if</span> (err_task != <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>) task_id = 0;</div>
-<div class="line"><span class="lineno">  179</span> </div>
-<div class="line"><span class="lineno">  180</span>    <span class="comment">/* Get log level color */</span></div>
-<div class="line"><span class="lineno">  181</span>    <span class="keyword">const</span> <span class="keywordtype">char</span> *color = <a class="code hl_define" href="#a259f4064d426d7f4d31d307343c39f19">MESHX_LOG_LEVEL_COLOR</a>(log_level);</div>
-<div class="line"><span class="lineno">  182</span> </div>
-<div class="line"><span class="lineno">  183</span><span class="preprocessor">#if CONFIG_MESHX_LOG_THREADED</span></div>
-<div class="line"><span class="lineno">  184</span>    <span class="keywordflow">if</span> (<a class="code hl_variable" href="../../d0/dc9/meshx__log_8c.html#a7239f84edf380da22b845f2222284210">log_threaded_init_done</a>)</div>
-<div class="line"><span class="lineno">  185</span>    {</div>
-<div class="line"><span class="lineno">  186</span>        <a class="code hl_struct" href="../../dd/d5b/structmeshx__log__msg__t.html">meshx_log_msg_t</a> msg;</div>
-<div class="line"><span class="lineno">  187</span>        <span class="keywordtype">int</span> len = snprintf(msg.<a class="code hl_variable" href="../../dd/d5b/structmeshx__log__msg__t.html#a4cb6126875e5d2a1eaa3f15fb03bb941">log_buf</a>, <span class="keyword">sizeof</span>(msg.<a class="code hl_variable" href="../../dd/d5b/structmeshx__log__msg__t.html#a4cb6126875e5d2a1eaa3f15fb03bb941">log_buf</a>), <span class="stringliteral">&quot;\r%s[%s][%08u][%03x][%25s:%04d]\t&quot;</span>, color, <a class="code hl_variable" href="../../d0/dc9/meshx__log_8c.html#a0ad15708a91c57f0f623524b07df18aa">log_lvl_str</a>[log_level], millis, task_id, func, line_no);</div>
-<div class="line"><span class="lineno">  188</span>        </div>
-<div class="line"><span class="lineno">  189</span>        <span class="keywordflow">if</span> (len &lt; (<span class="keywordtype">int</span>)<span class="keyword">sizeof</span>(msg.<a class="code hl_variable" href="../../dd/d5b/structmeshx__log__msg__t.html#a4cb6126875e5d2a1eaa3f15fb03bb941">log_buf</a>))</div>
-<div class="line"><span class="lineno">  190</span>        {</div>
-<div class="line"><span class="lineno">  191</span>            va_list args;</div>
-<div class="line"><span class="lineno">  192</span>            va_start(args, fmt);</div>
-<div class="line"><span class="lineno">  193</span>            len += vsnprintf(msg.<a class="code hl_variable" href="../../dd/d5b/structmeshx__log__msg__t.html#a4cb6126875e5d2a1eaa3f15fb03bb941">log_buf</a> + len, <span class="keyword">sizeof</span>(msg.<a class="code hl_variable" href="../../dd/d5b/structmeshx__log__msg__t.html#a4cb6126875e5d2a1eaa3f15fb03bb941">log_buf</a>) - len, fmt, args);</div>
-<div class="line"><span class="lineno">  194</span>            va_end(args);</div>
-<div class="line"><span class="lineno">  195</span>        }</div>
-<div class="line"><span class="lineno">  196</span> </div>
-<div class="line"><span class="lineno">  197</span>        <span class="keywordflow">if</span> (len &lt; (<span class="keywordtype">int</span>)<span class="keyword">sizeof</span>(msg.<a class="code hl_variable" href="../../dd/d5b/structmeshx__log__msg__t.html#a4cb6126875e5d2a1eaa3f15fb03bb941">log_buf</a>))</div>
-<div class="line"><span class="lineno">  198</span>        {</div>
-<div class="line"><span class="lineno">  199</span>            snprintf(msg.<a class="code hl_variable" href="../../dd/d5b/structmeshx__log__msg__t.html#a4cb6126875e5d2a1eaa3f15fb03bb941">log_buf</a> + len, <span class="keyword">sizeof</span>(msg.<a class="code hl_variable" href="../../dd/d5b/structmeshx__log__msg__t.html#a4cb6126875e5d2a1eaa3f15fb03bb941">log_buf</a>) - len, <span class="stringliteral">&quot;%s\n&quot;</span>, <a class="code hl_define" href="#a0c4d6862efe6c37fa66ecf0057c15845">MESHX_LOG_COLOR_RESET</a>);</div>
-<div class="line"><span class="lineno">  200</span>        }</div>
-<div class="line"><span class="lineno">  201</span>        <span class="keywordflow">else</span></div>
-<div class="line"><span class="lineno">  202</span>        {</div>
-<div class="line"><span class="lineno">  203</span>            <span class="comment">/* Truncated, but at least ensure reset color and newline if possible */</span></div>
-<div class="line"><span class="lineno">  204</span>            msg.<a class="code hl_variable" href="../../dd/d5b/structmeshx__log__msg__t.html#a4cb6126875e5d2a1eaa3f15fb03bb941">log_buf</a>[<span class="keyword">sizeof</span>(msg.<a class="code hl_variable" href="../../dd/d5b/structmeshx__log__msg__t.html#a4cb6126875e5d2a1eaa3f15fb03bb941">log_buf</a>) - 2] = <span class="charliteral">&#39;\n&#39;</span>;</div>
-<div class="line"><span class="lineno">  205</span>            msg.<a class="code hl_variable" href="../../dd/d5b/structmeshx__log__msg__t.html#a4cb6126875e5d2a1eaa3f15fb03bb941">log_buf</a>[<span class="keyword">sizeof</span>(msg.<a class="code hl_variable" href="../../dd/d5b/structmeshx__log__msg__t.html#a4cb6126875e5d2a1eaa3f15fb03bb941">log_buf</a>) - 1] = <span class="charliteral">&#39;\0&#39;</span>;</div>
-<div class="line"><span class="lineno">  206</span>        }</div>
-<div class="line"><span class="lineno">  207</span> </div>
-<div class="line"><span class="lineno">  208</span>        uint32_t wait_ms = 0;</div>
-<div class="line"><span class="lineno">  209</span>        <span class="comment">/* If queue count is above watermark, wait for space to avoid log miss */</span></div>
-<div class="line"><span class="lineno">  210</span>        <span class="keywordflow">if</span> (<a class="code hl_function" href="../../d2/dc7/meshx__msg__q_8h.html#a38f29fc22afcadd96f19efe519ad3743">meshx_msg_q_get_count</a>(&amp;<a class="code hl_variable" href="../../d0/dc9/meshx__log_8c.html#aeba8406eaae9c7d82cf27a6ffbcb752f">log_msg_q</a>) &gt;= <a class="code hl_define" href="#a4ef89f13b7ea1d1b5c0ca90852142cb3">CONFIG_MESHX_LOG_HIGH_WATERMARK</a>)</div>
-<div class="line"><span class="lineno">  211</span>        {</div>
-<div class="line"><span class="lineno">  212</span>            wait_ms = UINT32_MAX; <span class="comment">/* Block until space is available */</span></div>
-<div class="line"><span class="lineno">  213</span>        }</div>
-<div class="line"><span class="lineno">  214</span> </div>
-<div class="line"><span class="lineno">  215</span>        <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> send_err = <a class="code hl_function" href="../../d2/dc7/meshx__msg__q_8h.html#a7f1cd772e91a7005b2fac769ce4257e8">meshx_msg_q_send</a>(&amp;<a class="code hl_variable" href="../../d0/dc9/meshx__log_8c.html#aeba8406eaae9c7d82cf27a6ffbcb752f">log_msg_q</a>, &amp;msg, <span class="keyword">sizeof</span>(msg), wait_ms);</div>
-<div class="line"><span class="lineno">  216</span>        <span class="keywordflow">if</span> (send_err == <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>)</div>
-<div class="line"><span class="lineno">  217</span>        {</div>
-<div class="line"><span class="lineno">  218</span>            <span class="keywordflow">return</span>;</div>
-<div class="line"><span class="lineno">  219</span>        }</div>
-<div class="line"><span class="lineno">  220</span>        <span class="comment">/* If send_err is not success (e.g. timeout or other failure), fallback to direct print */</span></div>
-<div class="line"><span class="lineno">  221</span>    }</div>
-<div class="line"><span class="lineno">  222</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">  223</span> </div>
-<div class="line"><span class="lineno">  224</span>    <span class="comment">/* Fallback to direct print if threaded mode is not enabled or not initialized yet */</span></div>
-<div class="line"><span class="lineno">  225</span>    <a class="code hl_define" href="#aab871af326d6c21d6210c588f4a85dd1">CONFIG_MESHX_LOG_PRINTF</a>(<span class="stringliteral">&quot;\r%s[%s][%08u][%03x][%25s:%04d]\t&quot;</span>, color, <a class="code hl_variable" href="../../d0/dc9/meshx__log_8c.html#a0ad15708a91c57f0f623524b07df18aa">log_lvl_str</a>[log_level], millis, task_id, func, line_no);</div>
-<div class="line"><span class="lineno">  226</span> </div>
-<div class="line"><span class="lineno">  227</span>    <span class="comment">/* Process variable arguments */</span></div>
-<div class="line"><span class="lineno">  228</span>    va_list args;</div>
-<div class="line"><span class="lineno">  229</span>    va_start(args, fmt);</div>
-<div class="line"><span class="lineno">  230</span>    vprintf(fmt, args);</div>
-<div class="line"><span class="lineno">  231</span>    va_end(args);</div>
-<div class="line"><span class="lineno">  232</span>    <span class="comment">/* Reset color and add newline */</span></div>
-<div class="line"><span class="lineno">  233</span>    <a class="code hl_define" href="#aab871af326d6c21d6210c588f4a85dd1">CONFIG_MESHX_LOG_PRINTF</a>(<span class="stringliteral">&quot;%s\n&quot;</span>, <a class="code hl_define" href="#a0c4d6862efe6c37fa66ecf0057c15845">MESHX_LOG_COLOR_RESET</a>);</div>
-<div class="line"><span class="lineno">  234</span>}</div>
-<div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a></div><div class="ttdeci">meshx_err_t</div><div class="ttdoc">MeshX Error Codes.</div><div class="ttdef"><b>Definition</b> meshx_err.h:43</div></div>
-<div class="ttc" id="ameshx__log_8c_html_a0ad15708a91c57f0f623524b07df18aa"><div class="ttname"><a href="../../d0/dc9/meshx__log_8c.html#a0ad15708a91c57f0f623524b07df18aa">log_lvl_str</a></div><div class="ttdeci">static const char * log_lvl_str[6]</div><div class="ttdef"><b>Definition</b> meshx_log.c:73</div></div>
-<div class="ttc" id="ameshx__log_8c_html_a305b8079fcce435c2e419fa0b32c3ff4"><div class="ttname"><a href="../../d0/dc9/meshx__log_8c.html#a305b8079fcce435c2e419fa0b32c3ff4">meshx_logging_ctrl</a></div><div class="ttdeci">static meshx_logging_t meshx_logging_ctrl</div><div class="ttdef"><b>Definition</b> meshx_log.c:78</div></div>
-<div class="ttc" id="ameshx__log_8c_html_a6c22e8307d5b8940f73e90dd3ad9078b"><div class="ttname"><a href="../../d0/dc9/meshx__log_8c.html#a6c22e8307d5b8940f73e90dd3ad9078b">module_log_level</a></div><div class="ttdeci">static meshx_log_level_t module_log_level[MODULE_ID_MAX]</div><div class="ttdef"><b>Definition</b> meshx_log.c:71</div></div>
-<div class="ttc" id="ameshx__log_8c_html_a7239f84edf380da22b845f2222284210"><div class="ttname"><a href="../../d0/dc9/meshx__log_8c.html#a7239f84edf380da22b845f2222284210">log_threaded_init_done</a></div><div class="ttdeci">static bool log_threaded_init_done</div><div class="ttdef"><b>Definition</b> meshx_log.c:54</div></div>
-<div class="ttc" id="ameshx__log_8c_html_aeba8406eaae9c7d82cf27a6ffbcb752f"><div class="ttname"><a href="../../d0/dc9/meshx__log_8c.html#aeba8406eaae9c7d82cf27a6ffbcb752f">log_msg_q</a></div><div class="ttdeci">static meshx_msg_q_t log_msg_q</div><div class="ttdef"><b>Definition</b> meshx_log.c:49</div></div>
-<div class="ttc" id="ameshx__log_8h_html_a259f4064d426d7f4d31d307343c39f19"><div class="ttname"><a href="#a259f4064d426d7f4d31d307343c39f19">MESHX_LOG_LEVEL_COLOR</a></div><div class="ttdeci">#define MESHX_LOG_LEVEL_COLOR(level)</div><div class="ttdef"><b>Definition</b> meshx_log.h:86</div></div>
-<div class="ttc" id="ameshx__log_8h_html_a4ef89f13b7ea1d1b5c0ca90852142cb3"><div class="ttname"><a href="#a4ef89f13b7ea1d1b5c0ca90852142cb3">CONFIG_MESHX_LOG_HIGH_WATERMARK</a></div><div class="ttdeci">#define CONFIG_MESHX_LOG_HIGH_WATERMARK</div><div class="ttdef"><b>Definition</b> meshx_log.h:47</div></div>
-<div class="ttc" id="ameshx__log_8h_html_aab871af326d6c21d6210c588f4a85dd1"><div class="ttname"><a href="#aab871af326d6c21d6210c588f4a85dd1">CONFIG_MESHX_LOG_PRINTF</a></div><div class="ttdeci">#define CONFIG_MESHX_LOG_PRINTF</div><div class="ttdoc">Macro to define printf function.</div><div class="ttdef"><b>Definition</b> meshx_log.h:23</div></div>
-<div class="ttc" id="ameshx__model__level_8cpp_html_a781c2ae7a10a8be9b9436b090dded5fc"><div class="ttname"><a href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a></div><div class="ttdeci">**This function is called by the parent element when a state change request *is received It validates the request and returns a result to the element not the model layer **return * MESHX_SUCCESS</div><div class="ttdef"><b>Definition</b> meshx_model_level.cpp:385</div></div>
-<div class="ttc" id="ameshx__msg__q_8h_html_a38f29fc22afcadd96f19efe519ad3743"><div class="ttname"><a href="../../d2/dc7/meshx__msg__q_8h.html#a38f29fc22afcadd96f19efe519ad3743">meshx_msg_q_get_count</a></div><div class="ttdeci">int meshx_msg_q_get_count(meshx_msg_q_t *msg_q_handle)</div><div class="ttdoc">Get the number of messages in a MeshX Message Queue.</div></div>
-<div class="ttc" id="ameshx__msg__q_8h_html_a7f1cd772e91a7005b2fac769ce4257e8"><div class="ttname"><a href="../../d2/dc7/meshx__msg__q_8h.html#a7f1cd772e91a7005b2fac769ce4257e8">meshx_msg_q_send</a></div><div class="ttdeci">meshx_err_t meshx_msg_q_send(meshx_msg_q_t *msg_q_handle, void const *msg, size_t msg_len, uint32_t delay_ms)</div><div class="ttdoc">Send a Message to a MeshX Message Queue Back.</div></div>
-<div class="ttc" id="ameshx__rtos__utils_8h_html_a36747ae13d908654ff25903375211660"><div class="ttname"><a href="../../d8/d39/meshx__rtos__utils_8h.html#a36747ae13d908654ff25903375211660">meshx_rtos_get_sys_time</a></div><div class="ttdeci">meshx_err_t meshx_rtos_get_sys_time(unsigned int *millis)</div><div class="ttdoc">Retrieves the current system time in milliseconds.</div></div>
-<div class="ttc" id="ameshx__rtos__utils_8h_html_a6816e2e6131dc78da745ce5d815043e0"><div class="ttname"><a href="../../d8/d39/meshx__rtos__utils_8h.html#a6816e2e6131dc78da745ce5d815043e0">meshx_rtos_get_curr_task_id_prio</a></div><div class="ttdeci">meshx_err_t meshx_rtos_get_curr_task_id_prio(unsigned int *task_id)</div><div class="ttdoc">Retrieves the current task ID.</div></div>
-<div class="ttc" id="amodule__id_8h_html_ac6141ce7b2d1d07b28553017c6a3aedca0bca37d26c7c9e2acb8232315686be7d"><div class="ttname"><a href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca0bca37d26c7c9e2acb8232315686be7d">MODULE_ID_MAX</a></div><div class="ttdeci">@ MODULE_ID_MAX</div><div class="ttdef"><b>Definition</b> module_id.h:51</div></div>
-<div class="ttc" id="astructmeshx__log__msg__t_html"><div class="ttname"><a href="../../dd/d5b/structmeshx__log__msg__t.html">meshx_log_msg_t</a></div><div class="ttdef"><b>Definition</b> meshx_log.c:45</div></div>
-<div class="ttc" id="astructmeshx__log__msg__t_html_a4cb6126875e5d2a1eaa3f15fb03bb941"><div class="ttname"><a href="../../dd/d5b/structmeshx__log__msg__t.html#a4cb6126875e5d2a1eaa3f15fb03bb941">meshx_log_msg_t::log_buf</a></div><div class="ttdeci">char log_buf[256]</div><div class="ttdef"><b>Definition</b> meshx_log.c:46</div></div>
+<p>Legacy printf-style logging for external components. </p>
+<div class="fragment"><div class="line"><span class="lineno">  232</span>{</div>
+<div class="line"><span class="lineno">  233</span>    va_list args;</div>
+<div class="line"><span class="lineno">  234</span>    va_start(args, fmt);</div>
+<div class="line"><span class="lineno">  235</span>    <a class="code hl_function" href="../../d0/dc9/meshx__log_8c.html#aca8baee48b56fa39cf13659f0b645a87">vmeshx_log_packet</a>(module_id, log_level, func, line_no, fmt, args);</div>
+<div class="line"><span class="lineno">  236</span>    va_end(args);</div>
+<div class="line"><span class="lineno">  237</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -880,69 +1145,88 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> meshx_logging_init </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="#a7e75f09650fd33bcd03ea92acd58408f">meshx_logging_t</a> *</td>          <td class="paramname"><span class="paramname"><em>config</em></span></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="../../d4/dac/structmeshx__logging__t.html">meshx_logging_t</a> *</td>          <td class="paramname"><span class="paramname"><em>config</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Initializes the MeshX logging system with the provided configuration. </p>
-<p>This function sets up the logging system by assigning the default log level and the callback function for retrieving the current time in milliseconds. It validates the configuration parameters and returns an error if they are invalid.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">config</td><td>Pointer to the logging configuration structure.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>MESHX_SUCCESS on successful initialization, MESHX_INVALID_ARG if the configuration is invalid. </dd></dl>
-<div class="fragment"><div class="line"><span class="lineno">   94</span>{</div>
-<div class="line"><span class="lineno">   95</span>    <span class="keywordflow">if</span> (!config)</div>
-<div class="line"><span class="lineno">   96</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
-<div class="line"><span class="lineno">   97</span> </div>
-<div class="line"><span class="lineno">   98</span>    <a class="code hl_variable" href="../../d0/dc9/meshx__log_8c.html#a305b8079fcce435c2e419fa0b32c3ff4">meshx_logging_ctrl</a>.def_log_level = config-&gt;<a class="code hl_variable" href="../../db/d0b/structmeshx__logging.html#a140b99328b305503577b5333d5504873">def_log_level</a>;</div>
-<div class="line"><span class="lineno">   99</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca0bca37d26c7c9e2acb8232315686be7d">MODULE_ID_MAX</a>; i++)</div>
-<div class="line"><span class="lineno">  100</span>    {</div>
-<div class="line"><span class="lineno">  101</span>        <a class="code hl_variable" href="../../d0/dc9/meshx__log_8c.html#a6c22e8307d5b8940f73e90dd3ad9078b">module_log_level</a>[i] = <a class="code hl_define" href="#a736ad74c6ead5d4e1c683216f0898781">CONFIG_MESHX_DEFAULT_LOG_LEVEL</a>;</div>
-<div class="line"><span class="lineno">  102</span>    }</div>
-<div class="line"><span class="lineno">  103</span> </div>
-<div class="line"><span class="lineno">  104</span><span class="preprocessor">#if CONFIG_MESHX_LOG_THREADED</span></div>
-<div class="line"><span class="lineno">  105</span>    <span class="keywordflow">if</span> (!<a class="code hl_variable" href="../../d0/dc9/meshx__log_8c.html#a7239f84edf380da22b845f2222284210">log_threaded_init_done</a>)</div>
-<div class="line"><span class="lineno">  106</span>    {</div>
-<div class="line"><span class="lineno">  107</span>        <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_function" href="../../d2/dc7/meshx__msg__q_8h.html#a41c74f6b72168b1ffccded41d8fa4f25">meshx_msg_q_create</a>(&amp;<a class="code hl_variable" href="../../d0/dc9/meshx__log_8c.html#aeba8406eaae9c7d82cf27a6ffbcb752f">log_msg_q</a>);</div>
-<div class="line"><span class="lineno">  108</span>        <span class="keywordflow">if</span> (err != <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>)</div>
-<div class="line"><span class="lineno">  109</span>            <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  110</span> </div>
-<div class="line"><span class="lineno">  111</span>        <span class="keyword">static</span> <a class="code hl_typedef" href="../../da/d79/meshx__task_8h.html#a4e259d2a8257d3d541b853570e76f8e7">meshx_task_t</a> log_task;</div>
-<div class="line"><span class="lineno">  112</span>        log_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#aad50101db8e166aa04da529650c6e6c5">task_cb</a> = <a class="code hl_function" href="../../d0/dc9/meshx__log_8c.html#a21de7b7ee33cc60c7924f1e9cc05ea2c">meshx_log_task_handler</a>;</div>
-<div class="line"><span class="lineno">  113</span>        log_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#a47022b1832ed0ed43726bbc45f2dbe34">task_name</a> = <span class="stringliteral">&quot;meshx_log_task&quot;</span>;</div>
-<div class="line"><span class="lineno">  114</span>        log_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#a4d6d8d73711e5f445c6e39e928002688">stack_size</a> = <a class="code hl_define" href="#ac9d52edebf1bc4a27dbc85b57dd24040">CONFIG_MESHX_LOG_STACK_SIZE</a>;</div>
-<div class="line"><span class="lineno">  115</span>        log_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#a7e248a074928ca102c168ef1d223ef20">priority</a> = <a class="code hl_define" href="../../da/db3/meshx__control__task_8h.html#a14d77856594c7622a3540441015a9921">CONFIG_MESHX_LOG_TASK_PRIO</a>;</div>
-<div class="line"><span class="lineno">  116</span>        log_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#aa448c1fc0cd2c0a39d2e52db1a99da67">arg</a> = NULL;</div>
-<div class="line"><span class="lineno">  117</span> </div>
-<div class="line"><span class="lineno">  118</span>        err = <a class="code hl_function" href="../../da/d79/meshx__task_8h.html#ad9da426e4904251ffbf803de09d05e57">meshx_task_create</a>(&amp;log_task);</div>
-<div class="line"><span class="lineno">  119</span>        <span class="keywordflow">if</span> (err != <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>)</div>
-<div class="line"><span class="lineno">  120</span>            <span class="keywordflow">return</span> err;</div>
-<div class="line"><span class="lineno">  121</span> </div>
-<div class="line"><span class="lineno">  122</span>        <a class="code hl_variable" href="../../d0/dc9/meshx__log_8c.html#a7239f84edf380da22b845f2222284210">log_threaded_init_done</a> = <span class="keyword">true</span>;</div>
-<div class="line"><span class="lineno">  123</span>    }</div>
-<div class="line"><span class="lineno">  124</span><span class="preprocessor">#endif</span></div>
-<div class="line"><span class="lineno">  125</span> </div>
-<div class="line"><span class="lineno">  126</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
-<div class="line"><span class="lineno">  127</span>}</div>
+<div class="fragment"><div class="line"><span class="lineno">   89</span>{</div>
+<div class="line"><span class="lineno">   90</span>    <span class="keywordflow">if</span> (!config)</div>
+<div class="line"><span class="lineno">   91</span>        <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a>;</div>
+<div class="line"><span class="lineno">   92</span> </div>
+<div class="line"><span class="lineno">   93</span>    <a class="code hl_variable" href="../../d0/dc9/meshx__log_8c.html#a305b8079fcce435c2e419fa0b32c3ff4">meshx_logging_ctrl</a>.def_log_level = config-&gt;<a class="code hl_variable" href="../../d4/dac/structmeshx__logging__t.html#a1805b30cf930081360279c62def33764">def_log_level</a>;</div>
+<div class="line"><span class="lineno">   94</span>    <span class="keywordflow">for</span> (<span class="keywordtype">size_t</span> i = 0; i &lt; <a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca0bca37d26c7c9e2acb8232315686be7d">MODULE_ID_MAX</a>; i++)</div>
+<div class="line"><span class="lineno">   95</span>    {</div>
+<div class="line"><span class="lineno">   96</span>        <a class="code hl_variable" href="../../d0/dc9/meshx__log_8c.html#a6c22e8307d5b8940f73e90dd3ad9078b">module_log_level</a>[i] = config-&gt;<a class="code hl_variable" href="../../d4/dac/structmeshx__logging__t.html#a1805b30cf930081360279c62def33764">def_log_level</a>;</div>
+<div class="line"><span class="lineno">   97</span>    }</div>
+<div class="line"><span class="lineno">   98</span> </div>
+<div class="line"><span class="lineno">   99</span><span class="preprocessor">#if CONFIG_MESHX_LOG_THREADED</span></div>
+<div class="line"><span class="lineno">  100</span>    <span class="keywordflow">if</span> (!log_threaded_init_done)</div>
+<div class="line"><span class="lineno">  101</span>    {</div>
+<div class="line"><span class="lineno">  102</span>        <a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> err = <a class="code hl_function" href="../../d2/dc7/meshx__msg__q_8h.html#a41c74f6b72168b1ffccded41d8fa4f25">meshx_msg_q_create</a>(&amp;log_msg_q);</div>
+<div class="line"><span class="lineno">  103</span>        <span class="keywordflow">if</span> (err != <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>)</div>
+<div class="line"><span class="lineno">  104</span>            <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  105</span> </div>
+<div class="line"><span class="lineno">  106</span>        <span class="keyword">static</span> <a class="code hl_typedef" href="../../da/d79/meshx__task_8h.html#a4e259d2a8257d3d541b853570e76f8e7">meshx_task_t</a> log_task;</div>
+<div class="line"><span class="lineno">  107</span>        log_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#aad50101db8e166aa04da529650c6e6c5">task_cb</a> = meshx_log_task_handler;</div>
+<div class="line"><span class="lineno">  108</span>        log_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#a47022b1832ed0ed43726bbc45f2dbe34">task_name</a> = <span class="stringliteral">&quot;meshx_log_task&quot;</span>;</div>
+<div class="line"><span class="lineno">  109</span>        log_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#a4d6d8d73711e5f445c6e39e928002688">stack_size</a> = CONFIG_MESHX_LOG_STACK_SIZE;</div>
+<div class="line"><span class="lineno">  110</span>        log_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#a7e248a074928ca102c168ef1d223ef20">priority</a> = <a class="code hl_define" href="../../da/db3/meshx__control__task_8h.html#a14d77856594c7622a3540441015a9921">CONFIG_MESHX_LOG_TASK_PRIO</a>;</div>
+<div class="line"><span class="lineno">  111</span>        log_task.<a class="code hl_variable" href="../../db/d8e/structmeshx__task.html#aa448c1fc0cd2c0a39d2e52db1a99da67">arg</a> = NULL;</div>
+<div class="line"><span class="lineno">  112</span> </div>
+<div class="line"><span class="lineno">  113</span>        err = <a class="code hl_function" href="../../da/d79/meshx__task_8h.html#ad9da426e4904251ffbf803de09d05e57">meshx_task_create</a>(&amp;log_task);</div>
+<div class="line"><span class="lineno">  114</span>        <span class="keywordflow">if</span> (err != <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>)</div>
+<div class="line"><span class="lineno">  115</span>            <span class="keywordflow">return</span> err;</div>
+<div class="line"><span class="lineno">  116</span> </div>
+<div class="line"><span class="lineno">  117</span>        log_threaded_init_done = <span class="keyword">true</span>;</div>
+<div class="line"><span class="lineno">  118</span>    }</div>
+<div class="line"><span class="lineno">  119</span><span class="preprocessor">#endif</span></div>
+<div class="line"><span class="lineno">  120</span> </div>
+<div class="line"><span class="lineno">  121</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a>;</div>
+<div class="line"><span class="lineno">  122</span>}</div>
 <div class="ttc" id="ameshx__control__task_8h_html_a14d77856594c7622a3540441015a9921"><div class="ttname"><a href="../../da/db3/meshx__control__task_8h.html#a14d77856594c7622a3540441015a9921">CONFIG_MESHX_LOG_TASK_PRIO</a></div><div class="ttdeci">#define CONFIG_MESHX_LOG_TASK_PRIO</div><div class="ttdoc">Logging task priority configuration.</div><div class="ttdef"><b>Definition</b> meshx_control_task.h:43</div></div>
+<div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a></div><div class="ttdeci">meshx_err_t</div><div class="ttdoc">MeshX Error Codes.</div><div class="ttdef"><b>Definition</b> meshx_err.h:43</div></div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6a0fbbd53c07d6e68fb5bca0ac8a532c7e">MESHX_INVALID_ARG</a></div><div class="ttdeci">@ MESHX_INVALID_ARG</div><div class="ttdef"><b>Definition</b> meshx_err.h:46</div></div>
-<div class="ttc" id="ameshx__log_8c_html_a21de7b7ee33cc60c7924f1e9cc05ea2c"><div class="ttname"><a href="../../d0/dc9/meshx__log_8c.html#a21de7b7ee33cc60c7924f1e9cc05ea2c">meshx_log_task_handler</a></div><div class="ttdeci">static void meshx_log_task_handler(void *args)</div><div class="ttdef"><b>Definition</b> meshx_log.c:56</div></div>
-<div class="ttc" id="ameshx__log_8h_html_a736ad74c6ead5d4e1c683216f0898781"><div class="ttname"><a href="#a736ad74c6ead5d4e1c683216f0898781">CONFIG_MESHX_DEFAULT_LOG_LEVEL</a></div><div class="ttdeci">#define CONFIG_MESHX_DEFAULT_LOG_LEVEL</div><div class="ttdef"><b>Definition</b> meshx_log.h:27</div></div>
-<div class="ttc" id="ameshx__log_8h_html_ac9d52edebf1bc4a27dbc85b57dd24040"><div class="ttname"><a href="#ac9d52edebf1bc4a27dbc85b57dd24040">CONFIG_MESHX_LOG_STACK_SIZE</a></div><div class="ttdeci">#define CONFIG_MESHX_LOG_STACK_SIZE</div><div class="ttdef"><b>Definition</b> meshx_log.h:51</div></div>
+<div class="ttc" id="ameshx__log_8c_html_a305b8079fcce435c2e419fa0b32c3ff4"><div class="ttname"><a href="../../d0/dc9/meshx__log_8c.html#a305b8079fcce435c2e419fa0b32c3ff4">meshx_logging_ctrl</a></div><div class="ttdeci">static meshx_logging_t meshx_logging_ctrl</div><div class="ttdef"><b>Definition</b> meshx_log.c:73</div></div>
+<div class="ttc" id="ameshx__log_8c_html_a6c22e8307d5b8940f73e90dd3ad9078b"><div class="ttname"><a href="../../d0/dc9/meshx__log_8c.html#a6c22e8307d5b8940f73e90dd3ad9078b">module_log_level</a></div><div class="ttdeci">static meshx_log_level_t module_log_level[MODULE_ID_MAX]</div><div class="ttdef"><b>Definition</b> meshx_log.c:72</div></div>
+<div class="ttc" id="ameshx__model__level_8cpp_html_a781c2ae7a10a8be9b9436b090dded5fc"><div class="ttname"><a href="../../d6/d12/meshx__model__level_8cpp.html#a781c2ae7a10a8be9b9436b090dded5fc">MESHX_SUCCESS</a></div><div class="ttdeci">**This function is called by the parent element when a state change request *is received It validates the request and returns a result to the element not the model layer **return * MESHX_SUCCESS</div><div class="ttdef"><b>Definition</b> meshx_model_level.cpp:385</div></div>
 <div class="ttc" id="ameshx__msg__q_8h_html_a41c74f6b72168b1ffccded41d8fa4f25"><div class="ttname"><a href="../../d2/dc7/meshx__msg__q_8h.html#a41c74f6b72168b1ffccded41d8fa4f25">meshx_msg_q_create</a></div><div class="ttdeci">meshx_err_t meshx_msg_q_create(meshx_msg_q_t *msg_q_handle)</div><div class="ttdoc">Create a MeshX Message Queue.</div></div>
 <div class="ttc" id="ameshx__task_8h_html_a4e259d2a8257d3d541b853570e76f8e7"><div class="ttname"><a href="../../da/d79/meshx__task_8h.html#a4e259d2a8257d3d541b853570e76f8e7">meshx_task_t</a></div><div class="ttdeci">struct meshx_task meshx_task_t</div><div class="ttdoc">MeshX Task Structure.</div></div>
 <div class="ttc" id="ameshx__task_8h_html_ad9da426e4904251ffbf803de09d05e57"><div class="ttname"><a href="../../da/d79/meshx__task_8h.html#ad9da426e4904251ffbf803de09d05e57">meshx_task_create</a></div><div class="ttdeci">meshx_err_t meshx_task_create(meshx_task_t *task_handle)</div><div class="ttdoc">Create a MeshX Task.</div></div>
-<div class="ttc" id="astructmeshx__logging_html_a140b99328b305503577b5333d5504873"><div class="ttname"><a href="../../db/d0b/structmeshx__logging.html#a140b99328b305503577b5333d5504873">meshx_logging::def_log_level</a></div><div class="ttdeci">unsigned def_log_level</div><div class="ttdef"><b>Definition</b> meshx_log.h:82</div></div>
+<div class="ttc" id="amodule__id_8h_html_ac6141ce7b2d1d07b28553017c6a3aedca0bca37d26c7c9e2acb8232315686be7d"><div class="ttname"><a href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca0bca37d26c7c9e2acb8232315686be7d">MODULE_ID_MAX</a></div><div class="ttdeci">@ MODULE_ID_MAX</div><div class="ttdef"><b>Definition</b> module_id.h:51</div></div>
+<div class="ttc" id="astructmeshx__logging__t_html_a1805b30cf930081360279c62def33764"><div class="ttname"><a href="../../d4/dac/structmeshx__logging__t.html#a1805b30cf930081360279c62def33764">meshx_logging_t::def_log_level</a></div><div class="ttdeci">meshx_log_level_t def_log_level</div><div class="ttdef"><b>Definition</b> meshx_log.h:38</div></div>
 <div class="ttc" id="astructmeshx__task_html_a47022b1832ed0ed43726bbc45f2dbe34"><div class="ttname"><a href="../../db/d8e/structmeshx__task.html#a47022b1832ed0ed43726bbc45f2dbe34">meshx_task::task_name</a></div><div class="ttdeci">const char * task_name</div><div class="ttdef"><b>Definition</b> meshx_task.h:34</div></div>
 <div class="ttc" id="astructmeshx__task_html_a4d6d8d73711e5f445c6e39e928002688"><div class="ttname"><a href="../../db/d8e/structmeshx__task.html#a4d6d8d73711e5f445c6e39e928002688">meshx_task::stack_size</a></div><div class="ttdeci">size_t stack_size</div><div class="ttdef"><b>Definition</b> meshx_task.h:36</div></div>
 <div class="ttc" id="astructmeshx__task_html_a7e248a074928ca102c168ef1d223ef20"><div class="ttname"><a href="../../db/d8e/structmeshx__task.html#a7e248a074928ca102c168ef1d223ef20">meshx_task::priority</a></div><div class="ttdeci">int priority</div><div class="ttdef"><b>Definition</b> meshx_task.h:37</div></div>
 <div class="ttc" id="astructmeshx__task_html_aa448c1fc0cd2c0a39d2e52db1a99da67"><div class="ttname"><a href="../../db/d8e/structmeshx__task.html#aa448c1fc0cd2c0a39d2e52db1a99da67">meshx_task::arg</a></div><div class="ttdeci">void * arg</div><div class="ttdef"><b>Definition</b> meshx_task.h:35</div></div>
 <div class="ttc" id="astructmeshx__task_html_aad50101db8e166aa04da529650c6e6c5"><div class="ttname"><a href="../../db/d8e/structmeshx__task.html#aad50101db8e166aa04da529650c6e6c5">meshx_task::task_cb</a></div><div class="ttdeci">meshx_task_cb_t task_cb</div><div class="ttdef"><b>Definition</b> meshx_task.h:38</div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a033915fe8c70de68a3da859035274436" name="a033915fe8c70de68a3da859035274436"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a033915fe8c70de68a3da859035274436">&#9670;&#160;</a></span>meshx_module_set_log_level()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void meshx_module_set_log_level </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedc">module_id_t</a></td>          <td class="paramname"><span class="paramname"><em>module_id</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="#aa6b3e50c8c6b727fd46249db2a643fc6">meshx_log_level_t</a></td>          <td class="paramname"><span class="paramname"><em>log_level</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="fragment"><div class="line"><span class="lineno">  125</span>{</div>
+<div class="line"><span class="lineno">  126</span>    <span class="keywordflow">if</span> (module_id &lt; <a class="code hl_enumvalue" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedca0bca37d26c7c9e2acb8232315686be7d">MODULE_ID_MAX</a>)</div>
+<div class="line"><span class="lineno">  127</span>    {</div>
+<div class="line"><span class="lineno">  128</span>        <a class="code hl_variable" href="../../d0/dc9/meshx__log_8c.html#a6c22e8307d5b8940f73e90dd3ad9078b">module_log_level</a>[module_id] = log_level;</div>
+<div class="line"><span class="lineno">  129</span>    }</div>
+<div class="line"><span class="lineno">  130</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

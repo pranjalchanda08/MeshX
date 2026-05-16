@@ -6700,24 +6700,74 @@
             </Subnodes>
            </Node>
            <Node>
-            <Name>meshx_log_msg_t</Name>
-            <Path>dd/d5b/structmeshx__log__msg__t.html</Path>
+            <Name>meshx_log_packet_t</Name>
+            <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
           <Subnodes>
              <Node>
-              <Name>log_buf</Name>
-              <Path>dd/d5b/structmeshx__log__msg__t.html</Path>
-              <Anchor>a4cb6126875e5d2a1eaa3f15fb03bb941</Anchor>
+              <Name>args</Name>
+              <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+              <Anchor>a478d0238be1cf547848e19bcfb5ea400</Anchor>
+             </Node>
+             <Node>
+              <Name>file_addr</Name>
+              <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+              <Anchor>a19e1fa5a3a254a54f038f651a2a52432</Anchor>
+             </Node>
+             <Node>
+              <Name>fmt_addr</Name>
+              <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+              <Anchor>a582cd72c637fb03d18c5a6a4a1ddfbd5</Anchor>
+             </Node>
+             <Node>
+              <Name>inline_str</Name>
+              <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+              <Anchor>a75becedd0b71053caf9ad4df92f55789</Anchor>
+             </Node>
+             <Node>
+              <Name>len</Name>
+              <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+              <Anchor>a133204f90845cf3f4c31fc69e2ff1cf1</Anchor>
+             </Node>
+             <Node>
+              <Name>level</Name>
+              <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+              <Anchor>a80e3ac2b4072091e58a16b12be01dae5</Anchor>
+             </Node>
+             <Node>
+              <Name>line_no</Name>
+              <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+              <Anchor>aaa257aadd879bdb738f2679fd799c1ee</Anchor>
+             </Node>
+             <Node>
+              <Name>module_id</Name>
+              <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+              <Anchor>a6c1f124243689aa9abe67106f569b997</Anchor>
+             </Node>
+             <Node>
+              <Name>parity</Name>
+              <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+              <Anchor>a54010b690da8953cf411882288715e07</Anchor>
+             </Node>
+             <Node>
+              <Name>sync</Name>
+              <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+              <Anchor>a24106a51340f782f0a99ccaf684798fa</Anchor>
+             </Node>
+             <Node>
+              <Name>timestamp</Name>
+              <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+              <Anchor>aa9338bf2a456f19bb587d553f0032697</Anchor>
              </Node>
             </Subnodes>
            </Node>
            <Node>
-            <Name>meshx_logging</Name>
-            <Path>db/d0b/structmeshx__logging.html</Path>
+            <Name>meshx_logging_t</Name>
+            <Path>d4/dac/structmeshx__logging__t.html</Path>
           <Subnodes>
              <Node>
               <Name>def_log_level</Name>
-              <Path>db/d0b/structmeshx__logging.html</Path>
-              <Anchor>a140b99328b305503577b5333d5504873</Anchor>
+              <Path>d4/dac/structmeshx__logging__t.html</Path>
+              <Anchor>a1805b30cf930081360279c62def33764</Anchor>
              </Node>
             </Subnodes>
            </Node>
@@ -14953,12 +15003,12 @@
             <Path>d1/dd1/structmeshx__location__srv__el__msg.html</Path>
            </Node>
            <Node>
-            <Name>meshx_log_msg_t</Name>
-            <Path>dd/d5b/structmeshx__log__msg__t.html</Path>
+            <Name>meshx_log_packet_t</Name>
+            <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
            </Node>
            <Node>
-            <Name>meshx_logging</Name>
-            <Path>db/d0b/structmeshx__logging.html</Path>
+            <Name>meshx_logging_t</Name>
+            <Path>d4/dac/structmeshx__logging__t.html</Path>
            </Node>
            <Node>
             <Name>meshx_prov_cb_param_t::meshx_lpn_disable_comp_param</Name>
@@ -38580,25 +38630,24 @@
                       <Path>d0/dc9/meshx__log_8c.html</Path>
                     <Subnodes>
                        <Node>
-                        <Name>meshx_log_msg_t</Name>
-                        <Path>dd/d5b/structmeshx__log__msg__t.html</Path>
-                      <Subnodes>
-                         <Node>
-                          <Name>log_buf</Name>
-                          <Path>dd/d5b/structmeshx__log__msg__t.html</Path>
-                          <Anchor>a4cb6126875e5d2a1eaa3f15fb03bb941</Anchor>
-                         </Node>
-                        </Subnodes>
+                        <Name>CONFIG_MESHX_LOG_BUF_SIZE</Name>
+                        <Path>d0/dc9/meshx__log_8c.html</Path>
+                        <Anchor>a3191b7c8f443bac0775457d85fe27a12</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>calculate_xor_parity</Name>
+                        <Path>d0/dc9/meshx__log_8c.html</Path>
+                        <Anchor>a03073d6d5583d068b2fab1cc312e9450</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>meshx_log_packet</Name>
+                        <Path>d0/dc9/meshx__log_8c.html</Path>
+                        <Anchor>a41704f3ef1ab424f6709ba29d70cd8b4</Anchor>
                        </Node>
                        <Node>
                         <Name>meshx_log_printf</Name>
                         <Path>d0/dc9/meshx__log_8c.html</Path>
                         <Anchor>ab47e09c155a1ce6f88a355797f495c53</Anchor>
-                       </Node>
-                       <Node>
-                        <Name>meshx_log_task_handler</Name>
-                        <Path>d0/dc9/meshx__log_8c.html</Path>
-                        <Anchor>a21de7b7ee33cc60c7924f1e9cc05ea2c</Anchor>
                        </Node>
                        <Node>
                         <Name>meshx_logging_init</Name>
@@ -38611,19 +38660,9 @@
                         <Anchor>a033915fe8c70de68a3da859035274436</Anchor>
                        </Node>
                        <Node>
-                        <Name>log_lvl_str</Name>
+                        <Name>vmeshx_log_packet</Name>
                         <Path>d0/dc9/meshx__log_8c.html</Path>
-                        <Anchor>a0ad15708a91c57f0f623524b07df18aa</Anchor>
-                       </Node>
-                       <Node>
-                        <Name>log_msg_q</Name>
-                        <Path>d0/dc9/meshx__log_8c.html</Path>
-                        <Anchor>aeba8406eaae9c7d82cf27a6ffbcb752f</Anchor>
-                       </Node>
-                       <Node>
-                        <Name>log_threaded_init_done</Name>
-                        <Path>d0/dc9/meshx__log_8c.html</Path>
-                        <Anchor>a7239f84edf380da22b845f2222284210</Anchor>
+                        <Anchor>aca8baee48b56fa39cf13659f0b645a87</Anchor>
                        </Node>
                        <Node>
                         <Name>meshx_logging_ctrl</Name>
@@ -38642,13 +38681,74 @@
                       <Path>d7/dcb/meshx__log_8h.html</Path>
                     <Subnodes>
                        <Node>
-                        <Name>meshx_logging</Name>
-                        <Path>db/d0b/structmeshx__logging.html</Path>
+                        <Name>meshx_logging_t</Name>
+                        <Path>d4/dac/structmeshx__logging__t.html</Path>
                       <Subnodes>
                          <Node>
                           <Name>def_log_level</Name>
-                          <Path>db/d0b/structmeshx__logging.html</Path>
-                          <Anchor>a140b99328b305503577b5333d5504873</Anchor>
+                          <Path>d4/dac/structmeshx__logging__t.html</Path>
+                          <Anchor>a1805b30cf930081360279c62def33764</Anchor>
+                         </Node>
+                        </Subnodes>
+                       </Node>
+                       <Node>
+                        <Name>meshx_log_packet_t</Name>
+                        <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+                      <Subnodes>
+                         <Node>
+                          <Name>args</Name>
+                          <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+                          <Anchor>a478d0238be1cf547848e19bcfb5ea400</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>file_addr</Name>
+                          <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+                          <Anchor>a19e1fa5a3a254a54f038f651a2a52432</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>fmt_addr</Name>
+                          <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+                          <Anchor>a582cd72c637fb03d18c5a6a4a1ddfbd5</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>inline_str</Name>
+                          <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+                          <Anchor>a75becedd0b71053caf9ad4df92f55789</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>len</Name>
+                          <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+                          <Anchor>a133204f90845cf3f4c31fc69e2ff1cf1</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>level</Name>
+                          <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+                          <Anchor>a80e3ac2b4072091e58a16b12be01dae5</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>line_no</Name>
+                          <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+                          <Anchor>aaa257aadd879bdb738f2679fd799c1ee</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>module_id</Name>
+                          <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+                          <Anchor>a6c1f124243689aa9abe67106f569b997</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>parity</Name>
+                          <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+                          <Anchor>a54010b690da8953cf411882288715e07</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>sync</Name>
+                          <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+                          <Anchor>a24106a51340f782f0a99ccaf684798fa</Anchor>
+                         </Node>
+                         <Node>
+                          <Name>timestamp</Name>
+                          <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+                          <Anchor>aa9338bf2a456f19bb587d553f0032697</Anchor>
                          </Node>
                         </Subnodes>
                        </Node>
@@ -38658,29 +38758,9 @@
                         <Anchor>a736ad74c6ead5d4e1c683216f0898781</Anchor>
                        </Node>
                        <Node>
-                        <Name>CONFIG_MESHX_LOG_BUF_SIZE</Name>
-                        <Path>d7/dcb/meshx__log_8h.html</Path>
-                        <Anchor>a3191b7c8f443bac0775457d85fe27a12</Anchor>
-                       </Node>
-                       <Node>
-                        <Name>CONFIG_MESHX_LOG_HIGH_WATERMARK</Name>
-                        <Path>d7/dcb/meshx__log_8h.html</Path>
-                        <Anchor>a4ef89f13b7ea1d1b5c0ca90852142cb3</Anchor>
-                       </Node>
-                       <Node>
                         <Name>CONFIG_MESHX_LOG_PRINTF</Name>
                         <Path>d7/dcb/meshx__log_8h.html</Path>
                         <Anchor>aab871af326d6c21d6210c588f4a85dd1</Anchor>
-                       </Node>
-                       <Node>
-                        <Name>CONFIG_MESHX_LOG_QUEUE_LEN</Name>
-                        <Path>d7/dcb/meshx__log_8h.html</Path>
-                        <Anchor>a244c72b30ec2e7ed4767243cd4630e24</Anchor>
-                       </Node>
-                       <Node>
-                        <Name>CONFIG_MESHX_LOG_STACK_SIZE</Name>
-                        <Path>d7/dcb/meshx__log_8h.html</Path>
-                        <Anchor>ac9d52edebf1bc4a27dbc85b57dd24040</Anchor>
                        </Node>
                        <Node>
                         <Name>CONFIG_MESHX_LOG_THREADED</Name>
@@ -38693,6 +38773,11 @@
                         <Anchor>a4b5b6c33e3ebc4b69f92142a528195f7</Anchor>
                        </Node>
                        <Node>
+                        <Name>MESHX_LOG_COLOR</Name>
+                        <Path>d7/dcb/meshx__log_8h.html</Path>
+                        <Anchor>a52d86e24726c38d5c164364acf077d83</Anchor>
+                       </Node>
+                       <Node>
                         <Name>MESHX_LOG_COLOR_BLACK</Name>
                         <Path>d7/dcb/meshx__log_8h.html</Path>
                         <Anchor>a8dac627e2fe191ab9b0bc88ba515c6b9</Anchor>
@@ -38703,14 +38788,34 @@
                         <Anchor>a9aa746a561a333446e13c33325fc8565</Anchor>
                        </Node>
                        <Node>
+                        <Name>MESHX_LOG_COLOR_BROWN</Name>
+                        <Path>d7/dcb/meshx__log_8h.html</Path>
+                        <Anchor>a966c9b74233fd81d53076de92fdab386</Anchor>
+                       </Node>
+                       <Node>
                         <Name>MESHX_LOG_COLOR_CYAN</Name>
                         <Path>d7/dcb/meshx__log_8h.html</Path>
                         <Anchor>ac6b1b3976da12f60657fab36b06f1a95</Anchor>
                        </Node>
                        <Node>
+                        <Name>MESHX_LOG_COLOR_D</Name>
+                        <Path>d7/dcb/meshx__log_8h.html</Path>
+                        <Anchor>ad61be124156ff166be877c6e2993992f</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>MESHX_LOG_COLOR_E</Name>
+                        <Path>d7/dcb/meshx__log_8h.html</Path>
+                        <Anchor>aa65ff6518918e4d6a6c467421761a339</Anchor>
+                       </Node>
+                       <Node>
                         <Name>MESHX_LOG_COLOR_GREEN</Name>
                         <Path>d7/dcb/meshx__log_8h.html</Path>
                         <Anchor>ac646236cab389357ec26a879f827e032</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>MESHX_LOG_COLOR_I</Name>
+                        <Path>d7/dcb/meshx__log_8h.html</Path>
+                        <Anchor>a91c52703f2c58aef02cf891d1129285c</Anchor>
                        </Node>
                        <Node>
                         <Name>MESHX_LOG_COLOR_PURPLE</Name>
@@ -38728,14 +38833,29 @@
                         <Anchor>a0c4d6862efe6c37fa66ecf0057c15845</Anchor>
                        </Node>
                        <Node>
+                        <Name>MESHX_LOG_COLOR_V</Name>
+                        <Path>d7/dcb/meshx__log_8h.html</Path>
+                        <Anchor>a619c2ea451cc235d3135fddde741745f</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>MESHX_LOG_COLOR_W</Name>
+                        <Path>d7/dcb/meshx__log_8h.html</Path>
+                        <Anchor>a473400b8658d9d643d3cf829c69d2fc8</Anchor>
+                       </Node>
+                       <Node>
                         <Name>MESHX_LOG_COLOR_WHITE</Name>
                         <Path>d7/dcb/meshx__log_8h.html</Path>
                         <Anchor>aa3cc18467c8d47158c06b8c3790d0edb</Anchor>
                        </Node>
                        <Node>
-                        <Name>MESHX_LOG_COLOR_YELLOW</Name>
+                        <Name>MESHX_LOG_CONCAT</Name>
                         <Path>d7/dcb/meshx__log_8h.html</Path>
-                        <Anchor>ae887818b14a1b93cc8c6da1a4982be48</Anchor>
+                        <Anchor>a8b54c156e7b8471fe77026352f8a542f</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>MESHX_LOG_CONCAT_INNER</Name>
+                        <Path>d7/dcb/meshx__log_8h.html</Path>
+                        <Anchor>ab17ce1dc80ff3646daa0324e520a525e</Anchor>
                        </Node>
                        <Node>
                         <Name>MESHX_LOG_DEBUG</Name>
@@ -38748,14 +38868,19 @@
                         <Anchor>abac72310c5c0e272dd1030d857f285b0</Anchor>
                        </Node>
                        <Node>
+                        <Name>MESHX_LOG_GET_COLOR</Name>
+                        <Path>d7/dcb/meshx__log_8h.html</Path>
+                        <Anchor>a9f2ce795bcc8b28dd54c4ed86553f8b9</Anchor>
+                       </Node>
+                       <Node>
                         <Name>MESHX_LOG_INFO</Name>
                         <Path>d7/dcb/meshx__log_8h.html</Path>
                         <Anchor>a081cbffb2f246d1443ba585cb7f89a91</Anchor>
                        </Node>
                        <Node>
-                        <Name>MESHX_LOG_LEVEL_COLOR</Name>
+                        <Name>MESHX_LOG_INTERNAL</Name>
                         <Path>d7/dcb/meshx__log_8h.html</Path>
-                        <Anchor>a259f4064d426d7f4d31d307343c39f19</Anchor>
+                        <Anchor>afbfc9bd176206ada02e68cdc26b0f87e</Anchor>
                        </Node>
                        <Node>
                         <Name>MESHX_LOG_MAX</Name>
@@ -38766,6 +38891,21 @@
                         <Name>MESHX_LOG_NONE</Name>
                         <Path>d7/dcb/meshx__log_8h.html</Path>
                         <Anchor>a4173c823294016adf0e114e9488bfcaa</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>MESHX_LOG_STR_ATTR</Name>
+                        <Path>d7/dcb/meshx__log_8h.html</Path>
+                        <Anchor>a356c832124628fcc2f92d264ce7f0eca</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>MESHX_LOG_SYNC_WORD</Name>
+                        <Path>d7/dcb/meshx__log_8h.html</Path>
+                        <Anchor>ab67c85b43e2b081e12fb9701ffee4b1f</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>MESHX_LOG_UNIQUE_ID</Name>
+                        <Path>d7/dcb/meshx__log_8h.html</Path>
+                        <Anchor>a8af95e2650f30c1699cb8b68605d7bb3</Anchor>
                        </Node>
                        <Node>
                         <Name>MESHX_LOG_VERBOSE</Name>
@@ -38793,24 +38933,34 @@
                         <Anchor>a47d4a699f2997a758e0eca271b66cb48</Anchor>
                        </Node>
                        <Node>
+                        <Name>MESHX_LOGV</Name>
+                        <Path>d7/dcb/meshx__log_8h.html</Path>
+                        <Anchor>a74c76963399db022b9ee6de29a416206</Anchor>
+                       </Node>
+                       <Node>
                         <Name>MESHX_LOGW</Name>
                         <Path>d7/dcb/meshx__log_8h.html</Path>
                         <Anchor>a3df9f46a0a08969094d8eef3581409e8</Anchor>
                        </Node>
                        <Node>
+                        <Name>MESHX_STR</Name>
+                        <Path>d7/dcb/meshx__log_8h.html</Path>
+                        <Anchor>abd90b0a1ae9a5d9631ae19067349860f</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>MESHX_STR_INNER</Name>
+                        <Path>d7/dcb/meshx__log_8h.html</Path>
+                        <Anchor>a37368a8d2f50947b39294ad35bed70a1</Anchor>
+                       </Node>
+                       <Node>
                         <Name>meshx_log_level_t</Name>
                         <Path>d7/dcb/meshx__log_8h.html</Path>
-                        <Anchor>a2bb5164357b270ea80733b70e7e0ee17</Anchor>
+                        <Anchor>aa6b3e50c8c6b727fd46249db2a643fc6</Anchor>
                        </Node>
                        <Node>
-                        <Name>meshx_logging_t</Name>
+                        <Name>meshx_log_packet</Name>
                         <Path>d7/dcb/meshx__log_8h.html</Path>
-                        <Anchor>a7e75f09650fd33bcd03ea92acd58408f</Anchor>
-                       </Node>
-                       <Node>
-                        <Name>millis_t</Name>
-                        <Path>d7/dcb/meshx__log_8h.html</Path>
-                        <Anchor>adef7845289a24e0f4bfd4ac68af4ba6d</Anchor>
+                        <Anchor>a41704f3ef1ab424f6709ba29d70cd8b4</Anchor>
                        </Node>
                        <Node>
                         <Name>meshx_log_printf</Name>
@@ -38821,6 +38971,11 @@
                         <Name>meshx_logging_init</Name>
                         <Path>d7/dcb/meshx__log_8h.html</Path>
                         <Anchor>a2943545097e48060e29c8be20f92677f</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>meshx_module_set_log_level</Name>
+                        <Path>d7/dcb/meshx__log_8h.html</Path>
+                        <Anchor>a033915fe8c70de68a3da859035274436</Anchor>
                        </Node>
                       </Subnodes>
                      </Node>
@@ -39322,6 +39477,32 @@
                         <Name>meshx_shell_start</Name>
                         <Path>d9/d2a/meshx__shell_8h.html</Path>
                         <Anchor>a3a6a06b07575ba27caa90bd7bcae6119</Anchor>
+                       </Node>
+                      </Subnodes>
+                     </Node>
+                     <Node>
+                      <Name>meshx_tiny_printf.h</Name>
+                      <Path>d4/d50/meshx__tiny__printf_8h.html</Path>
+                    <Subnodes>
+                       <Node>
+                        <Name>meshx_tiny_printf</Name>
+                        <Path>d4/d50/meshx__tiny__printf_8h.html</Path>
+                        <Anchor>a34b5e371bf2aa40ab5442036a8711bcc</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>meshx_tiny_snprintf</Name>
+                        <Path>d4/d50/meshx__tiny__printf_8h.html</Path>
+                        <Anchor>afdcf1d79b9721c741427126b124f076f</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>meshx_tiny_vprintf</Name>
+                        <Path>d4/d50/meshx__tiny__printf_8h.html</Path>
+                        <Anchor>a2930a80a3e9a8c896a212cda22fa16dc</Anchor>
+                       </Node>
+                       <Node>
+                        <Name>meshx_tiny_vsnprintf</Name>
+                        <Path>d4/d50/meshx__tiny__printf_8h.html</Path>
+                        <Anchor>ad45aca0258fa2c689c2815e05696d906</Anchor>
                        </Node>
                       </Subnodes>
                      </Node>
@@ -41164,11 +41345,6 @@
                       <Anchor>a5e1bda274f01ae047df2fd8515637beb</Anchor>
                      </Node>
                      <Node>
-                      <Name>meshx_banner_print</Name>
-                      <Path>d9/d05/meshx_8c.html</Path>
-                      <Anchor>a237c489801a704688102f4fc36321b51</Anchor>
-                     </Node>
-                     <Node>
                       <Name>meshx_ble_mesh_init</Name>
                       <Path>d9/d05/meshx_8c.html</Path>
                       <Anchor>ae488bc4a1d8eb698d2e2e60ec90bbad1</Anchor>
@@ -41227,16 +41403,6 @@
                       <Name>g_prov_cfg</Name>
                       <Path>d9/d05/meshx_8c.html</Path>
                       <Anchor>ac51a3a297381ec8163ffa2ad4c74da57</Anchor>
-                     </Node>
-                     <Node>
-                      <Name>meshX_banner_art</Name>
-                      <Path>d9/d05/meshx_8c.html</Path>
-                      <Anchor>a4abdb8b0dbe43d3fd9ceb26ede23882f</Anchor>
-                     </Node>
-                     <Node>
-                      <Name>meshX_banner_border</Name>
-                      <Path>d9/d05/meshx_8c.html</Path>
-                      <Anchor>a4e0f59375b640675fa558e1ffb84d83e</Anchor>
                      </Node>
                     </Subnodes>
                    </Node>
@@ -41985,6 +42151,52 @@
                       <Name>shell_ctx</Name>
                       <Path>dd/d1f/meshx__shell_8c.html</Path>
                       <Anchor>a5f21413f6b012f06ad01fffef03fdb23</Anchor>
+                     </Node>
+                    </Subnodes>
+                   </Node>
+                   <Node>
+                    <Name>meshx_tiny_printf.c</Name>
+                    <Path>dd/d6b/meshx__tiny__printf_8c.html</Path>
+                  <Subnodes>
+                     <Node>
+                      <Name>meshx_tiny_printf</Name>
+                      <Path>dd/d6b/meshx__tiny__printf_8c.html</Path>
+                      <Anchor>a34b5e371bf2aa40ab5442036a8711bcc</Anchor>
+                     </Node>
+                     <Node>
+                      <Name>meshx_tiny_snprintf</Name>
+                      <Path>dd/d6b/meshx__tiny__printf_8c.html</Path>
+                      <Anchor>afdcf1d79b9721c741427126b124f076f</Anchor>
+                     </Node>
+                     <Node>
+                      <Name>meshx_tiny_vprintf</Name>
+                      <Path>dd/d6b/meshx__tiny__printf_8c.html</Path>
+                      <Anchor>a2930a80a3e9a8c896a212cda22fa16dc</Anchor>
+                     </Node>
+                     <Node>
+                      <Name>meshx_tiny_vsnprintf</Name>
+                      <Path>dd/d6b/meshx__tiny__printf_8c.html</Path>
+                      <Anchor>ad45aca0258fa2c689c2815e05696d906</Anchor>
+                     </Node>
+                     <Node>
+                      <Name>out_char</Name>
+                      <Path>dd/d6b/meshx__tiny__printf_8c.html</Path>
+                      <Anchor>a0a10e3114ba9487a2fe28042dc789ee4</Anchor>
+                     </Node>
+                     <Node>
+                      <Name>out_int</Name>
+                      <Path>dd/d6b/meshx__tiny__printf_8c.html</Path>
+                      <Anchor>ad42cd4d72cde5ec918412fbd1aa693f7</Anchor>
+                     </Node>
+                     <Node>
+                      <Name>out_str</Name>
+                      <Path>dd/d6b/meshx__tiny__printf_8c.html</Path>
+                      <Anchor>aff99ef14313dc0fe37e4f767e77813d8</Anchor>
+                     </Node>
+                     <Node>
+                      <Name>out_uint</Name>
+                      <Path>dd/d6b/meshx__tiny__printf_8c.html</Path>
+                      <Anchor>a31c51e4958ae2507f8e711abaaed6015</Anchor>
                      </Node>
                     </Subnodes>
                    </Node>
@@ -43182,6 +43394,10 @@
              <Node>
               <Name>m</Name>
               <Path>globals_func_m.html</Path>
+             </Node>
+             <Node>
+              <Name>o</Name>
+              <Path>globals_func_o.html</Path>
              </Node>
              <Node>
               <Name>p</Name>

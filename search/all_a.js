@@ -6,7 +6,7 @@ var searchData=
   ['data_5fsize_3',['data_size',['../d2/d84/structmeshx__gpio__pin__state__t.html#a9cd114b48cf7aba7a62cf55a293db62b',1,'meshx_gpio_pin_state_t']]],
   ['deadlock_20prevention_4',['Best Practices &amp;amp; Deadlock Prevention',['../d6/df3/md_docs_2uml__diag_2meshx_2meshx__call__flow.html#best-practices--deadlock-prevention',1,'']]],
   ['deadlocks_20in_20control_20task_5',['1. Preventing Circular Deadlocks in Control Task',['../d6/df3/md_docs_2uml__diag_2meshx_2meshx__call__flow.html#autotoc_md1-preventing-circular-deadlocks-in-control-task',1,'']]],
-  ['def_5flog_5flevel_6',['def_log_level',['../db/d0b/structmeshx__logging.html#a140b99328b305503577b5333d5504873',1,'meshx_logging']]],
+  ['def_5flog_5flevel_6',['def_log_level',['../d4/dac/structmeshx__logging__t.html#a1805b30cf930081360279c62def33764',1,'meshx_logging_t']]],
   ['def_5ftrans_5ftime_7',['def_trans_time',['../d8/df6/structmeshx__gen__server__state.html#a1726ed09e75a66a3dd6786607204a2ac',1,'meshx_gen_server_state']]],
   ['def_5ftrans_5ftime_5fset_8',['def_trans_time_set',['../d8/df2/unionmeshx__gen__cli__set__t.html#a7fff894af0f7cfacdd716ba1abd605cd',1,'meshx_gen_cli_set_t::def_trans_time_set'],['../d3/dbf/unionmeshx__gen__srv__state__change__t.html#adabd590f86ae574d0bd60975604b9cd3',1,'meshx_gen_srv_state_change_t::def_trans_time_set']]],
   ['def_5ftrans_5ftime_5fstatus_9',['def_trans_time_status',['../d0/d91/unionmeshx__gen__client__status__cb__t.html#a52cf613649644bc62ac9980f06d0591b',1,'meshx_gen_client_status_cb_t']]],

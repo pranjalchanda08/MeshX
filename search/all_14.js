@@ -33,6 +33,10 @@ var searchData=
   ['os_5ftimer_5finit_5fmagic_30',['OS_TIMER_INIT_MAGIC',['../dd/da1/meshx__os__timer_8c.html#a297d2679d06ff46588ed5cc251f07ebf',1,'meshx_os_timer.c']]],
   ['os_5ftimer_5fsize_31',['OS_TIMER_SIZE',['../d8/d03/meshx__os__timer_8h.html#a5b36f76812b76b64f3b434fd4b7bc5d3',1,'meshx_os_timer.h']]],
   ['os_5ftmer_5fget_5ftimer_5fname_32',['OS_TMER_GET_TIMER_NAME',['../d8/d03/meshx__os__timer_8h.html#adb0ba77bc857e8f6bfec9be2081d5370',1,'meshx_os_timer.h']]],
-  ['output_33',['OUTPUT',['../d4/de4/namespacemeshx.html#a82741a69e80936806dc4196b17f45f5ea50a87f0d71f7221582dad4bf507a0f34',1,'meshx']]],
-  ['overview_34',['Overview',['../db/de4/md_docs_2DEVELOPER__GUIDE__CUSTOM__MODELS__AND__ELEMENTS.html#overview',1,'']]]
+  ['out_5fchar_33',['out_char',['../dd/d6b/meshx__tiny__printf_8c.html#a0a10e3114ba9487a2fe28042dc789ee4',1,'meshx_tiny_printf.c']]],
+  ['out_5fint_34',['out_int',['../dd/d6b/meshx__tiny__printf_8c.html#ad42cd4d72cde5ec918412fbd1aa693f7',1,'meshx_tiny_printf.c']]],
+  ['out_5fstr_35',['out_str',['../dd/d6b/meshx__tiny__printf_8c.html#aff99ef14313dc0fe37e4f767e77813d8',1,'meshx_tiny_printf.c']]],
+  ['out_5fuint_36',['out_uint',['../dd/d6b/meshx__tiny__printf_8c.html#a31c51e4958ae2507f8e711abaaed6015',1,'meshx_tiny_printf.c']]],
+  ['output_37',['OUTPUT',['../d4/de4/namespacemeshx.html#a82741a69e80936806dc4196b17f45f5ea50a87f0d71f7221582dad4bf507a0f34',1,'meshx']]],
+  ['overview_38',['Overview',['../db/de4/md_docs_2DEVELOPER__GUIDE__CUSTOM__MODELS__AND__ELEMENTS.html#overview',1,'']]]
 ];

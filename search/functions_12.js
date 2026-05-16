@@ -9,5 +9,6 @@ var searchData=
   ['validate_5fpwm_5fresolution_6',['validate_pwm_resolution',['../d1/d17/meshx__pwm_8c.html#a41d82bcd8577f2e3534c6268c8f14d40',1,'meshx_pwm.c']]],
   ['validate_5fserver_5fstatus_5fopcode_7',['validate_server_status_opcode',['../d8/d9b/classmeshXBaseServerModel.html#a72524c229f43a6992ad66e5e4f675d28',1,'meshXBaseServerModel::validate_server_status_opcode()'],['../dd/df7/classmeshXBaseConfigServerModel.html#a2519fa037c6080b4abab85002713a387',1,'meshXBaseConfigServerModel::validate_server_status_opcode()'],['../da/d39/classmeshXBaseGenericServerModel.html#abb84179512247aa7f68937aa57e222e2',1,'meshXBaseGenericServerModel::validate_server_status_opcode()'],['../db/df5/classmeshXBaseLightServerModel.html#ad577e6d686fe181dfa9f0295b55b2113',1,'meshXBaseLightServerModel::validate_server_status_opcode()'],['../df/d16/classmeshXBaseSensorServerModel.html#ad6d7d9cd5daf584bad96a28cc2f51135',1,'meshXBaseSensorServerModel::validate_server_status_opcode()']]],
   ['ven_5fplat_5fmodel_5farray_5fallocate_8',['ven_plat_model_array_allocate',['../de/dfb/classmeshXElement.html#a675c79a37b2920b0118b8f5637fee4ac',1,'meshXElement']]],
-  ['visualize_5fstatus_9',['visualize_status',['../da/d4a/classmeshXDevice.html#aa2f46bc2fb5c23eddb2600aa872d1d09',1,'meshXDevice']]]
+  ['visualize_5fstatus_9',['visualize_status',['../da/d4a/classmeshXDevice.html#aa2f46bc2fb5c23eddb2600aa872d1d09',1,'meshXDevice']]],
+  ['vmeshx_5flog_5fpacket_10',['vmeshx_log_packet',['../d0/dc9/meshx__log_8c.html#aca8baee48b56fa39cf13659f0b645a87',1,'meshx_log.c']]]
 ];

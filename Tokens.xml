@@ -2043,21 +2043,22 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>meshx_log_msg_t</Name>
+      <Name>meshx_log_packet_t</Name>
       <APILanguage>c</APILanguage>
       <Type>cl</Type>
-      <Scope>meshx_log_msg_t</Scope>
+      <Scope>meshx_log_packet_t</Scope>
     </TokenIdentifier>
-    <Path>dd/d5b/structmeshx__log__msg__t.html</Path>
+    <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+    <DeclaredIn>meshx_log.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>meshx_logging</Name>
+      <Name>meshx_logging_t</Name>
       <APILanguage>c</APILanguage>
       <Type>cl</Type>
-      <Scope>meshx_logging</Scope>
+      <Scope>meshx_logging_t</Scope>
     </TokenIdentifier>
-    <Path>db/d0b/structmeshx__logging.html</Path>
+    <Path>d4/dac/structmeshx__logging__t.html</Path>
     <DeclaredIn>meshx_log.h</DeclaredIn>
   </Token>
   <Token>
@@ -5276,6 +5277,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>args</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_log_packet_t</Scope>
+    </TokenIdentifier>
+    <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+    <Anchor>a478d0238be1cf547848e19bcfb5ea400</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>auto_reload</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -7310,10 +7321,10 @@
       <Name>def_log_level</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
-      <Scope>meshx_logging</Scope>
+      <Scope>meshx_logging_t</Scope>
     </TokenIdentifier>
-    <Path>db/d0b/structmeshx__logging.html</Path>
-    <Anchor>a140b99328b305503577b5333d5504873</Anchor>
+    <Path>d4/dac/structmeshx__logging__t.html</Path>
+    <Anchor>a1805b30cf930081360279c62def33764</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -9935,6 +9946,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>file_addr</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_log_packet_t</Scope>
+    </TokenIdentifier>
+    <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+    <Anchor>a19e1fa5a3a254a54f038f651a2a52432</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>filter_type</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -10054,6 +10075,16 @@
     </TokenIdentifier>
     <Path>d2/dea/structmeshx__gen__location__state__t.html</Path>
     <Anchor>a413520ab3b0673df3488a8978421cd4c</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>fmt_addr</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_log_packet_t</Scope>
+    </TokenIdentifier>
+    <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+    <Anchor>a582cd72c637fb03d18c5a6a4a1ddfbd5</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -14312,6 +14343,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>inline_str</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_log_packet_t</Scope>
+    </TokenIdentifier>
+    <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+    <Anchor>a75becedd0b71053caf9ad4df92f55789</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>interrupt</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -15076,6 +15117,16 @@
       <Name>len</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
+      <Scope>meshx_log_packet_t</Scope>
+    </TokenIdentifier>
+    <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+    <Anchor>a133204f90845cf3f4c31fc69e2ff1cf1</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>len</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
       <Scope>kv_pending_node</Scope>
     </TokenIdentifier>
     <Path>d1/da2/structkv__pending__node.html</Path>
@@ -15160,6 +15211,16 @@
     </TokenIdentifier>
     <Path>d8/df6/structmeshx__gen__server__state.html</Path>
     <Anchor>a5b086cab2612a2fb6c84c3311de97815</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>level</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_log_packet_t</Scope>
+    </TokenIdentifier>
+    <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+    <Anchor>a80e3ac2b4072091e58a16b12be01dae5</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -15833,6 +15894,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>line_no</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_log_packet_t</Scope>
+    </TokenIdentifier>
+    <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+    <Anchor>aaa257aadd879bdb738f2679fd799c1ee</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>linear_output</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -16378,16 +16449,6 @@
     </TokenIdentifier>
     <Path>d0/d91/unionmeshx__gen__client__status__cb__t.html</Path>
     <Anchor>a635d699e2228c14cb0fa93a58c2cfc13</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>log_buf</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_log_msg_t</Scope>
-    </TokenIdentifier>
-    <Path>dd/d5b/structmeshx__log__msg__t.html</Path>
-    <Anchor>a4cb6126875e5d2a1eaa3f15fb03bb941</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -21431,6 +21492,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>module_id</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_log_packet_t</Scope>
+    </TokenIdentifier>
+    <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+    <Anchor>a6c1f124243689aa9abe67106f569b997</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>move_set</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -23537,6 +23608,16 @@
     </TokenIdentifier>
     <Path>d1/d52/classmeshXModelIF.html</Path>
     <Anchor>a0474b091b2f287e435c749a1617ddc21</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>parity</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_log_packet_t</Scope>
+    </TokenIdentifier>
+    <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+    <Anchor>a54010b690da8953cf411882288715e07</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -31356,6 +31437,16 @@
     <TokenIdentifier>
       <Name>sync</Name>
       <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_log_packet_t</Scope>
+    </TokenIdentifier>
+    <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+    <Anchor>a24106a51340f782f0a99ccaf684798fa</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>sync</Name>
+      <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
       <Scope>meshXElementIF</Scope>
     </TokenIdentifier>
@@ -32549,6 +32640,16 @@
     </TokenIdentifier>
     <Path>d1/d2f/structmeshx__gpio__hosted__event__t.html</Path>
     <Anchor>a1922bf930c9511c8663b4c26ff2f3cbf</Anchor>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>timestamp</Name>
+      <APILanguage>cpp</APILanguage>
+      <Type>data</Type>
+      <Scope>meshx_log_packet_t</Scope>
+    </TokenIdentifier>
+    <Path>d4/d2e/structmeshx__log__packet__t.html</Path>
+    <Anchor>aa9338bf2a456f19bb587d553f0032697</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -35306,6 +35407,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>calculate_xor_parity</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/dc9/meshx__log_8c.html</Path>
+    <Anchor>a03073d6d5583d068b2fab1cc312e9450</Anchor>
+    <DeclaredIn>meshx_log.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>callback_list</Name>
       <APILanguage>c</APILanguage>
       <Type>data</Type>
@@ -35740,19 +35851,9 @@
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
     </TokenIdentifier>
-    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Path>d0/dc9/meshx__log_8c.html</Path>
     <Anchor>a3191b7c8f443bac0775457d85fe27a12</Anchor>
-    <DeclaredIn>meshx_log.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONFIG_MESHX_LOG_HIGH_WATERMARK</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>macro</Type>
-    </TokenIdentifier>
-    <Path>d7/dcb/meshx__log_8h.html</Path>
-    <Anchor>a4ef89f13b7ea1d1b5c0ca90852142cb3</Anchor>
-    <DeclaredIn>meshx_log.h</DeclaredIn>
+    <DeclaredIn>meshx_log.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -35762,26 +35863,6 @@
     </TokenIdentifier>
     <Path>d7/dcb/meshx__log_8h.html</Path>
     <Anchor>aab871af326d6c21d6210c588f4a85dd1</Anchor>
-    <DeclaredIn>meshx_log.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONFIG_MESHX_LOG_QUEUE_LEN</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>macro</Type>
-    </TokenIdentifier>
-    <Path>d7/dcb/meshx__log_8h.html</Path>
-    <Anchor>a244c72b30ec2e7ed4767243cd4630e24</Anchor>
-    <DeclaredIn>meshx_log.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONFIG_MESHX_LOG_STACK_SIZE</Name>
-      <APILanguage>unknown</APILanguage>
-      <Type>macro</Type>
-    </TokenIdentifier>
-    <Path>d7/dcb/meshx__log_8h.html</Path>
-    <Anchor>ac9d52edebf1bc4a27dbc85b57dd24040</Anchor>
     <DeclaredIn>meshx_log.h</DeclaredIn>
   </Token>
   <Token>
@@ -38622,36 +38703,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>log_lvl_str</Name>
-      <APILanguage>c</APILanguage>
-      <Type>data</Type>
-    </TokenIdentifier>
-    <Path>d0/dc9/meshx__log_8c.html</Path>
-    <Anchor>a0ad15708a91c57f0f623524b07df18aa</Anchor>
-    <DeclaredIn>meshx_log.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>log_msg_q</Name>
-      <APILanguage>c</APILanguage>
-      <Type>data</Type>
-    </TokenIdentifier>
-    <Path>d0/dc9/meshx__log_8c.html</Path>
-    <Anchor>aeba8406eaae9c7d82cf27a6ffbcb752f</Anchor>
-    <DeclaredIn>meshx_log.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>log_threaded_init_done</Name>
-      <APILanguage>c</APILanguage>
-      <Type>data</Type>
-    </TokenIdentifier>
-    <Path>d0/dc9/meshx__log_8c.html</Path>
-    <Anchor>a7239f84edf380da22b845f2222284210</Anchor>
-    <DeclaredIn>meshx_log.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>LOW_LEVEL</Name>
       <APILanguage>cpp</APILanguage>
       <Type>econst</Type>
@@ -38999,36 +39050,6 @@
     <Path>d4/de0/meshx__ble__mesh__cmn__def_8h.html</Path>
     <Anchor>aa4699a7092eff27510fce542fdb1f1ab</Anchor>
     <DeclaredIn>meshx_ble_mesh_cmn_def.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshX_banner_art</Name>
-      <APILanguage>c</APILanguage>
-      <Type>data</Type>
-    </TokenIdentifier>
-    <Path>d9/d05/meshx_8c.html</Path>
-    <Anchor>a4abdb8b0dbe43d3fd9ceb26ede23882f</Anchor>
-    <DeclaredIn>meshx.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshX_banner_border</Name>
-      <APILanguage>c</APILanguage>
-      <Type>data</Type>
-    </TokenIdentifier>
-    <Path>d9/d05/meshx_8c.html</Path>
-    <Anchor>a4e0f59375b640675fa558e1ffb84d83e</Anchor>
-    <DeclaredIn>meshx.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_banner_print</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d9/d05/meshx_8c.html</Path>
-    <Anchor>a237c489801a704688102f4fc36321b51</Anchor>
-    <DeclaredIn>meshx.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -45724,6 +45745,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>MESHX_LOG_COLOR</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Anchor>a52d86e24726c38d5c164364acf077d83</Anchor>
+    <DeclaredIn>meshx_log.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_LOG_COLOR_BLACK</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
@@ -45744,6 +45775,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>MESHX_LOG_COLOR_BROWN</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Anchor>a966c9b74233fd81d53076de92fdab386</Anchor>
+    <DeclaredIn>meshx_log.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_LOG_COLOR_CYAN</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
@@ -45754,12 +45795,42 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>MESHX_LOG_COLOR_D</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Anchor>ad61be124156ff166be877c6e2993992f</Anchor>
+    <DeclaredIn>meshx_log.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LOG_COLOR_E</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Anchor>aa65ff6518918e4d6a6c467421761a339</Anchor>
+    <DeclaredIn>meshx_log.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_LOG_COLOR_GREEN</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
     </TokenIdentifier>
     <Path>d7/dcb/meshx__log_8h.html</Path>
     <Anchor>ac646236cab389357ec26a879f827e032</Anchor>
+    <DeclaredIn>meshx_log.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LOG_COLOR_I</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Anchor>a91c52703f2c58aef02cf891d1129285c</Anchor>
     <DeclaredIn>meshx_log.h</DeclaredIn>
   </Token>
   <Token>
@@ -45794,6 +45865,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>MESHX_LOG_COLOR_V</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Anchor>a619c2ea451cc235d3135fddde741745f</Anchor>
+    <DeclaredIn>meshx_log.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LOG_COLOR_W</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Anchor>a473400b8658d9d643d3cf829c69d2fc8</Anchor>
+    <DeclaredIn>meshx_log.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_LOG_COLOR_WHITE</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
@@ -45804,12 +45895,22 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>MESHX_LOG_COLOR_YELLOW</Name>
+      <Name>MESHX_LOG_CONCAT</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
     </TokenIdentifier>
     <Path>d7/dcb/meshx__log_8h.html</Path>
-    <Anchor>ae887818b14a1b93cc8c6da1a4982be48</Anchor>
+    <Anchor>a8b54c156e7b8471fe77026352f8a542f</Anchor>
+    <DeclaredIn>meshx_log.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LOG_CONCAT_INNER</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Anchor>ab17ce1dc80ff3646daa0324e520a525e</Anchor>
     <DeclaredIn>meshx_log.h</DeclaredIn>
   </Token>
   <Token>
@@ -45834,6 +45935,16 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>MESHX_LOG_GET_COLOR</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Anchor>a9f2ce795bcc8b28dd54c4ed86553f8b9</Anchor>
+    <DeclaredIn>meshx_log.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_LOG_INFO</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
@@ -45844,12 +45955,12 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>MESHX_LOG_LEVEL_COLOR</Name>
+      <Name>MESHX_LOG_INTERNAL</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
     </TokenIdentifier>
     <Path>d7/dcb/meshx__log_8h.html</Path>
-    <Anchor>a259f4064d426d7f4d31d307343c39f19</Anchor>
+    <Anchor>afbfc9bd176206ada02e68cdc26b0f87e</Anchor>
     <DeclaredIn>meshx_log.h</DeclaredIn>
   </Token>
   <Token>
@@ -45859,7 +45970,7 @@
       <Type>tdef</Type>
     </TokenIdentifier>
     <Path>d7/dcb/meshx__log_8h.html</Path>
-    <Anchor>a2bb5164357b270ea80733b70e7e0ee17</Anchor>
+    <Anchor>aa6b3e50c8c6b727fd46249db2a643fc6</Anchor>
     <DeclaredIn>meshx_log.h</DeclaredIn>
   </Token>
   <Token>
@@ -45884,6 +45995,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>meshx_log_packet</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/dc9/meshx__log_8c.html</Path>
+    <Anchor>a41704f3ef1ab424f6709ba29d70cd8b4</Anchor>
+    <DeclaredIn>meshx_log.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_log_packet</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Anchor>a41704f3ef1ab424f6709ba29d70cd8b4</Anchor>
+    <DeclaredIn>meshx_log.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>meshx_log_printf</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -45904,13 +46035,33 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>meshx_log_task_handler</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
+      <Name>MESHX_LOG_STR_ATTR</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
     </TokenIdentifier>
-    <Path>d0/dc9/meshx__log_8c.html</Path>
-    <Anchor>a21de7b7ee33cc60c7924f1e9cc05ea2c</Anchor>
-    <DeclaredIn>meshx_log.c</DeclaredIn>
+    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Anchor>a356c832124628fcc2f92d264ce7f0eca</Anchor>
+    <DeclaredIn>meshx_log.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LOG_SYNC_WORD</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Anchor>ab67c85b43e2b081e12fb9701ffee4b1f</Anchor>
+    <DeclaredIn>meshx_log.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LOG_UNIQUE_ID</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Anchor>a8af95e2650f30c1699cb8b68605d7bb3</Anchor>
+    <DeclaredIn>meshx_log.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -45984,22 +46135,22 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>meshx_logging_t</Name>
-      <APILanguage>c</APILanguage>
-      <Type>tdef</Type>
-    </TokenIdentifier>
-    <Path>d7/dcb/meshx__log_8h.html</Path>
-    <Anchor>a7e75f09650fd33bcd03ea92acd58408f</Anchor>
-    <DeclaredIn>meshx_log.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>MESHX_LOGI</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
     </TokenIdentifier>
     <Path>d7/dcb/meshx__log_8h.html</Path>
     <Anchor>a47d4a699f2997a758e0eca271b66cb48</Anchor>
+    <DeclaredIn>meshx_log.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_LOGV</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Anchor>a74c76963399db022b9ee6de29a416206</Anchor>
     <DeclaredIn>meshx_log.h</DeclaredIn>
   </Token>
   <Token>
@@ -49761,6 +49912,16 @@
     <Path>d0/dc9/meshx__log_8c.html</Path>
     <Anchor>a033915fe8c70de68a3da859035274436</Anchor>
     <DeclaredIn>meshx_log.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_module_set_log_level</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Anchor>a033915fe8c70de68a3da859035274436</Anchor>
+    <DeclaredIn>meshx_log.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -55344,6 +55505,26 @@
   </Token>
   <Token>
     <TokenIdentifier>
+      <Name>MESHX_STR</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Anchor>abd90b0a1ae9a5d9631ae19067349860f</Anchor>
+    <DeclaredIn>meshx_log.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>MESHX_STR_INNER</Name>
+      <APILanguage>unknown</APILanguage>
+      <Type>macro</Type>
+    </TokenIdentifier>
+    <Path>d7/dcb/meshx__log_8h.html</Path>
+    <Anchor>a37368a8d2f50947b39294ad35bed70a1</Anchor>
+    <DeclaredIn>meshx_log.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
       <Name>MESHX_SUCCESS</Name>
       <APILanguage>c</APILanguage>
       <Type>data</Type>
@@ -55461,6 +55642,86 @@
     <Path>da/d68/meshx__err_8h.html</Path>
     <Anchor>a6f984f69fa8d0240992b3a1e78bd42f6ae6801b97153b624681126cfbc3f19d02</Anchor>
     <DeclaredIn>meshx_err.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_tiny_printf</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d4/d50/meshx__tiny__printf_8h.html</Path>
+    <Anchor>a34b5e371bf2aa40ab5442036a8711bcc</Anchor>
+    <DeclaredIn>meshx_tiny_printf.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_tiny_printf</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>dd/d6b/meshx__tiny__printf_8c.html</Path>
+    <Anchor>a34b5e371bf2aa40ab5442036a8711bcc</Anchor>
+    <DeclaredIn>meshx_tiny_printf.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_tiny_snprintf</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d4/d50/meshx__tiny__printf_8h.html</Path>
+    <Anchor>afdcf1d79b9721c741427126b124f076f</Anchor>
+    <DeclaredIn>meshx_tiny_printf.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_tiny_snprintf</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>dd/d6b/meshx__tiny__printf_8c.html</Path>
+    <Anchor>afdcf1d79b9721c741427126b124f076f</Anchor>
+    <DeclaredIn>meshx_tiny_printf.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_tiny_vprintf</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d4/d50/meshx__tiny__printf_8h.html</Path>
+    <Anchor>a2930a80a3e9a8c896a212cda22fa16dc</Anchor>
+    <DeclaredIn>meshx_tiny_printf.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_tiny_vprintf</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>dd/d6b/meshx__tiny__printf_8c.html</Path>
+    <Anchor>a2930a80a3e9a8c896a212cda22fa16dc</Anchor>
+    <DeclaredIn>meshx_tiny_printf.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_tiny_vsnprintf</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d4/d50/meshx__tiny__printf_8h.html</Path>
+    <Anchor>ad45aca0258fa2c689c2815e05696d906</Anchor>
+    <DeclaredIn>meshx_tiny_printf.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>meshx_tiny_vsnprintf</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>dd/d6b/meshx__tiny__printf_8c.html</Path>
+    <Anchor>ad45aca0258fa2c689c2815e05696d906</Anchor>
+    <DeclaredIn>meshx_tiny_printf.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -56700,16 +56961,6 @@
     <Path>dc/d93/meshx__api_8c.html</Path>
     <Anchor>a4859bf68641bed24cb3d958103375a48</Anchor>
     <DeclaredIn>meshx_api.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>millis_t</Name>
-      <APILanguage>c</APILanguage>
-      <Type>tdef</Type>
-    </TokenIdentifier>
-    <Path>d7/dcb/meshx__log_8h.html</Path>
-    <Anchor>adef7845289a24e0f4bfd4ac68af4ba6d</Anchor>
-    <DeclaredIn>meshx_log.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -58090,6 +58341,46 @@
     <Path>d8/d03/meshx__os__timer_8h.html</Path>
     <Anchor>adb0ba77bc857e8f6bfec9be2081d5370</Anchor>
     <DeclaredIn>meshx_os_timer.h</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>out_char</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>dd/d6b/meshx__tiny__printf_8c.html</Path>
+    <Anchor>a0a10e3114ba9487a2fe28042dc789ee4</Anchor>
+    <DeclaredIn>meshx_tiny_printf.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>out_int</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>dd/d6b/meshx__tiny__printf_8c.html</Path>
+    <Anchor>ad42cd4d72cde5ec918412fbd1aa693f7</Anchor>
+    <DeclaredIn>meshx_tiny_printf.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>out_str</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>dd/d6b/meshx__tiny__printf_8c.html</Path>
+    <Anchor>aff99ef14313dc0fe37e4f767e77813d8</Anchor>
+    <DeclaredIn>meshx_tiny_printf.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>out_uint</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>dd/d6b/meshx__tiny__printf_8c.html</Path>
+    <Anchor>a31c51e4958ae2507f8e711abaaed6015</Anchor>
+    <DeclaredIn>meshx_tiny_printf.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -59624,6 +59915,16 @@
     <Path>d1/d17/meshx__pwm_8c.html</Path>
     <Anchor>a41d82bcd8577f2e3534c6268c8f14d40</Anchor>
     <DeclaredIn>meshx_pwm.c</DeclaredIn>
+  </Token>
+  <Token>
+    <TokenIdentifier>
+      <Name>vmeshx_log_packet</Name>
+      <APILanguage>c</APILanguage>
+      <Type>func</Type>
+    </TokenIdentifier>
+    <Path>d0/dc9/meshx__log_8c.html</Path>
+    <Anchor>aca8baee48b56fa39cf13659f0b645a87</Anchor>
+    <DeclaredIn>meshx_log.c</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>

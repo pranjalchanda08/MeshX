@@ -89,211 +89,218 @@ $(function() {
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#define MESHX_LOG_H</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="../../df/d01/meshx__config__internal_8h.html">meshx_config_internal.h</a>&quot;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="../../d3/da1/module__id_8h.html">module_id.h</a>&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/d68/meshx__err_8h.html">meshx_err.h</a>&quot;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="comment"></span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="comment"> * @brief Macro to define printf function</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"> * @note this can be overriden by compile time Macro def</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#ifndef CONFIG_MESHX_LOG_PRINTF</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#aab871af326d6c21d6210c588f4a85dd1">   23</a></span><span class="preprocessor">#define CONFIG_MESHX_LOG_PRINTF printf</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_MESHX_LOG_PRINTF */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#ifndef CONFIG_MESHX_DEFAULT_LOG_LEVEL</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a736ad74c6ead5d4e1c683216f0898781">   27</a></span><span class="preprocessor">#define CONFIG_MESHX_DEFAULT_LOG_LEVEL MESHX_LOG_INFO</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_MESHX_DEFAULT_LOG_LEVEL */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment"></span> </div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment"> * @brief Threaded logging configuration</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#ifndef CONFIG_MESHX_LOG_THREADED</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a225df21758d8a88e9f5b6099a188fc6a">   34</a></span><span class="preprocessor">#define CONFIG_MESHX_LOG_THREADED 1</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_MESHX_LOG_THREADED */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="preprocessor">#if CONFIG_MESHX_LOG_THREADED</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="preprocessor">#ifndef CONFIG_MESHX_LOG_QUEUE_LEN</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a244c72b30ec2e7ed4767243cd4630e24">   39</a></span><span class="preprocessor">#define CONFIG_MESHX_LOG_QUEUE_LEN 50</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_MESHX_LOG_QUEUE_LEN */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#ifndef CONFIG_MESHX_LOG_BUF_SIZE</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a3191b7c8f443bac0775457d85fe27a12">   43</a></span><span class="preprocessor">#define CONFIG_MESHX_LOG_BUF_SIZE 256</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_MESHX_LOG_BUF_SIZE */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#ifndef CONFIG_MESHX_LOG_HIGH_WATERMARK</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a4ef89f13b7ea1d1b5c0ca90852142cb3">   47</a></span><span class="preprocessor">#define CONFIG_MESHX_LOG_HIGH_WATERMARK (CONFIG_MESHX_LOG_QUEUE_LEN * 8 / 10)</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_MESHX_LOG_HIGH_WATERMARK */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#ifndef CONFIG_MESHX_LOG_STACK_SIZE</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#ac9d52edebf1bc4a27dbc85b57dd24040">   51</a></span><span class="preprocessor">#define CONFIG_MESHX_LOG_STACK_SIZE 4096</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_MESHX_LOG_STACK_SIZE */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#endif </span><span class="comment">/* CONFIG_MESHX_LOG_THREADED */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">/* ANSI Color Codes */</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a8dac627e2fe191ab9b0bc88ba515c6b9">   56</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_BLACK &quot;\033[0;30m&quot;</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a986327e019c81798f993ce4b5beb5c8b">   57</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_RED &quot;\033[0;31m&quot;</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#ac646236cab389357ec26a879f827e032">   58</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_GREEN &quot;\033[0;32m&quot;</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#ae887818b14a1b93cc8c6da1a4982be48">   59</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_YELLOW &quot;\033[0;33m&quot;</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a9aa746a561a333446e13c33325fc8565">   60</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_BLUE &quot;\033[0;34m&quot;</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a9fd61076f120bb273a5534f8d94c2b06">   61</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_PURPLE &quot;\033[0;35m&quot;</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#ac6b1b3976da12f60657fab36b06f1a95">   62</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_CYAN &quot;\033[0;36m&quot;</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#aa3cc18467c8d47158c06b8c3790d0edb">   63</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_WHITE &quot;\033[0;37m&quot;</span></div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a0c4d6862efe6c37fa66ecf0057c15845">   64</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_RESET &quot;\033[0m&quot;</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">/* Log levels */</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a4d2cb7b27cc324414a98b0aaa88fd2cf">   68</a></span><span class="preprocessor">#define MESHX_LOG_VERBOSE 0 </span><span class="comment">/* White */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a4a141c7b841c566af55bd50045ee4e90">   69</a></span><span class="preprocessor">#define MESHX_LOG_DEBUG 1   </span><span class="comment">/* Blue */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a081cbffb2f246d1443ba585cb7f89a91">   70</a></span><span class="preprocessor">#define MESHX_LOG_INFO 2    </span><span class="comment">/* Green */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#aab45c3bbc9cb0d29d9828b8f85794aa5">   71</a></span><span class="preprocessor">#define MESHX_LOG_WARN 3    </span><span class="comment">/* Yellow */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#abac72310c5c0e272dd1030d857f285b0">   72</a></span><span class="preprocessor">#define MESHX_LOG_ERROR 4   </span><span class="comment">/* Red */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a4173c823294016adf0e114e9488bfcaa">   73</a></span><span class="preprocessor">#define MESHX_LOG_NONE 5    </span><span class="comment">/* Blue */</span><span class="preprocessor"></span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a491d1fb4dfccd0cb83eb2e499ca25f27">   74</a></span><span class="preprocessor">#define MESHX_LOG_MAX 6</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a2bb5164357b270ea80733b70e7e0ee17">   76</a></span><span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> <a class="code hl_typedef" href="../../d7/dcb/meshx__log_8h.html#a2bb5164357b270ea80733b70e7e0ee17">meshx_log_level_t</a>;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#adef7845289a24e0f4bfd4ac68af4ba6d">   78</a></span><span class="keyword">typedef</span> <span class="keywordtype">unsigned</span> int (*<a class="code hl_typedef" href="../../d7/dcb/meshx__log_8h.html#adef7845289a24e0f4bfd4ac68af4ba6d">millis_t</a>)(void);</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="foldopen" id="foldopen00080" data-start="{" data-end="};">
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="../../db/d0b/structmeshx__logging.html">   80</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code hl_struct" href="../../db/d0b/structmeshx__logging.html">meshx_logging</a></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>{</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="../../db/d0b/structmeshx__logging.html#a140b99328b305503577b5333d5504873">   82</a></span>    <span class="keywordtype">unsigned</span> <a class="code hl_variable" href="../../db/d0b/structmeshx__logging.html#a140b99328b305503577b5333d5504873">def_log_level</a>;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a7e75f09650fd33bcd03ea92acd58408f">   83</a></span>} <a class="code hl_typedef" href="../../d7/dcb/meshx__log_8h.html#a7e75f09650fd33bcd03ea92acd58408f">meshx_logging_t</a>;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;stdarg.h&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;stdbool.h&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="../../da/d68/meshx__err_8h.html">meshx_err.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="../../d3/da1/module__id_8h.html">module_id.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="../../d4/d50/meshx__tiny__printf_8h.html">interface/utils/meshx_tiny_printf.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#ifndef CONFIG_MESHX_LOG_THREADED</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a225df21758d8a88e9f5b6099a188fc6a">   22</a></span><span class="preprocessor">#define CONFIG_MESHX_LOG_THREADED 0</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="comment">/* Log levels matching esp_log.h levels for compatibility where needed */</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a4173c823294016adf0e114e9488bfcaa">   26</a></span><span class="preprocessor">#define MESHX_LOG_NONE    0</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#abac72310c5c0e272dd1030d857f285b0">   27</a></span><span class="preprocessor">#define MESHX_LOG_ERROR   1</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#aab45c3bbc9cb0d29d9828b8f85794aa5">   28</a></span><span class="preprocessor">#define MESHX_LOG_WARN    2</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a081cbffb2f246d1443ba585cb7f89a91">   29</a></span><span class="preprocessor">#define MESHX_LOG_INFO    3</span></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a4a141c7b841c566af55bd50045ee4e90">   30</a></span><span class="preprocessor">#define MESHX_LOG_DEBUG   4</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a4d2cb7b27cc324414a98b0aaa88fd2cf">   31</a></span><span class="preprocessor">#define MESHX_LOG_VERBOSE 5</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a491d1fb4dfccd0cb83eb2e499ca25f27">   32</a></span><span class="preprocessor">#define MESHX_LOG_MAX     6</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#aa6b3e50c8c6b727fd46249db2a643fc6">   34</a></span><span class="keyword">typedef</span> uint8_t <a class="code hl_typedef" href="../../d7/dcb/meshx__log_8h.html#aa6b3e50c8c6b727fd46249db2a643fc6">meshx_log_level_t</a>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">/* Logging control structure */</span></div>
+<div class="foldopen" id="foldopen00037" data-start="{" data-end="};">
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="../../d4/dac/structmeshx__logging__t.html">   37</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="../../d4/dac/structmeshx__logging__t.html#a1805b30cf930081360279c62def33764">   38</a></span>    <a class="code hl_typedef" href="../../d7/dcb/meshx__log_8h.html#aa6b3e50c8c6b727fd46249db2a643fc6">meshx_log_level_t</a> <a class="code hl_variable" href="../../d4/dac/structmeshx__logging__t.html#a1805b30cf930081360279c62def33764">def_log_level</a>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>} <a class="code hl_struct" href="../../d4/dac/structmeshx__logging__t.html">meshx_logging_t</a>;</div>
 </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment">/* Get color for log level */</span></div>
-<div class="foldopen" id="foldopen00086" data-start="" data-end="">
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a259f4064d426d7f4d31d307343c39f19">   86</a></span><span class="preprocessor">#define MESHX_LOG_LEVEL_COLOR(level) (                                                                    \</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="preprocessor">    (level) == MESHX_LOG_ERROR ? MESHX_LOG_COLOR_RED : (level) == MESHX_LOG_WARN ? MESHX_LOG_COLOR_YELLOW \</span></div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="preprocessor">                                                   : (level) == MESHX_LOG_INFO   ? MESHX_LOG_COLOR_GREEN  \</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="preprocessor">                                                   : (level) == MESHX_LOG_DEBUG  ? MESHX_LOG_COLOR_BLUE   \</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="preprocessor">                                                                                 : MESHX_LOG_COLOR_RESET)</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment">/* Color codes for console output (used by host decoder or fallback) */</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a8dac627e2fe191ab9b0bc88ba515c6b9">   42</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_BLACK   &quot;30&quot;</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a986327e019c81798f993ce4b5beb5c8b">   43</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_RED     &quot;31&quot;</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#ac646236cab389357ec26a879f827e032">   44</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_GREEN   &quot;32&quot;</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a966c9b74233fd81d53076de92fdab386">   45</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_BROWN   &quot;33&quot;</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a9aa746a561a333446e13c33325fc8565">   46</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_BLUE    &quot;34&quot;</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a9fd61076f120bb273a5534f8d94c2b06">   47</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_PURPLE  &quot;35&quot;</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#ac6b1b3976da12f60657fab36b06f1a95">   48</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_CYAN    &quot;36&quot;</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#aa3cc18467c8d47158c06b8c3790d0edb">   49</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_WHITE   &quot;37&quot;</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a0c4d6862efe6c37fa66ecf0057c15845">   50</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_RESET   &quot;\033[0m&quot;</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a52d86e24726c38d5c164364acf077d83">   51</a></span><span class="preprocessor">#define MESHX_LOG_COLOR(COLOR)  &quot;\033[0;&quot; COLOR &quot;m&quot;</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#aa65ff6518918e4d6a6c467421761a339">   53</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_E       MESHX_LOG_COLOR(MESHX_LOG_COLOR_RED)</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a473400b8658d9d643d3cf829c69d2fc8">   54</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_W       MESHX_LOG_COLOR(MESHX_LOG_COLOR_BROWN)</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a91c52703f2c58aef02cf891d1129285c">   55</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_I       MESHX_LOG_COLOR(MESHX_LOG_COLOR_GREEN)</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#ad61be124156ff166be877c6e2993992f">   56</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_D       MESHX_LOG_COLOR(MESHX_LOG_COLOR_BLUE)</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a619c2ea451cc235d3135fddde741745f">   57</a></span><span class="preprocessor">#define MESHX_LOG_COLOR_V       MESHX_LOG_COLOR(MESHX_LOG_COLOR_RESET)</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="foldopen" id="foldopen00059" data-start="" data-end="">
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a9f2ce795bcc8b28dd54c4ed86553f8b9">   59</a></span><span class="preprocessor">#define MESHX_LOG_GET_COLOR(level) ((level) == MESHX_LOG_ERROR ? MESHX_LOG_COLOR_E : \</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">                                    (level) == MESHX_LOG_WARN  ? MESHX_LOG_COLOR_W : \</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">                                    (level) == MESHX_LOG_INFO  ? MESHX_LOG_COLOR_I : \</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">                                    (level) == MESHX_LOG_DEBUG ? MESHX_LOG_COLOR_BLUE : \</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="preprocessor">                                    MESHX_LOG_COLOR_RESET)</span></div>
 </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">/* Logging macro with colors */</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a4b5b6c33e3ebc4b69f92142a528195f7">   93</a></span><span class="preprocessor">#define MESHX_LOG(module_id, level, format, ...) meshx_log_printf(module_id, level, __FILENAME__, __LINE__, format, ##__VA_ARGS__)</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="preprocessor">#if CONFIG_MESHX_DEFAULT_LOG_LEVEL &lt; MESHX_LOG_MAX</span></div>
-<div class="foldopen" id="foldopen00096" data-start="" data-end="">
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">   96</a></span><span class="preprocessor">#define MESHX_LOGE(module_id, format, ...)                            \</span></div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="preprocessor">    do                                                                \</span></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="preprocessor">    {                                                                 \</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="preprocessor">        MESHX_LOG(module_id, MESHX_LOG_ERROR, format, ##__VA_ARGS__); \</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="preprocessor">    } while (0)</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">#ifndef CONFIG_MESHX_DEFAULT_LOG_LEVEL</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a736ad74c6ead5d4e1c683216f0898781">   66</a></span><span class="preprocessor">#define CONFIG_MESHX_DEFAULT_LOG_LEVEL MESHX_LOG_INFO</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a356c832124628fcc2f92d264ce7f0eca">   69</a></span><span class="preprocessor">#define MESHX_LOG_STR_ATTR __attribute__((section(&quot;.meshx_log_str&quot;), used))</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#ab67c85b43e2b081e12fb9701ffee4b1f">   70</a></span><span class="preprocessor">#define MESHX_LOG_SYNC_WORD 0xDEAD</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#ab17ce1dc80ff3646daa0324e520a525e">   72</a></span><span class="preprocessor">#define MESHX_LOG_CONCAT_INNER(a, b) a ## b</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a8b54c156e7b8471fe77026352f8a542f">   73</a></span><span class="preprocessor">#define MESHX_LOG_CONCAT(a, b) MESHX_LOG_CONCAT_INNER(a, b)</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="preprocessor">#ifdef __COUNTER__</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="preprocessor">#define MESHX_LOG_UNIQUE_ID __COUNTER__</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a8af95e2650f30c1699cb8b68605d7bb3">   78</a></span><span class="preprocessor">#define MESHX_LOG_UNIQUE_ID __LINE__</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment"></span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment"> * @brief TLV Log Packet structure</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment"> * @note Packed for transmission efficiency</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment"> */</span></div>
+<div class="foldopen" id="foldopen00085" data-start="{" data-end="};">
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="../../d4/d2e/structmeshx__log__packet__t.html">   85</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="../../d4/d2e/structmeshx__log__packet__t.html#a24106a51340f782f0a99ccaf684798fa">   86</a></span>    uint16_t <a class="code hl_variable" href="../../d4/d2e/structmeshx__log__packet__t.html#a24106a51340f782f0a99ccaf684798fa">sync</a>;      <span class="comment">/* 0xDEAD */</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="../../d4/d2e/structmeshx__log__packet__t.html#a133204f90845cf3f4c31fc69e2ff1cf1">   87</a></span>    uint8_t  <a class="code hl_variable" href="../../d4/d2e/structmeshx__log__packet__t.html#a133204f90845cf3f4c31fc69e2ff1cf1">len</a>;       <span class="comment">/* Length of payload (everything after this field) */</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="../../d4/d2e/structmeshx__log__packet__t.html#a80e3ac2b4072091e58a16b12be01dae5">   88</a></span>    uint8_t  <a class="code hl_variable" href="../../d4/d2e/structmeshx__log__packet__t.html#a80e3ac2b4072091e58a16b12be01dae5">level</a>;     <span class="comment">/* Log level */</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="../../d4/d2e/structmeshx__log__packet__t.html#a6c1f124243689aa9abe67106f569b997">   89</a></span>    uint8_t  <a class="code hl_variable" href="../../d4/d2e/structmeshx__log__packet__t.html#a6c1f124243689aa9abe67106f569b997">module_id</a>; <span class="comment">/* Module ID */</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="../../d4/d2e/structmeshx__log__packet__t.html#aa9338bf2a456f19bb587d553f0032697">   90</a></span>    uint32_t <a class="code hl_variable" href="../../d4/d2e/structmeshx__log__packet__t.html#aa9338bf2a456f19bb587d553f0032697">timestamp</a>; <span class="comment">/* System time in ms */</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="../../d4/d2e/structmeshx__log__packet__t.html#a582cd72c637fb03d18c5a6a4a1ddfbd5">   91</a></span>    uint32_t <a class="code hl_variable" href="../../d4/d2e/structmeshx__log__packet__t.html#a582cd72c637fb03d18c5a6a4a1ddfbd5">fmt_addr</a>;  <span class="comment">/* Address of format string in ELF */</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="../../d4/d2e/structmeshx__log__packet__t.html#a19e1fa5a3a254a54f038f651a2a52432">   92</a></span>    uint32_t <a class="code hl_variable" href="../../d4/d2e/structmeshx__log__packet__t.html#a19e1fa5a3a254a54f038f651a2a52432">file_addr</a>; <span class="comment">/* Address of file name in ELF */</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="../../d4/d2e/structmeshx__log__packet__t.html#aaa257aadd879bdb738f2679fd799c1ee">   93</a></span>    uint16_t <a class="code hl_variable" href="../../d4/d2e/structmeshx__log__packet__t.html#aaa257aadd879bdb738f2679fd799c1ee">line_no</a>;   <span class="comment">/* Line number */</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="../../d4/d2e/structmeshx__log__packet__t.html#a478d0238be1cf547848e19bcfb5ea400">   94</a></span>    uint32_t <a class="code hl_variable" href="../../d4/d2e/structmeshx__log__packet__t.html#a478d0238be1cf547848e19bcfb5ea400">args</a>[16];  <span class="comment">/* 16 variadic arguments */</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="../../d4/d2e/structmeshx__log__packet__t.html#a75becedd0b71053caf9ad4df92f55789">   95</a></span>    <span class="keywordtype">char</span>     <a class="code hl_variable" href="../../d4/d2e/structmeshx__log__packet__t.html#a75becedd0b71053caf9ad4df92f55789">inline_str</a>[32]; <span class="comment">/* Space for one dynamic string (up to 32 chars) */</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="../../d4/d2e/structmeshx__log__packet__t.html#a54010b690da8953cf411882288715e07">   96</a></span>    uint8_t  <a class="code hl_variable" href="../../d4/d2e/structmeshx__log__packet__t.html#a54010b690da8953cf411882288715e07">parity</a>;    <span class="comment">/* XOR parity at the end */</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>} __attribute__((packed)) <a class="code hl_struct" href="../../d4/d2e/structmeshx__log__packet__t.html">meshx_log_packet_t</a>;</div>
 </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="preprocessor">#define MESHX_LOGE(module_id, format, ...) \</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="preprocessor">    do                                     \</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="preprocessor">    {                                      \</span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="preprocessor">    } while (0) </span><span class="comment">// Prevent empty macro expansion warning</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="preprocessor">#if CONFIG_MESHX_DEFAULT_LOG_LEVEL &lt; MESHX_LOG_ERROR</span></div>
-<div class="foldopen" id="foldopen00110" data-start="" data-end="">
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a3df9f46a0a08969094d8eef3581409e8">  110</a></span><span class="preprocessor">#define MESHX_LOGW(module_id, format, ...)                           \</span></div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="preprocessor">    do                                                               \</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="preprocessor">    {                                                                \</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="preprocessor">        MESHX_LOG(module_id, MESHX_LOG_WARN, format, ##__VA_ARGS__); \</span></div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="preprocessor">    } while (0)</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="foldopen" id="foldopen00099" data-start="" data-end="">
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a4b5b6c33e3ebc4b69f92142a528195f7">   99</a></span><span class="preprocessor">#define MESHX_LOG(module_id, level, format, ...) \</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="preprocessor">    MESHX_LOG_INTERNAL(MESHX_LOG_UNIQUE_ID, module_id, level, format, ##__VA_ARGS__, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)</span></div>
 </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="preprocessor">#define MESHX_LOGW(module_id, format, ...) \</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor">    do                                     \</span></div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="preprocessor">    {                                      \</span></div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="preprocessor">    } while (0)</span></div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="preprocessor">#if CONFIG_MESHX_DEFAULT_LOG_LEVEL &lt; MESHX_LOG_WARN</span></div>
-<div class="foldopen" id="foldopen00123" data-start="" data-end="">
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a47d4a699f2997a758e0eca271b66cb48">  123</a></span><span class="preprocessor">#define MESHX_LOGI(module_id, format, ...)                           \</span></div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="preprocessor">    do                                                               \</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="preprocessor">    {                                                                \</span></div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span><span class="preprocessor">        MESHX_LOG(module_id, MESHX_LOG_INFO, format, ##__VA_ARGS__); \</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="preprocessor">    } while (0)</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a37368a8d2f50947b39294ad35bed70a1">  102</a></span><span class="preprocessor">#define MESHX_STR_INNER(x) #x</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#abd90b0a1ae9a5d9631ae19067349860f">  103</a></span><span class="preprocessor">#define MESHX_STR(x) MESHX_STR_INNER(x)</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="foldopen" id="foldopen00105" data-start="" data-end="">
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#afbfc9bd176206ada02e68cdc26b0f87e">  105</a></span><span class="preprocessor">#define MESHX_LOG_INTERNAL(id, module_id, level, format, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, ...) \</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="preprocessor">    do                                                                \</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="preprocessor">    {                                                                 \</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="preprocessor">        static const char MESHX_LOG_CONCAT(_fmt, id)[] __attribute__((section(&quot;.meshx_log_str.&quot; MESHX_STR(id)), used)) = format; \</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="preprocessor">        static const char MESHX_LOG_CONCAT(_file, id)[] __attribute__((section(&quot;.meshx_log_str.&quot; MESHX_STR(id)), used)) = __FILE__; \</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="preprocessor">        meshx_log_packet(module_id, level, MESHX_LOG_CONCAT(_file, id), __LINE__, MESHX_LOG_CONCAT(_fmt, id), arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15); \</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="preprocessor">    } while (0)</span></div>
 </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="preprocessor">#define MESHX_LOGI(module_id, format, ...) \</span></div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="preprocessor">    do                                     \</span></div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="preprocessor">    {                                      \</span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="preprocessor">    } while (0)</span></div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="preprocessor">#if CONFIG_MESHX_DEFAULT_LOG_LEVEL &lt; MESHX_LOG_INFO</span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="preprocessor">#define MESHX_LOGD(module_id, format, ...)                            \</span></div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="preprocessor">    do                                                                \</span></div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="preprocessor">    {                                                                 \</span></div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="preprocessor">        MESHX_LOG(module_id, MESHX_LOG_DEBUG, format, ##__VA_ARGS__); \</span></div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="preprocessor">    } while (0)</span></div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="preprocessor">#else</span></div>
-<div class="foldopen" id="foldopen00142" data-start="" data-end="">
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">  142</a></span><span class="preprocessor">#define MESHX_LOGD(module_id, format, ...) \</span></div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="preprocessor">    do                                     \</span></div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="preprocessor">    {                                      \</span></div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="preprocessor">    } while (0)</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="preprocessor">#if CONFIG_MESHX_DEFAULT_LOG_LEVEL &lt; MESHX_LOG_MAX</span></div>
+<div class="foldopen" id="foldopen00114" data-start="" data-end="">
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a56673888067cbe14c7a33b0856f46eb8">  114</a></span><span class="preprocessor">#define MESHX_LOGE(module_id, format, ...)                            \</span></div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="preprocessor">    do                                                                \</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="preprocessor">    {                                                                 \</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor">        MESHX_LOG(module_id, MESHX_LOG_ERROR, format, ##__VA_ARGS__); \</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="preprocessor">    } while (0)</span></div>
 </div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="comment"></span> </div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="comment"> * @brief Initializes the MeshX logging system with the provided configuration.</span></div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><span class="comment"> * This function sets up the logging system by assigning the default log level</span></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="comment"> * and the callback function for retrieving the current time in milliseconds.</span></div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="comment"> * It validates the configuration parameters and returns an error if they are</span></div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="comment"> * invalid.</span></div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="comment"> * @param[in] config Pointer to the logging configuration structure.</span></div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="comment"> * @return MESHX_SUCCESS on successful initialization, MESHX_INVALID_ARG if</span></div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="comment"> *         the configuration is invalid.</span></div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> <a class="code hl_function" href="../../d7/dcb/meshx__log_8h.html#a2943545097e48060e29c8be20f92677f">meshx_logging_init</a>(<span class="keyword">const</span> <a class="code hl_typedef" href="../../d7/dcb/meshx__log_8h.html#a7e75f09650fd33bcd03ea92acd58408f">meshx_logging_t</a> *config);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="foldopen" id="foldopen00120" data-start="" data-end="">
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a3df9f46a0a08969094d8eef3581409e8">  120</a></span><span class="preprocessor">#define MESHX_LOGW(module_id, format, ...)                            \</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="preprocessor">    do                                                                \</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="preprocessor">    {                                                                 \</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="preprocessor">        MESHX_LOG(module_id, MESHX_LOG_WARN, format, ##__VA_ARGS__);  \</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="preprocessor">    } while (0)</span></div>
+</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="foldopen" id="foldopen00126" data-start="" data-end="">
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a47d4a699f2997a758e0eca271b66cb48">  126</a></span><span class="preprocessor">#define MESHX_LOGI(module_id, format, ...)                            \</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="preprocessor">    do                                                                \</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="preprocessor">    {                                                                 \</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="preprocessor">        MESHX_LOG(module_id, MESHX_LOG_INFO, format, ##__VA_ARGS__);  \</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="preprocessor">    } while (0)</span></div>
+</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="foldopen" id="foldopen00132" data-start="" data-end="">
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#acb76057f2c8e23ca61edf04fd824818b">  132</a></span><span class="preprocessor">#define MESHX_LOGD(module_id, format, ...)                            \</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="preprocessor">    do                                                                \</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="preprocessor">    {                                                                 \</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="preprocessor">        MESHX_LOG(module_id, MESHX_LOG_DEBUG, format, ##__VA_ARGS__); \</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="preprocessor">    } while (0)</span></div>
+</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="foldopen" id="foldopen00138" data-start="" data-end="">
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#a74c76963399db022b9ee6de29a416206">  138</a></span><span class="preprocessor">#define MESHX_LOGV(module_id, format, ...)                            \</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="preprocessor">    do                                                                \</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="preprocessor">    {                                                                 \</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="preprocessor">        MESHX_LOG(module_id, MESHX_LOG_VERBOSE, format, ##__VA_ARGS__);\</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="preprocessor">    } while (0)</span></div>
+</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="preprocessor">#define MESHX_LOGE(module_id, format, ...) do {} while (0)</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span><span class="preprocessor">#define MESHX_LOGW(module_id, format, ...) do {} while (0)</span></div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="preprocessor">#define MESHX_LOGI(module_id, format, ...) do {} while (0)</span></div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span><span class="preprocessor">#define MESHX_LOGD(module_id, format, ...) do {} while (0)</span></div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span><span class="preprocessor">#define MESHX_LOGV(module_id, format, ...) do {} while (0)</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span><span class="comment">/* Exported functions */</span></div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><a class="code hl_enumeration" href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a> <a class="code hl_function" href="../../d7/dcb/meshx__log_8h.html#a2943545097e48060e29c8be20f92677f">meshx_logging_init</a>(<span class="keyword">const</span> <a class="code hl_struct" href="../../d4/dac/structmeshx__logging__t.html">meshx_logging_t</a> *config);</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d7/dcb/meshx__log_8h.html#a033915fe8c70de68a3da859035274436">meshx_module_set_log_level</a>(<a class="code hl_enumeration" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedc">module_id_t</a> module_id, <a class="code hl_typedef" href="../../d7/dcb/meshx__log_8h.html#aa6b3e50c8c6b727fd46249db2a643fc6">meshx_log_level_t</a> log_level);</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><span class="comment"></span> </div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span><span class="comment">/**</span></div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="comment"> * @brief Logs a packetized binary log message.</span></div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span><span class="comment"> * @note This is called by the MESHX_LOG macro.</span></div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d7/dcb/meshx__log_8h.html#a41704f3ef1ab424f6709ba29d70cd8b4">meshx_log_packet</a>(<a class="code hl_enumeration" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedc">module_id_t</a> module_id, <a class="code hl_typedef" href="../../d7/dcb/meshx__log_8h.html#aa6b3e50c8c6b727fd46249db2a643fc6">meshx_log_level_t</a> log_level,</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                      <span class="keyword">const</span> <span class="keywordtype">char</span> *file, <span class="keywordtype">int</span> line_no, <span class="keyword">const</span> <span class="keywordtype">char</span> *fmt, ...);</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="comment"></span> </div>
 <div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="comment">/**</span></div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="comment"> * @brief Logs a formatted message for a specified module and log level.</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="comment"> * @note This is a weak function, can be redefined to override in app layer</span></div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span><span class="comment"> * This function checks if the provided module ID and log level are valid</span></div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="comment"> * and above the current global and module-specific log levels. If valid,</span></div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="comment"> * it processes the variable arguments to format and log the message.</span></div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="comment"> * @note This is a weak function defination and can be overriden by any other version</span></div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="comment"> *       of defination required as per platform</span></div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="comment"> * @param[in] module_id     The ID of the module for which the log is generated.</span></div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span><span class="comment"> * @param[in] log_level     The log level of the message.</span></div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="comment"> * @param[in] func          The name of the function where the log is called.</span></div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span><span class="comment"> * @param[in] line_no       The line number in the source code where the log is called.</span></div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span><span class="comment"> * @param[in] fmt           The format string for the log message.</span></div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span><span class="comment"> * @param[in] ...           Additional arguments for the format string.</span></div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span><span class="comment"> */</span></div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span><a class="code hl_define" href="../../da/d68/meshx__err_8h.html#afd06eb7b8ab3675d045204c907af34e8">MESHX_WEEK</a> <span class="keywordtype">void</span> <a class="code hl_function" href="../../d7/dcb/meshx__log_8h.html#ab47e09c155a1ce6f88a355797f495c53">meshx_log_printf</a>(<a class="code hl_enumeration" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedc">module_id_t</a> module_id, <a class="code hl_typedef" href="../../d7/dcb/meshx__log_8h.html#a2bb5164357b270ea80733b70e7e0ee17">meshx_log_level_t</a> log_level,</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>                      <span class="keyword">const</span> <span class="keywordtype">char</span> *func, <span class="keywordtype">int</span> line_no, <span class="keyword">const</span> <span class="keywordtype">char</span> *fmt, ...);</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>}</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span><span class="preprocessor">#endif </span><span class="comment">/* MESHX_LOG_H */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="ameshx__config__internal_8h_html"><div class="ttname"><a href="../../df/d01/meshx__config__internal_8h.html">meshx_config_internal.h</a></div><div class="ttdoc">Internal configuration settings for MeshX.</div></div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="comment"> * @brief Legacy printf-style logging for external components.</span></div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span><span class="comment"> */</span></div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d7/dcb/meshx__log_8h.html#ab47e09c155a1ce6f88a355797f495c53">meshx_log_printf</a>(<a class="code hl_enumeration" href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedc">module_id_t</a> module_id, <a class="code hl_typedef" href="../../d7/dcb/meshx__log_8h.html#aa6b3e50c8c6b727fd46249db2a643fc6">meshx_log_level_t</a> log_level,</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>                      <span class="keyword">const</span> <span class="keywordtype">char</span> *func, <span class="keywordtype">int</span> line_no, <span class="keyword">const</span> <span class="keywordtype">char</span> *fmt, ...);</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span><span class="preprocessor">#ifndef CONFIG_MESHX_LOG_PRINTF</span></div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="../../d7/dcb/meshx__log_8h.html#aab871af326d6c21d6210c588f4a85dd1">  170</a></span><span class="preprocessor">#define CONFIG_MESHX_LOG_PRINTF meshx_tiny_printf</span></div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>}</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span><span class="preprocessor">#endif </span><span class="comment">/* MESHX_LOG_H */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="ameshx__err_8h_html"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html">meshx_err.h</a></div><div class="ttdoc">MeshX Error Codes.</div></div>
 <div class="ttc" id="ameshx__err_8h_html_a6f984f69fa8d0240992b3a1e78bd42f6"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#a6f984f69fa8d0240992b3a1e78bd42f6">meshx_err_t</a></div><div class="ttdeci">meshx_err_t</div><div class="ttdoc">MeshX Error Codes.</div><div class="ttdef"><b>Definition</b> meshx_err.h:43</div></div>
-<div class="ttc" id="ameshx__err_8h_html_afd06eb7b8ab3675d045204c907af34e8"><div class="ttname"><a href="../../da/d68/meshx__err_8h.html#afd06eb7b8ab3675d045204c907af34e8">MESHX_WEEK</a></div><div class="ttdeci">#define MESHX_WEEK</div><div class="ttdef"><b>Definition</b> meshx_err.h:23</div></div>
-<div class="ttc" id="ameshx__log_8h_html_a2943545097e48060e29c8be20f92677f"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a2943545097e48060e29c8be20f92677f">meshx_logging_init</a></div><div class="ttdeci">meshx_err_t meshx_logging_init(const meshx_logging_t *config)</div><div class="ttdoc">Initializes the MeshX logging system with the provided configuration.</div><div class="ttdef"><b>Definition</b> meshx_log.c:93</div></div>
-<div class="ttc" id="ameshx__log_8h_html_a2bb5164357b270ea80733b70e7e0ee17"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a2bb5164357b270ea80733b70e7e0ee17">meshx_log_level_t</a></div><div class="ttdeci">unsigned meshx_log_level_t</div><div class="ttdef"><b>Definition</b> meshx_log.h:76</div></div>
-<div class="ttc" id="ameshx__log_8h_html_a7e75f09650fd33bcd03ea92acd58408f"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a7e75f09650fd33bcd03ea92acd58408f">meshx_logging_t</a></div><div class="ttdeci">struct meshx_logging meshx_logging_t</div></div>
-<div class="ttc" id="ameshx__log_8h_html_ab47e09c155a1ce6f88a355797f495c53"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#ab47e09c155a1ce6f88a355797f495c53">meshx_log_printf</a></div><div class="ttdeci">void meshx_log_printf(module_id_t module_id, meshx_log_level_t log_level, const char *func, int line_no, const char *fmt,...)</div><div class="ttdoc">Logs a formatted message for a specified module and log level.</div><div class="ttdef"><b>Definition</b> meshx_log.c:163</div></div>
-<div class="ttc" id="ameshx__log_8h_html_adef7845289a24e0f4bfd4ac68af4ba6d"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#adef7845289a24e0f4bfd4ac68af4ba6d">millis_t</a></div><div class="ttdeci">unsigned int(* millis_t)(void)</div><div class="ttdef"><b>Definition</b> meshx_log.h:78</div></div>
+<div class="ttc" id="ameshx__log_8h_html_a033915fe8c70de68a3da859035274436"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a033915fe8c70de68a3da859035274436">meshx_module_set_log_level</a></div><div class="ttdeci">void meshx_module_set_log_level(module_id_t module_id, meshx_log_level_t log_level)</div><div class="ttdef"><b>Definition</b> meshx_log.c:124</div></div>
+<div class="ttc" id="ameshx__log_8h_html_a2943545097e48060e29c8be20f92677f"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a2943545097e48060e29c8be20f92677f">meshx_logging_init</a></div><div class="ttdeci">meshx_err_t meshx_logging_init(const meshx_logging_t *config)</div><div class="ttdef"><b>Definition</b> meshx_log.c:88</div></div>
+<div class="ttc" id="ameshx__log_8h_html_a41704f3ef1ab424f6709ba29d70cd8b4"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#a41704f3ef1ab424f6709ba29d70cd8b4">meshx_log_packet</a></div><div class="ttdeci">void meshx_log_packet(module_id_t module_id, meshx_log_level_t log_level, const char *file, int line_no, const char *fmt,...)</div><div class="ttdoc">Logs a packetized binary log message.</div><div class="ttdef"><b>Definition</b> meshx_log.c:221</div></div>
+<div class="ttc" id="ameshx__log_8h_html_aa6b3e50c8c6b727fd46249db2a643fc6"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#aa6b3e50c8c6b727fd46249db2a643fc6">meshx_log_level_t</a></div><div class="ttdeci">uint8_t meshx_log_level_t</div><div class="ttdef"><b>Definition</b> meshx_log.h:34</div></div>
+<div class="ttc" id="ameshx__log_8h_html_ab47e09c155a1ce6f88a355797f495c53"><div class="ttname"><a href="../../d7/dcb/meshx__log_8h.html#ab47e09c155a1ce6f88a355797f495c53">meshx_log_printf</a></div><div class="ttdeci">void meshx_log_printf(module_id_t module_id, meshx_log_level_t log_level, const char *func, int line_no, const char *fmt,...)</div><div class="ttdoc">Legacy printf-style logging for external components.</div><div class="ttdef"><b>Definition</b> meshx_log.c:230</div></div>
+<div class="ttc" id="ameshx__tiny__printf_8h_html"><div class="ttname"><a href="../../d4/d50/meshx__tiny__printf_8h.html">meshx_tiny_printf.h</a></div><div class="ttdoc">Lightweight printf implementation to reduce flash footprint.</div></div>
 <div class="ttc" id="amodule__id_8h_html"><div class="ttname"><a href="../../d3/da1/module__id_8h.html">module_id.h</a></div><div class="ttdoc">Defines module IDs for different elements in the BLE mesh node application.</div></div>
 <div class="ttc" id="amodule__id_8h_html_ac6141ce7b2d1d07b28553017c6a3aedc"><div class="ttname"><a href="../../d3/da1/module__id_8h.html#ac6141ce7b2d1d07b28553017c6a3aedc">module_id_t</a></div><div class="ttdeci">module_id_t</div><div class="ttdoc">Enumeration of module IDs.</div><div class="ttdef"><b>Definition</b> module_id.h:27</div></div>
-<div class="ttc" id="astructmeshx__logging_html"><div class="ttname"><a href="../../db/d0b/structmeshx__logging.html">meshx_logging</a></div><div class="ttdef"><b>Definition</b> meshx_log.h:81</div></div>
-<div class="ttc" id="astructmeshx__logging_html_a140b99328b305503577b5333d5504873"><div class="ttname"><a href="../../db/d0b/structmeshx__logging.html#a140b99328b305503577b5333d5504873">meshx_logging::def_log_level</a></div><div class="ttdeci">unsigned def_log_level</div><div class="ttdef"><b>Definition</b> meshx_log.h:82</div></div>
+<div class="ttc" id="astructmeshx__log__packet__t_html"><div class="ttname"><a href="../../d4/d2e/structmeshx__log__packet__t.html">meshx_log_packet_t</a></div><div class="ttdoc">TLV Log Packet structure.</div><div class="ttdef"><b>Definition</b> meshx_log.h:85</div></div>
+<div class="ttc" id="astructmeshx__log__packet__t_html_a133204f90845cf3f4c31fc69e2ff1cf1"><div class="ttname"><a href="../../d4/d2e/structmeshx__log__packet__t.html#a133204f90845cf3f4c31fc69e2ff1cf1">meshx_log_packet_t::len</a></div><div class="ttdeci">uint8_t len</div><div class="ttdef"><b>Definition</b> meshx_log.h:87</div></div>
+<div class="ttc" id="astructmeshx__log__packet__t_html_a19e1fa5a3a254a54f038f651a2a52432"><div class="ttname"><a href="../../d4/d2e/structmeshx__log__packet__t.html#a19e1fa5a3a254a54f038f651a2a52432">meshx_log_packet_t::file_addr</a></div><div class="ttdeci">uint32_t file_addr</div><div class="ttdef"><b>Definition</b> meshx_log.h:92</div></div>
+<div class="ttc" id="astructmeshx__log__packet__t_html_a24106a51340f782f0a99ccaf684798fa"><div class="ttname"><a href="../../d4/d2e/structmeshx__log__packet__t.html#a24106a51340f782f0a99ccaf684798fa">meshx_log_packet_t::sync</a></div><div class="ttdeci">uint16_t sync</div><div class="ttdef"><b>Definition</b> meshx_log.h:86</div></div>
+<div class="ttc" id="astructmeshx__log__packet__t_html_a478d0238be1cf547848e19bcfb5ea400"><div class="ttname"><a href="../../d4/d2e/structmeshx__log__packet__t.html#a478d0238be1cf547848e19bcfb5ea400">meshx_log_packet_t::args</a></div><div class="ttdeci">uint32_t args[16]</div><div class="ttdef"><b>Definition</b> meshx_log.h:94</div></div>
+<div class="ttc" id="astructmeshx__log__packet__t_html_a54010b690da8953cf411882288715e07"><div class="ttname"><a href="../../d4/d2e/structmeshx__log__packet__t.html#a54010b690da8953cf411882288715e07">meshx_log_packet_t::parity</a></div><div class="ttdeci">uint8_t parity</div><div class="ttdef"><b>Definition</b> meshx_log.h:96</div></div>
+<div class="ttc" id="astructmeshx__log__packet__t_html_a582cd72c637fb03d18c5a6a4a1ddfbd5"><div class="ttname"><a href="../../d4/d2e/structmeshx__log__packet__t.html#a582cd72c637fb03d18c5a6a4a1ddfbd5">meshx_log_packet_t::fmt_addr</a></div><div class="ttdeci">uint32_t fmt_addr</div><div class="ttdef"><b>Definition</b> meshx_log.h:91</div></div>
+<div class="ttc" id="astructmeshx__log__packet__t_html_a6c1f124243689aa9abe67106f569b997"><div class="ttname"><a href="../../d4/d2e/structmeshx__log__packet__t.html#a6c1f124243689aa9abe67106f569b997">meshx_log_packet_t::module_id</a></div><div class="ttdeci">uint8_t module_id</div><div class="ttdef"><b>Definition</b> meshx_log.h:89</div></div>
+<div class="ttc" id="astructmeshx__log__packet__t_html_a75becedd0b71053caf9ad4df92f55789"><div class="ttname"><a href="../../d4/d2e/structmeshx__log__packet__t.html#a75becedd0b71053caf9ad4df92f55789">meshx_log_packet_t::inline_str</a></div><div class="ttdeci">char inline_str[32]</div><div class="ttdef"><b>Definition</b> meshx_log.h:95</div></div>
+<div class="ttc" id="astructmeshx__log__packet__t_html_a80e3ac2b4072091e58a16b12be01dae5"><div class="ttname"><a href="../../d4/d2e/structmeshx__log__packet__t.html#a80e3ac2b4072091e58a16b12be01dae5">meshx_log_packet_t::level</a></div><div class="ttdeci">uint8_t level</div><div class="ttdef"><b>Definition</b> meshx_log.h:88</div></div>
+<div class="ttc" id="astructmeshx__log__packet__t_html_aa9338bf2a456f19bb587d553f0032697"><div class="ttname"><a href="../../d4/d2e/structmeshx__log__packet__t.html#aa9338bf2a456f19bb587d553f0032697">meshx_log_packet_t::timestamp</a></div><div class="ttdeci">uint32_t timestamp</div><div class="ttdef"><b>Definition</b> meshx_log.h:90</div></div>
+<div class="ttc" id="astructmeshx__log__packet__t_html_aaa257aadd879bdb738f2679fd799c1ee"><div class="ttname"><a href="../../d4/d2e/structmeshx__log__packet__t.html#aaa257aadd879bdb738f2679fd799c1ee">meshx_log_packet_t::line_no</a></div><div class="ttdeci">uint16_t line_no</div><div class="ttdef"><b>Definition</b> meshx_log.h:93</div></div>
+<div class="ttc" id="astructmeshx__logging__t_html"><div class="ttname"><a href="../../d4/dac/structmeshx__logging__t.html">meshx_logging_t</a></div><div class="ttdef"><b>Definition</b> meshx_log.h:37</div></div>
+<div class="ttc" id="astructmeshx__logging__t_html_a1805b30cf930081360279c62def33764"><div class="ttname"><a href="../../d4/dac/structmeshx__logging__t.html#a1805b30cf930081360279c62def33764">meshx_logging_t::def_log_level</a></div><div class="ttdeci">meshx_log_level_t def_log_level</div><div class="ttdef"><b>Definition</b> meshx_log.h:38</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
