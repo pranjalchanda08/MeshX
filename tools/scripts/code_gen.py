@@ -123,7 +123,7 @@ class CodeGen(CodeGenException):
         self.file_insert = file_insert
         self.genfile_h = config_path + "/meshx_config.h" #self.meshx_root + "/default/inc/meshx_config.h"
         self.genfile_bin = config_path + "/meshx_cfg.bin"
-        self.define_fmt = "\n#define {}{}{}"
+        self.define_fmt = "\n#ifndef {0}\n#define {0}{1}{2}\n#endif"
         if os.name == 'nt':
             os.system(f'echo.>{self.genfile_h}')  # Create the header file
         elif os.name =='posix':
@@ -425,90 +425,49 @@ class CodeGen(CodeGenException):
         """
         Resolve component dependencies and their dependencies.
         """
-        if self.product is not None:
-            comp_ptr = self.prod_profile['components'][component]
-            comp_ptr['macros'][0]['value'] = value
-            self.__get_src_from_path(comp_ptr['path'])
-            for macro in comp_ptr['macros']:
-                macro['value'] = value
+        pass
 
     def resolve_base_models_deps(self, base_model):
         """
         Resolve base model dependencies and their dependencies.
         """
-        res_base_model = self.prod_profile['base_models'][base_model]
-        self.__get_src_from_path(res_base_model['path'])
-        for macro in res_base_model['macros']:
-            macro['value'] = True
+        pass
 
     def resolve_default_models(self):
         """
         Resolve default models and their dependencies.
         """
-        for model in self.prod_profile['models']:
-            mod = self.prod_profile['models'][model]
-            if mod['default']:
-                self.__get_src_from_path(mod['path'])
-                self.resolve_model_deps(model, 1)
+        pass
 
     def resolve_default_components(self):
         """
         Resolve default components and their dependencies.
         """
-        for comp in self.prod_profile['components']:
-            com = self.prod_profile['components'][comp]
-            if com['default']:
-                com['macros'][0]['value'] = True
-                self.__get_src_from_path(com['path'])
+        pass
 
     def resolve_model_deps(self, model, val):
         """
         Resolve model dependencies and their dependencies.
         """
-        res_model = self.prod_profile['models'][model]
-        self.__get_src_from_path(res_model['path'])
-        for macro in res_model['macros']:
-            if isinstance(macro['value'], bool):
-                macro['value'] = True
-            else:
-                macro['value'] += val
-        if res_model['base_model'] is not None:
-            self.resolve_base_models_deps(res_model['base_model'])
+        pass
 
     def resolve_el_deps(self, element, value=0):
         """
         Resolve element dependencies and their dependencies.
         """
-        if self.product is not None:
-            element_ptr = self.prod_profile['elements'][element]
-            element_ptr['macros'][0]['value'] = value
-            self.__get_src_from_path(element_ptr['path'])
-            for model_reg in element_ptr['models']:
-                for model_key, model_val in model_reg.items():
-                    self.resolve_model_deps(model_key, (model_val * value))
+        pass
 
     def resolve_prod_el(self):
         """
         Resolve product elements and their dependencies.
         """
-        if self.product is not None:
-            for element in self.product['elements']:
-                self.resolve_el_deps(list(element.keys())[0], list(element.values())[0])
-            try:
-                for component in self.product['components']:
-                    self.resolve_component_deps(list(component.keys())[0], list(component.values())[0])
-            except KeyError:
-                pass
+        pass
 
     def get_all_macro(self):
         """
         Get all macros from the product profile.
         """
-        if self.product is not None:
-            for _key in ['elements', 'models', 'base_models', 'components']:
-                for __key in self.prod_profile[_key]:
-                    for macro in self.prod_profile[_key][__key]['macros']:
-                        self.file_insert += self.__get_fmt_define(macro['def'], int(macro['value']))
+        pass
 
     def create_cmake_list(self):
         """

@@ -28,17 +28,16 @@ extern "C" {
  * Interface Header
  *************************************************************/
 #include <interface/ble_mesh/meshx_ble_mesh_cmn.h>
-#include <interface/ble_mesh/client/meshx_ble_mesh_gen_cli.h>
-#include <interface/ble_mesh/client/meshx_ble_mesh_light_cli.h>
 
+/* Provisioning and Config server (still active) */
 #include <interface/ble_mesh/server/meshx_ble_mesh_config_srv.h>
-#include <interface/ble_mesh/server/meshx_ble_mesh_gen_srv.h>
-#include <interface/ble_mesh/server/meshx_ble_mesh_light_srv.h>
-#include <interface/ble_mesh/server/meshx_ble_mesh_sensor_srv.h>
 #include <interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h>
 #include <interface/logging/meshx_log.h>
 #include <meshx_prov_srv.h>
 #include <meshx_config_server.h>
+
+/* NOTE: Legacy SIG model headers (gen_srv, light_srv, sensor_srv, gen_cli, light_cli)
+ * were decommissioned in TASK-007 (UVP migration). Removed from this header. */
 
 
 #ifdef __cplusplus

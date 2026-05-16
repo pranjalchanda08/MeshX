@@ -173,10 +173,13 @@ void meshx_os_timer_fire_cb(const void* timer_handle)
  * @param params    Pointer to the event parameters.
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static meshx_err_t meshx_os_timer_control_task_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, void *params)
+static meshx_err_t meshx_os_timer_control_task_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, void *params, uint16_t params_len)
 {
     meshx_os_timer_t *msg_params = (meshx_os_timer_t *)params;
     meshx_err_t err = MESHX_SUCCESS;
+
+    MESHX_UNUSED(pdev);
+    MESHX_UNUSED(params_len);
 
     switch (evt)
     {

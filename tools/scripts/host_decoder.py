@@ -278,7 +278,7 @@ def main():
             print("Please specify --port or --file")
     except KeyboardInterrupt:
         print("\nExiting MeshX Shell...")
-        sys.exit(0)
+        os._exit(0)
 
 if __name__ == "__main__":
     main()

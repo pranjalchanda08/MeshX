@@ -454,9 +454,13 @@ def build(args, build_root = "build"):
                             f"-DELF='meshx_build_{args.bsp}'"
                         ]
 
+        # Mandatory UVP Decommissioning Flags
+        uvp_defs = []
+
         if args.define:
-            # We pass these as a semicolon-separated list to MESHX_EXTRA_DEFS
-            cmake_command.append(f"-DMESHX_EXTRA_DEFS={';'.join(args.define)}")
+            uvp_defs.extend(args.define)
+
+        cmake_command.append(f"-DMESHX_EXTRA_DEFS={';'.join(uvp_defs)}")
 
         print("Running CMake command:", " ".join(cmake_command))
         # run cmake command

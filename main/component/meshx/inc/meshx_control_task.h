@@ -19,6 +19,7 @@
 #include "interface/rtos/meshx_task.h"
 #include "interface/rtos/meshx_msg_q.h"
 #include "interface/rtos/meshx_rtos_utils.h"
+#include "meshx_uvp.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -177,15 +178,27 @@ typedef enum __packed control_task_msg_evt_txcm
     CONTROL_TASK_MSG_EVT_TXCM_MSG_TIMEOUT   = MESHX_BIT(1), /**< Event for TXCM message timeout */
     CONTROL_TASK_MSG_EVT_TXCM_MAX
 }control_task_msg_evt_txcm_t;
+
+/**
+ * @brief Metadata for UVP messages sent via Control Task.
+ *        This header is prepended to the payload in the 'params' pointer
+ *        for CONTROL_TASK_MSG_CODE_FRM_BLE / MESHX_MODEL_ID_UVP events.
+ */
+typedef struct {
+    uint16_t src_addr;             /**< Source address of the message */
+    meshx_uvp_header_t uvp_header; /**< Extracted UVP header */
+} control_task_uvp_meta_t;
+
 /**
  * @brief Function pointer type for control task message handler.
  *
  * @param pdev      Pointer to the device structure.
  * @param evt       Event code.
- * @param params    Pointer to the event parameters.
+ * @param params    Pointer to the event parameters (may include metadata header).
+ * @param params_len Total length of params including any metadata header.
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-typedef meshx_err_t (*control_task_msg_handle_t)(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params);
+typedef meshx_err_t (*control_task_msg_handle_t)(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params, uint16_t params_len);
 
 /**
  * @brief Structure for control task message.
@@ -195,6 +208,7 @@ typedef struct control_task_msg
     control_task_msg_code_t msg_code; /**< Message code. */
     control_task_msg_evt_t msg_evt;   /**< Message event. */
     void *msg_evt_params;             /**< Pointer to message event parameters. */
+    uint16_t msg_evt_params_len;      /**< Length of the event parameters. */
 } control_task_msg_t;
 
 /**
@@ -271,6 +285,19 @@ meshx_err_t control_task_msg_unsubscribe(control_task_msg_code_t msg_code, contr
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
 meshx_err_t control_task_msg_publish(control_task_msg_code_t msg_code, control_task_msg_evt_t msg_evt, const void *msg_evt_params, size_t sizeof_msg_evt_params);
+
+/**
+ * @brief Publish a control task message with a UVP header.
+ *
+ * @param[in] msg_code              The message code to publish.
+ * @param[in] msg_evt               The event associated with the message.
+ * @param[in] src_addr              The source address of the message.
+ * @param[in] uvp_header            The UVP header for vendor messages.
+ * @param[in] msg_evt_params        Pointer to the event parameters.
+ * @param[in] sizeof_msg_evt_params Size of the event parameters.
+ * @return MESHX_SUCCESS on success, or an error code on failure.
+ */
+meshx_err_t control_task_msg_publish_uvp(control_task_msg_code_t msg_code, control_task_msg_evt_t msg_evt, uint16_t src_addr, meshx_uvp_header_t uvp_header, const void *msg_evt_params, size_t sizeof_msg_evt_params);
 
 #ifdef __cplusplus
 }

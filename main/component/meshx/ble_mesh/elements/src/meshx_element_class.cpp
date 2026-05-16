@@ -14,15 +14,6 @@
 #include <meshx_element_class.hpp>
 #include <meshx_element_registry.hpp>
 
-#include <generic_model/meshx_model_onoff.hpp>
-#include <generic_model/meshx_model_level.hpp>
-#include <generic_model/meshx_model_location.hpp>
-#include <generic_model/meshx_model_battery.hpp>
-#include <generic_model/meshx_model_power_level.hpp>
-
-#include <light_model/meshx_model_ctl.hpp>
-#include <light_model/meshx_model_hsl.hpp>
-#include <light_model/meshx_model_lightness.hpp>
 
 /*****************************************************************************************************
  * meshXElement
@@ -403,9 +394,11 @@ bool meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
  *****************************************************************************************************/
 MESHX_ELEMENT_TEMPLATE_PROTO
 meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
-    ::static_prov_srv_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+    ::static_prov_srv_cb(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params, uint16_t params_len)
 {
-    MESHX_UNUSED(pdev); MESHX_UNUSED(params);
+    MESHX_UNUSED(pdev);
+    MESHX_UNUSED(params);
+    MESHX_UNUSED(params_len);
 
     // Iterate through all elements and call sync only for server elements
     auto elements = meshXElementRegistry::get_instance().get_all_elements();
@@ -421,9 +414,11 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
 
 MESHX_ELEMENT_TEMPLATE_PROTO
 meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
-    ::static_prov_cli_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params)
+    ::static_prov_cli_cb(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params, uint16_t params_len)
 {
-    MESHX_UNUSED(pdev); MESHX_UNUSED(params);
+    MESHX_UNUSED(pdev);
+    MESHX_UNUSED(params);
+    MESHX_UNUSED(params_len);
 
     // Iterate through all elements and call sync only for client elements
     auto elements = meshXElementRegistry::get_instance().get_all_elements();
@@ -439,20 +434,22 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
 
 MESHX_ELEMENT_TEMPLATE_PROTO
 meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
-    ::static_config_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const meshx_config_srv_cb_param_t *params)
+    ::static_config_cb(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params, uint16_t params_len)
 {
+    const meshx_config_srv_cb_param_t *p_params = (const meshx_config_srv_cb_param_t *)params;
     MESHX_UNUSED(pdev);
-    if (!params) return MESHX_INVALID_ARG;
+    MESHX_UNUSED(params_len);
+    if (!p_params) return MESHX_INVALID_ARG;
 
     uint16_t element_addr = 0;
 
     if (evt == CONTROL_TASK_MSG_EVT_APP_KEY_BIND)
     {
-        element_addr = params->state_change.mod_app_bind.element_addr;
+        element_addr = p_params->state_change.mod_app_bind.element_addr;
     }
     else if (evt == CONTROL_TASK_MSG_EVT_PUB_ADD || evt == CONTROL_TASK_MSG_EVT_PUB_DEL)
     {
-        element_addr = params->state_change.mod_pub_set.element_addr;
+        element_addr = p_params->state_change.mod_pub_set.element_addr;
     }
     else
     {
@@ -470,14 +467,14 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
             bool save = false;
             if (evt == CONTROL_TASK_MSG_EVT_APP_KEY_BIND)
             {
-                ctx->app_id = params->state_change.mod_app_bind.app_idx;
+                ctx->app_id = p_params->state_change.mod_app_bind.app_idx;
                 save = true;
             }
             else if (evt == CONTROL_TASK_MSG_EVT_PUB_ADD || evt == CONTROL_TASK_MSG_EVT_PUB_DEL)
             {
                 if (evt == CONTROL_TASK_MSG_EVT_PUB_ADD) {
-                    ctx->pub_addr = params->state_change.mod_pub_set.pub_addr;
-                    ctx->app_id   = params->state_change.mod_pub_set.app_idx;
+                    ctx->pub_addr = p_params->state_change.mod_pub_set.pub_addr;
+                    ctx->app_id   = p_params->state_change.mod_pub_set.app_idx;
                 } else {
                     ctx->pub_addr = MESHX_ADDR_UNASSIGNED;
                 }
@@ -492,7 +489,7 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
         }
 
         // Notify element for any specialized handling
-        el->handle_config(evt, params);
+        el->handle_config(evt, p_params);
     }
     return MESHX_SUCCESS;
 }

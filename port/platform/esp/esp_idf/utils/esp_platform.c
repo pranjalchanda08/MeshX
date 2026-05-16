@@ -143,6 +143,9 @@ int32_t meshx_platform_serial_read(uint8_t *data, uint16_t len)
 
 meshx_err_t meshx_platform_console_init(void)
 {
+    static bool console_initialized = false;
+    if (console_initialized) return MESHX_SUCCESS;
+
 #if CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG
     /* Disable buffering on stdin and stdout */
     setvbuf(stdin, NULL, _IONBF, 0);
@@ -172,6 +175,7 @@ meshx_err_t meshx_platform_console_init(void)
         ESP_LOGD("MESHX_PLAT", "Console initialized via UART%d", CONFIG_MESHX_CONSOLE_UART_PORT);
     }
 #endif
+    console_initialized = true;
     return MESHX_SUCCESS;
 }
 
