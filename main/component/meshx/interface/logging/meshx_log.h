@@ -12,6 +12,7 @@
 #include <stdbool.h>
 #include "meshx_err.h"
 #include "module_id.h"
+#include "interface/utils/meshx_tiny_printf.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -166,7 +167,7 @@ void meshx_log_printf(module_id_t module_id, meshx_log_level_t log_level,
                       const char *func, int line_no, const char *fmt, ...);
 
 #ifndef CONFIG_MESHX_LOG_PRINTF
-#define CONFIG_MESHX_LOG_PRINTF printf
+#define CONFIG_MESHX_LOG_PRINTF meshx_tiny_printf
 #endif
 
 #ifdef __cplusplus
