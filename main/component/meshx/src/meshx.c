@@ -16,6 +16,7 @@
 #include <meshx_ro_cfg.h>
 #include <stdio.h>
 #include <string.h>
+#include "interface/utils/meshx_tiny_printf.h"
 
 /**
  * @def ROOT_ELEMENT_IDX
@@ -28,67 +29,6 @@
  * @brief Defines the timeout duration in milliseconds for a fresh boot.
  */
 #define FRESHBOOT_TIMEOUT_MS 1500
-
-
-/**
- * @var meshX_banner_art
- * A static constant character array containing the ASCII art portion of the MeshX banner.
- */
-static const char meshX_banner_art[] =
-"*********************************************************************************************************************\n"
-"* MMMMMMMM               MMMMMMMM                                     hhhhhhh                 XXXXXXX       XXXXXXX *\n"
-"* M:::::::M             M:::::::M                                     h:::::h                 X:::::X       X:::::X *\n"
-"* M::::::::M           M::::::::M                                     h:::::h                 X:::::X       X:::::X *\n"
-"* M:::::::::M         M:::::::::M                                     h:::::h                 X::::::X      X:::::X *\n"
-"* M::::::::::M       M::::::::::M    eeeeeeeeeeee        ssssssssss   h:::: hhhhhh            XX:::::X     X:::::XX *\n"
-"* M:::::::::::M     M:::::::::::M  ee::::::::::::ee    ss::::::::::s  h::::::::::hhh            X:::::X   X:::::X   *\n"
-"* M:::::::M::::M   M::::M:::::::M e::::::eeeee:::::eess:::::::::::::s h::::::::::::::hh           X:::::X:::::X     *\n"
-"* M::::::M M::::M M::::M M::::::Me::::::e     e:::::es::::::ssss:::::sh:::::::hhh::::::h           X:::::::::X      *\n"
-"* M::::::M  M::::M::::M  M::::::Me:::::::eeeee::::::e s:::::s  ssssss h::::::h   h::::::h          X:::::::::X      *\n"
-"* M::::::M   M:::::::M   M::::::Me:::::::::::::::::e    s::::::s      h:::::h     h:::::h         X:::::X:::::X     *\n"
-"* M::::::M    M:::::M    M::::::Me::::::eeeeeeeeeee        s::::::s   h:::::h     h:::::h        X:::::X X:::::X    *\n"
-"* M::::::M     MMMMM     M::::::Me:::::::e           ssssss   s:::::s h:::::h     h:::::h     XXX:::::X   X:::::XXX *\n"
-"* M::::::M               M::::::Me::::::::e          s:::::ssss::::::sh:::::h     h:::::h     X::::::X     X::::::X *\n"
-"* M::::::M               M::::::M e::::::::eeeeeeee  s::::::::::::::s h:::::h     h:::::h     X:::::X       X:::::X *\n"
-"* M::::::M               M::::::M  ee:::::::::::::e   s:::::::::::ss  h:::::h     h:::::h     X:::::X       X:::::X *\n"
-"* MMMMMMMM               MMMMMMMM    eeeeeeeeeeeeee    sssssssssss    hhhhhhh     hhhhhhh     XXXXXXX       XXXXXXX *\n";
-
-/**
- * @var meshX_banner_border
- * A static constant character array containing the border for the MeshX banner.
- */
-static const char meshX_banner_border[] =
-"*********************************************************************************************************************\n";
-
-static void meshx_banner_print(void)
-{
-    char version_text[64];
-    char version_line[128];
-    const int total_width = 117;
-    const int padding_width = total_width - 2;
-
-    snprintf(version_text, sizeof(version_text), "Version: %s", MESHX_VERSION);
-    int text_len = strlen(version_text);
-    int left_padding = (padding_width - text_len) / 2;
-    int right_padding = padding_width - text_len - left_padding;
-
-    int pos = 0;
-    version_line[pos++] = '*';
-    for (int i = 0; i < left_padding; i++) version_line[pos++] = ' ';
-    memcpy(&version_line[pos], version_text, text_len);
-    pos += text_len;
-    for (int i = 0; i < right_padding; i++) version_line[pos++] = ' ';
-    version_line[pos++] = '*';
-    version_line[pos++] = '\n';
-    version_line[pos++] = '\0';
-
-    CONFIG_MESHX_LOG_PRINTF(MESHX_LOG_COLOR_CYAN);
-    CONFIG_MESHX_LOG_PRINTF("%s", meshX_banner_art);
-    CONFIG_MESHX_LOG_PRINTF("*%*s*\n", padding_width, ""); // Blank line
-    CONFIG_MESHX_LOG_PRINTF("%s", version_line);
-    CONFIG_MESHX_LOG_PRINTF("%s", meshX_banner_border);
-    CONFIG_MESHX_LOG_PRINTF(MESHX_LOG_COLOR_RESET);
-}
 
 static dev_struct_t g_dev;
 
