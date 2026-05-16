@@ -39053,36 +39053,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>meshX_banner_art</Name>
-      <APILanguage>c</APILanguage>
-      <Type>data</Type>
-    </TokenIdentifier>
-    <Path>d9/d05/meshx_8c.html</Path>
-    <Anchor>a4abdb8b0dbe43d3fd9ceb26ede23882f</Anchor>
-    <DeclaredIn>meshx.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshX_banner_border</Name>
-      <APILanguage>c</APILanguage>
-      <Type>data</Type>
-    </TokenIdentifier>
-    <Path>d9/d05/meshx_8c.html</Path>
-    <Anchor>a4e0f59375b640675fa558e1ffb84d83e</Anchor>
-    <DeclaredIn>meshx.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_banner_print</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d9/d05/meshx_8c.html</Path>
-    <Anchor>a237c489801a704688102f4fc36321b51</Anchor>
-    <DeclaredIn>meshx.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>meshx_base_cli_evt</Name>
       <APILanguage>c</APILanguage>
       <Type>enum</Type>

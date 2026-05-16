@@ -41345,11 +41345,6 @@
                       <Anchor>a5e1bda274f01ae047df2fd8515637beb</Anchor>
                      </Node>
                      <Node>
-                      <Name>meshx_banner_print</Name>
-                      <Path>d9/d05/meshx_8c.html</Path>
-                      <Anchor>a237c489801a704688102f4fc36321b51</Anchor>
-                     </Node>
-                     <Node>
                       <Name>meshx_ble_mesh_init</Name>
                       <Path>d9/d05/meshx_8c.html</Path>
                       <Anchor>ae488bc4a1d8eb698d2e2e60ec90bbad1</Anchor>
@@ -41408,16 +41403,6 @@
                       <Name>g_prov_cfg</Name>
                       <Path>d9/d05/meshx_8c.html</Path>
                       <Anchor>ac51a3a297381ec8163ffa2ad4c74da57</Anchor>
-                     </Node>
-                     <Node>
-                      <Name>meshX_banner_art</Name>
-                      <Path>d9/d05/meshx_8c.html</Path>
-                      <Anchor>a4abdb8b0dbe43d3fd9ceb26ede23882f</Anchor>
-                     </Node>
-                     <Node>
-                      <Name>meshX_banner_border</Name>
-                      <Path>d9/d05/meshx_8c.html</Path>
-                      <Anchor>a4e0f59375b640675fa558e1ffb84d83e</Anchor>
                      </Node>
                     </Subnodes>
                    </Node>
