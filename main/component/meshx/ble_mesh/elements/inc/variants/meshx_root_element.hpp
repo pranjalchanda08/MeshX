@@ -17,8 +17,6 @@
 #define MESHX_ROOT_ELEMENT_TEMPLATE_PROTO
 #define MESHX_ROOT_ELEMENT_TEMPLATE_PARAMS
 
-#define MESHX_ROOT_DEPENDENCY_RESOLVER_TEMPLATE_PROTO  template <typename ModelT>
-#define MESHX_ROOT_DEPENDENCY_RESOLVER_TEMPLATE_PARAMS <ModelT>
 
 /*********************************************************************************
  * meshXRootElement
@@ -45,8 +43,6 @@ private:
     void sync(control_task_msg_evt_t evt) override;
     void handle_config(control_task_msg_evt_t evt, const meshx_config_srv_cb_param_t *params) override;
 
-    MESHX_ROOT_DEPENDENCY_RESOLVER_TEMPLATE_PROTO
-    void add_sig_model_if_present(uint16_t trigger_model_id, const char* log_name);
 
 public:
     /**

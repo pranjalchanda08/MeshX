@@ -15,7 +15,7 @@
 
 #include <meshx_fwd_decl.hpp>
 #include <meshx_model_class.hpp>
-#include <meshx_base_model_common.hpp>
+#include <meshx_base_model_common.hpp>  /* meshXBaseConfigServerModel — required since CONFIG_ENABLE_CONFIG_SERVER=1 */
 
 /*********************************************************************************
  * Model Configuration Macros

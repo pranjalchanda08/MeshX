@@ -122,7 +122,7 @@ meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::model_se
  */
 #include <meshx_element_registry.hpp>
 
-#include <variants/meshx_relay_element.hpp>
+/* meshx_relay_element.hpp decommissioned in TASK-007 */
 
 MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PROTO
 meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::model_from_ble_cb(

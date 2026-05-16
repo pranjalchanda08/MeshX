@@ -26,6 +26,12 @@ extern "C" {
 bool meshx_builder_is_active(void);
 
 /**
+ * @brief Checks if TXCM should be enabled based on the composition.
+ * @return true if any client elements were added, false otherwise.
+ */
+bool meshx_builder_is_txcm_active(void);
+
+/**
  * @brief Bakes the dynamic composition into the device structure.
  * @param pdev Pointer to the device structure.
  * @param cid Company ID.

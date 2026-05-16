@@ -202,7 +202,7 @@ protected:
     meshx_ptr_t p_plat_model;
     static std::once_flag plat_server_init_flag;
     static std::forward_list<base_server_model_cb_reg_t> base_server_model_cb_list;
-    static meshx_err_t base_from_ble_msg_handle(dev_struct_t *pdev, control_task_msg_evt_t evt, meshx_ptr_t params);
+    static meshx_err_t base_from_ble_msg_handle(dev_struct_t *pdev, control_task_msg_evt_t evt, meshx_ptr_t params, uint16_t params_len);
 
     /* Model validation function - to be implemented by derived classes */
     virtual meshx_err_t validate_server_status_opcode(uint16_t opcode) = 0;
@@ -274,7 +274,7 @@ protected:
     /* Per instance template based static functions */
     static meshx_err_t base_txcm_handle_ack     (uint16_t src_addr);
     static meshx_err_t base_txcm_handle_resend  (uint16_t model_id, const ble_mesh_plat_model_cb_params_t *param);
-    static meshx_err_t base_from_ble_msg_handle (dev_struct_t *pdev, control_task_msg_evt_t evt, meshx_ptr_t params);
+    static meshx_err_t base_from_ble_msg_handle (dev_struct_t *pdev, control_task_msg_evt_t evt, meshx_ptr_t params, uint16_t params_len);
     static meshx_err_t base_handle_txcm_msg     (dev_struct_t *pdev, control_task_msg_evt_t evt, base_client_model_resend_ctx_t *param);
 public:
 

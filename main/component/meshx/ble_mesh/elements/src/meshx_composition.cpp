@@ -13,6 +13,7 @@ extern "C" {
 #include <meshx_element_class.hpp>
 #include <meshx_model_class.hpp>
 #include <meshx_element_registry.hpp>
+#include <meshx_uvp_model.hpp>
 #include <cstring>
 
 #ifdef __cplusplus
@@ -68,6 +69,18 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
 
         auto& sig_models = el->get_sig_models();
         auto& ven_models = el->get_ven_models();
+
+        /* Inject UVP Vendor Model (Mandatory for all MeshX elements) */
+        bool uvp_present = false;
+        for (auto& m : ven_models) {
+            if (m->get_model_id() == MESHX_MODEL_ID_UVP) {
+                uvp_present = true;
+                break;
+            }
+        }
+        if (!uvp_present) {
+            ven_models.push_back(std::make_unique<meshXUVPModel>(el.get()));
+        }
 
         /* 1. Pre-calculate counts after filtering */
         size_t actual_sig_cnt = 0;
@@ -145,6 +158,8 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
             }
 
             m->set_plat_model(p_baked);
+            MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "Baked VND Model 0x%04x (CID 0x%04x) at %p, pub: %p",
+                       p_baked->vnd.model_id, p_baked->vnd.company_id, (void*)p_baked, (void*)p_baked->pub);
             baked_ven_idx++;
         }
 

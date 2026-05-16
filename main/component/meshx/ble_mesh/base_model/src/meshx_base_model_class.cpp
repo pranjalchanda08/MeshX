@@ -20,10 +20,7 @@
  */
 
 #include "meshx_base_model_class.hpp"
-#include "meshx_base_model_generic.hpp"
-#include "meshx_base_model_light.hpp"
 #include "meshx_base_model_common.hpp"
-#include "meshx_base_model_sensor.hpp"
 
 MESHX_BASE_SERVER_TEMPLATE_PROTO
 std::forward_list<typename meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::base_server_model_cb_reg_t>
@@ -75,7 +72,7 @@ meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS ::~meshXBaseModel()
  *                     Possible values include success or specific error codes.
  */
 MESHX_BASE_TEMPLATE_PROTO
-std::forward_list<typename meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::reg_info> 
+std::forward_list<typename meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::reg_info>
     meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::registrations = { };
 
 MESHX_BASE_TEMPLATE_PROTO
@@ -165,16 +162,17 @@ meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::meshXBaseServerModel(uin
 }
 
 /**
- * @brief Sends a BLE message from a server model.
+ * @brief Template-based static message handler for BLE Mesh Server models.
  *
  * @param[in] pdev Pointer to the device structure.
  * @param[in] evt  The event type associated with the message.
  * @param[in] params Pointer to the parameters of the message.
+ * @param[in] params_len Length of the message parameters.
  * @return meshx_err_t Returns an error code indicating the result of the send operation.
  */
 MESHX_BASE_SERVER_TEMPLATE_PROTO
 meshx_err_t meshXBaseServerModel MESHX_BASE_SERVER_TEMPLATE_PARAMS::base_from_ble_msg_handle(
-    dev_struct_t *pdev, control_task_msg_evt_t evt, meshx_ptr_t params)
+    dev_struct_t *pdev, control_task_msg_evt_t evt, meshx_ptr_t params, uint16_t params_len)
 {
     if (pdev == nullptr || params == nullptr)
         return MESHX_INVALID_ARG;
@@ -349,6 +347,7 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_txcm_ha
  * @param[in] evt Control task message event type (typically contains model context).
  * @param[in] params Pointer to platform-specific message parameters structure.
  *                   Must not be NULL and contain valid model_id.
+ * @param[in] params_len Length of the message parameters.
  *
  * @retval MESHX_SUCCESS Message processed successfully by registered callback.
  * @retval MESHX_INVALID_ARG Invalid parameters or unsupported model ID.
@@ -362,7 +361,7 @@ meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_txcm_ha
  */
 MESHX_BASE_CLIENT_TEMPLATE_PROTO
 meshx_err_t meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::base_from_ble_msg_handle(
-    dev_struct_t *pdev, control_task_msg_evt_t evt, meshx_ptr_t params)
+    dev_struct_t *pdev, control_task_msg_evt_t evt, meshx_ptr_t params, uint16_t params_len)
 {
     if (pdev == nullptr || params == nullptr)
     {
@@ -535,44 +534,9 @@ void meshXBaseClientModel MESHX_BASE_CLIENT_TEMPLATE_PARAMS::set_plat_model_ptr(
  * defined in this .cpp file.
  */
 
-#if CONFIG_ENABLE_GEN_CLIENT
-// meshXBaseModel instantiations
-template class meshXBaseModel<meshx_gen_client_send_params_t>;
-// meshXBaseClientModel instantiations
-template class meshXBaseClientModel<meshXBaseGenericClientModel, meshx_gen_client_send_params_t, meshx_gen_cli_cb_param_t>;
-#endif
-
-#if CONFIG_ENABLE_GEN_SERVER
-// meshXBaseModel instantiations
-template class meshXBaseModel<meshx_gen_server_send_params_t>;
-// meshXBaseServerModel instantiations
-template class meshXBaseServerModel<meshXBaseGenericServerModel, meshx_gen_server_send_params_t, meshx_gen_server_restore_params_t, meshx_gen_srv_cb_param_t>;
-#endif
-
-#if CONFIG_ENABLE_LIGHT_CLIENT
-// meshXBaseModel instantiations
-template class meshXBaseModel<meshx_gen_light_client_send_params_t>;
-// meshXBaseClientModel instantiations
-template class meshXBaseClientModel<meshXBaseLightClientModel, meshx_gen_light_client_send_params_t, meshx_gen_light_cli_cb_param_t>;
-#endif
-
-#if CONFIG_ENABLE_LIGHT_SERVER
-// meshXBaseModel instantiations
-template class meshXBaseModel<meshx_light_server_send_params_t>;
-// meshXBaseServerModel instantiations
-template class meshXBaseServerModel<meshXBaseLightServerModel, meshx_light_server_send_params_t, meshx_light_server_restore_params_t, meshx_lighting_server_cb_param_t>;
-#endif
-
 #if CONFIG_ENABLE_CONFIG_SERVER
 // meshXBaseModel instantiations
 template class meshXBaseModel<meshx_config_server_send_params_t>;
 // meshXBaseServerModel instantiations
 template class meshXBaseServerModel<meshXBaseConfigServerModel, meshx_config_server_send_params_t, meshx_config_server_restore_params_t, meshx_config_srv_cb_param_t>;
-#endif
-
-#if CONFIG_ENABLE_SENSOR_SERVER
-// meshXBaseModel instantiations
-template class meshXBaseModel<meshx_sensor_server_send_params_t>;
-// meshXBaseServerModel instantiations
-template class meshXBaseServerModel<meshXBaseSensorServerModel, meshx_sensor_server_send_params_t, meshx_sensor_server_restore_params_t, meshx_sensor_server_cb_param_t>;
 #endif

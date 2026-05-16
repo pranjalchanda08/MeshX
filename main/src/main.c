@@ -20,7 +20,6 @@ static meshx_err_t meshx_app_ctrl_cb(const meshx_ctrl_msg_header_t *msg_hdr, con
 static const meshx_config_t meshx_config = {
     .app_ctrl_cb            = &meshx_app_ctrl_cb,
     .app_element_cb         = &meshx_app_data_cb,
-    .meshx_uuid_addr        = MESHX_UUID_EMPTY,   /* UUID address to be filled internally for MeshX */
     .meshx_nvs_save_period  = CONFIG_MESHX_NVS_SAVE_PERIOD_MS,
     .meshx_log_level        = MESHX_LOG_INFO,
 };

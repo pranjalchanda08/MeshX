@@ -65,7 +65,7 @@ public:
 
     void set_element_type(meshxElementType_t type) { element_type = type; }
     meshxElementType_t get_element_type(void) const final { return element_type; }
- 
+
     void set_element_variant(meshx_element_type_t variant) { element_variant = variant; }
     meshx_element_type_t get_element_variant(void) const final { return element_variant; }
 
@@ -291,22 +291,39 @@ public:
     meshx_err_t reset(void) override;
     bool is_initialized(void) const override;
     meshx_err_t restore_nvs_context(void) override;
-    
 
     /**
-     * @brief Global static provisioning callback for Server elements
+     * @param[in] pdev       Pointer to the device structure.
+     * @param[in] evt        The event type.
+     * @param[in] params     Pointer to the message parameters.
+     * @param[in] params_len Length of the message parameters.
+     * @return MESHX_SUCCESS on success, error code otherwise.
      */
-    static meshx_err_t static_prov_srv_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params);
+    static meshx_err_t static_prov_srv_cb(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params, uint16_t params_len);
 
     /**
-     * @brief Global static provisioning callback for Client elements
+     * @brief Global static provisioning callback for Client elements.
+     * @note Signature matches prov_srv_cb_t / control_task_msg_handle_t.
+     *
+     * @param[in] pdev       Pointer to the device structure.
+     * @param[in] evt        The event type.
+     * @param[in] params     Pointer to the message parameters.
+     * @param[in] params_len Length of the message parameters.
+     * @return MESHX_SUCCESS on success, error code otherwise.
      */
-    static meshx_err_t static_prov_cli_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const void *params);
+    static meshx_err_t static_prov_cli_cb(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params, uint16_t params_len);
 
     /**
-     * @brief Global static configuration callback
+     * @brief Global static configuration callback.
+     * @note Signature matches config_srv_cb_t / control_task_msg_handle_t.
+     *
+     * @param[in] pdev       Pointer to the device structure.
+     * @param[in] evt        The event type.
+     * @param[in] params     Pointer to the message parameters.
+     * @param[in] params_len Length of the message parameters.
+     * @return MESHX_SUCCESS on success, error code otherwise.
      */
-    static meshx_err_t static_config_cb(const dev_struct_t *pdev, control_task_msg_evt_t evt, const meshx_config_srv_cb_param_t *params);
+    static meshx_err_t static_config_cb(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params, uint16_t params_len);
 
     /**
      * @brief Register the global callbacks with the provisioning server.
