@@ -69,6 +69,52 @@ void meshXUVPElement::handle_config(control_task_msg_evt_t evt, const meshx_conf
     MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "UVP Element [%d] config: %d", get_element_idx(), evt);
 }
 
-/* on_model_cb is final in meshXElement — base class implementation handles app notification.
- * No override needed here. */
+meshx_err_t meshXUVPElement::element_state_change_notify(meshx_ptr_t param, size_t param_size, const meshx_uvp_ctx_t* ctx)
+{
+    /* Handled only for UVP messages from dispatcher */
+    if (!ctx) {
+        return MESHX_SUCCESS;
+    }
+
+    MESHX_LOGI(MODULE_ID_BLE_MESH_ELEMENT, "UVP Element [%d] state change from 0x%04x (ACK_REQ: %d)",
+               get_element_idx(), ctx->src_addr, ctx->ack_req);
+
+    /*
+     * Requirement REQ-005: Dual-Response Architecture
+     * 1. Unicast ACK to requester (if requested)
+     * 2. Publish to Group Address (if valid and requester is different)
+     */
+
+    /* Find the UVP model instance */
+    auto* uvp_model = static_cast<meshXUVPModel*>(this->get_ven_models()[0].get());
+    if (!uvp_model) {
+        return MESHX_FAIL;
+    }
+
+    /* Logic Step 1: Send Unicast ACK/Status back to the requester */
+    if (ctx->ack_req) {
+        MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "UVP Element [%d] sending unicast ACK to 0x%04x",
+                   get_element_idx(), ctx->src_addr);
+        uvp_model->send(ctx->src_addr,
+                        (uint16_t)this->get_element_variant(),
+                        param,
+                        (uint16_t)param_size,
+                        false); // No ACK for ACK
+    }
+
+    /* Logic Step 2: Publish updated state to the registered Publish Address */
+    if (element_ctx.pub_addr != MESHX_ADDR_UNASSIGNED &&
+        element_ctx.pub_addr != ctx->src_addr) {
+        MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "UVP Element [%d] publishing state to 0x%04x",
+                   get_element_idx(), element_ctx.pub_addr);
+        uvp_model->send(element_ctx.pub_addr,
+                        (uint16_t)this->get_element_variant(),
+                        param,
+                        (uint16_t)param_size,
+                        false); // No ACK for publication
+    }
+
+    return MESHX_SUCCESS;
+}
+
 

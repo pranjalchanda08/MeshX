@@ -60,7 +60,7 @@ private:
      *     - MESHX_SUCCESS: State change handled successfully
      *     - MESHX_INVALID_ARG: Invalid parameter
      */
-    meshx_err_t on_model_cb(meshx_ptr_t param, size_t param_size) final;
+    meshx_err_t on_model_cb(meshx_ptr_t param, size_t param_size, const meshx_uvp_ctx_t* ctx) final;
 public:
 
     void set_element_type(meshxElementType_t type) { element_type = type; }
@@ -110,14 +110,14 @@ public:
      * @note  This function shall be derived by the specific element class to handle
      *       state change notifications from child models (if required).
      *
-     * @param[in] param      Pointer to the state change parameter
-     * @param[in] param_size Size of the parameter structure
+     * @param[in] ctx        Pointer to the UVP context (src, dst, tid, ack_req)
      *
      * @return MESHX_SUCCESS on success, error code otherwise
      */
-    virtual meshx_err_t element_state_change_notify(meshx_ptr_t param, size_t param_size)
+    virtual meshx_err_t element_state_change_notify(meshx_ptr_t param, size_t param_size, const meshx_uvp_ctx_t* ctx)
     {
         /* If not derived, return success */
+        MESHX_UNUSED(ctx);
         return MESHX_SUCCESS;
     }
 

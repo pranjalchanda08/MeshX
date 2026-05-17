@@ -253,7 +253,7 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
  */
 MESHX_ELEMENT_TEMPLATE_PROTO
 meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
-    :: on_model_cb(meshx_ptr_t param, size_t param_size)
+    ::on_model_cb(meshx_ptr_t param, size_t param_size, const meshx_uvp_ctx_t* ctx)
 {
     if (param == nullptr)
     {
@@ -262,31 +262,47 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
     }
     meshx_err_t err = MESHX_SUCCESS;
 
-    auto *msg_header = static_cast<meshx_model_send_param_header_t *>(param);
-
-    if(!msg_header)
+    if (ctx)
     {
-        MESHX_LOGE(MODULE_ID_COMMON, "Invalid message header in on_model_cb");
-        return MESHX_INVALID_ARG;
+        /* 
+         * UVP Dispatcher call: 
+         * 'param' is the raw TLV payload.
+         */
+        err = this->element_state_change_notify(param, param_size, ctx);
     }
-
-    if(msg_header->element_state_change == MESHX_SUCCESS)
+    else
     {
-        /* Notify the element of the state change to derived class (if defined) */
-        err = this->element_state_change_notify(param, param_size);
-        if(err != MESHX_SUCCESS)
+        /* 
+         * Standard Model call: 
+         * 'param' is meshx_model_send_param_header_t (template param).
+         */
+        auto *msg_header = static_cast<meshx_model_send_param_header_t *>(param);
+        if(!msg_header)
         {
-            MESHX_LOGE(MODULE_ID_COMMON, "Element state change notify failed in on_model_cb");
-            return err;
+            MESHX_LOGE(MODULE_ID_COMMON, "Invalid message header in on_model_cb");
+            return MESHX_INVALID_ARG;
         }
 
+        if(msg_header->element_state_change == MESHX_SUCCESS)
+        {
+            err = this->element_state_change_notify(param, param_size, nullptr);
+        }
+        else
+        {
+            return msg_header->element_state_change;
+        }
+    }
+
+    /* Common Post-Notification Logic (Persistence) */
+    if(err == MESHX_SUCCESS)
+    {
         /* Save updated context to NVS if it exists */
         if (element_ctx && element_ctx_size > 0)
         {
-            err = meshx_nvs_element_ctx_set(get_element_idx(), get_element_variant(), element_ctx, element_ctx_size);
-            if(err)
+            meshx_err_t nvs_err = meshx_nvs_element_ctx_set(get_element_idx(), get_element_variant(), element_ctx, element_ctx_size);
+            if(nvs_err)
             {
-                MESHX_LOGE(MODULE_ID_BLE_MESH_ELEMENT, "meshx_nvs_element_ctx_set failed: %d", err);
+                MESHX_LOGE(MODULE_ID_BLE_MESH_ELEMENT, "meshx_nvs_element_ctx_set failed: %d", nvs_err);
             }
         }
     }
