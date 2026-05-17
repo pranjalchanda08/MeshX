@@ -11,6 +11,7 @@
 
 #include <meshx_model_class.hpp>
 #include <meshx_uvp.h>
+#include <interface/ble_mesh/meshx_ble_mesh_cmn.h>
 
 /**
  * @class meshXUVPModel
@@ -72,6 +73,16 @@ public:
         uint32_t vnd_id = MESHX_VND_MODEL_ID_UVP;
         memcpy((void*)&p_baked_model->model_id, &vnd_id, sizeof(vnd_id));
         
+        /* Create the publication context for the vendor model */
+        meshx_ptr_t p_pub = nullptr;
+        meshx_err_t err = meshx_plat_create_model_pub(&p_pub, 1);
+        if (err != MESHX_SUCCESS) {
+            return err;
+        }
+        meshx_ptr_t *p_baked_pub = (meshx_ptr_t *)&p_baked_model->pub;
+        *p_baked_pub = p_pub;
+        this->set_pub_struct(p_pub);
+        
         /* 
          * Note: Opcode handling and callbacks are registered globally in the port layer 
          * via esp_ble_mesh_register_vendor_model_callback.
@@ -80,7 +91,19 @@ public:
         return MESHX_SUCCESS;
     }
 
-    meshx_err_t plat_model_delete(void) override { return MESHX_SUCCESS; }
+    meshx_err_t plat_model_delete(void) override {
+        MESHX_MODEL *p_model = this->get_plat_model();
+        if (p_model) {
+            meshx_ptr_t *p_baked_pub = (meshx_ptr_t *)&p_model->pub;
+            *p_baked_pub = nullptr;
+        }
+        meshx_ptr_t p_pub = this->get_pub_struct();
+        if (p_pub) {
+            meshx_plat_del_model_pub(&p_pub);
+            this->set_pub_struct(nullptr);
+        }
+        return MESHX_SUCCESS;
+    }
     meshx_err_t element_state_change_handle(void) override { return MESHX_SUCCESS; }
     meshx_err_t prepare_element_msg(meshx_ptr_t *msg_ptr, size_t *msg_size) override { 
         if (msg_ptr) *msg_ptr = nullptr;
