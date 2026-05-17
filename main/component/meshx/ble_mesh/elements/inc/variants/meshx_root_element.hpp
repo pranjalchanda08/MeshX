@@ -38,7 +38,7 @@ private:
     uint8_t list_sig_models() override;
     uint8_t list_ven_models() override;
     const char* get_element_name(void) const override;
-    meshx_err_t element_state_change_notify(meshx_ptr_t param, size_t param_size) override;
+    meshx_err_t element_state_change_notify(meshx_ptr_t param, size_t param_size, const meshx_uvp_ctx_t* ctx) override;
 
     void sync(control_task_msg_evt_t evt) override;
     void handle_config(control_task_msg_evt_t evt, const meshx_config_srv_cb_param_t *params) override;
