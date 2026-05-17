@@ -12,6 +12,8 @@
 #include "unit_test.h"
 #include "interface/logging/meshx_log.h"
 #include "interface/utils/meshx_shell.h"
+#include "interface/meshx_platform.h"
+#include <stdlib.h>
 
 #if CONFIG_ENABLE_UNIT_TEST
 
@@ -81,6 +83,21 @@ static int ut_command_handler(int argc, char **argv) {
  *     - MESHX_SUCCESS: Success
  *     - Other error codes: Failure
  */
+static meshx_err_t common_unit_test_cb_handler(int cmd_id, int argc, char **argv) {
+    if (cmd_id == 1) { // Serial multiplex routing control
+        if (argc < 1) {
+            MESHX_LOGE(MODULE_ID_COMMON, "Missing argument for common serial routing");
+            return MESHX_INVALID_ARG;
+        }
+        int enable = atoi(argv[0]);
+        meshx_platform_set_mxsp_use_console(enable == 1);
+        MESHX_LOGI(MODULE_ID_COMMON, "MXSP Serial routing target updated: %s",
+                   (enable == 1) ? "Console (USB CDC)" : "UART1");
+        return MESHX_SUCCESS;
+    }
+    return MESHX_NOT_FOUND;
+}
+
 meshx_err_t register_ut_command() {
     const meshx_shell_cmd_t cmd = {
         .command = "ut",
@@ -90,8 +107,6 @@ meshx_err_t register_ut_command() {
     };
     return meshx_shell_register_command(&cmd);
 }
-
-#include "gpio_test_registry.h"
 
 /**
  * @brief Initializes the unit test console using the platform shell.
@@ -111,8 +126,7 @@ meshx_err_t init_unit_test_console() {
         return err;
     }
 
-    // Register all GPIO subsystem tests
-    err = register_all_gpio_tests();
+    err = register_unit_test(MODULE_ID_COMMON, common_unit_test_cb_handler);
     if (err != MESHX_SUCCESS) {
         return err;
     }

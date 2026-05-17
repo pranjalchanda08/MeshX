@@ -72,11 +72,17 @@ static void shell_process_line(char *line) {
     meshx_shell_printf("Unknown command: %s. Type 'help' for available commands.\n", argv[0]);
 }
 
+extern bool meshx_serial_is_hosted_mode_enabled(void);
+
 static void shell_task(void *pvParameters) {
     uint8_t c;
     meshx_shell_printf("\n%s", SHELL_PROMPT);
 
     while (1) {
+        if (meshx_platform_get_mxsp_use_console() && meshx_serial_is_hosted_mode_enabled()) {
+            meshx_task_delay(100);
+            continue;
+        }
         if (meshx_platform_console_read(&c, 1) > 0) {
             if (c == '\r' || c == '\n') {
                 shell_ctx.line_buffer[shell_ctx.line_ptr] = '\0';
