@@ -127,7 +127,7 @@ meshx_err_t meshXModel MESHX_MODEL_TEMPLATE_PARAMS
         // Delegate type-specific header casting to derived class
         this->update_element_state_change_header(state_change_result, msg_ptr);
 
-        return this->get_parent_element()->on_model_cb(msg_ptr, msg_size);
+        return this->get_parent_element()->on_model_cb(msg_ptr, msg_size, nullptr);
     }
     else
     {

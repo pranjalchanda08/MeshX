@@ -86,9 +86,11 @@ const char* meshXRootElement::get_element_name(void) const
  *     - MESHX_SUCCESS: State change handled successfully
  *     - MESHX_INVALID_ARG: Invalid parameter
  */
-meshx_err_t meshXRootElement :: element_state_change_notify(meshx_ptr_t param, size_t param_size)
+meshx_err_t meshXRootElement :: element_state_change_notify(meshx_ptr_t param, size_t param_size, const meshx_uvp_ctx_t* ctx)
 {
-    if (!param) {
+    MESHX_UNUSED(ctx);
+    if (param == nullptr)
+    {
         MESHX_LOGE(MODULE_ID_ELEMENT_ROOT, "Invalid parameter in element_state_change_notify");
         return MESHX_INVALID_ARG;
     }

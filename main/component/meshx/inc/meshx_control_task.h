@@ -186,6 +186,8 @@ typedef enum __packed control_task_msg_evt_txcm
  */
 typedef struct {
     uint16_t src_addr;             /**< Source address of the message */
+    uint16_t dst_addr;             /**< Destination address of the message */
+    uint8_t rx_el_id;              /**< Locally-resolved element index that received the message */
     meshx_uvp_header_t uvp_header; /**< Extracted UVP header */
 } control_task_uvp_meta_t;
 
@@ -291,13 +293,12 @@ meshx_err_t control_task_msg_publish(control_task_msg_code_t msg_code, control_t
  *
  * @param[in] msg_code              The message code to publish.
  * @param[in] msg_evt               The event associated with the message.
- * @param[in] src_addr              The source address of the message.
- * @param[in] uvp_header            The UVP header for vendor messages.
+ * @param[in] p_uvp_ctx             Pointer to the UVP context structure.
  * @param[in] msg_evt_params        Pointer to the event parameters.
  * @param[in] sizeof_msg_evt_params Size of the event parameters.
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-meshx_err_t control_task_msg_publish_uvp(control_task_msg_code_t msg_code, control_task_msg_evt_t msg_evt, uint16_t src_addr, meshx_uvp_header_t uvp_header, const void *msg_evt_params, size_t sizeof_msg_evt_params);
+meshx_err_t control_task_msg_publish_uvp(control_task_msg_code_t msg_code, control_task_msg_evt_t msg_evt, const control_task_uvp_meta_t *p_uvp_ctx, const void *msg_evt_params, size_t sizeof_msg_evt_params);
 
 #ifdef __cplusplus
 }
