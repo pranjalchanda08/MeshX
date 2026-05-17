@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MeshX Premium Telemetry Dashboard</title>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+
+    <div class="app-container">
+        <!-- Header Bar -->
+        <header class="app-header">
+            <div class="logo">
+                <i class="fa-solid fa-cube logo-icon"></i>
+                <span class="logo-text">Mesh<span class="highlight">X</span></span>
+                <span class="badge">UVP Active</span>
+            </div>
+            
+            <div class="port-selector-container">
+                <label for="port-select"><i class="fa-solid fa-plug"></i> Serial Port:</label>
+                <select id="port-select">
+                    <option value="">Scan for ports...</option>
+                </select>
+                <button id="connect-btn" class="btn btn-primary"><i class="fa-solid fa-link"></i> Connect</button>
+            </div>
+        </header>
+
+        <!-- Dashboard Grid Layout -->
+        <main class="dashboard-grid">
+            
+            <!-- BLE Mesh Topography -->
+            <section class="card topo-card glass-panel">
+                <div class="card-header">
+                    <div class="title-wrap">
+                        <i class="fa-solid fa-network-wired header-icon icon-emerald"></i>
+                        <h2>BLE Mesh topography</h2>
+                    </div>
+                    <span class="live-pulse"></span>
+                </div>
+                <div class="card-content">
+                    <div class="topo-viewport" id="topo-viewport">
+                        <!-- Discovered nodes will be rendered here dynamically -->
+                        <div class="empty-state">
+                            <i class="fa-solid fa-satellite-dish"></i>
+                            <p>No active BLE Mesh nodes detected.<br>Connect to start auto-discovery.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- GPIO Live Pipeline -->
+            <section class="card gpio-card glass-panel">
+                <div class="card-header">
+                    <div class="title-wrap">
+                        <i class="fa-solid fa-microchip header-icon icon-amber"></i>
+                        <h2>GPIO Live Pipeline</h2>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="gpio-grid" id="gpio-grid">
+                        <!-- Dynamic GPIO pins will render here -->
+                        <div class="gpio-item input-pin">
+                            <span class="pin-num">Pin 12</span>
+                            <span class="pin-tag tag-input">INPUT</span>
+                            <span class="status-indicator-light light-off"></span>
+                            <span class="pin-label">Button 1</span>
+                        </div>
+                        <div class="gpio-item output-pin">
+                            <span class="pin-num">Pin 23</span>
+                            <span class="pin-tag tag-output">OUTPUT</span>
+                            <span class="status-indicator-light light-on animate-pulse-glow"></span>
+                            <span class="pin-label">Relay 1</span>
+                            <button class="pin-toggle-btn" onclick="togglePin(23)"><i class="fa-solid fa-power-off"></i></button>
+                        </div>
+                        <div class="gpio-item pwm-pin">
+                            <span class="pin-num">Pin 25</span>
+                            <span class="pin-tag tag-pwm">PWM</span>
+                            <div class="pwm-meter-container">
+                                <div class="pwm-bar-fill" style="width: 65%;"></div>
+                                <span class="pwm-percent">65%</span>
+                            </div>
+                            <span class="pin-label">LED Dimmer</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Packet Dissector Timeline -->
+            <section class="card packets-card glass-panel">
+                <div class="card-header">
+                    <div class="title-wrap">
+                        <i class="fa-solid fa-arrow-right-arrow-left header-icon icon-purple"></i>
+                        <h2>Packet Dissector Timeline</h2>
+                    </div>
+                    <div class="actions">
+                        <button id="clear-packets-btn" class="btn btn-icon"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="packets-timeline" id="packets-timeline">
+                        <!-- Packet items will render here -->
+                        <div class="empty-state">
+                            <i class="fa-solid fa-receipt"></i>
+                            <p>Listening for active binary MXSP stream packets...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Decoded Virtual Logs Terminal -->
+            <section class="card logs-card glass-panel">
+                <div class="card-header">
+                    <div class="title-wrap">
+                        <i class="fa-solid fa-terminal header-icon icon-crimson"></i>
+                        <h2>Virtualized Decoded Log Terminal</h2>
+                    </div>
+                    <div class="log-controls">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="filter-err" checked>
+                            <span class="checkmark chk-err"></span> [ERR]
+                        </label>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="filter-wrn" checked>
+                            <span class="checkmark chk-wrn"></span> [WRN]
+                        </label>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="filter-dbg" checked>
+                            <span class="checkmark chk-dbg"></span> [DBG]
+                        </label>
+                        <button id="autoscroll-btn" class="btn btn-secondary active"><i class="fa-solid fa-angles-down"></i> AutoScroll</button>
+                        <button id="clear-logs-btn" class="btn btn-secondary"><i class="fa-solid fa-circle-minus"></i> Clear</button>
+                        <button id="export-logs-btn" class="btn btn-primary"><i class="fa-solid fa-download"></i> Export</button>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="terminal-body" id="log-terminal">
+                        <!-- Logs stream here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Raw CLI Console Commands -->
+            <section class="card cli-card glass-panel">
+                <div class="card-header">
+                    <div class="title-wrap">
+                        <i class="fa-solid fa-keyboard header-icon"></i>
+                        <h2>Direct CLI Command Console</h2>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="cli-terminal" id="cli-output">
+                        Welcome to MeshX Interactive Developer Console. Select port and send commands.<br>
+                    </div>
+                    <div class="cli-input-wrapper">
+                        <span class="cli-prompt">MeshX&gt;</span>
+                        <input type="text" id="cli-input" placeholder="Type a CLI command (e.g. 'ut 8 1 1 1' or 'help') and press Enter...">
+                        <button id="cli-send-btn" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Script Import -->
+    <script src="app.js"></script>
+</body>
+</html>

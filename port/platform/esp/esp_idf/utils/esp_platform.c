@@ -45,6 +45,8 @@
 #include "interface/meshx_platform.h"
 #include "interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h"
 
+static bool g_mxsp_use_console = false;
+
 /**
  * @brief Initializes the MeshX platform for the ESP32.
  *
@@ -130,7 +132,14 @@ meshx_err_t meshx_platform_serial_init(void)
  */
 void meshx_platform_serial_write(const uint8_t *data, uint16_t len)
 {
-    uart_write_bytes(CONFIG_MXSP_UART_PORT, (const char *)data, len);
+    if (g_mxsp_use_console)
+    {
+        meshx_platform_console_write((const char *)data, len);
+    }
+    else
+    {
+        uart_write_bytes(CONFIG_MXSP_UART_PORT, (const char *)data, len);
+    }
 }
 
 /**
@@ -138,7 +147,14 @@ void meshx_platform_serial_write(const uint8_t *data, uint16_t len)
  */
 int32_t meshx_platform_serial_read(uint8_t *data, uint16_t len)
 {
-    return uart_read_bytes(CONFIG_MXSP_UART_PORT, data, len, 20 / portTICK_PERIOD_MS);
+    if (g_mxsp_use_console)
+    {
+        return meshx_platform_console_read(data, len);
+    }
+    else
+    {
+        return uart_read_bytes(CONFIG_MXSP_UART_PORT, data, len, 20 / portTICK_PERIOD_MS);
+    }
 }
 
 meshx_err_t meshx_platform_console_init(void)
@@ -200,4 +216,35 @@ int32_t meshx_platform_console_read(uint8_t *data, uint16_t len)
 #else
     return -1;
 #endif
+}
+
+/**
+ * @brief Get the active console channel type.
+ * @return The active console channel type.
+ */
+meshx_platform_console_channel_t meshx_platform_get_console_channel(void)
+{
+#if CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG
+    return MESHX_PLATFORM_CONSOLE_CHANNEL_USB_CDC;
+#else
+    return MESHX_PLATFORM_CONSOLE_CHANNEL_UART;
+#endif
+}
+
+/**
+ * @brief Get the current dynamic MXSP routing target.
+ * @return True if MXSP is currently multiplexed over console channel, False if routed to UART1.
+ */
+bool meshx_platform_get_mxsp_use_console(void)
+{
+    return g_mxsp_use_console;
+}
+
+/**
+ * @brief Set the dynamic MXSP routing target.
+ * @param[in] enable Set to true to route MXSP over active console log channel.
+ */
+void meshx_platform_set_mxsp_use_console(bool enable)
+{
+    g_mxsp_use_console = enable;
 }
