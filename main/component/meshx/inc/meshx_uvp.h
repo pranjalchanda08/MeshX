@@ -21,9 +21,23 @@ extern "C" {
 /**
  * @brief MeshX Unified Vendor Protocol (UVP) Fixed Header (4 Bytes)
  */
+/**
+ * @brief UVP Routing Context (Application Layer)
+ */
+typedef struct {
+    uint16_t src_addr;     /**< Source unicast address */
+    uint16_t dst_addr;     /**< Destination unicast or group address */
+    uint8_t tid;           /**< Transaction ID */
+    uint8_t ack_req;       /**< 1 if client requested an ACK */
+} meshx_uvp_ctx_t;
+
+/**
+ * @brief MeshX Unified Vendor Protocol (UVP) Fixed Header (4 Bytes)
+ */
 typedef struct {
     uint8_t tid;           /**< Transaction ID (0-255) */
-    uint8_t element_idx;   /**< Target Element Index (0-31) */
+    uint8_t ack_req     : 1; /**< ACK Requested Flag (1 = true) */
+    uint8_t rfu         : 7; /**< Reserved for Future Use */
     uint16_t type_id;      /**< Function/Type ID (0-65535) */
 } __attribute__((packed)) meshx_uvp_header_t;
 
@@ -53,10 +67,10 @@ typedef struct {
  */
 meshx_err_t meshx_uvp_send(void *p_model,
                            uint16_t dst_addr,
-                           uint8_t el_idx,
                            uint16_t type_id,
                            const void *payload,
-                           uint16_t payload_len);
+                           uint16_t payload_len,
+                           bool ack_req);
 
 #ifdef __cplusplus
 }

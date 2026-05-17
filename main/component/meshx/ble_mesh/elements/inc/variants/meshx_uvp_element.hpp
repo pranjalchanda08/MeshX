@@ -48,6 +48,11 @@ public:
      * @brief Get the element name string.
      */
     const char* get_element_name(void) const override;
+    
+    /**
+     * @brief Handle UVP state change notification and perform dual-routing (ACK + Pub).
+     */
+    meshx_err_t element_state_change_notify(meshx_ptr_t param, size_t param_size, const meshx_uvp_ctx_t* ctx) override;
 
     /* on_model_cb is final in meshXElement — not overridden here.
      * UVP data is dispatched via control_task_msg_publish_uvp in the port layer. */

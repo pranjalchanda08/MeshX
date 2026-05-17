@@ -89,11 +89,10 @@ public:
      * This is a pure virtual function that must be implemented by derived classes.
      * It is called when a model event occurs, allowing the element to handle the event.
      *
-     * @param[in] param      Pointer to the model event parameters.
-     * @param[in] param_size Size of the parameter structure.
+     * @param[in] ctx        Pointer to the UVP context (src, dst, tid, ack_req).
      * @return MESHX_SUCCESS on success, error code otherwise.
      */
-    virtual meshx_err_t on_model_cb(meshx_ptr_t param, size_t param_size) = 0;
+    virtual meshx_err_t on_model_cb(meshx_ptr_t param, size_t param_size, const meshx_uvp_ctx_t* ctx = nullptr) = 0;
 
     void set_element_idx(uint16_t idx) { element_idx = idx; }
     uint16_t get_element_idx(void) const { return element_idx; }

@@ -94,6 +94,7 @@ sequenceDiagram
     participant Port as esp_ven_srv_model.c
     participant CT as Control Task
     participant Disp as UVP Dispatcher
+    participant REG as Element Registry (C++)
     participant El as meshXUVPElement (Relay)
     participant API as meshx_api.c
     participant App as App Layer (main.c)
@@ -101,12 +102,16 @@ sequenceDiagram
     Note over BLE, App: Inbound Data Path (Relay Command)
 
     BLE->>Port: Inbound Vendor Frame (UVP)
-    Port->>CT: control_task_msg_publish_uvp(CODE_FRM_BLE)
+    Port->>Port: rx_el_id = model->element_idx
+    Note over Port: Resolve receiving element index<br/>from local model instance
+    Port->>CT: control_task_msg_publish_uvp(CODE_FRM_BLE, &meta, payload)
 
     Note over CT: Message Queued & Dispatched
 
     CT->>Disp: Dispatch to uvp_unified_dispatcher_cb
-    Disp->>El: element->on_model_cb(payload)
+    Disp->>REG: find_element(rx_el_id)
+    REG-->>Disp: return element pointer
+    Disp->>El: element->on_model_cb(payload, len, &uvp_ctx)
 
     Note over El: State Processing & App Bridge
 

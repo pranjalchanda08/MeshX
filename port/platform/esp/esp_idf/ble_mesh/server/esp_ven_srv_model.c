@@ -52,20 +52,30 @@ static void esp_ble_mesh_vendor_server_cb(MESHX_VND_SRV_CB_EVT event,
 
     meshx_uvp_header_t *header = (meshx_uvp_header_t *)msg;
 
+    /* Resolve the local receiving element index from the model instance */
+    uint8_t rx_el_id = param->model_operation.model->element_idx;
+
     MESHX_LOGI(MODULE_ID_MODEL_SERVER, "UVP Frame -> TID: %d, EL_IDX: %d, TYPE_ID: 0x%04x, Payload: %d bytes",
-               header->tid, header->element_idx, header->type_id, (int)(length - MESHX_UVP_HEADER_SIZE));
+               header->tid, rx_el_id, header->type_id, (int)(length - MESHX_UVP_HEADER_SIZE));
 
     /*
      * Publish UVP message to Control Task for centralized processing.
      * msg_evt: 0x0001 (UVP Vendor Model ID)
+     * resolved_rx_el_id: The physical element receiving this packet
      * uvp_header: Extracted 4-byte header
      * params: Payload after the 4-byte header
      */
+    control_task_uvp_meta_t uvp_ctx = {
+        .src_addr = ctx->addr,
+        .dst_addr = ctx->recv_dst,
+        .rx_el_id = rx_el_id,
+        .uvp_header = *header
+    };
+
     control_task_msg_publish_uvp(
         CONTROL_TASK_MSG_CODE_FRM_BLE,
         MESHX_MODEL_ID_UVP,
-        ctx->addr,
-        *header,
+        &uvp_ctx,
         msg + MESHX_UVP_HEADER_SIZE,
         length - MESHX_UVP_HEADER_SIZE
     );
@@ -108,10 +118,10 @@ meshx_err_t meshx_plat_ven_srv_init(void)
  */
 meshx_err_t meshx_uvp_send(void *p_model,
                            uint16_t dst_addr,
-                           uint8_t el_idx,
                            uint16_t type_id,
                            const void *payload,
-                           uint16_t payload_len)
+                           uint16_t payload_len,
+                           bool ack_req)
 {
     meshx_model_t *model = (meshx_model_t *)p_model;
     if (!model || (!payload && payload_len > 0)) {
@@ -133,7 +143,8 @@ meshx_err_t meshx_uvp_send(void *p_model,
     /* Populate UVP Header */
     meshx_uvp_header_t *header = (meshx_uvp_header_t *)buffer;
     header->tid = g_uvp_tid++;
-    header->element_idx = el_idx;
+    header->ack_req = ack_req ? 1 : 0;
+    header->rfu = 0;
     header->type_id = type_id;
 
     /* Copy Payload */
@@ -142,6 +153,7 @@ meshx_err_t meshx_uvp_send(void *p_model,
     }
 
     esp_ble_mesh_model_t *esp_model = (esp_ble_mesh_model_t *)model->p_model;
+    uint8_t el_idx = esp_model ? esp_model->element_idx : 0;
 
     /*
      * Retrieve net_idx via the runtime-stored provisioning key ID.

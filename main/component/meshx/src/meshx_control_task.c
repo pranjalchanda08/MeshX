@@ -130,52 +130,44 @@ meshx_err_t control_task_msg_publish(control_task_msg_code_t msg_code,
  */
 meshx_err_t control_task_msg_publish_uvp(control_task_msg_code_t msg_code,
                                        control_task_msg_evt_t msg_evt,
-                                       uint16_t src_addr,
-                                       meshx_uvp_header_t uvp_header,
+                                       const control_task_uvp_meta_t *p_uvp_ctx,
                                        const void *msg_evt_params,
                                        size_t sizeof_msg_evt_params)
 {
-    control_task_msg_t send_msg;
-    if (msg_code >= CONTROL_TASK_MSG_CODE_MAX)
+    if (msg_code >= CONTROL_TASK_MSG_CODE_MAX || p_uvp_ctx == NULL)
     {
-        MESHX_LOGE(MODULE_ID_COMMON, "Invalid message code or event");
+        MESHX_LOGE(MODULE_ID_COMMON, "Invalid message code or context");
         return MESHX_INVALID_ARG;
     }
 
-    memset(&send_msg, 0, sizeof(send_msg));
-    
-    /* 
-     * Prepend UVP Metadata header to the params buffer.
-     * total_size = sizeof(control_task_uvp_meta_t) + sizeof_msg_evt_params
+    /*
+     * Total size = Metadata struct + actual payload
      */
     size_t total_size = sizeof(control_task_uvp_meta_t) + sizeof_msg_evt_params;
-    meshx_err_t err = meshx_rtos_malloc(&send_msg.msg_evt_params, total_size);
+    uint8_t *tmp_buf = NULL;
+    meshx_err_t err = meshx_rtos_malloc((void **)&tmp_buf, total_size);
     if (err)
         return err;
 
-    /* Fill the header */
-    control_task_uvp_meta_t *p_meta = (control_task_uvp_meta_t *)send_msg.msg_evt_params;
-    p_meta->src_addr = src_addr;
-    p_meta->uvp_header = uvp_header;
+    /* Fill the header from the passed context structure */
+    control_task_uvp_meta_t *p_meta = (control_task_uvp_meta_t *)tmp_buf;
+    memcpy(p_meta, p_uvp_ctx, sizeof(control_task_uvp_meta_t));
 
     /* Copy the payload if it exists */
     if (sizeof_msg_evt_params != 0 && msg_evt_params != NULL)
     {
-        memcpy((uint8_t *)send_msg.msg_evt_params + sizeof(control_task_uvp_meta_t), 
+        memcpy(tmp_buf + sizeof(control_task_uvp_meta_t),
                msg_evt_params, sizeof_msg_evt_params);
     }
-    
-    send_msg.msg_evt_params_len = (uint16_t)total_size;
-    send_msg.msg_code = msg_code;
-    send_msg.msg_evt = msg_evt;
 
-    meshx_err_t send_err = meshx_msg_q_send(&control_task_queue, &send_msg, sizeof(send_msg), UINT32_MAX);
-    if (send_err != MESHX_SUCCESS)
-    {
-        meshx_rtos_free(&send_msg.msg_evt_params);
-    }
-    return send_err;
+    /* Dispatch using the common publish function */
+    err = control_task_msg_publish(msg_code, msg_evt, tmp_buf, total_size);
+
+    /* Free the temporary buffer */
+    meshx_rtos_free((void **)&tmp_buf);
+    return err;
 }
+
 
 /**
  * @brief Subscribe to a control task message.

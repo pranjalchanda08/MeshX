@@ -49,11 +49,11 @@ public:
      * @param payload_len   Payload length.
      * @return MESHX_SUCCESS on success, error code otherwise.
      */
-    meshx_err_t send(uint16_t dst_addr, uint8_t el_idx, uint16_t type_id, const void *payload, uint16_t payload_len) {
+    meshx_err_t send(uint16_t dst_addr, uint16_t type_id, const void *payload, uint16_t payload_len, bool ack_req = false) {
         MESHX_MODEL *p_model = this->get_plat_model();
         if (!p_model) return MESHX_INVALID_STATE;
         
-        return meshx_uvp_send((void*)p_model, dst_addr, el_idx, type_id, payload, payload_len);
+        return meshx_uvp_send((void*)p_model, dst_addr, type_id, payload, payload_len, ack_req);
     }
 
     /**

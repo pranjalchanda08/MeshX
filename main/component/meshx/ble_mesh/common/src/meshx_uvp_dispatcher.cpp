@@ -18,7 +18,7 @@ static std::map<uint16_t, uint8_t> g_tid_cache;
 
 /**
  * @brief Unified Dispatcher Callback for UVP messages.
- * 
+ *
  * This callback is triggered by the Control Task when a vendor message (MESHX_MODEL_ID_UVP)
  * is received from the BLE stack.
  *
@@ -28,8 +28,8 @@ static std::map<uint16_t, uint8_t> g_tid_cache;
  * @param[in] params_len Length of the message parameters.
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
-static meshx_err_t uvp_unified_dispatcher_cb(dev_struct_t *pdev, 
-                                            control_task_msg_evt_t evt, 
+static meshx_err_t uvp_unified_dispatcher_cb(dev_struct_t *pdev,
+                                            control_task_msg_evt_t evt,
                                             void *params,
                                             uint16_t params_len)
 {
@@ -45,49 +45,57 @@ static meshx_err_t uvp_unified_dispatcher_cb(dev_struct_t *pdev,
     control_task_uvp_meta_t *p_meta = (control_task_uvp_meta_t *)params;
     uint16_t src_addr = p_meta->src_addr;
     meshx_uvp_header_t *uvp_header = &p_meta->uvp_header;
-    
+
     /* Calculate actual payload pointer and length */
     void *payload = (uint8_t *)params + sizeof(control_task_uvp_meta_t);
     uint16_t payload_len = params_len - sizeof(control_task_uvp_meta_t);
 
-    /* 
+    /*
      * TID (Transaction ID) Mechanism:
      * Duplicate suppression based on per-source monotonic counter (REQ-F17).
      */
     if (g_tid_cache.count(src_addr) && g_tid_cache[src_addr] == uvp_header->tid) {
-        MESHX_LOGD(MODULE_ID_COMMON, "UVP Dispatcher: Dropping duplicate TID %d from 0x%04x", 
+        MESHX_LOGD(MODULE_ID_COMMON, "UVP Dispatcher: Dropping duplicate TID %d from 0x%04x",
                    uvp_header->tid, src_addr);
         return MESHX_SUCCESS; // Already processed
     }
     g_tid_cache[src_addr] = uvp_header->tid;
 
-    /* Find the targeted element in the registry */
-    meshXElementIF* element = meshXElementRegistry::get_instance().find_element(uvp_header->element_idx);
+    /* Find the targeted element in the registry using the locally-resolved receiving element index */
+    meshXElementIF* element = meshXElementRegistry::get_instance().find_element(p_meta->rx_el_id);
     if (!element) {
-        MESHX_LOGW(MODULE_ID_COMMON, "UVP Dispatcher: No element registered at index %d", uvp_header->element_idx);
+        MESHX_LOGW(MODULE_ID_COMMON, "UVP Dispatcher: No element registered at index %d", p_meta->rx_el_id);
         return MESHX_NOT_FOUND;
     }
 
-    /* 
+    /*
      * Verify that the element type matches the UVP type_id.
      * This provides an extra layer of safety.
      */
     if (element->get_element_variant() != (meshx_element_type_t)uvp_header->type_id) {
-         MESHX_LOGW(MODULE_ID_COMMON, "UVP Dispatcher: Type mismatch! EL[%d] variant=%d, UVP type_id=%d", 
-                   uvp_header->element_idx, (int)element->get_element_variant(), (int)uvp_header->type_id);
+         MESHX_LOGW(MODULE_ID_COMMON, "UVP Dispatcher: Type mismatch! EL[%d] variant=%d, UVP type_id=%d",
+                   p_meta->rx_el_id, (int)element->get_element_variant(), (int)uvp_header->type_id);
     }
 
-    /* 
+    /* Populate UVP Routing Context */
+    meshx_uvp_ctx_t uvp_ctx = {
+        .src_addr = src_addr,
+        .dst_addr = p_meta->dst_addr,
+        .tid      = uvp_header->tid,
+        .ack_req  = (bool)uvp_header->ack_req
+    };
+
+    /*
      * Pass the actual TLV payload to the element's callback.
      */
-    return element->on_model_cb(payload, payload_len);
+    return element->on_model_cb(payload, payload_len, &uvp_ctx);
 }
 
 extern "C" meshx_err_t meshx_uvp_dispatcher_init(void)
 {
     MESHX_LOGI(MODULE_ID_COMMON, "Initializing Unified UVP Dispatcher");
 
-    /* 
+    /*
      * Subscribe to the vendor model ID (MESHX_MODEL_ID_UVP) on the BLE message path.
      */
     return control_task_msg_subscribe(
