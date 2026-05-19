@@ -127,8 +127,8 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
             m->set_plat_model(p_baked);
 
             // Debug: Verify the baked model state and check for garbage pointers
-            MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "  Model %zu ID: 0x%04x, Pub: %p, Slot Addr: %p",
-                       baked_sig_idx, p_baked->model_id, (void*)p_baked->pub, (void*)p_baked);
+            MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "  Model %zu ID: 0x%04x, Pub: 0x%04x, Slot Addr: 0x%04x",
+                       baked_sig_idx, p_baked->model_id, p_baked->pub, (void*)p_baked);
 
             if (p_baked->pub) {
                 uint32_t pub_ptr_val = (uint32_t)p_baked->pub;
@@ -158,7 +158,7 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
             }
 
             m->set_plat_model(p_baked);
-            MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "Baked VND Model 0x%04x (CID 0x%04x) at %p, pub: %p",
+            MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "Baked VND Model 0x%04x (CID 0x%04x) at 0x%x, pub: 0x%x",
                        p_baked->vnd.model_id, p_baked->vnd.company_id, (void*)p_baked, (void*)p_baked->pub);
             baked_ven_idx++;
         }
