@@ -58,4 +58,15 @@
 
 #define CONFIG_TXCM_ENABLE                     1
 
+/**
+ * @brief Check if element variant is a Client
+ */
+#ifndef MESHX_ELEMENT_TYPE_IS_CLIENT
+#define MESHX_ELEMENT_TYPE_IS_CLIENT(variant) \
+    (((variant) == MESHX_ELEMENT_TYPE_RELAY_CLIENT) || \
+     ((variant) == MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT) || \
+     ((variant) == MESHX_ELEMENT_TYPE_LIGHT_HSL_CLIENT) || \
+     ((variant) == MESHX_ELEMENT_TYPE_SENSOR_CLIENT))
+#endif
+
 #endif /* __MESHX_CONFIG_INTERNAL_H__ */

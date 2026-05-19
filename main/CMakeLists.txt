@@ -47,9 +47,9 @@ if(NOT CMAKE_BUILD_EARLY_EXPANSION)
     set(MESHX_PYTHON_DEPS "${CMAKE_BINARY_DIR}/python_deps")
     message(STATUS "MeshX: Using Python interpreter: ${PYTHON}")
     message(STATUS "MeshX: Installing Python dependencies to ${MESHX_PYTHON_DEPS}...")
-    
+
     file(MAKE_DIRECTORY "${MESHX_PYTHON_DEPS}")
-    
+
     execute_process(
         COMMAND ${PYTHON} -m pip install protobuf grpcio-tools pyyaml --target "${MESHX_PYTHON_DEPS}"
         RESULT_VARIABLE pip_status
