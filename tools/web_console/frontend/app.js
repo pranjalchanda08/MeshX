@@ -296,74 +296,132 @@ function decodeMxspPacket(msg_type, payloadHex) {
         
         let html = '<div class="pkt-decoded">';
         
-        if (msg_type === 0xB1 || msg_type === 0xC2) { // SYS_EVT_NOTIFY / SYS_CMD_SEND
-            const evt_id = bytes[0] | (bytes[1] << 8);
-            const eventNames = {
-                1: "NODE_RESET",
-                2: "PROV_COMPLETED",
-                3: "PROV_FAILED",
-                4: "PROV_STARTED",
-                5: "IDENTIFY_STARTED",
-                6: "IDENTIFY_STOPPED",
-                7: "GET_COMPOSITION",
-                8: "SET_CONSOLE_ROUTING"
-            };
-            const evtName = eventNames[evt_id] || `UNKNOWN_SYS_EVT (${evt_id})`;
-            const title = msg_type === 0xB1 ? "System Control Notification" : "System Control Command";
-            html += `<div class="pkt-decoded-header">${title}</div>`;
-            html += `<div class="pkt-decoded-item">Event / Action: <strong>${evtName}</strong></div>`;
-            
-            if (evt_id === 0x07 && msg_type === 0xB1 && bytes.length >= 5) {
-                const num_elements = bytes[4];
-                html += `<div class="pkt-decoded-item">Elements Discovered: <strong>${num_elements}</strong></div>`;
-                html += `<table class="pkt-composition-table">`;
-                html += `<thead><tr><th>Idx</th><th>Variant</th><th>Type</th><th>Name</th></tr></thead><tbody>`;
-                let offset = 5;
-                for (let i = 0; i < num_elements; i++) {
-                    if (offset + 6 > bytes.length) break;
-                    const idx = bytes[offset] | (bytes[offset + 1] << 8);
-                    const variant = bytes[offset + 2] | (bytes[offset + 3] << 8);
-                    const type = bytes[offset + 4] | (bytes[offset + 5] << 8);
-                    offset += 6;
-                    let name = "";
-                    while (offset < bytes.length && bytes[offset] !== 0) {
-                        name += String.fromCharCode(bytes[offset]);
-                        offset++;
-                    }
-                    offset++; // skip null
-                    const variants = {
-                        0: "Relay Server",
-                        1: "Relay Client",
-                        2: "CWWW Server",
-                        3: "CWWW Client",
-                        4: "RGB Server",
-                        5: "RGB Client",
-                        6: "Sensor Server",
-                        7: "Sensor Client"
-                    };
-                    const variantStr = variants[variant] || `Unknown (${variant})`;
-                    const typeStr = type === 0 ? "Server" : "Client";
-                    html += `<tr><td>${idx}</td><td>${variantStr}</td><td>${typeStr}</td><td>${name}</td></tr>`;
+        // --- 1. Hosted Mode, Console Routing, Node Reset Commands / Responses ---
+        if (msg_type === 0x01) { // MXCP_CMD_HOSTED_MODE_ENABLE
+            const enable = bytes[0] !== 0;
+            html += `<div class="pkt-decoded-header">Hosted Mode Switch</div>`;
+            html += `<div class="pkt-decoded-item">State: <strong style="color: var(--neon-purple);">${enable ? "ENABLED" : "DISABLED"}</strong></div>`;
+        }
+        else if (msg_type === 0x89) { // MXCP_EVT_HOSTED_MODE_RSP
+            html += `<div class="pkt-decoded-header">Hosted Mode Response</div>`;
+            html += `<div class="pkt-decoded-item">Status: <strong>SUCCESS</strong></div>`;
+        }
+        else if (msg_type === 0x02) { // MXCP_CMD_NODE_RESET
+            html += `<div class="pkt-decoded-header">Node Reset Command</div>`;
+        }
+        else if (msg_type === 0x88) { // MXCP_EVT_NODE_RESET_IND
+            html += `<div class="pkt-decoded-header">Node Reset Indication</div>`;
+        }
+        else if (msg_type === 0x03) { // MXCP_CMD_GET_COMPOSITION
+            html += `<div class="pkt-decoded-header">Get Composition Command</div>`;
+        }
+        else if (msg_type === 0x04) { // MXCP_CMD_GET_ELEMENT_STATE
+            html += `<div class="pkt-decoded-header">Get Element State Command</div>`;
+        }
+        else if (msg_type === 0x05) { // MXCP_CMD_SET_CONSOLE_ROUTING
+            const enable = bytes[0] !== 0;
+            html += `<div class="pkt-decoded-header">Set Console Routing Command</div>`;
+            html += `<div class="pkt-decoded-item">Console Routing: <strong>${enable ? "ENABLED" : "DISABLED"}</strong></div>`;
+        }
+        else if (msg_type === 0x8A) { // MXCP_EVT_CONSOLE_ROUTING_RSP
+            html += `<div class="pkt-decoded-header">Console Routing Response</div>`;
+            html += `<div class="pkt-decoded-item">Status: <strong>SUCCESS</strong></div>`;
+        }
+
+        // --- 2. Provisioning Events ---
+        else if (msg_type === 0x81) { // MXCP_EVT_PROV_COMP
+            const net_idx = bytes[0] | (bytes[1] << 8);
+            const addr = bytes[2] | (bytes[3] << 8);
+            const uuidBytes = bytes.slice(4, 20);
+            const uuidHex = Array.from(uuidBytes).map(b => b.toString(16).padStart(2, '0')).join('');
+            const uuidFormatted = `${uuidHex.substr(0,8)}-${uuidHex.substr(8,4)}-${uuidHex.substr(12,4)}-${uuidHex.substr(16,4)}-${uuidHex.substr(20)}`;
+            html += `<div class="pkt-decoded-header">Provisioning Completed Event</div>`;
+            html += `<div class="pkt-decoded-item">Assigned Address: <strong>0x${addr.toString(16).toUpperCase().padStart(4, '0')}</strong></div>`;
+            html += `<div class="pkt-decoded-item">NetIdx: <strong>${net_idx}</strong></div>`;
+            html += `<div class="pkt-decoded-item">UUID: <code style="font-size:0.7rem;">${uuidFormatted}</code></div>`;
+        }
+        else if (msg_type === 0x82) { // MXCP_EVT_PROV_FAILED
+            const reason = bytes[0];
+            html += `<div class="pkt-decoded-header">Provisioning Failed Event</div>`;
+            html += `<div class="pkt-decoded-item" style="color: var(--neon-crimson);">Failed Reason: <strong>0x${reason.toString(16).toUpperCase().padStart(2, '0')}</strong></div>`;
+        }
+        else if (msg_type === 0x83) { // MXCP_EVT_PROV_START
+            html += `<div class="pkt-decoded-header">Provisioning Started Event</div>`;
+        }
+        else if (msg_type === 0x84) { // MXCP_EVT_IDENTIFY_START
+            html += `<div class="pkt-decoded-header">Identify Started Event</div>`;
+        }
+        else if (msg_type === 0x85) { // MXCP_EVT_IDENTIFY_STOP
+            html += `<div class="pkt-decoded-header">Identify Stopped Event</div>`;
+        }
+
+        // --- 3. Composition & Element State Responses ---
+        else if (msg_type === 0x86) { // MXCP_EVT_COMPOSITION_RSP
+            const num_elements = bytes[0];
+            html += `<div class="pkt-decoded-header">Composition Response Event</div>`;
+            html += `<div class="pkt-decoded-item">Elements Discovered: <strong>${num_elements}</strong></div>`;
+            html += `<table class="pkt-composition-table">`;
+            html += `<thead><tr><th>Idx</th><th>Variant</th><th>Type</th><th>Name</th></tr></thead><tbody>`;
+            let offset = 1;
+            for (let i = 0; i < num_elements; i++) {
+                if (offset + 6 > bytes.length) break;
+                const idx = bytes[offset] | (bytes[offset + 1] << 8);
+                const variant = bytes[offset + 2] | (bytes[offset + 3] << 8);
+                const type = bytes[offset + 4] | (bytes[offset + 5] << 8);
+                offset += 6;
+                let name = "";
+                while (offset < bytes.length && bytes[offset] !== 0) {
+                    name += String.fromCharCode(bytes[offset]);
+                    offset++;
                 }
-                html += `</tbody></table>`;
-            } else if (evt_id === 0x02 && bytes.length >= 24) { // PROV_COMPLETED
-                const net_idx = bytes[4] | (bytes[5] << 8);
-                const addr = bytes[6] | (bytes[7] << 8);
-                const uuidBytes = bytes.slice(8, 24);
-                const uuidHex = Array.from(uuidBytes).map(b => b.toString(16).padStart(2, '0')).join('');
-                const uuidFormatted = `${uuidHex.substr(0,8)}-${uuidHex.substr(8,4)}-${uuidHex.substr(12,4)}-${uuidHex.substr(16,4)}-${uuidHex.substr(20)}`;
-                html += `<div class="pkt-decoded-item">Assigned Address: <strong>0x${addr.toString(16).toUpperCase().padStart(4, '0')}</strong></div>`;
-                html += `<div class="pkt-decoded-item">NetIdx: <strong>${net_idx}</strong></div>`;
-                html += `<div class="pkt-decoded-item">UUID: <code style="font-size:0.7rem;">${uuidFormatted}</code></div>`;
-            } else if (evt_id === 0x03 && bytes.length >= 5) { // PROV_FAILED
-                const reason = bytes[4];
-                html += `<div class="pkt-decoded-item" style="color: var(--neon-crimson);">Failed Reason: <strong>0x${reason.toString(16).toUpperCase().padStart(2, '0')}</strong></div>`;
-            } else if (evt_id === 0x08 && bytes.length >= 5) { // SET_CONSOLE_ROUTING
-                const enable = bytes[4] !== 0;
-                html += `<div class="pkt-decoded-item">Console Routing: <strong>${enable ? "ENABLED" : "DISABLED"}</strong></div>`;
+                offset++; // skip null
+                const variants = {
+                    0: "Relay Server",
+                    1: "Relay Client",
+                    2: "CWWW Server",
+                    3: "CWWW Client",
+                    4: "RGB Server",
+                    5: "RGB Client",
+                    6: "Sensor Server",
+                    7: "Sensor Client"
+                };
+                const variantStr = variants[variant] || `Unknown (${variant})`;
+                const typeStr = type === 0 ? "Server" : "Client";
+                html += `<tr><td>${idx}</td><td>${variantStr}</td><td>${typeStr}</td><td>${name}</td></tr>`;
             }
-        } 
-        else if (msg_type === 0xB2 || msg_type === 0xC1) { // DATA_EVT_NOTIFY / EL_CMD_SEND
+            html += `</tbody></table>`;
+        }
+        else if (msg_type === 0x87) { // MXCP_EVT_ELEMENT_STATE_RSP
+            const num_elements = bytes[0];
+            html += `<div class="pkt-decoded-header">Element State Response Event</div>`;
+            html += `<div class="pkt-decoded-item">Elements Reported: <strong>${num_elements}</strong></div>`;
+            html += `<table class="pkt-composition-table">`;
+            html += `<thead><tr><th>Idx</th><th>Variant</th><th>Ctx Size</th></tr></thead><tbody>`;
+            let offset = 1;
+            for (let i = 0; i < num_elements; i++) {
+                if (offset + 6 > bytes.length) break;
+                const idx = bytes[offset] | (bytes[offset + 1] << 8);
+                const variant = bytes[offset + 2] | (bytes[offset + 3] << 8);
+                const ctx_size = bytes[offset + 4] | (bytes[offset + 5] << 8);
+                offset += 6;
+                const variants = {
+                    0: "Relay Server",
+                    1: "Relay Client",
+                    2: "CWWW Server",
+                    3: "CWWW Client",
+                    4: "RGB Server",
+                    5: "RGB Client",
+                    6: "Sensor Server",
+                    7: "Sensor Client"
+                };
+                const variantStr = variants[variant] || `Unknown (${variant})`;
+                html += `<tr><td>${idx}</td><td>${variantStr}</td><td>${ctx_size} bytes</td></tr>`;
+            }
+            html += `</tbody></table>`;
+        }
+
+        // --- 4. Element Send / Data Notify ---
+        else if (msg_type === 0x10 || msg_type === 0x90) { // MXCP_CMD_EL_SEND / MXCP_EVT_EL_DATA_NOTIFY
             const el_id = bytes[0] | (bytes[1] << 8);
             const el_type = bytes[2] | (bytes[3] << 8);
             const func_id = bytes[4] | (bytes[5] << 8);
@@ -380,7 +438,7 @@ function decodeMxspPacket(msg_type, payloadHex) {
                 7: "SENSOR_CLIENT"
             };
             const elTypeName = elementTypes[el_type] || `Unknown Type (${el_type})`;
-            const title = msg_type === 0xB2 ? "Telemetry Data Event" : "Element Control Command";
+            const title = msg_type === 0x90 ? "Telemetry Data Event" : "Element Control Command";
             
             html += `<div class="pkt-decoded-header">${title}</div>`;
             html += `<div class="pkt-decoded-item">Element #${el_id} (<strong>${elTypeName}</strong>) | Func ID: <strong>0x${func_id.toString(16).toUpperCase().padStart(2, '0')}</strong></div>`;
@@ -439,77 +497,96 @@ function decodeMxspPacket(msg_type, payloadHex) {
                 }
             }
         }
-        else if (msg_type === 0xD1) { // GPIO_CMD
-            const cmd = bytes[0];
-            const logical_pin = bytes[1];
-            const reserved = bytes[2];
-            const payload_len = bytes[3];
-            
+
+        // --- 5. GPIO Commands (0x21 - 0x29) ---
+        else if (msg_type >= 0x21 && msg_type <= 0x29) {
+            const logical_pin = bytes[0];
             const cmdNames = {
-                1: "SET_LEVEL",
-                2: "GET_LEVEL",
-                3: "TOGGLE",
-                4: "SET_PWM_DUTY",
-                5: "SET_PWM_FREQ",
-                6: "INTR_ENABLE",
-                7: "INTR_DISABLE",
-                8: "GET_CONFIG",
-                9: "GET_STATE"
+                0x21: "SET_LEVEL",
+                0x22: "GET_LEVEL",
+                0x23: "TOGGLE",
+                0x24: "SET_PWM_DUTY",
+                0x25: "SET_PWM_FREQ",
+                0x26: "INTR_ENABLE",
+                0x27: "INTR_DISABLE",
+                0x28: "GET_CONFIG",
+                0x29: "GET_STATE"
             };
-            const cmdName = cmdNames[cmd] || `UNKNOWN_CMD (${cmd})`;
+            const cmdName = cmdNames[msg_type] || `UNKNOWN_CMD (0x${msg_type.toString(16).toUpperCase()})`;
             html += `<div class="pkt-decoded-header">GPIO Control Command</div>`;
             html += `<div class="pkt-decoded-item">Logical Pin: <strong>${logical_pin}</strong> | Action: <strong>${cmdName}</strong></div>`;
-            if (payload_len > 0 && bytes.length >= 5) {
-                const val = bytes[4];
-                if (cmd === 1) {
-                    html += `<div class="pkt-decoded-item">Target Level: <strong style="color: ${val === 1 ? 'var(--neon-emerald)' : 'var(--text-secondary)'};">${val === 1 ? "HIGH (1)" : "LOW (0)"}</strong></div>`;
-                } else if (cmd === 4) {
-                    html += `<div class="pkt-decoded-item">PWM Duty Cycle: <strong>${val}%</strong></div>`;
-                } else {
-                    html += `<div class="pkt-decoded-item">Value: <strong>${val}</strong></div>`;
-                }
+            
+            if (msg_type === 0x21 && bytes.length >= 2) { // SET_LEVEL
+                const val = bytes[1];
+                html += `<div class="pkt-decoded-item">Target Level: <strong style="color: ${val === 1 ? 'var(--neon-emerald)' : 'var(--text-secondary)'};">${val === 1 ? "HIGH (1)" : "LOW (0)"}</strong></div>`;
+            } else if (msg_type === 0x24 && bytes.length >= 2) { // SET_PWM_DUTY
+                const val = bytes[1];
+                html += `<div class="pkt-decoded-item">PWM Duty Cycle: <strong>${val}%</strong></div>`;
+            } else if (msg_type === 0x25 && bytes.length >= 5) { // SET_PWM_FREQ
+                const freq = bytes[1] | (bytes[2] << 8) | (bytes[3] << 16) | (bytes[4] << 24);
+                html += `<div class="pkt-decoded-item">PWM Frequency: <strong>${freq} Hz</strong></div>`;
+            } else if (msg_type === 0x26 && bytes.length >= 2) { // INTR_ENABLE
+                const val = bytes[1];
+                html += `<div class="pkt-decoded-item">Interrupt Enable: <strong>${val !== 0 ? "ON" : "OFF"}</strong></div>`;
             }
         }
-        else if (msg_type === 0xD2) { // GPIO_RSP
-            const cmd = bytes[0];
+
+        // --- 6. GPIO Responses (0xA1 - 0xA9) ---
+        else if (msg_type >= 0xA1 && msg_type <= 0xA9) {
+            const status = bytes[0];
             const logical_pin = bytes[1];
-            const status = bytes[2];
-            const response_len = bytes[3];
-            
+            const cmd_id = msg_type - 0x80;
             const cmdNames = {
-                1: "SET_LEVEL",
-                2: "GET_LEVEL",
-                3: "TOGGLE",
-                4: "SET_PWM_DUTY",
-                5: "SET_PWM_FREQ",
-                6: "INTR_ENABLE",
-                7: "INTR_DISABLE",
-                8: "GET_CONFIG",
-                9: "GET_STATE"
+                0x21: "SET_LEVEL",
+                0x22: "GET_LEVEL",
+                0x23: "TOGGLE",
+                0x24: "SET_PWM_DUTY",
+                0x25: "SET_PWM_FREQ",
+                0x26: "INTR_ENABLE",
+                0x27: "INTR_DISABLE",
+                0x28: "GET_CONFIG",
+                0x29: "GET_STATE"
             };
-            const cmdName = cmdNames[cmd] || `UNKNOWN_CMD (${cmd})`;
+            const cmdName = cmdNames[cmd_id] || `UNKNOWN_CMD (0x${cmd_id.toString(16).toUpperCase()})`;
             const statusStr = status === 0 ? "SUCCESS" : `ERROR (${status})`;
             html += `<div class="pkt-decoded-header">GPIO Response</div>`;
             html += `<div class="pkt-decoded-item">Pin: <strong>${logical_pin}</strong> | Action: <strong>${cmdName}</strong></div>`;
             html += `<div class="pkt-decoded-item">Status: <strong style="color: ${status === 0 ? 'var(--neon-emerald)' : 'var(--neon-crimson)'};">${statusStr}</strong></div>`;
             
-            if (response_len > 0 && bytes.length >= 5) {
-                const respVal = bytes[4];
-                if (cmd === 8 && bytes.length >= 6) { // GET_CONFIG
-                    const mode = bytes[4];
-                    const pull = bytes[5];
-                    const modeStr = mode === 1 ? "INPUT" : mode === 2 ? "OUTPUT" : "PWM";
-                    html += `<div class="pkt-decoded-item">Config: Mode=<strong>${modeStr}</strong>, Pull=<strong>${pull}</strong></div>`;
-                } else {
-                    html += `<div class="pkt-decoded-item">Response Data: <strong>${respVal}</strong></div>`;
+            if (status === 0 && bytes.length >= 3) {
+                if (cmd_id === 0x22 || cmd_id === 0x23) { // GET_LEVEL, TOGGLE
+                    const val = bytes[2];
+                    html += `<div class="pkt-decoded-item">Level Value: <strong style="color: ${val === 1 ? 'var(--neon-emerald)' : 'var(--text-secondary)'};">${val === 1 ? "HIGH (1)" : "LOW (0)"}</strong></div>`;
+                } else if (cmd_id === 0x28 && bytes.length >= 7) { // GET_CONFIG
+                    const mode = bytes[2];
+                    const pull = bytes[3];
+                    const drive = bytes[4];
+                    const initial_level = bytes[5];
+                    const sig_inversion = bytes[6];
+                    const modeStr = mode === 1 ? "INPUT" : mode === 2 ? "OUTPUT" : mode === 3 ? "PWM" : `Unknown (${mode})`;
+                    const pullStr = pull === 0 ? "NO_PULL" : pull === 1 ? "PULLUP" : pull === 2 ? "PULLDOWN" : `Unknown (${pull})`;
+                    html += `<div class="pkt-decoded-item">Config: Mode=<strong>${modeStr}</strong>, Pull=<strong>${pullStr}</strong>, Drive=<strong>${drive}</strong>, InitLevel=<strong>${initial_level}</strong>, Inverted=<strong>${sig_inversion !== 0}</strong></div>`;
+                } else if (cmd_id === 0x29 && bytes.length >= 5) { // GET_STATE
+                    const current_level = bytes[2];
+                    const intr_registered = bytes[3];
+                    const intr_type = bytes[4];
+                    const intrTypeStr = intr_type === 0 ? "DISABLED" : intr_type === 1 ? "RISING" : intr_type === 2 ? "FALLING" : intr_type === 3 ? "ANY_EDGE" : `Unknown (${intr_type})`;
+                    html += `<div class="pkt-decoded-item">State: Level=<strong>${current_level}</strong>, IntrReg=<strong>${intr_registered !== 0}</strong>, IntrType=<strong>${intrTypeStr}</strong></div>`;
                 }
             }
         }
-        else if (msg_type === 0xD3) { // GPIO_EVT
+
+        // --- 7. GPIO Async Event (0xBE) ---
+        else if (msg_type === 0xBE) { // MXCP_EVT_GPIO_ASYNC
             const event_type = bytes[0];
             const logical_pin = bytes[1];
             const value = bytes[2];
-            const timestamp = bytes[4] | (bytes[5] << 8) | (bytes[6] << 16) | (bytes[7] << 24);
+            let timestamp = 0;
+            if (bytes.length >= 7) {
+                timestamp = bytes[3] | (bytes[4] << 8) | (bytes[5] << 16) | (bytes[6] << 24);
+            } else if (bytes.length >= 8) {
+                timestamp = bytes[4] | (bytes[5] << 8) | (bytes[6] << 16) | (bytes[7] << 24);
+            }
             
             const eventNames = {
                 1: "LEVEL_CHANGE",
@@ -522,11 +599,6 @@ function decodeMxspPacket(msg_type, payloadHex) {
             html += `<div class="pkt-decoded-item">Pin: <strong>${logical_pin}</strong> | Event: <strong>${eventName}</strong></div>`;
             html += `<div class="pkt-decoded-item">Level Value: <strong style="color: ${value === 1 ? 'var(--neon-emerald)' : 'var(--text-secondary)'};">${value === 1 ? "HIGH (1)" : "LOW (0)"}</strong></div>`;
             html += `<div class="pkt-decoded-item">Timestamp: <strong>${timestamp} ms</strong></div>`;
-        }
-        else if (msg_type === 0x03) { // HOSTED_MODE
-            const enable = bytes[0] !== 0;
-            html += `<div class="pkt-decoded-header">Hosted Mode Switch</div>`;
-            html += `<div class="pkt-decoded-item">State: <strong style="color: var(--neon-purple);">${enable ? "ENABLED" : "DISABLED"}</strong></div>`;
         }
         else {
             html += `<div class="pkt-decoded-header">OPCODE 0x${msg_type.toString(16).toUpperCase()}</div>`;
@@ -555,18 +627,54 @@ function renderPackets() {
     packetsTimeline.innerHTML = "";
     state.packets.forEach(p => {
         const div = document.createElement("div");
-        const isIncoming = (p.msg_type === 0xB1 || p.msg_type === 0xB2 || p.msg_type === 0xD2 || p.msg_type === 0xD3);
+        const isIncoming = (p.msg_type & 0x80) !== 0;
         div.className = `packet-item ${isIncoming ? "incoming" : "outgoing"}`;
         
         let typeStr = `OPCODE 0x${p.msg_type.toString(16).toUpperCase()}`;
-        if (p.msg_type === 0xB1) typeStr = "SYS_EVT_NOTIFY (0xB1)";
-        else if (p.msg_type === 0xB2) typeStr = "DATA_EVT_NOTIFY (0xB2)";
-        else if (p.msg_type === 0xC1) typeStr = "EL_CMD_SEND (0xC1)";
-        else if (p.msg_type === 0xC2) typeStr = "SYS_CMD_SEND (0xC2)";
-        else if (p.msg_type === 0xD1) typeStr = "GPIO_CMD (0xD1)";
-        else if (p.msg_type === 0xD2) typeStr = "GPIO_RSP (0xD2)";
-        else if (p.msg_type === 0xD3) typeStr = "GPIO_EVT (0xD3)";
-        else if (p.msg_type === 0x03) typeStr = "HOSTED_MODE (0x03)";
+        const typeNames = {
+            // Commands
+            0x01: "CMD_HOSTED_MODE_ENABLE (0x01)",
+            0x02: "CMD_NODE_RESET (0x02)",
+            0x03: "CMD_GET_COMPOSITION (0x03)",
+            0x04: "CMD_GET_ELEMENT_STATE (0x04)",
+            0x05: "CMD_SET_CONSOLE_ROUTING (0x05)",
+            0x10: "CMD_EL_SEND (0x10)",
+            0x21: "CMD_GPIO_SET_LEVEL (0x21)",
+            0x22: "CMD_GPIO_GET_LEVEL (0x22)",
+            0x23: "CMD_GPIO_TOGGLE (0x23)",
+            0x24: "CMD_GPIO_SET_PWM_DUTY (0x24)",
+            0x25: "CMD_GPIO_SET_PWM_FREQ (0x25)",
+            0x26: "CMD_GPIO_INTR_ENABLE (0x26)",
+            0x27: "CMD_GPIO_INTR_DISABLE (0x27)",
+            0x28: "CMD_GPIO_GET_CONFIG (0x28)",
+            0x29: "CMD_GPIO_GET_STATE (0x29)",
+            // Events
+            0x81: "EVT_PROV_COMP (0x81)",
+            0x82: "EVT_PROV_FAILED (0x82)",
+            0x83: "EVT_PROV_START (0x83)",
+            0x84: "EVT_IDENTIFY_START (0x84)",
+            0x85: "EVT_IDENTIFY_STOP (0x85)",
+            0x86: "EVT_COMPOSITION_RSP (0x86)",
+            0x87: "EVT_ELEMENT_STATE_RSP (0x87)",
+            0x88: "EVT_NODE_RESET_IND (0x88)",
+            0x89: "EVT_HOSTED_MODE_RSP (0x89)",
+            0x8A: "EVT_CONSOLE_ROUTING_RSP (0x8A)",
+            0x90: "EVT_EL_DATA_NOTIFY (0x90)",
+            0xA1: "EVT_GPIO_SET_LEVEL_RSP (0xA1)",
+            0xA2: "EVT_GPIO_GET_LEVEL_RSP (0xA2)",
+            0xA3: "EVT_GPIO_TOGGLE_RSP (0xA3)",
+            0xA4: "EVT_GPIO_SET_PWM_DUTY_RSP (0xA4)",
+            0xA5: "EVT_GPIO_SET_PWM_FREQ_RSP (0xA5)",
+            0xA6: "EVT_GPIO_INTR_ENABLE_RSP (0xA6)",
+            0xA7: "EVT_GPIO_INTR_DISABLE_RSP (0xA7)",
+            0xA8: "EVT_GPIO_GET_CONFIG_RSP (0xA8)",
+            0xA9: "EVT_GPIO_GET_STATE_RSP (0xA9)",
+            0xBE: "EVT_GPIO_ASYNC (0xBE)",
+            0xBF: "EVT_GPIO_ERROR (0xBF)"
+        };
+        if (typeNames[p.msg_type]) {
+            typeStr = typeNames[p.msg_type];
+        }
         
         const directionLabel = isIncoming 
             ? `<span style="color: var(--neon-emerald); font-size: 0.7rem; font-weight: 800; text-transform: uppercase;"><i class="fa-solid fa-cloud-arrow-down"></i> Incoming Telemetry</span>`

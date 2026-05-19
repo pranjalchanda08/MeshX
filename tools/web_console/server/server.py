@@ -107,15 +107,19 @@ class AsyncSerialWorker:
             logger.warning(f"Target ELF not found at resolved path: {target_elf}")
             self.decoder = None
 
-    def start(self):
+    async def start(self):
         if self.running:
             return
         self.running = True
+        self.loop = asyncio.get_running_loop()
         try:
-            self.ser = serial.Serial(self.port, self.baudrate, timeout=0.1)
+            # Run blocking Serial operations in executor
+            self.ser = await self.loop.run_in_executor(
+                None, lambda: serial.Serial(self.port, self.baudrate, timeout=0.1)
+            )
             # Send ASCII CLI command to shift the MXCP channel over the active console log channel
-            self.ser.write(b"ut 8 1 1 1\n")
-            time.sleep(0.2)
+            await self.loop.run_in_executor(None, self.ser.write, b"ut 8 1 1 1\n")
+            await asyncio.sleep(0.2)
             # Send dynamic Hosted switch activation binary frame using structured helper
             self.send_cmd(0x01, bytes([0x01]))
             logger.info(f"Serial port {self.port} opened successfully.")
@@ -369,8 +373,23 @@ class AsyncSerialWorker:
         self.subscriptions.discard(websocket)
 
     def broadcast(self, event: dict):
-        # We run it safely as asyncio call
-        asyncio.create_task(self._async_broadcast(event))
+        if not self.running:
+            return
+        if hasattr(self, "loop") and self.loop and self.loop.is_running():
+            try:
+                current_loop = asyncio.get_running_loop()
+                if current_loop == self.loop:
+                    self.loop.create_task(self._async_broadcast(event))
+                    return
+            except RuntimeError:
+                pass
+            asyncio.run_coroutine_threadsafe(self._async_broadcast(event), self.loop)
+        else:
+            try:
+                loop = asyncio.get_running_loop()
+                loop.create_task(self._async_broadcast(event))
+            except RuntimeError:
+                logger.error("Cannot broadcast event: no running event loop found.")
 
     async def _async_broadcast(self, event: dict):
         disconnected = []
@@ -403,16 +422,19 @@ class AsyncSerialWorker:
             self.ser = None
         logger.info(f"Serial port {self.port} paused.")
 
-    def resume(self):
+    async def resume(self):
         """Reopen the serial port and resume the read loop."""
         if self.running:
             return
         self.running = True
+        self.loop = asyncio.get_running_loop()
         try:
-            self.ser = serial.Serial(self.port, self.baudrate, timeout=0.1)
+            self.ser = await self.loop.run_in_executor(
+                None, lambda: serial.Serial(self.port, self.baudrate, timeout=0.1)
+            )
             # Send ASCII CLI command to shift the MXCP channel over the active console log channel
-            self.ser.write(b"ut 8 1 1 1\n")
-            time.sleep(0.2)
+            await self.loop.run_in_executor(None, self.ser.write, b"ut 8 1 1 1\n")
+            await asyncio.sleep(0.2)
             # Send dynamic Hosted switch activation binary frame using structured helper
             self.send_cmd(0x01, bytes([0x01]))
             logger.info(f"Serial port {self.port} resumed successfully.")
@@ -550,7 +572,7 @@ async def run_flash_subprocess(worker: AsyncSerialWorker, port: str, bsp: str, p
             "type": "text",
             "data": "[System] >>> Resuming serial monitoring...\n\n"
         })
-        worker.resume()
+        await worker.resume()
 
 @app.get("/api/config-metadata")
 def get_config_metadata():
@@ -693,21 +715,21 @@ async def flash_custom_config(port: str, bsp: str, product: str):
                 "type": "text",
                 "data": "[System] >>> Resuming serial monitoring...\n\n"
             })
-            worker.resume()
+            await worker.resume()
 
     asyncio.create_task(run_cfg_flash())
     return {"status": "success", "message": "Configuration flashing started."}
 
 @app.post("/api/port/connect")
-def connect_port(port: str):
+async def connect_port(port: str):
     if port not in active_workers:
         worker = AsyncSerialWorker(port)
-        worker.start()
+        await worker.start()
         active_workers[port] = worker
     return {"status": "success", "port": port}
 
 @app.post("/api/gpio/command")
-def send_gpio_command(port: str, pin: int, cmd: int, value: int = 0):
+async def send_gpio_command(port: str, pin: int, cmd: int, value: int = 0):
     if port not in active_workers:
         raise HTTPException(status_code=404, detail="Serial port not connected")
 
@@ -731,7 +753,7 @@ def send_gpio_command(port: str, pin: int, cmd: int, value: int = 0):
     return {"status": "success"}
 
 @app.post("/api/cli/send")
-def send_cli_command(port: str, command: str):
+async def send_cli_command(port: str, command: str):
     if port not in active_workers:
         raise HTTPException(status_code=404, detail="Serial port not connected")
 
@@ -740,7 +762,7 @@ def send_cli_command(port: str, command: str):
     return {"status": "success"}
 
 @app.post("/api/mxcp/enable")
-def enable_mxcp(port: str):
+async def enable_mxcp(port: str):
     if port not in active_workers:
         raise HTTPException(status_code=404, detail="Serial port not connected")
 
@@ -748,11 +770,11 @@ def enable_mxcp(port: str):
     if worker.ser and worker.ser.is_open:
         # 1. Send ASCII CLI command
         worker.ser.write(b"ut 8 1 1 1\n")
-        time.sleep(0.25)
+        await asyncio.sleep(0.25)
         # 2. Send dynamic Hosted switch activation binary frame using structured helper
         worker.send_cmd(0x01, bytes([0x01]))
 
-        time.sleep(0.15)
+        await asyncio.sleep(0.15)
         worker.send_cmd(0x03, b'')
 
         return {"status": "success", "message": "MXCP Routing enabled and Element Composition requested."}
@@ -760,7 +782,7 @@ def enable_mxcp(port: str):
         raise HTTPException(status_code=500, detail="Serial port is closed or invalid")
 
 @app.post("/api/composition/request")
-def request_composition(port: str):
+async def request_composition(port: str):
     if port not in active_workers:
         raise HTTPException(status_code=404, detail="Serial port not connected")
 
@@ -774,7 +796,7 @@ async def websocket_endpoint(websocket: WebSocket, port: str = Query(...)):
 
     if port not in active_workers:
         worker = AsyncSerialWorker(port)
-        worker.start()
+        await worker.start()
         active_workers[port] = worker
     else:
         worker = active_workers[port]
@@ -871,12 +893,12 @@ frontend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../front
 if os.path.exists(frontend_dir):
     @app.get("/")
     def get_index():
-        return FileResponse(os.path.join(frontend_dir, "index.html"))
+        return FileResponse(os.path.join(frontend_dir, "index.html"), headers={"Cache-Control": "no-cache"})
 
     @app.get("/index.css")
     def get_css():
-        return FileResponse(os.path.join(frontend_dir, "index.css"))
+        return FileResponse(os.path.join(frontend_dir, "index.css"), headers={"Cache-Control": "no-cache"})
 
     @app.get("/app.js")
     def get_js():
-        return FileResponse(os.path.join(frontend_dir, "app.js"))
+        return FileResponse(os.path.join(frontend_dir, "app.js"), headers={"Cache-Control": "no-cache, no-store, must-revalidate"})
