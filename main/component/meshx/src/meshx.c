@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "interface/utils/meshx_tiny_printf.h"
+#include "interface/gpio/meshx_gpio.h"
 
 /**
  * @def ROOT_ELEMENT_IDX
@@ -290,6 +291,10 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     /* Initialize Unified Vendor Protocol Dispatcher */
     err = meshx_uvp_dispatcher_init();
     MESHX_ERR_PRINT_RET("UVP Dispatcher Init failed", err);
+
+    /* Initialize GPIO subsystem */
+    err = meshx_gpio_init();
+    MESHX_ERR_PRINT_RET("GPIO Init failed", err);
 
     /* Initialize MeshX NVS */
     err = meshx_nvs_init();
