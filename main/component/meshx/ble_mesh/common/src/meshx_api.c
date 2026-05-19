@@ -9,6 +9,7 @@
  * @author Pranjal Chanda
  */
 #include <meshx_api.h>
+#include "meshx_mxcp.h"
 
 #define MESSAGE_BUFF_CLEAR(buff)        memset(&buff, 0, sizeof(buff))
 
@@ -128,16 +129,29 @@ static meshx_err_t meshx_prepare_ctrl_message(meshx_ctrl_evt_t evt, uint16_t msg
  */
 meshx_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg)
 {
-    meshx_err_t err = MESHX_SUCCESS;
+    mxcp_evt_el_data_notify_t hdr;
+    hdr.element_id = element_id;
+    hdr.element_type = element_type;
+    hdr.func_id = func_id;
+    hdr.msg_len = msg_len;
+    uint8_t buf[sizeof(hdr) + msg_len];
+    memcpy(buf, &hdr, sizeof(hdr));
+    if (msg_len > 0 && msg != NULL) {
+        memcpy(buf + sizeof(hdr), msg, msg_len);
+    }
+    mxcp_send_event(MXCP_EVT_EL_DATA_NOTIFY, buf, (uint8_t)(sizeof(hdr) + msg_len));
 
-    err = meshx_prepare_data_message(element_id, element_type, func_id, msg_len,msg);
-    if(err)
+    meshx_err_t err = meshx_prepare_data_message(element_id, element_type, func_id, msg_len, msg);
+    if (err) {
         MESHX_LOGE(MODULE_ID_COMMON, "Failed to create message: (0x%x)", err);
+        return err;
+    }
 
-    err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_APP, CONTROL_TASK_MSG_EVT_DATA, &meshx_api_ctrl.msg_buff, sizeof(meshx_app_api_msg_t));
-    if(err)
+    err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_APP, CONTROL_TASK_MSG_EVT_DATA,
+                                   &meshx_api_ctrl.msg_buff, sizeof(meshx_app_api_msg_t));
+    if (err) {
         MESHX_LOGE(MODULE_ID_COMMON, "Failed to send message to app: (0x%x)", err);
-
+    }
     return err;
 }
 
@@ -154,16 +168,43 @@ meshx_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, ui
  */
 meshx_err_t meshx_send_ctrl_msg_to_app(meshx_ctrl_evt_t evt, uint16_t msg_len, const void *msg)
 {
-    meshx_err_t err = MESHX_SUCCESS;
+    mxcp_evt_id_t mxcp_evt;
+    switch (evt) {
+        case MESHX_CTRL_EVT_NODE_RESET:
+            mxcp_evt = MXCP_EVT_NODE_RESET_IND;
+            break;
+        case MESHX_CTRL_EVT_PROV_COMP:
+            mxcp_evt = MXCP_EVT_PROV_COMP;
+            break;
+        case MESHX_CTRL_EVT_PROV_FAILED:
+            mxcp_evt = MXCP_EVT_PROV_FAILED;
+            break;
+        case MESHX_CTRL_EVT_PROV_START:
+            mxcp_evt = MXCP_EVT_PROV_START;
+            break;
+        case MESHX_CTRL_EVT_IDENTIFY_START:
+            mxcp_evt = MXCP_EVT_IDENTIFY_START;
+            break;
+        case MESHX_CTRL_EVT_IDENTIFY_STOP:
+            mxcp_evt = MXCP_EVT_IDENTIFY_STOP;
+            break;
+        default:
+            mxcp_evt = (mxcp_evt_id_t)evt;
+            break;
+    }
+    mxcp_send_event(mxcp_evt, (const uint8_t *)msg, (uint8_t)msg_len);
 
-    err = meshx_prepare_ctrl_message(evt, msg_len, msg);
-    if(err)
+    meshx_err_t err = meshx_prepare_ctrl_message(evt, msg_len, msg);
+    if (err) {
         MESHX_LOGE(MODULE_ID_COMMON, "Failed to create ctrl message: (0x%x)", err);
+        return err;
+    }
 
-    err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_APP, CONTROL_TASK_MSG_EVT_CTRL, &meshx_api_ctrl.msg_buff, sizeof(meshx_app_api_msg_t));
-    if(err)
+    err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_APP, CONTROL_TASK_MSG_EVT_CTRL,
+                                   &meshx_api_ctrl.msg_buff, sizeof(meshx_app_api_msg_t));
+    if (err) {
         MESHX_LOGE(MODULE_ID_COMMON, "Failed to send ctrl message to app: (0x%x)", err);
-
+    }
     return err;
 }
 

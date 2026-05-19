@@ -6,6 +6,7 @@
 #include "meshx_uvp_dispatcher.hpp"
 #include "meshx_element_registry.hpp"
 #include "meshx_element_class.hpp"
+#include <meshx_api.h>
 
 #include <map>
 
@@ -91,6 +92,48 @@ static meshx_err_t uvp_unified_dispatcher_cb(dev_struct_t *pdev,
     return element->on_model_cb(payload, payload_len, &uvp_ctx);
 }
 
+/**
+ * @brief Dispatcher callback for local host serial commands.
+ *
+ * This callback is triggered when the host sends local commands via serial
+ * line (CONTROL_TASK_MSG_CODE_TO_MESHX).
+ */
+static meshx_err_t uvp_app_command_cb(dev_struct_t *pdev,
+                                      control_task_msg_evt_t evt,
+                                      void *params,
+                                      uint16_t params_len)
+{
+    MESHX_UNUSED(pdev);
+    MESHX_UNUSED(evt);
+
+    if (!params || params_len < sizeof(meshx_app_api_msg_t)) {
+        MESHX_LOGE(MODULE_ID_COMMON, "UVP App Command Dispatcher: Invalid parameters!");
+        return MESHX_INVALID_ARG;
+    }
+
+    meshx_app_api_msg_t *p_msg = (meshx_app_api_msg_t *)params;
+    uint16_t el_id = p_msg->msg_type_u.element_msg.element_id;
+    uint16_t msg_len = p_msg->msg_type_u.element_msg.msg_len;
+
+    /* Find the targeted element in the registry using the element index */
+    meshXElementIF* element = meshXElementRegistry::get_instance().find_element(el_id);
+    if (!element) {
+        MESHX_LOGW(MODULE_ID_COMMON, "UVP App Command Dispatcher: No element registered at index %d", el_id);
+        return MESHX_NOT_FOUND;
+    }
+
+    /* Populate a dummy UVP routing context to satisfy the element callbacks */
+    meshx_uvp_ctx_t uvp_ctx = {
+        .src_addr = 0x0001, /* Host identifier */
+        .dst_addr = 0x0000,
+        .tid      = 0,
+        .ack_req  = false
+    };
+
+    /* Pass the local serial parameters payload directly to the element's callback */
+    return element->on_model_cb(p_msg->data, msg_len, &uvp_ctx);
+}
+
 extern "C" meshx_err_t meshx_uvp_dispatcher_init(void)
 {
     MESHX_LOGI(MODULE_ID_COMMON, "Initializing Unified UVP Dispatcher");
@@ -98,9 +141,28 @@ extern "C" meshx_err_t meshx_uvp_dispatcher_init(void)
     /*
      * Subscribe to the vendor model ID (MESHX_MODEL_ID_UVP) on the BLE message path.
      */
-    return control_task_msg_subscribe(
+    meshx_err_t err = control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_FRM_BLE,
         MESHX_MODEL_ID_UVP,
         (control_task_msg_handle_t)uvp_unified_dispatcher_cb
     );
+    if (err != MESHX_SUCCESS) {
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to subscribe to BLE UVP messages: %d", err);
+        return err;
+    }
+
+    /*
+     * Subscribe to the local host serial commands (CONTROL_TASK_MSG_CODE_TO_MESHX).
+     */
+    err = control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_TO_MESHX,
+        CONTROL_TASK_MSG_EVT_DATA,
+        (control_task_msg_handle_t)uvp_app_command_cb
+    );
+    if (err != MESHX_SUCCESS) {
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to subscribe to local host UVP commands: %d", err);
+        return err;
+    }
+
+    return MESHX_SUCCESS;
 }

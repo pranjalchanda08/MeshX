@@ -21,7 +21,7 @@ static const meshx_config_t meshx_config = {
     .app_ctrl_cb            = &meshx_app_ctrl_cb,
     .app_element_cb         = &meshx_app_data_cb,
     .meshx_nvs_save_period  = CONFIG_MESHX_NVS_SAVE_PERIOD_MS,
-    .meshx_log_level        = MESHX_LOG_INFO,
+    .meshx_log_level        = MESHX_LOG_VERBOSE,
 };
 
 /**
@@ -46,9 +46,6 @@ static meshx_err_t meshx_app_data_cb(const meshx_app_element_msg_header_t *msg_h
 {
     if (!msg_hdr || !data_payload_u)
         return MESHX_INVALID_ARG;
-
-    /* Forward to Serial Host if enabled */
-    mxsp_send_data_event(msg_hdr, data_payload_u);
 
     switch (msg_hdr->element_type)
     {
@@ -105,9 +102,6 @@ static meshx_err_t meshx_app_ctrl_cb(const meshx_ctrl_msg_header_t *msg_hdr, con
         return MESHX_INVALID_ARG;
 
     MESHX_LOGI(MODULE_ID_COMMON, "Control Event Received: ID %d", msg_hdr->evt_id);
-
-    /* Forward to Serial Host if enabled */
-    mxsp_send_ctrl_event(msg_hdr, msg);
 
     return MESHX_SUCCESS;
 }

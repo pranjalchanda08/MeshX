@@ -133,7 +133,7 @@ static void vmeshx_log_packet(module_id_t module_id, meshx_log_level_t log_level
                               const char *file, int line_no, const char *fmt, va_list args)
 {
     /* Validate module ID and log level */
-    if (module_id >= MODULE_ID_MAX || log_level < meshx_logging_ctrl.def_log_level ||
+    if (module_id >= MODULE_ID_MAX || log_level > meshx_logging_ctrl.def_log_level ||
         module_log_level[module_id] < log_level)
     {
         return;

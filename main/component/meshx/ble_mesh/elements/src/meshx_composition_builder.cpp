@@ -11,6 +11,7 @@
 #include <meshx_device.hpp>
 #include <variants/meshx_root_element.hpp>
 #include <variants/meshx_uvp_element.hpp>
+#include <meshx_serial.h>
 
 // Removed std::map for embedded footprint and performance
 
@@ -107,6 +108,20 @@ meshx_err_t meshx_builder_bake(dev_struct_t *pdev, uint16_t cid, uint16_t pid, u
     return err;
 }
 
+/**
+ * @brief Add elements to the composition using the builder.
+ * This is a C-friendly wrapper that can be called from C code to add elements before baking.
+ *
+ * @param type Element type (meshx_element_type_t)
+ * @param count Number of elements of this type to add
+ *
+ * Note: This function can be called multiple times before commit() to add different types and counts of elements.
+ * Example usage:
+ *  meshx_builder_add_element(MESHX_ELEMENT_TYPE_RELAY_SERVER, 2);
+ *  meshx_builder_add_element(MESHX_ELEMENT_TYPE_SENSOR_SERVER, 1);
+ *  meshx_builder_commit();
+ *
+ */
 void meshx_builder_add_element(meshx_element_type_t type, uint16_t count) {
     meshXCompositionBuilder builder;
     switch(type) {
@@ -147,6 +162,89 @@ void meshx_builder_begin(void) {
 void meshx_builder_commit(void) {
     meshXCompositionBuilder builder;
     builder.commit();
+}
+
+/**
+ * @brief Get element composition data for all elements in the composition
+ * This is used to sync the composition structure with the host during initialization.
+ *
+ * @param buf Buffer to write the composition data into
+ * @param max_len Maximum length of the buffer
+ * @return Number of bytes written to the buffer
+ */
+size_t meshx_get_element_composition_data(uint8_t *buf, size_t max_len) {
+    if (!buf || max_len < 2) return 0;
+
+    auto& comp = meshXComposition::get_instance();
+    auto& elements = comp.get_elements();
+
+    buf[0] = (uint8_t)elements.size();
+    size_t offset = 1;
+
+    for (const auto& el : elements) {
+        if (!el) continue;
+
+        const char* name = el->get_element_name();
+        size_t name_len = strlen(name) + 1;
+        if (offset + sizeof(mxcp_comp_entry_header_t) + name_len > max_len) {
+            break;
+        }
+
+        mxcp_comp_entry_header_t entry;
+        entry.idx = el->get_element_idx();
+        entry.variant = (uint16_t)el->get_element_variant();
+        entry.type = (uint16_t)el->get_element_type();
+
+        memcpy(&buf[offset], &entry, sizeof(entry));
+        offset += sizeof(entry);
+        memcpy(&buf[offset], name, name_len);
+        offset += name_len;
+    }
+
+    return offset;
+}
+
+/**
+ * @brief Get element state data for all elements in the composition
+ * This is used to sync the current state of the composition with the host during initialization.
+ *
+ * @param buf Buffer to write the state data into
+ * @param max_len Maximum length of the buffer
+ * @return Number of bytes written to the buffer
+ */
+size_t meshx_get_element_state_data(uint8_t *buf, size_t max_len) {
+    if (!buf || max_len < 2) return 0;
+
+    auto& comp = meshXComposition::get_instance();
+    auto& elements = comp.get_elements();
+
+    buf[0] = (uint8_t)elements.size();
+    size_t offset = 1;
+
+    for (const auto& el : elements) {
+        if (!el) continue;
+
+        size_t ctx_size = el->get_element_ctx_size();
+
+        if (offset + sizeof(mxcp_state_entry_header_t) + ctx_size > max_len) {
+            break;
+        }
+
+        mxcp_state_entry_header_t entry;
+        entry.idx = el->get_element_idx();
+        entry.variant = (uint16_t)el->get_element_variant();
+        entry.ctx_size = (uint16_t)ctx_size;
+
+        memcpy(&buf[offset], &entry, sizeof(entry));
+        offset += sizeof(entry);
+
+        if (ctx_size > 0 && el->get_element_ctx()) {
+            memcpy(&buf[offset], el->get_element_ctx(), ctx_size);
+            offset += ctx_size;
+        }
+    }
+
+    return offset;
 }
 
 } /* extern "C" */
