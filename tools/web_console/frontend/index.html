@@ -26,11 +26,35 @@
             </div>
             
             <div class="port-selector-container">
-                <label for="port-select"><i class="fa-solid fa-plug"></i> Serial Port:</label>
-                <select id="port-select">
-                    <option value="">Scan for ports...</option>
-                </select>
-                <button id="connect-btn" class="btn btn-primary"><i class="fa-solid fa-link"></i> Connect</button>
+                <div class="selector-group connection-group">
+                    <label for="port-select"><i class="fa-solid fa-plug"></i> Serial Port:</label>
+                    <select id="port-select">
+                        <option value="">Scan for ports...</option>
+                    </select>
+                    <button id="connect-btn" class="btn btn-primary"><i class="fa-solid fa-link"></i> Connect</button>
+                    <button id="mxcp-shift-btn" class="btn" style="color: #fff; background: linear-gradient(135deg, #8A2BE2, #4B0082); border: none; font-weight: 600; display: none;" title="Shift MXCP Channel over Console via 'ut 8 1 1 1'"><i class="fa-solid fa-shuffle"></i> Enable MXCP</button>
+                </div>
+                
+                <div class="header-divider"></div>
+                
+                <div class="selector-group flash-group">
+                    <label for="bsp-select"><i class="fa-solid fa-microchip icon-cyan"></i> BSP:</label>
+                    <select id="bsp-select">
+                        <option value="">Select BSP...</option>
+                    </select>
+
+                    <label for="profile-select"><i class="fa-solid fa-box icon-emerald"></i> Profile:</label>
+                    <select id="profile-select" disabled>
+                        <option value="">Select Product...</option>
+                    </select>
+
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="erase-flash-chk">
+                        <span class="checkmark chk-flash"></span> Erase
+                    </label>
+                    <button id="flash-btn" class="btn btn-secondary flash-btn" disabled title="Flash firmware binary"><i class="fa-solid fa-bolt"></i> Flash Firmware</button>
+                    <button id="flash-mxc-btn" class="btn btn-secondary btn-config-flash" disabled title="Flash custom configuration"><i class="fa-solid fa-arrow-up-from-bracket"></i> Flash Config</button>
+                </div>
             </div>
         </header>
 
@@ -42,76 +66,50 @@
                 <div class="card-header">
                     <div class="title-wrap">
                         <i class="fa-solid fa-network-wired header-icon icon-emerald"></i>
-                        <h2>BLE Mesh topography</h2>
+                        <h2>BLE Mesh Topography</h2>
                     </div>
-                    <span class="live-pulse"></span>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <button id="refresh-composition-btn" class="btn btn-secondary btn-icon" title="Refresh dynamic elements composition"><i class="fa-solid fa-arrows-rotate"></i></button>
+                        <span class="live-pulse"></span>
+                    </div>
                 </div>
                 <div class="card-content">
                     <div class="topo-viewport" id="topo-viewport">
                         <!-- Discovered nodes will be rendered here dynamically -->
                         <div class="empty-state">
                             <i class="fa-solid fa-satellite-dish"></i>
-                            <p>No active BLE Mesh nodes detected.<br>Connect to start auto-discovery.</p>
+                            <p>Serial port offline.<br>Connect to start BLE Mesh auto-discovery.</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- GPIO Live Pipeline -->
-            <section class="card gpio-card glass-panel">
+            <!-- MXCP OEM Commands Table -->
+            <section class="card mxcp-card glass-panel">
                 <div class="card-header">
                     <div class="title-wrap">
-                        <i class="fa-solid fa-microchip header-icon icon-amber"></i>
-                        <h2>GPIO Live Pipeline</h2>
+                        <i class="fa-solid fa-sliders header-icon icon-amber"></i>
+                        <h2>MXCP OEM Element Commands</h2>
                     </div>
                 </div>
                 <div class="card-content">
-                    <div class="gpio-grid" id="gpio-grid">
-                        <!-- Dynamic GPIO pins will render here -->
-                        <div class="gpio-item input-pin">
-                            <span class="pin-num">Pin 12</span>
-                            <span class="pin-tag tag-input">INPUT</span>
-                            <span class="status-indicator-light light-off"></span>
-                            <span class="pin-label">Button 1</span>
-                        </div>
-                        <div class="gpio-item output-pin">
-                            <span class="pin-num">Pin 23</span>
-                            <span class="pin-tag tag-output">OUTPUT</span>
-                            <span class="status-indicator-light light-on animate-pulse-glow"></span>
-                            <span class="pin-label">Relay 1</span>
-                            <button class="pin-toggle-btn" onclick="togglePin(23)"><i class="fa-solid fa-power-off"></i></button>
-                        </div>
-                        <div class="gpio-item pwm-pin">
-                            <span class="pin-num">Pin 25</span>
-                            <span class="pin-tag tag-pwm">PWM</span>
-                            <div class="pwm-meter-container">
-                                <div class="pwm-bar-fill" style="width: 65%;"></div>
-                                <span class="pwm-percent">65%</span>
-                            </div>
-                            <span class="pin-label">LED Dimmer</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Packet Dissector Timeline -->
-            <section class="card packets-card glass-panel">
-                <div class="card-header">
-                    <div class="title-wrap">
-                        <i class="fa-solid fa-arrow-right-arrow-left header-icon icon-purple"></i>
-                        <h2>Packet Dissector Timeline</h2>
-                    </div>
-                    <div class="actions">
-                        <button id="clear-packets-btn" class="btn btn-icon"><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
-                </div>
-                <div class="card-content">
-                    <div class="packets-timeline" id="packets-timeline">
-                        <!-- Packet items will render here -->
-                        <div class="empty-state">
-                            <i class="fa-solid fa-receipt"></i>
-                            <p>Listening for active binary MXSP stream packets...</p>
-                        </div>
+                    <div class="mxcp-table-container">
+                        <table class="mxcp-table">
+                            <thead>
+                                <tr>
+                                    <th>Element</th>
+                                    <th>Type</th>
+                                    <th>Function</th>
+                                    <th>Action / Control</th>
+                                    <th>Status Reply</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mxcp-commands-tbody">
+                                <tr class="empty-row">
+                                    <td colspan="5" style="text-align: center; color: var(--text-secondary);">No active elements composition retrieved. Click "Enable MXCP" and "Refresh Topography".</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </section>
@@ -144,6 +142,27 @@
                 <div class="card-content">
                     <div class="terminal-body" id="log-terminal">
                         <!-- Logs stream here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Packet Dissector Timeline -->
+            <section class="card packets-card glass-panel">
+                <div class="card-header">
+                    <div class="title-wrap">
+                        <i class="fa-solid fa-arrow-right-arrow-left header-icon icon-purple"></i>
+                        <h2>Packet Dissector Timeline</h2>
+                    </div>
+                    <div class="actions">
+                        <button id="clear-packets-btn" class="btn btn-icon"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="packets-timeline" id="packets-timeline">
+                        <div class="empty-state">
+                            <i class="fa-solid fa-receipt"></i>
+                            <p>Listening for active binary MXSP stream packets...</p>
+                        </div>
                     </div>
                 </div>
             </section>

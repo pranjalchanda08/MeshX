@@ -15,6 +15,8 @@
 #include "interface/meshx_platform.h"
 #include <stdlib.h>
 
+extern void meshx_serial_set_hosted_mode(bool enabled);
+
 #if CONFIG_ENABLE_UNIT_TEST
 
 #define UT_CMD_MIN_ARGS 4
@@ -91,6 +93,7 @@ static meshx_err_t common_unit_test_cb_handler(int cmd_id, int argc, char **argv
         }
         int enable = atoi(argv[0]);
         meshx_platform_set_mxsp_use_console(enable == 1);
+        meshx_serial_set_hosted_mode(enable == 1);
         MESHX_LOGI(MODULE_ID_COMMON, "MXSP Serial routing target updated: %s",
                    (enable == 1) ? "Console (USB CDC)" : "UART1");
         return MESHX_SUCCESS;

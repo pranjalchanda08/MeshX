@@ -223,14 +223,28 @@ class CodeGen(CodeGenException):
         enum_str = "\n/**\n * @brief Auto-generated Element Types\n */\n"
         enum_str += "typedef enum meshx_element_type\n{\n"
         
-        for name in elements_profile.keys():
+        clients = []
+        for name, info in elements_profile.items():
             # Convert name to uppercase and prefix with MESHX_ELEMENT_TYPE_
             enum_name = "MESHX_ELEMENT_TYPE_" + name.upper()
             enum_str += f"    {enum_name},\n"
             
+            # Check if this element variant represents a client
+            path = info.get('path', '')
+            if "client" in path or "client" in name:
+                clients.append(enum_name)
+            
         enum_str += "    MESHX_ELEMENT_TYPE_MAX,\n"
         enum_str += "    MESHX_ELEMENT_TYPE_ALL = 0xFF\n"
         enum_str += "} meshx_element_type_t;\n\n"
+        
+        # Dynamically generate client detection macro
+        enum_str += "/**\n * @brief Check if element variant is a Client\n */\n"
+        enum_str += "#define MESHX_ELEMENT_TYPE_IS_CLIENT(variant) \\\n"
+        if clients:
+            enum_str += "    (" + " || \\\n     ".join([f"((variant) == {c})" for c in clients]) + ")\n\n"
+        else:
+            enum_str += "    (false)\n\n"
         
         self.file_insert += enum_str
 
