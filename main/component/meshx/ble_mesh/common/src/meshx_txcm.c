@@ -606,7 +606,7 @@ static void meshx_txcm_task_handler(const dev_struct_t *args)
         err = g_sig_proc_table[request.request_type](&request);
         if(err)
         {
-            MESHX_LOGE(MODULE_ID_TXCM, "Failed to process the request (%p): %p",(void*)request.request_type, (void *)err);
+            MESHX_LOGE(MODULE_ID_TXCM, "Failed to process the request (0x%x): 0x%x", request.request_type, err);
         }
     }
 }
