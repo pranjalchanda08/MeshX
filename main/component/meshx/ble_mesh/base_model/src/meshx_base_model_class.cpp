@@ -95,7 +95,7 @@ meshx_err_t meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::from_ble_reg_cb(void) con
     }
 
     registrations.push_front({model_id, 1});
-    MESHX_LOGD(MODULE_ID_COMMON, "meshXBaseModel[%08" PRIx32 "] First registration, subscribing callback %p", model_id, from_ble_cb);
+    MESHX_LOGD(MODULE_ID_COMMON, "meshXBaseModel[%08" PRIx32 "] First registration, subscribing callback 0x%x", model_id, from_ble_cb);
     return control_task_msg_subscribe(CONTROL_TASK_MSG_CODE_FRM_BLE, model_id, from_ble_cb);
 }
 

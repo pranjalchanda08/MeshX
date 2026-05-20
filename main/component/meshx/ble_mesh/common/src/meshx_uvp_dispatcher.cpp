@@ -8,6 +8,10 @@
 #include "meshx_element_class.hpp"
 #include <meshx_api.h>
 
+#if CONFIG_TXCM_ENABLE
+#include <meshx_txcm.h>
+#endif
+
 #include <map>
 
 /**
@@ -46,6 +50,11 @@ static meshx_err_t uvp_unified_dispatcher_cb(dev_struct_t *pdev,
     control_task_uvp_meta_t *p_meta = (control_task_uvp_meta_t *)params;
     uint16_t src_addr = p_meta->src_addr;
     meshx_uvp_header_t *uvp_header = &p_meta->uvp_header;
+
+#if CONFIG_TXCM_ENABLE
+    /* Notify TXCM that we received a packet from src_addr, which serves as an ACK to clear the queue */
+    meshx_txcm_request_send(MESHX_TXCM_SIG_ACK, src_addr, nullptr, 0, nullptr);
+#endif
 
     /* Calculate actual payload pointer and length */
     void *payload = (uint8_t *)params + sizeof(control_task_uvp_meta_t);
