@@ -17,6 +17,8 @@ This document is organized as a multi-page Technical Reference. Each page covers
 
 ## Document Pages
 
+> 📖 Full TRM with navigation: **[docs/arch_diag/trm/README.md](../../docs/arch_diag/trm/README.md)**
+
 | # | Page | Topics Covered |
 |---|------|---------------|
 | 1 | [System Overview & Layered Architecture](../../docs/arch_diag/trm/01_system_overview.md) | Node roles, stack diagram, data flow sequences |
@@ -26,15 +28,19 @@ This document is organized as a multi-page Technical Reference. Each page covers
 | 5 | [TXCM — Transmission Control Module](../../docs/arch_diag/trm/05_txcm.md) | Reliability, retry state machine, key functions |
 | 6 | [State Persistence Strategy](../../docs/arch_diag/trm/06_state_persistence.md) | KV engine, NVS commit, key format, flash layout |
 | 7 | [Hardware Abstraction Layer (HAL)](../../docs/arch_diag/trm/07_hal.md) | GPIO/PWM abstraction, hosted mode, IO class hierarchy |
-| 8 | [Protocol Design — TLV Engine](../../docs/arch_diag/trm/08_tlv_protocol.md) | Frame format, tag namespace, TID mechanism, examples |
+| 8 | [UVP Protocol & TLV Engine](../../docs/arch_diag/trm/08_tlv_protocol.md) | Frame format, tag namespace, TID mechanism, examples |
 | 9 | [Composition & Element Discovery](../../docs/arch_diag/trm/09_composition.md) | Builder API, product profiles, EL_TYPE_ID discovery |
-| 10 | [Hosted Mode & MXSP Serial Protocol](../../docs/arch_diag/trm/10_hosted_mode.md) | Co-processor mode, MXSP frame format, MSG_TYPEs |
+| 10 | [MXCP — Binary Host Protocol](../../docs/arch_diag/trm/10_mxcp_protocol.md) | Frame structure, CMD/EVT namespace, dispatch table |
 | 11 | [Read-Only Persistent Configuration](../../docs/arch_diag/trm/11_ro_config.md) | meshx_cfg partition, Nanopb layout, fallback flow |
 | 12 | [Hardware Platform Reference](../../docs/arch_diag/trm/12_hardware_platform.md) | ESP32-C3 specs, BSPs, memory budget, partition map |
 | 13 | [Decommissioning & Flash Reclamation](../../docs/arch_diag/trm/13_decommissioning.md) | SIG models removed, template elimination analysis |
 | 14 | [Error Codes Reference](../../docs/arch_diag/trm/14_error_codes.md) | All error codes by domain, error handling pattern |
 | 15 | [Configuration Reference](../../docs/arch_diag/trm/15_configuration.md) | Compile-time macros, runtime config struct, NFR traceability |
-| 16 | [Architectural Memory Impact Analysis](../../docs/arch_diag/trm/16_memory_impact.md) | Post-refactor Flash/RAM savings, template elimination analysis |
+| 16 | [Memory Impact Analysis](../../docs/arch_diag/trm/16_memory_impact.md) | Post-refactor Flash/RAM delta, template elimination |
+| 17 | [Logical Models & MXCP Testing](../../docs/arch_diag/trm/17_logical_models_testing.md) | `device.py` interfaces, L0 test suite, binary frame injection |
+| 18 | [Web Console & USB CDC Multiplexing](../../docs/arch_diag/trm/18_web_console.md) | Dynamic stream routing, host demux parser, UI data flow |
+| 19 | [ELF-Based Binary Logging](../../docs/arch_diag/trm/19_elf_logging.md) | Non-loadable log section, TLV encoding, host-side decoder |
+| 20 | [UVP Routing & ACK Architecture](../../docs/arch_diag/trm/20_uvp_routing.md) | `meshx_uvp_ctx_t`, dual-routing, func_id wire encoding |
 
 ---
 
