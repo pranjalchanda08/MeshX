@@ -42,6 +42,13 @@ extern "C" {
 /* MeshX Function ID Sensor Server */
 #define MESHX_ELEMENT_FUNC_ID_SENSOR_SERVER_DATA            0x00
 
+/* MeshX Function ID Sensor Client */
+#define MESHX_ELEMENT_FUNC_ID_SENSOR_CLIENT_DATA            0x00
+
+/* MeshX Function ID Light HSL Client */
+#define MESHX_ELEMENT_FUNC_ID_LIGHT_HSL_CLIENT_ONN_OFF      0x00
+#define MESHX_ELEMENT_FUNC_ID_LIGHT_HSL_CLIENT_HSL          0x01
+
 /**
  * @brief Enumeration of BLE Mesh application API message types.
  */
@@ -102,7 +109,55 @@ typedef struct meshx_api_light_hsl_server_evt
     }state_change;
 }meshx_api_light_hsl_server_evt_t;
 
-/* meshx_api_sensor_server_evt_t removed: sensor model decommissioned in TASK-007 */
+/**
+ * @brief Structure defines the payload for MESHX_ELEMENT_TYPE_SENSOR_SERVER
+ */
+typedef struct meshx_api_sensor_server_evt
+{
+    union
+    {
+        struct
+        {
+            uint16_t value;
+        }data;
+    }state_change;
+}meshx_api_sensor_server_evt_t;
+
+/**
+ * @brief Structure defines the payload for MESHX_ELEMENT_TYPE_LIGHT_HSL_CLIENT
+ */
+typedef struct meshx_api_light_hsl_client_evt
+{
+   uint8_t err_code;
+    union
+    {
+        struct
+        {
+            uint8_t state;
+        }on_off;
+        struct
+        {
+            uint16_t lightness;
+            uint16_t hue;
+            uint16_t saturation;
+        }hsl;
+    }state_change;
+}meshx_api_light_hsl_client_evt_t;
+
+/**
+ * @brief Structure defines the payload for MESHX_ELEMENT_TYPE_SENSOR_CLIENT
+ */
+typedef struct meshx_api_sensor_client_evt
+{
+   uint8_t err_code;
+    union
+    {
+        struct
+        {
+            uint16_t value;
+        }data;
+    }state_change;
+}meshx_api_sensor_client_evt_t;
 
 
 /**
@@ -149,6 +204,9 @@ typedef union meshx_data_payload
     meshx_api_light_cwww_client_evt_t light_cwww_client_evt;
     meshx_api_light_cwww_server_evt_t light_cwww_server_evt;
     meshx_api_light_hsl_server_evt_t light_hsl_server_evt;
+    meshx_api_light_hsl_client_evt_t light_hsl_client_evt;
+    meshx_api_sensor_server_evt_t sensor_server_evt;
+    meshx_api_sensor_client_evt_t sensor_client_evt;
 } meshx_data_payload_t;
 
 /**
