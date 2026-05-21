@@ -34,6 +34,7 @@ This document is organized as a multi-page Technical Reference. Each page covers
 | 13 | [Decommissioning & Flash Reclamation](../../docs/arch_diag/trm/13_decommissioning.md) | SIG models removed, template elimination analysis |
 | 14 | [Error Codes Reference](../../docs/arch_diag/trm/14_error_codes.md) | All error codes by domain, error handling pattern |
 | 15 | [Configuration Reference](../../docs/arch_diag/trm/15_configuration.md) | Compile-time macros, runtime config struct, NFR traceability |
+| 16 | [Architectural Memory Impact Analysis](../../docs/arch_diag/trm/16_memory_impact.md) | Post-refactor Flash/RAM savings, template elimination analysis |
 
 ---
 

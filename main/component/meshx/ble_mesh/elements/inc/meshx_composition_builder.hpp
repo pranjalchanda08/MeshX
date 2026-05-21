@@ -61,10 +61,22 @@ public:
     meshXCompositionBuilder& add_sensor_server();
 
     /**
+     * @brief Add a Sensor Client element
+     * @return Reference to the builder
+     */
+    meshXCompositionBuilder& add_sensor_client();
+
+    /**
      * @brief Add an RGB (HSL) Server element
      * @return Reference to the builder
      */
     meshXCompositionBuilder& add_rgb_server();
+
+    /**
+     * @brief Add an RGB (HSL) Client element
+     * @return Reference to the builder
+     */
+    meshXCompositionBuilder& add_rgb_client();
 
     /**
      * @brief Commit the composition (Triggers Baking)

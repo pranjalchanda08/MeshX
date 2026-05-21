@@ -40,6 +40,7 @@ public:
      */
     uint16_t get_company_id(void) const { return MESHX_COMPANY_ID_UVP; }
 
+
 #if CONFIG_TXCM_ENABLE
 #include <meshx_txcm.h>
 
@@ -91,6 +92,53 @@ static inline meshx_err_t uvp_txcm_send_wrapper(meshx_cptr_t msg_param, size_t m
         }
 #endif
         return meshx_uvp_send((void*)p_model, dst_addr, type_id, payload, payload_len, ack_req);
+    }
+
+    /**
+     * @brief Send a UVP message with func_id prepended as a 2-byte LE wire prefix.
+     *
+     * Wire layout: [ func_id (2 B, LE) | payload (N B) ]
+     *
+     * The receiver dispatcher strips the prefix and populates ctx->func_id before
+     * invoking the element callback. See REQ-004 and meshx_uvp_dispatcher.cpp.
+     *
+     * @param dst_addr    Destination unicast or group address
+     * @param type_id     Element type ID (variant)
+     * @param func_id     Function ID to embed at the wire payload prefix
+     * @param payload     Application payload (may be nullptr if payload_len == 0)
+     * @param payload_len Application payload length in bytes
+     * @param ack_req     Whether to request an ACK from the destination
+     * @return MESHX_SUCCESS on success, error code otherwise
+     */
+    meshx_err_t send_with_func_id(uint16_t    dst_addr,
+                                  uint16_t    type_id,
+                                  uint16_t    func_id,
+                                  const void* payload,
+                                  uint16_t    payload_len,
+                                  bool        ack_req = false)
+    {
+        /* Allocate wire buffer: [func_id (2B)] + [payload (N B)] */
+        const uint16_t wire_len = static_cast<uint16_t>(sizeof(uint16_t) + payload_len);
+
+        /* Use stack buffer for common small payloads to avoid heap overhead */
+        uint8_t stack_buf[64];
+        uint8_t* wire = (wire_len <= static_cast<uint16_t>(sizeof(stack_buf)))
+                            ? stack_buf
+                            : static_cast<uint8_t*>(malloc(wire_len));
+        if (!wire) return MESHX_NO_MEM;
+
+        /* Prepend func_id in little-endian byte order */
+        wire[0] = static_cast<uint8_t>(func_id & 0xFFu);
+        wire[1] = static_cast<uint8_t>((func_id >> 8u) & 0xFFu);
+
+        if (payload && payload_len > 0) {
+            memcpy(wire + sizeof(uint16_t), payload, payload_len);
+        }
+
+        meshx_err_t err = send(dst_addr, type_id, wire, wire_len, ack_req);
+
+        if (wire != stack_buf) { free(wire); }
+        return err;
     }
 
     /**

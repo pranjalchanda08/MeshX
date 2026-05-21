@@ -65,10 +65,26 @@ meshXCompositionBuilder& meshXCompositionBuilder::add_sensor_server() {
     return *this;
 }
 
+meshXCompositionBuilder& meshXCompositionBuilder::add_sensor_client() {
+    auto& comp = meshXComposition::get_instance();
+    uint16_t next_idx = (uint16_t)(comp.get_elements().size());
+    comp.get_elements().push_back(std::make_unique<meshXUVPElement>(next_idx, MESHX_ELEMENT_TYPE_SENSOR_CLIENT));
+    comp.activate_txcm();
+    return *this;
+}
+
 meshXCompositionBuilder& meshXCompositionBuilder::add_rgb_server() {
     auto& comp = meshXComposition::get_instance();
     uint16_t next_idx = (uint16_t)(comp.get_elements().size());
     comp.get_elements().push_back(std::make_unique<meshXUVPElement>(next_idx, MESHX_ELEMENT_TYPE_LIGHT_HSL_SERVER));
+    return *this;
+}
+
+meshXCompositionBuilder& meshXCompositionBuilder::add_rgb_client() {
+    auto& comp = meshXComposition::get_instance();
+    uint16_t next_idx = (uint16_t)(comp.get_elements().size());
+    comp.get_elements().push_back(std::make_unique<meshXUVPElement>(next_idx, MESHX_ELEMENT_TYPE_LIGHT_HSL_CLIENT));
+    comp.activate_txcm();
     return *this;
 }
 
@@ -140,8 +156,14 @@ void meshx_builder_add_element(meshx_element_type_t type, uint16_t count) {
         case MESHX_ELEMENT_TYPE_SENSOR_SERVER:
             for(uint16_t i=0; i<count; ++i) builder.add_sensor_server();
             break;
+        case MESHX_ELEMENT_TYPE_SENSOR_CLIENT:
+            for(uint16_t i=0; i<count; ++i) builder.add_sensor_client();
+            break;
         case MESHX_ELEMENT_TYPE_LIGHT_HSL_SERVER:
             for(uint16_t i=0; i<count; ++i) builder.add_rgb_server();
+            break;
+        case MESHX_ELEMENT_TYPE_LIGHT_HSL_CLIENT:
+            for(uint16_t i=0; i<count; ++i) builder.add_rgb_client();
             break;
         default:
             MESHX_LOGW(MODULE_ID_COMMON, "Builder: No implementation for element type %d", type);

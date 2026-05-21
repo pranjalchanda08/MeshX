@@ -134,6 +134,8 @@ def main():
         if node.connect():
             # Reset target before starting tests to ensure clean state
             node.hard_reset(config['bsp'])
+            # Trigger hosted mode for binary transport
+            node.send_command("ut 8 1 1 1")
             nodes.append(node)
             devices.append(MeshXDevice(node))
         else:

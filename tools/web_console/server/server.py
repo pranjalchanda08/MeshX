@@ -1,15 +1,16 @@
 import asyncio
 import os
 import sys
-import time
+import yaml
 import struct
 import json
 import logging
-from typing import Dict, Set, Optional
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Query, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
 import serial
 import serial.tools.list_ports
+from typing import Dict, Set, Optional
+from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Query, HTTPException
 
 # Add server and scripts directories to path to import local modules
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -35,8 +36,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-import yaml
 
 current_bsp = "xiao_c3"
 current_product = "all_in_one"
@@ -884,10 +883,6 @@ async def websocket_endpoint(websocket: WebSocket, port: str = Query(...)):
         worker.unsubscribe(websocket)
         # If no more tabs are viewing this port, we can keep the worker or clean it up.
         # Keeping it ensures that serial reading and logging continues backgrounded.
-
-# Serve frontend dashboard static files directly from root URL
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
 
 frontend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../frontend"))
 if os.path.exists(frontend_dir):

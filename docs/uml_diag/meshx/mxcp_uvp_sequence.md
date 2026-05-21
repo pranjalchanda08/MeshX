@@ -137,6 +137,22 @@ sequenceDiagram
         Host->>Host: demux.feed(data) -> handle_mxsp()
         Note over Host: Parse data notify event & update Web Console UI state
     end
+
+    %% PHASE 5: TXCM Timeout and Telemetry Propagation
+    rect rgb(255, 230, 230)
+        Note over TXCM, Host: Phase 5: TXCM Transmission Timeout and Telemetry (Host UI Notify)
+        TXCM->>TXCM: Retry limit reached (No ACK received)
+        TXCM->>CT: Publish CONTROL_TASK_MSG_EVT_TXCM_MSG_TIMEOUT
+        CT->>Disp: uvp_txcm_timeout_cb(params)
+        Disp->>Disp: Registry lookup element by model pointer
+        Disp->>ElCli: element->on_model_cb(nullptr, 0, &uvp_ctx {src=MESHX_ADDR_UNASSIGNED})
+        ElCli->>ElCli: element_state_change_notify(..., err=MESHX_TIMEOUT)
+        ElCli->>API: meshx_send_msg_to_app(..., Error: 1)
+        API->>MXCP: mxcp_send_event(MXCP_EVT_EL_DATA_NOTIFY, buf, size)
+        MXCP->>SerPlat: meshx_platform_serial_write(frame_buff)
+        SerPlat->>Host: Stream MXSP status frame over serial port
+        Host->>Host: Parse data notify event & log/report Error: 1 (Timeout)
+    end
 ```
 
 ---
@@ -190,6 +206,7 @@ UVP payloads sent over-the-air through BLE Mesh are encapsulated under the `MESH
    - **Queueing & Pacing**: Commands are enqueued in a circular buffer to pace traffic and prevent packet collision/flooding.
    - **Retries**: If `ack_req` is true, the message uses `MESHX_TXCM_SIG_ENQ_SEND` and TXCM retries the transmission up to `MESHX_TXCM_MSG_RETRY_MAX` times.
    - **ACK Cancellation**: When the dispatcher receives a matching frame from the target address, it signals `MESHX_TXCM_SIG_ACK` back to TXCM, which removes the message from the queue and stops retries.
+   - **Timeout Propagation**: If no ACK is received and retries are exhausted, TXCM fires `CONTROL_TASK_MSG_EVT_TXCM_MSG_TIMEOUT`. The dispatcher's `uvp_txcm_timeout_cb` routes this event to the target element's `on_model_cb` with a source address of `MESHX_ADDR_UNASSIGNED`. The element then triggers `element_state_change_notify` with `MESHX_TIMEOUT` error, dispatching it to the host application as telemetry (`Error: 1`).
 
 3. **Dynamic Unicast & Publish Routing**
    Upon receiving a state-altering UVP command, `meshXUVPElement::element_state_change_notify()` performs a dual check:
