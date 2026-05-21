@@ -13,6 +13,7 @@
 #define __MESHX_UVP_H__
 
 #include <stdint.h>
+#include <meshx_common.h>   /* meshx_err_t */
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,10 +26,13 @@ extern "C" {
  * @brief UVP Routing Context (Application Layer)
  */
 typedef struct {
-    uint16_t src_addr;     /**< Source unicast address */
+    uint16_t src_addr;     /**< Source unicast address.
+                           *   0x0001 = host command, MESHX_ADDR_UNASSIGNED = TXCM timeout */
     uint16_t dst_addr;     /**< Destination unicast or group address */
-    uint8_t tid;           /**< Transaction ID */
-    uint8_t ack_req;       /**< 1 if client requested an ACK */
+    uint8_t  tid;          /**< Transaction ID */
+    uint8_t  ack_req;      /**< 1 if client requested an ACK */
+    uint16_t func_id;      /**< Function ID within the element (REQ-003).
+                           *   0xFFFF = broadcast sentinel for TXCM timeout (all models). */
 } meshx_uvp_ctx_t;
 
 /**
@@ -50,8 +54,10 @@ typedef struct {
 
 #define MESHX_UVP_OPCODE_BASE   0x01
 #define MESHX_UVP_OPCODE        ((0xC0 | MESHX_UVP_OPCODE_BASE) | (MESHX_COMPANY_ID_UVP << 8))
-#define MESHX_UVP_HEADER_SIZE   sizeof(meshx_uvp_header_t)
-#define MESHX_UVP_MAX_PAYLOAD   377         /**< Max payload size for single Segmented Access PDU */
+#define MESHX_UVP_HEADER_SIZE       sizeof(meshx_uvp_header_t)
+#define MESHX_UVP_MAX_PAYLOAD       377  /**< Max total TLV payload bytes (single Segmented Access PDU) */
+#define MESHX_UVP_FUNC_ID_PREFIX_SZ 2    /**< Bytes reserved for func_id wire prefix (REQ-004) */
+#define MESHX_UVP_MAX_APP_PAYLOAD   (MESHX_UVP_MAX_PAYLOAD - MESHX_UVP_FUNC_ID_PREFIX_SZ) /**< 375 B app payload budget */
 
 /**
  * @brief Send a UVP message.

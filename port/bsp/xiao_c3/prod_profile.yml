@@ -30,6 +30,10 @@ prod:
               - relay_server: 1
               - light_cwww_server: 1
               - light_cwww_client: 1
+              - sensor_server: 1
+              - sensor_client: 1
+              - light_hsl_server: 1
+              - light_hsl_client: 1
 
         - name: sensor_node
           pid: 0x0005
