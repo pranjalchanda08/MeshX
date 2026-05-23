@@ -364,14 +364,19 @@ static meshx_err_t meshx_txcm_msg_q_try_send(bool resend, uint16_t target_addr)
                 }
 
                 active_tx.msg_state = MESHX_TXCM_MSG_STATE_SENDING;
+                MESHX_LOGI(MODULE_ID_TXCM, "TXCM: invoking send_fn for dst=0x%04x type=%s",
+                           active_tx.dest_addr,
+                           active_tx.msg_type == MESHX_TXCM_MSG_TYPE_ACKED ? "ACKED" : "UNACKED");
                 if (active_tx.send_fn != NULL)
                 {
                     err = active_tx.send_fn(active_tx.msg_param, active_tx.msg_param_len);
                     if (err != MESHX_SUCCESS)
                     {
+                        MESHX_LOGE(MODULE_ID_TXCM, "TXCM: send_fn failed for dst=0x%04x err=0x%x", active_tx.dest_addr, err);
                         active_tx.msg_state = MESHX_TXCM_MSG_STATE_NACK;
                         return err;
                     }
+                    MESHX_LOGI(MODULE_ID_TXCM, "TXCM: send_fn success for dst=0x%04x", active_tx.dest_addr);
                 }
 
                 if (active_tx.msg_type == MESHX_TXCM_MSG_TYPE_ACKED)
@@ -416,9 +421,11 @@ static meshx_err_t meshx_txcm_proccess_request_msg(
     if (   request == NULL
         || request->send_fn == NULL
         || msg_type >= MESHX_TXCM_MSG_TYPE_MAX
-        || request->msg_param_len >= MESHX_TXCM_MSG_PARAM_MAX_LEN
+        || request->msg_param_len > MESHX_TXCM_MSG_PARAM_MAX_LEN
     )
     {
+        MESHX_LOGE(MODULE_ID_TXCM, "TXCM process: invalid param: send_fn=%p msg_type=%d param_len=%d max=%d",
+                   (void*)request->send_fn, msg_type, request->msg_param_len, MESHX_TXCM_MSG_PARAM_MAX_LEN);
         return MESHX_INVALID_ARG;
     }
 
@@ -445,14 +452,14 @@ static meshx_err_t meshx_txcm_proccess_request_msg(
     err = meshx_tx_queue_enqueue(&g_txcm.txcm_tx_queue, &new_tx);
     if (err)
     {
-        MESHX_LOGE(MODULE_ID_TXCM, "Failed to send message to Tx Control Tx Queue: %p", (void *)err);
+        MESHX_LOGE(MODULE_ID_TXCM, "Failed to send message to Tx Control Tx Queue: 0x%x", (uint32_t)err);
         return err;
     }
 
     err = meshx_txcm_msg_q_front_try_send(false);
     if(err)
     {
-        MESHX_LOGE(MODULE_ID_TXCM, "Failed to process front of Tx Control Tx Queue: %p", (void *)err);
+        MESHX_LOGE(MODULE_ID_TXCM, "Failed to process front of Tx Control Tx Queue: 0x%x", (uint32_t)err);
     }
     return err;
 }
@@ -518,7 +525,7 @@ static meshx_err_t meshx_txcm_sig_resend(meshx_txcm_request_t *request)
         );
         if(err)
         {
-            MESHX_LOGE(MODULE_ID_TXCM, "Failed to publish timeout: %p", (void *)err);
+            MESHX_LOGE(MODULE_ID_TXCM, "Failed to publish timeout: 0x%x", (uint32_t)err);
         }
         err = meshx_txcm_msg_q_front_try_send(false);
     }
@@ -567,7 +574,7 @@ static meshx_err_t meshx_txcm_sig_ack(const meshx_txcm_request_t *request)
     err = meshx_rtos_free(request->msg_param);
     if (err)
     {
-        MESHX_LOGE(MODULE_ID_TXCM, "RTOS Free failed: %p", (void *)err);
+        MESHX_LOGE(MODULE_ID_TXCM, "RTOS Free failed: 0x%x", (uint32_t)err);
     }
     err = meshx_txcm_msg_q_front_try_send(false);
     return err;
@@ -640,14 +647,14 @@ meshx_err_t meshx_txcm_init(dev_struct_t *pdev)
     err = meshx_msg_q_create(&g_txcm.txcm_sig_queue);
     if(err)
     {
-        MESHX_LOGE(MODULE_ID_TXCM, "Failed to create Tx Control Signal Queue: %p", (void *)err);
+        MESHX_LOGE(MODULE_ID_TXCM, "Failed to create Tx Control Signal Queue: 0x%x", (uint32_t)err);
         return err;
     }
 
     err = meshx_task_create(&g_txcm.txcm_task);
     if(err)
     {
-        MESHX_LOGE(MODULE_ID_TXCM, "Failed to create Tx Control task: %p", (void *)err);
+        MESHX_LOGE(MODULE_ID_TXCM, "Failed to create Tx Control task: 0x%x", (uint32_t)err);
         return err;
     }
 
@@ -700,7 +707,7 @@ meshx_err_t meshx_txcm_request_send(
         err = meshx_rtos_malloc(&new_req.msg_param, msg_param_len);
         if (err)
         {
-            MESHX_LOGE(MODULE_ID_TXCM, "Malloc Failure: %p", (void *)err);
+            MESHX_LOGE(MODULE_ID_TXCM, "Malloc Failure: 0x%x", (uint32_t)err);
             return err;
         }
         memcpy(new_req.msg_param, msg_param, msg_param_len);
@@ -712,7 +719,7 @@ meshx_err_t meshx_txcm_request_send(
     err = meshx_msg_q_send(&g_txcm.txcm_sig_queue, &new_req, sizeof(meshx_txcm_request_t), 0);
     if (err)
     {
-        MESHX_LOGE(MODULE_ID_TXCM, "TXCM Signal failed: %p", (void *)err);
+        MESHX_LOGE(MODULE_ID_TXCM, "TXCM Signal failed: 0x%x", (uint32_t)err);
         meshx_rtos_free(&new_req.msg_param);
         return err;
     }

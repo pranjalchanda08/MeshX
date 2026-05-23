@@ -57,7 +57,7 @@ meshx_err_t meshXRelayClientModel::handle_rx(
             el_idx, this->get_func_id(), el_ctx->pub_addr);
         return this->physical_model->send_with_func_id(
             el_ctx->pub_addr, type_id, this->get_func_id(),
-            param, (uint16_t)param_size, true);
+            param, (uint16_t)param_size, true, el_ctx->app_id);
     }
 
     /* BLE response path (REQ-007) */
@@ -107,23 +107,20 @@ meshx_err_t meshXRelayServerModel::handle_rx(
         "RelayServer [%d] func_id=0x%02x: cmd from 0x%04x (ack_req=%d)",
         el_idx, this->get_func_id(), ctx->src_addr, ctx->ack_req);
 
-    /* Step 1: Unicast ACK (REQ-006) */
     if (ctx->ack_req) {
         this->physical_model->send_with_func_id(
             ctx->src_addr, type_id, this->get_func_id(),
-            param, (uint16_t)param_size, false);
+            param, (uint16_t)param_size, false, el_ctx ? el_ctx->app_id : 0);
     }
 
-    /* Step 2: Publish (REQ-006) */
     if (el_ctx &&
         el_ctx->pub_addr != MESHX_ADDR_UNASSIGNED &&
         el_ctx->pub_addr != ctx->src_addr) {
         this->physical_model->send_with_func_id(
             el_ctx->pub_addr, type_id, this->get_func_id(),
-            param, (uint16_t)param_size, false);
+            param, (uint16_t)param_size, false, el_ctx->app_id);
     }
 
-    /* Step 3: App telemetry (REQ-006) */
     meshx_err_t err = meshx_send_msg_to_app(
         el_idx, type_id, this->get_func_id(), (uint16_t)param_size, param);
     if (err != MESHX_SUCCESS) {
@@ -166,7 +163,7 @@ meshx_err_t meshXLightCWWWClientModel::handle_rx(
             el_idx, this->get_func_id(), el_ctx->pub_addr);
         return this->physical_model->send_with_func_id(
             el_ctx->pub_addr, type_id, this->get_func_id(),
-            param, (uint16_t)param_size, true);
+            param, (uint16_t)param_size, true, el_ctx->app_id);
     }
 
     /* BLE response path (REQ-007) */
@@ -217,20 +214,18 @@ meshx_err_t meshXLightCWWWServerModel::handle_rx(
         "CWWWServer [%d] func_id=0x%02x: cmd from 0x%04x (ack_req=%d)",
         el_idx, this->get_func_id(), ctx->src_addr, ctx->ack_req);
 
-    /* Step 1: Unicast ACK (REQ-006) */
     if (ctx->ack_req) {
         this->physical_model->send_with_func_id(
             ctx->src_addr, type_id, this->get_func_id(),
-            param, (uint16_t)param_size, false);
+            param, (uint16_t)param_size, false, el_ctx ? el_ctx->app_id : 0);
     }
 
-    /* Step 2: Publish (REQ-006) */
     if (el_ctx &&
         el_ctx->pub_addr != MESHX_ADDR_UNASSIGNED &&
         el_ctx->pub_addr != ctx->src_addr) {
         this->physical_model->send_with_func_id(
             el_ctx->pub_addr, type_id, this->get_func_id(),
-            param, (uint16_t)param_size, false);
+            param, (uint16_t)param_size, false, el_ctx->app_id);
     }
 
     /* Step 3: App telemetry (REQ-006) */
@@ -271,7 +266,7 @@ meshx_err_t meshXSensorServerModel::handle_rx(
     if (ctx->ack_req) {
         this->physical_model->send_with_func_id(
             ctx->src_addr, type_id, this->get_func_id(),
-            param, (uint16_t)param_size, false);
+            param, (uint16_t)param_size, false, el_ctx ? el_ctx->app_id : 0);
     }
 
     if (el_ctx &&
@@ -279,7 +274,7 @@ meshx_err_t meshXSensorServerModel::handle_rx(
         el_ctx->pub_addr != ctx->src_addr) {
         this->physical_model->send_with_func_id(
             el_ctx->pub_addr, type_id, this->get_func_id(),
-            param, (uint16_t)param_size, false);
+            param, (uint16_t)param_size, false, el_ctx->app_id);
     }
 
     meshx_err_t err = meshx_send_msg_to_app(
@@ -324,7 +319,7 @@ meshx_err_t meshXSensorClientModel::handle_rx(
             el_idx, this->get_func_id(), el_ctx->pub_addr);
         return this->physical_model->send_with_func_id(
             el_ctx->pub_addr, type_id, this->get_func_id(),
-            param, (uint16_t)param_size, true);
+            param, (uint16_t)param_size, true, el_ctx->app_id);
     }
 
     MESHX_LOGI(MODULE_ID_BLE_MESH_ELEMENT,
@@ -377,7 +372,7 @@ meshx_err_t meshXLightHSLServerModel::handle_rx(
     if (ctx->ack_req) {
         this->physical_model->send_with_func_id(
             ctx->src_addr, type_id, this->get_func_id(),
-            param, (uint16_t)param_size, false);
+            param, (uint16_t)param_size, false, el_ctx ? el_ctx->app_id : 0);
     }
 
     if (el_ctx &&
@@ -385,7 +380,7 @@ meshx_err_t meshXLightHSLServerModel::handle_rx(
         el_ctx->pub_addr != ctx->src_addr) {
         this->physical_model->send_with_func_id(
             el_ctx->pub_addr, type_id, this->get_func_id(),
-            param, (uint16_t)param_size, false);
+            param, (uint16_t)param_size, false, el_ctx->app_id);
     }
 
     meshx_err_t err = meshx_send_msg_to_app(
@@ -430,7 +425,7 @@ meshx_err_t meshXLightHSLClientModel::handle_rx(
             el_idx, this->get_func_id(), el_ctx->pub_addr);
         return this->physical_model->send_with_func_id(
             el_ctx->pub_addr, type_id, this->get_func_id(),
-            param, (uint16_t)param_size, true);
+            param, (uint16_t)param_size, true, el_ctx->app_id);
     }
 
     MESHX_LOGI(MODULE_ID_BLE_MESH_ELEMENT,
