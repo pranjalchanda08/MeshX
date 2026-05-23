@@ -117,7 +117,7 @@ meshx_err_t meshXBaseModel MESHX_BASE_TEMPLATE_PARAMS::from_ble_dereg_cb(void) c
         {
             if (--it->count == 0)
             {
-                MESHX_LOGD(MODULE_ID_COMMON, "meshXBaseModel[%08" PRIx32 "] Last instance, unsubscribing callback %p", model_id, from_ble_cb);
+                MESHX_LOGD(MODULE_ID_COMMON, "meshXBaseModel[%08" PRIx32 "] Last instance, unsubscribing callback 0x%x", model_id, (uint32_t)(uintptr_t)from_ble_cb);
                 meshx_err_t err = control_task_msg_unsubscribe(CONTROL_TASK_MSG_CODE_FRM_BLE, (control_task_msg_evt_t)model_id, from_ble_cb);
                 registrations.remove_if([this](const reg_info& reg) { return reg.id == model_id; });
                 return err;

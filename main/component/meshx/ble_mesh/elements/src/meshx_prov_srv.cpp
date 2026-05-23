@@ -12,6 +12,11 @@
 
 #if CONFIG_ENABLE_PROVISIONING
 
+extern "C" int bt_mesh_node_local_app_key_add(uint16_t net_idx, uint16_t app_idx, const uint8_t app_key[16]);
+
+#include "meshx_element_registry.hpp"
+#include "meshx_model_class.hpp"
+
 /**
  * @brief Mask for control task provisioning events.
  */
@@ -169,6 +174,40 @@ static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_t
         case CONTROL_TASK_MSG_EVT_PROVISION_STOP:
             pdev->meshx_store.net_key_id = param->node_prov_complete.net_idx;
             pdev->meshx_store.node_addr  = param->node_prov_complete.addr;
+            
+            // The appkey shall be registered as part of the provision callback
+            {
+                uint8_t dummy_key[16] = {0};
+                int err = bt_mesh_node_local_app_key_add(param->node_prov_complete.net_idx, 0, dummy_key);
+                if (err && err != -17) {
+                    MESHX_LOGW(MODULE_ID_COMMON, "bt_mesh_node_local_app_key_add returned %d", err);
+                }
+
+                // Bind AppKey index 0 to all models so ESP-IDF transport layer allows loopback
+                auto elements = meshXElementRegistry::get_instance().get_all_elements();
+                for (auto const& [abs_id, el] : elements) {
+                    if (!el) continue;
+                    
+                    for (auto const& m : el->get_sig_models()) {
+                        if (m) {
+                            auto p_plat = m->get_plat_model();
+                            if (p_plat) {
+                                p_plat->keys[0] = 0; // Bind AppKey index 0
+                            }
+                        }
+                    }
+
+                    for (auto const& m : el->get_ven_models()) {
+                        if (m) {
+                            auto p_plat = m->get_plat_model();
+                            if (p_plat) {
+                                p_plat->keys[0] = 0; // Bind AppKey index 0
+                            }
+                        }
+                    }
+                }
+            }
+
             meshx_nvs_set(MESHX_NVS_STORE, &pdev->meshx_store, sizeof(pdev->meshx_store), MESHX_NVS_AUTO_COMMIT);
             break;
         case CONTROL_TASK_MSG_EVT_IDENTIFY_START:

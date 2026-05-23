@@ -52,11 +52,6 @@ static meshx_err_t uvp_unified_dispatcher_cb(dev_struct_t *pdev,
     uint16_t src_addr = p_meta->src_addr;
     meshx_uvp_header_t *uvp_header = &p_meta->uvp_header;
 
-#if CONFIG_TXCM_ENABLE
-    /* Notify TXCM that we received a packet from src_addr, which serves as an ACK to clear the queue */
-    meshx_txcm_request_send(MESHX_TXCM_SIG_ACK, src_addr, nullptr, 0, nullptr);
-#endif
-
     /* Calculate actual payload pointer and length */
     void *payload = (uint8_t *)params + sizeof(control_task_uvp_meta_t);
     uint16_t payload_len = params_len - sizeof(control_task_uvp_meta_t);
@@ -79,12 +74,22 @@ static meshx_err_t uvp_unified_dispatcher_cb(dev_struct_t *pdev,
         return MESHX_NOT_FOUND;
     }
 
+#if CONFIG_TXCM_ENABLE
+    /* Notify TXCM that we received an ACK to clear the queue.
+     * In UVP, if the receiving element is a CLIENT, the incoming message is an ACK/Status update
+     * sent from the SERVER to this CLIENT. */
+    if (element->get_element_type() == meshxElementType::MESHX_ELEMENT_TYPE_CLIENT) {
+        meshx_txcm_request_send(MESHX_TXCM_SIG_ACK, src_addr, nullptr, 0, nullptr);
+    }
+#endif
+
     /*
-     * Verify that the element type matches the UVP type_id.
-     * This provides an extra layer of safety.
+     * Verify that the element type matches the expected incoming UVP message types.
+     * A CLIENT expects messages from a SERVER, and vice versa.
+     * Therefore, the receiver's variant (e.g. Relay Client) should NOT match the sender's variant (e.g. Relay Server).
      */
-    if (element->get_element_variant() != (meshx_element_type_t)uvp_header->type_id) {
-         MESHX_LOGW(MODULE_ID_COMMON, "UVP Dispatcher: Type mismatch! EL[%d] variant=%d, UVP type_id=%d",
+    if ((uint16_t)element->get_element_variant() == uvp_header->type_id) {
+         MESHX_LOGW(MODULE_ID_COMMON, "UVP Dispatcher: Role mismatch! Sender and receiver have same variant. EL[%d] variant=%d, UVP type_id=%d",
                    p_meta->rx_el_id, (int)element->get_element_variant(), (int)uvp_header->type_id);
     }
 
@@ -187,7 +192,7 @@ static meshx_err_t uvp_txcm_timeout_cb(dev_struct_t *pdev,
     }
 
     if (!target_el) {
-        MESHX_LOGW(MODULE_ID_COMMON, "UVP TXCM Timeout: No registered element found for model %p", p_model);
+        MESHX_LOGW(MODULE_ID_COMMON, "UVP TXCM Timeout: No registered element found for model 0x%x", (uint32_t)(uintptr_t)p_model);
         return MESHX_NOT_FOUND;
     }
 

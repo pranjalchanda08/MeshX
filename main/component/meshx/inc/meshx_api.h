@@ -361,6 +361,18 @@ meshx_err_t meshx_app_reg_system_events_callback(meshx_app_ctrl_cb_t cb);
  */
 uint16_t meshx_get_net_key_id(void);
 
+/**
+ * @brief Get the node's primary unicast address.
+ * @return uint16_t The node's primary unicast address, or 0x0000 if unprovisioned.
+ */
+uint16_t meshx_get_node_addr(void);
+
+/**
+ * @brief Get the total number of elements on this node.
+ * @return size_t The element count.
+ */
+size_t meshx_get_element_count(void);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
