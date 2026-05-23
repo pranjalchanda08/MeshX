@@ -105,6 +105,48 @@ meshx_err_t meshx_plat_ven_srv_init(void)
 }
 
 /**
+ * @brief Bind the platform-specific UVP opcodes to a model instance.
+ *
+ * @param p_model Pointer to the platform model structure.
+ * @return MESHX_SUCCESS on success, or an error code.
+ */
+meshx_err_t meshx_plat_bind_uvp_opcodes(void *p_model)
+{
+    if (!p_model) {
+        return MESHX_INVALID_ARG;
+    }
+
+    esp_ble_mesh_model_t *esp_model = (esp_ble_mesh_model_t *)p_model;
+
+    /* Initialize keys and groups arrays with correct ESP-IDF sentinels.
+     * C++ dynamic builder zero-initializes, which ESP-IDF misinterprets as bound elements! */
+    for (int i = 0; i < CONFIG_BLE_MESH_MODEL_KEY_COUNT; i++) {
+        esp_model->keys[i] = ESP_BLE_MESH_KEY_UNUSED;
+    }
+    for (int i = 0; i < CONFIG_BLE_MESH_MODEL_GROUP_COUNT; i++) {
+        esp_model->groups[i] = ESP_BLE_MESH_ADDR_UNASSIGNED;
+    }
+
+    /* Dynamically allocate the opcodes array to prevent it from being merged into .rodata
+     * by the compiler or being overwritten across multiple model instances */
+    esp_ble_mesh_model_op_t init_opcodes[] = {
+        ESP_BLE_MESH_MODEL_OP(MESHX_UVP_OPCODE, MESHX_UVP_HEADER_SIZE),
+        ESP_BLE_MESH_MODEL_OP_END,
+    };
+
+    esp_ble_mesh_model_op_t *uvp_opcodes = (esp_ble_mesh_model_op_t *)MESHX_MALLOC(sizeof(init_opcodes));
+    if (!uvp_opcodes) {
+        return MESHX_NO_MEM;
+    }
+
+    memcpy(uvp_opcodes, init_opcodes, sizeof(init_opcodes));
+
+    esp_model->op = uvp_opcodes;
+
+    return MESHX_SUCCESS;
+}
+
+/**
  * @brief Send a UVP message.
  *
  * @param p_model       Pointer to the UVP Vendor Model instance (meshx_model_t*).
@@ -121,10 +163,11 @@ meshx_err_t meshx_uvp_send(void *p_model,
                            uint16_t type_id,
                            const void *payload,
                            uint16_t payload_len,
-                           bool ack_req)
+                           bool ack_req,
+                           uint16_t app_idx)
 {
-    meshx_model_t *model = (meshx_model_t *)p_model;
-    if (!model || (!payload && payload_len > 0)) {
+    esp_ble_mesh_model_t *esp_model = (esp_ble_mesh_model_t *)p_model;
+    if (!esp_model || (!payload && payload_len > 0)) {
         return MESHX_INVALID_ARG;
     }
 
@@ -152,17 +195,9 @@ meshx_err_t meshx_uvp_send(void *p_model,
         memcpy(buffer + MESHX_UVP_HEADER_SIZE, payload, payload_len);
     }
 
-    esp_ble_mesh_model_t *esp_model = (esp_ble_mesh_model_t *)model->p_model;
-    uint8_t el_idx = esp_model ? esp_model->element_idx : 0;
+    uint8_t el_idx = esp_model->element_idx;
 
-    /*
-     * Retrieve net_idx via the runtime-stored provisioning key ID.
-     * app_idx is taken from the first bound AppKey on this model (index 0);
-     * defaults to 0 if no key is bound yet.
-     */
     uint16_t net_idx = meshx_get_net_key_id();
-    uint16_t app_idx = (esp_model && esp_model->keys[0] != ESP_BLE_MESH_KEY_UNUSED)
-                       ? esp_model->keys[0] : 0;
 
     /* Prepare Context */
     esp_ble_mesh_msg_ctx_t ctx = {
@@ -176,7 +211,7 @@ meshx_err_t meshx_uvp_send(void *p_model,
 
     /* Send via ESP-BLE-MESH stack */
     esp_err_t err = esp_ble_mesh_server_model_send_msg(
-        (esp_ble_mesh_model_t *)model->p_model,
+        esp_model,
         &ctx,
         MESHX_UVP_OPCODE,
         total_len,

@@ -42,6 +42,12 @@ bool meshx_builder_is_txcm_active(void);
 meshx_err_t meshx_builder_bake(dev_struct_t *pdev, uint16_t cid, uint16_t pid, uint16_t vid);
 
 /**
+ * @brief Restores the NVS context for all elements in the active composition.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_restore_all_element_ctx(void);
+
+/**
  * @brief Adds elements of a specific type to the composition.
  * @param type The type of element to add.
  * @param count The number of elements of this type to add.
