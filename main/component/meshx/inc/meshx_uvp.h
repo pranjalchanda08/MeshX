@@ -53,7 +53,7 @@ typedef struct {
 #define MESHX_VND_MODEL_ID_UVP  ((MESHX_MODEL_ID_UVP << 16) | MESHX_COMPANY_ID_UVP)
 
 #define MESHX_UVP_OPCODE_BASE   0x01
-#define MESHX_UVP_OPCODE        ((0xC0 | MESHX_UVP_OPCODE_BASE) | (MESHX_COMPANY_ID_UVP << 8))
+#define MESHX_UVP_OPCODE        ((0xC00000 | (MESHX_UVP_OPCODE_BASE << 16)) | MESHX_COMPANY_ID_UVP)
 #define MESHX_UVP_HEADER_SIZE       sizeof(meshx_uvp_header_t)
 #define MESHX_UVP_MAX_PAYLOAD       377  /**< Max total TLV payload bytes (single Segmented Access PDU) */
 #define MESHX_UVP_FUNC_ID_PREFIX_SZ 2    /**< Bytes reserved for func_id wire prefix (REQ-004) */
@@ -76,7 +76,8 @@ meshx_err_t meshx_uvp_send(void *p_model,
                            uint16_t type_id,
                            const void *payload,
                            uint16_t payload_len,
-                           bool ack_req);
+                           bool ack_req,
+                           uint16_t app_idx);
 
 #ifdef __cplusplus
 }

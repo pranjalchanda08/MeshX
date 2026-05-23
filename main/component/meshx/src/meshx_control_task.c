@@ -96,7 +96,7 @@ meshx_err_t control_task_msg_publish(control_task_msg_code_t msg_code,
 #if CONFIG_MESHX_DEFAULT_LOG_LEVEL <= MESHX_LOG_DEBUG
     void *caller_addr0 = __builtin_return_address(0);
 #endif /* CONFIG_MESHX_DEFAULT_LOG_LEVEL <= MESHX_LOG_DEBUG */
-    MESHX_LOGD(MODULE_ID_COMMON, "fn_address|msg|evt: %p|%p|%p", caller_addr0, (void *)msg_code, (void *)msg_evt);
+    MESHX_LOGD(MODULE_ID_COMMON, "fn_address|msg|evt: 0x%x|0x%x|0x%x", (uint32_t)(uintptr_t)caller_addr0, (uint32_t)(uintptr_t)msg_code, (uint32_t)(uintptr_t)msg_evt);
 #endif /* CONFIG_CT_DEBUG_LOG */
 
     memset(&send_msg, 0, sizeof(send_msg));
@@ -272,12 +272,12 @@ static meshx_err_t control_task_msg_dispatch(
 
     if (ptr == NULL)
     {
-        MESHX_LOGW(MODULE_ID_COMMON, "No control task msg callback registered for msg: %p", (void *)msg_code);
+        MESHX_LOGW(MODULE_ID_COMMON, "No control task msg callback registered for msg: 0x%x", (uint32_t)(uintptr_t)msg_code);
         return MESHX_INVALID_STATE;
     }
 
 #if CONFIG_CT_DEBUG_LOG
-    MESHX_LOGD(MODULE_ID_COMMON, "msg|evt: %p|%p", (void *)msg_code, (void *)evt);
+    MESHX_LOGD(MODULE_ID_COMMON, "msg|evt: 0x%x|0x%x", (uint32_t)(uintptr_t)msg_code, (uint32_t)(uintptr_t)evt);
 #endif /* CONFIG_CT_DEBUG_LOG */
 
     while (ptr)
@@ -302,7 +302,7 @@ static meshx_err_t control_task_msg_dispatch(
         ptr = ptr->next;
     }
     if (!evt_handled)
-        MESHX_LOGW(MODULE_ID_COMMON, "No handler reg for EVT %p", (void *)evt);
+        MESHX_LOGW(MODULE_ID_COMMON, "No handler reg for EVT 0x%x", (uint32_t)(uintptr_t)evt);
 
     return MESHX_SUCCESS;
 }
