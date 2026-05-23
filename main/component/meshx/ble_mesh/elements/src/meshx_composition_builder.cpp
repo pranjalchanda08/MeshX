@@ -11,12 +11,16 @@
 #include <meshx_device.hpp>
 #include <variants/meshx_root_element.hpp>
 #include <variants/meshx_uvp_element.hpp>
+#include <meshx_element_registry.hpp>
+#include <meshx_element_class.hpp>
 #include <meshx_serial.h>
-
-// Removed std::map for embedded footprint and performance
 
 /**
  * @brief Fluent API Implementation
+ */
+/**
+ * @brief Start building the composition
+ * @return Reference to the builder
  */
 meshXCompositionBuilder& meshXCompositionBuilder::begin() {
     auto& comp = meshXComposition::get_instance();
@@ -28,6 +32,10 @@ meshXCompositionBuilder& meshXCompositionBuilder::begin() {
     return *this;
 }
 
+/**
+ * @brief Add a Relay Server element
+ * @return Reference to the builder
+ */
 meshXCompositionBuilder& meshXCompositionBuilder::add_relay_server() {
     auto& comp = meshXComposition::get_instance();
     uint16_t next_idx = (uint16_t)(comp.get_elements().size());
@@ -35,6 +43,10 @@ meshXCompositionBuilder& meshXCompositionBuilder::add_relay_server() {
     return *this;
 }
 
+/**
+ * @brief Add a Relay Client element
+ * @return Reference to the builder
+ */
 meshXCompositionBuilder& meshXCompositionBuilder::add_relay_client() {
     auto& comp = meshXComposition::get_instance();
     uint16_t next_idx = (uint16_t)(comp.get_elements().size());
@@ -43,6 +55,10 @@ meshXCompositionBuilder& meshXCompositionBuilder::add_relay_client() {
     return *this;
 }
 
+/**
+ * @brief Add a Light CWWW Server element
+ * @return Reference to the builder
+ */
 meshXCompositionBuilder& meshXCompositionBuilder::add_cwww_server() {
     auto& comp = meshXComposition::get_instance();
     uint16_t next_idx = (uint16_t)(comp.get_elements().size());
@@ -50,6 +66,10 @@ meshXCompositionBuilder& meshXCompositionBuilder::add_cwww_server() {
     return *this;
 }
 
+/**
+ * @brief Add a Light CWWW Client element
+ * @return Reference to the builder
+ */
 meshXCompositionBuilder& meshXCompositionBuilder::add_cwww_client() {
     auto& comp = meshXComposition::get_instance();
     uint16_t next_idx = (uint16_t)(comp.get_elements().size());
@@ -58,6 +78,10 @@ meshXCompositionBuilder& meshXCompositionBuilder::add_cwww_client() {
     return *this;
 }
 
+/**
+ * @brief Add a Sensor Server element
+ * @return Reference to the builder
+ */
 meshXCompositionBuilder& meshXCompositionBuilder::add_sensor_server() {
     auto& comp = meshXComposition::get_instance();
     uint16_t next_idx = (uint16_t)(comp.get_elements().size());
@@ -65,6 +89,10 @@ meshXCompositionBuilder& meshXCompositionBuilder::add_sensor_server() {
     return *this;
 }
 
+/**
+ * @brief Add a Sensor Client element
+ * @return Reference to the builder
+ */
 meshXCompositionBuilder& meshXCompositionBuilder::add_sensor_client() {
     auto& comp = meshXComposition::get_instance();
     uint16_t next_idx = (uint16_t)(comp.get_elements().size());
@@ -73,6 +101,10 @@ meshXCompositionBuilder& meshXCompositionBuilder::add_sensor_client() {
     return *this;
 }
 
+/**
+ * @brief Add an RGB (HSL) Server element
+ * @return Reference to the builder
+ */
 meshXCompositionBuilder& meshXCompositionBuilder::add_rgb_server() {
     auto& comp = meshXComposition::get_instance();
     uint16_t next_idx = (uint16_t)(comp.get_elements().size());
@@ -80,6 +112,10 @@ meshXCompositionBuilder& meshXCompositionBuilder::add_rgb_server() {
     return *this;
 }
 
+/**
+ * @brief Add an RGB (HSL) Client element
+ * @return Reference to the builder
+ */
 meshXCompositionBuilder& meshXCompositionBuilder::add_rgb_client() {
     auto& comp = meshXComposition::get_instance();
     uint16_t next_idx = (uint16_t)(comp.get_elements().size());
@@ -88,6 +124,10 @@ meshXCompositionBuilder& meshXCompositionBuilder::add_rgb_client() {
     return *this;
 }
 
+/**
+ * @brief Commit the composition (Triggers Baking)
+ * @return Reference to the builder
+ */
 meshXCompositionBuilder& meshXCompositionBuilder::commit() {
     /* Currently just a marker, bake() happens during meshx_init */
     return *this;
@@ -99,15 +139,53 @@ meshXCompositionBuilder& meshXCompositionBuilder::commit() {
  */
 extern "C" {
 
+/**
+ * @brief Restores the NVS context for all elements in the active composition.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_restore_all_element_ctx(void)
+{
+    meshx_err_t first_err = MESHX_SUCCESS;
+    auto all_elements = meshXElementRegistry::get_instance().get_all_elements();
+    for (auto const& [idx, el] : all_elements) {
+        if (el) {
+            meshx_err_t ctx_err = el->restore_nvs_context();
+            if (ctx_err != MESHX_SUCCESS) {
+                MESHX_LOGW(MODULE_ID_COMMON, "Element [%d] NVS ctx restore: 0x%x", idx, ctx_err);
+                if (first_err == MESHX_SUCCESS) {
+                    first_err = ctx_err;
+                }
+            }
+        }
+    }
+    return first_err;
+}
 
+
+/**
+ * @brief Checks if a dynamic composition has been built.
+ * @return true if elements have been added via the builder, false otherwise.
+ */
 bool meshx_builder_is_active(void) {
     return meshXComposition::get_instance().has_elements();
 }
 
+/**
+ * @brief Checks if TXCM should be enabled based on the composition.
+ * @return true if any client elements were added, false otherwise.
+ */
 bool meshx_builder_is_txcm_active(void) {
     return meshXComposition::get_instance().is_txcm_active();
 }
 
+/**
+ * @brief Bakes the dynamic composition into the device structure.
+ * @param pdev Pointer to the device structure.
+ * @param cid Company ID.
+ * @param pid Product ID.
+ * @param vid Version ID.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
 meshx_err_t meshx_builder_bake(dev_struct_t *pdev, uint16_t cid, uint16_t pid, uint16_t vid) {
     // 1. Initialize the C++ Device wrapper
     meshXDevice::get_instance().init(pdev);
@@ -171,16 +249,21 @@ void meshx_builder_add_element(meshx_element_type_t type, uint16_t count) {
     }
 }
 
-
 /**
  * @brief C-Friendly Builder functions
  */
 
+/**
+ * @brief Begin the dynamic composition builder.
+ */
 void meshx_builder_begin(void) {
     meshXCompositionBuilder builder;
     builder.begin();
 }
 
+/**
+ * @brief Commit the dynamic composition builder.
+ */
 void meshx_builder_commit(void) {
     meshXCompositionBuilder builder;
     builder.commit();

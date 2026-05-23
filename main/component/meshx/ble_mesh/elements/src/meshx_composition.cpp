@@ -114,6 +114,12 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
 
             /* Explicitly zero the slot again before calling platform create to prevent garbage */
             memset(static_cast<void*>(p_baked), 0, sizeof(MESHX_MODEL));
+            for (size_t k = 0; k < sizeof(p_baked->keys) / sizeof(p_baked->keys[0]); k++) {
+                p_baked->keys[k] = ESP_BLE_MESH_KEY_UNUSED;
+            }
+            for (size_t g = 0; g < sizeof(p_baked->groups) / sizeof(p_baked->groups[0]); g++) {
+                p_baked->groups[g] = ESP_BLE_MESH_ADDR_UNASSIGNED;
+            }
 
             /* Create the platform model directly into the baked slot */
             meshx_err_t m_err = m->plat_model_create(p_baked);
@@ -127,13 +133,13 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
             m->set_plat_model(p_baked);
 
             // Debug: Verify the baked model state and check for garbage pointers
-            MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "  Model %zu ID: 0x%04x, Pub: 0x%04x, Slot Addr: 0x%04x",
-                       baked_sig_idx, p_baked->model_id, p_baked->pub, (void*)p_baked);
+            MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "  Model %zu ID: 0x%04x, Pub: 0x%x, Slot Addr: 0x%x",
+                       baked_sig_idx, p_baked->model_id, (uint32_t)(uintptr_t)p_baked->pub, (uint32_t)(uintptr_t)p_baked);
 
             if (p_baked->pub) {
-                uint32_t pub_ptr_val = (uint32_t)p_baked->pub;
+                uint32_t pub_ptr_val = (uint32_t)(uintptr_t)p_baked->pub;
                 if (pub_ptr_val < 0x3f000000 || pub_ptr_val > 0x3fffffff) {
-                    MESHX_LOGE(MODULE_ID_BLE_MESH_ELEMENT, "  CRITICAL: Garbage Pub pointer detected: %p at %p", (void*)p_baked->pub, (void*)&p_baked->pub);
+                    MESHX_LOGE(MODULE_ID_BLE_MESH_ELEMENT, "  CRITICAL: Garbage Pub pointer detected: 0x%x at 0x%x", (uint32_t)(uintptr_t)p_baked->pub, (uint32_t)(uintptr_t)&p_baked->pub);
                 }
             }
 
@@ -148,6 +154,12 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
             /* Get pointer to the baked slot for this vendor model */
             MESHX_MODEL* p_baked = reinterpret_cast<MESHX_MODEL*>(baked_ven_model_arrays[plat_idx].data()) + baked_ven_idx;
             memset(static_cast<void*>(p_baked), 0, sizeof(MESHX_MODEL));
+            for (size_t k = 0; k < sizeof(p_baked->keys) / sizeof(p_baked->keys[0]); k++) {
+                p_baked->keys[k] = ESP_BLE_MESH_KEY_UNUSED;
+            }
+            for (size_t g = 0; g < sizeof(p_baked->groups) / sizeof(p_baked->groups[0]); g++) {
+                p_baked->groups[g] = ESP_BLE_MESH_ADDR_UNASSIGNED;
+            }
 
             /* Create the platform model directly into the baked slot */
             meshx_err_t m_err = m->plat_model_create(p_baked);
@@ -159,7 +171,7 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid) {
 
             m->set_plat_model(p_baked);
             MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "Baked VND Model 0x%04x (CID 0x%04x) at 0x%x, pub: 0x%x",
-                       p_baked->vnd.model_id, p_baked->vnd.company_id, (void*)p_baked, (void*)p_baked->pub);
+                       p_baked->vnd.model_id, p_baked->vnd.company_id, (uint32_t)(uintptr_t)p_baked, (uint32_t)(uintptr_t)p_baked->pub);
             baked_ven_idx++;
         }
 
