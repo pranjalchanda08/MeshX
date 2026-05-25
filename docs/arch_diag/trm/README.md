@@ -67,7 +67,7 @@
 
 | EVT TYPE | ID | Description |
 |----------|----|-------------|
-| `MXCP_EVT_EL_DATA_NOTIFY` | `0x10` (→ `0x90` on wire) | Asynchronous element state telemetry |
+| `MXCP_EVT_EL_DATA_RX_NOTIFY` | `0x10` (→ `0x90` on wire) | Asynchronous element state telemetry |
 | `MXCP_EVT_PROV_COMP` | `0x01` (→ `0x81`) | Provisioning complete |
 | `MXCP_EVT_GPIO_ASYNC` | `0x3E` (→ `0xBE`) | Interrupt-driven GPIO event |
 

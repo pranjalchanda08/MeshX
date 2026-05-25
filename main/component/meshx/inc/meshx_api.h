@@ -58,6 +58,16 @@ typedef enum meshx_api_type
     MESHX_API_TYPE_CTRL = CONTROL_TASK_MSG_EVT_CTRL,        /**< Control message : All msg related to System control */
 } meshx_api_type_t;
 
+/**
+ * @brief Enumeration of Client Logical Model error codes.
+ */
+typedef enum meshx_api_client_err
+{
+    MESHX_CLIENT_ERR_SUCCESS = 0x00,          /**< Operation successful */
+    MESHX_CLIENT_ERR_TIMEOUT = 0x01,          /**< TXCM timeout */
+    MESHX_CLIENT_ERR_UNCONFIGURED = 0x02,     /**< No pub_addr configured */
+} meshx_api_client_err_t;
+
 
 /**
  * @brief Structure defines the payload for MESHX_ELEMENT_TYPE_RELAY_SERVER

@@ -102,7 +102,7 @@ function connectPort() {
         // Render panels immediately upon connection
         renderGpioPipeline();
         renderTopography();
-        renderMxcpCommands();
+        
     };
     
     socket.onmessage = (event) => {
@@ -122,7 +122,7 @@ function connectPort() {
         state.nodes = {};
         state.gpio = {};
         renderTopography();
-        renderMxcpCommands();
+        
         renderGpioPipeline();
         
         // Restore flash buttons if active
@@ -175,7 +175,7 @@ function handleIncomingEvent(evt) {
         renderGpioPipeline();
         renderLogs();
         detectNodesFromState();
-        renderMxcpCommands();
+        
     } else if (evt.type === "log") {
         state.logs.push(evt);
         if (state.logs.length > 200) state.logs.shift();
@@ -184,8 +184,10 @@ function handleIncomingEvent(evt) {
         writeCliOutput(evt.data);
         // Self-restoring flashing UI button logic
         if (evt.data.includes("SUCCESS: Custom configuration flashed successfully!") || 
+            evt.data.includes("SUCCESS: Configuration flashed successfully") || 
             evt.data.includes("SUCCESS: Flashing completed successfully") || 
             evt.data.includes("ERROR: Command failed") || 
+            evt.data.includes("ERROR: Flash command failed") ||
             evt.data.includes("ERROR: Flashing process failed") ||
             evt.data.includes("ERROR: Configuration flashing failed") ||
             evt.data.includes("ERROR: Flashing failed")) {
@@ -208,37 +210,112 @@ function handleIncomingEvent(evt) {
     } else if (evt.type === "nodes_discovered") {
         state.nodes = evt.nodes;
         renderTopography();
-        renderMxcpCommands();
+        
     } else if (evt.type === "node_state_update") {
         if (state.nodes[evt.address]) {
-            state.nodes[evt.address].value = evt.value;
+            const bytes = evt.data_hex ? hexToBytes(evt.data_hex) : [];
+            let val = evt.value;
+            let replyStr = `STATUS: UNKNOWN`;
             
-            // Format a nice status reply string!
-            let replyStr = `STATUS: ${evt.value > 0 ? "ON" : "OFF"}`;
-            if (evt.element_type === 2) { // CWWW
+            // Server elements (func 0 is 1 byte)
+            if (evt.element_type === 0 || evt.element_type === 2 || evt.element_type === 4 || evt.element_type === 6) {
+                if (evt.func_id === 0 && bytes.length >= 1) {
+                    val = bytes[0];
+                    replyStr = `STATUS: ${val > 0 ? "ON" : "OFF"}`;
+                }
+            }
+            // Client elements (func 0 is err + val + padding)
+            else if (evt.element_type === 1 || evt.element_type === 3 || evt.element_type === 5 || evt.element_type === 7) {
+                if (evt.func_id === 0) {
+                    const err = bytes[0];
+                    if (evt.element_type === 1 && bytes.length >= 2) { // Relay Client
+                        val = bytes[1];
+                        replyStr = `STATUS: ${val > 0 ? "ON" : "OFF"} (Err: ${err})`;
+                    } else if ((evt.element_type === 3 || evt.element_type === 5) && bytes.length >= 3) { // CWWW/RGB
+                        val = bytes[2];
+                        replyStr = `STATUS: ${val > 0 ? "ON" : "OFF"} (Err: ${err})`;
+                    } else if (evt.element_type === 7 && bytes.length >= 4) { // Sensor
+                        val = bytes[2] | (bytes[3] << 8);
+                        replyStr = `STATUS: Sensor ${val} (Err: ${err})`;
+                    }
+                }
+            }
+            
+            if (evt.element_type === 2 || evt.element_type === 3) { // CWWW
                 if (evt.func_id === 1 && evt.data_hex) {
                     replyStr = `Lightness/Temp: ${evt.data_hex}`;
                 }
-            } else if (evt.element_type === 4) { // RGB
+            } else if (evt.element_type === 4 || evt.element_type === 5) { // RGB
                 if (evt.func_id === 1 && evt.data_hex) {
                     replyStr = `HSL: ${evt.data_hex}`;
                 }
-            } else if (evt.element_type === 6) { // Sensor
-                replyStr = `Sensor: ${evt.value} units`;
+            } else if (evt.element_type === 6 || evt.element_type === 7) { // Sensor
+                if (evt.func_id === 1) {
+                    replyStr = `Sensor: ${val} units`;
+                }
             }
-            
+
+            state.nodes[evt.address].value = val;
             state.nodes[evt.address].lastReply = replyStr + ` (${new Date().toLocaleTimeString()})`;
             
             renderTopography();
-            renderMxcpCommands();
+            
+        }
+    } else if (evt.type === "telemetry_update") {
+        const address = `0x00${evt.element_id.toString(16).padStart(2, '0').toUpperCase()}`;
+        if (state.nodes[address]) {
+            state.nodes[address].value = evt.value;
+            let replyStr = `STATUS: ${evt.value > 0 ? "ON" : "OFF"}`;
+            if (evt.element_type === 6 || evt.element_type === 7) {
+                replyStr = `STATUS: Sensor ${evt.value}`;
+            }
+            state.nodes[address].lastReply = replyStr + ` (${new Date().toLocaleTimeString()})`;
+            renderTopography();
         }
     }
 }
 
+let cliTextBuffer = "";
+
 // Write to raw CLI terminal log
 function writeCliOutput(text) {
-    cliOutput.innerHTML += text.replace(/\n/g, "<br>");
-    cliOutput.scrollTop = cliOutput.scrollHeight;
+    cliTextBuffer += text;
+    let coloredHtml = "";
+    let newlineIdx;
+    
+    while ((newlineIdx = cliTextBuffer.indexOf('\n')) !== -1) {
+        let line = cliTextBuffer.substring(0, newlineIdx);
+        if (line.endsWith('\r')) {
+            line = line.substring(0, line.length - 1);
+        }
+        cliTextBuffer = cliTextBuffer.substring(newlineIdx + 1);
+        
+        let colorStyle = "";
+        if (line.includes("[E]") || line.includes("ERROR:")) {
+            colorStyle = "color: var(--neon-crimson);";
+        } else if (line.includes("[W]") || line.includes("WARN:")) {
+            colorStyle = "color: var(--neon-amber);";
+        } else if (line.includes("[I]") || line.includes("INFO:")) {
+            colorStyle = "color: var(--acc-cyan);";
+        } else if (line.includes("[D]") || line.includes("DEBUG:")) {
+            colorStyle = "color: var(--neon-teal); opacity: 0.8;";
+        } else if (line.includes("[V]") || line.includes("VERBOSE:")) {
+            colorStyle = "color: var(--text-muted);";
+        } else if (line.includes("[System]")) {
+            colorStyle = "color: var(--acc-purple);";
+        }
+        
+        if (colorStyle) {
+            coloredHtml += `<span style="${colorStyle}">${line}</span><br>`;
+        } else {
+            coloredHtml += `${line}<br>`;
+        }
+    }
+    
+    if (coloredHtml !== "") {
+        cliOutput.innerHTML += coloredHtml;
+        cliOutput.scrollTop = cliOutput.scrollHeight;
+    }
 }
 
 // Append live log
@@ -246,6 +323,8 @@ function appendLogLine(log) {
     const isErr = log.message.includes("[E]") || log.level === "ERR";
     const isWrn = log.message.includes("[W]") || log.level === "WRN";
     const isDbg = log.message.includes("[D]") || log.level === "DBG";
+    const isInfo = log.message.includes("[I]") || log.level === "INF" || log.level === "INFO";
+    const isVer = log.message.includes("[V]") || log.level === "VER";
     
     // Severity Filter logic
     if (isErr && !filterErr.checked) return;
@@ -260,8 +339,13 @@ function appendLogLine(log) {
         div.style.color = "var(--neon-crimson)";
     } else if (isWrn) {
         div.style.color = "var(--neon-amber)";
+    } else if (isInfo) {
+        div.style.color = "var(--acc-cyan)";
     } else if (isDbg) {
         div.style.color = "var(--neon-teal)";
+        div.style.opacity = "0.8";
+    } else if (isVer) {
+        div.style.color = "var(--text-muted)";
     }
     
     div.textContent = log.message;
@@ -396,14 +480,30 @@ function decodeMxspPacket(msg_type, payloadHex) {
             html += `<div class="pkt-decoded-header">Element State Response Event</div>`;
             html += `<div class="pkt-decoded-item">Elements Reported: <strong>${num_elements}</strong></div>`;
             html += `<table class="pkt-composition-table">`;
-            html += `<thead><tr><th>Idx</th><th>Variant</th><th>Ctx Size</th></tr></thead><tbody>`;
+            html += `<thead><tr><th>Idx</th><th>Variant</th><th>Ctx Size</th><th>Data</th><th>Tel Size</th><th>Tel Data</th></tr></thead><tbody>`;
             let offset = 1;
             for (let i = 0; i < num_elements; i++) {
-                if (offset + 6 > bytes.length) break;
+                if (offset + 8 > bytes.length) break;
                 const idx = bytes[offset] | (bytes[offset + 1] << 8);
                 const variant = bytes[offset + 2] | (bytes[offset + 3] << 8);
                 const ctx_size = bytes[offset + 4] | (bytes[offset + 5] << 8);
-                offset += 6;
+                const telemetry_size = bytes[offset + 6] | (bytes[offset + 7] << 8);
+                offset += 8;
+                
+                let dataHex = "";
+                if (ctx_size > 0 && offset + ctx_size <= bytes.length) {
+                    const dataBytes = bytes.slice(offset, offset + ctx_size);
+                    dataHex = Array.from(dataBytes).map(b => b.toString(16).padStart(2, '0')).join(' ');
+                }
+                offset += ctx_size;
+                
+                let telHex = "";
+                if (telemetry_size > 0 && offset + telemetry_size <= bytes.length) {
+                    const telBytes = bytes.slice(offset, offset + telemetry_size);
+                    telHex = Array.from(telBytes).map(b => b.toString(16).padStart(2, '0')).join(' ');
+                }
+                offset += telemetry_size;
+                
                 const variants = {
                     0: "Relay Server",
                     1: "Relay Client",
@@ -412,16 +512,30 @@ function decodeMxspPacket(msg_type, payloadHex) {
                     4: "RGB Server",
                     5: "RGB Client",
                     6: "Sensor Server",
-                    7: "Sensor Client"
+                    7: "Sensor Client",
+                    8: "Config Server"
                 };
                 const variantStr = variants[variant] || `Unknown (${variant})`;
-                html += `<tr><td>${idx}</td><td>${variantStr}</td><td>${ctx_size} bytes</td></tr>`;
+                html += `<tr><td>${idx}</td><td>${variantStr}</td><td>${ctx_size} bytes</td><td>${dataHex}</td><td>${telemetry_size} bytes</td><td>${telHex}</td></tr>`;
+                
+                // Format context data for display
+                const address = `0x00${idx.toString(16).padStart(2, '0').toUpperCase()}`;
+                
+                // Note: ctx_size contains NVS context (app_id, pub_addr) not telemetry state.
+                // Telemetry state is updated via telemetry_update broadcast from server.
+
             }
             html += `</tbody></table>`;
+            
+            // Re-render UI
+            setTimeout(() => {
+                renderTopography();
+                
+            }, 100);
         }
 
         // --- 4. Element Send / Data Notify ---
-        else if (msg_type === 0x10 || msg_type === 0x90) { // MXCP_CMD_EL_SEND / MXCP_EVT_EL_DATA_NOTIFY
+        else if (msg_type === 0x10 || msg_type === 0x90 || msg_type === 0x91) { // MXCP_CMD_EL_SEND / RX / TX
             const el_id = bytes[0] | (bytes[1] << 8);
             const el_type = bytes[2] | (bytes[3] << 8);
             const func_id = bytes[4] | (bytes[5] << 8);
@@ -438,61 +552,77 @@ function decodeMxspPacket(msg_type, payloadHex) {
                 7: "SENSOR_CLIENT"
             };
             const elTypeName = elementTypes[el_type] || `Unknown Type (${el_type})`;
-            const title = msg_type === 0x90 ? "Telemetry Data Event" : "Element Control Command";
+            let title = "Element Control Command";
+            if (msg_type === 0x90) title = "Telemetry RX Event";
+            else if (msg_type === 0x91) title = "Telemetry TX Event";
             
             html += `<div class="pkt-decoded-header">${title}</div>`;
             html += `<div class="pkt-decoded-item">Element #${el_id} (<strong>${elTypeName}</strong>) | Func ID: <strong>0x${func_id.toString(16).toUpperCase().padStart(2, '0')}</strong></div>`;
             
             if (bytes.length >= 8 + msg_len) {
                 const dataBytes = bytes.slice(8, 8 + msg_len);
-                // Decode specific telemetry states based on element type
-                if (el_type === 0) { // Relay Server
-                    if (func_id === 0x00 && dataBytes.length >= 1) {
-                        const stateStr = dataBytes[0] === 1 ? "ON" : "OFF";
-                        html += `<div class="pkt-decoded-item">Telemetry: State is <strong style="color: ${dataBytes[0] === 1 ? 'var(--neon-emerald)' : 'var(--text-secondary)'};">${stateStr}</strong></div>`;
+                const isRx = (msg_type === 0x90);
+                
+                if (el_type === 0 || el_type === 1) { // Relay
+                    const hasErr = (el_type === 1 && isRx);
+                    const expectedLen = hasErr ? 2 : 1;
+                    if (func_id === 0x00 && dataBytes.length >= expectedLen) {
+                        const errStr = hasErr ? ` (Error: ${dataBytes[0]})` : "";
+                        const stateByte = hasErr ? dataBytes[1] : dataBytes[0];
+                        const stateStr = stateByte === 1 ? "ON" : "OFF";
+                        html += `<div class="pkt-decoded-item">Telemetry: State is <strong style="color: ${stateByte === 1 ? 'var(--neon-emerald)' : 'var(--text-secondary)'};">${stateStr}</strong>${errStr}</div>`;
                     }
-                } else if (el_type === 1) { // Relay Client
-                    if (func_id === 0x00 && dataBytes.length >= 2) {
-                        const err = dataBytes[0];
-                        const stateStr = dataBytes[1] === 1 ? "ON" : "OFF";
-                        html += `<div class="pkt-decoded-item">Telemetry: State is <strong>${stateStr}</strong> (Error: ${err})</div>`;
+                } else if (el_type === 2 || el_type === 3) { // CWWW
+                    const hasErr = (el_type === 3 && isRx);
+                    if (func_id === 0x00) {
+                        const expectedLen = hasErr ? 3 : 1;
+                        if (dataBytes.length >= expectedLen) {
+                            const errStr = hasErr ? ` (Error: ${dataBytes[0]})` : "";
+                            const stateByte = hasErr ? dataBytes[2] : dataBytes[0];
+                            const stateStr = stateByte === 1 ? "ON" : "OFF";
+                            html += `<div class="pkt-decoded-item">Telemetry: State is <strong>${stateStr}</strong>${errStr}</div>`;
+                        }
+                    } else if (func_id === 0x01) {
+                        const expectedLen = hasErr ? 6 : 4;
+                        if (dataBytes.length >= expectedLen) {
+                            const errStr = hasErr ? ` (Error: ${dataBytes[0]})` : "";
+                            const offset = hasErr ? 2 : 0;
+                            const lightness = dataBytes[offset] | (dataBytes[offset+1] << 8);
+                            const temperature = dataBytes[offset+2] | (dataBytes[offset+3] << 8);
+                            html += `<div class="pkt-decoded-item">Lightness: <strong>${lightness}</strong> | Temp: <strong>${temperature} K</strong>${errStr}</div>`;
+                        }
                     }
-                } else if (el_type === 2) { // CWWW Server
-                    if (func_id === 0x00 && dataBytes.length >= 1) {
-                        const stateStr = dataBytes[0] === 1 ? "ON" : "OFF";
-                        html += `<div class="pkt-decoded-item">Telemetry: State is <strong>${stateStr}</strong></div>`;
-                    } else if (func_id === 0x01 && dataBytes.length >= 6) {
-                        const lightness = dataBytes[0] | (dataBytes[1] << 8);
-                        const temperature = dataBytes[2] | (dataBytes[3] << 8);
-                        const delta_uv = dataBytes[4] | (dataBytes[5] << 8);
-                        html += `<div class="pkt-decoded-item">Lightness: <strong>${lightness}</strong> | Temp: <strong>${temperature} K</strong> | Delta UV: <strong>${delta_uv}</strong></div>`;
+                } else if (el_type === 4 || el_type === 5) { // RGB
+                    const hasErr = (el_type === 5 && isRx);
+                    if (func_id === 0x00) {
+                        const expectedLen = hasErr ? 3 : 1;
+                        if (dataBytes.length >= expectedLen) {
+                            const errStr = hasErr ? ` (Error: ${dataBytes[0]})` : "";
+                            const stateByte = hasErr ? dataBytes[2] : dataBytes[0];
+                            const stateStr = stateByte === 1 ? "ON" : "OFF";
+                            html += `<div class="pkt-decoded-item">Telemetry: State is <strong>${stateStr}</strong>${errStr}</div>`;
+                        }
+                    } else if (func_id === 0x01) {
+                        const expectedLen = hasErr ? 8 : 6;
+                        if (dataBytes.length >= expectedLen) {
+                            const errStr = hasErr ? ` (Error: ${dataBytes[0]})` : "";
+                            const offset = hasErr ? 2 : 0;
+                            const h = dataBytes[offset] | (dataBytes[offset+1] << 8);
+                            const s = dataBytes[offset+2] | (dataBytes[offset+3] << 8);
+                            const l = dataBytes[offset+4] | (dataBytes[offset+5] << 8);
+                            html += `<div class="pkt-decoded-item">HSL: <strong>H:${h} S:${s}% L:${l}%</strong>${errStr}</div>`;
+                        }
                     }
-                } else if (el_type === 3) { // CWWW Client
-                    if (func_id === 0x00 && dataBytes.length >= 2) {
-                        const err = dataBytes[0];
-                        const stateStr = dataBytes[1] === 1 ? "ON" : "OFF";
-                        html += `<div class="pkt-decoded-item">Telemetry: State is <strong>${stateStr}</strong> (Error: ${err})</div>`;
-                    } else if (func_id === 0x01 && dataBytes.length >= 7) {
-                        const err = dataBytes[0];
-                        const lightness = dataBytes[1] | (dataBytes[2] << 8);
-                        const temperature = dataBytes[3] | (dataBytes[4] << 8);
-                        const delta_uv = dataBytes[5] | (dataBytes[6] << 8);
-                        html += `<div class="pkt-decoded-item">Lightness: <strong>${lightness}</strong> | Temp: <strong>${temperature} K</strong> (Error: ${err})</div>`;
-                    }
-                } else if (el_type === 4) { // RGB Server
-                    if (func_id === 0x00 && dataBytes.length >= 1) {
-                        const stateStr = dataBytes[0] === 1 ? "ON" : "OFF";
-                        html += `<div class="pkt-decoded-item">Telemetry: State is <strong>${stateStr}</strong></div>`;
-                    } else if (func_id === 0x01 && dataBytes.length >= 6) {
-                        const h = dataBytes[0] | (dataBytes[1] << 8);
-                        const s = dataBytes[2] | (dataBytes[3] << 8);
-                        const l = dataBytes[4] | (dataBytes[5] << 8);
-                        html += `<div class="pkt-decoded-item">HSL: <strong>H:${h} S:${s}% L:${l}%</strong></div>`;
-                    }
-                } else if (el_type === 6) { // Sensor Server
-                    if (func_id === 0x00 && dataBytes.length >= 2) {
-                        const val = dataBytes[0] | (dataBytes[1] << 8);
-                        html += `<div class="pkt-decoded-item">Sensor Value: <strong>${val} units</strong></div>`;
+                } else if (el_type === 6 || el_type === 7) { // Sensor
+                    const hasErr = (el_type === 7 && isRx);
+                    if (func_id === 0x00) {
+                        const expectedLen = hasErr ? 4 : 2;
+                        if (dataBytes.length >= expectedLen) {
+                            const errStr = hasErr ? ` (Error: ${dataBytes[0]})` : "";
+                            const offset = hasErr ? 2 : 0;
+                            const val = dataBytes[offset] | (dataBytes[offset+1] << 8);
+                            html += `<div class="pkt-decoded-item">Sensor Value: <strong>${val} units</strong>${errStr}</div>`;
+                        }
                     }
                 }
             }
@@ -659,7 +789,8 @@ function renderPackets() {
             0x88: "EVT_NODE_RESET_IND (0x88)",
             0x89: "EVT_HOSTED_MODE_RSP (0x89)",
             0x8A: "EVT_CONSOLE_ROUTING_RSP (0x8A)",
-            0x90: "EVT_EL_DATA_NOTIFY (0x90)",
+            0x90: "EVT_EL_DATA_RX_NOTIFY (0x90)",
+            0x91: "EVT_EL_DATA_TX_NOTIFY (0x91)",
             0xA1: "EVT_GPIO_SET_LEVEL_RSP (0xA1)",
             0xA2: "EVT_GPIO_GET_LEVEL_RSP (0xA2)",
             0xA3: "EVT_GPIO_TOGGLE_RSP (0xA3)",
@@ -826,43 +957,137 @@ function renderTopography() {
         const card = document.createElement("div");
         card.className = "mesh-node";
         
-        let controlWidget = "";
         let badgeColor = "var(--neon-emerald)";
         let badgeBg = "rgba(0, 230, 118, 0.15)";
         
         if (node.type.includes("Relay")) {
             badgeColor = "var(--neon-teal)";
             badgeBg = "rgba(0, 229, 255, 0.15)";
-            controlWidget = `
-                <div class="control-group">
-                    <label><i class="fa-solid fa-power-off"></i> Element Command:</label>
-                    <div style="display:flex; gap:10px; margin-top:5px;">
-                        <button class="btn btn-secondary ${node.value > 0 ? "active" : ""}" style="flex:1; padding:4px;" 
-                            onclick="sendNodeElementCmd('${addr}', ${node.element_idx}, ${node.element_type}, 1)">ON</button>
-                        <button class="btn btn-secondary ${node.value === 0 ? "active" : ""}" style="flex:1; padding:4px;" 
-                            onclick="sendNodeElementCmd('${addr}', ${node.element_idx}, ${node.element_type}, 0)">OFF</button>
-                    </div>
-                </div>`;
         } else if (node.type.includes("Light") || node.type.includes("RGB")) {
             badgeColor = "var(--neon-purple)";
             badgeBg = "rgba(138, 43, 226, 0.15)";
-            controlWidget = `
-                <div class="control-group">
-                    <label><i class="fa-solid fa-lightbulb"></i> Element Command:</label>
-                    <div style="display:flex; gap:10px; margin-top:5px;">
-                        <button class="btn btn-secondary ${node.value > 0 ? "active" : ""}" style="flex:1; padding:4px;" 
-                            onclick="sendNodeElementCmd('${addr}', ${node.element_idx}, ${node.element_type}, 1)">ON</button>
-                        <button class="btn btn-secondary ${node.value === 0 ? "active" : ""}" style="flex:1; padding:4px;" 
-                            onclick="sendNodeElementCmd('${addr}', ${node.element_idx}, ${node.element_type}, 0)">OFF</button>
-                    </div>
-                </div>`;
         } else {
             badgeColor = "var(--neon-amber)";
             badgeBg = "rgba(255, 179, 0, 0.15)";
-            controlWidget = `
-                <div class="control-group" style="text-align: center; padding: 10px 0;">
-                    <span style="font-size:0.85rem; color:var(--text-secondary); font-weight:600;"><i class="fa-solid fa-circle-check animate-pulse-glow"></i> Element Active</span>
+        }
+        
+        let lastReply = node.lastReply;
+        if (!lastReply) {
+            if (node.value !== undefined && node.value !== null) {
+                if (node.element_type === 6 || node.element_type === 7) {
+                    lastReply = `Sensor: ${node.value} units`;
+                } else {
+                    lastReply = `STATUS: ${node.value > 0 ? "ON" : "OFF"}`;
+                }
+            } else {
+                lastReply = "STATUS: IDLE";
+            }
+        }
+        
+        const controlWidget = `
+                <div class="control-group" style="text-align: left; padding: 10px 0;">
+                    <span style="font-size:0.85rem; color:var(--text-secondary); font-weight:600;"><i class="fa-solid fa-info-circle"></i> <span id="status-reply-${node.element_idx}">${lastReply}</span></span>
                 </div>`;
+        
+        let actionsHtml = "";
+        
+        if (node.element_type === 1) { // Relay Client
+            actionsHtml = `
+                <div class="node-actions" onclick="event.stopPropagation()">
+                    <div class="node-actions-title">MXCP COMMANDS</div>
+                    <div class="node-action-item">
+                        <span style="font-size:0.75rem; color:var(--text-secondary);">On/Off Toggle (Func: 0)</span>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-secondary ${node.value > 0 ? "active" : ""}" style="flex:1; padding:0; height:30px;"
+                                onclick="sendNodeElementCmd('${addr}', ${node.element_idx}, ${node.element_type}, 1)">ON</button>
+                            <button class="btn btn-secondary ${node.value === 0 ? "active" : ""}" style="flex:1; padding:0; height:30px;"
+                                onclick="sendNodeElementCmd('${addr}', ${node.element_idx}, ${node.element_type}, 0)">OFF</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else if (node.element_type === 3) { // CWWW
+            const lightValId = `cwww-light-${node.element_idx}`;
+            const tempValId = `cwww-temp-${node.element_idx}`;
+            actionsHtml = `
+                <div class="node-actions" onclick="event.stopPropagation()">
+                    <div class="node-actions-title">MXCP COMMANDS</div>
+                    <div class="node-action-item">
+                        <span style="font-size:0.75rem; color:var(--text-secondary);">On/Off Toggle (Func: 0)</span>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-secondary ${node.value > 0 ? "active" : ""}" style="flex:1; padding:0; height:30px;"
+                                onclick="sendNodeElementCmd('${addr}', ${node.element_idx}, ${node.element_type}, 1)">ON</button>
+                            <button class="btn btn-secondary ${node.value === 0 ? "active" : ""}" style="flex:1; padding:0; height:30px;"
+                                onclick="sendNodeElementCmd('${addr}', ${node.element_idx}, ${node.element_type}, 0)">OFF</button>
+                        </div>
+                    </div>
+                    <div class="node-action-item" style="margin-top: 8px;">
+                        <span style="font-size:0.75rem; color:var(--text-secondary);">CTL Level (Func: 1)</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 0.7rem; width: 40px; color: var(--text-secondary);">Light:</span>
+                            <input type="range" id="${lightValId}" class="slider-control" min="0" max="65535" value="32768" style="flex: 1;">
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 0.7rem; width: 40px; color: var(--text-secondary);">Temp:</span>
+                            <input type="range" id="${tempValId}" class="slider-control" min="0" max="65535" value="32768" style="flex: 1;">
+                        </div>
+                        <button class="btn btn-primary" style="padding: 0; height: 30px; margin-top: 4px;"
+                            onclick="sendCwwwCtlCmd('${addr}', ${node.element_idx}, ${node.element_type}, document.getElementById('${lightValId}').value, document.getElementById('${tempValId}').value)">
+                            Set CTL
+                        </button>
+                    </div>
+                </div>
+            `;
+        } else if (node.element_type === 5) { // RGB
+            const hId = `rgb-h-${node.element_idx}`;
+            const sId = `rgb-s-${node.element_idx}`;
+            const lId = `rgb-l-${node.element_idx}`;
+            actionsHtml = `
+                <div class="node-actions" onclick="event.stopPropagation()">
+                    <div class="node-actions-title">MXCP COMMANDS</div>
+                    <div class="node-action-item">
+                        <span style="font-size:0.75rem; color:var(--text-secondary);">On/Off Toggle (Func: 0)</span>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn btn-secondary ${node.value > 0 ? "active" : ""}" style="flex:1; padding:0; height:30px;"
+                                onclick="sendNodeElementCmd('${addr}', ${node.element_idx}, ${node.element_type}, 1)">ON</button>
+                            <button class="btn btn-secondary ${node.value === 0 ? "active" : ""}" style="flex:1; padding:0; height:30px;"
+                                onclick="sendNodeElementCmd('${addr}', ${node.element_idx}, ${node.element_type}, 0)">OFF</button>
+                        </div>
+                    </div>
+                    <div class="node-action-item" style="margin-top: 8px;">
+                        <span style="font-size:0.75rem; color:var(--text-secondary);">HSL Color (Func: 1)</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 0.7rem; width: 30px; color: var(--text-secondary);">H:</span>
+                            <input type="range" id="${hId}" class="slider-control" min="0" max="65535" value="32768" style="flex: 1;">
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 0.7rem; width: 30px; color: var(--text-secondary);">S:</span>
+                            <input type="range" id="${sId}" class="slider-control" min="0" max="65535" value="65535" style="flex: 1;">
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 0.7rem; width: 30px; color: var(--text-secondary);">L:</span>
+                            <input type="range" id="${lId}" class="slider-control" min="0" max="65535" value="32768" style="flex: 1;">
+                        </div>
+                        <button class="btn btn-primary" style="padding: 0; height: 30px; margin-top: 4px;"
+                            onclick="sendHslColorCmd('${addr}', ${node.element_idx}, ${node.element_type}, document.getElementById('${hId}').value, document.getElementById('${sId}').value, document.getElementById('${lId}').value)">
+                            Set HSL
+                        </button>
+                    </div>
+                </div>
+            `;
+        } else if (node.element_type === 7) { // Sensor
+            actionsHtml = `
+                <div class="node-actions" onclick="event.stopPropagation()">
+                    <div class="node-actions-title">MXCP COMMANDS</div>
+                    <div class="node-action-item">
+                        <span style="font-size:0.75rem; color:var(--text-secondary);">Read Value (Func: 0)</span>
+                        <button class="btn btn-primary" style="padding: 0; height: 30px;"
+                            onclick="sendSensorReadCmd('${addr}', ${node.element_idx}, ${node.element_type})">
+                            <i class="fa-solid fa-gauge"></i> Read Sensor
+                        </button>
+                    </div>
+                </div>
+            `;
         }
         
         card.innerHTML = `
@@ -874,6 +1099,7 @@ function renderTopography() {
                 <p style="font-size:0.85rem; font-weight:600; color:var(--text-primary);"><i class="fa-solid fa-microchip" style="color: ${badgeColor}; margin-right: 6px;"></i>${node.name}</p>
                 ${controlWidget}
             </div>
+            ${actionsHtml}
         `;
         topoViewport.appendChild(card);
     });
@@ -883,8 +1109,8 @@ window.sendNodeElementCmd = (addr, elementIdx, elementType, val) => {
     // Update local state cache instantly for premium responsive feel
     if (state.nodes[addr]) {
         state.nodes[addr].value = parseInt(val);
+        // Only update the active states without full re-render if possible, but full render is easiest
         renderTopography();
-        renderMxcpCommands();
     }
     
     // Broadcast dynamic MXSP binary element control frame
@@ -900,212 +1126,48 @@ window.sendNodeElementCmd = (addr, elementIdx, elementType, val) => {
     }
 };
 
-const mxcpCommandsTbody = document.getElementById("mxcp-commands-tbody");
-
-function renderMxcpCommands() {
-    if (!mxcpCommandsTbody) return;
-    
-    // Filter out root element (index 0 / 0x0000)
-    const validAddresses = Object.keys(state.nodes).filter(addr => {
-        const node = state.nodes[addr];
-        return node.element_idx !== 0 && addr !== "0x0000";
-    });
-    
-    if (!socket || socket.readyState !== WebSocket.OPEN || validAddresses.length === 0) {
-        mxcpCommandsTbody.innerHTML = `
-            <tr class="empty-row">
-                <td colspan="5" style="text-align: center; color: var(--text-secondary); padding: 20px;">
-                    No customer/OEM elements discovered yet. Click "Enable MXCP" and "Refresh Topography" in the header to discover.
-                </td>
-            </tr>`;
-        return;
-    }
-    
-    mxcpCommandsTbody.innerHTML = "";
-    
-    validAddresses.forEach(addr => {
-        const node = state.nodes[addr];
-        const lastReply = node.lastReply || "STATUS: IDLE";
-        
-        // Let's create rows for the commands!
-        if (node.element_type === 0) { // Relay Server
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td><strong>Element ${node.element_idx}</strong></td>
-                <td><span class="pin-tag tag-input" style="background: rgba(0, 229, 255, 0.15); color: var(--neon-teal); border: 1px solid var(--neon-teal);">Relay Server</span></td>
-                <td>On/Off Toggle (Func ID: 0)</td>
-                <td>
-                    <div style="display: flex; gap: 8px;">
-                        <button class="btn btn-secondary btn-table-control ${node.value > 0 ? "active" : ""}" 
-                            onclick="sendNodeElementCmd('${addr}', ${node.element_idx}, ${node.element_type}, 1)">ON</button>
-                        <button class="btn btn-secondary btn-table-control ${node.value === 0 ? "active" : ""}" 
-                            onclick="sendNodeElementCmd('${addr}', ${node.element_idx}, ${node.element_type}, 0)">OFF</button>
-                    </div>
-                </td>
-                <td><span class="status-reply-cell">${node.value > 0 ? "STATUS: ON" : "STATUS: OFF"}</span></td>
-            `;
-            mxcpCommandsTbody.appendChild(tr);
-            
-        } else if (node.element_type === 2) { // CWWW Light
-            // Row 1: On/Off Toggle
-            const tr1 = document.createElement("tr");
-            tr1.innerHTML = `
-                <td><strong>Element ${node.element_idx}</strong></td>
-                <td><span class="pin-tag tag-pwm" style="background: rgba(255, 179, 0, 0.15); color: var(--neon-amber); border: 1px solid var(--neon-amber);">CWWW Light</span></td>
-                <td>On/Off Toggle (Func ID: 0)</td>
-                <td>
-                    <div style="display: flex; gap: 8px;">
-                        <button class="btn btn-secondary btn-table-control ${node.value > 0 ? "active" : ""}" 
-                            onclick="sendNodeElementCmd('${addr}', ${node.element_idx}, ${node.element_type}, 1)">ON</button>
-                        <button class="btn btn-secondary btn-table-control ${node.value === 0 ? "active" : ""}" 
-                            onclick="sendNodeElementCmd('${addr}', ${node.element_idx}, ${node.element_type}, 0)">OFF</button>
-                    </div>
-                </td>
-                <td><span class="status-reply-cell">${node.value > 0 ? "STATUS: ON" : "STATUS: OFF"}</span></td>
-            `;
-            mxcpCommandsTbody.appendChild(tr1);
-            
-            // Row 2: CTL Lightness & Temp
-            const tr2 = document.createElement("tr");
-            const lightValId = `cwww-light-${node.element_idx}`;
-            const tempValId = `cwww-temp-${node.element_idx}`;
-            tr2.innerHTML = `
-                <td><strong>Element ${node.element_idx}</strong></td>
-                <td><span class="pin-tag tag-pwm" style="background: rgba(255, 179, 0, 0.15); color: var(--neon-amber); border: 1px solid var(--neon-amber);">CWWW Light</span></td>
-                <td>CTL Level (Func ID: 1)</td>
-                <td>
-                    <div style="display: flex; flex-direction: column; gap: 6px; min-width: 180px;">
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 0.75rem; width: 60px; color: var(--text-secondary);">Lightness:</span>
-                            <input type="range" id="${lightValId}" class="slider-control" min="0" max="65535" value="32768" style="flex: 1;">
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 0.75rem; width: 60px; color: var(--text-secondary);">Temp:</span>
-                            <input type="range" id="${tempValId}" class="slider-control" min="0" max="65535" value="32768" style="flex: 1;">
-                        </div>
-                        <button class="btn btn-primary btn-table-control" style="align-self: flex-start; padding: 2px 10px; margin-top: 4px;"
-                            onclick="sendCwwwCtlCmd('${addr}', ${node.element_idx}, document.getElementById('${lightValId}').value, document.getElementById('${tempValId}').value)">
-                            Set CTL
-                        </button>
-                    </div>
-                </td>
-                <td><span class="status-reply-cell" id="status-reply-cwww-${node.element_idx}">${lastReply}</span></td>
-            `;
-            mxcpCommandsTbody.appendChild(tr2);
-            
-        } else if (node.element_type === 4) { // RGB / HSL Light
-            // Row 1: On/Off Toggle
-            const tr1 = document.createElement("tr");
-            tr1.innerHTML = `
-                <td><strong>Element ${node.element_idx}</strong></td>
-                <td><span class="pin-tag tag-output" style="background: rgba(138, 43, 226, 0.15); color: var(--neon-purple); border: 1px solid var(--neon-purple);">RGB Light</span></td>
-                <td>On/Off Toggle (Func ID: 0)</td>
-                <td>
-                    <div style="display: flex; gap: 8px;">
-                        <button class="btn btn-secondary btn-table-control ${node.value > 0 ? "active" : ""}" 
-                            onclick="sendNodeElementCmd('${addr}', ${node.element_idx}, ${node.element_type}, 1)">ON</button>
-                        <button class="btn btn-secondary btn-table-control ${node.value === 0 ? "active" : ""}" 
-                            onclick="sendNodeElementCmd('${addr}', ${node.element_idx}, ${node.element_type}, 0)">OFF</button>
-                    </div>
-                </td>
-                <td><span class="status-reply-cell">${node.value > 0 ? "STATUS: ON" : "STATUS: OFF"}</span></td>
-            `;
-            mxcpCommandsTbody.appendChild(tr1);
-            
-            // Row 2: HSL Color
-            const tr2 = document.createElement("tr");
-            const hId = `rgb-h-${node.element_idx}`;
-            const sId = `rgb-s-${node.element_idx}`;
-            const lId = `rgb-l-${node.element_idx}`;
-            tr2.innerHTML = `
-                <td><strong>Element ${node.element_idx}</strong></td>
-                <td><span class="pin-tag tag-output" style="background: rgba(138, 43, 226, 0.15); color: var(--neon-purple); border: 1px solid var(--neon-purple);">RGB Light</span></td>
-                <td>HSL Color (Func ID: 1)</td>
-                <td>
-                    <div style="display: flex; flex-direction: column; gap: 6px; min-width: 180px;">
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 0.75rem; width: 60px; color: var(--text-secondary);">Hue:</span>
-                            <input type="range" id="${hId}" class="slider-control" min="0" max="65535" value="32768" style="flex: 1;">
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 0.75rem; width: 60px; color: var(--text-secondary);">Sat:</span>
-                            <input type="range" id="${sId}" class="slider-control" min="0" max="65535" value="65535" style="flex: 1;">
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 0.75rem; width: 60px; color: var(--text-secondary);">Light:</span>
-                            <input type="range" id="${lId}" class="slider-control" min="0" max="65535" value="32768" style="flex: 1;">
-                        </div>
-                        <button class="btn btn-primary btn-table-control" style="align-self: flex-start; padding: 2px 10px; margin-top: 4px;"
-                            onclick="sendHslColorCmd('${addr}', ${node.element_idx}, document.getElementById('${hId}').value, document.getElementById('${sId}').value, document.getElementById('${lId}').value)">
-                            Set HSL
-                        </button>
-                    </div>
-                </td>
-                <td><span class="status-reply-cell" id="status-reply-rgb-${node.element_idx}">${lastReply}</span></td>
-            `;
-            mxcpCommandsTbody.appendChild(tr2);
-            
-        } else if (node.element_type === 6) { // Sensor Server
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td><strong>Element ${node.element_idx}</strong></td>
-                <td><span class="pin-tag tag-input" style="background: rgba(0, 230, 118, 0.15); color: var(--neon-emerald); border: 1px solid var(--neon-emerald);">Sensor Server</span></td>
-                <td>Read Value (Func ID: 0)</td>
-                <td>
-                    <button class="btn btn-primary btn-table-control" 
-                        onclick="sendSensorReadCmd('${addr}', ${node.element_idx})">
-                        <i class="fa-solid fa-gauge"></i> Read Sensor
-                    </button>
-                </td>
-                <td><span class="status-reply-cell" id="status-reply-sensor-${node.element_idx}">${lastReply}</span></td>
-            `;
-            mxcpCommandsTbody.appendChild(tr);
-        }
-    });
-}
-
-window.sendCwwwCtlCmd = (addr, elementIdx, lightness, temp) => {
+window.sendCwwwCtlCmd = (addr, elementIdx, elementType, lightness, temp) => {
     if (socket && socket.readyState === WebSocket.OPEN) {
         socket.send(JSON.stringify({
             type: "el_cmd_cwww",
             element_idx: parseInt(elementIdx),
-            element_type: 2,
+            element_type: parseInt(elementType),
             func_id: 1,
             lightness: parseInt(lightness),
             temperature: parseInt(temp)
         }));
-        const statusCell = document.getElementById(`status-reply-cwww-${elementIdx}`);
+        const statusCell = document.getElementById(`status-reply-${elementIdx}`);
         if (statusCell) statusCell.innerText = "STATUS: SENT";
         writeCliOutput(`[System] Sent CWWW CTL command (el_idx: ${elementIdx}, lightness: ${lightness}, temp: ${temp})\n`);
     }
 };
 
-window.sendHslColorCmd = (addr, elementIdx, hue, sat, light) => {
+window.sendHslColorCmd = (addr, elementIdx, elementType, hue, sat, light) => {
     if (socket && socket.readyState === WebSocket.OPEN) {
         socket.send(JSON.stringify({
             type: "el_cmd_hsl",
             element_idx: parseInt(elementIdx),
-            element_type: 4,
+            element_type: parseInt(elementType),
             func_id: 1,
             hue: parseInt(hue),
             saturation: parseInt(sat),
             lightness: parseInt(light)
         }));
-        const statusCell = document.getElementById(`status-reply-rgb-${elementIdx}`);
+        const statusCell = document.getElementById(`status-reply-${elementIdx}`);
         if (statusCell) statusCell.innerText = "STATUS: SENT";
         writeCliOutput(`[System] Sent HSL color command (el_idx: ${elementIdx}, H: ${hue}, S: ${sat}, L: ${light})\n`);
     }
 };
 
-window.sendSensorReadCmd = (addr, elementIdx) => {
+window.sendSensorReadCmd = (addr, elementIdx, elementType) => {
     if (socket && socket.readyState === WebSocket.OPEN) {
         socket.send(JSON.stringify({
             type: "el_cmd_sensor",
             element_idx: parseInt(elementIdx),
-            element_type: 6,
+            element_type: parseInt(elementType),
             func_id: 0
         }));
-        const statusCell = document.getElementById(`status-reply-sensor-${elementIdx}`);
+        const statusCell = document.getElementById(`status-reply-${elementIdx}`);
         if (statusCell) statusCell.innerText = "STATUS: READING...";
         writeCliOutput(`[System] Sent Sensor Read request (el_idx: ${elementIdx})\n`);
     }
@@ -1138,7 +1200,10 @@ async function triggerDeviceFlash() {
         });
         const data = await res.json();
         if (data.status === "success") {
-            writeCliOutput(`\n[System] Flash pipeline triggered successfully. Streaming compile & write logs below:\n`);
+            writeCliOutput(`\n[System] Flash pipeline completed.\n`);
+            flashBtn.innerHTML = '<i class="fa-solid fa-bolt"></i> Flash Firmware';
+            flashBtn.disabled = false;
+            if (flashMxcBtn) flashMxcBtn.disabled = !(bspSelect.value && profileSelect.value);
         } else {
             writeCliOutput(`\n[System] Failed to trigger flash: ${data.detail || data.message}\n`);
             flashBtn.innerHTML = '<i class="fa-solid fa-bolt"></i> Flash Firmware';
@@ -1324,7 +1389,10 @@ if (flashMxcBtn) {
             });
             const data = await res.json();
             if (data.status === "success") {
-                writeCliOutput(`\n[System] Custom configuration flash pipeline triggered successfully. Streaming write logs below:\n`);
+                writeCliOutput(`\n[System] Custom configuration flash pipeline completed.\n`);
+                flashMxcBtn.innerHTML = '<i class="fa-solid fa-arrow-up-from-bracket"></i> Flash Config';
+                flashMxcBtn.disabled = false;
+                flashBtn.disabled = false;
             } else {
                 writeCliOutput(`\n[System] Failed to trigger custom flash: ${data.detail || data.message}\n`);
                 flashMxcBtn.innerHTML = '<i class="fa-solid fa-arrow-up-from-bracket"></i> Flash Config';
@@ -1377,4 +1445,4 @@ scanPorts();
 loadConfigMetadata();
 detectNodesFromState();
 renderGpioPipeline();
-renderMxcpCommands();
+

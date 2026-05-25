@@ -3,57 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MeshX Premium Telemetry Dashboard</title>
-    <!-- Fonts & Icons -->
+    <title>MeshX Orbital Command Console</title>
+    <!-- Premium Aerospace Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <div class="stars"></div>
-    <div class="glow-orb glow-orb-1"></div>
-    <div class="glow-orb glow-orb-2"></div>
+    <div class="crt-scanline"></div>
+    <div class="bg-grid"></div>
+    <div class="ambient-glow"></div>
 
     <div class="app-container">
         <!-- Header Bar -->
         <header class="app-header">
             <div class="logo">
-                <i class="fa-solid fa-cube logo-icon"></i>
-                <span class="logo-text">Mesh<span class="highlight">X</span></span>
-                <span class="badge">UVP Active</span>
+                <i class="fa-solid fa-satellite logo-icon"></i>
+                <span class="logo-text">MESH<span class="highlight">X</span></span>
+                <span class="badge">ORBITAL LINK ACTIVE</span>
             </div>
             
             <div class="port-selector-container">
                 <div class="selector-group connection-group">
-                    <label for="port-select"><i class="fa-solid fa-plug"></i> Serial Port:</label>
+                    <label for="port-select"><i class="fa-solid fa-plug"></i> DATA_PORT</label>
                     <select id="port-select">
-                        <option value="">Scan for ports...</option>
+                        <option value="">AWAITING SCAN...</option>
                     </select>
-                    <button id="connect-btn" class="btn btn-primary"><i class="fa-solid fa-link"></i> Connect</button>
-                    <button id="mxcp-shift-btn" class="btn" style="color: #fff; background: linear-gradient(135deg, #8A2BE2, #4B0082); border: none; font-weight: 600; display: none;" title="Shift MXCP Channel over Console via 'ut 8 1 1 1'"><i class="fa-solid fa-shuffle"></i> Enable MXCP</button>
+                    <button id="connect-btn" class="btn btn-primary"><i class="fa-solid fa-link"></i> INITIATE LINK</button>
+                    <button id="mxcp-shift-btn" class="btn btn-mxcp" title="Shift MXCP Channel over Console"><i class="fa-solid fa-shuffle"></i> SHIFT MXCP</button>
                 </div>
                 
                 <div class="header-divider"></div>
                 
                 <div class="selector-group flash-group">
-                    <label for="bsp-select"><i class="fa-solid fa-microchip icon-cyan"></i> BSP:</label>
+                    <label for="bsp-select"><i class="fa-solid fa-microchip icon-cyan"></i> SYS_BSP</label>
                     <select id="bsp-select">
-                        <option value="">Select BSP...</option>
+                        <option value="">SELECT...</option>
                     </select>
 
-                    <label for="profile-select"><i class="fa-solid fa-box icon-emerald"></i> Profile:</label>
+                    <label for="profile-select"><i class="fa-solid fa-box icon-cyan"></i> PROFILE</label>
                     <select id="profile-select" disabled>
-                        <option value="">Select Product...</option>
+                        <option value="">SELECT...</option>
                     </select>
 
                     <label class="checkbox-container">
                         <input type="checkbox" id="erase-flash-chk">
-                        <span class="checkmark chk-flash"></span> Erase
+                        <span class="checkmark chk-flash"></span> <span class="chk-label">ERASE</span>
                     </label>
-                    <button id="flash-btn" class="btn btn-secondary flash-btn" disabled title="Flash firmware binary"><i class="fa-solid fa-bolt"></i> Flash Firmware</button>
-                    <button id="flash-mxc-btn" class="btn btn-secondary btn-config-flash" disabled title="Flash custom configuration"><i class="fa-solid fa-arrow-up-from-bracket"></i> Flash Config</button>
+                    <button id="flash-btn" class="btn btn-secondary flash-btn" disabled title="Flash firmware binary"><i class="fa-solid fa-bolt"></i> BURN_FW</button>
+                    <button id="flash-mxc-btn" class="btn btn-secondary btn-config-flash" disabled title="Flash custom configuration"><i class="fa-solid fa-upload"></i> BURN_CFG</button>
                 </div>
             </div>
         </header>
@@ -62,81 +62,52 @@
         <main class="dashboard-grid">
             
             <!-- BLE Mesh Topography -->
-            <section class="card topo-card glass-panel">
+            <section class="card topo-card tech-panel">
                 <div class="card-header">
                     <div class="title-wrap">
-                        <i class="fa-solid fa-network-wired header-icon icon-emerald"></i>
-                        <h2>BLE Mesh Topography</h2>
+                        <i class="fa-solid fa-network-wired header-icon icon-cyan"></i>
+                        <h2>TOPOGRAPHY MAP</h2>
                     </div>
                     <div style="display: flex; align-items: center; gap: 15px;">
-                        <button id="refresh-composition-btn" class="btn btn-secondary btn-icon" title="Refresh dynamic elements composition"><i class="fa-solid fa-arrows-rotate"></i></button>
+                        <button id="refresh-composition-btn" class="btn btn-icon" title="Refresh dynamic elements"><i class="fa-solid fa-arrows-rotate"></i></button>
                         <span class="live-pulse"></span>
                     </div>
                 </div>
                 <div class="card-content">
                     <div class="topo-viewport" id="topo-viewport">
-                        <!-- Discovered nodes will be rendered here dynamically -->
                         <div class="empty-state">
                             <i class="fa-solid fa-satellite-dish"></i>
-                            <p>Serial port offline.<br>Connect to start BLE Mesh auto-discovery.</p>
+                            <p>NO SIGNAL DETECTED.<br>ESTABLISH LINK TO COMMENCE SCAN.</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- MXCP OEM Commands Table -->
-            <section class="card mxcp-card glass-panel">
-                <div class="card-header">
-                    <div class="title-wrap">
-                        <i class="fa-solid fa-sliders header-icon icon-amber"></i>
-                        <h2>MXCP OEM Element Commands</h2>
-                    </div>
-                </div>
-                <div class="card-content">
-                    <div class="mxcp-table-container">
-                        <table class="mxcp-table">
-                            <thead>
-                                <tr>
-                                    <th>Element</th>
-                                    <th>Type</th>
-                                    <th>Function</th>
-                                    <th>Action / Control</th>
-                                    <th>Status Reply</th>
-                                </tr>
-                            </thead>
-                            <tbody id="mxcp-commands-tbody">
-                                <tr class="empty-row">
-                                    <td colspan="5" style="text-align: center; color: var(--text-secondary);">No active elements composition retrieved. Click "Enable MXCP" and "Refresh Topography".</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
 
             <!-- Decoded Virtual Logs Terminal -->
-            <section class="card logs-card glass-panel">
+            <section class="card logs-card tech-panel">
                 <div class="card-header">
                     <div class="title-wrap">
-                        <i class="fa-solid fa-terminal header-icon icon-crimson"></i>
-                        <h2>Virtualized Decoded Log Terminal</h2>
+                        <i class="fa-solid fa-terminal header-icon icon-orange"></i>
+                        <h2>DECODED TELEMETRY STREAM</h2>
                     </div>
                     <div class="log-controls">
                         <label class="checkbox-container">
                             <input type="checkbox" id="filter-err" checked>
-                            <span class="checkmark chk-err"></span> [ERR]
+                            <span class="checkmark chk-err"></span> <span class="chk-label">ERR</span>
                         </label>
                         <label class="checkbox-container">
                             <input type="checkbox" id="filter-wrn" checked>
-                            <span class="checkmark chk-wrn"></span> [WRN]
+                            <span class="checkmark chk-wrn"></span> <span class="chk-label">WRN</span>
                         </label>
                         <label class="checkbox-container">
                             <input type="checkbox" id="filter-dbg" checked>
-                            <span class="checkmark chk-dbg"></span> [DBG]
+                            <span class="checkmark chk-dbg"></span> <span class="chk-label">DBG</span>
                         </label>
-                        <button id="autoscroll-btn" class="btn btn-secondary active"><i class="fa-solid fa-angles-down"></i> AutoScroll</button>
-                        <button id="clear-logs-btn" class="btn btn-secondary"><i class="fa-solid fa-circle-minus"></i> Clear</button>
-                        <button id="export-logs-btn" class="btn btn-primary"><i class="fa-solid fa-download"></i> Export</button>
+                        <div class="vertical-divider"></div>
+                        <button id="autoscroll-btn" class="btn btn-ghost active" title="Toggle Autoscroll"><i class="fa-solid fa-angles-down"></i></button>
+                        <button id="clear-logs-btn" class="btn btn-ghost" title="Clear Logs"><i class="fa-solid fa-trash-can"></i></button>
+                        <button id="export-logs-btn" class="btn btn-ghost" title="Export Logs"><i class="fa-solid fa-download"></i></button>
                     </div>
                 </div>
                 <div class="card-content">
@@ -147,41 +118,41 @@
             </section>
 
             <!-- Packet Dissector Timeline -->
-            <section class="card packets-card glass-panel">
+            <section class="card packets-card tech-panel">
                 <div class="card-header">
                     <div class="title-wrap">
-                        <i class="fa-solid fa-arrow-right-arrow-left header-icon icon-purple"></i>
-                        <h2>Packet Dissector Timeline</h2>
+                        <i class="fa-solid fa-microchip header-icon icon-cyan"></i>
+                        <h2>PACKET DISSECTOR</h2>
                     </div>
                     <div class="actions">
-                        <button id="clear-packets-btn" class="btn btn-icon"><i class="fa-solid fa-trash-can"></i></button>
+                        <button id="clear-packets-btn" class="btn btn-ghost"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 </div>
                 <div class="card-content">
                     <div class="packets-timeline" id="packets-timeline">
                         <div class="empty-state">
                             <i class="fa-solid fa-receipt"></i>
-                            <p>Listening for active binary MXSP stream packets...</p>
+                            <p>WAITING FOR MXSP STREAM...</p>
                         </div>
                     </div>
                 </div>
             </section>
 
             <!-- Raw CLI Console Commands -->
-            <section class="card cli-card glass-panel">
+            <section class="card cli-card tech-panel">
                 <div class="card-header">
                     <div class="title-wrap">
                         <i class="fa-solid fa-keyboard header-icon"></i>
-                        <h2>Direct CLI Command Console</h2>
+                        <h2>UPLINK CONSOLE</h2>
                     </div>
                 </div>
-                <div class="card-content">
+                <div class="card-content" style="padding: 0;">
                     <div class="cli-terminal" id="cli-output">
-                        Welcome to MeshX Interactive Developer Console. Select port and send commands.<br>
+                        SYSTEM INITIALIZED. AWAITING UPLINK.<br>
                     </div>
                     <div class="cli-input-wrapper">
-                        <span class="cli-prompt">MeshX&gt;</span>
-                        <input type="text" id="cli-input" placeholder="Type a CLI command (e.g. 'ut 8 1 1 1' or 'help') and press Enter...">
+                        <span class="cli-prompt">SYS_OP&gt;</span>
+                        <input type="text" id="cli-input" placeholder="ENTER COMMAND (e.g. 'ut 8 1 1 1')...">
                         <button id="cli-send-btn" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i></button>
                     </div>
                 </div>

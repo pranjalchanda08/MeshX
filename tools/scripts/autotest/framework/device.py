@@ -18,7 +18,7 @@ class RelayInterface:
         return self.set_onoff(element_id, 1)
 
     def check_state(self, element_id, expected_state):
-        # Wait for MXCP_EVT_EL_DATA_NOTIFY (0x90)
+        # Wait for MXCP_EVT_EL_DATA_RX_NOTIFY (0x90)
         start_time = time.time()
         while time.time() - start_time < 2:
             frame = self.node.wait_for_mxcp_frame(0x90, timeout=0.5)
