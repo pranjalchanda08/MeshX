@@ -180,6 +180,11 @@ meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::model_fr
 
     if (sync_required)
     {
+        if (p_dev->meshx_store.node_addr == MESHX_ADDR_UNASSIGNED)
+        {
+            MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Cannot sync config: node_addr is unassigned. Ignoring event.");
+            return MESHX_INVALID_STATE;
+        }
         uint16_t el_id = target_addr - p_dev->meshx_store.node_addr;
         auto *el = meshXElementRegistry::get_instance().find_element(el_id);
         if (el && el->get_element_ctx())
@@ -195,6 +200,11 @@ meshx_err_t meshXConfigModel MESHX_CONFIG_SERVER_MODEL_TEMPLATE_PARAMS::model_fr
             meshx_nvs_element_ctx_set(el_id, variant, ctx, el->get_element_ctx_size());
             meshx_nvs_commit(); // Force immediate commit for critical config changes
             MESHX_LOGI(MODULE_ID_MODEL_SERVER, "  Element [%d] context updated and committed to NVS (variant: %d)", el_id, variant);
+        }
+        else
+        {
+            MESHX_LOGE(MODULE_ID_MODEL_SERVER, "  Sync failed: Element lookup failed for el_id %d (target: 0x%04x, node: 0x%04x)",
+                       el_id, target_addr, p_dev->meshx_store.node_addr);
         }
     }
 

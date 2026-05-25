@@ -1,6 +1,6 @@
-S# Page 11 — Read-Only Persistent Configuration
+# Page 11 — Read-Only Persistent Configuration
 
-> **[← Hosted Mode](./10_hosted_mode.md)** | **[← Index](../README.md)** | **[Next: Hardware Platform →](./12_hardware_platform.md)**
+> **[← MXCP Protocol](./10_mxcp_protocol.md)** | **[← Index](../README.md)** | **[Next: Hardware Platform →](./12_hardware_platform.md)**
 
 ---
 
@@ -8,24 +8,28 @@ S# Page 11 — Read-Only Persistent Configuration
 
 ### 12.1 Purpose
 
-The `meshx_cfg` flash partition stores a CRC-validated Protobuf binary containing product identity, hardware configuration, and persistent device UUID. This enables field-programmable device identification without firmware reflashing.
+The `meshx_cfg` flash partition stores a serialized, CRC-validated binary container (`meshx_cfg.mxc`) containing product identity, element composition, and GPIO bindings. This enables OEM field provisioning and dynamic element baking without firmware recompilation.
 
-### 12.2 Partition Layout
+### 12.2 Partition Layout (`.mxc` Container)
 
 ```
 ┌────────────────────────────────────────────────────────────┐
 │  meshx_cfg partition (FAL-managed, 4 KB)                   │
-├───────────────┬────────────────────────────────────────────┤
-│  Header (8B)  │ Magic, Version, Payload Length, Header CRC │
-├───────────────┼────────────────────────────────────────────┤
-│  Payload (NB) │ Nanopb-encoded ProductInfo protobuf        │
-│               │  - company_id (uint32)                     │
-│               │  - product_id (uint32)                     │
-│               │  - product_name (string)                   │
-│               │  - uuid (bytes[16]) — optional             │
-├───────────────┼────────────────────────────────────────────┤
-│  CRC (2B)     │ CRC-16-CCITT of payload                    │
-└───────────────┴────────────────────────────────────────────┘
+├─────────────────┬──────────────────────────────────────────┤
+│  Header (15B)   │ meshx_cfg_header_t:                      │
+│                 │  - magic (4B): 0x0043584D ('MXC\0')      │
+│                 │  - version (1B): 0x01                    │
+│                 │  - schema_id (4B): CRC32 of proto+opts   │
+│                 │  - total_len (2B): 15 + payload_len      │
+│                 │  - header_crc (2B): CRC-16 of first 11B  │
+│                 │  - payload_crc (2B): CRC-16 of payload   │
+├─────────────────┼──────────────────────────────────────────┤
+│  Payload (NB)   │ Nanopb-encoded MeshXConfig protobuf:     │
+│                 │  - product: CID, PID, name, UUID (16B)   │
+│                 │  - elements: repeated ElementConfig      │
+│                 │  - gpio: repeated GpioConfig             │
+│                 │  - bindings: repeated IoBinding          │
+└─────────────────┴──────────────────────────────────────────┘
 ```
 
 ### 12.3 Load Sequence & Fallback
@@ -34,15 +38,20 @@ The `meshx_cfg` flash partition stores a CRC-validated Protobuf binary containin
 flowchart TD
     A["meshx_ro_cfg_init()"] --> B{Partition found?}
     B -- No --> F[Use compile-time defaults]
-    B -- Yes --> C{Header CRC valid?}
+    B -- Yes --> C{"Magic == 'MXC' & Ver == 0x01?"}
     C -- No --> F
-    C -- Yes --> D{Payload CRC valid?}
+    C -- Yes --> S{"Schema ID matches firmware?"}
+    S -- No --> F
+    S -- Yes --> HCRC{Header CRC valid?}
+    HCRC -- No --> F
+    HCRC -- Yes --> D{Payload CRC valid?}
     D -- No --> F
-    D -- Yes --> E[Decode Nanopb - CID / PID / Name / UUID]
-    E --> G{UUID all zeros?}
-    G -- Yes --> H[Legacy UUID - derive from MAC address]
-    G -- No --> I[Use persistent UUID from partition]
-    F --> J["Apply to g_config"]
+    D -- Yes --> E["Decode Nanopb (MeshXConfig)"]
+    E --> BAK["meshx_builder_begin() -> add_element() -> commit()"]
+    BAK --> G{UUID present?}
+    G -- No --> H[Legacy UUID: derive from MAC address]
+    G -- Yes --> I[Use persistent UUID from partition]
+    F --> J["Apply CID/PID/Name to system"]
     H --> J
     I --> J
 ```

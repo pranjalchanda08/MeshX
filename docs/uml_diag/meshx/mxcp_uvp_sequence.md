@@ -129,7 +129,7 @@ sequenceDiagram
         end
 
         ElSrv->>API: meshx_send_msg_to_app(el_idx, variant, func_id, len, param)
-        API->>MXCP: mxcp_send_event(MXCP_EVT_EL_DATA_NOTIFY, buf, size)
+        API->>MXCP: mxcp_send_event(MXCP_EVT_EL_DATA_RX_NOTIFY, buf, size)
         MXCP->>MXCP: mxcp_send_frame(type, payload, len)
         MXCP->>SerPlat: meshx_platform_serial_write(frame_buff)
         
@@ -148,7 +148,7 @@ sequenceDiagram
         Disp->>ElCli: element->on_model_cb(nullptr, 0, &uvp_ctx {src=MESHX_ADDR_UNASSIGNED})
         ElCli->>ElCli: element_state_change_notify(..., err=MESHX_TIMEOUT)
         ElCli->>API: meshx_send_msg_to_app(..., Error: 1)
-        API->>MXCP: mxcp_send_event(MXCP_EVT_EL_DATA_NOTIFY, buf, size)
+        API->>MXCP: mxcp_send_event(MXCP_EVT_EL_DATA_RX_NOTIFY, buf, size)
         MXCP->>SerPlat: meshx_platform_serial_write(frame_buff)
         SerPlat->>Host: Stream MXSP status frame over serial port
         Host->>Host: Parse data notify event & log/report Error: 1 (Timeout)
