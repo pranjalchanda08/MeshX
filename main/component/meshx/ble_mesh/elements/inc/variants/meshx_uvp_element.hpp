@@ -8,6 +8,10 @@
 
 #include <meshx_element_class.hpp>
 #include <meshx_uvp_model.hpp>
+#include <meshx_uvp_logical_model.hpp>   /* meshXLogicalModel base class */
+#include <meshx_uvp_logical_models.hpp>  /* Concrete model subclasses */
+#include <vector>
+#include <memory>
 
 /**
  * @class meshXUVPElement
@@ -17,9 +21,16 @@ class meshXUVPElement : public meshXElementServer
 {
 private:
     /**
-     * @brief Element context
+     * @brief Element NVS context
      */
     meshx_element_common_ctx_t element_ctx;
+
+    /**
+     * @brief Logical model registry (REQ-001).
+     * Populated by list_ven_models() after the physical model is baked.
+     * Each entry handles one func_id on this element.
+     */
+    std::vector<std::unique_ptr<meshXLogicalModel>> logical_models;
 
 public:
     /**
@@ -48,6 +59,11 @@ public:
      * @brief Get the element name string.
      */
     const char* get_element_name(void) const override;
+    
+    /**
+     * @brief Get the logical models associated with this element.
+     */
+    const std::vector<std::unique_ptr<meshXLogicalModel>>* get_logical_models_ptr() const override { return &logical_models; }
     
     /**
      * @brief Handle UVP state change notification and perform dual-routing (ACK + Pub).

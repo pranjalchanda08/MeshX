@@ -97,7 +97,7 @@ static meshx_err_t meshx_nvs_erase_prod_init(uint16_t cid, uint16_t pid)
     err = meshx_nvs_erase();
     if (err)
     {
-        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "meshx_nvs_erase %p", (void *)err);
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "meshx_nvs_erase 0x%x", (uint32_t)err);
         return err;
     }
 
@@ -112,7 +112,7 @@ static meshx_err_t meshx_nvs_erase_prod_init(uint16_t cid, uint16_t pid)
 
     if (err)
     {
-        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "meshx_nvs_set %p", (void *)err);
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "meshx_nvs_set 0x%x", (uint32_t)err);
         return err;
     }
 
@@ -124,7 +124,7 @@ static meshx_err_t meshx_nvs_erase_prod_init(uint16_t cid, uint16_t pid)
 
     if (err)
     {
-        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "meshx_nvs_set %p", (void *)err);
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "meshx_nvs_set 0x%x", (uint32_t)err);
         return err;
     }
 
@@ -189,7 +189,7 @@ meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_m
     err = meshx_nvs_plat_open(&(meshx_nvs_inst.meshx_nvs_handle));
     if (err)
     {
-        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "nvs_open %p", (void *)err);
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "nvs_open 0x%x", (uint32_t)err);
         return err;
     }
 
@@ -206,7 +206,7 @@ meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_m
         &(meshx_nvs_inst.meshx_nvs_commit_tmr));
     if (err)
     {
-        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "os_timer_create %p", (void *)err);
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "os_timer_create 0x%x", (uint32_t)err);
         return err;
     }
 #else
@@ -325,7 +325,7 @@ meshx_err_t meshx_nvs_close(void)
     err = meshx_nvs_plat_close(meshx_nvs_inst.meshx_nvs_handle);
     if (err)
     {
-        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "nvs_close %p", (void *)err);
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "nvs_close 0x%x", (uint32_t)err);
     }
 
 #if MESHX_NVS_TIMER_PERIOD

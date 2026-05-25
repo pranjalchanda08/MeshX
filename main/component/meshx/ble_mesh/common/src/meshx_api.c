@@ -10,6 +10,7 @@
  */
 #include <meshx_api.h>
 #include "meshx_mxcp.h"
+#include <stdlib.h>
 
 #define MESSAGE_BUFF_CLEAR(buff)        memset(&buff, 0, sizeof(buff))
 
@@ -129,17 +130,25 @@ static meshx_err_t meshx_prepare_ctrl_message(meshx_ctrl_evt_t evt, uint16_t msg
  */
 meshx_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg)
 {
-    mxcp_evt_el_data_notify_t hdr;
+    mxcp_evt_el_data_rx_notify_t hdr;
     hdr.element_id = element_id;
     hdr.element_type = element_type;
     hdr.func_id = func_id;
     hdr.msg_len = msg_len;
-    uint8_t buf[sizeof(hdr) + msg_len];
+
+    uint32_t buf_size = sizeof(hdr) + msg_len;
+    uint8_t *buf = (uint8_t *)malloc(buf_size);
+    if (!buf) {
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to allocate memory for app msg");
+        return MESHX_NO_MEM;
+    }
+
     memcpy(buf, &hdr, sizeof(hdr));
     if (msg_len > 0 && msg != NULL) {
         memcpy(buf + sizeof(hdr), msg, msg_len);
     }
-    mxcp_send_event(MXCP_EVT_EL_DATA_NOTIFY, buf, (uint8_t)(sizeof(hdr) + msg_len));
+    mxcp_send_event(MXCP_EVT_EL_DATA_RX_NOTIFY, buf, (uint8_t)buf_size);
+    free(buf);
 
     meshx_err_t err = meshx_prepare_data_message(element_id, element_type, func_id, msg_len, msg);
     if (err) {

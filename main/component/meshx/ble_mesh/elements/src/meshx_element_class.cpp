@@ -255,7 +255,7 @@ MESHX_ELEMENT_TEMPLATE_PROTO
 meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
     ::on_model_cb(meshx_ptr_t param, size_t param_size, const meshx_uvp_ctx_t* ctx)
 {
-    if (param == nullptr)
+    if (param == nullptr && (!ctx || ctx->src_addr != MESHX_ADDR_UNASSIGNED))
     {
         MESHX_LOGE(MODULE_ID_COMMON, "Invalid parameter in on_model_cb");
         return MESHX_INVALID_ARG;
@@ -453,9 +453,8 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
     ::static_config_cb(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params, uint16_t params_len)
 {
     const meshx_config_srv_cb_param_t *p_params = (const meshx_config_srv_cb_param_t *)params;
-    MESHX_UNUSED(pdev);
     MESHX_UNUSED(params_len);
-    if (!p_params) return MESHX_INVALID_ARG;
+    if (!p_params || !pdev) return MESHX_INVALID_ARG;
 
     uint16_t element_addr = 0;
 
@@ -472,8 +471,8 @@ meshx_err_t meshXElement MESHX_ELEMENT_TEMPLATE_PARAMS
         return MESHX_SUCCESS; // Not an event we handle context for directly
     }
 
-    // Find element by address (abs_id)
-    auto *el = meshXElementRegistry::get_instance().find_element(element_addr);
+    uint16_t el_idx = element_addr - pdev->meshx_store.node_addr;
+    auto *el = meshXElementRegistry::get_instance().find_element(el_idx);
     if (el)
     {
         // Update common context first (pattern matching)

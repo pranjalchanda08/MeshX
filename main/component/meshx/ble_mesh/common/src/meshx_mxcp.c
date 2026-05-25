@@ -16,6 +16,7 @@
 #include "interface/gpio/meshx_gpio.h"
 #include "interface/gpio/meshx_gpio_types.h"
 #include <string.h>
+#include <stdlib.h>
 
 extern void meshx_platform_reset(void);
 extern void meshx_platform_set_mxsp_use_console(bool enable);
@@ -62,55 +63,24 @@ static void mxcp_cmd_fn_set_console_routing (const uint8_t *payload, uint8_t len
  *   async_evt_id — Async notification EVT (0 = none)
  */
 static const mxcp_cmd_entry_t mxcp_cmd_table[] = {
-    MXCP_CMD_ENTRY(MXCP_CMD_HOSTED_MODE_ENABLE,  mxcp_cmd_fn_hosted_mode,         sizeof(mxcp_cmd_hosted_mode_enable_t),  MXCP_EVT_HOSTED_MODE_RSP,      0),
-    MXCP_CMD_ENTRY(MXCP_CMD_NODE_RESET,          mxcp_cmd_fn_node_reset,          0,                                      0,                             0),
-    MXCP_CMD_ENTRY(MXCP_CMD_GET_COMPOSITION,     mxcp_cmd_fn_get_composition,     0,                                      MXCP_EVT_COMPOSITION_RSP,      0),
-    MXCP_CMD_ENTRY(MXCP_CMD_GET_ELEMENT_STATE,   mxcp_cmd_fn_get_element_state,   0,                                      MXCP_EVT_ELEMENT_STATE_RSP,    0),
-    MXCP_CMD_ENTRY(MXCP_CMD_SET_CONSOLE_ROUTING, mxcp_cmd_fn_set_console_routing, sizeof(mxcp_cmd_set_console_routing_t), MXCP_EVT_CONSOLE_ROUTING_RSP,  0),
-    MXCP_CMD_ENTRY(MXCP_CMD_EL_SEND,             mxcp_cmd_fn_el_send,             sizeof(mxcp_cmd_el_send_t),              0,                             MXCP_EVT_EL_DATA_NOTIFY),
-    MXCP_CMD_ENTRY(MXCP_CMD_GPIO_SET_LEVEL,      mxcp_cmd_fn_gpio_set_level,      sizeof(mxcp_cmd_gpio_set_level_t),      MXCP_EVT_GPIO_SET_LEVEL_RSP,   0),
-    MXCP_CMD_ENTRY(MXCP_CMD_GPIO_GET_LEVEL,      mxcp_cmd_fn_gpio_get_level,      sizeof(mxcp_cmd_gpio_get_level_t),      MXCP_EVT_GPIO_GET_LEVEL_RSP,   0),
-    MXCP_CMD_ENTRY(MXCP_CMD_GPIO_TOGGLE,         mxcp_cmd_fn_gpio_toggle,         sizeof(mxcp_cmd_gpio_toggle_t),         MXCP_EVT_GPIO_TOGGLE_RSP,      0),
-    MXCP_CMD_ENTRY(MXCP_CMD_GPIO_SET_PWM_DUTY,   mxcp_cmd_fn_gpio_set_pwm_duty,   sizeof(mxcp_cmd_gpio_set_pwm_duty_t),   MXCP_EVT_GPIO_SET_PWM_DUTY_RSP,0),
-    MXCP_CMD_ENTRY(MXCP_CMD_GPIO_SET_PWM_FREQ,   mxcp_cmd_fn_gpio_set_pwm_freq,   sizeof(mxcp_cmd_gpio_set_pwm_freq_t),   MXCP_EVT_GPIO_SET_PWM_FREQ_RSP,0),
-    MXCP_CMD_ENTRY(MXCP_CMD_GPIO_INTR_ENABLE,    mxcp_cmd_fn_gpio_intr_enable,    sizeof(mxcp_cmd_gpio_intr_enable_t),    MXCP_EVT_GPIO_INTR_ENABLE_RSP, 0),
-    MXCP_CMD_ENTRY(MXCP_CMD_GPIO_INTR_DISABLE,   mxcp_cmd_fn_gpio_intr_disable,   sizeof(mxcp_cmd_gpio_intr_disable_t),   MXCP_EVT_GPIO_INTR_DISABLE_RSP,0),
-    MXCP_CMD_ENTRY(MXCP_CMD_GPIO_GET_CONFIG,     mxcp_cmd_fn_gpio_get_config,     sizeof(mxcp_cmd_gpio_get_config_t),     MXCP_EVT_GPIO_GET_CONFIG_RSP,  0),
-    MXCP_CMD_ENTRY(MXCP_CMD_GPIO_GET_STATE,      mxcp_cmd_fn_gpio_get_state,      sizeof(mxcp_cmd_gpio_get_state_t),      MXCP_EVT_GPIO_GET_STATE_RSP,   0),
+    MXCP_CMD_ENTRY(MXCP_CMD_HOSTED_MODE_ENABLE,  mxcp_cmd_fn_hosted_mode,         sizeof(mxcp_cmd_hosted_mode_enable_t),  MXCP_EVT_HOSTED_MODE_RSP,      MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_NODE_RESET,          mxcp_cmd_fn_node_reset,          0,                                      0,                             MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_GET_COMPOSITION,     mxcp_cmd_fn_get_composition,     0,                                      MXCP_EVT_COMPOSITION_RSP,      MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_GET_ELEMENT_STATE,   mxcp_cmd_fn_get_element_state,   0,                                      MXCP_EVT_ELEMENT_STATE_RSP,    MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_SET_CONSOLE_ROUTING, mxcp_cmd_fn_set_console_routing, sizeof(mxcp_cmd_set_console_routing_t), MXCP_EVT_CONSOLE_ROUTING_RSP,  MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_EL_SEND,             mxcp_cmd_fn_el_send,             sizeof(mxcp_cmd_el_send_t),             MXCP_EVT_EL_DATA_TX_NOTIFY,    MXCP_EVT_EL_DATA_RX_NOTIFY),
+    MXCP_CMD_ENTRY(MXCP_CMD_GPIO_SET_LEVEL,      mxcp_cmd_fn_gpio_set_level,      sizeof(mxcp_cmd_gpio_set_level_t),      MXCP_EVT_GPIO_SET_LEVEL_RSP,   MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_GPIO_GET_LEVEL,      mxcp_cmd_fn_gpio_get_level,      sizeof(mxcp_cmd_gpio_get_level_t),      MXCP_EVT_GPIO_GET_LEVEL_RSP,   MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_GPIO_TOGGLE,         mxcp_cmd_fn_gpio_toggle,         sizeof(mxcp_cmd_gpio_toggle_t),         MXCP_EVT_GPIO_TOGGLE_RSP,      MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_GPIO_SET_PWM_DUTY,   mxcp_cmd_fn_gpio_set_pwm_duty,   sizeof(mxcp_cmd_gpio_set_pwm_duty_t),   MXCP_EVT_GPIO_SET_PWM_DUTY_RSP,MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_GPIO_SET_PWM_FREQ,   mxcp_cmd_fn_gpio_set_pwm_freq,   sizeof(mxcp_cmd_gpio_set_pwm_freq_t),   MXCP_EVT_GPIO_SET_PWM_FREQ_RSP,MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_GPIO_INTR_ENABLE,    mxcp_cmd_fn_gpio_intr_enable,    sizeof(mxcp_cmd_gpio_intr_enable_t),    MXCP_EVT_GPIO_INTR_ENABLE_RSP, MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_GPIO_INTR_DISABLE,   mxcp_cmd_fn_gpio_intr_disable,   sizeof(mxcp_cmd_gpio_intr_disable_t),   MXCP_EVT_GPIO_INTR_DISABLE_RSP,MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_GPIO_GET_CONFIG,     mxcp_cmd_fn_gpio_get_config,     sizeof(mxcp_cmd_gpio_get_config_t),     MXCP_EVT_GPIO_GET_CONFIG_RSP,  MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_GPIO_GET_STATE,      mxcp_cmd_fn_gpio_get_state,      sizeof(mxcp_cmd_gpio_get_state_t),      MXCP_EVT_GPIO_GET_STATE_RSP,   MXCP_EVT_NONE),
 };
 
 #define MXCP_CMD_TABLE_SIZE (sizeof(mxcp_cmd_table) / sizeof(mxcp_cmd_table[0]))
-
-/**
- * @brief Event lookup table (Engine -> Host).
- *
- * Reverse-mapping table from EVT ID to the originating CMD ID and
- * expected response payload size.  Reserved for future use (e.g.
- * host-side response correlation).
- *
- * Fields per entry:
- *   evt_id       — MXCP event ID from mxcp_evt_id_t
- *   src_cmd_id   — Command ID that triggers this event (0 = spontaneous)
- *   payload_size — Expected response payload size (0 = variable)
- */
-static const mxcp_evt_entry_t mxcp_evt_table[] __attribute__((unused)) = {
-    { MXCP_EVT_HOSTED_MODE_RSP,      MXCP_CMD_HOSTED_MODE_ENABLE,  0                       },
-    { MXCP_EVT_COMPOSITION_RSP,      MXCP_CMD_GET_COMPOSITION,     0                       },
-    { MXCP_EVT_ELEMENT_STATE_RSP,    MXCP_CMD_GET_ELEMENT_STATE,   0                       },
-    { MXCP_EVT_CONSOLE_ROUTING_RSP,  MXCP_CMD_SET_CONSOLE_ROUTING, 0                       },
-    { MXCP_EVT_EL_DATA_NOTIFY,       MXCP_CMD_EL_SEND,             0                       },
-    { MXCP_EVT_GPIO_SET_LEVEL_RSP,   MXCP_CMD_GPIO_SET_LEVEL,      sizeof(mxcp_evt_gpio_rsp_t) },
-    { MXCP_EVT_GPIO_GET_LEVEL_RSP,   MXCP_CMD_GPIO_GET_LEVEL,      sizeof(mxcp_evt_gpio_rsp_t) },
-    { MXCP_EVT_GPIO_TOGGLE_RSP,      MXCP_CMD_GPIO_TOGGLE,         sizeof(mxcp_evt_gpio_rsp_t) },
-    { MXCP_EVT_GPIO_SET_PWM_DUTY_RSP,MXCP_CMD_GPIO_SET_PWM_DUTY,   sizeof(mxcp_evt_gpio_rsp_t) },
-    { MXCP_EVT_GPIO_SET_PWM_FREQ_RSP,MXCP_CMD_GPIO_SET_PWM_FREQ,   sizeof(mxcp_evt_gpio_rsp_t) },
-    { MXCP_EVT_GPIO_INTR_ENABLE_RSP, MXCP_CMD_GPIO_INTR_ENABLE,    sizeof(mxcp_evt_gpio_rsp_t) },
-    { MXCP_EVT_GPIO_INTR_DISABLE_RSP,MXCP_CMD_GPIO_INTR_DISABLE,   sizeof(mxcp_evt_gpio_rsp_t) },
-    { MXCP_EVT_GPIO_GET_CONFIG_RSP,  MXCP_CMD_GPIO_GET_CONFIG,     sizeof(mxcp_evt_gpio_rsp_t) },
-    { MXCP_EVT_GPIO_GET_STATE_RSP,   MXCP_CMD_GPIO_GET_STATE,      sizeof(mxcp_evt_gpio_rsp_t) },
-};
-
-#define MXCP_EVT_TABLE_SIZE (sizeof(mxcp_evt_table) / sizeof(mxcp_evt_table[0]))
 
 /**
  * @brief Compute XOR checksum over LEN, TYPE, and PAYLOAD fields.
@@ -345,6 +315,23 @@ static void mxcp_cmd_fn_el_send(const uint8_t *payload, uint8_t len)
         meshx_send_msg_to_element(hdr.element_id, hdr.element_type, hdr.func_id,
                                   len - sizeof(hdr),
                                   &payload[sizeof(hdr)]);
+
+        mxcp_evt_el_data_tx_notify_t tx_hdr;
+        tx_hdr.element_id = hdr.element_id;
+        tx_hdr.element_type = hdr.element_type;
+        tx_hdr.func_id = hdr.func_id;
+        tx_hdr.msg_len = len - sizeof(hdr);
+
+        uint32_t buf_size = sizeof(tx_hdr) + tx_hdr.msg_len;
+        uint8_t *buf = (uint8_t *)malloc(buf_size);
+        if (buf) {
+            memcpy(buf, &tx_hdr, sizeof(tx_hdr));
+            if (tx_hdr.msg_len > 0) {
+                memcpy(buf + sizeof(tx_hdr), &payload[sizeof(hdr)], tx_hdr.msg_len);
+            }
+            mxcp_send_event(MXCP_EVT_EL_DATA_TX_NOTIFY, buf, (uint8_t)buf_size);
+            free(buf);
+        }
     }
 }
 

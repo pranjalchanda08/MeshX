@@ -12,6 +12,11 @@
 
 #if CONFIG_ENABLE_PROVISIONING
 
+extern "C" int bt_mesh_node_local_app_key_add(uint16_t net_idx, uint16_t app_idx, const uint8_t app_key[16]);
+
+#include "meshx_element_registry.hpp"
+#include "meshx_model_class.hpp"
+
 /**
  * @brief Mask for control task provisioning events.
  */
@@ -170,6 +175,7 @@ static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_t
             pdev->meshx_store.net_key_id = param->node_prov_complete.net_idx;
             pdev->meshx_store.node_addr  = param->node_prov_complete.addr;
             meshx_nvs_set(MESHX_NVS_STORE, &pdev->meshx_store, sizeof(pdev->meshx_store), MESHX_NVS_AUTO_COMMIT);
+            meshx_nvs_commit(); // Force immediate commit for critical provisioning parameters
             break;
         case CONTROL_TASK_MSG_EVT_IDENTIFY_START:
             MESHX_LOGI(MODULE_ID_COMMON, "Identify Start");

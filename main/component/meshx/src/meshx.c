@@ -15,6 +15,7 @@
 #include <meshx_serial.h>
 #include <meshx_ro_cfg.h>
 #include <meshx_uvp_dispatcher.hpp>
+
 #include <stdio.h>
 #include <string.h>
 #include "interface/utils/meshx_tiny_printf.h"
@@ -72,16 +73,16 @@ static meshx_err_t meshx_element_init(dev_struct_t *p_dev, meshx_config_t const 
 
     meshx_err_t err = MESHX_SUCCESS;
 
-    /**
-     * @brief Detect if Dynamic Composition Builder was used
-     * @note If the builder is active, we bake the dynamic composition and skip legacy init
-     */
     if (meshx_builder_is_active()) {
         MESHX_LOGD(MODULE_ID_COMMON, "Dynamic Composition detected. Baking...");
         err = meshx_builder_bake(p_dev, g_cid, g_pid, g_vid);
         if (err != MESHX_SUCCESS) return err;
 
-        // Dynamic comp already initialized plat composition and models
+        err = meshx_restore_all_element_ctx();
+        if (err != MESHX_SUCCESS) {
+            MESHX_LOGW(MODULE_ID_COMMON, "Element NVS ctx restore failed: 0x%x", err);
+        }
+
         return MESHX_SUCCESS;
     }
     return MESHX_SUCCESS;
@@ -336,5 +337,15 @@ meshx_err_t meshx_init(meshx_config_t const *config)
 uint16_t meshx_get_net_key_id(void)
 {
     return g_dev.meshx_store.net_key_id;
+}
+
+uint16_t meshx_get_node_addr(void)
+{
+    return g_dev.meshx_store.node_addr;
+}
+
+size_t meshx_get_element_count(void)
+{
+    return g_dev.element_cnt;
 }
 

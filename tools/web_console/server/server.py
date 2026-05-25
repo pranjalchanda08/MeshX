@@ -1,15 +1,16 @@
 import asyncio
 import os
 import sys
-import time
+import yaml
 import struct
 import json
 import logging
-from typing import Dict, Set, Optional
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Query, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
 import serial
 import serial.tools.list_ports
+from typing import Dict, Set, Optional
+from fastapi.responses import FileResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Query, HTTPException
 
 # Add server and scripts directories to path to import local modules
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -35,8 +36,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-import yaml
 
 current_bsp = "xiao_c3"
 current_product = "all_in_one"
@@ -293,6 +292,60 @@ class AsyncSerialWorker:
                     })
                 except Exception as e:
                     logger.error(f"Error parsing Dynamic Composition response: {e}")
+        elif msg_type == 0x87:
+            if len(payload) >= 1:
+                try:
+                    num_elements = payload[0]
+                    offset = 1
+                    for _ in range(num_elements):
+                        if offset + 8 > len(payload):
+                            break
+                        idx, variant, ctx_size, telemetry_size = struct.unpack("<HHHH", payload[offset:offset+8])
+                        offset += 8
+
+                        data = bytes()
+                        if ctx_size > 0 and offset + ctx_size <= len(payload):
+                            data = payload[offset:offset+ctx_size]
+                        offset += ctx_size
+
+                        address = f"0x00{idx:02X}"
+                        
+                        # Process telemetry data if available
+                        if telemetry_size > 0 and offset + telemetry_size <= len(payload):
+                            tel_data = payload[offset:offset+telemetry_size]
+                            offset += telemetry_size
+                            
+                            val = 0
+                            if variant in (0, 2, 4): # Relay/CWWW/RGB Servers
+                                if len(tel_data) >= 1:
+                                    val = tel_data[0]
+                            elif variant == 6: # Sensor Server
+                                if len(tel_data) >= 2:
+                                    val = tel_data[0] | (tel_data[1] << 8)
+                            elif variant == 1: # Relay Client (no padding)
+                                if len(tel_data) >= 2:
+                                    val = tel_data[1]
+                            elif variant in (3, 5): # CWWW/RGB Clients (padding at data[1])
+                                if len(tel_data) >= 3:
+                                    val = tel_data[2]
+                            elif variant == 7: # Sensor Client
+                                if len(tel_data) >= 4:
+                                    val = tel_data[2] | (tel_data[3] << 8)
+                                    
+                            if address in self.state_cache["nodes"]:
+                                self.state_cache["nodes"][address]["value"] = val
+                                self.state_cache["nodes"][address]["timestamp"] = time.time()
+                                
+                                # Broadcast the initial telemetry update
+                                self.broadcast({
+                                    "type": "telemetry_update",
+                                    "element_id": idx,
+                                    "element_type": variant,
+                                    "func_id": 0,
+                                    "value": val
+                                })
+                except Exception as e:
+                    logger.error(f"Error parsing Element State Response: {e}")
         elif msg_type == 0x90:
             if len(payload) >= 8:
                 try:
@@ -300,9 +353,21 @@ class AsyncSerialWorker:
                     data = payload[8:]
 
                     val = 0
-                    if el_type in (0, 2, 4): # Relay Server, CWWW Light, RGB Light
+                    if el_type in (0, 2, 4): # Relay/CWWW/RGB Servers
                         if func_id == 0 and len(data) >= 1:
                             val = data[0]
+                    elif el_type == 6: # Sensor Server
+                        if func_id == 0 and len(data) >= 2:
+                            val = data[0] | (data[1] << 8)
+                    elif el_type == 1: # Relay Client (no padding)
+                        if func_id == 0 and len(data) >= 2:
+                            val = data[1]
+                    elif el_type in (3, 5): # CWWW/RGB Clients (padding at data[1])
+                        if func_id == 0 and len(data) >= 3:
+                            val = data[2]
+                    elif el_type == 7: # Sensor Client
+                        if func_id == 0 and len(data) >= 4:
+                            val = data[2] | (data[3] << 8)
 
                     address = f"0x00{el_id:02X}"
 
@@ -373,8 +438,6 @@ class AsyncSerialWorker:
         self.subscriptions.discard(websocket)
 
     def broadcast(self, event: dict):
-        if not self.running:
-            return
         if hasattr(self, "loop") and self.loop and self.loop.is_running():
             try:
                 current_loop = asyncio.get_running_loop()
@@ -446,6 +509,8 @@ class AsyncSerialWorker:
         self.read_task = asyncio.create_task(self.run_loop())
 
 
+# Store references to background tasks to prevent garbage collection
+background_tasks = set()
 active_workers: Dict[str, AsyncSerialWorker] = {}
 
 @app.get("/api/ports")
@@ -561,6 +626,8 @@ async def run_flash_subprocess(worker: AsyncSerialWorker, port: str, bsp: str, p
             "type": "text",
             "data": "\n[System] SUCCESS: Flashing completed successfully!\n"
         })
+        # Reload the ELF decoder since the build process likely updated the ELF binary
+        worker.set_active_bsp_and_product(bsp, product)
     except Exception as e:
         logger.error(f"Error in flashing process: {e}")
         worker.broadcast({
@@ -616,8 +683,11 @@ async def flash_device(port: str, bsp: str, product: str, erase: bool = False):
     current_product = product
     worker.set_active_bsp_and_product(bsp, product)
 
-    asyncio.create_task(run_flash_subprocess(worker, port, bsp, product, erase))
-    return {"status": "success", "message": "Flashing process started in background."}
+    try:
+        await run_flash_subprocess(worker, port, bsp, product, erase)
+        return {"status": "success", "message": "Flashing process completed."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/flash/config")
 async def flash_custom_config(port: str, bsp: str, product: str):
@@ -699,6 +769,8 @@ async def flash_custom_config(port: str, bsp: str, product: str):
                     "type": "text",
                     "data": "\n[System] SUCCESS: Configuration flashed successfully!\n"
                 })
+                # Reload the ELF decoder since the build process likely updated the ELF binary
+                worker.set_active_bsp_and_product(bsp, product)
             else:
                 worker.broadcast({
                     "type": "text",
@@ -710,6 +782,7 @@ async def flash_custom_config(port: str, bsp: str, product: str):
                 "type": "text",
                 "data": f"\n[System] ERROR: Flashing failed: {e}\n"
             })
+            raise HTTPException(status_code=500, detail=str(e))
         finally:
             worker.broadcast({
                 "type": "text",
@@ -717,8 +790,8 @@ async def flash_custom_config(port: str, bsp: str, product: str):
             })
             await worker.resume()
 
-    asyncio.create_task(run_cfg_flash())
-    return {"status": "success", "message": "Configuration flashing started."}
+    await run_cfg_flash()
+    return {"status": "success", "message": "Configuration flashing completed."}
 
 @app.post("/api/port/connect")
 async def connect_port(port: str):
@@ -882,12 +955,12 @@ async def websocket_endpoint(websocket: WebSocket, port: str = Query(...)):
         pass
     finally:
         worker.unsubscribe(websocket)
-        # If no more tabs are viewing this port, we can keep the worker or clean it up.
-        # Keeping it ensures that serial reading and logging continues backgrounded.
-
-# Serve frontend dashboard static files directly from root URL
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+        # Clean up worker and release the port if no clients remain
+        if len(worker.subscriptions) == 0:
+            worker.close()
+            if port in active_workers:
+                del active_workers[port]
+            logger.info(f"Released serial port {port} as all clients disconnected.")
 
 frontend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../frontend"))
 if os.path.exists(frontend_dir):

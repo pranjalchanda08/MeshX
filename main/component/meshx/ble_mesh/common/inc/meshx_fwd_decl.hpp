@@ -52,6 +52,7 @@ class meshXModelIF;
 MESHX_MODEL_TEMPLATE_PROTO class meshXModel;
 MESHX_SERVER_MODEL_TEMPLATE_PROTO class meshXServerModel;
 MESHX_CLIENT_MODEL_TEMPLATE_PROTO class meshXClientModel;
+class meshXLogicalModel;
 
 /*********************************************************************************
  * meshXElementIF
@@ -148,6 +149,12 @@ public:
      * @return Reference to the Vendor models vector
      */
     virtual std::vector<std::unique_ptr<meshXModelIF>>& get_ven_models(void) = 0;
+
+    /**
+     * @brief Get the logical models vector pointer (if supported)
+     * @return Pointer to the logical models vector, or nullptr if not supported
+     */
+    virtual const std::vector<std::unique_ptr<meshXLogicalModel>>* get_logical_models_ptr() const { return nullptr; }
 
     /**
      * @brief Initialize the element

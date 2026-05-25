@@ -4,9 +4,14 @@
  */
 
 #include "meshx_uvp_dispatcher.hpp"
+#include <meshx_api.h>
 #include "meshx_element_registry.hpp"
 #include "meshx_element_class.hpp"
-#include <meshx_api.h>
+#include <variants/meshx_uvp_element.hpp>
+
+#if CONFIG_TXCM_ENABLE
+#include <meshx_txcm.h>
+#endif
 
 #include <map>
 
@@ -69,25 +74,48 @@ static meshx_err_t uvp_unified_dispatcher_cb(dev_struct_t *pdev,
         return MESHX_NOT_FOUND;
     }
 
+#if CONFIG_TXCM_ENABLE
+    /* Notify TXCM that we received an ACK to clear the queue.
+     * In UVP, if the receiving element is a CLIENT, the incoming message is an ACK/Status update
+     * sent from the SERVER to this CLIENT. */
+    if (element->get_element_type() == meshxElementType::MESHX_ELEMENT_TYPE_CLIENT) {
+        meshx_txcm_request_send(MESHX_TXCM_SIG_ACK, src_addr, nullptr, 0, nullptr);
+    }
+#endif
+
     /*
-     * Verify that the element type matches the UVP type_id.
-     * This provides an extra layer of safety.
+     * Verify that the element type matches the expected incoming UVP message types.
+     * A CLIENT expects messages from a SERVER, and vice versa.
+     * Therefore, the receiver's variant (e.g. Relay Client) should NOT match the sender's variant (e.g. Relay Server).
      */
-    if (element->get_element_variant() != (meshx_element_type_t)uvp_header->type_id) {
-         MESHX_LOGW(MODULE_ID_COMMON, "UVP Dispatcher: Type mismatch! EL[%d] variant=%d, UVP type_id=%d",
+    if ((uint16_t)element->get_element_variant() == uvp_header->type_id) {
+         MESHX_LOGW(MODULE_ID_COMMON, "UVP Dispatcher: Role mismatch! Sender and receiver have same variant. EL[%d] variant=%d, UVP type_id=%d",
                    p_meta->rx_el_id, (int)element->get_element_variant(), (int)uvp_header->type_id);
     }
 
     /* Populate UVP Routing Context */
-    meshx_uvp_ctx_t uvp_ctx = {
-        .src_addr = src_addr,
-        .dst_addr = p_meta->dst_addr,
-        .tid      = uvp_header->tid,
-        .ack_req  = (bool)uvp_header->ack_req
-    };
+    meshx_uvp_ctx_t uvp_ctx;
+    uvp_ctx.src_addr = src_addr;
+    uvp_ctx.dst_addr = p_meta->dst_addr;
+    uvp_ctx.tid      = uvp_header->tid;
+    uvp_ctx.ack_req  = (bool)uvp_header->ack_req;
 
     /*
-     * Pass the actual TLV payload to the element's callback.
+     * REQ-004: Strip the 2-byte func_id wire prefix from the payload.
+     * Wire layout: [ func_id (2 B, LE) | app_payload (N B) ]
+     * If payload is too short for the prefix, fall back to func_id=0.
+     */
+    if (payload_len >= MESHX_UVP_FUNC_ID_PREFIX_SZ) {
+        const uint8_t *raw = static_cast<const uint8_t*>(payload);
+        uvp_ctx.func_id = (uint16_t)(raw[0] | ((uint16_t)raw[1] << 8u));
+        payload     = (uint8_t*)payload + MESHX_UVP_FUNC_ID_PREFIX_SZ;
+        payload_len = (uint16_t)(payload_len - MESHX_UVP_FUNC_ID_PREFIX_SZ);
+    } else {
+        uvp_ctx.func_id = 0x0000u; /* Legacy / malformed — default to func 0 */
+    }
+
+    /*
+     * Pass the stripped app payload to the element's callback.
      */
     return element->on_model_cb(payload, payload_len, &uvp_ctx);
 }
@@ -122,17 +150,62 @@ static meshx_err_t uvp_app_command_cb(dev_struct_t *pdev,
         return MESHX_NOT_FOUND;
     }
 
-    /* Populate a dummy UVP routing context to satisfy the element callbacks */
-    meshx_uvp_ctx_t uvp_ctx = {
-        .src_addr = 0x0001, /* Host identifier */
-        .dst_addr = 0x0000,
-        .tid      = 0,
-        .ack_req  = false
-    };
+    /* Populate UVP routing context — host command path (REQ-003) */
+    meshx_uvp_ctx_t uvp_ctx;
+    uvp_ctx.src_addr = 0x0001u; /* Host identifier */
+    uvp_ctx.dst_addr = 0x0000u;
+    uvp_ctx.tid      = 0;
+    uvp_ctx.ack_req  = false;
+    uvp_ctx.func_id  = p_msg->msg_type_u.element_msg.func_id; /* Propagate explicit func_id (REQ-003) */
 
     /* Pass the local serial parameters payload directly to the element's callback */
     return element->on_model_cb(p_msg->data, msg_len, &uvp_ctx);
 }
+
+#if CONFIG_TXCM_ENABLE
+static meshx_err_t uvp_txcm_timeout_cb(dev_struct_t *pdev,
+                                       control_task_msg_evt_t evt,
+                                       void *params,
+                                       uint16_t params_len)
+{
+    MESHX_UNUSED(pdev);
+    MESHX_UNUSED(evt);
+
+    if (!params || params_len < sizeof(meshXUVPModel::uvp_txcm_param_t)) {
+        MESHX_LOGE(MODULE_ID_COMMON, "UVP TXCM Timeout Callback: Invalid parameters!");
+        return MESHX_INVALID_ARG;
+    }
+
+    const auto *param = static_cast<const meshXUVPModel::uvp_txcm_param_t*>(params);
+    void *p_model = param->p_model;
+
+    // Find the targeted element in the registry by matching the platform model pointer
+    meshXElementIF* target_el = nullptr;
+    auto all_elements = meshXElementRegistry::get_instance().get_all_elements();
+    for (auto const& [idx, element] : all_elements) {
+        if (!element->get_ven_models().empty()) {
+            if (element->get_ven_models()[0]->get_plat_model() == p_model) {
+                target_el = element;
+                break;
+            }
+        }
+    }
+
+    if (!target_el) {
+        MESHX_LOGW(MODULE_ID_COMMON, "UVP TXCM Timeout: No registered element found for model 0x%x", (uint32_t)(uintptr_t)p_model);
+        return MESHX_NOT_FOUND;
+    }
+
+    meshx_uvp_ctx_t uvp_ctx;
+    uvp_ctx.src_addr = MESHX_ADDR_UNASSIGNED; /* Timeout sentinel */
+    uvp_ctx.dst_addr = 0x0000u;
+    uvp_ctx.tid      = 0;
+    uvp_ctx.ack_req  = false;
+    uvp_ctx.func_id  = 0xFFFFu; /* Broadcast to all models (REQ-008) */
+
+    return target_el->on_model_cb(nullptr, 0, &uvp_ctx);
+}
+#endif
 
 extern "C" meshx_err_t meshx_uvp_dispatcher_init(void)
 {
@@ -164,5 +237,21 @@ extern "C" meshx_err_t meshx_uvp_dispatcher_init(void)
         return err;
     }
 
+#if CONFIG_TXCM_ENABLE
+    /*
+     * Subscribe to TXCM message timeouts to report to client elements.
+     */
+    err = control_task_msg_subscribe(
+        CONTROL_TASK_MSG_CODE_TXCM,
+        CONTROL_TASK_MSG_EVT_TXCM_MSG_TIMEOUT,
+        (control_task_msg_handle_t)uvp_txcm_timeout_cb
+    );
+    if (err != MESHX_SUCCESS) {
+        MESHX_LOGE(MODULE_ID_COMMON, "Failed to subscribe to TXCM timeout: %d", err);
+        return err;
+    }
+#endif
+
     return MESHX_SUCCESS;
 }
+

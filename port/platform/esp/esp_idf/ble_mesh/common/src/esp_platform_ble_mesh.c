@@ -140,8 +140,8 @@ meshx_err_t meshx_plat_add_element_to_composition(
         return MESHX_INVALID_ARG;
     }
 
-    MESHX_LOGI(MODULE_ID_BLE_MESH_ELEMENT, "Plat Add Element [%d]: SIG=%d (ptr=%p), VEN=%d (ptr=%p)",
-               index, sig_cnt, p_sig_models, ven_cnt, p_ven_models);
+    MESHX_LOGI(MODULE_ID_BLE_MESH_ELEMENT, "Plat Add Element [%d]: SIG=%d (ptr=0x%x), VEN=%d (ptr=0x%x)",
+               index, sig_cnt, (uint32_t)(uintptr_t)p_sig_models, ven_cnt, (uint32_t)(uintptr_t)p_ven_models);
 
     MESHX_ELEMENT* element = (MESHX_ELEMENT*)(p_element_list) + index;
     element->sig_models = p_sig_models;
@@ -173,6 +173,8 @@ meshx_err_t meshx_plat_composition_init(
     return MESHX_SUCCESS;
 }
 
+uint16_t g_force_provisioned_addr = 0;
+
 meshx_err_t meshx_get_base_element_id(uint16_t *base_el_id)
 {
     if (!base_el_id)
@@ -180,7 +182,14 @@ meshx_err_t meshx_get_base_element_id(uint16_t *base_el_id)
         return MESHX_INVALID_ARG;
     }
 
-    *base_el_id = esp_ble_mesh_get_primary_element_address();
+    if (g_force_provisioned_addr != 0)
+    {
+        *base_el_id = g_force_provisioned_addr;
+    }
+    else
+    {
+        *base_el_id = esp_ble_mesh_get_primary_element_address();
+    }
 
     return MESHX_SUCCESS;
 }

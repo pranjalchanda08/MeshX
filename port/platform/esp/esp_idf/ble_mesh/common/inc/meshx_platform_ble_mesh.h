@@ -57,5 +57,12 @@
  */
 meshx_err_t meshx_plat_ven_srv_init(void);
 
+/**
+ * @brief Bind the platform-specific UVP opcodes to a model instance.
+ * @param p_model Pointer to the platform model structure.
+ * @return MESHX_SUCCESS on success, or an error code.
+ */
+meshx_err_t meshx_plat_bind_uvp_opcodes(void *p_model);
+
 #endif /* __MESHX_BLE_MESH__ */
 
