@@ -18,6 +18,7 @@
 
 #include <meshx_uvp.h>           /* meshx_uvp_ctx_t — now carries func_id */
 #include <meshx_common.h>        /* MESHX_SUCCESS, meshx_err_t */
+#include <cstring>
 #include <stdint.h>
 #include <stddef.h>
 
@@ -44,6 +45,8 @@ protected:
     meshXElementIF* parent_element; ///< Non-owning pointer to the containing element
     meshXUVPModel*  physical_model; ///< Non-owning pointer to the shared physical transport
     uint16_t        func_id;        ///< Registered function ID (REQ-002)
+    uint8_t         cached_state[8];///< Cached telemetry state (up to 8 bytes)
+    size_t          cached_state_len; ///< Length of cached state
 
 public:
     /**
@@ -58,7 +61,24 @@ public:
         : parent_element(parent)
         , physical_model(phys_model)
         , func_id(func_id)
-    {}
+        , cached_state_len(0)
+    {
+        std::memset(cached_state, 0, sizeof(cached_state));
+    }
+    
+    /** @brief Get cached telemetry state */
+    const uint8_t* get_cached_state(size_t& out_len) const {
+        out_len = cached_state_len;
+        return cached_state;
+    }
+    
+    /** @brief Update cached telemetry state */
+    void update_cached_state(const void* param, size_t param_size) {
+        if (param && param_size > 0 && param_size <= sizeof(cached_state)) {
+            std::memcpy(cached_state, param, param_size);
+            cached_state_len = param_size;
+        }
+    }
 
     virtual ~meshXLogicalModel() = default;
 

@@ -52,7 +52,7 @@ sequenceDiagram
 | **P6** | `meshx_nvs_init()` + `meshx_dev_restore()` | Opens NVS namespace, restores `net_key_id` and `node_addr` |
 | **P7** | `meshx_tasks_init()` | Creates Control Task + initializes TXCM |
 | **P8** | `meshx_ble_mesh_init()` | Bakes element composition, initializes provisioning, starts BLE stack |
-| **P9** | `meshx_serial_init()` | Starts MXSP serial host bridge (if enabled) |
+| **P9** | `meshx_serial_init()` | Starts MXCP binary serial host bridge & console multiplexer |
 
 ### 3.2 Fresh Boot vs. Provisioned Boot
 
