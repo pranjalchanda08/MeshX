@@ -18,13 +18,24 @@
 #define MODULE_ID_RO_CFG MODULE_ID_COMMON
 
 #pragma pack(push, 1)
+/**
+ * @brief Binary configuration container header stored at offset 0 of meshx_cfg partition.
+ *
+ * Layout (15 bytes total):
+ * - magic:       4-byte 'MXC\0' magic identifier (0x0043584D)
+ * - version:     1-byte container layout format version (0x01)
+ * - schema_id:   4-byte CRC32 fingerprint computed from proto schema and options
+ * - total_len:   2-byte total length of container including this 15-byte header
+ * - header_crc:  2-byte CRC-16-CCITT covering the first 11 bytes of this header
+ * - payload_crc: 2-byte CRC-16-CCITT covering the serialized Protobuf payload
+ */
 typedef struct {
-    uint32_t magic;      // 'MXC' -> 0x0043584D
-    uint8_t  version;    // 0x01
-    uint32_t schema_id;  // Fingerprint of .proto + .options
-    uint16_t total_len;  // 15 + payload_len
-    uint16_t header_crc;
-    uint16_t payload_crc;
+    uint32_t magic;      /**< Magic bytes: 'MXC\0' (0x0043584D) */
+    uint8_t  version;    /**< Container structure version (0x01) */
+    uint32_t schema_id;  /**< Fingerprint of .proto + .options (Schema ID) */
+    uint16_t total_len;  /**< Total container length in bytes (15 + payload_len) */
+    uint16_t header_crc; /**< CRC-16-CCITT checksum over first 11 header bytes */
+    uint16_t payload_crc;/**< CRC-16-CCITT checksum over the Protobuf payload */
 } meshx_cfg_header_t;
 #pragma pack(pop)
 
@@ -41,7 +52,15 @@ typedef struct {
         "CID/PID alignment mismatch! Expected PID at offset 2.");
 #endif
 
-// CRC-16-CCITT (Polynomial 0x1021, Initial 0xFFFF)
+/**
+ * @brief Calculate standard CRC-16-CCITT checksum.
+ *
+ * Uses polynomial 0x1021 with initial seed 0xFFFF without post-inversion.
+ *
+ * @param[in] data Pointer to the input byte buffer.
+ * @param[in] len  Number of bytes to calculate the checksum over.
+ * @return uint16_t Calculated 16-bit CRC-16-CCITT value.
+ */
 static uint16_t calc_crc16_ccitt(const uint8_t *data, size_t len) {
     uint16_t crc = 0xFFFF;
     for (size_t i = 0; i < len; i++) {
@@ -57,7 +76,17 @@ static uint16_t calc_crc16_ccitt(const uint8_t *data, size_t len) {
     return crc;
 }
 
-// Nanopb callback for elements
+/**
+ * @brief Nanopb repeated field decoding callback for element compositions.
+ *
+ * Decodes each ElementConfig message from the protobuf stream and registers the
+ * element type and instance count with the MeshX composition builder.
+ *
+ * @param[in,out] stream Pointer to the Nanopb input stream.
+ * @param[in]     field  Pointer to the active protobuf field iterator.
+ * @param[in,out] arg    Custom user argument pointer (unused).
+ * @return true if decoding and registration succeeded, false on stream decode error.
+ */
 static bool elements_decode_cb(pb_istream_t *stream, const pb_field_iter_t *field, void **arg) {
     ElementConfig element = ElementConfig_init_zero;
     if (!pb_decode(stream, ElementConfig_fields, &element)) {
@@ -67,7 +96,16 @@ static bool elements_decode_cb(pb_istream_t *stream, const pb_field_iter_t *fiel
     return true;
 }
 
-// Nanopb callback for gpio
+/**
+ * @brief Nanopb repeated field decoding callback for GPIO pin configuration.
+ *
+ * Decodes GpioConfig entries from the serialized configuration.
+ *
+ * @param[in,out] stream Pointer to the Nanopb input stream.
+ * @param[in]     field  Pointer to the active protobuf field iterator.
+ * @param[in,out] arg    Custom user argument pointer (unused).
+ * @return true on successful decode, false on stream decode error.
+ */
 static bool gpio_decode_cb(pb_istream_t *stream, const pb_field_iter_t *field, void **arg) {
     GpioConfig gpio = GpioConfig_init_zero;
     if (!pb_decode(stream, GpioConfig_fields, &gpio)) {
@@ -77,7 +115,16 @@ static bool gpio_decode_cb(pb_istream_t *stream, const pb_field_iter_t *field, v
     return true;
 }
 
-// Nanopb callback for bindings
+/**
+ * @brief Nanopb repeated field decoding callback for IO bindings.
+ *
+ * Decodes IoBinding entries from the serialized configuration.
+ *
+ * @param[in,out] stream Pointer to the Nanopb input stream.
+ * @param[in]     field  Pointer to the active protobuf field iterator.
+ * @param[in,out] arg    Custom user argument pointer (unused).
+ * @return true on successful decode, false on stream decode error.
+ */
 static bool bindings_decode_cb(pb_istream_t *stream, const pb_field_iter_t *field, void **arg) {
     IoBinding binding = IoBinding_init_zero;
     if (!pb_decode(stream, IoBinding_fields, &binding)) {
@@ -87,6 +134,28 @@ static bool bindings_decode_cb(pb_istream_t *stream, const pb_field_iter_t *fiel
     return true;
 }
 
+/**
+ * @brief Initialize and load read-only configuration from the dedicated flash partition.
+ *
+ * Locates the `meshx_cfg` partition, validates the header magic ('MXC\0'), version,
+ * Schema ID fingerprint, and header/payload CRC-16 checksums. Upon successful
+ * validation, decodes the Protobuf configuration payload via Nanopb, drives
+ * dynamic element baking via the composition builder, and populates output parameters.
+ *
+ * @param[out] cid          Pointer to store the decoded Company ID (optional, nullable).
+ * @param[out] pid          Pointer to store the decoded Product ID (optional, nullable).
+ * @param[out] product_name Buffer to store the null-terminated product name (optional, nullable).
+ * @param[in]  name_max_len Maximum capacity of the product_name buffer.
+ * @param[out] uuid         Buffer to store the 16-byte device UUID if present (optional, nullable).
+ * @return
+ *     - MESHX_SUCCESS: Configuration successfully loaded and applied
+ *     - MESHX_NOT_FOUND: 'meshx_cfg' partition not found
+ *     - MESHX_ERR_PLAT: Flash read operation failed
+ *     - MESHX_ERR_RO_CFG_FORMAT: Invalid magic identifier or Protobuf decoding error
+ *     - MESHX_ERR_RO_CFG_VERSION: Unsupported container version or Schema ID mismatch
+ *     - MESHX_ERR_RO_CFG_CRC: Header or payload CRC-16 validation failure
+ *     - MESHX_NO_MEM: Memory allocation failed for payload buffer
+ */
 meshx_err_t meshx_ro_cfg_init(uint16_t *cid, uint16_t *pid, char *product_name, size_t name_max_len, uint8_t *uuid) {
     meshx_fal_partition_t part;
     if (meshx_fal_find_partition("meshx_cfg", &part) != MESHX_SUCCESS) {

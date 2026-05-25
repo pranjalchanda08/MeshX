@@ -52,13 +52,13 @@ graph TD
 
 | Layer | Component | Responsibility |
 |-------|-----------|----------------|
-| **L7: Application** | `main.c` | Consumes `meshx_app_data_cb` / `meshx_app_ctrl_cb`; forwards to MXSP |
+| **L7: Application** | `main.c` / `meshx_mxcp.c` | Consumes `meshx_app_data_cb` / `meshx_app_ctrl_cb`; forwards to MXCP binary protocol |
 | **L6: MeshX API** | `meshx_api.c` | `meshx_send_msg_to_app()`, `meshx_send_ctrl_msg_to_app()` — bridge to Control Task |
-| **L5: Dispatcher** | `meshx_uvp_dispatcher.c` | TLV parsing and element-specific TagHandler routing |
-| **L4: Port** | `meshx_port_ble_mesh.c` | Translates `esp_ble_mesh_msg_t` ↔ MeshX UVP frames |
+| **L5: Dispatcher** | `meshx_uvp_dispatcher.cpp` | UVP frame header parsing, TID deduplication, `func_id` prefix stripping, and model dispatch |
+| **L4: Port** | `esp_ven_srv_model.c` | Translates ESP-IDF vendor model callbacks ↔ MeshX UVP frames |
 | **L3: Stack** | `esp_ble_mesh_core` | BLE Mesh Network / Transport layer (ESP-IDF managed) |
-| **L2: HAL** | `meshx_gpio.c` / `meshx_pwm.c` | Platform-abstracted GPIO bit-bang and PWM duty control |
-| **L1: Persistence** | `meshx_kv_engine.c` / `meshx_nvs.c` | Non-volatile element state storage via FAL interface |
+| **L2: HAL** | `meshx_gpio.c` / `meshx_pwm.c` / `MeshXIoInterface` | Platform-abstracted GPIO and PWM duty control |
+| **L1: Persistence** | `meshx_ro_cfg.c` / `meshx_nvs.c` | Flash storage: read-only `.mxc` configuration & persistent NVS state via FAL interface |
 
 ### 2.2 Inbound Control & Persistence Sequence
 
@@ -186,6 +186,13 @@ sequenceDiagram
     end
 
 ```
+
+---
+
+### 2.4 Interactive Architectural Flows
+
+- [Bidirectional End-to-End System Architecture (Downstream Web Console & Upstream BLE Mesh)](file:///d:/MeshX/.archify/architecture-trm-overview-20261014-201500/trm-overview.html)
+- [Upstream BLE Mesh Inbound Event Sequence (BLE Mesh → Element → MXCP → Web Console)](file:///d:/MeshX/.archify/sequence-ble-upstream-20261014-204500/ble-upstream.html)
 
 ---
 
