@@ -61,6 +61,11 @@ public:
     const char* get_element_name(void) const override;
     
     /**
+     * @brief Get the logical models associated with this element.
+     */
+    const std::vector<std::unique_ptr<meshXLogicalModel>>* get_logical_models_ptr() const override { return &logical_models; }
+    
+    /**
      * @brief Handle UVP state change notification and perform dual-routing (ACK + Pub).
      */
     meshx_err_t element_state_change_notify(meshx_ptr_t param, size_t param_size, const meshx_uvp_ctx_t* ctx) override;

@@ -71,6 +71,7 @@ typedef enum {
  * @brief Event ID namespace (Engine -> Host, bit 7 = 1).
  */
 typedef enum {
+    MXCP_EVT_NONE                  = 0x00,
     MXCP_EVT_PROV_COMP             = 0x01,
     MXCP_EVT_PROV_FAILED           = 0x02,
     MXCP_EVT_PROV_START            = 0x03,
@@ -82,7 +83,8 @@ typedef enum {
     MXCP_EVT_HOSTED_MODE_RSP       = 0x09,
     MXCP_EVT_CONSOLE_ROUTING_RSP   = 0x0A,
 
-    MXCP_EVT_EL_DATA_NOTIFY        = 0x10,
+    MXCP_EVT_EL_DATA_RX_NOTIFY     = 0x10,
+    MXCP_EVT_EL_DATA_TX_NOTIFY     = 0x11,
 
     MXCP_EVT_GPIO_SET_LEVEL_RSP    = 0x21,
     MXCP_EVT_GPIO_GET_LEVEL_RSP    = 0x22,
@@ -179,7 +181,14 @@ typedef struct {
     uint16_t element_type;
     uint16_t func_id;
     uint16_t msg_len;
-} mxcp_evt_el_data_notify_t;
+} mxcp_evt_el_data_rx_notify_t;
+
+typedef struct {
+    uint16_t element_id;
+    uint16_t element_type;
+    uint16_t func_id;
+    uint16_t msg_len;
+} mxcp_evt_el_data_tx_notify_t;
 
 typedef struct {
     uint8_t  status;
@@ -223,6 +232,7 @@ typedef struct {
     uint16_t idx;
     uint16_t variant;
     uint16_t ctx_size;
+    uint16_t telemetry_size;
 } mxcp_state_entry_header_t;
 
 #pragma pack(pop)

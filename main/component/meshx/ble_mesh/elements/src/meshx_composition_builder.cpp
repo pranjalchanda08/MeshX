@@ -330,8 +330,21 @@ size_t meshx_get_element_state_data(uint8_t *buf, size_t max_len) {
         if (!el) continue;
 
         size_t ctx_size = el->get_element_ctx_size();
+        size_t telemetry_size = 0;
+        
+        // Compute total telemetry size for this element
+        auto logical_models = el->get_logical_models_ptr();
+        if (logical_models) {
+            for (const auto& m : *logical_models) {
+                if (m) {
+                    size_t len;
+                    m->get_cached_state(len);
+                    telemetry_size += len;
+                }
+            }
+        }
 
-        if (offset + sizeof(mxcp_state_entry_header_t) + ctx_size > max_len) {
+        if (offset + sizeof(mxcp_state_entry_header_t) + ctx_size + telemetry_size > max_len) {
             break;
         }
 
@@ -339,6 +352,7 @@ size_t meshx_get_element_state_data(uint8_t *buf, size_t max_len) {
         entry.idx = el->get_element_idx();
         entry.variant = (uint16_t)el->get_element_variant();
         entry.ctx_size = (uint16_t)ctx_size;
+        entry.telemetry_size = (uint16_t)telemetry_size;
 
         memcpy(&buf[offset], &entry, sizeof(entry));
         offset += sizeof(entry);
@@ -346,6 +360,20 @@ size_t meshx_get_element_state_data(uint8_t *buf, size_t max_len) {
         if (ctx_size > 0 && el->get_element_ctx()) {
             memcpy(&buf[offset], el->get_element_ctx(), ctx_size);
             offset += ctx_size;
+        }
+        
+        // Append telemetry state data
+        if (telemetry_size > 0 && logical_models) {
+            for (const auto& m : *logical_models) {
+                if (m) {
+                    size_t len;
+                    const uint8_t* state = m->get_cached_state(len);
+                    if (state && len > 0) {
+                        memcpy(&buf[offset], state, len);
+                        offset += len;
+                    }
+                }
+            }
         }
     }
 

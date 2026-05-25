@@ -24,7 +24,7 @@ graph TD
         MXCP["meshx_mxcp.c\nmxcp_cmd_fn_el_send()"]
         API["meshx_send_msg_to_element()"]
         El["meshXUVPElement\non_model_cb()"]
-        EVT["MXCP_EVT_EL_DATA_NOTIFY (0x90)"]
+        EVT["MXCP_EVT_EL_DATA_RX_NOTIFY (0x90)"]
     end
 
     Runner --> Dev

@@ -10,11 +10,7 @@ class StreamDemultiplexer:
         self.buffer = bytearray()
 
     def feed(self, chunk: bytes, on_log, on_mxsp, on_text):
-        if chunk:
-            print(f"[DEMUX FEED] Received chunk size {len(chunk)}", flush=True)
         self.buffer.extend(chunk)
-        if len(self.buffer) > 0:
-            print(f"[DEMUX BUFFER] Buffer size {len(self.buffer)}", flush=True)
 
         while len(self.buffer) > 0:
             # 1. Evaluate Dynamic Log Frame Signature (0xAD 0xDE in Little-Endian)
@@ -85,5 +81,10 @@ class StreamDemultiplexer:
 
             # 3. Fallback Raw Console Text Processing
             else:
-                on_text(bytes([self.buffer[0]]))
-                del self.buffer[0]
+                try:
+                    next_fe = self.buffer.index(0xFE, 1)
+                except ValueError:
+                    next_fe = len(self.buffer)
+                
+                on_text(bytes(self.buffer[:next_fe]))
+                del self.buffer[:next_fe]

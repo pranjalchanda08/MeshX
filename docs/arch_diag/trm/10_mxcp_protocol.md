@@ -107,7 +107,8 @@ typedef enum {
     MXCP_EVT_CONSOLE_ROUTING_RSP   = 0x0A,   /* wire: 0x8A */
 
     /* Element Data Events (0x10–0x1F) */
-    MXCP_EVT_EL_DATA_NOTIFY        = 0x10,   /* wire: 0x90 — element telemetry */
+    MXCP_EVT_EL_DATA_RX_NOTIFY     = 0x10,   /* wire: 0x90 — element telemetry received */
+    MXCP_EVT_EL_DATA_TX_NOTIFY     = 0x11,   /* wire: 0x91 — element telemetry queued */
 
     /* GPIO Events (0x20–0x3F) */
     MXCP_EVT_GPIO_SET_LEVEL_RSP    = 0x21,   /* wire: 0xA1 */
@@ -168,7 +169,7 @@ typedef struct __attribute__((packed)) {
 
 ---
 
-## 5. MXCP_EVT_EL_DATA_NOTIFY — Element Telemetry (0x90)
+## 5. MXCP_EVT_EL_DATA_RX_NOTIFY — Element Telemetry (0x90)
 
 When an element state changes, the engine emits this event. The host test framework waits for it to verify element state.
 
