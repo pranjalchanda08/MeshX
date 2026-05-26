@@ -43,11 +43,11 @@ class StreamDemultiplexer:
 
             # 2. Evaluate Binary MXSP Frame Signature (0xFE)
             elif self.buffer[0] == 0xFE:
-                if len(self.buffer) < 3:
-                    return # Wait for Length field
+                if len(self.buffer) < 4:
+                    return # Wait for Length and Type fields
 
                 payload_len = self.buffer[1]
-                total_packet_len = 1 + 1 + 1 + payload_len + 1 + 1  # SOF + Len + Type + Payload + Checksum + EOF
+                total_packet_len = 1 + 1 + 2 + payload_len + 1 + 1  # SOF + Len + Type (2 bytes) + Payload + Checksum + EOF
 
                 if len(self.buffer) < total_packet_len:
                     return # Wait for full packet
@@ -68,8 +68,8 @@ class StreamDemultiplexer:
 
                 if checksum_calc == packet[-2]:
                     # MXSP Frame Validated! Route upstream
-                    msg_type = packet[2]
-                    payload = packet[3:-2]
+                    msg_type = packet[2] | (packet[3] << 8)
+                    payload = packet[4:-2]
                     on_mxsp(msg_type, payload)
                     del self.buffer[:total_packet_len]
                     continue

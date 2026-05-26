@@ -61,13 +61,20 @@ void meshx_serial_parse_byte(uint8_t data)
         case STATE_LEN:
             mxsp_ctx.rx_frame.len = data;
             mxsp_ctx.state = STATE_TYPE;
+            mxsp_ctx.rx_ptr = 0;
             break;
         case STATE_TYPE:
-            mxsp_ctx.rx_frame.type = data;
-            if (mxsp_ctx.rx_frame.len == 0) {
-                mxsp_ctx.state = STATE_CHECKSUM;
+            if (mxsp_ctx.rx_ptr == 0) {
+                mxsp_ctx.rx_frame.type = data;
+                mxsp_ctx.rx_ptr = 1;
             } else {
-                mxsp_ctx.state = STATE_PAYLOAD;
+                mxsp_ctx.rx_frame.type |= (data << 8);
+                mxsp_ctx.rx_ptr = 0;
+                if (mxsp_ctx.rx_frame.len == 0) {
+                    mxsp_ctx.state = STATE_CHECKSUM;
+                } else {
+                    mxsp_ctx.state = STATE_PAYLOAD;
+                }
             }
             break;
         case STATE_PAYLOAD:
@@ -82,7 +89,7 @@ void meshx_serial_parse_byte(uint8_t data)
             break;
         case STATE_EOF:
             if (data == MXCP_EOF) {
-                uint8_t calc = mxsp_ctx.rx_frame.len ^ mxsp_ctx.rx_frame.type;
+                uint8_t calc = mxsp_ctx.rx_frame.len ^ (mxsp_ctx.rx_frame.type & 0xFF) ^ ((mxsp_ctx.rx_frame.type >> 8) & 0xFF);
                 for (uint8_t i = 0; i < mxsp_ctx.rx_frame.len; i++) {
                     calc ^= mxsp_ctx.rx_frame.payload[i];
                 }
@@ -141,11 +148,12 @@ static void mxsp_uart_rx_task(void *pvParameters)
     }
 }
 
+#ifdef CONFIG_MESHX_ENABLE_GPIO_TEST_API
 /**
  * @brief Callback invoked by the GPIO subsystem when an interrupt or
  *        level-change event occurs in hosted mode.
  *
- * Packs the event into an mxcp_evt_gpio_async_t and transmits it to
+ * Packs the event into an meshx_msg_gpio_async_t and transmits it to
  * the host via mxcp_send_event().
  *
  * @param event Pointer to the GPIO hosted event data.
@@ -161,18 +169,19 @@ static void meshx_gpio_hosted_event_handler(const meshx_gpio_hosted_event_t *eve
         return;
     }
 
-    mxcp_evt_gpio_async_t async_evt;
+    meshx_msg_gpio_async_t async_evt;
     async_evt.event_type = event->event_type;
     async_evt.logical_pin = event->logical_pin;
     async_evt.value = event->value;
     unsigned int millis = 0;
     meshx_rtos_get_sys_time(&millis);
     async_evt.timestamp = (uint32_t)millis;
-    mxcp_send_event(MXCP_EVT_GPIO_ASYNC, (const uint8_t *)&async_evt, sizeof(async_evt));
+    mxcp_send_event(MESHX_MSG_CTRL_EVT_GPIO_ASYNC, (const uint8_t *)&async_evt, sizeof(async_evt));
 
     MESHX_LOGD(MODULE_ID_COMMON, "GPIO hosted event sent: type=%d, pin=%u, value=%u",
                event->event_type, event->logical_pin, event->value);
 }
+#endif
 
 /**
  * @brief Initialise the serial transport layer.
@@ -196,7 +205,9 @@ meshx_err_t meshx_serial_init(void)
     uart_rx_task.arg            = NULL;
     meshx_task_create(&uart_rx_task);
 
+#ifdef CONFIG_MESHX_ENABLE_GPIO_TEST_API
     meshx_gpio_register_hosted_event_cb(meshx_gpio_hosted_event_handler);
+#endif
 
     return MESHX_SUCCESS;
 }

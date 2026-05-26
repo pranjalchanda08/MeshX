@@ -310,11 +310,11 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     MESHX_ERR_PRINT_RET("Tasks initialization failed", err);
 
     /* Register application element callback */
-    err = meshx_app_reg_element_callback(g_config.app_element_cb);
+    err = meshx_api_register_data_cb(g_config.app_element_cb);
     MESHX_ERR_PRINT_RET("Failed to register app element callback", err);
 
     /* Register application control callback */
-    err = meshx_app_reg_system_events_callback(g_config.app_ctrl_cb);
+    err = meshx_api_register_ctrl_cb(g_config.app_ctrl_cb);
     MESHX_ERR_PRINT_RET("Failed to register app control callback", err);
 
     /* Initialize the Bluetooth Mesh Subsystem */

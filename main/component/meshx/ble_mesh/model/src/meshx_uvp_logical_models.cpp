@@ -53,7 +53,19 @@ meshx_err_t meshXRelayClientModel::handle_rx(
             meshx_api_relay_client_evt_t evt;
             std::memset(&evt, 0, sizeof(evt));
             evt.err_code = MESHX_CLIENT_ERR_UNCONFIGURED;
-            meshx_send_msg_to_app(el_idx, type_id, this->get_func_id(), sizeof(evt), &evt);
+            {
+        meshx_msg_data_t *msg = (meshx_msg_data_t*)malloc(sizeof(meshx_msg_data_t) + sizeof(evt));
+        if (msg) {
+            msg->msg_id = MESHX_MSG_DATA_EVT_RX_NOTIFY;
+            msg->element_id = el_idx;
+            msg->element_type = type_id;
+            msg->func_id = this->get_func_id();
+            msg->payload_len = sizeof(evt);
+            memcpy(msg->payload, &evt, sizeof(evt));
+            meshx_api_data_send(msg);
+            free(msg);
+        }
+    }
 
             return MESHX_INVALID_STATE;
         }
@@ -77,7 +89,19 @@ meshx_err_t meshXRelayClientModel::handle_rx(
         evt.on_off = *(static_cast<const uint8_t*>(param));
         this->update_cached_state(param, param_size);
     }
-    return meshx_send_msg_to_app(el_idx, type_id, this->get_func_id(), sizeof(evt), &evt);
+    meshx_err_t err = MESHX_NO_MEM;
+    meshx_msg_data_t *msg = (meshx_msg_data_t*)malloc(sizeof(meshx_msg_data_t) + sizeof(evt));
+    if (msg) {
+        msg->msg_id = MESHX_MSG_DATA_EVT_RX_NOTIFY;
+        msg->element_id = el_idx;
+        msg->element_type = type_id;
+        msg->func_id = this->get_func_id();
+        msg->payload_len = sizeof(evt);
+        memcpy(msg->payload, &evt, sizeof(evt));
+        err = meshx_api_data_send(msg);
+        free(msg);
+    }
+    return err;
 }
 
 meshx_err_t meshXRelayClientModel::handle_timeout(const meshx_uvp_ctx_t* /*ctx*/)
@@ -88,10 +112,19 @@ meshx_err_t meshXRelayClientModel::handle_timeout(const meshx_uvp_ctx_t* /*ctx*/
     MESHX_LOGW(MODULE_ID_BLE_MESH_ELEMENT,
         "RelayClient [%d] func_id=0x%02x: TXCM timeout",
         this->parent_element->get_element_idx(), this->get_func_id());
-    return meshx_send_msg_to_app(
-        this->parent_element->get_element_idx(),
-        (uint16_t)this->parent_element->get_element_variant(),
-        this->get_func_id(), sizeof(evt), &evt);
+    meshx_err_t err = MESHX_NO_MEM;
+    meshx_msg_data_t *msg = (meshx_msg_data_t*)malloc(sizeof(meshx_msg_data_t) + sizeof(evt));
+    if (msg) {
+        msg->msg_id = MESHX_MSG_DATA_EVT_RX_NOTIFY;
+        msg->element_id = this->parent_element->get_element_idx();
+        msg->element_type = (uint16_t)this->parent_element->get_element_variant();
+        msg->func_id = this->get_func_id();
+        msg->payload_len = sizeof(evt);
+        memcpy(msg->payload, &evt, sizeof(evt));
+        err = meshx_api_data_send(msg);
+        free(msg);
+    }
+    return err;
 }
 
 /* =========================================================================
@@ -131,8 +164,20 @@ meshx_err_t meshXRelayServerModel::handle_rx(
         this->update_cached_state(param, param_size);
     }
 
-    meshx_err_t err = meshx_send_msg_to_app(
-        el_idx, type_id, this->get_func_id(), (uint16_t)param_size, param);
+    meshx_err_t err = MESHX_NO_MEM;
+    {
+        meshx_msg_data_t *msg = (meshx_msg_data_t*)malloc(sizeof(meshx_msg_data_t) + (uint16_t)param_size);
+        if (msg) {
+            msg->msg_id = MESHX_MSG_DATA_EVT_RX_NOTIFY;
+            msg->element_id = el_idx;
+            msg->element_type = type_id;
+            msg->func_id = this->get_func_id();
+            msg->payload_len = (uint16_t)param_size;
+            memcpy(msg->payload, param, (uint16_t)param_size);
+            err = meshx_api_data_send(msg);
+            free(msg);
+        }
+    }
     if (err != MESHX_SUCCESS) {
         MESHX_LOGE(MODULE_ID_BLE_MESH_ELEMENT,
             "RelayServer [%d]: telemetry failed: 0x%x", el_idx, err);
@@ -170,7 +215,19 @@ meshx_err_t meshXLightCWWWClientModel::handle_rx(
             meshx_api_light_cwww_client_evt_t evt;
             std::memset(&evt, 0, sizeof(evt));
             evt.err_code = MESHX_CLIENT_ERR_UNCONFIGURED;
-            meshx_send_msg_to_app(el_idx, type_id, this->get_func_id(), sizeof(evt), &evt);
+            {
+        meshx_msg_data_t *msg = (meshx_msg_data_t*)malloc(sizeof(meshx_msg_data_t) + sizeof(evt));
+        if (msg) {
+            msg->msg_id = MESHX_MSG_DATA_EVT_RX_NOTIFY;
+            msg->element_id = el_idx;
+            msg->element_type = type_id;
+            msg->func_id = this->get_func_id();
+            msg->payload_len = sizeof(evt);
+            memcpy(msg->payload, &evt, sizeof(evt));
+            meshx_api_data_send(msg);
+            free(msg);
+        }
+    }
 
             return MESHX_INVALID_STATE;
         }
@@ -195,7 +252,19 @@ meshx_err_t meshXLightCWWWClientModel::handle_rx(
         std::memcpy(&evt.state_change, param, copy);
         this->update_cached_state(param, param_size);
     }
-    return meshx_send_msg_to_app(el_idx, type_id, this->get_func_id(), sizeof(evt), &evt);
+    meshx_err_t err = MESHX_NO_MEM;
+    meshx_msg_data_t *msg = (meshx_msg_data_t*)malloc(sizeof(meshx_msg_data_t) + sizeof(evt));
+    if (msg) {
+        msg->msg_id = MESHX_MSG_DATA_EVT_RX_NOTIFY;
+        msg->element_id = el_idx;
+        msg->element_type = type_id;
+        msg->func_id = this->get_func_id();
+        msg->payload_len = sizeof(evt);
+        memcpy(msg->payload, &evt, sizeof(evt));
+        err = meshx_api_data_send(msg);
+        free(msg);
+    }
+    return err;
 }
 
 meshx_err_t meshXLightCWWWClientModel::handle_timeout(const meshx_uvp_ctx_t* /*ctx*/)
@@ -206,10 +275,19 @@ meshx_err_t meshXLightCWWWClientModel::handle_timeout(const meshx_uvp_ctx_t* /*c
     MESHX_LOGW(MODULE_ID_BLE_MESH_ELEMENT,
         "CWWWClient [%d] func_id=0x%02x: TXCM timeout",
         this->parent_element->get_element_idx(), this->get_func_id());
-    return meshx_send_msg_to_app(
-        this->parent_element->get_element_idx(),
-        (uint16_t)this->parent_element->get_element_variant(),
-        this->get_func_id(), sizeof(evt), &evt);
+    meshx_err_t err = MESHX_NO_MEM;
+    meshx_msg_data_t *msg = (meshx_msg_data_t*)malloc(sizeof(meshx_msg_data_t) + sizeof(evt));
+    if (msg) {
+        msg->msg_id = MESHX_MSG_DATA_EVT_RX_NOTIFY;
+        msg->element_id = this->parent_element->get_element_idx();
+        msg->element_type = (uint16_t)this->parent_element->get_element_variant();
+        msg->func_id = this->get_func_id();
+        msg->payload_len = sizeof(evt);
+        memcpy(msg->payload, &evt, sizeof(evt));
+        err = meshx_api_data_send(msg);
+        free(msg);
+    }
+    return err;
 }
 
 /* =========================================================================
@@ -250,8 +328,20 @@ meshx_err_t meshXLightCWWWServerModel::handle_rx(
     }
 
     /* Step 3: App telemetry (REQ-006) */
-    meshx_err_t err = meshx_send_msg_to_app(
-        el_idx, type_id, this->get_func_id(), (uint16_t)param_size, param);
+    meshx_err_t err = MESHX_NO_MEM;
+    {
+        meshx_msg_data_t *msg = (meshx_msg_data_t*)malloc(sizeof(meshx_msg_data_t) + (uint16_t)param_size);
+        if (msg) {
+            msg->msg_id = MESHX_MSG_DATA_EVT_RX_NOTIFY;
+            msg->element_id = el_idx;
+            msg->element_type = type_id;
+            msg->func_id = this->get_func_id();
+            msg->payload_len = (uint16_t)param_size;
+            memcpy(msg->payload, param, (uint16_t)param_size);
+            err = meshx_api_data_send(msg);
+            free(msg);
+        }
+    }
     if (err != MESHX_SUCCESS) {
         MESHX_LOGE(MODULE_ID_BLE_MESH_ELEMENT,
             "CWWWServer [%d] func_id=0x%02x: telemetry failed: 0x%x",
@@ -302,8 +392,20 @@ meshx_err_t meshXSensorServerModel::handle_rx(
         this->update_cached_state(param, param_size);
     }
 
-    meshx_err_t err = meshx_send_msg_to_app(
-        el_idx, type_id, this->get_func_id(), (uint16_t)param_size, param);
+    meshx_err_t err = MESHX_NO_MEM;
+    {
+        meshx_msg_data_t *msg = (meshx_msg_data_t*)malloc(sizeof(meshx_msg_data_t) + (uint16_t)param_size);
+        if (msg) {
+            msg->msg_id = MESHX_MSG_DATA_EVT_RX_NOTIFY;
+            msg->element_id = el_idx;
+            msg->element_type = type_id;
+            msg->func_id = this->get_func_id();
+            msg->payload_len = (uint16_t)param_size;
+            memcpy(msg->payload, param, (uint16_t)param_size);
+            err = meshx_api_data_send(msg);
+            free(msg);
+        }
+    }
     if (err != MESHX_SUCCESS) {
         MESHX_LOGE(MODULE_ID_BLE_MESH_ELEMENT,
             "SensorServer [%d] func_id=0x%02x: telemetry failed: 0x%x",
@@ -341,7 +443,19 @@ meshx_err_t meshXSensorClientModel::handle_rx(
             meshx_api_sensor_client_evt_t evt;
             std::memset(&evt, 0, sizeof(evt));
             evt.err_code = MESHX_CLIENT_ERR_UNCONFIGURED;
-            meshx_send_msg_to_app(el_idx, type_id, this->get_func_id(), sizeof(evt), &evt);
+            {
+        meshx_msg_data_t *msg = (meshx_msg_data_t*)malloc(sizeof(meshx_msg_data_t) + sizeof(evt));
+        if (msg) {
+            msg->msg_id = MESHX_MSG_DATA_EVT_RX_NOTIFY;
+            msg->element_id = el_idx;
+            msg->element_type = type_id;
+            msg->func_id = this->get_func_id();
+            msg->payload_len = sizeof(evt);
+            memcpy(msg->payload, &evt, sizeof(evt));
+            meshx_api_data_send(msg);
+            free(msg);
+        }
+    }
 
             return MESHX_INVALID_STATE;
         }
@@ -365,7 +479,19 @@ meshx_err_t meshXSensorClientModel::handle_rx(
         std::memcpy(&evt.state_change, param, copy);
         this->update_cached_state(param, param_size);
     }
-    return meshx_send_msg_to_app(el_idx, type_id, this->get_func_id(), sizeof(evt), &evt);
+    meshx_err_t err = MESHX_NO_MEM;
+    meshx_msg_data_t *msg = (meshx_msg_data_t*)malloc(sizeof(meshx_msg_data_t) + sizeof(evt));
+    if (msg) {
+        msg->msg_id = MESHX_MSG_DATA_EVT_RX_NOTIFY;
+        msg->element_id = el_idx;
+        msg->element_type = type_id;
+        msg->func_id = this->get_func_id();
+        msg->payload_len = sizeof(evt);
+        memcpy(msg->payload, &evt, sizeof(evt));
+        err = meshx_api_data_send(msg);
+        free(msg);
+    }
+    return err;
 }
 
 meshx_err_t meshXSensorClientModel::handle_timeout(const meshx_uvp_ctx_t* /*ctx*/)
@@ -376,10 +502,19 @@ meshx_err_t meshXSensorClientModel::handle_timeout(const meshx_uvp_ctx_t* /*ctx*
     MESHX_LOGW(MODULE_ID_BLE_MESH_ELEMENT,
         "SensorClient [%d] func_id=0x%02x: TXCM timeout",
         this->parent_element->get_element_idx(), this->get_func_id());
-    return meshx_send_msg_to_app(
-        this->parent_element->get_element_idx(),
-        (uint16_t)this->parent_element->get_element_variant(),
-        this->get_func_id(), sizeof(evt), &evt);
+    meshx_err_t err = MESHX_NO_MEM;
+    meshx_msg_data_t *msg = (meshx_msg_data_t*)malloc(sizeof(meshx_msg_data_t) + sizeof(evt));
+    if (msg) {
+        msg->msg_id = MESHX_MSG_DATA_EVT_RX_NOTIFY;
+        msg->element_id = this->parent_element->get_element_idx();
+        msg->element_type = (uint16_t)this->parent_element->get_element_variant();
+        msg->func_id = this->get_func_id();
+        msg->payload_len = sizeof(evt);
+        memcpy(msg->payload, &evt, sizeof(evt));
+        err = meshx_api_data_send(msg);
+        free(msg);
+    }
+    return err;
 }
 
 /* =========================================================================
@@ -419,8 +554,20 @@ meshx_err_t meshXLightHSLServerModel::handle_rx(
         this->update_cached_state(param, param_size);
     }
 
-    meshx_err_t err = meshx_send_msg_to_app(
-        el_idx, type_id, this->get_func_id(), (uint16_t)param_size, param);
+    meshx_err_t err = MESHX_NO_MEM;
+    {
+        meshx_msg_data_t *msg = (meshx_msg_data_t*)malloc(sizeof(meshx_msg_data_t) + (uint16_t)param_size);
+        if (msg) {
+            msg->msg_id = MESHX_MSG_DATA_EVT_RX_NOTIFY;
+            msg->element_id = el_idx;
+            msg->element_type = type_id;
+            msg->func_id = this->get_func_id();
+            msg->payload_len = (uint16_t)param_size;
+            memcpy(msg->payload, param, (uint16_t)param_size);
+            err = meshx_api_data_send(msg);
+            free(msg);
+        }
+    }
     if (err != MESHX_SUCCESS) {
         MESHX_LOGE(MODULE_ID_BLE_MESH_ELEMENT,
             "HSLServer [%d] func_id=0x%02x: telemetry failed: 0x%x",
@@ -458,7 +605,19 @@ meshx_err_t meshXLightHSLClientModel::handle_rx(
             meshx_api_light_hsl_client_evt_t evt;
             std::memset(&evt, 0, sizeof(evt));
             evt.err_code = MESHX_CLIENT_ERR_UNCONFIGURED;
-            meshx_send_msg_to_app(el_idx, type_id, this->get_func_id(), sizeof(evt), &evt);
+            {
+        meshx_msg_data_t *msg = (meshx_msg_data_t*)malloc(sizeof(meshx_msg_data_t) + sizeof(evt));
+        if (msg) {
+            msg->msg_id = MESHX_MSG_DATA_EVT_RX_NOTIFY;
+            msg->element_id = el_idx;
+            msg->element_type = type_id;
+            msg->func_id = this->get_func_id();
+            msg->payload_len = sizeof(evt);
+            memcpy(msg->payload, &evt, sizeof(evt));
+            meshx_api_data_send(msg);
+            free(msg);
+        }
+    }
 
             return MESHX_INVALID_STATE;
         }
@@ -482,7 +641,19 @@ meshx_err_t meshXLightHSLClientModel::handle_rx(
         std::memcpy(&evt.state_change, param, copy);
         this->update_cached_state(param, param_size);
     }
-    return meshx_send_msg_to_app(el_idx, type_id, this->get_func_id(), sizeof(evt), &evt);
+    meshx_err_t err = MESHX_NO_MEM;
+    meshx_msg_data_t *msg = (meshx_msg_data_t*)malloc(sizeof(meshx_msg_data_t) + sizeof(evt));
+    if (msg) {
+        msg->msg_id = MESHX_MSG_DATA_EVT_RX_NOTIFY;
+        msg->element_id = el_idx;
+        msg->element_type = type_id;
+        msg->func_id = this->get_func_id();
+        msg->payload_len = sizeof(evt);
+        memcpy(msg->payload, &evt, sizeof(evt));
+        err = meshx_api_data_send(msg);
+        free(msg);
+    }
+    return err;
 }
 
 meshx_err_t meshXLightHSLClientModel::handle_timeout(const meshx_uvp_ctx_t* /*ctx*/)
@@ -493,8 +664,17 @@ meshx_err_t meshXLightHSLClientModel::handle_timeout(const meshx_uvp_ctx_t* /*ct
     MESHX_LOGW(MODULE_ID_BLE_MESH_ELEMENT,
         "HSLClient [%d] func_id=0x%02x: TXCM timeout",
         this->parent_element->get_element_idx(), this->get_func_id());
-    return meshx_send_msg_to_app(
-        this->parent_element->get_element_idx(),
-        (uint16_t)this->parent_element->get_element_variant(),
-        this->get_func_id(), sizeof(evt), &evt);
+    meshx_err_t err = MESHX_NO_MEM;
+    meshx_msg_data_t *msg = (meshx_msg_data_t*)malloc(sizeof(meshx_msg_data_t) + sizeof(evt));
+    if (msg) {
+        msg->msg_id = MESHX_MSG_DATA_EVT_RX_NOTIFY;
+        msg->element_id = this->parent_element->get_element_idx();
+        msg->element_type = (uint16_t)this->parent_element->get_element_variant();
+        msg->func_id = this->get_func_id();
+        msg->payload_len = sizeof(evt);
+        memcpy(msg->payload, &evt, sizeof(evt));
+        err = meshx_api_data_send(msg);
+        free(msg);
+    }
+    return err;
 }

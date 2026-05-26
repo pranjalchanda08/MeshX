@@ -386,14 +386,14 @@ function decodeMxspPacket(msg_type, payloadHex) {
             html += `<div class="pkt-decoded-header">Hosted Mode Switch</div>`;
             html += `<div class="pkt-decoded-item">State: <strong style="color: var(--neon-purple);">${enable ? "ENABLED" : "DISABLED"}</strong></div>`;
         }
-        else if (msg_type === 0x89) { // MXCP_EVT_HOSTED_MODE_RSP
+        else if (msg_type === 0x88) { // MXCP_EVT_HOSTED_MODE_RSP
             html += `<div class="pkt-decoded-header">Hosted Mode Response</div>`;
             html += `<div class="pkt-decoded-item">Status: <strong>SUCCESS</strong></div>`;
         }
         else if (msg_type === 0x02) { // MXCP_CMD_NODE_RESET
             html += `<div class="pkt-decoded-header">Node Reset Command</div>`;
         }
-        else if (msg_type === 0x88) { // MXCP_EVT_NODE_RESET_IND
+        else if (msg_type === 0x87) { // MXCP_EVT_NODE_RESET_IND
             html += `<div class="pkt-decoded-header">Node Reset Indication</div>`;
         }
         else if (msg_type === 0x03) { // MXCP_CMD_GET_COMPOSITION
@@ -407,7 +407,7 @@ function decodeMxspPacket(msg_type, payloadHex) {
             html += `<div class="pkt-decoded-header">Set Console Routing Command</div>`;
             html += `<div class="pkt-decoded-item">Console Routing: <strong>${enable ? "ENABLED" : "DISABLED"}</strong></div>`;
         }
-        else if (msg_type === 0x8A) { // MXCP_EVT_CONSOLE_ROUTING_RSP
+        else if (msg_type === 0x89) { // MXCP_EVT_CONSOLE_ROUTING_RSP
             html += `<div class="pkt-decoded-header">Console Routing Response</div>`;
             html += `<div class="pkt-decoded-item">Status: <strong>SUCCESS</strong></div>`;
         }
@@ -429,18 +429,15 @@ function decodeMxspPacket(msg_type, payloadHex) {
             html += `<div class="pkt-decoded-header">Provisioning Failed Event</div>`;
             html += `<div class="pkt-decoded-item" style="color: var(--neon-crimson);">Failed Reason: <strong>0x${reason.toString(16).toUpperCase().padStart(2, '0')}</strong></div>`;
         }
-        else if (msg_type === 0x83) { // MXCP_EVT_PROV_START
-            html += `<div class="pkt-decoded-header">Provisioning Started Event</div>`;
-        }
-        else if (msg_type === 0x84) { // MXCP_EVT_IDENTIFY_START
+        else if (msg_type === 0x83) { // MXCP_EVT_IDENTIFY_START
             html += `<div class="pkt-decoded-header">Identify Started Event</div>`;
         }
-        else if (msg_type === 0x85) { // MXCP_EVT_IDENTIFY_STOP
+        else if (msg_type === 0x84) { // MXCP_EVT_IDENTIFY_STOP
             html += `<div class="pkt-decoded-header">Identify Stopped Event</div>`;
         }
 
         // --- 3. Composition & Element State Responses ---
-        else if (msg_type === 0x86) { // MXCP_EVT_COMPOSITION_RSP
+        else if (msg_type === 0x85) { // MXCP_EVT_COMPOSITION_RSP
             const num_elements = bytes[0];
             html += `<div class="pkt-decoded-header">Composition Response Event</div>`;
             html += `<div class="pkt-decoded-item">Elements Discovered: <strong>${num_elements}</strong></div>`;
@@ -475,7 +472,7 @@ function decodeMxspPacket(msg_type, payloadHex) {
             }
             html += `</tbody></table>`;
         }
-        else if (msg_type === 0x87) { // MXCP_EVT_ELEMENT_STATE_RSP
+        else if (msg_type === 0x86) { // MXCP_EVT_ELEMENT_STATE_RSP
             const num_elements = bytes[0];
             html += `<div class="pkt-decoded-header">Element State Response Event</div>`;
             html += `<div class="pkt-decoded-item">Elements Reported: <strong>${num_elements}</strong></div>`;
@@ -781,14 +778,13 @@ function renderPackets() {
             // Events
             0x81: "EVT_PROV_COMP (0x81)",
             0x82: "EVT_PROV_FAILED (0x82)",
-            0x83: "EVT_PROV_START (0x83)",
-            0x84: "EVT_IDENTIFY_START (0x84)",
-            0x85: "EVT_IDENTIFY_STOP (0x85)",
-            0x86: "EVT_COMPOSITION_RSP (0x86)",
-            0x87: "EVT_ELEMENT_STATE_RSP (0x87)",
-            0x88: "EVT_NODE_RESET_IND (0x88)",
-            0x89: "EVT_HOSTED_MODE_RSP (0x89)",
-            0x8A: "EVT_CONSOLE_ROUTING_RSP (0x8A)",
+            0x83: "EVT_IDENTIFY_START (0x83)",
+            0x84: "EVT_IDENTIFY_STOP (0x84)",
+            0x85: "EVT_COMPOSITION_RSP (0x85)",
+            0x86: "EVT_ELEMENT_STATE_RSP (0x86)",
+            0x87: "EVT_NODE_RESET_IND (0x87)",
+            0x88: "EVT_HOSTED_MODE_RSP (0x88)",
+            0x89: "EVT_CONSOLE_ROUTING_RSP (0x89)",
             0x90: "EVT_EL_DATA_RX_NOTIFY (0x90)",
             0x91: "EVT_EL_DATA_TX_NOTIFY (0x91)",
             0xA1: "EVT_GPIO_SET_LEVEL_RSP (0xA1)",

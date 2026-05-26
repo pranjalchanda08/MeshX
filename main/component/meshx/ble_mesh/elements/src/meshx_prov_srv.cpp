@@ -155,7 +155,7 @@ static void meshx_handle_node_reset(dev_struct_t *pdev)
     }
 
     /* Notify application about node reset */
-    meshx_send_ctrl_msg_to_app(MESHX_CTRL_EVT_NODE_RESET, 0, NULL);
+    meshx_api_ctrl_send_with_payload(MESHX_MSG_CTRL_EVT_NODE_RESET_IND, NULL, 0);
 
     /* Reset the MCU */
     meshx_platform_reset();
@@ -172,13 +172,34 @@ static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_t
     switch (evt)
     {
         case CONTROL_TASK_MSG_EVT_PROVISION_STOP:
-            pdev->meshx_store.net_key_id = param->node_prov_complete.net_idx;
-            pdev->meshx_store.node_addr  = param->node_prov_complete.addr;
-            meshx_nvs_set(MESHX_NVS_STORE, &pdev->meshx_store, sizeof(pdev->meshx_store), MESHX_NVS_AUTO_COMMIT);
-            meshx_nvs_commit(); // Force immediate commit for critical provisioning parameters
+            if (param) {
+                pdev->meshx_store.net_key_id = param->node_prov_complete.net_idx;
+                pdev->meshx_store.node_addr  = param->node_prov_complete.addr;
+                meshx_nvs_set(MESHX_NVS_STORE, &pdev->meshx_store, sizeof(pdev->meshx_store), MESHX_NVS_AUTO_COMMIT);
+                meshx_nvs_commit(); // Force immediate commit for critical provisioning parameters
+
+                /* Notify application and host about provisioning completion */
+                meshx_msg_prov_comp_t payload;
+                payload.net_idx = param->node_prov_complete.net_idx;
+                payload.addr = param->node_prov_complete.addr;
+                memcpy(payload.device_uuid, pdev->uuid, 16);
+                meshx_api_ctrl_send_with_payload(MESHX_MSG_CTRL_EVT_PROV_COMP, &payload, sizeof(payload));
+            }
             break;
         case CONTROL_TASK_MSG_EVT_IDENTIFY_START:
             MESHX_LOGI(MODULE_ID_COMMON, "Identify Start");
+            meshx_api_ctrl_send_with_payload(MESHX_MSG_CTRL_EVT_IDENTIFY_START, NULL, 0);
+            break;
+        case CONTROL_TASK_MSG_EVT_IDENTIFY_STOP:
+            MESHX_LOGI(MODULE_ID_COMMON, "Identify Stop");
+            meshx_api_ctrl_send_with_payload(MESHX_MSG_CTRL_EVT_IDENTIFY_STOP, NULL, 0);
+
+            // If not provisioned yet when the link closes, report provisioning failed/aborted
+            if (pdev->meshx_store.node_addr == MESHX_ADDR_UNASSIGNED && param) {
+                meshx_msg_prov_failed_t fail_payload;
+                fail_payload.reason = param->node_prov_link_close.reason;
+                meshx_api_ctrl_send_with_payload(MESHX_MSG_CTRL_EVT_PROV_FAILED, &fail_payload, sizeof(fail_payload));
+            }
             break;
         case CONTROL_TASK_MSG_EVT_NODE_RESET:
             MESHX_LOGW(MODULE_ID_COMMON, "Node Reset Event");

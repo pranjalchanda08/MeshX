@@ -17,24 +17,24 @@
 ```
  Byte 0:    SOF = 0xFE
  Byte 1:    LEN (payload length in bytes, 0–255)
- Byte 2:    TYPE
-              Bit 7:    Direction (0 = CMD host→engine, 1 = EVT engine→host)
-              Bits 6-0: Command/Event ID (0x00–0x7F)
- Byte 3..N: PAYLOAD (typed struct, up to 255 bytes)
- Byte N+1:  CHECKSUM = LEN ^ TYPE ^ (XOR of all payload bytes)
+ Byte 2..3: TYPE (2 bytes, little-endian)
+              Bit 15:    Direction (0 = CMD host→engine, 1 = EVT engine→host)
+              Bits 14-0: Command/Event ID (0x0000–0x7FFF)
+ Byte 4..N: PAYLOAD (typed struct, up to 255 bytes)
+ Byte N+1:  CHECKSUM = LEN ^ TYPE_LSB ^ TYPE_MSB ^ (XOR of all payload bytes)
  Byte N+2:  EOF = 0xEF
 ```
 
 ### 1.1 Frame Type Bit-Field Macros
 
 ```c
-#define MXCP_TYPE_DIR_CMD  0x00
-#define MXCP_TYPE_DIR_EVT  0x80
-#define MXCP_TYPE_ID_MASK  0x7F
+#define MXCP_TYPE_DIR_CMD  0x0000
+#define MXCP_TYPE_DIR_EVT  0x8000
+#define MXCP_TYPE_ID_MASK  0x7FFF
 
-#define MXCP_MAKE_TYPE(dir, id)   ((uint8_t)((dir) | ((id) & MXCP_TYPE_ID_MASK)))
-#define MXCP_TYPE_IS_CMD(t)       (((t) & 0x80) == 0)
-#define MXCP_TYPE_IS_EVT(t)       (((t) & 0x80) != 0)
+#define MXCP_MAKE_TYPE(dir, id)   ((uint16_t)((dir) | ((id) & MXCP_TYPE_ID_MASK)))
+#define MXCP_TYPE_IS_CMD(t)       (((t) & 0x8000) == 0)
+#define MXCP_TYPE_IS_EVT(t)       (((t) & 0x8000) != 0)
 #define MXCP_TYPE_ID(t)           ((t) & MXCP_TYPE_ID_MASK)
 ```
 
@@ -46,12 +46,10 @@
 #define MXCP_PAYLOAD_MAX_SIZE 255
 
 typedef struct {
-    uint8_t sof;
     uint8_t len;
-    uint8_t type;                          /* DIR (bit 7) + ID (bits 6-0) */
+    uint16_t type;                         /* DIR (bit 15) + ID (bits 14-0) */
     uint8_t payload[MXCP_PAYLOAD_MAX_SIZE];
     uint8_t checksum;
-    uint8_t eof;
 } mxcp_frame_t;
 ```
 
@@ -59,7 +57,7 @@ typedef struct {
 
 ## 2. Command ID Namespace (Host → Engine)
 
-All commands have bit 7 = 0 on the wire.
+All commands have bit 15 = 0 on the wire.
 
 ```c
 typedef enum {
@@ -90,28 +88,27 @@ typedef enum {
 
 ## 3. Event ID Namespace (Engine → Host)
 
-All events have bit 7 = 1 on the wire (i.e., TYPE = `0x80 | id`).
+All events have bit 15 = 1 on the wire (i.e., TYPE = `0x8000 | id`).
 
 ```c
 typedef enum {
     /* System Events (0x01–0x0F) */
-    MXCP_EVT_PROV_COMP             = 0x01,   /* wire: 0x81 */
-    MXCP_EVT_PROV_FAILED           = 0x02,   /* wire: 0x82 */
-    MXCP_EVT_PROV_START            = 0x03,   /* wire: 0x83 */
-    MXCP_EVT_IDENTIFY_START        = 0x04,   /* wire: 0x84 */
-    MXCP_EVT_IDENTIFY_STOP         = 0x05,   /* wire: 0x85 */
-    MXCP_EVT_COMPOSITION_RSP       = 0x06,   /* wire: 0x86 */
-    MXCP_EVT_ELEMENT_STATE_RSP     = 0x07,   /* wire: 0x87 */
-    MXCP_EVT_NODE_RESET_IND        = 0x08,   /* wire: 0x88 */
-    MXCP_EVT_HOSTED_MODE_RSP       = 0x09,   /* wire: 0x89 */
-    MXCP_EVT_CONSOLE_ROUTING_RSP   = 0x0A,   /* wire: 0x8A */
+    MXCP_EVT_PROV_COMP             = 0x01,   /* wire: 0x8001 */
+    MXCP_EVT_PROV_FAILED           = 0x02,   /* wire: 0x8002 */
+    MXCP_EVT_IDENTIFY_START        = 0x03,   /* wire: 0x8003 */
+    MXCP_EVT_IDENTIFY_STOP         = 0x04,   /* wire: 0x8004 */
+    MXCP_EVT_COMPOSITION_RSP       = 0x05,   /* wire: 0x8005 */
+    MXCP_EVT_ELEMENT_STATE_RSP     = 0x06,   /* wire: 0x8006 */
+    MXCP_EVT_NODE_RESET_IND        = 0x07,   /* wire: 0x8007 */
+    MXCP_EVT_HOSTED_MODE_RSP       = 0x08,   /* wire: 0x8008 */
+    MXCP_EVT_CONSOLE_ROUTING_RSP   = 0x09,   /* wire: 0x8009 */
 
     /* Element Data Events (0x10–0x1F) */
-    MXCP_EVT_EL_DATA_RX_NOTIFY     = 0x10,   /* wire: 0x90 — element telemetry received */
-    MXCP_EVT_EL_DATA_TX_NOTIFY     = 0x11,   /* wire: 0x91 — element telemetry queued */
+    MXCP_EVT_EL_DATA_RX_NOTIFY     = 0x10,   /* wire: 0x8010 — element telemetry received */
+    MXCP_EVT_EL_DATA_TX_NOTIFY     = 0x11,   /* wire: 0x8011 — element telemetry queued */
 
     /* GPIO Events (0x20–0x3F) */
-    MXCP_EVT_GPIO_SET_LEVEL_RSP    = 0x21,   /* wire: 0xA1 */
+    MXCP_EVT_GPIO_SET_LEVEL_RSP    = 0x21,   /* wire: 0x8021 */
     MXCP_EVT_GPIO_GET_LEVEL_RSP    = 0x22,
     MXCP_EVT_GPIO_TOGGLE_RSP       = 0x23,
     MXCP_EVT_GPIO_SET_PWM_DUTY_RSP = 0x24,
@@ -120,8 +117,8 @@ typedef enum {
     MXCP_EVT_GPIO_INTR_DISABLE_RSP = 0x27,
     MXCP_EVT_GPIO_GET_CONFIG_RSP   = 0x28,
     MXCP_EVT_GPIO_GET_STATE_RSP    = 0x29,
-    MXCP_EVT_GPIO_ASYNC            = 0x3E,   /* wire: 0xBE — async GPIO interrupt */
-    MXCP_EVT_GPIO_ERROR            = 0x3F,   /* wire: 0xBF */
+    MXCP_EVT_GPIO_ASYNC            = 0x3E,   /* wire: 0x803E — async GPIO interrupt */
+    MXCP_EVT_GPIO_ERROR            = 0x3F,   /* wire: 0x803F */
 } mxcp_evt_id_t;
 ```
 

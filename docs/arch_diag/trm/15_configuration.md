@@ -74,8 +74,19 @@ Only ESP-BLE-MESH SIG model flags remain as sdkconfig concerns. MeshX-internal e
 | `CONFIG_BLE_MESH_HEALTH_SERVER` | `y` | Keep — required by BLE Mesh spec |
 | `CONFIG_BLE_MESH_CFG_CLI` | `n` | Disable config client (node only) |
 | `CONFIG_MESHX_HOSTED_MODE` | per BSP | Enable MXSP serial co-processor bridge |
+| `CONFIG_MESHX_ENABLE_GPIO_TEST_API` | `n` | Gated compile-time flag for GPIO test commands, events, and structs (enabled only for test builds) |
 
-### 16.4 Non-Functional Requirements Traceability
+### 16.4 Production-Safety Configuration (GPIO Isolation)
+
+To comply with production-safety requirements, all GPIO testing APIs, payload structs, event IDs, and command dispatch mappings are wrapped in preprocessor guards.
+
+- **Security Boundary**: Unauthorized remote or serial command access to physical GPIOs must be prevented in production binaries.
+- **Gating Mechanism**: The `CONFIG_MESHX_ENABLE_GPIO_TEST_API` macro controls this boundary.
+- **Compilation Behavior**:
+  - **Production Builds**: The macro is **not defined**. The compiler completely strips all GPIO command handler entry points, structure definitions, and registration metadata.
+  - **HIL/Unit Test Builds**: The macro is defined automatically when `ENABLE_TESTS=1` is passed to the build system.
+
+### 16.5 Non-Functional Requirements Traceability
 
 | REQ | Description | Design Mechanism |
 |-----|-------------|-----------------|
@@ -84,6 +95,7 @@ Only ESP-BLE-MESH SIG model flags remain as sdkconfig concerns. MeshX-internal e
 | REQ-NF03 | Robust TLV parser | Bounds-checked length field; truncation detection |
 | REQ-NF04 | Large payload segmentation | ESP-BLE-MESH SAR; max 377B TLV payload ([§8](./08_tlv_protocol.md)) |
 | REQ-NF05 | Walled garden | Private vendor opcode; no SIG interoperability |
+| REQ-004  | GPIO Production Safety | Preprocessor gating via `CONFIG_MESHX_ENABLE_GPIO_TEST_API` |
 
 ---
 

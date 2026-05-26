@@ -46,8 +46,8 @@
 typedef struct meshx_config
 {
     uint32_t meshx_nvs_save_period;     /**< NVS save period */
-    meshx_app_data_cb_t app_element_cb; /**< Application element callback */
-    meshx_app_ctrl_cb_t app_ctrl_cb;    /**< Application control callback */
+    meshx_api_data_cb_t app_element_cb; /**< Application element callback */
+    meshx_api_ctrl_cb_t app_ctrl_cb;    /**< Application control callback */
     unsigned meshx_log_level;           /**< MeshX log level */
 }meshx_config_t;
 

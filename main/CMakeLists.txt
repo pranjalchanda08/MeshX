@@ -170,6 +170,7 @@ set(INC_FILES
 if(ENABLE_TESTS AND PLATFORM_TEST_SUPPORTED)
     # Set the compile definition for complete project
     add_definitions(-DCONFIG_ENABLE_UNIT_TEST=1)
+    add_definitions(-DCONFIG_MESHX_ENABLE_GPIO_TEST_API=1)
     include_directories("${CMAKE_SOURCE_DIR}/main/component/unit_test/inc")
 
     # Collect all unit test source files

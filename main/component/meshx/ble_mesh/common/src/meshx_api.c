@@ -1,302 +1,145 @@
 /**
  * @file meshx_api.c
  * @brief Implementation of the BLE Mesh application API.
- *
- * This file contains the implementation of the BLE Mesh application API.
- * It includes functions to send messages to the BLE Mesh application and
- * register the BLE Mesh application callback.
- *
- * @author Pranjal Chanda
  */
 #include <meshx_api.h>
 #include "meshx_mxcp.h"
 #include <stdlib.h>
+#include <string.h>
 
-#define MESSAGE_BUFF_CLEAR(buff)        memset(&buff, 0, sizeof(buff))
-
-static struct{
-
-    meshx_app_data_cb_t app_data_cb;    /**< BLE Mesh application data callback */
-    meshx_app_ctrl_cb_t app_ctrl_cb;    /**< BLE Mesh application control callback */
-    meshx_app_api_msg_t msg_buff;       /**< BLE Mesh application message buffer */
-}meshx_api_ctrl;
+static struct {
+    meshx_api_data_cb_t app_data_cb;    /**< Callback function to be invoked when a data message is received. */
+    meshx_api_ctrl_cb_t app_ctrl_cb;    /**< Callback function to be invoked when a control message is received. */
+} meshx_api_ctrl;
 
 /**
- * @brief Control task handler for BLE Mesh application messages.
+ * @brief Handler for incoming messages from the control task.
  *
- * This function handles BLE Mesh application messages.
- *
- * @param[in] pdev       Pointer to the device structure.
- * @param[in] evt        Event type.
- * @param[in] params     Pointer to the message parameters.
- * @param[in] params_len Length of the message parameters.
- *
- * @return MESHX_SUCCESS on success, error code otherwise.
+ * @param pdev Pointer to the device structure.
+ * @param evt Event type.
+ * @param params Pointer to the message parameters.
+ * @param params_len Length of the parameters.
+ * @return MESHX_SUCCESS on success.
  */
 static meshx_err_t meshx_api_control_task_handler(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params, uint16_t params_len)
 {
-    const meshx_app_api_msg_t *msg = (const meshx_app_api_msg_t *)params;
+    if (!pdev) return MESHX_INVALID_ARG;
 
-    meshx_err_t err = MESHX_SUCCESS;
-
-    if (!pdev)
-        return MESHX_INVALID_ARG;
-
-    if(evt == CONTROL_TASK_MSG_EVT_DATA)
-        err = meshx_api_ctrl.app_data_cb ? meshx_api_ctrl.app_data_cb(&msg->msg_type_u.element_msg,
-                (const meshx_data_payload_t*) msg->data) : MESHX_SUCCESS;
-
-    else
-        err = meshx_api_ctrl.app_ctrl_cb ? meshx_api_ctrl.app_ctrl_cb(&msg->msg_type_u.ctrl_msg,
-                (const meshx_ctrl_payload_t*) msg->data) : MESHX_SUCCESS;
-
-    return err;
-}
-
-/**
- * @brief Prepares a message to be sent to the BLE Mesh application.
- *
- * This function prepares a message to be sent to the BLE Mesh application.
- *
- * @param[in] element_id    The element ID.
- * @param[in] element_type  The element type.
- * @param[in] func_id       The function ID.
- * @param[in] msg_len       The message length.
- * @param[in] msg           Pointer to the message.
- *
- * @return MESHX_SUCCESS on success, error code otherwise.
- */
-static meshx_err_t meshx_prepare_data_message(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg)
-{
-    if (!msg || msg_len > MESHX_APP_API_MSG_MAX_SIZE)
-        return MESHX_INVALID_ARG;
-
-    MESSAGE_BUFF_CLEAR(meshx_api_ctrl.msg_buff);
-
-    meshx_api_ctrl.msg_buff.msg_type_u.element_msg.func_id      = func_id;
-    meshx_api_ctrl.msg_buff.msg_type_u.element_msg.msg_len      = msg_len;
-    meshx_api_ctrl.msg_buff.msg_type_u.element_msg.element_id   = element_id;
-    meshx_api_ctrl.msg_buff.msg_type_u.element_msg.element_type = element_type;
-
-    if (msg && msg_len > 0)
-    {
-        memcpy(meshx_api_ctrl.msg_buff.data, msg, msg_len);
+    if (evt == CONTROL_TASK_MSG_EVT_DATA) {
+        if (meshx_api_ctrl.app_data_cb) {
+            meshx_api_ctrl.app_data_cb((const meshx_msg_data_t *)params);
+        }
+    } else {
+        if (meshx_api_ctrl.app_ctrl_cb) {
+            meshx_api_ctrl.app_ctrl_cb((const meshx_msg_ctrl_t *)params);
+        }
     }
-
     return MESHX_SUCCESS;
 }
 
 /**
- * @brief Prepares a control message to be sent to the BLE Mesh application.
+ * @brief Registers a callback function to be invoked when a data message is received.
  *
- * This function prepares a control message to be sent to the BLE Mesh application.
+ * This function subscribes to the data message event from the control task and sets the application data callback.
+ * The callback will be invoked for all data messages received from the mesh network.
  *
- * @param[in] evt       The event ID.
- * @param[in] msg_len   The message length.
- * @param[in] msg       Pointer to the message.
- *
- * @return MESHX_SUCCESS on success, error code otherwise.
+ * @param cb Callback function to be invoked when a data message is received.
+ * @return MESHX_SUCCESS on success.
  */
-static meshx_err_t meshx_prepare_ctrl_message(meshx_ctrl_evt_t evt, uint16_t msg_len, const void *msg)
+meshx_err_t meshx_api_register_data_cb(meshx_api_data_cb_t cb)
 {
-    if (msg_len > MESHX_APP_API_MSG_MAX_SIZE)
-        return MESHX_INVALID_ARG;
-
-    MESSAGE_BUFF_CLEAR(meshx_api_ctrl.msg_buff);
-
-    meshx_api_ctrl.msg_buff.msg_type_u.ctrl_msg.evt_id = evt;
-    meshx_api_ctrl.msg_buff.msg_type_u.ctrl_msg.reserved = 0;
-
-    if (msg && msg_len > 0)
-    {
-        memcpy(meshx_api_ctrl.msg_buff.data, msg, msg_len);
-    }
-
-    return MESHX_SUCCESS;
-}
-
-/**
- * @brief Sends a message to the BLE Mesh application.
- *
- * This function sends a message to the BLE Mesh application.
- *
- * @param[in] element_id    The element ID.
- * @param[in] element_type  The element type.
- * @param[in] func_id       The function ID.
- * @param[in] msg_len       The message length.
- * @param[in] msg           Pointer to the message.
- *
- * @return MESHX_SUCCESS on success, error code otherwise.
- */
-meshx_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg)
-{
-    mxcp_evt_el_data_rx_notify_t hdr;
-    hdr.element_id = element_id;
-    hdr.element_type = element_type;
-    hdr.func_id = func_id;
-    hdr.msg_len = msg_len;
-
-    uint32_t buf_size = sizeof(hdr) + msg_len;
-    uint8_t *buf = (uint8_t *)malloc(buf_size);
-    if (!buf) {
-        MESHX_LOGE(MODULE_ID_COMMON, "Failed to allocate memory for app msg");
-        return MESHX_NO_MEM;
-    }
-
-    memcpy(buf, &hdr, sizeof(hdr));
-    if (msg_len > 0 && msg != NULL) {
-        memcpy(buf + sizeof(hdr), msg, msg_len);
-    }
-    mxcp_send_event(MXCP_EVT_EL_DATA_RX_NOTIFY, buf, (uint8_t)buf_size);
-    free(buf);
-
-    meshx_err_t err = meshx_prepare_data_message(element_id, element_type, func_id, msg_len, msg);
-    if (err) {
-        MESHX_LOGE(MODULE_ID_COMMON, "Failed to create message: (0x%x)", err);
-        return err;
-    }
-
-    err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_APP, CONTROL_TASK_MSG_EVT_DATA,
-                                   &meshx_api_ctrl.msg_buff, sizeof(meshx_app_api_msg_t));
-    if (err) {
-        MESHX_LOGE(MODULE_ID_COMMON, "Failed to send message to app: (0x%x)", err);
-    }
-    return err;
-}
-
-/**
- * @brief Sends a control message to the BLE Mesh application.
- *
- * This function sends a control message to the BLE Mesh application.
- *
- * @param[in] evt       The event ID.
- * @param[in] msg_len   The message length.
- * @param[in] msg       Pointer to the message.
- *
- * @return MESHX_SUCCESS on success, error code otherwise.
- */
-meshx_err_t meshx_send_ctrl_msg_to_app(meshx_ctrl_evt_t evt, uint16_t msg_len, const void *msg)
-{
-    mxcp_evt_id_t mxcp_evt;
-    switch (evt) {
-        case MESHX_CTRL_EVT_NODE_RESET:
-            mxcp_evt = MXCP_EVT_NODE_RESET_IND;
-            break;
-        case MESHX_CTRL_EVT_PROV_COMP:
-            mxcp_evt = MXCP_EVT_PROV_COMP;
-            break;
-        case MESHX_CTRL_EVT_PROV_FAILED:
-            mxcp_evt = MXCP_EVT_PROV_FAILED;
-            break;
-        case MESHX_CTRL_EVT_PROV_START:
-            mxcp_evt = MXCP_EVT_PROV_START;
-            break;
-        case MESHX_CTRL_EVT_IDENTIFY_START:
-            mxcp_evt = MXCP_EVT_IDENTIFY_START;
-            break;
-        case MESHX_CTRL_EVT_IDENTIFY_STOP:
-            mxcp_evt = MXCP_EVT_IDENTIFY_STOP;
-            break;
-        default:
-            mxcp_evt = (mxcp_evt_id_t)evt;
-            break;
-    }
-    mxcp_send_event(mxcp_evt, (const uint8_t *)msg, (uint8_t)msg_len);
-
-    meshx_err_t err = meshx_prepare_ctrl_message(evt, msg_len, msg);
-    if (err) {
-        MESHX_LOGE(MODULE_ID_COMMON, "Failed to create ctrl message: (0x%x)", err);
-        return err;
-    }
-
-    err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_APP, CONTROL_TASK_MSG_EVT_CTRL,
-                                   &meshx_api_ctrl.msg_buff, sizeof(meshx_app_api_msg_t));
-    if (err) {
-        MESHX_LOGE(MODULE_ID_COMMON, "Failed to send ctrl message to app: (0x%x)", err);
-    }
-    return err;
-}
-
-/**
- * @brief Sends a message to the element
- *
- * This function sends a message to the element from BLE mesh Application
- *
- * @param[in] element_id    The element ID.
- * @param[in] element_type  The element type.
- * @param[in] func_id       The function ID.
- * @param[in] msg_len       The message length.
- * @param[in] msg           Pointer to the message.
- *
- * @return MESHX_SUCCESS on success, error code otherwise.
- */
-meshx_err_t meshx_send_msg_to_element(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg)
-{
-    meshx_err_t err = MESHX_SUCCESS;
-
-    err = meshx_prepare_data_message(element_id, element_type, func_id, msg_len,msg);
-    if(err)
-        MESHX_LOGE(MODULE_ID_COMMON, "Failed to create message: (0x%x)", err);
-
-    err = control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_MESHX, CONTROL_TASK_MSG_EVT_DATA, &meshx_api_ctrl.msg_buff, sizeof(meshx_app_api_msg_t));
-    if(err)
-        MESHX_LOGE(MODULE_ID_COMMON, "Failed to send message to app: (0x%x)", err);
-
-    return err;
-}
-
-/**
- * @brief Registers the BLE Mesh application callback.
- *
- * This function registers the BLE Mesh application data path callback.
- *
- * @param[in] cb Pointer to the application callback.
- *
- * @return MESHX_SUCCESS on success, error code otherwise.
- */
-meshx_err_t meshx_app_reg_element_callback(meshx_app_data_cb_t cb)
-{
-    meshx_err_t err = MESHX_SUCCESS;
-
-    err = control_task_msg_subscribe(
+    meshx_err_t err = control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_TO_APP,
         CONTROL_TASK_MSG_EVT_DATA,
         (control_task_msg_handle_t)&meshx_api_control_task_handler);
-    if (err)
-    {
+    if (err) {
         MESHX_LOGE(MODULE_ID_COMMON, "Failed to register control task callback: (%d)", err);
         return err;
     }
-
     meshx_api_ctrl.app_data_cb = cb;
-
-    return err;
+    return MESHX_SUCCESS;
 }
 
 /**
- * @brief Registers the BLE Mesh application control callback.
+ * @brief Registers a callback function to be invoked when a control message is received.
  *
- * This function registers the BLE Mesh application control callback.
+ * This function subscribes to the control message event from the control task and sets the application control callback.
+ * The callback will be invoked for all control messages received from the mesh network.
  *
- * @param[in] cb Pointer to the control callback.
- *
- * @return MESHX_SUCCESS on success, error code otherwise.
+ * @param cb Callback function to be invoked when a control message is received.
+ * @return MESHX_SUCCESS on success.
  */
-meshx_err_t meshx_app_reg_system_events_callback(meshx_app_ctrl_cb_t cb)
+meshx_err_t meshx_api_register_ctrl_cb(meshx_api_ctrl_cb_t cb)
 {
-    meshx_err_t err = MESHX_SUCCESS;
-
-    err = control_task_msg_subscribe(
+    meshx_err_t err = control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_TO_APP,
         CONTROL_TASK_MSG_EVT_CTRL,
         (control_task_msg_handle_t)&meshx_api_control_task_handler);
-    if (err)
-    {
+    if (err) {
         MESHX_LOGE(MODULE_ID_COMMON, "Failed to register control task callback: (%d)", err);
         return err;
     }
-
     meshx_api_ctrl.app_ctrl_cb = cb;
+    return MESHX_SUCCESS;
+}
 
+/**
+ * @brief Sends a data message to the mesh network.
+ *
+ * This function sends a data message to the mesh network. The message will be sent to the mesh network.
+ *
+ * @param msg Pointer to the data message to be sent.
+ * @return MESHX_SUCCESS on success.
+ */
+meshx_err_t meshx_api_data_send(const meshx_msg_data_t *msg)
+{
+    if (!msg) return MESHX_INVALID_ARG;
+    uint16_t total_len = sizeof(meshx_msg_data_t) + msg->payload_len;
+
+    if (msg->msg_id & MESHX_MSG_DIR_EVT) {
+        mxcp_send_event(msg->msg_id, (const uint8_t*)msg + 2, total_len - 2);
+        control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_APP, CONTROL_TASK_MSG_EVT_DATA, (void*)msg, total_len);
+    } else {
+        control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_MESHX, CONTROL_TASK_MSG_EVT_DATA, (void*)msg, total_len);
+    }
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Sends a control message to the mesh network.
+ *
+ * This function sends a control message to the mesh network. The message will be sent to the mesh network.
+ *
+ * @param msg Pointer to the control message to be sent.
+ * @return MESHX_SUCCESS on success.
+ */
+meshx_err_t meshx_api_ctrl_send(const meshx_msg_ctrl_t *msg)
+{
+    if (!msg) return MESHX_INVALID_ARG;
+    uint16_t total_len = sizeof(meshx_msg_ctrl_t) + msg->payload_len;
+
+    if (msg->msg_id & MESHX_MSG_DIR_EVT) {
+        mxcp_send_event(msg->msg_id, (const uint8_t*)msg + 2, total_len - 2);
+        control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_APP, CONTROL_TASK_MSG_EVT_CTRL, (void*)msg, total_len);
+    } else {
+        control_task_msg_publish(CONTROL_TASK_MSG_CODE_TO_MESHX, CONTROL_TASK_MSG_EVT_CTRL, (void*)msg, total_len);
+    }
+    return MESHX_SUCCESS;
+}
+
+meshx_err_t meshx_api_ctrl_send_with_payload(uint16_t msg_id, const void *payload, uint16_t payload_len)
+{
+    uint16_t total_len = sizeof(meshx_msg_ctrl_t) + payload_len;
+    meshx_msg_ctrl_t *msg = (meshx_msg_ctrl_t*)malloc(total_len);
+    if (!msg) return MESHX_FAIL;
+
+    msg->msg_id = msg_id;
+    msg->payload_len = payload_len;
+    if (payload && payload_len > 0) {
+        memcpy(msg->payload, payload, payload_len);
+    }
+
+    meshx_err_t err = meshx_api_ctrl_send(msg);
+    free(msg);
     return err;
 }

@@ -32,12 +32,11 @@ typedef enum {
     MESHX_CTRL_EVT_NODE_RESET = 0x01,   /* Node Reset */
     MESHX_CTRL_EVT_PROV_COMP,           /* Provisioning Completed */
     MESHX_CTRL_EVT_PROV_FAILED,         /* Provisioning Failed */
-    MESHX_CTRL_EVT_PROV_START,          /* Provisioning Started */
     MESHX_CTRL_EVT_IDENTIFY_START,      /* Identification Started */
     MESHX_CTRL_EVT_IDENTIFY_STOP,       /* Identification Stopped */
-    MESHX_CTRL_EVT_GET_COMPOSITION = 0x07, /* Get dynamic composition */
-    MESHX_CTRL_EVT_SET_CONSOLE_ROUTING = 0x08, /* Set serial multiplex console routing */
-    MESHX_CTRL_EVT_GET_ELEMENT_STATE = 0x09, /* Get current element states */
+    MESHX_CTRL_EVT_GET_COMPOSITION = 0x06, /* Get dynamic composition */
+    MESHX_CTRL_EVT_SET_CONSOLE_ROUTING = 0x07, /* Set serial multiplex console routing */
+    MESHX_CTRL_EVT_GET_ELEMENT_STATE = 0x08, /* Get current element states */
 } meshx_ctrl_evt_t;
 
 

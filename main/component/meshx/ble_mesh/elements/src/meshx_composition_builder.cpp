@@ -291,11 +291,11 @@ size_t meshx_get_element_composition_data(uint8_t *buf, size_t max_len) {
 
         const char* name = el->get_element_name();
         size_t name_len = strlen(name) + 1;
-        if (offset + sizeof(mxcp_comp_entry_header_t) + name_len > max_len) {
+        if (offset + sizeof(meshx_comp_entry_header_t) + name_len > max_len) {
             break;
         }
 
-        mxcp_comp_entry_header_t entry;
+        meshx_comp_entry_header_t entry;
         entry.idx = el->get_element_idx();
         entry.variant = (uint16_t)el->get_element_variant();
         entry.type = (uint16_t)el->get_element_type();
@@ -344,11 +344,11 @@ size_t meshx_get_element_state_data(uint8_t *buf, size_t max_len) {
             }
         }
 
-        if (offset + sizeof(mxcp_state_entry_header_t) + ctx_size + telemetry_size > max_len) {
+        if (offset + sizeof(meshx_state_entry_header_t) + ctx_size + telemetry_size > max_len) {
             break;
         }
 
-        mxcp_state_entry_header_t entry;
+        meshx_state_entry_header_t entry;
         entry.idx = el->get_element_idx();
         entry.variant = (uint16_t)el->get_element_variant();
         entry.ctx_size = (uint16_t)ctx_size;

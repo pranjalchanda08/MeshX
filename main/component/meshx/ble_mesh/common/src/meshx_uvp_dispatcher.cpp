@@ -134,14 +134,14 @@ static meshx_err_t uvp_app_command_cb(dev_struct_t *pdev,
     MESHX_UNUSED(pdev);
     MESHX_UNUSED(evt);
 
-    if (!params || params_len < sizeof(meshx_app_api_msg_t)) {
+    if (!params || params_len < sizeof(meshx_msg_data_t)) {
         MESHX_LOGE(MODULE_ID_COMMON, "UVP App Command Dispatcher: Invalid parameters!");
         return MESHX_INVALID_ARG;
     }
 
-    meshx_app_api_msg_t *p_msg = (meshx_app_api_msg_t *)params;
-    uint16_t el_id = p_msg->msg_type_u.element_msg.element_id;
-    uint16_t msg_len = p_msg->msg_type_u.element_msg.msg_len;
+    meshx_msg_data_t *p_msg = (meshx_msg_data_t *)params;
+    uint16_t el_id = p_msg->element_id;
+    uint16_t msg_len = p_msg->payload_len;
 
     /* Find the targeted element in the registry using the element index */
     meshXElementIF* element = meshXElementRegistry::get_instance().find_element(el_id);
@@ -156,10 +156,10 @@ static meshx_err_t uvp_app_command_cb(dev_struct_t *pdev,
     uvp_ctx.dst_addr = 0x0000u;
     uvp_ctx.tid      = 0;
     uvp_ctx.ack_req  = false;
-    uvp_ctx.func_id  = p_msg->msg_type_u.element_msg.func_id; /* Propagate explicit func_id (REQ-003) */
+    uvp_ctx.func_id  = p_msg->func_id; /* Propagate explicit func_id (REQ-003) */
 
     /* Pass the local serial parameters payload directly to the element's callback */
-    return element->on_model_cb(p_msg->data, msg_len, &uvp_ctx);
+    return element->on_model_cb(p_msg->payload, msg_len, &uvp_ctx);
 }
 
 #if CONFIG_TXCM_ENABLE

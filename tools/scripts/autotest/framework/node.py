@@ -228,11 +228,13 @@ class MeshXNode:
             return False
         
         length = len(payload)
-        frame = bytearray([0xFE, length, type_id])
+        type_bytes = struct.pack("<H", type_id)
+        frame = bytearray([0xFE, length])
+        frame.extend(type_bytes)
         frame.extend(payload)
 
         # XOR Checksum
-        checksum = length ^ type_id
+        checksum = length ^ type_bytes[0] ^ type_bytes[1]
         for b in payload:
             checksum ^= b
 

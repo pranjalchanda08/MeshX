@@ -12,8 +12,8 @@
 
 #define CONFIG_MESHX_NVS_SAVE_PERIOD_MS 1000
 
-static meshx_err_t meshx_app_data_cb(const meshx_app_element_msg_header_t *msg_hdr, const meshx_data_payload_t *data_payload_u);
-static meshx_err_t meshx_app_ctrl_cb(const meshx_ctrl_msg_header_t *msg_hdr, const meshx_ctrl_payload_t *msg);
+static void meshx_app_data_cb(const meshx_msg_data_t *msg);
+static void meshx_app_ctrl_cb(const meshx_msg_ctrl_t *msg);
 /**
  * @brief Configuration for the MeshX library.
  */
@@ -42,66 +42,66 @@ void CONFIG_APP_MAIN(void)
     }
 }
 
-static meshx_err_t meshx_app_data_cb(const meshx_app_element_msg_header_t *msg_hdr, const meshx_data_payload_t *data_payload_u)
+static void meshx_app_data_cb(const meshx_msg_data_t *msg)
 {
-    if (!msg_hdr || !data_payload_u)
-        return MESHX_INVALID_ARG;
+    if (!msg)
+        return;
 
-    switch (msg_hdr->element_type)
+    switch (msg->element_type)
     {
     case MESHX_ELEMENT_TYPE_RELAY_SERVER:
-        MESHX_LOGI(MODULE_ID_COMMON, "Relay Server Element ID: %d, Func ID: %d, Data: %d", msg_hdr->element_id, msg_hdr->func_id, data_payload_u->relay_server_evt.on_off);
+        MESHX_LOGI(MODULE_ID_COMMON, "Relay Server Element ID: %d, Func ID: %d, Data: %d", msg->element_id, msg->func_id, ((const meshx_api_relay_server_evt_t*)msg->payload)->on_off);
         break;
     case MESHX_ELEMENT_TYPE_RELAY_CLIENT:
-        MESHX_LOGI(MODULE_ID_COMMON, "Relay Client Element ID: %d, Func ID: %d, Data: %d, Error: %d", msg_hdr->element_id, msg_hdr->func_id, data_payload_u->relay_client_evt.on_off, data_payload_u->relay_client_evt.err_code);
+        MESHX_LOGI(MODULE_ID_COMMON, "Relay Client Element ID: %d, Func ID: %d, Data: %d, Error: %d", msg->element_id, msg->func_id, ((const meshx_api_relay_client_evt_t*)msg->payload)->on_off, ((const meshx_api_relay_client_evt_t*)msg->payload)->err_code);
         break;
     case MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER:
-        switch (msg_hdr->func_id)
+        switch (msg->func_id)
         {
         case MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_ONN_OFF:
-            MESHX_LOGI(MODULE_ID_COMMON, "Light CW-WW Server Element ID: %d, Func ID: %d, Data: %d", msg_hdr->element_id, msg_hdr->func_id,
-                     data_payload_u->light_cwww_server_evt.state_change.on_off.state);
+            MESHX_LOGI(MODULE_ID_COMMON, "Light CW-WW Server Element ID: %d, Func ID: %d, Data: %d", msg->element_id, msg->func_id,
+                     ((const meshx_api_light_cwww_server_evt_t*)msg->payload)->state_change.on_off.state);
             break;
         case MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_SERVER_CTL:
-            MESHX_LOGI(MODULE_ID_COMMON, "Light CW-WW Server Element ID: %d, Func ID: %d, Data: %d|%d", msg_hdr->element_id, msg_hdr->func_id,
-                     data_payload_u->light_cwww_server_evt.state_change.ctl.lightness,
-                     data_payload_u->light_cwww_server_evt.state_change.ctl.temperature);
+            MESHX_LOGI(MODULE_ID_COMMON, "Light CW-WW Server Element ID: %d, Func ID: %d, Data: %d|%d", msg->element_id, msg->func_id,
+                     ((const meshx_api_light_cwww_server_evt_t*)msg->payload)->state_change.ctl.lightness,
+                     ((const meshx_api_light_cwww_server_evt_t*)msg->payload)->state_change.ctl.temperature);
             break;
         default:
-            MESHX_LOGW(MODULE_ID_COMMON, "Unhandled function ID: %d", msg_hdr->func_id);
+            MESHX_LOGW(MODULE_ID_COMMON, "Unhandled function ID: %d", msg->func_id);
             break;
         }
         break;
     case MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT:
-        switch (msg_hdr->func_id)
+        switch (msg->func_id)
         {
         case MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_CLIENT_ONN_OFF:
-            MESHX_LOGI(MODULE_ID_COMMON, "Light CW-WW Client Element ID: %d, Func ID: %d, Data: %d, Error: %d", msg_hdr->element_id, msg_hdr->func_id,
-                     data_payload_u->light_cwww_client_evt.state_change.on_off.state, data_payload_u->light_cwww_client_evt.err_code);
+            MESHX_LOGI(MODULE_ID_COMMON, "Light CW-WW Client Element ID: %d, Func ID: %d, Data: %d, Error: %d", msg->element_id, msg->func_id,
+                     ((const meshx_api_light_cwww_client_evt_t*)msg->payload)->state_change.on_off.state, ((const meshx_api_light_cwww_client_evt_t*)msg->payload)->err_code);
             break;
         case MESHX_ELEMENT_FUNC_ID_LIGHT_CWWW_CLIENT_CTL:
-            MESHX_LOGI(MODULE_ID_COMMON, "Light CW-WW Client Element ID: %d, Func ID: %d, Data: %d|%d", msg_hdr->element_id, msg_hdr->func_id,
-                     data_payload_u->light_cwww_client_evt.state_change.ctl.lightness,
-                     data_payload_u->light_cwww_client_evt.state_change.ctl.temperature);
+            MESHX_LOGI(MODULE_ID_COMMON, "Light CW-WW Client Element ID: %d, Func ID: %d, Data: %d|%d", msg->element_id, msg->func_id,
+                     ((const meshx_api_light_cwww_client_evt_t*)msg->payload)->state_change.ctl.lightness,
+                     ((const meshx_api_light_cwww_client_evt_t*)msg->payload)->state_change.ctl.temperature);
             break;
         default:
-            MESHX_LOGW(MODULE_ID_COMMON, "Unhandled function ID: %d", msg_hdr->func_id);
+            MESHX_LOGW(MODULE_ID_COMMON, "Unhandled function ID: %d", msg->func_id);
             break;
         }
         break;
     default:
-        MESHX_LOGW(MODULE_ID_COMMON, "Unhandled element type: %d", msg_hdr->element_type);
+        MESHX_LOGW(MODULE_ID_COMMON, "Unhandled element type: %d", msg->element_type);
         break;
     }
-    return MESHX_SUCCESS;
+    return;
 }
 
-static meshx_err_t meshx_app_ctrl_cb(const meshx_ctrl_msg_header_t *msg_hdr, const meshx_ctrl_payload_t *msg)
+static void meshx_app_ctrl_cb(const meshx_msg_ctrl_t *msg)
 {
-    if (!msg_hdr || !msg)
-        return MESHX_INVALID_ARG;
+    if (!msg)
+        return;
 
-    MESHX_LOGI(MODULE_ID_COMMON, "Control Event Received: ID %d", msg_hdr->evt_id);
+    MESHX_LOGI(MODULE_ID_COMMON, "Control Event Received: ID 0x%x", msg->msg_id);
 
-    return MESHX_SUCCESS;
+    return;
 }
