@@ -262,6 +262,32 @@ class ESPTarget(Target):
         ]
         self.proc_run(esp_tool_cmd, cwd=build_dir)
 
+
+    def _get_parttool_cmd(self, partition_table, *args):
+        """
+        Build and execute a parttool command robustly across OS environments.
+        Tries:
+        1. IDF_PATH/components/partition_table/parttool.py using sys.executable
+        2. parttool.py if on PATH via shutil.which
+        3. sys.executable -m parttool
+        """
+        cmd_args = ["--quiet", "--partition-table-file", partition_table] + list(args)
+
+        # 1. Check IDF_PATH environment variable or standard location
+        idf_path = os.environ.get("IDF_PATH")
+        if idf_path:
+            parttool_script = os.path.join(idf_path, "components", "partition_table", "parttool.py")
+            if os.path.exists(parttool_script):
+                return subprocess.check_output([sys.executable, parttool_script] + cmd_args, text=True).strip()
+
+        # 2. Check if parttool.py is on PATH
+        parttool_path = shutil.which("parttool.py")
+        if parttool_path:
+            return subprocess.check_output([sys.executable, parttool_path] + cmd_args, text=True).strip()
+
+        # 3. Fallback to python -m parttool
+        return subprocess.check_output([sys.executable, "-m", "parttool"] + cmd_args, text=True).strip()
+
     def flash_cfg(self, args, build_root = "build"):
         if len(args.prod_name) != 1:
             raise InvalidProductNameException()
@@ -278,22 +304,13 @@ class ESPTarget(Target):
         print(f"Flashing configuration binary: {cfg_to_flash}")
 
         # Get offset dynamically using parttool.py
+        partition_table = os.path.join(build_dir, "partition_table", "partition-table.bin")
         try:
-            partition_table = os.path.join(build_dir, "partition_table", "partition-table.bin")
-            offset = subprocess.check_output(
-                [sys.executable, "-m", "parttool", "--quiet", "--partition-table-file", partition_table, "get_partition_info", "--partition-name", "meshx_cfg", "--info", "offset"],
-                text=True
-            ).strip()
+            offset = self._get_parttool_cmd(partition_table, "get_partition_info", "--partition-name", "meshx_cfg", "--info", "offset")
             if not offset:
                 raise Exception("Empty offset returned")
-        except Exception:
-            try:
-                offset = subprocess.check_output(
-                    ["parttool.py", "--quiet", "--partition-table-file", partition_table, "get_partition_info", "--partition-name", "meshx_cfg", "--info", "offset"],
-                    text=True
-                ).strip()
-            except Exception as e:
-                raise TargetFlashException(f"Failed to get meshx_cfg partition offset: {e}. Is ESP-IDF activated?")
+        except Exception as e:
+            raise TargetFlashException(f"Failed to get meshx_cfg partition offset: {e}. Is ESP-IDF activated or IDF_PATH set?")
 
         esp_tool_cmd = [
             sys.executable, "-m", "esptool",
@@ -309,28 +326,12 @@ class ESPTarget(Target):
         self.validate_port(args.port)
 
         build_dir = os.path.join(build_root, args.prod_name[0])
+        partition_table = os.path.join(build_dir, "partition_table", "partition-table.bin")
         try:
-            partition_table = os.path.join(build_dir, "partition_table", "partition-table.bin")
-            offset = subprocess.check_output(
-                [sys.executable, "-m", "parttool", "--quiet", "--partition-table-file", partition_table, "get_partition_info", "--partition-name", "meshx_cfg", "--info", "offset"],
-                text=True
-            ).strip()
-            size = subprocess.check_output(
-                [sys.executable, "-m", "parttool", "--quiet", "--partition-table-file", partition_table, "get_partition_info", "--partition-name", "meshx_cfg", "--info", "size"],
-                text=True
-            ).strip()
-        except Exception:
-            try:
-                offset = subprocess.check_output(
-                    ["parttool.py", "--quiet", "--partition-table-file", partition_table, "get_partition_info", "--partition-name", "meshx_cfg", "--info", "offset"],
-                    text=True
-                ).strip()
-                size = subprocess.check_output(
-                    ["parttool.py", "--quiet", "--partition-table-file", partition_table, "get_partition_info", "--partition-name", "meshx_cfg", "--info", "size"],
-                    text=True
-                ).strip()
-            except Exception as e:
-                raise TargetFlashException(f"Failed to get meshx_cfg partition info: {e}. Is ESP-IDF activated?")
+            offset = self._get_parttool_cmd(partition_table, "get_partition_info", "--partition-name", "meshx_cfg", "--info", "offset")
+            size = self._get_parttool_cmd(partition_table, "get_partition_info", "--partition-name", "meshx_cfg", "--info", "size")
+        except Exception as e:
+            raise TargetFlashException(f"Failed to get meshx_cfg partition info: {e}. Is ESP-IDF activated or IDF_PATH set?")
 
         esp_tool_cmd = [
             sys.executable, "-m", "esptool",
