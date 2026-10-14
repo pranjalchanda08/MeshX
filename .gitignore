@@ -73,3 +73,7 @@ meshx_config_pb2.py
 *meshx_cfg.mxc
 *.code_spec.json
 *.config.kiro
+.archify
+logs
+docs
+
