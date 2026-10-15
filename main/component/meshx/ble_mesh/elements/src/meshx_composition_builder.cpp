@@ -13,7 +13,7 @@
 #include <variants/meshx_uvp_element.hpp>
 #include <meshx_element_registry.hpp>
 #include <meshx_element_class.hpp>
-#include <meshx_serial.h>
+#include <meshx_c_header.h>
 
 /**
  * @brief Fluent API Implementation
@@ -146,10 +146,12 @@ extern "C" {
 meshx_err_t meshx_restore_all_element_ctx(void)
 {
     meshx_err_t first_err = MESHX_SUCCESS;
+    meshx_err_t ctx_err = MESHX_SUCCESS;
     auto all_elements = meshXElementRegistry::get_instance().get_all_elements();
+
     for (auto const& [idx, el] : all_elements) {
         if (el) {
-            meshx_err_t ctx_err = el->restore_nvs_context();
+            ctx_err = el->restore_nvs_context();
             if (ctx_err != MESHX_SUCCESS) {
                 MESHX_LOGW(MODULE_ID_COMMON, "Element [%d] NVS ctx restore: 0x%x", idx, ctx_err);
                 if (first_err == MESHX_SUCCESS) {
@@ -187,12 +189,14 @@ bool meshx_builder_is_txcm_active(void) {
  * @return MESHX_SUCCESS on success, or error code.
  */
 meshx_err_t meshx_builder_bake(dev_struct_t *pdev, uint16_t cid, uint16_t pid, uint16_t vid) {
+    meshx_err_t err = MESHX_SUCCESS;
+
     // 1. Initialize the C++ Device wrapper
     meshXDevice::get_instance().init(pdev);
 
     // 2. Perform the bake
     meshXComposition::get_instance().set_device_struct(pdev);
-    meshx_err_t err = meshXComposition::get_instance().bake(cid, pid, vid);
+    err = meshXComposition::get_instance().bake(cid, pid, vid);
 
     // 3. Visualize the result
     if (err == MESHX_SUCCESS) {
@@ -218,30 +222,32 @@ meshx_err_t meshx_builder_bake(dev_struct_t *pdev, uint16_t cid, uint16_t pid, u
  */
 void meshx_builder_add_element(meshx_element_type_t type, uint16_t count) {
     meshXCompositionBuilder builder;
+    uint16_t i = 0;
+
     switch(type) {
         case MESHX_ELEMENT_TYPE_RELAY_SERVER:
-            for(uint16_t i=0; i<count; ++i) builder.add_relay_server();
+            for(i=0; i<count; ++i) builder.add_relay_server();
             break;
         case MESHX_ELEMENT_TYPE_RELAY_CLIENT:
-            for(uint16_t i=0; i<count; ++i) builder.add_relay_client();
+            for(i=0; i<count; ++i) builder.add_relay_client();
             break;
         case MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER:
-            for(uint16_t i=0; i<count; ++i) builder.add_cwww_server();
+            for(i=0; i<count; ++i) builder.add_cwww_server();
             break;
         case MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT:
-            for(uint16_t i=0; i<count; ++i) builder.add_cwww_client();
+            for(i=0; i<count; ++i) builder.add_cwww_client();
             break;
         case MESHX_ELEMENT_TYPE_SENSOR_SERVER:
-            for(uint16_t i=0; i<count; ++i) builder.add_sensor_server();
+            for(i=0; i<count; ++i) builder.add_sensor_server();
             break;
         case MESHX_ELEMENT_TYPE_SENSOR_CLIENT:
-            for(uint16_t i=0; i<count; ++i) builder.add_sensor_client();
+            for(i=0; i<count; ++i) builder.add_sensor_client();
             break;
         case MESHX_ELEMENT_TYPE_LIGHT_HSL_SERVER:
-            for(uint16_t i=0; i<count; ++i) builder.add_rgb_server();
+            for(i=0; i<count; ++i) builder.add_rgb_server();
             break;
         case MESHX_ELEMENT_TYPE_LIGHT_HSL_CLIENT:
-            for(uint16_t i=0; i<count; ++i) builder.add_rgb_client();
+            for(i=0; i<count; ++i) builder.add_rgb_client();
             break;
         default:
             MESHX_LOGW(MODULE_ID_COMMON, "Builder: No implementation for element type %d", type);
@@ -254,7 +260,7 @@ void meshx_builder_add_element(meshx_element_type_t type, uint16_t count) {
  */
 
 /**
- * @brief Begin the dynamic composition builder.
+ * @brief Resets and starts a new dynamic composition build session.
  */
 void meshx_builder_begin(void) {
     meshXCompositionBuilder builder;
@@ -262,7 +268,7 @@ void meshx_builder_begin(void) {
 }
 
 /**
- * @brief Commit the dynamic composition builder.
+ * @brief Commits the pending dynamic composition build session.
  */
 void meshx_builder_commit(void) {
     meshXCompositionBuilder builder;
@@ -270,32 +276,72 @@ void meshx_builder_commit(void) {
 }
 
 /**
+ * @brief Saves the current dynamic composition schema to NVS.
+ *
+ * Iterates through active elements in the composition (skipping root at index 0)
+ * and writes the element type array into NVS.
+ *
+ * @param[in] override_ro Set to true if this schema should take precedence over factory RO configuration.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully written to NVS.
+ *     - MESHX_INVALID_STATE: Composition is empty.
+ *     - Error code from meshx_nvs_comp_schema_set on write failure.
+ */
+meshx_err_t meshx_builder_save_to_nvs(bool override_ro) {
+    meshXComposition& comp = meshXComposition::get_instance();
+    auto& elements = comp.get_elements();
+    meshx_nvs_comp_schema_t schema;
+    uint8_t count = 0;
+    size_t i = 1;
+
+    if (elements.empty()) return MESHX_INVALID_STATE;
+
+    memset(&schema, 0, sizeof(schema));
+    schema.magic = MESHX_NVS_COMP_MAGIC;
+    schema.version = MESHX_NVS_COMP_VERSION;
+    schema.flags = override_ro ? MESHX_COMP_FLAG_OVERRIDE_RO : 0;
+
+    // Element 0 is always Root Element; save all dynamic elements from index 1 upwards
+    for (i = 1; i < elements.size() && count < CONFIG_MAX_ELEMENT_COUNT; ++i) {
+        if (elements[i]) {
+            schema.element_types[count++] = (uint16_t)elements[i]->get_element_variant();
+        }
+    }
+    schema.element_count = count;
+
+    return meshx_nvs_comp_schema_set(&schema);
+}
+
+/**
  * @brief Get element composition data for all elements in the composition
  * This is used to sync the composition structure with the host during initialization.
  *
- * @param buf Buffer to write the composition data into
- * @param max_len Maximum length of the buffer
- * @return Number of bytes written to the buffer
+ * @param[out] buf     Buffer to write the composition data into.
+ * @param[in]  max_len Maximum length of the buffer.
+ * @return Number of bytes written to the buffer.
  */
 size_t meshx_get_element_composition_data(uint8_t *buf, size_t max_len) {
+    meshXComposition& comp = meshXComposition::get_instance();
+    auto& elements = comp.get_elements();
+    size_t offset = 1;
+    const char* name = NULL;
+    size_t name_len = 0;
+    mxcp_comp_entry_header_t entry;
+
     if (!buf || max_len < 2) return 0;
 
-    auto& comp = meshXComposition::get_instance();
-    auto& elements = comp.get_elements();
-
     buf[0] = (uint8_t)elements.size();
-    size_t offset = 1;
 
     for (const auto& el : elements) {
         if (!el) continue;
 
-        const char* name = el->get_element_name();
-        size_t name_len = strlen(name) + 1;
+        name = el->get_element_name();
+        name_len = strlen(name) + 1;
         if (offset + sizeof(mxcp_comp_entry_header_t) + name_len > max_len) {
             break;
         }
 
-        mxcp_comp_entry_header_t entry;
         entry.idx = el->get_element_idx();
         entry.variant = (uint16_t)el->get_element_variant();
         entry.type = (uint16_t)el->get_element_type();
@@ -313,31 +359,35 @@ size_t meshx_get_element_composition_data(uint8_t *buf, size_t max_len) {
  * @brief Get element state data for all elements in the composition
  * This is used to sync the current state of the composition with the host during initialization.
  *
- * @param buf Buffer to write the state data into
- * @param max_len Maximum length of the buffer
- * @return Number of bytes written to the buffer
+ * @param[out] buf     Buffer to write the state data into.
+ * @param[in]  max_len Maximum length of the buffer.
+ * @return Number of bytes written to the buffer.
  */
 size_t meshx_get_element_state_data(uint8_t *buf, size_t max_len) {
+    meshXComposition& comp = meshXComposition::get_instance();
+    auto& elements = comp.get_elements();
+    size_t offset = 1;
+    size_t ctx_size = 0;
+    size_t telemetry_size = 0;
+    size_t len = 0;
+    const uint8_t* state = NULL;
+    mxcp_state_entry_header_t entry;
+
     if (!buf || max_len < 2) return 0;
 
-    auto& comp = meshXComposition::get_instance();
-    auto& elements = comp.get_elements();
-
     buf[0] = (uint8_t)elements.size();
-    size_t offset = 1;
 
     for (const auto& el : elements) {
         if (!el) continue;
 
-        size_t ctx_size = el->get_element_ctx_size();
-        size_t telemetry_size = 0;
+        ctx_size = el->get_element_ctx_size();
+        telemetry_size = 0;
         
         // Compute total telemetry size for this element
         auto logical_models = el->get_logical_models_ptr();
         if (logical_models) {
             for (const auto& m : *logical_models) {
                 if (m) {
-                    size_t len;
                     m->get_cached_state(len);
                     telemetry_size += len;
                 }
@@ -348,7 +398,6 @@ size_t meshx_get_element_state_data(uint8_t *buf, size_t max_len) {
             break;
         }
 
-        mxcp_state_entry_header_t entry;
         entry.idx = el->get_element_idx();
         entry.variant = (uint16_t)el->get_element_variant();
         entry.ctx_size = (uint16_t)ctx_size;
@@ -366,8 +415,7 @@ size_t meshx_get_element_state_data(uint8_t *buf, size_t max_len) {
         if (telemetry_size > 0 && logical_models) {
             for (const auto& m : *logical_models) {
                 if (m) {
-                    size_t len;
-                    const uint8_t* state = m->get_cached_state(len);
+                    state = m->get_cached_state(len);
                     if (state && len > 0) {
                         memcpy(&buf[offset], state, len);
                         offset += len;

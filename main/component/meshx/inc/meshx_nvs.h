@@ -30,6 +30,27 @@ extern "C" {
 #define MESHX_NVS_AUTO_COMMIT       true
 #define MESHX_NVS_NO_AUTO_COMMIT    false
 
+#ifndef CONFIG_MAX_ELEMENT_COUNT
+#define CONFIG_MAX_ELEMENT_COUNT 16
+#endif
+
+#define MESHX_NVS_KEY_COMP_SCHEMA     "comp_schema"
+#define MESHX_NVS_COMP_MAGIC          0x4D584350  /* 'MXCP' */
+#define MESHX_NVS_COMP_VERSION        0x01
+#define MESHX_COMP_FLAG_OVERRIDE_RO   0x01
+
+#pragma pack(push, 1)
+typedef struct {
+    uint32_t magic;                                     /**< 0x4D584350 ('MXCP') */
+    uint8_t  version;                                   /**< Format version (0x01) */
+    uint8_t  element_count;                             /**< Total number of elements */
+    uint8_t  flags;                                     /**< Flags (e.g. MESHX_COMP_FLAG_OVERRIDE_RO) */
+    uint8_t  reserved;                                  /**< Alignment padding */
+    uint16_t element_types[CONFIG_MAX_ELEMENT_COUNT];   /**< Array of meshx_element_type_t */
+    uint16_t schema_crc;                                /**< CRC-16-CCITT over preceding fields */
+} meshx_nvs_comp_schema_t;
+#pragma pack(pop)
+
 /**
  * @struct meshx_nvs
  * @brief Structure to hold the MeshX NVS data.
@@ -171,12 +192,35 @@ meshx_err_t meshx_nvs_element_ctx_set(uint16_t element_id, meshx_element_type_t 
  * @brief Remove the context of a specific element from NVS.
  *
  * @param[in] element_id   The ID of the element whose context is to be removed.
- * @param[in] element_type The type of the element.
+ * @param[in] element_type The type of the element (or MESHX_ELEMENT_TYPE_ALL).
  *
  * @return
  *     - MESHX_SUCCESS: Successfully removed the context.
  */
 meshx_err_t meshx_nvs_element_ctx_remove(uint16_t element_id, meshx_element_type_t element_type);
+
+/**
+ * @brief Store composition schema into NVS.
+ *
+ * @param[in] schema Pointer to composition schema structure.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_nvs_comp_schema_set(const meshx_nvs_comp_schema_t *schema);
+
+/**
+ * @brief Retrieve composition schema from NVS with CRC validation.
+ *
+ * @param[out] schema Pointer to buffer to receive schema.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_nvs_comp_schema_get(meshx_nvs_comp_schema_t *schema);
+
+/**
+ * @brief Erase composition schema from NVS.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_nvs_comp_schema_erase(void);
 
 #ifdef __cplusplus
 } /* extern "C" */
