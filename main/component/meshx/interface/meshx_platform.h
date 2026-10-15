@@ -110,6 +110,21 @@ bool meshx_platform_get_mxsp_use_console(void);
  */
 void meshx_platform_set_mxsp_use_console(bool enable);
 
+/**
+ * @brief Initializes the Bluetooth controller and subsystem on the platform.
+ *
+ * @return meshx_err_t MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_platform_bt_init(void);
+
+/**
+ * @brief Retrieves the 6-byte Bluetooth MAC address from the platform.
+ *
+ * @param[out] mac Pointer to 6-byte buffer to store the retrieved MAC address.
+ * @return meshx_err_t MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_platform_get_mac(uint8_t *mac);
+
 #ifdef __cplusplus
 }
 #endif
