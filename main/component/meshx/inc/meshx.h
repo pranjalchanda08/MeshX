@@ -62,4 +62,14 @@ typedef struct meshx_config
  */
 meshx_err_t meshx_init(meshx_config_t const *config);
 
+/**
+ * @brief Derives the MeshX Device UUID: CID (2B) | MAC (6B) | PID (2B) | Footer (6B).
+ *
+ * @param[out] uuid Destination 16-byte buffer for the synthesized Device UUID.
+ * @param[in]  cid  Company ID.
+ * @param[in]  pid  Product ID.
+ * @return meshx_err_t MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_derive_device_uuid(meshx_uuid_addr_t uuid, uint16_t cid, uint16_t pid);
+
 #endif /* __MESHX_H__ */

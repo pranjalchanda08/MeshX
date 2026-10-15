@@ -60,6 +60,11 @@ void meshx_builder_add_element(meshx_element_type_t type, uint16_t count);
 void meshx_builder_begin(void);
 
 /**
+ * @brief Clears all elements from the active composition builder session.
+ */
+void meshx_builder_clear(void);
+
+/**
  * @brief Commits the pending dynamic composition build session.
  */
 void meshx_builder_commit(void);

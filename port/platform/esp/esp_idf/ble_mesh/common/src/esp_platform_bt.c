@@ -11,7 +11,6 @@
  *
  */
 
-#include <stdio.h>
 #include <string.h>
 #include <sdkconfig.h>
 
@@ -41,11 +40,7 @@ void ble_mesh_get_dev_uuid(uint8_t *dev_uuid)
         return;
     }
 
-    /* Copy device address to the device uuid with offset equals to 2 here.
-     * The first two bytes is used for matching device uuid by Provisioner.
-     * And using device address here is to avoid using the same device uuid
-     * by different unprovisioned devices.
-     */
+    /* Copy device address to the device uuid with offset equals to 2 here. */
     memcpy(dev_uuid + 2, esp_bt_dev_get_address(), BD_ADDR_LEN);
 }
 
@@ -114,11 +109,7 @@ void ble_mesh_get_dev_uuid(uint8_t *dev_uuid)
         return;
     }
 
-    /* Copy device address to the device uuid with offset equals to 2 here.
-     * The first two bytes is used for matching device uuid by Provisioner.
-     * And using device address here is to avoid using the same device uuid
-     * by different unprovisioned devices.
-     */
+    /* Copy device address to the device uuid with offset equals to 2 here. */
     memcpy(dev_uuid + 2, addr_val, BD_ADDR_LEN);
 }
 
