@@ -12,9 +12,7 @@
 #ifndef __MESHX_UVP_DISPATCHER_HPP__
 #define __MESHX_UVP_DISPATCHER_HPP__
 
-#include <meshx_common.h>
-#include <meshx_control_task.h>
-#include <meshx_uvp.h>
+#include <meshx_c_header.h>
 
 #ifdef __cplusplus
 extern "C" {

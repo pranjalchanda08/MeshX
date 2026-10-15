@@ -25,7 +25,7 @@ uint16_t meshXUVPModel::get_model_id(void) const {
  * @return Company ID
  */
 uint16_t meshXUVPModel::get_company_id(void) const {
-    return MESHX_COMPANY_ID_UVP;
+    return meshx_uvp_get_company_id();
 }
 
 #if CONFIG_TXCM_ENABLE
@@ -126,8 +126,8 @@ meshx_err_t meshXUVPModel::send_with_func_id(uint16_t dst_addr, uint16_t type_id
 meshx_err_t meshXUVPModel::plat_model_create(MESHX_MODEL* p_baked_model) {
     if (!p_baked_model) return MESHX_INVALID_ARG;
 
-    /* Set vendor model ID (4 bytes: CID + ID) */
-    uint32_t vnd_id = MESHX_VND_MODEL_ID_UVP;
+    /* Set vendor model ID (4 bytes: Model ID + CID from active profile) */
+    uint32_t vnd_id = meshx_uvp_get_vnd_model_id();
     memcpy((void*)&p_baked_model->model_id, &vnd_id, sizeof(vnd_id));
 
     /* Create the publication context for the vendor model */

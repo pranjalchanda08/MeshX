@@ -141,7 +141,7 @@ file(GLOB_RECURSE MESHX_INC_DIRS
 set(MESHX_FINAL_INC "" CACHE STRING "MeshX include directories")
 
 foreach(dir ${MESHX_INC_DIRS})
-    if(IS_DIRECTORY ${dir} AND dir MATCHES "(/inc$|/include$)")
+    if(IS_DIRECTORY ${dir} AND (dir MATCHES "(/inc(/.*)?$|/include(/.*)?$)"))
         # Exclude legacy elements_c from includes
         if(NOT dir MATCHES "main/component/meshx/ble_mesh/elements_c/")
             list(APPEND MESHX_FINAL_INC "${dir}")

@@ -34,7 +34,7 @@ Two explorable, validated standalone interactive architecture models have been c
 
 > [!TIP]
 > - **Protocol & Subsystem Stack:** Open [protocol-architecture.html](file:///d:/MeshX/.specs/autonomous-element-pairing/protocol-architecture.html) to inspect the 4-tier protocol hierarchy, UVP message formats, and data paths.
-> - **Topology Orchestration & Anchor Node Logic:** Open [topology-orchestration.html](file:///d:/MeshX/.specs/autonomous-element-pairing/topology-orchestration.html) to inspect the Anchor Node Classifier, Dynamic Promotion engine (1:1 $\to$ Group), 128-byte RAM lease bitmap, and DAD arbitration fallbacks.
+> - **Topology Orchestration & Anchor Node Logic:** Open [topology-orchestration.html](file:///d:/MeshX/.specs/autonomous-element-pairing/topology-orchestration.html) to inspect the Anchor Node Classifier, Dynamic Promotion engine (1:1 $\to$ Group), deterministic hash allocation, and group reference counting.
 
 ```mermaid
 graph TD

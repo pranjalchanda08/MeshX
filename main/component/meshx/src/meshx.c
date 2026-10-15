@@ -355,6 +355,9 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     err = meshx_ble_mesh_init(&g_config);
     MESHX_ERR_PRINT_RET("Bluetooth mesh init failed", err);
 
+    /* Audit and reconcile persisted autonomous links against active elements */
+    meshx_link_reconcile();
+
     /* Initialize Hosted Serial Protocol */
     err = meshx_serial_init();
     MESHX_ERR_PRINT_RET("Serial init failed", err);
@@ -382,4 +385,23 @@ size_t meshx_get_element_count(void)
 {
     return g_dev.element_cnt;
 }
+
+/**
+ * @brief Get the active Company ID (CID).
+ * @return Active 16-bit company identifier.
+ */
+uint16_t meshx_get_cid(void)
+{
+    return g_cid;
+}
+
+/**
+ * @brief Get the active Product ID (PID).
+ * @return Active 16-bit product identifier.
+ */
+uint16_t meshx_get_pid(void)
+{
+    return g_pid;
+}
+
 

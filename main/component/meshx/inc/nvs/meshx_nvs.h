@@ -14,7 +14,6 @@
 
 #include <stdint.h>
 #include <meshx_common.h>
-#include "meshx_control_task.h"
 #include "meshx_os_timer.h"
 
 #ifdef __cplusplus
@@ -49,6 +48,36 @@ typedef struct {
     uint16_t element_types[CONFIG_MAX_ELEMENT_COUNT];   /**< Array of meshx_element_type_t */
     uint16_t schema_crc;                                /**< CRC-16-CCITT over preceding fields */
 } meshx_nvs_comp_schema_t;
+
+#define MESHX_NVS_KEY_LINK_TABLE      "link_table"
+#define MESHX_NVS_LINK_MAGIC          0x4C4E4B53  /* 'LNKS' */
+#define MESHX_NVS_LINK_VERSION        0x01
+#define MESHX_MAX_PERSISTED_LINKS     16
+
+/**
+ * @brief Individual link entry in NVS
+ */
+typedef struct {
+    uint8_t  local_element_idx;
+    uint16_t bound_variant;       /**< Element variant type at time of pairing */
+    uint16_t target_unicast_addr; /**< Unicast address of peer (if 1:1 link) */
+    uint16_t target_group_addr;   /**< Group address (0x0000 if 1:1 unicast) */
+    uint16_t func_id;             /**< Function ID bound to this link */
+    uint8_t  active;              /**< 1 = active, 0 = free slot */
+} meshx_nvs_link_entry_t;
+
+/**
+ * @brief Persistent link table header & records
+ */
+typedef struct {
+    uint32_t              magic;       /**< 0x4C4E4B53 ('LNKS') */
+    uint8_t               version;     /**< Format version (0x01) */
+    uint16_t              link_epoch;  /**< Monotonic counter incremented on every pair/unpair */
+    uint8_t               link_count;  /**< Number of active links */
+    uint8_t               reserved;
+    meshx_nvs_link_entry_t links[MESHX_MAX_PERSISTED_LINKS];
+    uint16_t              table_crc;   /**< CRC-16-CCITT across preceding fields */
+} meshx_nvs_link_table_t;
 #pragma pack(pop)
 
 /**
@@ -221,6 +250,43 @@ meshx_err_t meshx_nvs_comp_schema_get(meshx_nvs_comp_schema_t *schema);
  * @return MESHX_SUCCESS on success, or error code.
  */
 meshx_err_t meshx_nvs_comp_schema_erase(void);
+
+/**
+ * @brief Store link table into NVS with CRC validation.
+ *
+ * @param[in] table Pointer to link table structure.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_nvs_link_table_set(const meshx_nvs_link_table_t *table);
+
+/**
+ * @brief Retrieve link table from NVS with CRC validation.
+ *
+ * @param[out] table Pointer to buffer to receive link table.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_nvs_link_table_get(meshx_nvs_link_table_t *table);
+
+/**
+ * @brief Erase link table from NVS.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_nvs_link_table_erase(void);
+
+/**
+ * @brief Get the current link epoch counter from NVS.
+ *
+ * @return Current link epoch (defaults to 0 if not yet set or unlinked).
+ */
+uint16_t meshx_nvs_get_link_epoch(void);
+
+/**
+ * @brief Boot-time autonomous self-audit reconciling persisted links against baked elements.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_link_reconcile(void);
 
 #ifdef __cplusplus
 } /* extern "C" */
