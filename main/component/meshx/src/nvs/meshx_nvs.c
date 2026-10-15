@@ -57,6 +57,18 @@ static meshx_err_t meshx_nvs_unit_test_cb_handler(int cmd_id, int argc, char **a
 
 static meshx_nvs_t meshx_nvs_inst;
 
+/**
+ * @brief MeshX NVS control message handler.
+ * @note This is responsible for handling control task messages related to NVS operations
+ *
+ * @param[in] pdev       Device structure pointer
+ * @param[in] evt        Control task message event
+ * @param[in] params     Message parameters
+ * @param[in] params_len Message parameters length
+ *
+ * @return
+ *  - MESHX_SUCCESS: Success.
+ */
 static meshx_err_t meshx_nvs_control_msg_handler(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params, uint16_t params_len)
 {
     if (evt & CONTROL_TASK_MSG_EVT_SYSTEM_NVS_COMMIT) {
@@ -640,6 +652,105 @@ meshx_err_t meshx_nvs_comp_schema_erase(void)
 {
     MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "Erasing NVS composition schema");
     return meshx_nvs_remove(MESHX_NVS_KEY_COMP_SCHEMA);
+}
+
+/**
+ * @brief Store link table into NVS with CRC validation.
+ *
+ * @param[in] table Pointer to link table structure.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_nvs_link_table_set(const meshx_nvs_link_table_t *table)
+{
+    meshx_nvs_link_table_t to_write;
+    size_t crc_len = 0;
+
+    if (!table || table->link_count > MESHX_MAX_PERSISTED_LINKS) {
+        return MESHX_INVALID_ARG;
+    }
+
+    to_write = *table;
+    to_write.magic = MESHX_NVS_LINK_MAGIC;
+    to_write.version = MESHX_NVS_LINK_VERSION;
+    to_write.reserved = 0;
+
+    crc_len = offsetof(meshx_nvs_link_table_t, table_crc);
+    to_write.table_crc = meshx_nvs_calc_crc16((const uint8_t *)&to_write, crc_len);
+
+    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "Saving NVS link table (%d active links, epoch: %u, CRC: 0x%04X)",
+               to_write.link_count, to_write.link_epoch, to_write.table_crc);
+
+    return meshx_nvs_set(MESHX_NVS_KEY_LINK_TABLE, &to_write, sizeof(to_write), MESHX_NVS_AUTO_COMMIT);
+}
+
+/**
+ * @brief Retrieve link table from NVS with CRC validation.
+ *
+ * @param[out] table Pointer to buffer to receive link table.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_nvs_link_table_get(meshx_nvs_link_table_t *table)
+{
+    meshx_nvs_link_table_t read_buf;
+    meshx_err_t err = MESHX_SUCCESS;
+    size_t crc_len = 0;
+    uint16_t expected_crc = 0;
+
+    if (!table) {
+        return MESHX_INVALID_ARG;
+    }
+
+    err = meshx_nvs_get(MESHX_NVS_KEY_LINK_TABLE, &read_buf, sizeof(read_buf));
+    if (err != MESHX_SUCCESS) {
+        return err;
+    }
+
+    if (read_buf.magic != MESHX_NVS_LINK_MAGIC || read_buf.version != MESHX_NVS_LINK_VERSION) {
+        MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_NVS, "Invalid NVS link table magic (0x%08X) or version (%d)",
+                   (unsigned int)read_buf.magic, (int)read_buf.version);
+        return MESHX_INVALID_STATE;
+    }
+
+    crc_len = offsetof(meshx_nvs_link_table_t, table_crc);
+    expected_crc = meshx_nvs_calc_crc16((const uint8_t *)&read_buf, crc_len);
+    if (expected_crc != read_buf.table_crc) {
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "NVS link table CRC mismatch (calc: 0x%04X, stored: 0x%04X)",
+                   expected_crc, read_buf.table_crc);
+        return MESHX_INVALID_STATE;
+    }
+
+    if (read_buf.link_count > MESHX_MAX_PERSISTED_LINKS) {
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "NVS link table link count exceeded: %d", read_buf.link_count);
+        return MESHX_INVALID_STATE;
+    }
+
+    *table = read_buf;
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Erase link table from NVS.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_nvs_link_table_erase(void)
+{
+    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "Erasing NVS link table");
+    return meshx_nvs_remove(MESHX_NVS_KEY_LINK_TABLE);
+}
+
+/**
+ * @brief Get the current link epoch counter from NVS.
+ *
+ * @return Current link epoch (defaults to 0 if not yet set or unlinked).
+ */
+uint16_t meshx_nvs_get_link_epoch(void)
+{
+    meshx_nvs_link_table_t table;
+    if (meshx_nvs_link_table_get(&table) == MESHX_SUCCESS) {
+        return table.link_epoch;
+    }
+    return 0;
 }
 
 #if CONFIG_ENABLE_UNIT_TEST

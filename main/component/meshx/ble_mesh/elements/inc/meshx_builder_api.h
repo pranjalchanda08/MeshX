@@ -92,6 +92,36 @@ size_t meshx_get_element_composition_data(uint8_t *buf, size_t max_len);
  */
 size_t meshx_get_element_state_data(uint8_t *buf, size_t max_len);
 
+/**
+ * @brief Get the number of elements in the active composition.
+ * @return Total number of elements.
+ */
+uint8_t meshx_comp_get_element_count(void);
+
+/**
+ * @brief Get the variant of a specific element in the active composition.
+ * @param element_idx Index of the element.
+ * @return Element variant (e.g. MESHX_ELEMENT_TYPE_RELAY_SERVER), or 0 if invalid.
+ */
+uint16_t meshx_comp_get_element_variant(uint8_t element_idx);
+
+/**
+ * @brief Get the list of functional IDs supported by an element.
+ * @param element_idx Index of the element.
+ * @param out_func_ids Destination buffer to receive function IDs.
+ * @param max_count Maximum number of function IDs to store.
+ * @return Number of function IDs written.
+ */
+uint8_t meshx_comp_get_element_func_ids(uint8_t element_idx, uint16_t *out_func_ids, uint8_t max_count);
+
+/**
+ * @brief Check if a specific element contains a logical model with the given func_id.
+ * @param element_idx Index of the element.
+ * @param func_id Functional ID to query.
+ * @return true if supported, false otherwise.
+ */
+bool meshx_comp_element_has_func_id(uint8_t element_idx, uint16_t func_id);
+
 #ifdef __cplusplus
 }
 #endif

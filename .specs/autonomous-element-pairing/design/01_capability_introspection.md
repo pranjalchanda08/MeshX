@@ -114,47 +114,79 @@ graph TD
 ### 3.1 Introspection Routine Implementation
 
 ```cpp
-esp_err_t meshx_manifest_build_local(meshx_capability_manifest_t *out_manifest)
+meshx_err_t meshx_manifest_build_local(meshx_capability_manifest_t *out_manifest)
 {
-    if (!out_manifest) return ESP_ERR_INVALID_ARG;
+    if (!out_manifest) return MESHX_INVALID_ARG;
     memset(out_manifest, 0, sizeof(*out_manifest));
 
-    out_manifest->unicast_addr = esp_ble_mesh_get_primary_element_address();
-    out_manifest->company_id   = MESHX_COMPANY_ID;
-    out_manifest->product_id   = MESHX_PRODUCT_ID;
+    out_manifest->unicast_addr = meshx_get_node_addr();
+    out_manifest->company_id   = meshx_get_cid();
+    out_manifest->product_id   = meshx_get_pid();
     out_manifest->link_epoch   = meshx_nvs_get_link_epoch();
 
-    meshXComposition* comp = meshXElementRegistry::get_instance().get_composition();
-    if (!comp) return ESP_ERR_INVALID_STATE;
+    uint8_t total_elements = meshx_comp_get_element_count();
+    if (total_elements > MESHX_MAX_MANIFEST_ELEMENTS) {
+        total_elements = MESHX_MAX_MANIFEST_ELEMENTS;
+    }
+    out_manifest->element_count = total_elements;
 
-    const auto& elements = comp->get_elements();
-    out_manifest->element_count = (uint8_t)std::min(elements.size(), (size_t)MESHX_MAX_MANIFEST_ELEMENTS);
-
-    for (uint8_t i = 0; i < out_manifest->element_count; ++i) {
-        const auto& el = elements[i];
+    for (uint8_t i = 0; i < total_elements; ++i) {
         meshx_element_descriptor_t* desc = &out_manifest->elements[i];
 
         desc->element_idx = i;
-        desc->variant     = el->get_element_variant();
+        desc->variant     = meshx_comp_get_element_variant(i);
 
-        // Resolve role and trait from variant
+        // Resolve role and trait from variant using static LUT (see §3.2 and TRM Sheet 03)
         meshx_manifest_resolve_role_trait(desc->variant, &desc->role, &desc->trait);
 
-        // Populate supported func_ids from active logical models
-        const auto& models = el->get_logical_models();
-        desc->func_count = 0;
-        for (const auto& m : models) {
-            if (desc->func_count < MESHX_MAX_FUNC_IDS_PER_ELEM) {
-                desc->func_ids[desc->func_count++] = m->get_func_id();
-            }
-        }
+        // Populate supported func_ids from active logical models via C bridge
+        desc->func_count = meshx_comp_get_element_func_ids(i, desc->func_ids, MESHX_MAX_FUNC_IDS_PER_ELEM);
 
         // Copy human-readable element name
         snprintf(desc->label, sizeof(desc->label), "%s %u", 
                  (desc->role == MESHX_ROLE_PRODUCER) ? "Switch" : "Actuator", i + 1);
     }
 
-    return ESP_OK;
+    return MESHX_SUCCESS;
+}
+```
+
+### 3.2 Role and Trait Resolution (`meshx_manifest_resolve_role_trait`)
+
+To map baked element variants (`meshx_element_type_t`) to their pairing role and semantic trait, the manifest engine employs a static Look-Up Table (LUT) aligned with the Compatibility Matrix ([TRM Sheet 03](./03_semantic_compatibility_engine.md)):
+
+```c
+typedef struct {
+    uint16_t variant;
+    uint8_t  role;
+    uint16_t trait;
+} meshx_variant_lut_entry_t;
+
+static const meshx_variant_lut_entry_t s_variant_lut[] = {
+    { MESHX_ELEMENT_TYPE_RELAY_SERVER,      MESHX_ROLE_CONSUMER, MESHX_TRAIT_RELAY_POWER },
+    { MESHX_ELEMENT_TYPE_RELAY_CLIENT,      MESHX_ROLE_PRODUCER, MESHX_TRAIT_RELAY_POWER },
+    { MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER, MESHX_ROLE_CONSUMER, MESHX_TRAIT_LIGHT_CWWW },
+    { MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT, MESHX_ROLE_PRODUCER, MESHX_TRAIT_LIGHT_CWWW },
+    { MESHX_ELEMENT_TYPE_LIGHT_HSL_SERVER,  MESHX_ROLE_CONSUMER, MESHX_TRAIT_LIGHT_HSL },
+    { MESHX_ELEMENT_TYPE_LIGHT_HSL_CLIENT,  MESHX_ROLE_PRODUCER, MESHX_TRAIT_LIGHT_HSL },
+    { MESHX_ELEMENT_TYPE_SENSOR_SERVER,     MESHX_ROLE_CONSUMER, MESHX_TRAIT_SENSOR_DATA },
+    { MESHX_ELEMENT_TYPE_SENSOR_CLIENT,     MESHX_ROLE_PRODUCER, MESHX_TRAIT_SENSOR_DATA },
+};
+
+void meshx_manifest_resolve_role_trait(uint16_t variant, uint8_t *out_role, uint16_t *out_trait)
+{
+    if (!out_role || !out_trait) return;
+
+    *out_role  = MESHX_ROLE_UNKNOWN;
+    *out_trait = MESHX_TRAIT_UNKNOWN;
+
+    for (size_t i = 0; i < (sizeof(s_variant_lut) / sizeof(s_variant_lut[0])); ++i) {
+        if (s_variant_lut[i].variant == variant) {
+            *out_role  = s_variant_lut[i].role;
+            *out_trait = s_variant_lut[i].trait;
+            return;
+        }
+    }
 }
 ```
 
@@ -169,11 +201,14 @@ Before a device is provisioned into a Bluetooth Mesh network, smartphones and fi
 When advertising unprovisioned device beacons (`0x2B` Mesh Provisioning Service), MeshX injects a custom 4-byte Capability Hint within the 16-byte Device UUID:
 
 ```
-+---------------+-------------------+--------------------+-------------------+
-| Bytes 0..7    | Bytes 8..9        | Bytes 10..11       | Bytes 12..15      |
-| MAC / Entropy | Company ID (0x02E5)| Product Trait Mask | Serial / Version  |
-+---------------+-------------------+--------------------+-------------------+
++---------------+-----------------------------+--------------------+-------------------+
+| Bytes 0..7    | Bytes 8..9                  | Bytes 10..11       | Bytes 12..15      |
+| MAC / Entropy | Company ID (OEM CID e.g. 0x02E5)| Product Trait Mask | Serial / Version  |
++---------------+-----------------------------+--------------------+-------------------+
 ```
+
+> [!NOTE]
+> The Company ID field (Bytes 8..9) is OEM-configurable per enterprise profile (Bluetooth SIG-assigned 16-bit CID or internal company identifier). It is populated at provisioning/manufacturing time per company need and is not hardcoded to any single vendor.
 
 #### Trait Mask Bitfields:
 - `Bit 0`: Relay Actuator (Consumer)

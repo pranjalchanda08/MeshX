@@ -166,27 +166,21 @@ sequenceDiagram
 
 ## 6. Group Reference Counting & Dynamic Reclamation
 
-To prevent orphaned group subscriptions from consuming slot capacity on actuator models, nodes maintain an internal reference count for each active group binding:
+To prevent orphaned group subscriptions from consuming slot capacity on actuator models, nodes derive group binding reference counts directly from the persistent NVS Link Table (`meshx_nvs_link_table_t`):
 
 ```c
-typedef struct {
-    uint16_t group_addr;       /* 0xC000 - 0xC3FF */
-    uint16_t publisher_count;  /* Number of switch elements publishing to this group */
-    uint16_t subscriber_count; /* Number of actuator elements subscribed to this group */
-    uint16_t owner_unicast;    /* Primary address of allocating anchor node */
-} meshx_group_lease_entry_t;
+uint16_t meshx_group_get_ref_count(uint16_t group_addr);
 ```
 
 ### Reclamation Flow:
-1. **Binding Creation:** When a link is added, `publisher_count++` or `subscriber_count++`.
+1. **Binding Creation:** When a link is added and persisted in NVS, the group address reference is recorded in `table.links[slot].group_addr`.
 2. **Granular Unpairing:** When an element unbinds:
-   - Publisher unpair: `publisher_count--`.
-   - Subscriber unpair: `subscriber_count--` and node executes `Config Model Sub Del`.
+   - The link entry is cleared in NVS (`active = false`).
+   - The node checks `meshx_group_get_ref_count(group_addr)`.
 3. **Zero-Reference Cleanup:**
-   - When $\text{publisher\_count} == 0$ AND $\text{subscriber\_count} == 0$:
-     - The subscription is completely deleted from the BLE Mesh stack.
-     - The link entry is erased from NVS.
-     - `link_epoch` is incremented.
+   - When $\text{ref\_count} == 0$:
+     - If local element is subscribed, the subscription is deleted from the BLE Mesh stack via `Config Model Sub Del`.
+     - `link_epoch` is incremented and saved to NVS.
 
 ---
 

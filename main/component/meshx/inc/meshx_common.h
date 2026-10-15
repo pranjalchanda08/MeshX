@@ -45,16 +45,8 @@ typedef enum {
  *      FEATURE CONFIGURATION
  * *******************************************************************/
 
-/**
- * @brief Enable Element Table registration using Linker script.
- * @note This feature is disabled by default.
- */
-#ifndef CONFIG_SECTION_ENABLE_ELEMENT_TABLE
-#define CONFIG_SECTION_ENABLE_ELEMENT_TABLE 0
-#endif /* CONFIG_SECTION_ENABLE_ELEMENT_TABLE */
-
-#define MAX_ELE_CNT CONFIG_MAX_ELEMENT_COUNT
 #define MESHX_NVS_STORE "meshx_store"
+#define MESHX_PACKED    __attribute__((packed))
 
 /**
  * @brief Structure to store mesh application data.
@@ -77,72 +69,6 @@ typedef struct dev_struct
     size_t element_cnt;                        /**< Total number of elements */
     meshx_app_store_t meshx_store;             /**< Mesh application store */
 } dev_struct_t;
-
-/**
- * @struct meshx_model
- * @brief Structure as Interface for meshx models.
- */
-typedef struct meshx_model_interface
-{
-    /* meshx_sig to be deplicated post C++ migration */
-    meshx_ptr_t meshx_sig;   /**< SIG model pointer */
-    meshx_ptr_t meshx_pub;   /**< publication structures */
-    meshx_ptr_t meshx_gen;   /**< generic structures */
-}meshx_model_interface_t;
-
-/**
- * @brief MeshX Compostion init Function Pointer
- * @typedef element_comp_fn_t
- *
- * @param[in] pdev          Pointer to the device structure.
- * @param[in] element_cnt   Number of elements.
- *
- * @return meshx_err_t
- */
-typedef meshx_err_t (*element_comp_fn_t)(dev_struct_t *pdev, uint16_t element_cnt);
-
-/**
- * @struct element_comp_table
- * @brief Structure to store element composition functions.
- */
-typedef struct element_comp_table
-{
-    uint8_t idx;                       /**< Index of the element type */
-    element_comp_fn_t element_comp_fn; /**< Element composition function */
-} element_comp_table_t;
-
-#if CONFIG_SECTION_ENABLE_ELEMENT_TABLE
-
-/**
- * @brief Register an element composition function.
- *
- * This macro registers an element composition function to the element table.
- *
- * @param _name Name of the element composition function.
- * @param _type Type of the element.
- * @param _fn Element composition function.
- */
-#define REG_MESHX_ELEMENT_FN(_name, _type, _fn)                      \
-    __section(".element_table") const element_comp_table_t _name = { \
-        .idx = _type,                                                \
-        .element_comp_fn = &_fn,                                     \
-    }
-
-#else
-
-/**
- * @brief Register an element composition function.
- * @note Currently feature is disabled using CONFIG_SECTION_ENABLE_ELEMENT_TABLE
- *
- * This macro registers an element composition function to the element table.
- *
- * @param _name Name of the element composition function.
- * @param _type Type of the element.
- * @param _fn Element composition function.
- */
-#define REG_MESHX_ELEMENT_FN(_name, _type, _fn)
-
-#endif /* CONFIG_SECTION_ENABLE_ELEMENT_TABLE */
 
 #ifdef __cplusplus
 }

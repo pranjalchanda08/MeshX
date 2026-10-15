@@ -3,6 +3,9 @@
  *
  * @file meshx_ro_cfg.h
  * @brief Persistent Serialized Configuration Loader (Read-Only)
+ *
+ * @author Pranjal Chanda
+ * @date 2024-2025
  */
 
 #ifndef __MESHX_RO_CFG_H__
