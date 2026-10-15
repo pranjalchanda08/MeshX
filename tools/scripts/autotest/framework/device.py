@@ -132,6 +132,35 @@ class HSLInterface:
         return False
 
 
+class CompositionInterface:
+    def __init__(self, node):
+        self.node = node
+        self.logger = logging.getLogger(f"{node.name}.Composition")
+
+    def set_composition(self, element_types, reboot_delay_ms=500):
+        count = len(element_types)
+        fmt = f"<BH{count}H"
+        payload = struct.pack(fmt, count, reboot_delay_ms, *element_types)
+        return self.node.send_mxcp_frame(0x06, payload)
+
+    def wait_for_set_composition_rsp(self, timeout=3.0):
+        frame = self.node.wait_for_mxcp_frame(0x8B, timeout=timeout)
+        if frame and len(frame) >= 4:
+            status, count, delay = struct.unpack("<BBH", frame[:4])
+            return {"status": status, "count": count, "reboot_delay_ms": delay}
+        return None
+
+    def get_composition(self):
+        return self.node.send_mxcp_frame(0x03, b"")
+
+    def wait_for_composition_rsp(self, timeout=3.0):
+        frame = self.node.wait_for_mxcp_frame(0x86, timeout=timeout)
+        return frame
+
+    def reset_node(self):
+        return self.node.send_mxcp_frame(0x02, b"")
+
+
 class MeshXDevice:
     """
     High-level abstraction of a MeshX Device.
@@ -144,9 +173,11 @@ class MeshXDevice:
         self.cwww = CWWWInterface(node)
         self.sensor = SensorInterface(node)
         self.hsl = HSLInterface(node)
+        self.composition = CompositionInterface(node)
 
     def reboot(self):
         self.node.send_command("reboot", wait_for_prompt=False)
         time.sleep(2)
         return self.node.connect()
+
 
