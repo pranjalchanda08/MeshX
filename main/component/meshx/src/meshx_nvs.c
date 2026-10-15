@@ -15,6 +15,7 @@
 #include "interface/utils/meshx_nvs_interface.h"
 #include "meshx_control_task.h"
 #include "interface/utils/meshx_tiny_printf.h"
+#include <stddef.h>
 
 #define MESHX_NVS_INIT_MAGIC        0x5489
 
@@ -179,12 +180,12 @@ meshx_err_t meshx_nvs_init(void)
  */
 meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_ms)
 {
+    meshx_err_t err = MESHX_SUCCESS;
+
     if (meshx_nvs_inst.init == MESHX_NVS_INIT_MAGIC)
     {
         return MESHX_INVALID_STATE;
     }
-
-    meshx_err_t err;
 
     err = meshx_nvs_plat_open(&(meshx_nvs_inst.meshx_nvs_handle));
     if (err)
@@ -387,6 +388,12 @@ meshx_err_t meshx_nvs_get(char const *key, void *blob, uint16_t blob_size)
  */
 meshx_err_t meshx_nvs_set(char const* key, void const* blob, uint16_t blob_size, bool arm_timer)
 {
+    meshx_nvs_write_list_t *cur = NULL;
+    meshx_nvs_write_list_t *node = NULL;
+#if MESHX_NVS_TIMER_PERIOD
+    meshx_err_t timer_err = MESHX_SUCCESS;
+#endif
+
     if (meshx_nvs_inst.init != MESHX_NVS_INIT_MAGIC)
         return MESHX_INVALID_STATE;
 
@@ -394,7 +401,7 @@ meshx_err_t meshx_nvs_set(char const* key, void const* blob, uint16_t blob_size,
         return MESHX_INVALID_ARG;
 
     // Check if key already exists in list → overwrite instead of duplicate
-    meshx_nvs_write_list_t *cur = meshx_nvs_write_list_head;
+    cur = meshx_nvs_write_list_head;
     while (cur) {
         if (strncmp(cur->key, key, MESHX_KEY_NAME_MAX_SIZE-1) == 0)
         {
@@ -407,7 +414,7 @@ meshx_err_t meshx_nvs_set(char const* key, void const* blob, uint16_t blob_size,
     }
 
     // Allocate new node
-    meshx_nvs_write_list_t *node = malloc(sizeof(meshx_nvs_write_list_t));
+    node = malloc(sizeof(meshx_nvs_write_list_t));
     if (!node) return MESHX_NO_MEM;
 
     strncpy(node->key, key, MESHX_KEY_NAME_MAX_SIZE);
@@ -420,10 +427,10 @@ restart_timer:
     if (arm_timer)
     {
 #if MESHX_NVS_TIMER_PERIOD
-        meshx_err_t err = meshx_os_timer_restart(meshx_nvs_inst.meshx_nvs_commit_tmr);
-        if (err)
+        timer_err = meshx_os_timer_restart(meshx_nvs_inst.meshx_nvs_commit_tmr);
+        if (timer_err)
         {
-            MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "meshx_os_timer_restart failed: (%d)", err);
+            MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "meshx_os_timer_restart failed: (%d)", timer_err);
         }
 #else
         meshx_nvs_commit();
@@ -482,13 +489,16 @@ meshx_err_t meshx_nvs_element_ctx_set(uint16_t element_id, meshx_element_type_t 
 meshx_err_t meshx_nvs_element_ctx_remove(uint16_t element_id, meshx_element_type_t element_type)
 {
     char key[MESHX_KEY_NAME_MAX_SIZE];
+    meshx_err_t err = MESHX_SUCCESS;
+    meshx_err_t temp_err = MESHX_SUCCESS;
+    uint8_t t = 0;
+
     if (element_type == MESHX_ELEMENT_TYPE_ALL)
     {
-        meshx_err_t err = MESHX_SUCCESS;
-        for (uint8_t t = 0; t < (uint8_t)MESHX_ELEMENT_TYPE_MAX; t++)
+        for (t = 0; t < (uint8_t)MESHX_ELEMENT_TYPE_MAX; t++)
         {
             snprintf(key, MESHX_KEY_NAME_MAX_SIZE, MESHX_NVS_ELEMENT_CTX, t, element_id);
-            meshx_err_t temp_err = meshx_nvs_remove(key);
+            temp_err = meshx_nvs_remove(key);
             if (temp_err != MESHX_SUCCESS && temp_err != MESHX_NOT_FOUND)
             {
                 err = temp_err;
@@ -499,6 +509,137 @@ meshx_err_t meshx_nvs_element_ctx_remove(uint16_t element_id, meshx_element_type
     snprintf(key, MESHX_KEY_NAME_MAX_SIZE, MESHX_NVS_ELEMENT_CTX, (uint8_t)element_type, element_id);
     meshx_tiny_snprintf(key, MESHX_KEY_NAME_MAX_SIZE, MESHX_NVS_ELEMENT_CTX, (uint8_t)element_type, element_id);
     return meshx_nvs_remove(key);
+}
+
+/**
+ * @brief Calculate CRC-16-CCITT checksum over a buffer.
+ *
+ * @param[in] data Pointer to data buffer.
+ * @param[in] len  Length of data buffer in bytes.
+ *
+ * @return uint16_t Calculated 16-bit CRC checksum.
+ */
+static uint16_t meshx_nvs_calc_crc16(const uint8_t *data, size_t len)
+{
+    uint16_t crc = 0xFFFF;
+    size_t i = 0;
+    int j = 0;
+
+    for (i = 0; i < len; i++) {
+        crc ^= ((uint16_t)data[i] << 8);
+        for (j = 0; j < 8; j++) {
+            if (crc & 0x8000) {
+                crc = (crc << 1) ^ 0x1021;
+            } else {
+                crc <<= 1;
+            }
+        }
+    }
+    return crc;
+}
+
+/**
+ * @brief Store composition schema into NVS.
+ *
+ * Validates the schema, computes the CRC-16-CCITT, and writes the
+ * record synchronously to NVS.
+ *
+ * @param[in] schema Pointer to composition schema structure.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully stored the schema.
+ *     - MESHX_INVALID_ARG: Null pointer or invalid element count.
+ *     - Error code from meshx_nvs_set on write failure.
+ */
+meshx_err_t meshx_nvs_comp_schema_set(const meshx_nvs_comp_schema_t *schema)
+{
+    meshx_nvs_comp_schema_t to_write;
+    size_t crc_len = 0;
+
+    if (!schema || schema->element_count > CONFIG_MAX_ELEMENT_COUNT) {
+        return MESHX_INVALID_ARG;
+    }
+
+    to_write = *schema;
+    to_write.magic = MESHX_NVS_COMP_MAGIC;
+    to_write.version = MESHX_NVS_COMP_VERSION;
+    to_write.reserved = 0;
+
+    crc_len = offsetof(meshx_nvs_comp_schema_t, schema_crc);
+    to_write.schema_crc = meshx_nvs_calc_crc16((const uint8_t *)&to_write, crc_len);
+
+    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "Saving NVS comp schema (%d elements, CRC: 0x%04X, flags: 0x%02X)",
+               to_write.element_count, to_write.schema_crc, to_write.flags);
+
+    return meshx_nvs_set(MESHX_NVS_KEY_COMP_SCHEMA, &to_write, sizeof(to_write), MESHX_NVS_AUTO_COMMIT);
+}
+
+/**
+ * @brief Retrieve composition schema from NVS with CRC validation.
+ *
+ * Reads the schema from NVS, verifies magic number, version, element count,
+ * and CRC-16-CCITT checksum before returning.
+ *
+ * @param[out] schema Pointer to buffer to receive the schema.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully retrieved and validated the schema.
+ *     - MESHX_INVALID_ARG: Null pointer passed.
+ *     - MESHX_INVALID_STATE: Magic, version, CRC, or element count corrupted.
+ *     - Error code from meshx_nvs_get if read fails.
+ */
+meshx_err_t meshx_nvs_comp_schema_get(meshx_nvs_comp_schema_t *schema)
+{
+    meshx_nvs_comp_schema_t read_buf;
+    meshx_err_t err = MESHX_SUCCESS;
+    size_t crc_len = 0;
+    uint16_t expected_crc = 0;
+
+    if (!schema) {
+        return MESHX_INVALID_ARG;
+    }
+
+    err = meshx_nvs_get(MESHX_NVS_KEY_COMP_SCHEMA, &read_buf, sizeof(read_buf));
+    if (err != MESHX_SUCCESS) {
+        return err;
+    }
+
+    if (read_buf.magic != MESHX_NVS_COMP_MAGIC || read_buf.version != MESHX_NVS_COMP_VERSION) {
+        MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_NVS, "Invalid NVS comp schema magic (0x%08X) or version (%d)",
+                   (unsigned int)read_buf.magic, (int)read_buf.version);
+        return MESHX_INVALID_STATE;
+    }
+
+    crc_len = offsetof(meshx_nvs_comp_schema_t, schema_crc);
+    expected_crc = meshx_nvs_calc_crc16((const uint8_t *)&read_buf, crc_len);
+    if (expected_crc != read_buf.schema_crc) {
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "NVS comp schema CRC mismatch (calc: 0x%04X, stored: 0x%04X)",
+                   expected_crc, read_buf.schema_crc);
+        return MESHX_INVALID_STATE;
+    }
+
+    if (read_buf.element_count > CONFIG_MAX_ELEMENT_COUNT) {
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "NVS comp schema element count exceeded: %d", read_buf.element_count);
+        return MESHX_INVALID_STATE;
+    }
+
+    *schema = read_buf;
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Erase composition schema from NVS.
+ *
+ * Removes the composition schema record from the NVS namespace.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Successfully erased.
+ *     - Error code from meshx_nvs_remove on failure.
+ */
+meshx_err_t meshx_nvs_comp_schema_erase(void)
+{
+    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "Erasing NVS composition schema");
+    return meshx_nvs_remove(MESHX_NVS_KEY_COMP_SCHEMA);
 }
 
 #if CONFIG_ENABLE_UNIT_TEST
