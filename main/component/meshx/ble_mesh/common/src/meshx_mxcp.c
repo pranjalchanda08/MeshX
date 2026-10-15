@@ -283,7 +283,7 @@ static void mxcp_reboot_timer_cb(const meshx_os_timer_t *timer)
  */
 static void mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t len)
 {
-    static meshx_os_timer_t s_comp_reboot_timer;
+    static meshx_os_timer_t *s_comp_reboot_timer = NULL;
     mxcp_evt_set_composition_rsp_t rsp;
     const mxcp_cmd_set_composition_t *cmd = NULL;
     meshx_nvs_comp_schema_t schema;
@@ -351,9 +351,9 @@ static void mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t len)
     mxcp_send_event(MXCP_EVT_SET_COMPOSITION_RSP, (const uint8_t *)&rsp, sizeof(rsp));
 
     /* Schedule reboot timer */
-    err = meshx_os_timer_create("mxcp_comp_rst", delay_ms, 0, mxcp_reboot_timer_cb, &s_comp_reboot_timer);
+    err = meshx_os_timer_create("mxcp_comp_rst", delay_ms, false, mxcp_reboot_timer_cb, &s_comp_reboot_timer);
     if (err == MESHX_SUCCESS) {
-        meshx_os_timer_start(&s_comp_reboot_timer);
+        meshx_os_timer_start(s_comp_reboot_timer);
     } else {
         meshx_platform_reset();
     }
