@@ -12,4 +12,7 @@
     "cmake.cmakePath": "cmake",
     "sonarlint.pathToCompileCommands": "${workspaceFolder}/build/weact_c3/Debug/all_in_one/compile_commands.json",
     "idf.pythonInstallPath": "/usr/bin/python3",
+    "clangd.arguments": [
+        "--query-driver=**/*riscv32*,**/*gcc*"
+    ]
 }

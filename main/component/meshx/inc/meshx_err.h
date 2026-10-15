@@ -73,6 +73,14 @@ typedef enum
     MESHX_ERR_GPIO_KV_STORAGE,             /**< KV Engine storage error */
     MESHX_ERR_GPIO_SERIALIZATION,          /**< Configuration serialization error */
 
+    /* Autonomous Pairing & Topology Error Codes (Base: 0x6000) */
+    MESHX_ERR_PAIRING_BASE = 0x6000,       /**< Pairing error base */
+    MESHX_ERR_BLOCKED_ADDR,                /**< Application-layer blocked destination address (e.g. 0xFFFF) */
+    MESHX_ERR_ROLE_COLLISION,              /**< Pairing role collision */
+    MESHX_ERR_INCOMPATIBLE_TRAIT,          /**< Incompatible semantic trait */
+    MESHX_ERR_UNSUPPORTED_FUNC_ID,         /**< Mutually unsupported function ID */
+    MESHX_ERR_TABLE_FULL,                  /**< Link or group subscription table full */
+
     MESHX_ERR_MAX        /**< Maximum Error */
 } meshx_err_t;
 

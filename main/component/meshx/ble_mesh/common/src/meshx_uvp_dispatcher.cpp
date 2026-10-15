@@ -4,14 +4,12 @@
  */
 
 #include "meshx_uvp_dispatcher.hpp"
-#include <meshx_api.h>
-#include "meshx_element_registry.hpp"
-#include "meshx_element_class.hpp"
+#include <meshx_element_registry.hpp>
+#include <meshx_element_class.hpp>
+#include <meshx_composition.hpp>
+#include <meshx_uvp_model.hpp>
 #include <variants/meshx_uvp_element.hpp>
-
-#if CONFIG_TXCM_ENABLE
-#include <meshx_txcm.h>
-#endif
+#include <meshx_c_header.h>
 
 #include <map>
 
@@ -112,6 +110,57 @@ static meshx_err_t uvp_unified_dispatcher_cb(dev_struct_t *pdev,
         payload_len = (uint16_t)(payload_len - MESHX_UVP_FUNC_ID_PREFIX_SZ);
     } else {
         uvp_ctx.func_id = 0x0000u; /* Legacy / malformed — default to func 0 */
+    }
+
+    /*
+     * Application-Layer Security Guard: Block 0xFFFF (All-Nodes) on UVP System Management
+     */
+    if ((uvp_ctx.func_id == MESHX_FUNC_ID_SYS_DISCOVERY || uvp_ctx.func_id == MESHX_FUNC_ID_SYS_PAIRING) &&
+        (p_meta->dst_addr == 0xFFFF || uvp_ctx.dst_addr == 0xFFFF)) {
+        MESHX_LOGW(MODULE_ID_COMMON, "UVP Dispatcher: Security violation! Dropping 0xFFFF broadcast on system func 0x%04X",
+                   uvp_ctx.func_id);
+        return MESHX_ERR_BLOCKED_ADDR;
+    }
+
+    /*
+     * In-Mesh UVP Discovery Protocol (func_id 0xFFFE)
+     */
+    if (uvp_ctx.func_id == MESHX_FUNC_ID_SYS_DISCOVERY) {
+        if (payload_len >= sizeof(uint8_t)) {
+            uint8_t msg_type = *static_cast<const uint8_t*>(payload);
+            if (msg_type == MESHX_SYS_CMD_DISCOVERY_QUERY) {
+                meshx_uvp_discovery_report_t report;
+                memset(&report, 0, sizeof(report));
+                report.msg_type = MESHX_SYS_RSP_DISCOVERY_REPORT;
+                meshx_err_t err = meshx_manifest_build_local(&report.manifest);
+                if (err == MESHX_SUCCESS) {
+                    size_t report_len = sizeof(report.msg_type) +
+                                        offsetof(meshx_capability_manifest_t, elements) +
+                                        report.manifest.element_count * sizeof(meshx_element_descriptor_t);
+
+                    auto& comp = meshXComposition::get_instance();
+                    for (const auto& elem : comp.get_elements()) {
+                        auto& ven_models = elem->get_ven_models();
+                        if (!ven_models.empty() && ven_models[0]->get_model_id() == MESHX_MODEL_ID_UVP) {
+                            auto* uvp_model = static_cast<meshXUVPModel*>(ven_models[0].get());
+                            if (uvp_model) {
+                                uvp_model->send_with_func_id(
+                                    uvp_ctx.src_addr,
+                                    uvp_header->type_id,
+                                    MESHX_FUNC_ID_SYS_DISCOVERY,
+                                    &report,
+                                    (uint16_t)report_len,
+                                    false,
+                                    0
+                                );
+                                return MESHX_SUCCESS;
+                            }
+                        }
+                    }
+                }
+                return err;
+            }
+        }
     }
 
     /*

@@ -127,10 +127,9 @@ meshx_err_t meshx_plat_bind_uvp_opcodes(void *p_model)
         esp_model->groups[i] = ESP_BLE_MESH_ADDR_UNASSIGNED;
     }
 
-    /* Dynamically allocate the opcodes array to prevent it from being merged into .rodata
-     * by the compiler or being overwritten across multiple model instances */
+    /* Dynamically allocate the opcodes array using active product profile opcode */
     esp_ble_mesh_model_op_t init_opcodes[] = {
-        ESP_BLE_MESH_MODEL_OP(MESHX_UVP_OPCODE, MESHX_UVP_HEADER_SIZE),
+        ESP_BLE_MESH_MODEL_OP(meshx_uvp_get_opcode(), MESHX_UVP_HEADER_SIZE),
         ESP_BLE_MESH_MODEL_OP_END,
     };
 

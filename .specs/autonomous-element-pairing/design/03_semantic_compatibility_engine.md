@@ -24,13 +24,13 @@ The table below defines the formal rules for semantic compatibility between clie
 
 | Source Element Variant (`meshx_element_type_t`) | Allowed Sink Element Variants | Supported `func_id` | Operation / Semantic Intent |
 | :--- | :--- | :--- | :--- |
-| `MESHX_ELEMENT_TYPE_RELAY_CLIENT` | `RELAY_SERVER`<br/>`LIGHT_CWWW_SERVER`<br/>`LIGHT_HSL_SERVER` | `0x00` | Basic On/Off power switching & toggle |
+| `MESHX_ELEMENT_TYPE_RELAY_CLIENT` | `RELAY_SERVER` | `0x00` | Basic On/Off power switching & toggle |
 | `MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT` | `LIGHT_CWWW_SERVER` | `0x00`<br/>`0x01` | Power On/Off (`0x00`) + Correlated Color Temp (`0x01`) |
 | `MESHX_ELEMENT_TYPE_LIGHT_HSL_CLIENT` | `LIGHT_HSL_SERVER` | `0x00`<br/>`0x01` | Power On/Off (`0x00`) + Hue-Saturation-Lightness (`0x01`) |
 | `MESHX_ELEMENT_TYPE_SENSOR_CLIENT` | `SENSOR_SERVER` | `0x00` | Periodic and event-driven environmental telemetry ingest |
 
 ### Incompatible Pairings (Must Be Rejected):
-- **Cross-Domain Trait Mismatch:** E.g., attempting to pair `MESHX_ELEMENT_TYPE_SENSOR_CLIENT` to `MESHX_ELEMENT_TYPE_RELAY_SERVER`.
+- **Cross-Domain Trait Mismatch:** E.g., attempting to pair `MESHX_ELEMENT_TYPE_SENSOR_CLIENT` to `MESHX_ELEMENT_TYPE_RELAY_SERVER`, or cross-pairing across distinct traits.
 - **Role Collision:** E.g., attempting to pair two `PRODUCER` elements (Switch to Switch) or two `CONSUMER` elements (Relay to Relay).
 - **Unsupported Function ID:** E.g., requesting `func_id = 0x01` (Color CTL) on a basic `RELAY_SERVER` sink.
 
@@ -43,10 +43,10 @@ The engine is encapsulated in `meshx_compat_matrix.c` (C runtime) and callable b
 ```mermaid
 graph TD
     Intent[Pairing Intent Request] --> ValRole[1. Validate Roles]
-    ValRole -->|Producer + Consumer?| ValVariant[2. Validate Element Variants]
+    ValRole -->|Producer + Consumer?| ValVariant[2. Validate Element Variants via 1:1 LUT]
     ValRole -->|Role Collision| ErrRole[Reject: MESHX_ERR_INVALID_ROLE]
     
-    ValVariant -->|Matrix Match?| ValFunc[3. Validate func_id Support]
+    ValVariant -->|1:1 LUT Match?| ValFunc[3. Validate func_id Support]
     ValVariant -->|Mismatch| ErrTrait[Reject: MESHX_ERR_INCOMPATIBLE_TRAIT]
     
     ValFunc -->|func_id Match?| Success[Pass: Compatible Link Verified]
@@ -57,16 +57,25 @@ graph TD
 
 ```c
 #include "meshx_compat_matrix.h"
-#include "esp_log.h"
 
-static const char *TAG = "MESHX_COMPAT";
+typedef struct {
+    uint16_t src_variant;
+    uint16_t dst_variant;
+} meshx_variant_compat_entry_t;
 
-esp_err_t meshx_compat_validate(const meshx_element_descriptor_t *src_desc,
-                                const meshx_element_descriptor_t *dst_desc,
-                                uint16_t func_id)
+static const meshx_variant_compat_entry_t s_variant_compat_lut[] = {
+    { MESHX_ELEMENT_TYPE_RELAY_CLIENT,      MESHX_ELEMENT_TYPE_RELAY_SERVER },
+    { MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT, MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER },
+    { MESHX_ELEMENT_TYPE_LIGHT_HSL_CLIENT,  MESHX_ELEMENT_TYPE_LIGHT_HSL_SERVER },
+    { MESHX_ELEMENT_TYPE_SENSOR_CLIENT,     MESHX_ELEMENT_TYPE_SENSOR_SERVER },
+};
+
+meshx_err_t meshx_compat_validate(const meshx_element_descriptor_t *src_desc,
+                                  const meshx_element_descriptor_t *dst_desc,
+                                  uint16_t func_id)
 {
     if (!src_desc || !dst_desc) {
-        return ESP_ERR_INVALID_ARG;
+        return MESHX_INVALID_ARG;
     }
 
     /* 1. Check Roles: Must have a producer and a consumer */
@@ -76,8 +85,8 @@ esp_err_t meshx_compat_validate(const meshx_element_descriptor_t *src_desc,
                             dst_desc->role == MESHX_ROLE_BIDIRECTIONAL);
 
     if (!src_can_produce || !dst_can_consume) {
-        ESP_LOGE(TAG, "Role collision: src_role=%u, dst_role=%u", src_desc->role, dst_desc->role);
-        return ESP_ERR_MESHX_ROLE_COLLISION;
+        MESHX_LOGE(MODULE_ID_COMMON, "Role collision: src_role=%u, dst_role=%u", src_desc->role, dst_desc->role);
+        return MESHX_ERR_ROLE_COLLISION;
     }
 
     /* 2. Check func_id availability on both endpoints */
@@ -91,46 +100,22 @@ esp_err_t meshx_compat_validate(const meshx_element_descriptor_t *src_desc,
     }
 
     if (!src_has_func || !dst_has_func) {
-        ESP_LOGE(TAG, "func_id 0x%04X not mutually supported (src:%d, dst:%d)", 
-                 func_id, src_has_func, dst_has_func);
-        return ESP_ERR_MESHX_UNSUPPORTED_FUNC_ID;
+        MESHX_LOGE(MODULE_ID_COMMON, "func_id 0x%04X not mutually supported (src:%d, dst:%d)", 
+                   func_id, src_has_func, dst_has_func);
+        return MESHX_ERR_UNSUPPORTED_FUNC_ID;
     }
 
-    /* 3. Check Variant Compatibility Matrix */
-    switch (src_desc->variant) {
-    case MESHX_ELEMENT_TYPE_RELAY_CLIENT:
-        if (dst_desc->variant == MESHX_ELEMENT_TYPE_RELAY_SERVER ||
-            dst_desc->variant == MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER ||
-            dst_desc->variant == MESHX_ELEMENT_TYPE_LIGHT_HSL_SERVER) {
-            return ESP_OK;
+    /* 3. Check Variant Compatibility LUT (1:1 strict mapping) */
+    for (size_t i = 0; i < (sizeof(s_variant_compat_lut) / sizeof(s_variant_compat_lut[0])); ++i) {
+        if (s_variant_compat_lut[i].src_variant == src_desc->variant &&
+            s_variant_compat_lut[i].dst_variant == dst_desc->variant) {
+            return MESHX_SUCCESS;
         }
-        break;
-
-    case MESHX_ELEMENT_TYPE_LIGHT_CWWW_CLIENT:
-        if (dst_desc->variant == MESHX_ELEMENT_TYPE_LIGHT_CWWW_SERVER) {
-            return ESP_OK;
-        }
-        break;
-
-    case MESHX_ELEMENT_TYPE_LIGHT_HSL_CLIENT:
-        if (dst_desc->variant == MESHX_ELEMENT_TYPE_LIGHT_HSL_SERVER) {
-            return ESP_OK;
-        }
-        break;
-
-    case MESHX_ELEMENT_TYPE_SENSOR_CLIENT:
-        if (dst_desc->variant == MESHX_ELEMENT_TYPE_SENSOR_SERVER) {
-            return ESP_OK;
-        }
-        break;
-
-    default:
-        break;
     }
 
-    ESP_LOGE(TAG, "Variant mismatch: src_variant=0x%04X, dst_variant=0x%04X",
-             src_desc->variant, dst_desc->variant);
-    return ESP_ERR_MESHX_INCOMPATIBLE_TRAIT;
+    MESHX_LOGE(MODULE_ID_COMMON, "Variant mismatch: src_variant=0x%04X, dst_variant=0x%04X",
+               src_desc->variant, dst_desc->variant);
+    return MESHX_ERR_INCOMPATIBLE_TRAIT;
 }
 ```
 
@@ -142,6 +127,6 @@ When a pairing attempt fails validation, the orchestrator returns structured err
 
 | Error Code | Constant | Meaning & Recommended Action |
 | :--- | :--- | :--- |
-| `0x81` | `ESP_ERR_MESHX_ROLE_COLLISION` | Attempted to link two emitters or two sinks. Prompt user to select an actuator. |
-| `0x82` | `ESP_ERR_MESHX_INCOMPATIBLE_TRAIT` | Client cannot command the selected server type. Filter candidate list in UI. |
-| `0x83` | `ESP_ERR_MESHX_UNSUPPORTED_FUNC_ID` | Function ID not present on target element. Verify target firmware capabilities. |
+| `0x81` | `MESHX_ERR_ROLE_COLLISION` | Attempted to link two emitters or two sinks. Prompt user to select an actuator. |
+| `0x82` | `MESHX_ERR_INCOMPATIBLE_TRAIT` | Client cannot command the selected server type. Filter candidate list in UI. |
+| `0x83` | `MESHX_ERR_UNSUPPORTED_FUNC_ID` | Function ID not present on target element. Verify target firmware capabilities. |

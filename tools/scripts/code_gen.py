@@ -10,6 +10,7 @@ import argparse
 import struct
 import sys
 import binascii
+import hashlib
 
 def generate_schema_id(proto_path, options_path):
     """Generates a CRC32 ID based on the content of the schema files."""
@@ -212,8 +213,43 @@ class CodeGen(CodeGenException):
         # Parse and generate GPIO configuration if present
         self._generate_element_type_enum()
         self._generate_gpio_config()
+        self._generate_mgmt_addressing()
 
         return self.file_insert
+
+    def _generate_mgmt_addressing(self):
+        """
+        Generate Company-wide Management Label UUID and pre-computed Virtual Address.
+        Derived from prod.mgmt_uuid or deterministically from prod.cid.
+        """
+        prod_section = self.prod_profile.get('prod', {})
+        mgmt_uuid_str = prod_section.get('mgmt_uuid')
+
+        uuid_bytes = None
+        if mgmt_uuid_str:
+            clean_hex = str(mgmt_uuid_str).replace(':', '').replace('-', '')
+            try:
+                parsed = bytes.fromhex(clean_hex)
+                if len(parsed) == 16:
+                    uuid_bytes = parsed
+            except Exception as e:
+                print(f"Warning: Invalid mgmt_uuid '{mgmt_uuid_str}': {e}. Falling back to deterministic derivation.")
+
+        if uuid_bytes is None:
+            # Deterministic derivation: cid (2B, BE) || 0x59, 0x53 ("YS") || b"MeshX-MGMT-V1"
+            cid_bytes = struct.pack('>H', self.cid)
+            uuid_bytes = cid_bytes + bytes([0x59, 0x53]) + b'MeshX-MGMT-V1'
+
+        self.mgmt_uuid_bytes = uuid_bytes
+
+        # Compute 16-bit Virtual Address in range 0x8000..0xBFFF (Bluetooth Mesh §3.8.4)
+        digest = hashlib.sha256(b"vtad" + uuid_bytes).digest()
+        va_offset = (digest[0] | (digest[1] << 8)) & 0x3FFF
+        self.mgmt_virtual_addr = 0x8000 | va_offset
+
+        uuid_hex_list = ", ".join([f"0x{b:02X}" for b in uuid_bytes])
+        self.file_insert += f"\n#define MESHX_MGMT_LABEL_UUID       {{ {uuid_hex_list} }}\n"
+        self.file_insert += self.__get_fmt_define("MESHX_MGMT_VIRTUAL_ADDR", f"0x{self.mgmt_virtual_addr:04X}")
 
     def _generate_element_type_enum(self):
         """
@@ -523,6 +559,8 @@ class CodeGen(CodeGenException):
                         print(f"Warning: UUID '{uuid_str}' is not 16 bytes. Skipping.")
                 except ValueError:
                     print(f"Warning: UUID '{uuid_str}' is not valid hex. Skipping.")
+            elif hasattr(self, 'mgmt_uuid_bytes') and self.mgmt_uuid_bytes:
+                config.product.uuid = self.mgmt_uuid_bytes
 
         # Type 0x02: Element Composition
         if self.product is not None and 'elements' in self.product:

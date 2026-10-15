@@ -383,6 +383,18 @@ uint16_t meshx_get_node_addr(void);
  */
 size_t meshx_get_element_count(void);
 
+/**
+ * @brief Get the active Company ID (CID).
+ * @return uint16_t The company ID.
+ */
+uint16_t meshx_get_cid(void);
+
+/**
+ * @brief Get the active Product ID (PID).
+ * @return uint16_t The product ID.
+ */
+uint16_t meshx_get_pid(void);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
