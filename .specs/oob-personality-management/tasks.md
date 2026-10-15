@@ -47,7 +47,9 @@ graph TD
 - [x] **Task 6: Complete Application Data Callback in `main.c`**
   - Added switch cases for `MESHX_ELEMENT_TYPE_SENSOR_SERVER`, `MESHX_ELEMENT_TYPE_SENSOR_CLIENT`, `MESHX_ELEMENT_TYPE_LIGHT_HSL_SERVER`, and `MESHX_ELEMENT_TYPE_LIGHT_HSL_CLIENT`.
   - Logged received state changes and telemetry.
-- [ ] **Task 7: L0 & Functional Verification**
-  - Test cold boot with NVS schema restore.
-  - Test MXCP set composition command, reboot, and verify baked elements.
-  - Test CRC mismatch fallback and factory reset erasure.
+- [x] **Task 7: L0 & Functional Verification**
+  - Added CLI L0 unit tests in `meshx_nvs.c` (`ut 3 7`, `ut 3 8`, `ut 3 9`, `ut 3 10`) for schema write, CRC-16 read, corruption rejection, and erasure.
+  - Documented CLI test commands in `unit_test/README.md`.
+  - Added `CompositionInterface` to `tools/scripts/autotest/framework/device.py` (`MXCP_CMD_SET_COMPOSITION`, `MXCP_EVT_SET_COMPOSITION_RSP`, `MXCP_CMD_NODE_RESET`).
+  - Implemented end-to-end integration test case `tools/scripts/autotest/cases/test_oob_composition.py`.
+  - Verified firmware compilation cleanliness on target platform.

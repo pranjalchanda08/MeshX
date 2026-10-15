@@ -655,6 +655,10 @@ typedef enum meshx_nvs_cli_cmd{
     MESHX_NVS_CLI_CMD_REMOVE,       /* ut 3 4 0 */
     MESHX_NVS_CLI_CMD_ERASE,        /* ut 3 5 0 */
     MESHX_NVS_CLI_CMD_CLOSE,        /* ut 3 6 0 */
+    MESHX_NVS_CLI_CMD_SCHEMA_SET,   /* ut 3 7 1 [count] */
+    MESHX_NVS_CLI_CMD_SCHEMA_GET,   /* ut 3 8 0 */
+    MESHX_NVS_CLI_CMD_SCHEMA_ERASE, /* ut 3 9 0 */
+    MESHX_NVS_CLI_CMD_SCHEMA_CORRUPT,/* ut 3 10 0 */
     MESHX_NVS_CLI_MAX
 }meshx_nvs_cli_cmd_t;
 
@@ -678,7 +682,11 @@ static meshx_err_t meshx_nvs_unit_test_cb_handler(int cmd_id, int argc, char **a
     meshx_err_t err = MESHX_SUCCESS;
     uint32_t ut_blob = 0xDEAD;
     uint32_t ut_blob_get = 0x00;
-    bool arm_timer;
+    bool arm_timer = false;
+    meshx_nvs_comp_schema_t test_schema;
+    meshx_nvs_comp_schema_t read_schema;
+    uint8_t count = 0;
+    uint8_t i = 0;
 
     MESHX_UNUSED(argc);
     MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_NVS, "argc|cmd_id: %d|%d", argc, cmd_id);
@@ -714,6 +722,81 @@ static meshx_err_t meshx_nvs_unit_test_cb_handler(int cmd_id, int argc, char **a
             break;
         case MESHX_NVS_CLI_CMD_CLOSE:
             err = meshx_nvs_close();
+            break;
+        case MESHX_NVS_CLI_CMD_SCHEMA_SET:
+            count = (argc > 0) ? (uint8_t)UT_GET_ARG(0, int, argv) : 3;
+            if (count > CONFIG_MAX_ELEMENT_COUNT) {
+                count = CONFIG_MAX_ELEMENT_COUNT;
+            }
+            memset(&test_schema, 0, sizeof(test_schema));
+            test_schema.element_count = count;
+            test_schema.flags = MESHX_COMP_FLAG_OVERRIDE_RO;
+            for (i = 0; i < count; i++) {
+                test_schema.element_types[i] = (uint16_t)(i % MESHX_ELEMENT_TYPE_MAX);
+            }
+            err = meshx_nvs_comp_schema_set(&test_schema);
+            if (err == MESHX_SUCCESS) {
+                MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "UT SCHEMA_SET PASS: %d elements, flags=0x%02X",
+                           test_schema.element_count, test_schema.flags);
+            } else {
+                MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "UT SCHEMA_SET FAIL: err=%d", err);
+            }
+            break;
+        case MESHX_NVS_CLI_CMD_SCHEMA_GET:
+            memset(&read_schema, 0, sizeof(read_schema));
+            err = meshx_nvs_comp_schema_get(&read_schema);
+            if (err == MESHX_SUCCESS) {
+                MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS,
+                           "UT SCHEMA_GET PASS: magic=0x%08X ver=%d count=%d flags=0x%02X crc=0x%04X",
+                           (unsigned int)read_schema.magic, (int)read_schema.version,
+                           (int)read_schema.element_count, (int)read_schema.flags,
+                           (unsigned int)read_schema.schema_crc);
+                for (i = 0; i < read_schema.element_count; i++) {
+                    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "  Element[%d]: type=%d", (int)i, (int)read_schema.element_types[i]);
+                }
+            } else {
+                MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "UT SCHEMA_GET FAIL: err=%d", err);
+            }
+            break;
+        case MESHX_NVS_CLI_CMD_SCHEMA_ERASE:
+            err = meshx_nvs_comp_schema_erase();
+            if (err != MESHX_SUCCESS) {
+                MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "UT SCHEMA_ERASE FAIL: err=%d", err);
+                break;
+            }
+            memset(&read_schema, 0, sizeof(read_schema));
+            err = meshx_nvs_comp_schema_get(&read_schema);
+            if (err != MESHX_SUCCESS) {
+                MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "UT SCHEMA_ERASE PASS: schema successfully erased");
+                err = MESHX_SUCCESS;
+            } else {
+                MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "UT SCHEMA_ERASE FAIL: schema still readable after erase");
+                err = MESHX_INVALID_STATE;
+            }
+            break;
+        case MESHX_NVS_CLI_CMD_SCHEMA_CORRUPT:
+            memset(&test_schema, 0, sizeof(test_schema));
+            test_schema.magic = MESHX_NVS_COMP_MAGIC;
+            test_schema.version = MESHX_NVS_COMP_VERSION;
+            test_schema.element_count = 2;
+            test_schema.flags = MESHX_COMP_FLAG_OVERRIDE_RO;
+            test_schema.element_types[0] = 0;
+            test_schema.element_types[1] = 1;
+            test_schema.schema_crc = 0xBADC; /* Intentionally corrupt CRC */
+            err = meshx_nvs_set(MESHX_NVS_KEY_COMP_SCHEMA, &test_schema, sizeof(test_schema), MESHX_NVS_AUTO_COMMIT);
+            if (err != MESHX_SUCCESS) {
+                MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "UT SCHEMA_CORRUPT write fail: err=%d", err);
+                break;
+            }
+            memset(&read_schema, 0, sizeof(read_schema));
+            err = meshx_nvs_comp_schema_get(&read_schema);
+            if (err != MESHX_SUCCESS) {
+                MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "UT SCHEMA_CORRUPT PASS: Corrupted CRC successfully rejected (err=%d)", err);
+                err = MESHX_SUCCESS;
+            } else {
+                MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "UT SCHEMA_CORRUPT FAIL: corrupted schema was accepted!");
+                err = MESHX_INVALID_STATE;
+            }
             break;
         default:
             err = MESHX_INVALID_ARG;
