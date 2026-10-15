@@ -210,6 +210,14 @@ class CodeGen(CodeGenException):
         self.file_insert += self.__get_fmt_define("CONFIG_PRODUCT_NAME", f'"{self.target[:16:]}"')
         self.file_insert += self.__get_fmt_define("CONFIG_MAX_ELEMENT_COUNT", self.max_el)
 
+        prod_section = self.prod_profile.get('prod', {})
+        footer = str(prod_section.get('uuid_footer', 'MESH-X'))
+        if len(footer) > 6:
+            footer = footer[:6]
+        elif len(footer) < 6:
+            footer = footer.ljust(6, '\0')
+        self.file_insert += self.__get_fmt_define("CONFIG_UUID_FOOTER", f'"{footer}"')
+
         # Parse and generate GPIO configuration if present
         self._generate_element_type_enum()
         self._generate_gpio_config()
@@ -236,9 +244,12 @@ class CodeGen(CodeGenException):
                 print(f"Warning: Invalid mgmt_uuid '{mgmt_uuid_str}': {e}. Falling back to deterministic derivation.")
 
         if uuid_bytes is None:
-            # Deterministic derivation: cid (2B, BE) || 0x59, 0x53 ("YS") || b"MeshX-MGMT-V1"
+            # Deterministic 16-byte derivation: cid (2B, BE) || 0x59, 0x53 ("YS") || 12B namespace
             cid_bytes = struct.pack('>H', self.cid)
-            uuid_bytes = cid_bytes + bytes([0x59, 0x53]) + b'MeshX-MGMT-V1'
+            uuid_bytes = cid_bytes + bytes([0x59, 0x53]) + b'MeshX-MGMT-1'
+
+        if len(uuid_bytes) != 16:
+            raise CodeGenException(f"Invalid Management UUID length: expected 16 bytes, got {len(uuid_bytes)}")
 
         self.mgmt_uuid_bytes = uuid_bytes
 
@@ -559,8 +570,6 @@ class CodeGen(CodeGenException):
                         print(f"Warning: UUID '{uuid_str}' is not 16 bytes. Skipping.")
                 except ValueError:
                     print(f"Warning: UUID '{uuid_str}' is not valid hex. Skipping.")
-            elif hasattr(self, 'mgmt_uuid_bytes') and self.mgmt_uuid_bytes:
-                config.product.uuid = self.mgmt_uuid_bytes
 
         # Type 0x02: Element Composition
         if self.product is not None and 'elements' in self.product:

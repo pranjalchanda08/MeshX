@@ -217,11 +217,9 @@ meshx_err_t meshx_plat_composition_init(
  * This function sets up the Bluetooth-related components necessary for
  * MeshX operation, such as BLE Mesh provisioning and communication.
  *
- * @param[in] uuid Pointer to the UUID address to be used for the Bluetooth initialization.
- *
- * @return meshx_err_t Returns MESHX_OK on success, or an appropriate error code.
+ * @return meshx_err_t Returns MESHX_SUCCESS on success, or an appropriate error code.
  */
-meshx_err_t meshx_platform_bt_init(meshx_uuid_addr_t uuid);
+meshx_err_t meshx_platform_bt_init(void);
 
 /**
  * @brief Initializes the BLE Mesh stack with the given provisioning parameters.
