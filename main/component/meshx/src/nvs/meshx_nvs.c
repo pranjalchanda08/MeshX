@@ -57,21 +57,11 @@ static meshx_err_t meshx_nvs_unit_test_cb_handler(int cmd_id, int argc, char **a
 
 static meshx_nvs_t meshx_nvs_inst;
 
-/**
- * @brief MeshX NVS control message handler.
- * @note This is responsible for handling control task messages related to NVS operations
- *
- * @param[in] pdev       Device structure pointer
- * @param[in] evt        Control task message event
- * @param[in] params     Message parameters
- * @param[in] params_len Message parameters length
- *
- * @return
- *  - MESHX_SUCCESS: Success.
- */
+
 static meshx_err_t meshx_nvs_control_msg_handler(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params, uint16_t params_len)
 {
-    if (evt & CONTROL_TASK_MSG_EVT_SYSTEM_NVS_COMMIT) {
+    if (evt & CONTROL_TASK_MSG_EVT_SYSTEM_NVS_COMMIT)
+    {
         meshx_nvs_commit();
     }
     return MESHX_SUCCESS;

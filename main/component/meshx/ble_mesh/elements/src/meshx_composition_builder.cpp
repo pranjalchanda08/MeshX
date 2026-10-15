@@ -268,6 +268,13 @@ void meshx_builder_begin(void) {
 }
 
 /**
+ * @brief Clears all elements from the active composition builder session.
+ */
+void meshx_builder_clear(void) {
+    meshXComposition::get_instance().clear_elements();
+}
+
+/**
  * @brief Commits the pending dynamic composition build session.
  */
 void meshx_builder_commit(void) {

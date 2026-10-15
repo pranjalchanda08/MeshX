@@ -301,6 +301,10 @@ class ESPTarget(Target):
 
         cfg_to_flash = generated_cfg if os.path.exists(generated_cfg) else static_cfg
 
+        if not os.path.exists(cfg_to_flash):
+            print(f"Warning: Configuration binary not found at {generated_cfg} or {static_cfg}. Skipping meshx_cfg flash.")
+            return
+
         print(f"Flashing configuration binary: {cfg_to_flash}")
 
         # Get offset dynamically using parttool.py
@@ -448,7 +452,7 @@ def main():
     target_group.add_argument('-H', '--host', choices=PLAT_LIST, default=PLAT_LIST[0] if PLAT_LIST else None, help=f"Target host. Default is {PLAT_LIST[0] if PLAT_LIST else 'None'}")
     target_group.add_argument('-P', '--port', type=str, default=None, help="Target port")
     target_group.add_argument('-C', '--config', action="store_true", help="target configs")
-    target_group.add_argument('-F', '--flash', choices=["firmware", "cfg", "all"], nargs='?', const="firmware", default=None, help="flash ESP target")
+    target_group.add_argument('-F', '--flash', choices=["firmware", "cfg", "all"], nargs='?', const="all", default=None, help="flash ESP target (default: all)")
     target_group.add_argument('-E', '--erase', choices=["firmware", "chip", "cfg", "all"], default=None, help="Erase target")
     target_group.add_argument('-R', '--run', action="store_true", help="Run target")
     target_group.add_argument("--decode", action="store_true", help="Decode TLV logs from target")
