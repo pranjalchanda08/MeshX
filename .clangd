@@ -1,0 +1,11 @@
+CompileFlags:
+  CompilationDatabase: build/weact_c3/Debug/all_in_one
+  Add:
+    - --target=riscv32-esp-elf
+  Remove:
+    - -fno-tree-switch-conversion
+    - -fstrict-volatile-bitfields
+    - -fno-shrink-wrap
+
+Index:
+  Background: Build

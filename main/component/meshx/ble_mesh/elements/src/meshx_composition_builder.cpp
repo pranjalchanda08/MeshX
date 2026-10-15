@@ -428,4 +428,74 @@ size_t meshx_get_element_state_data(uint8_t *buf, size_t max_len) {
     return offset;
 }
 
+/**
+ * @brief Get the number of elements in the active composition.
+ * @return Total number of elements.
+ */
+uint8_t meshx_comp_get_element_count(void) {
+    meshXComposition& comp = meshXComposition::get_instance();
+    return (uint8_t)comp.get_elements().size();
+}
+
+/**
+ * @brief Get the variant of a specific element in the active composition.
+ * @param element_idx Index of the element.
+ * @return Element variant, or 0 if invalid.
+ */
+uint16_t meshx_comp_get_element_variant(uint8_t element_idx) {
+    meshXComposition& comp = meshXComposition::get_instance();
+    const auto& elements = comp.get_elements();
+    if (element_idx < elements.size() && elements[element_idx]) {
+        return (uint16_t)elements[element_idx]->get_element_variant();
+    }
+    return 0;
+}
+
+/**
+ * @brief Get the list of functional IDs supported by an element.
+ * @param element_idx Index of the element.
+ * @param out_func_ids Destination buffer to receive function IDs.
+ * @param max_count Maximum number of function IDs to store.
+ * @return Number of function IDs written.
+ */
+uint8_t meshx_comp_get_element_func_ids(uint8_t element_idx, uint16_t *out_func_ids, uint8_t max_count) {
+    if (!out_func_ids || max_count == 0) return 0;
+    meshXComposition& comp = meshXComposition::get_instance();
+    const auto& elements = comp.get_elements();
+    if (element_idx >= elements.size() || !elements[element_idx]) return 0;
+
+    auto models = elements[element_idx]->get_logical_models_ptr();
+    if (!models) return 0;
+
+    uint8_t count = 0;
+    for (const auto& m : *models) {
+        if (m && count < max_count) {
+            out_func_ids[count++] = m->get_func_id();
+        }
+    }
+    return count;
+}
+
+/**
+ * @brief Check if a specific element contains a logical model with the given func_id.
+ * @param element_idx Index of the element.
+ * @param func_id Functional ID to query.
+ * @return true if supported, false otherwise.
+ */
+bool meshx_comp_element_has_func_id(uint8_t element_idx, uint16_t func_id) {
+    meshXComposition& comp = meshXComposition::get_instance();
+    const auto& elements = comp.get_elements();
+    if (element_idx >= elements.size() || !elements[element_idx]) return false;
+
+    auto models = elements[element_idx]->get_logical_models_ptr();
+    if (!models) return false;
+
+    for (const auto& m : *models) {
+        if (m && m->get_func_id() == func_id) {
+            return true;
+        }
+    }
+    return false;
+}
+
 } /* extern "C" */

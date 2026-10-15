@@ -94,15 +94,13 @@ When `mxcp_cmd_fn_set_composition()` receives a new element configuration:
 Even if power is lost immediately after a composition update or the host bypasses Tier 1, the device performs an autonomous self-audit during cold boot:
 
 ```c
-esp_err_t meshx_link_reconcile(void)
+meshx_err_t meshx_link_reconcile(void)
 {
     meshx_nvs_link_table_t table;
-    if (meshx_nvs_get_link_table(&table) != ESP_OK) return ESP_FAIL;
+    if (meshx_nvs_get_link_table(&table) != MESHX_SUCCESS) return MESHX_FAIL;
 
-    meshXComposition* comp = meshXElementRegistry::get_instance().get_composition();
-    if (!comp) return ESP_ERR_INVALID_STATE;
-
-    const auto& elements = comp->get_elements();
+    meshXComposition& comp = meshXComposition::get_instance();
+    const auto& elements = comp.get_elements();
     bool table_modified = false;
 
     for (uint8_t i = 0; i < MESHX_MAX_PERSISTED_LINKS; ++i) {
@@ -114,18 +112,21 @@ esp_err_t meshx_link_reconcile(void)
             const auto& el = elements[link->local_element_idx];
             if (el->get_element_variant() == link->bound_variant) {
                 // Verify func_id support
-                for (const auto& m : el->get_logical_models()) {
-                    if (m->get_func_id() == link->func_id) {
-                        link_valid = true;
-                        break;
+                auto* models_ptr = el->get_logical_models_ptr();
+                if (models_ptr) {
+                    for (const auto& m : *models_ptr) {
+                        if (m->get_func_id() == link->func_id) {
+                            link_valid = true;
+                            break;
+                        }
                     }
                 }
             }
         }
 
         if (!link_valid) {
-            ESP_LOGW("MESHX_RECONCILE", "Pruning stale link slot %u (el=%u, variant=0x%04X, func=0x%04X)",
-                     i, link->local_element_idx, link->bound_variant, link->func_id);
+            MESHX_LOGW(MODULE_ID_COMMON, "Pruning stale link slot %u (el=%u, variant=0x%04X, func=0x%04X)",
+                       i, link->local_element_idx, link->bound_variant, link->func_id);
             memset(link, 0, sizeof(*link));
             table.link_count--;
             table_modified = true;
@@ -135,10 +136,10 @@ esp_err_t meshx_link_reconcile(void)
     if (table_modified) {
         table.link_epoch++;
         meshx_nvs_set_link_table(&table);
-        ESP_LOGI("MESHX_RECONCILE", "Link table sanitized. New epoch: %u", table.link_epoch);
+        MESHX_LOGI(MODULE_ID_COMMON, "Link table sanitized. New epoch: %u", table.link_epoch);
     }
 
-    return ESP_OK;
+    return MESHX_SUCCESS;
 }
 ```
 

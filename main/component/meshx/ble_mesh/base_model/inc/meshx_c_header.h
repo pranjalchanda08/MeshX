@@ -22,8 +22,12 @@ extern "C" {
 #include <meshx_api.h>
 #include <meshx_nvs.h>
 #include <meshx_platform_ble_mesh.h>
-#include <meshx_relay_msg_defs.h>
 #include <meshx_serial.h>
+#include <meshx_manifest.h>
+#include <meshx_element_lut.h>
+#include <meshx_compat_matrix.h>
+#include <meshx_group_allocator.h>
+#include <meshx_uvp.h>
 
 /*************************************************************
  * Interface Header

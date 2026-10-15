@@ -1,8 +1,8 @@
 # Technical Reference Sheet 06: Lifecycle Unpairing & Teardown Handshake
 
-**Document:** `design/06_lifecycle_unpairing_teardown.md`  
-**Parent TRM:** [Master Design Index](../design.md)  
-**Requirements Addressed:** [REQ-008](../requirements.md)  
+**Document:** `design/06_lifecycle_unpairing_teardown.md`
+**Parent TRM:** [Master Design Index](../design.md)
+**Requirements Addressed:** [REQ-008](../requirements.md)
 
 ---
 
@@ -35,12 +35,12 @@ sequenceDiagram
 
     alt Case 1: Direct 1-to-1 Unicast Link
         Switch->>Switch: Set element_ctx.pub_addr = MESHX_ADDR_UNASSIGNED
-        Switch->>Lamp: UVP Unpair Request (func_id=0xFFFF, type=UNPAIR_REQ)
+        Switch->>Lamp: UVP Unpair Request (func_id=MESHX_FUNC_ID_SYS_PAIRING [0xFFFF], type=UNPAIR_REQ, unicast dst)
         Lamp->>Lamp: Clear direct link slot in local table
         Lamp-->>Switch: UVP Unpair Response (status=SUCCESS)
     else Case 2: Group Link (e.g. 0xC005)
         Switch->>Switch: Clear or reassign element_ctx.pub_addr
-        Switch->>Lamp: UVP Unpair Request (group_addr=0xC005)
+        Switch->>Lamp: UVP Unpair Request (func_id=MESHX_FUNC_ID_SYS_PAIRING, group_addr=0xC005, unicast dst)
         Lamp->>Lamp: Decrement reference count for 0xC005
         opt Reference count drops to 0 (No other switches control this lamp)
             Lamp->>Lamp: Config Model Sub Del(0xC005)
@@ -73,7 +73,7 @@ sequenceDiagram
     Note over NodeA: Step 1: Active Mesh Authenticated Phase<br/>Do NOT wipe NVS or keys yet!
 
     NodeA->>NodeA: Inspect local meshx_nvs_link_table_t
-    
+
     par Targeted Pre-Reset Unpair
         NodeA->>Peer1: UVP Unpair Request (reason=NODE_RESET)
         Peer1->>Peer1: Clear pub_addr = MESHX_ADDR_UNASSIGNED
