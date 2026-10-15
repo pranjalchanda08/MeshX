@@ -11,6 +11,8 @@
 #include "meshx_serial.h"
 #include "meshx_builder_api.h"
 #include "meshx_api.h"
+#include "meshx_nvs.h"
+#include "meshx_os_timer.h"
 #include "interface/logging/meshx_log.h"
 #include "interface/meshx_platform.h"
 #include "interface/gpio/meshx_gpio.h"
@@ -47,6 +49,7 @@ static void mxcp_cmd_fn_get_element_state   (const uint8_t *payload, uint8_t len
 static void mxcp_cmd_fn_gpio_set_pwm_freq   (const uint8_t *payload, uint8_t len);
 static void mxcp_cmd_fn_gpio_intr_disable   (const uint8_t *payload, uint8_t len);
 static void mxcp_cmd_fn_set_console_routing (const uint8_t *payload, uint8_t len);
+static void mxcp_cmd_fn_set_composition     (const uint8_t *payload, uint8_t len);
 
 /**
  * @brief Command dispatch table (Host -> Engine).
@@ -68,6 +71,7 @@ static const mxcp_cmd_entry_t mxcp_cmd_table[] = {
     MXCP_CMD_ENTRY(MXCP_CMD_GET_COMPOSITION,     mxcp_cmd_fn_get_composition,     0,                                      MXCP_EVT_COMPOSITION_RSP,      MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_GET_ELEMENT_STATE,   mxcp_cmd_fn_get_element_state,   0,                                      MXCP_EVT_ELEMENT_STATE_RSP,    MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_SET_CONSOLE_ROUTING, mxcp_cmd_fn_set_console_routing, sizeof(mxcp_cmd_set_console_routing_t), MXCP_EVT_CONSOLE_ROUTING_RSP,  MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_SET_COMPOSITION,     mxcp_cmd_fn_set_composition,     0,                                      MXCP_EVT_SET_COMPOSITION_RSP,  MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_EL_SEND,             mxcp_cmd_fn_el_send,             sizeof(mxcp_cmd_el_send_t),             MXCP_EVT_EL_DATA_TX_NOTIFY,    MXCP_EVT_EL_DATA_RX_NOTIFY),
     MXCP_CMD_ENTRY(MXCP_CMD_GPIO_SET_LEVEL,      mxcp_cmd_fn_gpio_set_level,      sizeof(mxcp_cmd_gpio_set_level_t),      MXCP_EVT_GPIO_SET_LEVEL_RSP,   MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_GPIO_GET_LEVEL,      mxcp_cmd_fn_gpio_get_level,      sizeof(mxcp_cmd_gpio_get_level_t),      MXCP_EVT_GPIO_GET_LEVEL_RSP,   MXCP_EVT_NONE),
@@ -93,7 +97,9 @@ static const mxcp_cmd_entry_t mxcp_cmd_table[] = {
 static uint8_t mxcp_calculate_checksum(uint8_t len, uint8_t type, const uint8_t *payload)
 {
     uint8_t checksum = len ^ type;
-    for (uint8_t i = 0; i < len; i++) {
+    uint8_t i = 0;
+
+    for (i = 0; i < len; i++) {
         checksum ^= payload[i];
     }
     return checksum;
@@ -105,20 +111,23 @@ static uint8_t mxcp_calculate_checksum(uint8_t len, uint8_t type, const uint8_t 
  * Performs a linear scan of mxcp_cmd_table for the given command ID.
  * EVT-typed frames are rejected with a warning.
  *
- * @param type    TYPE byte (direction + ID).
- * @param payload Payload bytes.
- * @param len     Payload length.
+ * @param[in] type    TYPE byte (direction + ID).
+ * @param[in] payload Payload bytes.
+ * @param[in] len     Payload length in bytes.
  */
 void mxcp_dispatch_frame(uint8_t type, const uint8_t *payload, uint8_t len)
 {
+    uint8_t cmd_id = 0;
+    size_t i = 0;
+
     if (MXCP_TYPE_IS_EVT(type)) {
         MESHX_LOGW(MODULE_ID_COMMON, "MXCP: received unexpected EVT frame 0x%02x", type);
         return;
     }
 
-    uint8_t cmd_id = MXCP_TYPE_ID(type);
+    cmd_id = MXCP_TYPE_ID(type);
 
-    for (size_t i = 0; i < MXCP_CMD_TABLE_SIZE; i++) {
+    for (i = 0; i < MXCP_CMD_TABLE_SIZE; i++) {
         if (mxcp_cmd_table[i].cmd_id == cmd_id) {
             mxcp_cmd_table[i].handler(payload, len);
             return;
@@ -132,21 +141,22 @@ void mxcp_dispatch_frame(uint8_t type, const uint8_t *payload, uint8_t len)
  * @brief Build and transmit a variable-length MXCP frame.
  *
  * Serialises [SOF][LEN][TYPE][PAYLOAD][CHK][EOF] into a flat buffer
- * and writes it to the UART.  No-op when hosted mode is disabled.
+ * and writes it to the UART. No-op when hosted mode is disabled.
  *
- * @param type    TYPE byte.
- * @param payload Payload bytes (may be NULL).
- * @param len     Payload length.
- * @return MESHX_SUCCESS.
+ * @param[in] type    TYPE byte.
+ * @param[in] payload Payload bytes (may be NULL).
+ * @param[in] len     Payload length in bytes.
+ *
+ * @return MESHX_SUCCESS on success.
  */
 meshx_err_t mxcp_send_frame(uint8_t type, const uint8_t *payload, uint8_t len)
 {
+    uint8_t frame_buff[3 + MXCP_PAYLOAD_MAX_SIZE + 2];
+    uint8_t ptr = 0;
+
     if (!mxsp_ctx.hosted_mode_enabled) {
         return MESHX_SUCCESS;
     }
-
-    uint8_t frame_buff[3 + MXCP_PAYLOAD_MAX_SIZE + 2];
-    uint8_t ptr = 0;
 
     frame_buff[ptr++] = MXCP_SOF;
     frame_buff[ptr++] = len;
@@ -165,10 +175,11 @@ meshx_err_t mxcp_send_frame(uint8_t type, const uint8_t *payload, uint8_t len)
 /**
  * @brief Send an MXCP event (Engine -> Host).
  *
- * @param evt_id  Event ID.
- * @param payload Typed event payload.
- * @param len     Payload length.
- * @return MESHX_SUCCESS.
+ * @param[in] evt_id  Event ID.
+ * @param[in] payload Typed event payload.
+ * @param[in] len     Payload length in bytes.
+ *
+ * @return MESHX_SUCCESS on success.
  */
 meshx_err_t mxcp_send_event(mxcp_evt_id_t evt_id, const uint8_t *payload, uint8_t len)
 {
@@ -179,10 +190,11 @@ meshx_err_t mxcp_send_event(mxcp_evt_id_t evt_id, const uint8_t *payload, uint8_
 /**
  * @brief Send an MXCP command (Host -> Engine).
  *
- * @param cmd_id  Command ID.
- * @param payload Typed command payload.
- * @param len     Payload length.
- * @return MESHX_SUCCESS.
+ * @param[in] cmd_id  Command ID.
+ * @param[in] payload Typed command payload.
+ * @param[in] len     Payload length in bytes.
+ *
+ * @return MESHX_SUCCESS on success.
  */
 meshx_err_t mxcp_send_cmd(mxcp_cmd_id_t cmd_id, const uint8_t *payload, uint8_t len)
 {
@@ -193,7 +205,7 @@ meshx_err_t mxcp_send_cmd(mxcp_cmd_id_t cmd_id, const uint8_t *payload, uint8_t 
 /**
  * @brief Query the composition builder and send the response as an MXCP event.
  *
- * @param evt_id MXCP_EVT_COMPOSITION_RSP or MXCP_EVT_ELEMENT_STATE_RSP.
+ * @param[in] evt_id MXCP_EVT_COMPOSITION_RSP or MXCP_EVT_ELEMENT_STATE_RSP.
  */
 void mxcp_send_element_info_response(mxcp_evt_id_t evt_id)
 {
@@ -212,20 +224,22 @@ void mxcp_send_element_info_response(mxcp_evt_id_t evt_id)
 /**
  * @brief Handle MXCP_CMD_HOSTED_MODE_ENABLE.
  *
- * Enables or disables hosted mode on the engine.  When disabled,
+ * Enables or disables hosted mode on the engine. When disabled,
  * the TX path silently discards all outgoing frames.
  *
- * @param payload  mxcp_cmd_hosted_mode_enable_t (enable != 0 to activate).
- * @param len      Must be >= sizeof(mxcp_cmd_hosted_mode_enable_t).
+ * @param[in] payload Pointer to mxcp_cmd_hosted_mode_enable_t (enable != 0 to activate).
+ * @param[in] len     Must be >= sizeof(mxcp_cmd_hosted_mode_enable_t).
  */
 static void mxcp_cmd_fn_hosted_mode(const uint8_t *payload, uint8_t len)
 {
+    mxcp_cmd_hosted_mode_enable_t cmd;
+    bool enabled = false;
+
     if (len < sizeof(mxcp_cmd_hosted_mode_enable_t)) {
         return;
     }
-    mxcp_cmd_hosted_mode_enable_t cmd;
     memcpy(&cmd, payload, sizeof(cmd));
-    bool enabled = (cmd.enable != 0);
+    enabled = (cmd.enable != 0);
     meshx_serial_set_hosted_mode(enabled);
     MESHX_LOGI(MODULE_ID_COMMON, "Hosted mode %s via MXCP", enabled ? "enabled" : "disabled");
 }
@@ -233,17 +247,116 @@ static void mxcp_cmd_fn_hosted_mode(const uint8_t *payload, uint8_t len)
 /**
  * @brief Handle MXCP_CMD_NODE_RESET.
  *
- * Triggers a platform-level reset of the engine.  This function
- * does not return if the reset is immediate.
+ * Erases dynamic composition schema from NVS and triggers a platform-level reset.
  *
- * @param payload  Unused.
- * @param len      Unused.
+ * @param[in] payload Unused.
+ * @param[in] len     Unused.
  */
 static void mxcp_cmd_fn_node_reset(const uint8_t *payload, uint8_t len)
 {
     (void)payload;
     (void)len;
+    meshx_nvs_comp_schema_erase();
     meshx_platform_reset();
+}
+
+/**
+ * @brief Software timer callback for scheduled reboot following composition change.
+ *
+ * @param[in] timer Pointer to the OS timer structure.
+ */
+static void mxcp_reboot_timer_cb(const meshx_os_timer_t *timer)
+{
+    (void)timer;
+    MESHX_LOGI(MODULE_ID_COMMON, "Rebooting MCU to apply new composition...");
+    meshx_platform_reset();
+}
+
+/**
+ * @brief Handle MXCP_CMD_SET_COMPOSITION.
+ *
+ * Configures the element composition remotely, commits it to NVS with override flag,
+ * sends response event to the host, and schedules a graceful reset.
+ *
+ * @param[in] payload Pointer to mxcp_cmd_set_composition_t followed by element_types array.
+ * @param[in] len     Total length of the payload in bytes.
+ */
+static void mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t len)
+{
+    static meshx_os_timer_t s_comp_reboot_timer;
+    mxcp_evt_set_composition_rsp_t rsp;
+    const mxcp_cmd_set_composition_t *cmd = NULL;
+    meshx_nvs_comp_schema_t schema;
+    meshx_err_t err = MESHX_SUCCESS;
+    size_t expected_len = 0;
+    uint16_t delay_ms = 0;
+    uint8_t i = 0;
+
+    rsp.status = MXCP_COMP_STATUS_SUCCESS;
+    rsp.element_count = 0;
+    rsp.reboot_delay_ms = 0;
+
+    if (len < sizeof(mxcp_cmd_set_composition_t)) {
+        rsp.status = MXCP_COMP_STATUS_ERR_INVALID_TYPE;
+        mxcp_send_event(MXCP_EVT_SET_COMPOSITION_RSP, (const uint8_t *)&rsp, sizeof(rsp));
+        return;
+    }
+
+    cmd = (const mxcp_cmd_set_composition_t *)payload;
+    expected_len = sizeof(mxcp_cmd_set_composition_t) + (cmd->element_count * sizeof(uint16_t));
+    if (len < expected_len) {
+        rsp.status = MXCP_COMP_STATUS_ERR_INVALID_TYPE;
+        mxcp_send_event(MXCP_EVT_SET_COMPOSITION_RSP, (const uint8_t *)&rsp, sizeof(rsp));
+        return;
+    }
+
+    if (cmd->element_count > CONFIG_MAX_ELEMENT_COUNT) {
+        rsp.status = MXCP_COMP_STATUS_ERR_COUNT_EXCEEDED;
+        rsp.element_count = cmd->element_count;
+        mxcp_send_event(MXCP_EVT_SET_COMPOSITION_RSP, (const uint8_t *)&rsp, sizeof(rsp));
+        return;
+    }
+
+    /* Validate element types */
+    for (i = 0; i < cmd->element_count; i++) {
+        if (cmd->element_types[i] >= MESHX_ELEMENT_TYPE_MAX) {
+            rsp.status = MXCP_COMP_STATUS_ERR_INVALID_TYPE;
+            mxcp_send_event(MXCP_EVT_SET_COMPOSITION_RSP, (const uint8_t *)&rsp, sizeof(rsp));
+            return;
+        }
+    }
+
+    /* Populate schema to save in NVS */
+    memset(&schema, 0, sizeof(schema));
+    schema.magic = MESHX_NVS_COMP_MAGIC;
+    schema.version = MESHX_NVS_COMP_VERSION;
+    schema.flags = MESHX_COMP_FLAG_OVERRIDE_RO;
+    schema.element_count = cmd->element_count;
+    for (i = 0; i < cmd->element_count; i++) {
+        schema.element_types[i] = cmd->element_types[i];
+    }
+
+    err = meshx_nvs_comp_schema_set(&schema);
+    if (err != MESHX_SUCCESS) {
+        rsp.status = MXCP_COMP_STATUS_ERR_NVS_WRITE;
+        mxcp_send_event(MXCP_EVT_SET_COMPOSITION_RSP, (const uint8_t *)&rsp, sizeof(rsp));
+        return;
+    }
+
+    delay_ms = cmd->reboot_delay_ms ? cmd->reboot_delay_ms : 500;
+    rsp.status = MXCP_COMP_STATUS_SUCCESS;
+    rsp.element_count = cmd->element_count;
+    rsp.reboot_delay_ms = delay_ms;
+
+    mxcp_send_event(MXCP_EVT_SET_COMPOSITION_RSP, (const uint8_t *)&rsp, sizeof(rsp));
+
+    /* Schedule reboot timer */
+    err = meshx_os_timer_create("mxcp_comp_rst", delay_ms, 0, mxcp_reboot_timer_cb, &s_comp_reboot_timer);
+    if (err == MESHX_SUCCESS) {
+        meshx_os_timer_start(&s_comp_reboot_timer);
+    } else {
+        meshx_platform_reset();
+    }
 }
 
 /**
@@ -252,8 +365,8 @@ static void mxcp_cmd_fn_node_reset(const uint8_t *payload, uint8_t len)
  * Requests both composition data and element state from the builder.
  * Sends MXCP_EVT_COMPOSITION_RSP followed by MXCP_EVT_ELEMENT_STATE_RSP.
  *
- * @param payload  Unused.
- * @param len      Unused.
+ * @param[in] payload Unused.
+ * @param[in] len     Unused.
  */
 static void mxcp_cmd_fn_get_composition(const uint8_t *payload, uint8_t len)
 {
@@ -269,8 +382,8 @@ static void mxcp_cmd_fn_get_composition(const uint8_t *payload, uint8_t len)
  * Requests element state data from the builder and sends
  * MXCP_EVT_ELEMENT_STATE_RSP to the host.
  *
- * @param payload  Unused.
- * @param len      Unused.
+ * @param[in] payload Unused.
+ * @param[in] len     Unused.
  */
 static void mxcp_cmd_fn_get_element_state(const uint8_t *payload, uint8_t len)
 {
@@ -284,15 +397,16 @@ static void mxcp_cmd_fn_get_element_state(const uint8_t *payload, uint8_t len)
  *
  * Enables or disables console routing for MXSP/MXCP debug output.
  *
- * @param payload  mxcp_cmd_set_console_routing_t (enable != 0 to route).
- * @param len      Must be >= sizeof(mxcp_cmd_set_console_routing_t).
+ * @param[in] payload Pointer to mxcp_cmd_set_console_routing_t (enable != 0 to route).
+ * @param[in] len     Must be >= sizeof(mxcp_cmd_set_console_routing_t).
  */
 static void mxcp_cmd_fn_set_console_routing(const uint8_t *payload, uint8_t len)
 {
+    mxcp_cmd_set_console_routing_t cmd;
+
     if (len < sizeof(mxcp_cmd_set_console_routing_t)) {
         return;
     }
-    mxcp_cmd_set_console_routing_t cmd;
     memcpy(&cmd, payload, sizeof(cmd));
     meshx_platform_set_mxsp_use_console(cmd.enable != 0);
 }
@@ -301,29 +415,32 @@ static void mxcp_cmd_fn_set_console_routing(const uint8_t *payload, uint8_t len)
  * @brief Handle MXCP_CMD_EL_SEND.
  *
  * Forwards element-bound data from the host to the target element
- * via meshx_send_msg_to_element().  The payload beyond the header
+ * via meshx_send_msg_to_element(). The payload beyond the header
  * is treated as the message body.
  *
- * @param payload  mxcp_cmd_el_send_t header followed by message body.
- * @param len      Must be >= sizeof(mxcp_cmd_el_send_t).
+ * @param[in] payload Pointer to mxcp_cmd_el_send_t header followed by message body.
+ * @param[in] len     Must be >= sizeof(mxcp_cmd_el_send_t).
  */
 static void mxcp_cmd_fn_el_send(const uint8_t *payload, uint8_t len)
 {
     mxcp_cmd_el_send_t hdr;
+    mxcp_evt_el_data_tx_notify_t tx_hdr;
+    uint32_t buf_size = 0;
+    uint8_t *buf = NULL;
+
     if (len >= sizeof(hdr)) {
         memcpy(&hdr, payload, sizeof(hdr));
         meshx_send_msg_to_element(hdr.element_id, hdr.element_type, hdr.func_id,
                                   len - sizeof(hdr),
                                   &payload[sizeof(hdr)]);
 
-        mxcp_evt_el_data_tx_notify_t tx_hdr;
         tx_hdr.element_id = hdr.element_id;
         tx_hdr.element_type = hdr.element_type;
         tx_hdr.func_id = hdr.func_id;
         tx_hdr.msg_len = len - sizeof(hdr);
 
-        uint32_t buf_size = sizeof(tx_hdr) + tx_hdr.msg_len;
-        uint8_t *buf = (uint8_t *)malloc(buf_size);
+        buf_size = sizeof(tx_hdr) + tx_hdr.msg_len;
+        buf = (uint8_t *)malloc(buf_size);
         if (buf) {
             memcpy(buf, &tx_hdr, sizeof(tx_hdr));
             if (tx_hdr.msg_len > 0) {
@@ -341,18 +458,20 @@ static void mxcp_cmd_fn_el_send(const uint8_t *payload, uint8_t len)
  * Sets the output level on a GPIO pin and sends a status-only response
  * (status + logical_pin, 2 bytes).
  *
- * @param payload  mxcp_cmd_gpio_set_level_t (logical_pin, level).
- * @param len      Must be >= sizeof(mxcp_cmd_gpio_set_level_t).
+ * @param[in] payload Pointer to mxcp_cmd_gpio_set_level_t (logical_pin, level).
+ * @param[in] len     Must be >= sizeof(mxcp_cmd_gpio_set_level_t).
  */
 static void mxcp_cmd_fn_gpio_set_level(const uint8_t *payload, uint8_t len)
 {
+    mxcp_cmd_gpio_set_level_t cmd;
+    mxcp_evt_gpio_rsp_t rsp;
+    meshx_err_t err = MESHX_SUCCESS;
+
     if (len < sizeof(mxcp_cmd_gpio_set_level_t)) {
         return;
     }
-    mxcp_cmd_gpio_set_level_t cmd;
     memcpy(&cmd, payload, sizeof(cmd));
-    meshx_err_t err = meshx_gpio_set_level(cmd.logical_pin, cmd.level);
-    mxcp_evt_gpio_rsp_t rsp;
+    err = meshx_gpio_set_level(cmd.logical_pin, cmd.level);
     memset(&rsp, 0, sizeof(rsp));
     rsp.status = (uint8_t)err;
     rsp.logical_pin = cmd.logical_pin;
@@ -366,19 +485,21 @@ static void mxcp_cmd_fn_gpio_set_level(const uint8_t *payload, uint8_t len)
  * Reads the current level of a GPIO pin and sends a typed response
  * (status + logical_pin + level, 3 bytes).
  *
- * @param payload  mxcp_cmd_gpio_get_level_t (logical_pin).
- * @param len      Must be >= sizeof(mxcp_cmd_gpio_get_level_t).
+ * @param[in] payload Pointer to mxcp_cmd_gpio_get_level_t (logical_pin).
+ * @param[in] len     Must be >= sizeof(mxcp_cmd_gpio_get_level_t).
  */
 static void mxcp_cmd_fn_gpio_get_level(const uint8_t *payload, uint8_t len)
 {
+    mxcp_cmd_gpio_get_level_t cmd;
+    mxcp_evt_gpio_rsp_t rsp;
+    uint8_t level = 0;
+    meshx_err_t err = MESHX_SUCCESS;
+
     if (len < sizeof(mxcp_cmd_gpio_get_level_t)) {
         return;
     }
-    mxcp_cmd_gpio_get_level_t cmd;
     memcpy(&cmd, payload, sizeof(cmd));
-    uint8_t level = 0;
-    meshx_err_t err = meshx_gpio_get_level(cmd.logical_pin, &level);
-    mxcp_evt_gpio_rsp_t rsp;
+    err = meshx_gpio_get_level(cmd.logical_pin, &level);
     memset(&rsp, 0, sizeof(rsp));
     rsp.status = (uint8_t)err;
     rsp.logical_pin = cmd.logical_pin;
@@ -395,23 +516,25 @@ static void mxcp_cmd_fn_gpio_get_level(const uint8_t *payload, uint8_t len)
  * Toggles the output level of a GPIO pin, reads back the new level,
  * and sends a typed response (status + logical_pin + level, 3 bytes).
  *
- * @param payload  mxcp_cmd_gpio_toggle_t (logical_pin).
- * @param len      Must be >= sizeof(mxcp_cmd_gpio_toggle_t).
+ * @param[in] payload Pointer to mxcp_cmd_gpio_toggle_t (logical_pin).
+ * @param[in] len     Must be >= sizeof(mxcp_cmd_gpio_toggle_t).
  */
 static void mxcp_cmd_fn_gpio_toggle(const uint8_t *payload, uint8_t len)
 {
+    mxcp_cmd_gpio_toggle_t cmd;
+    mxcp_evt_gpio_rsp_t rsp;
+    uint8_t level = 0;
+    meshx_err_t err = MESHX_SUCCESS;
+
     if (len < sizeof(mxcp_cmd_gpio_toggle_t)) {
         return;
     }
-    mxcp_cmd_gpio_toggle_t cmd;
     memcpy(&cmd, payload, sizeof(cmd));
-    meshx_err_t err = meshx_gpio_toggle(cmd.logical_pin);
-    mxcp_evt_gpio_rsp_t rsp;
+    err = meshx_gpio_toggle(cmd.logical_pin);
     memset(&rsp, 0, sizeof(rsp));
     rsp.status = (uint8_t)err;
     rsp.logical_pin = cmd.logical_pin;
     if (err == MESHX_SUCCESS) {
-        uint8_t level = 0;
         meshx_gpio_get_level(cmd.logical_pin, &level);
         rsp.data.toggle.level = level;
     }
@@ -425,21 +548,24 @@ static void mxcp_cmd_fn_gpio_toggle(const uint8_t *payload, uint8_t len)
  * Sets the PWM duty cycle on a GPIO pin via meshx_gpio_execute_function()
  * and sends a status-only response (status + logical_pin, 2 bytes).
  *
- * @param payload  mxcp_cmd_gpio_set_pwm_duty_t (logical_pin, duty_cycle).
- * @param len      Must be >= sizeof(mxcp_cmd_gpio_set_pwm_duty_t).
+ * @param[in] payload Pointer to mxcp_cmd_gpio_set_pwm_duty_t (logical_pin, duty_cycle).
+ * @param[in] len     Must be >= sizeof(mxcp_cmd_gpio_set_pwm_duty_t).
  */
 static void mxcp_cmd_fn_gpio_set_pwm_duty(const uint8_t *payload, uint8_t len)
 {
+    mxcp_cmd_gpio_set_pwm_duty_t cmd;
+    mxcp_evt_gpio_rsp_t rsp;
+    uint32_t args[1];
+    meshx_err_t err = MESHX_SUCCESS;
+
     if (len < sizeof(mxcp_cmd_gpio_set_pwm_duty_t)) {
         return;
     }
-    mxcp_cmd_gpio_set_pwm_duty_t cmd;
     memcpy(&cmd, payload, sizeof(cmd));
-    uint32_t args[1] = { cmd.duty_cycle };
-    meshx_err_t err = meshx_gpio_execute_function(cmd.logical_pin,
-                                                   MESHX_IO_FUNCTION_SET_PWM_DUTY,
-                                                   args, 1);
-    mxcp_evt_gpio_rsp_t rsp;
+    args[0] = cmd.duty_cycle;
+    err = meshx_gpio_execute_function(cmd.logical_pin,
+                                      MESHX_IO_FUNCTION_SET_PWM_DUTY,
+                                      args, 1);
     memset(&rsp, 0, sizeof(rsp));
     rsp.status = (uint8_t)err;
     rsp.logical_pin = cmd.logical_pin;
@@ -452,21 +578,24 @@ static void mxcp_cmd_fn_gpio_set_pwm_duty(const uint8_t *payload, uint8_t len)
  * Sets the PWM frequency on a GPIO pin via meshx_gpio_execute_function()
  * and sends a status-only response (status + logical_pin, 2 bytes).
  *
- * @param payload  mxcp_cmd_gpio_set_pwm_freq_t (logical_pin, frequency).
- * @param len      Must be >= sizeof(mxcp_cmd_gpio_set_pwm_freq_t).
+ * @param[in] payload Pointer to mxcp_cmd_gpio_set_pwm_freq_t (logical_pin, frequency).
+ * @param[in] len     Must be >= sizeof(mxcp_cmd_gpio_set_pwm_freq_t).
  */
 static void mxcp_cmd_fn_gpio_set_pwm_freq(const uint8_t *payload, uint8_t len)
 {
+    mxcp_cmd_gpio_set_pwm_freq_t cmd;
+    mxcp_evt_gpio_rsp_t rsp;
+    uint32_t args[1];
+    meshx_err_t err = MESHX_SUCCESS;
+
     if (len < sizeof(mxcp_cmd_gpio_set_pwm_freq_t)) {
         return;
     }
-    mxcp_cmd_gpio_set_pwm_freq_t cmd;
     memcpy(&cmd, payload, sizeof(cmd));
-    uint32_t args[1] = { cmd.frequency };
-    meshx_err_t err = meshx_gpio_execute_function(cmd.logical_pin,
-                                                   MESHX_IO_FUNCTION_SET_PWM_FREQUENCY,
-                                                   args, 1);
-    mxcp_evt_gpio_rsp_t rsp;
+    args[0] = cmd.frequency;
+    err = meshx_gpio_execute_function(cmd.logical_pin,
+                                      MESHX_IO_FUNCTION_SET_PWM_FREQUENCY,
+                                      args, 1);
     memset(&rsp, 0, sizeof(rsp));
     rsp.status = (uint8_t)err;
     rsp.logical_pin = cmd.logical_pin;
@@ -479,19 +608,22 @@ static void mxcp_cmd_fn_gpio_set_pwm_freq(const uint8_t *payload, uint8_t len)
  * Enables or disables interrupt registration on a GPIO pin and sends
  * a status-only response (status + logical_pin, 2 bytes).
  *
- * @param payload  mxcp_cmd_gpio_intr_enable_t (logical_pin, enable).
- * @param len      Must be >= sizeof(mxcp_cmd_gpio_intr_enable_t).
+ * @param[in] payload Pointer to mxcp_cmd_gpio_intr_enable_t (logical_pin, enable).
+ * @param[in] len     Must be >= sizeof(mxcp_cmd_gpio_intr_enable_t).
  */
 static void mxcp_cmd_fn_gpio_intr_enable(const uint8_t *payload, uint8_t len)
 {
+    mxcp_cmd_gpio_intr_enable_t cmd;
+    mxcp_evt_gpio_rsp_t rsp;
+    bool enable = false;
+    meshx_err_t err = MESHX_SUCCESS;
+
     if (len < sizeof(mxcp_cmd_gpio_intr_enable_t)) {
         return;
     }
-    mxcp_cmd_gpio_intr_enable_t cmd;
     memcpy(&cmd, payload, sizeof(cmd));
-    bool enable = (cmd.enable != 0);
-    meshx_err_t err = meshx_gpio_intr_enable(cmd.logical_pin, enable);
-    mxcp_evt_gpio_rsp_t rsp;
+    enable = (cmd.enable != 0);
+    err = meshx_gpio_intr_enable(cmd.logical_pin, enable);
     memset(&rsp, 0, sizeof(rsp));
     rsp.status = (uint8_t)err;
     rsp.logical_pin = cmd.logical_pin;
@@ -504,18 +636,20 @@ static void mxcp_cmd_fn_gpio_intr_enable(const uint8_t *payload, uint8_t len)
  * Disables interrupt registration on a GPIO pin (always passes false)
  * and sends a status-only response (status + logical_pin, 2 bytes).
  *
- * @param payload  mxcp_cmd_gpio_intr_disable_t (logical_pin).
- * @param len      Must be >= sizeof(mxcp_cmd_gpio_intr_disable_t).
+ * @param[in] payload Pointer to mxcp_cmd_gpio_intr_disable_t (logical_pin).
+ * @param[in] len     Must be >= sizeof(mxcp_cmd_gpio_intr_disable_t).
  */
 static void mxcp_cmd_fn_gpio_intr_disable(const uint8_t *payload, uint8_t len)
 {
+    mxcp_cmd_gpio_intr_disable_t cmd;
+    mxcp_evt_gpio_rsp_t rsp;
+    meshx_err_t err = MESHX_SUCCESS;
+
     if (len < sizeof(mxcp_cmd_gpio_intr_disable_t)) {
         return;
     }
-    mxcp_cmd_gpio_intr_disable_t cmd;
     memcpy(&cmd, payload, sizeof(cmd));
-    meshx_err_t err = meshx_gpio_intr_enable(cmd.logical_pin, false);
-    mxcp_evt_gpio_rsp_t rsp;
+    err = meshx_gpio_intr_enable(cmd.logical_pin, false);
     memset(&rsp, 0, sizeof(rsp));
     rsp.status = (uint8_t)err;
     rsp.logical_pin = cmd.logical_pin;
@@ -529,19 +663,21 @@ static void mxcp_cmd_fn_gpio_intr_disable(const uint8_t *payload, uint8_t len)
  * initial level, signal inversion) and sends a typed response
  * (status + logical_pin + 5 config bytes = 7 bytes).
  *
- * @param payload  mxcp_cmd_gpio_get_config_t (logical_pin).
- * @param len      Must be >= sizeof(mxcp_cmd_gpio_get_config_t).
+ * @param[in] payload Pointer to mxcp_cmd_gpio_get_config_t (logical_pin).
+ * @param[in] len     Must be >= sizeof(mxcp_cmd_gpio_get_config_t).
  */
 static void mxcp_cmd_fn_gpio_get_config(const uint8_t *payload, uint8_t len)
 {
+    mxcp_cmd_gpio_get_config_t cmd;
+    meshx_gpio_pin_config_t config;
+    mxcp_evt_gpio_rsp_t rsp;
+    meshx_err_t err = MESHX_SUCCESS;
+
     if (len < sizeof(mxcp_cmd_gpio_get_config_t)) {
         return;
     }
-    mxcp_cmd_gpio_get_config_t cmd;
     memcpy(&cmd, payload, sizeof(cmd));
-    meshx_gpio_pin_config_t config;
-    meshx_err_t err = meshx_gpio_get_pin_config(cmd.logical_pin, &config);
-    mxcp_evt_gpio_rsp_t rsp;
+    err = meshx_gpio_get_pin_config(cmd.logical_pin, &config);
     memset(&rsp, 0, sizeof(rsp));
     rsp.status = (uint8_t)err;
     rsp.logical_pin = cmd.logical_pin;
@@ -563,19 +699,21 @@ static void mxcp_cmd_fn_gpio_get_config(const uint8_t *payload, uint8_t len)
  * interrupt type) and sends a typed response
  * (status + logical_pin + 3 state bytes = 5 bytes).
  *
- * @param payload  mxcp_cmd_gpio_get_state_t (logical_pin).
- * @param len      Must be >= sizeof(mxcp_cmd_gpio_get_state_t).
+ * @param[in] payload Pointer to mxcp_cmd_gpio_get_state_t (logical_pin).
+ * @param[in] len     Must be >= sizeof(mxcp_cmd_gpio_get_state_t).
  */
 static void mxcp_cmd_fn_gpio_get_state(const uint8_t *payload, uint8_t len)
 {
+    mxcp_cmd_gpio_get_state_t cmd;
+    meshx_gpio_pin_state_t state;
+    mxcp_evt_gpio_rsp_t rsp;
+    meshx_err_t err = MESHX_SUCCESS;
+
     if (len < sizeof(mxcp_cmd_gpio_get_state_t)) {
         return;
     }
-    mxcp_cmd_gpio_get_state_t cmd;
     memcpy(&cmd, payload, sizeof(cmd));
-    meshx_gpio_pin_state_t state;
-    meshx_err_t err = meshx_gpio_get_pin_state(cmd.logical_pin, &state);
-    mxcp_evt_gpio_rsp_t rsp;
+    err = meshx_gpio_get_pin_state(cmd.logical_pin, &state);
     memset(&rsp, 0, sizeof(rsp));
     rsp.status = (uint8_t)err;
     rsp.logical_pin = cmd.logical_pin;

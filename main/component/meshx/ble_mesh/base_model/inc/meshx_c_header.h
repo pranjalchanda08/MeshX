@@ -23,6 +23,7 @@ extern "C" {
 #include <meshx_nvs.h>
 #include <meshx_platform_ble_mesh.h>
 #include <meshx_relay_msg_defs.h>
+#include <meshx_serial.h>
 
 /*************************************************************
  * Interface Header

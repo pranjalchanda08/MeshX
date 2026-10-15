@@ -85,6 +85,15 @@ static meshx_os_timer_t *g_boot_timer;
 
 /**
  * @brief Control task handler for the provisioning server.
+ *
+ * Translates provisioning server events into control task messages.
+ *
+ * @param[in] pdev       Pointer to the device structure.
+ * @param[in] evt        Control task message event ID.
+ * @param[in] params     Pointer to provisioning callback parameters.
+ * @param[in] params_len Length of parameter buffer.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
  */
 static meshx_err_t meshx_prov_srv_control_task_handler(
     dev_struct_t *pdev,
@@ -93,13 +102,14 @@ static meshx_err_t meshx_prov_srv_control_task_handler(
     uint16_t params_len)
 {
     meshx_prov_srv_param_t *p_params = (meshx_prov_srv_param_t *)params;
+    control_task_msg_evt_provision_t prov_evt = (control_task_msg_evt_provision_t)0;
+
     if (!pdev || !p_params)
     {
         return MESHX_INVALID_ARG;
     }
     MESHX_UNUSED(params_len);
     init_prov_cb_table();
-    control_task_msg_evt_provision_t prov_evt = (control_task_msg_evt_provision_t)0;
     if(evt != CONTROL_TASK_MSG_EVT_PROVISION_ALL)
     {
         return MESHX_INVALID_ARG;
@@ -136,23 +146,34 @@ static meshx_err_t meshx_prov_srv_control_task_handler(
 
 /**
  * @brief Handle node reset event.
+ *
+ * Clears persistent element contexts, erases dynamic composition schema from NVS,
+ * notifies the application, and initiates platform reset.
+ *
+ * @param[in] pdev Pointer to device structure.
  */
 static void meshx_handle_node_reset(dev_struct_t *pdev)
 {
-    if(!pdev)
+    size_t i = 0;
+    meshx_err_t err = MESHX_SUCCESS;
+
+    if (!pdev)
     {
         MESHX_LOGE(MODULE_ID_COMMON, "Invalid device structure");
         return;
     }
 
-    for(size_t i = 1; i < pdev->element_idx; ++i)
+    for (i = 1; i < pdev->element_idx; ++i)
     {
-        meshx_err_t err = meshx_nvs_element_ctx_remove(static_cast<uint16_t>(i), MESHX_ELEMENT_TYPE_ALL);
-        if(err != MESHX_SUCCESS)
+        err = meshx_nvs_element_ctx_remove(static_cast<uint16_t>(i), MESHX_ELEMENT_TYPE_ALL);
+        if (err != MESHX_SUCCESS)
         {
             MESHX_LOGE(MODULE_ID_COMMON, "Failed to erase element context (%zu): (%d)", i, err);
         }
     }
+
+    /* Erase dynamic composition schema from NVS */
+    meshx_nvs_comp_schema_erase();
 
     /* Notify application about node reset */
     meshx_send_ctrl_msg_to_app(MESHX_CTRL_EVT_NODE_RESET, 0, NULL);
@@ -195,6 +216,11 @@ static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_t
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Register callback for provisioning control task messages.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
 extern "C" meshx_err_t meshx_prov_srv_meshx_reg_cb(void)
 {
     return control_task_msg_subscribe(
@@ -203,31 +229,49 @@ extern "C" meshx_err_t meshx_prov_srv_meshx_reg_cb(void)
         (control_task_msg_handle_t)&meshx_prov_control_task_handler);
 }
 
+/**
+ * @brief Callback invoked when the fresh boot timer expires.
+ *
+ * @param[in] p_timer Pointer to the OS timer structure.
+ */
 static void meshx_init_freshboot_timer_trigger_cb(const meshx_os_timer_t* p_timer)
 {
+    meshx_err_t err = MESHX_SUCCESS;
+
     MESHX_UNUSED(p_timer);
     MESHX_LOGD(MODULE_ID_COMMON, "Fresh Boot Timer Expired");
 
-    meshx_err_t err = control_task_msg_publish(
+    err = control_task_msg_publish(
         CONTROL_TASK_MSG_CODE_PROVISION,
         CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT,
         NULL,
         0
     );
-    if(err)
+    if (err)
     {
         MESHX_LOGE(MODULE_ID_COMMON, "Failed to publish fresh boot event: (%d)", err);
     }
 }
 
+/**
+ * @brief Initialize and start the fresh boot timer for provisioned devices.
+ *
+ * @param[in] p_dev      Pointer to device structure.
+ * @param[in] timeout_ms Timer timeout in milliseconds.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
 static meshx_err_t meshx_init_freshboot_timer(dev_struct_t *p_dev, uint16_t timeout_ms)
 {
-    if(p_dev->meshx_store.node_addr == MESHX_ADDR_UNASSIGNED)
+    meshx_err_t err = MESHX_SUCCESS;
+
+    if (p_dev->meshx_store.node_addr == MESHX_ADDR_UNASSIGNED)
     {
         MESHX_LOGI(MODULE_ID_COMMON, "Device not provisioned, not starting boot timer");
         return MESHX_SUCCESS;
     }
-    meshx_err_t err = meshx_os_timer_create("boot_timer",
+
+    err = meshx_os_timer_create("boot_timer",
         timeout_ms,
         false,
         meshx_init_freshboot_timer_trigger_cb,
@@ -247,6 +291,11 @@ static meshx_err_t meshx_init_freshboot_timer(dev_struct_t *p_dev, uint16_t time
     return err;
 }
 
+/**
+ * @brief Register callback for platform provisioning events.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
 extern "C" meshx_err_t meshx_prov_srv_reg_from_ble_cb(void)
 {
     init_prov_cb_table();
@@ -257,15 +306,25 @@ extern "C" meshx_err_t meshx_prov_srv_reg_from_ble_cb(void)
     );
 }
 
+/**
+ * @brief Initialize provisioning service with device configuration.
+ *
+ * @param[in] p_dev    Pointer to device structure.
+ * @param[in] prov_cfg Pointer to provisioning parameters.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
 extern "C" meshx_err_t meshx_init_prov(dev_struct_t *p_dev, const meshx_prov_params_t *prov_cfg)
 {
+    meshx_err_t err = MESHX_SUCCESS;
+
     if (!prov_cfg || memcmp(prov_cfg->uuid, MESHX_UUID_EMPTY, sizeof(meshx_uuid_addr_t)) == 0)
     {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid server configuration");
         return MESHX_INVALID_ARG;
     }
 
-    meshx_err_t err = meshx_prov_srv_reg_from_ble_cb();
+    err = meshx_prov_srv_reg_from_ble_cb();
     if (err != MESHX_SUCCESS)
     {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to register provisioning callback");
@@ -289,6 +348,13 @@ extern "C" meshx_err_t meshx_init_prov(dev_struct_t *p_dev, const meshx_prov_par
     return meshx_plat_init_prov(prov_cfg->uuid);
 }
 
+/**
+ * @brief Register client element callback for provisioning events.
+ *
+ * @param[in] cb Callback function to register.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
 extern "C" meshx_err_t meshx_prov_srv_reg_el_client_cb(prov_srv_cb_t cb)
 {
     return control_task_msg_subscribe(
@@ -298,6 +364,13 @@ extern "C" meshx_err_t meshx_prov_srv_reg_el_client_cb(prov_srv_cb_t cb)
     );
 }
 
+/**
+ * @brief Register server element callback for provisioning events.
+ *
+ * @param[in] cb Callback function to register.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
 extern "C" meshx_err_t meshx_prov_srv_reg_el_server_cb(prov_srv_cb_t cb)
 {
     return control_task_msg_subscribe(
@@ -307,6 +380,13 @@ extern "C" meshx_err_t meshx_prov_srv_reg_el_server_cb(prov_srv_cb_t cb)
     );
 }
 
+/**
+ * @brief Publish a platform provisioning event to control task.
+ *
+ * @param[in] param Pointer to provisioning parameter structure.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
 extern "C" meshx_err_t meshx_prov_srv_notify_plat_event(meshx_prov_srv_param_t *param)
 {
     if (!param)
@@ -322,6 +402,11 @@ extern "C" meshx_err_t meshx_prov_srv_notify_plat_event(meshx_prov_srv_param_t *
     );
 }
 
+/**
+ * @brief Check if the device is currently provisioned.
+ *
+ * @return true if provisioned, false otherwise.
+ */
 extern "C" bool meshx_prov_srv_is_provisioned(void)
 {
     uint16_t primary_addr = 0;

@@ -55,10 +55,21 @@ meshx_err_t meshx_restore_all_element_ctx(void);
 void meshx_builder_add_element(meshx_element_type_t type, uint16_t count);
 
 /**
- * @brief C-friendly builder lifecycle functions
+ * @brief Resets and starts a new dynamic composition build session.
  */
 void meshx_builder_begin(void);
+
+/**
+ * @brief Commits the pending dynamic composition build session.
+ */
 void meshx_builder_commit(void);
+
+/**
+ * @brief Saves the current dynamic composition schema to NVS.
+ * @param override_ro true if this schema should override factory read-only config.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_builder_save_to_nvs(bool override_ro);
 
 /**
  * @brief Retrieves element composition data into a byte buffer for serial transmission.
