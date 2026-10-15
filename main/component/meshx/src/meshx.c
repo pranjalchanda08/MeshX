@@ -61,17 +61,51 @@ static MESHX_ELEMENT g_legacy_elements[MAX_ELE_CNT];
 /**
  * @brief Initializes BLE Mesh elements.
  *
- * @param[in] p_dev     Pointer to the device structure.
- * @param[in] config    Pointer to the meshX configuration.
+ * Checks for a dynamic composition from RO configuration or NVS schema.
+ * If found, bakes the composition into the platform device structure and
+ * restores persistent element contexts. Falls back to default personality if needed.
+ *
+ * @param[in] p_dev  Pointer to the device structure.
+ * @param[in] config Pointer to the meshX configuration.
  *
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
 static meshx_err_t meshx_element_init(dev_struct_t *p_dev, meshx_config_t const *config)
 {
-    if (!p_dev)
-        return MESHX_INVALID_STATE;
+    meshx_err_t err        = MESHX_SUCCESS;
+    meshx_err_t schema_err = MESHX_FAIL;
+    bool has_nvs_override  = false;
+    uint8_t i              = 0;
+    meshx_nvs_comp_schema_t schema;
 
-    meshx_err_t err = MESHX_SUCCESS;
+    if (!p_dev) {
+        return MESHX_INVALID_STATE;
+    }
+
+    /* Check if an NVS composition schema exists */
+    schema_err = meshx_nvs_comp_schema_get(&schema);
+    has_nvs_override = (schema_err == MESHX_SUCCESS && (schema.flags & MESHX_COMP_FLAG_OVERRIDE_RO) && schema.element_count > 0);
+
+    /* Apply NVS composition if it overrides RO config or if builder has no active elements */
+    if (has_nvs_override || !meshx_builder_is_active()) {
+        if (schema_err == MESHX_SUCCESS && schema.element_count > 0) {
+            MESHX_LOGI(MODULE_ID_COMMON, "Applying composition from NVS (%d elements%s)",
+                       schema.element_count, has_nvs_override ? ", override active" : "");
+            meshx_builder_begin();
+            for (i = 0; i < schema.element_count; i++) {
+                meshx_builder_add_element((meshx_element_type_t)schema.element_types[i], 1);
+            }
+            meshx_builder_commit();
+        }
+    }
+
+    /* Fallback: if no composition was defined, use default Relay Server */
+    if (!meshx_builder_is_active()) {
+        MESHX_LOGW(MODULE_ID_COMMON, "No dynamic composition configured. Using default Relay Server.");
+        meshx_builder_begin();
+        meshx_builder_add_element(MESHX_ELEMENT_TYPE_RELAY_SERVER, 1);
+        meshx_builder_commit();
+    }
 
     if (meshx_builder_is_active()) {
         MESHX_LOGD(MODULE_ID_COMMON, "Dynamic Composition detected. Baking...");

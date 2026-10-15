@@ -51,6 +51,7 @@ typedef enum {
     MXCP_CMD_GET_COMPOSITION       = 0x03,
     MXCP_CMD_GET_ELEMENT_STATE     = 0x04,
     MXCP_CMD_SET_CONSOLE_ROUTING   = 0x05,
+    MXCP_CMD_SET_COMPOSITION       = 0x06,
 
     MXCP_CMD_EL_SEND               = 0x10,
 
@@ -82,6 +83,7 @@ typedef enum {
     MXCP_EVT_NODE_RESET_IND        = 0x08,
     MXCP_EVT_HOSTED_MODE_RSP       = 0x09,
     MXCP_EVT_CONSOLE_ROUTING_RSP   = 0x0A,
+    MXCP_EVT_SET_COMPOSITION_RSP   = 0x0B,
 
     MXCP_EVT_EL_DATA_RX_NOTIFY     = 0x10,
     MXCP_EVT_EL_DATA_TX_NOTIFY     = 0x11,
@@ -171,6 +173,25 @@ typedef struct {
 typedef struct {
     uint8_t element_count;
 } mxcp_evt_composition_rsp_t;
+
+typedef enum {
+    MXCP_COMP_STATUS_SUCCESS            = 0x00,
+    MXCP_COMP_STATUS_ERR_COUNT_EXCEEDED = 0x01,
+    MXCP_COMP_STATUS_ERR_INVALID_TYPE   = 0x02,
+    MXCP_COMP_STATUS_ERR_NVS_WRITE      = 0x03,
+} mxcp_comp_status_t;
+
+typedef struct {
+    uint8_t  element_count;
+    uint16_t reboot_delay_ms;
+    uint16_t element_types[0];
+} mxcp_cmd_set_composition_t;
+
+typedef struct {
+    uint8_t  status;
+    uint8_t  element_count;
+    uint16_t reboot_delay_ms;
+} mxcp_evt_set_composition_rsp_t;
 
 typedef struct {
     uint8_t element_count;
@@ -279,9 +300,9 @@ typedef struct {
 /**
  * @brief Dispatch a received MXCP frame to the matching command handler.
  *
- * @param type    TYPE byte from the frame (direction + ID).
- * @param payload Pointer to the payload bytes.
- * @param len     Payload length in bytes.
+ * @param[in] type    TYPE byte from the frame (direction + ID).
+ * @param[in] payload Pointer to the payload bytes.
+ * @param[in] len     Payload length in bytes.
  */
 void mxcp_dispatch_frame(uint8_t type, const uint8_t *payload, uint8_t len);
 
@@ -290,9 +311,10 @@ void mxcp_dispatch_frame(uint8_t type, const uint8_t *payload, uint8_t len);
  *
  * Frames are only sent when hosted mode is enabled.
  *
- * @param type    TYPE byte (direction + ID).
- * @param payload Pointer to payload bytes (may be NULL if len == 0).
- * @param len     Payload length in bytes.
+ * @param[in] type    TYPE byte (direction + ID).
+ * @param[in] payload Pointer to payload bytes (may be NULL if len == 0).
+ * @param[in] len     Payload length in bytes.
+ *
  * @return MESHX_SUCCESS on success.
  */
 meshx_err_t mxcp_send_frame(uint8_t type, const uint8_t *payload, uint8_t len);
@@ -300,9 +322,10 @@ meshx_err_t mxcp_send_frame(uint8_t type, const uint8_t *payload, uint8_t len);
 /**
  * @brief Send an MXCP event (Engine -> Host).
  *
- * @param evt_id  Event ID from @ref mxcp_evt_id_t.
- * @param payload Pointer to the typed event payload.
- * @param len     Payload length in bytes.
+ * @param[in] evt_id  Event ID from @ref mxcp_evt_id_t.
+ * @param[in] payload Pointer to the typed event payload.
+ * @param[in] len     Payload length in bytes.
+ *
  * @return MESHX_SUCCESS on success.
  */
 meshx_err_t mxcp_send_event(mxcp_evt_id_t evt_id, const uint8_t *payload, uint8_t len);
@@ -310,9 +333,10 @@ meshx_err_t mxcp_send_event(mxcp_evt_id_t evt_id, const uint8_t *payload, uint8_
 /**
  * @brief Send an MXCP command (Host -> Engine).
  *
- * @param cmd_id  Command ID from @ref mxcp_cmd_id_t.
- * @param payload Pointer to the typed command payload.
- * @param len     Payload length in bytes.
+ * @param[in] cmd_id  Command ID from @ref mxcp_cmd_id_t.
+ * @param[in] payload Pointer to the typed command payload.
+ * @param[in] len     Payload length in bytes.
+ *
  * @return MESHX_SUCCESS on success.
  */
 meshx_err_t mxcp_send_cmd(mxcp_cmd_id_t cmd_id, const uint8_t *payload, uint8_t len);
@@ -323,7 +347,7 @@ meshx_err_t mxcp_send_cmd(mxcp_cmd_id_t cmd_id, const uint8_t *payload, uint8_t 
  * Queries the composition builder for the requested data and sends it
  * as an MXCP event.
  *
- * @param evt_id  MXCP_EVT_COMPOSITION_RSP or MXCP_EVT_ELEMENT_STATE_RSP.
+ * @param[in] evt_id MXCP_EVT_COMPOSITION_RSP or MXCP_EVT_ELEMENT_STATE_RSP.
  */
 void mxcp_send_element_info_response(mxcp_evt_id_t evt_id);
 
