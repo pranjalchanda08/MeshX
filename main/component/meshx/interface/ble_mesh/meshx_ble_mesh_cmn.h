@@ -66,8 +66,7 @@ typedef struct meshx_prov_params
  * @brief Checks if a model is subscribed to a specific group address.
  *
  * This function determines whether the specified BLE Mesh model is subscribed
- * to a given group address by utilizing the internal function
- * esp_ble_mesh_is_model_subscribed_to_group.
+ * to a given group address by querying the platform BLE Mesh stack.
  *
  * @param[in] p_model   Pointer to the BLE Mesh model structure.
  * @param[in] addr      The group address to check for subscription.

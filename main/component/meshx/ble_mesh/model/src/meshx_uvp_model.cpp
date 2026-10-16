@@ -145,8 +145,7 @@ meshx_err_t meshXUVPModel::plat_model_create(MESHX_MODEL* p_baked_model) {
     meshx_plat_bind_uvp_opcodes(p_baked_model);
 
     /*
-     * Note: Opcode handling and callbacks are registered globally in the port layer
-     * via esp_ble_mesh_register_custom_model_callback.
+     * Note: Opcode handling and callbacks are registered globally in the port layer.
      */
     this->set_plat_model(p_baked_model);
     return MESHX_SUCCESS;
