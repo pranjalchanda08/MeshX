@@ -15,6 +15,8 @@
 #include "interface/utils/meshx_nvs_interface.h"
 #include "meshx_control_task.h"
 #include "interface/utils/meshx_tiny_printf.h"
+#include "meshx_group_allocator.h"
+#include "meshx_compat_matrix.h"
 #include <stddef.h>
 
 #define MESHX_NVS_INIT_MAGIC        0x5489
@@ -760,6 +762,11 @@ typedef enum meshx_nvs_cli_cmd{
     MESHX_NVS_CLI_CMD_SCHEMA_GET,   /* ut 3 8 0 */
     MESHX_NVS_CLI_CMD_SCHEMA_ERASE, /* ut 3 9 0 */
     MESHX_NVS_CLI_CMD_SCHEMA_CORRUPT,/* ut 3 10 0 */
+    MESHX_NVS_CLI_CMD_LINK_SET,     /* ut 3 11 0 */
+    MESHX_NVS_CLI_CMD_LINK_GET,     /* ut 3 12 0 */
+    MESHX_NVS_CLI_CMD_LINK_ERASE,   /* ut 3 13 0 */
+    MESHX_NVS_CLI_CMD_LINK_RECONCILE,/* ut 3 14 0 */
+    MESHX_NVS_CLI_CMD_GROUP_ALLOC_TEST,/* ut 3 15 0 */
     MESHX_NVS_CLI_MAX
 }meshx_nvs_cli_cmd_t;
 
@@ -786,6 +793,8 @@ static meshx_err_t meshx_nvs_unit_test_cb_handler(int cmd_id, int argc, char **a
     bool arm_timer = false;
     meshx_nvs_comp_schema_t test_schema;
     meshx_nvs_comp_schema_t read_schema;
+    meshx_nvs_link_table_t  test_link_table;
+    meshx_nvs_link_table_t  read_link_table;
     uint8_t count = 0;
     uint8_t i = 0;
 
@@ -897,6 +906,151 @@ static meshx_err_t meshx_nvs_unit_test_cb_handler(int cmd_id, int argc, char **a
             } else {
                 MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "UT SCHEMA_CORRUPT FAIL: corrupted schema was accepted!");
                 err = MESHX_INVALID_STATE;
+            }
+            break;
+        case MESHX_NVS_CLI_CMD_LINK_SET:
+            memset(&test_link_table, 0, sizeof(test_link_table));
+            test_link_table.link_epoch = 1;
+            test_link_table.link_count = 2;
+            /* Link 0: Self-pairing (Intra-node 1:1 direct link: Element 0 Switch -> Element 1 Relay) */
+            test_link_table.links[0].local_element_idx   = 0;
+            test_link_table.links[0].bound_variant       = 1;
+            test_link_table.links[0].target_unicast_addr = 0x0011;
+            test_link_table.links[0].target_group_addr   = 0x0000;
+            test_link_table.links[0].func_id             = 0x0000;
+            test_link_table.links[0].active              = 1;
+            /* Link 1: 1:N Group Link (Anchor = Switch 0x0010, group = 0xC010) */
+            test_link_table.links[1].local_element_idx   = 0;
+            test_link_table.links[1].bound_variant       = 1;
+            test_link_table.links[1].target_unicast_addr = 0x0025;
+            test_link_table.links[1].target_group_addr   = 0xC010;
+            test_link_table.links[1].func_id             = 0x0000;
+            test_link_table.links[1].active              = 1;
+
+            err = meshx_nvs_link_table_set(&test_link_table);
+            if (err == MESHX_SUCCESS)
+            {
+                MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "UT LINK_SET PASS: epoch=%u count=%u",
+                           test_link_table.link_epoch, test_link_table.link_count);
+            }
+            else
+            {
+                MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "UT LINK_SET FAIL: err=%d", err);
+            }
+            break;
+
+        case MESHX_NVS_CLI_CMD_LINK_GET:
+            memset(&read_link_table, 0, sizeof(read_link_table));
+            err = meshx_nvs_link_table_get(&read_link_table);
+            if (err == MESHX_SUCCESS)
+            {
+                MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS,
+                           "UT LINK_GET PASS: magic=0x%08X ver=%d epoch=%u count=%d crc=0x%04X",
+                           (unsigned int)read_link_table.magic, (int)read_link_table.version,
+                           (unsigned int)read_link_table.link_epoch, (int)read_link_table.link_count,
+                           (unsigned int)read_link_table.table_crc);
+            }
+            else
+            {
+                MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "UT LINK_GET FAIL: err=%d", err);
+            }
+            break;
+
+        case MESHX_NVS_CLI_CMD_LINK_ERASE:
+            err = meshx_nvs_link_table_erase();
+            if (err != MESHX_SUCCESS)
+            {
+                MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "UT LINK_ERASE FAIL: err=%d", err);
+                break;
+            }
+            memset(&read_link_table, 0, sizeof(read_link_table));
+            err = meshx_nvs_link_table_get(&read_link_table);
+            if (err != MESHX_SUCCESS)
+            {
+                MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "UT LINK_ERASE PASS: link table successfully erased");
+                err = MESHX_SUCCESS;
+            }
+            else
+            {
+                MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "UT LINK_ERASE FAIL: link table still readable after erase");
+                err = MESHX_INVALID_STATE;
+            }
+            break;
+
+        case MESHX_NVS_CLI_CMD_LINK_RECONCILE:
+            err = meshx_link_reconcile();
+            if (err == MESHX_SUCCESS)
+            {
+                MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "UT LINK_RECONCILE PASS: new_epoch=%u",
+                           meshx_nvs_get_link_epoch());
+            }
+            else
+            {
+                MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "UT LINK_RECONCILE FAIL: err=%d", err);
+            }
+            break;
+
+        case MESHX_NVS_CLI_CMD_GROUP_ALLOC_TEST:
+            {
+                bool all_passed = true;
+                /* 1. Test mathematical Anchor Group Derivation */
+                if (meshx_group_derive_from_anchor(0x0014) != 0xC014 ||
+                    meshx_group_derive_from_anchor(0x03FF) != 0xC3FF ||
+                    meshx_group_derive_from_anchor(0x0400) != 0xC000 ||
+                    meshx_group_derive_from_anchor(0x0414) != 0xC014 ||
+                    !meshx_is_dynamic_group_addr(0xC000) ||
+                    !meshx_is_dynamic_group_addr(0xC3FF) ||
+                    meshx_is_dynamic_group_addr(0xBFFF) ||
+                    meshx_is_dynamic_group_addr(0xC400))
+                {
+                    MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "UT GROUP_ALLOC FAIL: Anchor math check failed");
+                    all_passed = false;
+                }
+
+                /* 2. Test Anchor Node Resolution (1:N Producer hub vs N:1 Consumer hub) */
+                uint16_t anchor_1n = meshx_group_resolve_anchor_topology(0x0010, 0x0020, MESHX_ROLE_PRODUCER, MESHX_ROLE_CONSUMER, MESHX_TOPOLOGY_1_TO_N);
+                if (anchor_1n != 0x0010)
+                {
+                    MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "UT GROUP_ALLOC FAIL: 1:N anchor expected 0x0010, got 0x%04X", anchor_1n);
+                    all_passed = false;
+                }
+
+                uint16_t anchor_n1 = meshx_group_resolve_anchor_topology(0x0010, 0x0020, MESHX_ROLE_PRODUCER, MESHX_ROLE_CONSUMER, MESHX_TOPOLOGY_N_TO_1);
+                if (anchor_n1 != 0x0020)
+                {
+                    MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "UT GROUP_ALLOC FAIL: N:1 anchor expected 0x0020, got 0x%04X", anchor_n1);
+                    all_passed = false;
+                }
+
+                /* 3. Test Reference Counting against NVS Link Table */
+                memset(&test_link_table, 0, sizeof(test_link_table));
+                test_link_table.link_epoch = 1;
+                test_link_table.link_count = 3;
+                test_link_table.links[0].target_group_addr = 0xC010;
+                test_link_table.links[0].active = 1;
+                test_link_table.links[1].target_group_addr = 0xC010;
+                test_link_table.links[1].active = 1;
+                test_link_table.links[2].target_group_addr = 0x0000;
+                test_link_table.links[2].active = 1;
+                meshx_nvs_link_table_set(&test_link_table);
+
+                if (meshx_group_get_ref_count(0xC010) != 2 ||
+                    meshx_group_get_ref_count(0x0000) != 0 ||
+                    meshx_group_get_ref_count(0xC020) != 0)
+                {
+                    MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "UT GROUP_ALLOC FAIL: Ref count check failed");
+                    all_passed = false;
+                }
+
+                if (all_passed)
+                {
+                    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "UT GROUP_ALLOC PASS: all anchor and group allocation invariants verified");
+                    err = MESHX_SUCCESS;
+                }
+                else
+                {
+                    err = MESHX_FAIL;
+                }
             }
             break;
         default:

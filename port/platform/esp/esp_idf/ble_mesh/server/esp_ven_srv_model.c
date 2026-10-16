@@ -230,3 +230,75 @@ meshx_err_t meshx_uvp_send(void *p_model,
 
     return MESHX_SUCCESS;
 }
+
+/**
+ * @brief Add a group subscription address to a platform model.
+ *
+ * @param[in] p_model   Pointer to the platform model instance.
+ * @param[in] sub_addr  Group address to subscribe to (0xC000 - 0xC3FF).
+ *
+ * @return MESHX_SUCCESS on success, MESHX_ERR_NO_MEM if table full, or error code.
+ */
+meshx_err_t meshx_plat_model_sub_add(void *p_model, uint16_t sub_addr)
+{
+    esp_ble_mesh_model_t *esp_model = (esp_ble_mesh_model_t *)p_model;
+    if (!esp_model || sub_addr == ESP_BLE_MESH_ADDR_UNASSIGNED)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    /* Check if already subscribed */
+    for (int i = 0; i < CONFIG_BLE_MESH_MODEL_GROUP_COUNT; i++)
+    {
+        if (esp_model->groups[i] == sub_addr)
+        {
+            return MESHX_SUCCESS;
+        }
+    }
+
+    /* Find empty slot */
+    for (int i = 0; i < CONFIG_BLE_MESH_MODEL_GROUP_COUNT; i++)
+    {
+        if (esp_model->groups[i] == ESP_BLE_MESH_ADDR_UNASSIGNED)
+        {
+            esp_model->groups[i] = sub_addr;
+            MESHX_LOGI(MODULE_ID_MODEL_SERVER, "Model 0x%04x subscribed to group 0x%04x (slot %d)",
+                       esp_model->model_id, sub_addr, i);
+            return MESHX_SUCCESS;
+        }
+    }
+
+    MESHX_LOGW(MODULE_ID_MODEL_SERVER, "Model 0x%04x subscription table full (%d)",
+               esp_model->model_id, CONFIG_BLE_MESH_MODEL_GROUP_COUNT);
+    return MESHX_NO_MEM;
+}
+
+/**
+ * @brief Delete a group subscription address from a platform model.
+ *
+ * @param[in] p_model   Pointer to the platform model instance.
+ * @param[in] sub_addr  Group address to remove.
+ *
+ * @return MESHX_SUCCESS on success, MESHX_NOT_FOUND if not present, or error code.
+ */
+meshx_err_t meshx_plat_model_sub_del(void *p_model, uint16_t sub_addr)
+{
+    esp_ble_mesh_model_t *esp_model = (esp_ble_mesh_model_t *)p_model;
+    if (!esp_model || sub_addr == ESP_BLE_MESH_ADDR_UNASSIGNED)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    for (int i = 0; i < CONFIG_BLE_MESH_MODEL_GROUP_COUNT; i++)
+    {
+        if (esp_model->groups[i] == sub_addr)
+        {
+            esp_model->groups[i] = ESP_BLE_MESH_ADDR_UNASSIGNED;
+            MESHX_LOGI(MODULE_ID_MODEL_SERVER, "Model 0x%04x unsubscribed from group 0x%04x (slot %d)",
+                       esp_model->model_id, sub_addr, i);
+            return MESHX_SUCCESS;
+        }
+    }
+
+    return MESHX_NOT_FOUND;
+}

@@ -127,6 +127,66 @@ uint8_t meshx_comp_get_element_func_ids(uint8_t element_idx, uint16_t *out_func_
  */
 bool meshx_comp_element_has_func_id(uint8_t element_idx, uint16_t func_id);
 
+/**
+ * @brief Set the publication address of an element.
+ *
+ * Updates the in-memory context and commits to NVS.
+ *
+ * @param[in] element_idx Index of the element.
+ * @param[in] pub_addr    New publication address (unicast or group).
+ *
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_comp_set_element_pub_addr(uint8_t element_idx, uint16_t pub_addr);
+
+/**
+ * @brief Get the publication address of an element.
+ *
+ * @param[in] element_idx Index of the element.
+ *
+ * @return Publication address, or MESHX_ADDR_UNASSIGNED (0x0000) if unset.
+ */
+uint16_t meshx_comp_get_element_pub_addr(uint8_t element_idx);
+
+/**
+ * @brief Add a group subscription address to an element's models.
+ *
+ * @param[in] element_idx Index of the element.
+ * @param[in] sub_addr    Group address to subscribe to (0xC000 - 0xC3FF).
+ *
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_comp_add_element_sub_addr(uint8_t element_idx, uint16_t sub_addr);
+
+/**
+ * @brief Delete a group subscription address from an element's models.
+ *
+ * @param[in] element_idx Index of the element.
+ * @param[in] sub_addr    Group address to remove.
+ *
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_comp_del_element_sub_addr(uint8_t element_idx, uint16_t sub_addr);
+
+/**
+ * @brief Send a UVP message from an element.
+ *
+ * @param[in] element_idx Element index to send from (or 0 for primary).
+ * @param[in] dst_addr    Destination unicast, virtual, or group address.
+ * @param[in] func_id     Function ID (e.g. MESHX_FUNC_ID_SYS_PAIRING).
+ * @param[in] payload     Pointer to payload data.
+ * @param[in] payload_len Length of payload.
+ * @param[in] ack_req     True to request transport ACK.
+ *
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_comp_send_uvp(uint8_t element_idx,
+                                uint16_t dst_addr,
+                                uint16_t func_id,
+                                const void *payload,
+                                uint16_t payload_len,
+                                bool ack_req);
+
 #ifdef __cplusplus
 }
 #endif

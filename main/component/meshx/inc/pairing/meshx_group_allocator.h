@@ -19,23 +19,25 @@
 #include "meshx_err.h"
 #include "meshx_manifest.h"
 
+#include "meshx_common.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define MESHX_DYNAMIC_GROUP_START       0xC000
-#define MESHX_DYNAMIC_GROUP_END         0xC3FF
-#define MESHX_DYNAMIC_GROUP_MASK        0x03FF
+#define MESHX_DYNAMIC_GROUP_START       MESHX_ADDR_GROUP_START
+#define MESHX_DYNAMIC_GROUP_END         MESHX_ADDR_GROUP_END
+#define MESHX_DYNAMIC_GROUP_MASK        MESHX_ADDR_GROUP_MASK
 
 /**
  * @brief Topology type determined by pairing roles and current link counts.
  */
 typedef enum {
-    MESHX_TOPOLOGY_UNKNOWN = 0,
-    MESHX_TOPOLOGY_1_TO_1,   /**< 1 Switch -> 1 Lamp (Direct Unicast, 0 group leases) */
-    MESHX_TOPOLOGY_1_TO_N,   /**< 1 Switch -> N Lamps (Anchor = Switch) */
-    MESHX_TOPOLOGY_N_TO_1,   /**< N Switches -> 1 Lamp (Anchor = Lamp) */
-    MESHX_TOPOLOGY_M_TO_N,   /**< M Switches -> N Lamps (Multi-controller zone) */
+    MESHX_TOPOLOGY_UNKNOWN  = 0,
+    MESHX_TOPOLOGY_1_TO_1   = 1,   /**< 1 Switch -> 1 Lamp (Direct Unicast, 0 group leases) */
+    MESHX_TOPOLOGY_1_TO_N   = 2,   /**< 1 Switch -> N Lamps (Anchor = Switch) */
+    MESHX_TOPOLOGY_N_TO_1   = 3,   /**< N Switches -> 1 Lamp (Anchor = Lamp) */
+    MESHX_TOPOLOGY_M_TO_N   = 4,   /**< M Switches -> N Lamps (Multi-controller zone) */
 } meshx_topology_type_t;
 
 /**
@@ -74,6 +76,25 @@ uint16_t meshx_group_resolve_anchor(uint16_t local_unicast,
                                     uint16_t peer_unicast,
                                     uint8_t local_role,
                                     uint8_t peer_role);
+
+/**
+ * @brief Determine anchor unicast address based on pairing roles and topology archetype.
+ *
+ * - 1:N (Switch -> Lamps): Producer is the hub => Anchor is Producer (Switch).
+ * - N:1 (Switches -> Lamp): Consumer is the hub => Anchor is Consumer (Lamp).
+ *
+ * @param[in] local_unicast Unicast address of local element.
+ * @param[in] peer_unicast  Unicast address of peer element.
+ * @param[in] local_role    meshx_element_role_t of local element.
+ * @param[in] peer_role     meshx_element_role_t of peer element.
+ * @param[in] topology      meshx_topology_type_t archetype.
+ * @return Unicast address of resolved anchor node.
+ */
+uint16_t meshx_group_resolve_anchor_topology(uint16_t local_unicast,
+                                             uint16_t peer_unicast,
+                                             uint8_t  local_role,
+                                             uint8_t  peer_role,
+                                             meshx_topology_type_t topology);
 
 /**
  * @brief Query total active reference count for a group address from the NVS link table.

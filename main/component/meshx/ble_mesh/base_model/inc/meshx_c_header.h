@@ -27,6 +27,10 @@ extern "C" {
 #include <meshx_element_lut.h>
 #include <meshx_compat_matrix.h>
 #include <meshx_group_allocator.h>
+#include <pairing/meshx_pair_orchestrator.h>
+#include <pairing/meshx_unpair_mgr.h>
+#include <pairing/meshx_proximity_pair.h>
+#include <meshx_builder_api.h>
 #include <meshx_uvp.h>
 
 /*************************************************************
