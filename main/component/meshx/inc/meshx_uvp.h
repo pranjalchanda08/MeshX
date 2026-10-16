@@ -77,6 +77,7 @@ typedef enum {
     MESHX_SYS_NOTIFY_GROUP_MEMBERSHIP_CHANGE = 0x0B, /**< Real-time group join/leave notice */
     MESHX_SYS_CMD_TOPOLOGY_UPGRADE           = 0x0C, /**< Upgrade 1:1 unicast link to group */
     MESHX_SYS_RSP_UPGRADE_ACK                = 0x0D, /**< Upgrade confirmation */
+    MESHX_SYS_CMD_PAIR_ANNOUNCE              = 0x0E, /**< Autonomous pairing beacon announcement */
 } meshx_sys_msg_type_t;
 
 /**
@@ -139,6 +140,14 @@ typedef struct {
 } MESHX_PACKED meshx_uvp_upgrade_req_t;
 
 /**
+ * @brief Wire format for topology upgrade acknowledgement
+ */
+typedef struct {
+    uint8_t msg_type;                           /**< MESHX_SYS_RSP_UPGRADE_ACK */
+    uint8_t status;                             /**< meshx_sys_status_t */
+} MESHX_PACKED meshx_uvp_upgrade_rsp_t;
+
+/**
  * @brief Wire format for unpair request
  */
 typedef struct {
@@ -171,6 +180,27 @@ typedef struct {
     uint8_t  msg_type;                          /**< MESHX_SYS_RSP_EPOCH_PONG */
     uint16_t link_epoch;                        /**< Current link epoch */
 } MESHX_PACKED meshx_uvp_epoch_pong_t;
+
+/**
+ * @brief Wire format for node reset teardown broadcast notice
+ */
+typedef struct {
+    uint8_t  msg_type;                          /**< MESHX_SYS_NOTIFY_NODE_RESET */
+    uint16_t reset_node_addr;                   /**< Primary unicast address of resetting node */
+} MESHX_PACKED meshx_uvp_notify_node_reset_t;
+
+/**
+ * @brief Wire format for autonomous pairing beacon announcement
+ */
+typedef struct {
+    uint8_t  msg_type;                          /**< MESHX_SYS_CMD_PAIR_ANNOUNCE */
+    uint16_t unicast_addr;                      /**< Announcing node primary unicast address */
+    uint8_t  elem_idx;                          /**< Announcing element index */
+    uint16_t variant;                           /**< Element variant */
+    uint8_t  role;                              /**< Role: PRODUCER (0x02) or CONSUMER (0x01) */
+    int8_t   min_rssi;                          /**< Minimum RSSI threshold (e.g. -50 dBm) */
+    uint8_t  seq_num;                           /**< Sequence number for deduplication */
+} MESHX_PACKED meshx_uvp_pair_announce_t;
 
 /**
  * @brief UVP Routing Context (Application Layer)

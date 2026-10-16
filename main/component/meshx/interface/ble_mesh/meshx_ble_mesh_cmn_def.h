@@ -29,11 +29,13 @@
 #define MESHX_ADDR_IS_GROUP(_addr) ((_addr) >= 0xC000 && (_addr) <= 0xFF00)
 
 #define MESHX_ADDR_GROUP_START 0xC000
-#define MESHX_ADDR_UNASSIGNED 0x0000
-#define MESHX_KEY_UNUSED 0XFFFF
+#define MESHX_ADDR_GROUP_MASK  0x03FF
+#define MESHX_ADDR_UNASSIGNED  0x0000
+#define MESHX_KEY_UNUSED       0xFFFF
+#define MESHX_ADDR_GROUP_END   (MESHX_ADDR_GROUP_START + MESHX_ADDR_GROUP_MASK)
 
-#define MESHX_MODEL_OP_1(b0) (b0)
-#define MESHX_MODEL_OP_2(b0, b1) (((b0) << 8) | (b1))
+#define MESHX_MODEL_OP_1(b0)      (b0)
+#define MESHX_MODEL_OP_2(b0, b1)  (((b0) << 8) | (b1))
 #define MESHX_MODEL_OP_3(b0, cid) ((((b0) << 16) | 0xC00000) | (cid))
 
 /**

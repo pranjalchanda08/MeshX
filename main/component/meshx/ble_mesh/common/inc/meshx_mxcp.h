@@ -65,6 +65,12 @@ typedef enum {
     MXCP_CMD_GPIO_GET_CONFIG       = 0x28,
     MXCP_CMD_GPIO_GET_STATE        = 0x29,
 
+    MXCP_CMD_DISCOVER_CAPABILITIES = 0x70,
+    MXCP_CMD_BIND_ELEMENTS         = 0x71,
+    MXCP_CMD_UNBIND_ELEMENTS       = 0x72,
+    MXCP_CMD_GET_LINK_TABLE        = 0x73,
+    MXCP_CMD_GET_LINK_EPOCH        = 0x74,
+
     MXCP_CMD_MAX
 } mxcp_cmd_id_t;
 
@@ -99,6 +105,12 @@ typedef enum {
     MXCP_EVT_GPIO_GET_STATE_RSP    = 0x29,
     MXCP_EVT_GPIO_ASYNC            = 0x3E,
     MXCP_EVT_GPIO_ERROR            = 0x3F,
+
+    MXCP_EVT_CAPABILITY_REPORT     = 0x70,
+    MXCP_EVT_BIND_STATUS           = 0x71,
+    MXCP_EVT_UNBIND_STATUS         = 0x72,
+    MXCP_EVT_LINK_TABLE_RSP        = 0x73,
+    MXCP_EVT_LINK_EPOCH_RSP        = 0x74,
 
     MXCP_EVT_MAX
 } mxcp_evt_id_t;
@@ -255,6 +267,40 @@ typedef struct {
     uint16_t ctx_size;
     uint16_t telemetry_size;
 } mxcp_state_entry_header_t;
+
+typedef struct {
+    uint16_t target_unicast;
+    uint8_t  filter_role;
+} mxcp_cmd_discover_capabilities_t;
+
+typedef struct {
+    uint16_t src_addr;
+    uint8_t  src_elem;
+    uint16_t dst_addr;
+    uint8_t  dst_elem;
+    uint16_t func_id;
+} mxcp_cmd_bind_elements_t;
+
+typedef struct {
+    uint16_t src_addr;
+    uint8_t  src_elem;
+    uint16_t dst_addr;
+    uint8_t  dst_elem;
+    uint16_t func_id;
+} mxcp_cmd_unbind_elements_t;
+
+typedef struct {
+    uint8_t  status;
+    uint16_t group_addr;
+} mxcp_evt_bind_status_t;
+
+typedef struct {
+    uint8_t status;
+} mxcp_evt_unbind_status_t;
+
+typedef struct {
+    uint16_t link_epoch;
+} mxcp_evt_link_epoch_rsp_t;
 
 #pragma pack(pop)
 

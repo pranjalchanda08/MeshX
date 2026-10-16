@@ -64,5 +64,25 @@ meshx_err_t meshx_plat_ven_srv_init(void);
  */
 meshx_err_t meshx_plat_bind_uvp_opcodes(void *p_model);
 
+/**
+ * @brief Add a group subscription address to a platform model.
+ *
+ * @param[in] p_model   Pointer to the platform model instance.
+ * @param[in] sub_addr  Group address to subscribe to (0xC000 - 0xC3FF).
+ *
+ * @return MESHX_SUCCESS on success, MESHX_ERR_NO_MEM if table full, or error code.
+ */
+meshx_err_t meshx_plat_model_sub_add(void *p_model, uint16_t sub_addr);
+
+/**
+ * @brief Delete a group subscription address from a platform model.
+ *
+ * @param[in] p_model   Pointer to the platform model instance.
+ * @param[in] sub_addr  Group address to remove.
+ *
+ * @return MESHX_SUCCESS on success, MESHX_ERR_NOT_FOUND if not present, or error code.
+ */
+meshx_err_t meshx_plat_model_sub_del(void *p_model, uint16_t sub_addr);
+
 #endif /* __MESHX_BLE_MESH__ */
 

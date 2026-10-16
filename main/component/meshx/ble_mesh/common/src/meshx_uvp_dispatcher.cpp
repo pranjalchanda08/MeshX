@@ -109,14 +109,14 @@ static meshx_err_t uvp_unified_dispatcher_cb(dev_struct_t *pdev,
         payload     = (uint8_t*)payload + MESHX_UVP_FUNC_ID_PREFIX_SZ;
         payload_len = (uint16_t)(payload_len - MESHX_UVP_FUNC_ID_PREFIX_SZ);
     } else {
-        uvp_ctx.func_id = 0x0000u; /* Legacy / malformed — default to func 0 */
+        uvp_ctx.func_id = MESHX_ADDR_UNASSIGNED; /* Legacy / malformed — default to func 0 */
     }
 
     /*
      * Application-Layer Security Guard: Block 0xFFFF (All-Nodes) on UVP System Management
      */
     if ((uvp_ctx.func_id == MESHX_FUNC_ID_SYS_DISCOVERY || uvp_ctx.func_id == MESHX_FUNC_ID_SYS_PAIRING) &&
-        (p_meta->dst_addr == 0xFFFF || uvp_ctx.dst_addr == 0xFFFF)) {
+        (p_meta->dst_addr == MESHX_KEY_UNUSED || uvp_ctx.dst_addr == MESHX_KEY_UNUSED)) {
         MESHX_LOGW(MODULE_ID_COMMON, "UVP Dispatcher: Security violation! Dropping 0xFFFF broadcast on system func 0x%04X",
                    uvp_ctx.func_id);
         return MESHX_ERR_BLOCKED_ADDR;
@@ -138,29 +138,149 @@ static meshx_err_t uvp_unified_dispatcher_cb(dev_struct_t *pdev,
                                         offsetof(meshx_capability_manifest_t, elements) +
                                         report.manifest.element_count * sizeof(meshx_element_descriptor_t);
 
-                    auto& comp = meshXComposition::get_instance();
-                    for (const auto& elem : comp.get_elements()) {
-                        auto& ven_models = elem->get_ven_models();
-                        if (!ven_models.empty() && ven_models[0]->get_model_id() == MESHX_MODEL_ID_UVP) {
-                            auto* uvp_model = static_cast<meshXUVPModel*>(ven_models[0].get());
-                            if (uvp_model) {
-                                uvp_model->send_with_func_id(
-                                    uvp_ctx.src_addr,
-                                    uvp_header->type_id,
-                                    MESHX_FUNC_ID_SYS_DISCOVERY,
-                                    &report,
-                                    (uint16_t)report_len,
-                                    false,
-                                    0
-                                );
-                                return MESHX_SUCCESS;
-                            }
-                        }
-                    }
+                    return meshx_comp_send_uvp(0,
+                                               uvp_ctx.src_addr,
+                                               MESHX_FUNC_ID_SYS_DISCOVERY,
+                                               &report,
+                                               (uint16_t)report_len,
+                                               false);
                 }
                 return err;
+            } else if (msg_type == MESHX_SYS_CMD_EPOCH_PING) {
+                meshx_uvp_epoch_pong_t pong;
+                memset(&pong, 0, sizeof(pong));
+                pong.msg_type = MESHX_SYS_RSP_EPOCH_PONG;
+                pong.link_epoch = meshx_nvs_get_link_epoch();
+                return meshx_comp_send_uvp(0,
+                                           uvp_ctx.src_addr,
+                                           MESHX_FUNC_ID_SYS_DISCOVERY,
+                                           &pong,
+                                           sizeof(pong),
+                                           false);
             }
         }
+        return MESHX_SUCCESS;
+    }
+
+    /*
+     * In-Mesh UVP Pairing Protocol (func_id 0xFFFF)
+     */
+    if (uvp_ctx.func_id == MESHX_FUNC_ID_SYS_PAIRING) {
+        if (payload_len >= sizeof(uint8_t)) {
+            uint8_t msg_type = *static_cast<const uint8_t*>(payload);
+            switch (msg_type) {
+                case MESHX_SYS_CMD_PAIR_REQUEST: {
+                    if (payload_len >= sizeof(meshx_uvp_pair_req_t)) {
+                        meshx_uvp_pair_rsp_t rsp;
+                        memset(&rsp, 0, sizeof(rsp));
+                        meshx_err_t err = meshx_pair_handle_request(
+                            static_cast<const meshx_uvp_pair_req_t*>(payload),
+                            uvp_ctx.src_addr,
+                            &rsp);
+                        if (err == MESHX_SUCCESS) {
+                            meshx_comp_send_uvp(0,
+                                                uvp_ctx.src_addr,
+                                                MESHX_FUNC_ID_SYS_PAIRING,
+                                                &rsp,
+                                                sizeof(rsp),
+                                                false);
+                        }
+                    }
+                    return MESHX_SUCCESS;
+                }
+
+                case MESHX_SYS_RSP_PAIR_RESPONSE: {
+                    if (payload_len >= sizeof(meshx_uvp_pair_rsp_t)) {
+                        meshx_pair_handle_response(
+                            static_cast<const meshx_uvp_pair_rsp_t*>(payload),
+                            uvp_ctx.src_addr);
+                    }
+                    return MESHX_SUCCESS;
+                }
+
+                case MESHX_SYS_CMD_TOPOLOGY_UPGRADE: {
+                    if (payload_len >= sizeof(meshx_uvp_upgrade_req_t)) {
+                        meshx_uvp_upgrade_rsp_t rsp;
+                        memset(&rsp, 0, sizeof(rsp));
+                        meshx_err_t err = meshx_pair_handle_upgrade(
+                            static_cast<const meshx_uvp_upgrade_req_t*>(payload),
+                            uvp_ctx.src_addr,
+                            &rsp);
+                        if (err == MESHX_SUCCESS) {
+                            meshx_comp_send_uvp(0,
+                                                uvp_ctx.src_addr,
+                                                MESHX_FUNC_ID_SYS_PAIRING,
+                                                &rsp,
+                                                sizeof(rsp),
+                                                false);
+                        }
+                    }
+                    return MESHX_SUCCESS;
+                }
+
+                case MESHX_SYS_CMD_UNPAIR_REQUEST: {
+                    if (payload_len >= sizeof(meshx_uvp_unpair_req_t)) {
+                        meshx_uvp_unpair_rsp_t rsp;
+                        memset(&rsp, 0, sizeof(rsp));
+                        meshx_err_t err = meshx_unpair_handle_request(
+                            static_cast<const meshx_uvp_unpair_req_t*>(payload),
+                            uvp_ctx.src_addr,
+                            &rsp);
+                        if (err == MESHX_SUCCESS) {
+                            meshx_comp_send_uvp(0,
+                                                uvp_ctx.src_addr,
+                                                MESHX_FUNC_ID_SYS_PAIRING,
+                                                &rsp,
+                                                sizeof(rsp),
+                                                false);
+                        }
+                    }
+                    return MESHX_SUCCESS;
+                }
+
+                case MESHX_SYS_RSP_UNPAIR_RESPONSE: {
+                    if (payload_len >= sizeof(meshx_uvp_unpair_rsp_t)) {
+                        meshx_unpair_handle_response(
+                            static_cast<const meshx_uvp_unpair_rsp_t*>(payload),
+                            uvp_ctx.src_addr);
+                    }
+                    return MESHX_SUCCESS;
+                }
+
+                case MESHX_SYS_NOTIFY_NODE_RESET: {
+                    if (payload_len >= sizeof(meshx_uvp_notify_node_reset_t)) {
+                        const auto* notice = static_cast<const meshx_uvp_notify_node_reset_t*>(payload);
+                        meshx_unpair_handle_reset_notify(notice->reset_node_addr);
+                    }
+                    return MESHX_SUCCESS;
+                }
+
+                case MESHX_SYS_CMD_EPOCH_PING: {
+                    meshx_uvp_epoch_pong_t pong;
+                    memset(&pong, 0, sizeof(pong));
+                    pong.msg_type = MESHX_SYS_RSP_EPOCH_PONG;
+                    pong.link_epoch = meshx_nvs_get_link_epoch();
+                    return meshx_comp_send_uvp(0,
+                                               uvp_ctx.src_addr,
+                                               MESHX_FUNC_ID_SYS_PAIRING,
+                                               &pong,
+                                               sizeof(pong),
+                                               false);
+                }
+
+                case MESHX_SYS_CMD_PAIR_ANNOUNCE: {
+                    if (payload_len >= sizeof(meshx_uvp_pair_announce_t)) {
+                        const auto* ann = static_cast<const meshx_uvp_pair_announce_t*>(payload);
+                        meshx_proximity_handle_announce(ann, uvp_ctx.src_addr, -45, 7);
+                    }
+                    return MESHX_SUCCESS;
+                }
+
+                default:
+                    break;
+            }
+        }
+        return MESHX_SUCCESS;
     }
 
     /*
@@ -247,10 +367,10 @@ static meshx_err_t uvp_txcm_timeout_cb(dev_struct_t *pdev,
 
     meshx_uvp_ctx_t uvp_ctx;
     uvp_ctx.src_addr = MESHX_ADDR_UNASSIGNED; /* Timeout sentinel */
-    uvp_ctx.dst_addr = 0x0000u;
+    uvp_ctx.dst_addr = MESHX_ADDR_UNASSIGNED;
     uvp_ctx.tid      = 0;
     uvp_ctx.ack_req  = false;
-    uvp_ctx.func_id  = 0xFFFFu; /* Broadcast to all models (REQ-008) */
+    uvp_ctx.func_id  = MESHX_KEY_UNUSED; /* Broadcast to all models (REQ-008) */
 
     return target_el->on_model_cb(nullptr, 0, &uvp_ctx);
 }
