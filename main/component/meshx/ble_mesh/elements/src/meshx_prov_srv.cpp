@@ -163,6 +163,10 @@ static void meshx_handle_node_reset(dev_struct_t *pdev)
         return;
     }
 
+    /* Mandatory Pre-Reset Lifecycle Teardown:
+     * Dismantle active peer links and broadcast node reset notification before erasing keys. */
+    meshx_unpair_pre_reset_teardown();
+
     for (i = 1; i < pdev->element_idx; ++i)
     {
         err = meshx_nvs_element_ctx_remove(static_cast<uint16_t>(i), MESHX_ELEMENT_TYPE_ALL);
