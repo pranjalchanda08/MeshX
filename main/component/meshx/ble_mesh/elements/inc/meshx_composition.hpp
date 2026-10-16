@@ -74,7 +74,7 @@ public:
      * @param vid Version ID.
      * @return MESHX_SUCCESS on success, error code otherwise
      */
-    meshx_err_t bake(uint16_t cid, uint16_t pid, uint16_t vid);
+    meshx_err_t bake(uint16_t cid, uint16_t pid, uint16_t vid = 0);
 
     /**
      * @brief Check if the composition is baked
