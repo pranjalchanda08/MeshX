@@ -96,3 +96,10 @@ graph TD
   - [x] Test UVP discovery and unpair frame serialization within packet budget constraints.
   - [x] Validate boot-time link recovery, `link_epoch` tracking, and CRC mismatch fallback.
   - [x] Verify multi-node pairing, unpairing, and provisioner reconnection cache synchronization.
+- [x] **Task 12: Hardware Functional Test Suite (1 & 2 Nodes)**
+  - [x] Implement `PairingInterface` in `tools/scripts/autotest/framework/device.py` for MXCP wire exchange (`0x70`-`0x74`).
+  - [x] Implement single-node loopback functional tests (`TestFunctionalPairingSingleNode`):
+    - MXCP bind, unbind, link table inspection, monotonic epoch verification, and Switch -> Relay actuation.
+  - [x] Implement multi-node BLE Mesh functional tests (`TestFunctionalPairingMultiNode`):
+    - Multi-node address discovery, cross-node pairing, remote RF mesh actuation, dynamic promotion, and teardown unpairing.
+

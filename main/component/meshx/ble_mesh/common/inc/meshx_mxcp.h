@@ -300,6 +300,7 @@ typedef struct {
 
 typedef struct {
     uint16_t link_epoch;
+    uint16_t node_addr;
 } mxcp_evt_link_epoch_rsp_t;
 
 #pragma pack(pop)
