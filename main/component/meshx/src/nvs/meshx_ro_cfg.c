@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
+#include "interface/rtos/meshx_rtos_utils.h"
 
 #define MODULE_ID_RO_CFG MODULE_ID_COMMON
 
@@ -212,14 +213,14 @@ meshx_err_t meshx_ro_cfg_init(uint16_t *cid, uint16_t *pid, char *product_name, 
     }
 
     size_t payload_len = header.total_len - MESHX_HDR_SIZE;
-    uint8_t *payload = malloc(payload_len);
-    if (!payload)
+    uint8_t *payload = NULL;
+    if (MESHX_MALLOC(&payload, payload_len) != MESHX_SUCCESS || !payload)
         return MESHX_NO_MEM;
 
     if (meshx_fal_read(&part, MESHX_HDR_SIZE, payload, payload_len) != MESHX_SUCCESS)
     {
         MESHX_LOGE(MODULE_ID_RO_CFG, "Failed to read config payload");
-        free(payload);
+        MESHX_FREE(&payload);
         return MESHX_ERR_PLAT;
     }
 
@@ -227,7 +228,7 @@ meshx_err_t meshx_ro_cfg_init(uint16_t *cid, uint16_t *pid, char *product_name, 
     if (header.payload_crc != expected_pld_crc)
     {
         MESHX_LOGE(MODULE_ID_RO_CFG, "Config payload CRC mismatch (calc: 0x%04X, exp: 0x%04X)", expected_pld_crc, header.payload_crc);
-        free(payload);
+        MESHX_FREE(&payload);
         return MESHX_ERR_RO_CFG_CRC;
     }
 
@@ -243,7 +244,7 @@ meshx_err_t meshx_ro_cfg_init(uint16_t *cid, uint16_t *pid, char *product_name, 
     if (!pb_decode(&stream, MeshXConfig_fields, &config))
     {
         MESHX_LOGE(MODULE_ID_RO_CFG, "Config protobuf decode failed");
-        free(payload);
+        MESHX_FREE(&payload);
         return MESHX_ERR_RO_CFG_FORMAT;
     }
 
@@ -269,6 +270,6 @@ meshx_err_t meshx_ro_cfg_init(uint16_t *cid, uint16_t *pid, char *product_name, 
                    config.product.cid, config.product.pid, config.product.name);
     }
 
-    free(payload);
+    MESHX_FREE(&payload);
     return MESHX_SUCCESS;
 }

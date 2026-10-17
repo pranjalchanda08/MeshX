@@ -102,7 +102,7 @@ meshx_err_t control_task_msg_publish(control_task_msg_code_t msg_code,
     memset(&send_msg, 0, sizeof(send_msg));
     if (sizeof_msg_evt_params != 0)
     {
-        meshx_err_t err = meshx_rtos_malloc(&send_msg.msg_evt_params, sizeof_msg_evt_params);
+        meshx_err_t err = MESHX_MALLOC(&send_msg.msg_evt_params, sizeof_msg_evt_params);
         if (err)
             return err;
         /* Copy the params to allocated space */
@@ -120,7 +120,7 @@ meshx_err_t control_task_msg_publish(control_task_msg_code_t msg_code,
     meshx_err_t send_err = meshx_msg_q_send(&control_task_queue, &send_msg, sizeof(send_msg), UINT32_MAX);
     if (send_err != MESHX_SUCCESS && send_msg.msg_evt_params)
     {
-        meshx_rtos_free(&send_msg.msg_evt_params);
+        MESHX_FREE(&send_msg.msg_evt_params);
     }
     return send_err;
 }
@@ -145,7 +145,7 @@ meshx_err_t control_task_msg_publish_uvp(control_task_msg_code_t msg_code,
      */
     size_t total_size = sizeof(control_task_uvp_meta_t) + sizeof_msg_evt_params;
     uint8_t *tmp_buf = NULL;
-    meshx_err_t err = meshx_rtos_malloc((void **)&tmp_buf, total_size);
+    meshx_err_t err = MESHX_MALLOC(&tmp_buf, total_size);
     if (err)
         return err;
 
@@ -164,7 +164,7 @@ meshx_err_t control_task_msg_publish_uvp(control_task_msg_code_t msg_code,
     err = control_task_msg_publish(msg_code, msg_evt, tmp_buf, total_size);
 
     /* Free the temporary buffer */
-    meshx_rtos_free((void **)&tmp_buf);
+    MESHX_FREE(&tmp_buf);
     return err;
 }
 
@@ -193,7 +193,7 @@ meshx_err_t control_task_msg_subscribe(control_task_msg_code_t msg_code,
         return MESHX_INVALID_ARG; // Invalid arguments
 
     control_task_evt_cb_reg_t *new_node = NULL;
-    meshx_err_t err = meshx_rtos_malloc((void**)&new_node, sizeof(control_task_evt_cb_reg_t));
+    meshx_err_t err = MESHX_MALLOC(&new_node, sizeof(control_task_evt_cb_reg_t));
     if (err || !new_node)
         return err; // Memory allocation failed
 
@@ -234,7 +234,7 @@ meshx_err_t control_task_msg_unsubscribe(control_task_msg_code_t msg_code,
             else
                 prev->next = curr->next;
 
-            return meshx_rtos_free((void**)&curr);
+            return MESHX_FREE(&curr);
         }
         prev = curr;
         curr = curr->next;
@@ -346,7 +346,7 @@ static void control_task_handler(void *args)
             if (recv_msg.msg_evt_params)
             {
                 /* If Params were passed Free the allocated memory */
-                meshx_rtos_free(&recv_msg.msg_evt_params);
+                MESHX_FREE(&recv_msg.msg_evt_params);
             }
         }
     }

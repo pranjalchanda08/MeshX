@@ -22,19 +22,7 @@ extern "C" {
 
 #define MESHX_WEEK __attribute__((weak))
 
-/* Compiler based definations */
 
-#ifndef MESHX_MALLOC
-#define MESHX_MALLOC    malloc
-#endif
-
-#ifndef MESHX_CALOC
-#define MESHX_CALOC     calloc
-#endif
-
-#ifndef MESHX_FREE
-#define MESHX_FREE      free
-#endif
 
 /**
  * @brief MeshX Error Codes
