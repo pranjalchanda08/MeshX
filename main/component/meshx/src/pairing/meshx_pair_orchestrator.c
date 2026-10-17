@@ -17,6 +17,7 @@
 #include <pairing/meshx_compat_matrix.h>
 #include <pairing/meshx_group_allocator.h>
 #include <pairing/meshx_pair_orchestrator.h>
+#include <interface/rtos/meshx_rtos_utils.h>
 
 #define TAG MODULE_ID_COMMON
 
@@ -41,7 +42,7 @@ typedef struct
  * @brief Dynamically allocated pending transaction pool.
  *
  * Threading Model & Design Rationale:
- * A bounded object pool allocated via MESHX_CALOC() provides:
+ * A bounded object pool allocated via meshx_rtos_calloc() provides:
  * 1. Bounded Heap Usage: Sized to MESHX_PAIR_MAX_PENDING to prevent unbounded heap growth
  *    while supporting concurrent in-flight pairing transactions.
  * 2. Execution Context: Dispatches and UVP response handling execute cooperatively on the
@@ -55,7 +56,7 @@ static meshx_pair_status_cb_t s_pair_status_cb = NULL;
 /**
  * @brief Acquire an available slot in the pending transaction pool.
  *
- * Checks if the pool has been initialized (allocating via MESHX_CALOC if needed),
+ * Checks if the pool has been initialized (allocating via meshx_rtos_calloc if needed),
  * validates that no duplicate transaction to the same destination endpoint is already
  * in flight, and returns a pointer to an idle slot.
  *
@@ -68,8 +69,7 @@ static meshx_pending_pair_t *pending_pool_acquire(uint16_t dst_unicast, uint8_t 
 {
     if (s_pending_pool == NULL)
     {
-        s_pending_pool = (meshx_pending_pair_t *)MESHX_CALOC(MESHX_PAIR_MAX_PENDING, sizeof(meshx_pending_pair_t));
-        if (s_pending_pool == NULL)
+        if ((MESHX_CALLOC(&s_pending_pool, MESHX_PAIR_MAX_PENDING, sizeof(meshx_pending_pair_t)) != MESHX_SUCCESS) || (s_pending_pool == NULL))
         {
             MESHX_LOGE(TAG, "Pair Orchestrator: Failed to allocate pending transaction pool");
             return NULL;
@@ -197,8 +197,7 @@ meshx_err_t meshx_pair_init(void)
 {
     if (s_pending_pool == NULL)
     {
-        s_pending_pool = (meshx_pending_pair_t *)MESHX_CALOC(MESHX_PAIR_MAX_PENDING, sizeof(meshx_pending_pair_t));
-        if (s_pending_pool == NULL)
+        if ((MESHX_CALLOC(&s_pending_pool, MESHX_PAIR_MAX_PENDING, sizeof(meshx_pending_pair_t)) != MESHX_SUCCESS) || (s_pending_pool == NULL))
         {
             MESHX_LOGE(TAG, "Pair Orchestrator: Failed to allocate pending transaction pool");
             return MESHX_NO_MEM;

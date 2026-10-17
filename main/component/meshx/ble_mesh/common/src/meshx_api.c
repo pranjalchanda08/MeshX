@@ -11,6 +11,7 @@
 #include <meshx_api.h>
 #include "meshx_mxcp.h"
 #include <stdlib.h>
+#include "interface/rtos/meshx_rtos_utils.h"
 
 #define MESSAGE_BUFF_CLEAR(buff)        memset(&buff, 0, sizeof(buff))
 
@@ -137,8 +138,9 @@ meshx_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, ui
     hdr.msg_len = msg_len;
 
     uint32_t buf_size = sizeof(hdr) + msg_len;
-    uint8_t *buf = (uint8_t *)malloc(buf_size);
-    if (!buf) {
+    uint8_t *buf = NULL;
+    meshx_err_t err = MESHX_MALLOC(&buf, buf_size);
+    if (err != MESHX_SUCCESS || !buf) {
         MESHX_LOGE(MODULE_ID_COMMON, "Failed to allocate memory for app msg");
         return MESHX_NO_MEM;
     }
@@ -148,9 +150,9 @@ meshx_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, ui
         memcpy(buf + sizeof(hdr), msg, msg_len);
     }
     mxcp_send_event(MXCP_EVT_EL_DATA_RX_NOTIFY, buf, (uint8_t)buf_size);
-    free(buf);
+    MESHX_FREE(&buf);
 
-    meshx_err_t err = meshx_prepare_data_message(element_id, element_type, func_id, msg_len, msg);
+    err = meshx_prepare_data_message(element_id, element_type, func_id, msg_len, msg);
     if (err) {
         MESHX_LOGE(MODULE_ID_COMMON, "Failed to create message: (0x%x)", err);
         return err;

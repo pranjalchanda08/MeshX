@@ -17,6 +17,7 @@
 #include "interface/utils/meshx_tiny_printf.h"
 #include "meshx_group_allocator.h"
 #include "meshx_compat_matrix.h"
+#include "interface/rtos/meshx_rtos_utils.h"
 #include <stddef.h>
 
 #define MESHX_NVS_INIT_MAGIC        0x5489
@@ -299,7 +300,7 @@ meshx_err_t meshx_nvs_commit(void)
         }
         prev = cur;
         cur = cur->next;
-        free(prev);
+        MESHX_FREE(&prev);
     }
 
     meshx_nvs_write_list_head = NULL;
@@ -418,8 +419,8 @@ meshx_err_t meshx_nvs_set(char const* key, void const* blob, uint16_t blob_size,
     }
 
     // Allocate new node
-    node = malloc(sizeof(meshx_nvs_write_list_t));
-    if (!node) return MESHX_NO_MEM;
+    meshx_err_t m_err = MESHX_MALLOC(&node, sizeof(meshx_nvs_write_list_t));
+    if (m_err != MESHX_SUCCESS || !node) return MESHX_NO_MEM;
 
     strncpy(node->key, key, MESHX_KEY_NAME_MAX_SIZE);
     memcpy(node->data, blob, blob_size);

@@ -24,6 +24,13 @@ extern "C" {
 #endif
 
 /**
+ * @brief Memory allocation macros wrapping RTOS allocation functions with (void **) typecast.
+ */
+#define MESHX_MALLOC(ptr, size)         meshx_rtos_malloc((void **)(ptr), (size))
+#define MESHX_CALLOC(ptr, num, size)    meshx_rtos_calloc((void **)(ptr), (num), (size))
+#define MESHX_FREE(ptr)                 meshx_rtos_free((void **)(ptr))
+
+/**
  * @brief Retrieves the current system time in milliseconds.
  *
  * This function calculates the system time in milliseconds based on the

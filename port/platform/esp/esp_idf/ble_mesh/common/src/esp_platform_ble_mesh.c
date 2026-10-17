@@ -18,6 +18,7 @@
 #include "ble_mesh_plat_init.h"
 #include "interface/meshx_platform.h"
 #include "interface/logging/meshx_log.h"
+#include "interface/rtos/meshx_rtos_utils.h"
 #include "interface/ble_mesh/meshx_ble_mesh_cmn.h"
 #include "interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h"
 #include "meshx_platform_ble_mesh.h"
@@ -35,11 +36,7 @@ meshx_err_t meshx_plat_create_model_pub(void ** p_pub, uint16_t nmax)
     if(!p_pub)
         return MESHX_INVALID_ARG;
 
-    *p_pub   = (MESHX_MODEL_PUB *) MESHX_CALOC(nmax, sizeof(MESHX_MODEL_PUB));
-    if(!*p_pub)
-        return MESHX_NO_MEM;
-
-    return MESHX_SUCCESS;
+    return MESHX_CALLOC(p_pub, nmax, sizeof(MESHX_MODEL_PUB));
 }
 
 meshx_err_t meshx_plat_del_model_pub(void ** p_pub)
@@ -47,12 +44,7 @@ meshx_err_t meshx_plat_del_model_pub(void ** p_pub)
     if (!p_pub)
         return MESHX_INVALID_ARG;
 
-    if (*p_pub) {
-        MESHX_FREE(*p_pub);
-        *p_pub = NULL;
-    }
-
-    return MESHX_SUCCESS;
+    return MESHX_FREE(p_pub);
 }
 
 meshx_err_t meshx_plat_client_create(meshx_ptr_t p_model, meshx_ptr_t* p_pub, meshx_ptr_t* p_cli, uint16_t model_id)
@@ -74,8 +66,8 @@ meshx_err_t meshx_plat_client_create(meshx_ptr_t p_model, meshx_ptr_t* p_pub, me
     }
 
     // Allocate memory for the generic client model
-    *p_cli = (MESHX_CLIENT *)MESHX_CALOC(1, sizeof(MESHX_CLIENT));
-    if (!*p_cli)
+    err = MESHX_CALLOC(p_cli, 1, sizeof(MESHX_CLIENT));
+    if (err != MESHX_SUCCESS)
     {
         return MESHX_NO_MEM; // Memory allocation failed
     }
@@ -99,8 +91,7 @@ meshx_err_t meshx_plat_client_delete(meshx_ptr_t p_model, meshx_ptr_t* p_pub, me
 
     meshx_plat_del_model_pub(p_pub);
 
-    MESHX_FREE(*p_cli);
-    *p_cli = NULL;
+    MESHX_FREE(p_cli);
 
     return MESHX_SUCCESS;
 }
@@ -121,11 +112,7 @@ meshx_err_t meshx_create_plat_composition(meshx_ptr_t* p_comp)
     if(!p_comp)
         return MESHX_INVALID_ARG;
 
-    *p_comp = (MESHX_COMPOSITION *) MESHX_MALLOC (sizeof(MESHX_COMPOSITION));
-    if(!*p_comp)
-        return MESHX_NO_MEM;
-
-    return MESHX_SUCCESS;
+    return MESHX_MALLOC(p_comp, sizeof(MESHX_COMPOSITION));
 }
 
 meshx_err_t meshx_plat_add_element_to_composition(

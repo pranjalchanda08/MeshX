@@ -16,6 +16,7 @@
 #include <pairing/meshx_unpair_mgr.h>
 #include <interface/rtos/meshx_task.h>
 #include <interface/logging/meshx_log.h>
+#include <interface/rtos/meshx_rtos_utils.h>
 #include <pairing/meshx_group_allocator.h>
 
 #define TAG MODULE_ID_COMMON
@@ -326,8 +327,9 @@ meshx_err_t meshx_unpair_pre_reset_teardown(void)
     if (meshx_nvs_link_table_get(&table) == MESHX_SUCCESS && table.link_count > 0)
     {
         size_t active_count = 0;
-        meshx_nvs_link_entry_t *snapshot = (meshx_nvs_link_entry_t *)MESHX_MALLOC(table.link_count * sizeof(meshx_nvs_link_entry_t));
-        if (snapshot != NULL)
+        meshx_nvs_link_entry_t *snapshot = NULL;
+        meshx_err_t m_err = MESHX_MALLOC(&snapshot, table.link_count * sizeof(meshx_nvs_link_entry_t));
+        if (m_err == MESHX_SUCCESS && snapshot != NULL)
         {
             for (size_t i = 0; i < MESHX_MAX_PERSISTED_LINKS; i++)
             {
@@ -360,7 +362,7 @@ meshx_err_t meshx_unpair_pre_reset_teardown(void)
                 }
             }
 
-            MESHX_FREE(snapshot);
+            MESHX_FREE(&snapshot);
         }
         else
         {
