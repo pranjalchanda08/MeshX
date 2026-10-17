@@ -21,6 +21,11 @@
 #define TAG MODULE_ID_COMMON
 
 #ifndef MESHX_MGMT_VIRTUAL_ADDR
+/**
+ * Default Company Management Destination Address fallback.
+ * Note: Resolves to the 16-bit Virtual Address (0x8F42 in 0x8000..0xBFFF) derived via
+ * code_gen.py from the management Label UUID, or the Company Management Group Address (0xCFFF).
+ */
 #define MESHX_MGMT_VIRTUAL_ADDR 0x8F42
 #endif
 
@@ -95,12 +100,17 @@ meshx_err_t meshx_unpair_element(uint8_t    src_elem_idx,
     req.func_id = func_id;
     req.target_group_addr = group_addr;
 
-    meshx_comp_send_uvp(src_elem_idx,
-                        peer_unicast,
-                        MESHX_FUNC_ID_SYS_PAIRING,
-                        &req,
-                        sizeof(req),
-                        false);
+    meshx_err_t send_err = meshx_comp_send_uvp(src_elem_idx,
+                                               peer_unicast,
+                                               MESHX_FUNC_ID_SYS_PAIRING,
+                                               &req,
+                                               sizeof(req),
+                                               false);
+    if (send_err != MESHX_SUCCESS)
+    {
+        MESHX_LOGW(TAG, "Unpair Mgr: Failed to dispatch UNPAIR_REQUEST to 0x%04X:el%u (err %d)",
+                   peer_unicast, peer_elem, send_err);
+    }
 
     /* Local cleansing:
      * If element pub_addr matches peer_unicast or group_addr, reset to MESHX_ADDR_UNASSIGNED
@@ -141,7 +151,12 @@ meshx_err_t meshx_unpair_element(uint8_t    src_elem_idx,
         table.link_count--;
     }
     table.link_epoch++;
-    meshx_nvs_link_table_set(&table);
+    meshx_err_t set_err = meshx_nvs_link_table_set(&table);
+    if (set_err != MESHX_SUCCESS)
+    {
+        MESHX_LOGE(TAG, "Unpair Mgr: Failed to persist unlinked table to NVS (%d)", set_err);
+        return set_err;
+    }
 
     MESHX_LOGI(TAG, "Unpair Mgr: Successfully unlinked El%u from 0x%04X:el%u",
                src_elem_idx, peer_unicast, peer_elem);
@@ -285,6 +300,20 @@ meshx_err_t meshx_unpair_handle_reset_notify(uint16_t reset_node_addr)
 
 /**
  * @brief Execute mandatory Pre-Reset Lifecycle Teardown.
+ *
+ * Dispatches targeted UNPAIR_REQUESTs to all active peers, followed by a broadcast
+ * of MESHX_SYS_NOTIFY_NODE_RESET to the Company Management Virtual / Group Address.
+ *
+ * Address Selection & Audit Notes:
+ * - MESHX_MGMT_VIRTUAL_ADDR selects the destination address for the reset notification broadcast:
+ *     - Intended Company Management Group Address: 0xCFFF (fixed group address range 0xC000..0xFEFF).
+ *     - Virtual Address fallback: 0x8F42 (derived via code_gen.py from the management Label UUID
+ *       per Bluetooth Mesh Profile §3.8.4 in the 0x8000..0xBFFF range).
+ * - All provisioned nodes belonging to the company network subscribe to this management address on boot.
+ * - Receiving nodes immediately cleanse stale link-table entries referring to the resetting node
+ *   without waiting for offline heartbeat timeouts or unpair polling.
+ * - Stage 2 implements a 500ms network drain window before MCU reset/NVS erase, guaranteeing radio transmission
+ *   queue flush even under mesh traffic contention.
  */
 meshx_err_t meshx_unpair_pre_reset_teardown(void)
 {
@@ -293,43 +322,95 @@ meshx_err_t meshx_unpair_pre_reset_teardown(void)
 
     MESHX_LOGW(TAG, "Unpair Mgr: Initiating Pre-Reset Teardown (Active Mesh Phase)");
 
-    /* Stage 1: Active In-Mesh Notification */
-    if (meshx_nvs_link_table_get(&table) == MESHX_SUCCESS)
+    /* Stage 1: Active In-Mesh Notification to known peers */
+    if (meshx_nvs_link_table_get(&table) == MESHX_SUCCESS && table.link_count > 0)
     {
-        for (size_t i = 0; i < MESHX_MAX_PERSISTED_LINKS; i++)
+        size_t active_count = 0;
+        meshx_nvs_link_entry_t *snapshot = (meshx_nvs_link_entry_t *)MESHX_MALLOC(table.link_count * sizeof(meshx_nvs_link_entry_t));
+        if (snapshot != NULL)
         {
-            if (table.links[i].active)
+            for (size_t i = 0; i < MESHX_MAX_PERSISTED_LINKS; i++)
+            {
+                if (table.links[i].active && active_count < table.link_count)
+                {
+                    snapshot[active_count++] = table.links[i];
+                }
+            }
+
+            for (size_t i = 0; i < active_count; i++)
             {
                 meshx_uvp_unpair_req_t req;
                 memset(&req, 0, sizeof(req));
                 req.msg_type = MESHX_SYS_CMD_UNPAIR_REQUEST;
-                req.src_elem_idx = table.links[i].local_element_idx;
+                req.src_elem_idx = snapshot[i].local_element_idx;
                 req.dst_elem_idx = 1;
-                req.func_id = table.links[i].func_id;
-                req.target_group_addr = table.links[i].target_group_addr;
+                req.func_id = snapshot[i].func_id;
+                req.target_group_addr = snapshot[i].target_group_addr;
 
-                meshx_comp_send_uvp(table.links[i].local_element_idx,
-                                    table.links[i].target_unicast_addr,
-                                    MESHX_FUNC_ID_SYS_PAIRING,
-                                    &req,
-                                    sizeof(req),
-                                    false);
+                meshx_err_t err = meshx_comp_send_uvp(snapshot[i].local_element_idx,
+                                                      snapshot[i].target_unicast_addr,
+                                                      MESHX_FUNC_ID_SYS_PAIRING,
+                                                      &req,
+                                                      sizeof(req),
+                                                      false);
+                if (err != MESHX_SUCCESS)
+                {
+                    MESHX_LOGW(TAG, "Unpair Mgr: Teardown notice to 0x%04X returned %d",
+                               snapshot[i].target_unicast_addr, err);
+                }
+            }
+
+            MESHX_FREE(snapshot);
+        }
+        else
+        {
+            /* Fallback to direct table iteration if heap allocation fails */
+            MESHX_LOGW(TAG, "Unpair Mgr: Heap snapshot allocation failed, falling back to direct table iteration");
+            for (size_t i = 0; i < MESHX_MAX_PERSISTED_LINKS; i++)
+            {
+                if (table.links[i].active)
+                {
+                    meshx_uvp_unpair_req_t req;
+                    memset(&req, 0, sizeof(req));
+                    req.msg_type = MESHX_SYS_CMD_UNPAIR_REQUEST;
+                    req.src_elem_idx = table.links[i].local_element_idx;
+                    req.dst_elem_idx = 1;
+                    req.func_id = table.links[i].func_id;
+                    req.target_group_addr = table.links[i].target_group_addr;
+
+                    meshx_err_t err = meshx_comp_send_uvp(table.links[i].local_element_idx,
+                                                          table.links[i].target_unicast_addr,
+                                                          MESHX_FUNC_ID_SYS_PAIRING,
+                                                          &req,
+                                                          sizeof(req),
+                                                          false);
+                    if (err != MESHX_SUCCESS)
+                    {
+                        MESHX_LOGW(TAG, "Unpair Mgr: Teardown notice to 0x%04X returned %d",
+                                   table.links[i].target_unicast_addr, err);
+                    }
+                }
             }
         }
     }
 
-    /* Broadcast MESHX_SYS_NOTIFY_NODE_RESET to Company Management Virtual Address */
+    /* Broadcast MESHX_SYS_NOTIFY_NODE_RESET to Company Management Virtual Address (0xCFFF) */
     meshx_uvp_notify_node_reset_t reset_notice;
     memset(&reset_notice, 0, sizeof(reset_notice));
     reset_notice.msg_type = MESHX_SYS_NOTIFY_NODE_RESET;
     reset_notice.reset_node_addr = local_unicast;
 
-    meshx_comp_send_uvp(0,
-                        MESHX_MGMT_VIRTUAL_ADDR,
-                        MESHX_FUNC_ID_SYS_PAIRING,
-                        &reset_notice,
-                        sizeof(reset_notice),
-                        false);
+    meshx_err_t bcast_err = meshx_comp_send_uvp(0,
+                                                MESHX_MGMT_VIRTUAL_ADDR,
+                                                MESHX_FUNC_ID_SYS_PAIRING,
+                                                &reset_notice,
+                                                sizeof(reset_notice),
+                                                false);
+    if (bcast_err != MESHX_SUCCESS)
+    {
+        MESHX_LOGW(TAG, "Unpair Mgr: Teardown broadcast to 0x%04X returned %d",
+                   MESHX_MGMT_VIRTUAL_ADDR, bcast_err);
+    }
 
     /* Stage 2: 500 ms Graceful Network Drain Delay */
     MESHX_LOGI(TAG, "Unpair Mgr: Waiting 500 ms network drain window...");

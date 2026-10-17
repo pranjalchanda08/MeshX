@@ -80,9 +80,12 @@ typedef enum
     MESHX_ERR_INCOMPATIBLE_TRAIT,          /**< Incompatible semantic trait */
     MESHX_ERR_UNSUPPORTED_FUNC_ID,         /**< Mutually unsupported function ID */
     MESHX_ERR_TABLE_FULL,                  /**< Link or group subscription table full */
+    MESHX_ERR_BUSY,                        /**< Pairing transaction in progress / resource busy */
 
     MESHX_ERR_MAX        /**< Maximum Error */
 } meshx_err_t;
+
+#define MESHX_BUSY MESHX_ERR_BUSY
 
 #ifdef __cplusplus
 }

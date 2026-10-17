@@ -20,6 +20,10 @@
 
 #define TAG MODULE_ID_COMMON
 
+#ifndef MESHX_PAIR_MAX_PENDING
+#define MESHX_PAIR_MAX_PENDING 4
+#endif
+
 /**
  * @brief Pending pairing transaction context.
  */
@@ -33,11 +37,118 @@ typedef struct
     uint16_t proposed_group;
 } meshx_pending_pair_t;
 
-static meshx_pending_pair_t s_pending_pair;
+/**
+ * @brief Dynamically allocated pending transaction pool.
+ *
+ * Threading Model & Design Rationale:
+ * A bounded object pool allocated via MESHX_CALOC() provides:
+ * 1. Bounded Heap Usage: Sized to MESHX_PAIR_MAX_PENDING to prevent unbounded heap growth
+ *    while supporting concurrent in-flight pairing transactions.
+ * 2. Execution Context: Dispatches and UVP response handling execute cooperatively on the
+ *    MeshX task context.
+ * 3. Concurrency Contract: If a duplicate transaction to the same destination is in flight,
+ *    or the pool is exhausted, meshx_pair_initiate() returns MESHX_BUSY (status 0x06).
+ */
+static meshx_pending_pair_t *s_pending_pool = NULL;
 static meshx_pair_status_cb_t s_pair_status_cb = NULL;
 
 /**
- * @brief Helper to persist an entry in the link table and bump epoch.
+ * @brief Acquire an available slot in the pending transaction pool.
+ *
+ * Checks if the pool has been initialized (allocating via MESHX_CALOC if needed),
+ * validates that no duplicate transaction to the same destination endpoint is already
+ * in flight, and returns a pointer to an idle slot.
+ *
+ * @param[in] dst_unicast Destination primary unicast address.
+ * @param[in] dst_elem_idx Destination element index.
+ *
+ * @return Pointer to acquired meshx_pending_pair_t slot, or NULL if duplicate or pool exhausted.
+ */
+static meshx_pending_pair_t *pending_pool_acquire(uint16_t dst_unicast, uint8_t dst_elem_idx)
+{
+    if (s_pending_pool == NULL)
+    {
+        s_pending_pool = (meshx_pending_pair_t *)MESHX_CALOC(MESHX_PAIR_MAX_PENDING, sizeof(meshx_pending_pair_t));
+        if (s_pending_pool == NULL)
+        {
+            MESHX_LOGE(TAG, "Pair Orchestrator: Failed to allocate pending transaction pool");
+            return NULL;
+        }
+    }
+
+    /* Reject duplicate pending transaction to the same destination element */
+    for (size_t i = 0; i < MESHX_PAIR_MAX_PENDING; i++)
+    {
+        if (s_pending_pool[i].active &&
+            s_pending_pool[i].dst_unicast == dst_unicast &&
+            s_pending_pool[i].dst_elem_idx == dst_elem_idx)
+        {
+            MESHX_LOGW(TAG, "Pair Orchestrator: Transaction already active for 0x%04X:el%u (busy)",
+                       dst_unicast, dst_elem_idx);
+            return NULL;
+        }
+    }
+
+    /* Find available slot */
+    for (size_t i = 0; i < MESHX_PAIR_MAX_PENDING; i++)
+    {
+        if (!s_pending_pool[i].active)
+        {
+            return &s_pending_pool[i];
+        }
+    }
+
+    MESHX_LOGW(TAG, "Pair Orchestrator: Pending pool exhausted (%u in flight)", MESHX_PAIR_MAX_PENDING);
+    return NULL;
+}
+
+/**
+ * @brief Locate an active pending transaction slot by destination unicast address.
+ *
+ * @param[in] dst_unicast Destination primary unicast address of respondent node.
+ *
+ * @return Pointer to matching active slot, or NULL if not found.
+ */
+static meshx_pending_pair_t *pending_pool_find(uint16_t dst_unicast)
+{
+    if (s_pending_pool == NULL)
+    {
+        return NULL;
+    }
+    for (size_t i = 0; i < MESHX_PAIR_MAX_PENDING; i++)
+    {
+        if (s_pending_pool[i].active && s_pending_pool[i].dst_unicast == dst_unicast)
+        {
+            return &s_pending_pool[i];
+        }
+    }
+    return NULL;
+}
+
+/**
+ * @brief Release an active pending transaction slot back to the idle pool.
+ *
+ * Clears the slot contents and marks active as false.
+ *
+ * @param[in,out] slot Pointer to the pending slot to release.
+ */
+static void pending_pool_release(meshx_pending_pair_t *slot)
+{
+    if (slot != NULL)
+    {
+        memset(slot, 0, sizeof(*slot));
+    }
+}
+
+/**
+ * @brief Helper to persist an entry in the persistent NVS link table and bump link epoch.
+ *
+ * Locates an existing matching slot or first available free slot in the NVS link table,
+ * updates entry fields, increments the monotonic link epoch counter, and commits to NVS.
+ *
+ * @param[in] entry Pointer to the link entry to store.
+ *
+ * @return MESHX_SUCCESS on successful persistence, or MESHX_NO_MEM / NVS error code.
  */
 static meshx_err_t store_link_entry(const meshx_nvs_link_entry_t *entry)
 {
@@ -84,7 +195,19 @@ static meshx_err_t store_link_entry(const meshx_nvs_link_entry_t *entry)
  */
 meshx_err_t meshx_pair_init(void)
 {
-    memset(&s_pending_pair, 0, sizeof(s_pending_pair));
+    if (s_pending_pool == NULL)
+    {
+        s_pending_pool = (meshx_pending_pair_t *)MESHX_CALOC(MESHX_PAIR_MAX_PENDING, sizeof(meshx_pending_pair_t));
+        if (s_pending_pool == NULL)
+        {
+            MESHX_LOGE(TAG, "Pair Orchestrator: Failed to allocate pending transaction pool");
+            return MESHX_NO_MEM;
+        }
+    }
+    else
+    {
+        memset(s_pending_pool, 0, MESHX_PAIR_MAX_PENDING * sizeof(meshx_pending_pair_t));
+    }
     s_pair_status_cb = NULL;
     return MESHX_SUCCESS;
 }
@@ -121,6 +244,13 @@ meshx_err_t meshx_pair_initiate(uint8_t src_elem_idx,
         return MESHX_INVALID_STATE;
     }
 
+    /* Concurrency guard: acquire available slot in pending transaction pool */
+    meshx_pending_pair_t *pending = pending_pool_acquire(dst_unicast, dst_elem_idx);
+    if (!pending)
+    {
+        return MESHX_BUSY;
+    }
+
     local_variant = meshx_comp_get_element_variant(src_elem_idx);
     if (local_variant == 0)
     {
@@ -135,8 +265,16 @@ meshx_err_t meshx_pair_initiate(uint8_t src_elem_idx,
     }
 
     /* Inspect current persistent link table */
+    memset(&table, 0, sizeof(table));
     if (meshx_nvs_link_table_get(&table) == MESHX_SUCCESS)
     {
+        if (table.link_count >= MESHX_MAX_PERSISTED_LINKS)
+        {
+            MESHX_LOGE(TAG, "Pair Orchestrator: Link table full (%u/%u)",
+                       table.link_count, MESHX_MAX_PERSISTED_LINKS);
+            return MESHX_NO_MEM;
+        }
+
         for (size_t i = 0; i < MESHX_MAX_PERSISTED_LINKS; i++)
         {
             if (table.links[i].active &&
@@ -150,6 +288,10 @@ meshx_err_t meshx_pair_initiate(uint8_t src_elem_idx,
                 }
             }
         }
+    }
+    else
+    {
+        MESHX_LOGD(TAG, "Pair Orchestrator: No existing link table in NVS, starting fresh");
     }
 
     /* Topology Decision:
@@ -193,18 +335,24 @@ meshx_err_t meshx_pair_initiate(uint8_t src_elem_idx,
             /* Update previous link in NVS to point to the new group */
             table.links[first_link_slot].target_group_addr = group_addr;
             table.link_epoch++;
-            meshx_nvs_link_table_set(&table);
+            meshx_err_t set_err = meshx_nvs_link_table_set(&table);
+            if (set_err != MESHX_SUCCESS)
+            {
+                MESHX_LOGE(TAG, "Pair Orchestrator: Failed to persist promoted group link in NVS (%d)", set_err);
+                pending_pool_release(pending);
+                return set_err;
+            }
             meshx_comp_set_element_pub_addr(src_elem_idx, group_addr);
         }
     }
 
     /* Record pending context */
-    s_pending_pair.active = true;
-    s_pending_pair.src_elem_idx = src_elem_idx;
-    s_pending_pair.dst_unicast = dst_unicast;
-    s_pending_pair.dst_elem_idx = dst_elem_idx;
-    s_pending_pair.func_id = func_id;
-    s_pending_pair.proposed_group = group_addr;
+    pending->active = true;
+    pending->src_elem_idx = src_elem_idx;
+    pending->dst_unicast = dst_unicast;
+    pending->dst_elem_idx = dst_elem_idx;
+    pending->func_id = func_id;
+    pending->proposed_group = group_addr;
 
     /* Transmit MESHX_SYS_CMD_PAIR_REQUEST */
     meshx_uvp_pair_req_t req;
@@ -216,12 +364,21 @@ meshx_err_t meshx_pair_initiate(uint8_t src_elem_idx,
     req.target_group_addr = group_addr;
     req.sender_unicast = local_unicast;
 
-    return meshx_comp_send_uvp(src_elem_idx,
-                               dst_unicast,
-                               MESHX_FUNC_ID_SYS_PAIRING,
-                               &req,
-                               sizeof(req),
-                               false);
+    meshx_err_t send_err = meshx_comp_send_uvp(src_elem_idx,
+                                               dst_unicast,
+                                               MESHX_FUNC_ID_SYS_PAIRING,
+                                               &req,
+                                               sizeof(req),
+                                               false);
+    if (send_err != MESHX_SUCCESS)
+    {
+        MESHX_LOGW(TAG, "Pair Orchestrator: Failed to transmit PAIR_REQUEST to 0x%04X (err %d)",
+                   dst_unicast, send_err);
+        pending_pool_release(pending);
+        return send_err;
+    }
+
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -308,47 +465,61 @@ meshx_err_t meshx_pair_handle_response(const meshx_uvp_pair_rsp_t *rsp,
         return MESHX_INVALID_ARG;
     }
 
-    if (!s_pending_pair.active || s_pending_pair.dst_unicast != src_unicast)
+    meshx_pending_pair_t *pending = pending_pool_find(src_unicast);
+    if (!pending)
     {
         MESHX_LOGW(TAG, "Pair Orchestrator: Unexpected pair response from 0x%04X", src_unicast);
         return MESHX_NOT_FOUND;
     }
 
+    uint8_t src_elem_idx = pending->src_elem_idx;
+    uint8_t dst_elem_idx = pending->dst_elem_idx;
+
     if (rsp->status == MESHX_SYS_STATUS_SUCCESS)
     {
         uint16_t pub_target = (rsp->target_group_addr != MESHX_ADDR_UNASSIGNED) ? rsp->target_group_addr : src_unicast;
-        meshx_comp_set_element_pub_addr(s_pending_pair.src_elem_idx, pub_target);
+        meshx_comp_set_element_pub_addr(src_elem_idx, pub_target);
 
         /* Commit link entry into initiator NVS table */
         meshx_nvs_link_entry_t entry;
         memset(&entry, 0, sizeof(entry));
         entry.active = 1;
-        entry.local_element_idx = s_pending_pair.src_elem_idx;
-        entry.bound_variant = meshx_comp_get_element_variant(s_pending_pair.src_elem_idx);
+        entry.local_element_idx = src_elem_idx;
+        entry.bound_variant = meshx_comp_get_element_variant(src_elem_idx);
         entry.target_unicast_addr = src_unicast;
         entry.target_group_addr = rsp->target_group_addr;
-        entry.func_id = s_pending_pair.func_id;
-
-        store_link_entry(&entry);
+        meshx_err_t store_err = store_link_entry(&entry);
+        if (store_err != MESHX_SUCCESS)
+        {
+            MESHX_LOGE(TAG, "Pair Orchestrator: Failed to persist initiator link in NVS (%d)", store_err);
+            if (s_pair_status_cb)
+            {
+                s_pair_status_cb(store_err, src_unicast, dst_elem_idx, 0);
+            }
+            pending_pool_release(pending);
+            return store_err;
+        }
 
         MESHX_LOGI(TAG, "Pair Orchestrator: Initiator link confirmed -> Pub target 0x%04X", pub_target);
 
+        pending_pool_release(pending);
+
         if (s_pair_status_cb)
         {
-            s_pair_status_cb(MESHX_SUCCESS, src_unicast, s_pending_pair.dst_elem_idx, rsp->target_group_addr);
+            s_pair_status_cb(MESHX_SUCCESS, src_unicast, dst_elem_idx, rsp->target_group_addr);
         }
     }
     else
     {
         MESHX_LOGW(TAG, "Pair Orchestrator: Peer 0x%04X rejected pair request (status %u)",
                    src_unicast, rsp->status);
+        pending_pool_release(pending);
         if (s_pair_status_cb)
         {
-            s_pair_status_cb(MESHX_FAIL, src_unicast, s_pending_pair.dst_elem_idx, 0);
+            s_pair_status_cb(MESHX_FAIL, src_unicast, dst_elem_idx, 0);
         }
     }
 
-    s_pending_pair.active = false;
     return MESHX_SUCCESS;
 }
 
