@@ -17,21 +17,27 @@
 #include "interface/gpio/meshx_gpio.h"
 #include "interface/gpio/meshx_gpio_types.h"
 #include "interface/gpio/meshx_gpio_platform.h"
-#include "../../inc/meshx_err.h"
-#include "../../interface/logging/meshx_log.h"
-#include "../../inc/module_id.h"
+#include "interface/rtos/meshx_rtos_utils.h"
+#include "interface/logging/meshx_log.h"
+#include "meshx_err.h"
+#include "module_id.h"
+
+#ifndef MESHX_GPIO_COUNT_MAX
+#define MESHX_GPIO_COUNT_MAX    128
+#endif /* MESHX_GPIO_COUNT_MAX */
 
 /**
  * @brief GPIO runtime state structure
  */
-typedef struct {
-    bool initialized;                       /**< GPIO subsystem initialized flag */
-    uint8_t pin_count;                      /**< Number of configured pins */
-    meshx_gpio_pin_config_t* pin_configs;   /**< Pin configuration array */
-    meshx_gpio_pin_state_t* pin_states;     /**< Pin runtime state array */
-    uint8_t* logical_to_physical_map;       /**< Logical to physical pin mapping */
-    uint8_t* physical_to_logical_map;       /**< Physical to logical pin mapping */
-    meshx_gpio_hosted_mode_t hosted_mode;   /**< Current hosted mode state */
+typedef struct
+{
+    bool initialized;                             /**< GPIO subsystem initialized flag */
+    uint8_t pin_count;                            /**< Number of configured pins */
+    meshx_gpio_pin_config_t *pin_configs;         /**< Pin configuration array */
+    meshx_gpio_pin_state_t *pin_states;           /**< Pin runtime state array */
+    uint8_t *logical_to_physical_map;             /**< Logical to physical pin mapping */
+    uint8_t *physical_to_logical_map;             /**< Physical to logical pin mapping */
+    meshx_gpio_hosted_mode_t hosted_mode;         /**< Current hosted mode state */
     meshx_gpio_hosted_event_cb_t hosted_event_cb; /**< Callback for hosted mode events */
 } meshx_gpio_runtime_t;
 
@@ -48,13 +54,14 @@ static meshx_err_t meshx_gpio_send_hosted_event(uint8_t event_type, uint8_t logi
  *
  * @param arg Logical pin number passed as uintptr_t
  */
-static void intr_wrapper(void* arg)
+static void intr_wrapper(void *arg)
 {
     uint8_t logical_pin = (uintptr_t)arg;
     if (gpio_runtime.pin_states != NULL &&
         logical_pin < gpio_runtime.pin_count &&
         gpio_runtime.pin_states[logical_pin].interrupt_registered &&
-        gpio_runtime.pin_states[logical_pin].intr_callback != NULL) {
+        gpio_runtime.pin_states[logical_pin].intr_callback != NULL)
+    {
         gpio_runtime.pin_states[logical_pin].intr_callback(
             logical_pin,
             gpio_runtime.pin_states[logical_pin].intr_user_data);
@@ -62,16 +69,15 @@ static void intr_wrapper(void* arg)
 }
 
 #if CONFIG_ENABLE_GPIO && CONFIG_GPIO_PIN_COUNT > 0
-static const meshx_gpio_pin_config_t g_compiled_configs[] = {
-    CONFIG_GPIO_PIN_CONFIG_TABLE
-};
+static const meshx_gpio_pin_config_t g_compiled_configs[] = {CONFIG_GPIO_PIN_CONFIG_TABLE};
 #endif
 
 #if CONFIG_ENABLE_UNIT_TEST
 /* Unit test helper to patch pin count at runtime */
 meshx_err_t meshx_gpio_test_set_pin_count(uint8_t count)
 {
-    if (count <= 128) {
+    if (count <= MESHX_GPIO_COUNT_MAX)
+    {
         gpio_runtime.pin_count = count;
         return MESHX_SUCCESS;
     }
@@ -81,7 +87,8 @@ meshx_err_t meshx_gpio_test_set_pin_count(uint8_t count)
 /* Unit test helper to patch pin modes at runtime */
 meshx_err_t meshx_gpio_test_set_pin_mode(uint8_t logical_pin, uint8_t mode)
 {
-    if (logical_pin < 128 && gpio_runtime.pin_configs != NULL) {
+    if (logical_pin < MESHX_GPIO_COUNT_MAX && gpio_runtime.pin_configs != NULL)
+    {
         gpio_runtime.pin_configs[logical_pin].mode = mode;
         return MESHX_SUCCESS;
     }
@@ -96,27 +103,30 @@ meshx_err_t meshx_gpio_init(void)
 {
     MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Initializing GPIO subsystem");
 
-    if (gpio_runtime.initialized) {
+    if (gpio_runtime.initialized)
+    {
         MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_GPIO, "GPIO already initialized");
         return MESHX_SUCCESS;
     }
 
     // Initialize platform-specific GPIO
     meshx_err_t err = meshx_gpio_platform_init();
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_GPIO, "Platform GPIO init failed: %d", err);
         return err;
     }
 
 #if CONFIG_ENABLE_GPIO && CONFIG_GPIO_PIN_COUNT > 0
     gpio_runtime.pin_count = CONFIG_GPIO_PIN_COUNT;
-    gpio_runtime.pin_configs = (meshx_gpio_pin_config_t*)malloc(sizeof(meshx_gpio_pin_config_t) * gpio_runtime.pin_count);
-    gpio_runtime.pin_states = (meshx_gpio_pin_state_t*)malloc(sizeof(meshx_gpio_pin_state_t) * gpio_runtime.pin_count);
-    gpio_runtime.logical_to_physical_map = (uint8_t*)malloc(sizeof(uint8_t) * 256); // Full range map
-    gpio_runtime.physical_to_logical_map = (uint8_t*)malloc(sizeof(uint8_t) * 256); // Full range map
+    MESHX_MALLOC(&gpio_runtime.pin_configs, sizeof(meshx_gpio_pin_config_t) * gpio_runtime.pin_count);
+    MESHX_MALLOC(&gpio_runtime.pin_states, sizeof(meshx_gpio_pin_state_t) * gpio_runtime.pin_count);
+    MESHX_MALLOC(&gpio_runtime.logical_to_physical_map, sizeof(uint8_t) * 256); // Full range map
+    MESHX_MALLOC(&gpio_runtime.physical_to_logical_map, sizeof(uint8_t) * 256); // Full range map
 
     if (!gpio_runtime.pin_configs || !gpio_runtime.pin_states ||
-        !gpio_runtime.logical_to_physical_map || !gpio_runtime.physical_to_logical_map) {
+        !gpio_runtime.logical_to_physical_map || !gpio_runtime.physical_to_logical_map)
+    {
         MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_GPIO, "Failed to allocate memory for GPIO runtime");
         return MESHX_NO_MEM;
     }
@@ -126,7 +136,8 @@ meshx_err_t meshx_gpio_init(void)
     memset(gpio_runtime.pin_states, 0, sizeof(meshx_gpio_pin_state_t) * gpio_runtime.pin_count);
 
     // Copy compiled configurations and setup maps
-    for (int i = 0; i < gpio_runtime.pin_count; i++) {
+    for (int i = 0; i < gpio_runtime.pin_count; i++)
+    {
         gpio_runtime.pin_configs[i] = g_compiled_configs[i];
         uint8_t l_pin = gpio_runtime.pin_configs[i].logical_pin;
         uint8_t p_pin = gpio_runtime.pin_configs[i].physical_pin;
@@ -139,20 +150,22 @@ meshx_err_t meshx_gpio_init(void)
                                                 (meshx_gpio_mode_t)gpio_runtime.pin_configs[i].mode,
                                                 (meshx_gpio_pull_t)gpio_runtime.pin_configs[i].pull,
                                                 (meshx_gpio_drive_t)gpio_runtime.pin_configs[i].drive_strength);
-        if (err != MESHX_SUCCESS) {
+        if (err != MESHX_SUCCESS)
+        {
             MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_GPIO, "Failed to config pin %d (L:%d, P:%d): %d", i, l_pin, p_pin, err);
         }
     }
 #elif CONFIG_ENABLE_UNIT_TEST
     /* Fallback for unit tests when no board pins are configured */
-    gpio_runtime.pin_count = 128;
-    gpio_runtime.pin_configs = (meshx_gpio_pin_config_t*)malloc(sizeof(meshx_gpio_pin_config_t) * gpio_runtime.pin_count);
-    gpio_runtime.pin_states = (meshx_gpio_pin_state_t*)malloc(sizeof(meshx_gpio_pin_state_t) * gpio_runtime.pin_count);
-    gpio_runtime.logical_to_physical_map = (uint8_t*)malloc(sizeof(uint8_t) * 256);
-    gpio_runtime.physical_to_logical_map = (uint8_t*)malloc(sizeof(uint8_t) * 256);
+    gpio_runtime.pin_count = MESHX_GPIO_COUNT_MAX;
+    MESHX_MALLOC(&gpio_runtime.pin_configs, sizeof(meshx_gpio_pin_config_t) * gpio_runtime.pin_count);
+    MESHX_MALLOC(&gpio_runtime.pin_states, sizeof(meshx_gpio_pin_state_t) * gpio_runtime.pin_count);
+    MESHX_MALLOC(&gpio_runtime.logical_to_physical_map, sizeof(uint8_t) * 256);
+    MESHX_MALLOC(&gpio_runtime.physical_to_logical_map, sizeof(uint8_t) * 256);
 
     if (!gpio_runtime.pin_configs || !gpio_runtime.pin_states ||
-        !gpio_runtime.logical_to_physical_map || !gpio_runtime.physical_to_logical_map) {
+        !gpio_runtime.logical_to_physical_map || !gpio_runtime.physical_to_logical_map)
+    {
         return MESHX_NO_MEM;
     }
 
@@ -161,7 +174,8 @@ meshx_err_t meshx_gpio_init(void)
     memset(gpio_runtime.logical_to_physical_map, 0xFF, 256);
     memset(gpio_runtime.physical_to_logical_map, 0xFF, 256);
 
-    for (int i = 0; i < 128; i++) {
+    for (int i = 0; i < MESHX_GPIO_COUNT_MAX; i++)
+    {
         gpio_runtime.pin_configs[i].logical_pin = i;
         gpio_runtime.pin_configs[i].physical_pin = i;
         gpio_runtime.pin_configs[i].mode = MESHX_GPIO_MODE_OUTPUT;
@@ -190,14 +204,16 @@ meshx_err_t meshx_gpio_deinit(void)
 {
     MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Deinitializing GPIO subsystem");
 
-    if (!gpio_runtime.initialized) {
+    if (!gpio_runtime.initialized)
+    {
         MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_GPIO, "GPIO not initialized");
         return MESHX_SUCCESS;
     }
 
     // Deinitialize platform-specific GPIO
     meshx_err_t err = meshx_gpio_platform_deinit();
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_GPIO, "Platform GPIO deinit failed: %d", err);
         return err;
     }
@@ -223,11 +239,13 @@ meshx_err_t meshx_gpio_deinit(void)
  */
 static meshx_err_t validate_logical_pin(uint8_t logical_pin)
 {
-    if (!gpio_runtime.initialized) {
+    if (!gpio_runtime.initialized)
+    {
         return MESHX_ERR_GPIO_NOT_INITIALIZED;
     }
 
-    if (logical_pin >= gpio_runtime.pin_count) {
+    if (logical_pin >= gpio_runtime.pin_count)
+    {
         return MESHX_ERR_GPIO_INVALID_PIN;
     }
 
@@ -241,19 +259,22 @@ static meshx_err_t validate_logical_pin(uint8_t logical_pin)
  * @param[out] physical_pin Pointer to store physical pin number
  * @return meshx_err_t MESHX_SUCCESS on success, error code on failure
  */
-static meshx_err_t get_physical_pin(uint8_t logical_pin, uint8_t* physical_pin)
+static meshx_err_t get_physical_pin(uint8_t logical_pin, uint8_t *physical_pin)
 {
     meshx_err_t err = validate_logical_pin(logical_pin);
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         return err;
     }
 
-    if (gpio_runtime.logical_to_physical_map == NULL) {
+    if (gpio_runtime.logical_to_physical_map == NULL)
+    {
         return MESHX_ERR_GPIO_CONFIG_INVALID;
     }
 
     *physical_pin = gpio_runtime.logical_to_physical_map[logical_pin];
-    if (*physical_pin == 0xFF) {  // Using 0xFF as invalid pin marker
+    if (*physical_pin == 0xFF)
+    { // Using 0xFF as invalid pin marker
         return MESHX_ERR_GPIO_INVALID_PIN;
     }
 
@@ -269,11 +290,13 @@ static meshx_err_t get_physical_pin(uint8_t logical_pin, uint8_t* physical_pin)
  */
 static meshx_err_t validate_pin_mode(uint8_t logical_pin, meshx_gpio_mode_t required_mode)
 {
-    if (gpio_runtime.pin_configs == NULL) {
+    if (gpio_runtime.pin_configs == NULL)
+    {
         return MESHX_ERR_GPIO_NOT_INITIALIZED;
     }
 
-    if (logical_pin >= gpio_runtime.pin_count) {
+    if (logical_pin >= gpio_runtime.pin_count)
+    {
         MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "validate_pin_mode: pin %u out of range (%u)", logical_pin, gpio_runtime.pin_count);
         return MESHX_ERR_GPIO_INVALID_PIN;
     }
@@ -282,35 +305,39 @@ static meshx_err_t validate_pin_mode(uint8_t logical_pin, meshx_gpio_mode_t requ
     MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "validate_pin_mode: pin %u, req=%u, actual=%u", logical_pin, required_mode, actual_mode);
 
     // Check if actual mode supports the required operation
-    switch (required_mode) {
-        case MESHX_GPIO_MODE_INPUT:
-            // Input operations are generally allowed on all configured pins
-            // to support reading back output states.
-            if (actual_mode == MESHX_GPIO_MODE_MAX) {
-                return MESHX_ERR_GPIO_INVALID_MODE;
-            }
-            break;
-
-        case MESHX_GPIO_MODE_OUTPUT:
-            // Only output operations allowed
-            if (actual_mode != MESHX_GPIO_MODE_OUTPUT &&
-                actual_mode != MESHX_GPIO_MODE_INPUT_OUTPUT &&
-                actual_mode != MESHX_GPIO_MODE_OPEN_DRAIN &&
-                actual_mode != MESHX_GPIO_MODE_OPEN_DRAIN_INPUT_OUTPUT &&
-                actual_mode != MESHX_GPIO_MODE_PWM_OUTPUT) {
-                return MESHX_ERR_GPIO_INVALID_MODE;
-            }
-            break;
-
-        case MESHX_GPIO_MODE_PWM_OUTPUT:
-            // Only PWM operations allowed
-            if (actual_mode != MESHX_GPIO_MODE_PWM_OUTPUT) {
-                return MESHX_ERR_GPIO_INVALID_MODE;
-            }
-            break;
-
-        default:
+    switch (required_mode)
+    {
+    case MESHX_GPIO_MODE_INPUT:
+        // Input operations are generally allowed on all configured pins
+        // to support reading back output states.
+        if (actual_mode == MESHX_GPIO_MODE_MAX)
+        {
             return MESHX_ERR_GPIO_INVALID_MODE;
+        }
+        break;
+
+    case MESHX_GPIO_MODE_OUTPUT:
+        // Only output operations allowed
+        if (actual_mode != MESHX_GPIO_MODE_OUTPUT &&
+            actual_mode != MESHX_GPIO_MODE_INPUT_OUTPUT &&
+            actual_mode != MESHX_GPIO_MODE_OPEN_DRAIN &&
+            actual_mode != MESHX_GPIO_MODE_OPEN_DRAIN_INPUT_OUTPUT &&
+            actual_mode != MESHX_GPIO_MODE_PWM_OUTPUT)
+        {
+            return MESHX_ERR_GPIO_INVALID_MODE;
+        }
+        break;
+
+    case MESHX_GPIO_MODE_PWM_OUTPUT:
+        // Only PWM operations allowed
+        if (actual_mode != MESHX_GPIO_MODE_PWM_OUTPUT)
+        {
+            return MESHX_ERR_GPIO_INVALID_MODE;
+        }
+        break;
+
+    default:
+        return MESHX_ERR_GPIO_INVALID_MODE;
     }
 
     return MESHX_SUCCESS;
@@ -324,39 +351,45 @@ meshx_err_t meshx_gpio_set_level(uint8_t logical_pin, uint8_t level)
     MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Setting pin %u level to %u", logical_pin, level);
 
     // Validate level
-    if (level > 1) {
+    if (level > 1)
+    {
         return MESHX_ERR_GPIO_INVALID_LEVEL;
     }
 
     // Validate pin mode for output operation
     meshx_err_t err = validate_pin_mode(logical_pin, MESHX_GPIO_MODE_OUTPUT);
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         return err;
     }
 
     // Get physical pin
     uint8_t physical_pin;
     err = get_physical_pin(logical_pin, &physical_pin);
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         return err;
     }
 
     // Apply signal inversion if configured
     uint8_t effective_level = level;
     if (gpio_runtime.pin_configs != NULL &&
-        gpio_runtime.pin_configs[logical_pin].signal_inversion) {
+        gpio_runtime.pin_configs[logical_pin].signal_inversion)
+    {
         effective_level = !effective_level;
     }
 
     /* In hosted mode: send event to host instead of direct hardware access */
-    if (gpio_runtime.hosted_mode == MESHX_GPIO_MODE_HOSTED) {
+    if (gpio_runtime.hosted_mode == MESHX_GPIO_MODE_HOSTED)
+    {
         /* Update runtime state */
-        if (gpio_runtime.pin_states != NULL) {
+        if (gpio_runtime.pin_states != NULL)
+        {
             gpio_runtime.pin_states[logical_pin].current_level = level;
         }
 
         /* Send GPIO level change event to host */
-        meshx_gpio_send_hosted_event(0, logical_pin, level);  /* event_type 0 = level change */
+        meshx_gpio_send_hosted_event(0, logical_pin, level); /* event_type 0 = level change */
 
         MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Pin %u level set to %u (hosted mode)", logical_pin, level);
         return MESHX_SUCCESS;
@@ -366,19 +399,22 @@ meshx_err_t meshx_gpio_set_level(uint8_t logical_pin, uint8_t level)
     err = meshx_gpio_platform_set_level(physical_pin, effective_level);
 
     // Update runtime state
-    if (gpio_runtime.pin_states != NULL) {
+    if (gpio_runtime.pin_states != NULL)
+    {
         gpio_runtime.pin_states[logical_pin].current_level = level;
     }
 
 #if CONFIG_ENABLE_UNIT_TEST
     // In unit test mode, we consider the set operation successful for logic tracking
     // even if the platform driver (rightfully) rejects an out-of-range physical pin.
-    if (err != MESHX_SUCCESS && physical_pin >= 22) {
+    if (err != MESHX_SUCCESS && physical_pin >= 22)
+    {
         err = MESHX_SUCCESS;
     }
 #endif
 
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         return err;
     }
 
@@ -389,24 +425,27 @@ meshx_err_t meshx_gpio_set_level(uint8_t logical_pin, uint8_t level)
 /**
  * @brief Get GPIO pin level
  */
-meshx_err_t meshx_gpio_get_level(uint8_t logical_pin, uint8_t* level)
+meshx_err_t meshx_gpio_get_level(uint8_t logical_pin, uint8_t *level)
 {
     MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Getting pin %u level", logical_pin);
 
-    if (level == NULL) {
+    if (level == NULL)
+    {
         return MESHX_INVALID_ARG;
     }
 
     // Validate pin mode for input operation
     meshx_err_t err = validate_pin_mode(logical_pin, MESHX_GPIO_MODE_INPUT);
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         return err;
     }
 
     // Get physical pin
     uint8_t physical_pin;
     err = get_physical_pin(logical_pin, &physical_pin);
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         return err;
     }
 
@@ -416,30 +455,37 @@ meshx_err_t meshx_gpio_get_level(uint8_t logical_pin, uint8_t* level)
 #if CONFIG_ENABLE_UNIT_TEST
     // In unit test mode, prioritize the tracked state for consistency,
     // especially for virtual pins that the platform driver cannot read.
-    if (gpio_runtime.pin_states != NULL) {
+    if (gpio_runtime.pin_states != NULL)
+    {
         // If platform failed or it's a virtual pin, use tracked state
-        if (err != MESHX_SUCCESS || physical_pin >= 22) {
+        if (err != MESHX_SUCCESS || physical_pin >= 22)
+        {
             *level = gpio_runtime.pin_states[logical_pin].current_level;
             err = MESHX_SUCCESS;
-        } else {
+        }
+        else
+        {
             // Even if platform succeeded, we might want to sync the state
             gpio_runtime.pin_states[logical_pin].current_level = *level;
         }
     }
 #else
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         return err;
     }
 
     // Update runtime state
-    if (gpio_runtime.pin_states != NULL) {
+    if (gpio_runtime.pin_states != NULL)
+    {
         gpio_runtime.pin_states[logical_pin].current_level = *level;
     }
 #endif
 
     // Apply signal inversion if configured
     if (gpio_runtime.pin_configs != NULL &&
-        gpio_runtime.pin_configs[logical_pin].signal_inversion) {
+        gpio_runtime.pin_configs[logical_pin].signal_inversion)
+    {
         *level = !(*level);
     }
 
@@ -456,23 +502,29 @@ meshx_err_t meshx_gpio_toggle(uint8_t logical_pin)
 
     // Validate pin mode for output operation
     meshx_err_t err = validate_pin_mode(logical_pin, MESHX_GPIO_MODE_OUTPUT);
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         return err;
     }
 
     // PWM output pins cannot be toggled via direct GPIO level control
-    if (gpio_runtime.pin_configs[logical_pin].mode == MESHX_GPIO_MODE_PWM_OUTPUT) {
+    if (gpio_runtime.pin_configs[logical_pin].mode == MESHX_GPIO_MODE_PWM_OUTPUT)
+    {
         return MESHX_ERR_GPIO_INVALID_MODE;
     }
 
     // Get current level
     uint8_t current_level;
-    if (gpio_runtime.pin_states != NULL) {
+    if (gpio_runtime.pin_states != NULL)
+    {
         current_level = gpio_runtime.pin_states[logical_pin].current_level;
-    } else {
+    }
+    else
+    {
         // If state not tracked, read current level
         err = meshx_gpio_get_level(logical_pin, &current_level);
-        if (err != MESHX_SUCCESS) {
+        if (err != MESHX_SUCCESS)
+        {
             return err;
         }
     }
@@ -493,24 +545,28 @@ meshx_err_t meshx_gpio_register_intr(uint8_t logical_pin,
     MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO,
                "Registering interrupt for pin %u, type %d", logical_pin, intr_type);
 
-    if (callback == NULL) {
+    if (callback == NULL)
+    {
         return MESHX_INVALID_ARG;
     }
 
-    if (intr_type == MESHX_GPIO_INTR_DISABLED) {
+    if (intr_type == MESHX_GPIO_INTR_DISABLED)
+    {
         return MESHX_ERR_GPIO_INTR_NOT_SUPPORTED;
     }
 
     // Check if interrupt already registered
     if (gpio_runtime.pin_states != NULL &&
-        gpio_runtime.pin_states[logical_pin].interrupt_registered) {
+        gpio_runtime.pin_states[logical_pin].interrupt_registered)
+    {
         return MESHX_ERR_GPIO_INTR_ALREADY_REGISTERED;
     }
 
     // Get physical pin
     uint8_t physical_pin;
     meshx_err_t err = get_physical_pin(logical_pin, &physical_pin);
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         return err;
     }
 
@@ -518,9 +574,11 @@ meshx_err_t meshx_gpio_register_intr(uint8_t logical_pin,
     // TODO: Check pin capabilities from BSP
 
     // In hosted mode: just register the callback, no hardware interrupt needed
-    if (gpio_runtime.hosted_mode == MESHX_GPIO_MODE_HOSTED) {
+    if (gpio_runtime.hosted_mode == MESHX_GPIO_MODE_HOSTED)
+    {
         // Update runtime state for hosted mode
-        if (gpio_runtime.pin_states != NULL) {
+        if (gpio_runtime.pin_states != NULL)
+        {
             gpio_runtime.pin_states[logical_pin].interrupt_registered = true;
             gpio_runtime.pin_states[logical_pin].intr_callback = callback;
             gpio_runtime.pin_states[logical_pin].intr_user_data = user_data;
@@ -533,14 +591,16 @@ meshx_err_t meshx_gpio_register_intr(uint8_t logical_pin,
 
     // Non-hosted mode: register hardware interrupt
     // Use the internal wrapper that dispatches to user's callback with logical pin context
-    err = meshx_gpio_platform_register_intr(physical_pin, intr_type, intr_wrapper, (void*)(uintptr_t)logical_pin);
-    if (err != MESHX_SUCCESS) {
+    err = meshx_gpio_platform_register_intr(physical_pin, intr_type, intr_wrapper, (void *)(uintptr_t)logical_pin);
+    if (err != MESHX_SUCCESS)
+    {
         MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_GPIO, "Failed to register platform interrupt for pin %u: %d", logical_pin, err);
         return err;
     }
 
     // Update runtime state
-    if (gpio_runtime.pin_states != NULL) {
+    if (gpio_runtime.pin_states != NULL)
+    {
         gpio_runtime.pin_states[logical_pin].interrupt_registered = true;
         gpio_runtime.pin_states[logical_pin].intr_callback = callback;
         gpio_runtime.pin_states[logical_pin].intr_user_data = user_data;
@@ -560,14 +620,16 @@ meshx_err_t meshx_gpio_unregister_intr(uint8_t logical_pin)
 
     // Check if interrupt is registered
     if (gpio_runtime.pin_states == NULL ||
-        !gpio_runtime.pin_states[logical_pin].interrupt_registered) {
-        return MESHX_SUCCESS;  // Not an error if not registered
+        !gpio_runtime.pin_states[logical_pin].interrupt_registered)
+    {
+        return MESHX_SUCCESS; // Not an error if not registered
     }
 
     // Get physical pin
     uint8_t physical_pin;
     meshx_err_t err = get_physical_pin(logical_pin, &physical_pin);
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         return err;
     }
 
@@ -595,14 +657,16 @@ meshx_err_t meshx_gpio_intr_enable(uint8_t logical_pin, bool enable)
 
     // Check if interrupt is registered
     if (gpio_runtime.pin_states == NULL ||
-        !gpio_runtime.pin_states[logical_pin].interrupt_registered) {
+        !gpio_runtime.pin_states[logical_pin].interrupt_registered)
+    {
         return MESHX_ERR_GPIO_INTR_NOT_SUPPORTED;
     }
 
     // Get physical pin
     uint8_t physical_pin;
     meshx_err_t err = get_physical_pin(logical_pin, &physical_pin);
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         return err;
     }
 
@@ -624,7 +688,8 @@ meshx_err_t meshx_gpio_execute_function(uint8_t logical_pin,
     // Get physical pin
     uint8_t physical_pin;
     meshx_err_t err = get_physical_pin(logical_pin, &physical_pin);
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         return err;
     }
 
@@ -662,16 +727,19 @@ uint8_t meshx_gpio_get_pin_count(void)
  */
 meshx_err_t meshx_gpio_get_pin_config(uint8_t logical_pin, meshx_gpio_pin_config_t *config)
 {
-    if (config == NULL) {
+    if (config == NULL)
+    {
         return MESHX_INVALID_ARG;
     }
 
     meshx_err_t err = validate_logical_pin(logical_pin);
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         return err;
     }
 
-    if (gpio_runtime.pin_configs == NULL) {
+    if (gpio_runtime.pin_configs == NULL)
+    {
         return MESHX_ERR_GPIO_CONFIG_INVALID;
     }
 
@@ -688,16 +756,19 @@ meshx_err_t meshx_gpio_get_pin_config(uint8_t logical_pin, meshx_gpio_pin_config
  */
 meshx_err_t meshx_gpio_get_pin_state(uint8_t logical_pin, meshx_gpio_pin_state_t *state)
 {
-    if (state == NULL) {
+    if (state == NULL)
+    {
         return MESHX_INVALID_ARG;
     }
 
     meshx_err_t err = validate_logical_pin(logical_pin);
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         return err;
     }
 
-    if (gpio_runtime.pin_states == NULL) {
+    if (gpio_runtime.pin_states == NULL)
+    {
         return MESHX_ERR_GPIO_CONFIG_INVALID;
     }
 
@@ -712,19 +783,22 @@ meshx_err_t meshx_gpio_set_hosted_mode(meshx_gpio_hosted_mode_t mode)
 {
     MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Setting hosted mode to %d", mode);
 
-    if (!gpio_runtime.initialized) {
+    if (!gpio_runtime.initialized)
+    {
         MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_GPIO, "GPIO not initialized");
         return MESHX_ERR_GPIO_NOT_INITIALIZED;
     }
 
     /* Validate mode value */
-    if (mode > MESHX_GPIO_MODE_TRANSITIONING) {
+    if (mode > MESHX_GPIO_MODE_TRANSITIONING)
+    {
         MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_GPIO, "Invalid hosted mode: %d", mode);
         return MESHX_INVALID_ARG;
     }
 
     /* Check if already in the requested mode */
-    if (gpio_runtime.hosted_mode == mode) {
+    if (gpio_runtime.hosted_mode == mode)
+    {
         MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Already in mode %d", mode);
         return MESHX_SUCCESS;
     }
@@ -733,7 +807,8 @@ meshx_err_t meshx_gpio_set_hosted_mode(meshx_gpio_hosted_mode_t mode)
     gpio_runtime.hosted_mode = MESHX_GPIO_MODE_TRANSITIONING;
 
     /* Handle pin state transitions during mode switch */
-    if (mode == MESHX_GPIO_MODE_HOSTED) {
+    if (mode == MESHX_GPIO_MODE_HOSTED)
+    {
         /* Transitioning TO hosted mode:
          * - Save current pin states for potential restoration
          * - Disable direct hardware access
@@ -742,17 +817,23 @@ meshx_err_t meshx_gpio_set_hosted_mode(meshx_gpio_hosted_mode_t mode)
         MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Transitioning to hosted mode");
 
         /* Disable all active interrupts on hardware side */
-        if (gpio_runtime.pin_states != NULL) {
-            for (uint8_t i = 0; i < gpio_runtime.pin_count; i++) {
-                if (gpio_runtime.pin_states[i].interrupt_registered) {
+        if (gpio_runtime.pin_states != NULL)
+        {
+            for (uint8_t i = 0; i < gpio_runtime.pin_count; i++)
+            {
+                if (gpio_runtime.pin_states[i].interrupt_registered)
+                {
                     uint8_t physical_pin;
-                    if (get_physical_pin(i, &physical_pin) == MESHX_SUCCESS) {
+                    if (get_physical_pin(i, &physical_pin) == MESHX_SUCCESS)
+                    {
                         meshx_gpio_platform_intr_enable(physical_pin, false);
                     }
                 }
             }
         }
-    } else if (mode == MESHX_GPIO_MODE_NON_HOSTED) {
+    }
+    else if (mode == MESHX_GPIO_MODE_NON_HOSTED)
+    {
         /* Transitioning TO non-hosted mode:
          * - Restore direct hardware access
          * - Re-enable interrupts if they were registered
@@ -761,11 +842,15 @@ meshx_err_t meshx_gpio_set_hosted_mode(meshx_gpio_hosted_mode_t mode)
         MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "Transitioning to non-hosted mode");
 
         /* Re-enable interrupts that were registered */
-        if (gpio_runtime.pin_states != NULL) {
-            for (uint8_t i = 0; i < gpio_runtime.pin_count; i++) {
-                if (gpio_runtime.pin_states[i].interrupt_registered) {
+        if (gpio_runtime.pin_states != NULL)
+        {
+            for (uint8_t i = 0; i < gpio_runtime.pin_count; i++)
+            {
+                if (gpio_runtime.pin_states[i].interrupt_registered)
+                {
                     uint8_t physical_pin;
-                    if (get_physical_pin(i, &physical_pin) == MESHX_SUCCESS) {
+                    if (get_physical_pin(i, &physical_pin) == MESHX_SUCCESS)
+                    {
                         meshx_gpio_platform_intr_enable(physical_pin, true);
                     }
                 }
@@ -801,7 +886,8 @@ bool meshx_gpio_is_hosted_mode(void)
  */
 meshx_err_t meshx_gpio_register_hosted_event_cb(meshx_gpio_hosted_event_cb_t callback)
 {
-    if (callback == NULL) {
+    if (callback == NULL)
+    {
         MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_GPIO, "NULL callback provided");
         return MESHX_INVALID_ARG;
     }
@@ -823,16 +909,19 @@ meshx_err_t meshx_gpio_register_hosted_event_cb(meshx_gpio_hosted_event_cb_t cal
  */
 static meshx_err_t meshx_gpio_send_hosted_event(uint8_t event_type, uint8_t logical_pin, uint8_t value)
 {
-    if (!gpio_runtime.initialized) {
+    if (!gpio_runtime.initialized)
+    {
         return MESHX_ERR_GPIO_NOT_INITIALIZED;
     }
 
-    if (gpio_runtime.hosted_mode != MESHX_GPIO_MODE_HOSTED) {
+    if (gpio_runtime.hosted_mode != MESHX_GPIO_MODE_HOSTED)
+    {
         /* Not in hosted mode, don't send event */
         return MESHX_SUCCESS;
     }
 
-    if (gpio_runtime.hosted_event_cb == NULL) {
+    if (gpio_runtime.hosted_event_cb == NULL)
+    {
         MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_GPIO, "No hosted event callback registered");
         return MESHX_ERR_GPIO_NOT_INITIALIZED;
     }
@@ -842,7 +931,7 @@ static meshx_err_t meshx_gpio_send_hosted_event(uint8_t event_type, uint8_t logi
         .event_type = event_type,
         .logical_pin = logical_pin,
         .value = value,
-        .timestamp = 0  /* Timestamp will be filled by serial layer */
+        .timestamp = 0 /* Timestamp will be filled by serial layer */
     };
 
     gpio_runtime.hosted_event_cb(&event);
@@ -855,24 +944,28 @@ static meshx_err_t meshx_gpio_send_hosted_event(uint8_t event_type, uint8_t logi
  */
 meshx_err_t meshx_gpio_process_hosted_interrupt(uint8_t logical_pin, uint8_t value)
 {
-    if (!gpio_runtime.initialized) {
+    if (!gpio_runtime.initialized)
+    {
         return MESHX_ERR_GPIO_NOT_INITIALIZED;
     }
 
-    if (gpio_runtime.hosted_mode != MESHX_GPIO_MODE_HOSTED) {
+    if (gpio_runtime.hosted_mode != MESHX_GPIO_MODE_HOSTED)
+    {
         MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_GPIO, "Not in hosted mode, ignoring interrupt event");
         return MESHX_ERR_GPIO_INVALID_MODE;
     }
 
     /* Check if interrupt is registered for this pin */
     if (gpio_runtime.pin_states == NULL ||
-        !gpio_runtime.pin_states[logical_pin].interrupt_registered) {
+        !gpio_runtime.pin_states[logical_pin].interrupt_registered)
+    {
         MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_GPIO, "No interrupt registered for pin %u", logical_pin);
         return MESHX_ERR_GPIO_INTR_NOT_SUPPORTED;
     }
 
     /* Invoke the user's callback */
-    if (gpio_runtime.pin_states[logical_pin].intr_callback != NULL) {
+    if (gpio_runtime.pin_states[logical_pin].intr_callback != NULL)
+    {
         meshx_gpio_intr_cb_t callback = (meshx_gpio_intr_cb_t)gpio_runtime.pin_states[logical_pin].intr_callback;
         callback(logical_pin, gpio_runtime.pin_states[logical_pin].intr_user_data);
     }

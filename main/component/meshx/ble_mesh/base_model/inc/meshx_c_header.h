@@ -41,6 +41,7 @@ extern "C" {
 /* Provisioning and Config server (still active) */
 #include <interface/ble_mesh/server/meshx_ble_mesh_config_srv.h>
 #include <interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h>
+#include <interface/rtos/meshx_rtos_utils.h>
 #include <interface/logging/meshx_log.h>
 #include <meshx_prov_srv.h>
 #include <meshx_config_server.h>

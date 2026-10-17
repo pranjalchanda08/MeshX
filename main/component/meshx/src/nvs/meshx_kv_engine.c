@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "meshx_common.h"
+#include "interface/rtos/meshx_rtos_utils.h"
 
 #define KV_MAGIC 0x4D58 /**< "MX" */
 #define KV_STATUS_VALID 0xEE
@@ -247,11 +248,17 @@ meshx_err_t meshx_kv_engine_read(const char *key, void *buf, uint16_t len)
 meshx_err_t meshx_kv_engine_set(const char *key, const void *buf,
                                 uint16_t len)
 {
-    kv_pending_t *node = malloc(sizeof(kv_pending_t));
-    if (!node)
+    kv_pending_t *node = NULL;
+    meshx_err_t err = MESHX_MALLOC(&node, sizeof(kv_pending_t));
+    if (err != MESHX_SUCCESS || !node)
         return MESHX_NO_MEM;
     strncpy(node->key, key, KV_MAX_KEY_LEN - 1);
-    node->data = malloc(len);
+    err = MESHX_MALLOC(&node->data, len);
+    if (err != MESHX_SUCCESS || !node->data)
+    {
+        MESHX_FREE(&node);
+        return MESHX_NO_MEM;
+    }
     memcpy(node->data, buf, len);
     node->len = len;
     node->next = pending_list;
@@ -307,8 +314,8 @@ meshx_err_t meshx_kv_engine_commit(void)
 
         kv_pending_t *prev = cur;
         cur = cur->next;
-        free(prev->data);
-        free(prev);
+        MESHX_FREE(&prev->data);
+        MESHX_FREE(&prev);
     }
     pending_list = NULL;
     return MESHX_SUCCESS;

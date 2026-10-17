@@ -529,7 +529,7 @@ static meshx_err_t meshx_txcm_sig_resend(meshx_txcm_request_t *request)
         }
         err = meshx_txcm_msg_q_front_try_send(false);
     }
-    meshx_rtos_free(&request->msg_param);
+    MESHX_FREE(&request->msg_param);
     return err;
 }
 
@@ -571,7 +571,7 @@ static meshx_err_t meshx_txcm_sig_ack(const meshx_txcm_request_t *request)
         MESHX_LOGW(MODULE_ID_TXCM, "ACK received for unknown/non-pending address 0x%X", request->dest_addr);
     }
 
-    err = meshx_rtos_free(request->msg_param);
+    err = MESHX_FREE(request->msg_param);
     if (err)
     {
         MESHX_LOGE(MODULE_ID_TXCM, "RTOS Free failed: 0x%x", (uint32_t)err);
@@ -704,7 +704,7 @@ meshx_err_t meshx_txcm_request_send(
     if(msg_param_len != 0 && msg_param != NULL)
     {
         /* Retain message context */
-        err = meshx_rtos_malloc(&new_req.msg_param, msg_param_len);
+        err = MESHX_MALLOC(&new_req.msg_param, msg_param_len);
         if (err)
         {
             MESHX_LOGE(MODULE_ID_TXCM, "Malloc Failure: 0x%x", (uint32_t)err);
@@ -720,7 +720,7 @@ meshx_err_t meshx_txcm_request_send(
     if (err)
     {
         MESHX_LOGE(MODULE_ID_TXCM, "TXCM Signal failed: 0x%x", (uint32_t)err);
-        meshx_rtos_free(&new_req.msg_param);
+        MESHX_FREE(&new_req.msg_param);
         return err;
     }
     return err;
