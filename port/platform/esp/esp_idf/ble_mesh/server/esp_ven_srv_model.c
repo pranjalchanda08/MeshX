@@ -11,8 +11,8 @@
 #include "meshx_control_task.h"
 #include "meshx_uvp.h"
 #include "meshx_platform_ble_mesh.h"
-#include "interface/ble_mesh/meshx_ble_mesh_cmn.h"  /* meshx_model_t */
-#include "meshx_api.h"                               /* meshx_get_net_key_id */
+#include "interface/ble_mesh/meshx_ble_mesh_cmn.h" /* meshx_model_t */
+#include "meshx_api.h"                             /* meshx_get_net_key_id */
 
 static uint8_t g_uvp_tid = 0; /**< Monotonic Transaction ID for UVP messages */
 
@@ -29,7 +29,8 @@ static void esp_ble_mesh_vendor_server_cb(MESHX_VND_SRV_CB_EVT event,
                                           MESHX_VND_SRV_CB_PARAM *param)
 {
     /* We only handle receive messages (operations) */
-    if (event != ESP_BLE_MESH_MODEL_OPERATION_EVT) {
+    if (event != ESP_BLE_MESH_MODEL_OPERATION_EVT)
+    {
         return;
     }
 
@@ -38,13 +39,14 @@ static void esp_ble_mesh_vendor_server_cb(MESHX_VND_SRV_CB_EVT event,
     uint8_t *msg = param->model_operation.msg;
 
     MESHX_LOGD(MODULE_ID_MODEL_SERVER, "VND_SRV_CB, event: %d, op|src|dst:%06" PRIx32 "|%04x|%04x",
-            event, ctx->recv_op, ctx->addr, ctx->recv_dst);
+               event, ctx->recv_op, ctx->addr, ctx->recv_dst);
 
     /*
      * UVP Header Parsing:
      * Every vendor model message in MeshX must start with the 4-byte UVP header.
      */
-    if (length < MESHX_UVP_HEADER_SIZE) {
+    if (length < MESHX_UVP_HEADER_SIZE)
+    {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "UVP: Packet too small (%d < %d)",
                    length, MESHX_UVP_HEADER_SIZE);
         return;
@@ -69,16 +71,14 @@ static void esp_ble_mesh_vendor_server_cb(MESHX_VND_SRV_CB_EVT event,
         .src_addr = ctx->addr,
         .dst_addr = ctx->recv_dst,
         .rx_el_id = rx_el_id,
-        .uvp_header = *header
-    };
+        .uvp_header = *header};
 
     control_task_msg_publish_uvp(
         CONTROL_TASK_MSG_CODE_FRM_BLE,
         MESHX_MODEL_ID_UVP,
         &uvp_ctx,
         msg + MESHX_UVP_HEADER_SIZE,
-        length - MESHX_UVP_HEADER_SIZE
-    );
+        length - MESHX_UVP_HEADER_SIZE);
 }
 
 /**
@@ -93,10 +93,10 @@ meshx_err_t meshx_plat_ven_srv_init(void)
     MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Initializing UVP Vendor Model Callback");
 
     esp_err_t err = esp_ble_mesh_register_custom_model_callback(
-        (MESHX_VND_SRV_CB)esp_ble_mesh_vendor_server_cb
-    );
+        (MESHX_VND_SRV_CB)esp_ble_mesh_vendor_server_cb);
 
-    if (err != ESP_OK) {
+    if (err != ESP_OK)
+    {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to register vendor callback: 0x%x", err);
         return MESHX_ERR_PLAT;
     }
@@ -112,7 +112,8 @@ meshx_err_t meshx_plat_ven_srv_init(void)
  */
 meshx_err_t meshx_plat_bind_uvp_opcodes(void *p_model)
 {
-    if (!p_model) {
+    if (!p_model)
+    {
         return MESHX_INVALID_ARG;
     }
 
@@ -120,10 +121,12 @@ meshx_err_t meshx_plat_bind_uvp_opcodes(void *p_model)
 
     /* Initialize keys and groups arrays with correct ESP-IDF sentinels.
      * C++ dynamic builder zero-initializes, which ESP-IDF misinterprets as bound elements! */
-    for (int i = 0; i < CONFIG_BLE_MESH_MODEL_KEY_COUNT; i++) {
+    for (int i = 0; i < CONFIG_BLE_MESH_MODEL_KEY_COUNT; i++)
+    {
         esp_model->keys[i] = ESP_BLE_MESH_KEY_UNUSED;
     }
-    for (int i = 0; i < CONFIG_BLE_MESH_MODEL_GROUP_COUNT; i++) {
+    for (int i = 0; i < CONFIG_BLE_MESH_MODEL_GROUP_COUNT; i++)
+    {
         esp_model->groups[i] = ESP_BLE_MESH_ADDR_UNASSIGNED;
     }
 
@@ -133,8 +136,10 @@ meshx_err_t meshx_plat_bind_uvp_opcodes(void *p_model)
         ESP_BLE_MESH_MODEL_OP_END,
     };
 
-    esp_ble_mesh_model_op_t *uvp_opcodes = (esp_ble_mesh_model_op_t *)MESHX_MALLOC(sizeof(init_opcodes));
-    if (!uvp_opcodes) {
+    esp_ble_mesh_model_op_t *uvp_opcodes = NULL;
+    meshx_err_t err = MESHX_MALLOC(&uvp_opcodes, sizeof(init_opcodes));
+    if (err != MESHX_SUCCESS || !uvp_opcodes)
+    {
         return MESHX_NO_MEM;
     }
 
@@ -166,19 +171,23 @@ meshx_err_t meshx_uvp_send(void *p_model,
                            uint16_t app_idx)
 {
     esp_ble_mesh_model_t *esp_model = (esp_ble_mesh_model_t *)p_model;
-    if (!esp_model || (!payload && payload_len > 0)) {
+    uint8_t *buffer = NULL;
+    if (!esp_model || (!payload && payload_len > 0))
+    {
         return MESHX_INVALID_ARG;
     }
 
-    if (payload_len > MESHX_UVP_MAX_PAYLOAD) {
+    if (payload_len > MESHX_UVP_MAX_PAYLOAD)
+    {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "UVP Payload too large (%d > %d)", payload_len, MESHX_UVP_MAX_PAYLOAD);
         return MESHX_INVALID_ARG;
     }
 
     /* Allocate buffer for Header + Payload */
     uint16_t total_len = MESHX_UVP_HEADER_SIZE + payload_len;
-    uint8_t *buffer = (uint8_t *)MESHX_MALLOC(total_len);
-    if (!buffer) {
+    meshx_err_t m_err = MESHX_MALLOC(&buffer, total_len);
+    if (m_err != MESHX_SUCCESS || !buffer)
+    {
         return MESHX_NO_MEM;
     }
 
@@ -190,7 +199,8 @@ meshx_err_t meshx_uvp_send(void *p_model,
     header->type_id = type_id;
 
     /* Copy Payload */
-    if (payload_len > 0) {
+    if (payload_len > 0)
+    {
         memcpy(buffer + MESHX_UVP_HEADER_SIZE, payload, payload_len);
     }
 
@@ -200,12 +210,12 @@ meshx_err_t meshx_uvp_send(void *p_model,
 
     /* Prepare Context */
     esp_ble_mesh_msg_ctx_t ctx = {
-        .net_idx   = net_idx,
-        .app_idx   = app_idx,
-        .addr      = dst_addr,
-        .send_ttl  = ESP_BLE_MESH_TTL_DEFAULT,
+        .net_idx = net_idx,
+        .app_idx = app_idx,
+        .addr = dst_addr,
+        .send_ttl = ESP_BLE_MESH_TTL_DEFAULT,
         .send_cred = 0,
-        .send_tag  = BIT1,
+        .send_tag = BIT1,
     };
 
     /* Send via ESP-BLE-MESH stack */
@@ -214,13 +224,13 @@ meshx_err_t meshx_uvp_send(void *p_model,
         &ctx,
         MESHX_UVP_OPCODE,
         total_len,
-        buffer
-    );
+        buffer);
 
     uint8_t tid = header->tid;
-    MESHX_FREE(buffer);
+    MESHX_FREE(&buffer);
 
-    if (err != ESP_OK) {
+    if (err != ESP_OK)
+    {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "UVP Send failed: 0x%x", err);
         return MESHX_ERR_PLAT;
     }

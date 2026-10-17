@@ -20,6 +20,7 @@
 #include <meshx_config_internal.h>
 #include <interface/logging/meshx_log.h>
 #include "interface/meshx_platform.h"
+#include "interface/rtos/meshx_rtos_utils.h"
 
 #ifdef __cplusplus
 extern "C" {

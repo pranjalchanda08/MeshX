@@ -22,6 +22,7 @@
 #include "interface/gpio/meshx_gpio.h"
 #include "interface/logging/meshx_log.h"
 #include "interface/gpio/meshx_gpio_types.h"
+#include "interface/rtos/meshx_rtos_utils.h"
 #include "pairing/meshx_pair_orchestrator.h"
 
 extern void meshx_platform_reset(void);
@@ -671,8 +672,8 @@ static void mxcp_cmd_fn_el_send(const uint8_t *payload, uint8_t len)
     tx_hdr.msg_len = len - sizeof(hdr);
 
     buf_size = sizeof(tx_hdr) + tx_hdr.msg_len;
-    buf = (uint8_t *)malloc(buf_size);
-    if (buf)
+    buf = NULL;
+    if (MESHX_MALLOC(&buf, buf_size) == MESHX_SUCCESS && buf)
     {
         memcpy(buf, &tx_hdr, sizeof(tx_hdr));
         if (tx_hdr.msg_len > 0)
@@ -680,7 +681,7 @@ static void mxcp_cmd_fn_el_send(const uint8_t *payload, uint8_t len)
             memcpy(buf + sizeof(tx_hdr), &payload[sizeof(hdr)], tx_hdr.msg_len);
         }
         mxcp_send_event(MXCP_EVT_EL_DATA_TX_NOTIFY, buf, (uint8_t)buf_size);
-        free(buf);
+        MESHX_FREE(&buf);
     }
 }
 
