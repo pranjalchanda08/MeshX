@@ -59,6 +59,20 @@
 #define CONFIG_TXCM_ENABLE                     1
 
 /**
+ * @brief Enable raw GPIO remote control/test APIs over MXCP.
+ * Enabled by default for testing/development builds. Can be disabled
+ * for production releases (e.g. via -DCONFIG_MESHX_ENABLE_GPIO_TEST_API=0 or
+ * when CONFIG_MESHX_PRODUCTION_BUILD is defined).
+ */
+#ifndef CONFIG_MESHX_ENABLE_GPIO_TEST_API
+#ifdef CONFIG_MESHX_PRODUCTION_BUILD
+#define CONFIG_MESHX_ENABLE_GPIO_TEST_API       0
+#else
+#define CONFIG_MESHX_ENABLE_GPIO_TEST_API       1
+#endif
+#endif
+
+/**
  * @brief Check if element variant is a Client
  */
 #ifndef MESHX_ELEMENT_TYPE_IS_CLIENT

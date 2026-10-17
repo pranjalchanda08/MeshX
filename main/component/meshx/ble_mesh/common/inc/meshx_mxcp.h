@@ -55,6 +55,7 @@ typedef enum {
 
     MXCP_CMD_EL_SEND               = 0x10,
 
+#if CONFIG_MESHX_ENABLE_GPIO_TEST_API
     MXCP_CMD_GPIO_SET_LEVEL        = 0x21,
     MXCP_CMD_GPIO_GET_LEVEL        = 0x22,
     MXCP_CMD_GPIO_TOGGLE           = 0x23,
@@ -64,6 +65,7 @@ typedef enum {
     MXCP_CMD_GPIO_INTR_DISABLE     = 0x27,
     MXCP_CMD_GPIO_GET_CONFIG       = 0x28,
     MXCP_CMD_GPIO_GET_STATE        = 0x29,
+#endif
 
     MXCP_CMD_DISCOVER_CAPABILITIES = 0x70,
     MXCP_CMD_BIND_ELEMENTS         = 0x71,
@@ -94,6 +96,7 @@ typedef enum {
     MXCP_EVT_EL_DATA_RX_NOTIFY     = 0x10,
     MXCP_EVT_EL_DATA_TX_NOTIFY     = 0x11,
 
+#if CONFIG_MESHX_ENABLE_GPIO_TEST_API
     MXCP_EVT_GPIO_SET_LEVEL_RSP    = 0x21,
     MXCP_EVT_GPIO_GET_LEVEL_RSP    = 0x22,
     MXCP_EVT_GPIO_TOGGLE_RSP       = 0x23,
@@ -105,6 +108,7 @@ typedef enum {
     MXCP_EVT_GPIO_GET_STATE_RSP    = 0x29,
     MXCP_EVT_GPIO_ASYNC            = 0x3E,
     MXCP_EVT_GPIO_ERROR            = 0x3F,
+#endif
 
     MXCP_EVT_CAPABILITY_REPORT     = 0x70,
     MXCP_EVT_BIND_STATUS           = 0x71,
@@ -125,13 +129,12 @@ typedef struct {
     uint8_t enable;
 } mxcp_cmd_set_console_routing_t;
 
-typedef struct {
-    uint16_t element_id;
-    uint16_t element_type;
-    uint16_t func_id;
-    uint16_t msg_len;
-} mxcp_cmd_el_send_t;
+/**
+ * @brief Unify element data send command with canonical meshx_data_msg_hdr_t (REQ-001)
+ */
+typedef meshx_data_msg_hdr_t mxcp_cmd_el_send_t;
 
+#if CONFIG_MESHX_ENABLE_GPIO_TEST_API
 typedef struct {
     uint8_t logical_pin;
     uint8_t level;
@@ -171,6 +174,7 @@ typedef struct {
 typedef struct {
     uint8_t logical_pin;
 } mxcp_cmd_gpio_get_state_t;
+#endif
 
 typedef struct {
     uint16_t net_idx;
@@ -209,20 +213,13 @@ typedef struct {
     uint8_t element_count;
 } mxcp_evt_element_state_rsp_t;
 
-typedef struct {
-    uint16_t element_id;
-    uint16_t element_type;
-    uint16_t func_id;
-    uint16_t msg_len;
-} mxcp_evt_el_data_rx_notify_t;
+/**
+ * @brief Unify element data notify events with canonical meshx_data_msg_hdr_t (REQ-001)
+ */
+typedef meshx_data_msg_hdr_t mxcp_evt_el_data_rx_notify_t;
+typedef meshx_data_msg_hdr_t mxcp_evt_el_data_tx_notify_t;
 
-typedef struct {
-    uint16_t element_id;
-    uint16_t element_type;
-    uint16_t func_id;
-    uint16_t msg_len;
-} mxcp_evt_el_data_tx_notify_t;
-
+#if CONFIG_MESHX_ENABLE_GPIO_TEST_API
 typedef struct {
     uint8_t  status;
     uint8_t  logical_pin;
@@ -254,6 +251,7 @@ typedef struct {
     uint8_t  value;
     uint32_t timestamp;
 } mxcp_evt_gpio_async_t;
+#endif
 
 typedef struct {
     uint16_t idx;

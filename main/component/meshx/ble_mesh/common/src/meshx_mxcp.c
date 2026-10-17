@@ -41,17 +41,19 @@ extern void meshx_platform_serial_write(const uint8_t *data, uint16_t len);
 static void mxcp_cmd_fn_el_send                (const uint8_t *payload, uint8_t len);
 static void mxcp_cmd_fn_node_reset             (const uint8_t *payload, uint8_t len);
 static void mxcp_cmd_fn_hosted_mode            (const uint8_t *payload, uint8_t len);
+#if CONFIG_MESHX_ENABLE_GPIO_TEST_API
 static void mxcp_cmd_fn_gpio_toggle            (const uint8_t *payload, uint8_t len);
 static void mxcp_cmd_fn_gpio_set_level         (const uint8_t *payload, uint8_t len);
 static void mxcp_cmd_fn_gpio_get_level         (const uint8_t *payload, uint8_t len);
 static void mxcp_cmd_fn_gpio_get_state         (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_get_composition        (const uint8_t *payload, uint8_t len);
 static void mxcp_cmd_fn_gpio_get_config        (const uint8_t *payload, uint8_t len);
 static void mxcp_cmd_fn_gpio_intr_enable       (const uint8_t *payload, uint8_t len);
 static void mxcp_cmd_fn_gpio_set_pwm_duty      (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_get_element_state      (const uint8_t *payload, uint8_t len);
 static void mxcp_cmd_fn_gpio_set_pwm_freq      (const uint8_t *payload, uint8_t len);
 static void mxcp_cmd_fn_gpio_intr_disable      (const uint8_t *payload, uint8_t len);
+#endif /* CONFIG_MESHX_ENABLE_GPIO_TEST_API */
+static void mxcp_cmd_fn_get_element_state      (const uint8_t *payload, uint8_t len);
+static void mxcp_cmd_fn_get_composition        (const uint8_t *payload, uint8_t len);
 static void mxcp_cmd_fn_set_console_routing    (const uint8_t *payload, uint8_t len);
 static void mxcp_cmd_fn_set_composition        (const uint8_t *payload, uint8_t len);
 static void mxcp_cmd_fn_discover_capabilities  (const uint8_t *payload, uint8_t len);
@@ -82,6 +84,7 @@ static const mxcp_cmd_entry_t mxcp_cmd_table[] = {
     MXCP_CMD_ENTRY(MXCP_CMD_SET_CONSOLE_ROUTING,   mxcp_cmd_fn_set_console_routing,   sizeof(mxcp_cmd_set_console_routing_t),   MXCP_EVT_CONSOLE_ROUTING_RSP,    MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_SET_COMPOSITION,       mxcp_cmd_fn_set_composition,       0,                                        MXCP_EVT_SET_COMPOSITION_RSP,    MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_EL_SEND,               mxcp_cmd_fn_el_send,               sizeof(mxcp_cmd_el_send_t),               MXCP_EVT_EL_DATA_TX_NOTIFY,      MXCP_EVT_EL_DATA_RX_NOTIFY),
+#if CONFIG_MESHX_ENABLE_GPIO_TEST_API
     MXCP_CMD_ENTRY(MXCP_CMD_GPIO_SET_LEVEL,        mxcp_cmd_fn_gpio_set_level,        sizeof(mxcp_cmd_gpio_set_level_t),        MXCP_EVT_GPIO_SET_LEVEL_RSP,     MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_GPIO_GET_LEVEL,        mxcp_cmd_fn_gpio_get_level,        sizeof(mxcp_cmd_gpio_get_level_t),        MXCP_EVT_GPIO_GET_LEVEL_RSP,     MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_GPIO_TOGGLE,           mxcp_cmd_fn_gpio_toggle,           sizeof(mxcp_cmd_gpio_toggle_t),           MXCP_EVT_GPIO_TOGGLE_RSP,        MXCP_EVT_NONE),
@@ -91,6 +94,7 @@ static const mxcp_cmd_entry_t mxcp_cmd_table[] = {
     MXCP_CMD_ENTRY(MXCP_CMD_GPIO_INTR_DISABLE,     mxcp_cmd_fn_gpio_intr_disable,     sizeof(mxcp_cmd_gpio_intr_disable_t),     MXCP_EVT_GPIO_INTR_DISABLE_RSP,  MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_GPIO_GET_CONFIG,       mxcp_cmd_fn_gpio_get_config,       sizeof(mxcp_cmd_gpio_get_config_t),       MXCP_EVT_GPIO_GET_CONFIG_RSP,    MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_GPIO_GET_STATE,        mxcp_cmd_fn_gpio_get_state,        sizeof(mxcp_cmd_gpio_get_state_t),        MXCP_EVT_GPIO_GET_STATE_RSP,     MXCP_EVT_NONE),
+#endif /* CONFIG_MESHX_ENABLE_GPIO_TEST_API */
     MXCP_CMD_ENTRY(MXCP_CMD_DISCOVER_CAPABILITIES, mxcp_cmd_fn_discover_capabilities, sizeof(mxcp_cmd_discover_capabilities_t), MXCP_EVT_NONE,                   MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_BIND_ELEMENTS,         mxcp_cmd_fn_bind_elements,         sizeof(mxcp_cmd_bind_elements_t),         MXCP_EVT_BIND_STATUS,            MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_UNBIND_ELEMENTS,       mxcp_cmd_fn_unbind_elements,       sizeof(mxcp_cmd_unbind_elements_t),       MXCP_EVT_UNBIND_STATUS,          MXCP_EVT_NONE),
@@ -685,6 +689,7 @@ static void mxcp_cmd_fn_el_send(const uint8_t *payload, uint8_t len)
     }
 }
 
+#if CONFIG_MESHX_ENABLE_GPIO_TEST_API
 /**
  * @brief Handle MXCP_CMD_GPIO_SET_LEVEL.
  *
@@ -971,3 +976,5 @@ static void mxcp_cmd_fn_gpio_get_state(const uint8_t *payload, uint8_t len)
     mxcp_send_event(MXCP_EVT_GPIO_GET_STATE_RSP, (const uint8_t *)&rsp,
                     2 + sizeof(rsp.data.get_state));
 }
+#endif
+
