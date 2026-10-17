@@ -146,7 +146,7 @@ class TestPairingAndGroupAllocation(TestBase):
     Automated test case executed via autotest runner or standalone python.
     """
     name = "Pairing_Group_Allocation"
-    required_nodes = 0  # Can run purely algorithmic tests without hardware, or with hardware if provided
+    required_nodes = 1  # Executes algorithmic assertions and on-target CLI UTs on connected device
 
     def run(self):
         self.log_info("=== [Phase 1] Mathematical Anchor Formula & Dynamic Range Invariants ===")
