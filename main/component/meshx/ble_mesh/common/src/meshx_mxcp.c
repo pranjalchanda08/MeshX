@@ -511,7 +511,22 @@ static void mxcp_cmd_fn_bind_elements(const uint8_t *payload, uint8_t len)
     }
 
     meshx_err_t err = meshx_pair_initiate(cmd->src_elem, cmd->dst_addr, cmd->dst_elem, cmd->func_id);
-    evt.status = (err == MESHX_SUCCESS) ? MESHX_SYS_STATUS_SUCCESS : MESHX_SYS_STATUS_ERR_INCOMPATIBLE;
+    if (err == MESHX_SUCCESS)
+    {
+        evt.status = MESHX_SYS_STATUS_SUCCESS;
+    }
+    else if (err == MESHX_BUSY)
+    {
+        evt.status = MESHX_SYS_STATUS_ERR_BUSY;
+    }
+    else if (err == MESHX_NO_MEM)
+    {
+        evt.status = MESHX_SYS_STATUS_ERR_TABLE_FULL;
+    }
+    else
+    {
+        evt.status = MESHX_SYS_STATUS_ERR_INCOMPATIBLE;
+    }
     mxcp_send_event(MXCP_EVT_BIND_STATUS, (const uint8_t *)&evt, sizeof(evt));
 }
 
