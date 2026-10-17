@@ -183,11 +183,6 @@ meshx_err_t mxcp_send_frame(uint8_t type, const uint8_t *payload, uint8_t len)
     uint8_t frame_buff[3 + MXCP_PAYLOAD_MAX_SIZE + 2];
     uint8_t ptr = 0;
 
-    if (len > MXCP_PAYLOAD_MAX_SIZE)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
     if (!mxsp_ctx.hosted_mode_enabled)
     {
         return MESHX_SUCCESS;
@@ -326,6 +321,8 @@ static void mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t len)
     uint8_t i                 = 0;
     uint16_t delay_ms         = 0;
     size_t expected_len       = 0;
+    uint8_t dyn_idx           = 0;
+    uint8_t cur_elem_count    = 0;
     uint8_t el                = 0xFF;
     bool mutated              = false;
     meshx_err_t err           = MESHX_SUCCESS;
@@ -404,14 +401,14 @@ static void mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t len)
     memset(&cur_table, 0, sizeof(cur_table));
     if (meshx_nvs_link_table_get(&cur_table) == MESHX_SUCCESS)
     {
-        uint8_t cur_elem_count = meshx_comp_get_element_count();
+        cur_elem_count = meshx_comp_get_element_count();
         for (i = 0; i < MESHX_MAX_PERSISTED_LINKS; i++)
         {
             if (cur_table.links[i].active &&
                 cur_table.links[i].target_unicast_addr != MESHX_ADDR_UNASSIGNED)
             {
-                uint8_t el = cur_table.links[i].local_element_idx;
-                bool mutated = false;
+                el = cur_table.links[i].local_element_idx;
+                mutated = false;
 
                 if (el == 0)
                 {
@@ -426,7 +423,7 @@ static void mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t len)
                 else
                 {
                     /* Dynamic elements are 1-based (el=1 corresponds to cmd->element_types[0]) */
-                    uint8_t dyn_idx = el - 1;
+                    dyn_idx = el - 1;
                     if (dyn_idx >= cmd->element_count)
                     {
                         /* Element removed in new composition */
@@ -569,6 +566,7 @@ static void mxcp_cmd_fn_get_link_epoch(const uint8_t *payload, uint8_t len)
     MESHX_UNUSED(len);
     mxcp_evt_link_epoch_rsp_t rsp;
     rsp.link_epoch = meshx_nvs_get_link_epoch();
+    rsp.node_addr  = meshx_get_node_addr();
     mxcp_send_event(MXCP_EVT_LINK_EPOCH_RSP, (const uint8_t *)&rsp, sizeof(rsp));
 }
 

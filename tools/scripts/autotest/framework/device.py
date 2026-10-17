@@ -161,6 +161,100 @@ class CompositionInterface:
         return self.node.send_mxcp_frame(0x02, b"")
 
 
+class PairingInterface:
+    def __init__(self, node):
+        self.node = node
+        self.logger = logging.getLogger(f"{node.name}.Pairing")
+
+    def bind_elements(self, src_elem, dst_addr, dst_elem, func_id, src_addr=0):
+        # MXCP_CMD_BIND_ELEMENTS (0x71)
+        # struct mxcp_cmd_bind_elements_t { uint16_t src_addr; uint8_t src_elem; uint16_t dst_addr; uint8_t dst_elem; uint16_t func_id; }
+        payload = struct.pack("<HBHBH", src_addr, src_elem, dst_addr, dst_elem, func_id)
+        return self.node.send_mxcp_frame(0x71, payload)
+
+    def wait_for_bind_status(self, timeout=3.0):
+        # MXCP_EVT_BIND_STATUS (0x80 | 0x71 = 0xF1)
+        # struct mxcp_evt_bind_status_t { uint8_t status; uint16_t group_addr; }
+        frame = self.node.wait_for_mxcp_frame(0xF1, timeout=timeout)
+        if frame and len(frame) >= 3:
+            status, group_addr = struct.unpack("<BH", frame[:3])
+            return {"status": status, "group_addr": group_addr}
+        return None
+
+    def unbind_elements(self, src_elem, dst_addr, dst_elem, func_id, src_addr=0):
+        # MXCP_CMD_UNBIND_ELEMENTS (0x72)
+        # struct mxcp_cmd_unbind_elements_t { uint16_t src_addr; uint8_t src_elem; uint16_t dst_addr; uint8_t dst_elem; uint16_t func_id; }
+        payload = struct.pack("<HBHBH", src_addr, src_elem, dst_addr, dst_elem, func_id)
+        return self.node.send_mxcp_frame(0x72, payload)
+
+    def wait_for_unbind_status(self, timeout=3.0):
+        # MXCP_EVT_UNBIND_STATUS (0x80 | 0x72 = 0xF2)
+        # struct mxcp_evt_unbind_status_t { uint8_t status; }
+        frame = self.node.wait_for_mxcp_frame(0xF2, timeout=timeout)
+        if frame and len(frame) >= 1:
+            status = struct.unpack("<B", frame[:1])[0]
+            return {"status": status}
+        return None
+
+    def get_link_table(self):
+        # MXCP_CMD_GET_LINK_TABLE (0x73)
+        return self.node.send_mxcp_frame(0x73, b"")
+
+    def wait_for_link_table_rsp(self, timeout=3.0):
+        # MXCP_EVT_LINK_TABLE_RSP (0x80 | 0x73 = 0xF3)
+        # meshx_nvs_link_table_t (packed 171 bytes)
+        frame = self.node.wait_for_mxcp_frame(0xF3, timeout=timeout)
+        if frame and len(frame) >= 9:
+            magic, version, link_epoch, link_count, reserved = struct.unpack("<IBHBB", frame[:9])
+            links = []
+            offset = 9
+            for _ in range(16):
+                if offset + 10 <= len(frame):
+                    el, variant, unicast, group, func, active = struct.unpack("<BHHHHB", frame[offset:offset+10])
+                    links.append({
+                        "local_element_idx": el,
+                        "bound_variant": variant,
+                        "target_unicast_addr": unicast,
+                        "target_group_addr": group,
+                        "func_id": func,
+                        "active": active
+                    })
+                    offset += 10
+            return {
+                "magic": magic,
+                "version": version,
+                "link_epoch": link_epoch,
+                "link_count": link_count,
+                "links": links
+            }
+        return None
+
+    def get_link_epoch(self):
+        # MXCP_CMD_GET_LINK_EPOCH (0x74)
+        return self.node.send_mxcp_frame(0x74, b"")
+
+    def wait_for_link_epoch_rsp(self, timeout=3.0):
+        # MXCP_EVT_LINK_EPOCH_RSP (0x80 | 0x74 = 0xF4)
+        # struct mxcp_evt_link_epoch_rsp_t { uint16_t link_epoch; uint16_t node_addr; }
+        frame = self.node.wait_for_mxcp_frame(0xF4, timeout=timeout)
+        if frame and len(frame) >= 2:
+            epoch = struct.unpack("<H", frame[:2])[0]
+            node_addr = struct.unpack("<H", frame[2:4])[0] if len(frame) >= 4 else 0
+            return {"link_epoch": epoch, "node_addr": node_addr}
+        return None
+
+    def discover_capabilities(self, target_unicast, filter_role=0):
+        # MXCP_CMD_DISCOVER_CAPABILITIES (0x70)
+        # struct mxcp_cmd_discover_capabilities_t { uint16_t target_unicast; uint8_t filter_role; }
+        payload = struct.pack("<HB", target_unicast, filter_role)
+        return self.node.send_mxcp_frame(0x70, payload)
+
+    def wait_for_capability_report(self, timeout=3.0):
+        # MXCP_EVT_CAPABILITY_REPORT (0x80 | 0x70 = 0xF0)
+        frame = self.node.wait_for_mxcp_frame(0xF0, timeout=timeout)
+        return frame
+
+
 class MeshXDevice:
     """
     High-level abstraction of a MeshX Device.
@@ -174,10 +268,12 @@ class MeshXDevice:
         self.sensor = SensorInterface(node)
         self.hsl = HSLInterface(node)
         self.composition = CompositionInterface(node)
+        self.pairing = PairingInterface(node)
 
     def reboot(self):
         self.node.send_command("reboot", wait_for_prompt=False)
         time.sleep(2)
         return self.node.connect()
+
 
 
