@@ -90,6 +90,7 @@ typedef enum {
     MESHX_SYS_STATUS_ERR_ELEMENT_MISSING   = 0x03,
     MESHX_SYS_STATUS_ERR_TABLE_FULL        = 0x04,
     MESHX_SYS_STATUS_ERR_TIMEOUT           = 0x05,
+    MESHX_SYS_STATUS_ERR_BUSY              = 0x06,
 } meshx_sys_status_t;
 
 /**

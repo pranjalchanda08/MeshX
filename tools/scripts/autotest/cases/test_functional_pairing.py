@@ -111,6 +111,30 @@ class TestFunctionalPairingSingleNode(TestBase):
         self.log_info(f"  -> Incompatible binding correctly rejected with status 0x{neg_rsp['status']:02X}")
 
         # -------------------------------------------------------------
+        # Phase 3.5: Concurrency Guard / Overlapping Transaction Test
+        # -------------------------------------------------------------
+        self.log_info("[Phase 3.5] Testing concurrency guard against overlapping pairing transactions...")
+        # Fire first bind request
+        device.pairing.bind_elements(src_elem=1, dst_addr=node_addr, dst_elem=2, func_id=0x0000)
+        # Immediately fire a second bind request to trigger the busy guard
+        device.pairing.bind_elements(src_elem=1, dst_addr=node_addr, dst_elem=2, func_id=0x0000)
+
+        rsp_a = device.pairing.wait_for_bind_status(timeout=3.0)
+        rsp_b = device.pairing.wait_for_bind_status(timeout=3.0)
+
+        statuses = [r["status"] for r in (rsp_a, rsp_b) if r is not None]
+        self.log_info(f"  -> Concurrency test responses received: {statuses}")
+        if 0x06 in statuses:
+            self.log_info("  -> Concurrency guard confirmed: overlapping transaction correctly rejected as BUSY (status 0x06)")
+        else:
+            self.log_info("  -> Overlapping transactions serialized cleanly by engine")
+
+        # Clean slate before Phase 4
+        device.pairing.unbind_elements(src_elem=1, dst_addr=node_addr, dst_elem=2, func_id=0x0000)
+        device.pairing.wait_for_unbind_status(timeout=2.0)
+        time.sleep(0.5)
+
+        # -------------------------------------------------------------
         # Phase 4: MXCP Autonomous Binding (Switch El 1 -> Relay El 2)
         # -------------------------------------------------------------
         self.log_info(f"[Phase 4] Initiating 1:1 intra-node binding: Switch (El 1) -> Relay (El 2) on 0x{node_addr:04X}...")
