@@ -236,53 +236,69 @@ typedef union meshx_ctrl_payload
 } meshx_ctrl_payload_t;
 
 
-/**
- * @brief Structure for the BLE Mesh application element message header.
- */
-typedef struct meshx_app_element_msg_header
-{
-    uint16_t element_id;               /* Element ID */
-    uint16_t element_type;             /* meshx_element_type_t */
-    uint16_t func_id;                  /* Functionality number */
-    uint16_t msg_len;                  /* Length of the message */
-}meshx_app_element_msg_header_t;
+#pragma pack(push, 1)
 
 /**
- * @brief Structure for the BLE Mesh application control message header.
+ * @brief Canonical 8-byte Element Data Message Header.
  *
- * This structure defines the header for BLE Mesh application control messages.
- *
+ * Single source of truth for both internal element messages and MXCP wire payloads
+ * (MXCP_CMD_EL_SEND 0x10, MXCP_EVT_EL_DATA_RX_NOTIFY 0x10, MXCP_EVT_EL_DATA_TX_NOTIFY 0x11).
+ */
+typedef struct meshx_data_msg_hdr
+{
+    uint16_t element_id;               /**< Element index (0 .. N-1) */
+    uint16_t element_type;             /**< Element type (meshx_element_type_t) */
+    uint16_t func_id;                  /**< Functionality / Opcode ID */
+    uint16_t msg_len;                  /**< Length of payload following header in bytes */
+} meshx_data_msg_hdr_t;
+
+/**
+ * @brief Canonical Control Message Header.
+ */
+typedef struct meshx_ctrl_msg_hdr
+{
+    uint16_t evt_id;                   /**< Control Event ID (meshx_ctrl_evt_t) */
+    uint16_t status;                   /**< Status / Result code (0 = SUCCESS) */
+    uint16_t msg_len;                  /**< Length of control payload in bytes */
+} meshx_ctrl_msg_hdr_t;
+
+#pragma pack(pop)
+
+/**
+ * @brief Backward-compatible typedef alias for legacy code.
+ */
+typedef meshx_data_msg_hdr_t meshx_app_element_msg_header_t;
+
+/**
+ * @brief Structure for the BLE Mesh application control message header (legacy).
  */
 typedef struct meshx_ctrl_msg_header
 {
     uint16_t evt_id;                /* Event */
     uint16_t reserved;              /* Reserved */
-}meshx_ctrl_msg_header_t;
+} meshx_ctrl_msg_header_t;
 
 /**
  * @brief Structure for the BLE Mesh application API message.
  *
- * This structure defines the BLE Mesh application API message.
- *
+ * Internal message wrapper exchanged over the control task message queue.
  */
 typedef struct meshx_app_api_msg
 {
     union
     {
         meshx_ctrl_msg_header_t ctrl_msg;
-        meshx_app_element_msg_header_t element_msg;
-    }msg_type_u;
+        meshx_data_msg_hdr_t    element_msg;
+    } msg_type_u;
 
     uint8_t data[MESHX_APP_API_MSG_MAX_SIZE];
-}meshx_app_api_msg_t;
+} meshx_app_api_msg_t;
 
 /**
- * @brief BLE Mesh application callback function.
+ * @brief BLE Mesh application callback function for element data.
  *
- * This function is the BLE Mesh application callback function.
- *
- * @param[in] msg_hdr   Pointer to the BLE Mesh application message header.
- * @param[in] msg       Pointer to the message.
+ * @param[in] msg_hdr   Pointer to the BLE Mesh application data message header.
+ * @param[in] msg       Pointer to the data payload union.
  *
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
@@ -291,19 +307,73 @@ typedef meshx_err_t (*meshx_app_data_cb_t)(const meshx_app_element_msg_header_t 
 /**
  * @brief BLE Mesh application control callback function.
  *
- * This function is the BLE Mesh application control callback function.
- *
  * @param[in] msg_hdr   Pointer to the BLE Mesh application control message header.
- * @param[in] msg       Pointer to the message.
+ * @param[in] msg       Pointer to the control payload union.
  *
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
 typedef meshx_err_t (*meshx_app_ctrl_cb_t)(const meshx_ctrl_msg_header_t *msg_hdr, const meshx_ctrl_payload_t *msg);
 
+/* ====================================================================
+ * Unified Data & Control Path Public APIs (REQ-001, REQ-002, REQ-003)
+ * ==================================================================== */
+
+/**
+ * @brief Send element data upwards to App and Host MCU (Data Path).
+ *
+ * Emits MXCP_EVT_EL_DATA_RX_NOTIFY if MXCP active and dispatches to local registered app_data_cb.
+ *
+ * @param[in] hdr       Pointer to unified data header.
+ * @param[in] payload   Pointer to element payload data.
+ *
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_data_send_to_app(const meshx_data_msg_hdr_t *hdr, const void *payload);
+
+/**
+ * @brief Send element command downwards from App or Host MCU into the MeshX Element Engine.
+ *
+ * @param[in] hdr       Pointer to unified data header.
+ * @param[in] payload   Pointer to element payload data.
+ *
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_data_send_to_element(const meshx_data_msg_hdr_t *hdr, const void *payload);
+
+/**
+ * @brief Dispatch a system control event to the registered app control callback and MXCP (Control Path).
+ *
+ * @param[in] evt_id        Control event ID (meshx_ctrl_evt_t).
+ * @param[in] status        Result or status code.
+ * @param[in] payload       Pointer to control payload data (optional).
+ * @param[in] payload_len   Length of control payload.
+ *
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_ctrl_send_event(meshx_ctrl_evt_t evt_id, uint16_t status, const void *payload, uint16_t payload_len);
+
+/**
+ * @brief Register callback for element data messages (Data Path).
+ *
+ * @param[in] cb Pointer to the data callback.
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_app_reg_data_callback(meshx_app_data_cb_t cb);
+
+/**
+ * @brief Register callback for system control messages (Control Path).
+ *
+ * @param[in] cb Pointer to the control callback.
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_app_reg_ctrl_callback(meshx_app_ctrl_cb_t cb);
+
+/* ====================================================================
+ * Legacy API Prototypes (Maintained for full backward compatibility)
+ * ==================================================================== */
+
 /**
  * @brief Sends a message to the BLE Mesh application.
- *
- * This function sends a message to the BLE Mesh application.
  *
  * @param[in] element_id    The element ID.
  * @param[in] element_type  The element type.
@@ -318,8 +388,6 @@ meshx_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, ui
 /**
  * @brief Sends a control message to the BLE Mesh application.
  *
- * This function sends a control message to the BLE Mesh application.
- *
  * @param[in] evt       The event ID.
  * @param[in] msg_len   The message length.
  * @param[in] msg       Pointer to the message.
@@ -329,9 +397,7 @@ meshx_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, ui
 meshx_err_t meshx_send_ctrl_msg_to_app(meshx_ctrl_evt_t evt, uint16_t msg_len, const void *msg);
 
 /**
- * @brief Sends a message to the element
- *
- * This function sends a message to the element from BLE mesh Application
+ * @brief Sends a message to the element.
  *
  * @param[in] element_id    The element ID.
  * @param[in] element_type  The element type.
@@ -344,23 +410,17 @@ meshx_err_t meshx_send_ctrl_msg_to_app(meshx_ctrl_evt_t evt, uint16_t msg_len, c
 meshx_err_t meshx_send_msg_to_element(uint16_t element_id, uint16_t element_type, uint16_t func_id, uint16_t msg_len, const void *msg);
 
 /**
- * @brief Registers the BLE Mesh application callback.
- *
- * This function registers the BLE Mesh application data path callback.
+ * @brief Registers the BLE Mesh application callback (Data Path).
  *
  * @param[in] cb Pointer to the application callback.
- *
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
 meshx_err_t meshx_app_reg_element_callback(meshx_app_data_cb_t cb);
 
 /**
- * @brief Registers the BLE Mesh application control callback.
- *
- * This function registers the BLE Mesh application control callback.
+ * @brief Registers the BLE Mesh application control callback (Control Path).
  *
  * @param[in] cb Pointer to the control callback.
- *
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
 meshx_err_t meshx_app_reg_system_events_callback(meshx_app_ctrl_cb_t cb);
