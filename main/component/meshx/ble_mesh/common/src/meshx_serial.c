@@ -150,6 +150,7 @@ static void mxsp_uart_rx_task(void *pvParameters)
  *
  * @param event Pointer to the GPIO hosted event data.
  */
+#if CONFIG_MESHX_ENABLE_GPIO_TEST_API
 static void meshx_gpio_hosted_event_handler(const meshx_gpio_hosted_event_t *event)
 {
     if (!mxsp_ctx.hosted_mode_enabled) {
@@ -173,6 +174,7 @@ static void meshx_gpio_hosted_event_handler(const meshx_gpio_hosted_event_t *eve
     MESHX_LOGD(MODULE_ID_COMMON, "GPIO hosted event sent: type=%d, pin=%u, value=%u",
                event->event_type, event->logical_pin, event->value);
 }
+#endif /* CONFIG_MESHX_ENABLE_GPIO_TEST_API */
 
 /**
  * @brief Initialise the serial transport layer.
@@ -196,7 +198,9 @@ meshx_err_t meshx_serial_init(void)
     uart_rx_task.arg            = NULL;
     meshx_task_create(&uart_rx_task);
 
+#if CONFIG_MESHX_ENABLE_GPIO_TEST_API
     meshx_gpio_register_hosted_event_cb(meshx_gpio_hosted_event_handler);
+#endif /* CONFIG_MESHX_ENABLE_GPIO_TEST_API */
 
     return MESHX_SUCCESS;
 }
