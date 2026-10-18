@@ -82,6 +82,7 @@ const char* meshXRootElement::get_element_name(void) const
  *
  * @param[in] param Pointer to the model callback parameter
  * @param[in] param_size Size of the parameter structure
+ * @param[in] ctx Pointer to the UVP context
  * @return
  *     - MESHX_SUCCESS: State change handled successfully
  *     - MESHX_INVALID_ARG: Invalid parameter

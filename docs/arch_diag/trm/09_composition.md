@@ -85,4 +85,4 @@ sequenceDiagram
 
 ---
 
-> **[← TLV Protocol](./08_tlv_protocol.md)** | **[← Index](../README.md)** | **[Next: Hosted Mode →](./10_hosted_mode.md)**
+> **[← TLV Protocol](./08_tlv_protocol.md)** | **[← Index](../README.md)** | **[Next: Hosted Mode →](./10_mxcp_protocol.md)**

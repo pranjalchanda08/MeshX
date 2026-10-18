@@ -44,7 +44,7 @@ extern int32_t meshx_platform_serial_read(uint8_t *data, uint16_t len);
 extern void meshx_platform_reset(void);
 extern void meshx_platform_set_mxsp_use_console(bool enable);
 
-/**
+/*
  * @brief Feed a single byte into the MXCP frame parser state machine.
  *
  * @param data Byte received from the UART.
@@ -97,7 +97,7 @@ void meshx_serial_parse_byte(uint8_t data)
     }
 }
 
-/**
+/*
  * @brief Enable or disable hosted (external-MCU) mode.
  *
  * When enabled, MXCP frames are transmitted over the serial port and
@@ -114,7 +114,7 @@ void meshx_serial_set_hosted_mode(bool enabled)
     meshx_gpio_set_hosted_mode(gpio_mode);
 }
 
-/**
+/*
  * @brief Check whether hosted mode is currently active.
  *
  * @return true if hosted mode is enabled.
@@ -124,7 +124,7 @@ bool meshx_serial_is_hosted_mode_enabled(void)
     return mxsp_ctx.hosted_mode_enabled;
 }
 
-/**
+/*
  * @brief FreeRTOS task that continuously reads bytes from the UART
  *        and feeds them into the frame parser.
  *
@@ -141,7 +141,7 @@ static void mxsp_uart_rx_task(void *pvParameters)
     }
 }
 
-/**
+/*
  * @brief Callback invoked by the GPIO subsystem when an interrupt or
  *        level-change event occurs in hosted mode.
  *
@@ -176,7 +176,7 @@ static void meshx_gpio_hosted_event_handler(const meshx_gpio_hosted_event_t *eve
 }
 #endif /* CONFIG_MESHX_ENABLE_GPIO_TEST_API */
 
-/**
+/*
  * @brief Initialise the serial transport layer.
  *
  * Resets the RX state machine, spawns the UART read task, and

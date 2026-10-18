@@ -56,6 +56,7 @@ private:
      * and notifying the application.
      * @param[in] param Pointer to the model callback parameter
      * @param[in] param_size Size of the parameter structure
+     * @param[in] ctx Pointer to the UVP context (src, dst, tid, ack_req)
      * @return
      *     - MESHX_SUCCESS: State change handled successfully
      *     - MESHX_INVALID_ARG: Invalid parameter
@@ -110,6 +111,8 @@ public:
      * @note  This function shall be derived by the specific element class to handle
      *       state change notifications from child models (if required).
      *
+     * @param[in] param      Pointer to the model callback parameter
+     * @param[in] param_size Size of the parameter structure
      * @param[in] ctx        Pointer to the UVP context (src, dst, tid, ack_req)
      *
      * @return MESHX_SUCCESS on success, error code otherwise

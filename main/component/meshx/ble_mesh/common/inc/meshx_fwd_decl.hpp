@@ -90,6 +90,8 @@ public:
      * This is a pure virtual function that must be implemented by derived classes.
      * It is called when a model event occurs, allowing the element to handle the event.
      *
+     * @param[in] param      Pointer to the model callback parameter.
+     * @param[in] param_size Size of the parameter structure.
      * @param[in] ctx        Pointer to the UVP context (src, dst, tid, ack_req).
      * @return MESHX_SUCCESS on success, error code otherwise.
      */

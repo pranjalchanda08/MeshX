@@ -75,7 +75,7 @@ meshXBaseModel (platform abstraction)
 
 ### Model Class Hierarchy
 
-All custom models must inherit from either [`meshXServerModel`](main/component/meshx/model/inc/meshx_model_class.hpp:304) or [`meshXClientModel`](main/component/meshx/model/inc/meshx_model_class.hpp:365), which in turn inherit from [`meshXModel`](main/component/meshx/model/inc/meshx_model_class.hpp:154).
+All custom models must inherit from either `meshXServerModel` or `meshXClientModel`, which in turn inherit from `meshXModel`.
 
 ### Server Model Implementation
 
@@ -475,9 +475,9 @@ meshx_err_t meshXCustomServerModel MESHX_CUSTOM_SERVER_MODEL_TEMPLATE_PARAMS
 
 Client models follow a similar pattern but with some key differences:
 
-1. They inherit from [`meshXClientModel`](main/component/meshx/model/inc/meshx_model_class.hpp:365)
+1. They inherit from `meshXClientModel`
 2. They don't implement `plat_model_create()` and `plat_model_delete()` (these are final in the base class)
-3. They use a different message header structure ([`meshx_cli_model_send_param_header_t`](main/component/meshx/model/inc/meshx_model_class.hpp:347))
+3. They use a different message header structure (`meshx_cli_model_send_param_header_t`)
 4. They handle timeout events
 
 ```cpp
@@ -511,7 +511,7 @@ public:
 
 ### Key Virtual Functions
 
-All models must implement these virtual functions from [`meshXModelIF`](main/component/meshx/model/inc/meshx_model_class.hpp:29):
+All models must implement these virtual functions from `meshXModelIF`:
 
 #### 1. `plat_model_create()` (Server only)
 Creates the platform-specific model instance. Call the platform-specific creation function and set the publication and generic structures.
@@ -537,7 +537,7 @@ Sends messages through the model to the BLE Mesh network. Prepare the send param
 
 ### Element Class Hierarchy
 
-All custom elements must inherit from either [`meshXElementServer`](main/component/meshx/elements/inc/meshx_element_class.hpp:293) or [`meshXElementClient`](main/component/meshx/elements/inc/meshx_element_class.hpp:306).
+All custom elements must inherit from either `meshXElementServer` or `meshXElementClient`.
 
 ### Server Element Implementation
 
@@ -682,7 +682,7 @@ uint8_t meshXCustomServerElement MESHX_CUSTOM_SERVER_ELEMENT_TEMPLATE_PARAMS
 
 ### Client Element Implementation
 
-Client elements follow the same pattern but inherit from [`meshXElementClient`](main/component/meshx/elements/inc/meshx_element_class.hpp:306):
+Client elements follow the same pattern but inherit from `meshXElementClient`:
 
 ```cpp
 MESHX_CUSTOM_CLIENT_ELEMENT_TEMPLATE_PROTO
@@ -707,11 +707,11 @@ Elements maintain state in a context structure that is persisted to NVS (Non-Vol
 #### Key Points:
 
 1. **Context Structure**: Define a context structure that contains all model states and publication/app binding information
-2. **Registration**: Call [`register_element_ctx()`](main/component/meshx/elements/inc/meshx_element_class.hpp:125) in the constructor to register the context
+2. **Registration**: Call `register_element_ctx()` in the constructor to register the context
 3. **Model State Pointers**: Pass pointers to individual model states when creating models
 4. **NVS Persistence**: The framework automatically saves/restores the context structure to/from NVS
 
-Example from [`meshx_relay_element.hpp`](main/component/meshx/elements/inc/variants/meshx_relay_element.hpp:33):
+Example from `meshx_relay_element.hpp`:
 
 ```cpp
 struct meshx_relay_srv_el_ctx_t
@@ -1229,28 +1229,28 @@ switch (param->ctx.opcode)
 
 ### Reference Implementations
 
-- **Generic OnOff Model**: [`meshx_model_onoff.hpp`](main/component/meshx/model/inc/generic_model/meshx_model_onoff.hpp) and [`meshx_model_onoff.cpp`](main/component/meshx/model/src/generic_model/meshx_model_onoff.cpp)
-- **Light CTL Model**: [`meshx_model_ctl.hpp`](main/component/meshx/model/inc/light_model/meshx_model_ctl.hpp) and [`meshx_model_ctl.cpp`](main/component/meshx/model/src/light_model/meshx_model_ctl.cpp)
-- **Relay Element**: [`meshx_relay_element.hpp`](main/component/meshx/elements/inc/variants/meshx_relay_element.hpp) and [`meshx_relay_element.cpp`](main/component/meshx/elements/src/variants/meshx_relay_element.cpp)
-- **CWWW Element**: [`meshx_cwww_element.hpp`](main/component/meshx/elements/inc/variants/meshx_cwww_element.hpp) and [`meshx_cwww_element.cpp`](main/component/meshx/elements/src/variants/meshx_cwww_element.cpp)
+- **Generic OnOff Model**: `meshx_model_onoff.hpp` and `meshx_model_onoff.cpp`
+- **Light CTL Model**: `meshx_model_ctl.hpp` and `meshx_model_ctl.cpp`
+- **Relay Element**: `meshx_relay_element.hpp` and `meshx_relay_element.cpp`
+- **CWWW Element**: `meshx_cwww_element.hpp` and `meshx_cwww_element.cpp`
 
 ### Base Classes
 
-- **Model Interface**: [`meshXModelIF`](main/component/meshx/model/inc/meshx_model_class.hpp:29)
-- **Model Base**: [`meshXModel`](main/component/meshx/model/inc/meshx_model_class.hpp:154)
-- **Server Model**: [`meshXServerModel`](main/component/meshx/model/inc/meshx_model_class.hpp:304)
-- **Client Model**: [`meshXClientModel`](main/component/meshx/model/inc/meshx_model_class.hpp:365)
-- **Element Interface**: [`meshXElementIF`](main/component/meshx/elements/inc/meshx_element_class.hpp)
-- **Element Base**: [`meshXElement`](main/component/meshx/elements/inc/meshx_element_class.hpp:32)
-- **Server Element**: [`meshXElementServer`](main/component/meshx/elements/inc/meshx_element_class.hpp:293)
-- **Client Element**: [`meshXElementClient`](main/component/meshx/elements/inc/meshx_element_class.hpp:306)
+- **Model Interface**: `meshXModelIF`
+- **Model Base**: `meshXModel`
+- **Server Model**: `meshXServerModel`
+- **Client Model**: `meshXClientModel`
+- **Element Interface**: `meshXElementIF`
+- **Element Base**: `meshXElement`
+- **Server Element**: `meshXElementServer`
+- **Client Element**: `meshXElementClient`
 
 ### Platform Base Models
 
-- **Generic Server**: [`meshXBaseGenericServerModel`](main/component/meshx/base_model/inc/meshx_base_model_generic.hpp)
-- **Generic Client**: [`meshXBaseGenericClientModel`](main/component/meshx/base_model/inc/meshx_base_model_generic.hpp)
-- **Light Server**: [`meshXBaseLightServerModel`](main/component/meshx/base_model/inc/meshx_base_model_light.hpp)
-- **Light Client**: [`meshXBaseLightClientModel`](main/component/meshx/base_model/inc/meshx_base_model_light.hpp)
+- **Generic Server**: `meshXBaseGenericServerModel`
+- **Generic Client**: `meshXBaseGenericClientModel`
+- **Light Server**: `meshXBaseLightServerModel`
+- **Light Client**: `meshXBaseLightClientModel`
 
 ---
 

@@ -18,7 +18,7 @@
 #include "meshx_nvs.h"
 #include "meshx_common.h"
 
-/**
+/*
  * @brief Resolve operational role and semantic trait from element variant using element LUT.
  *
  * @param[in]  variant   Element variant.
@@ -53,7 +53,7 @@ void meshx_manifest_resolve_role_trait(uint16_t variant, uint8_t *out_role, uint
     }
 }
 
-/**
+/*
  * @brief Build local capability manifest by introspecting registered elements and models.
  *
  * @param[out] out_manifest Pointer to manifest structure to populate.
