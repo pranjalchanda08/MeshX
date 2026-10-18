@@ -34,19 +34,19 @@
 #define MESHX_KEY_NAME_MAX_SIZE     16
 #define MESHX_KEY_VALUE_MAX_SIZE    256
 
-/**
+/*
  * @struct meshx_nvs_write_list
  * @brief Linked list structure used to store key-value pairs that need to be written to NVS.
  */
 typedef struct meshx_nvs_write_list
 {
-    uint16_t  len;                            /**< Length of the value in bytes */
-    char      key [MESHX_KEY_NAME_MAX_SIZE];  /**< Key name. Maximum length is (MESHX_KEY_NAME_MAX_SIZE-1) characters */
-    uint8_t   data[MESHX_KEY_VALUE_MAX_SIZE]; /**< Buffer containing the value to be written to NVS */
-    struct meshx_nvs_write_list *next;        /**< Pointer to the next node in the list */
+    uint16_t  len;                            /*< Length of the value in bytes */
+    char      key [MESHX_KEY_NAME_MAX_SIZE];  /*< Key name. Maximum length is (MESHX_KEY_NAME_MAX_SIZE-1) characters */
+    uint8_t   data[MESHX_KEY_VALUE_MAX_SIZE]; /*< Buffer containing the value to be written to NVS */
+    struct meshx_nvs_write_list *next;        /*< Pointer to the next node in the list */
 }meshx_nvs_write_list_t;
 
-/**
+/*
  * @var meshx_nvs_write_list_head
  * @brief Head of the linked list used to store key-value pairs that need to be written to NVS.
  */
@@ -71,7 +71,7 @@ static meshx_err_t meshx_nvs_control_msg_handler(dev_struct_t *pdev, control_tas
 }
 
 #if MESHX_NVS_TIMER_PERIOD
-/**
+/*
  * @brief MeshX NVS Timer callback.
  * @note This is responsible for performing the commit after stability timeout
  *
@@ -86,7 +86,7 @@ static void meshx_nvs_os_timer_cb(const meshx_os_timer_t *p_timer)
 }
 #endif /* MESHX_NVS_TIMER_PERIOD */
 
-/**
+/*
  * @brief Erase the NVS and set the product ID.
  *
  * This function erases the NVS and sets the product ID.
@@ -139,7 +139,7 @@ static meshx_err_t meshx_nvs_erase_prod_init(uint16_t cid, uint16_t pid)
     return err;
 }
 
-/**
+/*
  * @brief MeshX NVS Initialisation
  *
  * @return
@@ -167,7 +167,7 @@ meshx_err_t meshx_nvs_init(void)
     return err;
 }
 
-/**
+/*
  * @brief Open the NVS with a timeout.
  *
  * This function initializes the NVS and sets a timeout for stability operations.
@@ -256,7 +256,7 @@ meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_m
     return err;
 }
 
-/**
+/*
  * @brief Erase all key-value pairs stored in the NVS.
  *
  * This function clears all data stored in the Non-Volatile Storage.
@@ -272,7 +272,7 @@ meshx_err_t meshx_nvs_erase(void)
     return meshx_nvs_plat_erase(meshx_nvs_inst.meshx_nvs_handle);
 }
 
-/**
+/*
  * @brief Commit changes to the NVS.
  *
  * This function ensures that any pending changes to the NVS are flushed to persistent storage.
@@ -314,7 +314,7 @@ meshx_err_t meshx_nvs_commit(void)
 }
 
 
-/**
+/*
  * @brief Close the NVS handle.
  *
  * This function releases any resources associated with the NVS handle.
@@ -341,7 +341,7 @@ meshx_err_t meshx_nvs_close(void)
     return err;
 }
 
-/**
+/*
  * @brief Remove a key-value pair from the NVS.
  *
  * This function deletes a specific key-value pair from the NVS based on the provided key.
@@ -359,7 +359,7 @@ meshx_err_t meshx_nvs_remove(char const *key)
     return meshx_nvs_plat_remove(meshx_nvs_inst.meshx_nvs_handle, key);
 }
 
-/**
+/*
  * @brief Get a value from the NVS.
  *
  * This function retrieves a value associated with the given key from the NVS.
@@ -378,7 +378,7 @@ meshx_err_t meshx_nvs_get(char const *key, void *blob, uint16_t blob_size)
     return meshx_nvs_plat_read(meshx_nvs_inst.meshx_nvs_handle, key, blob, blob_size);
 }
 
-/**
+/*
  * @brief Set a value in the NVS.
  *
  * This function stores a value associated with the given key in the NVS.
@@ -445,7 +445,7 @@ restart_timer:
     return MESHX_SUCCESS;
 }
 
-/**
+/*
  * @brief Retrieve the context of a specific element from NVS.
  *
  * @param[in]   element_id   The ID of the element whose context is to be retrieved.
@@ -464,7 +464,7 @@ meshx_err_t meshx_nvs_element_ctx_get(uint16_t element_id, meshx_element_type_t 
     return meshx_nvs_get(key, blob, blob_size);
 }
 
-/**
+/*
  * @brief Store the context of a specific element to NVS.
  *
  * @param[in] element_id    The ID of the element whose context is to be stored.
@@ -482,7 +482,7 @@ meshx_err_t meshx_nvs_element_ctx_set(uint16_t element_id, meshx_element_type_t 
     return meshx_nvs_set(key, blob, (uint16_t) blob_size, MESHX_NVS_AUTO_COMMIT);
 }
 
-/**
+/*
  * @brief Remove the context of a specific element from NVS.
  *
  * @param[in] element_id   The ID of the element whose context is to be removed.
@@ -516,7 +516,7 @@ meshx_err_t meshx_nvs_element_ctx_remove(uint16_t element_id, meshx_element_type
     return meshx_nvs_remove(key);
 }
 
-/**
+/*
  * @brief Calculate CRC-16-CCITT checksum over a buffer.
  *
  * @param[in] data Pointer to data buffer.
@@ -543,7 +543,7 @@ static uint16_t meshx_nvs_calc_crc16(const uint8_t *data, size_t len)
     return crc;
 }
 
-/**
+/*
  * @brief Store composition schema into NVS.
  *
  * Validates the schema, computes the CRC-16-CCITT, and writes the
@@ -579,7 +579,7 @@ meshx_err_t meshx_nvs_comp_schema_set(const meshx_nvs_comp_schema_t *schema)
     return meshx_nvs_set(MESHX_NVS_KEY_COMP_SCHEMA, &to_write, sizeof(to_write), MESHX_NVS_AUTO_COMMIT);
 }
 
-/**
+/*
  * @brief Retrieve composition schema from NVS with CRC validation.
  *
  * Reads the schema from NVS, verifies magic number, version, element count,
@@ -632,7 +632,7 @@ meshx_err_t meshx_nvs_comp_schema_get(meshx_nvs_comp_schema_t *schema)
     return MESHX_SUCCESS;
 }
 
-/**
+/*
  * @brief Erase composition schema from NVS.
  *
  * Removes the composition schema record from the NVS namespace.
@@ -647,7 +647,7 @@ meshx_err_t meshx_nvs_comp_schema_erase(void)
     return meshx_nvs_remove(MESHX_NVS_KEY_COMP_SCHEMA);
 }
 
-/**
+/*
  * @brief Store link table into NVS with CRC validation.
  *
  * @param[in] table Pointer to link table structure.
@@ -676,7 +676,7 @@ meshx_err_t meshx_nvs_link_table_set(const meshx_nvs_link_table_t *table)
     return meshx_nvs_set(MESHX_NVS_KEY_LINK_TABLE, &to_write, sizeof(to_write), MESHX_NVS_AUTO_COMMIT);
 }
 
-/**
+/*
  * @brief Retrieve link table from NVS with CRC validation.
  *
  * @param[out] table Pointer to buffer to receive link table.
@@ -721,7 +721,7 @@ meshx_err_t meshx_nvs_link_table_get(meshx_nvs_link_table_t *table)
     return MESHX_SUCCESS;
 }
 
-/**
+/*
  * @brief Erase link table from NVS.
  *
  * @return MESHX_SUCCESS on success, or error code.
@@ -732,7 +732,7 @@ meshx_err_t meshx_nvs_link_table_erase(void)
     return meshx_nvs_remove(MESHX_NVS_KEY_LINK_TABLE);
 }
 
-/**
+/*
  * @brief Get the current link epoch counter from NVS.
  *
  * @return Current link epoch (defaults to 0 if not yet set or unlinked).
@@ -748,7 +748,7 @@ uint16_t meshx_nvs_get_link_epoch(void)
 
 #if CONFIG_ENABLE_UNIT_TEST
 
-/**
+/*
  * @brief MeshX NVS unit test command IDs.
  */
 typedef enum meshx_nvs_cli_cmd{
@@ -771,7 +771,7 @@ typedef enum meshx_nvs_cli_cmd{
     MESHX_NVS_CLI_MAX
 }meshx_nvs_cli_cmd_t;
 
-/**
+/*
  * @brief Callback handler for MeshX NVS unit test command.
  *
  * This function handles MeshX NVS unit test command by processing the

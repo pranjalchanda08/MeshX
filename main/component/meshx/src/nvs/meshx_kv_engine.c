@@ -14,7 +14,7 @@
 #include "meshx_common.h"
 #include "interface/rtos/meshx_rtos_utils.h"
 
-#define KV_MAGIC 0x4D58 /**< "MX" */
+#define KV_MAGIC 0x4D58 /*< "MX" */
 #define KV_STATUS_VALID 0xEE
 #define KV_STATUS_OBSOLETE 0x00
 #define KV_STATUS_EMPTY 0xFF
@@ -22,7 +22,7 @@
 #define KV_MAX_KEY_LEN 32
 #define KV_ALIGN_SIZE 4
 
-/**
+/*
  * @struct kv_record_header
  * @brief Header for each record stored in flash.
  */
@@ -36,7 +36,7 @@ typedef struct
     uint16_t crc;
 } MESHX_PACKED kv_header_t;
 
-/**
+/*
  * @struct kv_pending_node
  * @brief Node for pending writes (in-RAM cache).
  */
@@ -53,7 +53,7 @@ static uint32_t kv_next_seq_id              = 0;
 static kv_pending_t *pending_list           = NULL;
 static const meshx_fal_partition_t *kv_part = NULL;
 
-/**
+/*
  * @brief Garbage collect the KV store.
  *
  * @return meshx_err_t.
@@ -70,7 +70,7 @@ static meshx_err_t kv_engine_gc(void)
     return MESHX_FAIL;
 }
 
-/**
+/*
  * @brief Calculate CRC for a given data buffer.
  *
  * @param[in] data Data buffer.
@@ -94,7 +94,7 @@ static uint16_t kv_calc_crc(const uint8_t *data, uint32_t len)
     return crc;
 }
 
-/**
+/*
  * @brief Align a given size to the nearest multiple of KV_ALIGN_SIZE.
  *
  * @param[in] size Size to align.
@@ -105,7 +105,7 @@ static uint32_t kv_align(uint32_t size)
     return (size + (KV_ALIGN_SIZE - 1)) & ~(KV_ALIGN_SIZE - 1);
 }
 
-/**
+/*
  * @brief Initialize the KV engine.
  *
  * @param[in] part Pointer to FAL partition.
@@ -165,7 +165,7 @@ meshx_err_t meshx_kv_engine_init(const meshx_fal_partition_t *part)
     return MESHX_SUCCESS;
 }
 
-/**
+/*
  * @brief Read a value from the KV store.
  *
  * @param[in] key   Key to read.
@@ -237,7 +237,7 @@ meshx_err_t meshx_kv_engine_read(const char *key, void *buf, uint16_t len)
     return MESHX_NOT_FOUND;
 }
 
-/**
+/*
  * @brief Set a value in the KV store.
  *
  * @param[in] key   Key to set.
@@ -266,7 +266,7 @@ meshx_err_t meshx_kv_engine_set(const char *key, const void *buf,
     return MESHX_SUCCESS;
 }
 
-/**
+/*
  * @brief Commit all pending writes to the KV store.
  *
  * @return meshx_err_t.
@@ -321,7 +321,7 @@ meshx_err_t meshx_kv_engine_commit(void)
     return MESHX_SUCCESS;
 }
 
-/**
+/*
  * @brief Remove a value from the KV store.
  *
  * @param[in] key Key to remove.
@@ -337,7 +337,7 @@ meshx_err_t meshx_kv_engine_remove(const char *key)
     // as deleted
 }
 
-/**
+/*
  * @brief Erase all data in the KV store.
  *
  * @return meshx_err_t.

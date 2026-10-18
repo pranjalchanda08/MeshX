@@ -20,7 +20,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         submodules: false
         fetch-depth: 0
@@ -28,16 +28,8 @@ jobs:
     - name: Update submodule (only doxygen-awesome-css)
       run: git submodule update --init docs/doxygen-awesome-css
 
-    - name: Doxygen Action
-      uses: mattnotmitt/doxygen-action@v1.1.0
-      with:
-        # Path to Doxyfile
-        doxyfile-path: ".vscode/.doxygen/meshx.doxyconfig.ini" # default is ./Doxyfile
-        # Working directory
-        working-directory: "." # default is .
-
     - name: Generate Doxygen Docs
-      uses: mattnotmitt/doxygen-action@v1.1.0
+      uses: mattnotmitt/doxygen-action@v1.12.0
       with:
         doxyfile-path: ".vscode/.doxygen/meshx.doxyconfig.ini"
         working-directory: "."
@@ -63,7 +55,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Download generated docs
       uses: actions/download-artifact@v4
@@ -95,7 +87,7 @@ jobs:
         ln -sf main/index.html public/index.html
 
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
+      uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_branch: gh-pages

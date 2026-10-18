@@ -17,7 +17,7 @@
 #define __MESHX_RTOS_UTILS_H__
 
 #include "meshx_err.h"
-#include "stddef.h"
+#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {

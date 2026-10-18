@@ -17,7 +17,7 @@ extern "C" int bt_mesh_node_local_app_key_add(uint16_t net_idx, uint16_t app_idx
 #include "meshx_element_registry.hpp"
 #include "meshx_model_class.hpp"
 
-/**
+/*
  * @brief Mask for control task provisioning events.
  */
 #define CONTROL_TASK_PROV_EVT_MASK ( CONTROL_TASK_MSG_EVT_PROV_REG_COMP  |  \
@@ -34,18 +34,18 @@ extern "C" int bt_mesh_node_local_app_key_add(uint16_t net_idx, uint16_t app_idx
 #define MESHX_PROV_SRV_CLIENT_EVENT_BMAP    (CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT)
 #define MESHX_PROV_SRV_SERVER_EVENT_BMAP    (CONTROL_TASK_MSG_EVT_SYSTEM_STACK_READY)
 
-/**
+/*
  * @brief Structure to map provisioning callback events to control task events.
  */
 typedef struct prov_cb_evt_ctrl_task_evt_table
 {
 #if CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO
-    const char *evt_str;                            /**< String representation of the provisioning event. */
+    const char *evt_str;                            /*< String representation of the provisioning event. */
 #endif
-    control_task_msg_evt_provision_t ctrl_task_evt; /**< Corresponding control task event. */
+    control_task_msg_evt_provision_t ctrl_task_evt; /*< Corresponding control task event. */
 } prov_cb_evt_ctrl_task_evt_table_t;
 
-/**
+/*
  * @brief Table mapping provisioning events to control task events.
  * @note Fixed for C++17 compatibility (removed C99 designated initializers for large arrays if needed,
  *       but here we use explicit indices for clarity).
@@ -83,7 +83,7 @@ static void init_prov_cb_table(void)
 
 static meshx_os_timer_t *g_boot_timer;
 
-/**
+/*
  * @brief Control task handler for the provisioning server.
  *
  * Translates provisioning server events into control task messages.
@@ -144,7 +144,7 @@ static meshx_err_t meshx_prov_srv_control_task_handler(
         sizeof(meshx_prov_cb_param_t));
 }
 
-/**
+/*
  * @brief Handle node reset event.
  *
  * Clears persistent element contexts, erases dynamic composition schema from NVS,
@@ -186,7 +186,7 @@ static void meshx_handle_node_reset(dev_struct_t *pdev)
     meshx_platform_reset();
 }
 
-/**
+/*
  * @brief Handles provisioning control task events.
  */
 static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params, uint16_t params_len)
@@ -220,7 +220,7 @@ static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_t
     return MESHX_SUCCESS;
 }
 
-/**
+/*
  * @brief Register callback for provisioning control task messages.
  *
  * @return MESHX_SUCCESS on success, or error code.
@@ -233,7 +233,7 @@ extern "C" meshx_err_t meshx_prov_srv_meshx_reg_cb(void)
         (control_task_msg_handle_t)&meshx_prov_control_task_handler);
 }
 
-/**
+/*
  * @brief Callback invoked when the fresh boot timer expires.
  *
  * @param[in] p_timer Pointer to the OS timer structure.
@@ -257,7 +257,7 @@ static void meshx_init_freshboot_timer_trigger_cb(const meshx_os_timer_t* p_time
     }
 }
 
-/**
+/*
  * @brief Initialize and start the fresh boot timer for provisioned devices.
  *
  * @param[in] p_dev      Pointer to device structure.
@@ -295,7 +295,7 @@ static meshx_err_t meshx_init_freshboot_timer(dev_struct_t *p_dev, uint16_t time
     return err;
 }
 
-/**
+/*
  * @brief Register callback for platform provisioning events.
  *
  * @return MESHX_SUCCESS on success, or error code.
@@ -310,7 +310,7 @@ extern "C" meshx_err_t meshx_prov_srv_reg_from_ble_cb(void)
     );
 }
 
-/**
+/*
  * @brief Initialize provisioning service with device configuration.
  *
  * @param[in] p_dev    Pointer to device structure.
@@ -352,7 +352,7 @@ extern "C" meshx_err_t meshx_init_prov(dev_struct_t *p_dev, const meshx_prov_par
     return meshx_plat_init_prov(prov_cfg->uuid);
 }
 
-/**
+/*
  * @brief Register client element callback for provisioning events.
  *
  * @param[in] cb Callback function to register.
@@ -368,7 +368,7 @@ extern "C" meshx_err_t meshx_prov_srv_reg_el_client_cb(prov_srv_cb_t cb)
     );
 }
 
-/**
+/*
  * @brief Register server element callback for provisioning events.
  *
  * @param[in] cb Callback function to register.
@@ -384,7 +384,7 @@ extern "C" meshx_err_t meshx_prov_srv_reg_el_server_cb(prov_srv_cb_t cb)
     );
 }
 
-/**
+/*
  * @brief Publish a platform provisioning event to control task.
  *
  * @param[in] param Pointer to provisioning parameter structure.
@@ -406,7 +406,7 @@ extern "C" meshx_err_t meshx_prov_srv_notify_plat_event(meshx_prov_srv_param_t *
     );
 }
 
-/**
+/*
  * @brief Check if the device is currently provisioned.
  *
  * @return true if provisioned, false otherwise.

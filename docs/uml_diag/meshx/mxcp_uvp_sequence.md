@@ -172,7 +172,7 @@ Every frame written to or read from the physical UART conforms to the following 
 - **Type**: 1-byte packet type containing direction and event/command flags.
 - **Payload**: Variable payload carrying operation-specific headers and TLV tags.
 - **Checksum**: 1-byte XOR checksum calculated as:
-  $$\text{Checksum} = \text{Length} \oplus \text{Type} \oplus \left(\bigoplus_{i=0}^{N-1} \text{Payload}[i]\right)$$
+  `Checksum = Length ^ Type ^ (Payload[0] ^ ... ^ Payload[N-1])`
 - **EOF (End of Frame)**: Fixed byte `0xEF`.
 
 ### 3.2 BLE Mesh UVP Frame Structure
