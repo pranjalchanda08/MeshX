@@ -88,4 +88,4 @@ esptool.py write_flash 0x3F0000 build/meshx_cfg.bin
 
 ---
 
-> **[← Hosted Mode](./10_hosted_mode.md)** | **[← Index](../README.md)** | **[Next: Hardware Platform →](./12_hardware_platform.md)**
+> **[← Hosted Mode](./10_mxcp_protocol.md)** | **[← Index](../README.md)** | **[Next: Hardware Platform →](./12_hardware_platform.md)**

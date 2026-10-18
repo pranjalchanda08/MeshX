@@ -12,7 +12,7 @@
 #include "meshx_nvs.h"
 #include "meshx_common.h"
 
-/**
+/*
  * @brief Calculate group address from anchor node's unicast address.
  *
  * @param[in] anchor_unicast Unicast address of anchor node.
@@ -23,7 +23,7 @@ uint16_t meshx_group_derive_from_anchor(uint16_t anchor_unicast)
     return (uint16_t)(MESHX_DYNAMIC_GROUP_START + (anchor_unicast & MESHX_DYNAMIC_GROUP_MASK));
 }
 
-/**
+/*
  * @brief Determine anchor unicast address based on pairing roles.
  *
  * @param[in] local_unicast Unicast address of local element.
@@ -75,7 +75,7 @@ uint16_t meshx_group_resolve_anchor_topology(uint16_t local_unicast,
     return (local_unicast < peer_unicast) ? local_unicast : peer_unicast;
 }
 
-/**
+/*
  * @brief Determine anchor unicast address based on pairing roles.
  *
  * @param[in] local_unicast Unicast address of local element.
@@ -92,7 +92,7 @@ uint16_t meshx_group_resolve_anchor(uint16_t local_unicast,
     return meshx_group_resolve_anchor_topology(local_unicast, peer_unicast, local_role, peer_role, MESHX_TOPOLOGY_UNKNOWN);
 }
 
-/**
+/*
  * @brief Query total active reference count for a group address from the NVS link table.
  *
  * @param[in] group_addr Group address (0xC000 - 0xC3FF).

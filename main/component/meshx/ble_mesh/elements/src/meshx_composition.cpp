@@ -18,14 +18,14 @@
 extern "C" {
 #endif
 
-/** Forward declarations for legacy platform initialization */
+/* Forward declarations for legacy platform initialization */
 meshx_err_t meshx_init_config_server(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-/**
+/*
  * @brief Get the singleton instance of the meshXComposition.
  * @return Pointer to the singleton instance.
  */
@@ -35,7 +35,7 @@ meshXComposition &meshXComposition::get_instance()
     return instance;
 }
 
-/**
+/*
  * @brief Bake the composition into platform structures.
  * @param cid Company ID.
  * @param pid Product ID.

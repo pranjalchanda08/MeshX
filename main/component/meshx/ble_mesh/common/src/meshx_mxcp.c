@@ -29,7 +29,7 @@ extern void meshx_platform_reset(void);
 extern void meshx_platform_set_mxsp_use_console(bool enable);
 extern void meshx_platform_serial_write(const uint8_t *data, uint16_t len);
 
-/**
+/*
  * @brief Forward declarations for MXCP command handler functions.
  *
  * Each handler receives the raw payload and length extracted from
@@ -62,7 +62,7 @@ static void mxcp_cmd_fn_unbind_elements        (const uint8_t *payload, uint8_t 
 static void mxcp_cmd_fn_get_link_table         (const uint8_t *payload, uint8_t len);
 static void mxcp_cmd_fn_get_link_epoch         (const uint8_t *payload, uint8_t len);
 
-/**
+/*
  * @brief Command dispatch table (Host -> Engine).
  *
  * Linear-scan lookup table mapping each MXCP_CMD_xxx ID to its handler,
@@ -104,7 +104,7 @@ static const mxcp_cmd_entry_t mxcp_cmd_table[] = {
 
 #define MXCP_CMD_TABLE_SIZE (sizeof(mxcp_cmd_table) / sizeof(mxcp_cmd_table[0]))
 
-/**
+/*
  * @brief Compute XOR checksum over LEN, TYPE, and PAYLOAD fields.
  *
  * @param len     Payload length byte.
@@ -127,7 +127,7 @@ static uint8_t mxcp_calculate_checksum(uint8_t len, uint8_t type, const uint8_t 
     return checksum;
 }
 
-/**
+/*
  * @brief Dispatch a received frame to the matching command handler.
  *
  * Performs a linear scan of mxcp_cmd_table for the given command ID.
@@ -171,7 +171,7 @@ void mxcp_dispatch_frame(uint8_t type, const uint8_t *payload, uint8_t len)
     MESHX_LOGW(MODULE_ID_COMMON, "MXCP: unhandled CMD 0x%02x", cmd_id);
 }
 
-/**
+/*
  * @brief Build and transmit a variable-length MXCP frame.
  *
  * Serialises [SOF][LEN][TYPE][PAYLOAD][CHK][EOF] into a flat buffer
@@ -208,7 +208,7 @@ meshx_err_t mxcp_send_frame(uint8_t type, const uint8_t *payload, uint8_t len)
     return MESHX_SUCCESS;
 }
 
-/**
+/*
  * @brief Send an MXCP event (Engine -> Host).
  *
  * @param[in] evt_id  Event ID.
@@ -223,7 +223,7 @@ meshx_err_t mxcp_send_event(mxcp_evt_id_t evt_id, const uint8_t *payload, uint8_
     return mxcp_send_frame(type, payload, len);
 }
 
-/**
+/*
  * @brief Send an MXCP command (Host -> Engine).
  *
  * @param[in] cmd_id  Command ID.
@@ -238,7 +238,7 @@ meshx_err_t mxcp_send_cmd(mxcp_cmd_id_t cmd_id, const uint8_t *payload, uint8_t 
     return mxcp_send_frame(type, payload, len);
 }
 
-/**
+/*
  * @brief Query the composition builder and send the response as an MXCP event.
  *
  * @param[in] evt_id MXCP_EVT_COMPOSITION_RSP or MXCP_EVT_ELEMENT_STATE_RSP.
@@ -260,7 +260,7 @@ void mxcp_send_element_info_response(mxcp_evt_id_t evt_id)
     mxcp_send_event(evt_id, resp_buf, (uint8_t)data_len);
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_HOSTED_MODE_ENABLE.
  *
  * Enables or disables hosted mode on the engine. When disabled,
@@ -284,7 +284,7 @@ static void mxcp_cmd_fn_hosted_mode(const uint8_t *payload, uint8_t len)
     MESHX_LOGI(MODULE_ID_COMMON, "Hosted mode %s via MXCP", enabled ? "enabled" : "disabled");
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_NODE_RESET.
  *
  * Erases dynamic composition schema from NVS and triggers a platform-level reset.
@@ -300,7 +300,7 @@ static void mxcp_cmd_fn_node_reset(const uint8_t *payload, uint8_t len)
     meshx_platform_reset();
 }
 
-/**
+/*
  * @brief Software timer callback for scheduled reboot following composition change.
  *
  * @param[in] timer Pointer to the OS timer structure.
@@ -312,7 +312,7 @@ static void mxcp_reboot_timer_cb(const meshx_os_timer_t *timer)
     meshx_platform_reset();
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_SET_COMPOSITION.
  *
  * Configures the element composition remotely, commits it to NVS with override flag,
@@ -471,7 +471,7 @@ static void mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t len)
     }
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_DISCOVER_CAPABILITIES.
  */
 static void mxcp_cmd_fn_discover_capabilities(const uint8_t *payload, uint8_t len)
@@ -492,7 +492,7 @@ static void mxcp_cmd_fn_discover_capabilities(const uint8_t *payload, uint8_t le
     meshx_comp_send_uvp(0, cmd->target_unicast, MESHX_FUNC_ID_SYS_DISCOVERY, &query, sizeof(query), false);
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_BIND_ELEMENTS.
  */
 static void mxcp_cmd_fn_bind_elements(const uint8_t *payload, uint8_t len)
@@ -535,7 +535,7 @@ static void mxcp_cmd_fn_bind_elements(const uint8_t *payload, uint8_t len)
     mxcp_send_event(MXCP_EVT_BIND_STATUS, (const uint8_t *)&evt, sizeof(evt));
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_UNBIND_ELEMENTS.
  */
 static void mxcp_cmd_fn_unbind_elements(const uint8_t *payload, uint8_t len)
@@ -563,7 +563,7 @@ static void mxcp_cmd_fn_unbind_elements(const uint8_t *payload, uint8_t len)
     mxcp_send_event(MXCP_EVT_UNBIND_STATUS, (const uint8_t *)&evt, sizeof(evt));
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_GET_LINK_TABLE.
  */
 static void mxcp_cmd_fn_get_link_table(const uint8_t *payload, uint8_t len)
@@ -577,7 +577,7 @@ static void mxcp_cmd_fn_get_link_table(const uint8_t *payload, uint8_t len)
     }
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_GET_LINK_EPOCH.
  */
 static void mxcp_cmd_fn_get_link_epoch(const uint8_t *payload, uint8_t len)
@@ -590,7 +590,7 @@ static void mxcp_cmd_fn_get_link_epoch(const uint8_t *payload, uint8_t len)
     mxcp_send_event(MXCP_EVT_LINK_EPOCH_RSP, (const uint8_t *)&rsp, sizeof(rsp));
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_GET_COMPOSITION.
  *
  * Requests both composition data and element state from the builder.
@@ -607,7 +607,7 @@ static void mxcp_cmd_fn_get_composition(const uint8_t *payload, uint8_t len)
     mxcp_send_element_info_response(MXCP_EVT_ELEMENT_STATE_RSP);
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_GET_ELEMENT_STATE.
  *
  * Requests element state data from the builder and sends
@@ -623,7 +623,7 @@ static void mxcp_cmd_fn_get_element_state(const uint8_t *payload, uint8_t len)
     mxcp_send_element_info_response(MXCP_EVT_ELEMENT_STATE_RSP);
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_SET_CONSOLE_ROUTING.
  *
  * Enables or disables console routing for MXSP/MXCP debug output.
@@ -643,7 +643,7 @@ static void mxcp_cmd_fn_set_console_routing(const uint8_t *payload, uint8_t len)
     meshx_platform_set_mxsp_use_console(cmd.enable != 0);
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_EL_SEND.
  *
  * Forwards element-bound data from the host to the target element
@@ -690,7 +690,7 @@ static void mxcp_cmd_fn_el_send(const uint8_t *payload, uint8_t len)
 }
 
 #if CONFIG_MESHX_ENABLE_GPIO_TEST_API
-/**
+/*
  * @brief Handle MXCP_CMD_GPIO_SET_LEVEL.
  *
  * Sets the output level on a GPIO pin and sends a status-only response
@@ -718,7 +718,7 @@ static void mxcp_cmd_fn_gpio_set_level(const uint8_t *payload, uint8_t len)
                     2 + sizeof(rsp.data.get_level));
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_GPIO_GET_LEVEL.
  *
  * Reads the current level of a GPIO pin and sends a typed response
@@ -751,7 +751,7 @@ static void mxcp_cmd_fn_gpio_get_level(const uint8_t *payload, uint8_t len)
                     2 + sizeof(rsp.data.get_level));
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_GPIO_TOGGLE.
  *
  * Toggles the output level of a GPIO pin, reads back the new level,
@@ -785,7 +785,7 @@ static void mxcp_cmd_fn_gpio_toggle(const uint8_t *payload, uint8_t len)
                     2 + sizeof(rsp.data.toggle));
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_GPIO_SET_PWM_DUTY.
  *
  * Sets the PWM duty cycle on a GPIO pin via meshx_gpio_execute_function()
@@ -816,7 +816,7 @@ static void mxcp_cmd_fn_gpio_set_pwm_duty(const uint8_t *payload, uint8_t len)
     mxcp_send_event(MXCP_EVT_GPIO_SET_PWM_DUTY_RSP, (const uint8_t *)&rsp, 2);
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_GPIO_SET_PWM_FREQ.
  *
  * Sets the PWM frequency on a GPIO pin via meshx_gpio_execute_function()
@@ -847,7 +847,7 @@ static void mxcp_cmd_fn_gpio_set_pwm_freq(const uint8_t *payload, uint8_t len)
     mxcp_send_event(MXCP_EVT_GPIO_SET_PWM_FREQ_RSP, (const uint8_t *)&rsp, 2);
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_GPIO_INTR_ENABLE.
  *
  * Enables or disables interrupt registration on a GPIO pin and sends
@@ -876,7 +876,7 @@ static void mxcp_cmd_fn_gpio_intr_enable(const uint8_t *payload, uint8_t len)
     mxcp_send_event(MXCP_EVT_GPIO_INTR_ENABLE_RSP, (const uint8_t *)&rsp, 2);
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_GPIO_INTR_DISABLE.
  *
  * Disables interrupt registration on a GPIO pin (always passes false)
@@ -903,7 +903,7 @@ static void mxcp_cmd_fn_gpio_intr_disable(const uint8_t *payload, uint8_t len)
     mxcp_send_event(MXCP_EVT_GPIO_INTR_DISABLE_RSP, (const uint8_t *)&rsp, 2);
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_GPIO_GET_CONFIG.
  *
  * Retrieves the pin configuration (mode, pull, drive strength,
@@ -941,7 +941,7 @@ static void mxcp_cmd_fn_gpio_get_config(const uint8_t *payload, uint8_t len)
                     2 + sizeof(rsp.data.get_config));
 }
 
-/**
+/*
  * @brief Handle MXCP_CMD_GPIO_GET_STATE.
  *
  * Retrieves the runtime pin state (current level, interrupt registered,

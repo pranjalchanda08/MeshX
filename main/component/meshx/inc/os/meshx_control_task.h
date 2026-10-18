@@ -13,8 +13,8 @@
 #ifndef __MESHX_CONTROL_TASK__
 #define __MESHX_CONTROL_TASK__
 
-#include "stdio.h"
-#include "string.h"
+#include <stdio.h>
+#include <string.h>
 #include "meshx_common.h"
 #include "interface/rtos/meshx_task.h"
 #include "interface/rtos/meshx_msg_q.h"
