@@ -12,7 +12,7 @@
 #include "meshx_element_lut.h"
 #include "meshx_common.h"
 
-/**
+/*
  * @brief Validate semantic compatibility between source and destination element descriptors.
  *
  * @param[in] src_desc Pointer to source element descriptor.
@@ -79,7 +79,7 @@ meshx_err_t meshx_compat_validate(const meshx_element_descriptor_t *src_desc,
     return MESHX_ERR_INCOMPATIBLE_TRAIT;
 }
 
-/**
+/*
  * @brief High-level trait compatibility verification against element layer LUT.
  *
  * @param[in] source_trait Semantic trait of source element.

@@ -18,12 +18,12 @@
 
 #define MESHX_BUILDER_LUT_SIZE (sizeof(s_builder_add_lut) / sizeof(s_builder_add_lut[0]))
 
-/**
+/*
  * @brief Type definition for meshXCompositionBuilder::add_xxx() functions.
  */
 typedef meshXCompositionBuilder &(meshXCompositionBuilder::*meshx_builder_add_fn_t)();
 
-/**
+/*
  * @brief Structure for LUT entries
  */
 typedef struct
@@ -32,7 +32,7 @@ typedef struct
     meshx_builder_add_fn_t func;    // Pointer to the add function
 } meshx_builder_lut_entry_t;
 
-/**
+/*
  * @brief Lookup table for add element functions
  */
 static const meshx_builder_lut_entry_t s_builder_add_lut[] = {
@@ -46,11 +46,11 @@ static const meshx_builder_lut_entry_t s_builder_add_lut[] = {
     {MESHX_ELEMENT_TYPE_SENSOR_CLIENT,      &meshXCompositionBuilder::add_sensor_client },
 };
 
-/**
+/*
  * @brief Fluent API Implementation
  */
 
-/**
+/*
  * @brief Start building the composition
  * @return Reference to the builder
  */
@@ -65,7 +65,7 @@ meshXCompositionBuilder &meshXCompositionBuilder::begin()
     return *this;
 }
 
-/**
+/*
  * @brief Add a Relay Server element
  * @return Reference to the builder
  */
@@ -77,7 +77,7 @@ meshXCompositionBuilder &meshXCompositionBuilder::add_relay_server()
     return *this;
 }
 
-/**
+/*
  * @brief Add a Relay Client element
  * @return Reference to the builder
  */
@@ -90,7 +90,7 @@ meshXCompositionBuilder &meshXCompositionBuilder::add_relay_client()
     return *this;
 }
 
-/**
+/*
  * @brief Add a Light CWWW Server element
  * @return Reference to the builder
  */
@@ -102,7 +102,7 @@ meshXCompositionBuilder &meshXCompositionBuilder::add_cwww_server()
     return *this;
 }
 
-/**
+/*
  * @brief Add a Light CWWW Client element
  * @return Reference to the builder
  */
@@ -115,7 +115,7 @@ meshXCompositionBuilder &meshXCompositionBuilder::add_cwww_client()
     return *this;
 }
 
-/**
+/*
  * @brief Add a Sensor Server element
  * @return Reference to the builder
  */
@@ -127,7 +127,7 @@ meshXCompositionBuilder &meshXCompositionBuilder::add_sensor_server()
     return *this;
 }
 
-/**
+/*
  * @brief Add a Sensor Client element
  * @return Reference to the builder
  */
@@ -140,7 +140,7 @@ meshXCompositionBuilder &meshXCompositionBuilder::add_sensor_client()
     return *this;
 }
 
-/**
+/*
  * @brief Add an RGB (HSL) Server element
  * @return Reference to the builder
  */
@@ -152,7 +152,7 @@ meshXCompositionBuilder &meshXCompositionBuilder::add_rgb_server()
     return *this;
 }
 
-/**
+/*
  * @brief Add an RGB (HSL) Client element
  * @return Reference to the builder
  */
@@ -165,7 +165,7 @@ meshXCompositionBuilder &meshXCompositionBuilder::add_rgb_client()
     return *this;
 }
 
-/**
+/*
  * @brief Commit the composition (Triggers Baking)
  * @return Reference to the builder
  */
@@ -175,13 +175,13 @@ meshXCompositionBuilder &meshXCompositionBuilder::commit()
     return *this;
 }
 
-/**
+/*
  * @brief C-Wrapper Implementation
  */
 extern "C"
 {
 
-/**
+/*
  * @brief Restores the NVS context for all elements in the active composition.
  * @return MESHX_SUCCESS on success, or error code.
  */
@@ -209,7 +209,7 @@ meshx_err_t meshx_restore_all_element_ctx(void)
     return first_err;
 }
 
-/**
+/*
  * @brief Checks if a dynamic composition has been built.
  * @return true if elements have been added via the builder, false otherwise.
  */
@@ -218,7 +218,7 @@ bool meshx_builder_is_active(void)
     return meshXComposition::get_instance().has_elements();
 }
 
-/**
+/*
  * @brief Checks if TXCM should be enabled based on the composition.
  * @return true if any client elements were added, false otherwise.
  */
@@ -227,7 +227,7 @@ bool meshx_builder_is_txcm_active(void)
     return meshXComposition::get_instance().is_txcm_active();
 }
 
-/**
+/*
  * @brief Bakes the dynamic composition into the device structure.
  * @param pdev Pointer to the device structure.
  * @param cid Company ID.
@@ -255,7 +255,7 @@ meshx_err_t meshx_builder_bake(dev_struct_t *pdev, uint16_t cid, uint16_t pid, u
     return err;
 }
 
-/**
+/*
  * @brief Add elements to the composition using the builder.
  * This is a C-friendly wrapper that can be called from C code to add elements before baking.
  *
@@ -296,11 +296,11 @@ void meshx_builder_add_element(meshx_element_type_t type, uint16_t count)
     }
 }
 
-/**
+/*
  * @brief C-Friendly Builder functions
  */
 
-/**
+/*
  * @brief Resets and starts a new dynamic composition build session.
  */
 void meshx_builder_begin(void)
@@ -309,7 +309,7 @@ void meshx_builder_begin(void)
     builder.begin();
 }
 
-/**
+/*
  * @brief Clears all elements from the active composition builder session.
  */
 void meshx_builder_clear(void)
@@ -317,7 +317,7 @@ void meshx_builder_clear(void)
     meshXComposition::get_instance().clear_elements();
 }
 
-/**
+/*
  * @brief Commits the pending dynamic composition build session.
  */
 void meshx_builder_commit(void)
@@ -326,7 +326,7 @@ void meshx_builder_commit(void)
     builder.commit();
 }
 
-/**
+/*
  * @brief Saves the current dynamic composition schema to NVS.
  *
  * Iterates through active elements in the composition (skipping root at index 0)
@@ -368,7 +368,7 @@ meshx_err_t meshx_builder_save_to_nvs(bool override_ro)
     return meshx_nvs_comp_schema_set(&schema);
 }
 
-/**
+/*
  * @brief Get element composition data for all elements in the composition
  * This is used to sync the composition structure with the host during initialization.
  *
@@ -415,7 +415,7 @@ size_t meshx_get_element_composition_data(uint8_t *buf, size_t max_len)
     return offset;
 }
 
-/**
+/*
  * @brief Get element state data for all elements in the composition
  * This is used to sync the current state of the composition with the host during initialization.
  *
@@ -501,7 +501,7 @@ size_t meshx_get_element_state_data(uint8_t *buf, size_t max_len)
     return offset;
 }
 
-/**
+/*
  * @brief Get the number of elements in the active composition.
  * @return Total number of elements.
  */
@@ -511,7 +511,7 @@ uint8_t meshx_comp_get_element_count(void)
     return (uint8_t)comp.get_elements().size();
 }
 
-/**
+/*
  * @brief Get the variant of a specific element in the active composition.
  * @param element_idx Index of the element.
  * @return Element variant, or 0 if invalid.
@@ -527,7 +527,7 @@ uint16_t meshx_comp_get_element_variant(uint8_t element_idx)
     return 0;
 }
 
-/**
+/*
  * @brief Get the list of functional IDs supported by an element.
  * @param element_idx Index of the element.
  * @param out_func_ids Destination buffer to receive function IDs.
@@ -559,7 +559,7 @@ uint8_t meshx_comp_get_element_func_ids(uint8_t element_idx, uint16_t *out_func_
     return count;
 }
 
-/**
+/*
  * @brief Check if a specific element contains a logical model with the given func_id.
  * @param element_idx Index of the element.
  * @param func_id Functional ID to query.
@@ -586,7 +586,7 @@ bool meshx_comp_element_has_func_id(uint8_t element_idx, uint16_t func_id)
     return false;
 }
 
-/**
+/*
  * @brief Set the publication address of an element.
  */
 meshx_err_t meshx_comp_set_element_pub_addr(uint8_t element_idx, uint16_t pub_addr)
@@ -608,7 +608,7 @@ meshx_err_t meshx_comp_set_element_pub_addr(uint8_t element_idx, uint16_t pub_ad
                                         el->get_element_ctx(), el->get_element_ctx_size());
 }
 
-/**
+/*
  * @brief Get the publication address of an element.
  */
 uint16_t meshx_comp_get_element_pub_addr(uint8_t element_idx)
@@ -628,7 +628,7 @@ uint16_t meshx_comp_get_element_pub_addr(uint8_t element_idx)
     return ctx->pub_addr;
 }
 
-/**
+/*
  * @brief Add a group subscription address to an element's models.
  */
 meshx_err_t meshx_comp_add_element_sub_addr(uint8_t element_idx, uint16_t sub_addr)
@@ -655,7 +655,7 @@ meshx_err_t meshx_comp_add_element_sub_addr(uint8_t element_idx, uint16_t sub_ad
     return err;
 }
 
-/**
+/*
  * @brief Delete a group subscription address from an element's models.
  */
 meshx_err_t meshx_comp_del_element_sub_addr(uint8_t element_idx, uint16_t sub_addr)
@@ -682,7 +682,7 @@ meshx_err_t meshx_comp_del_element_sub_addr(uint8_t element_idx, uint16_t sub_ad
     return err;
 }
 
-/**
+/*
  * @brief Send a UVP message from an element.
  */
 meshx_err_t meshx_comp_send_uvp(uint8_t element_idx,

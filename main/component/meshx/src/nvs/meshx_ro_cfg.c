@@ -19,7 +19,7 @@
 #define MODULE_ID_RO_CFG MODULE_ID_COMMON
 
 #pragma pack(push, 1)
-/**
+/*
  * @brief Binary configuration container header stored at offset 0 of meshx_cfg partition.
  *
  * Layout (15 bytes total):
@@ -32,12 +32,12 @@
  */
 typedef struct
 {
-    uint32_t magic;       /**< Magic bytes: 'MXC\0' (0x0043584D) */
-    uint8_t version;      /**< Container structure version (0x01) */
-    uint32_t schema_id;   /**< Fingerprint of .proto + .options (Schema ID) */
-    uint16_t total_len;   /**< Total container length in bytes (15 + payload_len) */
-    uint16_t header_crc;  /**< CRC-16-CCITT checksum over first 11 header bytes */
-    uint16_t payload_crc; /**< CRC-16-CCITT checksum over the Protobuf payload */
+    uint32_t magic;       /*< Magic bytes: 'MXC\0' (0x0043584D) */
+    uint8_t version;      /*< Container structure version (0x01) */
+    uint32_t schema_id;   /*< Fingerprint of .proto + .options (Schema ID) */
+    uint16_t total_len;   /*< Total container length in bytes (15 + payload_len) */
+    uint16_t header_crc;  /*< CRC-16-CCITT checksum over first 11 header bytes */
+    uint16_t payload_crc; /*< CRC-16-CCITT checksum over the Protobuf payload */
 } meshx_cfg_header_t;
 #pragma pack(pop)
 
@@ -54,7 +54,7 @@ static_assert(offsetof(ProductInfo, pid) == 2,
               "CID/PID alignment mismatch! Expected PID at offset 2.");
 #endif
 
-/**
+/*
  * @brief Calculate standard CRC-16-CCITT checksum.
  *
  * Uses polynomial 0x1021 with initial seed 0xFFFF without post-inversion.
@@ -84,7 +84,7 @@ static uint16_t calc_crc16_ccitt(const uint8_t *data, size_t len)
     return crc;
 }
 
-/**
+/*
  * @brief Nanopb repeated field decoding callback for element compositions.
  *
  * Decodes each ElementConfig message from the protobuf stream and registers the
@@ -106,7 +106,7 @@ static bool elements_decode_cb(pb_istream_t *stream, const pb_field_iter_t *fiel
     return true;
 }
 
-/**
+/*
  * @brief Nanopb repeated field decoding callback for GPIO pin configuration.
  *
  * Decodes GpioConfig entries from the serialized configuration.
@@ -127,7 +127,7 @@ static bool gpio_decode_cb(pb_istream_t *stream, const pb_field_iter_t *field, v
     return true;
 }
 
-/**
+/*
  * @brief Nanopb repeated field decoding callback for IO bindings.
  *
  * Decodes IoBinding entries from the serialized configuration.
@@ -148,7 +148,7 @@ static bool bindings_decode_cb(pb_istream_t *stream, const pb_field_iter_t *fiel
     return true;
 }
 
-/**
+/*
  * @brief Initialize and load read-only configuration from the dedicated flash partition.
  *
  * Locates the `meshx_cfg` partition, validates the header magic ('MXC\0'), version,

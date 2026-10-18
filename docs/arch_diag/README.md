@@ -26,7 +26,7 @@ This document is organized as a multi-page Technical Reference. Each page covers
 | 7 | [Hardware Abstraction Layer (HAL)](./trm/07_hal.md) | GPIO/PWM abstraction, hosted mode, IO class hierarchy |
 | 8 | [Protocol Design — TLV Engine](./trm/08_tlv_protocol.md) | Frame format, tag namespace, TID mechanism, examples |
 | 9 | [Composition & Element Discovery](./trm/09_composition.md) | Builder API, product profiles, EL_TYPE_ID discovery |
-| 10 | [Hosted Mode & MXSP Serial Protocol](./trm/10_hosted_mode.md) | Co-processor mode, MXSP frame format, MSG_TYPEs |
+| 10 | [Hosted Mode & MXSP Serial Protocol](./trm/10_mxcp_protocol.md) | Co-processor mode, MXSP frame format, MSG_TYPEs |
 | 11 | [Read-Only Persistent Configuration](./trm/11_ro_config.md) | meshx_cfg partition, Nanopb layout, fallback flow |
 | 12 | [Hardware Platform Reference](./trm/12_hardware_platform.md) | ESP32-C3 specs, BSPs, memory budget, partition map |
 | 13 | [Decommissioning & Flash Reclamation](./trm/13_decommissioning.md) | SIG models removed, template elimination analysis |

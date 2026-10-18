@@ -11,7 +11,15 @@
 #ifndef __MESHX_CONFIG_INTERNAL_H__
 #define __MESHX_CONFIG_INTERNAL_H__
 
-#include "meshx_config.h"
+#ifndef DOXYGEN
+#if defined(__has_include)
+  #if __has_include("meshx_config.h")
+    #include "meshx_config.h"
+  #endif
+#else
+  #include "meshx_config.h"
+#endif
+#endif
 /**
  * @brief Mandatory Fixed Configs
  */

@@ -17,12 +17,12 @@
 
 static struct{
 
-    meshx_app_data_cb_t app_data_cb;    /**< BLE Mesh application data callback */
-    meshx_app_ctrl_cb_t app_ctrl_cb;    /**< BLE Mesh application control callback */
-    meshx_app_api_msg_t msg_buff;       /**< BLE Mesh application message buffer */
+    meshx_app_data_cb_t app_data_cb;    /*< BLE Mesh application data callback */
+    meshx_app_ctrl_cb_t app_ctrl_cb;    /*< BLE Mesh application control callback */
+    meshx_app_api_msg_t msg_buff;       /*< BLE Mesh application message buffer */
 }meshx_api_ctrl;
 
-/**
+/*
  * @brief Control task handler for BLE Mesh application messages.
  *
  * This function handles BLE Mesh application messages.
@@ -54,7 +54,7 @@ static meshx_err_t meshx_api_control_task_handler(dev_struct_t *pdev, control_ta
     return err;
 }
 
-/**
+/*
  * @brief Prepares a message to be sent to the BLE Mesh application.
  *
  * This function prepares a message to be sent to the BLE Mesh application.
@@ -87,7 +87,7 @@ static meshx_err_t meshx_prepare_data_message(uint16_t element_id, uint16_t elem
     return MESHX_SUCCESS;
 }
 
-/**
+/*
  * @brief Prepares a control message to be sent to the BLE Mesh application.
  *
  * This function prepares a control message to be sent to the BLE Mesh application.
@@ -116,7 +116,7 @@ static meshx_err_t meshx_prepare_ctrl_message(meshx_ctrl_evt_t evt, uint16_t msg
     return MESHX_SUCCESS;
 }
 
-/**
+/*
  * @brief Send element data upwards to App and Host MCU (Data Path - REQ-001, REQ-002, REQ-003).
  *
  * This function handles upstream telemetry from an element instance:
@@ -165,7 +165,7 @@ meshx_err_t meshx_data_send_to_app(const meshx_data_msg_hdr_t *hdr, const void *
     return err;
 }
 
-/**
+/*
  * @brief Send element command downwards from App or Host MCU into the MeshX Element Engine.
  *
  * Enqueues a command destined for a local element via the control task
@@ -198,7 +198,7 @@ meshx_err_t meshx_data_send_to_element(const meshx_data_msg_hdr_t *hdr, const vo
     return err;
 }
 
-/**
+/*
  * @brief Dispatch a system control event to registered app callback and MXCP (Control Path).
  *
  * Sends lifecycle, provisioning, and pairing notifications through both:
@@ -256,7 +256,7 @@ meshx_err_t meshx_ctrl_send_event(meshx_ctrl_evt_t evt_id, uint16_t status, cons
     return err;
 }
 
-/**
+/*
  * @brief Registers the BLE Mesh application data path callback.
  *
  * Subscribes to CONTROL_TASK_MSG_CODE_TO_APP with CONTROL_TASK_MSG_EVT_DATA
@@ -282,7 +282,7 @@ meshx_err_t meshx_app_reg_data_callback(meshx_app_data_cb_t cb)
     return err;
 }
 
-/**
+/*
  * @brief Registers the BLE Mesh application control callback.
  *
  * Subscribes to CONTROL_TASK_MSG_CODE_TO_APP with CONTROL_TASK_MSG_EVT_CTRL
@@ -312,7 +312,7 @@ meshx_err_t meshx_app_reg_ctrl_callback(meshx_app_ctrl_cb_t cb)
  * Legacy API Implementations (Delegated to Unified APIs)
  * ==================================================================== */
 
-/**
+/*
  * @brief Sends an element data message to the BLE Mesh application (legacy wrapper).
  *
  * @deprecated Use meshx_data_send_to_app() instead.
@@ -335,7 +335,7 @@ meshx_err_t meshx_send_msg_to_app(uint16_t element_id, uint16_t element_type, ui
     return meshx_data_send_to_app(&hdr, msg);
 }
 
-/**
+/*
  * @brief Sends a system control message to the BLE Mesh application (legacy wrapper).
  *
  * @deprecated Use meshx_ctrl_send_event() instead.
@@ -351,7 +351,7 @@ meshx_err_t meshx_send_ctrl_msg_to_app(meshx_ctrl_evt_t evt, uint16_t msg_len, c
     return meshx_ctrl_send_event(evt, 0, msg, msg_len);
 }
 
-/**
+/*
  * @brief Sends a command downwards to a targeted element (legacy wrapper).
  *
  * @deprecated Use meshx_data_send_to_element() instead.
@@ -374,7 +374,7 @@ meshx_err_t meshx_send_msg_to_element(uint16_t element_id, uint16_t element_type
     return meshx_data_send_to_element(&hdr, msg);
 }
 
-/**
+/*
  * @brief Registers the BLE Mesh element callback (legacy wrapper).
  *
  * @deprecated Use meshx_app_reg_data_callback() instead.
@@ -388,7 +388,7 @@ meshx_err_t meshx_app_reg_element_callback(meshx_app_data_cb_t cb)
     return meshx_app_reg_data_callback(cb);
 }
 
-/**
+/*
  * @brief Registers the BLE Mesh system events callback (legacy wrapper).
  *
  * @deprecated Use meshx_app_reg_ctrl_callback() instead.
