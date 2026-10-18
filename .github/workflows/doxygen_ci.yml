@@ -28,11 +28,17 @@ jobs:
     - name: Update submodule (only doxygen-awesome-css)
       run: git submodule update --init docs/doxygen-awesome-css
 
+    - name: Install Graphviz
+      run: sudo apt-get update && sudo apt-get install -y graphviz
+
+    - name: Install Latest Doxygen (Official Binary)
+      run: |
+        DOXYGEN_VER="1.14.0"
+        curl -sSL "https://github.com/doxygen/doxygen/releases/download/Release_${DOXYGEN_VER//./_}/doxygen-${DOXYGEN_VER}.linux.bin.tar.gz" | sudo tar -xz --strip-components=1 -C /usr/local
+        doxygen --version
+
     - name: Generate Doxygen Docs
-      uses: mattnotmitt/doxygen-action@v1.12.0
-      with:
-        doxyfile-path: ".vscode/.doxygen/meshx.doxyconfig.ini"
-        working-directory: "."
+      run: doxygen .vscode/.doxygen/meshx.doxyconfig.ini
 
     - name: Verify index.html exists
       run: test -f ./docs/doxygen/html/index.html
