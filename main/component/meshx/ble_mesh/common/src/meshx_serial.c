@@ -51,6 +51,20 @@ extern void meshx_platform_set_mxsp_use_console(bool enable);
  */
 void meshx_serial_parse_byte(uint8_t data)
 {
+    unsigned int now_ms = 0;
+    meshx_rtos_get_sys_time(&now_ms);
+
+    if (mxsp_ctx.state != STATE_SOF)
+    {
+        if ((now_ms - mxsp_ctx.last_rx_time_ms) > 50)
+        {
+            /* 50 ms inter-byte framing timeout expired: reset parser state machine back to SOF */
+            mxsp_ctx.state = STATE_SOF;
+            mxsp_ctx.rx_ptr = 0;
+        }
+    }
+    mxsp_ctx.last_rx_time_ms = now_ms;
+
     switch (mxsp_ctx.state)
     {
     case STATE_SOF:

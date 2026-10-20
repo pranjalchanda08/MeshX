@@ -33,6 +33,7 @@ extern "C" {
 #define CONFIG_MAX_ELEMENT_COUNT 16
 #endif
 
+#define MESHX_NVS_KEY_KR_EPOCH        "kr_epoch"
 #define MESHX_NVS_KEY_COMP_SCHEMA     "comp_schema"
 #define MESHX_NVS_COMP_MAGIC          0x4D584350  /* 'MXCP' */
 #define MESHX_NVS_COMP_VERSION        0x01
@@ -273,6 +274,21 @@ meshx_err_t meshx_nvs_link_table_get(meshx_nvs_link_table_t *table);
  * @return MESHX_SUCCESS on success, or error code.
  */
 meshx_err_t meshx_nvs_link_table_erase(void);
+
+/**
+ * @brief Get the current Key Rotation epoch counter from NVS.
+ *
+ * @return Current KR epoch (defaults to 0 if uninitialized).
+ */
+uint32_t meshx_nvs_get_kr_epoch(void);
+
+/**
+ * @brief Set and commit the Key Rotation epoch counter to NVS.
+ *
+ * @param[in] epoch Monotonically increasing KR epoch.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_nvs_set_kr_epoch(uint32_t epoch);
 
 /**
  * @brief Get the current link epoch counter from NVS.
