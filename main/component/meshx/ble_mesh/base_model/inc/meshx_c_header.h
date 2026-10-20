@@ -23,6 +23,7 @@ extern "C" {
 #include <meshx_nvs.h>
 #include <meshx_platform_ble_mesh.h>
 #include <meshx_serial.h>
+#include <meshx_os_timer.h>
 #include <meshx_manifest.h>
 #include <meshx_element_lut.h>
 #include <meshx_compat_matrix.h>

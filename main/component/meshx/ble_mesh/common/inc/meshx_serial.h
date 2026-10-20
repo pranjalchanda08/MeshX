@@ -25,6 +25,7 @@ typedef struct {
     mxcp_frame_t rx_frame;
     uint8_t rx_ptr;
     bool hosted_mode_enabled;
+    uint32_t last_rx_time_ms;
 } mxsp_ctx_t;
 
 /**

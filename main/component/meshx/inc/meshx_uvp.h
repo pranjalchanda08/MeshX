@@ -78,6 +78,20 @@ typedef enum {
     MESHX_SYS_CMD_TOPOLOGY_UPGRADE           = 0x0C, /**< Upgrade 1:1 unicast link to group */
     MESHX_SYS_RSP_UPGRADE_ACK                = 0x0D, /**< Upgrade confirmation */
     MESHX_SYS_CMD_PAIR_ANNOUNCE              = 0x0E, /**< Autonomous pairing beacon announcement */
+
+    /* UVP Remote Provisioning (RPR) & Advanced Security Management (0xC0..0xC9) */
+    MESHX_UVP_OP_RPR_SCAN_REQ                = 0xC0, /**< Master -> Mesh: scan for unprov beacons */
+    MESHX_UVP_OP_RPR_BEACON_REPORT           = 0xC1, /**< Proxy -> Master: report unprov device beacon */
+    MESHX_UVP_OP_RPR_TUNNEL_DOWN             = 0xC2, /**< Master -> Proxy: downlink provisioning PDU to device */
+    MESHX_UVP_OP_RPR_TUNNEL_UP               = 0xC3, /**< Proxy -> Master: uplink device reply PDU */
+    MESHX_UVP_OP_KR_DISTRIBUTE               = 0xC4, /**< Master -> Mesh: KR Phase 1 distribute new key */
+    MESHX_UVP_OP_KR_SWITCHOVER               = 0xC5, /**< Master -> Mesh: KR Phase 2 TX switchover */
+    MESHX_UVP_OP_KR_REVOKE_OLD               = 0xC6, /**< Master -> Mesh: KR Phase 3 revoke old key */
+    MESHX_UVP_OP_REDUNDANCY_SYNC             = 0xC7, /**< Master <-> Standby: heartbeat & state replication */
+    MESHX_UVP_OP_FAST_PROV_BATCH_DESC        = 0xC8, /**< Master -> Proxy: fast prov batch delegation */
+    MESHX_UVP_OP_FAST_PROV_REPORT            = 0xC9, /**< Proxy -> Master: fast prov progress report */
+    MESHX_UVP_OP_KR_KEY_REQ                  = 0xCA, /**< Straggler -> Master: orphan unicast pull request */
+    MESHX_UVP_OP_KR_KEY_CONFIRM              = 0xCB, /**< Straggler -> Master: orphan key confirm */
 } meshx_sys_msg_type_t;
 
 /**

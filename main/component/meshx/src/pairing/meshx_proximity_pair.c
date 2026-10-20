@@ -114,10 +114,10 @@ meshx_err_t meshx_proximity_start(uint16_t window_sec)
     /* Broadcast initial announcement */
     broadcast_pair_announce();
 
-    /* Start 500ms periodic beacon timer */
+    /* Start periodic beacon timer */
     if (!s_beacon_timer)
     {
-        err = meshx_os_timer_create("prox_bcn", 500, true, on_beacon_timer_expired, &s_beacon_timer);
+        err = meshx_os_timer_create("prox_bcn", MESHX_PROXIMITY_BEACON_INTERVAL_MS, true, on_beacon_timer_expired, &s_beacon_timer);
         if (err == MESHX_SUCCESS)
         {
             meshx_os_timer_start(s_beacon_timer);

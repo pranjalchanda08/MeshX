@@ -121,3 +121,28 @@ uint16_t meshx_group_get_ref_count(uint16_t group_addr)
     }
     return count;
 }
+
+/*
+ * @brief Get the configured provisioner address pool range.
+ * @param[in]  role          Provisioner role
+ * @param[out] pool_start    Start of address pool
+ * @param[out] pool_end      End of address pool
+ *
+ * @return      MESHX_SUCCESS on success, or error code
+ */
+void meshx_prov_get_address_pool(meshx_prov_role_t role, uint16_t *pool_start, uint16_t *pool_end)
+{
+    if (pool_start == NULL || pool_end == NULL) return;
+
+    if (role == MESHX_PROV_ROLE_STANDBY)
+    {
+        *pool_start = MESHX_PROV_POOL_B_START;
+        *pool_end   = MESHX_PROV_POOL_B_END;
+    }
+    else
+    {
+        /* Master or Standalone defaults to Pool A */
+        *pool_start = MESHX_PROV_POOL_A_START;
+        *pool_end   = MESHX_PROV_POOL_A_END;
+    }
+}

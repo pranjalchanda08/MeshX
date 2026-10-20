@@ -29,6 +29,18 @@ extern "C" {
 #define MESHX_DYNAMIC_GROUP_END         MESHX_ADDR_GROUP_END
 #define MESHX_DYNAMIC_GROUP_MASK        MESHX_ADDR_GROUP_MASK
 
+/* Partitioned Provisioner Unicast Address Pools (TASK-PROV-005) */
+#define MESHX_PROV_POOL_A_START         0x0002
+#define MESHX_PROV_POOL_A_END           0x3FFF
+#define MESHX_PROV_POOL_B_START         0x4000
+#define MESHX_PROV_POOL_B_END           0x7FFF
+
+typedef enum {
+    MESHX_PROV_ROLE_STANDALONE = 0,     /**< Provisioner is standalone */
+    MESHX_PROV_ROLE_MASTER     = 1,     /**< Provisioner is master */
+    MESHX_PROV_ROLE_STANDBY    = 2,     /**< Provisioner is standby */
+} meshx_prov_role_t;
+
 /**
  * @brief Topology type determined by pairing roles and current link counts.
  */
@@ -103,6 +115,15 @@ uint16_t meshx_group_resolve_anchor_topology(uint16_t local_unicast,
  * @return Number of active links bound to this group address, or 0 if none.
  */
 uint16_t meshx_group_get_ref_count(uint16_t group_addr);
+
+/**
+ * @brief Get the configured provisioner address pool range.
+ *
+ * @param[in]  role       Provisioner role (Master or Standby).
+ * @param[out] pool_start Pointer to store start of pool.
+ * @param[out] pool_end   Pointer to store end of pool.
+ */
+void meshx_prov_get_address_pool(meshx_prov_role_t role, uint16_t *pool_start, uint16_t *pool_end);
 
 #ifdef __cplusplus
 }

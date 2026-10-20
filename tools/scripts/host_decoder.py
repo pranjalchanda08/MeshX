@@ -282,6 +282,47 @@ def main():
                             if len(buffer) < 3:
                                 break
 
+                            # Check for MXCP Frame: [SOF 0xFE][LEN][TYPE][PAYLOAD][CHK][EOF 0xEF]
+                            mxcp_idx = buffer.find(b'\xFE')
+                            if mxcp_idx != -1 and len(buffer) >= mxcp_idx + 4:
+                                mlen = buffer[mxcp_idx + 1]
+                                total_frame_len = 2 + 1 + mlen + 1 + 1 # SOF + LEN + TYPE + PAYLOAD + CHK + EOF
+                                if len(buffer) >= mxcp_idx + total_frame_len:
+                                    if buffer[mxcp_idx + total_frame_len - 1] == 0xEF:
+                                        mtype = buffer[mxcp_idx + 2]
+                                        mpayload = buffer[mxcp_idx + 3 : mxcp_idx + 3 + mlen]
+                                        evt_names = {
+                                            0x81: "MXCP_EVT_PROV_COMP",
+                                            0x82: "MXCP_EVT_PROV_FAILED",
+                                            0x83: "MXCP_EVT_HOSTED_MODE_RSP",
+                                            0x86: "MXCP_EVT_COMPOSITION_RSP",
+                                            0x87: "MXCP_EVT_ELEMENT_STATE_RSP",
+                                            0x88: "MXCP_EVT_NODE_RESET_IND",
+                                            0x89: "MXCP_EVT_HOSTED_MODE_RSP",
+                                            0x8A: "MXCP_EVT_CONSOLE_ROUTING_RSP",
+                                            0x8B: "MXCP_EVT_SET_COMPOSITION_RSP",
+                                            0x8C: "MXCP_EVT_PROV_STATE_IND",
+                                            0x8D: "MXCP_EVT_PROV_LINK_OPEN",
+                                            0x8E: "MXCP_EVT_PROV_LINK_CLOSE",
+                                            0x8F: "MXCP_EVT_PROV_AUTH_REQ",
+                                            0x90: "MXCP_EVT_EL_DATA_RX_NOTIFY",
+                                            0x91: "MXCP_EVT_EL_DATA_TX_NOTIFY",
+                                            0xF0: "MXCP_EVT_CAPABILITY_REPORT",
+                                            0xF1: "MXCP_EVT_BIND_STATUS",
+                                            0xF2: "MXCP_EVT_UNBIND_STATUS",
+                                            0xF3: "MXCP_EVT_LINK_TABLE_RSP",
+                                            0xF4: "MXCP_EVT_LINK_EPOCH_RSP",
+                                            0xB0: "MXCP_EVT_UVP_RPR_BEACON_IND",
+                                            0xB1: "MXCP_EVT_UVP_RPR_TUNNEL_RECV",
+                                            0xB2: "MXCP_EVT_UVP_KEY_ROTATION_PHASE",
+                                            0xB3: "MXCP_EVT_UVP_REDUNDANCY_STATUS",
+                                            0xB4: "MXCP_EVT_UVP_FAST_PROV_PROGRESS",
+                                        }
+                                        evt_str = evt_names.get(mtype, f"EVT_0x{mtype:02X}")
+                                        print(f"\r\x1b[K{COLORS['MAGENTA']}[MXCP EVT] {evt_str} (Type: 0x{mtype:02X}, Len: {mlen}){COLORS['RESET']}")
+                                        buffer = buffer[mxcp_idx + total_frame_len:]
+                                        continue
+
                             length = buffer[2]
                             packet_len = 3 + length
                             if len(buffer) >= packet_len:

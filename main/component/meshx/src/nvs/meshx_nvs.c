@@ -746,6 +746,33 @@ uint16_t meshx_nvs_get_link_epoch(void)
     return 0;
 }
 
+/**
+ * @brief Get the persistent Key Rotation epoch counter from NVS.
+ */
+uint32_t meshx_nvs_get_kr_epoch(void)
+{
+    uint32_t epoch = 0;
+    if (meshx_nvs_get(MESHX_NVS_KEY_KR_EPOCH, &epoch, sizeof(epoch)) == MESHX_SUCCESS) {
+        return epoch;
+    }
+    return 0;
+}
+
+/**
+ * @brief Commit the Key Rotation epoch counter to NVS.
+ * @param[in]   epoch   Epoch no to be written
+ *
+ * @return      MESHX_SUCCESS on success, or error code
+ */
+meshx_err_t meshx_nvs_set_kr_epoch(uint32_t epoch)
+{
+    meshx_err_t err = meshx_nvs_set(MESHX_NVS_KEY_KR_EPOCH, &epoch, sizeof(epoch), MESHX_NVS_AUTO_COMMIT);
+    if (err == MESHX_SUCCESS) {
+        meshx_nvs_commit();
+    }
+    return err;
+}
+
 #if CONFIG_ENABLE_UNIT_TEST
 
 /*

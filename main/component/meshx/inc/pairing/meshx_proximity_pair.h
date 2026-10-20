@@ -24,7 +24,9 @@
 extern "C" {
 #endif
 
+#ifndef MESHX_PROXIMITY_DEFAULT_WINDOW_SEC
 #define MESHX_PROXIMITY_DEFAULT_WINDOW_SEC  30      /**< Default 30s pairing window */
+#endif
 #define MESHX_PROXIMITY_RSSI_THRESHOLD      (-50)   /**< Minimum RSSI in dBm for 1-hop proximity */
 
 /**

@@ -74,6 +74,48 @@ static const prov_cb_evt_ctrl_task_evt_table_t prov_cb_evt_ctrl_task_evt_table[M
 };
 
 static meshx_os_timer_t *g_boot_timer;
+static meshx_os_timer_t *g_oob_watchdog_timer = NULL;
+
+/*
+ * @brief 30-second OOB Authentication Watchdog callback (Mitigation #1).
+ */
+static void meshx_oob_watchdog_timeout_cb(const meshx_os_timer_t *p_timer)
+{
+    MESHX_UNUSED(p_timer);
+    MESHX_LOGW(MODULE_ID_COMMON, "Prov Srv: 30s OOB Input Watchdog timed out! Aborting provisioning session.");
+
+    /* Disable node provisioning to free radio/stack */
+    esp_ble_mesh_prov_bearer_t bearers = (esp_ble_mesh_prov_bearer_t)(ESP_BLE_MESH_PROV_ADV | ESP_BLE_MESH_PROV_GATT);
+    esp_ble_mesh_node_prov_disable(bearers);
+
+    mxcp_evt_prov_failed_t fail_evt;
+    fail_evt.reason = 0x05; /* REASON_TIMEOUT */
+    mxcp_send_event(MXCP_EVT_PROV_FAILED, (const uint8_t *)&fail_evt, sizeof(fail_evt));
+
+    mxcp_evt_prov_state_ind_t ind;
+    memset(&ind, 0, sizeof(ind));
+    ind.unicast_addr = meshx_get_node_addr();
+    ind.net_idx      = meshx_get_net_key_id();
+    ind.state        = (ind.unicast_addr != MESHX_ADDR_UNASSIGNED) ? 3 : 0;
+    mxcp_send_event(MXCP_EVT_PROV_STATE_IND, (const uint8_t *)&ind, sizeof(ind));
+}
+
+static void meshx_arm_oob_watchdog(void)
+{
+    if (g_oob_watchdog_timer == NULL) {
+        meshx_os_timer_create("oob_wdog", MESHX_PROV_OOB_WATCHDOG_TIMEOUT_MS, false, meshx_oob_watchdog_timeout_cb, &g_oob_watchdog_timer);
+    }
+    if (g_oob_watchdog_timer != NULL) {
+        meshx_os_timer_start(g_oob_watchdog_timer);
+    }
+}
+
+static void meshx_disarm_oob_watchdog(void)
+{
+    if (g_oob_watchdog_timer != NULL) {
+        meshx_os_timer_stop(g_oob_watchdog_timer);
+    }
+}
 
 /*
  * @brief Control task handler for the provisioning server.
@@ -188,15 +230,48 @@ static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_t
     switch (evt)
     {
         case CONTROL_TASK_MSG_EVT_PROVISION_STOP:
+        {
+            meshx_disarm_oob_watchdog();
             pdev->meshx_store.net_key_id = param->node_prov_complete.net_idx;
             pdev->meshx_store.node_addr  = param->node_prov_complete.addr;
             meshx_nvs_set(MESHX_NVS_STORE, &pdev->meshx_store, sizeof(pdev->meshx_store), MESHX_NVS_AUTO_COMMIT);
             meshx_nvs_commit(); // Force immediate commit for critical provisioning parameters
+
+            /* Emit MXCP_EVT_PROV_COMP to Host MCU */
+            mxcp_evt_prov_comp_t comp_evt;
+            memset(&comp_evt, 0, sizeof(comp_evt));
+            comp_evt.net_idx = param->node_prov_complete.net_idx;
+            comp_evt.addr    = param->node_prov_complete.addr;
+            mxcp_send_event(MXCP_EVT_PROV_COMP, (const uint8_t *)&comp_evt, sizeof(comp_evt));
             break;
+        }
         case CONTROL_TASK_MSG_EVT_IDENTIFY_START:
-            MESHX_LOGI(MODULE_ID_COMMON, "Identify Start");
+        {
+            MESHX_LOGI(MODULE_ID_COMMON, "Identify Start / Link Open");
+            meshx_arm_oob_watchdog();
+
+            /* Emit MXCP_EVT_PROV_LINK_OPEN to Host MCU */
+            mxcp_evt_prov_link_open_t open_evt;
+            memset(&open_evt, 0, sizeof(open_evt));
+            open_evt.bearer = (param != NULL) ? param->node_prov_link_open.bearer : 0x01;
+            mxcp_send_event(MXCP_EVT_PROV_LINK_OPEN, (const uint8_t *)&open_evt, sizeof(open_evt));
             break;
+        }
+        case CONTROL_TASK_MSG_EVT_IDENTIFY_STOP:
+        {
+            MESHX_LOGI(MODULE_ID_COMMON, "Identify Stop / Link Close");
+            meshx_disarm_oob_watchdog();
+
+            /* Emit MXCP_EVT_PROV_LINK_CLOSE to Host MCU */
+            mxcp_evt_prov_link_close_t close_evt;
+            memset(&close_evt, 0, sizeof(close_evt));
+            close_evt.bearer = (param != NULL) ? param->node_prov_link_close.bearer : 0x01;
+            close_evt.reason = (param != NULL) ? param->node_prov_link_close.reason : 0x00;
+            mxcp_send_event(MXCP_EVT_PROV_LINK_CLOSE, (const uint8_t *)&close_evt, sizeof(close_evt));
+            break;
+        }
         case CONTROL_TASK_MSG_EVT_NODE_RESET:
+            meshx_disarm_oob_watchdog();
             MESHX_LOGW(MODULE_ID_COMMON, "Node Reset Event");
             meshx_handle_node_reset(pdev);
             break;
