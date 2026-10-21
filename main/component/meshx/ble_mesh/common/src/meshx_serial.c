@@ -20,8 +20,10 @@
 #include "interface/rtos/meshx_task.h"
 #include "interface/rtos/meshx_rtos_utils.h"
 #include "interface/logging/meshx_log.h"
+#if CONFIG_MESHX_ENABLE_GPIO_TEST_API
 #include "interface/gpio/meshx_gpio.h"
 #include "interface/gpio/meshx_gpio_types.h"
+#endif
 
 #define MESHX_UART_RX_TASK_STACK_SIZE 2048
 
@@ -110,7 +112,11 @@ void meshx_serial_parse_byte(uint8_t data)
             }
             if (calc == mxsp_ctx.rx_frame.checksum)
             {
-                mxcp_dispatch_frame(mxsp_ctx.rx_frame.type, mxsp_ctx.rx_frame.payload, mxsp_ctx.rx_frame.len);
+                meshx_err_t err = mxcp_dispatch_frame(mxsp_ctx.rx_frame.type, mxsp_ctx.rx_frame.payload, mxsp_ctx.rx_frame.len);
+                if (err != MESHX_SUCCESS)
+                {
+                    MESHX_LOGW(MODULE_ID_COMMON, "MXCP frame dispatch failed: 0x%x", err);
+                }
             }
             else
             {
@@ -134,8 +140,10 @@ void meshx_serial_set_hosted_mode(bool enabled)
 {
     mxsp_ctx.hosted_mode_enabled = enabled;
 
+#if CONFIG_MESHX_ENABLE_GPIO_TEST_API
     meshx_gpio_hosted_mode_t gpio_mode = enabled ? MESHX_GPIO_MODE_HOSTED : MESHX_GPIO_MODE_NON_HOSTED;
     meshx_gpio_set_hosted_mode(gpio_mode);
+#endif
 }
 
 /*

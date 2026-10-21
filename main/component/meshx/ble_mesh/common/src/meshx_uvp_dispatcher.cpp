@@ -20,6 +20,7 @@
  */
 static std::map<uint16_t, uint8_t> g_tid_cache;
 
+#if CONFIG_ENABLE_UVP_PROVISIONER
 /*
  * Redundancy Watchdog (TASK-PROV-005)
  * Standby monitors Master heartbeats; promotes to Master if 3 heartbeats (15s) missed.
@@ -27,6 +28,7 @@ static std::map<uint16_t, uint8_t> g_tid_cache;
 static meshx_os_timer_t *s_redundancy_wd_timer = NULL;
 static uint8_t          s_redundancy_missed_beats = 0;
 static meshx_prov_role_t s_local_prov_role = MESHX_PROV_ROLE_STANDALONE;
+#endif /* CONFIG_ENABLE_UVP_PROVISIONER */
 
 /*
  * Orphan Key Recovery State (TASK-PROV-004)
@@ -53,6 +55,7 @@ static void uvp_orphan_pull_timer_cb(const meshx_os_timer_t *p_timer)
                s_kr_master_addr, (unsigned long)local_epoch);
 }
 
+#if CONFIG_ENABLE_UVP_PROVISIONER
 static void uvp_redundancy_wd_timer_cb(const meshx_os_timer_t *p_timer)
 {
     MESHX_UNUSED(p_timer);
@@ -74,6 +77,7 @@ static void uvp_redundancy_wd_timer_cb(const meshx_os_timer_t *p_timer)
         mxcp_send_event(MXCP_EVT_UVP_REDUNDANCY_STATUS, reinterpret_cast<const uint8_t *>(&evt), sizeof(evt));
     }
 }
+#endif /* CONFIG_ENABLE_UVP_PROVISIONER */
 
 /**
  * @brief Handler function signature for UVP system management messages.
@@ -489,6 +493,7 @@ static meshx_err_t uvp_handle_rpr_scan_req(const control_task_uvp_meta_t *p_meta
     return MESHX_SUCCESS;
 }
 
+#if CONFIG_ENABLE_UVP_PROVISIONER
 /**
  * @brief Handle Remote Provisioning beacon report (MESHX_UVP_OP_RPR_BEACON_REPORT).
  *
@@ -517,6 +522,7 @@ static meshx_err_t uvp_handle_rpr_beacon_report(const control_task_uvp_meta_t *p
     mxcp_send_event(MXCP_EVT_UVP_RPR_BEACON_IND, payload, static_cast<uint8_t>(payload_len));
     return MESHX_SUCCESS;
 }
+#endif /* CONFIG_ENABLE_UVP_PROVISIONER */
 
 /**
  * @brief Handle Remote Provisioning downlink tunnel PDU (MESHX_UVP_OP_RPR_TUNNEL_DOWN).
@@ -547,6 +553,7 @@ static meshx_err_t uvp_handle_rpr_tunnel_down(const control_task_uvp_meta_t *p_m
     return MESHX_SUCCESS;
 }
 
+#if CONFIG_ENABLE_UVP_PROVISIONER
 /**
  * @brief Handle Remote Provisioning uplink tunnel PDU (MESHX_UVP_OP_RPR_TUNNEL_UP).
  *
@@ -575,6 +582,7 @@ static meshx_err_t uvp_handle_rpr_tunnel_up(const control_task_uvp_meta_t *p_met
     mxcp_send_event(MXCP_EVT_UVP_RPR_TUNNEL_RECV, payload, static_cast<uint8_t>(payload_len));
     return MESHX_SUCCESS;
 }
+#endif /* CONFIG_ENABLE_UVP_PROVISIONER */
 
 /* =========================================================================
  * Individual Handlers for 5-Minute Key Rotation & Orphan Recovery (0xC4..0xC6, 0xCA, 0xCB)
@@ -698,6 +706,7 @@ static meshx_err_t uvp_handle_kr_revoke_old(const control_task_uvp_meta_t *p_met
     return MESHX_SUCCESS;
 }
 
+#if CONFIG_ENABLE_UVP_PROVISIONER
 /**
  * @brief Handle orphan node key pull request (MESHX_UVP_OP_KR_KEY_REQ).
  *
@@ -745,6 +754,7 @@ static meshx_err_t uvp_handle_kr_key_req(const control_task_uvp_meta_t *p_meta,
     }
     return MESHX_SUCCESS;
 }
+#endif /* CONFIG_ENABLE_UVP_PROVISIONER */
 
 /**
  * @brief Handle orphan node key recovery confirmation (MESHX_UVP_OP_KR_KEY_CONFIRM).
@@ -779,6 +789,7 @@ static meshx_err_t uvp_handle_kr_key_confirm(const control_task_uvp_meta_t *p_me
  * Individual Handlers for Redundancy & Fast Provisioning (0xC7..0xC9)
  * ========================================================================= */
 
+#if CONFIG_ENABLE_UVP_PROVISIONER
 /**
  * @brief Handle redundancy synchronization heartbeat (MESHX_UVP_OP_REDUNDANCY_SYNC).
  *
@@ -847,6 +858,7 @@ static meshx_err_t uvp_handle_redundancy_sync(const control_task_uvp_meta_t *p_m
                p_ctx->src_addr, (unsigned int)payload_len);
     return MESHX_SUCCESS;
 }
+#endif /* CONFIG_ENABLE_UVP_PROVISIONER */
 
 /**
  * @brief Handle fast provisioning batch descriptor (MESHX_UVP_OP_FAST_PROV_BATCH_DESC).
@@ -877,6 +889,7 @@ static meshx_err_t uvp_handle_fast_prov_batch_desc(const control_task_uvp_meta_t
     return MESHX_SUCCESS;
 }
 
+#if CONFIG_ENABLE_UVP_PROVISIONER
 /**
  * @brief Handle fast provisioning bulk progress report (MESHX_UVP_OP_FAST_PROV_REPORT).
  *
@@ -905,6 +918,7 @@ static meshx_err_t uvp_handle_fast_prov_report(const control_task_uvp_meta_t *p_
     mxcp_send_event(MXCP_EVT_UVP_FAST_PROV_PROGRESS, payload, static_cast<uint8_t>(payload_len));
     return MESHX_SUCCESS;
 }
+#endif /* CONFIG_ENABLE_UVP_PROVISIONER */
 
 /* =========================================================================
  * Static Registration Dispatch Tables
@@ -936,17 +950,27 @@ static const uvp_opcode_handler_entry_t s_uvp_pairing_mgmt_handlers[] =  {
     { MESHX_SYS_CMD_EPOCH_PING,          uvp_handle_epoch_ping_pairing   },
     { MESHX_SYS_CMD_PAIR_ANNOUNCE,       uvp_handle_pair_announce        },
     { MESHX_UVP_OP_RPR_SCAN_REQ,         uvp_handle_rpr_scan_req         },
+#if CONFIG_ENABLE_UVP_PROVISIONER
     { MESHX_UVP_OP_RPR_BEACON_REPORT,    uvp_handle_rpr_beacon_report    },
+#endif
     { MESHX_UVP_OP_RPR_TUNNEL_DOWN,      uvp_handle_rpr_tunnel_down      },
+#if CONFIG_ENABLE_UVP_PROVISIONER
     { MESHX_UVP_OP_RPR_TUNNEL_UP,        uvp_handle_rpr_tunnel_up        },
+#endif
     { MESHX_UVP_OP_KR_DISTRIBUTE,        uvp_handle_kr_distribute        },
     { MESHX_UVP_OP_KR_SWITCHOVER,        uvp_handle_kr_switchover        },
     { MESHX_UVP_OP_KR_REVOKE_OLD,        uvp_handle_kr_revoke_old        },
+#if CONFIG_ENABLE_UVP_PROVISIONER
     { MESHX_UVP_OP_KR_KEY_REQ,           uvp_handle_kr_key_req           },
+#endif
     { MESHX_UVP_OP_KR_KEY_CONFIRM,       uvp_handle_kr_key_confirm       },
+#if CONFIG_ENABLE_UVP_PROVISIONER
     { MESHX_UVP_OP_REDUNDANCY_SYNC,      uvp_handle_redundancy_sync      },
+#endif
     { MESHX_UVP_OP_FAST_PROV_BATCH_DESC, uvp_handle_fast_prov_batch_desc },
+#if CONFIG_ENABLE_UVP_PROVISIONER
     { MESHX_UVP_OP_FAST_PROV_REPORT,     uvp_handle_fast_prov_report     },
+#endif
 };
 
 /**

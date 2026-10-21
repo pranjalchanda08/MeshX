@@ -79,3 +79,120 @@ meshx_ptr_t meshx_plat_get_prov(void)
 {
     return (meshx_ptr_t)&g_meshx_prov;
 }
+
+/**
+ * @brief Enable provisioning bearers on the platform.
+ *
+ * Configures and enables the requested BLE Mesh provisioning bearers
+ * (PB-ADV and/or PB-GATT) using ESP-IDF.
+ *
+ * @param[in] bearers Bitmask of provisioning bearers (MESHX_PROV_ADV, MESHX_PROV_GATT).
+ *
+ * @return
+ *    - MESHX_SUCCESS: Provisioning bearers enabled successfully
+ *    - MESHX_FAIL: Failed to enable provisioning bearers
+ */
+meshx_err_t meshx_plat_prov_enable(meshx_prov_bearer_t bearers)
+{
+    esp_ble_mesh_prov_bearer_t esp_bearers = (esp_ble_mesh_prov_bearer_t)0;
+    if (bearers & MESHX_PROV_ADV)
+    {
+        esp_bearers = (esp_ble_mesh_prov_bearer_t)(esp_bearers | ESP_BLE_MESH_PROV_ADV);
+    }
+    if (bearers & MESHX_PROV_GATT)
+    {
+        esp_bearers = (esp_ble_mesh_prov_bearer_t)(esp_bearers | ESP_BLE_MESH_PROV_GATT);
+    }
+    esp_err_t err = esp_ble_mesh_node_prov_enable(esp_bearers);
+    return (err == ESP_OK) ? MESHX_SUCCESS : MESHX_FAIL;
+}
+
+/**
+ * @brief Disable provisioning bearers on the platform.
+ *
+ * Disables the active BLE Mesh provisioning bearers (PB-ADV and/or PB-GATT)
+ * using ESP-IDF.
+ *
+ * @param[in] bearers Bitmask of provisioning bearers (MESHX_PROV_ADV, MESHX_PROV_GATT).
+ *
+ * @return
+ *    - MESHX_SUCCESS: Provisioning bearers disabled successfully
+ *    - MESHX_FAIL: Failed to disable provisioning bearers
+ */
+meshx_err_t meshx_plat_prov_disable(meshx_prov_bearer_t bearers)
+{
+    esp_ble_mesh_prov_bearer_t esp_bearers = (esp_ble_mesh_prov_bearer_t)0;
+    if (bearers & MESHX_PROV_ADV)
+    {
+        esp_bearers = (esp_ble_mesh_prov_bearer_t)(esp_bearers | ESP_BLE_MESH_PROV_ADV);
+    }
+    if (bearers & MESHX_PROV_GATT)
+    {
+        esp_bearers = (esp_ble_mesh_prov_bearer_t)(esp_bearers | ESP_BLE_MESH_PROV_GATT);
+    }
+    esp_err_t err = esp_ble_mesh_node_prov_disable(esp_bearers);
+    return (err == ESP_OK) ? MESHX_SUCCESS : MESHX_FAIL;
+}
+
+/**
+ * @brief Set the unprovisioned device name on the platform.
+ *
+ * Configures the advertised unprovisioned device name using ESP-IDF.
+ *
+ * @param[in] name Null-terminated device name string.
+ *
+ * @return
+ *    - MESHX_SUCCESS: Device name configured successfully
+ *    - MESHX_INVALID_ARG: Name pointer is NULL
+ *    - MESHX_FAIL: Platform failed to configure device name
+ */
+meshx_err_t meshx_plat_prov_set_device_name(const char *name)
+{
+    if (name == NULL)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    esp_err_t err = esp_ble_mesh_set_unprovisioned_device_name(name);
+    return (err == ESP_OK) ? MESHX_SUCCESS : MESHX_FAIL;
+}
+
+/**
+ * @brief Provide numeric authentication input to the provisioning stack.
+ *
+ * Submits a numeric authentication value entered by the user to the
+ * ESP-IDF provisioning stack.
+ *
+ * @param[in] val Numeric authentication value.
+ *
+ * @return
+ *    - MESHX_SUCCESS: Input accepted by the provisioning stack
+ *    - MESHX_FAIL: Failed to submit input
+ */
+meshx_err_t meshx_plat_prov_input_number(uint32_t val)
+{
+    esp_err_t err = esp_ble_mesh_node_input_number(val);
+    return (err == ESP_OK) ? MESHX_SUCCESS : MESHX_FAIL;
+}
+
+/**
+ * @brief Provide alphanumeric string authentication input to the provisioning stack.
+ *
+ * Submits an alphanumeric authentication string entered by the user to the
+ * ESP-IDF provisioning stack.
+ *
+ * @param[in] str Null-terminated alphanumeric string.
+ *
+ * @return
+ *    - MESHX_SUCCESS: Input accepted by the provisioning stack
+ *    - MESHX_INVALID_ARG: String pointer is NULL
+ *    - MESHX_FAIL: Failed to submit input
+ */
+meshx_err_t meshx_plat_prov_input_string(const char *str)
+{
+    if (str == NULL)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    esp_err_t err = esp_ble_mesh_node_input_string((char *)str);
+    return (err == ESP_OK) ? MESHX_SUCCESS : MESHX_FAIL;
+}
