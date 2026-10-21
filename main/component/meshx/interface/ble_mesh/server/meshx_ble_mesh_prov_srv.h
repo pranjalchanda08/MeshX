@@ -910,6 +910,63 @@ meshx_ptr_t meshx_plat_get_prov(void);
  */
 bool meshx_prov_srv_is_provisioned(void);
 
+/**
+ * @brief Enable provisioning bearers on the platform.
+ *
+ * @param[in] bearers Bitmask of bearers (MESHX_PROV_ADV, MESHX_PROV_GATT).
+ *
+ * @return
+ *    - MESHX_SUCCESS: Provisioning bearers enabled successfully
+ *    - MESHX_FAIL: Failed to enable provisioning bearers
+ */
+meshx_err_t meshx_plat_prov_enable(meshx_prov_bearer_t bearers);
+
+/**
+ * @brief Disable provisioning bearers on the platform.
+ *
+ * @param[in] bearers Bitmask of bearers (MESHX_PROV_ADV, MESHX_PROV_GATT).
+ *
+ * @return
+ *    - MESHX_SUCCESS: Provisioning bearers disabled successfully
+ *    - MESHX_FAIL: Failed to disable provisioning bearers
+ */
+meshx_err_t meshx_plat_prov_disable(meshx_prov_bearer_t bearers);
+
+/**
+ * @brief Set the unprovisioned device name on the platform.
+ *
+ * @param[in] name Null-terminated device name string.
+ *
+ * @return
+ *    - MESHX_SUCCESS: Device name set successfully
+ *    - MESHX_INVALID_ARG: Name pointer is NULL
+ *    - MESHX_FAIL: Failed to set device name
+ */
+meshx_err_t meshx_plat_prov_set_device_name(const char *name);
+
+/**
+ * @brief Provide numeric authentication input to the provisioning stack.
+ *
+ * @param[in] val Numeric authentication value.
+ *
+ * @return
+ *    - MESHX_SUCCESS: Input submitted successfully
+ *    - MESHX_FAIL: Failed to submit input
+ */
+meshx_err_t meshx_plat_prov_input_number(uint32_t val);
+
+/**
+ * @brief Provide alphanumeric string authentication input to the provisioning stack.
+ *
+ * @param[in] str Null-terminated alphanumeric string.
+ *
+ * @return
+ *    - MESHX_SUCCESS: Input submitted successfully
+ *    - MESHX_INVALID_ARG: String pointer is NULL
+ *    - MESHX_FAIL: Failed to submit input
+ */
+meshx_err_t meshx_plat_prov_input_string(const char *str);
+
 #ifdef __cplusplus
 }
 #endif

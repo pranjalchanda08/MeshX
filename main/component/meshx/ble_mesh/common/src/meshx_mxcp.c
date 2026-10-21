@@ -20,17 +20,21 @@
 #include "pairing/meshx_group_allocator.h"
 #include "interface/meshx_platform.h"
 #include "pairing/meshx_unpair_mgr.h"
+#if CONFIG_MESHX_ENABLE_GPIO_TEST_API
 #include "interface/gpio/meshx_gpio.h"
-#include "interface/logging/meshx_log.h"
 #include "interface/gpio/meshx_gpio_types.h"
+#endif /* CONFIG_MESHX_ENABLE_GPIO_TEST_API */
+#include "interface/logging/meshx_log.h"
 #include "interface/rtos/meshx_rtos_utils.h"
 #include "pairing/meshx_pair_orchestrator.h"
+#include "interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h"
 
 /* UVP Management Virtual Address */
 #ifndef MESHX_MGMT_VIRTUAL_ADDR
 #define MESHX_MGMT_VIRTUAL_ADDR 0x8F42
 #endif
 
+#if CONFIG_ENABLE_UVP_PROVISIONER
 /*
  * Redundancy state tracking
  */
@@ -50,14 +54,17 @@ typedef struct {
     uint8_t  new_key[MXCP_NETKEY_SIZE];
     uint8_t  burst_count;
 } mxcp_kr_context_t;
+#endif /* CONFIG_ENABLE_UVP_PROVISIONER */
 
 extern void meshx_platform_reset(void);
 extern void meshx_platform_set_mxsp_use_console(bool enable);
 extern void meshx_platform_serial_write(const uint8_t *data, uint16_t len);
 
+#if CONFIG_ENABLE_UVP_PROVISIONER
 static mxcp_kr_context_t s_kr_ctx;
 static meshx_os_timer_t *s_kr_burst_timer = NULL;
 static meshx_os_timer_t *s_kr_overlap_timer = NULL;
+#endif /* CONFIG_ENABLE_UVP_PROVISIONER */
 
 /*
  * @brief Forward declarations for MXCP command handler functions.
@@ -67,40 +74,44 @@ static meshx_os_timer_t *s_kr_overlap_timer = NULL;
  *
  * @param payload  Pointer to payload bytes from the frame.
  * @param len      Payload length in bytes.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_el_send                (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_node_reset             (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_hosted_mode            (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_el_send                (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_node_reset             (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_hosted_mode            (const uint8_t *payload, uint8_t len);
 #if CONFIG_MESHX_ENABLE_GPIO_TEST_API
-static void mxcp_cmd_fn_gpio_toggle            (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_gpio_set_level         (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_gpio_get_level         (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_gpio_get_state         (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_gpio_get_config        (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_gpio_intr_enable       (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_gpio_set_pwm_duty      (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_gpio_set_pwm_freq      (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_gpio_intr_disable      (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_gpio_toggle            (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_gpio_set_level         (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_gpio_get_level         (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_gpio_get_state         (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_gpio_get_config        (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_gpio_intr_enable       (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_gpio_set_pwm_duty      (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_gpio_set_pwm_freq      (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_gpio_intr_disable      (const uint8_t *payload, uint8_t len);
 #endif /* CONFIG_MESHX_ENABLE_GPIO_TEST_API */
-static void mxcp_cmd_fn_get_element_state      (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_get_composition        (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_set_console_routing    (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_set_composition        (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_prov_enable            (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_prov_disable           (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_prov_get_state         (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_prov_set_name          (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_prov_auth_input        (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_uvp_rpr_scan_start     (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_uvp_rpr_tunnel_send    (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_uvp_key_rotate_trigger (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_uvp_redundancy_set_role(const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_uvp_fast_prov_start    (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_discover_capabilities  (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_bind_elements          (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_unbind_elements        (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_get_link_table         (const uint8_t *payload, uint8_t len);
-static void mxcp_cmd_fn_get_link_epoch         (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_get_element_state      (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_get_composition        (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_set_console_routing    (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_set_composition        (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_prov_enable            (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_prov_disable           (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_prov_get_state         (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_prov_set_name          (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_prov_auth_input        (const uint8_t *payload, uint8_t len);
+#if CONFIG_ENABLE_UVP_PROVISIONER
+static meshx_err_t mxcp_cmd_fn_uvp_rpr_scan_start     (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_uvp_rpr_tunnel_send    (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_uvp_key_rotate_trigger (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_uvp_redundancy_set_role(const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_uvp_fast_prov_start    (const uint8_t *payload, uint8_t len);
+#endif /* CONFIG_ENABLE_UVP_PROVISIONER */
+static meshx_err_t mxcp_cmd_fn_discover_capabilities  (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_bind_elements          (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_unbind_elements        (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_get_link_table         (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_get_link_epoch         (const uint8_t *payload, uint8_t len);
 
 /*
  * @brief Command dispatch table (Host -> Engine).
@@ -145,11 +156,13 @@ static const mxcp_cmd_entry_t mxcp_cmd_table[] = {
     MXCP_CMD_ENTRY(MXCP_CMD_UNBIND_ELEMENTS,        mxcp_cmd_fn_unbind_elements,        sizeof(mxcp_cmd_unbind_elements_t),       MXCP_EVT_UNBIND_STATUS,          MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_GET_LINK_TABLE,         mxcp_cmd_fn_get_link_table,         0,                                        MXCP_EVT_LINK_TABLE_RSP,         MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_GET_LINK_EPOCH,         mxcp_cmd_fn_get_link_epoch,         0,                                        MXCP_EVT_LINK_EPOCH_RSP,         MXCP_EVT_NONE),
+#if CONFIG_ENABLE_UVP_PROVISIONER
     MXCP_CMD_ENTRY(MXCP_CMD_UVP_RPR_SCAN_START,     mxcp_cmd_fn_uvp_rpr_scan_start,     0,                                        MXCP_EVT_NONE,                   MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_UVP_RPR_TUNNEL_SEND,    mxcp_cmd_fn_uvp_rpr_tunnel_send,    0,                                        MXCP_EVT_NONE,                   MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_UVP_KEY_ROTATE_TRIGGER, mxcp_cmd_fn_uvp_key_rotate_trigger, 0,                                        MXCP_EVT_UVP_KEY_ROTATION_PHASE, MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_UVP_REDUNDANCY_SET_ROLE,mxcp_cmd_fn_uvp_redundancy_set_role,0,                                        MXCP_EVT_UVP_REDUNDANCY_STATUS,  MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_UVP_FAST_PROV_START,    mxcp_cmd_fn_uvp_fast_prov_start,    0,                                        MXCP_EVT_UVP_FAST_PROV_PROGRESS, MXCP_EVT_NONE),
+#endif /* CONFIG_ENABLE_UVP_PROVISIONER */
 };
 
 #define MXCP_CMD_TABLE_SIZE (sizeof(mxcp_cmd_table) / sizeof(mxcp_cmd_table[0]))
@@ -178,7 +191,7 @@ static uint8_t mxcp_calculate_checksum(uint8_t len, uint8_t type, const uint8_t 
     return checksum;
 }
 
-/*
+/**
  * @brief Dispatch a received frame to the matching command handler.
  *
  * Performs a linear scan of mxcp_cmd_table for the given command ID.
@@ -187,8 +200,10 @@ static uint8_t mxcp_calculate_checksum(uint8_t len, uint8_t type, const uint8_t 
  * @param[in] type    TYPE byte (direction + ID).
  * @param[in] payload Payload bytes.
  * @param[in] len     Payload length in bytes.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-void mxcp_dispatch_frame(uint8_t type, const uint8_t *payload, uint8_t len)
+meshx_err_t mxcp_dispatch_frame(uint8_t type, const uint8_t *payload, uint8_t len)
 {
     uint8_t cmd_id = 0;
     size_t i = 0;
@@ -196,13 +211,13 @@ void mxcp_dispatch_frame(uint8_t type, const uint8_t *payload, uint8_t len)
     if (len > 0 && payload == NULL)
     {
         MESHX_LOGE(MODULE_ID_COMMON, "MXCP: payload NULL with non-zero length %u", len);
-        return;
+        return MESHX_INVALID_ARG;
     }
 
     if (MXCP_TYPE_IS_EVT(type))
     {
         MESHX_LOGW(MODULE_ID_COMMON, "MXCP: received unexpected EVT frame 0x%02x", type);
-        return;
+        return MESHX_INVALID_ARG;
     }
 
     cmd_id = MXCP_TYPE_ID(type);
@@ -213,13 +228,14 @@ void mxcp_dispatch_frame(uint8_t type, const uint8_t *payload, uint8_t len)
         {
             if (mxcp_cmd_table[i].handler != NULL)
             {
-                mxcp_cmd_table[i].handler(payload, len);
+                return mxcp_cmd_table[i].handler(payload, len);
             }
-            return;
+            return MESHX_SUCCESS;
         }
     }
 
     MESHX_LOGW(MODULE_ID_COMMON, "MXCP: unhandled CMD 0x%02x", cmd_id);
+    return MESHX_NOT_FOUND;
 }
 
 /*
@@ -236,7 +252,7 @@ void mxcp_dispatch_frame(uint8_t type, const uint8_t *payload, uint8_t len)
  */
 meshx_err_t mxcp_send_frame(uint8_t type, const uint8_t *payload, uint8_t len)
 {
-    uint8_t frame_buff[3 + MXCP_PAYLOAD_MAX_SIZE + 2];
+    uint8_t frame_buff[MXCP_FRAME_MAX_SIZE];
     uint8_t ptr = 0;
 
     if (!mxsp_ctx.hosted_mode_enabled)
@@ -320,19 +336,20 @@ void mxcp_send_element_info_response(mxcp_evt_id_t evt_id)
  * @param[in] payload Pointer to mxcp_cmd_hosted_mode_enable_t (enable != 0 to activate).
  * @param[in] len     Must be >= sizeof(mxcp_cmd_hosted_mode_enable_t).
  */
-static void mxcp_cmd_fn_hosted_mode(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_hosted_mode(const uint8_t *payload, uint8_t len)
 {
     mxcp_cmd_hosted_mode_enable_t cmd;
     bool enabled = false;
 
     if (payload == NULL || len < sizeof(mxcp_cmd_hosted_mode_enable_t))
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     memcpy(&cmd, payload, sizeof(cmd));
     enabled = (cmd.enable != 0);
     meshx_serial_set_hosted_mode(enabled);
     MESHX_LOGI(MODULE_ID_COMMON, "Hosted mode %s via MXCP", enabled ? "enabled" : "disabled");
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -342,13 +359,16 @@ static void mxcp_cmd_fn_hosted_mode(const uint8_t *payload, uint8_t len)
  *
  * @param[in] payload Unused.
  * @param[in] len     Unused.
+ *
+ * @return MESHX_SUCCESS on success.
  */
-static void mxcp_cmd_fn_node_reset(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_node_reset(const uint8_t *payload, uint8_t len)
 {
     (void)payload;
     (void)len;
     meshx_nvs_comp_schema_erase();
     meshx_platform_reset();
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -371,8 +391,10 @@ static void mxcp_reboot_timer_cb(const meshx_os_timer_t *timer)
  *
  * @param[in] payload Pointer to mxcp_cmd_set_composition_t followed by element_types array.
  * @param[in] len     Total length of the payload in bytes.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t len)
 {
     uint8_t i                 = 0;
     uint16_t delay_ms         = 0;
@@ -396,7 +418,7 @@ static void mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t len)
     {
         rsp.status = MXCP_COMP_STATUS_ERR_INVALID_TYPE;
         mxcp_send_event(MXCP_EVT_SET_COMPOSITION_RSP, (const uint8_t *)&rsp, sizeof(rsp));
-        return;
+        return MESHX_INVALID_ARG;
     }
 
     cmd = (const mxcp_cmd_set_composition_t *)payload;
@@ -404,7 +426,7 @@ static void mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t len)
     {
         rsp.status = MXCP_COMP_STATUS_ERR_INVALID_TYPE;
         mxcp_send_event(MXCP_EVT_SET_COMPOSITION_RSP, (const uint8_t *)&rsp, sizeof(rsp));
-        return;
+        return MESHX_INVALID_ARG;
     }
 
     if (cmd->element_count == 0 || cmd->element_count > CONFIG_MAX_ELEMENT_COUNT)
@@ -412,7 +434,7 @@ static void mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t len)
         rsp.status = MXCP_COMP_STATUS_ERR_COUNT_EXCEEDED;
         rsp.element_count = cmd->element_count;
         mxcp_send_event(MXCP_EVT_SET_COMPOSITION_RSP, (const uint8_t *)&rsp, sizeof(rsp));
-        return;
+        return MESHX_INVALID_ARG;
     }
 
     expected_len = sizeof(mxcp_cmd_set_composition_t) + (cmd->element_count * sizeof(uint16_t));
@@ -420,7 +442,7 @@ static void mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t len)
     {
         rsp.status = MXCP_COMP_STATUS_ERR_INVALID_TYPE;
         mxcp_send_event(MXCP_EVT_SET_COMPOSITION_RSP, (const uint8_t *)&rsp, sizeof(rsp));
-        return;
+        return MESHX_INVALID_ARG;
     }
 
     /* Validate element types */
@@ -430,7 +452,7 @@ static void mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t len)
         {
             rsp.status = MXCP_COMP_STATUS_ERR_INVALID_TYPE;
             mxcp_send_event(MXCP_EVT_SET_COMPOSITION_RSP, (const uint8_t *)&rsp, sizeof(rsp));
-            return;
+            return MESHX_INVALID_ARG;
         }
     }
 
@@ -450,7 +472,7 @@ static void mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t len)
     {
         rsp.status = MXCP_COMP_STATUS_ERR_NVS_WRITE;
         mxcp_send_event(MXCP_EVT_SET_COMPOSITION_RSP, (const uint8_t *)&rsp, sizeof(rsp));
-        return;
+        return err;
     }
 
     /* Proactively unpair peers of mutated or removed elements */
@@ -520,6 +542,7 @@ static void mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t len)
     {
         meshx_platform_reset();
     }
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -530,23 +553,25 @@ static void mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t len)
  *
  * @param[in] payload Pointer to mxcp_cmd_discover_capabilities_t.
  * @param[in] len     Must be >= sizeof(mxcp_cmd_discover_capabilities_t).
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_discover_capabilities(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_discover_capabilities(const uint8_t *payload, uint8_t len)
 {
     if (payload == NULL || len < sizeof(mxcp_cmd_discover_capabilities_t))
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     const mxcp_cmd_discover_capabilities_t *cmd = (const mxcp_cmd_discover_capabilities_t *)payload;
     if (cmd->target_unicast == MESHX_ADDR_UNASSIGNED)
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     meshx_uvp_discovery_query_t query;
     memset(&query, 0, sizeof(query));
     query.filter_role = cmd->filter_role;
     query.msg_type = MESHX_SYS_CMD_DISCOVERY_QUERY;
-    meshx_comp_send_uvp(0, cmd->target_unicast, MESHX_FUNC_ID_SYS_DISCOVERY, &query, sizeof(query), false);
+    return meshx_comp_send_uvp(0, cmd->target_unicast, MESHX_FUNC_ID_SYS_DISCOVERY, &query, sizeof(query), false);
 }
 
 /**
@@ -557,8 +582,10 @@ static void mxcp_cmd_fn_discover_capabilities(const uint8_t *payload, uint8_t le
  *
  * @param[in] payload Pointer to mxcp_cmd_bind_elements_t.
  * @param[in] len     Must be >= sizeof(mxcp_cmd_bind_elements_t).
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_bind_elements(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_bind_elements(const uint8_t *payload, uint8_t len)
 {
     mxcp_evt_bind_status_t evt;
     memset(&evt, 0, sizeof(evt));
@@ -567,7 +594,7 @@ static void mxcp_cmd_fn_bind_elements(const uint8_t *payload, uint8_t len)
     {
         evt.status = MESHX_SYS_STATUS_ERR_INCOMPATIBLE;
         mxcp_send_event(MXCP_EVT_BIND_STATUS, (const uint8_t *)&evt, sizeof(evt));
-        return;
+        return MESHX_INVALID_ARG;
     }
 
     const mxcp_cmd_bind_elements_t *cmd = (const mxcp_cmd_bind_elements_t *)payload;
@@ -575,7 +602,7 @@ static void mxcp_cmd_fn_bind_elements(const uint8_t *payload, uint8_t len)
     {
         evt.status = MESHX_SYS_STATUS_ERR_INCOMPATIBLE;
         mxcp_send_event(MXCP_EVT_BIND_STATUS, (const uint8_t *)&evt, sizeof(evt));
-        return;
+        return MESHX_INVALID_ARG;
     }
 
     meshx_err_t err = meshx_pair_initiate(cmd->src_elem, cmd->dst_addr, cmd->dst_elem, cmd->func_id);
@@ -596,6 +623,7 @@ static void mxcp_cmd_fn_bind_elements(const uint8_t *payload, uint8_t len)
         evt.status = MESHX_SYS_STATUS_ERR_INCOMPATIBLE;
     }
     mxcp_send_event(MXCP_EVT_BIND_STATUS, (const uint8_t *)&evt, sizeof(evt));
+    return err;
 }
 
 /**
@@ -606,8 +634,10 @@ static void mxcp_cmd_fn_bind_elements(const uint8_t *payload, uint8_t len)
  *
  * @param[in] payload Pointer to mxcp_cmd_unbind_elements_t.
  * @param[in] len     Must be >= sizeof(mxcp_cmd_unbind_elements_t).
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_unbind_elements(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_unbind_elements(const uint8_t *payload, uint8_t len)
 {
     mxcp_evt_unbind_status_t evt;
     memset(&evt, 0, sizeof(evt));
@@ -616,7 +646,7 @@ static void mxcp_cmd_fn_unbind_elements(const uint8_t *payload, uint8_t len)
     {
         evt.status = MESHX_SYS_STATUS_ERR_ELEMENT_MISSING;
         mxcp_send_event(MXCP_EVT_UNBIND_STATUS, (const uint8_t *)&evt, sizeof(evt));
-        return;
+        return MESHX_INVALID_ARG;
     }
 
     const mxcp_cmd_unbind_elements_t *cmd = (const mxcp_cmd_unbind_elements_t *)payload;
@@ -624,12 +654,13 @@ static void mxcp_cmd_fn_unbind_elements(const uint8_t *payload, uint8_t len)
     {
         evt.status = MESHX_SYS_STATUS_ERR_ELEMENT_MISSING;
         mxcp_send_event(MXCP_EVT_UNBIND_STATUS, (const uint8_t *)&evt, sizeof(evt));
-        return;
+        return MESHX_INVALID_ARG;
     }
 
     meshx_err_t err = meshx_unpair_element(cmd->src_elem, cmd->dst_addr, cmd->dst_elem, cmd->func_id);
     evt.status = (err == MESHX_SUCCESS) ? MESHX_SYS_STATUS_SUCCESS : MESHX_SYS_STATUS_ERR_ELEMENT_MISSING;
     mxcp_send_event(MXCP_EVT_UNBIND_STATUS, (const uint8_t *)&evt, sizeof(evt));
+    return err;
 }
 
 /**
@@ -639,16 +670,20 @@ static void mxcp_cmd_fn_unbind_elements(const uint8_t *payload, uint8_t len)
  *
  * @param[in] payload Unused.
  * @param[in] len     Unused.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_get_link_table(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_get_link_table(const uint8_t *payload, uint8_t len)
 {
     MESHX_UNUSED(payload);
     MESHX_UNUSED(len);
     meshx_nvs_link_table_t table;
-    if (meshx_nvs_link_table_get(&table) == MESHX_SUCCESS)
+    meshx_err_t err = meshx_nvs_link_table_get(&table);
+    if (err == MESHX_SUCCESS)
     {
         mxcp_send_event(MXCP_EVT_LINK_TABLE_RSP, (const uint8_t *)&table, sizeof(table));
     }
+    return err;
 }
 
 /**
@@ -658,15 +693,17 @@ static void mxcp_cmd_fn_get_link_table(const uint8_t *payload, uint8_t len)
  *
  * @param[in] payload Unused.
  * @param[in] len     Unused.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_get_link_epoch(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_get_link_epoch(const uint8_t *payload, uint8_t len)
 {
     MESHX_UNUSED(payload);
     MESHX_UNUSED(len);
     mxcp_evt_link_epoch_rsp_t rsp;
     rsp.link_epoch = meshx_nvs_get_link_epoch();
     rsp.node_addr  = meshx_get_node_addr();
-    mxcp_send_event(MXCP_EVT_LINK_EPOCH_RSP, (const uint8_t *)&rsp, sizeof(rsp));
+    return mxcp_send_event(MXCP_EVT_LINK_EPOCH_RSP, (const uint8_t *)&rsp, sizeof(rsp));
 }
 
 /**
@@ -677,8 +714,10 @@ static void mxcp_cmd_fn_get_link_epoch(const uint8_t *payload, uint8_t len)
  *
  * @param[in] payload Pointer to mxcp_cmd_prov_enable_t (bearer_mask).
  * @param[in] len     Payload length in bytes.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_prov_enable(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_prov_enable(const uint8_t *payload, uint8_t len)
 {
     mxcp_evt_prov_state_ind_t ind;
     memset(&ind, 0, sizeof(ind));
@@ -691,7 +730,7 @@ static void mxcp_cmd_fn_prov_enable(const uint8_t *payload, uint8_t len)
         MESHX_LOGW(MODULE_ID_COMMON, "MXCP: Prov Enable rejected: Node already provisioned (addr=0x%04X)", ind.unicast_addr);
         ind.state = MXCP_PROV_STATE_PROVISIONED;
         mxcp_send_event(MXCP_EVT_PROV_STATE_IND, (const uint8_t *)&ind, sizeof(ind));
-        return;
+        return MESHX_INVALID_STATE;
     }
 
     uint8_t bearer_mask = MXCP_PROV_BEARER_PB_ADV; /* Default to PB-ADV */
@@ -701,21 +740,22 @@ static void mxcp_cmd_fn_prov_enable(const uint8_t *payload, uint8_t len)
         bearer_mask = cmd->bearer_mask;
     }
 
-    esp_ble_mesh_prov_bearer_t bearers = (esp_ble_mesh_prov_bearer_t)0;
-    if (bearer_mask & MXCP_PROV_BEARER_PB_ADV) bearers = (esp_ble_mesh_prov_bearer_t)(bearers | ESP_BLE_MESH_PROV_ADV);
-    if (bearer_mask & MXCP_PROV_BEARER_PB_GATT) bearers = (esp_ble_mesh_prov_bearer_t)(bearers | ESP_BLE_MESH_PROV_GATT);
+    meshx_prov_bearer_t bearers = (meshx_prov_bearer_t)0;
+    if (bearer_mask & MXCP_PROV_BEARER_PB_ADV) bearers = (meshx_prov_bearer_t)(bearers | MESHX_PROV_ADV);
+    if (bearer_mask & MXCP_PROV_BEARER_PB_GATT) bearers = (meshx_prov_bearer_t)(bearers | MESHX_PROV_GATT);
 
-    esp_err_t err = esp_ble_mesh_node_prov_enable(bearers);
-    if (err == ESP_OK)
+    meshx_err_t err = meshx_plat_prov_enable(bearers);
+    if (err == MESHX_SUCCESS)
     {
         ind.state = MXCP_PROV_STATE_BEACONING;
     }
     else
     {
-        MESHX_LOGE(MODULE_ID_COMMON, "MXCP: esp_ble_mesh_node_prov_enable failed (%d)", err);
+        MESHX_LOGE(MODULE_ID_COMMON, "MXCP: meshx_plat_prov_enable failed (%d)", err);
         ind.state = MXCP_PROV_STATE_UNPROVISIONED;
     }
     mxcp_send_event(MXCP_EVT_PROV_STATE_IND, (const uint8_t *)&ind, sizeof(ind));
+    return err;
 }
 
 /**
@@ -725,8 +765,10 @@ static void mxcp_cmd_fn_prov_enable(const uint8_t *payload, uint8_t len)
  *
  * @param[in] payload Unused.
  * @param[in] len     Unused.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_prov_disable(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_prov_disable(const uint8_t *payload, uint8_t len)
 {
     MESHX_UNUSED(payload);
     MESHX_UNUSED(len);
@@ -735,11 +777,12 @@ static void mxcp_cmd_fn_prov_disable(const uint8_t *payload, uint8_t len)
     ind.unicast_addr = meshx_get_node_addr();
     ind.net_idx      = meshx_get_net_key_id();
 
-    esp_ble_mesh_prov_bearer_t bearers = (esp_ble_mesh_prov_bearer_t)(ESP_BLE_MESH_PROV_ADV | ESP_BLE_MESH_PROV_GATT);
-    esp_ble_mesh_node_prov_disable(bearers);
+    meshx_prov_bearer_t bearers = (meshx_prov_bearer_t)(MESHX_PROV_ADV | MESHX_PROV_GATT);
+    meshx_err_t err = meshx_plat_prov_disable(bearers);
 
     ind.state = (ind.unicast_addr != MESHX_ADDR_UNASSIGNED) ? MXCP_PROV_STATE_PROVISIONED : MXCP_PROV_STATE_UNPROVISIONED;
     mxcp_send_event(MXCP_EVT_PROV_STATE_IND, (const uint8_t *)&ind, sizeof(ind));
+    return err;
 }
 
 /**
@@ -749,8 +792,10 @@ static void mxcp_cmd_fn_prov_disable(const uint8_t *payload, uint8_t len)
  *
  * @param[in] payload Unused.
  * @param[in] len     Unused.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_prov_get_state(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_prov_get_state(const uint8_t *payload, uint8_t len)
 {
     MESHX_UNUSED(payload);
     MESHX_UNUSED(len);
@@ -760,7 +805,7 @@ static void mxcp_cmd_fn_prov_get_state(const uint8_t *payload, uint8_t len)
     ind.net_idx      = meshx_get_net_key_id();
     ind.state        = (ind.unicast_addr != MESHX_ADDR_UNASSIGNED) ? MXCP_PROV_STATE_PROVISIONED : MXCP_PROV_STATE_UNPROVISIONED;
 
-    mxcp_send_event(MXCP_EVT_PROV_STATE_IND, (const uint8_t *)&ind, sizeof(ind));
+    return mxcp_send_event(MXCP_EVT_PROV_STATE_IND, (const uint8_t *)&ind, sizeof(ind));
 }
 
 /**
@@ -770,16 +815,18 @@ static void mxcp_cmd_fn_prov_get_state(const uint8_t *payload, uint8_t len)
  *
  * @param[in] payload Pointer to unprovisioned device name string (up to 32 bytes).
  * @param[in] len     Length of device name in bytes.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_prov_set_name(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_prov_set_name(const uint8_t *payload, uint8_t len)
 {
-    if (payload == NULL || len == 0) return;
-    char name_buf[33];
-    size_t copy_len = len < 32 ? len : 32;
+    if (payload == NULL || len == 0) return MESHX_INVALID_ARG;
+    char name_buf[MXCP_DEV_NAME_BUF_SIZE];
+    size_t copy_len = len < MXCP_DEV_NAME_MAX_LEN ? len : MXCP_DEV_NAME_MAX_LEN;
     memcpy(name_buf, payload, copy_len);
     name_buf[copy_len] = '\0';
 
-    esp_ble_mesh_set_unprovisioned_device_name(name_buf);
+    return meshx_plat_prov_set_device_name(name_buf);
 }
 
 /**
@@ -789,28 +836,38 @@ static void mxcp_cmd_fn_prov_set_name(const uint8_t *payload, uint8_t len)
  *
  * @param[in] payload Pointer to mxcp_cmd_prov_auth_input_t.
  * @param[in] len     Must be >= 2 bytes (auth_type and auth_len).
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_prov_auth_input(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_prov_auth_input(const uint8_t *payload, uint8_t len)
 {
-    if (payload == NULL || len < 2) return;
+    if (payload == NULL || len < MXCP_CMD_PROV_AUTH_INPUT_HDR_SIZE)
+        return MESHX_INVALID_ARG;
+    uint32_t val = 0;
+    char str_buf[MXCP_AUTH_STR_BUF_SIZE];
     const mxcp_cmd_prov_auth_input_t *cmd = (const mxcp_cmd_prov_auth_input_t *)payload;
-    if (cmd->auth_type == MXCP_PROV_AUTH_TYPE_NUMERIC) {
+    meshx_err_t err = MESHX_SUCCESS;
+    if (cmd->auth_type == MXCP_PROV_AUTH_TYPE_NUMERIC)
+    {
         /* Numeric input */
-        uint32_t val = 0;
-        if (cmd->auth_len >= 4) {
-            memcpy(&val, cmd->auth_data, 4);
+        if (cmd->auth_len >= sizeof(uint32_t))
+        {
+            memcpy(&val, cmd->auth_data, sizeof(uint32_t));
         }
-        esp_ble_mesh_node_input_number(val);
-    } else {
+        err = meshx_plat_prov_input_number(val);
+    }
+    else
+    {
         /* Alphanumeric string */
-        char str_buf[17];
-        size_t slen = cmd->auth_len < 16 ? cmd->auth_len : 16;
+        size_t slen = cmd->auth_len < MXCP_AUTH_DATA_MAX_SIZE ? cmd->auth_len : MXCP_AUTH_DATA_MAX_SIZE;
         memcpy(str_buf, cmd->auth_data, slen);
         str_buf[slen] = '\0';
-        esp_ble_mesh_node_input_string(str_buf);
+        err = meshx_plat_prov_input_string(str_buf);
     }
+    return err;
 }
 
+#if CONFIG_ENABLE_UVP_PROVISIONER
 /**
  * @brief Key Rotation burst retransmission timer callback.
  *
@@ -927,9 +984,9 @@ static void mxcp_redundancy_hb_timer_cb(const meshx_os_timer_t *p_timer)
  * @param[in] payload Pointer to mxcp_cmd_uvp_rpr_scan_t.
  * @param[in] len     Must be >= sizeof(mxcp_cmd_uvp_rpr_scan_t).
  */
-static void mxcp_cmd_fn_uvp_rpr_scan_start(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_uvp_rpr_scan_start(const uint8_t *payload, uint8_t len)
 {
-    if (payload == NULL || len < sizeof(mxcp_cmd_uvp_rpr_scan_t)) return;
+    if (payload == NULL || len < sizeof(mxcp_cmd_uvp_rpr_scan_t)) return MESHX_INVALID_ARG;
     const mxcp_cmd_uvp_rpr_scan_t *cmd = (const mxcp_cmd_uvp_rpr_scan_t *)payload;
     MESHX_LOGI(MODULE_ID_COMMON, "MXCP: RPR Scan Start commanded for proxy 0x%04X (duration=%u s)",
                cmd->proxy_node_addr, cmd->duration_sec);
@@ -944,12 +1001,12 @@ static void mxcp_cmd_fn_uvp_rpr_scan_start(const uint8_t *payload, uint8_t len)
                    ? cmd->proxy_node_addr
                    : MESHX_MGMT_VIRTUAL_ADDR;
 
-    meshx_comp_send_uvp(0,
-                        dst,
-                        MESHX_FUNC_ID_SYS_PAIRING,
-                        req_buf,
-                        sizeof(req_buf),
-                        false);
+    return meshx_comp_send_uvp(0,
+                               dst,
+                               MESHX_FUNC_ID_SYS_PAIRING,
+                               req_buf,
+                               sizeof(req_buf),
+                               false);
 }
 
 /**
@@ -959,11 +1016,13 @@ static void mxcp_cmd_fn_uvp_rpr_scan_start(const uint8_t *payload, uint8_t len)
  * and transmits it to the remote proxy server node for device provisioning.
  *
  * @param[in] payload Pointer to mxcp_cmd_uvp_rpr_tunnel_t.
- * @param[in] len     Must be >= 18 bytes (header + target_uuid + pdu_len).
+ * @param[in] len     Must be >= MXCP_CMD_UVP_RPR_TUNNEL_HDR_SIZE bytes.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_uvp_rpr_tunnel_send(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_uvp_rpr_tunnel_send(const uint8_t *payload, uint8_t len)
 {
-    if (payload == NULL || len < 18) return;
+    if (payload == NULL || len < MXCP_CMD_UVP_RPR_TUNNEL_HDR_SIZE) return MESHX_INVALID_ARG;
     const mxcp_cmd_uvp_rpr_tunnel_t *cmd = (const mxcp_cmd_uvp_rpr_tunnel_t *)payload;
     MESHX_LOGI(MODULE_ID_COMMON, "MXCP: RPR Tunnel PDU Send to proxy 0x%04X (pdu_len=%u)",
                cmd->proxy_node_addr, cmd->pdu_len);
@@ -976,12 +1035,12 @@ static void mxcp_cmd_fn_uvp_rpr_tunnel_send(const uint8_t *payload, uint8_t len)
     uint8_t copy_len = (cmd->pdu_len > MXCP_RPR_PDU_MAX_SIZE) ? MXCP_RPR_PDU_MAX_SIZE : cmd->pdu_len;
     memcpy(&down_buf[2 + MXCP_UUID_SIZE], cmd->pdu_data, copy_len);
 
-    meshx_comp_send_uvp(0,
-                        cmd->proxy_node_addr,
-                        MESHX_FUNC_ID_SYS_PAIRING,
-                        down_buf,
-                        2 + MXCP_UUID_SIZE + copy_len,
-                        false);
+    return meshx_comp_send_uvp(0,
+                               cmd->proxy_node_addr,
+                               MESHX_FUNC_ID_SYS_PAIRING,
+                               down_buf,
+                               2 + MXCP_UUID_SIZE + copy_len,
+                               false);
 }
 
 /**
@@ -992,10 +1051,12 @@ static void mxcp_cmd_fn_uvp_rpr_tunnel_send(const uint8_t *payload, uint8_t len)
  *
  * @param[in] payload Pointer to mxcp_cmd_uvp_key_rotate_t.
  * @param[in] len     Must be >= 3 bytes (phase + epoch/key fields).
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_uvp_key_rotate_trigger(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_uvp_key_rotate_trigger(const uint8_t *payload, uint8_t len)
 {
-    if (payload == NULL || len < 3) return;
+    if (payload == NULL || len < 3) return MESHX_INVALID_ARG;
     const mxcp_cmd_uvp_key_rotate_t *cmd = (const mxcp_cmd_uvp_key_rotate_t *)payload;
 
     uint32_t current_epoch = meshx_nvs_get_kr_epoch();
@@ -1098,6 +1159,7 @@ static void mxcp_cmd_fn_uvp_key_rotate_trigger(const uint8_t *payload, uint8_t l
     }
 
     mxcp_send_event(MXCP_EVT_UVP_KEY_ROTATION_PHASE, (const uint8_t *)&rsp, sizeof(rsp));
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -1108,10 +1170,12 @@ static void mxcp_cmd_fn_uvp_key_rotate_trigger(const uint8_t *payload, uint8_t l
  *
  * @param[in] payload Pointer to mxcp_cmd_uvp_redundancy_role_t.
  * @param[in] len     Must be >= sizeof(mxcp_cmd_uvp_redundancy_role_t).
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_uvp_redundancy_set_role(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_uvp_redundancy_set_role(const uint8_t *payload, uint8_t len)
 {
-    if (payload == NULL || len < sizeof(mxcp_cmd_uvp_redundancy_role_t)) return;
+    if (payload == NULL || len < sizeof(mxcp_cmd_uvp_redundancy_role_t)) return MESHX_INVALID_ARG;
     const mxcp_cmd_uvp_redundancy_role_t *cmd = (const mxcp_cmd_uvp_redundancy_role_t *)payload;
 
     s_redundancy_role = (meshx_prov_role_t)cmd->role;
@@ -1152,6 +1216,7 @@ static void mxcp_cmd_fn_uvp_redundancy_set_role(const uint8_t *payload, uint8_t 
     rsp.sync_epoch     = s_redundancy_sync_epoch;
 
     mxcp_send_event(MXCP_EVT_UVP_REDUNDANCY_STATUS, (const uint8_t *)&rsp, sizeof(rsp));
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -1162,10 +1227,12 @@ static void mxcp_cmd_fn_uvp_redundancy_set_role(const uint8_t *payload, uint8_t 
  *
  * @param[in] payload Pointer to mxcp_cmd_uvp_fast_prov_start_t.
  * @param[in] len     Must be >= sizeof(mxcp_cmd_uvp_fast_prov_start_t).
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_uvp_fast_prov_start(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_uvp_fast_prov_start(const uint8_t *payload, uint8_t len)
 {
-    if (payload == NULL || len < sizeof(mxcp_cmd_uvp_fast_prov_start_t)) return;
+    if (payload == NULL || len < sizeof(mxcp_cmd_uvp_fast_prov_start_t)) return MESHX_INVALID_ARG;
     const mxcp_cmd_uvp_fast_prov_start_t *cmd = (const mxcp_cmd_uvp_fast_prov_start_t *)payload;
 
     /*
@@ -1192,7 +1259,9 @@ static void mxcp_cmd_fn_uvp_fast_prov_start(const uint8_t *payload, uint8_t len)
     rsp.progress_percent = 0;
 
     mxcp_send_event(MXCP_EVT_UVP_FAST_PROV_PROGRESS, (const uint8_t *)&rsp, sizeof(rsp));
+    return MESHX_SUCCESS;
 }
+#endif /* CONFIG_ENABLE_UVP_PROVISIONER */
 
 /**
  * @brief Handle MXCP_CMD_GET_COMPOSITION.
@@ -1202,13 +1271,16 @@ static void mxcp_cmd_fn_uvp_fast_prov_start(const uint8_t *payload, uint8_t len)
  *
  * @param[in] payload Unused.
  * @param[in] len     Unused.
+ *
+ * @return MESHX_SUCCESS on success.
  */
-static void mxcp_cmd_fn_get_composition(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_get_composition(const uint8_t *payload, uint8_t len)
 {
     (void)payload;
     (void)len;
     mxcp_send_element_info_response(MXCP_EVT_COMPOSITION_RSP);
     mxcp_send_element_info_response(MXCP_EVT_ELEMENT_STATE_RSP);
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -1219,12 +1291,15 @@ static void mxcp_cmd_fn_get_composition(const uint8_t *payload, uint8_t len)
  *
  * @param[in] payload Unused.
  * @param[in] len     Unused.
+ *
+ * @return MESHX_SUCCESS on success.
  */
-static void mxcp_cmd_fn_get_element_state(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_get_element_state(const uint8_t *payload, uint8_t len)
 {
     (void)payload;
     (void)len;
     mxcp_send_element_info_response(MXCP_EVT_ELEMENT_STATE_RSP);
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -1234,17 +1309,20 @@ static void mxcp_cmd_fn_get_element_state(const uint8_t *payload, uint8_t len)
  *
  * @param[in] payload Pointer to mxcp_cmd_set_console_routing_t (enable != 0 to route).
  * @param[in] len     Must be >= sizeof(mxcp_cmd_set_console_routing_t).
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_set_console_routing(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_set_console_routing(const uint8_t *payload, uint8_t len)
 {
     mxcp_cmd_set_console_routing_t cmd;
 
     if (payload == NULL || len < sizeof(mxcp_cmd_set_console_routing_t))
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     memcpy(&cmd, payload, sizeof(cmd));
     meshx_platform_set_mxsp_use_console(cmd.enable != 0);
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -1256,23 +1334,30 @@ static void mxcp_cmd_fn_set_console_routing(const uint8_t *payload, uint8_t len)
  *
  * @param[in] payload Pointer to mxcp_cmd_el_send_t header followed by message body.
  * @param[in] len     Must be >= sizeof(mxcp_cmd_el_send_t).
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_el_send(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_el_send(const uint8_t *payload, uint8_t len)
 {
     mxcp_cmd_el_send_t hdr;
     mxcp_evt_el_data_tx_notify_t tx_hdr;
     uint32_t buf_size = 0;
     uint8_t *buf = NULL;
+    meshx_err_t err = MESHX_SUCCESS;
 
     if (payload == NULL || len < sizeof(hdr))
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
 
     memcpy(&hdr, payload, sizeof(hdr));
-    meshx_send_msg_to_element(hdr.element_id, hdr.element_type, hdr.func_id,
-                              len - sizeof(hdr),
-                              &payload[sizeof(hdr)]);
+    err = meshx_send_msg_to_element(hdr.element_id, hdr.element_type, hdr.func_id,
+                                    len - sizeof(hdr),
+                                    &payload[sizeof(hdr)]);
+    if (err != MESHX_SUCCESS)
+    {
+        return err;
+    }
 
     tx_hdr.element_id = hdr.element_id;
     tx_hdr.element_type = hdr.element_type;
@@ -1291,6 +1376,7 @@ static void mxcp_cmd_fn_el_send(const uint8_t *payload, uint8_t len)
         mxcp_send_event(MXCP_EVT_EL_DATA_TX_NOTIFY, buf, (uint8_t)buf_size);
         MESHX_FREE(&buf);
     }
+    return err;
 }
 
 #if CONFIG_MESHX_ENABLE_GPIO_TEST_API
@@ -1298,12 +1384,14 @@ static void mxcp_cmd_fn_el_send(const uint8_t *payload, uint8_t len)
  * @brief Handle MXCP_CMD_GPIO_SET_LEVEL.
  *
  * Sets the output level on a GPIO pin and sends a status-only response
- * (status + logical_pin, 2 bytes).
+ * (status + logical_pin, MXCP_EVT_GPIO_SET_LEVEL_RSP_SIZE bytes).
  *
  * @param[in] payload Pointer to mxcp_cmd_gpio_set_level_t (logical_pin, level).
  * @param[in] len     Must be >= sizeof(mxcp_cmd_gpio_set_level_t).
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_gpio_set_level(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_gpio_set_level(const uint8_t *payload, uint8_t len)
 {
     mxcp_cmd_gpio_set_level_t cmd;
     mxcp_evt_gpio_rsp_t rsp;
@@ -1311,27 +1399,28 @@ static void mxcp_cmd_fn_gpio_set_level(const uint8_t *payload, uint8_t len)
 
     if (payload == NULL || len < sizeof(mxcp_cmd_gpio_set_level_t))
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     memcpy(&cmd, payload, sizeof(cmd));
     err = meshx_gpio_set_level(cmd.logical_pin, cmd.level);
-    memset(&rsp, 0, sizeof(rsp));
     rsp.status = (uint8_t)err;
     rsp.logical_pin = cmd.logical_pin;
-    mxcp_send_event(MXCP_EVT_GPIO_SET_LEVEL_RSP, (const uint8_t *)&rsp,
-                    2 + sizeof(rsp.data.get_level));
+    mxcp_send_event(MXCP_EVT_GPIO_SET_LEVEL_RSP, (const uint8_t *)&rsp, MXCP_EVT_GPIO_SET_LEVEL_RSP_SIZE);
+    return err;
 }
 
 /**
  * @brief Handle MXCP_CMD_GPIO_GET_LEVEL.
  *
  * Reads the current level of a GPIO pin and sends a typed response
- * (status + logical_pin + level, 3 bytes).
+ * (status + logical_pin + level, MXCP_EVT_GPIO_GET_LEVEL_RSP_SIZE bytes).
  *
  * @param[in] payload Pointer to mxcp_cmd_gpio_get_level_t (logical_pin).
  * @param[in] len     Must be >= sizeof(mxcp_cmd_gpio_get_level_t).
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_gpio_get_level(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_gpio_get_level(const uint8_t *payload, uint8_t len)
 {
     mxcp_cmd_gpio_get_level_t cmd;
     mxcp_evt_gpio_rsp_t rsp;
@@ -1340,31 +1429,37 @@ static void mxcp_cmd_fn_gpio_get_level(const uint8_t *payload, uint8_t len)
 
     if (payload == NULL || len < sizeof(mxcp_cmd_gpio_get_level_t))
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     memcpy(&cmd, payload, sizeof(cmd));
     err = meshx_gpio_get_level(cmd.logical_pin, &level);
-    memset(&rsp, 0, sizeof(rsp));
-    rsp.status = (uint8_t)err;
-    rsp.logical_pin = cmd.logical_pin;
-    if (err == MESHX_SUCCESS)
+    if (err != MESHX_SUCCESS)
     {
-        rsp.data.get_level.level = level;
+        rsp.status = (uint8_t)err;
+        rsp.logical_pin = cmd.logical_pin;
+        mxcp_send_event(MXCP_EVT_GPIO_GET_LEVEL_RSP, (const uint8_t *)&rsp, MXCP_EVT_GPIO_RSP_HDR_SIZE);
+        return err;
     }
+    rsp.status = (uint8_t)MESHX_SUCCESS;
+    rsp.logical_pin = cmd.logical_pin;
+    rsp.data.get_level.level = level;
     mxcp_send_event(MXCP_EVT_GPIO_GET_LEVEL_RSP, (const uint8_t *)&rsp,
-                    2 + sizeof(rsp.data.get_level));
+                    MXCP_EVT_GPIO_GET_LEVEL_RSP_SIZE);
+    return MESHX_SUCCESS;
 }
 
 /**
  * @brief Handle MXCP_CMD_GPIO_TOGGLE.
  *
  * Toggles the output level of a GPIO pin, reads back the new level,
- * and sends a typed response (status + logical_pin + level, 3 bytes).
+ * and sends a typed response (status + logical_pin + level, MXCP_EVT_GPIO_TOGGLE_RSP_SIZE bytes).
  *
  * @param[in] payload Pointer to mxcp_cmd_gpio_toggle_t (logical_pin).
  * @param[in] len     Must be >= sizeof(mxcp_cmd_gpio_toggle_t).
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_gpio_toggle(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_gpio_toggle(const uint8_t *payload, uint8_t len)
 {
     mxcp_cmd_gpio_toggle_t cmd;
     mxcp_evt_gpio_rsp_t rsp;
@@ -1373,32 +1468,38 @@ static void mxcp_cmd_fn_gpio_toggle(const uint8_t *payload, uint8_t len)
 
     if (payload == NULL || len < sizeof(mxcp_cmd_gpio_toggle_t))
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     memcpy(&cmd, payload, sizeof(cmd));
     err = meshx_gpio_toggle(cmd.logical_pin);
-    memset(&rsp, 0, sizeof(rsp));
-    rsp.status = (uint8_t)err;
-    rsp.logical_pin = cmd.logical_pin;
-    if (err == MESHX_SUCCESS)
+    if (err != MESHX_SUCCESS)
     {
-        meshx_gpio_get_level(cmd.logical_pin, &level);
-        rsp.data.toggle.level = level;
+        rsp.status = (uint8_t)err;
+        rsp.logical_pin = cmd.logical_pin;
+        mxcp_send_event(MXCP_EVT_GPIO_TOGGLE_RSP, (const uint8_t *)&rsp, MXCP_EVT_GPIO_RSP_HDR_SIZE);
+        return err;
     }
+    meshx_gpio_get_level(cmd.logical_pin, &level);
+    rsp.status = (uint8_t)MESHX_SUCCESS;
+    rsp.logical_pin = cmd.logical_pin;
+    rsp.data.toggle.level = level;
     mxcp_send_event(MXCP_EVT_GPIO_TOGGLE_RSP, (const uint8_t *)&rsp,
-                    2 + sizeof(rsp.data.toggle));
+                    MXCP_EVT_GPIO_TOGGLE_RSP_SIZE);
+    return MESHX_SUCCESS;
 }
 
 /**
  * @brief Handle MXCP_CMD_GPIO_SET_PWM_DUTY.
  *
  * Sets the PWM duty cycle on a GPIO pin via meshx_gpio_execute_function()
- * and sends a status-only response (status + logical_pin, 2 bytes).
+ * and sends a status-only response (status + logical_pin, MXCP_EVT_GPIO_SET_PWM_DUTY_RSP_SIZE bytes).
  *
  * @param[in] payload Pointer to mxcp_cmd_gpio_set_pwm_duty_t (logical_pin, duty_cycle).
  * @param[in] len     Must be >= sizeof(mxcp_cmd_gpio_set_pwm_duty_t).
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_gpio_set_pwm_duty(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_gpio_set_pwm_duty(const uint8_t *payload, uint8_t len)
 {
     mxcp_cmd_gpio_set_pwm_duty_t cmd;
     mxcp_evt_gpio_rsp_t rsp;
@@ -1407,29 +1508,31 @@ static void mxcp_cmd_fn_gpio_set_pwm_duty(const uint8_t *payload, uint8_t len)
 
     if (payload == NULL || len < sizeof(mxcp_cmd_gpio_set_pwm_duty_t))
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     memcpy(&cmd, payload, sizeof(cmd));
     args[0] = cmd.duty_cycle;
     err = meshx_gpio_execute_function(cmd.logical_pin,
                                       MESHX_IO_FUNCTION_SET_PWM_DUTY,
                                       args, 1);
-    memset(&rsp, 0, sizeof(rsp));
     rsp.status = (uint8_t)err;
     rsp.logical_pin = cmd.logical_pin;
-    mxcp_send_event(MXCP_EVT_GPIO_SET_PWM_DUTY_RSP, (const uint8_t *)&rsp, 2);
+    mxcp_send_event(MXCP_EVT_GPIO_SET_PWM_DUTY_RSP, (const uint8_t *)&rsp, MXCP_EVT_GPIO_SET_PWM_DUTY_RSP_SIZE);
+    return err;
 }
 
 /**
  * @brief Handle MXCP_CMD_GPIO_SET_PWM_FREQ.
  *
  * Sets the PWM frequency on a GPIO pin via meshx_gpio_execute_function()
- * and sends a status-only response (status + logical_pin, 2 bytes).
+ * and sends a status-only response (status + logical_pin, MXCP_EVT_GPIO_SET_PWM_FREQ_RSP_SIZE bytes).
  *
  * @param[in] payload Pointer to mxcp_cmd_gpio_set_pwm_freq_t (logical_pin, frequency).
  * @param[in] len     Must be >= sizeof(mxcp_cmd_gpio_set_pwm_freq_t).
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_gpio_set_pwm_freq(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_gpio_set_pwm_freq(const uint8_t *payload, uint8_t len)
 {
     mxcp_cmd_gpio_set_pwm_freq_t cmd;
     mxcp_evt_gpio_rsp_t rsp;
@@ -1438,29 +1541,31 @@ static void mxcp_cmd_fn_gpio_set_pwm_freq(const uint8_t *payload, uint8_t len)
 
     if (payload == NULL || len < sizeof(mxcp_cmd_gpio_set_pwm_freq_t))
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     memcpy(&cmd, payload, sizeof(cmd));
     args[0] = cmd.frequency;
     err = meshx_gpio_execute_function(cmd.logical_pin,
                                       MESHX_IO_FUNCTION_SET_PWM_FREQUENCY,
                                       args, 1);
-    memset(&rsp, 0, sizeof(rsp));
     rsp.status = (uint8_t)err;
     rsp.logical_pin = cmd.logical_pin;
-    mxcp_send_event(MXCP_EVT_GPIO_SET_PWM_FREQ_RSP, (const uint8_t *)&rsp, 2);
+    mxcp_send_event(MXCP_EVT_GPIO_SET_PWM_FREQ_RSP, (const uint8_t *)&rsp, MXCP_EVT_GPIO_SET_PWM_FREQ_RSP_SIZE);
+    return err;
 }
 
 /**
  * @brief Handle MXCP_CMD_GPIO_INTR_ENABLE.
  *
  * Enables or disables interrupt registration on a GPIO pin and sends
- * a status-only response (status + logical_pin, 2 bytes).
+ * a status-only response (status + logical_pin, MXCP_EVT_GPIO_INTR_ENABLE_RSP_SIZE bytes).
  *
  * @param[in] payload Pointer to mxcp_cmd_gpio_intr_enable_t (logical_pin, enable).
  * @param[in] len     Must be >= sizeof(mxcp_cmd_gpio_intr_enable_t).
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_gpio_intr_enable(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_gpio_intr_enable(const uint8_t *payload, uint8_t len)
 {
     mxcp_cmd_gpio_intr_enable_t cmd;
     mxcp_evt_gpio_rsp_t rsp;
@@ -1469,27 +1574,29 @@ static void mxcp_cmd_fn_gpio_intr_enable(const uint8_t *payload, uint8_t len)
 
     if (payload == NULL || len < sizeof(mxcp_cmd_gpio_intr_enable_t))
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     memcpy(&cmd, payload, sizeof(cmd));
     enable = (cmd.enable != 0);
     err = meshx_gpio_intr_enable(cmd.logical_pin, enable);
-    memset(&rsp, 0, sizeof(rsp));
     rsp.status = (uint8_t)err;
     rsp.logical_pin = cmd.logical_pin;
-    mxcp_send_event(MXCP_EVT_GPIO_INTR_ENABLE_RSP, (const uint8_t *)&rsp, 2);
+    mxcp_send_event(MXCP_EVT_GPIO_INTR_ENABLE_RSP, (const uint8_t *)&rsp, MXCP_EVT_GPIO_INTR_ENABLE_RSP_SIZE);
+    return err;
 }
 
 /**
  * @brief Handle MXCP_CMD_GPIO_INTR_DISABLE.
  *
  * Disables interrupt registration on a GPIO pin (always passes false)
- * and sends a status-only response (status + logical_pin, 2 bytes).
+ * and sends a status-only response (status + logical_pin, MXCP_EVT_GPIO_INTR_DISABLE_RSP_SIZE bytes).
  *
  * @param[in] payload Pointer to mxcp_cmd_gpio_intr_disable_t (logical_pin).
  * @param[in] len     Must be >= sizeof(mxcp_cmd_gpio_intr_disable_t).
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_gpio_intr_disable(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_gpio_intr_disable(const uint8_t *payload, uint8_t len)
 {
     mxcp_cmd_gpio_intr_disable_t cmd;
     mxcp_evt_gpio_rsp_t rsp;
@@ -1497,14 +1604,14 @@ static void mxcp_cmd_fn_gpio_intr_disable(const uint8_t *payload, uint8_t len)
 
     if (payload == NULL || len < sizeof(mxcp_cmd_gpio_intr_disable_t))
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     memcpy(&cmd, payload, sizeof(cmd));
     err = meshx_gpio_intr_enable(cmd.logical_pin, false);
-    memset(&rsp, 0, sizeof(rsp));
     rsp.status = (uint8_t)err;
     rsp.logical_pin = cmd.logical_pin;
-    mxcp_send_event(MXCP_EVT_GPIO_INTR_DISABLE_RSP, (const uint8_t *)&rsp, 2);
+    mxcp_send_event(MXCP_EVT_GPIO_INTR_DISABLE_RSP, (const uint8_t *)&rsp, MXCP_EVT_GPIO_INTR_DISABLE_RSP_SIZE);
+    return err;
 }
 
 /**
@@ -1512,12 +1619,14 @@ static void mxcp_cmd_fn_gpio_intr_disable(const uint8_t *payload, uint8_t len)
  *
  * Retrieves the pin configuration (mode, pull, drive strength,
  * initial level, signal inversion) and sends a typed response
- * (status + logical_pin + 5 config bytes = 7 bytes).
+ * (status + logical_pin + 5 config bytes = MXCP_EVT_GPIO_GET_CONFIG_RSP_SIZE bytes).
  *
  * @param[in] payload Pointer to mxcp_cmd_gpio_get_config_t (logical_pin).
  * @param[in] len     Must be >= sizeof(mxcp_cmd_gpio_get_config_t).
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_gpio_get_config(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_gpio_get_config(const uint8_t *payload, uint8_t len)
 {
     mxcp_cmd_gpio_get_config_t cmd;
     meshx_gpio_pin_config_t config;
@@ -1526,23 +1635,27 @@ static void mxcp_cmd_fn_gpio_get_config(const uint8_t *payload, uint8_t len)
 
     if (payload == NULL || len < sizeof(mxcp_cmd_gpio_get_config_t))
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     memcpy(&cmd, payload, sizeof(cmd));
     err = meshx_gpio_get_pin_config(cmd.logical_pin, &config);
-    memset(&rsp, 0, sizeof(rsp));
-    rsp.status = (uint8_t)err;
-    rsp.logical_pin = cmd.logical_pin;
-    if (err == MESHX_SUCCESS)
+    if (err != MESHX_SUCCESS)
     {
-        rsp.data.get_config.mode = config.mode;
-        rsp.data.get_config.pull = config.pull;
-        rsp.data.get_config.drive_strength = config.drive_strength;
-        rsp.data.get_config.initial_level = config.initial_level;
-        rsp.data.get_config.signal_inversion = config.signal_inversion ? 1 : 0;
+        rsp.status = (uint8_t)err;
+        rsp.logical_pin = cmd.logical_pin;
+        mxcp_send_event(MXCP_EVT_GPIO_GET_CONFIG_RSP, (const uint8_t *)&rsp, MXCP_EVT_GPIO_RSP_HDR_SIZE);
+        return err;
     }
+    rsp.status = (uint8_t)MESHX_SUCCESS;
+    rsp.logical_pin = cmd.logical_pin;
+    rsp.data.get_config.mode = config.mode;
+    rsp.data.get_config.pull = config.pull;
+    rsp.data.get_config.drive_strength = config.drive_strength;
+    rsp.data.get_config.initial_level = config.initial_level;
+    rsp.data.get_config.signal_inversion = config.signal_inversion ? 1 : 0;
     mxcp_send_event(MXCP_EVT_GPIO_GET_CONFIG_RSP, (const uint8_t *)&rsp,
-                    2 + sizeof(rsp.data.get_config));
+                    MXCP_EVT_GPIO_GET_CONFIG_RSP_SIZE);
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -1550,12 +1663,14 @@ static void mxcp_cmd_fn_gpio_get_config(const uint8_t *payload, uint8_t len)
  *
  * Retrieves the runtime pin state (current level, interrupt registered,
  * interrupt type) and sends a typed response
- * (status + logical_pin + 3 state bytes = 5 bytes).
+ * (status + logical_pin + 3 state bytes = MXCP_EVT_GPIO_GET_STATE_RSP_SIZE bytes).
  *
  * @param[in] payload Pointer to mxcp_cmd_gpio_get_state_t (logical_pin).
  * @param[in] len     Must be >= sizeof(mxcp_cmd_gpio_get_state_t).
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-static void mxcp_cmd_fn_gpio_get_state(const uint8_t *payload, uint8_t len)
+static meshx_err_t mxcp_cmd_fn_gpio_get_state(const uint8_t *payload, uint8_t len)
 {
     mxcp_cmd_gpio_get_state_t cmd;
     meshx_gpio_pin_state_t state;
@@ -1564,21 +1679,25 @@ static void mxcp_cmd_fn_gpio_get_state(const uint8_t *payload, uint8_t len)
 
     if (payload == NULL || len < sizeof(mxcp_cmd_gpio_get_state_t))
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     memcpy(&cmd, payload, sizeof(cmd));
     err = meshx_gpio_get_pin_state(cmd.logical_pin, &state);
-    memset(&rsp, 0, sizeof(rsp));
-    rsp.status = (uint8_t)err;
-    rsp.logical_pin = cmd.logical_pin;
-    if (err == MESHX_SUCCESS)
+    if (err != MESHX_SUCCESS)
     {
-        rsp.data.get_state.current_level = state.current_level;
-        rsp.data.get_state.interrupt_registered = state.interrupt_registered ? 1 : 0;
-        rsp.data.get_state.intr_type = (uint8_t)state.intr_type;
+        rsp.status = (uint8_t)err;
+        rsp.logical_pin = cmd.logical_pin;
+        mxcp_send_event(MXCP_EVT_GPIO_GET_STATE_RSP, (const uint8_t *)&rsp, MXCP_EVT_GPIO_RSP_HDR_SIZE);
+        return err;
     }
+    rsp.status = (uint8_t)MESHX_SUCCESS;
+    rsp.logical_pin = cmd.logical_pin;
+    rsp.data.get_state.current_level = state.current_level;
+    rsp.data.get_state.interrupt_registered = state.interrupt_registered ? 1 : 0;
+    rsp.data.get_state.intr_type = (uint8_t)state.intr_type;
     mxcp_send_event(MXCP_EVT_GPIO_GET_STATE_RSP, (const uint8_t *)&rsp,
-                    2 + sizeof(rsp.data.get_state));
+                    MXCP_EVT_GPIO_GET_STATE_RSP_SIZE);
+    return MESHX_SUCCESS;
 }
 #endif
 

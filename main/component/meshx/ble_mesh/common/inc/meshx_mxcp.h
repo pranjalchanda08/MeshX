@@ -39,6 +39,19 @@ extern "C" {
 #define MXCP_DEV_NAME_MAX_LEN  32
 #define MXCP_RPR_PDU_MAX_SIZE  64
 
+/* Buffer sizes (including null-terminator for string buffers) */
+#define MXCP_DEV_NAME_BUF_SIZE     (MXCP_DEV_NAME_MAX_LEN + 1)
+#define MXCP_AUTH_STR_BUF_SIZE     (MXCP_AUTH_DATA_MAX_SIZE + 1)
+
+/* Wire Frame Sizes */
+#define MXCP_FRAME_HDR_SIZE        3  /**< Frame preamble: [SOF][LEN][TYPE] */
+#define MXCP_FRAME_TRAILER_SIZE    2  /**< Frame trailer: [CHK][EOF] */
+#define MXCP_FRAME_MAX_SIZE        (MXCP_FRAME_HDR_SIZE + MXCP_PAYLOAD_MAX_SIZE + MXCP_FRAME_TRAILER_SIZE)
+
+/* Command Header Sizes */
+#define MXCP_CMD_PROV_AUTH_INPUT_HDR_SIZE (sizeof(uint8_t) + sizeof(uint8_t))
+#define MXCP_CMD_UVP_RPR_TUNNEL_HDR_SIZE  (sizeof(uint16_t) + MXCP_UUID_SIZE + sizeof(uint8_t))
+
 #define MXCP_TYPE_DIR_CMD  0x00
 #define MXCP_TYPE_DIR_EVT  0x80
 #define MXCP_TYPE_ID_MASK  0x7F
@@ -53,6 +66,19 @@ extern "C" {
 #define MXCP_PROV_BEARER_PB_GATT  0x02
 #define MXCP_PROV_BEARER_BOTH     (MXCP_PROV_BEARER_PB_ADV | MXCP_PROV_BEARER_PB_GATT)
 
+/**
+ * @brief MXCP GPIO Response Payload Sizes
+ */
+#define MXCP_EVT_GPIO_RSP_HDR_SIZE          (sizeof(uint8_t) + sizeof(uint8_t))
+#define MXCP_EVT_GPIO_SET_LEVEL_RSP_SIZE    (MXCP_EVT_GPIO_RSP_HDR_SIZE)
+#define MXCP_EVT_GPIO_GET_LEVEL_RSP_SIZE    (MXCP_EVT_GPIO_RSP_HDR_SIZE + sizeof(((mxcp_evt_gpio_rsp_t *)0)->data.get_level))
+#define MXCP_EVT_GPIO_TOGGLE_RSP_SIZE       (MXCP_EVT_GPIO_RSP_HDR_SIZE + sizeof(((mxcp_evt_gpio_rsp_t *)0)->data.toggle))
+#define MXCP_EVT_GPIO_SET_PWM_DUTY_RSP_SIZE (MXCP_EVT_GPIO_RSP_HDR_SIZE)
+#define MXCP_EVT_GPIO_SET_PWM_FREQ_RSP_SIZE (MXCP_EVT_GPIO_RSP_HDR_SIZE)
+#define MXCP_EVT_GPIO_INTR_ENABLE_RSP_SIZE  (MXCP_EVT_GPIO_RSP_HDR_SIZE)
+#define MXCP_EVT_GPIO_INTR_DISABLE_RSP_SIZE (MXCP_EVT_GPIO_RSP_HDR_SIZE)
+#define MXCP_EVT_GPIO_GET_CONFIG_RSP_SIZE   (MXCP_EVT_GPIO_RSP_HDR_SIZE + sizeof(((mxcp_evt_gpio_rsp_t *)0)->data.get_config))
+#define MXCP_EVT_GPIO_GET_STATE_RSP_SIZE    (MXCP_EVT_GPIO_RSP_HDR_SIZE + sizeof(((mxcp_evt_gpio_rsp_t *)0)->data.get_state))
 
 /**
  * @brief Command ID namespace (Host -> Engine, bit 7 = 0).
@@ -483,8 +509,10 @@ typedef struct {
  *
  * @param payload  Pointer to payload bytes from the frame.
  * @param len      Payload length in bytes.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-typedef void (*mxcp_cmd_handler_t)(const uint8_t *payload, uint8_t len);
+typedef meshx_err_t (*mxcp_cmd_handler_t)(const uint8_t *payload, uint8_t len);
 
 typedef struct {
     uint8_t              cmd_id;
@@ -509,8 +537,10 @@ typedef struct {
  * @param[in] type    TYPE byte from the frame (direction + ID).
  * @param[in] payload Pointer to the payload bytes.
  * @param[in] len     Payload length in bytes.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
  */
-void mxcp_dispatch_frame(uint8_t type, const uint8_t *payload, uint8_t len);
+meshx_err_t mxcp_dispatch_frame(uint8_t type, const uint8_t *payload, uint8_t len);
 
 /**
  * @brief Build and transmit an MXCP frame over the serial interface.

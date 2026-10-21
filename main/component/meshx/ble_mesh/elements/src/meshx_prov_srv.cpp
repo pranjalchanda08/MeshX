@@ -85,8 +85,8 @@ static void meshx_oob_watchdog_timeout_cb(const meshx_os_timer_t *p_timer)
     MESHX_LOGW(MODULE_ID_COMMON, "Prov Srv: 30s OOB Input Watchdog timed out! Aborting provisioning session.");
 
     /* Disable node provisioning to free radio/stack */
-    esp_ble_mesh_prov_bearer_t bearers = (esp_ble_mesh_prov_bearer_t)(ESP_BLE_MESH_PROV_ADV | ESP_BLE_MESH_PROV_GATT);
-    esp_ble_mesh_node_prov_disable(bearers);
+    meshx_prov_bearer_t bearers = (meshx_prov_bearer_t)(MESHX_PROV_ADV | MESHX_PROV_GATT);
+    meshx_plat_prov_disable(bearers);
 
     mxcp_evt_prov_failed_t fail_evt;
     fail_evt.reason = 0x05; /* REASON_TIMEOUT */
