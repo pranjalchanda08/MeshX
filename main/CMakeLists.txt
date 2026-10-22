@@ -43,6 +43,10 @@ if(NOT CMAKE_BUILD_EARLY_EXPANSION)
     endif()
 
 
+    if(NOT DEFINED PYTHON)
+        find_package(Python3 REQUIRED COMPONENTS Interpreter)
+        set(PYTHON "${Python3_EXECUTABLE}")
+    endif()
     # Ensure python dependencies are installed in a local directory to avoid permission issues
     set(MESHX_PYTHON_DEPS "${CMAKE_BINARY_DIR}/python_deps")
     message(STATUS "MeshX: Using Python interpreter: ${PYTHON}")
@@ -74,7 +78,11 @@ if(NOT CMAKE_BUILD_EARLY_EXPANSION)
         OUTPUT_VARIABLE MESHX_SCHEMA_ID
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
+    set(MESHX_SCHEMA_ID ${MESHX_SCHEMA_ID} CACHE STRING "MeshX Schema ID" FORCE)
     add_definitions(-DMESHX_SCHEMA_ID=${MESHX_SCHEMA_ID})
+    if(TARGET app)
+        target_compile_definitions(app PRIVATE -DMESHX_SCHEMA_ID=${MESHX_SCHEMA_ID})
+    endif()
     message(STATUS "MeshX Schema ID: ${MESHX_SCHEMA_ID}")
 
     # Generate C and H files using Nanopb generator
@@ -121,6 +129,28 @@ if(NOT CMAKE_BUILD_EARLY_EXPANSION)
         VERBATIM
     )
 
+    # Immediately generate protobuf and configuration if missing at configure time
+    if(NOT EXISTS "${GEN_C}" OR NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/meshx_config.h")
+        execute_process(
+            COMMAND ${PYTHON_WITH_DEPS} ${NANOPB_GENERATOR} -I ${PROTO_PATH} --output-dir=${CMAKE_CURRENT_BINARY_DIR} ${PROTO_FILE}
+        )
+        execute_process(
+            COMMAND ${PYTHON_WITH_DEPS} -m grpc_tools.protoc -I ${PROTO_PATH} --python_out=${PROTO_PATH} ${PROTO_FILE}
+        )
+        execute_process(
+            COMMAND ${PYTHON_WITH_DEPS} ${CMAKE_SOURCE_DIR}/tools/scripts/code_gen.py ${PROD_NAME_STR} --root ${CMAKE_SOURCE_DIR} --config ${CMAKE_CURRENT_BINARY_DIR} --profile ${PROD_PROFILE_PATH}
+        )
+    endif()
+
+    add_custom_target(meshx_proto_gen DEPENDS
+        "${GEN_C}"
+        "${GEN_H}"
+        "${GEN_PY}"
+        "${CMAKE_CURRENT_BINARY_DIR}/meshx_config.h"
+    )
+    if(TARGET app)
+        add_dependencies(app meshx_proto_gen)
+    endif()
 
     # Add nanopb core sources and generated protobuf C files
     set(NANOPB_SRC

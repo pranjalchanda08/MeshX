@@ -10,7 +10,6 @@
 #define __MESHX_UVP_LOGICAL_MODELS_HPP__
 
 #include <meshx_uvp_logical_model.hpp>
-#include <meshx_api.h>
 
 /* =========================================================================
  * meshXRelayClientModel  —  func_id=0x00 (OnOff)

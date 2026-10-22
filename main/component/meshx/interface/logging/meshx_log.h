@@ -92,7 +92,8 @@ typedef struct {
     uint32_t file_addr; /* Address of file name in ELF */
     uint16_t line_no;   /* Line number */
     uint32_t args[16];  /* 16 variadic arguments */
-    char     inline_str[32]; /* Space for one dynamic string (up to 32 chars) */
+    char     inline_str[32]; /* Space for one dynamic string (up to 32
+     chars) */
     uint8_t  parity;    /* XOR parity at the end */
 } __attribute__((packed)) meshx_log_packet_t;
 

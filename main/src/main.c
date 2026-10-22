@@ -12,6 +12,17 @@
 
 #define CONFIG_MESHX_NVS_SAVE_PERIOD_MS 1000
 
+#if defined(__ZEPHYR__)
+#define APP_MAIN_RET_TYPE int
+#define APP_MAIN_RETURN() return 0
+#elif defined(ESP_PLATFORM)
+#define APP_MAIN_RET_TYPE void
+#define APP_MAIN_RETURN()
+#else
+#define APP_MAIN_RET_TYPE int
+#define APP_MAIN_RETURN() return 0
+#endif
+
 static meshx_err_t meshx_app_data_cb(const meshx_app_element_msg_header_t *msg_hdr, const meshx_data_payload_t *data_payload_u);
 static meshx_err_t meshx_app_ctrl_cb(const meshx_ctrl_msg_header_t *msg_hdr, const meshx_ctrl_payload_t *msg);
 /**
@@ -30,7 +41,7 @@ static const meshx_config_t meshx_config = {
  * This function initializes the MeshX library and logs an error message
  * if the initialization fails.
  */
-void CONFIG_APP_MAIN(void)
+APP_MAIN_RET_TYPE CONFIG_APP_MAIN(void)
 {
     meshx_err_t err;
 
@@ -40,6 +51,8 @@ void CONFIG_APP_MAIN(void)
     {
         MESHX_LOGE(MODULE_ID_COMMON, "MeshX Init failed: 0x%x", err);
     }
+
+    APP_MAIN_RETURN();
 }
 
 /**

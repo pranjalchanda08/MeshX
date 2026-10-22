@@ -153,14 +153,7 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid)
 
             /* Explicitly zero the slot again before calling platform create to prevent garbage */
             memset(static_cast<void *>(p_baked), 0, sizeof(MESHX_MODEL));
-            for (size_t k = 0; k < sizeof(p_baked->keys) / sizeof(p_baked->keys[0]); k++)
-            {
-                p_baked->keys[k] = MESHX_KEY_UNUSED;
-            }
-            for (size_t g = 0; g < sizeof(p_baked->groups) / sizeof(p_baked->groups[0]); g++)
-            {
-                p_baked->groups[g] = MESHX_ADDR_UNASSIGNED;
-            }
+            MESHX_INIT_MODEL_KEYS_GROUPS(p_baked);
 
             /* Create the platform model directly into the baked slot */
             m_err = m->plat_model_create(p_baked);
@@ -176,7 +169,7 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid)
 
             // Debug: Verify the baked model state
             MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "  Model %zu ID: 0x%04x, Pub: 0x%x, Slot Addr: 0x%x",
-                       baked_sig_idx, p_baked->model_id, (uint32_t)(uintptr_t)p_baked->pub, (uint32_t)(uintptr_t)p_baked);
+                       baked_sig_idx, MESHX_MODEL_GET_SIG_ID(p_baked), (uint32_t)(uintptr_t)p_baked->pub, (uint32_t)(uintptr_t)p_baked);
 
             baked_sig_idx++;
         }
@@ -190,14 +183,7 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid)
             /* Get pointer to the baked slot for this vendor model */
             p_baked = reinterpret_cast<MESHX_MODEL *>(baked_ven_model_arrays[plat_idx].data()) + baked_ven_idx;
             memset(static_cast<void *>(p_baked), 0, sizeof(MESHX_MODEL));
-            for (size_t k = 0; k < sizeof(p_baked->keys) / sizeof(p_baked->keys[0]); k++)
-            {
-                p_baked->keys[k] = MESHX_KEY_UNUSED;
-            }
-            for (size_t g = 0; g < sizeof(p_baked->groups) / sizeof(p_baked->groups[0]); g++)
-            {
-                p_baked->groups[g] = MESHX_ADDR_UNASSIGNED;
-            }
+            MESHX_INIT_MODEL_KEYS_GROUPS(p_baked);
 
             /* Create the platform model directly into the baked slot */
             m_err = m->plat_model_create(p_baked);
@@ -210,7 +196,7 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid)
 
             m->set_plat_model(p_baked);
             MESHX_LOGD(MODULE_ID_BLE_MESH_ELEMENT, "Baked VND Model 0x%04x (CID 0x%04x) at 0x%x, pub: 0x%x",
-                       p_baked->vnd.model_id, p_baked->vnd.company_id, (uint32_t)(uintptr_t)p_baked, (uint32_t)(uintptr_t)p_baked->pub);
+                       MESHX_MODEL_GET_VND_ID(p_baked), MESHX_MODEL_GET_VND_CID(p_baked), (uint32_t)(uintptr_t)p_baked, (uint32_t)(uintptr_t)p_baked->pub);
             baked_ven_idx++;
         }
 
@@ -222,11 +208,12 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid)
         ven_ptr = (ven_cnt > 0) ? reinterpret_cast<MESHX_MODEL *>(baked_ven_model_arrays[plat_idx].data()) : nullptr;
 
         e = &p_elements[plat_idx];
-        memcpy((void *)&e->location, &loc, sizeof(e->location));
-        memcpy((void *)&e->sig_model_count, &sig_cnt, sizeof(e->sig_model_count));
-        memcpy((void *)&e->vnd_model_count, &ven_cnt, sizeof(e->vnd_model_count));
-        memcpy((void *)&e->sig_models, &sig_ptr, sizeof(e->sig_models));
-        memcpy((void *)&e->vnd_models, &ven_ptr, sizeof(e->vnd_models));
+        MESHX_INIT_ELEMENT(e);
+        MESHX_SET_ELEM_LOCATION(e, loc);
+        MESHX_SET_ELEM_SIG_COUNT(e, sig_cnt);
+        MESHX_SET_ELEM_VND_COUNT(e, ven_cnt);
+        MESHX_SET_ELEM_SIG_MODELS(e, sig_ptr);
+        MESHX_SET_ELEM_VND_MODELS(e, ven_ptr);
 
         /* Register in registry for runtime callbacks/lookups */
         el->on_baked(plat_idx);
@@ -237,8 +224,8 @@ meshx_err_t meshXComposition::bake(uint16_t cid, uint16_t pid, uint16_t vid)
     baked_comp.cid = cid;
     baked_comp.pid = pid;
     baked_comp.vid = vid;
-    baked_comp.element_count = (uint16_t)total_elements;
-    baked_comp.elements = p_elements;
+    MESHX_SET_COMP_ELEM_COUNT(&baked_comp, (uint16_t)total_elements);
+    MESHX_SET_COMP_ELEMS(&baked_comp, p_elements);
 
     baked_comp_ptr = &baked_comp;
     is_baked = true;

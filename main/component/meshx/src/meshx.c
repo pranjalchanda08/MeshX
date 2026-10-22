@@ -225,8 +225,8 @@ meshx_err_t meshx_derive_device_uuid(meshx_uuid_addr_t uuid, uint16_t cid,
   uuid[8] = (uint8_t)((pid >> 8) & 0xFF);
   uuid[9] = (uint8_t)(pid & 0xFF);
 
-  /* 4. Footer (Bytes 10..15, 6 bytes: "-MESHX") */
-  memcpy(uuid + 10, CONFIG_UUID_FOOTER, 6);
+  /* 4. Footer (Bytes 10..15, 6 bytes: "MESH-X") */
+  memcpy(uuid + 10, MESHX_UUID_FOOTER, 6);
 
   MESHX_LOGD(MODULE_ID_COMMON,
              "Derived MeshX Device UUID: "

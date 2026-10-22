@@ -13,8 +13,6 @@
 #include <meshx_uvp_model.hpp>         /* meshXUVPModel full definition (for send_with_func_id) */
 #include <meshx_fwd_decl.hpp>          /* meshXElementIF full definition, meshx_element_common_ctx_t */
 #include <meshx_element_class.hpp>     /* get_element_idx, get_element_variant, get_element_ctx */
-#include <meshx_api.h>
-#include "interface/logging/meshx_log.h"
 #include <cstring>
 
 /* =========================================================================

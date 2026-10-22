@@ -16,11 +16,10 @@
 #ifndef __MESHX_UVP_LOGICAL_MODEL_HPP__
 #define __MESHX_UVP_LOGICAL_MODEL_HPP__
 
-#include <meshx_uvp.h>           /* meshx_uvp_ctx_t — now carries func_id */
-#include <meshx_common.h>        /* MESHX_SUCCESS, meshx_err_t */
+#include <meshx_c_header.h>
 #include <cstring>
-#include <stdint.h>
-#include <stddef.h>
+#include <cstdint>
+#include <cstddef>
 
 /* Forward declarations — full definitions provided at point of use in .cpp files */
 class meshXElementIF;

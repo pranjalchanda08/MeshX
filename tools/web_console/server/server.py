@@ -576,7 +576,7 @@ async def run_flash_subprocess(worker: AsyncSerialWorker, port: str, bsp: str, p
         cmds.append(f"python3 {meshx_script} -B {bsp} -N {product} -P {port} -F firmware")
 
         # Combine into a single bash execution string with env sourced
-        full_cmd = f"source tools/scripts/env.sh source {export_path} && " + " && ".join(cmds)
+        full_cmd = f"source tools/bin/env.sh source {export_path} && " + " && ".join(cmds)
 
         worker.broadcast({
             "type": "text",
@@ -733,7 +733,7 @@ async def flash_custom_config(port: str, bsp: str, product: str):
                 custom_env["PATH"] = ":".join(espressif_bin_paths) + ":" + custom_env.get("PATH", "")
 
             meshx_script = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "scripts", "meshx.py"))
-            full_cmd = f"source tools/scripts/env.sh source {export_path} && python3 {meshx_script} -B {bsp} -N {product} -P {port} -F cfg"
+            full_cmd = f"source tools/bin/env.sh source {export_path} && python3 {meshx_script} -B {bsp} -N {product} -P {port} -F cfg"
 
             worker.broadcast({
                 "type": "text",

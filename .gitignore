@@ -76,4 +76,8 @@ meshx_config_pb2.py
 .archify
 logs
 docs
-
+.spec
+*third_party/zephyr
+*third_party/zephyr*
+.west/
+modules/

@@ -6,6 +6,7 @@
  */
 
 #include "meshx_ro_cfg.h"
+#include "meshx_config.h"
 #include "interface/utils/meshx_fal_interface.h"
 #include "interface/logging/meshx_log.h"
 #include "meshx_config.pb.h"

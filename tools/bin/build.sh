@@ -1,7 +1,7 @@
 TARGET=$1
 
-echo "TARGET = $TARGET"
-python3 scripts/code_gen.py $TARGET
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+python3 "$DIR/../scripts/code_gen.py" $TARGET
 APP_PATH=$(pwd)
 BUILD_PARAM=""
 echo $2

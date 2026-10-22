@@ -9,9 +9,10 @@ import yaml
 import shutil
 import argparse
 import subprocess
+import re
 from abc import ABC, abstractmethod
 
-VERSION_STRING = "v0.1.0"
+VERSION_STRING = "v0.2.0"
 
 BUILD_TYPE = ["Debug", "Release"]
 BSP_LIST = []
@@ -119,6 +120,14 @@ class Target(ABC):
         if result.returncode != 0:
             raise TargetFlashException("Target Error")
 
+    def validate_port(self, port):
+        if port is None:
+            raise TargetFlashException("Please provide a port")
+        # On Windows, COM ports (e.g. COM1, COM3, \\.\COM10) are character devices, not regular files
+        if not port.upper().startswith("COM") and not port.startswith(r"\\.\COM") and not os.path.exists(port):
+            raise TargetFlashException(f"Port {port} does not exist")
+        print(f"Using port: {port}")
+
     @abstractmethod
     def toolcheck(self):
         """Abstract method to perform tool checks on the target."""
@@ -143,8 +152,18 @@ class Target(ABC):
 
         if args.decode:
             # Resolve ELF path
-            elf_name = f"meshx_build_{args.bsp}.elf"
-            elf_path = os.path.abspath(os.path.join(build_dir, elf_name))
+            elf_candidates = [
+                os.path.abspath(os.path.join(build_dir, f"meshx_build_{args.bsp}.elf")),
+                os.path.abspath(os.path.join(build_dir, "zephyr", "zephyr.elf")),
+                os.path.abspath(os.path.join(build_dir, "zephyr.elf")),
+            ]
+            elf_path = None
+            for cand in elf_candidates:
+                if os.path.exists(cand):
+                    elf_path = cand
+                    break
+            if not elf_path:
+                elf_path = elf_candidates[0]
 
             # Call host_decoder
             decoder_script = os.path.join(os.path.dirname(__file__), "host_decoder.py")
@@ -207,14 +226,6 @@ class ESPTarget(Target):
             {"package": "esp_idf_monitor"},
         ]
         check_python_tool_installed(tools)
-
-    def validate_port(self, port):
-        if port is None:
-            raise TargetFlashException("Please provide a port")
-        # On Windows, COM ports (e.g. COM1, COM3, \\.\COM10) are character devices, not regular files
-        if not port.upper().startswith("COM") and not port.startswith(r"\\.\COM") and not os.path.exists(port):
-            raise TargetFlashException(f"Port {port} does not exist")
-        print(f"Using port: {port}")
 
     def configure(self, build_root, args=None):
         if len(args.prod_name) != 1:
@@ -356,23 +367,233 @@ class ESPTarget(Target):
         ]
         self.proc_run(esp_tool_cmd, cwd=build_dir)
 
-class NRFTarget(Target):
-    def run_fallback(self, args, build_dir):
-        raise TargetFlashException("Not implemented yet")
+class ZephyrTarget(Target):
+    def __init__(self, port, baud=115200):
+        super().__init__("zephyr", port, baud)
+
     def toolcheck(self):
-        pass
+        print("Checking Zephyr build tools...")
+        check_tool_installed("cmake")
+        check_tool_installed("ninja")
+        try:
+            check_tool_installed("west")
+        except EnvironmentError:
+            print("Note: 'west' not found in PATH. Ensure Zephyr environment is initialized.")
+
     def configure(self, build_root, args=None):
-        pass
-    def flash(self, args, build_root):
-        pass
-    def erase(self, args, build_root):
-        pass
-    def reset(self, args, build_root):
-        pass
-    def flash_cfg(self, args, build_root):
-        pass
-    def erase_cfg(self, args, build_root):
-        pass
+        if len(args.prod_name) != 1:
+            raise InvalidProductNameException()
+        build_dir = os.path.abspath(os.path.join(build_root, args.prod_name[0]))
+        cmd = ["west", "build", "-t", "menuconfig", "-d", build_dir]
+        subprocess.run(cmd, check=True)
+
+    def _get_flash_runner(self, build_dir, bsp=None):
+        runners_yaml_path = os.path.join(build_dir, "zephyr", "runners.yaml")
+        if os.path.exists(runners_yaml_path):
+            try:
+                import yaml
+                with open(runners_yaml_path, "r") as f:
+                    data = yaml.safe_load(f)
+                    if isinstance(data, dict):
+                        return data.get("flash-runner")
+            except Exception:
+                pass
+        if bsp in ["weact_c3", "xiao_c3", "esp32_devkitC"]:
+            return "esp32"
+        return None
+
+    def build_zephyr(self, args, build_dir, prod):
+        board_map = {
+            "weact_c3": "esp32c3_devkitm",
+            "xiao_c3": "esp32c3_devkitm",
+            "esp32_devkitC": "esp32_devkitc_wroom",
+            "rpi_pico_w": "rpi_pico/rp2040/w",
+        }
+        board = board_map.get(args.bsp, args.bsp)
+        project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+        pristine_mode = "always" if args.clean else "auto"
+        cmd = [
+            "west", "build",
+            "-b", board,
+            "-d", build_dir,
+            "-p", pristine_mode,
+            ".",
+            "--",
+            "-DMESHX_HOST=zephyr",
+            f"-DBSP={args.bsp}",
+            f"-DEXTRA_ZEPHYR_MODULES={project_root}",
+            f"-DPROD_NAME={prod}",
+            f"-DMESHX_BUILD_TYPE={str(args.build_type)}",
+            f"-DPROD_PROFILE={args.prod_profile}",
+            "-DUSE_CCACHE=0"
+        ]
+        if args.define:
+            cmd.append(f"-DMESHX_EXTRA_DEFS={';'.join(args.define)}")
+        print("Running Zephyr build command:", " ".join(cmd))
+        subprocess.run(cmd, check=True)
+
+    def flash(self, args, build_root="build"):
+        if len(args.prod_name) != 1:
+            raise InvalidProductNameException()
+        build_dir = os.path.abspath(os.path.join(build_root, args.prod_name[0]))
+        pathext = os.environ.get("PATHEXT", "")
+        if ".PY" not in pathext.upper().split(";"):
+            os.environ["PATHEXT"] = pathext + ";.PY;.py"
+        cmd = ["west", "flash", "-d", build_dir]
+        runner = self._get_flash_runner(build_dir, args.bsp)
+        if runner == "esp32":
+            project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+            esptool_path = os.path.abspath(os.path.join(project_root, "modules", "hal", "espressif", "tools", "esptool_py", "esptool.py"))
+            if os.path.exists(esptool_path):
+                cmd.extend(["--esp-tool", esptool_path])
+            if args.port:
+                os.environ["ESPTOOL_PORT"] = args.port
+                cmd.extend(["--esp-device", args.port])
+        elif args.port:
+            if runner in ["nrfjprog", "pyocd", "jlink"]:
+                cmd.extend(["--dev-id", args.port])
+            else:
+                cmd.extend(["--dev-id", args.port])
+        print("Flashing Zephyr target:", " ".join(cmd))
+        self.proc_run(cmd)
+
+    def erase(self, args, build_root="build"):
+        if len(args.prod_name) != 1:
+            raise InvalidProductNameException()
+        build_dir = os.path.abspath(os.path.join(build_root, args.prod_name[0]))
+        pathext = os.environ.get("PATHEXT", "")
+        if ".PY" not in pathext.upper().split(";"):
+            os.environ["PATHEXT"] = pathext + ";.PY;.py"
+        cmd = ["west", "flash", "--erase", "-d", build_dir]
+        runner = self._get_flash_runner(build_dir, args.bsp)
+        if runner == "esp32":
+            project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+            esptool_path = os.path.abspath(os.path.join(project_root, "modules", "hal", "espressif", "tools", "esptool_py", "esptool.py"))
+            if os.path.exists(esptool_path):
+                cmd.extend(["--esp-tool", esptool_path])
+            if args.port:
+                os.environ["ESPTOOL_PORT"] = args.port
+                cmd.extend(["--esp-device", args.port])
+        elif args.port:
+            if runner in ["nrfjprog", "pyocd", "jlink"]:
+                cmd.extend(["--dev-id", args.port])
+            else:
+                cmd.extend(["--dev-id", args.port])
+        print("Erasing Zephyr target flash:", " ".join(cmd))
+        self.proc_run(cmd)
+
+    def reset(self, args, build_root="build"):
+        if len(args.prod_name) != 1:
+            raise InvalidProductNameException()
+        build_dir = os.path.abspath(os.path.join(build_root, args.prod_name[0]))
+        runner = self._get_flash_runner(build_dir, args.bsp)
+        if runner == "esp32" and args.port:
+            print(f"Hard-resetting ESP target on port: {args.port}")
+            cmd = [sys.executable, "-m", "esptool", "--port", args.port, "--before", "default_reset", "--after", "hard_reset", "read_mac"]
+            subprocess.run(cmd, check=True)
+            return
+        elif runner == "nrfjprog":
+            cmd = ["west", "flash", "--runner", "nrfjprog", "--reset", "-d", build_dir]
+        else:
+            cmd = ["west", "flash", "--reset", "-d", build_dir]
+        print("Resetting Zephyr target:", " ".join(cmd))
+        self.proc_run(cmd)
+
+    def _get_partition_info(self, build_dir, label="meshx_cfg_partition"):
+        dts_path = os.path.join(build_dir, "zephyr", "zephyr.dts")
+        if os.path.exists(dts_path):
+            with open(dts_path, "r") as f:
+                content = f.read()
+            m = re.search(r'meshx_cfg_partition:\s*partition@([0-9a-fA-F]+)\s*\{[^}]*reg\s*=\s*<\s*(0x[0-9a-fA-F]+|\d+)\s*(0x[0-9a-fA-F]+|\d+)', content, re.DOTALL)
+            if m:
+                return int(m.group(2), 0), int(m.group(3), 0)
+            m2 = re.search(r'partition@([0-9a-fA-F]+)\s*\{[^}]*label\s*=\s*"meshx-cfg"[^}]*reg\s*=\s*<\s*(0x[0-9a-fA-F]+|\d+)\s*(0x[0-9a-fA-F]+|\d+)', content, re.DOTALL)
+            if m2:
+                return int(m2.group(2), 0), int(m2.group(3), 0)
+        return None, None
+
+    def flash_cfg(self, args, build_root="build"):
+        if len(args.prod_name) != 1:
+            raise InvalidProductNameException()
+        self.validate_port(args.port)
+
+        build_dir = os.path.abspath(os.path.join(build_root, args.prod_name[0]))
+        generated_cfg = os.path.abspath(os.path.join(build_dir, "main", "meshx_cfg.mxc"))
+        static_cfg = os.path.abspath(os.path.join("port", "bsp", args.bsp, "meshx_cfg.mxc"))
+        cfg_to_flash = generated_cfg if os.path.exists(generated_cfg) else static_cfg
+
+        if not os.path.exists(cfg_to_flash):
+            print(f"Warning: Configuration binary not found at {generated_cfg} or {static_cfg}. Skipping meshx_cfg flash.")
+            return
+
+        offset, size = self._get_partition_info(build_dir)
+        if offset is None:
+            print("Warning: Could not determine meshx-cfg partition offset from zephyr.dts. Skipping meshx_cfg flash.")
+            return
+
+        runner = self._get_flash_runner(build_dir, args.bsp)
+        print(f"Flashing configuration binary ({cfg_to_flash}) to 0x{offset:X}...")
+
+        if runner == "esp32":
+            project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+            esptool_path = os.path.abspath(os.path.join(project_root, "modules", "hal", "espressif", "tools", "esptool_py", "esptool.py"))
+            esptool_cmd = [sys.executable, esptool_path] if os.path.exists(esptool_path) else [sys.executable, "-m", "esptool"]
+            cmd = esptool_cmd + [
+                "--chip", "auto",
+                "--port", args.port,
+                "--baud", str(self.baud),
+                "--before", "default_reset",
+                "--after", "hard_reset",
+                "write_flash", hex(offset), cfg_to_flash
+            ]
+            self.proc_run(cmd, cwd=build_dir)
+        elif runner == "pyocd":
+            cmd = ["pyocd", "load", cfg_to_flash, "-a", hex(offset)]
+            if args.port:
+                cmd.extend(["-u", args.port])
+            self.proc_run(cmd, cwd=build_dir)
+        else:
+            print(f"Custom configuration flashing via runner '{runner}' not directly supported.")
+
+    def erase_cfg(self, args, build_root="build"):
+        self.validate_port(args.port)
+        build_dir = os.path.abspath(os.path.join(build_root, args.prod_name[0]))
+        offset, size = self._get_partition_info(build_dir)
+        if offset is None or size is None:
+            print("Warning: Could not determine meshx-cfg partition offset/size from zephyr.dts.")
+            return
+
+        runner = self._get_flash_runner(build_dir, args.bsp)
+        print(f"Erasing configuration partition at 0x{offset:X} (size 0x{size:X})...")
+        if runner == "esp32":
+            project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+            esptool_path = os.path.abspath(os.path.join(project_root, "modules", "hal", "espressif", "tools", "esptool_py", "esptool.py"))
+            esptool_cmd = [sys.executable, esptool_path] if os.path.exists(esptool_path) else [sys.executable, "-m", "esptool"]
+            cmd = esptool_cmd + [
+                "--chip", "auto",
+                "--port", args.port,
+                "--baud", str(self.baud),
+                "erase_region", hex(offset), hex(size)
+            ]
+            self.proc_run(cmd, cwd=build_dir)
+        else:
+            print(f"Configuration partition erase via runner '{runner}' is handled by whole-chip erase (--erase).")
+
+    def run_fallback(self, args, build_dir):
+        if not args.port:
+            raise TargetFlashException("Please provide a port for serial monitoring")
+        if args.bsp in ["weact_c3", "xiao_c3", "esp32_devkitC"]:
+            try:
+                import esp_idf_monitor
+                cmd = [sys.executable, "-m", "esp_idf_monitor", "--port", args.port, "--baud", str(self.baud)]
+                self.proc_run(cmd, cwd=build_dir)
+                return
+            except ImportError:
+                pass
+        cmd = [sys.executable, "-m", "serial.tools.miniterm", args.port, str(self.baud)]
+        self.proc_run(cmd, cwd=build_dir)
+
+NRFTarget = ZephyrTarget
 
 def clean(args, build_root = "build"):
     """Clean the build directory by removing all build artifacts."""
@@ -384,6 +605,14 @@ def clean(args, build_root = "build"):
 
 def build(args, build_root = "build"):
     """Build the expected target and product."""
+    if args.host == "zephyr":
+        target = ZephyrTarget(args.port, args.baud)
+        for prod in args.prod_name:
+            build_dir = os.path.join(build_root, prod)
+            os.makedirs(build_dir, exist_ok=True)
+            target.build_zephyr(args, build_dir, prod)
+        return
+
     for prod in args.prod_name:
         # Delete any existing sdkconfig file
         sdkconfig_path = "sdkconfig"
@@ -533,6 +762,8 @@ def main():
     target_sel = None
     if args.host == "esp":
         target_sel = ESPTarget(args.port, args.baud)
+    elif args.host == "zephyr" or args.host == "nrf":
+        target_sel = ZephyrTarget(args.port, args.baud)
     else:
         raise TargetFlashException(f"Unsupported target host: {args.host}")
 
