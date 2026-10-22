@@ -33,6 +33,5 @@ var searchData=
   ['kv_5fstatus_5fempty_30',['KV_STATUS_EMPTY',['../d5/d22/meshx__kv__engine_8c.html#a9656d2fae99788f81e32f09f4549a8be',1,'meshx_kv_engine.c']]],
   ['kv_5fstatus_5fobsolete_31',['KV_STATUS_OBSOLETE',['../d5/d22/meshx__kv__engine_8c.html#a5e89b2262ac5a9514a975a95b5bd33e8',1,'meshx_kv_engine.c']]],
   ['kv_5fstatus_5fvalid_32',['KV_STATUS_VALID',['../d5/d22/meshx__kv__engine_8c.html#afe9b793fdce1d7471dea184d1d0e32b8',1,'meshx_kv_engine.c']]],
-  ['kv_5fstorage_33',['KV_STORAGE',['../d4/de4/namespacemeshx.html#a7e6a67fc6ac833eb02c7926536eb855bab7fa64ab2cca8651a8b5e213d4d283ba',1,'meshx']]],
-  ['kv_5fwrite_5fpos_34',['kv_write_pos',['../d5/d22/meshx__kv__engine_8c.html#af65533646f8f861541d681703160fec9',1,'meshx_kv_engine.c']]]
+  ['kv_5fwrite_5fpos_33',['kv_write_pos',['../d5/d22/meshx__kv__engine_8c.html#af65533646f8f861541d681703160fec9',1,'meshx_kv_engine.c']]]
 ];

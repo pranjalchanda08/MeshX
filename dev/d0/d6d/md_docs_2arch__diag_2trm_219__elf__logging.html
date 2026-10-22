@@ -81,7 +81,7 @@ $(function() {
 <p><b><a class="el" href="../../db/df3/md_docs_2arch__diag_2trm_218__web__console.html">← Web Console</a></b> | <b><a class="el" href="../../index.html#md_README">← Index</a></b> | <b><a class="el" href="../../d7/d9a/md_docs_2arch__diag_2trm_220__uvp__routing.html">Next: UVP Routing →</a></b> </p>
 </blockquote>
 <hr  />
-<h1 class="doxsection"><a class="anchor" id="overview-4"></a>
+<h1 class="doxsection"><a class="anchor" id="overview-5"></a>
 Overview</h1>
 <p>MeshX uses an <b>ELF-based binary logging system</b> that removes all format strings from the firmware binary (<span class="tt">.bin</span> / <span class="tt">.hex</span>) while keeping them available in the debug ELF file. At runtime, only a compact TLV packet is emitted over UART: an ELF address + raw arguments. The host-side Python decoder resolves the address back to the format string and produces human-readable output.</p>
 <p>This reclaims <b>significant Flash</b> (format strings are frequently the largest <span class="tt">.rodata</span> component) with zero loss of debug information.</p>

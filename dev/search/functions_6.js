@@ -45,14 +45,5 @@ var searchData=
   ['get_5fven_5fmodel_5fcount_42',['get_ven_model_count',['../de/dfb/classmeshXElement.html#ab4d99188e6411b1a5dd04eb231526871',1,'meshXElement']]],
   ['get_5fven_5fmodels_43',['get_ven_models',['../d9/db0/classmeshXElementIF.html#a2aaec23bb470e4cc6653364fd5a172fc',1,'meshXElementIF::get_ven_models()'],['../de/dfb/classmeshXElement.html#ac4dd57c0ec55c6873bd16aac53a0256f',1,'meshXElement::get_ven_models(void) final']]],
   ['get_5fven_5fplat_5fmodel_5farray_44',['get_ven_plat_model_array',['../de/dfb/classmeshXElement.html#a21a090a03000a8d99acef26ebd16691e',1,'meshXElement']]],
-  ['getdutycycle_45',['getDutyCycle',['../d9/d5e/classmeshx_1_1MeshXPwmImpl.html#a9337875f88290591c5d59f8d3914046b',1,'meshx::MeshXPwmImpl']]],
-  ['getfrequency_46',['getFrequency',['../d9/d5e/classmeshx_1_1MeshXPwmImpl.html#a603def75f6598fdcac7ec75a57b471c9',1,'meshx::MeshXPwmImpl']]],
-  ['getinstance_47',['getInstance',['../dc/d95/classmeshx_1_1MeshXIoFactory.html#a4720341eb41fab504170f15e8a96606d',1,'meshx::MeshXIoFactory']]],
-  ['getlevel_48',['getLevel',['../df/dae/classmeshx_1_1MeshXIoInterface.html#ae64e38ecc86e7d22fdf1a394a84d417d',1,'meshx::MeshXIoInterface::getLevel()'],['../da/d8c/classmeshx_1_1MeshXGpioImpl.html#acae74bf66b6b7f3109f70e23a04d20f0',1,'meshx::MeshXGpioImpl::getLevel()'],['../d9/d5e/classmeshx_1_1MeshXPwmImpl.html#a26ebca765e87db2642042fd6618ef7cf',1,'meshx::MeshXPwmImpl::getLevel()']]],
-  ['getlogicalpin_49',['getLogicalPin',['../df/dae/classmeshx_1_1MeshXIoInterface.html#a377261c1ed0a6a8d437199d0b7e6c073',1,'meshx::MeshXIoInterface::getLogicalPin()'],['../da/d8c/classmeshx_1_1MeshXGpioImpl.html#ab3bba61aa58ce524f08f6e348f167267',1,'meshx::MeshXGpioImpl::getLogicalPin()'],['../d9/d5e/classmeshx_1_1MeshXPwmImpl.html#ad7685b91594b130815ce4c12e97834ae',1,'meshx::MeshXPwmImpl::getLogicalPin()']]],
-  ['getname_50',['getName',['../df/dae/classmeshx_1_1MeshXIoInterface.html#a097ea5e2eca954555e5965cbcdc00d43',1,'meshx::MeshXIoInterface::getName()'],['../da/d8c/classmeshx_1_1MeshXGpioImpl.html#af66ef12f10d3eca454bada9691e89095',1,'meshx::MeshXGpioImpl::getName()'],['../d9/d5e/classmeshx_1_1MeshXPwmImpl.html#ac8944b25203654307dc4c49e48dc04da',1,'meshx::MeshXPwmImpl::getName()']]],
-  ['gpio_5fdecode_5fcb_51',['gpio_decode_cb',['../d9/d9f/meshx__ro__cfg_8c.html#a2fd604c6491ed8f9231bdc82e0a5c5e0',1,'meshx_ro_cfg.c']]],
-  ['gpiodrivetostring_52',['gpioDriveToString',['../d4/de4/namespacemeshx.html#a066f683fa8b9170a72351fe780a05b07',1,'meshx']]],
-  ['gpiomodetostring_53',['gpioModeToString',['../d4/de4/namespacemeshx.html#adb2890d8daf29d3027004c25bf63a7ff',1,'meshx']]],
-  ['gpiopulltostring_54',['gpioPullToString',['../d4/de4/namespacemeshx.html#a43f8e597fea4059c50df0ca0eafa6190',1,'meshx']]]
+  ['gpio_5fdecode_5fcb_45',['gpio_decode_cb',['../d9/d9f/meshx__ro__cfg_8c.html#a2fd604c6491ed8f9231bdc82e0a5c5e0',1,'meshx_ro_cfg.c']]]
 ];

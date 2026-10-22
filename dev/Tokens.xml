@@ -101,16 +101,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>meshx::IoConfig</Name>
-      <APILanguage>c</APILanguage>
-      <Type>cl</Type>
-      <Scope>meshx::IoConfig</Scope>
-    </TokenIdentifier>
-    <Path>dc/d11/structmeshx_1_1IoConfig.html</Path>
-    <DeclaredIn>meshx_io_factory.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>kv_header_t</Name>
       <APILanguage>c</APILanguage>
       <Type>cl</Type>
@@ -683,16 +673,6 @@
     </TokenIdentifier>
     <Path>d6/dc1/structmeshx__prov__cb__param__t_1_1meshx__input__string__comp__param.html</Path>
     <DeclaredIn>meshx_ble_mesh_prov_srv.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_config_t</Name>
-      <APILanguage>c</APILanguage>
-      <Type>cl</Type>
-      <Scope>meshx_io_config_t</Scope>
-    </TokenIdentifier>
-    <Path>d5/d1e/structmeshx__io__config__t.html</Path>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -2318,35 +2298,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>meshx::MeshXGpioImpl</Name>
-      <APILanguage>c</APILanguage>
-      <Type>cl</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx::MeshXIoFactory</Name>
-      <APILanguage>c</APILanguage>
-      <Type>cl</Type>
-      <Scope>meshx::MeshXIoFactory</Scope>
-    </TokenIdentifier>
-    <Path>dc/d95/classmeshx_1_1MeshXIoFactory.html</Path>
-    <DeclaredIn>meshx_io_factory.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx::MeshXIoInterface</Name>
-      <APILanguage>c</APILanguage>
-      <Type>cl</Type>
-      <Scope>meshx::MeshXIoInterface</Scope>
-    </TokenIdentifier>
-    <Path>df/dae/classmeshx_1_1MeshXIoInterface.html</Path>
-    <DeclaredIn>meshx_io_interface.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>meshXLightCWWWClientModel</Name>
       <APILanguage>c</APILanguage>
       <Type>cl</Type>
@@ -2414,15 +2365,6 @@
     </TokenIdentifier>
     <Path>d1/d52/classmeshXModelIF.html</Path>
     <DeclaredIn>meshx_model_class.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx::MeshXPwmImpl</Name>
-      <APILanguage>c</APILanguage>
-      <Type>cl</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -2841,15 +2783,6 @@
     </TokenIdentifier>
     <Path>d0/d4b/structmeshXUVPModel_1_1uvp__txcm__param__t.html</Path>
     <DeclaredIn>meshx_uvp_model.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx</Name>
-      <APILanguage>c</APILanguage>
-      <Type>ns</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -4351,26 +4284,6 @@
       <Name>channel</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
-      <Scope>meshx::IoConfig</Scope>
-    </TokenIdentifier>
-    <Path>dc/d11/structmeshx_1_1IoConfig.html</Path>
-    <Anchor>ae8152476cfe281ee7fc8985c4e1000d2</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>channel</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_io_config_t</Scope>
-    </TokenIdentifier>
-    <Path>d5/d1e/structmeshx__io__config__t.html</Path>
-    <Anchor>a2a625a4a57a54ac2b369bf6efe6c945a</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>channel</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
       <Scope>meshx_pwm_config_t</Scope>
     </TokenIdentifier>
     <Path>dd/d39/structmeshx__pwm__config__t.html</Path>
@@ -4587,26 +4500,6 @@
     </TokenIdentifier>
     <Path>d7/d41/structdev__struct.html</Path>
     <Anchor>a074bb7184d06f02207895e34f0c4deeb</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>config</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::IoConfig</Scope>
-    </TokenIdentifier>
-    <Path>dc/d11/structmeshx_1_1IoConfig.html</Path>
-    <Anchor>add618a6addca881a91fbe38a179c7dbb</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>config</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_io_config_t</Scope>
-    </TokenIdentifier>
-    <Path>d5/d1e/structmeshx__io__config__t.html</Path>
-    <Anchor>a4944a1d07c7ed0a9bd4a662f5e91f9f7</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -5185,17 +5078,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>create</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoFactory</Scope>
-    </TokenIdentifier>
-    <Path>dc/d95/classmeshx_1_1MeshXIoFactory.html</Path>
-    <Anchor>abf2d3975dd375bbfba5afbabfd323774</Anchor>
-    <DeclaredIn>meshx_io_factory.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>create_control_task</Name>
       <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
@@ -5204,17 +5086,6 @@
     <Path>d7/d7a/classmeshXUVPModel.html</Path>
     <Anchor>a06bf7796a685bde07ba3e2714b1bee80</Anchor>
     <DeclaredIn>meshx_uvp_model.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>createFromYaml</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoFactory</Scope>
-    </TokenIdentifier>
-    <Path>dc/d95/classmeshx_1_1MeshXIoFactory.html</Path>
-    <Anchor>a92c5c78b4944578fffda751baa281893</Anchor>
-    <DeclaredIn>meshx_io_factory.hpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -5378,26 +5249,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>custom</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::IoConfig</Scope>
-    </TokenIdentifier>
-    <Path>dc/d11/structmeshx_1_1IoConfig.html</Path>
-    <Anchor>a8f84c0785dae5de6647003faa5328d84</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>custom</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_io_config_t</Scope>
-    </TokenIdentifier>
-    <Path>d5/d1e/structmeshx__io__config__t.html</Path>
-    <Anchor>af1b875ae42c080431021bc9d033ce4ee</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>custom_data</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -5405,46 +5256,6 @@
     </TokenIdentifier>
     <Path>d2/d84/structmeshx__gpio__pin__state__t.html</Path>
     <Anchor>ab3ce8299d8d6a56215155be05c27e5bd</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>custom_data</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::IoConfig</Scope>
-    </TokenIdentifier>
-    <Path>dc/d11/structmeshx_1_1IoConfig.html</Path>
-    <Anchor>a2427c7c4211c5c93c1d6ce6916e5e174</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>custom_data</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_io_config_t</Scope>
-    </TokenIdentifier>
-    <Path>d5/d1e/structmeshx__io__config__t.html</Path>
-    <Anchor>a6275a2bc0a23f9eba376de3aef0f8182</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>custom_id</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::IoConfig</Scope>
-    </TokenIdentifier>
-    <Path>dc/d11/structmeshx_1_1IoConfig.html</Path>
-    <Anchor>a97390f6ebfc8b4162f6531a58ef15abb</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>custom_id</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_io_config_t</Scope>
-    </TokenIdentifier>
-    <Path>d5/d1e/structmeshx__io__config__t.html</Path>
-    <Anchor>a64f591f814a8712ab8a44e7d7444ff23</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -5645,26 +5456,6 @@
     </TokenIdentifier>
     <Path>d7/de6/structmeshx__prov__cb__param__t_1_1meshx__provisioner__prov__comp__param.html</Path>
     <Anchor>a6c58b6d40f23f09588ef73a059a5c35c</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>drive</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::IoConfig</Scope>
-    </TokenIdentifier>
-    <Path>dc/d11/structmeshx_1_1IoConfig.html</Path>
-    <Anchor>adf6adfc60f5d9bf20e612d95968ab096</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>drive</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_io_config_t</Scope>
-    </TokenIdentifier>
-    <Path>d5/d1e/structmeshx__io__config__t.html</Path>
-    <Anchor>a47409ae02314275fbd87890477ccce17</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -5955,26 +5746,6 @@
     </TokenIdentifier>
     <Path>da/db3/structmeshx__gpio__pwm__config__serialized__t.html</Path>
     <Anchor>afc6ad28ed0ac3b8e79b5b4a30bd27232</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>duty_cycle</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::IoConfig</Scope>
-    </TokenIdentifier>
-    <Path>dc/d11/structmeshx_1_1IoConfig.html</Path>
-    <Anchor>a86d80ad91ea8a4dc12149367cdbf07bd</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>duty_cycle</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_io_config_t</Scope>
-    </TokenIdentifier>
-    <Path>d5/d1e/structmeshx__io__config__t.html</Path>
-    <Anchor>a9e5ce7b69b183834cd0bef7f7ac36b73</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -6674,28 +6445,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>enableInterrupt</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoInterface</Scope>
-    </TokenIdentifier>
-    <Path>df/dae/classmeshx_1_1MeshXIoInterface.html</Path>
-    <Anchor>a9c9a0d472b185f1b457faf5cc5d9c241</Anchor>
-    <DeclaredIn>meshx_io_interface.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>enableInterrupt</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>a03e2cd482f470220261d22c2107fd783</Anchor>
-    <DeclaredIn>meshx_gpio_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>err_code</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -7326,49 +7075,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>execute</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoInterface</Scope>
-    </TokenIdentifier>
-    <Path>df/dae/classmeshx_1_1MeshXIoInterface.html</Path>
-    <Anchor>ab677a6a54114838826f8465f222b054d</Anchor>
-    <DeclaredIn>meshx_io_interface.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>execute</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>a9bddb66b36f167c771043627e6e4e8d1</Anchor>
-    <DeclaredIn>meshx_gpio_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>execute</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>aad1bf5b040585605e1dfea2df9202af9</Anchor>
-    <DeclaredIn>meshx_pwm_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>factory_registry_</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::MeshXIoFactory</Scope>
-    </TokenIdentifier>
-    <Path>dc/d95/classmeshx_1_1MeshXIoFactory.html</Path>
-    <Anchor>afb1de585d0aa39e54c1922962303f61c</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>feature</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -7598,26 +7304,6 @@
     </TokenIdentifier>
     <Path>da/db3/structmeshx__gpio__pwm__config__serialized__t.html</Path>
     <Anchor>a47f3585bedc321efe8c78f9f306a8fe1</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>frequency</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::IoConfig</Scope>
-    </TokenIdentifier>
-    <Path>dc/d11/structmeshx_1_1IoConfig.html</Path>
-    <Anchor>a2cda46d4a998685d4409d7a6da3bc092</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>frequency</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_io_config_t</Scope>
-    </TokenIdentifier>
-    <Path>d5/d1e/structmeshx__io__config__t.html</Path>
-    <Anchor>afc8946648eafa83ac78bde6bcc04164b</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -9101,158 +8787,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>getDutyCycle</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>a9337875f88290591c5d59f8d3914046b</Anchor>
-    <DeclaredIn>meshx_pwm_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>getFrequency</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>a603def75f6598fdcac7ec75a57b471c9</Anchor>
-    <DeclaredIn>meshx_pwm_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>getInstance</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>clm</Type>
-      <Scope>meshx::MeshXIoFactory</Scope>
-    </TokenIdentifier>
-    <Path>dc/d95/classmeshx_1_1MeshXIoFactory.html</Path>
-    <Anchor>a4720341eb41fab504170f15e8a96606d</Anchor>
-    <DeclaredIn>meshx_io_factory.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>getLevel</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoInterface</Scope>
-    </TokenIdentifier>
-    <Path>df/dae/classmeshx_1_1MeshXIoInterface.html</Path>
-    <Anchor>ae64e38ecc86e7d22fdf1a394a84d417d</Anchor>
-    <DeclaredIn>meshx_io_interface.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>getLevel</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>acae74bf66b6b7f3109f70e23a04d20f0</Anchor>
-    <DeclaredIn>meshx_gpio_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>getLevel</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>a26ebca765e87db2642042fd6618ef7cf</Anchor>
-    <DeclaredIn>meshx_pwm_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>getLogicalPin</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoInterface</Scope>
-    </TokenIdentifier>
-    <Path>df/dae/classmeshx_1_1MeshXIoInterface.html</Path>
-    <Anchor>a377261c1ed0a6a8d437199d0b7e6c073</Anchor>
-    <DeclaredIn>meshx_io_interface.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>getLogicalPin</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>ab3bba61aa58ce524f08f6e348f167267</Anchor>
-    <DeclaredIn>meshx_gpio_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>getLogicalPin</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>ad7685b91594b130815ce4c12e97834ae</Anchor>
-    <DeclaredIn>meshx_pwm_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>getName</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoInterface</Scope>
-    </TokenIdentifier>
-    <Path>df/dae/classmeshx_1_1MeshXIoInterface.html</Path>
-    <Anchor>a097ea5e2eca954555e5965cbcdc00d43</Anchor>
-    <DeclaredIn>meshx_io_interface.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>getName</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>af66ef12f10d3eca454bada9691e89095</Anchor>
-    <DeclaredIn>meshx_gpio_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>getName</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>ac8944b25203654307dc4c49e48dc04da</Anchor>
-    <DeclaredIn>meshx_pwm_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>gpio</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::IoConfig</Scope>
-    </TokenIdentifier>
-    <Path>dc/d11/structmeshx_1_1IoConfig.html</Path>
-    <Anchor>a7e0277556a1d5538055b93f06d953c2d</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>gpio</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_io_config_t</Scope>
-    </TokenIdentifier>
-    <Path>d5/d1e/structmeshx__io__config__t.html</Path>
-    <Anchor>a42662aea8fd15d13aa21bcc3fb3c2605</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>group_addr</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -9919,26 +9453,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>initial_level</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::IoConfig</Scope>
-    </TokenIdentifier>
-    <Path>dc/d11/structmeshx_1_1IoConfig.html</Path>
-    <Anchor>ae01c6c525b894914e34405f40d8040e8</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>initial_level</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_io_config_t</Scope>
-    </TokenIdentifier>
-    <Path>d5/d1e/structmeshx__io__config__t.html</Path>
-    <Anchor>ac437a04769ed738638318adc07f475bc</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>initialize</Name>
       <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
@@ -10091,16 +9605,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>io_type</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_io_config_t</Scope>
-    </TokenIdentifier>
-    <Path>d5/d1e/structmeshx__io__config__t.html</Path>
-    <Anchor>a2ad4c2688332a262b2f2368ceab487ac</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>is_baked</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -10246,61 +9750,6 @@
     <Path>d0/d2f/classmeshXComposition.html</Path>
     <Anchor>ace68fc962783a627d424a9ad08ba7670</Anchor>
     <DeclaredIn>meshx_composition.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>isFunctionSupported</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoInterface</Scope>
-    </TokenIdentifier>
-    <Path>df/dae/classmeshx_1_1MeshXIoInterface.html</Path>
-    <Anchor>ae8315ffa28012365dcee892b4b4ef1f4</Anchor>
-    <DeclaredIn>meshx_io_interface.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>isFunctionSupported</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>a9648b0a59779dffb78a155c618f67698</Anchor>
-    <DeclaredIn>meshx_gpio_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>isFunctionSupported</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>a5de1e07e51f3fa37cc0f81d51474013b</Anchor>
-    <DeclaredIn>meshx_pwm_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>isStarted</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>a6156134001dbd0d88cefcfdfb6770ff7</Anchor>
-    <DeclaredIn>meshx_pwm_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>isTypeSupported</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoFactory</Scope>
-    </TokenIdentifier>
-    <Path>dc/d95/classmeshx_1_1MeshXIoFactory.html</Path>
-    <Anchor>a9bc18df537ecd2a844bc8a2d5f99ba57</Anchor>
-    <DeclaredIn>meshx_io_factory.hpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -11095,26 +10544,6 @@
       <Name>logical_pin</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
-      <Scope>meshx::IoConfig</Scope>
-    </TokenIdentifier>
-    <Path>dc/d11/structmeshx_1_1IoConfig.html</Path>
-    <Anchor>a8370beb7c223a783de2e724a4ed125bf</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>logical_pin</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_io_config_t</Scope>
-    </TokenIdentifier>
-    <Path>d5/d1e/structmeshx__io__config__t.html</Path>
-    <Anchor>acac9fc0000107c239f0b7703522d0e09</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>logical_pin</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
       <Scope>meshx_pwm_config_t</Scope>
     </TokenIdentifier>
     <Path>dd/d39/structmeshx__pwm__config__t.html</Path>
@@ -11199,126 +10628,6 @@
     </TokenIdentifier>
     <Path>d1/db1/unionmeshx__prov__cb__param__t.html</Path>
     <Anchor>a402b8dd8d355d00eeed13f73463c2917</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>m_duty_cycle</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>aa649601210af6e334ee9de51e84f77f3</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>m_frequency</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>ab5b3934424125c468a0f532135a5391a</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>m_initialized</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>ae2abcb1222d357b5f5366e54467a213d</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>m_initialized</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>a6f7b60c0ef35d0bffff4092aeace271c</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>m_intr_callback</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>a7c7b8a75f7f1e1072044d13dc4317867</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>m_intr_user_data</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>ac2f8d7d42e2cada3f6da2e5cef06a7e9</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>m_logical_pin</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>a72ea983eeaad8cb1a654bb9f435be59b</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>m_logical_pin</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>afa579d4095ab585eb48ccdead8e1b6e5</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>m_mode</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>a5e5bc1f9a3ee975aeaee25fc43c381c6</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>m_name</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>abbbd9b6378070d93b6c240d76d7a8612</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>m_name</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>a8c36e077ea46982c5109606fa61f8e85</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>m_started</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>a79f17692f41d9aa0c4ec5a9afe211b44</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -12610,17 +11919,6 @@
     <Path>d7/d7a/classmeshXUVPModel.html</Path>
     <Anchor>afed100e90260206e3900e8a966d3ce46</Anchor>
     <DeclaredIn>meshx_uvp_model.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_gpio_intr_cb_wrapper</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>ffunc</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>a41d164bcd129d1639e268efc9cda4bf7</Anchor>
-    <DeclaredIn>meshx_gpio_impl.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -16929,39 +16227,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>MeshXGpioImpl</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>af7586d968c38667dd5b8fdeb062da23a</Anchor>
-    <DeclaredIn>meshx_gpio_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MeshXIoFactory</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoFactory</Scope>
-    </TokenIdentifier>
-    <Path>dc/d95/classmeshx_1_1MeshXIoFactory.html</Path>
-    <Anchor>a6106a0ed3307e47c9de288121635b7fe</Anchor>
-    <DeclaredIn>meshx_io_factory.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MeshXIoFactory</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoFactory</Scope>
-    </TokenIdentifier>
-    <Path>dc/d95/classmeshx_1_1MeshXIoFactory.html</Path>
-    <Anchor>a9f48311a342b1a5a9e59ffeb1287387f</Anchor>
-    <DeclaredIn>meshx_io_factory.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>meshXLogicalModel</Name>
       <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
@@ -17113,17 +16378,6 @@
     <Path>d1/d52/classmeshXModelIF.html</Path>
     <Anchor>a5cd1e0a01dce4d0fce933de55426b224</Anchor>
     <DeclaredIn>meshx_model_class.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MeshXPwmImpl</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>ab61fa5319d96908a3415a1011346cb78</Anchor>
-    <DeclaredIn>meshx_pwm_impl.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -17339,26 +16593,6 @@
     </TokenIdentifier>
     <Path>d5/d9e/structmeshx__gpio__pin__config__serialized__t.html</Path>
     <Anchor>aecde43f468aaeb1900777890808866d3</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>mode</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::IoConfig</Scope>
-    </TokenIdentifier>
-    <Path>dc/d11/structmeshx_1_1IoConfig.html</Path>
-    <Anchor>a8ca2201fe86e91e298b6ddd794b552eb</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>mode</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_io_config_t</Scope>
-    </TokenIdentifier>
-    <Path>d5/d1e/structmeshx__io__config__t.html</Path>
-    <Anchor>a2bac1a80c985f453a7f86c68f366430f</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -18807,26 +18041,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>name</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::IoConfig</Scope>
-    </TokenIdentifier>
-    <Path>dc/d11/structmeshx_1_1IoConfig.html</Path>
-    <Anchor>ae45b3b78592e419b33e9f35b5d1cef4d</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>name</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_io_config_t</Scope>
-    </TokenIdentifier>
-    <Path>d5/d1e/structmeshx__io__config__t.html</Path>
-    <Anchor>aa7956cc5b47c97f64e527014e81261db</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>net_id</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -19832,17 +19046,6 @@
     <Path>db/d7b/classmeshXElementRegistry.html</Path>
     <Anchor>af1813f1310cd6b1693a7df7bbe289de5</Anchor>
     <DeclaredIn>meshx_element_registry.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>operator=</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoFactory</Scope>
-    </TokenIdentifier>
-    <Path>dc/d95/classmeshx_1_1MeshXIoFactory.html</Path>
-    <Anchor>a850cd429c21ae9bb99d84b998927acc9</Anchor>
-    <DeclaredIn>meshx_io_factory.hpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -21221,26 +20424,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>pull</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::IoConfig</Scope>
-    </TokenIdentifier>
-    <Path>dc/d11/structmeshx_1_1IoConfig.html</Path>
-    <Anchor>a1e831cea64ade1584bacee1465c20b72</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>pull</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_io_config_t</Scope>
-    </TokenIdentifier>
-    <Path>d5/d1e/structmeshx__io__config__t.html</Path>
-    <Anchor>ab18b3fa6a4b4dc1289d5823f666161be</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>pwm</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -21258,26 +20441,6 @@
     </TokenIdentifier>
     <Path>d2/d84/structmeshx__gpio__pin__state__t.html</Path>
     <Anchor>a7ba8cdf8c753a7370ab796975cc75d43</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>pwm</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::IoConfig</Scope>
-    </TokenIdentifier>
-    <Path>dc/d11/structmeshx_1_1IoConfig.html</Path>
-    <Anchor>abc0f78a8410b5504b0936dede2a295f5</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>pwm</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_io_config_t</Scope>
-    </TokenIdentifier>
-    <Path>d5/d1e/structmeshx__io__config__t.html</Path>
-    <Anchor>a0b77f20f2465693fbe9bf5f6b39017a6</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -21531,39 +20694,6 @@
     </TokenIdentifier>
     <Path>de/dfb/classmeshXElement.html</Path>
     <Anchor>a5047d455195ae5876bd3feec7a7da017</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>registerInterrupt</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoInterface</Scope>
-    </TokenIdentifier>
-    <Path>df/dae/classmeshx_1_1MeshXIoInterface.html</Path>
-    <Anchor>a2d7559f020117ac70cf10fd23cb7d2ad</Anchor>
-    <DeclaredIn>meshx_io_interface.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>registerInterrupt</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>abda4e6fd74724b2e5599c9787a6a7748</Anchor>
-    <DeclaredIn>meshx_gpio_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>registerType</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoFactory</Scope>
-    </TokenIdentifier>
-    <Path>dc/d95/classmeshx_1_1MeshXIoFactory.html</Path>
-    <Anchor>a3e1971a22de4e2de1e0c31ddca21ba64</Anchor>
-    <DeclaredIn>meshx_io_factory.hpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -21836,26 +20966,6 @@
     </TokenIdentifier>
     <Path>da/db3/structmeshx__gpio__pwm__config__serialized__t.html</Path>
     <Anchor>a2007bd2e3c38fb9421a67acd0a00f69e</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>resolution</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::IoConfig</Scope>
-    </TokenIdentifier>
-    <Path>dc/d11/structmeshx_1_1IoConfig.html</Path>
-    <Anchor>a5e1f344730c085d557f2cfa4e06189d6</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>resolution</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_io_config_t</Scope>
-    </TokenIdentifier>
-    <Path>d5/d1e/structmeshx__io__config__t.html</Path>
-    <Anchor>a755c45a660248bd45598d748e7a8f6f4</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -22816,83 +21926,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>setLevel</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoInterface</Scope>
-    </TokenIdentifier>
-    <Path>df/dae/classmeshx_1_1MeshXIoInterface.html</Path>
-    <Anchor>ab1ad9ac9838f82d47e4ab321b9d96368</Anchor>
-    <DeclaredIn>meshx_io_interface.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>setLevel</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>a13dd77dfae373bef04fcd01983395040</Anchor>
-    <DeclaredIn>meshx_gpio_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>setLevel</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>ae78f8c6a6db7f4a38f62901358715ac2</Anchor>
-    <DeclaredIn>meshx_pwm_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>setPwmDutyCycle</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoInterface</Scope>
-    </TokenIdentifier>
-    <Path>df/dae/classmeshx_1_1MeshXIoInterface.html</Path>
-    <Anchor>a60a3731ffbbe82240ebc9eeefe06e399</Anchor>
-    <DeclaredIn>meshx_io_interface.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>setPwmDutyCycle</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>a705799ebe5fe2dfe8f4d67b20c5ba21f</Anchor>
-    <DeclaredIn>meshx_gpio_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>setPwmFrequency</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoInterface</Scope>
-    </TokenIdentifier>
-    <Path>df/dae/classmeshx_1_1MeshXIoInterface.html</Path>
-    <Anchor>ac04281688491dfe3b2b693e09c98a34e</Anchor>
-    <DeclaredIn>meshx_io_interface.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>setPwmFrequency</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>a2d076d76c1669239a4f65e41c44e56bc</Anchor>
-    <DeclaredIn>meshx_gpio_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>sig_model_array</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -23021,26 +22054,6 @@
     </TokenIdentifier>
     <Path>d5/d9e/structmeshx__gpio__pin__config__serialized__t.html</Path>
     <Anchor>a4eea2dee5c9edd8ed26cd3ce6c03f97a</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>signal_inversion</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::IoConfig</Scope>
-    </TokenIdentifier>
-    <Path>dc/d11/structmeshx_1_1IoConfig.html</Path>
-    <Anchor>a055085c767f6133087577b1bceca5594</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>signal_inversion</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx_io_config_t</Scope>
-    </TokenIdentifier>
-    <Path>d5/d1e/structmeshx__io__config__t.html</Path>
-    <Anchor>a6588045b8de9d8a27206187eee747df0</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23302,17 +22315,6 @@
     </TokenIdentifier>
     <Path>db/d8e/structmeshx__task.html</Path>
     <Anchor>a4d6d8d73711e5f445c6e39e928002688</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>start</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>a8f90c7b6595c78ff22c5f5eb48b708ad</Anchor>
-    <DeclaredIn>meshx_pwm_impl.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -23806,17 +22808,6 @@
     </TokenIdentifier>
     <Path>db/d34/structmeshx__prov__cb__param__t_1_1meshx__set__fast__prov__info__comp__param.html</Path>
     <Anchor>a918e17b5bc5815268ef1584d4074205e</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>stop</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>a8d6a344dc29bb87ecb79d3e82fc2db33</Anchor>
-    <DeclaredIn>meshx_pwm_impl.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -24353,39 +23344,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>toggle</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoInterface</Scope>
-    </TokenIdentifier>
-    <Path>df/dae/classmeshx_1_1MeshXIoInterface.html</Path>
-    <Anchor>a9d8bb325251dca5f2ca27bc088d71566</Anchor>
-    <DeclaredIn>meshx_io_interface.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>toggle</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>a6794f5e739c919640a3d1edf877d87b4</Anchor>
-    <DeclaredIn>meshx_gpio_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>toggle</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>a354280f0241b8faab597ac6f0b81a201</Anchor>
-    <DeclaredIn>meshx_pwm_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>total_len</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -24526,16 +23484,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>type</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>data</Type>
-      <Scope>meshx::IoConfig</Scope>
-    </TokenIdentifier>
-    <Path>dc/d11/structmeshx_1_1IoConfig.html</Path>
-    <Anchor>abd3deec6957403adcf2800577b2bc1df</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>type_id</Name>
       <APILanguage>cpp</APILanguage>
       <Type>data</Type>
@@ -24654,28 +23602,6 @@
     <Path>db/d7b/classmeshXElementRegistry.html</Path>
     <Anchor>a2f83ca95ddfcfaaf21d5cb9dcfe11625</Anchor>
     <DeclaredIn>meshx_element_registry.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>unregisterInterrupt</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoInterface</Scope>
-    </TokenIdentifier>
-    <Path>df/dae/classmeshx_1_1MeshXIoInterface.html</Path>
-    <Anchor>a151c1fe8d2d7aff60b4adead1c209f25</Anchor>
-    <DeclaredIn>meshx_io_interface.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>unregisterInterrupt</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>a24678f75d1cd9fb9231988c82cf408ef</Anchor>
-    <DeclaredIn>meshx_gpio_impl.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -25277,39 +24203,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>~MeshXGpioImpl</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXGpioImpl</Scope>
-    </TokenIdentifier>
-    <Path>da/d8c/classmeshx_1_1MeshXGpioImpl.html</Path>
-    <Anchor>aa942196d9bc9afdc9e500fff0b8b6554</Anchor>
-    <DeclaredIn>meshx_gpio_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>~MeshXIoFactory</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoFactory</Scope>
-    </TokenIdentifier>
-    <Path>dc/d95/classmeshx_1_1MeshXIoFactory.html</Path>
-    <Anchor>a9b1d64f3648fa3a4a29d1f5db2c7d085</Anchor>
-    <DeclaredIn>meshx_io_factory.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>~MeshXIoInterface</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXIoInterface</Scope>
-    </TokenIdentifier>
-    <Path>df/dae/classmeshx_1_1MeshXIoInterface.html</Path>
-    <Anchor>a9c496821f509fce2fba50bd88522565c</Anchor>
-    <DeclaredIn>meshx_io_interface.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>~meshXLogicalModel</Name>
       <APILanguage>cpp</APILanguage>
       <Type>instm</Type>
@@ -25370,17 +24263,6 @@
     <Path>d1/d52/classmeshXModelIF.html</Path>
     <Anchor>ad0dcea00b8b8a965344eefb338bd9df0</Anchor>
     <DeclaredIn>meshx_model_class.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>~MeshXPwmImpl</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>instm</Type>
-      <Scope>meshx::MeshXPwmImpl</Scope>
-    </TokenIdentifier>
-    <Path>d9/d5e/classmeshx_1_1MeshXPwmImpl.html</Path>
-    <Anchor>a04a73419441f1ee03dc8dff7f688d5b4</Anchor>
-    <DeclaredIn>meshx_pwm_impl.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -25484,16 +24366,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>ADC</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a51f4cc0ea855288658ff8d2b19033d60a72c1bba79e6502c017bd14bc00a68491</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>allocate_pwm_channel</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -25501,16 +24373,6 @@
     <Path>d1/d17/meshx__pwm_8c.html</Path>
     <Anchor>a5728b9d65b9fb87d87254b71212b0a9c</Anchor>
     <DeclaredIn>meshx_pwm.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>ANY_EDGE</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ae200f2d6d4cdc3cc384ea3968a598e93a79865522fb6fb871c11105472e8bfa82</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -25701,16 +24563,6 @@
     <Path>db/d5f/meshx__ble__mesh__config__srv_8h.html</Path>
     <Anchor>aaf2416418e48211e47bfa2545d446530</Anchor>
     <DeclaredIn>meshx_ble_mesh_config_srv.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONFIG_INVALID</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba4ffc0c7b5bcec35f8472136dd4b95ef0</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -27384,28 +26236,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>createGpioInstance</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>func</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a9e9969736cf0726dbecedce86c491377</Anchor>
-    <DeclaredIn>meshx_gpio_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>createPwmInstance</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>func</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a8d36a2a4f435766a408ab2a22de26eda</Anchor>
-    <DeclaredIn>meshx_io_factory.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>current_product_name</Name>
       <APILanguage>c</APILanguage>
       <Type>data</Type>
@@ -27413,36 +26243,6 @@
     <Path>d9/d70/meshx__gpio__kv_8c.html</Path>
     <Anchor>aa605e01f5ba913fe77f94aa8e9a2e564</Anchor>
     <DeclaredIn>meshx_gpio_kv.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CUSTOM</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a51f4cc0ea855288658ff8d2b19033d60a72baef04098f035e8a320b03ad197818</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CUSTOM_FUNCTION</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4a7378435d5cfcb627bb91dec219f67c01</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>DAC</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a51f4cc0ea855288658ff8d2b19033d60a52a8b954485e8bf8ebe32865d17563a6</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -27476,26 +26276,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>DISABLED</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ae200f2d6d4cdc3cc384ea3968a598e93a055c1a591abb0e8cd86dc969727bcc0b</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>DRIVE_MAX</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ad411d1f5062c09d5330aeb2e75fed911a5192757dc72a8c02cce742b47b893dbb</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>elements_decode_cb</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -27503,26 +26283,6 @@
     <Path>d9/d9f/meshx__ro__cfg_8c.html</Path>
     <Anchor>aadba32f016d078382ea3a1b922f320a3</Anchor>
     <DeclaredIn>meshx_ro_cfg.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>ENABLE_INTERRUPT</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4ae8a7e3b7554d562ccd2b65cae34804a9</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>ERROR_MAX</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba5d1b0efef70669f90dc7a359fd329a17</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -27543,16 +26303,6 @@
     <Path>d9/d05/meshx_8c.html</Path>
     <Anchor>af23a5bec224ddbc5499118b9f2439a66</Anchor>
     <DeclaredIn>meshx.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>FUNCTION_MAX</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4a0c987cdf94f3c4b73a5858e51527bbf9</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -27696,16 +26446,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>GET_LEVEL</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4ad95a8f519b8de82da49257bbd2b4beed</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>get_physical_pin</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -27756,16 +26496,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>GPIO</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a51f4cc0ea855288658ff8d2b19033d60aa4b03abff0e37da035d6fc0f9a4b1235</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>gpio_decode_cb</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -27793,394 +26523,6 @@
     <Path>d9/d43/meshx__gpio_8c.html</Path>
     <Anchor>ab1ec44f9af158355873a902f7c4b4b79</Anchor>
     <DeclaredIn>meshx_gpio.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>GpioDrive</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>enum</Type>
-      <Scope>GpioDrive</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ad411d1f5062c09d5330aeb2e75fed911</Anchor>
-    <DeclaredIn>meshx_io_types.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>WEAK</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ad411d1f5062c09d5330aeb2e75fed911a32c7d8943bec86a6d7d5e03598670ca8</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MEDIUM</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ad411d1f5062c09d5330aeb2e75fed911ac87f3be66ffc3c0d4249f1c2cc5f3cce</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>STRONG</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ad411d1f5062c09d5330aeb2e75fed911a3dfb3ae3cdaa322f0388f1a531c39520</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MAX_STRONG</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ad411d1f5062c09d5330aeb2e75fed911a562729222fc1cd6427846148d3d3c05a</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>DRIVE_MAX</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ad411d1f5062c09d5330aeb2e75fed911a5192757dc72a8c02cce742b47b893dbb</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>gpioDriveToString</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>func</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a066f683fa8b9170a72351fe780a05b07</Anchor>
-    <DeclaredIn>meshx_io_types.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>GpioIntrTrigger</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>enum</Type>
-      <Scope>GpioIntrTrigger</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ae200f2d6d4cdc3cc384ea3968a598e93</Anchor>
-    <DeclaredIn>meshx_io_types.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>DISABLED</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ae200f2d6d4cdc3cc384ea3968a598e93a055c1a591abb0e8cd86dc969727bcc0b</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>POSITIVE_EDGE</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ae200f2d6d4cdc3cc384ea3968a598e93ae92b763dd3959256721879a04e1854db</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>NEGATIVE_EDGE</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ae200f2d6d4cdc3cc384ea3968a598e93a135adc56c880ab2e0553e59e2ef57e2e</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>ANY_EDGE</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ae200f2d6d4cdc3cc384ea3968a598e93a79865522fb6fb871c11105472e8bfa82</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>LOW_LEVEL</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ae200f2d6d4cdc3cc384ea3968a598e93ad5ef89cca31152290b30f50cd1d8c536</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>HIGH_LEVEL</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ae200f2d6d4cdc3cc384ea3968a598e93adfa16b340d97a534b55a7a2e2ba2b646</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>INTR_MAX</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ae200f2d6d4cdc3cc384ea3968a598e93ae970c56f6c7119bda2fc85dac92dac52</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>GpioMode</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>enum</Type>
-      <Scope>GpioMode</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a82741a69e80936806dc4196b17f45f5e</Anchor>
-    <DeclaredIn>meshx_io_types.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>INPUT</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a82741a69e80936806dc4196b17f45f5eaa84cc046d48610b05c21fd3670d0c829</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>OUTPUT</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a82741a69e80936806dc4196b17f45f5ea50a87f0d71f7221582dad4bf507a0f34</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>INPUT_OUTPUT</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a82741a69e80936806dc4196b17f45f5eaf8843763f80bc884c410ae4a03641158</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>OPEN_DRAIN</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a82741a69e80936806dc4196b17f45f5eaf8eab64275fc0fab3d946c89bb143865</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>OPEN_DRAIN_INPUT_OUTPUT</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a82741a69e80936806dc4196b17f45f5ea8eccd6a43290d69cf65ecf9ad7d77c89</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>PWM_OUTPUT</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a82741a69e80936806dc4196b17f45f5ea4b2955663a167228cfca3f58cc01b488</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MODE_MAX</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a82741a69e80936806dc4196b17f45f5ea301006b09e5efebe1b64a6116c40b5b5</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>gpioModeToString</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>func</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>adb2890d8daf29d3027004c25bf63a7ff</Anchor>
-    <DeclaredIn>meshx_io_types.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>GpioPull</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>enum</Type>
-      <Scope>GpioPull</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a517c3ad8f248e59b8372724c284f8f3c</Anchor>
-    <DeclaredIn>meshx_io_types.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>NONE</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a517c3ad8f248e59b8372724c284f8f3cab50339a10e1de285ac99d4c3990b8693</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>PULL_UP</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a517c3ad8f248e59b8372724c284f8f3ca25cc44c940a293deb2871d44b743cf5f</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>PULL_DOWN</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a517c3ad8f248e59b8372724c284f8f3ca2f1cbbc8e76207bba12a7df18a7efa4b</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>PULL_UP_DOWN</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a517c3ad8f248e59b8372724c284f8f3cad1e9324554de6912b74a536a8810d4fb</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>PULL_MAX</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a517c3ad8f248e59b8372724c284f8f3ca982cc8443b455b36d99f89d4dca3eec7</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>gpioPullToString</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>func</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a43f8e597fea4059c50df0ca0eafa6190</Anchor>
-    <DeclaredIn>meshx_io_types.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>HIGH_LEVEL</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ae200f2d6d4cdc3cc384ea3968a598e93adfa16b340d97a534b55a7a2e2ba2b646</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>HOSTED</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>aa5ad64eaa65b23c86ded00aeec53f9f2a02f28952d112d2d973277f8000f9771f</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>HOSTED_MODE</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855bacb3dcb90f5ed568b1349140e3609b651</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>HostedMode</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>enum</Type>
-      <Scope>HostedMode</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>aa5ad64eaa65b23c86ded00aeec53f9f2</Anchor>
-    <DeclaredIn>meshx_io_types.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>NON_HOSTED</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>aa5ad64eaa65b23c86ded00aeec53f9f2a1cd12697dba24002708303360a4155a4</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>HOSTED</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>aa5ad64eaa65b23c86ded00aeec53f9f2a02f28952d112d2d973277f8000f9771f</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>TRANSITIONING</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>aa5ad64eaa65b23c86ded00aeec53f9f2a5e174e130ee1847f37541ba5786207a3</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -28234,56 +26576,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>INPUT</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a82741a69e80936806dc4196b17f45f5eaa84cc046d48610b05c21fd3670d0c829</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>INPUT_OUTPUT</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a82741a69e80936806dc4196b17f45f5eaf8843763f80bc884c410ae4a03641158</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>INTR_ALREADY_REGISTERED</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba56a531a6c033979bfe7c3c319e064968</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>INTR_MAX</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ae200f2d6d4cdc3cc384ea3968a598e93ae970c56f6c7119bda2fc85dac92dac52</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>INTR_NOT_SUPPORTED</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba5a42dd9da2692c43d0d1299c0215ca6a</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>intr_wrapper</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -28291,422 +26583,6 @@
     <Path>d9/d43/meshx__gpio_8c.html</Path>
     <Anchor>affcf2b1b207d326b7eba5253f5d8d2b0</Anchor>
     <DeclaredIn>meshx_gpio.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>intrTriggerToString</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>func</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a5fe4ca46575758daab540806d0ecd963</Anchor>
-    <DeclaredIn>meshx_io_types.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>INVALID_ARG</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba894ac82c59da1ab27f0f2ec607e67de4</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>INVALID_LEVEL</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855baed9a8f82583a193d31d1377e5ca997e5</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>INVALID_MODE</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba3850fef095f068e996766fd34f9a567b</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>INVALID_PIN</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855bab3263611e0e278d8a590291e82b019d8</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>IoError</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>enum</Type>
-      <Scope>IoError</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855b</Anchor>
-    <DeclaredIn>meshx_io_types.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>SUCCESS</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855bad0749aaba8b833466dfcbb0428e4f89c</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>INVALID_PIN</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855bab3263611e0e278d8a590291e82b019d8</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>INVALID_MODE</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba3850fef095f068e996766fd34f9a567b</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>INVALID_LEVEL</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855baed9a8f82583a193d31d1377e5ca997e5</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>INVALID_ARG</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba894ac82c59da1ab27f0f2ec607e67de4</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>INTR_NOT_SUPPORTED</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba5a42dd9da2692c43d0d1299c0215ca6a</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>INTR_ALREADY_REGISTERED</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba56a531a6c033979bfe7c3c319e064968</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>PWM_NOT_SUPPORTED</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba07bd45c72a8a341855bf3e338e77e09f</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>PWM_INVALID_PARAM</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855bae7d3ca2f6a60c94aba2a5ab901ad42b6</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>NOT_SUPPORTED</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba5343bcd21aad65124478a61831f6949e</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>NOT_INITIALIZED</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba02de9649e258d1dd94056e676061e969</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CONFIG_INVALID</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba4ffc0c7b5bcec35f8472136dd4b95ef0</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>HOSTED_MODE</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855bacb3dcb90f5ed568b1349140e3609b651</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>KV_STORAGE</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855bab7fa64ab2cca8651a8b5e213d4d283ba</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>SERIALIZATION</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba1e9b0ec6eace5b06bb4b944ab3b9a45b</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>ERROR_MAX</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba5d1b0efef70669f90dc7a359fd329a17</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>ioErrorToString</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>func</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ae1fe251846009080685f1dd80505007e</Anchor>
-    <DeclaredIn>meshx_io_types.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>IoFactoryFunction</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>tdef</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ad01736e960d19a4c1571fbf459bf8fd1</Anchor>
-    <DeclaredIn>meshx_io_interface.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>IoFunction</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>enum</Type>
-      <Scope>IoFunction</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4</Anchor>
-    <DeclaredIn>meshx_io_interface.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>SET_LEVEL</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4a96bd924621badef9638a463d24873c8e</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>GET_LEVEL</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4ad95a8f519b8de82da49257bbd2b4beed</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>TOGGLE</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4a1252c45651289c0b553a30d27bb5ae9b</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>SET_PWM_DUTY</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4a722d74ab2d46edd9a010ba08369747ac</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>SET_PWM_FREQUENCY</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4a722d8d2a35ddc10881a4ab6ba87cd05a</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>REGISTER_INTERRUPT</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4a04e2a59e3d1a32c5a9d880e38d80f399</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>UNREGISTER_INTERRUPT</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4a6a8f320ef3b6246ebda1acfb6575365c</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>ENABLE_INTERRUPT</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4ae8a7e3b7554d562ccd2b65cae34804a9</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CUSTOM_FUNCTION</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4a7378435d5cfcb627bb91dec219f67c01</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>FUNCTION_MAX</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4a0c987cdf94f3c4b73a5858e51527bbf9</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>IoType</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>enum</Type>
-      <Scope>IoType</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a51f4cc0ea855288658ff8d2b19033d60</Anchor>
-    <DeclaredIn>meshx_io_factory.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>GPIO</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a51f4cc0ea855288658ff8d2b19033d60aa4b03abff0e37da035d6fc0f9a4b1235</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>PWM</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a51f4cc0ea855288658ff8d2b19033d60a8449bc264b69c3a0fe8b60361eaf7aeb</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>ADC</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a51f4cc0ea855288658ff8d2b19033d60a72c1bba79e6502c017bd14bc00a68491</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>DAC</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a51f4cc0ea855288658ff8d2b19033d60a52a8b954485e8bf8ebe32865d17563a6</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>CUSTOM</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a51f4cc0ea855288658ff8d2b19033d60a72baef04098f035e8a320b03ad197818</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -28840,16 +26716,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>KV_STORAGE</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855bab7fa64ab2cca8651a8b5e213d4d283ba</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>kv_write_pos</Name>
       <APILanguage>c</APILanguage>
       <Type>data</Type>
@@ -28877,36 +26743,6 @@
     <Path>dd/d1f/meshx__shell_8c.html</Path>
     <Anchor>aa7eb53e3d171ac08da0cd9362d620252</Anchor>
     <DeclaredIn>meshx_shell.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>LOW_LEVEL</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ae200f2d6d4cdc3cc384ea3968a598e93ad5ef89cca31152290b30f50cd1d8c536</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MAX_STRONG</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ad411d1f5062c09d5330aeb2e75fed911a562729222fc1cd6427846148d3d3c05a</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MEDIUM</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ad411d1f5062c09d5330aeb2e75fed911ac87f3be66ffc3c0d4249f1c2cc5f3cce</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -33321,17 +31157,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>meshx_gpio_intr_cb_wrapper</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>func</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>afc641a44e13d28972360edc66763d48d</Anchor>
-    <DeclaredIn>meshx_gpio_impl.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>MESHX_GPIO_INTR_CONFIG_SIZE</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
@@ -34802,296 +32627,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>meshx_io_create</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a1a3c4240b6ccc38d978246700e3838c3</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_create</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/dce/meshx__io__bridge_8cpp.html</Path>
-    <Anchor>a1a3c4240b6ccc38d978246700e3838c3</Anchor>
-    <DeclaredIn>meshx_io_bridge.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_deinit</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a6b875af1598456653579c0a5dda19da7</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_deinit</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/dce/meshx__io__bridge_8cpp.html</Path>
-    <Anchor>a6b875af1598456653579c0a5dda19da7</Anchor>
-    <DeclaredIn>meshx_io_bridge.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_destroy</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a520cf2a48080a8ecb5906d16c1830580</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_destroy</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/dce/meshx__io__bridge_8cpp.html</Path>
-    <Anchor>a520cf2a48080a8ecb5906d16c1830580</Anchor>
-    <DeclaredIn>meshx_io_bridge.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_execute</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a5b0094e0921695dcd45c0f79bcd06588</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_execute</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/dce/meshx__io__bridge_8cpp.html</Path>
-    <Anchor>a5b0094e0921695dcd45c0f79bcd06588</Anchor>
-    <DeclaredIn>meshx_io_bridge.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_CUSTOM</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1a7d8cf2d4c5cc702f3bc93e3fd58d40f9</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_ENABLE_INTERRUPT</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1a4e8b6bf95f24112263dfd8d1f40e5f71</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_GET_LEVEL</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1aa6436b102073b288f9a3e18fcd072269</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_MAX</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1a562efcc383ea5a33db94ae5791dee13f</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_REGISTER_INTERRUPT</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1ab4ab2e860177a29bc919c4b76eea4d21</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_SET_LEVEL</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1a6d24d291eed45c0461a4981a4e36d037</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_SET_PWM_DUTY</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1a7f42b5dfbaee6a673a467c1b4aa21ebd</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_SET_PWM_FREQUENCY</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1a34c06652ad2ad4d3c9ebf2ff94d1ef90</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_func_t</Name>
-      <APILanguage>c</APILanguage>
-      <Type>enum</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_SET_LEVEL</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1a6d24d291eed45c0461a4981a4e36d037</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_GET_LEVEL</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1aa6436b102073b288f9a3e18fcd072269</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_TOGGLE</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1afe16e5f23ba29514f7d1bec93f3a0948</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_SET_PWM_DUTY</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1a7f42b5dfbaee6a673a467c1b4aa21ebd</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_SET_PWM_FREQUENCY</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1a34c06652ad2ad4d3c9ebf2ff94d1ef90</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_REGISTER_INTERRUPT</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1ab4ab2e860177a29bc919c4b76eea4d21</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_UNREGISTER_INTERRUPT</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1a73793b642f95126668d92b018dfda436</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_ENABLE_INTERRUPT</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1a4e8b6bf95f24112263dfd8d1f40e5f71</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_CUSTOM</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1a7d8cf2d4c5cc702f3bc93e3fd58d40f9</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_MAX</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1a562efcc383ea5a33db94ae5791dee13f</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_TOGGLE</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1afe16e5f23ba29514f7d1bec93f3a0948</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>MESHX_IO_FUNC_UNREGISTER_INTERRUPT</Name>
-      <APILanguage>c</APILanguage>
-      <Type>econst</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a614e7d4d85534ec2adc57d1c4adb8bc1a73793b642f95126668d92b018dfda436</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>MESHX_IO_FUNCTION_CUSTOM</Name>
       <APILanguage>c</APILanguage>
       <Type>econst</Type>
@@ -35262,166 +32797,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>meshx_io_get_level</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a4b3c1a7ba937e73932dbfc95eca6f1fd</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_get_level</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/dce/meshx__io__bridge_8cpp.html</Path>
-    <Anchor>a4b3c1a7ba937e73932dbfc95eca6f1fd</Anchor>
-    <DeclaredIn>meshx_io_bridge.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_get_logical_pin</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a46f7eac7f60ff14f64a983a5896c7d47</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_get_logical_pin</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/dce/meshx__io__bridge_8cpp.html</Path>
-    <Anchor>a46f7eac7f60ff14f64a983a5896c7d47</Anchor>
-    <DeclaredIn>meshx_io_bridge.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_get_name</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a1b5b8a55ba482a2fd3d3ea8e091d6b71</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_get_name</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/dce/meshx__io__bridge_8cpp.html</Path>
-    <Anchor>a1b5b8a55ba482a2fd3d3ea8e091d6b71</Anchor>
-    <DeclaredIn>meshx_io_bridge.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_handle_t</Name>
-      <APILanguage>c</APILanguage>
-      <Type>tdef</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>abb1c6d263d81ae2c357e8eb56ea52c12</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_init</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a6fdce4ee919870b7a99ccf1a3c8abaef</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_init</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/dce/meshx__io__bridge_8cpp.html</Path>
-    <Anchor>a6fdce4ee919870b7a99ccf1a3c8abaef</Anchor>
-    <DeclaredIn>meshx_io_bridge.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_is_function_supported</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a1ba68daf0f7c9dcea8ddb3ab9b29532d</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_is_function_supported</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/dce/meshx__io__bridge_8cpp.html</Path>
-    <Anchor>a1ba68daf0f7c9dcea8ddb3ab9b29532d</Anchor>
-    <DeclaredIn>meshx_io_bridge.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_platform_create_gpio</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/d74/meshx__io__platform_8h.html</Path>
-    <Anchor>a290fda72bc3509b82791c1e413965194</Anchor>
-    <DeclaredIn>meshx_io_platform.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_platform_create_pwm</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/d74/meshx__io__platform_8h.html</Path>
-    <Anchor>af02c5ae382eb81e12c4333cec5c2058c</Anchor>
-    <DeclaredIn>meshx_io_platform.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_platform_deinit</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/d74/meshx__io__platform_8h.html</Path>
-    <Anchor>a2bb657ab3e4e15beda2dc903ed8a81e1</Anchor>
-    <DeclaredIn>meshx_io_platform.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_platform_destroy</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/d74/meshx__io__platform_8h.html</Path>
-    <Anchor>af9c64fa12d4df3cb6903206d48a6ceed</Anchor>
-    <DeclaredIn>meshx_io_platform.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_platform_execute</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/d74/meshx__io__platform_8h.html</Path>
-    <Anchor>a9f9c329902ce50d05badd7f2abe99af9</Anchor>
-    <DeclaredIn>meshx_io_platform.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>meshx_io_platform_execute_function</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -35432,26 +32807,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>meshx_io_platform_get_hosted_mode</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/d74/meshx__io__platform_8h.html</Path>
-    <Anchor>a03b274e9768c1460967519c2e3a59c7f</Anchor>
-    <DeclaredIn>meshx_io_platform.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_platform_init</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/d74/meshx__io__platform_8h.html</Path>
-    <Anchor>a7188d272aa1096e14046c93e9637e1a5</Anchor>
-    <DeclaredIn>meshx_io_platform.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>meshx_io_platform_register_custom_function</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -35459,66 +32814,6 @@
     <Path>de/ddb/meshx__gpio__platform_8h.html</Path>
     <Anchor>aafe719f522fe8d47643d96c431f9dcb7</Anchor>
     <DeclaredIn>meshx_gpio_platform.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_platform_send_hosted_event</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/d74/meshx__io__platform_8h.html</Path>
-    <Anchor>a3da34d536af2a37b2aca85893f0fe5a9</Anchor>
-    <DeclaredIn>meshx_io_platform.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_platform_set_hosted_mode</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/d74/meshx__io__platform_8h.html</Path>
-    <Anchor>ac86c7a045b1bd6ad6e8b547850f4b24a</Anchor>
-    <DeclaredIn>meshx_io_platform.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_set_level</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a3121f8132737fc7dd46b6c11142d0524</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_set_level</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/dce/meshx__io__bridge_8cpp.html</Path>
-    <Anchor>a3121f8132737fc7dd46b6c11142d0524</Anchor>
-    <DeclaredIn>meshx_io_bridge.cpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_toggle</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d3/d5e/meshx__io__bridge_8h.html</Path>
-    <Anchor>a8e79d628250ff9b7c97a9ef14557f917</Anchor>
-    <DeclaredIn>meshx_io_bridge.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>meshx_io_toggle</Name>
-      <APILanguage>c</APILanguage>
-      <Type>func</Type>
-    </TokenIdentifier>
-    <Path>d8/dce/meshx__io__bridge_8cpp.html</Path>
-    <Anchor>a8e79d628250ff9b7c97a9ef14557f917</Anchor>
-    <DeclaredIn>meshx_io_bridge.cpp</DeclaredIn>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -52425,16 +49720,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>MODE_MAX</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a82741a69e80936806dc4196b17f45f5ea301006b09e5efebe1b64a6116c40b5b5</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>module_callback_t</Name>
       <APILanguage>c</APILanguage>
       <Type>tdef</Type>
@@ -54675,56 +51960,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>NEGATIVE_EDGE</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ae200f2d6d4cdc3cc384ea3968a598e93a135adc56c880ab2e0553e59e2ef57e2e</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>NON_HOSTED</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>aa5ad64eaa65b23c86ded00aeec53f9f2a1cd12697dba24002708303360a4155a4</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>NONE</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a517c3ad8f248e59b8372724c284f8f3cab50339a10e1de285ac99d4c3990b8693</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>NOT_INITIALIZED</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba02de9649e258d1dd94056e676061e969</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>NOT_SUPPORTED</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba5343bcd21aad65124478a61831f6949e</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>on_beacon_timer_expired</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -54752,26 +51987,6 @@
     <Path>de/dc1/meshx__proximity__pair_8c.html</Path>
     <Anchor>a633a9bb33e22af29005817c15fd4e39f</Anchor>
     <DeclaredIn>meshx_proximity_pair.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>OPEN_DRAIN</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a82741a69e80936806dc4196b17f45f5eaf8eab64275fc0fab3d946c89bb143865</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>OPEN_DRAIN_INPUT_OUTPUT</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a82741a69e80936806dc4196b17f45f5ea8eccd6a43290d69cf65ecf9ad7d77c89</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -54925,16 +52140,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>OUTPUT</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a82741a69e80936806dc4196b17f45f5ea50a87f0d71f7221582dad4bf507a0f34</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>pending_list</Name>
       <APILanguage>c</APILanguage>
       <Type>data</Type>
@@ -54972,16 +52177,6 @@
     <Path>d7/d87/meshx__pair__orchestrator_8c.html</Path>
     <Anchor>a2bd85dcb71007789b295bce48f31983a</Anchor>
     <DeclaredIn>meshx_pair_orchestrator.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>POSITIVE_EDGE</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ae200f2d6d4cdc3cc384ea3968a598e93ae92b763dd3959256721879a04e1854db</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -55025,86 +52220,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>PULL_DOWN</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a517c3ad8f248e59b8372724c284f8f3ca2f1cbbc8e76207bba12a7df18a7efa4b</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>PULL_MAX</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a517c3ad8f248e59b8372724c284f8f3ca982cc8443b455b36d99f89d4dca3eec7</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>PULL_UP</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a517c3ad8f248e59b8372724c284f8f3ca25cc44c940a293deb2871d44b743cf5f</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>PULL_UP_DOWN</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a517c3ad8f248e59b8372724c284f8f3cad1e9324554de6912b74a536a8810d4fb</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>PWM</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a51f4cc0ea855288658ff8d2b19033d60a8449bc264b69c3a0fe8b60361eaf7aeb</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>PWM_INVALID_PARAM</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855bae7d3ca2f6a60c94aba2a5ab901ad42b6</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>PWM_NOT_SUPPORTED</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba07bd45c72a8a341855bf3e338e77e09f</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>PWM_OUTPUT</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a82741a69e80936806dc4196b17f45f5ea4b2955663a167228cfca3f58cc01b488</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>pwm_runtime</Name>
       <APILanguage>c</APILanguage>
       <Type>data</Type>
@@ -55112,16 +52227,6 @@
     <Path>d1/d17/meshx__pwm_8c.html</Path>
     <Anchor>ac3dc84cc1e1c747d593ba3eabad8e7b0</Anchor>
     <DeclaredIn>meshx_pwm.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>REGISTER_INTERRUPT</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4a04e2a59e3d1a32c5a9d880e38d80f399</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -55315,16 +52420,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>SERIALIZATION</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855ba1e9b0ec6eace5b06bb4b944ab3b9a45b</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>serialize_gpio_config</Name>
       <APILanguage>c</APILanguage>
       <Type>func</Type>
@@ -55332,36 +52427,6 @@
     <Path>d9/d70/meshx__gpio__kv_8c.html</Path>
     <Anchor>a03f2582fc94635d3a8cc908d3490f329</Anchor>
     <DeclaredIn>meshx_gpio_kv.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>SET_LEVEL</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4a96bd924621badef9638a463d24873c8e</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>SET_PWM_DUTY</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4a722d74ab2d46edd9a010ba08369747ac</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>SET_PWM_FREQUENCY</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4a722d8d2a35ddc10881a4ab6ba87cd05a</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -55515,70 +52580,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>stringToGpioDrive</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>func</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>abe4d6c9a4a4480c8a47af413373cf8a8</Anchor>
-    <DeclaredIn>meshx_io_types.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>stringToGpioMode</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>func</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>af5c7c0bbb72be1598dda82d2a0a65894</Anchor>
-    <DeclaredIn>meshx_io_types.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>stringToGpioPull</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>func</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a750db793a978a510a3c39d95093c575e</Anchor>
-    <DeclaredIn>meshx_io_types.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>stringToIntrTrigger</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>func</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a16a1a01fb44088b8295b7ab74236ec20</Anchor>
-    <DeclaredIn>meshx_io_types.hpp</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>STRONG</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ad411d1f5062c09d5330aeb2e75fed911a3dfb3ae3cdaa322f0388f1a531c39520</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>SUCCESS</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>a7e6a67fc6ac833eb02c7926536eb855bad0749aaba8b833466dfcbb0428e4f89c</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>TAG</Name>
       <APILanguage>unknown</APILanguage>
       <Type>macro</Type>
@@ -55629,26 +52630,6 @@
   </Token>
   <Token>
     <TokenIdentifier>
-      <Name>TOGGLE</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4a1252c45651289c0b553a30d27bb5ae9b</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>TRANSITIONING</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>aa5ad64eaa65b23c86ded00aeec53f9f2a5e174e130ee1847f37541ba5786207a3</Anchor>
-  </Token>
-  <Token>
-    <TokenIdentifier>
       <Name>txcm_sig_queue</Name>
       <APILanguage>c</APILanguage>
       <Type>data</Type>
@@ -55686,16 +52667,6 @@
     <Path>d8/d5d/unit__test_8h.html</Path>
     <Anchor>a929f2c2fc221cab8d7ac3427cee1fd92</Anchor>
     <DeclaredIn>unit_test.h</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>UNREGISTER_INTERRUPT</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ab25fa5b53f700e4e27d637162a7360a4a6a8f320ef3b6246ebda1acfb6575365c</Anchor>
   </Token>
   <Token>
     <TokenIdentifier>
@@ -55836,15 +52807,5 @@
     <Path>d0/dc9/meshx__log_8c.html</Path>
     <Anchor>aca8baee48b56fa39cf13659f0b645a87</Anchor>
     <DeclaredIn>meshx_log.c</DeclaredIn>
-  </Token>
-  <Token>
-    <TokenIdentifier>
-      <Name>WEAK</Name>
-      <APILanguage>cpp</APILanguage>
-      <Type>econst</Type>
-      <Scope>meshx</Scope>
-    </TokenIdentifier>
-    <Path>d4/de4/namespacemeshx.html</Path>
-    <Anchor>ad411d1f5062c09d5330aeb2e75fed911a32c7d8943bec86a6d7d5e03598670ca8</Anchor>
   </Token>
 </Tokens>
