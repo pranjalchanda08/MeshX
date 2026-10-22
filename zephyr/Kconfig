@@ -1,0 +1,46 @@
+# Copyright (c) 2024 - 2026 MeshX
+# SPDX-License-Identifier: Apache-2.0
+
+menuconfig MESHX
+	bool "MeshX BLE Mesh Framework"
+	default y
+	depends on BT_MESH
+	select CPP
+	help
+	  Enable the MeshX portable BLE Mesh framework.
+
+if MESHX
+
+config MESHX_LOG_LEVEL
+	int "MeshX Log Level"
+	default 3
+	range 0 4
+	help
+	  MeshX logging verbosity (0: None, 1: Error, 2: Warn, 3: Info, 4: Debug).
+
+config MESHX_DEVICE_NAME
+	string "MeshX Device Name"
+	default "MeshX Node"
+	help
+	  Default BLE advertising name for MeshX device.
+
+config MESHX_COMPANY_ID
+	hex "MeshX Company ID"
+	default 0x0A5C
+	help
+	  Bluetooth SIG-assigned 16-bit Company Identifier for MeshX vendor models.
+
+config MESHX_MAX_ELEMENTS
+	int "Maximum Elements"
+	default 4
+	range 1 16
+	help
+	  Maximum number of elements supported by MeshX composition on this target.
+
+config MESHX_TXCM_ENABLE
+	bool "Enable MeshX Transmission Control Manager (TXCM)"
+	default y
+	help
+	  Enable retry, deduplication, and transmission control manager for MeshX.
+
+endif # MESHX

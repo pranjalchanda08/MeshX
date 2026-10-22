@@ -23,14 +23,14 @@
 #include "interface/gpio/meshx_gpio.h"
 #include "interface/gpio/meshx_gpio_types.h"
 
+#define MESHX_UART_RX_TASK_STACK_SIZE 2048
 
-#define MESHX_UART_RX_TASK_STACK_SIZE  2048
-
-#define MESHX_UART_RX_TASK_PRIO        5
+#define MESHX_UART_RX_TASK_PRIO 5
 
 mxsp_ctx_t mxsp_ctx;
 
-enum {
+enum
+{
     STATE_SOF,
     STATE_LEN,
     STATE_TYPE,
@@ -51,49 +51,60 @@ extern void meshx_platform_set_mxsp_use_console(bool enable);
  */
 void meshx_serial_parse_byte(uint8_t data)
 {
-    switch (mxsp_ctx.state) {
-        case STATE_SOF:
-            if (data == MXCP_SOF) {
-                mxsp_ctx.state = STATE_LEN;
-                mxsp_ctx.rx_ptr = 0;
+    switch (mxsp_ctx.state)
+    {
+    case STATE_SOF:
+        if (data == MXCP_SOF)
+        {
+            mxsp_ctx.state = STATE_LEN;
+            mxsp_ctx.rx_ptr = 0;
+        }
+        break;
+    case STATE_LEN:
+        mxsp_ctx.rx_frame.len = data;
+        mxsp_ctx.state = STATE_TYPE;
+        break;
+    case STATE_TYPE:
+        mxsp_ctx.rx_frame.type = data;
+        if (mxsp_ctx.rx_frame.len == 0)
+        {
+            mxsp_ctx.state = STATE_CHECKSUM;
+        }
+        else
+        {
+            mxsp_ctx.state = STATE_PAYLOAD;
+        }
+        break;
+    case STATE_PAYLOAD:
+        mxsp_ctx.rx_frame.payload[mxsp_ctx.rx_ptr++] = data;
+        if (mxsp_ctx.rx_ptr >= mxsp_ctx.rx_frame.len)
+        {
+            mxsp_ctx.state = STATE_CHECKSUM;
+        }
+        break;
+    case STATE_CHECKSUM:
+        mxsp_ctx.rx_frame.checksum = data;
+        mxsp_ctx.state = STATE_EOF;
+        break;
+    case STATE_EOF:
+        if (data == MXCP_EOF)
+        {
+            uint8_t calc = mxsp_ctx.rx_frame.len ^ mxsp_ctx.rx_frame.type;
+            for (uint8_t i = 0; i < mxsp_ctx.rx_frame.len; i++)
+            {
+                calc ^= mxsp_ctx.rx_frame.payload[i];
             }
-            break;
-        case STATE_LEN:
-            mxsp_ctx.rx_frame.len = data;
-            mxsp_ctx.state = STATE_TYPE;
-            break;
-        case STATE_TYPE:
-            mxsp_ctx.rx_frame.type = data;
-            if (mxsp_ctx.rx_frame.len == 0) {
-                mxsp_ctx.state = STATE_CHECKSUM;
-            } else {
-                mxsp_ctx.state = STATE_PAYLOAD;
+            if (calc == mxsp_ctx.rx_frame.checksum)
+            {
+                mxcp_dispatch_frame(mxsp_ctx.rx_frame.type, mxsp_ctx.rx_frame.payload, mxsp_ctx.rx_frame.len);
             }
-            break;
-        case STATE_PAYLOAD:
-            mxsp_ctx.rx_frame.payload[mxsp_ctx.rx_ptr++] = data;
-            if (mxsp_ctx.rx_ptr >= mxsp_ctx.rx_frame.len) {
-                mxsp_ctx.state = STATE_CHECKSUM;
+            else
+            {
+                MESHX_LOGE(MODULE_ID_COMMON, "Invalid MXSP frame checksum");
             }
-            break;
-        case STATE_CHECKSUM:
-            mxsp_ctx.rx_frame.checksum = data;
-            mxsp_ctx.state = STATE_EOF;
-            break;
-        case STATE_EOF:
-            if (data == MXCP_EOF) {
-                uint8_t calc = mxsp_ctx.rx_frame.len ^ mxsp_ctx.rx_frame.type;
-                for (uint8_t i = 0; i < mxsp_ctx.rx_frame.len; i++) {
-                    calc ^= mxsp_ctx.rx_frame.payload[i];
-                }
-                if (calc == mxsp_ctx.rx_frame.checksum) {
-                    mxcp_dispatch_frame(mxsp_ctx.rx_frame.type, mxsp_ctx.rx_frame.payload, mxsp_ctx.rx_frame.len);
-                } else {
-                    MESHX_LOGE(MODULE_ID_COMMON, "Invalid MXSP frame checksum");
-                }
-            }
-            mxsp_ctx.state = STATE_SOF;
-            break;
+        }
+        mxsp_ctx.state = STATE_SOF;
+        break;
     }
 }
 
@@ -109,8 +120,7 @@ void meshx_serial_set_hosted_mode(bool enabled)
 {
     mxsp_ctx.hosted_mode_enabled = enabled;
 
-    meshx_gpio_hosted_mode_t gpio_mode = enabled ?
-        MESHX_GPIO_MODE_HOSTED : MESHX_GPIO_MODE_NON_HOSTED;
+    meshx_gpio_hosted_mode_t gpio_mode = enabled ? MESHX_GPIO_MODE_HOSTED : MESHX_GPIO_MODE_NON_HOSTED;
     meshx_gpio_set_hosted_mode(gpio_mode);
 }
 
@@ -133,9 +143,11 @@ bool meshx_serial_is_hosted_mode_enabled(void)
 static void mxsp_uart_rx_task(void *pvParameters)
 {
     uint8_t data;
-    while (1) {
+    while (1)
+    {
         int32_t len = meshx_platform_serial_read(&data, 1);
-        if (len > 0) {
+        if (len > 0)
+        {
             meshx_serial_parse_byte(data);
         }
     }
@@ -153,20 +165,23 @@ static void mxsp_uart_rx_task(void *pvParameters)
 #if CONFIG_MESHX_ENABLE_GPIO_TEST_API
 static void meshx_gpio_hosted_event_handler(const meshx_gpio_hosted_event_t *event)
 {
-    if (!mxsp_ctx.hosted_mode_enabled) {
+    if (!mxsp_ctx.hosted_mode_enabled)
+    {
         return;
     }
 
-    if (event == NULL) {
+    if (event == NULL)
+    {
         MESHX_LOGE(MODULE_ID_COMMON, "NULL GPIO hosted event");
         return;
     }
 
+    unsigned int millis = 0;
     mxcp_evt_gpio_async_t async_evt;
+
     async_evt.event_type = event->event_type;
     async_evt.logical_pin = event->logical_pin;
     async_evt.value = event->value;
-    unsigned int millis = 0;
     meshx_rtos_get_sys_time(&millis);
     async_evt.timestamp = (uint32_t)millis;
     mxcp_send_event(MXCP_EVT_GPIO_ASYNC, (const uint8_t *)&async_evt, sizeof(async_evt));
@@ -191,11 +206,11 @@ meshx_err_t meshx_serial_init(void)
     mxsp_ctx.hosted_mode_enabled = false;
 
     meshx_task_t uart_rx_task;
-    uart_rx_task.task_cb        = mxsp_uart_rx_task;
-    uart_rx_task.task_name      = "mxsp_uart_rx";
-    uart_rx_task.stack_size     = MESHX_UART_RX_TASK_STACK_SIZE;
-    uart_rx_task.priority       = MESHX_UART_RX_TASK_PRIO;
-    uart_rx_task.arg            = NULL;
+    uart_rx_task.task_cb = mxsp_uart_rx_task;
+    uart_rx_task.task_name = "mxsp_uart_rx";
+    uart_rx_task.stack_size = MESHX_UART_RX_TASK_STACK_SIZE;
+    uart_rx_task.priority = MESHX_UART_RX_TASK_PRIO;
+    uart_rx_task.arg = NULL;
     meshx_task_create(&uart_rx_task);
 
 #if CONFIG_MESHX_ENABLE_GPIO_TEST_API

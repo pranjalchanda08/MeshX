@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import os
-import sys
 import serial
 import struct
 import argparse
@@ -61,26 +60,56 @@ class MeshXLogDecoder:
         self._load_elf_strings()
 
     def _load_elf_strings(self):
-        """Pre-cache strings from the .meshx_log_str section if possible,
-        otherwise we will resolve addresses dynamically from the whole ELF."""
+        """Pre-cache strings from the .meshx_log_str section if possible."""
         if not os.path.exists(self.elf_path):
             print(f"Warning: ELF file {self.elf_path} not found. String resolution will fail.")
             return
 
-        with open(self.elf_path, 'rb') as f:
-            elffile = ELFFile(f)
-            # We don't necessarily need to pre-cache everything,
-            # but we need a way to read strings at specific addresses.
-            self.elffile = elffile
-            self.image_data = f.read() # Load entire ELF into memory for fast access
+        try:
+            with open(self.elf_path, 'rb') as f:
+                elffile = ELFFile(f)
+                for section in elffile.iter_sections():
+                    name = section.name
+                    if name == '.meshx_log_str' or name.startswith('.meshx_log_str.'):
+                        sec_data = section.data()
+                        sh_addr = section['sh_addr']
+                        offset = 0
+                        while offset < len(sec_data):
+                            null_pos = sec_data.find(b'\0', offset)
+                            if null_pos == -1:
+                                break
+                            s = sec_data[offset:null_pos].decode('utf-8', errors='replace')
+                            self.strings_cache[sh_addr + offset] = s
+                            offset = null_pos + 1
+        except Exception as e:
+            print(f"Warning: Failed to pre-cache strings: {e}")
 
     def resolve_string(self, addr):
         if addr in self.strings_cache:
             return self.strings_cache[addr]
 
-        # Find which segment contains this address
+        if not os.path.exists(self.elf_path):
+            return f"<addr: 0x{addr:08x}>"
+
         with open(self.elf_path, 'rb') as f:
             elffile = ELFFile(f)
+            # 1. Search ELF sections (covers NO-LOAD sections like .meshx_log_str)
+            for section in elffile.iter_sections():
+                sh_addr = section['sh_addr']
+                sh_size = section['sh_size']
+                if sh_size > 0 and sh_addr <= addr < sh_addr + sh_size:
+                    sec_data = section.data()
+                    offset = addr - sh_addr
+                    null_pos = sec_data.find(b'\0', offset)
+                    if null_pos != -1:
+                        s = sec_data[offset:null_pos]
+                    else:
+                        s = sec_data[offset:]
+                    res = s.decode('utf-8', errors='replace')
+                    self.strings_cache[addr] = res
+                    return res
+
+            # 2. Fallback to program segments (for loadable segments)
             for segment in elffile.iter_segments():
                 if segment['p_vaddr'] <= addr < segment['p_vaddr'] + segment['p_filesz']:
                     offset = segment['p_offset'] + (addr - segment['p_vaddr'])
@@ -94,6 +123,7 @@ class MeshXLogDecoder:
                     res = s.decode('utf-8', errors='replace')
                     self.strings_cache[addr] = res
                     return res
+
         return f"<addr: 0x{addr:08x}>"
 
     def calculate_parity(self, data):
@@ -148,7 +178,7 @@ class MeshXLogDecoder:
                 val = args_raw[arg_idx]
                 if p == 's':
                     resolved = self.resolve_string(val)
-                    if resolved.startswith("<addr:") and inline_str:
+                    if (not resolved or resolved.startswith("<addr:")) and inline_str:
                         final_args.append(inline_str)
                     else:
                         final_args.append(resolved)

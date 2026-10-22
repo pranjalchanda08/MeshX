@@ -126,7 +126,7 @@ static struct{
  * The table is indexed by the signal type (meshx_txcm_sig_t) and contains function pointers
  * to the respective signal processing functions.
  */
-static meshx_txcm_sig_proc_t g_sig_proc_table[MESHX_TXCM_SIG_MAX] =
+const static meshx_txcm_sig_proc_t g_sig_proc_table[MESHX_TXCM_SIG_MAX] =
 {
     [MESHX_TXCM_SIG_ACK]         = (meshx_txcm_sig_proc_t)&meshx_txcm_sig_ack,
     [MESHX_TXCM_SIG_RESEND]      = (meshx_txcm_sig_proc_t)&meshx_txcm_sig_resend,

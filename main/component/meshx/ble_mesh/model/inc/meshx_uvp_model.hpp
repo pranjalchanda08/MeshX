@@ -10,8 +10,6 @@
 #define __MESHX_UVP_MODEL_HPP__
 
 #include <meshx_model_class.hpp>
-#include <meshx_uvp.h>
-#include <interface/ble_mesh/meshx_ble_mesh_cmn.h>
 
 /**
  * @class meshXUVPModel
@@ -39,7 +37,6 @@ public:
     uint16_t get_company_id(void) const;
 
 #if CONFIG_TXCM_ENABLE
-#include <meshx_txcm.h>
 
     struct uvp_txcm_param_t {
         void* p_model;

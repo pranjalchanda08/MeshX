@@ -1,21 +1,21 @@
 @echo off
 :: -----------------------------------------------------------
 :: MeshX Environment Setup Script (Windows Batch)
-:: Must be called with:  call tools\scripts\env.bat [extra_command]
-:: Example:  call tools\scripts\env.bat D:\esp\v5.4.4\esp-idf\export.bat
+:: Must be called with:  call tools\bin\env.bat [extra_command]
+:: Example:  call tools\bin\env.bat D:\esp\v5.4.4\esp-idf\export.bat
 :: -----------------------------------------------------------
 
-:: Resolve canonical project root and tools\scripts paths
+:: Resolve canonical project root, tools\bin, and tools\scripts paths
 for %%I in ("%~dp0..\..") do set "PROJECT_ROOT=%%~fI"
-set "SCRIPTS_DIR=%~dp0"
-:: Strip trailing backslash from SCRIPTS_DIR if present
-if "%SCRIPTS_DIR:~-1%"=="\" set "SCRIPTS_DIR=%SCRIPTS_DIR:~0,-1%"
+set "BIN_DIR=%~dp0"
+if "%BIN_DIR:~-1%"=="\" set "BIN_DIR=%BIN_DIR:~0,-1%"
+set "SCRIPTS_DIR=%PROJECT_ROOT%\tools\scripts"
 
 echo Project root set to: %PROJECT_ROOT%
 
-:: Add tools\scripts to PATH so meshx.bat and meshx.py can be invoked from anywhere
-set "PATH=%SCRIPTS_DIR%;%PATH%"
-echo PATH updated: added %SCRIPTS_DIR%
+:: Add tools\bin and tools\scripts to PATH so meshx.bat and meshx.py can be invoked from anywhere
+set "PATH=%BIN_DIR%;%SCRIPTS_DIR%;%PATH%"
+echo PATH updated: added %BIN_DIR% and %SCRIPTS_DIR%
 
 :: Check for python availability
 where python >nul 2>&1

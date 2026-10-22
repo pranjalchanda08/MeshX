@@ -55,6 +55,7 @@ jobs:
         export CCACHE_DIR=$PWD/.ccache
         for product in $(python -c "import yaml; print(' '.join([p['name'] for p in yaml.safe_load(open('tools/scripts/prod_profile.ci.yml'))['prod']['products']]))"); do
           rm -f sdkconfig
-          sh tools/scripts/build_ci.sh $product
+          sh tools/bin/build_ci.sh $product
         done
       shell: bash
+

@@ -29,14 +29,19 @@ typedef struct {
     meshx_shell_func_t func; /**< Command function */
 } meshx_shell_cmd_t;
 
-#define MESHX_SHELL_MAX_COMMANDS 32
-
 /**
  * @brief Initializes the MeshX shell core and the underlying platform console.
  *
  * @return meshx_err_t MESHX_SUCCESS on success, error code otherwise.
  */
 meshx_err_t meshx_shell_init(void);
+
+/**
+ * @brief De-initializes the MeshX shell core.
+ *
+ * @return meshx_err_t MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_shell_deinit(void);
 
 /**
  * @brief Registers a command with the MeshX shell.

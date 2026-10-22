@@ -1,0 +1,126 @@
+/*
+ * Copyright (c) 2024 - 2026 MeshX
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Board-specific DeviceTree IO Overlay for Raspberry Pi Pico W BSP.
+ * Defines board-fixed peripherals (Status LED, User Button, USB CDC ACM console)
+ * and exposes breakout pins generically by GPIO number (and GP0-GP28 labels).
+ * Runtime role configuration is driven top-down by MeshX IO firmware and prod_profile.yml.
+ */
+
+/ {
+	aliases {
+		led0 = &status_led;
+		sw0 = &user_button;
+
+		/* Generic GPIO pin aliases (RP2040 GP0 - GP22, GP26 - GP28) */
+		gpio0  = &pin_gpio0;
+		gpio1  = &pin_gpio1;
+		gpio2  = &pin_gpio2;
+		gpio3  = &pin_gpio3;
+		gpio4  = &pin_gpio4;
+		gpio5  = &pin_gpio5;
+		gpio6  = &pin_gpio6;
+		gpio7  = &pin_gpio7;
+		gpio8  = &pin_gpio8;
+		gpio9  = &pin_gpio9;
+		gpio10 = &pin_gpio10;
+		gpio11 = &pin_gpio11;
+		gpio12 = &pin_gpio12;
+		gpio13 = &pin_gpio13;
+		gpio14 = &pin_gpio14;
+		gpio15 = &pin_gpio15;
+		gpio16 = &pin_gpio16;
+		gpio17 = &pin_gpio17;
+		gpio18 = &pin_gpio18;
+		gpio19 = &pin_gpio19;
+		gpio20 = &pin_gpio20;
+		gpio21 = &pin_gpio21;
+		gpio22 = &pin_gpio22;
+		gpio26 = &pin_gpio26;
+		gpio27 = &pin_gpio27;
+		gpio28 = &pin_gpio28;
+
+		/* Raspberry Pi Pico Pinout Aliases (GP0 - GP28) */
+		gp0  = &pin_gpio0;
+		gp1  = &pin_gpio1;
+		gp2  = &pin_gpio2;
+		gp3  = &pin_gpio3;
+		gp4  = &pin_gpio4;
+		gp5  = &pin_gpio5;
+		gp6  = &pin_gpio6;
+		gp7  = &pin_gpio7;
+		gp8  = &pin_gpio8;
+		gp9  = &pin_gpio9;
+		gp10 = &pin_gpio10;
+		gp11 = &pin_gpio11;
+		gp12 = &pin_gpio12;
+		gp13 = &pin_gpio13;
+		gp14 = &pin_gpio14;
+		gp15 = &pin_gpio15;
+		gp16 = &pin_gpio16;
+		gp17 = &pin_gpio17;
+		gp18 = &pin_gpio18;
+		gp19 = &pin_gpio19;
+		gp20 = &pin_gpio20;
+		gp21 = &pin_gpio21;
+		gp22 = &pin_gpio22;
+		gp26 = &pin_gpio26;
+		gp27 = &pin_gpio27;
+		gp28 = &pin_gpio28;
+	};
+
+	leds {
+		compatible = "gpio-leds";
+
+		status_led: led_0 {
+			gpios = <&gpio0 15 GPIO_ACTIVE_HIGH>;
+			label = "Pico W Status LED (GP15)";
+		};
+
+		/* Generic Breakout GPIO Pin Nodes */
+		pin_gpio0: gpio_0   { gpios = <&gpio0 0 GPIO_ACTIVE_HIGH>;  label = "GP0"; };
+		pin_gpio1: gpio_1   { gpios = <&gpio0 1 GPIO_ACTIVE_HIGH>;  label = "GP1"; };
+		pin_gpio2: gpio_2   { gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;  label = "GP2"; };
+		pin_gpio3: gpio_3   { gpios = <&gpio0 3 GPIO_ACTIVE_HIGH>;  label = "GP3"; };
+		pin_gpio4: gpio_4   { gpios = <&gpio0 4 GPIO_ACTIVE_HIGH>;  label = "GP4"; };
+		pin_gpio5: gpio_5   { gpios = <&gpio0 5 GPIO_ACTIVE_HIGH>;  label = "GP5"; };
+		pin_gpio6: gpio_6   { gpios = <&gpio0 6 GPIO_ACTIVE_HIGH>;  label = "GP6"; };
+		pin_gpio7: gpio_7   { gpios = <&gpio0 7 GPIO_ACTIVE_HIGH>;  label = "GP7"; };
+		pin_gpio8: gpio_8   { gpios = <&gpio0 8 GPIO_ACTIVE_HIGH>;  label = "GP8"; };
+		pin_gpio9: gpio_9   { gpios = <&gpio0 9 GPIO_ACTIVE_HIGH>;  label = "GP9"; };
+		pin_gpio10: gpio_10 { gpios = <&gpio0 10 GPIO_ACTIVE_HIGH>; label = "GP10"; };
+		pin_gpio11: gpio_11 { gpios = <&gpio0 11 GPIO_ACTIVE_HIGH>; label = "GP11"; };
+		pin_gpio12: gpio_12 { gpios = <&gpio0 12 GPIO_ACTIVE_HIGH>; label = "GP12"; };
+		pin_gpio13: gpio_13 { gpios = <&gpio0 13 GPIO_ACTIVE_HIGH>; label = "GP13"; };
+		pin_gpio14: gpio_14 { gpios = <&gpio0 14 GPIO_ACTIVE_HIGH>; label = "GP14"; };
+		pin_gpio15: gpio_15 { gpios = <&gpio0 15 GPIO_ACTIVE_HIGH>; label = "GP15"; };
+		pin_gpio16: gpio_16 { gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>; label = "GP16"; };
+		pin_gpio17: gpio_17 { gpios = <&gpio0 17 GPIO_ACTIVE_HIGH>; label = "GP17"; };
+		pin_gpio18: gpio_18 { gpios = <&gpio0 18 GPIO_ACTIVE_HIGH>; label = "GP18"; };
+		pin_gpio19: gpio_19 { gpios = <&gpio0 19 GPIO_ACTIVE_HIGH>; label = "GP19"; };
+		pin_gpio20: gpio_20 { gpios = <&gpio0 20 GPIO_ACTIVE_HIGH>; label = "GP20"; };
+		pin_gpio21: gpio_21 { gpios = <&gpio0 21 GPIO_ACTIVE_HIGH>; label = "GP21"; };
+		pin_gpio22: gpio_22 { gpios = <&gpio0 22 GPIO_ACTIVE_HIGH>; label = "GP22"; };
+
+		/* ADC-capable Analog Pins */
+		pin_gpio26: gpio_26 { gpios = <&gpio0 26 GPIO_ACTIVE_HIGH>; label = "GP26 / ADC0"; };
+		pin_gpio27: gpio_27 { gpios = <&gpio0 27 GPIO_ACTIVE_HIGH>; label = "GP27 / ADC1"; };
+		pin_gpio28: gpio_28 { gpios = <&gpio0 28 GPIO_ACTIVE_HIGH>; label = "GP28 / ADC2"; };
+	};
+
+	gpio_keys {
+		compatible = "gpio-keys";
+
+		user_button: button_user {
+			label = "User Button (GP22)";
+			gpios = <&gpio0 22 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+		};
+	};
+};
+
+&zephyr_udc0 {
+	cdc_acm_uart0: cdc_acm_uart0 {
+		compatible = "zephyr,cdc-acm-uart";
+	};
+};

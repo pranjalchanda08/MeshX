@@ -30,13 +30,14 @@
 #if CONFIG_MESHX_LOG_THREADED
 #include "meshx_control_task.h"
 
-typedef struct {
+typedef struct
+{
     uint8_t data[CONFIG_MESHX_LOG_BUF_SIZE];
     uint16_t len;
 } meshx_log_msg_t;
 
 static meshx_msg_q_t log_msg_q = {
-    .max_msg_depth = sizeof(meshx_log_msg_t),  /* Size of one message (bytes) */
+    .max_msg_depth = sizeof(meshx_log_msg_t),    /* Size of one message (bytes) */
     .max_msg_length = CONFIG_MESHX_LOG_QUEUE_LEN /* Max number of messages in queue */
 };
 
@@ -57,12 +58,12 @@ static void meshx_log_task_handler(void *args)
             if (recv_msg.len >= 2 && recv_msg.data[0] == 0xAD && recv_msg.data[1] == 0xDE)
             {
                 /* Raw binary output for host decoder */
-                meshx_platform_console_write((const char*)recv_msg.data, recv_msg.len);
+                meshx_platform_console_write((const char *)recv_msg.data, recv_msg.len);
             }
             else
             {
                 /* Fallback for legacy strings if any */
-                CONFIG_MESHX_LOG_PRINTF("%s", (char*)recv_msg.data);
+                CONFIG_MESHX_LOG_PRINTF("%s", (char *)recv_msg.data);
             }
         }
     }
@@ -129,6 +130,65 @@ void meshx_module_set_log_level(module_id_t module_id, meshx_log_level_t log_lev
     }
 }
 
+#if defined(__ZEPHYR__)
+extern char __attribute__((weak)) _meshx_log_str_start[];
+extern char __attribute__((weak)) _meshx_log_str_end[];
+extern char __attribute__((weak)) __rom_region_start[];
+extern char __attribute__((weak)) __rom_region_end[];
+extern char __attribute__((weak)) _image_ram_start[];
+
+static inline bool meshx_is_fmt_readable(const char *fmt_ptr)
+{
+    uintptr_t addr = (uintptr_t)fmt_ptr;
+    /* If fmt resides within the NO-LOAD dictionary section, it cannot be read on-target */
+    if (_meshx_log_str_start && addr >= (uintptr_t)_meshx_log_str_start && addr < (uintptr_t)_meshx_log_str_end)
+    {
+        return false;
+    }
+    /* Verify it falls within valid physical ROM or RAM */
+    return (addr >= (uintptr_t)__rom_region_start && addr < (uintptr_t)__rom_region_end) ||
+           (addr >= (uintptr_t)_image_ram_start);
+}
+
+static inline bool meshx_is_valid_ptr(uintptr_t str_ptr)
+{
+    return (str_ptr >= (uintptr_t)_image_ram_start) ||
+           (str_ptr >= (uintptr_t)__rom_region_start && str_ptr < (uintptr_t)__rom_region_end);
+}
+
+#elif defined(ESP_PLATFORM)
+#include <esp_memory_utils.h>
+
+static inline bool meshx_is_fmt_readable(const char *fmt_ptr)
+{
+    return esp_ptr_in_drom(fmt_ptr) || esp_ptr_in_dram(fmt_ptr);
+}
+
+static inline bool meshx_is_valid_ptr(uintptr_t str_ptr)
+{
+    return esp_ptr_in_dram((void *)str_ptr) || esp_ptr_in_drom((void *)str_ptr);
+}
+
+#else
+extern char __attribute__((weak)) _meshx_log_str_start[];
+extern char __attribute__((weak)) _meshx_log_str_end[];
+
+static inline bool meshx_is_fmt_readable(const char *fmt_ptr)
+{
+    uintptr_t addr = (uintptr_t)fmt_ptr;
+    if (_meshx_log_str_start && addr >= (uintptr_t)_meshx_log_str_start && addr < (uintptr_t)_meshx_log_str_end)
+    {
+        return false;
+    }
+    return addr >= 0x10000;
+}
+
+static inline bool meshx_is_valid_ptr(uintptr_t str_ptr)
+{
+    return str_ptr >= 0x10000;
+}
+#endif
+
 static void vmeshx_log_packet(module_id_t module_id, meshx_log_level_t log_level,
                               const char *file, int line_no, const char *fmt, va_list args)
 {
@@ -153,60 +213,91 @@ static void vmeshx_log_packet(module_id_t module_id, meshx_log_level_t log_level
     unsigned int timestamp = 0;
     meshx_rtos_get_sys_time(&timestamp);
 
-    pkt->sync = MESHX_LOG_SYNC_WORD;
-    pkt->level = (uint8_t)log_level;
-    pkt->module_id = (uint8_t)module_id;
-    pkt->timestamp = (uint32_t)timestamp;
-    pkt->fmt_addr = (uint32_t)fmt;
-    pkt->file_addr = (uint32_t)file;
-    pkt->line_no = (uint16_t)line_no;
+    pkt->sync       = MESHX_LOG_SYNC_WORD;
+    pkt->level      = (uint8_t)log_level;
+    pkt->module_id  = (uint8_t)module_id;
+    pkt->timestamp  = (uint32_t)timestamp;
+    pkt->fmt_addr   = (uint32_t)fmt;
+    pkt->file_addr  = (uint32_t)file;
+    pkt->line_no    = (uint16_t)line_no;
 
     /* Pack arguments */
     va_list args_copy;
     va_copy(args_copy, args);
-    for (int i = 0; i < 16; i++) {
+    for (int i = 0; i < 16; i++)
+    {
         pkt->args[i] = va_arg(args_copy, uint32_t);
     }
     va_end(args_copy);
 
-    /* Simple scan for %s to support dynamic string inlining */
-    const char *p = fmt;
-    int arg_idx = 0;
-    bool found_s = false;
-    while (*p) {
-        if (*p == '%' && *(p+1) != '%') {
-            p++;
-            // Basic skip of common modifiers
-            while (*p && (isdigit((int)*p) || strchr("-+ #.0123456789", *p))) p++;
-            while (*p && strchr("lhjzL", *p)) p++;
-            
-            if (*p == 's') {
-                found_s = true;
-                break;
+    /*
+     * If the log string dictionary is stored in a NO-LOAD section (e.g. Zephyr .meshx_log_str 0 (INFO)),
+     * fmt is a token/dictionary offset into the ELF file (not mapped in target memory).
+     * Only scan for %s if fmt is verified to reside in valid readable target memory.
+     */
+    if (meshx_is_fmt_readable(fmt))
+    {
+        /* Simple scan for %s to support dynamic string inlining */
+        const char *p = fmt;
+        int arg_idx = 0;
+        bool found_s = false;
+        while (*p)
+        {
+            if (*p == '%' && *(p + 1) != '%')
+            {
+                p++;
+                // Basic skip of common modifiers
+                while (*p && (isdigit((int)*p) || strchr("-+ #.0123456789", *p))) p++;
+                while (*p && strchr("lhjzL", *p)) p++;
+
+                if (*p == 's')
+                {
+                    found_s = true;
+                    break;
+                }
+                arg_idx++;
+                if (arg_idx >= 16)
+                    break;
             }
-            arg_idx++;
-            if (arg_idx >= 16) break;
+            p++;
         }
-        p++;
+
+        if (found_s && arg_idx < 16)
+        {
+            uintptr_t str_ptr = (uintptr_t)pkt->args[arg_idx];
+            if (meshx_is_valid_ptr(str_ptr))
+            {
+                /* Safely copy the string, ensuring null termination */
+                strncpy(pkt->inline_str, (const char *)str_ptr, sizeof(pkt->inline_str) - 1);
+                pkt->inline_str[sizeof(pkt->inline_str) - 1] = '\0';
+            }
+            else
+            {
+                /* Not a valid string pointer or out of expected bounds */
+                strncpy(pkt->inline_str, "<invalid>", sizeof(pkt->inline_str) - 1);
+            }
+        }
     }
-
-    if (found_s && arg_idx < 16) {
-        uintptr_t str_ptr = (uintptr_t)pkt->args[arg_idx];
-        /* 
-         * ESP32-C3 Memory Map Check:
-         * DRAM: 0x3FC80000 - 0x3FCE0000
-         * DROM (Flash strings): 0x3C000000 - 0x3C800000
+    else
+    {
+        /*
+         * When fmt is in a NO-LOAD section (saved in ELF, not on target), the target cannot
+         * inspect fmt for %s. Opportunistically check args for valid RAM string pointers to inline.
          */
-        bool is_valid_ptr = (str_ptr >= 0x3FC80000 && str_ptr < 0x3FCE0000) || 
-                            (str_ptr >= 0x3C000000 && str_ptr < 0x3C800000);
-
-        if (is_valid_ptr) {
-            /* Safely copy the string, ensuring null termination */
-            strncpy(pkt->inline_str, (const char *)str_ptr, sizeof(pkt->inline_str) - 1);
-            pkt->inline_str[sizeof(pkt->inline_str) - 1] = '\0';
-        } else {
-            /* Not a valid string pointer or out of expected bounds */
-            strncpy(pkt->inline_str, "<invalid>", sizeof(pkt->inline_str) - 1);
+        for (int i = 0; i < 8; i++)
+        {
+            uintptr_t str_ptr = (uintptr_t)pkt->args[i];
+            if (meshx_is_valid_ptr(str_ptr))
+            {
+                const char *s = (const char *)str_ptr;
+                /* If it points to printable ASCII text in RAM, inline it */
+                if (s[0] >= 32 && s[0] < 127)
+                {
+                    strncpy(pkt->inline_str, s, sizeof(pkt->inline_str) - 1);
+                    pkt->inline_str[sizeof(pkt->inline_str) - 1] = '\0';
+                    break;
+                }
+            }
         }
     }
 
@@ -218,7 +309,8 @@ static void vmeshx_log_packet(module_id_t module_id, meshx_log_level_t log_level
     if (log_threaded_init_done)
     {
         /* Use a small wait to avoid dropping logs if queue is momentarily full */
-        if (meshx_msg_q_send(&log_msg_q, &msg, sizeof(msg), 10) == MESHX_SUCCESS) {
+        if (meshx_msg_q_send(&log_msg_q, &msg, sizeof(msg), 10) == MESHX_SUCCESS)
+        {
             return;
         }
     }

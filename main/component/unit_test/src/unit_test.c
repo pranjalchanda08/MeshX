@@ -9,11 +9,12 @@
  * production use.
  */
 
+#include <stdlib.h>
+
 #include "unit_test.h"
 #include "interface/logging/meshx_log.h"
 #include "interface/utils/meshx_shell.h"
 #include "interface/meshx_platform.h"
-#include <stdlib.h>
 
 extern void meshx_serial_set_hosted_mode(bool enabled);
 
@@ -37,12 +38,15 @@ static unit_test_callback_t callback_list[MODULE_ID_MAX];
  *      - MESHX_INVALID_ARG: If the number of arguments is insufficient.
  *      - MESHX_NOT_FOUND: If no unit test is registered for the specified module ID.
  */
-static int ut_command_handler(int argc, char **argv) {
-    for (int i = 0; i < argc; i++) {
+static int ut_command_handler(int argc, char **argv)
+{
+    for (int i = 0; i < argc; i++)
+    {
         MESHX_LOGD(MODULE_ID_COMMON, "Raw argv[%d]: %s", i, argv[i]);
     }
 
-    if (argc < UT_CMD_MIN_ARGS) {
+    if (argc < UT_CMD_MIN_ARGS)
+    {
         MESHX_LOGE(MODULE_ID_COMMON, "Insufficient arguments");
         return MESHX_INVALID_ARG;
     }
@@ -50,7 +54,7 @@ static int ut_command_handler(int argc, char **argv) {
     int cmd_id = UT_GET_ARG(2, uint16_t, argv);
     int parsed_argc = UT_GET_ARG(3, uint16_t, argv);
     module_id_t module_id = UT_GET_ARG(1, uint16_t, argv);
-    MESHX_LOGD(MODULE_ID_COMMON, "Unit Test: Params -> argc: %d, Module: %d, cmd_id: %d", parsed_argc, module_id , cmd_id);
+    MESHX_LOGD(MODULE_ID_COMMON, "Unit Test: Params -> argc: %d, Module: %d, cmd_id: %d", parsed_argc, module_id, cmd_id);
     if (parsed_argc > (argc - UT_CMD_MIN_ARGS))
     {
         MESHX_LOGE(MODULE_ID_COMMON, "Insufficient module arguments");
@@ -62,12 +66,13 @@ static int ut_command_handler(int argc, char **argv) {
         MESHX_LOGD(MODULE_ID_COMMON, "argv[%d]: %s", i, argv[i + UT_CMD_MIN_ARGS]);
     }
 
-    if (module_id >= MODULE_ID_MAX) {
+    if (module_id >= MODULE_ID_MAX)
+    {
         MESHX_LOGE(MODULE_ID_COMMON, "Module ID %d unknown", module_id);
         return MESHX_INVALID_ARG;
     }
 
-    if(NULL != callback_list[module_id].callback)
+    if (NULL != callback_list[module_id].callback)
     {
         return callback_list[module_id].callback(cmd_id, parsed_argc, (argv + UT_CMD_MIN_ARGS));
     }
@@ -85,9 +90,12 @@ static int ut_command_handler(int argc, char **argv) {
  *     - MESHX_SUCCESS: Success
  *     - Other error codes: Failure
  */
-static meshx_err_t common_unit_test_cb_handler(int cmd_id, int argc, char **argv) {
-    if (cmd_id == 1) { // Serial multiplex routing control
-        if (argc < 1) {
+static meshx_err_t common_unit_test_cb_handler(int cmd_id, int argc, char **argv)
+{
+    if (cmd_id == 1)
+    { // Serial multiplex routing control
+        if (argc < 1)
+        {
             MESHX_LOGE(MODULE_ID_COMMON, "Missing argument for common serial routing");
             return MESHX_INVALID_ARG;
         }
@@ -101,7 +109,8 @@ static meshx_err_t common_unit_test_cb_handler(int cmd_id, int argc, char **argv
     return MESHX_NOT_FOUND;
 }
 
-meshx_err_t register_ut_command() {
+meshx_err_t register_ut_command()
+{
     const meshx_shell_cmd_t cmd = {
         .command = "ut",
         .help = "Run unit tests",
@@ -118,25 +127,40 @@ meshx_err_t register_ut_command() {
  *     - MESHX_SUCCESS: Success
  *     - Other error codes: Failure
  */
-meshx_err_t init_unit_test_console() {
+meshx_err_t init_unit_test_console()
+{
     meshx_err_t err = meshx_shell_init();
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         return err;
     }
 
     err = register_ut_command();
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         return err;
     }
 
     err = register_unit_test(MODULE_ID_COMMON, common_unit_test_cb_handler);
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         return err;
     }
 
     return meshx_shell_start();
 }
 
+/**
+ * @brief De-initializes the unit test console.
+ *
+ * @return
+ *     - MESHX_SUCCESS: Success
+ *     - Other error codes: Failure
+ */
+meshx_err_t deinit_unit_test_console()
+{
+    return meshx_shell_deinit();
+}
 
 /**
  * @brief Register a unit test for a specific module.
@@ -151,8 +175,9 @@ meshx_err_t init_unit_test_console() {
  *     - MESHX_INVALID_ARG: Invalid arguments
  *     - MESHX_FAIL: Failed to register the unit test
  */
-meshx_err_t register_unit_test(module_id_t module_id, module_callback_t callback) {
-    if(module_id >= MODULE_ID_MAX)
+meshx_err_t register_unit_test(module_id_t module_id, module_callback_t callback)
+{
+    if (module_id >= MODULE_ID_MAX)
         return MESHX_INVALID_ARG;
 
     callback_list[module_id].callback = callback;

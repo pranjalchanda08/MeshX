@@ -57,16 +57,15 @@ meshx_err_t control_task_init(void)
  */
 meshx_err_t create_control_task(dev_struct_t *pdev)
 {
+    static meshx_task_t task_handle;
+    task_handle.arg = pdev;
+    task_handle.task_cb = control_task_handler;
+    task_handle.priority = CONFIG_CONTROL_TASK_PRIO;
+    task_handle.task_name = CONFIG_CONTROL_TASK_NAME;
+    task_handle.stack_size = CONFIG_CONTROL_TASK_STACK_SIZE;
 
-    meshx_task_t task_handle = {
-        .arg = pdev,
-        .task_cb = control_task_handler,
-        .priority = CONFIG_CONTROL_TASK_PRIO,
-        .task_name = CONFIG_CONTROL_TASK_NAME,
-        .stack_size = CONFIG_CONTROL_TASK_STACK_SIZE,
-    };
-
-    return meshx_task_create(&task_handle);
+    meshx_err_t err = meshx_task_create(&task_handle);
+    return err;
 }
 
 /* @brief Publish a control task message.
@@ -333,12 +332,13 @@ static void control_task_handler(void *args)
     static control_task_msg_t recv_msg;
     dev_struct_t *pdev = (dev_struct_t *)args;
 
-    MESHX_LOGD(MODULE_ID_COMMON, "Control Task Initialised");
+    MESHX_LOGI(MODULE_ID_COMMON, "Control Task Initialised, entering loop");
     MESHX_UNUSED(err);
 
     while (true)
     {
-        if (meshx_msg_q_recv(&control_task_queue, &recv_msg, UINT32_MAX) == MESHX_SUCCESS)
+        meshx_err_t recv_err = meshx_msg_q_recv(&control_task_queue, &recv_msg, UINT32_MAX);
+        if (recv_err == MESHX_SUCCESS)
         {
             err = control_task_msg_dispatch(pdev, recv_msg.msg_code, recv_msg.msg_evt, recv_msg.msg_evt_params, recv_msg.msg_evt_params_len);
             if (err)
@@ -348,6 +348,10 @@ static void control_task_handler(void *args)
                 /* If Params were passed Free the allocated memory */
                 MESHX_FREE(&recv_msg.msg_evt_params);
             }
+        }
+        else
+        {
+            MESHX_LOGW(MODULE_ID_COMMON, "msg_q_recv failed: 0x%x", recv_err);
         }
     }
 }

@@ -35,7 +35,7 @@ if "%~2" equ "" (
 echo Product: %PRODUCT%
 
 :: Call environment setup (sets PROJECT_ROOT, PATH, installs PyYAML, IDF_PATH)
-call tools/scripts/env.bat
+call "%~dp0env.bat"
 
 :: Run code generation with product profile
 echo.

@@ -46,9 +46,7 @@
 #define MESHX_CID_SIG 0xFFFF
 #define MESHX_VND_MODEL_CID_MESHX 0x02E5 // Example MeshX CID
 
-#ifndef CONFIG_UUID_FOOTER
-#define CONFIG_UUID_FOOTER "-MESHX"
-#endif /* CONFIG_UUID_FOOTER */
+#define MESHX_UUID_FOOTER "MESH-X"
 
 /*!< Foundation Models */
 #define MESHX_MODEL_ID_CONFIG_SRV 0x0000

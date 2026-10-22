@@ -1,0 +1,5 @@
+# Enforce LF endings on shell and python scripts
+*.sh text eol=lf
+*.py text eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf

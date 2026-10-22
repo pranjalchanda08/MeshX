@@ -1,8 +1,8 @@
 #!/bin/bash
 # Sets up the environment for building and running the project.
 # This script should be sourced, not executed.
-# Usage: source tools/scripts/env.sh <extra commands>
-# Example: source tools/scripts/env.sh source ~/esp/esp-idf/export.sh
+# Usage: source tools/bin/env.sh <extra commands>
+# Example: source tools/bin/env.sh source ~/esp/esp-idf/export.sh
 
 # Exit if not sourced
 (return 0 2>/dev/null) || { echo "This script must be sourced, not executed."; exit 1; }
@@ -10,7 +10,7 @@
 # Set the project root directory
 export PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 echo "Project root set to: $PROJECT_ROOT"
-export PATH="$PROJECT_ROOT/tools/scripts:$PATH"
+export PATH="$PROJECT_ROOT/tools/bin:$PROJECT_ROOT/tools/scripts:$PATH"
 
 # make sure python3 is available
 if ! command -v python3 &> /dev/null; then
@@ -18,8 +18,11 @@ if ! command -v python3 &> /dev/null; then
     return 1
 fi
 
-# Make *.py as executable
+# Make *.py as executable and normalize CRLF line endings if files were touched by Windows
 find "$PROJECT_ROOT/tools/scripts" -name "*.py" -exec chmod +x {} \;
+if command -v sed &> /dev/null; then
+    find "$PROJECT_ROOT/tools/scripts" -name "*.py" -exec sed -i 's/\r$//' {} + 2>/dev/null || true
+fi
 
 # Execute additional command line arguments if provided like source env.sh source ~/esp/esp-idf/export.sh
 if [ "$#" -gt 0 ]; then
