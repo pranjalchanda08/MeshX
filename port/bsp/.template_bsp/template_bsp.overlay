@@ -1,0 +1,73 @@
+/*
+ * Copyright (c) 2024 - 2026 MeshX
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Board-specific DeviceTree IO Overlay Template for a new BSP.
+ * Defines board-fixed peripherals (Status LED, Boot Button) and exposes
+ * breakout pins generically by GPIO number.
+ * Copy to port/bsp/<your_bsp>/<your_bsp>.overlay and adjust the pin numbers.
+ */
+
+/ {
+	aliases {
+		led0 = &status_led;
+		sw0 = &user_button;
+
+		/* Generic GPIO pin aliases */
+		gpio0 = &pin_gpio0;
+		gpio1 = &pin_gpio1;
+		gpio2 = &pin_gpio2;
+		gpio3 = &pin_gpio3;
+		gpio4 = &pin_gpio4;
+		gpio5 = &pin_gpio5;
+	};
+
+	leds {
+		compatible = "gpio-leds";
+
+		status_led: led_0 {
+			gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
+			label = "Onboard Status LED";
+		};
+
+		/* Generic Breakout GPIO Pin Nodes */
+		pin_gpio0: gpio_0 {
+			gpios = <&gpio0 0 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 0";
+		};
+
+		pin_gpio1: gpio_1 {
+			gpios = <&gpio0 1 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 1";
+		};
+
+		pin_gpio2: gpio_2 {
+			gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 2";
+		};
+
+		pin_gpio3: gpio_3 {
+			gpios = <&gpio0 3 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 3";
+		};
+
+		pin_gpio4: gpio_4 {
+			gpios = <&gpio0 4 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 4";
+		};
+
+		pin_gpio5: gpio_5 {
+			gpios = <&gpio0 5 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 5";
+		};
+	};
+
+	gpio_keys {
+		compatible = "gpio-keys";
+
+		user_button: button_user {
+			label = "User / Boot Button";
+			gpios = <&gpio0 0 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+		};
+	};
+};

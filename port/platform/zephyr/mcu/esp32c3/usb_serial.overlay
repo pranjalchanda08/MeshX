@@ -1,0 +1,19 @@
+/*
+ * Copyright (c) 2024 - 2026 MeshX
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * ESP32-C3 Hardware USB Serial / JTAG (USB CDC ACM) Console Overlay.
+ * Enables the on-chip USB Serial controller and routes zephyr,console
+ * and zephyr,shell-uart to it (/dev/ttyACM0 on Linux, COMx on Windows).
+ */
+
+/ {
+	chosen {
+		zephyr,console = &usb_serial;
+		zephyr,shell-uart = &usb_serial;
+	};
+};
+
+&usb_serial {
+	status = "okay";
+};

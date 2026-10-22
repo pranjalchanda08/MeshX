@@ -1,0 +1,111 @@
+/*
+ * Copyright (c) 2024 - 2026 MeshX
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Board-specific DeviceTree IO Overlay for Seeed XIAO ESP32-C3 BSP.
+ * Defines board-fixed peripherals (User LED, Boot Button, USB CDC Serial)
+ * and exposes breakout pins generically by GPIO number (and D0-D8 header pins).
+ * Runtime role configuration is driven top-down by MeshX IO firmware and prod_profile.yml.
+ */
+
+/ {
+	chosen {
+		zephyr,console = &usb_serial;
+		zephyr,shell-uart = &usb_serial;
+	};
+
+	aliases {
+		led0 = &yellow_status_led;
+		sw0 = &boot_button;
+
+		/* Generic GPIO pin aliases */
+		gpio0 = &pin_gpio0;
+		gpio1 = &pin_gpio1;
+		gpio2 = &pin_gpio2;
+		gpio3 = &pin_gpio3;
+		gpio4 = &pin_gpio4;
+		gpio5 = &pin_gpio5;
+		gpio6 = &pin_gpio6;
+		gpio7 = &pin_gpio7;
+		gpio8 = &pin_gpio8;
+
+		/* XIAO Board Pin Label Aliases (D0 - D8) */
+		d0 = &pin_gpio1;
+		d1 = &pin_gpio0;
+		d2 = &pin_gpio2;
+		d3 = &pin_gpio3;
+		d4 = &pin_gpio4;
+		d5 = &pin_gpio5;
+		d6 = &pin_gpio6;
+		d7 = &pin_gpio7;
+		d8 = &pin_gpio8;
+	};
+
+	leds {
+		compatible = "gpio-leds";
+
+		yellow_status_led: led_0 {
+			gpios = <&gpio0 10 GPIO_ACTIVE_LOW>;
+			label = "Seeed XIAO User LED (GPIO10 / D10)";
+		};
+
+		/* Generic Breakout GPIO Pin Nodes */
+		pin_gpio0: gpio_0 {
+			gpios = <&gpio0 0 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 0 / D1";
+		};
+
+		pin_gpio1: gpio_1 {
+			gpios = <&gpio0 1 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 1 / D0";
+		};
+
+		pin_gpio2: gpio_2 {
+			gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 2 / D2";
+		};
+
+		pin_gpio3: gpio_3 {
+			gpios = <&gpio0 3 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 3 / D3";
+		};
+
+		pin_gpio4: gpio_4 {
+			gpios = <&gpio0 4 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 4 / D4";
+		};
+
+		pin_gpio5: gpio_5 {
+			gpios = <&gpio0 5 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 5 / D5";
+		};
+
+		pin_gpio6: gpio_6 {
+			gpios = <&gpio0 6 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 6 / D6";
+		};
+
+		pin_gpio7: gpio_7 {
+			gpios = <&gpio0 7 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 7 / D7";
+		};
+
+		pin_gpio8: gpio_8 {
+			gpios = <&gpio0 8 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 8 / D8";
+		};
+	};
+
+	gpio_keys {
+		compatible = "gpio-keys";
+
+		boot_button: button_boot {
+			label = "Boot Button (GPIO9 / D9)";
+			gpios = <&gpio0 9 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+		};
+	};
+};
+
+&usb_serial {
+	status = "okay";
+};

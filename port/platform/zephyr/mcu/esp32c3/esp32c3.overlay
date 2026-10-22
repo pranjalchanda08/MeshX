@@ -1,0 +1,71 @@
+/*
+ * Copyright (c) 2024 - 2026 MeshX
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Common MCU-level DeviceTree Overlay for ESP32-C3 (4MB Flash).
+ * Allocates dedicated partitions for MCUboot, Application slots,
+ * Bluetooth Mesh settings (storage), MeshX Config (meshx-cfg),
+ * and MeshX Application NVS (meshx-nvs).
+ */
+
+/ {
+	chosen {
+		zephyr,settings-partition = &storage_partition;
+	};
+};
+
+&flash0 {
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		/* Delete default board partitions that conflict with new offsets */
+		/delete-node/ partition@110000;
+		/delete-node/ partition@210000;
+		/delete-node/ partition@250000;
+
+		/* MCUboot Bootloader (64 KB) */
+		boot_partition: partition@0 {
+			label = "mcuboot";
+			reg = <0x00000000 0x00010000>;
+			read-only;
+		};
+
+		/* Primary Application Image Slot (1792 KB) */
+		slot0_partition: partition@10000 {
+			label = "image-0";
+			reg = <0x00010000 0x001C0000>;
+		};
+
+		/* Secondary Application Image Slot for Firmware OTA (1792 KB) */
+		slot1_partition: partition@1d0000 {
+			label = "image-1";
+			reg = <0x001D0000 0x001C0000>;
+		};
+
+		/* MCUboot Swap Scratch Space (128 KB) */
+		scratch_partition: partition@390000 {
+			label = "image-scratch";
+			reg = <0x00390000 0x00020000>;
+		};
+
+		/* Bluetooth Mesh & System Settings Partition (48 KB) */
+		storage_partition: partition@3b0000 {
+			label = "storage";
+			reg = <0x003B0000 0x0000C000>;
+		};
+
+		/* Dedicated MeshX Protobuf Configuration Partition (8 KB) */
+		meshx_cfg_partition: partition@3bc000 {
+			label = "meshx-cfg";
+			reg = <0x003BC000 0x00002000>;
+		};
+
+		/* Dedicated MeshX Application NVS Partition (16 KB) */
+		meshx_nvs_partition: partition@3be000 {
+			label = "meshx-nvs";
+			reg = <0x003BE000 0x00004000>;
+		};
+	};
+};

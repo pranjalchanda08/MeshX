@@ -34,14 +34,14 @@ extern "C" {
  * @brief Control task priority configuration.
  */
 #ifndef CONFIG_CONTROL_TASK_PRIO
-#define CONFIG_CONTROL_TASK_PRIO        configTIMER_TASK_PRIORITY + 2
+#define CONFIG_CONTROL_TASK_PRIO        3
 #endif
 
 /**
  * @brief Logging task priority configuration.
  */
 #ifndef CONFIG_MESHX_LOG_TASK_PRIO
-#define CONFIG_MESHX_LOG_TASK_PRIO      configTIMER_TASK_PRIORITY + 1
+#define CONFIG_MESHX_LOG_TASK_PRIO      2
 #endif
 
 /**

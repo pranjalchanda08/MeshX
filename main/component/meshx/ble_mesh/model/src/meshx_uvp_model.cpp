@@ -159,7 +159,7 @@ meshx_err_t meshXUVPModel::plat_model_create(MESHX_MODEL *p_baked_model)
 
     /* Set vendor model ID (4 bytes: Model ID + CID from active profile) */
     uint32_t vnd_id = meshx_uvp_get_vnd_model_id();
-    memcpy((void *)&p_baked_model->model_id, &vnd_id, sizeof(vnd_id));
+    MESHX_SET_MODEL_VND_ID(p_baked_model, vnd_id);
 
     /* Create the publication context for the vendor model */
     meshx_ptr_t p_pub = nullptr;

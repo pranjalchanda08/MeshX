@@ -1,0 +1,73 @@
+/*
+ * Copyright (c) 2024 - 2026 MeshX
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Common MCU-level DeviceTree Overlay for Raspberry Pi RP2040 (2MB Flash).
+ * Allocates dedicated partitions for MCUboot, Application slots,
+ * Bluetooth Mesh settings (storage), MeshX Config (meshx-cfg),
+ * and MeshX Application NVS (meshx-nvs).
+ */
+
+/ {
+	chosen {
+		zephyr,code-partition = &slot0_partition;
+		zephyr,settings-partition = &storage_partition;
+	};
+};
+
+&flash0 {
+	reg = <0x10000000 DT_SIZE_M(2)>;
+
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+		/* Delete default partitions if defined */
+		/delete-node/ partition@0;
+		/delete-node/ partition@100;
+
+		/* Bootloader Partition (64 KB) */
+		boot_partition: partition@0 {
+			label = "mcuboot";
+			reg = <0x00000000 0x00010000>;
+			read-only;
+		};
+
+		/* Primary Application Image Slot (832 KB) */
+		slot0_partition: partition@10000 {
+			label = "image-0";
+			reg = <0x00010000 0x000D0000>;
+		};
+
+		/* Secondary Application Image Slot for Firmware OTA (832 KB) */
+		slot1_partition: partition@E0000 {
+			label = "image-1";
+			reg = <0x000E0000 0x000D0000>;
+		};
+
+		/* MCUboot Swap Scratch Space (128 KB) */
+		scratch_partition: partition@1B0000 {
+			label = "image-scratch";
+			reg = <0x001B0000 0x00020000>;
+		};
+
+		/* Bluetooth Mesh & System Settings Partition (24 KB) */
+		storage_partition: partition@1D0000 {
+			label = "storage";
+			reg = <0x001D0000 0x00006000>;
+		};
+
+		/* Dedicated MeshX Protobuf Configuration Partition (8 KB) */
+		meshx_cfg_partition: partition@1D6000 {
+			label = "meshx-cfg";
+			reg = <0x001D6000 0x00002000>;
+		};
+
+		/* Dedicated MeshX Application NVS Partition (16 KB) */
+		meshx_nvs_partition: partition@1D8000 {
+			label = "meshx-nvs";
+			reg = <0x001D8000 0x00004000>;
+		};
+	};
+};

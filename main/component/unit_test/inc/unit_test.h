@@ -16,7 +16,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "meshx_config_internal.h"
-#include "argtable3/argtable3.h"
 #include "module_id.h"
 #include "meshx_err.h"
 
@@ -25,6 +24,7 @@ extern "C" {
 #endif
 
 #if CONFIG_ENABLE_UNIT_TEST
+#include "argtable3/argtable3.h"
 /**
  * @brief Macro to extract an argument from the argument list.
  */

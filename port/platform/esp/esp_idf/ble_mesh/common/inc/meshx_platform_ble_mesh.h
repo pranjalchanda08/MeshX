@@ -39,6 +39,35 @@
 #define MESHX_CLIENT            esp_ble_mesh_client_t
 #define MESHX_MODEL_PUB         esp_ble_mesh_model_pub_t
 
+#define MESHX_SET_ELEM_LOCATION(e, val)       memcpy((void *)&(e)->location, &(val), sizeof((e)->location))
+#define MESHX_SET_ELEM_SIG_COUNT(e, val)      memcpy((void *)&(e)->sig_model_count, &(val), sizeof((e)->sig_model_count))
+#define MESHX_SET_ELEM_VND_COUNT(e, val)      memcpy((void *)&(e)->vnd_model_count, &(val), sizeof((e)->vnd_model_count))
+#define MESHX_SET_ELEM_SIG_MODELS(e, val)     memcpy((void *)&(e)->sig_models, &(val), sizeof((e)->sig_models))
+#define MESHX_SET_ELEM_VND_MODELS(e, val)     memcpy((void *)&(e)->vnd_models, &(val), sizeof((e)->vnd_models))
+
+#define MESHX_SET_COMP_ELEM_COUNT(comp, val)  ((comp)->element_count = (val))
+#define MESHX_SET_COMP_ELEMS(comp, val)       ((comp)->elements = (val))
+#define MESHX_MODEL_GET_SIG_ID(m)             ((m)->model_id)
+#define MESHX_MODEL_GET_VND_ID(m)             ((m)->vnd.model_id)
+#define MESHX_MODEL_GET_VND_CID(m)            ((m)->vnd.company_id)
+#define MESHX_INIT_ELEMENT(e)                 do {} while(0)
+
+#define MESHX_INIT_MODEL_KEYS_GROUPS(p_baked) \
+    do { \
+        for (size_t k = 0; k < sizeof((p_baked)->keys) / sizeof((p_baked)->keys[0]); k++) { \
+            (p_baked)->keys[k] = MESHX_KEY_UNUSED; \
+        } \
+        for (size_t g = 0; g < sizeof((p_baked)->groups) / sizeof((p_baked)->groups[0]); g++) { \
+            (p_baked)->groups[g] = MESHX_ADDR_UNASSIGNED; \
+        } \
+    } while(0)
+
+#define MESHX_SET_MODEL_VND_ID(m, vnd_id_32) \
+    do { \
+        uint32_t _v = (vnd_id_32); \
+        memcpy((void *)&(m)->model_id, &_v, sizeof(uint32_t)); \
+    } while(0)
+
 /**
  * MESHX_SERVER_MODELS
  */

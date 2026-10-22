@@ -1,0 +1,11 @@
+# Copyright (c) 2024 - 2026 MeshX
+# SPDX-License-Identifier: Apache-2.0
+
+mainmenu "MeshX Node"
+
+# Include Zephyr base Kconfig first so subsystem symbols are defined
+source "Kconfig.zephyr"
+
+# Include MeshX Kconfig
+osource "zephyr/Kconfig"
+

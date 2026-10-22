@@ -1,0 +1,170 @@
+/*
+ * Copyright (c) 2024 - 2026 MeshX
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Board-specific DeviceTree IO Overlay for ESP32-DevKitC BSP.
+ * Defines board-fixed peripherals (LED, Button) and exposes breakout pins
+ * generically by GPIO number. Runtime role configuration (relays, switches,
+ * PWM, sensors) is driven top-down by MeshX IO firmware and prod_profile.yml.
+ */
+
+/ {
+	aliases {
+		led0 = &status_led;
+		sw0 = &boot_button;
+
+		/* Generic GPIO pin aliases */
+		gpio4  = &pin_gpio4;
+		gpio5  = &pin_gpio5;
+		gpio12 = &pin_gpio12;
+		gpio13 = &pin_gpio13;
+		gpio14 = &pin_gpio14;
+		gpio15 = &pin_gpio15;
+		gpio16 = &pin_gpio16;
+		gpio17 = &pin_gpio17;
+		gpio18 = &pin_gpio18;
+		gpio19 = &pin_gpio19;
+		gpio21 = &pin_gpio21;
+		gpio22 = &pin_gpio22;
+		gpio23 = &pin_gpio23;
+		gpio25 = &pin_gpio25;
+		gpio26 = &pin_gpio26;
+		gpio27 = &pin_gpio27;
+		gpio32 = &pin_gpio32;
+		gpio33 = &pin_gpio33;
+		gpio34 = &pin_gpio34;
+		gpio35 = &pin_gpio35;
+		gpio36 = &pin_gpio36;
+		gpio39 = &pin_gpio39;
+	};
+
+	leds {
+		compatible = "gpio-leds";
+
+		status_led: led_0 {
+			gpios = <&gpio0 2 GPIO_ACTIVE_HIGH>;
+			label = "Onboard Status LED (GPIO2)";
+		};
+
+		/* Generic Breakout GPIO Pin Nodes */
+		pin_gpio4: gpio_4 {
+			gpios = <&gpio0 4 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 4";
+		};
+
+		pin_gpio5: gpio_5 {
+			gpios = <&gpio0 5 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 5";
+		};
+
+		pin_gpio12: gpio_12 {
+			gpios = <&gpio0 12 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 12";
+		};
+
+		pin_gpio13: gpio_13 {
+			gpios = <&gpio0 13 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 13";
+		};
+
+		pin_gpio14: gpio_14 {
+			gpios = <&gpio0 14 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 14";
+		};
+
+		pin_gpio15: gpio_15 {
+			gpios = <&gpio0 15 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 15";
+		};
+
+		pin_gpio16: gpio_16 {
+			gpios = <&gpio0 16 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 16";
+		};
+
+		pin_gpio17: gpio_17 {
+			gpios = <&gpio0 17 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 17";
+		};
+
+		pin_gpio18: gpio_18 {
+			gpios = <&gpio0 18 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 18";
+		};
+
+		pin_gpio19: gpio_19 {
+			gpios = <&gpio0 19 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 19";
+		};
+
+		pin_gpio21: gpio_21 {
+			gpios = <&gpio0 21 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 21";
+		};
+
+		pin_gpio22: gpio_22 {
+			gpios = <&gpio0 22 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 22";
+		};
+
+		pin_gpio23: gpio_23 {
+			gpios = <&gpio0 23 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 23";
+		};
+
+		pin_gpio25: gpio_25 {
+			gpios = <&gpio0 25 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 25";
+		};
+
+		pin_gpio26: gpio_26 {
+			gpios = <&gpio0 26 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 26";
+		};
+
+		pin_gpio27: gpio_27 {
+			gpios = <&gpio0 27 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 27";
+		};
+
+		pin_gpio32: gpio_32 {
+			gpios = <&gpio0 32 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 32";
+		};
+
+		pin_gpio33: gpio_33 {
+			gpios = <&gpio0 33 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 33";
+		};
+
+		/* Input-Only Pins (GPI) */
+		pin_gpio34: gpio_34 {
+			gpios = <&gpio0 34 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 34 (Input Only)";
+		};
+
+		pin_gpio35: gpio_35 {
+			gpios = <&gpio0 35 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 35 (Input Only)";
+		};
+
+		pin_gpio36: gpio_36 {
+			gpios = <&gpio0 36 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 36 (Input Only)";
+		};
+
+		pin_gpio39: gpio_39 {
+			gpios = <&gpio0 39 GPIO_ACTIVE_HIGH>;
+			label = "GPIO 39 (Input Only)";
+		};
+	};
+
+	gpio_keys {
+		compatible = "gpio-keys";
+
+		boot_button: button_boot {
+			label = "Boot Button (GPIO0)";
+			gpios = <&gpio0 0 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+		};
+	};
+};

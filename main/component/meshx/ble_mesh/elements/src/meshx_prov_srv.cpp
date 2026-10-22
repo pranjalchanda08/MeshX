@@ -46,40 +46,32 @@ typedef struct prov_cb_evt_ctrl_task_evt_table
 } prov_cb_evt_ctrl_task_evt_table_t;
 
 /*
- * @brief Table mapping provisioning events to control task events.
- * @note Fixed for C++17 compatibility (removed C99 designated initializers for large arrays if needed,
- *       but here we use explicit indices for clarity).
+ * @brief Compile-time static const table mapping provisioning events to control task events.
+ * Stored in Flash read-only cache (drom) to save DRAM.
  */
-static prov_cb_evt_ctrl_task_evt_table_t prov_cb_evt_ctrl_task_evt_table[MESHX_PROV_EVT_MAX] = {};
-
-static void init_prov_cb_table(void)
-{
-    static bool initialized = false;
-    if (initialized) return;
-
+static const prov_cb_evt_ctrl_task_evt_table_t prov_cb_evt_ctrl_task_evt_table[MESHX_PROV_EVT_MAX] = {
 #if CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO
-    prov_cb_evt_ctrl_task_evt_table[MESHX_PROV_REGISTER_COMP_EVT]          = {"MESHX_PROV_REGISTER_COMP_EVT",          CONTROL_TASK_MSG_EVT_PROV_REG_COMP};
-    prov_cb_evt_ctrl_task_evt_table[MESHX_NODE_SET_UPROV_NAME_COMP_EVT]    = {"MESHX_NODE_SET_UPROV_NAME_COMP_EVT",    CONTROL_TASK_MSG_EVT_SET_NAME_COMP};
-    prov_cb_evt_ctrl_task_evt_table[MESHX_NODE_PROV_RESET_EVT]             = {"MESHX_NODE_PROV_RESET_EVT",             CONTROL_TASK_MSG_EVT_NODE_RESET};
-    prov_cb_evt_ctrl_task_evt_table[MESHX_NODE_PROV_COMPLETE_EVT]          = {"MESHX_NODE_PROV_COMPLETE_EVT",          CONTROL_TASK_MSG_EVT_PROVISION_STOP};
-    prov_cb_evt_ctrl_task_evt_table[MESHX_NODE_PROV_LINK_OPEN_EVT]         = {"MESHX_NODE_PROV_LINK_OPEN_EVT",         CONTROL_TASK_MSG_EVT_IDENTIFY_START};
-    prov_cb_evt_ctrl_task_evt_table[MESHX_NODE_PROV_LINK_CLOSE_EVT]        = {"MESHX_NODE_PROV_LINK_CLOSE_EVT",        CONTROL_TASK_MSG_EVT_IDENTIFY_STOP};
-    prov_cb_evt_ctrl_task_evt_table[MESHX_NODE_PROV_ENABLE_COMP_EVT]       = {"MESHX_NODE_PROV_ENABLE_COMP_EVT",       CONTROL_TASK_MSG_EVT_EN_NODE_PROV};
-    prov_cb_evt_ctrl_task_evt_table[MESHX_PROXY_SERVER_CONNECTED_EVT]      = {"MESHX_PROXY_SERVER_CONNECTED_EVT",      CONTROL_TASK_MSG_EVT_PROXY_CONNECT};
-    prov_cb_evt_ctrl_task_evt_table[MESHX_PROXY_SERVER_DISCONNECTED_EVT]   = {"MESHX_PROXY_SERVER_DISCONNECTED_EVT",   CONTROL_TASK_MSG_EVT_PROXY_DISCONN};
+    /* [0] MESHX_PROV_REGISTER_COMP_EVT */        {"MESHX_PROV_REGISTER_COMP_EVT",        CONTROL_TASK_MSG_EVT_PROV_REG_COMP},
+    /* [1] MESHX_NODE_SET_UPROV_NAME_COMP_EVT */  {"MESHX_NODE_SET_UPROV_NAME_COMP_EVT",  CONTROL_TASK_MSG_EVT_SET_NAME_COMP},
+    /* [2] MESHX_NODE_PROV_RESET_EVT */           {"MESHX_NODE_PROV_RESET_EVT",           CONTROL_TASK_MSG_EVT_NODE_RESET},
+    /* [3] MESHX_NODE_PROV_COMPLETE_EVT */        {"MESHX_NODE_PROV_COMPLETE_EVT",        CONTROL_TASK_MSG_EVT_PROVISION_STOP},
+    /* [4] MESHX_NODE_PROV_LINK_OPEN_EVT */       {"MESHX_NODE_PROV_LINK_OPEN_EVT",       CONTROL_TASK_MSG_EVT_IDENTIFY_START},
+    /* [5] MESHX_NODE_PROV_LINK_CLOSE_EVT */      {"MESHX_NODE_PROV_LINK_CLOSE_EVT",      CONTROL_TASK_MSG_EVT_IDENTIFY_STOP},
+    /* [6] MESHX_NODE_PROV_ENABLE_COMP_EVT */     {"MESHX_NODE_PROV_ENABLE_COMP_EVT",     CONTROL_TASK_MSG_EVT_EN_NODE_PROV},
+    /* [7] MESHX_PROXY_SERVER_CONNECTED_EVT */    {"MESHX_PROXY_SERVER_CONNECTED_EVT",    CONTROL_TASK_MSG_EVT_PROXY_CONNECT},
+    /* [8] MESHX_PROXY_SERVER_DISCONNECTED_EVT */ {"MESHX_PROXY_SERVER_DISCONNECTED_EVT", CONTROL_TASK_MSG_EVT_PROXY_DISCONN},
 #else
-    prov_cb_evt_ctrl_task_evt_table[MESHX_PROV_REGISTER_COMP_EVT].ctrl_task_evt          = CONTROL_TASK_MSG_EVT_PROV_REG_COMP;
-    prov_cb_evt_ctrl_task_evt_table[MESHX_NODE_SET_UPROV_NAME_COMP_EVT].ctrl_task_evt    = CONTROL_TASK_MSG_EVT_SET_NAME_COMP;
-    prov_cb_evt_ctrl_task_evt_table[MESHX_NODE_PROV_RESET_EVT].ctrl_task_evt             = CONTROL_TASK_MSG_EVT_NODE_RESET;
-    prov_cb_evt_ctrl_task_evt_table[MESHX_NODE_PROV_COMPLETE_EVT].ctrl_task_evt          = CONTROL_TASK_MSG_EVT_PROVISION_STOP;
-    prov_cb_evt_ctrl_task_evt_table[MESHX_NODE_PROV_LINK_OPEN_EVT].ctrl_task_evt         = CONTROL_TASK_MSG_EVT_IDENTIFY_START;
-    prov_cb_evt_ctrl_task_evt_table[MESHX_NODE_PROV_LINK_CLOSE_EVT].ctrl_task_evt        = CONTROL_TASK_MSG_EVT_IDENTIFY_STOP;
-    prov_cb_evt_ctrl_task_evt_table[MESHX_NODE_PROV_ENABLE_COMP_EVT].ctrl_task_evt       = CONTROL_TASK_MSG_EVT_EN_NODE_PROV;
-    prov_cb_evt_ctrl_task_evt_table[MESHX_PROXY_SERVER_CONNECTED_EVT].ctrl_task_evt      = CONTROL_TASK_MSG_EVT_PROXY_CONNECT;
-    prov_cb_evt_ctrl_task_evt_table[MESHX_PROXY_SERVER_DISCONNECTED_EVT].ctrl_task_evt   = CONTROL_TASK_MSG_EVT_PROXY_DISCONN;
+    /* [0] MESHX_PROV_REGISTER_COMP_EVT */        {CONTROL_TASK_MSG_EVT_PROV_REG_COMP},
+    /* [1] MESHX_NODE_SET_UPROV_NAME_COMP_EVT */  {CONTROL_TASK_MSG_EVT_SET_NAME_COMP},
+    /* [2] MESHX_NODE_PROV_RESET_EVT */           {CONTROL_TASK_MSG_EVT_NODE_RESET},
+    /* [3] MESHX_NODE_PROV_COMPLETE_EVT */        {CONTROL_TASK_MSG_EVT_PROVISION_STOP},
+    /* [4] MESHX_NODE_PROV_LINK_OPEN_EVT */       {CONTROL_TASK_MSG_EVT_IDENTIFY_START},
+    /* [5] MESHX_NODE_PROV_LINK_CLOSE_EVT */      {CONTROL_TASK_MSG_EVT_IDENTIFY_STOP},
+    /* [6] MESHX_NODE_PROV_ENABLE_COMP_EVT */     {CONTROL_TASK_MSG_EVT_EN_NODE_PROV},
+    /* [7] MESHX_PROXY_SERVER_CONNECTED_EVT */    {CONTROL_TASK_MSG_EVT_PROXY_CONNECT},
+    /* [8] MESHX_PROXY_SERVER_DISCONNECTED_EVT */ {CONTROL_TASK_MSG_EVT_PROXY_DISCONN},
 #endif
-    initialized = true;
-}
+};
 
 static meshx_os_timer_t *g_boot_timer;
 
@@ -109,7 +101,6 @@ static meshx_err_t meshx_prov_srv_control_task_handler(
         return MESHX_INVALID_ARG;
     }
     MESHX_UNUSED(params_len);
-    init_prov_cb_table();
     if(evt != CONTROL_TASK_MSG_EVT_PROVISION_ALL)
     {
         return MESHX_INVALID_ARG;
@@ -302,7 +293,6 @@ static meshx_err_t meshx_init_freshboot_timer(dev_struct_t *p_dev, uint16_t time
  */
 extern "C" meshx_err_t meshx_prov_srv_reg_from_ble_cb(void)
 {
-    init_prov_cb_table();
     return control_task_msg_subscribe(
         CONTROL_TASK_MSG_CODE_PROV_PLAT,
         CONTROL_TASK_MSG_EVT_PROVISION_ALL,
@@ -322,7 +312,8 @@ extern "C" meshx_err_t meshx_init_prov(dev_struct_t *p_dev, const meshx_prov_par
 {
     meshx_err_t err = MESHX_SUCCESS;
 
-    if (!prov_cfg || memcmp(prov_cfg->uuid, MESHX_UUID_EMPTY, sizeof(meshx_uuid_addr_t)) == 0)
+    static const meshx_uuid_addr_t empty_uuid = {0};
+    if (!prov_cfg || memcmp(prov_cfg->uuid, empty_uuid, sizeof(meshx_uuid_addr_t)) == 0)
     {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Invalid server configuration");
         return MESHX_INVALID_ARG;
