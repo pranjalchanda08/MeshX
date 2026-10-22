@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['—_20c_20class_20architecture_0',['Page 3 — C++ Class Architecture',['../da/d7c/md_docs_2arch__diag_2trm_203__cpp__architecture.html',1,'']]],
+  ['—_20central_20message_20bus_1',['5. Control Task — Central Message Bus',['../d2/d31/md_docs_2arch__diag_2trm_204__control__task.html#autotoc_md5-control-task--central-message-bus',1,'']]],
+  ['—_20composition_20element_20discovery_2',['Page 9 — Composition &amp;amp; Element Discovery',['../d6/d37/md_docs_2arch__diag_2trm_209__composition.html',1,'']]],
+  ['—_20configuration_20reference_3',['Page 15 — Configuration Reference',['../d2/d54/md_docs_2arch__diag_2trm_215__configuration.html',1,'']]],
+  ['—_20control_20task_3a_20central_20message_20bus_4',['Page 4 — Control Task: Central Message Bus',['../d2/d31/md_docs_2arch__diag_2trm_204__control__task.html',1,'']]],
+  ['—_20decommissioning_20flash_20reclamation_5',['Page 13 — Decommissioning &amp;amp; Flash Reclamation',['../df/d0e/md_docs_2arch__diag_2trm_213__decommissioning.html',1,'']]],
+  ['—_20element_20payload_20injection_6',['4. MXCP_CMD_EL_SEND — Element Payload Injection',['../d0/db8/md_docs_2arch__diag_2trm_210__mxcp__protocol.html#autotoc_md4-mxcp_cmd_el_send--element-payload-injection',1,'']]],
+  ['—_20element_20telemetry_200x90_7',['5. MXCP_EVT_EL_DATA_RX_NOTIFY — Element Telemetry (0x90)',['../d0/db8/md_docs_2arch__diag_2trm_210__mxcp__protocol.html#autotoc_md5-mxcp_evt_el_data_rx_notify--element-telemetry-0x90',1,'']]],
+  ['—_20elf_20based_20binary_20logging_8',['Page 19 — ELF-Based Binary Logging',['../d0/d6d/md_docs_2arch__diag_2trm_219__elf__logging.html',1,'']]],
+  ['—_20error_20codes_20reference_9',['Page 14 — Error Codes Reference',['../d8/d2f/md_docs_2arch__diag_2trm_214__error__codes.html',1,'']]],
+  ['—_20esp32_20c3_10',['13.1 Target Hardware — ESP32-C3',['../d3/d83/md_docs_2arch__diag_2trm_212__hardware__platform.html#autotoc_md131-target-hardware--esp32-c3',1,'']]],
+  ['—_20hardware_20abstraction_20layer_20hal_11',['Page 7 — Hardware Abstraction Layer (HAL)',['../df/d50/md_docs_2arch__diag_2trm_207__hal.html',1,'']]],
+  ['—_20hardware_20platform_20reference_12',['Page 12 — Hardware Platform Reference',['../d3/d83/md_docs_2arch__diag_2trm_212__hardware__platform.html',1,'']]],
+  ['—_20logical_20models_20mxcp_20based_20testing_13',['Page 17 — Logical Models &amp;amp; MXCP-Based Testing',['../d9/d28/md_docs_2arch__diag_2trm_217__logical__models__testing.html',1,'']]],
+  ['—_20mxcp_3a_20meshx_20command_20protocol_14',['Page 10 — MXCP: MeshX Command Protocol',['../d0/db8/md_docs_2arch__diag_2trm_210__mxcp__protocol.html',1,'']]],
+  ['—_20protocol_20design_3a_20tlv_20engine_15',['Page 8 — Protocol Design: TLV Engine',['../d7/d31/md_docs_2arch__diag_2trm_208__tlv__protocol.html',1,'']]],
+  ['—_20read_20only_20persistent_20configuration_16',['Page 11 — Read-Only Persistent Configuration',['../d5/d2c/md_docs_2arch__diag_2trm_211__ro__config.html',1,'']]],
+  ['—_20state_20persistence_20strategy_17',['Page 6 — State Persistence Strategy',['../da/d68/md_docs_2arch__diag_2trm_206__state__persistence.html',1,'']]],
+  ['—_20system_20boot_20initialization_20sequence_18',['Page 2 — System Boot &amp;amp; Initialization Sequence',['../d0/db2/md_docs_2arch__diag_2trm_202__boot__sequence.html',1,'']]],
+  ['—_20system_20overview_20layered_20architecture_19',['Page 1 — System Overview &amp;amp; Layered Architecture',['../da/d87/md_docs_2arch__diag_2trm_201__system__overview.html',1,'']]],
+  ['—_20tlv_20engine_20',['9. Protocol Design — TLV Engine',['../d7/d31/md_docs_2arch__diag_2trm_208__tlv__protocol.html#autotoc_md9-protocol-design--tlv-engine',1,'']]],
+  ['—_20transmission_20control_20module_21',['6. TXCM — Transmission Control Module',['../d5/d96/md_docs_2arch__diag_2trm_205__txcm.html#autotoc_md6-txcm--transmission-control-module',1,'']]],
+  ['—_20txcm_3a_20transmission_20control_20module_22',['Page 5 — TXCM: Transmission Control Module',['../d5/d96/md_docs_2arch__diag_2trm_205__txcm.html',1,'']]],
+  ['—_20uvp_20routing_20ack_20architecture_23',['Page 20 — UVP Routing &amp;amp; ACK Architecture',['../d7/d9a/md_docs_2arch__diag_2trm_220__uvp__routing.html',1,'']]],
+  ['—_20web_20console_20usb_20cdc_20multiplexing_24',['Page 18 — Web Console &amp;amp; USB CDC Multiplexing',['../db/df3/md_docs_2arch__diag_2trm_218__web__console.html',1,'']]]
+];

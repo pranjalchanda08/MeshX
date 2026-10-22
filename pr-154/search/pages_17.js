@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['observability_20zero_20ram_20logging_0',['5. Developer Observability &amp;amp; Zero-RAM Logging',['../index.html#autotoc_md5-developer-observability--zero-ram-logging',1,'']]],
+  ['of_20contents_1',['Table of Contents',['../db/de4/md_docs_2DEVELOPER__GUIDE__CUSTOM__MODELS__AND__ELEMENTS.html#table-of-contents',1,'']]],
+  ['of_20reductions_2',['Analysis of Reductions',['../d8/d6d/md_docs_2arch__diag_2trm_216__memory__impact.html#analysis-of-reductions',1,'']]],
+  ['on_20telemetry_20python_3',['5.1 Example: Waiting for Relay ON Telemetry (Python)',['../d0/db8/md_docs_2arch__diag_2trm_210__mxcp__protocol.html#autotoc_md51-example-waiting-for-relay-on-telemetry-python',1,'']]],
+  ['on_20wire_4',['Key Event IDs (bit 7 set on wire)',['..//home/runner/work/MeshX/MeshX/docs/arch_diag/trm/README.md#key-event-ids-bit-7-set-on-wire',1,'']]],
+  ['only_5',['only',['../db/de4/md_docs_2DEVELOPER__GUIDE__CUSTOM__MODELS__AND__ELEMENTS.html#autotoc_md1-plat_model_create-server-only',1,'1. <span class="tt">plat_model_create()</span> (Server only)'],['../db/de4/md_docs_2DEVELOPER__GUIDE__CUSTOM__MODELS__AND__ELEMENTS.html#autotoc_md2-plat_model_delete-server-only',1,'2. <span class="tt">plat_model_delete()</span> (Server only)']]],
+  ['only_20persistent_20configuration_6',['Only Persistent Configuration',['../d5/d2c/md_docs_2arch__diag_2trm_211__ro__config.html#autotoc_md12-read-only-persistent-configuration',1,'12. Read-Only Persistent Configuration'],['../d5/d2c/md_docs_2arch__diag_2trm_211__ro__config.html',1,'Page 11 — Read-Only Persistent Configuration']]],
+  ['opcode_20switch_20statement_7',['Pattern 5: Opcode Switch Statement',['../db/de4/md_docs_2DEVELOPER__GUIDE__CUSTOM__MODELS__AND__ELEMENTS.html#pattern-5-opcode-switch-statement',1,'']]],
+  ['operating_20systems_8',['2. Supported SDKs &amp;amp; Operating Systems',['../index.html#autotoc_md2-supported-sdks--operating-systems',1,'']]],
+  ['originating_20command_20flow_9',['4. Client-Originating Command Flow',['../d7/d9a/md_docs_2arch__diag_2trm_220__uvp__routing.html#autotoc_md4-client-originating-command-flow',1,'']]],
+  ['outbound_20command_20sequence_20client_20→_20server_10',['2.3 Outbound Command Sequence (Client → Server)',['../da/d87/md_docs_2arch__diag_2trm_201__system__overview.html#autotoc_md23-outbound-command-sequence-client--server',1,'']]],
+  ['outbound_20command_20sequence_20detailed_11',['2.3.1 Outbound Command Sequence (Detailed)',['../da/d87/md_docs_2arch__diag_2trm_201__system__overview.html#autotoc_md231-outbound-command-sequence-detailed',1,'']]],
+  ['output_12',['5.2 Example Pass Output',['../d9/d28/md_docs_2arch__diag_2trm_217__logical__models__testing.html#autotoc_md52-example-pass-output',1,'']]],
+  ['overview_13',['Overview',['../da/d87/md_docs_2arch__diag_2trm_201__system__overview.html#autotoc_md1-system-overview',1,'1. System Overview'],['..//home/runner/work/MeshX/MeshX/docs/arch_diag/README.md#overview',1,'Overview'],['../d0/db8/md_docs_2arch__diag_2trm_210__mxcp__protocol.html#overview-1',1,'Overview'],['../d9/d28/md_docs_2arch__diag_2trm_217__logical__models__testing.html#overview-3',1,'Overview'],['../db/df3/md_docs_2arch__diag_2trm_218__web__console.html#overview-4',1,'Overview'],['../d0/d6d/md_docs_2arch__diag_2trm_219__elf__logging.html#overview-5',1,'Overview'],['../d7/d9a/md_docs_2arch__diag_2trm_220__uvp__routing.html#overview-6',1,'Overview'],['../d8/d6d/md_docs_2arch__diag_2trm_216__memory__impact.html#overview-2',1,'Overview'],['../db/de4/md_docs_2DEVELOPER__GUIDE__CUSTOM__MODELS__AND__ELEMENTS.html#overview-7',1,'Overview']]],
+  ['overview_20layered_20architecture_14',['Page 1 — System Overview &amp;amp; Layered Architecture',['../da/d87/md_docs_2arch__diag_2trm_201__system__overview.html',1,'']]],
+  ['ownership_15',['16.1 Configuration Ownership',['../d2/d54/md_docs_2arch__diag_2trm_215__configuration.html#autotoc_md161-configuration-ownership',1,'']]]
+];
