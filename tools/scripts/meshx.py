@@ -49,17 +49,25 @@ def check_python_tool_installed(tools, import_module=None, auto_install=False):
             if should_install:
                 print(f"Installing missing python dependency: {pkg}...")
                 pip_cmd = [sys.executable, "-m", "pip", "install", pkg]
-                try:
-                    subprocess.check_call(pip_cmd)
-                    __import__(mod)
-                    continue
-                except subprocess.CalledProcessError:
+                installed = False
+                for extra_args in [[], ["--break-system-packages"], ["--user"], ["--user", "--break-system-packages"]]:
                     try:
-                        subprocess.check_call(pip_cmd + ["--break-system-packages"])
+                        subprocess.check_call(pip_cmd + extra_args)
+                        import site, importlib
+                        user_site = site.getusersitepackages()
+                        if user_site and user_site not in sys.path:
+                            sys.path.insert(0, user_site)
+                        for sp in site.getsitepackages():
+                            if sp not in sys.path:
+                                sys.path.append(sp)
+                        importlib.invalidate_caches()
                         __import__(mod)
+                        installed = True
+                        break
+                    except (subprocess.CalledProcessError, ImportError, AttributeError):
                         continue
-                    except subprocess.CalledProcessError as e:
-                        print(f"Warning: Failed to auto-install {pkg}: {e}")
+                if installed:
+                    continue
             raise EnvironmentError(f"Python package '{pkg}' (module: '{mod}') is not installed.")
 
 class InvalidProductNameException(Exception):
