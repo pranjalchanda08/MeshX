@@ -539,10 +539,10 @@ class CodeGen(CodeGenException):
         """
         self.c_list     = [entry.replace(self.meshx_root + "/", "") for entry in self.c_list]
         self.inc_list   = [entry.replace(self.meshx_root + "/", "") for entry in self.inc_list]
-        cmake_c_list_str = [f'    "{x}"' for x in self.c_list]
-        cmake_h_list_str = [f'    "{x}"' for x in self.inc_list]
-        cmake_src_list = f"set(DEP_SRC \n{'\n'.join(cmake_c_list_str)} \n)"
-        cmake_inc_list = f"set(DEP_INC \n{'\n'.join(cmake_h_list_str)} \n)"
+        c_entries = '\n'.join(self.c_list)
+        h_entries = '\n'.join(self.inc_list)
+        cmake_src_list = f"set(DEP_SRC \n{c_entries} \n)"
+        cmake_inc_list = f"set(DEP_INC \n{h_entries} \n)"
         return cmake_src_list, cmake_inc_list
 
     def generate_binary(self, max_size=4096):

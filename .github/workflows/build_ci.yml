@@ -13,49 +13,146 @@ on:
       - rel/*
 
 jobs:
-  build:
+  # ============================================================================
+  # 1. ESP-IDF Build (FreeRTOS) - Verification on weact_c3 : all_in_one
+  # ============================================================================
+  build-esp-idf:
+    name: ESP-IDF (weact_c3:all_in_one)
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+
+      - name: Initialize required build submodules
+        run: git submodule update --init --recursive third_party/nanopb
+
+      - name: Cache ccache
+        uses: actions/cache@v4
+        with:
+          path: .ccache
+          key: ccache-espidf-${{ runner.os }}-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            ccache-espidf-${{ runner.os }}-${{ github.ref_name }}-
+            ccache-espidf-${{ runner.os }}-
+
+      - name: Build all_in_one with ESP-IDF
+        run: |
+          mkdir -p .ccache
+          export APP_PATH=$(pwd)
+          sudo docker run --rm \
+            -v "$PWD:$APP_PATH" -w "$APP_PATH" \
+            -v "$PWD/.ccache:/tmp/.ccache" \
+            -e CCACHE_DIR=/tmp/.ccache \
+            -e HOME=/tmp \
+            espressif/idf:release-v5.4 /bin/bash -c "pip install pyyaml protobuf grpcio-tools && python3 tools/scripts/meshx.py -bc -B weact_c3 -N all_in_one && chown -R $(id -u):$(id -g) '$APP_PATH' /tmp/.ccache 2>/dev/null || true"
+        shell: bash
+
+  # ============================================================================
+  # 2. Zephyr RTOS Builds (Single Container, Pull Once, Sequential Target Loop)
+  # Uses official Zephyr container: ghcr.io/zephyrproject-rtos/ci:v0.26-branch
+  # ============================================================================
+  build-zephyr:
+    name: Zephyr Builds (All Targets & Variants)
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/zephyrproject-rtos/ci:v0.26-branch
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: false
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
+      - name: Fix Git Safe Directory in Container
+        run: git config --global --add safe.directory "${GITHUB_WORKSPACE:-*}"
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pyyaml protobuf grpcio-tools
-        sudo apt-get install -y ccache protobuf-compiler
+      - name: Initialize required build submodules
+        run: git submodule update --init --recursive third_party/nanopb
 
-    - name: Cache ccache
-      uses: actions/cache@v3
-      with:
-        path: .ccache
-        key: ccache-${{ runner.os }}-${{ github.ref_name }}-${{ github.sha }}
-        restore-keys: |
-          ccache-${{ runner.os }}-${{ github.ref_name }}-
-          ccache-${{ runner.os }}-
+      - name: Cache Zephyr modules
+        id: cache-zephyr-modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            /workdir/zephyrproject
+            ~/.cache/west
+          key: zephyr-modules-${{ runner.os }}-v3.7
+          restore-keys: |
+            zephyr-modules-${{ runner.os }}-
 
-    - name: Build all products
-      run: |
-        export APP_PATH=$(pwd)
-        mkdir -p .ccache
+      - name: Setup Zephyr Workspace & Hardware Modules
+        run: |
+          if [ ! -d "/workdir/zephyrproject/zephyr" ]; then
+            mkdir -p /workdir/zephyrproject
+            west init -m https://github.com/zephyrproject-rtos/zephyr.git --mr v3.7-branch /workdir/zephyrproject
+            cd /workdir/zephyrproject
+            west update --narrow -o=--depth=1 hal_espressif tinycrypt hal_rpi_pico cmsis
+            west blobs fetch hal_espressif
+          fi
+          # Register SDK CMake package inside container
+          cmake -P /opt/toolchains/zephyr-sdk-*/cmake/zephyr_sdk_export.cmake 2>/dev/null || true
+        shell: bash
 
-        sudo docker run --rm \
-          -v $PWD:$APP_PATH -w $APP_PATH -u $UID \
-          -v $PWD/.ccache:/tmp/.ccache \
-          -e CCACHE_DIR=/tmp/.ccache \
-          -e HOME=/tmp \
-          espressif/idf:release-v5.4 /bin/bash -c "idf.py -DPROD_NAME='all_in_one' reconfigure"
+      - name: Install Host Python Tools
+        run: |
+          python3 -m pip install --break-system-packages pyyaml protobuf grpcio-tools
+        shell: bash
 
-        export CCACHE_DIR=$PWD/.ccache
-        for product in $(python -c "import yaml; print(' '.join([p['name'] for p in yaml.safe_load(open('tools/scripts/prod_profile.ci.yml'))['prod']['products']]))"); do
-          rm -f sdkconfig
-          sh tools/bin/build_ci.sh $product
-        done
-      shell: bash
+      - name: Build All MeshX Zephyr Targets
+        run: |
+          export ZEPHYR_BASE=/workdir/zephyrproject/zephyr
+          # Link modules into workspace root for manifest resolution
+          mkdir -p modules
+          cp -rs /workdir/zephyrproject/modules/* modules/ 2>/dev/null || ln -sf /workdir/zephyrproject/modules/* modules/ 2>/dev/null || true
 
+          # Discover targets dynamically and build each sequentially
+          python3 - << 'EOF'
+          import os, yaml, subprocess, sys
+
+          bsp_root = "port/bsp"
+          base_bsp = "weact_c3"
+          targets = []
+
+          # 1. Discover all valid BSP directories (build all_in_one for each)
+          bsps = sorted([
+              b for b in os.listdir(bsp_root)
+              if os.path.exists(os.path.join(bsp_root, b, "bsp.cmake")) and not b.startswith('.')
+          ])
+          for bsp in bsps:
+              targets.append((bsp, "all_in_one"))
+
+          # 2. Discover all product variants from base_bsp's prod_profile.yml
+          base_profile = os.path.join(bsp_root, base_bsp, "prod_profile.yml")
+          if os.path.exists(base_profile):
+              with open(base_profile, "r", encoding="utf-8") as f:
+                  data = yaml.safe_load(f) or {}
+                  products = data.get("prod", {}).get("products", [])
+                  for p in products:
+                      name = p.get("name")
+                      if name and name != "all_in_one":
+                          targets.append((base_bsp, name))
+
+          print(f"============================================================")
+          print(f"Starting sequential build for {len(targets)} Zephyr targets...")
+          print(f"============================================================")
+
+          failed = []
+          for idx, (bsp, prod) in enumerate(targets, 1):
+              print(f"\n[{idx}/{len(targets)}] >>> Building Zephyr target: BSP={bsp}, Product={prod} <<<")
+              cmd = [sys.executable, "tools/scripts/meshx.py", "-bc", "-H", "zephyr", "-B", bsp, "-N", prod]
+              ret = subprocess.run(cmd)
+              if ret.returncode != 0:
+                  print(f"[ERROR] Build failed for BSP={bsp}, Product={prod}")
+                  failed.append(f"{bsp}:{prod}")
+
+          if failed:
+              print(f"\n[FATAL] The following {len(failed)} targets failed to build:")
+              for f in failed:
+                  print(f"  - {f}")
+              sys.exit(1)
+
+          print(f"\n[SUCCESS] All {len(targets)} Zephyr targets built successfully!")
+          EOF
+        shell: bash
