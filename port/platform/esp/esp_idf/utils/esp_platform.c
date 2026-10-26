@@ -43,7 +43,6 @@
 #endif
 
 #include "interface/meshx_platform.h"
-#include "interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h"
 
 static bool g_mxsp_use_console = false;
 
@@ -248,3 +247,4 @@ void meshx_platform_set_mxsp_use_console(bool enable)
 {
     g_mxsp_use_console = enable;
 }
+

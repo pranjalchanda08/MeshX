@@ -127,6 +127,19 @@ meshx_err_t meshx_platform_bt_init(void);
  */
 meshx_err_t meshx_platform_get_mac(uint8_t *mac);
 
+/**
+ * @brief Transmit a raw BLE advertisement carrying Manufacturer Specific Data (AD Type 0xFF).
+ *        Broadcasts via BLE Extended Advertising (e.g. CONFIG_BT_EXT_ADV / BLE_50_FEATURE_SUPPORT)
+ *        to ensure full payloads (e.g. 41-byte beacons) are transmitted without truncation.
+ *
+ * @param[in] mfg_data     Pointer to the formatted manufacturer-specific advertising data (starts with 2-byte Company ID).
+ * @param[in] mfg_len      Length of the manufacturer-specific advertising data in bytes.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_plat_ble_adv_mfg_data(const uint8_t *mfg_data, uint16_t mfg_len);
+
+#define meshx_plat_ble_adv_reheal_beacon meshx_plat_ble_adv_mfg_data
+
 #ifdef __cplusplus
 }
 #endif

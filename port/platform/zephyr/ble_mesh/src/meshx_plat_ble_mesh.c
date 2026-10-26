@@ -10,6 +10,7 @@
  */
 
 #include <string.h>
+#include <errno.h>
 #include "interface/meshx_platform.h"
 #include "interface/logging/meshx_log.h"
 #include "interface/rtos/meshx_rtos_utils.h"
@@ -20,6 +21,7 @@
 
 #include <zephyr/bluetooth/bluetooth.h>
 #include <zephyr/bluetooth/mesh.h>
+#include <zephyr/bluetooth/mesh/cfg.h>
 #if defined(CONFIG_SETTINGS)
 #include <zephyr/settings/settings.h>
 #endif
@@ -335,5 +337,87 @@ meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, meshx_
         bt_mesh_prov_enable(BT_MESH_PROV_ADV | BT_MESH_PROV_GATT);
     }
 
+    return MESHX_SUCCESS;
+}
+
+meshx_err_t meshx_plat_net_key_get(uint16_t net_key_id, uint8_t *key_out)
+{
+    if (!key_out) {
+        return MESHX_INVALID_ARG;
+    }
+
+    /* Zephyr BLE Mesh does not expose a public API to retrieve a subnet's
+     * net key by index. The net keys are managed internally by the stack.
+     * This is a stub; implement via bt_mesh_sub[] internal access when
+     * Zephyr net key retrieval is required. */
+    MESHX_LOGW(MODULE_ID_COMMON, "meshx_plat_net_key_get: not implemented on Zephyr");
+    return MESHX_NOT_SUPPORTED;
+}
+
+meshx_err_t meshx_plat_net_key_add(const uint8_t *key, uint16_t net_key_id)
+{
+    if (!key) {
+        return MESHX_INVALID_ARG;
+    }
+
+    /* Add subnet/net key via Zephyr BLE Mesh config API */
+    uint8_t result = bt_mesh_subnet_add(net_key_id, key);
+    if (result != 0) {
+        MESHX_LOGE(MODULE_ID_COMMON, "bt_mesh_subnet_add failed: %d", result);
+        return MESHX_FAIL;
+    }
+
+    return MESHX_SUCCESS;
+}
+
+#if !defined(CONFIG_BT_EXT_ADV) || !CONFIG_BT_EXT_ADV
+#error "CONFIG_BT_EXT_ADV must be enabled for meshx_plat_ble_adv_mfg_data to broadcast full-length BLE advertising packets without truncation"
+#endif
+
+meshx_err_t meshx_plat_ble_adv_mfg_data(const uint8_t *mfg_data, uint16_t mfg_len)
+{
+    if (!mfg_data || mfg_len == 0)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    static struct bt_le_ext_adv *s_ext_adv = NULL;
+
+    if (s_ext_adv == NULL)
+    {
+        const struct bt_le_adv_param ext_param = {
+            .options = BT_LE_ADV_OPT_EXT_ADV,
+            .interval_min = BT_GAP_ADV_FAST_INT_MIN_2,
+            .interval_max = BT_GAP_ADV_FAST_INT_MAX_2,
+            .peer = NULL,
+        };
+        int err = bt_le_ext_adv_create(&ext_param, NULL, &s_ext_adv);
+        if (err != 0)
+        {
+            MESHX_LOGE(MODULE_ID_COMMON, "bt_le_ext_adv_create failed: %d", err);
+            return MESHX_FAIL;
+        }
+    }
+
+    const struct bt_data ad[] = {
+        BT_DATA(BT_DATA_MANUFACTURER_DATA, mfg_data, mfg_len),
+    };
+
+    int err = bt_le_ext_adv_set_data(s_ext_adv, ad, ARRAY_SIZE(ad), NULL, 0);
+    if (err != 0)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "bt_le_ext_adv_set_data failed: %d", err);
+        return MESHX_FAIL;
+    }
+
+    err = bt_le_ext_adv_start(s_ext_adv, NULL);
+    if (err != 0 && err != -EALREADY)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "bt_le_ext_adv_start failed: %d", err);
+        return MESHX_FAIL;
+    }
+
+    MESHX_LOGI(MODULE_ID_COMMON, "plat_ble_adv_mfg_data: Advertised via Ext Adv (len=%u)",
+               (unsigned int)mfg_len);
     return MESHX_SUCCESS;
 }

@@ -242,8 +242,18 @@ def main():
                 while True:
                     try:
                         cmd = input(f"{COLORS['BOLD']}MeshX> {COLORS['RESET']}")
-                        if cmd.strip():
-                            ser.write((cmd + '\n').encode())
+                        line = cmd.strip()
+                        if line.startswith("mxcp:"):
+                            # Send raw MXCP command: mxcp:<type_hex>:<payload_hex>
+                            parts = line.split(":")
+                            if len(parts) >= 2:
+                                cmd_type = int(parts[1], 16)
+                                payload = bytes.fromhex(parts[2]) if len(parts) >= 3 else b""
+                                chk = (len(payload) + cmd_type + sum(payload)) & 0xFF
+                                frame = bytes([0xFE, len(payload), cmd_type]) + payload + bytes([chk, 0xEF])
+                                ser.write(frame)
+                        elif line:
+                            ser.write((line + '\n').encode())
                     except (EOFError, KeyboardInterrupt):
                         break
                     except Exception as e:
@@ -317,9 +327,34 @@ def main():
                                             0xB2: "MXCP_EVT_UVP_KEY_ROTATION_PHASE",
                                             0xB3: "MXCP_EVT_UVP_REDUNDANCY_STATUS",
                                             0xB4: "MXCP_EVT_UVP_FAST_PROV_PROGRESS",
+                                            0xB5: "MXCP_EVT_UVP_REHEAL_ADMITTED",
+                                            0xB6: "MXCP_EVT_NODE_REPLACE_STATUS",
+                                            0xB7: "MXCP_EVT_NODE_REPLACE_SCHEMA_DIFF",
+                                            0xB8: "MXCP_EVT_UVP_CLAIM_STATUS",
                                         }
                                         evt_str = evt_names.get(mtype, f"EVT_0x{mtype:02X}")
-                                        print(f"\r\x1b[K{COLORS['MAGENTA']}[MXCP EVT] {evt_str} (Type: 0x{mtype:02X}, Len: {mlen}){COLORS['RESET']}")
+                                        details = ""
+                                        if mtype == 0xB4 and len(mpayload) >= 20: # FAST_PROV_PROGRESS
+                                            uuid_str = ''.join(f'{b:02X}' for b in mpayload[:16])
+                                            naddr = int.from_bytes(mpayload[16:18], 'little')
+                                            cnt = mpayload[18]
+                                            details = f" [UUID={uuid_str}, Addr=0x{naddr:04X}, Count={cnt}]"
+                                        elif mtype == 0xB5 and len(mpayload) >= 19: # REHEAL_ADMITTED
+                                            uuid_str = ''.join(f'{b:02X}' for b in mpayload[:16])
+                                            old_a = int.from_bytes(mpayload[16:18], 'little')
+                                            details = f" [Evicted UUID={uuid_str}, OldAddr=0x{old_a:04X}]"
+                                        elif mtype == 0xB6 and len(mpayload) >= 7: # NODE_REPLACE_STATUS
+                                            status = mpayload[0]
+                                            old_a = int.from_bytes(mpayload[1:3], 'little')
+                                            new_a = int.from_bytes(mpayload[3:5], 'little')
+                                            details = f" [Status=0x{status:02X}, OldAddr=0x{old_a:04X}, NewAddr=0x{new_a:04X}]"
+                                        elif mtype == 0xB8 and len(mpayload) >= 22: # CLAIM_STATUS
+                                            uuid_str = ''.join(f'{b:02X}' for b in mpayload[:16])
+                                            c_addr = int.from_bytes(mpayload[16:18], 'little')
+                                            epoch = int.from_bytes(mpayload[18:22], 'little')
+                                            details = f" [Candidate={uuid_str}, Addr=0x{c_addr:04X}, Epoch={epoch}]"
+
+                                        print(f"\r\x1b[K{COLORS['MAGENTA']}[MXCP EVT] {evt_str} (Type: 0x{mtype:02X}, Len: {mlen}){details}{COLORS['RESET']}")
                                         buffer = buffer[mxcp_idx + total_frame_len:]
                                         continue
 

@@ -158,7 +158,6 @@ static inline uint8_t meshx_gpio_kv_make_intr_key(const char *product_name,
  * This header precedes all GPIO configuration data in KV Engine storage.
  * It includes versioning for migration support and CRC16 for integrity.
  */
-#pragma pack(push, 1)
 typedef struct {
     uint8_t  version;           /**< Format version (MESHX_GPIO_CONFIG_VERSION_*) */
     uint8_t  pin_count;         /**< Number of configured pins in this config */
@@ -166,7 +165,7 @@ typedef struct {
     uint16_t total_size;        /**< Total size of serialized data (header + pins) */
     uint8_t  flags;             /**< Configuration flags (reserved for future use) */
     uint8_t  reserved[3];       /**< Reserved for future use, must be 0 */
-} meshx_gpio_config_header_kv_t;
+} MESHX_PACKED meshx_gpio_config_header_kv_t;
 
 /**
  * @struct meshx_gpio_pin_config_kv_t
@@ -184,7 +183,7 @@ typedef struct {
     uint8_t  initial_level;     /**< Initial output level (0 or 1) */
     uint8_t  signal_inversion;  /**< Signal inversion flag (0=false, 1=true) */
     uint8_t  config_type;       /**< Extended config type: 0=none, 1=PWM, 2=interrupt */
-} meshx_gpio_pin_config_kv_t;
+} MESHX_PACKED meshx_gpio_pin_config_kv_t;
 
 /**
  * @struct meshx_gpio_pwm_config_kv_t
@@ -199,7 +198,7 @@ typedef struct {
     uint8_t  resolution;        /**< PWM resolution in bits */
     uint8_t  channel;           /**< Hardware PWM channel */
     uint8_t  reserved;          /**< Reserved, must be 0 */
-} meshx_gpio_pwm_config_kv_t;
+} MESHX_PACKED meshx_gpio_pwm_config_kv_t;
 
 /**
  * @struct meshx_gpio_intr_config_kv_t
@@ -214,7 +213,7 @@ typedef struct {
     uint16_t task_stack_size;   /**< Interrupt task stack size in bytes */
     uint8_t  flags;             /**< Interrupt flags (reserved) */
     uint8_t  reserved[3];       /**< Reserved, must be 0 */
-} meshx_gpio_intr_config_kv_t;
+} MESHX_PACKED meshx_gpio_intr_config_kv_t;
 
 /**
  * @struct meshx_gpio_pin_state_kv_t
@@ -229,8 +228,7 @@ typedef struct {
     uint8_t  pwm_started;       /**< PWM running flag (0=false, 1=true) */
     uint8_t  current_duty;      /**< Current PWM duty cycle (if applicable) */
     uint32_t reserved;          /**< Reserved for future use */
-} meshx_gpio_pin_state_kv_t;
-#pragma pack(pop)
+} MESHX_PACKED meshx_gpio_pin_state_kv_t;
 
 /*============================================================================
  * Size Constants

@@ -34,12 +34,12 @@ extern "C" {
 #endif
 
 #define MESHX_NVS_KEY_KR_EPOCH        "kr_epoch"
+#define MESHX_NVS_KEY_DEVKEY_PREFIX   "dk_"           /**< DevKey registry prefix: "dk_" + 8 hex UUID chars => "dk_XXXXXXXX" (11 chars) */
 #define MESHX_NVS_KEY_COMP_SCHEMA     "comp_schema"
 #define MESHX_NVS_COMP_MAGIC          0x4D584350  /* 'MXCP' */
 #define MESHX_NVS_COMP_VERSION        0x01
 #define MESHX_COMP_FLAG_OVERRIDE_RO   0x01
 
-#pragma pack(push, 1)
 typedef struct {
     uint32_t magic;                                     /**< 0x4D584350 ('MXCP') */
     uint8_t  version;                                   /**< Format version (0x01) */
@@ -48,7 +48,7 @@ typedef struct {
     uint8_t  reserved;                                  /**< Alignment padding */
     uint16_t element_types[CONFIG_MAX_ELEMENT_COUNT];   /**< Array of meshx_element_type_t */
     uint16_t schema_crc;                                /**< CRC-16-CCITT over preceding fields */
-} meshx_nvs_comp_schema_t;
+} MESHX_PACKED meshx_nvs_comp_schema_t;
 
 #define MESHX_NVS_KEY_LINK_TABLE      "link_table"
 #define MESHX_NVS_LINK_MAGIC          0x4C4E4B53  /* 'LNKS' */
@@ -65,7 +65,7 @@ typedef struct {
     uint16_t target_group_addr;   /**< Group address (0x0000 if 1:1 unicast) */
     uint16_t func_id;             /**< Function ID bound to this link */
     uint8_t  active;              /**< 1 = active, 0 = free slot */
-} meshx_nvs_link_entry_t;
+} MESHX_PACKED meshx_nvs_link_entry_t;
 
 /**
  * @brief Persistent link table header & records
@@ -78,8 +78,7 @@ typedef struct {
     uint8_t               reserved;
     meshx_nvs_link_entry_t links[MESHX_MAX_PERSISTED_LINKS];
     uint16_t              table_crc;   /**< CRC-16-CCITT across preceding fields */
-} meshx_nvs_link_table_t;
-#pragma pack(pop)
+} MESHX_PACKED meshx_nvs_link_table_t;
 
 /**
  * @struct meshx_nvs
@@ -304,8 +303,43 @@ uint16_t meshx_nvs_get_link_epoch(void);
  */
 meshx_err_t meshx_link_reconcile(void);
 
+/**
+ * @brief Persist the immutable DevKey for a provisioned node by UUID.
+ *
+ * Called by the provisioner upon successful provisioning completion to allow
+ * the Master to later verify HMAC-SHA256 signatures from evicted nodes.
+ *
+ * @param[in] uuid    16-byte Device UUID of the node.
+ * @param[in] dev_key 16-byte immutable DevKey assigned during provisioning.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_nvs_set_device_key(const meshx_uuid_t *uuid, const uint8_t *dev_key);
+
+/**
+ * @brief Retrieve the DevKey for a previously provisioned node by UUID.
+ *
+ * Used by the Master re-healing engine to look up the DevKey needed to verify
+ * the HMAC-SHA256 signature in the 0xCE beacon and encrypt the 0xCF response.
+ *
+ * @param[in]  uuid        16-byte Device UUID to look up.
+ * @param[out] dev_key_out 16-byte buffer to receive the stored DevKey.
+ * @return MESHX_SUCCESS if found, MESHX_NOT_FOUND if UUID not in registry, or error code.
+ */
+meshx_err_t meshx_nvs_get_device_key(const meshx_uuid_t *uuid, uint8_t *dev_key_out);
+
+/**
+ * @brief Remove the DevKey entry for a node by UUID.
+ *
+ * Should be called when a node is factory-reset or permanently de-provisioned.
+ *
+ * @param[in] uuid 16-byte Device UUID to remove.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_nvs_erase_device_key(const meshx_uuid_t *uuid);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
 
 #endif /* __MESHX_NVS_H__ */
+

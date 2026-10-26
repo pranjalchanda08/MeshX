@@ -132,6 +132,13 @@
 #define MESHX_KR_OVERLAP_WINDOW_MS                   CONFIG_MESHX_KR_OVERLAP_WINDOW_MS
 #endif
 
+#ifndef CONFIG_MESHX_KR_MAX_FORWARD_DRIFT
+#define CONFIG_MESHX_KR_MAX_FORWARD_DRIFT            1000  /**< Max forward modular epoch distance before dropping as wild jump */
+#endif
+#ifndef MESHX_KR_MAX_FORWARD_DRIFT
+#define MESHX_KR_MAX_FORWARD_DRIFT                   CONFIG_MESHX_KR_MAX_FORWARD_DRIFT
+#endif
+
 #ifndef CONFIG_MESHX_REDUNDANCY_HB_INTERVAL_MS
 #define CONFIG_MESHX_REDUNDANCY_HB_INTERVAL_MS       5000  /**< 5s periodic Master redundancy heartbeat */
 #endif
@@ -181,6 +188,27 @@
 #define MESHX_PROV_OOB_WATCHDOG_TIMEOUT_MS           CONFIG_MESHX_PROV_OOB_WATCHDOG_TIMEOUT_MS
 #endif
 
+#ifndef CONFIG_MESHX_REHEAL_BLINDNESS_TIMEOUT_MS
+#define CONFIG_MESHX_REHEAL_BLINDNESS_TIMEOUT_MS     15000 /**< 15s ambient packet MIC failure threshold */
+#endif
+#ifndef MESHX_REHEAL_BLINDNESS_TIMEOUT_MS
+#define MESHX_REHEAL_BLINDNESS_TIMEOUT_MS            CONFIG_MESHX_REHEAL_BLINDNESS_TIMEOUT_MS
+#endif
+
+#ifndef CONFIG_MESHX_REHEAL_COURIER_RATE_LIMIT_MS
+#define CONFIG_MESHX_REHEAL_COURIER_RATE_LIMIT_MS    30000 /**< Max 1 forward per unique UUID per 30s */
+#endif
+#ifndef MESHX_REHEAL_COURIER_RATE_LIMIT_MS
+#define MESHX_REHEAL_COURIER_RATE_LIMIT_MS           CONFIG_MESHX_REHEAL_COURIER_RATE_LIMIT_MS
+#endif
+
+#ifndef CONFIG_MESHX_CLAIM_DISCOVERY_INTERVAL_MS
+#define CONFIG_MESHX_CLAIM_DISCOVERY_INTERVAL_MS     30000 /**< 30s claim discovery broadcast when solo Master */
+#endif
+#ifndef MESHX_CLAIM_DISCOVERY_INTERVAL_MS
+#define MESHX_CLAIM_DISCOVERY_INTERVAL_MS            CONFIG_MESHX_CLAIM_DISCOVERY_INTERVAL_MS
+#endif
+
 #ifndef CONFIG_MESHX_PROXIMITY_BEACON_INTERVAL_MS
 #define CONFIG_MESHX_PROXIMITY_BEACON_INTERVAL_MS    500   /**< Proximity announcement periodic beacon interval (ms) */
 #endif
@@ -193,6 +221,23 @@
 #endif
 #ifndef MESHX_PROXIMITY_DEFAULT_WINDOW_SEC
 #define MESHX_PROXIMITY_DEFAULT_WINDOW_SEC           CONFIG_MESHX_PROXIMITY_DEFAULT_WINDOW_SEC
+#endif
+
+/**
+ * @brief Re-Healing & Redundancy Limits (configurable)
+ */
+#ifndef CONFIG_MESHX_REHEAL_CLAIM_RETRY_BASE_MS
+#define CONFIG_MESHX_REHEAL_CLAIM_RETRY_BASE_MS      2000  /**< Base retry delay for 0xCD claims (2s, then 4s, 8s) */
+#endif
+#ifndef MESHX_REHEAL_CLAIM_RETRY_BASE_MS
+#define MESHX_REHEAL_CLAIM_RETRY_BASE_MS             CONFIG_MESHX_REHEAL_CLAIM_RETRY_BASE_MS
+#endif
+
+#ifndef CONFIG_MESHX_REHEAL_CLAIM_MAX_ATTEMPTS
+#define CONFIG_MESHX_REHEAL_CLAIM_MAX_ATTEMPTS       3     /**< Max 0xCD claim retry attempts before solo Master */
+#endif
+#ifndef MESHX_REHEAL_CLAIM_MAX_ATTEMPTS
+#define MESHX_REHEAL_CLAIM_MAX_ATTEMPTS              CONFIG_MESHX_REHEAL_CLAIM_MAX_ATTEMPTS
 #endif
 
 #endif /* __MESHX_CONFIG_INTERNAL_H__ */

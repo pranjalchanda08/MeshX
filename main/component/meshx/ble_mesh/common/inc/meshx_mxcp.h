@@ -80,6 +80,7 @@ extern "C" {
 #define MXCP_EVT_GPIO_GET_CONFIG_RSP_SIZE   (MXCP_EVT_GPIO_RSP_HDR_SIZE + sizeof(((mxcp_evt_gpio_rsp_t *)0)->data.get_config))
 #define MXCP_EVT_GPIO_GET_STATE_RSP_SIZE    (MXCP_EVT_GPIO_RSP_HDR_SIZE + sizeof(((mxcp_evt_gpio_rsp_t *)0)->data.get_state))
 
+
 /**
  * @brief Command ID namespace (Host -> Engine, bit 7 = 0).
  */
@@ -115,6 +116,8 @@ typedef enum {
     MXCP_CMD_UVP_KEY_ROTATE_TRIGGER    = 0x32,
     MXCP_CMD_UVP_REDUNDANCY_SET_ROLE   = 0x33,
     MXCP_CMD_UVP_FAST_PROV_START       = 0x34,
+    MXCP_CMD_UVP_FAST_PROV_CANCEL      = 0x35,
+    MXCP_CMD_NODE_REPLACE_START        = 0x36,
 
     MXCP_CMD_DISCOVER_CAPABILITIES = 0x70,
     MXCP_CMD_BIND_ELEMENTS         = 0x71,
@@ -175,6 +178,10 @@ typedef enum {
     MXCP_EVT_UVP_KEY_ROTATION_PHASE   = 0xB2,
     MXCP_EVT_UVP_REDUNDANCY_STATUS    = 0xB3,
     MXCP_EVT_UVP_FAST_PROV_PROGRESS   = 0xB4,
+    MXCP_EVT_UVP_REHEAL_ADMITTED       = 0xB5, /**< Evicted node successfully re-admitted */
+    MXCP_EVT_NODE_REPLACE_STATUS       = 0xB6, /**< Node replacement status & address assignment */
+    MXCP_EVT_NODE_REPLACE_SCHEMA_DIFF  = 0xB7, /**< Modality B schema difference */
+    MXCP_EVT_UVP_CLAIM_STATUS          = 0xB8, /**< Cascading N+1 claim accepted by candidate */
 
     MXCP_EVT_MAX
 } mxcp_evt_id_t;
@@ -198,15 +205,35 @@ typedef enum {
     MXCP_COMP_STATUS_ERR_NVS_WRITE      = 0x03,
 } mxcp_comp_status_t;
 
-#pragma pack(push, 1)
+/**
+ * @brief Node replacement execution status codes (TRD Page 9)
+ */
+typedef enum {
+    MXCP_REPLACE_STATUS_SUCCESS_INPLACE       = 0x00, /**< Modality A: In-place address preserved */
+    MXCP_REPLACE_STATUS_SUCCESS_RELOCATED     = 0x01, /**< Modality B: Relocated to new contiguous block */
+    MXCP_REPLACE_STATUS_ERR_OLD_NOT_FOUND     = 0x02, /**< Old device UUID not found in DevKey cache */
+    MXCP_REPLACE_STATUS_ERR_ADDR_EXHAUSTION   = 0x03, /**< Insufficient contiguous free addresses */
+    MXCP_REPLACE_STATUS_ERR_SCHEMA_MISMATCH   = 0x04, /**< Strict schema verification failed */
+    MXCP_REPLACE_STATUS_ERR_PROV_FAILED       = 0x05, /**< Provisioning link/exchange failure */
+} mxcp_node_replace_status_t;
+
+/**
+ * @brief Node replacement request flags
+ */
+typedef enum {
+    MXCP_REPLACE_FLAG_NONE              = 0x00,
+    MXCP_REPLACE_FLAG_ALLOW_RELOCATION  = 0x01, /**< Allow address relocation if element count differs */
+    MXCP_REPLACE_FLAG_IGNORE_SCHEMA     = 0x02, /**< Force replacement ignoring model schema diffs */
+    MXCP_REPLACE_FLAG_FAST_REBIND       = 0x04, /**< Fast parallel replay of AppKey binds & subscriptions */
+} mxcp_node_replace_flags_t;
 
 typedef struct {
     uint8_t enable;
-} mxcp_cmd_hosted_mode_enable_t;
+} MESHX_PACKED mxcp_cmd_hosted_mode_enable_t;
 
 typedef struct {
     uint8_t enable;
-} mxcp_cmd_set_console_routing_t;
+} MESHX_PACKED mxcp_cmd_set_console_routing_t;
 
 /**
  * @brief Unify element data send command with canonical meshx_data_msg_hdr_t (REQ-001)
@@ -217,73 +244,73 @@ typedef meshx_data_msg_hdr_t mxcp_cmd_el_send_t;
 typedef struct {
     uint8_t logical_pin;
     uint8_t level;
-} mxcp_cmd_gpio_set_level_t;
+} MESHX_PACKED mxcp_cmd_gpio_set_level_t;
 
 typedef struct {
     uint8_t logical_pin;
-} mxcp_cmd_gpio_get_level_t;
+} MESHX_PACKED mxcp_cmd_gpio_get_level_t;
 
 typedef struct {
     uint8_t logical_pin;
-} mxcp_cmd_gpio_toggle_t;
+} MESHX_PACKED mxcp_cmd_gpio_toggle_t;
 
 typedef struct {
     uint8_t  logical_pin;
     uint8_t  duty_cycle;
-} mxcp_cmd_gpio_set_pwm_duty_t;
+} MESHX_PACKED mxcp_cmd_gpio_set_pwm_duty_t;
 
 typedef struct {
     uint8_t  logical_pin;
     uint32_t frequency;
-} mxcp_cmd_gpio_set_pwm_freq_t;
+} MESHX_PACKED mxcp_cmd_gpio_set_pwm_freq_t;
 
 typedef struct {
     uint8_t logical_pin;
     uint8_t enable;
-} mxcp_cmd_gpio_intr_enable_t;
+} MESHX_PACKED mxcp_cmd_gpio_intr_enable_t;
 
 typedef struct {
     uint8_t logical_pin;
-} mxcp_cmd_gpio_intr_disable_t;
+} MESHX_PACKED mxcp_cmd_gpio_intr_disable_t;
 
 typedef struct {
     uint8_t logical_pin;
-} mxcp_cmd_gpio_get_config_t;
+} MESHX_PACKED mxcp_cmd_gpio_get_config_t;
 
 typedef struct {
     uint8_t logical_pin;
-} mxcp_cmd_gpio_get_state_t;
+} MESHX_PACKED mxcp_cmd_gpio_get_state_t;
 #endif
 
 typedef struct {
-    uint16_t net_idx;
-    uint16_t addr;
-    uint8_t  device_uuid[MXCP_UUID_SIZE];
-} mxcp_evt_prov_comp_t;
+    uint16_t     net_idx;
+    uint16_t     addr;
+    meshx_uuid_t device_uuid;
+} MESHX_PACKED mxcp_evt_prov_comp_t;
 
 typedef struct {
     uint8_t reason;
-} mxcp_evt_prov_failed_t;
+} MESHX_PACKED mxcp_evt_prov_failed_t;
 
 typedef struct {
     uint8_t element_count;
-} mxcp_evt_composition_rsp_t;
+} MESHX_PACKED mxcp_evt_composition_rsp_t;
 
 typedef struct {
     uint8_t  element_count;
     uint16_t reboot_delay_ms;
     uint16_t element_types[0];
-} mxcp_cmd_set_composition_t;
+} MESHX_PACKED mxcp_cmd_set_composition_t;
 
 typedef struct {
     uint8_t  status;
     uint8_t  element_count;
     uint16_t reboot_delay_ms;
-} mxcp_evt_set_composition_rsp_t;
+} MESHX_PACKED mxcp_evt_set_composition_rsp_t;
 
 typedef struct {
     uint8_t element_count;
-} mxcp_evt_element_state_rsp_t;
+} MESHX_PACKED mxcp_evt_element_state_rsp_t;
 
 /**
  * @brief Unify element data notify events with canonical meshx_data_msg_hdr_t (REQ-001)
@@ -315,33 +342,33 @@ typedef struct {
             uint8_t intr_type;
         } get_state;
     } data;
-} mxcp_evt_gpio_rsp_t;
+} MESHX_PACKED mxcp_evt_gpio_rsp_t;
 
 typedef struct {
     uint8_t  event_type;
     uint8_t  logical_pin;
     uint8_t  value;
     uint32_t timestamp;
-} mxcp_evt_gpio_async_t;
+} MESHX_PACKED mxcp_evt_gpio_async_t;
 #endif
 
 typedef struct {
     uint16_t idx;
     uint16_t variant;
     uint16_t type;
-} mxcp_comp_entry_header_t;
+} MESHX_PACKED mxcp_comp_entry_header_t;
 
 typedef struct {
     uint16_t idx;
     uint16_t variant;
     uint16_t ctx_size;
     uint16_t telemetry_size;
-} mxcp_state_entry_header_t;
+} MESHX_PACKED mxcp_state_entry_header_t;
 
 typedef struct {
     uint16_t target_unicast;
     uint8_t  filter_role;
-} mxcp_cmd_discover_capabilities_t;
+} MESHX_PACKED mxcp_cmd_discover_capabilities_t;
 
 typedef struct {
     uint16_t src_addr;
@@ -349,7 +376,7 @@ typedef struct {
     uint16_t dst_addr;
     uint8_t  dst_elem;
     uint16_t func_id;
-} mxcp_cmd_bind_elements_t;
+} MESHX_PACKED mxcp_cmd_bind_elements_t;
 
 typedef struct {
     uint16_t src_addr;
@@ -357,86 +384,86 @@ typedef struct {
     uint16_t dst_addr;
     uint8_t  dst_elem;
     uint16_t func_id;
-} mxcp_cmd_unbind_elements_t;
+} MESHX_PACKED mxcp_cmd_unbind_elements_t;
 
 typedef struct {
     uint8_t  status;
     uint16_t group_addr;
-} mxcp_evt_bind_status_t;
+} MESHX_PACKED mxcp_evt_bind_status_t;
 
 typedef struct {
     uint8_t status;
-} mxcp_evt_unbind_status_t;
+} MESHX_PACKED mxcp_evt_unbind_status_t;
 
 typedef struct {
     uint16_t link_epoch;
     uint16_t node_addr;
-} mxcp_evt_link_epoch_rsp_t;
+} MESHX_PACKED mxcp_evt_link_epoch_rsp_t;
 
 typedef struct {
     uint8_t  bearer_mask;       /**< 0x01 = PB-ADV, 0x02 = PB-GATT, 0x03 = Both */
     uint16_t duration_sec;      /**< Beaconing duration (0 = indefinite) */
-} mxcp_cmd_prov_enable_t;
+} MESHX_PACKED mxcp_cmd_prov_enable_t;
 
 typedef struct {
     char device_name[MXCP_DEV_NAME_MAX_LEN]; /**< Friendly device advertising name */
-} mxcp_cmd_prov_set_name_t;
+} MESHX_PACKED mxcp_cmd_prov_set_name_t;
 
 typedef struct {
     uint8_t  auth_type;         /**< 0x01 = Number, 0x02 = Alphanumeric (mxcp_prov_auth_type_t) */
     uint8_t  auth_len;          /**< Length of input auth payload */
     uint8_t  auth_data[MXCP_AUTH_DATA_MAX_SIZE]; /**< Input authentication bytes */
-} mxcp_cmd_prov_auth_input_t;
+} MESHX_PACKED mxcp_cmd_prov_auth_input_t;
 
 typedef struct {
     uint8_t  state;             /**< mxcp_prov_state_t (0=Unprov, 1=Beacon, 2=Proving, 3=Provd) */
     uint16_t unicast_addr;      /**< Assigned primary unicast address */
     uint16_t net_idx;           /**< Primary NetKey index */
-} mxcp_evt_prov_state_ind_t;
+} MESHX_PACKED mxcp_evt_prov_state_ind_t;
 
 typedef struct {
-    uint8_t  bearer;            /**< 0x01 = PB-ADV, 0x02 = PB-GATT */
-    uint8_t  device_uuid[MXCP_UUID_SIZE]; /**< Remote or local device UUID */
-} mxcp_evt_prov_link_open_t;
+    uint8_t      bearer;        /**< 0x01 = PB-ADV, 0x02 = PB-GATT */
+    meshx_uuid_t device_uuid;   /**< Remote or local device UUID */
+} MESHX_PACKED mxcp_evt_prov_link_open_t;
 
 typedef struct {
     uint8_t  bearer;            /**< 0x01 = PB-ADV, 0x02 = PB-GATT */
     uint8_t  reason;            /**< Disconnect/close reason */
-} mxcp_evt_prov_link_close_t;
+} MESHX_PACKED mxcp_evt_prov_link_close_t;
 
 typedef struct {
     uint8_t  action;            /**< 0x01 = Output Display, 0x02 = Input Request */
     uint8_t  auth_size;         /**< Number of digits / bytes */
     uint32_t output_num;        /**< Random number to display (if action == 1) */
-} mxcp_evt_prov_auth_req_t;
+} MESHX_PACKED mxcp_evt_prov_auth_req_t;
 
 /* UVP Remote Provisioning (RPR) Structs */
 typedef struct {
-    uint16_t proxy_node_addr;   /**< 0xFFFF for all nodes, or specific relay address */
-    uint8_t  duration_sec;      /**< Scan duration (seconds) */
-    uint8_t  uuid_filter[MXCP_UUID_SIZE]; /**< All 0s = match any unprov node */
-} mxcp_cmd_uvp_rpr_scan_t;
+    uint16_t     proxy_node_addr;   /**< 0xFFFF for all nodes, or specific relay address */
+    uint8_t      duration_sec;      /**< Scan duration (seconds) */
+    meshx_uuid_t uuid_filter;       /**< All 0s = match any unprov node */
+} MESHX_PACKED mxcp_cmd_uvp_rpr_scan_t;
 
 typedef struct {
-    uint16_t proxy_node_addr;   /**< Address of relay node in range of unprov device */
-    uint8_t  target_uuid[MXCP_UUID_SIZE]; /**< Target unprovisioned node UUID */
-    uint8_t  pdu_len;           /**< Length of raw provisioning PDU */
-    uint8_t  pdu_data[MXCP_RPR_PDU_MAX_SIZE]; /**< Provisioning PDU bytes */
-} mxcp_cmd_uvp_rpr_tunnel_t;
+    uint16_t     proxy_node_addr;   /**< Address of relay node in range of unprov device */
+    meshx_uuid_t target_uuid;       /**< Target unprovisioned node UUID */
+    uint8_t      pdu_len;           /**< Length of raw provisioning PDU */
+    uint8_t      pdu_data[MXCP_RPR_PDU_MAX_SIZE]; /**< Provisioning PDU bytes */
+} MESHX_PACKED mxcp_cmd_uvp_rpr_tunnel_t;
 
 typedef struct {
-    uint16_t proxy_node_addr;   /**< Node that heard the beacon */
-    uint8_t  uuid[MXCP_UUID_SIZE]; /**< Discovered device UUID */
-    int8_t   rssi;              /**< Received signal strength */
-    uint16_t oob_info;          /**< Advertised OOB info */
-} mxcp_evt_uvp_rpr_beacon_ind_t;
+    uint16_t     proxy_node_addr;   /**< Node that heard the beacon */
+    meshx_uuid_t uuid;              /**< Discovered device UUID */
+    int8_t       rssi;              /**< Received signal strength */
+    uint16_t     oob_info;          /**< Advertised OOB info */
+} MESHX_PACKED mxcp_evt_uvp_rpr_beacon_ind_t;
 
 typedef struct {
-    uint16_t proxy_node_addr;   /**< Reporting proxy relay */
-    uint8_t  target_uuid[MXCP_UUID_SIZE]; /**< Target unprov device UUID */
-    uint8_t  pdu_len;           /**< Length of reply PDU */
-    uint8_t  pdu_data[MXCP_RPR_PDU_MAX_SIZE]; /**< Reply PDU payload */
-} mxcp_evt_uvp_rpr_tunnel_recv_t;
+    uint16_t     proxy_node_addr;   /**< Reporting proxy relay */
+    meshx_uuid_t target_uuid;       /**< Target unprov device UUID */
+    uint8_t      pdu_len;           /**< Length of reply PDU */
+    uint8_t      pdu_data[MXCP_RPR_PDU_MAX_SIZE]; /**< Reply PDU payload */
+} MESHX_PACKED mxcp_evt_uvp_rpr_tunnel_recv_t;
 
 /* UVP Key Rotation Enums & Structs */
 typedef enum {
@@ -450,13 +477,13 @@ typedef struct {
     uint8_t  phase;             /**< mxcp_kr_phase_t (1=Distribute, 2=Switchover, 3=Revoke) */
     uint16_t net_idx;           /**< Primary NetKey index */
     uint8_t  new_key[MXCP_NETKEY_SIZE]; /**< 16-byte NetKey payload (only for Phase 1) */
-} mxcp_cmd_uvp_key_rotate_t;
+} MESHX_PACKED mxcp_cmd_uvp_key_rotate_t;
 
 typedef struct {
     uint8_t  current_phase;     /**< mxcp_kr_phase_t (1, 2, or 3) */
     uint32_t rotation_epoch;    /**< Monotonically increasing epoch */
     uint8_t  status_code;       /**< 0 = Success */
-} mxcp_evt_uvp_key_rot_phase_t;
+} MESHX_PACKED mxcp_evt_uvp_key_rot_phase_t;
 
 /* UVP Provisioner Redundancy Structs */
 typedef struct {
@@ -464,31 +491,76 @@ typedef struct {
     uint16_t peer_addr;         /**< Peer provisioner unicast address */
     uint16_t pool_start;        /**< Assigned address pool start */
     uint16_t pool_end;          /**< Assigned address pool end */
-} mxcp_cmd_uvp_redundancy_role_t;
+} MESHX_PACKED mxcp_cmd_uvp_redundancy_role_t;
 
 typedef struct {
     uint8_t  current_role;      /**< 1 = Master, 2 = Standby */
     uint8_t  peer_alive;        /**< 1 = Peer heartbeat OK, 0 = Lost */
     uint16_t next_free_addr;    /**< Next allocatable address in pool */
     uint32_t sync_epoch;        /**< Provisioner state sync epoch */
-} mxcp_evt_uvp_redundancy_status_t;
+} MESHX_PACKED mxcp_evt_uvp_redundancy_status_t;
 
 /* UVP Fast Bulk Provisioning Structs */
 typedef struct {
-    uint8_t  uuid_mask[MXCP_UUID_SIZE]; /**< Filter mask for bulk discovery */
-    uint16_t target_count;      /**< Total nodes to batch onboard */
-    uint16_t base_addr;         /**< Starting unicast address block */
-} mxcp_cmd_uvp_fast_prov_start_t;
+    meshx_uuid_t uuid_mask;             /**< Filter mask for bulk discovery */
+    uint16_t     target_count;          /**< Total nodes to batch onboard */
+    uint16_t     base_addr;             /**< Starting unicast address block */
+    uint8_t      k_factor;              /**< 0 = Uncapped (K=inf, natural silence), >0 = Bounded quota (e.g. 2, 4) */
+} MESHX_PACKED mxcp_cmd_uvp_fast_prov_start_t;
 
 typedef struct {
-    uint16_t onboarded_count;   /**< Nodes successfully provisioned */
-    uint16_t total_target;      /**< Total nodes requested */
-    uint8_t  last_uuid[MXCP_UUID_SIZE]; /**< UUID of most recent provisioned node */
-    uint16_t last_addr;         /**< Assigned unicast address */
-    uint8_t  progress_percent;  /**< Overall progress (0-100) */
-} mxcp_evt_uvp_fast_prov_progress_t;
+    uint16_t     onboarded_count;       /**< Nodes successfully provisioned */
+    uint16_t     total_target;          /**< Total nodes requested */
+    meshx_uuid_t last_uuid;             /**< UUID of most recent provisioned node */
+    uint16_t     last_addr;             /**< Assigned unicast address */
+    uint8_t      progress_percent;      /**< Overall progress (0-100) */
+} MESHX_PACKED mxcp_evt_uvp_fast_prov_progress_t;
 
-#pragma pack(pop)
+/* Re-healing & Cascading Redundancy Events */
+
+/**
+ * @brief Event raised when an evicted node is successfully re-admitted (0xCF received).
+ */
+typedef struct {
+    meshx_uuid_t node_uuid;             /**< UUID of re-healed node */
+    uint16_t     restored_addr;         /**< Unicast address restored/confirmed */
+    uint32_t     new_epoch;             /**< Key rotation epoch issued to node */
+} MESHX_PACKED mxcp_evt_uvp_reheal_admitted_t;
+
+/**
+ * @brief Event raised when a Candidate accepts Standby duty via 0xD0.
+ */
+typedef struct {
+    meshx_uuid_t candidate_uuid;        /**< UUID of new Standby node */
+    uint16_t     candidate_addr;        /**< Unicast address of new Standby */
+    uint32_t     claim_epoch;           /**< Epoch from the accepted claim */
+} MESHX_PACKED mxcp_evt_uvp_claim_status_t;
+
+typedef struct {
+    meshx_uuid_t old_device_uuid;       /**< 16-byte UUID of failed node */
+    meshx_uuid_t new_device_uuid;       /**< 16-byte UUID of replacement node */
+    uint8_t      flags;                 /**< Bitmask of MXCP_REPLACE_FLAG_* */
+    uint16_t     target_addr_override;  /**< 0x0000 = auto-detect from old UUID */
+    uint32_t     seqnum_offset;         /**< Manual SeqNum fast-forward override */
+} MESHX_PACKED mxcp_cmd_node_replace_start_t;
+
+typedef struct {
+    uint8_t  status;            /**< MXCP_REPLACE_STATUS_* */
+    uint16_t old_addr;          /**< Unicast address of retired node */
+    uint16_t new_addr;          /**< Unicast address of replacement node */
+    uint8_t  old_elem_count;    /**< Old node element count */
+    uint8_t  new_elem_count;    /**< New node element count */
+    uint8_t  flags;             /**< Diagnostic flags */
+} MESHX_PACKED mxcp_evt_node_replace_status_t;
+
+typedef struct {
+    uint16_t unicast_addr;      /**< Base unicast address of replaced node */
+    uint8_t  element_index;     /**< Element index where model divergence occurred */
+    uint8_t  num_orphaned;      /**< Count of orphaned models */
+    uint8_t  num_new;           /**< Count of newly introduced models */
+    uint16_t orphaned_models[8];/**< List of orphaned SIG/Vendor models */
+    uint16_t new_models[8];     /**< List of new SIG/Vendor models */
+} MESHX_PACKED mxcp_evt_node_replace_schema_diff_t;
 
 /**
  * @brief MXCP wire frame for RX-side parsing.

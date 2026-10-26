@@ -1,5 +1,8 @@
 prod:
     cid: 0x7908
+    # Company Secret Management Configuration (Shared across all products in product line)
+    mgmt_uuid: "e6a2b840-7f24-4d89-915b-18a0a9ef8f42"
+    mgmt_virtual_addr: 0x8F42
     products:
         - name: 4_relay_panel
           pid: 0x0001

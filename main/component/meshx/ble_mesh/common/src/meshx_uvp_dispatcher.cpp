@@ -1,9 +1,17 @@
 /**
  * @file meshx_uvp_dispatcher.cpp
  * @brief Implementation of the Unified UVP Dispatcher.
+ *
+ * Dispatches MeshX Unified Vendor Protocol (UVP) messages received over the BLE mesh
+ * or from the local host serial interface. Delegates system management opcodes to the
+ * modular UVP registry and application data messages to registered element models.
+ *
+ * @author Pranjal Chanda
+ * @date 2024-2026
  */
 
 #include "meshx_uvp_dispatcher.hpp"
+#include "meshx_uvp_registry.hpp"
 #include <meshx_element_registry.hpp>
 #include <meshx_element_class.hpp>
 #include <meshx_composition.hpp>
@@ -13,6 +21,10 @@
 
 #include <map>
 
+/* =========================================================================
+ * Defines, Enums, Structs, and Global Variables
+ * ========================================================================= */
+
 /**
  * @brief TID Tracking Cache.
  *        Key: Source Address (uint16_t)
@@ -20,25 +32,50 @@
  */
 static std::map<uint16_t, uint8_t> g_tid_cache;
 
-#if CONFIG_ENABLE_UVP_PROVISIONER
-/*
- * Redundancy Watchdog (TASK-PROV-005)
- * Standby monitors Master heartbeats; promotes to Master if 3 heartbeats (15s) missed.
- */
-static meshx_os_timer_t *s_redundancy_wd_timer = NULL;
-static uint8_t          s_redundancy_missed_beats = 0;
-static meshx_prov_role_t s_local_prov_role = MESHX_PROV_ROLE_STANDALONE;
-#endif /* CONFIG_ENABLE_UVP_PROVISIONER */
-
-/*
- * Orphan Key Recovery State (TASK-PROV-004)
+/**
+ * @brief Timer handle for orphan straggler key recovery pull.
  */
 static meshx_os_timer_t *s_orphan_pull_timer = NULL;
-static uint16_t          s_kr_master_addr = 0x0001;
 
+/**
+ * @brief Master node unicast address targeted for orphan key recovery.
+ */
+static uint16_t s_kr_master_addr = 0x0001;
+
+/* --- Forward Declarations of Static Functions --- */
+static void uvp_orphan_pull_timer_cb(const meshx_os_timer_t *p_timer);
+
+static meshx_err_t uvp_unified_dispatcher_cb(dev_struct_t *pdev,
+                                             control_task_msg_evt_t evt,
+                                             void *params,
+                                             uint16_t params_len);
+
+static meshx_err_t uvp_app_command_cb(dev_struct_t *pdev,
+                                      control_task_msg_evt_t evt,
+                                      void *params,
+                                      uint16_t params_len);
+
+#if CONFIG_TXCM_ENABLE
+static meshx_err_t uvp_txcm_timeout_cb(dev_struct_t *pdev,
+                                       control_task_msg_evt_t evt,
+                                       void *params,
+                                       uint16_t params_len);
+#endif
+
+/* =========================================================================
+ * Timer Callbacks
+ * ========================================================================= */
+
+/**
+ * @brief Timer callback triggered when an orphan node needs to pull active network keys.
+ *
+ * @param[in] p_timer Pointer to the OS timer structure.
+ */
 static void uvp_orphan_pull_timer_cb(const meshx_os_timer_t *p_timer)
 {
     MESHX_UNUSED(p_timer);
+    MESHX_LOGD(MODULE_ID_COMMON, "UVP KR: Orphan pull timer fired, querying Master 0x%04X", s_kr_master_addr);
+
     /* Straggler triggers unicast key request to Master */
     uint8_t req_buf[1 + sizeof(uint32_t)];
     req_buf[0] = MESHX_UVP_OP_KR_KEY_REQ;
@@ -55,965 +92,9 @@ static void uvp_orphan_pull_timer_cb(const meshx_os_timer_t *p_timer)
                s_kr_master_addr, (unsigned long)local_epoch);
 }
 
-#if CONFIG_ENABLE_UVP_PROVISIONER
-static void uvp_redundancy_wd_timer_cb(const meshx_os_timer_t *p_timer)
-{
-    MESHX_UNUSED(p_timer);
-    s_redundancy_missed_beats++;
-    if (s_redundancy_missed_beats >= MESHX_REDUNDANCY_MAX_MISSED_BEATS && s_local_prov_role == MESHX_PROV_ROLE_STANDBY)
-    {
-        /* 15 seconds without heartbeat -> Promote Standby to active Master */
-        s_local_prov_role = MESHX_PROV_ROLE_MASTER;
-        MESHX_LOGW(MODULE_ID_COMMON, "UVP Redundancy: 3 heartbeats missed (15s). Promoting STANDBY -> MASTER!");
-
-        mxcp_evt_uvp_redundancy_status_t evt;
-        memset(&evt, 0, sizeof(evt));
-        evt.current_role = MESHX_PROV_ROLE_MASTER;
-        evt.peer_alive = 0;
-        uint16_t p_start = 0, p_end = 0;
-        meshx_prov_get_address_pool(MESHX_PROV_ROLE_MASTER, &p_start, &p_end);
-        evt.next_free_addr = p_start;
-        evt.sync_epoch = 1;
-        mxcp_send_event(MXCP_EVT_UVP_REDUNDANCY_STATUS, reinterpret_cast<const uint8_t *>(&evt), sizeof(evt));
-    }
-}
-#endif /* CONFIG_ENABLE_UVP_PROVISIONER */
-
-/**
- * @brief Handler function signature for UVP system management messages.
- *
- * @param[in] p_meta      Pointer to message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes (pointing at or after msg_type).
- * @param[in] payload_len Length of payload bytes.
- * @return MESHX_SUCCESS on success, or error code.
- */
-typedef meshx_err_t (*uvp_sys_msg_handler_t)(const control_task_uvp_meta_t *p_meta,
-                                             const meshx_uvp_ctx_t *p_ctx,
-                                             const uint8_t *payload,
-                                             uint16_t payload_len);
-
 /* =========================================================================
- * Individual Handlers for In-Mesh Discovery (0xFFFE) & Pairing (0xFFFF)
+ * Core Dispatcher Callbacks
  * ========================================================================= */
-
-/**
- * @brief Handle in-mesh discovery query request (MESHX_SYS_CMD_DISCOVERY_QUERY).
- *
- * Constructs the local node's capability manifest and transmits a discovery report
- * back to the requester via UVP func_id 0xFFFE.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on success, or an error code on transmission failure.
- */
-static meshx_err_t uvp_handle_discovery_query(const control_task_uvp_meta_t *p_meta,
-                                              const meshx_uvp_ctx_t *p_ctx,
-                                              const uint8_t *payload,
-                                              uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    MESHX_UNUSED(payload);
-    MESHX_UNUSED(payload_len);
-
-    if (!p_ctx)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    meshx_uvp_discovery_report_t report;
-    memset(&report, 0, sizeof(report));
-    report.msg_type = MESHX_SYS_RSP_DISCOVERY_REPORT;
-    meshx_err_t err = meshx_manifest_build_local(&report.manifest);
-    if (err == MESHX_SUCCESS)
-    {
-        size_t report_len = sizeof(report.msg_type) +
-                            offsetof(meshx_capability_manifest_t, elements) +
-                            report.manifest.element_count * sizeof(meshx_element_descriptor_t);
-
-        return meshx_comp_send_uvp(0,
-                                   p_ctx->src_addr,
-                                   MESHX_FUNC_ID_SYS_DISCOVERY,
-                                   &report,
-                                   (uint16_t)report_len,
-                                   false);
-    }
-    return err;
-}
-
-/**
- * @brief Handle epoch audit ping under discovery func_id 0xFFFE (MESHX_SYS_CMD_EPOCH_PING).
- *
- * Replies to the requester with the local node's persisted link epoch counter
- * to verify topology and link synchronization.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on success, or an error code on failure.
- */
-static meshx_err_t uvp_handle_epoch_ping_discovery(const control_task_uvp_meta_t *p_meta,
-                                                   const meshx_uvp_ctx_t *p_ctx,
-                                                   const uint8_t *payload,
-                                                   uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    MESHX_UNUSED(payload);
-    MESHX_UNUSED(payload_len);
-
-    if (!p_ctx)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    meshx_uvp_epoch_pong_t pong;
-    memset(&pong, 0, sizeof(pong));
-    pong.msg_type = MESHX_SYS_RSP_EPOCH_PONG;
-    pong.link_epoch = meshx_nvs_get_link_epoch();
-    return meshx_comp_send_uvp(0,
-                               p_ctx->src_addr,
-                               MESHX_FUNC_ID_SYS_DISCOVERY,
-                               &pong,
-                               sizeof(pong),
-                               false);
-}
-
-/**
- * @brief Handle in-mesh pairing request (MESHX_SYS_CMD_PAIR_REQUEST).
- *
- * Parses the incoming pairing request, invokes the pairing manager engine,
- * and transmits the pairing response back to the requester.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes containing meshx_uvp_pair_req_t.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on completion.
- */
-static meshx_err_t uvp_handle_pair_request(const control_task_uvp_meta_t *p_meta,
-                                           const meshx_uvp_ctx_t *p_ctx,
-                                           const uint8_t *payload,
-                                           uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    if (!p_ctx || !payload || payload_len < sizeof(meshx_uvp_pair_req_t))
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    meshx_uvp_pair_rsp_t rsp;
-    memset(&rsp, 0, sizeof(rsp));
-    meshx_err_t err = meshx_pair_handle_request(
-        reinterpret_cast<const meshx_uvp_pair_req_t *>(payload),
-        p_ctx->src_addr,
-        &rsp);
-    if (err == MESHX_SUCCESS)
-    {
-        meshx_comp_send_uvp(0,
-                            p_ctx->src_addr,
-                            MESHX_FUNC_ID_SYS_PAIRING,
-                            &rsp,
-                            sizeof(rsp),
-                            false);
-    }
-    return MESHX_SUCCESS;
-}
-
-/**
- * @brief Handle in-mesh pairing response (MESHX_SYS_RSP_PAIR_RESPONSE).
- *
- * Forwards the pairing response from the responder node to the pairing manager engine.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes containing meshx_uvp_pair_rsp_t.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on completion.
- */
-static meshx_err_t uvp_handle_pair_response(const control_task_uvp_meta_t *p_meta,
-                                            const meshx_uvp_ctx_t *p_ctx,
-                                            const uint8_t *payload,
-                                            uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    if (!p_ctx || !payload || payload_len < sizeof(meshx_uvp_pair_rsp_t))
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    meshx_pair_handle_response(
-        reinterpret_cast<const meshx_uvp_pair_rsp_t *>(payload),
-        p_ctx->src_addr);
-    return MESHX_SUCCESS;
-}
-
-/**
- * @brief Handle topology upgrade request (MESHX_SYS_CMD_TOPOLOGY_UPGRADE).
- *
- * Processes a unicast-to-group binding upgrade request from a peer node and replies
- * with the upgrade response.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes containing meshx_uvp_upgrade_req_t.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on completion.
- */
-static meshx_err_t uvp_handle_topology_upgrade(const control_task_uvp_meta_t *p_meta,
-                                               const meshx_uvp_ctx_t *p_ctx,
-                                               const uint8_t *payload,
-                                               uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    if (!p_ctx || !payload || payload_len < sizeof(meshx_uvp_upgrade_req_t))
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    meshx_uvp_upgrade_rsp_t rsp;
-    memset(&rsp, 0, sizeof(rsp));
-    meshx_err_t err = meshx_pair_handle_upgrade(
-        reinterpret_cast<const meshx_uvp_upgrade_req_t *>(payload),
-        p_ctx->src_addr,
-        &rsp);
-    if (err == MESHX_SUCCESS)
-    {
-        meshx_comp_send_uvp(0,
-                            p_ctx->src_addr,
-                            MESHX_FUNC_ID_SYS_PAIRING,
-                            &rsp,
-                            sizeof(rsp),
-                            false);
-    }
-    return MESHX_SUCCESS;
-}
-
-/**
- * @brief Handle in-mesh unpair request (MESHX_SYS_CMD_UNPAIR_REQUEST).
- *
- * Processes element unbinding requests between paired nodes and sends the unpair response.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes containing meshx_uvp_unpair_req_t.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on completion.
- */
-static meshx_err_t uvp_handle_unpair_request(const control_task_uvp_meta_t *p_meta,
-                                             const meshx_uvp_ctx_t *p_ctx,
-                                             const uint8_t *payload,
-                                             uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    if (!p_ctx || !payload || payload_len < sizeof(meshx_uvp_unpair_req_t))
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    meshx_uvp_unpair_rsp_t rsp;
-    memset(&rsp, 0, sizeof(rsp));
-    meshx_err_t err = meshx_unpair_handle_request(
-        reinterpret_cast<const meshx_uvp_unpair_req_t *>(payload),
-        p_ctx->src_addr,
-        &rsp);
-    if (err == MESHX_SUCCESS)
-    {
-        meshx_comp_send_uvp(0,
-                            p_ctx->src_addr,
-                            MESHX_FUNC_ID_SYS_PAIRING,
-                            &rsp,
-                            sizeof(rsp),
-                            false);
-    }
-    return MESHX_SUCCESS;
-}
-
-/**
- * @brief Handle in-mesh unpair response (MESHX_SYS_RSP_UNPAIR_RESPONSE).
- *
- * Forwards unpair acknowledgment from the peer node to the unpair management logic.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes containing meshx_uvp_unpair_rsp_t.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on completion.
- */
-static meshx_err_t uvp_handle_unpair_response(const control_task_uvp_meta_t *p_meta,
-                                              const meshx_uvp_ctx_t *p_ctx,
-                                              const uint8_t *payload,
-                                              uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    if (!p_ctx || !payload || payload_len < sizeof(meshx_uvp_unpair_rsp_t))
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    meshx_unpair_handle_response(
-        reinterpret_cast<const meshx_uvp_unpair_rsp_t *>(payload),
-        p_ctx->src_addr);
-    return MESHX_SUCCESS;
-}
-
-/**
- * @brief Handle peer node reset notification (MESHX_SYS_NOTIFY_NODE_RESET).
- *
- * Purges all bindings, publication targets, and subscription associations tied
- * to the resetting peer node.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes containing meshx_uvp_notify_node_reset_t.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on completion.
- */
-static meshx_err_t uvp_handle_notify_node_reset(const control_task_uvp_meta_t *p_meta,
-                                                const meshx_uvp_ctx_t *p_ctx,
-                                                const uint8_t *payload,
-                                                uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    MESHX_UNUSED(p_ctx);
-    if (!payload || payload_len < sizeof(meshx_uvp_notify_node_reset_t))
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    const auto *notice = reinterpret_cast<const meshx_uvp_notify_node_reset_t *>(payload);
-    meshx_unpair_handle_reset_notify(notice->reset_node_addr);
-    return MESHX_SUCCESS;
-}
-
-/**
- * @brief Handle epoch audit ping under pairing func_id 0xFFFF (MESHX_SYS_CMD_EPOCH_PING).
- *
- * Replies to the requester with the local node's persisted link epoch counter
- * via the pairing functional endpoint.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on success, or an error code on failure.
- */
-static meshx_err_t uvp_handle_epoch_ping_pairing(const control_task_uvp_meta_t *p_meta,
-                                                 const meshx_uvp_ctx_t *p_ctx,
-                                                 const uint8_t *payload,
-                                                 uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    MESHX_UNUSED(payload);
-    MESHX_UNUSED(payload_len);
-
-    if (!p_ctx)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    meshx_uvp_epoch_pong_t pong;
-    memset(&pong, 0, sizeof(pong));
-    pong.msg_type = MESHX_SYS_RSP_EPOCH_PONG;
-    pong.link_epoch = meshx_nvs_get_link_epoch();
-    return meshx_comp_send_uvp(0,
-                               p_ctx->src_addr,
-                               MESHX_FUNC_ID_SYS_PAIRING,
-                               &pong,
-                               sizeof(pong),
-                               false);
-}
-
-/**
- * @brief Handle autonomous proximity pairing announcement (MESHX_SYS_CMD_PAIR_ANNOUNCE).
- *
- * Forwards proximity announcement parameters to the proximity engine for RSSI/TTL-based
- * autonomous peer pairing evaluation.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes containing meshx_uvp_pair_announce_t.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on completion.
- */
-static meshx_err_t uvp_handle_pair_announce(const control_task_uvp_meta_t *p_meta,
-                                            const meshx_uvp_ctx_t *p_ctx,
-                                            const uint8_t *payload,
-                                            uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    if (!p_ctx || !payload || payload_len < sizeof(meshx_uvp_pair_announce_t))
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    const auto *ann = reinterpret_cast<const meshx_uvp_pair_announce_t *>(payload);
-    meshx_proximity_handle_announce(ann, p_ctx->src_addr, -45, 7);
-    return MESHX_SUCCESS;
-}
-
-/* =========================================================================
- * Individual Handlers for RPR Tunneling (0xC0..0xC3)
- * ========================================================================= */
-
-/**
- * @brief Handle Remote Provisioning scan request (MESHX_UVP_OP_RPR_SCAN_REQ).
- *
- * Commands an in-mesh relay node to initiate local BLE radio scanning for unprovisioned
- * device beacons.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes containing scan duration.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on completion.
- */
-static meshx_err_t uvp_handle_rpr_scan_req(const control_task_uvp_meta_t *p_meta,
-                                           const meshx_uvp_ctx_t *p_ctx,
-                                           const uint8_t *payload,
-                                           uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    if (!p_ctx)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    uint8_t duration_sec = 10;
-    if (payload && payload_len >= 2)
-    {
-        duration_sec = payload[1];
-    }
-    MESHX_LOGI(MODULE_ID_COMMON, "UVP RPR: Scan request from 0x%04X (duration=%u s)",
-               p_ctx->src_addr, duration_sec);
-
-    /* Relay node activates local BLE scanner for unprovisioned mesh beacons */
-    return MESHX_SUCCESS;
-}
-
-#if CONFIG_ENABLE_UVP_PROVISIONER
-/**
- * @brief Handle Remote Provisioning beacon report (MESHX_UVP_OP_RPR_BEACON_REPORT).
- *
- * Forwards an unprovisioned device beacon received by a proxy node to the Host MCU
- * via MXCP event MXCP_EVT_UVP_RPR_BEACON_IND.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes containing beacon notification.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on completion.
- */
-static meshx_err_t uvp_handle_rpr_beacon_report(const control_task_uvp_meta_t *p_meta,
-                                                const meshx_uvp_ctx_t *p_ctx,
-                                                const uint8_t *payload,
-                                                uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    MESHX_UNUSED(p_ctx);
-    if (!payload || payload_len < sizeof(mxcp_evt_uvp_rpr_beacon_ind_t))
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    /* Proxy node -> Master: forward discovered unprovisioned beacon to Host MCU via MXCP */
-    mxcp_send_event(MXCP_EVT_UVP_RPR_BEACON_IND, payload, static_cast<uint8_t>(payload_len));
-    return MESHX_SUCCESS;
-}
-#endif /* CONFIG_ENABLE_UVP_PROVISIONER */
-
-/**
- * @brief Handle Remote Provisioning downlink tunnel PDU (MESHX_UVP_OP_RPR_TUNNEL_DOWN).
- *
- * Injects a PB-ADV provisioning PDU received from the Master into the local radio
- * air interface targeting the unprovisioned device.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes containing the PB-ADV PDU.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on completion.
- */
-static meshx_err_t uvp_handle_rpr_tunnel_down(const control_task_uvp_meta_t *p_meta,
-                                              const meshx_uvp_ctx_t *p_ctx,
-                                              const uint8_t *payload,
-                                              uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    if (!p_ctx || !payload || payload_len == 0)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    /* Master -> Proxy: Inject PB-ADV PDU into radio air for target unprov node */
-    MESHX_LOGI(MODULE_ID_COMMON, "UVP RPR: Downlink PDU injection on proxy from 0x%04X (len=%u)",
-               p_ctx->src_addr, payload_len);
-    return MESHX_SUCCESS;
-}
-
-#if CONFIG_ENABLE_UVP_PROVISIONER
-/**
- * @brief Handle Remote Provisioning uplink tunnel PDU (MESHX_UVP_OP_RPR_TUNNEL_UP).
- *
- * Forwards a device reply PDU received by a proxy node back to the Master/Host MCU
- * via MXCP event MXCP_EVT_UVP_RPR_TUNNEL_RECV.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes containing device reply PDU.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on completion.
- */
-static meshx_err_t uvp_handle_rpr_tunnel_up(const control_task_uvp_meta_t *p_meta,
-                                            const meshx_uvp_ctx_t *p_ctx,
-                                            const uint8_t *payload,
-                                            uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    MESHX_UNUSED(p_ctx);
-    if (!payload || payload_len < sizeof(mxcp_evt_uvp_rpr_tunnel_recv_t))
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    /* Proxy -> Master: forward reply PDU from unprov node to Host MCU via MXCP */
-    mxcp_send_event(MXCP_EVT_UVP_RPR_TUNNEL_RECV, payload, static_cast<uint8_t>(payload_len));
-    return MESHX_SUCCESS;
-}
-#endif /* CONFIG_ENABLE_UVP_PROVISIONER */
-
-/* =========================================================================
- * Individual Handlers for 5-Minute Key Rotation & Orphan Recovery (0xC4..0xC6, 0xCA, 0xCB)
- * ========================================================================= */
-
-/**
- * @brief Handle Key Rotation Phase 1 distribution (MESHX_UVP_OP_KR_DISTRIBUTE).
- *
- * Installs K_new into the secondary NetKey slot and enables Dual-RX reception if
- * the incoming epoch exceeds the local persisted key rotation epoch.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes [msg_type | epoch (4B) | new_key (16B)].
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on completion.
- */
-static meshx_err_t uvp_handle_kr_distribute(const control_task_uvp_meta_t *p_meta,
-                                            const meshx_uvp_ctx_t *p_ctx,
-                                            const uint8_t *payload,
-                                            uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    if (!p_ctx || !payload || payload_len == 0)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    /*
-     * Phase 1 (Distribution): Master broadcasts K_new to MESHX_MGMT_VIRTUAL_ADDR.
-     * Wire layout: [ msg_type (1 B) | epoch (4 B, LE) | new_key (16 B) ]
-     */
-    if (payload_len >= 1 + sizeof(uint32_t) + 16)
-    {
-        uint32_t epoch = 0;
-        memcpy(&epoch, &payload[1], sizeof(uint32_t));
-        const uint8_t *new_key = &payload[1 + sizeof(uint32_t)];
-
-        uint32_t current_epoch = meshx_nvs_get_kr_epoch();
-        if (epoch > current_epoch)
-        {
-            /* Add or update key in secondary slot with Dual-RX enabled */
-            esp_ble_mesh_node_add_local_net_key(new_key, meshx_get_net_key_id());
-            MESHX_LOGI(MODULE_ID_COMMON, "UVP KR: Phase 1 Key installed for epoch %lu from 0x%04X",
-                       (unsigned long)epoch, p_ctx->src_addr);
-        }
-    }
-    else
-    {
-        MESHX_LOGI(MODULE_ID_COMMON, "UVP KR: Phase 1 Key Distribution received from 0x%04X", p_ctx->src_addr);
-    }
-    return MESHX_SUCCESS;
-}
-
-/**
- * @brief Handle Key Rotation Phase 2 switchover (MESHX_UVP_OP_KR_SWITCHOVER).
- *
- * Directs the node to switch its active transmission key to K_new while maintaining
- * dual key reception during the overlap period.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on completion.
- */
-static meshx_err_t uvp_handle_kr_switchover(const control_task_uvp_meta_t *p_meta,
-                                            const meshx_uvp_ctx_t *p_ctx,
-                                            const uint8_t *payload,
-                                            uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    MESHX_UNUSED(payload);
-    MESHX_UNUSED(payload_len);
-    if (!p_ctx)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    /* Phase 2: Switchover TX Key = K_new (Both keys valid for RX during 4-min overlap) */
-    MESHX_LOGI(MODULE_ID_COMMON, "UVP KR: Phase 2 TX Switchover received from 0x%04X", p_ctx->src_addr);
-    return MESHX_SUCCESS;
-}
-
-/**
- * @brief Handle Key Rotation Phase 3 revocation (MESHX_UVP_OP_KR_REVOKE_OLD).
- *
- * Revokes K_old, commits K_new as the single active NetKey, increments and persists
- * the key rotation epoch counter to NVS, and notifies the host.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on completion.
- */
-static meshx_err_t uvp_handle_kr_revoke_old(const control_task_uvp_meta_t *p_meta,
-                                            const meshx_uvp_ctx_t *p_ctx,
-                                            const uint8_t *payload,
-                                            uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    MESHX_UNUSED(payload);
-    MESHX_UNUSED(payload_len);
-    if (!p_ctx)
-    {
-        return MESHX_INVALID_ARG;
-    }
-    mxcp_evt_uvp_key_rot_phase_t rsp;
-    memset(&rsp, 0, sizeof(rsp));
-    /* Phase 3: Invalidate K_old, Commit K_new and updated epoch to NVS */
-    rsp.rotation_epoch = meshx_nvs_get_kr_epoch() + 1;
-    meshx_nvs_set_kr_epoch(rsp.rotation_epoch);
-    MESHX_LOGI(MODULE_ID_COMMON, "UVP KR: Phase 3 Revocation committed; kr_epoch=%lu (from 0x%04X)",
-               (unsigned long)rsp.rotation_epoch, p_ctx->src_addr);
-
-    /* Notify host of completed rotation phase */
-    rsp.current_phase  = MXCP_KR_PHASE_REVOKE;
-    rsp.status_code    = 0;
-    mxcp_send_event(MXCP_EVT_UVP_KEY_ROTATION_PHASE, reinterpret_cast<const uint8_t *>(&rsp), sizeof(rsp));
-    return MESHX_SUCCESS;
-}
-
-#if CONFIG_ENABLE_UVP_PROVISIONER
-/**
- * @brief Handle orphan node key pull request (MESHX_UVP_OP_KR_KEY_REQ).
- *
- * Master node receives a recovery request from a straggler node and transmits
- * the active NetKey and epoch unicast back to the requesting node.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on completion.
- */
-static meshx_err_t uvp_handle_kr_key_req(const control_task_uvp_meta_t *p_meta,
-                                         const meshx_uvp_ctx_t *p_ctx,
-                                         const uint8_t *payload,
-                                         uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    MESHX_UNUSED(payload);
-    MESHX_UNUSED(payload_len);
-    if (!p_ctx)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    /* Orphan Node Recovery: Straggler requesting active key distribution */
-    MESHX_LOGI(MODULE_ID_COMMON, "UVP KR: Orphan key pull request from 0x%04X", p_ctx->src_addr);
-
-    /* Master replies unicast with active K_new and current epoch */
-    const uint8_t *cur_key = esp_ble_mesh_node_get_local_net_key(meshx_get_net_key_id());
-    if (cur_key)
-    {
-        uint8_t rsp_buf[1 + sizeof(uint32_t) + 16];
-        rsp_buf[0] = MESHX_UVP_OP_KR_DISTRIBUTE;
-        uint32_t epoch = meshx_nvs_get_kr_epoch();
-        memcpy(&rsp_buf[1], &epoch, sizeof(uint32_t));
-        memcpy(&rsp_buf[1 + sizeof(uint32_t)], cur_key, 16);
-
-        meshx_comp_send_uvp(0,
-                            p_ctx->src_addr,
-                            MESHX_FUNC_ID_SYS_PAIRING,
-                            rsp_buf,
-                            sizeof(rsp_buf),
-                            false);
-    }
-    return MESHX_SUCCESS;
-}
-#endif /* CONFIG_ENABLE_UVP_PROVISIONER */
-
-/**
- * @brief Handle orphan node key recovery confirmation (MESHX_UVP_OP_KR_KEY_CONFIRM).
- *
- * Logs and acknowledges successful key re-synchronization by a recovered orphan node.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on completion.
- */
-static meshx_err_t uvp_handle_kr_key_confirm(const control_task_uvp_meta_t *p_meta,
-                                             const meshx_uvp_ctx_t *p_ctx,
-                                             const uint8_t *payload,
-                                             uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    MESHX_UNUSED(payload);
-    MESHX_UNUSED(payload_len);
-    if (!p_ctx)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    /* Orphan Node Recovery: Confirmation of key re-synchronization */
-    MESHX_LOGI(MODULE_ID_COMMON, "UVP KR: Orphan key confirm received from 0x%04X", p_ctx->src_addr);
-    return MESHX_SUCCESS;
-}
-
-/* =========================================================================
- * Individual Handlers for Redundancy & Fast Provisioning (0xC7..0xC9)
- * ========================================================================= */
-
-#if CONFIG_ENABLE_UVP_PROVISIONER
-/**
- * @brief Handle redundancy synchronization heartbeat (MESHX_UVP_OP_REDUNDANCY_SYNC).
- *
- * Master <-> Standby heartbeat token reception that resets the 15-second failover watchdog.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on completion.
- */
-static meshx_err_t uvp_handle_redundancy_sync(const control_task_uvp_meta_t *p_meta,
-                                              const meshx_uvp_ctx_t *p_ctx,
-                                              const uint8_t *payload,
-                                              uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    if (!p_ctx)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    uint16_t p_start = 0;
-    uint16_t p_end   = 0;
-
-    /* Reset Standby missed beat watchdog counter */
-    s_redundancy_missed_beats = 0;
-
-    /* Ensure watchdog timer is running on Standby */
-    if (!s_redundancy_wd_timer)
-    {
-        meshx_os_timer_create("redun_wd", MESHX_REDUNDANCY_WD_INTERVAL_MS, true, uvp_redundancy_wd_timer_cb, &s_redundancy_wd_timer);
-        if (s_redundancy_wd_timer)
-        {
-            meshx_os_timer_start(s_redundancy_wd_timer);
-        }
-    }
-
-    /*
-     * Split-Brain Collision Tie-Breaker (TASK-PROV-005):
-     * If two nodes both claim to be Master, compare addresses / UUIDs.
-     * The node with the lower unicast address / UUID automatically yields to Standby.
-     */
-    if (s_local_prov_role == MESHX_PROV_ROLE_MASTER)
-    {
-        uint16_t my_addr = meshx_get_node_addr();
-        if (p_ctx->src_addr < my_addr)
-        {
-            /* Remote has lower address; yield and demote to Standby */
-            s_local_prov_role = MESHX_PROV_ROLE_STANDBY;
-            MESHX_LOGW(MODULE_ID_COMMON, "UVP Redundancy: Split-brain collision with 0x%04X! Local 0x%04X demoting to STANDBY.",
-                       p_ctx->src_addr, my_addr);
-
-            mxcp_evt_uvp_redundancy_status_t evt;
-            memset(&evt, 0, sizeof(evt));
-            meshx_prov_get_address_pool(MESHX_PROV_ROLE_STANDBY, &p_start, &p_end);
-            evt.sync_epoch = 1;
-            evt.peer_alive = 1;
-            evt.next_free_addr = p_start;
-            evt.current_role = MESHX_PROV_ROLE_STANDBY;
-            mxcp_send_event(MXCP_EVT_UVP_REDUNDANCY_STATUS, reinterpret_cast<const uint8_t *>(&evt), sizeof(evt));
-        }
-    }
-
-    MESHX_LOGD(MODULE_ID_COMMON, "UVP Redundancy: Heartbeat sync token from 0x%04X (len=%u)",
-               p_ctx->src_addr, (unsigned int)payload_len);
-    return MESHX_SUCCESS;
-}
-#endif /* CONFIG_ENABLE_UVP_PROVISIONER */
-
-/**
- * @brief Handle fast provisioning batch descriptor (MESHX_UVP_OP_FAST_PROV_BATCH_DESC).
- *
- * Receives delegated batch unicast address ranges and network parameters from Master.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on completion.
- */
-static meshx_err_t uvp_handle_fast_prov_batch_desc(const control_task_uvp_meta_t *p_meta,
-                                                   const meshx_uvp_ctx_t *p_ctx,
-                                                   const uint8_t *payload,
-                                                   uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    MESHX_UNUSED(payload);
-    MESHX_UNUSED(payload_len);
-    if (!p_ctx)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    /* Master -> Intermediate Proxy: Batch descriptor received */
-    MESHX_LOGI(MODULE_ID_COMMON, "UVP Fast Prov: Batch descriptor received from 0x%04X", p_ctx->src_addr);
-    return MESHX_SUCCESS;
-}
-
-#if CONFIG_ENABLE_UVP_PROVISIONER
-/**
- * @brief Handle fast provisioning bulk progress report (MESHX_UVP_OP_FAST_PROV_REPORT).
- *
- * Forwards provisioning status and address assignment updates from intermediate proxy
- * to Host MCU via MXCP event MXCP_EVT_UVP_FAST_PROV_PROGRESS.
- *
- * @param[in] p_meta      Pointer to UVP message metadata header.
- * @param[in] p_ctx       Pointer to UVP routing context.
- * @param[in] payload     Pointer to payload bytes containing mxcp_evt_uvp_fast_prov_progress_t.
- * @param[in] payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on completion.
- */
-static meshx_err_t uvp_handle_fast_prov_report(const control_task_uvp_meta_t *p_meta,
-                                               const meshx_uvp_ctx_t *p_ctx,
-                                               const uint8_t *payload,
-                                               uint16_t payload_len)
-{
-    MESHX_UNUSED(p_meta);
-    MESHX_UNUSED(p_ctx);
-    if (!payload || payload_len < sizeof(mxcp_evt_uvp_fast_prov_progress_t))
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    /* Proxy -> Master: Bulk progress report forwarded to Host MCU via MXCP */
-    mxcp_send_event(MXCP_EVT_UVP_FAST_PROV_PROGRESS, payload, static_cast<uint8_t>(payload_len));
-    return MESHX_SUCCESS;
-}
-#endif /* CONFIG_ENABLE_UVP_PROVISIONER */
-
-/* =========================================================================
- * Static Registration Dispatch Tables
- * ========================================================================= */
-
-typedef struct {
-    uint8_t               msg_type;
-    uvp_sys_msg_handler_t handler;
-} uvp_opcode_handler_entry_t;
-
-/**
- * @brief Dispatch table for In-Mesh Discovery (func_id 0xFFFE).
- */
-static const uvp_opcode_handler_entry_t s_uvp_discovery_handlers[] = {
-    { MESHX_SYS_CMD_DISCOVERY_QUERY, uvp_handle_discovery_query      },
-    { MESHX_SYS_CMD_EPOCH_PING,      uvp_handle_epoch_ping_discovery },
-};
-
-/**
- * @brief Dispatch table for In-Mesh Pairing & Network Management (func_id 0xFFFF / Opcodes 0xC0..0xCB).
- */
-static const uvp_opcode_handler_entry_t s_uvp_pairing_mgmt_handlers[] =  {
-    { MESHX_SYS_CMD_PAIR_REQUEST,        uvp_handle_pair_request         },
-    { MESHX_SYS_RSP_PAIR_RESPONSE,       uvp_handle_pair_response        },
-    { MESHX_SYS_CMD_TOPOLOGY_UPGRADE,    uvp_handle_topology_upgrade     },
-    { MESHX_SYS_CMD_UNPAIR_REQUEST,      uvp_handle_unpair_request       },
-    { MESHX_SYS_RSP_UNPAIR_RESPONSE,     uvp_handle_unpair_response      },
-    { MESHX_SYS_NOTIFY_NODE_RESET,       uvp_handle_notify_node_reset    },
-    { MESHX_SYS_CMD_EPOCH_PING,          uvp_handle_epoch_ping_pairing   },
-    { MESHX_SYS_CMD_PAIR_ANNOUNCE,       uvp_handle_pair_announce        },
-    { MESHX_UVP_OP_RPR_SCAN_REQ,         uvp_handle_rpr_scan_req         },
-#if CONFIG_ENABLE_UVP_PROVISIONER
-    { MESHX_UVP_OP_RPR_BEACON_REPORT,    uvp_handle_rpr_beacon_report    },
-#endif
-    { MESHX_UVP_OP_RPR_TUNNEL_DOWN,      uvp_handle_rpr_tunnel_down      },
-#if CONFIG_ENABLE_UVP_PROVISIONER
-    { MESHX_UVP_OP_RPR_TUNNEL_UP,        uvp_handle_rpr_tunnel_up        },
-#endif
-    { MESHX_UVP_OP_KR_DISTRIBUTE,        uvp_handle_kr_distribute        },
-    { MESHX_UVP_OP_KR_SWITCHOVER,        uvp_handle_kr_switchover        },
-    { MESHX_UVP_OP_KR_REVOKE_OLD,        uvp_handle_kr_revoke_old        },
-#if CONFIG_ENABLE_UVP_PROVISIONER
-    { MESHX_UVP_OP_KR_KEY_REQ,           uvp_handle_kr_key_req           },
-#endif
-    { MESHX_UVP_OP_KR_KEY_CONFIRM,       uvp_handle_kr_key_confirm       },
-#if CONFIG_ENABLE_UVP_PROVISIONER
-    { MESHX_UVP_OP_REDUNDANCY_SYNC,      uvp_handle_redundancy_sync      },
-#endif
-    { MESHX_UVP_OP_FAST_PROV_BATCH_DESC, uvp_handle_fast_prov_batch_desc },
-#if CONFIG_ENABLE_UVP_PROVISIONER
-    { MESHX_UVP_OP_FAST_PROV_REPORT,     uvp_handle_fast_prov_report     },
-#endif
-};
-
-/**
- * @brief Dispatch helper that looks up and executes the handler from a table.
- *
- * Scans the provided table for an entry matching @p msg_type and invokes its associated
- * handler function.
- *
- * @param[in]  table       Pointer to array of opcode handler entries.
- * @param[in]  table_size  Number of entries in the handler table.
- * @param[in]  msg_type    Opcode or message type identifier to match.
- * @param[in]  p_meta      Pointer to UVP message metadata header.
- * @param[in]  p_ctx       Pointer to UVP routing context.
- * @param[in]  payload     Pointer to payload bytes.
- * @param[in]  payload_len Length of payload bytes in bytes.
- * @return MESHX_SUCCESS on success, MESHX_NOT_FOUND if opcode not in table, or error code from handler.
- */
-static meshx_err_t uvp_dispatch_from_table(const uvp_opcode_handler_entry_t *table,
-                                           size_t table_size,
-                                           uint8_t msg_type,
-                                           const control_task_uvp_meta_t *p_meta,
-                                           const meshx_uvp_ctx_t *p_ctx,
-                                           const uint8_t *payload,
-                                           uint16_t payload_len)
-{
-    if (!table || table_size == 0 || !p_meta || !p_ctx || !payload)
-    {
-        return MESHX_INVALID_ARG;
-    }
-
-    for (size_t i = 0; i < table_size; ++i)
-    {
-        if (table[i].msg_type == msg_type)
-        {
-            if (table[i].handler)
-            {
-                return table[i].handler(p_meta, p_ctx, payload, payload_len);
-            }
-            return MESHX_SUCCESS;
-        }
-    }
-    return MESHX_NOT_FOUND;
-}
 
 /**
  * @brief Unified Dispatcher Callback for UVP messages.
@@ -1098,27 +179,19 @@ static meshx_err_t uvp_unified_dispatcher_cb(dev_struct_t *pdev,
     }
 
     /*
-     * In-Mesh UVP Discovery Protocol (func_id 0xFFFE)
+     * Element 0 Exclusivity Rule (REQ-002 / Design Sheet 01):
+     * System management functional endpoints (0xFFFE discovery, 0xFFFF pairing)
+     * are held strictly and exclusively on Element 0. Secondary elements drop management frames.
      */
-    if (uvp_ctx.func_id == MESHX_FUNC_ID_SYS_DISCOVERY)
+    if (p_meta->rx_el_id != 0 &&
+        (uvp_ctx.func_id == MESHX_FUNC_ID_SYS_DISCOVERY || uvp_ctx.func_id == MESHX_FUNC_ID_SYS_PAIRING))
     {
-        if (payload_len >= sizeof(uint8_t))
-        {
-            uint8_t msg_type = *static_cast<const uint8_t *>(payload);
-            return uvp_dispatch_from_table(s_uvp_discovery_handlers,
-                                           sizeof(s_uvp_discovery_handlers) / sizeof(s_uvp_discovery_handlers[0]),
-                                           msg_type,
-                                           p_meta,
-                                           &uvp_ctx,
-                                           static_cast<const uint8_t *>(payload),
-                                           payload_len);
-        }
-        return MESHX_SUCCESS;
+        MESHX_LOGW(MODULE_ID_COMMON, "UVP Dispatcher: Dropping management func 0x%04X on secondary element %u (Element 0 exclusive)",
+                   uvp_ctx.func_id, p_meta->rx_el_id);
+        return MESHX_ERR_BLOCKED_ADDR;
     }
 
-    /*
-     * In-Mesh UVP Pairing Protocol & System Management (func_id 0xFFFF or Network Mgmt Opcodes 0xC0..0xCB)
-     */
+    /* Extract Opcode / Message Type */
     uint8_t msg_type = 0;
     if (payload_len >= sizeof(uint8_t))
     {
@@ -1135,11 +208,17 @@ static meshx_err_t uvp_unified_dispatcher_cb(dev_struct_t *pdev,
         uint32_t incoming_epoch = 0;
         memcpy(&incoming_epoch, &static_cast<const uint8_t *>(payload)[1], sizeof(uint32_t));
         uint32_t local_epoch = meshx_nvs_get_kr_epoch();
-        if (incoming_epoch > local_epoch + 1)
+        /*
+         * RFC 1982 Modular Distance Arithmetic:
+         * Handles monotonic sequence advancement AND 32-bit integer rollover (0xFFFFFFFF -> 0x00000001).
+         */
+        int32_t delta = static_cast<int32_t>(incoming_epoch - local_epoch);
+
+        if (delta > 1 && delta <= MESHX_KR_MAX_FORWARD_DRIFT)
         {
             /* Node missed one or more complete key rotation epochs: mark desync and schedule recovery pull */
-            MESHX_LOGW(MODULE_ID_COMMON, "UVP KR: Major epoch drift detected (local=%lu, packet=%lu). Scheduling orphan pull.",
-                       (unsigned long)local_epoch, (unsigned long)incoming_epoch);
+            MESHX_LOGW(MODULE_ID_COMMON, "UVP KR: Major epoch drift detected (local=%lu, packet=%lu, delta=%ld). Scheduling orphan pull.",
+                       (unsigned long)local_epoch, (unsigned long)incoming_epoch, static_cast<long>(delta));
             s_kr_master_addr = src_addr;
             if (!s_orphan_pull_timer)
             {
@@ -1152,21 +231,30 @@ static meshx_err_t uvp_unified_dispatcher_cb(dev_struct_t *pdev,
                 meshx_os_timer_start(s_orphan_pull_timer);
             }
         }
+        else if (delta < 0 || delta > MESHX_KR_MAX_FORWARD_DRIFT)
+        {
+            MESHX_LOGD(MODULE_ID_COMMON, "UVP KR: Stale or wild epoch received (local=%lu, packet=%lu, delta=%ld). Ignoring for drift.",
+                       (unsigned long)local_epoch, (unsigned long)incoming_epoch, static_cast<long>(delta));
+        }
     }
 
-    bool is_sys_mgmt_opcode = (msg_type >= MESHX_UVP_OP_RPR_SCAN_REQ && msg_type <= MESHX_UVP_OP_KR_KEY_CONFIRM);
+    /*
+     * Delegate System Management and Pairing Opcodes to Dynamic UVP Registry.
+     */
+    bool is_sys_mgmt_opcode = (msg_type >= MESHX_UVP_OP_RPR_SCAN_REQ && msg_type <= MESHX_UVP_OP_REDUNDANCY_CLAIM_ACK);
 
-    if (uvp_ctx.func_id == MESHX_FUNC_ID_SYS_PAIRING || is_sys_mgmt_opcode)
+    if (uvp_ctx.func_id == MESHX_FUNC_ID_SYS_DISCOVERY ||
+        uvp_ctx.func_id == MESHX_FUNC_ID_SYS_PAIRING ||
+        is_sys_mgmt_opcode)
     {
         if (payload_len >= sizeof(uint8_t))
         {
-            return uvp_dispatch_from_table(s_uvp_pairing_mgmt_handlers,
-                                           sizeof(s_uvp_pairing_mgmt_handlers) / sizeof(s_uvp_pairing_mgmt_handlers[0]),
-                                           msg_type,
-                                           p_meta,
-                                           &uvp_ctx,
-                                           static_cast<const uint8_t *>(payload),
-                                           payload_len);
+            return meshx_uvp_dispatch_handler(uvp_ctx.func_id,
+                                              msg_type,
+                                              p_meta,
+                                              &uvp_ctx,
+                                              static_cast<const uint8_t *>(payload),
+                                              payload_len);
         }
         return MESHX_SUCCESS;
     }
@@ -1323,7 +411,15 @@ static meshx_err_t uvp_txcm_timeout_cb(dev_struct_t *pdev,
 
 extern "C" meshx_err_t meshx_uvp_dispatcher_init(void)
 {
-    MESHX_LOGI(MODULE_ID_COMMON, "Initializing Unified UVP Dispatcher");
+    MESHX_LOGI(MODULE_ID_COMMON, "Initializing Unified UVP Dispatcher and registering modular handlers");
+
+    /* Register all modular UVP opcode handlers */
+    meshx_uvp_register_kr_handlers();
+    meshx_uvp_register_rpr_handlers();
+    meshx_uvp_register_reheal_handlers();
+    meshx_uvp_register_pairing_handlers();
+    meshx_uvp_register_discovery_handlers();
+    meshx_uvp_register_redundancy_handlers();
 
     /*
      * Subscribe to the vendor model ID (MESHX_MODEL_ID_UVP) on the BLE message path.

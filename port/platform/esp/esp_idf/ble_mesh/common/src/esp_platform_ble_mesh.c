@@ -261,3 +261,37 @@ meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, meshx_
     MESHX_LOGD(MODULE_ID_MODEL_SERVER, "BLE Mesh Node initialized");
     return MESHX_SUCCESS;
 }
+
+meshx_err_t meshx_plat_net_key_get(uint16_t net_key_id, uint8_t *key_out)
+{
+    if (!key_out)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    const uint8_t *key = esp_ble_mesh_node_get_local_net_key(net_key_id);
+    if (!key)
+    {
+        return MESHX_NOT_FOUND;
+    }
+
+    memcpy(key_out, key, MESHX_KEY_LEN);
+    return MESHX_SUCCESS;
+}
+
+meshx_err_t meshx_plat_net_key_add(const uint8_t *key, uint16_t net_key_id)
+{
+    if (!key)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    esp_err_t err = esp_ble_mesh_node_add_local_net_key(key, net_key_id);
+    if (err != ESP_OK)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "esp_ble_mesh_node_add_local_net_key failed: %d", err);
+        return MESHX_FAIL;
+    }
+
+    return MESHX_SUCCESS;
+}

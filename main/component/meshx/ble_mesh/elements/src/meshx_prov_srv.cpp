@@ -237,6 +237,21 @@ static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_t
             meshx_nvs_set(MESHX_NVS_STORE, &pdev->meshx_store, sizeof(pdev->meshx_store), MESHX_NVS_AUTO_COMMIT);
             meshx_nvs_commit(); // Force immediate commit for critical provisioning parameters
 
+            /* TASK-HEAL-003: Persist local node's DevKey into NVS registry for Master re-healing lookups.
+             * The net_key serves as the immutable DevKey in this custom MeshX stack. */
+            if (pdev && meshx_prov_srv_is_provisioned())
+            {
+                meshx_err_t dk_err = meshx_nvs_set_device_key(&pdev->uuid,
+                                                              param->node_prov_complete.net_key);
+                if (dk_err != MESHX_SUCCESS)
+                {
+                    MESHX_LOGW(MODULE_ID_COMMON, "Prov Srv: Failed to persist DevKey for local UUID (err=%d)", dk_err);
+                }
+            }
+
+            /* TASK-HEAL-004: Arm 15s blindness detection timer for autonomous re-healing */
+            meshx_reheal_start_eviction_detection(pdev);
+
             /* Emit MXCP_EVT_PROV_COMP to Host MCU */
             mxcp_evt_prov_comp_t comp_evt;
             memset(&comp_evt, 0, sizeof(comp_evt));
