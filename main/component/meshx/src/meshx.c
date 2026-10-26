@@ -17,12 +17,10 @@
 #include <meshx_serial.h>
 #include <meshx_uvp_dispatcher.hpp>
 
-
 #include "interface/gpio/meshx_gpio.h"
 #include "interface/utils/meshx_tiny_printf.h"
 #include <stdio.h>
 #include <string.h>
-
 
 /**
  * @def ROOT_ELEMENT_IDX
@@ -75,63 +73,71 @@ static MESHX_ELEMENT g_legacy_elements[MAX_ELE_CNT];
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
 static meshx_err_t meshx_element_init(dev_struct_t *p_dev,
-                                      meshx_config_t const *config) {
-  meshx_err_t err = MESHX_SUCCESS;
-  meshx_err_t schema_err = MESHX_FAIL;
-  bool has_nvs_override = false;
-  uint8_t i = 0;
-  meshx_nvs_comp_schema_t schema;
+                                      meshx_config_t const *config)
+{
+    meshx_err_t err = MESHX_SUCCESS;
+    meshx_err_t schema_err = MESHX_FAIL;
+    bool has_nvs_override = false;
+    uint8_t i = 0;
+    meshx_nvs_comp_schema_t schema;
 
-  if (!p_dev) {
-    return MESHX_INVALID_STATE;
-  }
-
-  /* Check if an NVS composition schema exists */
-  schema_err = meshx_nvs_comp_schema_get(&schema);
-  has_nvs_override = (schema_err == MESHX_SUCCESS &&
-                      (schema.flags & MESHX_COMP_FLAG_OVERRIDE_RO) &&
-                      schema.element_count > 0);
-
-  /* Apply NVS composition if it overrides RO config or if builder has no active
-   * elements */
-  if (has_nvs_override || !meshx_builder_is_active()) {
-    if (schema_err == MESHX_SUCCESS && schema.element_count > 0) {
-      MESHX_LOGI(
-          MODULE_ID_COMMON, "Applying composition from NVS (%d elements%s)",
-          schema.element_count, has_nvs_override ? ", override active" : "");
-      meshx_builder_begin();
-      for (i = 0; i < schema.element_count; i++) {
-        meshx_builder_add_element((meshx_element_type_t)schema.element_types[i],
-                                  1);
-      }
-      meshx_builder_commit();
-    }
-  }
-
-  /* Fallback: if no composition was defined, use default Relay Server */
-  if (!meshx_builder_is_active()) {
-    MESHX_LOGW(
-        MODULE_ID_COMMON,
-        "No dynamic composition configured. Using default Relay Server.");
-    meshx_builder_begin();
-    meshx_builder_add_element(MESHX_ELEMENT_TYPE_RELAY_SERVER, 1);
-    meshx_builder_commit();
-  }
-
-  if (meshx_builder_is_active()) {
-    MESHX_LOGD(MODULE_ID_COMMON, "Dynamic Composition detected. Baking...");
-    err = meshx_builder_bake(p_dev, g_cid, g_pid, g_vid);
-    if (err != MESHX_SUCCESS)
-      return err;
-
-    err = meshx_restore_all_element_ctx();
-    if (err != MESHX_SUCCESS) {
-      MESHX_LOGW(MODULE_ID_COMMON, "Element NVS ctx restore failed: 0x%x", err);
+    if (!p_dev)
+    {
+        return MESHX_INVALID_STATE;
     }
 
+    /* Check if an NVS composition schema exists */
+    schema_err = meshx_nvs_comp_schema_get(&schema);
+    has_nvs_override = (schema_err == MESHX_SUCCESS &&
+                        (schema.flags & MESHX_COMP_FLAG_OVERRIDE_RO) &&
+                        schema.element_count > 0);
+
+    /* Apply NVS composition if it overrides RO config or if builder has no active
+     * elements */
+    if (has_nvs_override || !meshx_builder_is_active())
+    {
+        if (schema_err == MESHX_SUCCESS && schema.element_count > 0)
+        {
+            MESHX_LOGI(
+                MODULE_ID_COMMON, "Applying composition from NVS (%d elements%s)",
+                schema.element_count, has_nvs_override ? ", override active" : "");
+            meshx_builder_begin();
+            for (i = 0; i < schema.element_count; i++)
+            {
+                meshx_builder_add_element((meshx_element_type_t)schema.element_types[i],
+                                          1);
+            }
+            meshx_builder_commit();
+        }
+    }
+
+    /* Fallback: if no composition was defined, use default Relay Server */
+    if (!meshx_builder_is_active())
+    {
+        MESHX_LOGW(
+            MODULE_ID_COMMON,
+            "No dynamic composition configured. Using default Relay Server.");
+        meshx_builder_begin();
+        meshx_builder_add_element(MESHX_ELEMENT_TYPE_RELAY_SERVER, 1);
+        meshx_builder_commit();
+    }
+
+    if (meshx_builder_is_active())
+    {
+        MESHX_LOGD(MODULE_ID_COMMON, "Dynamic Composition detected. Baking...");
+        err = meshx_builder_bake(p_dev, g_cid, g_pid, g_vid);
+        if (err != MESHX_SUCCESS)
+            return err;
+
+        err = meshx_restore_all_element_ctx();
+        if (err != MESHX_SUCCESS)
+        {
+            MESHX_LOGW(MODULE_ID_COMMON, "Element NVS ctx restore failed: 0x%x", err);
+        }
+
+        return MESHX_SUCCESS;
+    }
     return MESHX_SUCCESS;
-  }
-  return MESHX_SUCCESS;
 }
 
 /**
@@ -141,25 +147,27 @@ static meshx_err_t meshx_element_init(dev_struct_t *p_dev,
  *
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
-static meshx_err_t meshx_tasks_init(dev_struct_t *pdev) {
-  meshx_err_t err;
+static meshx_err_t meshx_tasks_init(dev_struct_t *pdev)
+{
+    meshx_err_t err;
 
-  err = create_control_task(pdev);
-  MESHX_ERR_PRINT_RET("Failed to create control task", err);
+    err = create_control_task(pdev);
+    MESHX_ERR_PRINT_RET("Failed to create control task", err);
 
-  /**
-   * @brief Enable TXCM if dynamic composition has client elements or if legacy
-   * flags are set
-   */
+    /**
+     * @brief Enable TXCM if dynamic composition has client elements or if legacy
+     * flags are set
+     */
 #if CONFIG_TXCM_ENABLE
-  bool txcm_needed = meshx_builder_is_txcm_active();
-  txcm_needed = true;
-  if (txcm_needed) {
-    err = meshx_txcm_init(pdev);
-    MESHX_ERR_PRINT_RET("Failed to create Tx Control Module", err);
-  }
+    bool txcm_needed = meshx_builder_is_txcm_active();
+    txcm_needed = true;
+    if (txcm_needed)
+    {
+        err = meshx_txcm_init(pdev);
+        MESHX_ERR_PRINT_RET("Failed to create Tx Control Module", err);
+    }
 #endif /* CONFIG_TXCM_ENABLE */
-  return err;
+    return err;
 }
 
 /**
@@ -172,23 +180,25 @@ static meshx_err_t meshx_tasks_init(dev_struct_t *pdev) {
  *
  */
 static meshx_err_t meshx_dev_restore(dev_struct_t *pdev,
-                                     meshx_config_t const *config) {
-  meshx_err_t err = MESHX_SUCCESS;
+                                     meshx_config_t const *config)
+{
+    meshx_err_t err = MESHX_SUCCESS;
 
-  err = meshx_nvs_open(g_cid, g_pid, config->meshx_nvs_save_period);
-  MESHX_ERR_PRINT_RET("MeshX NVS Open failed", err);
+    err = meshx_nvs_open(g_cid, g_pid, config->meshx_nvs_save_period);
+    MESHX_ERR_PRINT_RET("MeshX NVS Open failed", err);
 
-  err = meshx_nvs_get(MESHX_NVS_STORE, &pdev->meshx_store,
-                      sizeof(meshx_app_store_t));
-  if (err != MESHX_SUCCESS) {
-    MESHX_LOGW(MODULE_ID_COMMON,
-               "No meshx device state found in NVS, starting fresh (err 0x%x)",
-               err);
-    memset(&pdev->meshx_store, 0, sizeof(meshx_app_store_t));
-    return MESHX_SUCCESS; // Non-fatal
-  }
+    err = meshx_nvs_get(MESHX_NVS_STORE, &pdev->meshx_store,
+                        sizeof(meshx_app_store_t));
+    if (err != MESHX_SUCCESS)
+    {
+        MESHX_LOGW(MODULE_ID_COMMON,
+                   "No meshx device state found in NVS, starting fresh (err 0x%x)",
+                   err);
+        memset(&pdev->meshx_store, 0, sizeof(meshx_app_store_t));
+        return MESHX_SUCCESS; // Non-fatal
+    }
 
-  return MESHX_SUCCESS;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -201,41 +211,44 @@ static meshx_err_t meshx_dev_restore(dev_struct_t *pdev,
  * @return meshx_err_t MESHX_SUCCESS on success, error code otherwise.
  */
 meshx_err_t meshx_derive_device_uuid(meshx_uuid_addr_t uuid, uint16_t cid,
-                                     uint16_t pid) {
-  if (uuid == NULL) {
-    return MESHX_INVALID_ARG;
-  }
+                                     uint16_t pid)
+{
+    if (uuid == NULL)
+    {
+        return MESHX_INVALID_ARG;
+    }
 
-  uint8_t mac[MESHX_BD_ADDR_LEN] = {0};
-  meshx_err_t err = meshx_platform_get_mac(mac);
-  if (err != MESHX_SUCCESS) {
-    MESHX_LOGE(MODULE_ID_COMMON,
-               "Failed to get platform MAC for Device UUID derivation");
-    return err;
-  }
+    uint8_t mac[MESHX_BD_ADDR_LEN] = {0};
+    meshx_err_t err = meshx_platform_get_mac(mac);
+    if (err != MESHX_SUCCESS)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON,
+                   "Failed to get platform MAC for Device UUID derivation");
+        return err;
+    }
 
-  /* 1. CID (Bytes 0..1, Big-Endian) */
-  uuid[0] = (uint8_t)((cid >> 8) & 0xFF);
-  uuid[1] = (uint8_t)(cid & 0xFF);
+    /* 1. CID (Bytes 0..1, Big-Endian) */
+    uuid[0] = (uint8_t)((cid >> 8) & 0xFF);
+    uuid[1] = (uint8_t)(cid & 0xFF);
 
-  /* 2. Hardware MAC (Bytes 2..7) */
-  memcpy(uuid + 2, mac, MESHX_BD_ADDR_LEN);
+    /* 2. Hardware MAC (Bytes 2..7) */
+    memcpy(uuid + 2, mac, MESHX_BD_ADDR_LEN);
 
-  /* 3. PID (Bytes 8..9, Big-Endian) */
-  uuid[8] = (uint8_t)((pid >> 8) & 0xFF);
-  uuid[9] = (uint8_t)(pid & 0xFF);
+    /* 3. PID (Bytes 8..9, Big-Endian) */
+    uuid[8] = (uint8_t)((pid >> 8) & 0xFF);
+    uuid[9] = (uint8_t)(pid & 0xFF);
 
-  /* 4. Footer (Bytes 10..15, 6 bytes: "MESH-X") */
-  memcpy(uuid + 10, MESHX_UUID_FOOTER, 6);
+    /* 4. Footer (Bytes 10..15, 6 bytes: "MESH-X") */
+    memcpy(uuid + 10, MESHX_UUID_FOOTER, 6);
 
-  MESHX_LOGD(MODULE_ID_COMMON,
-             "Derived MeshX Device UUID: "
-             "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-             uuid[0], uuid[1], uuid[2], uuid[3], uuid[4], uuid[5], uuid[6],
-             uuid[7], uuid[8], uuid[9], uuid[10], uuid[11], uuid[12], uuid[13],
-             uuid[14], uuid[15]);
+    MESHX_LOGD(MODULE_ID_COMMON,
+               "Derived MeshX Device UUID: "
+               "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+               uuid[0], uuid[1], uuid[2], uuid[3], uuid[4], uuid[5], uuid[6],
+               uuid[7], uuid[8], uuid[9], uuid[10], uuid[11], uuid[12], uuid[13],
+               uuid[14], uuid[15]);
 
-  return MESHX_SUCCESS;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -246,43 +259,45 @@ meshx_err_t meshx_derive_device_uuid(meshx_uuid_addr_t uuid, uint16_t cid,
  *
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
-static meshx_err_t meshx_ble_mesh_init(meshx_config_t *config) {
-  if (config == NULL)
-    return MESHX_INVALID_ARG;
+static meshx_err_t meshx_ble_mesh_init(meshx_config_t *config)
+{
+    if (config == NULL)
+        return MESHX_INVALID_ARG;
 
-  meshx_err_t err;
-  g_prov_cfg.node_name = (uint8_t *)g_product_name;
+    meshx_err_t err;
+    g_prov_cfg.node_name = (uint8_t *)g_product_name;
 
-  err = meshx_platform_bt_init();
-  MESHX_ERR_PRINT_RET("Platform BT init failed", err);
+    err = meshx_platform_bt_init();
+    MESHX_ERR_PRINT_RET("Platform BT init failed", err);
 
-  /* Derive MeshX Device UUID in MeshX layer if not loaded from persistent
-   * static config */
-  if (memcmp(g_uuid, MESHX_UUID_EMPTY, sizeof(g_uuid)) == 0) {
-    err = meshx_derive_device_uuid(g_uuid, g_cid, g_pid);
-    MESHX_ERR_PRINT_RET("Device UUID derivation failed", err);
-  }
+    /* Derive MeshX Device UUID in MeshX layer if not loaded from persistent
+     * static config */
+    if (memcmp(g_uuid, MESHX_UUID_EMPTY, sizeof(g_uuid)) == 0)
+    {
+        err = meshx_derive_device_uuid(g_uuid, g_cid, g_pid);
+        MESHX_ERR_PRINT_RET("Device UUID derivation failed", err);
+    }
 
-  /* Copy the UUID to the global device structure for visualization and
-   * management */
-  memcpy(g_dev.uuid, g_uuid, sizeof(g_dev.uuid));
-  g_prov_cfg.uuid = g_dev.uuid;
-  g_prov_cfg.freshboot_timeout_ms = FRESHBOOT_TIMEOUT_MS;
+    /* Copy the UUID to the global device structure for visualization and
+     * management */
+    memcpy(g_dev.uuid, g_uuid, sizeof(g_dev.uuid));
+    g_prov_cfg.uuid = g_dev.uuid;
+    g_prov_cfg.freshboot_timeout_ms = FRESHBOOT_TIMEOUT_MS;
 
-  err = meshx_element_init(&g_dev, config);
-  MESHX_ERR_PRINT_RET("Failed to initialize BLE Elements", err);
+    err = meshx_element_init(&g_dev, config);
+    MESHX_ERR_PRINT_RET("Failed to initialize BLE Elements", err);
 
-  err = meshx_init_prov(&g_dev, &g_prov_cfg);
-  MESHX_ERR_PRINT_RET("Failed to initialize provisioning", err);
+    err = meshx_init_prov(&g_dev, &g_prov_cfg);
+    MESHX_ERR_PRINT_RET("Failed to initialize provisioning", err);
 
-  err = meshx_plat_ble_mesh_init(&g_prov_cfg, g_dev.composition);
-  MESHX_ERR_PRINT_RET("Failed to initialize BLE Mesh stack", err);
+    err = meshx_plat_ble_mesh_init(&g_prov_cfg, g_dev.composition);
+    MESHX_ERR_PRINT_RET("Failed to initialize BLE Mesh stack", err);
 
-  /* Publish system ready event to notify lower layers */
-  control_task_msg_publish(CONTROL_TASK_MSG_CODE_PROVISION,
-                           CONTROL_TASK_MSG_EVT_SYSTEM_STACK_READY, NULL, 0);
+    /* Publish system ready event to notify lower layers */
+    control_task_msg_publish(CONTROL_TASK_MSG_CODE_PROVISION,
+                             CONTROL_TASK_MSG_EVT_SYSTEM_STACK_READY, NULL, 0);
 
-  return MESHX_SUCCESS;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -298,61 +313,72 @@ static meshx_err_t meshx_ble_mesh_init(meshx_config_t *config) {
  * @return meshx_err_t MESHX_SUCCESS on success, or an error code on fatal
  * failure.
  */
-static meshx_err_t meshx_load_persistent_config(meshx_config_t const *config) {
-  meshx_err_t err;
-  uint16_t loaded_cid = 0xFFFF;
-  uint16_t loaded_pid = 0xFFFF;
-  uint8_t loaded_uuid[16] = {0};
+static meshx_err_t meshx_load_persistent_config(meshx_config_t const *config)
+{
+    meshx_err_t err;
+    uint16_t loaded_cid = 0xFFFF;
+    uint16_t loaded_pid = 0xFFFF;
+    uint8_t loaded_uuid[16] = {0};
 
-  /* Load Persistent Read-Only Configuration */
-  err = meshx_ro_cfg_init(&loaded_cid, &loaded_pid, g_product_name,
-                          sizeof(g_product_name), loaded_uuid);
-  if (err != MESHX_SUCCESS) {
-    if (err == MESHX_NOT_FOUND || err == MESHX_ERR_RO_CFG_FORMAT) {
-      MESHX_LOGW(
-          MODULE_ID_COMMON,
-          "No valid read-only config found (err 0x%x). Using legacy defaults.",
-          err);
+    /* Load Persistent Read-Only Configuration */
+    err = meshx_ro_cfg_init(&loaded_cid, &loaded_pid, g_product_name,
+                            sizeof(g_product_name), loaded_uuid);
+    if (err != MESHX_SUCCESS)
+    {
+        if (err == MESHX_NOT_FOUND || err == MESHX_ERR_RO_CFG_FORMAT)
+        {
+            MESHX_LOGW(
+                MODULE_ID_COMMON,
+                "No valid read-only config found (err 0x%x). Using legacy defaults.",
+                err);
 
-      // Fallback product name
-      if (g_product_name[0] == '\0') {
-        strncpy(g_product_name, CONFIG_PRODUCT_NAME,
-                sizeof(g_product_name) - 1);
-        g_product_name[sizeof(g_product_name) - 1] = '\0';
-      }
+            // Fallback product name
+            if (g_product_name[0] == '\0')
+            {
+                strncpy(g_product_name, CONFIG_PRODUCT_NAME,
+                        sizeof(g_product_name) - 1);
+                g_product_name[sizeof(g_product_name) - 1] = '\0';
+            }
 
-      // Fallback CID/PID
-      loaded_cid = CONFIG_CID_ID;
-      loaded_pid = CONFIG_PID_ID;
-    } else {
-      return err;
+            // Fallback CID/PID
+            loaded_cid = CONFIG_CID_ID;
+            loaded_pid = CONFIG_PID_ID;
+        }
+        else
+        {
+            return err;
+        }
     }
-  }
 
-  g_cid = loaded_cid;
-  g_pid = loaded_pid;
-  g_vid = loaded_cid;
+    g_cid = loaded_cid;
+    g_pid = loaded_pid;
+    g_vid = loaded_cid;
 
-  // Check if UUID was loaded (if it's not all zeros)
-  bool uuid_loaded = false;
-  for (int i = 0; i < 16; i++) {
-    if (loaded_uuid[i] != 0) {
-      uuid_loaded = true;
-      break;
+    // Check if UUID was loaded (if it's not all zeros)
+    bool uuid_loaded = false;
+    for (int i = 0; i < 16; i++)
+    {
+        if (loaded_uuid[i] != 0)
+        {
+            uuid_loaded = true;
+            break;
+        }
     }
-  }
 
-  if (uuid_loaded) {
-    memcpy(g_uuid, loaded_uuid, 16);
-    MESHX_LOGD(MODULE_ID_COMMON, "Using Persistent UUID from config");
-  } else {
-    /* Fallback to empty UUID (will be generated by stack if needed) */
-    memset(g_uuid, 0, 16);
-    MESHX_LOGI(MODULE_ID_COMMON,
-               "Using Empty UUID (Stack will handle generation)");
-  }
+    if (uuid_loaded)
+    {
+        memcpy(g_uuid, loaded_uuid, 16);
+        MESHX_LOGD(MODULE_ID_COMMON, "Using Persistent UUID from config");
+    }
+    else
+    {
+        /* Fallback to empty UUID (will be generated by stack if needed) */
+        memset(g_uuid, 0, 16);
+        MESHX_LOGI(MODULE_ID_COMMON,
+                   "Using Empty UUID (Stack will handle generation)");
+    }
 
-  return MESHX_SUCCESS;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -364,89 +390,90 @@ static meshx_err_t meshx_load_persistent_config(meshx_config_t const *config) {
  *
  * @return MESHX_SUCCESS, Success
  */
-meshx_err_t meshx_init(meshx_config_t const *config) {
-  /* Check if the configuration is valid */
-  if (!config)
-    return MESHX_INVALID_ARG;
+meshx_err_t meshx_init(meshx_config_t const *config)
+{
+    /* Check if the configuration is valid */
+    if (!config)
+        return MESHX_INVALID_ARG;
 
-  meshx_err_t err = MESHX_SUCCESS;
+    meshx_err_t err = MESHX_SUCCESS;
 
-  /* Copy the configuration to the global config structure */
-  memcpy(&g_config, config, sizeof(meshx_config_t));
+    /* Copy the configuration to the global config structure */
+    memcpy(&g_config, config, sizeof(meshx_config_t));
 
-  /* Initialise Platform deps */
-  err = meshx_platform_init();
-  MESHX_ERR_PRINT_RET("Platform init failed", err);
+    /* Initialise Platform deps */
+    err = meshx_platform_init();
+    MESHX_ERR_PRINT_RET("Platform init failed", err);
 
-  meshx_logging_t logging_cfg;
-  logging_cfg.def_log_level = config->meshx_log_level == MESHX_LOG_VERBOSE
-                                  ? CONFIG_MESHX_DEFAULT_LOG_LEVEL
-                                  : config->meshx_log_level;
+    meshx_logging_t logging_cfg;
+    logging_cfg.def_log_level = config->meshx_log_level == MESHX_LOG_VERBOSE
+                                    ? CONFIG_MESHX_DEFAULT_LOG_LEVEL
+                                    : config->meshx_log_level;
 
-  err = meshx_logging_init(&logging_cfg);
-  MESHX_ERR_PRINT_RET("Logging init failed", err);
+    err = meshx_logging_init(&logging_cfg);
+    MESHX_ERR_PRINT_RET("Logging init failed", err);
 
-  MESHX_LOGD(MODULE_ID_COMMON, "MeshX Logging Initialized successfully");
+    MESHX_LOGD(MODULE_ID_COMMON, "MeshX Logging Initialized successfully");
 
-  /* Load Persistent Configuration and apply UUID/Product Info */
-  err = meshx_load_persistent_config(config);
-  MESHX_ERR_PRINT_RET("Failed to load persistent configuration", err);
+    /* Load Persistent Configuration and apply UUID/Product Info */
+    err = meshx_load_persistent_config(config);
+    MESHX_ERR_PRINT_RET("Failed to load persistent configuration", err);
 
-  /* Initialise Control Task messaging early (required for NVS and OS Timers) */
-  err = control_task_init();
-  MESHX_ERR_PRINT_RET("Control Task Init failed", err);
+    /* Initialise Control Task messaging early (required for NVS and OS Timers) */
+    err = control_task_init();
+    MESHX_ERR_PRINT_RET("Control Task Init failed", err);
 
-  /* Initialize OS timer */
-  err = meshx_os_timer_init();
-  MESHX_ERR_PRINT_RET("OS Timer Init failed", err);
+    /* Initialize OS timer */
+    err = meshx_os_timer_init();
+    MESHX_ERR_PRINT_RET("OS Timer Init failed", err);
 
-  /* Initialize Unified Vendor Protocol Dispatcher */
-  err = meshx_uvp_dispatcher_init();
-  MESHX_ERR_PRINT_RET("UVP Dispatcher Init failed", err);
+    /* Initialize Unified Vendor Protocol Dispatcher */
+    err = meshx_uvp_dispatcher_init();
+    MESHX_ERR_PRINT_RET("UVP Dispatcher Init failed", err);
 
-  /* Initialize GPIO subsystem */
-  err = meshx_gpio_init();
-  MESHX_ERR_PRINT_RET("GPIO Init failed", err);
+    /* Initialize GPIO subsystem */
+    err = meshx_gpio_init();
+    MESHX_ERR_PRINT_RET("GPIO Init failed", err);
 
-  /* Initialize MeshX NVS */
-  err = meshx_nvs_init();
-  MESHX_ERR_PRINT_RET("MeshX NVS Init failed", err);
+    /* Initialize MeshX NVS */
+    err = meshx_nvs_init();
+    MESHX_ERR_PRINT_RET("MeshX NVS Init failed", err);
 
-  /* Restore the device state and open NVS (Required before element constructors
-   * run) */
-  err = meshx_dev_restore(&g_dev, &g_config);
-  MESHX_ERR_PRINT_RET("Device restore failed", err);
+    /* Restore the device state and open NVS (Required before element constructors
+     * run) */
+    err = meshx_dev_restore(&g_dev, &g_config);
+    MESHX_ERR_PRINT_RET("Device restore failed", err);
 
-  /* Initialize application tasks */
-  err = meshx_tasks_init(&g_dev);
-  MESHX_ERR_PRINT_RET("Tasks initialization failed", err);
+    /* Initialize application tasks */
+    err = meshx_tasks_init(&g_dev);
+    MESHX_ERR_PRINT_RET("Tasks initialization failed", err);
 
-  /* Register application element callback */
-  err = meshx_app_reg_element_callback(g_config.app_element_cb);
-  MESHX_ERR_PRINT_RET("Failed to register app element callback", err);
+    /* Register application element callback */
+    err = meshx_app_reg_element_callback(g_config.app_element_cb);
+    MESHX_ERR_PRINT_RET("Failed to register app element callback", err);
 
-  /* Register application control callback */
-  err = meshx_app_reg_system_events_callback(g_config.app_ctrl_cb);
-  MESHX_ERR_PRINT_RET("Failed to register app control callback", err);
+    /* Register application control callback */
+    err = meshx_app_reg_system_events_callback(g_config.app_ctrl_cb);
+    MESHX_ERR_PRINT_RET("Failed to register app control callback", err);
 
-  /* Initialize the Bluetooth Mesh Subsystem */
-  err = meshx_ble_mesh_init(&g_config);
-  MESHX_ERR_PRINT_RET("Bluetooth mesh init failed", err);
+    /* Initialize the Bluetooth Mesh Subsystem */
+    err = meshx_ble_mesh_init(&g_config);
+    MESHX_ERR_PRINT_RET("Bluetooth mesh init failed", err);
 
-  /* Audit and reconcile persisted autonomous links against active elements */
-  meshx_link_reconcile();
+    /* Audit and reconcile persisted autonomous links against active elements */
+    meshx_link_reconcile();
 
-  /* Initialize Hosted Serial Protocol */
-  err = meshx_serial_init();
-  MESHX_ERR_PRINT_RET("Serial init failed", err);
+    /* Initialize Hosted Serial Protocol */
+    err = meshx_serial_init();
+    MESHX_ERR_PRINT_RET("Serial init failed", err);
 
 #if CONFIG_ENABLE_UNIT_TEST
-  /* Initialize unit test console (this also registers the 'ut' command) */
-  err = init_unit_test_console();
-  MESHX_ERR_PRINT_RET("Failed to initialize unit test console", err);
+    /* Initialize unit test console (this also registers the 'ut' command) */
+    err = init_unit_test_console();
+    MESHX_ERR_PRINT_RET("Failed to initialize unit test console", err);
 #endif /* CONFIG_ENABLE_UNIT_TEST */
 
-  return err;
+    return err;
 }
 
 uint16_t meshx_get_net_key_id(void) { return g_dev.meshx_store.net_key_id; }
@@ -466,3 +493,18 @@ uint16_t meshx_get_cid(void) { return g_cid; }
  * @return Active 16-bit product identifier.
  */
 uint16_t meshx_get_pid(void) { return g_pid; }
+
+/**
+ * @brief Get the active 16-byte Device UUID.
+ * @param[out] out_uuid Pointer to destination meshx_uuid_t buffer.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if out_uuid is NULL.
+ */
+meshx_err_t meshx_get_device_uuid(meshx_uuid_t *out_uuid)
+{
+    if (!out_uuid)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    memcpy(*out_uuid, g_dev.uuid, sizeof(meshx_uuid_t));
+    return MESHX_SUCCESS;
+}

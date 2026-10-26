@@ -256,10 +256,19 @@ class CodeGen(CodeGenException):
 
         self.mgmt_uuid_bytes = uuid_bytes
 
-        # Compute 16-bit Virtual Address in range 0x8000..0xBFFF (Bluetooth Mesh §3.8.4)
-        digest = hashlib.sha256(b"vtad" + uuid_bytes).digest()
-        va_offset = (digest[0] | (digest[1] << 8)) & 0x3FFF
-        self.mgmt_virtual_addr = 0x8000 | va_offset
+        # 16-bit Virtual Address in range 0x8000..0xBFFF (Bluetooth Mesh §3.8.4)
+        mgmt_va_cfg = prod_section.get('mgmt_virtual_addr')
+        if mgmt_va_cfg is not None:
+            if isinstance(mgmt_va_cfg, str):
+                self.mgmt_virtual_addr = int(mgmt_va_cfg, 0)
+            else:
+                self.mgmt_virtual_addr = int(mgmt_va_cfg)
+            if not (0x8000 <= self.mgmt_virtual_addr <= 0xBFFF):
+                raise CodeGenException(f"Invalid Management Virtual Address 0x{self.mgmt_virtual_addr:04X}: must be in 0x8000..0xBFFF")
+        else:
+            digest = hashlib.sha256(b"vtad" + uuid_bytes).digest()
+            va_offset = (digest[0] | (digest[1] << 8)) & 0x3FFF
+            self.mgmt_virtual_addr = 0x8000 | va_offset
 
         uuid_hex_list = ", ".join([f"0x{b:02X}" for b in uuid_bytes])
         self.file_insert += f"\n#define MESHX_MGMT_LABEL_UUID       {{ {uuid_hex_list} }}\n"

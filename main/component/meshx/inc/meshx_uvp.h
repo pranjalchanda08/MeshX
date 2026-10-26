@@ -18,7 +18,8 @@
 #include <stdbool.h>
 #include "meshx_common.h"
 #include "meshx_manifest.h"
- 
+#include "pairing/meshx_group_allocator.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -60,6 +61,46 @@ uint16_t meshx_get_cid(void);
 #define MESHX_UVP_FUNC_ID_PREFIX_SZ     2       /**< Bytes reserved for func_id wire prefix (REQ-004) */
 #define MESHX_UVP_MAX_APP_PAYLOAD       (MESHX_UVP_MAX_PAYLOAD - MESHX_UVP_FUNC_ID_PREFIX_SZ) /**< 375 B app payload budget */
 
+#define MESHX_UVP_HMAC_LEN              16      /**< HMAC-SHA256 truncated to 16 bytes */
+#define MESHX_KEY_LEN                   16      /**< Network Key length */
+
+/**
+ * @brief Re-Healing & Redundancy Protocol Constants
+ */
+#define MESHX_UVP_MASTER_ADDR           0x0001  /**< Master Provisioner unicast address */
+#define MESHX_CCM_MIC_LEN               4       /**< AES-128-CCM MIC/tag length (bytes) */
+#define MESHX_CCM_NONCE_LEN             13      /**< AES-128-CCM nonce length (bytes) */
+#define MESHX_HMAC_SHA256_FULL_LEN      32      /**< Full HMAC-SHA256 output length (bytes) */
+#define MESHX_UVP_REHEAL_BEACON_PAYLOAD_LEN 39  /**< 0xCE beacon payload: msg_type(1)+UUID(16)+addr(2)+nonce(4)+HMAC(16) */
+
+/* Inverse-RSSI Backoff Constants (TRD Page 7 Section 3 & TASK-BPROV-004) */
+#define MESHX_BACKOFF_MIN_DELAY_MS      20U
+#define MESHX_BACKOFF_RSSI_REF_DBM      (-50)
+#define MESHX_BACKOFF_SLOPE_MULTIPLIER  8U
+#define MESHX_BACKOFF_JITTER_MAX_MS     40U
+
+/* Key Rotation RFC 1982 Constants (RFC 1982 Section 3.2) */
+#define MESHX_KR_RFC1982_MODULO     256U
+#define MESHX_KR_RFC1982_HALF_SPACE 128U
+
+/**
+ * @brief Calculate proxy inverse-RSSI backoff delay (TRD Page 7 Section 3).
+ *
+ * Formula: T_backoff = max(20 ms, ((-50 - RSSI) * 8) + rand(0, 40) ms).
+ * Ensures proxy physically closest to the unprovisioned device responds first.
+ *
+ * @param[in] rssi Received signal strength indicator of the unprovisioned beacon.
+ * @param[in] jitter_ms Random jitter in range [0, 40] ms.
+ * @return Delay in milliseconds before proxy transmits lease request or beacon report.
+ */
+static inline uint32_t meshx_uvp_calc_proxy_backoff_ms(int8_t rssi, uint8_t jitter_ms)
+{
+    int32_t diff = MESHX_BACKOFF_RSSI_REF_DBM - (int32_t)rssi;
+    int32_t delay = (diff > 0) ? (diff * (int32_t)MESHX_BACKOFF_SLOPE_MULTIPLIER) : 0;
+    delay += (int32_t)(jitter_ms % (MESHX_BACKOFF_JITTER_MAX_MS + 1U));
+    return (delay < (int32_t)MESHX_BACKOFF_MIN_DELAY_MS) ? MESHX_BACKOFF_MIN_DELAY_MS : (uint32_t)delay;
+}
+
 /**
  * @brief System Management Message Types
  */
@@ -88,10 +129,15 @@ typedef enum {
     MESHX_UVP_OP_KR_SWITCHOVER               = 0xC5, /**< Master -> Mesh: KR Phase 2 TX switchover */
     MESHX_UVP_OP_KR_REVOKE_OLD               = 0xC6, /**< Master -> Mesh: KR Phase 3 revoke old key */
     MESHX_UVP_OP_REDUNDANCY_SYNC             = 0xC7, /**< Master <-> Standby: heartbeat & state replication */
-    MESHX_UVP_OP_FAST_PROV_BATCH_DESC        = 0xC8, /**< Master -> Proxy: fast prov batch delegation */
-    MESHX_UVP_OP_FAST_PROV_REPORT            = 0xC9, /**< Proxy -> Master: fast prov progress report */
+    MESHX_UVP_OP_INFILL_LEASE_REQ            = 0xC8, /**< Saturated Proxy -> Master: request 10% reserve address lease */
+    MESHX_UVP_OP_FAST_PROV_REPORT            = 0xC9, /**< Proxy -> Master: fast prov progress / quota retirement report */
     MESHX_UVP_OP_KR_KEY_REQ                  = 0xCA, /**< Straggler -> Master: orphan unicast pull request */
     MESHX_UVP_OP_KR_KEY_CONFIRM              = 0xCB, /**< Straggler -> Master: orphan key confirm */
+    MESHX_UVP_OP_INFILL_LEASE_RSP            = 0xCC, /**< Master -> Saturated Proxy: grant 10% reserve address lease */
+    MESHX_UVP_OP_REDUNDANCY_CLAIM            = 0xCD, /**< Master -> Broadcast: claim standby candidate */
+    MESHX_UVP_OP_REHEAL_BEACON_REQ           = 0xCE, /**< Evicted Node -> BLE Adv: DevKey-signed re-healing beacon */
+    MESHX_UVP_OP_REHEAL_ADMIT_RSP            = 0xCF, /**< Master -> Evicted Node: DevKey-encrypted re-admission */
+    MESHX_UVP_OP_REDUNDANCY_CLAIM_ACK        = 0xD0, /**< Candidate -> Master: accept standby duty */
 } meshx_sys_msg_type_t;
 
 /**
@@ -182,6 +228,46 @@ typedef struct {
 } MESHX_PACKED meshx_uvp_unpair_rsp_t;
 
 /**
+ * @brief Wire format for Key Rotation Phase 1 (0xC4) - Distribute New NetKey.
+ * Broadcast to company secret virtual address MESHX_MGMT_VIRTUAL_ADDR (0x8F42).
+ */
+typedef struct {
+    uint32_t epoch;                         /**< Monotonically increasing epoch (RFC 1982) */
+    uint8_t  new_key[MESHX_KEY_LEN];        /**< 16-byte K_new NetKey payload */
+} MESHX_PACKED uvp_key_phase1_prepare_t;
+
+/**
+ * @brief Wire format for Key Rotation Phase 2 (0xC5) - Switchover Primary TX Key.
+ */
+typedef struct {
+    uint32_t epoch;                         /**< Target rotation epoch to activate */
+} MESHX_PACKED uvp_key_phase2_activate_t;
+
+/**
+ * @brief Wire format for Key Rotation Phase 3 (0xC6) - Revoke Old NetKey.
+ */
+typedef struct {
+    uint32_t epoch;                         /**< Target rotation epoch to finalize */
+} MESHX_PACKED uvp_key_phase3_revoke_t;
+
+
+/**
+ * @brief Compare Key Rotation epochs using RFC 1982 serial number arithmetic (TRD Page 4 Section 3).
+ *
+ * Formula: ((new_epoch - curr_epoch) % 256) < 128.
+ * Protects against delayed or replayed packets while allowing safe wrap-around.
+ *
+ * @param[in] new_epoch  Candidate epoch received over the air.
+ * @param[in] curr_epoch Current locally committed epoch from NVS.
+ * @return true if new_epoch is forward in time relative to curr_epoch, false otherwise.
+ */
+static inline bool meshx_kr_epoch_is_newer(uint32_t new_epoch, uint32_t curr_epoch)
+{
+    uint32_t diff = (new_epoch - curr_epoch) % MESHX_KR_RFC1982_MODULO;
+    return (diff > 0U && diff < MESHX_KR_RFC1982_HALF_SPACE);
+}
+
+/**
  * @brief Wire format for epoch ping
  */
 typedef struct {
@@ -205,6 +291,14 @@ typedef struct {
 } MESHX_PACKED meshx_uvp_notify_node_reset_t;
 
 /**
+ * @brief Wire format for dynamic composition change broadcast notice
+ */
+typedef struct {
+    uint8_t  msg_type;                          /**< MESHX_SYS_NOTIFY_COMP_CHANGE */
+    uint16_t node_addr;                         /**< Primary unicast address of mutated node */
+} MESHX_PACKED meshx_uvp_notify_comp_change_t;
+
+/**
  * @brief Wire format for autonomous pairing beacon announcement
  */
 typedef struct {
@@ -216,6 +310,105 @@ typedef struct {
     int8_t   min_rssi;                          /**< Minimum RSSI threshold (e.g. -50 dBm) */
     uint8_t  seq_num;                           /**< Sequence number for deduplication */
 } MESHX_PACKED meshx_uvp_pair_announce_t;
+
+/**
+ * @brief Payload for MESHX_UVP_OP_REHEAL_BEACON_REQ (0xCE)
+ */
+typedef struct {
+    meshx_uuid_t target_uuid;                   /**< 16-byte Device UUID */
+    uint16_t previous_addr;                      /**< Last known 16-bit unicast address */
+    uint32_t timestamp_nonce;                    /**< Monotonic counter / timestamp preventing replay */
+    uint8_t  hmac_signature[MESHX_UVP_HMAC_LEN]; /**< HMAC-SHA256 truncated to 16 bytes over [UUID || Addr || Nonce] */
+} MESHX_PACKED meshx_uvp_reheal_req_t;
+
+/**
+ * @brief Plaintext payload for MESHX_UVP_OP_REHEAL_ADMIT_RSP (0xCF) prior to DevKey encryption
+ */
+typedef struct {
+    uint8_t  active_netkey[MESHX_KEY_LEN]; /**< Current active Network Key */
+    uint32_t active_epoch;                 /**< Current key rotation epoch */
+    uint16_t assigned_addr;                /**< Assigned or restored unicast address */
+} MESHX_PACKED meshx_uvp_reheal_rsp_plain_t;
+
+/**
+ * @brief Subtypes for MESHX_UVP_OP_REDUNDANCY_SYNC (0xC7).
+ */
+typedef enum {
+    MESHX_REDUND_SYNC_HEARTBEAT_FV = 0x01, /**< Master heartbeat & State Freshness Vector */
+    MESHX_REDUND_SYNC_ADDR_DELTA   = 0x02, /**< Single 32-byte chunk address delta update */
+    MESHX_REDUND_SYNC_DEVKEY_MIRROR= 0x03, /**< Node DevKey mirror envelope */
+    MESHX_REDUND_SYNC_BULK_SNAPSHOT= 0x04, /**< Full state snapshot request / transfer */
+} meshx_uvp_redund_sync_subtype_t;
+
+/**
+ * @brief Wire format for MESHX_UVP_OP_REDUNDANCY_SYNC (0xC7) - Subtype 0x01 (Heartbeat / Freshness Vector).
+ */
+typedef struct {
+    uint8_t                  subtype;            /**< MESHX_REDUND_SYNC_HEARTBEAT_FV (0x01) */
+    uint16_t                 sender_addr;        /**< Master or Standby sender unicast address */
+    meshx_uuid_t             sender_uuid;        /**< Sender UUID for arbitration */
+    meshx_freshness_vector_t freshness_vector;   /**< Current local state freshness vector */
+} MESHX_PACKED meshx_uvp_redund_sync_heartbeat_t;
+
+/**
+ * @brief Wire format for MESHX_UVP_OP_REDUNDANCY_SYNC (0xC7) - Subtype 0x02 (Addr Map Delta).
+ */
+typedef struct {
+    uint8_t  subtype;            /**< MESHX_REDUND_SYNC_ADDR_DELTA (0x02) */
+    uint16_t chunk_idx;          /**< Chunk index (0..255) */
+    uint8_t  chunk_data[MESHX_CHUNK_BYTE_SIZE]; /**< 32-byte chunk bitmap (2 bits per address) */
+} MESHX_PACKED meshx_uvp_redund_sync_delta_t;
+
+/**
+ * @brief Payload for MESHX_UVP_OP_REDUNDANCY_CLAIM (0xCD)
+ */
+typedef struct {
+    uint32_t claim_epoch;       /**< Master claim epoch */
+    uint16_t master_addr;       /**< Master unicast address */
+    uint16_t next_free_addr;    /**< Monotonic allocation high-water mark */
+    uint16_t reserved;          /**< Reserved alignment padding */
+} MESHX_PACKED meshx_uvp_redundancy_claim_t;
+
+/**
+ * @brief Payload for MESHX_UVP_OP_REDUNDANCY_CLAIM_ACK (0xD0)
+ */
+typedef struct {
+    meshx_uuid_t candidate_uuid;/**< Candidate node UUID accepting Standby */
+    uint16_t candidate_addr;    /**< Candidate unicast address */
+} MESHX_PACKED meshx_uvp_redundancy_claim_ack_t;
+
+/**
+ * @brief Payload for MESHX_UVP_OP_INFILL_LEASE_REQ (0xC8).
+ * Saturated Proxy -> Master provisioner requesting contiguous address block.
+ */
+typedef struct {
+    uint8_t      requested_count; /**< Number of contiguous addresses requested (e.g. 1-16) */
+    uint16_t     proxy_addr;      /**< Unicast address of requesting proxy relay */
+    meshx_uuid_t target_uuid;     /**< Unprovisioned device UUID */
+} MESHX_PACKED meshx_uvp_infill_lease_req_t;
+
+/**
+ * @brief Payload for MESHX_UVP_OP_INFILL_LEASE_RSP (0xCC).
+ * Master provisioner -> Proxy granting contiguous block lease.
+ */
+typedef struct {
+    uint32_t     lease_id;        /**< Unique lease identifier for commit/rollback */
+    uint16_t     allocated_base;  /**< Starting unicast address of granted block */
+    uint8_t      allocated_count; /**< Number of addresses granted (0 if rejected) */
+    meshx_uuid_t target_uuid;     /**< UUID confirmed for this lease */
+} MESHX_PACKED meshx_uvp_infill_lease_rsp_t;
+
+/**
+ * @brief Payload for MESHX_UVP_OP_FAST_PROV_REPORT (0xC9).
+ * Proxy -> Master provisioner reporting completion of node provisioning to commit lease.
+ */
+typedef struct {
+    uint32_t     lease_id;        /**< Lease identifier to commit */
+    uint16_t     assigned_addr;   /**< Primary unicast address assigned */
+    uint8_t      element_count;   /**< Actual element count assigned */
+    meshx_uuid_t device_uuid;     /**< UUID of successfully onboarded node */
+} MESHX_PACKED meshx_uvp_fast_prov_report_t;
+
 
 /**
  * @brief UVP Routing Context (Application Layer)
@@ -294,6 +487,46 @@ meshx_err_t meshx_uvp_send(void       *p_model,
                            uint16_t    payload_len,
                            bool        ack_req,
                            uint16_t    app_idx);
+
+/**
+ * @brief Start 15s eviction/blindness detection timer (Evicted Node side).
+ *
+ * Called on node boot or after provisioning to arm the blindness detection
+ * watchdog. On expiry, the node transitions to ISOLATED_HEALING and begins
+ * broadcasting 0xCE re-healing beacons.
+ *
+ * @param[in] pdev Pointer to device structure (for UUID and address).
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_reheal_start_eviction_detection(dev_struct_t *pdev);
+
+/**
+ * @brief Broadcast 0xCD Redundancy Claim with exponential backoff (Master side).
+ *
+ * Invites candidate nodes to assume Standby duty. Retries at 2s, 4s, 8s intervals.
+ *
+ * @param[in] claim_epoch     Monotonic claim epoch.
+ * @param[in] next_free_addr  Local allocation high-water mark across unified address space.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_redundancy_claim_start(uint32_t claim_epoch,
+                                         uint16_t next_free_addr);
+
+/**
+ * @brief Relay-side courier forward of raw 0xCE beacon to Master (TASK-HEAL-005).
+ *
+ * Called by the platform layer when a raw 0xCE BLE advertisement is received
+ * over the air. Applies zero-trust (no local HMAC auth) and rate limiting
+ * (1 forward per unique UUID per 30s).
+ *
+ * @param[in] beacon_payload    Raw 0xCE beacon payload from BLE advertisement.
+ * @param[in] beacon_payload_len Length of beacon payload.
+ * @param[in] relay_addr        Relay node unicast address (used for CCM nonce).
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_reheal_courier_forward_to_master(const uint8_t *beacon_payload,
+                                                   uint16_t beacon_payload_len,
+                                                   uint16_t relay_addr);
 
 #ifdef __cplusplus
 }

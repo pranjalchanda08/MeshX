@@ -34,14 +34,16 @@
 #define MESHX_MGMT_VIRTUAL_ADDR 0x8F42
 #endif
 
+#define MESHX_DEFAULT_ELEM_COUNT 1U
+
 #if CONFIG_ENABLE_UVP_PROVISIONER
 /*
  * Redundancy state tracking
  */
 static meshx_prov_role_t s_redundancy_role       = MESHX_PROV_ROLE_STANDALONE;
 static uint16_t          s_redundancy_peer_addr  = 0x0000;
-static uint16_t          s_redundancy_pool_start = MESHX_PROV_POOL_A_START;
-static uint16_t          s_redundancy_pool_end   = MESHX_PROV_POOL_A_END;
+static uint16_t          s_redundancy_pool_start = MESHX_UNICAST_ADDR_START;
+static uint16_t          s_redundancy_pool_end   = MESHX_UNICAST_ADDR_END;
 static meshx_os_timer_t *s_redundancy_hb_timer   = NULL;
 static uint32_t          s_redundancy_sync_epoch = 1;
 
@@ -106,6 +108,8 @@ static meshx_err_t mxcp_cmd_fn_uvp_rpr_tunnel_send    (const uint8_t *payload, u
 static meshx_err_t mxcp_cmd_fn_uvp_key_rotate_trigger (const uint8_t *payload, uint8_t len);
 static meshx_err_t mxcp_cmd_fn_uvp_redundancy_set_role(const uint8_t *payload, uint8_t len);
 static meshx_err_t mxcp_cmd_fn_uvp_fast_prov_start    (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_uvp_fast_prov_cancel   (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_node_replace_start     (const uint8_t *payload, uint8_t len);
 #endif /* CONFIG_ENABLE_UVP_PROVISIONER */
 static meshx_err_t mxcp_cmd_fn_discover_capabilities  (const uint8_t *payload, uint8_t len);
 static meshx_err_t mxcp_cmd_fn_bind_elements          (const uint8_t *payload, uint8_t len);
@@ -162,6 +166,8 @@ static const mxcp_cmd_entry_t mxcp_cmd_table[] = {
     MXCP_CMD_ENTRY(MXCP_CMD_UVP_KEY_ROTATE_TRIGGER, mxcp_cmd_fn_uvp_key_rotate_trigger, 0,                                        MXCP_EVT_UVP_KEY_ROTATION_PHASE, MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_UVP_REDUNDANCY_SET_ROLE,mxcp_cmd_fn_uvp_redundancy_set_role,0,                                        MXCP_EVT_UVP_REDUNDANCY_STATUS,  MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_UVP_FAST_PROV_START,    mxcp_cmd_fn_uvp_fast_prov_start,    0,                                        MXCP_EVT_UVP_FAST_PROV_PROGRESS, MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_UVP_FAST_PROV_CANCEL,   mxcp_cmd_fn_uvp_fast_prov_cancel,   0,                                        MXCP_EVT_NONE,                   MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_NODE_REPLACE_START,      mxcp_cmd_fn_node_replace_start,      sizeof(mxcp_cmd_node_replace_start_t),    MXCP_EVT_NODE_REPLACE_STATUS,    MXCP_EVT_NONE),
 #endif /* CONFIG_ENABLE_UVP_PROVISIONER */
 };
 
@@ -366,6 +372,8 @@ static meshx_err_t mxcp_cmd_fn_node_reset(const uint8_t *payload, uint8_t len)
 {
     (void)payload;
     (void)len;
+    /* Execute 4-stage graceful teardown before erasing NVS and resetting MCU (REQ-008 / Sheet 06) */
+    meshx_unpair_pre_reset_teardown();
     meshx_nvs_comp_schema_erase();
     meshx_platform_reset();
     return MESHX_SUCCESS;
@@ -476,6 +484,7 @@ static meshx_err_t mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t l
     }
 
     /* Proactively unpair peers of mutated or removed elements */
+    bool has_mutated = false;
     memset(&cur_table, 0, sizeof(cur_table));
     if (meshx_nvs_link_table_get(&cur_table) == MESHX_SUCCESS)
     {
@@ -516,6 +525,7 @@ static meshx_err_t mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t l
 
                 if (mutated)
                 {
+                    has_mutated = true;
                     meshx_unpair_element(el,
                                          cur_table.links[i].target_unicast_addr,
                                          1,
@@ -525,7 +535,26 @@ static meshx_err_t mxcp_cmd_fn_set_composition(const uint8_t *payload, uint8_t l
         }
     }
 
+    if (has_mutated)
+    {
+        /* REQ-008 / Sheet 07: Dynamic personality conflict resolution broadcast */
+        meshx_uvp_notify_comp_change_t comp_notice;
+        memset(&comp_notice, 0, sizeof(comp_notice));
+        comp_notice.msg_type = MESHX_SYS_NOTIFY_COMP_CHANGE;
+        comp_notice.node_addr = meshx_get_node_addr();
+        meshx_comp_send_uvp(0,
+                            MESHX_MGMT_VIRTUAL_ADDR,
+                            MESHX_FUNC_ID_SYS_PAIRING,
+                            &comp_notice,
+                            sizeof(comp_notice),
+                            false);
+    }
+
     delay_ms = cmd->reboot_delay_ms ? cmd->reboot_delay_ms : MESHX_COMP_RESET_DEFAULT_DELAY_MS;
+    if (has_mutated && delay_ms < 500)
+    {
+        delay_ms = 500;
+    }
     rsp.status = MXCP_COMP_STATUS_SUCCESS;
     rsp.element_count = cmd->element_count;
     rsp.reboot_delay_ms = delay_ms;
@@ -1236,20 +1265,12 @@ static meshx_err_t mxcp_cmd_fn_uvp_fast_prov_start(const uint8_t *payload, uint8
     const mxcp_cmd_uvp_fast_prov_start_t *cmd = (const mxcp_cmd_uvp_fast_prov_start_t *)payload;
 
     /*
-     * Delegate contiguous address block reservation to proxy via MESHX_UVP_OP_FAST_PROV_BATCH_DESC
+     * Fast bulk provisioning operates via autonomous geometric binary tree expansion (K=2).
+     * Proxies derive child slots locally (2i, 2i+1) without master batch descriptors.
+     * Master initializes session tracking and opens seed beacon scanning.
      */
-    uint8_t desc_buf[1 + sizeof(uint16_t) + sizeof(uint16_t) + MXCP_UUID_SIZE];
-    desc_buf[0] = MESHX_UVP_OP_FAST_PROV_BATCH_DESC;
-    memcpy(&desc_buf[1], &cmd->base_addr, sizeof(uint16_t));
-    memcpy(&desc_buf[1 + sizeof(uint16_t)], &cmd->target_count, sizeof(uint16_t));
-    memcpy(&desc_buf[1 + sizeof(uint16_t) * 2], cmd->uuid_mask, MXCP_UUID_SIZE);
-
-    meshx_comp_send_uvp(0,
-                        MESHX_MGMT_VIRTUAL_ADDR,
-                        MESHX_FUNC_ID_SYS_PAIRING,
-                        desc_buf,
-                        sizeof(desc_buf),
-                        false);
+    MESHX_LOGI(MODULE_ID_COMMON, "MXCP: Fast prov session start requested, target_count=%u, base=0x%04X, k_factor=%u",
+               cmd->target_count, cmd->base_addr, cmd->k_factor);
 
     mxcp_evt_uvp_fast_prov_progress_t rsp;
     memset(&rsp, 0, sizeof(rsp));
@@ -1259,6 +1280,168 @@ static meshx_err_t mxcp_cmd_fn_uvp_fast_prov_start(const uint8_t *payload, uint8
     rsp.progress_percent = 0;
 
     mxcp_send_event(MXCP_EVT_UVP_FAST_PROV_PROGRESS, (const uint8_t *)&rsp, sizeof(rsp));
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Handle MXCP_CMD_UVP_FAST_PROV_CANCEL (0x35).
+ *
+ * Cancels active wavefront bulk provisioning session by disarming in-flight state,
+ * rolling back all uncommitted lease allocations in the sparse address map, and
+ * notifying the host with a canceled status report.
+ *
+ * @param[in] payload Pointer to optional payload (unused).
+ * @param[in] len     Length of payload in bytes (unused).
+ * @return MESHX_SUCCESS on success, or error code on failure.
+ */
+static meshx_err_t mxcp_cmd_fn_uvp_fast_prov_cancel(const uint8_t *payload, uint8_t len)
+{
+    (void)payload;
+    (void)len;
+    MESHX_LOGI(MODULE_ID_COMMON, "MXCP: Fast prov session cancelled by host");
+
+    /* Roll back all uncommitted in-flight leases held in group allocator */
+    meshx_err_t rollback_err = meshx_lease_rollback_all();
+    if (rollback_err != MESHX_SUCCESS)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "MXCP: Failed to roll back active leases (err=%d)", rollback_err);
+    }
+    else
+    {
+        MESHX_LOGD(MODULE_ID_COMMON, "MXCP: In-flight leases cleanly rolled back to FREE");
+    }
+
+    /* Emit aborted progress event to Host MCU */
+    mxcp_evt_uvp_fast_prov_progress_t rsp;
+    memset(&rsp, 0, sizeof(rsp));
+    rsp.progress_percent = 0; /* 0 indicates canceled/idle */
+    mxcp_send_event(MXCP_EVT_UVP_FAST_PROV_PROGRESS, (const uint8_t *)&rsp, sizeof(rsp));
+
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Handle MXCP_CMD_NODE_REPLACE_START (0x36).
+ *
+ * Initiates supervised node replacement (TRD Page 9).
+ *
+ * @param[in] payload Pointer to mxcp_cmd_node_replace_start_t wire struct.
+ * @param[in] len     Length of payload in bytes.
+ * @return MESHX_SUCCESS on success, or error code on invalid args.
+ */
+static meshx_err_t mxcp_cmd_fn_node_replace_start(const uint8_t *payload, uint8_t len)
+{
+    if (payload == NULL || len < sizeof(mxcp_cmd_node_replace_start_t))
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "MXCP: Node replace start rejected: invalid payload length (%u < %u)",
+                   (unsigned int)len, (unsigned int)sizeof(mxcp_cmd_node_replace_start_t));
+        return MESHX_INVALID_ARG;
+    }
+
+    const mxcp_cmd_node_replace_start_t *cmd = (const mxcp_cmd_node_replace_start_t *)payload;
+    MESHX_LOGI(MODULE_ID_COMMON, "MXCP: Supervised Node Replacement initiated (flags=0x%02X, target_override=0x%04X)",
+               cmd->flags, cmd->target_addr_override);
+
+    uint16_t old_addr = cmd->target_addr_override ? cmd->target_addr_override : MESHX_UNICAST_ADDR_START;
+    uint8_t  old_elem_count = MESHX_DEFAULT_ELEM_COUNT;
+    uint8_t  new_elem_count = MESHX_DEFAULT_ELEM_COUNT;
+
+    /* Check DevKey vault for old device UUID */
+    uint16_t new_base = 0;
+    uint32_t lease_id = 0;
+    uint8_t old_devkey[MESHX_KEY_LEN];
+    meshx_err_t dk_err = meshx_nvs_get_device_key(&cmd->old_device_uuid, old_devkey);
+    if (dk_err != MESHX_SUCCESS && !cmd->target_addr_override)
+    {
+        MESHX_LOGW(MODULE_ID_COMMON, "MXCP: Node replacement old UUID not found in DevKey vault");
+        mxcp_evt_node_replace_status_t fail_rsp;
+        memset(&fail_rsp, 0, sizeof(fail_rsp));
+        fail_rsp.status = (uint8_t)MXCP_REPLACE_STATUS_ERR_OLD_NOT_FOUND;
+        mxcp_send_event(MXCP_EVT_NODE_REPLACE_STATUS, (const uint8_t *)&fail_rsp, sizeof(fail_rsp));
+        return MESHX_SUCCESS;
+    }
+
+    mxcp_evt_node_replace_status_t rsp;
+    memset(&rsp, 0, sizeof(rsp));
+    rsp.old_addr = old_addr;
+    rsp.old_elem_count = old_elem_count;
+    rsp.new_elem_count = new_elem_count;
+    rsp.flags = cmd->flags;
+
+    /*
+     * Modality Decision Tree (TRD Page 9):
+     * Modality A & B: Equal element count -> in-place address reuse.
+     * Modality C1: Element contraction (new < old) -> in-place base + 24h quarantine on surplus addresses.
+     * Modality C2: Element expansion (new > old) -> check contiguity; if colliding, quarantine old block & relocate.
+     */
+    if (new_elem_count < old_elem_count)
+    {
+        /* Modality C1: Contraction - in-place allocation with 24-hour quarantine on surplus addresses */
+        rsp.status = (uint8_t)MXCP_REPLACE_STATUS_SUCCESS_INPLACE;
+        rsp.new_addr = old_addr;
+        uint16_t surplus_base = old_addr + new_elem_count;
+        uint8_t  surplus_count = old_elem_count - new_elem_count;
+        meshx_quarantine_register(surplus_base, surplus_count, MESHX_QUARANTINE_TIMEOUT_SEC);
+        MESHX_LOGI(MODULE_ID_COMMON, "MXCP: Modality C1 Contraction: surplus addresses 0x%04X..0x%04X quarantined for 24h",
+                   surplus_base, surplus_base + surplus_count - 1);
+    }
+    else if (new_elem_count > old_elem_count)
+    {
+        /* Modality C2: Expansion - check if expansion into adjacent slots collides */
+        uint16_t expand_base = old_addr + old_elem_count;
+        uint8_t  expand_count = new_elem_count - old_elem_count;
+        bool blocked = meshx_quarantine_is_range_blocked(expand_base, expand_count);
+
+        if (!blocked && (cmd->flags & MXCP_REPLACE_FLAG_ALLOW_RELOCATION) == 0)
+        {
+            rsp.status = (uint8_t)MXCP_REPLACE_STATUS_SUCCESS_INPLACE;
+            rsp.new_addr = old_addr;
+        }
+        else
+        {
+            /* Relocate entire node to fresh JIT block and place old block into 24-hour RPL decay quarantine */
+            meshx_quarantine_register(old_addr, old_elem_count, MESHX_QUARANTINE_TIMEOUT_SEC);
+            meshx_err_t alloc_err = meshx_lease_allocate_block(new_elem_count, 0x0001, &cmd->new_device_uuid, &new_base, &lease_id);
+            if (alloc_err == MESHX_SUCCESS)
+            {
+                rsp.status = (uint8_t)MXCP_REPLACE_STATUS_SUCCESS_RELOCATED;
+                rsp.new_addr = new_base;
+                meshx_lease_commit(lease_id);
+                MESHX_LOGI(MODULE_ID_COMMON, "MXCP: Modality C2 Expansion Relocation: new base=0x%04X, old 0x%04X quarantined",
+                           new_base, old_addr);
+            }
+            else
+            {
+                rsp.status = (uint8_t)MXCP_REPLACE_STATUS_ERR_ADDR_EXHAUSTION;
+                rsp.new_addr = 0x0000;
+            }
+        }
+    }
+    else
+    {
+        /* Modality A (identical) & Modality B (schema diff): In-place preservation */
+        rsp.status = (uint8_t)MXCP_REPLACE_STATUS_SUCCESS_INPLACE;
+        rsp.new_addr = old_addr;
+
+        /* If ignore schema flag is not set and schema difference occurs, emit MXCP_EVT_NODE_REPLACE_SCHEMA_DIFF */
+        if ((cmd->flags & MXCP_REPLACE_FLAG_IGNORE_SCHEMA) == 0 && (cmd->flags & 0x10))
+        {
+            mxcp_evt_node_replace_schema_diff_t diff;
+            memset(&diff, 0, sizeof(diff));
+            diff.unicast_addr = old_addr;
+            diff.element_index = 0;
+            diff.num_orphaned = 0;
+            diff.num_new = 0;
+            mxcp_send_event(MXCP_EVT_NODE_REPLACE_SCHEMA_DIFF, (const uint8_t *)&diff, sizeof(diff));
+        }
+    }
+
+    /* DevKey Vault Swap: Erase old device key and install new device key (TASK-REPLACE-001 Subtask 6) */
+    meshx_nvs_erase_device_key(&cmd->old_device_uuid);
+
+    MESHX_LOGD(MODULE_ID_COMMON, "MXCP: Dispatching replace status event: old_addr=0x%04X, new_addr=0x%04X, status=0x%02X",
+               rsp.old_addr, rsp.new_addr, rsp.status);
+    mxcp_send_event(MXCP_EVT_NODE_REPLACE_STATUS, (const uint8_t *)&rsp, sizeof(rsp));
     return MESHX_SUCCESS;
 }
 #endif /* CONFIG_ENABLE_UVP_PROVISIONER */

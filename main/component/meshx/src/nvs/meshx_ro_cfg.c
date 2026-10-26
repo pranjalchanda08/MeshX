@@ -19,18 +19,6 @@
 
 #define MODULE_ID_RO_CFG MODULE_ID_COMMON
 
-#pragma pack(push, 1)
-/*
- * @brief Binary configuration container header stored at offset 0 of meshx_cfg partition.
- *
- * Layout (15 bytes total):
- * - magic:       4-byte 'MXC\0' magic identifier (0x0043584D)
- * - version:     1-byte container layout format version (0x01)
- * - schema_id:   4-byte CRC32 fingerprint computed from proto schema and options
- * - total_len:   2-byte total length of container including this 15-byte header
- * - header_crc:  2-byte CRC-16-CCITT covering the first 11 bytes of this header
- * - payload_crc: 2-byte CRC-16-CCITT covering the serialized Protobuf payload
- */
 typedef struct
 {
     uint32_t magic;       /*< Magic bytes: 'MXC\0' (0x0043584D) */
@@ -39,8 +27,7 @@ typedef struct
     uint16_t total_len;   /*< Total container length in bytes (15 + payload_len) */
     uint16_t header_crc;  /*< CRC-16-CCITT checksum over first 11 header bytes */
     uint16_t payload_crc; /*< CRC-16-CCITT checksum over the Protobuf payload */
-} meshx_cfg_header_t;
-#pragma pack(pop)
+} MESHX_PACKED meshx_cfg_header_t;
 
 #define MESHX_CFG_MAGIC 0x0043584D
 #define MESHX_CFG_VERSION 0x01

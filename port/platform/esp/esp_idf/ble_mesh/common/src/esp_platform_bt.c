@@ -29,6 +29,19 @@
 #endif
 
 #include "esp_ble_mesh_defs.h"
+#include "interface/meshx_platform.h"
+#include "interface/logging/meshx_log.h"
+#if defined(CONFIG_BT_BLE_50_FEATURES_SUPPORTED) && !defined(BLE_50_FEATURE_SUPPORT)
+#define BLE_50_FEATURE_SUPPORT TRUE
+#endif
+#include "esp_gap_ble_api.h"
+
+/* Extended Advertising parameters for BLE beacon broadcasting */
+#define MESHX_EXT_ADV_INTERVAL_MIN          0x00A0   /**< Extended advertising interval min (~100ms) */
+#define MESHX_EXT_ADV_INTERVAL_MAX          0x00A0   /**< Extended advertising interval max (~100ms) */
+#define MESHX_EXT_ADV_CHANNEL_MAP           0x07     /**< Advertising channels 37, 38, 39 */
+#define MESHX_EXT_ADV_TX_POWER              0x7F     /**< Extended advertising TX power */
+#define MESHX_EXT_ADV_DURATION_10MS         100U     /**< Extended advertising duration in 10ms units (1000ms) */
 
 #define TAG "EXAMPLE_INIT"
 
@@ -209,3 +222,67 @@ esp_err_t bluetooth_init(void)
     return MESHX_SUCCESS;
 }
 #endif /* CONFIG_BT_NIMBLE_ENABLED */
+
+#if !defined(CONFIG_BT_BLE_50_FEATURES_SUPPORTED) || !defined(CONFIG_BT_BLE_50_EXTEND_ADV_EN)
+#error "BLE 5.0 Extended Advertising (CONFIG_BT_BLE_50_EXTEND_ADV_EN) must be enabled for meshx_plat_ble_adv_mfg_data to broadcast full-length BLE advertising packets without truncation"
+#endif
+
+meshx_err_t meshx_plat_ble_adv_mfg_data(const uint8_t *mfg_data, uint16_t mfg_len)
+{
+    if (!mfg_data || mfg_len == 0)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    static uint8_t s_reheal_adv_instance = 0;
+    static bool s_ext_adv_configured = false;
+
+    if (!s_ext_adv_configured)
+    {
+        esp_ble_gap_ext_adv_params_t ext_adv_params = {
+            .type = ESP_BLE_GAP_SET_EXT_ADV_PROP_NONCONN_NONSCANNABLE_UNDIRECTED,
+            .interval_min = MESHX_EXT_ADV_INTERVAL_MIN,
+            .interval_max = MESHX_EXT_ADV_INTERVAL_MAX,
+            .channel_map = MESHX_EXT_ADV_CHANNEL_MAP,
+            .own_addr_type = BLE_ADDR_TYPE_PUBLIC,
+            .peer_addr_type = BLE_ADDR_TYPE_PUBLIC,
+            .filter_policy = ADV_FILTER_ALLOW_SCAN_ANY_CON_ANY,
+            .tx_power = MESHX_EXT_ADV_TX_POWER,
+            .primary_phy = ESP_BLE_GAP_PHY_1M,
+            .max_skip = 0,
+            .secondary_phy = ESP_BLE_GAP_PHY_1M,
+            .sid = 1,
+            .scan_req_notif = false,
+        };
+        esp_err_t err = esp_ble_gap_ext_adv_set_params(s_reheal_adv_instance, &ext_adv_params);
+        if (err != ESP_OK)
+        {
+            MESHX_LOGE(MODULE_ID_COMMON, "esp_ble_gap_ext_adv_set_params failed: %d", err);
+            return MESHX_FAIL;
+        }
+        s_ext_adv_configured = true;
+    }
+
+    esp_err_t err = esp_ble_gap_config_ext_adv_data_raw(s_reheal_adv_instance, mfg_len, mfg_data);
+    if (err != ESP_OK)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "esp_ble_gap_config_ext_adv_data_raw failed: %d", err);
+        return MESHX_FAIL;
+    }
+
+    esp_ble_gap_ext_adv_t ext_adv = {
+        .instance = s_reheal_adv_instance,
+        .duration = MESHX_EXT_ADV_DURATION_10MS,
+        .max_events = 0,
+    };
+    err = esp_ble_gap_ext_adv_start(1, &ext_adv);
+    if (err != ESP_OK && err != ESP_ERR_INVALID_STATE)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "esp_ble_gap_ext_adv_start failed: %d", err);
+        return MESHX_FAIL;
+    }
+
+    MESHX_LOGI(MODULE_ID_COMMON, "plat_ble_adv_mfg_data: Advertised via Ext Adv (len=%u)",
+               (unsigned int)mfg_len);
+    return MESHX_SUCCESS;
+}

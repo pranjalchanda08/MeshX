@@ -45,6 +45,7 @@ extern "C" {
 #include <interface/rtos/meshx_rtos_utils.h>
 #include <interface/rtos/meshx_sem.h>
 #include <interface/logging/meshx_log.h>
+#include <interface/crypto/meshx_crypto.h>
 #include <meshx_prov_srv.h>
 #include <meshx_config_server.h>
 

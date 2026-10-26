@@ -9,6 +9,7 @@
 
 #include "interface/meshx_platform.h"
 #include "interface/logging/meshx_log.h"
+#include "meshx_config_internal.h"
 #include <zephyr/kernel.h>
 #include <zephyr/drivers/uart.h>
 #if defined(CONFIG_REBOOT)

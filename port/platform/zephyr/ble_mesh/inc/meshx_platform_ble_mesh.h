@@ -125,6 +125,24 @@ meshx_err_t meshx_plat_model_sub_add(void *p_model, uint16_t sub_addr);
  */
 meshx_err_t meshx_plat_model_sub_del(void *p_model, uint16_t sub_addr);
 
+/**
+ * @brief Get the active Network Key from the platform BLE Mesh stack.
+ *
+ * @param[in]  net_key_id  NetKey Index.
+ * @param[out] key_out     16-byte output buffer for the NetKey.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_plat_net_key_get(uint16_t net_key_id, uint8_t *key_out);
+
+/**
+ * @brief Add a Network Key to the platform BLE Mesh stack.
+ *
+ * @param[in] key         16-byte NetKey.
+ * @param[in] net_key_id  NetKey Index.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_plat_net_key_add(const uint8_t *key, uint16_t net_key_id);
+
 #ifdef __cplusplus
 }
 #endif

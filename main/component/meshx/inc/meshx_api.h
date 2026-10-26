@@ -236,8 +236,6 @@ typedef union meshx_ctrl_payload
 } meshx_ctrl_payload_t;
 
 
-#pragma pack(push, 1)
-
 /**
  * @brief Canonical 8-byte Element Data Message Header.
  *
@@ -250,7 +248,7 @@ typedef struct meshx_data_msg_hdr
     uint16_t element_type;             /**< Element type (meshx_element_type_t) */
     uint16_t func_id;                  /**< Functionality / Opcode ID */
     uint16_t msg_len;                  /**< Length of payload following header in bytes */
-} meshx_data_msg_hdr_t;
+} MESHX_PACKED meshx_data_msg_hdr_t;
 
 /**
  * @brief Canonical Control Message Header.
@@ -260,9 +258,7 @@ typedef struct meshx_ctrl_msg_hdr
     uint16_t evt_id;                   /**< Control Event ID (meshx_ctrl_evt_t) */
     uint16_t status;                   /**< Status / Result code (0 = SUCCESS) */
     uint16_t msg_len;                  /**< Length of control payload in bytes */
-} meshx_ctrl_msg_hdr_t;
-
-#pragma pack(pop)
+} MESHX_PACKED meshx_ctrl_msg_hdr_t;
 
 /**
  * @brief Backward-compatible typedef alias for legacy code.
@@ -454,6 +450,13 @@ uint16_t meshx_get_cid(void);
  * @return uint16_t The product ID.
  */
 uint16_t meshx_get_pid(void);
+
+/**
+ * @brief Get the active 16-byte Device UUID.
+ * @param[out] out_uuid Pointer to destination meshx_uuid_t buffer.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if out_uuid is NULL.
+ */
+meshx_err_t meshx_get_device_uuid(meshx_uuid_t *out_uuid);
 
 #ifdef __cplusplus
 } /* extern "C" */

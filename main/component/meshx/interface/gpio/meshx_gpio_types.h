@@ -14,6 +14,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include "meshx_common.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -118,13 +119,12 @@ typedef struct {
  * This structure is used for serialized GPIO configuration storage
  * in KV Engine with versioning and CRC validation.
  */
-#pragma pack(push, 1)
 typedef struct {
     uint8_t version;                        /**< Format version (1) */
     uint8_t pin_count;                      /**< Number of configured pins */
     uint16_t crc16;                         /**< CRC16 checksum (compatible with KV Engine) */
     uint8_t reserved[3];                    /**< Reserved for future use */
-} meshx_gpio_config_header_t;
+} MESHX_PACKED meshx_gpio_config_header_t;
 
 /**
  * @brief Serialized GPIO Pin Configuration
@@ -140,7 +140,7 @@ typedef struct {
     uint8_t initial_level;
     uint8_t signal_inversion;
     uint8_t reserved;
-} meshx_gpio_pin_config_serialized_t;
+} MESHX_PACKED meshx_gpio_pin_config_serialized_t;
 
 /**
  * @brief Serialized PWM Configuration
@@ -151,7 +151,7 @@ typedef struct {
     uint8_t resolution;
     uint8_t channel;
     uint8_t reserved[1];
-} meshx_gpio_pwm_config_serialized_t;
+} MESHX_PACKED meshx_gpio_pwm_config_serialized_t;
 
 /**
  * @brief Serialized Interrupt Configuration
@@ -160,8 +160,7 @@ typedef struct {
     uint8_t trigger_type;
     uint8_t task_priority;
     uint16_t task_stack_size;
-} meshx_gpio_intr_config_serialized_t;
-#pragma pack(pop)
+} MESHX_PACKED meshx_gpio_intr_config_serialized_t;
 
 /**
  * @brief Hosted Mode State

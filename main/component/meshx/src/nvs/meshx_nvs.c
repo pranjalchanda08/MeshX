@@ -773,6 +773,112 @@ meshx_err_t meshx_nvs_set_kr_epoch(uint32_t epoch)
     return err;
 }
 
+/**
+ * @brief Format a DevKey NVS key from the first 4 bytes of a UUID.
+ *        Key layout: "dk_" + 8 hex chars => "dk_XXXXXXXX" (11 chars total).
+ *
+ * @param[in]  uuid        16-byte Device UUID.
+ * @param[out] key_out     Output buffer (must be >= MESHX_KEY_NAME_MAX_SIZE).
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG.
+ */
+static meshx_err_t meshx_nvs_devkey_format_key(const uint8_t *uuid, char *key_out, size_t key_out_size)
+{
+    if (!uuid || !key_out || key_out_size < MESHX_KEY_NAME_MAX_SIZE)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    int n = meshx_tiny_snprintf(key_out, key_out_size, "%s%02X%02X%02X%02X",
+                                MESHX_NVS_KEY_DEVKEY_PREFIX,
+                                uuid[0], uuid[1], uuid[2], uuid[3]);
+    if (n < 0 || (size_t)n >= key_out_size)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Persist the immutable DevKey for a provisioned node by UUID.
+ *
+ * Called by the provisioner upon successful provisioning completion to allow
+ * the Master to later verify HMAC-SHA256 signatures from evicted nodes.
+ *
+ * @param[in] uuid    16-byte Device UUID of the node.
+ * @param[in] dev_key 16-byte immutable DevKey assigned during provisioning.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_nvs_set_device_key(const meshx_uuid_t *uuid, const uint8_t *dev_key)
+{
+    char key[MESHX_KEY_NAME_MAX_SIZE];
+    meshx_err_t err = meshx_nvs_devkey_format_key(*uuid, key, sizeof(key));
+    if (err != MESHX_SUCCESS)
+    {
+        return err;
+    }
+    err = meshx_nvs_set(key, dev_key, MESHX_KEY_LEN, MESHX_NVS_AUTO_COMMIT);
+    if (err == MESHX_SUCCESS)
+    {
+        meshx_nvs_commit();
+        MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "DevKey persisted for UUID %02X%02X%02X%02X...",
+                   (*uuid)[0], (*uuid)[1], (*uuid)[2], (*uuid)[3]);
+    }
+    return err;
+}
+
+/**
+ * @brief Retrieve the DevKey for a previously provisioned node by UUID.
+ *
+ * Used by the Master re-healing engine to look up the DevKey needed to verify
+ * the HMAC-SHA256 signature in the 0xCE beacon and encrypt the 0xCF response.
+ *
+ * @param[in]  uuid        16-byte Device UUID to look up.
+ * @param[out] dev_key_out 16-byte buffer to receive the stored DevKey.
+ * @return MESHX_SUCCESS if found, MESHX_NOT_FOUND if UUID not in registry, or error code.
+ */
+meshx_err_t meshx_nvs_get_device_key(const meshx_uuid_t *uuid, uint8_t *dev_key_out)
+{
+    char key[MESHX_KEY_NAME_MAX_SIZE];
+    meshx_err_t err = meshx_nvs_devkey_format_key(*uuid, key, sizeof(key));
+    if (err != MESHX_SUCCESS)
+    {
+        return err;
+    }
+    err = meshx_nvs_get(key, dev_key_out, MESHX_KEY_LEN);
+    if (err != MESHX_SUCCESS)
+    {
+        MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_NVS, "DevKey not found for UUID %02X%02X%02X%02X... (err=%d)",
+                   (*uuid)[0], (*uuid)[1], (*uuid)[2], (*uuid)[3], err);
+    }
+    return err;
+}
+
+/**
+ * @brief Remove the DevKey entry for a node by UUID.
+ *
+ * Should be called when a node is factory-reset or permanently de-provisioned.
+ *
+ * @param[in] uuid 16-byte Device UUID to remove.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_nvs_erase_device_key(const meshx_uuid_t *uuid)
+{
+    char key[MESHX_KEY_NAME_MAX_SIZE];
+    meshx_err_t err = meshx_nvs_devkey_format_key(*uuid, key, sizeof(key));
+    if (err != MESHX_SUCCESS)
+    {
+        return err;
+    }
+    err = meshx_nvs_remove(key);
+    if (err == MESHX_SUCCESS || err == MESHX_NOT_FOUND)
+    {
+        meshx_nvs_commit();
+        MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "DevKey erased for UUID %02X%02X%02X%02X...",
+                   (*uuid)[0], (*uuid)[1], (*uuid)[2], (*uuid)[3]);
+    }
+    return err;
+}
+
+
 #if CONFIG_ENABLE_UNIT_TEST
 
 /*

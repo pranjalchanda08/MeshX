@@ -10,6 +10,7 @@
 #include "meshx_platform_ble_mesh.h"
 
 #include <string.h>
+#include <errno.h>
 #include "interface/logging/meshx_log.h"
 
 static struct bt_mesh_prov g_zephyr_prov;
@@ -54,4 +55,94 @@ meshx_err_t meshx_plat_init_prov(const uint8_t *uuid)
 meshx_ptr_t meshx_plat_get_prov(void)
 {
     return (meshx_ptr_t)&g_zephyr_prov;
+}
+
+meshx_err_t meshx_plat_prov_enable(meshx_prov_bearer_t bearers)
+{
+    bt_mesh_prov_bearer_t z_bearers = (bt_mesh_prov_bearer_t)0;
+    if (bearers & MESHX_PROV_ADV)
+    {
+        z_bearers = (bt_mesh_prov_bearer_t)(z_bearers | BT_MESH_PROV_ADV);
+    }
+    if (bearers & MESHX_PROV_GATT)
+    {
+        z_bearers = (bt_mesh_prov_bearer_t)(z_bearers | BT_MESH_PROV_GATT);
+    }
+
+    int err = bt_mesh_prov_enable(z_bearers);
+    if (err != 0 && err != -EALREADY)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "bt_mesh_prov_enable failed: %d", err);
+        return MESHX_FAIL;
+    }
+
+    return MESHX_SUCCESS;
+}
+
+meshx_err_t meshx_plat_prov_disable(meshx_prov_bearer_t bearers)
+{
+    bt_mesh_prov_bearer_t z_bearers = (bt_mesh_prov_bearer_t)0;
+    if (bearers & MESHX_PROV_ADV)
+    {
+        z_bearers = (bt_mesh_prov_bearer_t)(z_bearers | BT_MESH_PROV_ADV);
+    }
+    if (bearers & MESHX_PROV_GATT)
+    {
+        z_bearers = (bt_mesh_prov_bearer_t)(z_bearers | BT_MESH_PROV_GATT);
+    }
+
+    int err = bt_mesh_prov_disable(z_bearers);
+    if (err != 0 && err != -EALREADY)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "bt_mesh_prov_disable failed: %d", err);
+        return MESHX_FAIL;
+    }
+
+    return MESHX_SUCCESS;
+}
+
+meshx_err_t meshx_plat_prov_set_device_name(const char *name)
+{
+    if (name == NULL)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    int err = bt_set_name(name);
+    if (err != 0)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "bt_set_name failed: %d", err);
+        return MESHX_FAIL;
+    }
+
+    return MESHX_SUCCESS;
+}
+
+meshx_err_t meshx_plat_prov_input_number(uint32_t val)
+{
+    int err = bt_mesh_input_number(val);
+    if (err != 0)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "bt_mesh_input_number failed: %d", err);
+        return MESHX_FAIL;
+    }
+
+    return MESHX_SUCCESS;
+}
+
+meshx_err_t meshx_plat_prov_input_string(const char *str)
+{
+    if (str == NULL)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    int err = bt_mesh_input_string(str);
+    if (err != 0)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "bt_mesh_input_string failed: %d", err);
+        return MESHX_FAIL;
+    }
+
+    return MESHX_SUCCESS;
 }
