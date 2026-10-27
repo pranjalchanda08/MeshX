@@ -17,12 +17,12 @@
 #include "interface/logging/meshx_log.h"
 #include "interface/utils/meshx_tiny_printf.h"
 
-#define MESHX_SHELL_MAX_COMMANDS 2
+#define MESHX_SHELL_MAX_COMMANDS 4
 #define SHELL_MAX_LINE_LEN       128U
 #define SHELL_MAX_ARGS           16U
 #define SHELL_PROMPT             ""
 
-#define MESHX_SHELL_TASK_STACK_SIZE 4096U
+#define MESHX_SHELL_TASK_STACK_SIZE 2048U
 #define MESHX_SHELL_TASK_PRIORITY   4U
 #define MESHX_SHELL_TASK_NAME      "meshx_shell"
 
@@ -139,7 +139,7 @@ static void shell_task(void *pvParameters)
 
 meshx_err_t meshx_shell_init(void)
 {
-    if (MESHX_SUCCESS != MESHX_CALLOC(shell_ctx, 1, sizeof(shell_ctx_t)))
+    if (MESHX_SUCCESS != MESHX_CALLOC(&shell_ctx, 1, sizeof(shell_ctx_t)))
     {
         return MESHX_NO_MEM;
     }
@@ -162,7 +162,7 @@ meshx_err_t meshx_shell_init(void)
 
 meshx_err_t meshx_shell_deinit(void)
 {
-    return MESHX_FREE(shell_ctx);
+    return MESHX_FREE(&shell_ctx);
 }
 
 meshx_err_t meshx_shell_register_command(const meshx_shell_cmd_t *cmd)
