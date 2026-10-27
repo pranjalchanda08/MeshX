@@ -225,8 +225,70 @@ class CodeGen(CodeGenException):
         self._generate_element_type_enum()
         self._generate_gpio_config()
         self._generate_mgmt_addressing()
+        self._generate_test_configs()
 
         return self.file_insert
+
+    def _generate_test_configs(self):
+        """
+        Generate Test and Certification configuration macros (Virtual Topo / SDVT, Unit Test, GPIO Test)
+        based on MXC product profile.
+        """
+        virtual_topo_enabled = False
+        unit_test_enabled = False
+        gpio_test_enabled = False
+
+        if self.product is not None:
+            # Direct product fields
+            if 'virtual_topo' in self.product:
+                virtual_topo_enabled = bool(self.product['virtual_topo'])
+            if 'unit_test' in self.product:
+                unit_test_enabled = bool(self.product['unit_test'])
+            if 'gpio_test_api' in self.product:
+                gpio_test_enabled = bool(self.product['gpio_test_api'])
+
+            # 'test' block
+            if 'test' in self.product and isinstance(self.product['test'], dict):
+                t = self.product['test']
+                if 'virtual_topo' in t or 'sdvt' in t:
+                    virtual_topo_enabled = bool(t.get('virtual_topo', t.get('sdvt', False)))
+                if 'unit_test' in t:
+                    unit_test_enabled = bool(t.get('unit_test', False))
+                if 'gpio_test_api' in t:
+                    gpio_test_enabled = bool(t.get('gpio_test_api', False))
+
+            # 'components' list
+            if 'components' in self.product:
+                for comp in self.product['components']:
+                    if isinstance(comp, dict):
+                        if 'virtual_topo' in comp or 'sdvt' in comp:
+                            virtual_topo_enabled = bool(comp.get('virtual_topo', comp.get('sdvt', 0)))
+                        if 'unit_test' in comp:
+                            unit_test_enabled = bool(comp.get('unit_test', 0))
+                        if 'gpio_test_api' in comp:
+                            gpio_test_enabled = bool(comp.get('gpio_test_api', 0))
+                    elif comp in ('virtual_topo', 'sdvt'):
+                        virtual_topo_enabled = True
+                    elif comp == 'unit_test':
+                        unit_test_enabled = True
+                    elif comp == 'gpio_test_api':
+                        gpio_test_enabled = True
+
+        # Fallback to global prod-level configs
+        prod_sec = self.prod_profile.get('prod', {})
+        if not virtual_topo_enabled and 'virtual_topo' in prod_sec:
+            virtual_topo_enabled = bool(prod_sec['virtual_topo'])
+        if not unit_test_enabled and 'unit_test' in prod_sec:
+            unit_test_enabled = bool(prod_sec['unit_test'])
+        if not gpio_test_enabled and 'gpio_test_api' in prod_sec:
+            gpio_test_enabled = bool(prod_sec['gpio_test_api'])
+
+        if virtual_topo_enabled:
+            self.file_insert += self.__get_fmt_define("CONFIG_MESHX_ENABLE_VIRTUAL_TOPO", 1)
+        if unit_test_enabled:
+            self.file_insert += self.__get_fmt_define("CONFIG_ENABLE_UNIT_TEST", 1)
+        if gpio_test_enabled:
+            self.file_insert += self.__get_fmt_define("CONFIG_MESHX_ENABLE_GPIO_TEST_API", 1)
 
     def _generate_mgmt_addressing(self):
         """

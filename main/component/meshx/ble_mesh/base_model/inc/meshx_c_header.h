@@ -33,6 +33,7 @@ extern "C" {
 #include <pairing/meshx_proximity_pair.h>
 #include <meshx_builder_api.h>
 #include <meshx_uvp.h>
+#include <meshx_virtual_topo.h>
 
 /*************************************************************
  * Interface Header

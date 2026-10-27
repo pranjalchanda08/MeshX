@@ -14,6 +14,7 @@
 #include "meshx_platform_ble_mesh.h"
 #include "interface/ble_mesh/meshx_ble_mesh_cmn.h"
 #include "interface/logging/meshx_log.h"
+#include "meshx_virtual_topo.h"
 
 #include <zephyr/bluetooth/bluetooth.h>
 #include <zephyr/bluetooth/mesh.h>
@@ -43,6 +44,15 @@ static int zephyr_uvp_rx_handler(const struct bt_mesh_model *model,
 
     meshx_uvp_header_t *header = (meshx_uvp_header_t *)msg;
     uint8_t rx_el_id = (model->rt != NULL) ? model->rt->elem_idx : 0;
+
+#if CONFIG_MESHX_ENABLE_VIRTUAL_TOPO
+    int8_t effective_rssi = ctx->recv_rssi;
+    if (!meshx_virtual_topo_filter_rx(ctx->addr, &effective_rssi)) {
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Virtual Topo: Dropped packet from 0x%04X", ctx->addr);
+        return 0; /* Silently dropped */
+    }
+    ctx->recv_rssi = effective_rssi;
+#endif
 
     MESHX_LOGI(MODULE_ID_MODEL_SERVER, "Zephyr UVP Frame -> TID: %d, EL_IDX: %d, TYPE_ID: 0x%04x, Payload: %d bytes",
                header->tid, rx_el_id, header->type_id, (int)(length - MESHX_UVP_HEADER_SIZE));
