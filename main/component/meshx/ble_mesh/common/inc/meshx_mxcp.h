@@ -235,6 +235,10 @@ typedef struct {
 
 typedef struct {
     uint8_t enable;
+} MESHX_PACKED mxcp_evt_hosted_mode_rsp_t;
+
+typedef struct {
+    uint8_t enable;
 } MESHX_PACKED mxcp_cmd_set_console_routing_t;
 
 /**
