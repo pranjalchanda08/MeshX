@@ -22,6 +22,7 @@
 #include <interface/meshx_platform.h>
 
 #include <meshx_builder_api.h>
+#include <meshx_virtual_topo.h>
 
 #if CONFIG_ENABLE_UNIT_TEST
 #include <unit_test.h>

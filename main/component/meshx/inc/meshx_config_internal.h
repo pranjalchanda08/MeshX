@@ -240,4 +240,13 @@
 #define MESHX_REHEAL_CLAIM_MAX_ATTEMPTS              CONFIG_MESHX_REHEAL_CLAIM_MAX_ATTEMPTS
 #endif
 
+/**
+ * @brief Enable Dynamic Software-Defined Virtual Topology (SDVT) Switch.
+ * Controlled dynamically via MXC (meshx_config.h / prod_profile.yml).
+ * Default is disabled (0).
+ */
+#ifndef CONFIG_MESHX_ENABLE_VIRTUAL_TOPO
+#define CONFIG_MESHX_ENABLE_VIRTUAL_TOPO             0
+#endif
+
 #endif /* __MESHX_CONFIG_INTERNAL_H__ */

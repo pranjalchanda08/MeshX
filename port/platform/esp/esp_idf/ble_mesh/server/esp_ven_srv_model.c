@@ -13,6 +13,7 @@
 #include "meshx_platform_ble_mesh.h"
 #include "interface/ble_mesh/meshx_ble_mesh_cmn.h" /* meshx_model_t */
 #include "meshx_api.h"                             /* meshx_get_net_key_id */
+#include "meshx_virtual_topo.h"
 
 static uint8_t g_uvp_tid = 0; /**< Monotonic Transaction ID for UVP messages */
 
@@ -56,6 +57,15 @@ static void esp_ble_mesh_vendor_server_cb(MESHX_VND_SRV_CB_EVT event,
 
     /* Resolve the local receiving element index from the model instance */
     uint8_t rx_el_id = param->model_operation.model->element_idx;
+
+#if CONFIG_MESHX_ENABLE_VIRTUAL_TOPO
+    int8_t effective_rssi = ctx->recv_rssi;
+    if (!meshx_virtual_topo_filter_rx(ctx->addr, &effective_rssi)) {
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Virtual Topo: Dropped packet from 0x%04X", ctx->addr);
+        return;
+    }
+    ctx->recv_rssi = effective_rssi;
+#endif
 
     MESHX_LOGI(MODULE_ID_MODEL_SERVER, "UVP Frame -> TID: %d, EL_IDX: %d, TYPE_ID: 0x%04x, Payload: %d bytes",
                header->tid, rx_el_id, header->type_id, (int)(length - MESHX_UVP_HEADER_SIZE));

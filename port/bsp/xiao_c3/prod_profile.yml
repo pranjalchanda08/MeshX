@@ -82,3 +82,20 @@ prod:
                         resolution: 10
                         duty_cycle: 50
                         channel: 0
+
+        - name: test_profile
+          pid: 0x0009
+          uuid: 9a7261593ae84b9384129a14fabb4299
+          test:
+              virtual_topo: 1
+              unit_test: 1
+              gpio_test_api: 1
+          elements:
+              - relay_client: 1
+              - relay_server: 1
+              - light_cwww_server: 1
+              - light_cwww_client: 1
+              - sensor_server: 1
+              - sensor_client: 1
+              - light_hsl_server: 1
+              - light_hsl_client: 1

@@ -28,6 +28,7 @@
 #include "interface/rtos/meshx_rtos_utils.h"
 #include "pairing/meshx_pair_orchestrator.h"
 #include "interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h"
+#include "meshx_virtual_topo.h"
 
 /* UVP Management Virtual Address */
 #ifndef MESHX_MGMT_VIRTUAL_ADDR
@@ -116,6 +117,9 @@ static meshx_err_t mxcp_cmd_fn_bind_elements          (const uint8_t *payload, u
 static meshx_err_t mxcp_cmd_fn_unbind_elements        (const uint8_t *payload, uint8_t len);
 static meshx_err_t mxcp_cmd_fn_get_link_table         (const uint8_t *payload, uint8_t len);
 static meshx_err_t mxcp_cmd_fn_get_link_epoch         (const uint8_t *payload, uint8_t len);
+#if CONFIG_MESHX_ENABLE_VIRTUAL_TOPO
+static meshx_err_t mxcp_cmd_fn_virtual_topo            (const uint8_t *payload, uint8_t len);
+#endif
 
 /*
  * @brief Command dispatch table (Host -> Engine).
@@ -169,6 +173,9 @@ static const mxcp_cmd_entry_t mxcp_cmd_table[] = {
     MXCP_CMD_ENTRY(MXCP_CMD_UVP_FAST_PROV_CANCEL,   mxcp_cmd_fn_uvp_fast_prov_cancel,   0,                                        MXCP_EVT_NONE,                   MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_NODE_REPLACE_START,      mxcp_cmd_fn_node_replace_start,      sizeof(mxcp_cmd_node_replace_start_t),    MXCP_EVT_NODE_REPLACE_STATUS,    MXCP_EVT_NONE),
 #endif /* CONFIG_ENABLE_UVP_PROVISIONER */
+#if CONFIG_MESHX_ENABLE_VIRTUAL_TOPO
+    MXCP_CMD_ENTRY(MXCP_CMD_VIRTUAL_TOPO_REQ,        mxcp_cmd_fn_virtual_topo,            0,                                        MXCP_EVT_VIRTUAL_TOPO_STATUS,    MXCP_EVT_NONE),
+#endif
 };
 
 #define MXCP_CMD_TABLE_SIZE (sizeof(mxcp_cmd_table) / sizeof(mxcp_cmd_table[0]))
@@ -1883,4 +1890,109 @@ static meshx_err_t mxcp_cmd_fn_gpio_get_state(const uint8_t *payload, uint8_t le
     return MESHX_SUCCESS;
 }
 #endif
+
+#if CONFIG_MESHX_ENABLE_VIRTUAL_TOPO
+/**
+ * @brief Handle Virtual Topology Control Request (Host -> Engine, MXCP_CMD_VIRTUAL_TOPO_REQ)
+ *
+ * Dispatches action to the SDVT switch engine and immediately transmits the
+ * binary status event notification (MXCP_EVT_VIRTUAL_TOPO_STATUS = 0xB9) back to the host.
+ *
+ * @param[in] payload Pointer to mxcp_cmd_virtual_topo_t.
+ * @param[in] len     Payload length in bytes (minimum sizeof(uint8_t) for action).
+ *
+ * @return MESHX_SUCCESS on success, or an error code.
+ */
+static meshx_err_t mxcp_cmd_fn_virtual_topo(const uint8_t *payload, uint8_t len)
+{
+    if (payload == NULL || len < sizeof(uint8_t)) {
+        MESHX_LOGE(MODULE_ID_COMMON, "MXCP: Virtual Topo payload missing or too small (%u)", len);
+        return MESHX_INVALID_ARG;
+    }
+
+    const mxcp_cmd_virtual_topo_t *cmd = (const mxcp_cmd_virtual_topo_t *)payload;
+    meshx_err_t err = MESHX_SUCCESS;
+
+    MESHX_LOGD(MODULE_ID_COMMON, "MXCP Virtual Topo: Received action %u, len %u", cmd->action, len);
+
+    switch (cmd->action) {
+    case MXCP_TOPO_ACTION_INIT: {
+        err = meshx_virtual_topo_init();
+        if (err == MESHX_SUCCESS && len >= (sizeof(uint8_t) + sizeof(uint16_t))) {
+            meshx_virtual_topo_set_own_addr(cmd->params.init.own_addr);
+        }
+        break;
+    }
+
+    case MXCP_TOPO_ACTION_DEINIT: {
+        err = meshx_virtual_topo_deinit();
+        break;
+    }
+
+    case MXCP_TOPO_ACTION_SET_ENABLED: {
+        if (len < (sizeof(uint8_t) + sizeof(uint8_t))) {
+            return MESHX_INVALID_ARG;
+        }
+        err = meshx_virtual_topo_set_enabled(cmd->params.set_enabled.enabled != 0);
+        break;
+    }
+
+    case MXCP_TOPO_ACTION_APPLY_PRESET: {
+        if (len < (sizeof(uint8_t) + sizeof(uint8_t) + sizeof(uint16_t))) {
+            return MESHX_INVALID_ARG;
+        }
+        err = meshx_virtual_topo_apply_preset((meshx_topo_preset_t)cmd->params.apply_preset.preset,
+                                              cmd->params.apply_preset.own_addr);
+        break;
+    }
+
+    case MXCP_TOPO_ACTION_SET_PEER: {
+        if (len < (sizeof(uint8_t) + sizeof(uint16_t) + sizeof(int8_t) + sizeof(uint8_t) + sizeof(uint8_t))) {
+            return MESHX_INVALID_ARG;
+        }
+        err = meshx_virtual_topo_set_peer(cmd->params.set_peer.peer_addr,
+                                          cmd->params.set_peer.rssi_offset_db,
+                                          cmd->params.set_peer.drop_rate_pct,
+                                          cmd->params.set_peer.blocked != 0);
+        break;
+    }
+
+    case MXCP_TOPO_ACTION_REMOVE_PEER: {
+        if (len < (sizeof(uint8_t) + sizeof(uint16_t))) {
+            return MESHX_INVALID_ARG;
+        }
+        err = meshx_virtual_topo_remove_peer(cmd->params.remove_peer.peer_addr);
+        break;
+    }
+
+    case MXCP_TOPO_ACTION_SET_PARTITION: {
+        if (len < (sizeof(uint8_t) + sizeof(uint8_t) + sizeof(uint16_t))) {
+            return MESHX_INVALID_ARG;
+        }
+        uint16_t bridge = cmd->params.set_partition.bridge_addr;
+        err = meshx_virtual_topo_set_partition_state(cmd->params.set_partition.is_split != 0,
+                                                     &bridge, 1);
+        break;
+    }
+
+    case MXCP_TOPO_ACTION_CLEAR: {
+        err = meshx_virtual_topo_clear();
+        break;
+    }
+
+    case MXCP_TOPO_ACTION_GET_STATUS: {
+        err = MESHX_SUCCESS;
+        break;
+    }
+
+    default:
+        MESHX_LOGE(MODULE_ID_COMMON, "MXCP: Unknown Virtual Topo action %u", cmd->action);
+        err = MESHX_NOT_SUPPORTED;
+        break;
+    }
+
+    /* Send response event notification to host */
+    return meshx_virtual_topo_notify_status(cmd->action, (err == MESHX_SUCCESS) ? 0x00 : (uint8_t)err);
+}
+#endif /* CONFIG_MESHX_ENABLE_VIRTUAL_TOPO */
 

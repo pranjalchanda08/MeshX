@@ -118,6 +118,7 @@ typedef enum {
     MXCP_CMD_UVP_FAST_PROV_START       = 0x34,
     MXCP_CMD_UVP_FAST_PROV_CANCEL      = 0x35,
     MXCP_CMD_NODE_REPLACE_START        = 0x36,
+    MXCP_CMD_VIRTUAL_TOPO_REQ          = 0x38,
 
     MXCP_CMD_DISCOVER_CAPABILITIES = 0x70,
     MXCP_CMD_BIND_ELEMENTS         = 0x71,
@@ -182,6 +183,7 @@ typedef enum {
     MXCP_EVT_NODE_REPLACE_STATUS       = 0xB6, /**< Node replacement status & address assignment */
     MXCP_EVT_NODE_REPLACE_SCHEMA_DIFF  = 0xB7, /**< Modality B schema difference */
     MXCP_EVT_UVP_CLAIM_STATUS          = 0xB8, /**< Cascading N+1 claim accepted by candidate */
+    MXCP_EVT_VIRTUAL_TOPO_STATUS       = 0xB9, /**< Dynamic SDVT switch status and peer table notification */
 
     MXCP_EVT_MAX
 } mxcp_evt_id_t;
@@ -561,6 +563,76 @@ typedef struct {
     uint16_t orphaned_models[8];/**< List of orphaned SIG/Vendor models */
     uint16_t new_models[8];     /**< List of new SIG/Vendor models */
 } MESHX_PACKED mxcp_evt_node_replace_schema_diff_t;
+
+/**
+ * @brief Dynamic Software-Defined Virtual Topology (SDVT) Action Types
+ */
+typedef enum {
+    MXCP_TOPO_ACTION_INIT          = 0x00, /**< Initialize SDVT engine and buffer (optional own_addr) */
+    MXCP_TOPO_ACTION_DEINIT        = 0x01, /**< De-initialize SDVT engine, clear rules, revert to passthrough */
+    MXCP_TOPO_ACTION_SET_ENABLED   = 0x02, /**< Enable (1) or disable (0) link filtering */
+    MXCP_TOPO_ACTION_APPLY_PRESET  = 0x03, /**< Apply preset (1=Linear, 2=Clique, 3=Tree, 4=Dumbbell, 5=Diamond) */
+    MXCP_TOPO_ACTION_SET_PEER      = 0x04, /**< Configure peer link (rssi_offset, drop_rate, blocked) */
+    MXCP_TOPO_ACTION_REMOVE_PEER   = 0x05, /**< Remove rule for peer_addr */
+    MXCP_TOPO_ACTION_SET_PARTITION = 0x06, /**< Sever (1) or heal (0) partition at bridge_addr */
+    MXCP_TOPO_ACTION_CLEAR         = 0x07, /**< Clear all peer rules */
+    MXCP_TOPO_ACTION_GET_STATUS    = 0x08, /**< Request current status & peer table */
+} mxcp_topo_action_t;
+
+/**
+ * @brief Virtual Topology Command Payload (Host -> Engine, MXCP_CMD_VIRTUAL_TOPO_REQ = 0x38)
+ */
+typedef struct {
+    uint8_t action;  /**< mxcp_topo_action_t */
+    union {
+        struct {
+            uint16_t own_addr;
+        } init;
+        struct {
+            uint8_t enabled;
+        } set_enabled;
+        struct {
+            uint8_t  preset;    /**< 1=Linear, 2=Clique, 3=Tree, 4=Dumbbell, 5=Diamond */
+            uint16_t own_addr;
+        } apply_preset;
+        struct {
+            uint16_t peer_addr;
+            int8_t   rssi_offset_db;
+            uint8_t  drop_rate_pct;
+            uint8_t  blocked;
+        } set_peer;
+        struct {
+            uint16_t peer_addr;
+        } remove_peer;
+        struct {
+            uint8_t  is_split;  /**< 1 = Sever / Split, 0 = Heal / Restore */
+            uint16_t bridge_addr;
+        } set_partition;
+    } params;
+} MESHX_PACKED mxcp_cmd_virtual_topo_t;
+
+/**
+ * @brief Virtual Topology Peer Entry in Status Event
+ */
+typedef struct {
+    uint16_t peer_addr;
+    int8_t   rssi_offset_db;
+    uint8_t  drop_rate_pct;
+    uint8_t  blocked;
+} MESHX_PACKED mxcp_topo_peer_entry_t;
+
+/**
+ * @brief Virtual Topology Status Event Payload (Engine -> Host, MXCP_EVT_VIRTUAL_TOPO_STATUS = 0xB9)
+ */
+typedef struct {
+    uint8_t  status_code;  /**< 0x00 = Success, error code otherwise */
+    uint8_t  action;       /**< The action that triggered this notification */
+    uint8_t  initialized;  /**< 1 if SDVT switch engine is initialized */
+    uint8_t  enabled;      /**< 1 if link filtering is active */
+    uint8_t  preset;       /**< Active preset (0=None, 1=Linear, etc.) */
+    uint16_t own_addr;     /**< Local node address */
+    uint8_t  peer_count;   /**< Number of active peer rules following this header */
+} MESHX_PACKED mxcp_evt_virtual_topo_status_t;
 
 /**
  * @brief MXCP wire frame for RX-side parsing.
