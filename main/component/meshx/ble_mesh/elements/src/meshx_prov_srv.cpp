@@ -37,41 +37,51 @@ extern "C" int bt_mesh_node_local_app_key_add(uint16_t net_idx, uint16_t app_idx
 /*
  * @brief Structure to map provisioning callback events to control task events.
  */
-typedef struct prov_cb_evt_ctrl_task_evt_table
+static control_task_msg_evt_provision_t meshx_prov_evt_to_ctrl_task_evt(uint16_t evt)
 {
-#if CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO
-    const char *evt_str;                            /*< String representation of the provisioning event. */
-#endif
-    control_task_msg_evt_provision_t ctrl_task_evt; /*< Corresponding control task event. */
-} prov_cb_evt_ctrl_task_evt_table_t;
+    switch (evt)
+    {
+        case MESHX_PROV_REGISTER_COMP_EVT:
+            return CONTROL_TASK_MSG_EVT_PROV_REG_COMP;
+        case MESHX_NODE_SET_UPROV_NAME_COMP_EVT:
+            return CONTROL_TASK_MSG_EVT_SET_NAME_COMP;
+        case MESHX_NODE_PROV_ENABLE_COMP_EVT:
+            return CONTROL_TASK_MSG_EVT_EN_NODE_PROV;
+        case MESHX_NODE_PROV_LINK_OPEN_EVT:
+            return CONTROL_TASK_MSG_EVT_IDENTIFY_START;
+        case MESHX_NODE_PROV_LINK_CLOSE_EVT:
+            return CONTROL_TASK_MSG_EVT_IDENTIFY_STOP;
+        case MESHX_NODE_PROV_COMPLETE_EVT:
+            return CONTROL_TASK_MSG_EVT_PROVISION_STOP;
+        case MESHX_NODE_PROV_RESET_EVT:
+            return CONTROL_TASK_MSG_EVT_NODE_RESET;
+        case MESHX_PROXY_SERVER_CONNECTED_EVT:
+            return CONTROL_TASK_MSG_EVT_PROXY_CONNECT;
+        case MESHX_PROXY_SERVER_DISCONNECTED_EVT:
+            return CONTROL_TASK_MSG_EVT_PROXY_DISCONN;
+        default:
+            return (control_task_msg_evt_provision_t)0;
+    }
+}
 
-/*
- * @brief Compile-time static const table mapping provisioning events to control task events.
- * Stored in Flash read-only cache (drom) to save DRAM.
- */
-static const prov_cb_evt_ctrl_task_evt_table_t prov_cb_evt_ctrl_task_evt_table[MESHX_PROV_EVT_MAX] = {
 #if CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO
-    /* [0] MESHX_PROV_REGISTER_COMP_EVT */        {"MESHX_PROV_REGISTER_COMP_EVT",        CONTROL_TASK_MSG_EVT_PROV_REG_COMP},
-    /* [1] MESHX_NODE_SET_UPROV_NAME_COMP_EVT */  {"MESHX_NODE_SET_UPROV_NAME_COMP_EVT",  CONTROL_TASK_MSG_EVT_SET_NAME_COMP},
-    /* [2] MESHX_NODE_PROV_RESET_EVT */           {"MESHX_NODE_PROV_RESET_EVT",           CONTROL_TASK_MSG_EVT_NODE_RESET},
-    /* [3] MESHX_NODE_PROV_COMPLETE_EVT */        {"MESHX_NODE_PROV_COMPLETE_EVT",        CONTROL_TASK_MSG_EVT_PROVISION_STOP},
-    /* [4] MESHX_NODE_PROV_LINK_OPEN_EVT */       {"MESHX_NODE_PROV_LINK_OPEN_EVT",       CONTROL_TASK_MSG_EVT_IDENTIFY_START},
-    /* [5] MESHX_NODE_PROV_LINK_CLOSE_EVT */      {"MESHX_NODE_PROV_LINK_CLOSE_EVT",      CONTROL_TASK_MSG_EVT_IDENTIFY_STOP},
-    /* [6] MESHX_NODE_PROV_ENABLE_COMP_EVT */     {"MESHX_NODE_PROV_ENABLE_COMP_EVT",     CONTROL_TASK_MSG_EVT_EN_NODE_PROV},
-    /* [7] MESHX_PROXY_SERVER_CONNECTED_EVT */    {"MESHX_PROXY_SERVER_CONNECTED_EVT",    CONTROL_TASK_MSG_EVT_PROXY_CONNECT},
-    /* [8] MESHX_PROXY_SERVER_DISCONNECTED_EVT */ {"MESHX_PROXY_SERVER_DISCONNECTED_EVT", CONTROL_TASK_MSG_EVT_PROXY_DISCONN},
-#else
-    /* [0] MESHX_PROV_REGISTER_COMP_EVT */        {CONTROL_TASK_MSG_EVT_PROV_REG_COMP},
-    /* [1] MESHX_NODE_SET_UPROV_NAME_COMP_EVT */  {CONTROL_TASK_MSG_EVT_SET_NAME_COMP},
-    /* [2] MESHX_NODE_PROV_RESET_EVT */           {CONTROL_TASK_MSG_EVT_NODE_RESET},
-    /* [3] MESHX_NODE_PROV_COMPLETE_EVT */        {CONTROL_TASK_MSG_EVT_PROVISION_STOP},
-    /* [4] MESHX_NODE_PROV_LINK_OPEN_EVT */       {CONTROL_TASK_MSG_EVT_IDENTIFY_START},
-    /* [5] MESHX_NODE_PROV_LINK_CLOSE_EVT */      {CONTROL_TASK_MSG_EVT_IDENTIFY_STOP},
-    /* [6] MESHX_NODE_PROV_ENABLE_COMP_EVT */     {CONTROL_TASK_MSG_EVT_EN_NODE_PROV},
-    /* [7] MESHX_PROXY_SERVER_CONNECTED_EVT */    {CONTROL_TASK_MSG_EVT_PROXY_CONNECT},
-    /* [8] MESHX_PROXY_SERVER_DISCONNECTED_EVT */ {CONTROL_TASK_MSG_EVT_PROXY_DISCONN},
+static const char *meshx_prov_evt_to_str(uint16_t evt)
+{
+    switch (evt)
+    {
+        case MESHX_PROV_REGISTER_COMP_EVT:       return "MESHX_PROV_REGISTER_COMP_EVT";
+        case MESHX_NODE_SET_UPROV_NAME_COMP_EVT: return "MESHX_NODE_SET_UPROV_NAME_COMP_EVT";
+        case MESHX_NODE_PROV_ENABLE_COMP_EVT:    return "MESHX_NODE_PROV_ENABLE_COMP_EVT";
+        case MESHX_NODE_PROV_LINK_OPEN_EVT:      return "MESHX_NODE_PROV_LINK_OPEN_EVT";
+        case MESHX_NODE_PROV_LINK_CLOSE_EVT:     return "MESHX_NODE_PROV_LINK_CLOSE_EVT";
+        case MESHX_NODE_PROV_COMPLETE_EVT:       return "MESHX_NODE_PROV_COMPLETE_EVT";
+        case MESHX_NODE_PROV_RESET_EVT:          return "MESHX_NODE_PROV_RESET_EVT";
+        case MESHX_PROXY_SERVER_CONNECTED_EVT:   return "MESHX_PROXY_SERVER_CONNECTED_EVT";
+        case MESHX_PROXY_SERVER_DISCONNECTED_EVT: return "MESHX_PROXY_SERVER_DISCONNECTED_EVT";
+        default:                                 return "UNKNOWN";
+    }
+}
 #endif
-};
 
 static meshx_os_timer_t *g_boot_timer;
 static meshx_os_timer_t *g_oob_watchdog_timer = NULL;
@@ -148,13 +158,13 @@ static meshx_err_t meshx_prov_srv_control_task_handler(
         return MESHX_INVALID_ARG;
     }
 
-    if (p_params->prov_evt < MESHX_PROV_EVT_MAX && prov_cb_evt_ctrl_task_evt_table[p_params->prov_evt].ctrl_task_evt != 0)
+    prov_evt = meshx_prov_evt_to_ctrl_task_evt(p_params->prov_evt);
+    if (prov_evt != 0)
     {
 #if CONFIG_MESHX_DEFAULT_LOG_LEVEL < MESHX_LOG_INFO
         MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Provisioning event mapped: %s",
-                    prov_cb_evt_ctrl_task_evt_table[p_params->prov_evt].evt_str);
+                    meshx_prov_evt_to_str(p_params->prov_evt));
 #endif
-        prov_evt = prov_cb_evt_ctrl_task_evt_table[p_params->prov_evt].ctrl_task_evt;
     }
     else
     {
@@ -203,7 +213,7 @@ static void meshx_handle_node_reset(dev_struct_t *pdev)
     for (i = 1; i < pdev->element_idx; ++i)
     {
         err = meshx_nvs_element_ctx_remove(static_cast<uint16_t>(i), MESHX_ELEMENT_TYPE_ALL);
-        if (err != MESHX_SUCCESS)
+        if (err != MESHX_SUCCESS && err != MESHX_NOT_FOUND)
         {
             MESHX_LOGE(MODULE_ID_COMMON, "Failed to erase element context (%zu): (%d)", i, err);
         }

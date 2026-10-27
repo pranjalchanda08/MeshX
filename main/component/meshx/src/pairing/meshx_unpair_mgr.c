@@ -323,6 +323,15 @@ meshx_err_t meshx_unpair_pre_reset_teardown(void)
 
     MESHX_LOGW(TAG, "Unpair Mgr: Initiating Pre-Reset Teardown (Active Mesh Phase)");
 
+    /* If device is unprovisioned, there is no active mesh phase, no links, and no valid NetKey */
+    if (local_unicast == MESHX_ADDR_UNASSIGNED)
+    {
+        MESHX_LOGI(TAG, "Unpair Mgr: Device unprovisioned, skipping active mesh teardown OTA notices");
+        meshx_nvs_link_table_erase();
+        MESHX_LOGI(TAG, "Unpair Mgr: Link table erased. Pre-reset teardown complete.");
+        return MESHX_SUCCESS;
+    }
+
     /* Stage 1: Active In-Mesh Notification to known peers */
     if (meshx_nvs_link_table_get(&table) == MESHX_SUCCESS && table.link_count > 0)
     {

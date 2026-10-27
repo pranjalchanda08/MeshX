@@ -190,6 +190,10 @@ meshx_err_t meshx_kv_engine_read(const char *key, void *buf, uint16_t len)
     {
         if (strncmp(pending->key, key, KV_MAX_KEY_LEN - 1) == 0)
         {
+            if (pending->len == 0)
+            {
+                return MESHX_NOT_FOUND;
+            }
             uint16_t to_copy = (len < pending->len) ? len : pending->len;
             memcpy(buf, pending->data, to_copy);
             return MESHX_SUCCESS;
@@ -223,6 +227,10 @@ meshx_err_t meshx_kv_engine_read(const char *key, void *buf, uint16_t len)
 
     if (best_pos != 0xFFFFFFFF)
     {
+        if (found_val_len == 0)
+        {
+            return MESHX_NOT_FOUND;
+        }
         uint16_t to_read = (len < found_val_len) ? len : found_val_len;
         kv_header_t h;
         meshx_fal_read(kv_part, best_pos, &h, sizeof(h));
@@ -253,13 +261,21 @@ meshx_err_t meshx_kv_engine_set(const char *key, const void *buf,
     if (err != MESHX_SUCCESS || !node)
         return MESHX_NO_MEM;
     strncpy(node->key, key, KV_MAX_KEY_LEN - 1);
-    err = MESHX_MALLOC(&node->data, len);
-    if (err != MESHX_SUCCESS || !node->data)
+    node->key[KV_MAX_KEY_LEN - 1] = '\0';
+    if (len > 0)
     {
-        MESHX_FREE(&node);
-        return MESHX_NO_MEM;
+        err = MESHX_MALLOC(&node->data, len);
+        if (err != MESHX_SUCCESS || !node->data)
+        {
+            MESHX_FREE(&node);
+            return MESHX_NO_MEM;
+        }
+        memcpy(node->data, buf, len);
     }
-    memcpy(node->data, buf, len);
+    else
+    {
+        node->data = NULL;
+    }
     node->len = len;
     node->next = pending_list;
     pending_list = node;
@@ -294,8 +310,11 @@ meshx_err_t meshx_kv_engine_commit(void)
         meshx_fal_write(kv_part, kv_write_pos, &header, sizeof(header));
         meshx_fal_write(kv_part, kv_write_pos + sizeof(header), cur->key,
                         header.key_len);
-        meshx_fal_write(kv_part, kv_write_pos + sizeof(header) + header.key_len,
-                        cur->data, header.val_len);
+        if (cur->len > 0 && cur->data)
+        {
+            meshx_fal_write(kv_part, kv_write_pos + sizeof(header) + header.key_len,
+                            cur->data, header.val_len);
+        }
 
         // Verification
         kv_header_t v_header;
@@ -314,7 +333,10 @@ meshx_err_t meshx_kv_engine_commit(void)
 
         kv_pending_t *prev = cur;
         cur = cur->next;
-        MESHX_FREE(&prev->data);
+        if (prev->data)
+        {
+            MESHX_FREE(&prev->data);
+        }
         MESHX_FREE(&prev);
     }
     pending_list = NULL;
