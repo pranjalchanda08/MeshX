@@ -171,7 +171,7 @@ static const mxcp_cmd_entry_t mxcp_cmd_table[] = {
     MXCP_CMD_ENTRY(MXCP_CMD_UVP_REDUNDANCY_SET_ROLE,mxcp_cmd_fn_uvp_redundancy_set_role,0,                                        MXCP_EVT_UVP_REDUNDANCY_STATUS,  MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_UVP_FAST_PROV_START,    mxcp_cmd_fn_uvp_fast_prov_start,    0,                                        MXCP_EVT_UVP_FAST_PROV_PROGRESS, MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_UVP_FAST_PROV_CANCEL,   mxcp_cmd_fn_uvp_fast_prov_cancel,   0,                                        MXCP_EVT_NONE,                   MXCP_EVT_NONE),
-    MXCP_CMD_ENTRY(MXCP_CMD_NODE_REPLACE_START,      mxcp_cmd_fn_node_replace_start,      sizeof(mxcp_cmd_node_replace_start_t),    MXCP_EVT_NODE_REPLACE_STATUS,    MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_NODE_REPLACE_START,     mxcp_cmd_fn_node_replace_start,     sizeof(mxcp_cmd_node_replace_start_t),    MXCP_EVT_NODE_REPLACE_STATUS,    MXCP_EVT_NONE),
 #endif /* CONFIG_ENABLE_UVP_PROVISIONER */
 #if CONFIG_MESHX_ENABLE_VIRTUAL_TOPO
     MXCP_CMD_ENTRY(MXCP_CMD_VIRTUAL_TOPO_REQ,        mxcp_cmd_fn_virtual_topo,            0,                                        MXCP_EVT_VIRTUAL_TOPO_STATUS,    MXCP_EVT_NONE),
@@ -351,7 +351,8 @@ void mxcp_send_element_info_response(mxcp_evt_id_t evt_id)
  */
 static meshx_err_t mxcp_cmd_fn_hosted_mode(const uint8_t *payload, uint8_t len)
 {
-    mxcp_cmd_hosted_mode_enable_t cmd;
+    mxcp_evt_hosted_mode_rsp_t rsp = {0};
+    mxcp_cmd_hosted_mode_enable_t cmd = {0};
     bool enabled = false;
 
     if (payload == NULL || len < sizeof(mxcp_cmd_hosted_mode_enable_t))
@@ -362,6 +363,9 @@ static meshx_err_t mxcp_cmd_fn_hosted_mode(const uint8_t *payload, uint8_t len)
     enabled = (cmd.enable != 0);
     meshx_serial_set_hosted_mode(enabled);
     MESHX_LOGI(MODULE_ID_COMMON, "Hosted mode %s via MXCP", enabled ? "enabled" : "disabled");
+
+    rsp.enable = enabled;
+    mxcp_send_event(MXCP_EVT_HOSTED_MODE_RSP, (const uint8_t *)&rsp, sizeof(rsp));
     return MESHX_SUCCESS;
 }
 
