@@ -16,3 +16,26 @@ GpioConfig.drive_strength   int_size:IS_8
 IoBinding.element_id        int_size:IS_8
 IoBinding.logical_pin       int_size:IS_16
 IoBinding.usage             int_size:IS_8
+
+MxcpDeviceInfoRsp.uuid         max_size:16
+MxcpDeviceInfoRsp.uuid         fixed_length:true
+MxcpDeviceInfoRsp.mac_addr     max_size:6
+MxcpDeviceInfoRsp.mac_addr     fixed_length:true
+MxcpDeviceInfoRsp.cid          int_size:IS_16
+MxcpDeviceInfoRsp.pid          int_size:IS_16
+MxcpDeviceInfoRsp.node_addr    int_size:IS_16
+MxcpDeviceInfoRsp.link_epoch   int_size:IS_32
+MxcpDeviceInfoRsp.element_count int_size:IS_8
+MxcpDeviceInfoRsp.fw_version   max_size:32
+
+MxcpLinkEntry.local_element_idx   int_size:IS_8
+MxcpLinkEntry.bound_variant       int_size:IS_16
+MxcpLinkEntry.target_unicast_addr int_size:IS_16
+MxcpLinkEntry.target_group_addr   int_size:IS_16
+MxcpLinkEntry.func_id             int_size:IS_16
+
+MxcpLinkTableRsp.magic         int_size:IS_32
+MxcpLinkTableRsp.version       int_size:IS_8
+MxcpLinkTableRsp.link_epoch    int_size:IS_16
+MxcpLinkTableRsp.link_count    int_size:IS_8
+MxcpLinkTableRsp.links         max_count:16

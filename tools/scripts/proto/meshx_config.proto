@@ -37,3 +37,46 @@ message MeshXConfig {
   repeated GpioConfig gpio = 3;
   repeated IoBinding bindings = 4;
 }
+
+// ==================================================================
+// MXCP (MeshX Command Protocol) Wire Messages
+// ==================================================================
+
+enum ProvisioningState {
+  PROV_STATE_UNPROVISIONED = 0;
+  PROV_STATE_BEACONING     = 1;
+  PROV_STATE_PROVISIONING  = 2;
+  PROV_STATE_PROVISIONED   = 3;
+}
+
+// Device Information Response (MXCP_CMD_DEV_GET_INFO 0x75 / MXCP_EVT_DEV_INFO_RSP 0xF5)
+message MxcpDeviceInfoRsp {
+  bytes uuid           = 1; // 16-byte Device UUID
+  bytes mac_addr       = 2; // 6-byte Hardware MAC
+  uint32 cid           = 3; // Company ID (LE)
+  uint32 pid           = 4; // Product ID (LE)
+  ProvisioningState prov_status = 5;
+  uint32 node_addr     = 6; // Assigned primary unicast address
+  uint32 link_epoch    = 7; // Monotonic NVS link table epoch
+  uint32 element_count = 8; // Number of active elements
+  string fw_version    = 9; // Firmware build version string
+}
+
+// Link Table Entry
+message MxcpLinkEntry {
+  uint32 local_element_idx   = 1;
+  uint32 bound_variant       = 2;
+  uint32 target_unicast_addr = 3;
+  uint32 target_group_addr   = 4;
+  uint32 func_id             = 5;
+  bool   active              = 6;
+}
+
+// Link Table Response (MXCP_CMD_GET_LINK_TABLE 0x73 / MXCP_EVT_LINK_TABLE_RSP 0xF3)
+message MxcpLinkTableRsp {
+  uint32 magic        = 1; // 0x4C4E4B53 ('LNKS')
+  uint32 version      = 2; // 1
+  uint32 link_epoch   = 3;
+  uint32 link_count   = 4;
+  repeated MxcpLinkEntry links = 5;
+}

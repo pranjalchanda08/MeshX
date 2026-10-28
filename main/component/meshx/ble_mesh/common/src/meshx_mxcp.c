@@ -13,6 +13,8 @@
 #include "meshx_nvs.h"
 #include "meshx_uvp.h"
 #include "meshx_mxcp.h"
+#include "pb_encode.h"
+#include "meshx_config.pb.h"
 #include "meshx_serial.h"
 #include "meshx_os_timer.h"
 #include "meshx_builder_api.h"
@@ -719,17 +721,46 @@ static meshx_err_t mxcp_cmd_fn_get_link_table(const uint8_t *payload, uint8_t le
 {
     MESHX_UNUSED(payload);
     MESHX_UNUSED(len);
+    uint8_t buffer[MXCP_PAYLOAD_MAX_SIZE];
     meshx_nvs_link_table_t table;
+    MxcpLinkTableRsp rsp = MxcpLinkTableRsp_init_zero;
+
     meshx_err_t err = meshx_nvs_link_table_get(&table);
-    if (err != MESHX_SUCCESS)
+    if (err == MESHX_SUCCESS)
     {
-        memset(&table, 0, sizeof(table));
-        table.magic = MESHX_NVS_LINK_MAGIC;
-        table.version = MESHX_NVS_LINK_VERSION;
-        table.link_epoch = 0;
-        table.link_count = 0;
+        rsp.magic = table.magic;
+        rsp.version = table.version;
+        rsp.link_epoch = table.link_epoch;
+        rsp.link_count = table.link_count;
+        uint8_t count = table.link_count;
+        if (count > 16) count = 16;
+        rsp.links_count = count;
+        for (uint8_t i = 0; i < count; i++)
+        {
+            rsp.links[i].local_element_idx   = table.links[i].local_element_idx;
+            rsp.links[i].bound_variant       = table.links[i].bound_variant;
+            rsp.links[i].target_unicast_addr = table.links[i].target_unicast_addr;
+            rsp.links[i].target_group_addr   = table.links[i].target_group_addr;
+            rsp.links[i].func_id             = table.links[i].func_id;
+            rsp.links[i].active              = (table.links[i].active != 0);
+        }
     }
-    return mxcp_send_event(MXCP_EVT_LINK_TABLE_RSP, (const uint8_t *)&table, sizeof(table));
+    else
+    {
+        rsp.magic = MESHX_NVS_LINK_MAGIC;
+        rsp.version = MESHX_NVS_LINK_VERSION;
+        rsp.link_epoch = 0;
+        rsp.link_count = 0;
+        rsp.links_count = 0;
+    }
+
+    pb_ostream_t stream = pb_ostream_from_buffer(buffer, sizeof(buffer));
+    if (!pb_encode(&stream, MxcpLinkTableRsp_fields, &rsp))
+    {
+        return MESHX_FAIL;
+    }
+
+    return mxcp_send_event(MXCP_EVT_LINK_TABLE_RSP, buffer, (uint8_t)stream.bytes_written);
 }
 
 /**
@@ -768,23 +799,32 @@ static meshx_err_t mxcp_cmd_fn_get_dev_info(const uint8_t *payload, uint8_t len)
 {
     MESHX_UNUSED(payload);
     MESHX_UNUSED(len);
-    mxcp_evt_dev_info_rsp_t rsp;
-    memset(&rsp, 0, sizeof(rsp));
+    uint8_t buffer[MXCP_PAYLOAD_MAX_SIZE];
+    MxcpDeviceInfoRsp rsp = MxcpDeviceInfoRsp_init_zero;
 
     meshx_uuid_t uuid;
     if (meshx_get_device_uuid(&uuid) == MESHX_SUCCESS)
     {
-        memcpy(rsp.uuid, uuid, sizeof(rsp.uuid));
+        memcpy(rsp.uuid, uuid, 16);
     }
-    meshx_platform_get_mac(rsp.mac);
+    meshx_platform_get_mac(rsp.mac_addr);
     rsp.cid = meshx_get_cid();
     rsp.pid = meshx_get_pid();
     rsp.node_addr = meshx_get_node_addr();
-    rsp.prov_status = (rsp.node_addr != MESHX_ADDR_UNASSIGNED) ? 1 : 0;
+    rsp.prov_status = (rsp.node_addr != MESHX_ADDR_UNASSIGNED) ?
+        ProvisioningState_PROV_STATE_PROVISIONED :
+        ProvisioningState_PROV_STATE_UNPROVISIONED;
     rsp.link_epoch = meshx_nvs_get_link_epoch();
     rsp.element_count = meshx_comp_get_element_count();
+    strncpy(rsp.fw_version, "v0.6.0-meshx", sizeof(rsp.fw_version) - 1);
 
-    return mxcp_send_event(MXCP_EVT_DEV_INFO_RSP, (const uint8_t *)&rsp, sizeof(rsp));
+    pb_ostream_t stream = pb_ostream_from_buffer(buffer, sizeof(buffer));
+    if (!pb_encode(&stream, MxcpDeviceInfoRsp_fields, &rsp))
+    {
+        return MESHX_FAIL;
+    }
+
+    return mxcp_send_event(MXCP_EVT_DEV_INFO_RSP, buffer, (uint8_t)stream.bytes_written);
 }
 
 /**

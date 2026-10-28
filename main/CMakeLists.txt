@@ -159,6 +159,7 @@ if(NOT CMAKE_BUILD_EARLY_EXPANSION)
     set(NANOPB_SRC
         "${NANOPB_DIR}/pb_common.c"
         "${NANOPB_DIR}/pb_decode.c"
+        "${NANOPB_DIR}/pb_encode.c"
         "${GEN_C}"
     )
     set(MESHX_SRC ${MESHX_SRC} ${NANOPB_SRC} "${CMAKE_CURRENT_BINARY_DIR}/meshx_config.h")
