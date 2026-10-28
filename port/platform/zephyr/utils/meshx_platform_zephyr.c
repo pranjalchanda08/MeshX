@@ -139,12 +139,20 @@ meshx_err_t meshx_platform_serial_init(void)
 
 int32_t meshx_platform_serial_read(uint8_t *data, uint16_t max_len)
 {
-    return meshx_platform_console_read(data, max_len);
+    if (g_mxsp_use_console)
+    {
+        return meshx_platform_console_read(data, max_len);
+    }
+    k_msleep(20);
+    return 0;
 }
 
 void meshx_platform_serial_write(const uint8_t *data, uint16_t len)
 {
-    meshx_platform_console_write((const char *)data, len);
+    if (g_mxsp_use_console)
+    {
+        meshx_platform_console_write((const char *)data, len);
+    }
 }
 
 bool meshx_platform_get_mxsp_use_console(void)

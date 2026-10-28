@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 set(ZEPHYR_COMMON_DIR "${CMAKE_SOURCE_DIR}/port/platform/zephyr")
-set(PLATFORM_TEST_SUPPORTED OFF CACHE INTERNAL "Testing supported in platform" FORCE)
+set(PLATFORM_TEST_SUPPORTED ON CACHE INTERNAL "Testing supported in platform" FORCE)
 
 # ------------------------------------------------------------------------------
 # Auto-detect DeviceTree Overlays: MCU Common + BSP Board Custom

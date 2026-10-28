@@ -22,7 +22,7 @@
 #define SHELL_MAX_ARGS           16U
 #define SHELL_PROMPT             ""
 
-#define MESHX_SHELL_TASK_STACK_SIZE 2048U
+#define MESHX_SHELL_TASK_STACK_SIZE 1536U
 #define MESHX_SHELL_TASK_PRIORITY   4U
 #define MESHX_SHELL_TASK_NAME      "meshx_shell"
 
@@ -94,12 +94,15 @@ static void shell_process_line(char *line)
 
 extern bool meshx_serial_is_hosted_mode_enabled(void);
 
+static meshx_task_t s_shell_task;
+static bool s_shell_running = false;
+
 static void shell_task(void *pvParameters)
 {
     uint8_t c;
     meshx_shell_printf("\n%s", SHELL_PROMPT);
 
-    while (true)
+    while (s_shell_running)
     {
         if (meshx_platform_get_mxsp_use_console() && meshx_serial_is_hosted_mode_enabled())
         {
@@ -139,12 +142,13 @@ static void shell_task(void *pvParameters)
 
 meshx_err_t meshx_shell_init(void)
 {
+    if (shell_ctx != NULL && shell_ctx->initialized)
+        return MESHX_SUCCESS;
+
     if (MESHX_SUCCESS != MESHX_CALLOC(&shell_ctx, 1, sizeof(shell_ctx_t)))
     {
         return MESHX_NO_MEM;
     }
-    if (shell_ctx->initialized)
-        return MESHX_SUCCESS;
 
     MESHX_LOGD(MODULE_ID_COMMON, "Initializing MeshX Shell...");
 
@@ -152,6 +156,7 @@ meshx_err_t meshx_shell_init(void)
     if (err != MESHX_SUCCESS)
     {
         MESHX_LOGE(MODULE_ID_COMMON, "Platform console init failed: %d", err);
+        MESHX_FREE(&shell_ctx);
         return err;
     }
 
@@ -162,14 +167,18 @@ meshx_err_t meshx_shell_init(void)
 
 meshx_err_t meshx_shell_deinit(void)
 {
-    return MESHX_FREE(&shell_ctx);
+    if (shell_ctx != NULL)
+    {
+        return MESHX_FREE(&shell_ctx);
+    }
+    return MESHX_SUCCESS;
 }
 
 meshx_err_t meshx_shell_register_command(const meshx_shell_cmd_t *cmd)
 {
-    if (!shell_ctx->initialized)
+    if (!shell_ctx || !shell_ctx->initialized)
     {
-        MESHX_LOGE(MODULE_ID_COMMON, "Shell not initialized, cannot register command '%s'", cmd->command);
+        MESHX_LOGE(MODULE_ID_COMMON, "Shell not initialized, cannot register command '%s'", cmd ? cmd->command : "NULL");
         return MESHX_ERR_NOT_INIT;
     }
     if (shell_ctx->cmd_count >= MESHX_SHELL_MAX_COMMANDS)
@@ -181,13 +190,40 @@ meshx_err_t meshx_shell_register_command(const meshx_shell_cmd_t *cmd)
 
 meshx_err_t meshx_shell_start(void)
 {
-    meshx_task_t task_cfg = {
-        .arg        = NULL,
-        .task_cb    = shell_task,
-        .task_name  = MESHX_SHELL_TASK_NAME,
-        .priority   = MESHX_SHELL_TASK_PRIORITY,
-        .stack_size = MESHX_SHELL_TASK_STACK_SIZE,
-    };
+    if (s_shell_running)
+    {
+        return MESHX_SUCCESS;
+    }
 
-    return meshx_task_create(&task_cfg);
+    s_shell_task.arg        = NULL;
+    s_shell_task.task_cb    = shell_task;
+    s_shell_task.task_name  = MESHX_SHELL_TASK_NAME;
+    s_shell_task.priority   = MESHX_SHELL_TASK_PRIORITY;
+    s_shell_task.stack_size = MESHX_SHELL_TASK_STACK_SIZE;
+
+    meshx_err_t err = meshx_task_create(&s_shell_task);
+    if (err == MESHX_SUCCESS)
+    {
+        s_shell_running = true;
+    }
+    return err;
+}
+
+bool meshx_shell_is_running(void)
+{
+    return s_shell_running;
+}
+
+meshx_err_t meshx_shell_stop(void)
+{
+    if (!s_shell_running)
+    {
+        return MESHX_SUCCESS;
+    }
+
+    s_shell_running = false;
+    meshx_err_t err = meshx_task_delete(&s_shell_task);
+    meshx_shell_deinit();
+    MESHX_LOGI(MODULE_ID_COMMON, "MeshX Shell stopped and reclaimed task memory");
+    return err;
 }

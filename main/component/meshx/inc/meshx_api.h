@@ -13,7 +13,6 @@
 #ifndef __MESHX_API_H__
 #define __MESHX_API_H__
 
-#include "unit_test.h"
 #include <meshx_common.h>
 #include <meshx_control_task.h>
 /* NOTE: meshx_ble_mesh_sensor_srv.h decommissioned in TASK-007 (UVP migration) */

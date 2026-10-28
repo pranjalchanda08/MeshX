@@ -125,6 +125,7 @@ typedef enum {
     MXCP_CMD_UNBIND_ELEMENTS       = 0x72,
     MXCP_CMD_GET_LINK_TABLE        = 0x73,
     MXCP_CMD_GET_LINK_EPOCH        = 0x74,
+    MXCP_CMD_DEV_GET_INFO          = 0x75,
 
     MXCP_CMD_MAX
 } mxcp_cmd_id_t;
@@ -168,6 +169,7 @@ typedef enum {
     MXCP_EVT_UNBIND_STATUS         = 0x72,
     MXCP_EVT_LINK_TABLE_RSP        = 0x73,
     MXCP_EVT_LINK_EPOCH_RSP        = 0x74,
+    MXCP_EVT_DEV_INFO_RSP          = 0x75,
 
     MXCP_EVT_PROV_STATE_IND        = 0x8C,
     MXCP_EVT_PROV_LINK_OPEN        = 0x8D,
@@ -405,6 +407,17 @@ typedef struct {
     uint16_t link_epoch;
     uint16_t node_addr;
 } MESHX_PACKED mxcp_evt_link_epoch_rsp_t;
+
+typedef struct {
+    uint8_t  uuid[MXCP_UUID_SIZE]; /**< 16-byte Device UUID */
+    uint8_t  mac[6];               /**< 6-byte Hardware MAC address */
+    uint16_t cid;                  /**< Company ID (LE) */
+    uint16_t pid;                  /**< Product ID (LE) */
+    uint8_t  prov_status;          /**< 0 = unprovisioned, 1 = provisioned */
+    uint16_t node_addr;            /**< Unicast address (0x0000 if unprovisioned) */
+    uint32_t link_epoch;           /**< Monotonic NVS link table epoch */
+    uint8_t  element_count;        /**< Number of active elements */
+} MESHX_PACKED mxcp_evt_dev_info_rsp_t;
 
 typedef struct {
     uint8_t  bearer_mask;       /**< 0x01 = PB-ADV, 0x02 = PB-GATT, 0x03 = Both */
