@@ -24,8 +24,11 @@
 #include "interface/gpio/meshx_gpio.h"
 #include "interface/gpio/meshx_gpio_types.h"
 #endif
+#if CONFIG_ENABLE_UNIT_TEST
+#include "interface/utils/meshx_shell.h"
+#endif
 
-#define MESHX_UART_RX_TASK_STACK_SIZE 2048
+#define MESHX_UART_RX_TASK_STACK_SIZE 1024
 
 #define MESHX_UART_RX_TASK_PRIO 5
 
@@ -167,6 +170,16 @@ static void mxsp_uart_rx_task(void *pvParameters)
     uint8_t data;
     while (1)
     {
+#if CONFIG_ENABLE_UNIT_TEST
+        /* If hosted mode is activated on console, stop the shell and reclaim its stack & context memory */
+        if (meshx_platform_get_mxsp_use_console() && mxsp_ctx.hosted_mode_enabled)
+        {
+            if (meshx_shell_is_running())
+            {
+                meshx_shell_stop();
+            }
+        }
+#endif
         int32_t len = meshx_platform_serial_read(&data, 1);
         if (len > 0)
         {

@@ -117,6 +117,7 @@ static meshx_err_t mxcp_cmd_fn_bind_elements          (const uint8_t *payload, u
 static meshx_err_t mxcp_cmd_fn_unbind_elements        (const uint8_t *payload, uint8_t len);
 static meshx_err_t mxcp_cmd_fn_get_link_table         (const uint8_t *payload, uint8_t len);
 static meshx_err_t mxcp_cmd_fn_get_link_epoch         (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_get_dev_info           (const uint8_t *payload, uint8_t len);
 #if CONFIG_MESHX_ENABLE_VIRTUAL_TOPO
 static meshx_err_t mxcp_cmd_fn_virtual_topo            (const uint8_t *payload, uint8_t len);
 #endif
@@ -164,6 +165,7 @@ static const mxcp_cmd_entry_t mxcp_cmd_table[] = {
     MXCP_CMD_ENTRY(MXCP_CMD_UNBIND_ELEMENTS,        mxcp_cmd_fn_unbind_elements,        sizeof(mxcp_cmd_unbind_elements_t),       MXCP_EVT_UNBIND_STATUS,          MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_GET_LINK_TABLE,         mxcp_cmd_fn_get_link_table,         0,                                        MXCP_EVT_LINK_TABLE_RSP,         MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_GET_LINK_EPOCH,         mxcp_cmd_fn_get_link_epoch,         0,                                        MXCP_EVT_LINK_EPOCH_RSP,         MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_DEV_GET_INFO,           mxcp_cmd_fn_get_dev_info,           0,                                        MXCP_EVT_DEV_INFO_RSP,           MXCP_EVT_NONE),
 #if CONFIG_ENABLE_UVP_PROVISIONER
     MXCP_CMD_ENTRY(MXCP_CMD_UVP_RPR_SCAN_START,     mxcp_cmd_fn_uvp_rpr_scan_start,     0,                                        MXCP_EVT_NONE,                   MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_UVP_RPR_TUNNEL_SEND,    mxcp_cmd_fn_uvp_rpr_tunnel_send,    0,                                        MXCP_EVT_NONE,                   MXCP_EVT_NONE),
@@ -719,11 +721,15 @@ static meshx_err_t mxcp_cmd_fn_get_link_table(const uint8_t *payload, uint8_t le
     MESHX_UNUSED(len);
     meshx_nvs_link_table_t table;
     meshx_err_t err = meshx_nvs_link_table_get(&table);
-    if (err == MESHX_SUCCESS)
+    if (err != MESHX_SUCCESS)
     {
-        mxcp_send_event(MXCP_EVT_LINK_TABLE_RSP, (const uint8_t *)&table, sizeof(table));
+        memset(&table, 0, sizeof(table));
+        table.magic = MESHX_NVS_LINK_MAGIC;
+        table.version = MESHX_NVS_LINK_VERSION;
+        table.link_epoch = 0;
+        table.link_count = 0;
     }
-    return err;
+    return mxcp_send_event(MXCP_EVT_LINK_TABLE_RSP, (const uint8_t *)&table, sizeof(table));
 }
 
 /**
@@ -744,6 +750,41 @@ static meshx_err_t mxcp_cmd_fn_get_link_epoch(const uint8_t *payload, uint8_t le
     rsp.link_epoch = meshx_nvs_get_link_epoch();
     rsp.node_addr  = meshx_get_node_addr();
     return mxcp_send_event(MXCP_EVT_LINK_EPOCH_RSP, (const uint8_t *)&rsp, sizeof(rsp));
+}
+
+/**
+ * @brief Handle MXCP_CMD_DEV_GET_INFO.
+ *
+ * Retrieves runtime identification, dynamic 16-byte Device UUID, MAC address,
+ * CID, PID, provisioned state, primary unicast address, link table epoch,
+ * and element count, transmitting them via MXCP_EVT_DEV_INFO_RSP.
+ *
+ * @param[in] payload Unused.
+ * @param[in] len     Unused.
+ *
+ * @return MESHX_SUCCESS on success.
+ */
+static meshx_err_t mxcp_cmd_fn_get_dev_info(const uint8_t *payload, uint8_t len)
+{
+    MESHX_UNUSED(payload);
+    MESHX_UNUSED(len);
+    mxcp_evt_dev_info_rsp_t rsp;
+    memset(&rsp, 0, sizeof(rsp));
+
+    meshx_uuid_t uuid;
+    if (meshx_get_device_uuid(&uuid) == MESHX_SUCCESS)
+    {
+        memcpy(rsp.uuid, uuid, sizeof(rsp.uuid));
+    }
+    meshx_platform_get_mac(rsp.mac);
+    rsp.cid = meshx_get_cid();
+    rsp.pid = meshx_get_pid();
+    rsp.node_addr = meshx_get_node_addr();
+    rsp.prov_status = (rsp.node_addr != MESHX_ADDR_UNASSIGNED) ? 1 : 0;
+    rsp.link_epoch = meshx_nvs_get_link_epoch();
+    rsp.element_count = meshx_comp_get_element_count();
+
+    return mxcp_send_event(MXCP_EVT_DEV_INFO_RSP, (const uint8_t *)&rsp, sizeof(rsp));
 }
 
 /**

@@ -8,6 +8,7 @@
 #ifndef __MESHX_SHELL_H__
 #define __MESHX_SHELL_H__
 
+#include <stdbool.h>
 #include "meshx_err.h"
 
 #ifdef __cplusplus
@@ -57,6 +58,20 @@ meshx_err_t meshx_shell_register_command(const meshx_shell_cmd_t *cmd);
  * @return meshx_err_t MESHX_SUCCESS on success, error code otherwise.
  */
 meshx_err_t meshx_shell_start(void);
+
+/**
+ * @brief Checks if the MeshX shell task is currently active.
+ *
+ * @return true if running, false otherwise.
+ */
+bool meshx_shell_is_running(void);
+
+/**
+ * @brief Stops and deletes the MeshX shell task and frees all shell memory.
+ *
+ * @return meshx_err_t MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_shell_stop(void);
 
 /**
  * @brief Prints a message to the shell console.

@@ -159,7 +159,7 @@ meshx_err_t init_unit_test_console()
  */
 meshx_err_t deinit_unit_test_console()
 {
-    return meshx_shell_deinit();
+    return meshx_shell_stop();
 }
 
 /**

@@ -24,7 +24,6 @@ extern "C" {
 #endif
 
 #if CONFIG_ENABLE_UNIT_TEST
-#include "argtable3/argtable3.h"
 /**
  * @brief Macro to extract an argument from the argument list.
  */
