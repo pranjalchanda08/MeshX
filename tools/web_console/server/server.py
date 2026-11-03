@@ -48,8 +48,10 @@ def find_elf() -> Optional[str]:
 
     build_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../build"))
 
-    # Prioritize the build-path resolved ELF based on active BSP and product
-    resolved_elf = os.path.join(build_dir, current_bsp, "Debug", current_product, f"meshx_build_{current_bsp}.elf")
+    # Prioritize the build-path resolved ELF based on active BSP, platform, and product
+    resolved_elf = os.path.join(build_dir, current_bsp, "esp", "Debug", current_product, f"meshx_build_{current_bsp}.elf")
+    if not os.path.exists(resolved_elf):
+        resolved_elf = os.path.join(build_dir, current_bsp, "Debug", current_product, f"meshx_build_{current_bsp}.elf")
     if os.path.exists(resolved_elf):
         return resolved_elf
 
@@ -94,7 +96,9 @@ class AsyncSerialWorker:
     def set_active_bsp_and_product(self, bsp: str, product: str):
         """Dynamically load/reload the ELF file when a new target configuration is selected in UI."""
         build_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../build"))
-        target_elf = os.path.join(build_dir, bsp, "Debug", product, f"meshx_build_{bsp}.elf")
+        target_elf = os.path.join(build_dir, bsp, "esp", "Debug", product, f"meshx_build_{bsp}.elf")
+        if not os.path.exists(target_elf):
+            target_elf = os.path.join(build_dir, bsp, "Debug", product, f"meshx_build_{bsp}.elf")
         if os.path.exists(target_elf):
             if MeshXLogDecoder:
                 logger.info(f"Dynamically loading selected ELF: {target_elf}")
@@ -534,9 +538,10 @@ def get_current_product() -> str:
         parts = elf_path.split(os.sep)
         if "build" in parts:
             idx = parts.index("build")
-            # build/[bsp]/[build_type]/[product_name]
-            if idx + 3 < len(parts):
-                return parts[idx + 3]
+            # Can be build/[bsp]/[platform]/[build_type]/[product_name] or legacy build/[bsp]/[build_type]/[product_name]
+            # Product folder contains the ELF file, so its directory is the parent of the ELF
+            if len(parts) >= 2:
+                return parts[-2]
     return "all_in_one"
 
 async def run_flash_subprocess(worker: AsyncSerialWorker, port: str, bsp: str, product: str, erase: bool):

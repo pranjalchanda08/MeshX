@@ -10,6 +10,8 @@ import shutil
 import argparse
 import subprocess
 import re
+from copy import copy
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from abc import ABC, abstractmethod
 
 VERSION_STRING = "v0.2.0"
@@ -687,7 +689,7 @@ def main():
 
     target_group = parser.add_argument_group("Target Options")
     target_group.add_argument('-H', '--host', choices=PLAT_LIST, default=PLAT_LIST[0] if PLAT_LIST else None, help=f"Target host. Default is {PLAT_LIST[0] if PLAT_LIST else 'None'}")
-    target_group.add_argument('-P', '--port', type=str, default=None, help="Target port")
+    target_group.add_argument('-P', '--port', nargs='+', default=None, help="Target port(s), space or comma separated for multi-parallel flashing (e.g., -P COM3 COM4 or -P=COM3,COM4)")
     target_group.add_argument('-C', '--config', action="store_true", help="target configs")
     target_group.add_argument('-F', '--flash', choices=["firmware", "cfg", "all"], nargs='?', const="all", default=None, help="flash ESP target (default: all)")
     target_group.add_argument('-E', '--erase', choices=["firmware", "chip", "cfg", "all"], default=None, help="Erase target")
@@ -765,17 +767,63 @@ def main():
 
     print(f"Final Product Names: {args.prod_name}")
 
-    build_root = os.path.join("build", args.bsp, args.build_type)
+    build_root = os.path.join("build", args.bsp, args.host, args.build_type)
 
-    target_sel = None
-    if args.host == "esp":
-        target_sel = ESPTarget(args.port, args.baud)
-    elif args.host == "zephyr" or args.host == "nrf":
-        target_sel = ZephyrTarget(args.port, args.baud)
-    else:
-        raise TargetFlashException(f"Unsupported target host: {args.host}")
+    ports = []
+    if args.port:
+        for p in args.port:
+            for sub_p in p.split(','):
+                sub_p_clean = sub_p.strip()
+                if sub_p_clean:
+                    ports.append(sub_p_clean)
+
+    def instantiate_target(port):
+        if args.host == "esp":
+            return ESPTarget(port, args.baud)
+        elif args.host == "zephyr" or args.host == "nrf":
+            return ZephyrTarget(port, args.baud)
+        else:
+            raise TargetFlashException(f"Unsupported target host: {args.host}")
+
+    def run_parallel_op(op_name, op_func):
+        if not ports:
+            # Single run without specific port specified
+            target = instantiate_target(None)
+            op_func(target, args)
+            return
+
+        if len(ports) == 1:
+            target = instantiate_target(ports[0])
+            port_args = copy(args)
+            port_args.port = ports[0]
+            op_func(target, port_args)
+            return
+
+        print(f"\n[Parallel {op_name}] Running across {len(ports)} ports: {', '.join(ports)}...")
+        errors = {}
+        with ThreadPoolExecutor(max_workers=len(ports)) as executor:
+            future_to_port = {}
+            for port in ports:
+                target = instantiate_target(port)
+                port_args = copy(args)
+                port_args.port = port
+                future = executor.submit(op_func, target, port_args)
+                future_to_port[future] = port
+
+            for future in as_completed(future_to_port):
+                p = future_to_port[future]
+                try:
+                    future.result()
+                    print(f"[Parallel {op_name}] Port {p}: SUCCESS")
+                except Exception as e:
+                    print(f"[Parallel {op_name}] Port {p}: FAILED ({e})")
+                    errors[p] = e
+
+        if errors:
+            raise TargetFlashException(f"{op_name} failed on ports: {list(errors.keys())}")
 
     if args.config:
+        target_sel = instantiate_target(ports[0] if ports else None)
         target_sel.configure(build_root, args)
 
     if args.clean:
@@ -784,18 +832,21 @@ def main():
         build(args, build_root)
     if args.erase:
         if args.erase in ["firmware", "chip", "all"]:
-            target_sel.erase(args, build_root)
+            run_parallel_op("Erase", lambda t, a: t.erase(a, build_root))
         if args.erase in ["cfg", "all"]:
-            target_sel.erase_cfg(args, build_root)
+            run_parallel_op("Erase Config", lambda t, a: t.erase_cfg(a, build_root))
     if args.flash:
         if args.flash in ["firmware", "all"]:
-            target_sel.flash(args, build_root)
+            run_parallel_op("Flash Firmware", lambda t, a: t.flash(a, build_root))
         if args.flash in ["cfg", "all"]:
-            target_sel.flash_cfg(args, build_root)
+            run_parallel_op("Flash Config", lambda t, a: t.flash_cfg(a, build_root))
     if args.reset:
-        target_sel.reset(args, build_root)
+        run_parallel_op("Reset", lambda t, a: t.reset(a, build_root))
     if args.run:
-        target_sel.run(args, build_root)
+        target_sel = instantiate_target(ports[0] if ports else None)
+        run_args = copy(args)
+        run_args.port = ports[0] if ports else None
+        target_sel.run(run_args, build_root)
 
 if __name__ == "__main__":
     try:
