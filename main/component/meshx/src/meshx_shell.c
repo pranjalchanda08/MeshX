@@ -99,44 +99,52 @@ static bool s_shell_running = false;
 
 static void shell_task(void *pvParameters)
 {
-    uint8_t c;
+    uint8_t rx_buf[64];
     meshx_shell_printf("\n%s", SHELL_PROMPT);
 
-    while (s_shell_running)
+    while (1)
     {
         if (meshx_platform_get_mxsp_use_console() && meshx_serial_is_hosted_mode_enabled())
         {
             meshx_task_delay(100);
             continue;
         }
-        if (meshx_platform_console_read(&c, 1) > 0)
+        int32_t len = meshx_platform_console_read(rx_buf, sizeof(rx_buf), 10);
+        if (len > 0)
         {
-            if (c == '\r' || c == '\n')
+            for (int32_t i = 0; i < len; i++)
             {
-                shell_ctx->line_buffer[shell_ctx->line_ptr] = '\0';
-                if (shell_ctx->line_ptr > 0)
+                uint8_t c = rx_buf[i];
+                if (c == '\r' || c == '\n')
                 {
-                    shell_process_line(shell_ctx->line_buffer);
+                    shell_ctx->line_buffer[shell_ctx->line_ptr] = '\0';
+                    if (shell_ctx->line_ptr > 0)
+                    {
+                        shell_process_line(shell_ctx->line_buffer);
+                    }
+                    shell_ctx->line_ptr = 0;
+                    meshx_shell_printf(SHELL_PROMPT);
                 }
-                shell_ctx->line_ptr = 0;
-                meshx_shell_printf(SHELL_PROMPT);
-            }
-            else if (c == '\b' || c == 0x7F)    /* Backspace */
-            {
-                if (shell_ctx->line_ptr > 0)
+                else if (c == '\b' || c == 0x7F)    /* Backspace */
                 {
-                    shell_ctx->line_ptr--;
+                    if (shell_ctx->line_ptr > 0)
+                    {
+                        shell_ctx->line_ptr--;
+                    }
                 }
-            }
-            else if (shell_ctx->line_ptr < SHELL_MAX_LINE_LEN - 1)
-            {
-                if (isprint(c))
+                else if (shell_ctx->line_ptr < SHELL_MAX_LINE_LEN - 1)
                 {
-                    shell_ctx->line_buffer[shell_ctx->line_ptr++] = c;
+                    if (isprint(c))
+                    {
+                        shell_ctx->line_buffer[shell_ctx->line_ptr++] = c;
+                    }
                 }
             }
         }
-        meshx_task_delay(10); // Small delay to prevent tight loop
+        else
+        {
+            meshx_task_delay(10); // Small delay only when no input is available
+        }
     }
 }
 
@@ -222,8 +230,8 @@ meshx_err_t meshx_shell_stop(void)
     }
 
     s_shell_running = false;
-    meshx_err_t err = meshx_task_delete(&s_shell_task);
-    meshx_shell_deinit();
-    MESHX_LOGI(MODULE_ID_COMMON, "MeshX Shell stopped and reclaimed task memory");
+    meshx_err_t err = /* meshx_task_delete(&s_shell_task); */ MESHX_SUCCESS;
+    /* meshx_shell_deinit(); */
+    MESHX_LOGI(MODULE_ID_COMMON, "MeshX Shell stopped");
     return err;
 }

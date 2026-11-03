@@ -25,6 +25,29 @@ extern "C" {
  * @brief Console channel interface types.
  */
 typedef enum {
+    MESHX_PLATFORM_TX_PRIO_LOW  = 0, /**< Low priority (e.g. background binary/text logging) */
+    MESHX_PLATFORM_TX_PRIO_HIGH = 1  /**< High priority (e.g. MXCP / protocol control frames) */
+} meshx_platform_tx_prio_t;
+
+/**
+ * @brief Acquire exclusive access to console/serial transmit channel.
+ *
+ * For non-multiplexed channels (separate console and serial), this returns true immediately.
+ * For multiplexed channels (console shared between logs and serial protocol), this acquires
+ * an OS mutex/semaphore with priority-dependent wait behavior.
+ *
+ * @param[in] prio Priority level (LOW for logs, HIGH for MXCP control).
+ * @param[in] timeout_ms Maximum time to wait in milliseconds.
+ * @return true if lock was acquired (or not required), false if timeout/failed.
+ */
+bool meshx_platform_console_tx_lock(meshx_platform_tx_prio_t prio, uint32_t timeout_ms);
+
+/**
+ * @brief Release exclusive access to console/serial transmit channel.
+ */
+void meshx_platform_console_tx_unlock(void);
+
+typedef enum {
     MESHX_PLATFORM_CONSOLE_CHANNEL_UART,     /**< Standard physical logging UART */
     MESHX_PLATFORM_CONSOLE_CHANNEL_USB_CDC   /**< Native USB-to-UART or JTAG/CDC Bridge */
 } meshx_platform_console_channel_t;
@@ -68,7 +91,7 @@ meshx_err_t meshx_platform_serial_init(void);
  * @param[in] len Length of the data to read.
  * @return int32_t Number of bytes read, or negative error code.
  */
-int32_t meshx_platform_serial_read(uint8_t *data, uint16_t len);
+int32_t meshx_platform_serial_read(uint8_t *data, uint16_t len, uint32_t timeout_ms);
 
 /**
  * @brief Writes data to the console interface.
@@ -82,10 +105,12 @@ void meshx_platform_console_write(const char *data, uint16_t len);
  * @brief Reads data from the console interface.
  *
  * @param[out] data Pointer to the data buffer.
- * @param[in] len Length of the data to read.
- * @return int32_t Number of bytes read, or negative error code.
+ * @param[in] len Maximum number of bytes to read.
+ * @param[in] timeout_ms Block timeout in milliseconds. 0 returns immediately
+ *        with whatever is available (non-blocking poll).
+ * @return int32_t Number of bytes read, 0 on timeout, negative error code.
  */
-int32_t meshx_platform_console_read(uint8_t *data, uint16_t len);
+int32_t meshx_platform_console_read(uint8_t *data, uint16_t len, uint32_t timeout_ms);
 
 /**
  * @brief Initializes the console interface.

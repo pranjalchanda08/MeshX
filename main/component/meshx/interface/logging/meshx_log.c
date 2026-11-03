@@ -27,6 +27,8 @@
 #define CONFIG_MESHX_LOG_BUF_SIZE 128
 #endif
 
+extern bool meshx_serial_is_hosted_mode_enabled(void);
+
 #if CONFIG_MESHX_LOG_THREADED
 #include "meshx_control_task.h"
 
@@ -58,7 +60,11 @@ static void meshx_log_task_handler(void *args)
             if (recv_msg.len >= 2 && recv_msg.data[0] == 0xAD && recv_msg.data[1] == 0xDE)
             {
                 /* Raw binary output for host decoder */
-                meshx_platform_console_write((const char *)recv_msg.data, recv_msg.len);
+                if (meshx_platform_console_tx_lock(MESHX_PLATFORM_TX_PRIO_LOW, 0))
+                {
+                    meshx_platform_console_write((const char *)recv_msg.data, recv_msg.len);
+                    meshx_platform_console_tx_unlock();
+                }
             }
             else
             {
@@ -317,7 +323,11 @@ static void vmeshx_log_packet(module_id_t module_id, meshx_log_level_t log_level
 #endif
 
     /* Fallback: direct output if not threaded or queue full/not ready */
-    meshx_platform_console_write((const char *)pkt, sizeof(meshx_log_packet_t));
+    if (meshx_platform_console_tx_lock(MESHX_PLATFORM_TX_PRIO_LOW, 0))
+    {
+        meshx_platform_console_write((const char *)pkt, sizeof(meshx_log_packet_t));
+        meshx_platform_console_tx_unlock();
+    }
 }
 
 void meshx_log_packet(module_id_t module_id, meshx_log_level_t log_level,

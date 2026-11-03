@@ -8,6 +8,7 @@
  */
 
 #include "interface/meshx_platform.h"
+#include "interface/rtos/meshx_sem.h"
 #include "interface/logging/meshx_log.h"
 #include "meshx_config_internal.h"
 #include <zephyr/kernel.h>
@@ -21,6 +22,40 @@
 #include <zephyr/sys/printk.h>
 
 static bool g_mxsp_use_console = false;
+static meshx_sem_t s_console_tx_sem = {
+    .sem_name = "cons_tx_sem",
+    .max_count = 1,
+    .init_count = 1,
+    .__sem_handle = NULL
+};
+static bool s_console_tx_sem_init = false;
+
+static void ensure_tx_sem_init(void)
+{
+    if (!s_console_tx_sem_init) {
+        meshx_sem_create(&s_console_tx_sem);
+        s_console_tx_sem_init = true;
+    }
+}
+
+bool meshx_platform_console_tx_lock(meshx_platform_tx_prio_t prio, uint32_t timeout_ms)
+{
+    if (!g_mxsp_use_console) {
+        return true;
+    }
+    ensure_tx_sem_init();
+    uint32_t wait_ms = (prio == MESHX_PLATFORM_TX_PRIO_HIGH) ? timeout_ms : 0;
+    return (meshx_sem_take(&s_console_tx_sem, wait_ms) == MESHX_SUCCESS);
+}
+
+void meshx_platform_console_tx_unlock(void)
+{
+    if (!g_mxsp_use_console) {
+        return;
+    }
+    ensure_tx_sem_init();
+    meshx_sem_give(&s_console_tx_sem);
+}
 
 meshx_err_t meshx_platform_init(void)
 {
@@ -65,7 +100,7 @@ void meshx_platform_console_write(const char *data, uint16_t len)
     }
 }
 
-int32_t meshx_platform_console_read(uint8_t *data, uint16_t len)
+int32_t meshx_platform_console_read(uint8_t *data, uint16_t len, uint32_t timeout_ms)
 {
     if (!data || len == 0)
     {
@@ -92,9 +127,9 @@ int32_t meshx_platform_console_read(uint8_t *data, uint16_t len)
             break;
         }
     }
-    if (read_bytes == 0)
+    if (timeout_ms > 0 && read_bytes == 0)
     {
-        k_msleep(10);
+        k_msleep(timeout_ms < 10 ? timeout_ms : 10);
     }
     return read_bytes;
 #else
@@ -137,11 +172,11 @@ meshx_err_t meshx_platform_serial_init(void)
     return MESHX_SUCCESS;
 }
 
-int32_t meshx_platform_serial_read(uint8_t *data, uint16_t max_len)
+int32_t meshx_platform_serial_read(uint8_t *data, uint16_t max_len, uint32_t timeout_ms)
 {
     if (g_mxsp_use_console)
     {
-        return meshx_platform_console_read(data, max_len);
+        return meshx_platform_console_read(data, max_len, timeout_ms);
     }
     k_msleep(20);
     return 0;
@@ -151,7 +186,11 @@ void meshx_platform_serial_write(const uint8_t *data, uint16_t len)
 {
     if (g_mxsp_use_console)
     {
-        meshx_platform_console_write((const char *)data, len);
+        if (meshx_platform_console_tx_lock(MESHX_PLATFORM_TX_PRIO_HIGH, 500))
+        {
+            meshx_platform_console_write((const char *)data, len);
+            meshx_platform_console_tx_unlock();
+        }
     }
 }
 

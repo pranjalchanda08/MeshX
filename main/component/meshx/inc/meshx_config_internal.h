@@ -62,6 +62,11 @@
 
 /**
  * @brief Enable Unit Test
+ *
+ * When enabled, the `ut` shell command is registered, allowing the host
+ * to activate hosted/MXCP mode over USB-CDC via `ut 8 1 1 1`. Required
+ * for the MXCTF driver to route MXCP frames over the USB-Serial-JTAG
+ * console port instead of UART1.
  */
 #ifndef CONFIG_ENABLE_UNIT_TEST
 #define CONFIG_ENABLE_UNIT_TEST                 0
