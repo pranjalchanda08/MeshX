@@ -77,13 +77,69 @@ class MeshXNode:
                         return os.path.join(root, f)
         return None
 
+    def _serial_alive(self):
+        return self.serial is not None and self.serial.is_open
+
+    def _drop_serial(self):
+        """Close and clear a dead serial handle (e.g. Windows invalidated it
+        after a hardware EN reset). Log file is left untouched."""
+        if self.serial:
+            try:
+                self.serial.close()
+            except Exception:
+                pass
+            self.serial = None
+
+    def _ensure_connected(self):
+        """Open (or re-open) the serial port, retrying while the device
+        re-enumerates after a reset. Returns True on success."""
+        if self._serial_alive():
+            return True
+        self._drop_serial()
+        while self.running:
+            try:
+                self.serial = serial.Serial(self.port, self.baud, timeout=1)
+                self.logger.info(f"Connected to {self.port}")
+                return True
+            except Exception as e:
+                self.logger.debug(f"Connect retry on {self.port}: {e}")
+                time.sleep(0.5)
+        return False
+
+    def _serial_write(self, data: bytes) -> bool:
+        """Write with one auto-reconnect on a dead handle (Windows OSError 9
+        after a USB-CDC re-enumeration)."""
+        try:
+            with self.lock:
+                if not self._serial_alive():
+                    return False
+                self.serial.write(data)
+            return True
+        except (OSError, serial.SerialException) as e:
+            if self.running:
+                self.logger.error(f"Serial write error on {self.port}: {e} (reconnecting)")
+            self._drop_serial()
+            if not self._ensure_connected():
+                return False
+            try:
+                with self.lock:
+                    self.serial.write(data)
+                return True
+            except Exception as e2:
+                self.logger.error(f"Serial write failed after reconnect: {e2}")
+                return False
+        except Exception as e:
+            self.logger.error(f"Serial write error: {e}")
+            return False
+
     def connect(self):
         try:
             # Open log file in append mode if it's not open
             if self.log_file and not self.f_log:
                 self.f_log = open(self.log_file, "a", encoding='utf-8', errors='ignore')
 
-            self.serial = serial.Serial(self.port, self.baud, timeout=1)
+            if not self._ensure_connected():
+                return False
             self.running = True
             self.thread = threading.Thread(target=self._read_loop, daemon=True)
             self.thread.start()
@@ -98,7 +154,7 @@ class MeshXNode:
         if self.serial:
             try:
                 self.serial.close()
-            except:
+            except Exception:
                 pass
             self.serial = None
             
@@ -192,16 +248,31 @@ class MeshXNode:
             self.logger.debug(f"Received MXCP frame: type=0x{msg_type:02X}, len={len(payload)}")
             self.mxcp_queue.put((msg_type, payload))
 
-        while self.running and self.serial:
+        while self.running:
             try:
-                if self.serial.in_waiting > 0:
-                    chunk = self.serial.read(self.serial.in_waiting)
+                with self.lock:
+                    alive = self._serial_alive()
+                if not alive:
+                    if not self._ensure_connected():
+                        time.sleep(0.5)
+                        continue
+                with self.lock:
+                    waiting = self.serial.in_waiting
+                if waiting > 0:
+                    with self.lock:
+                        chunk = self.serial.read(waiting)
                     if self.demux:
                         self.demux.feed(chunk, on_log=handle_log, on_mxsp=handle_mxsp, on_text=handle_text)
                     else:
                         handle_text(chunk)
                 else:
                     time.sleep(0.01)
+            except (OSError, serial.SerialException) as e:
+                if self.running:
+                    self.logger.error(f"Serial I/O error on {self.port}: {e} (reconnecting)")
+                self._drop_serial()
+                if not self._ensure_connected():
+                    time.sleep(0.5)
             except Exception as e:
                 if self.running:
                     self.logger.error(f"Read error: {e}")
@@ -213,10 +284,7 @@ class MeshXNode:
         
         self.prompt_received.clear()
         full_cmd = cmd + "\n"
-        try:
-            self.serial.write(full_cmd.encode())
-        except Exception as e:
-            self.logger.error(f"Write error: {e}")
+        if not self._serial_write(full_cmd.encode()):
             return False
         
         if wait_for_prompt:
@@ -239,12 +307,7 @@ class MeshXNode:
         frame.append(checksum)
         frame.append(0xEF)
         
-        try:
-            self.serial.write(bytes(frame))
-            return True
-        except Exception as e:
-            self.logger.error(f"Failed to write MXCP frame: {e}")
-            return False
+        return self._serial_write(bytes(frame))
 
     def wait_for_mxcp_frame(self, expected_type, timeout=5):
         start_time = time.time()

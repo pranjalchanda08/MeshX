@@ -28,9 +28,14 @@
 #include "interface/utils/meshx_shell.h"
 #endif
 
-#define MESHX_UART_RX_TASK_STACK_SIZE 1024
+#define MESHX_UART_RX_TASK_STACK_SIZE 4096
 
 #define MESHX_UART_RX_TASK_PRIO 5
+
+#define MESHX_UART_RX_BUF_SIZE MXCP_FRAME_MAX_SIZE
+#define MESHX_UART_RX_BLOCK_TIMEOUT_MS 20
+#define MESHX_UART_RX_POLL_TIMEOUT_MS 0
+#define MESHX_UART_RX_BURST_MAX_READS 4
 
 mxsp_ctx_t mxsp_ctx;
 
@@ -45,7 +50,7 @@ enum
 };
 
 extern void meshx_platform_serial_write(const uint8_t *data, uint16_t len);
-extern int32_t meshx_platform_serial_read(uint8_t *data, uint16_t len);
+extern int32_t meshx_platform_serial_read(uint8_t *data, uint16_t len, uint32_t timeout_ms);
 extern void meshx_platform_reset(void);
 extern void meshx_platform_set_mxsp_use_console(bool enable);
 
@@ -167,23 +172,31 @@ bool meshx_serial_is_hosted_mode_enabled(void)
  */
 static void mxsp_uart_rx_task(void *pvParameters)
 {
-    uint8_t data;
+    uint8_t rx_buf[MESHX_UART_RX_BUF_SIZE];
     while (1)
     {
-#if CONFIG_ENABLE_UNIT_TEST
-        /* If hosted mode is activated on console, stop the shell and reclaim its stack & context memory */
-        if (meshx_platform_get_mxsp_use_console() && mxsp_ctx.hosted_mode_enabled)
+        /* Block for the first byte of the next frame/burst. */
+        int32_t len = meshx_platform_serial_read(rx_buf, sizeof(rx_buf), MESHX_UART_RX_BLOCK_TIMEOUT_MS);
+        if (len <= 0)
         {
-            if (meshx_shell_is_running())
-            {
-                meshx_shell_stop();
-            }
+            continue;
         }
-#endif
-        int32_t len = meshx_platform_serial_read(&data, 1);
-        if (len > 0)
+
+        int32_t total = len;
+        /* Drain the remaining burst bytes while the FIFO keeps feeding */
+        for (int i = 1; i < MESHX_UART_RX_BURST_MAX_READS && total < (int32_t)sizeof(rx_buf); i++)
         {
-            meshx_serial_parse_byte(data);
+            int32_t more = meshx_platform_serial_read(rx_buf + total, (uint16_t)(sizeof(rx_buf) - total), MESHX_UART_RX_POLL_TIMEOUT_MS);
+            if (more <= 0)
+            {
+                break;
+            }
+            total += more;
+        }
+
+        for (int32_t i = 0; i < total; i++)
+        {
+            meshx_serial_parse_byte(rx_buf[i]);
         }
     }
 }

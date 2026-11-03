@@ -19,6 +19,7 @@
 #include "driver/usb_serial_jtag.h"
 #include "driver/usb_serial_jtag_vfs.h"
 #include "esp_vfs_dev.h"
+#include "hal/usb_serial_jtag_ll.h"
 #endif
 
 #ifndef CONFIG_MESHX_CONSOLE_UART_PORT
@@ -43,8 +44,43 @@
 #endif
 
 #include "interface/meshx_platform.h"
+#include "interface/rtos/meshx_sem.h"
 
 static bool g_mxsp_use_console = false;
+static meshx_sem_t s_console_tx_sem = {
+    .sem_name = "cons_tx_sem",
+    .max_count = 1,
+    .init_count = 1,
+    .__sem_handle = NULL
+};
+static bool s_console_tx_sem_init = false;
+
+static void ensure_tx_sem_init(void)
+{
+    if (!s_console_tx_sem_init) {
+        meshx_sem_create(&s_console_tx_sem);
+        s_console_tx_sem_init = true;
+    }
+}
+
+bool meshx_platform_console_tx_lock(meshx_platform_tx_prio_t prio, uint32_t timeout_ms)
+{
+    if (!g_mxsp_use_console) {
+        return true;
+    }
+    ensure_tx_sem_init();
+    uint32_t wait_ms = (prio == MESHX_PLATFORM_TX_PRIO_HIGH) ? timeout_ms : 0;
+    return (meshx_sem_take(&s_console_tx_sem, wait_ms) == MESHX_SUCCESS);
+}
+
+void meshx_platform_console_tx_unlock(void)
+{
+    if (!g_mxsp_use_console) {
+        return;
+    }
+    ensure_tx_sem_init();
+    meshx_sem_give(&s_console_tx_sem);
+}
 
 /**
  * @brief Initializes the MeshX platform for the ESP32.
@@ -133,7 +169,11 @@ void meshx_platform_serial_write(const uint8_t *data, uint16_t len)
 {
     if (g_mxsp_use_console)
     {
-        meshx_platform_console_write((const char *)data, len);
+        if (meshx_platform_console_tx_lock(MESHX_PLATFORM_TX_PRIO_HIGH, 500))
+        {
+            meshx_platform_console_write((const char *)data, len);
+            meshx_platform_console_tx_unlock();
+        }
     }
     else
     {
@@ -144,15 +184,15 @@ void meshx_platform_serial_write(const uint8_t *data, uint16_t len)
 /**
  * @brief Reads data from the serial interface.
  */
-int32_t meshx_platform_serial_read(uint8_t *data, uint16_t len)
+int32_t meshx_platform_serial_read(uint8_t *data, uint16_t len, uint32_t timeout_ms)
 {
     if (g_mxsp_use_console)
     {
-        return meshx_platform_console_read(data, len);
+        return meshx_platform_console_read(data, len, timeout_ms);
     }
     else
     {
-        return uart_read_bytes(CONFIG_MXSP_UART_PORT, data, len, 20 / portTICK_PERIOD_MS);
+        return uart_read_bytes(CONFIG_MXSP_UART_PORT, data, len, timeout_ms / portTICK_PERIOD_MS);
     }
 }
 
@@ -162,18 +202,13 @@ meshx_err_t meshx_platform_console_init(void)
     if (console_initialized) return MESHX_SUCCESS;
 
 #if CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG
-    /* Disable buffering on stdin and stdout */
-    setvbuf(stdin, NULL, _IONBF, 0);
-    setvbuf(stdout, NULL, _IONBF, 0);
-
-    /* Install USB-SERIAL-JTAG driver for interrupt-driven reads */
-    usb_serial_jtag_driver_config_t usb_serial_jtag_config = USB_SERIAL_JTAG_DRIVER_CONFIG_DEFAULT();
-    esp_err_t ret = usb_serial_jtag_driver_install(&usb_serial_jtag_config);
-    if (ret != ESP_OK && ret != ESP_ERR_INVALID_STATE) return MESHX_ERR_PLAT;
-
-    /* Tell VFS to use USB-SERIAL-JTAG driver */
+    usb_serial_jtag_driver_config_t usj_cfg = {
+        .rx_buffer_size = 2048,
+        .tx_buffer_size = 2048,
+    };
+    usb_serial_jtag_driver_install(&usj_cfg);
     usb_serial_jtag_vfs_use_driver();
-    ESP_LOGD("MESHX_PLAT", "Console initialized via USB Serial JTAG");
+    ESP_LOGD("MESHX_PLAT", "Console initialized via USB Serial JTAG ISR driver");
 
 #elif CONFIG_ESP_CONSOLE_UART
     if (!uart_is_driver_installed(CONFIG_MESHX_CONSOLE_UART_PORT)) {
@@ -197,7 +232,7 @@ meshx_err_t meshx_platform_console_init(void)
 void meshx_platform_console_write(const char *data, uint16_t len)
 {
 #if CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG
-    usb_serial_jtag_write_bytes(data, len, portMAX_DELAY);
+    usb_serial_jtag_write_bytes(data, len, pdMS_TO_TICKS(50));
 #elif CONFIG_ESP_CONSOLE_UART
     uart_write_bytes(CONFIG_MESHX_CONSOLE_UART_PORT, data, len);
 #else
@@ -206,12 +241,18 @@ void meshx_platform_console_write(const char *data, uint16_t len)
 #endif
 }
 
-int32_t meshx_platform_console_read(uint8_t *data, uint16_t len)
+int32_t meshx_platform_console_read(uint8_t *data, uint16_t len, uint32_t timeout_ms)
 {
 #if CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG
-    return usb_serial_jtag_read_bytes(data, len, 10 / portTICK_PERIOD_MS);
+    TickType_t ticks = (timeout_ms == 0) ? 0 : pdMS_TO_TICKS(timeout_ms);
+    if (timeout_ms > 0 && ticks == 0) ticks = 1;
+    return usb_serial_jtag_read_bytes(data, len, ticks);
 #elif CONFIG_ESP_CONSOLE_UART
-    return uart_read_bytes(CONFIG_MESHX_CONSOLE_UART_PORT, data, len, 10 / portTICK_PERIOD_MS);
+    TickType_t ticks = (timeout_ms == 0) ? 0 : pdMS_TO_TICKS(timeout_ms);
+    if (timeout_ms > 0 && ticks == 0) {
+        ticks = 1;
+    }
+    return uart_read_bytes(CONFIG_MESHX_CONSOLE_UART_PORT, data, len, ticks);
 #else
     return -1;
 #endif
