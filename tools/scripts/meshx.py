@@ -422,6 +422,23 @@ class ZephyrTarget(Target):
         board = board_map.get(args.bsp, args.bsp)
         project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
         pristine_mode = "always" if args.clean else "auto"
+
+        extra_conf_files = []
+        bsp_conf = os.path.join(project_root, "port", "bsp", args.bsp, f"{args.bsp}.conf")
+        if os.path.exists(bsp_conf):
+            extra_conf_files.append(os.path.abspath(bsp_conf))
+
+        # Check MCU-specific conf (e.g. port/platform/zephyr/mcu/esp32/esp32.conf)
+        mcu_conf_map = {
+            "esp32_devkitC": os.path.join(project_root, "port", "platform", "zephyr", "mcu", "esp32", "esp32.conf"),
+            "weact_c3": os.path.join(project_root, "port", "platform", "zephyr", "mcu", "esp32c3", "esp32c3.conf"),
+            "xiao_c3": os.path.join(project_root, "port", "platform", "zephyr", "mcu", "esp32c3", "esp32c3.conf"),
+            "rpi_pico_w": os.path.join(project_root, "port", "platform", "zephyr", "mcu", "rp2040", "rp2040.conf"),
+        }
+        mcu_conf = mcu_conf_map.get(args.bsp)
+        if mcu_conf and os.path.exists(mcu_conf) and mcu_conf not in extra_conf_files:
+            extra_conf_files.append(os.path.abspath(mcu_conf))
+
         cmd = [
             "west", "build",
             "-b", board,
@@ -437,6 +454,8 @@ class ZephyrTarget(Target):
             f"-DPROD_PROFILE={args.prod_profile}",
             "-DUSE_CCACHE=0"
         ]
+        if extra_conf_files:
+            cmd.append(f"-DEXTRA_CONF_FILE={';'.join(extra_conf_files)}")
         if args.define:
             cmd.append(f"-DMESHX_EXTRA_DEFS={';'.join(args.define)}")
         print("Running Zephyr build command:", " ".join(cmd))
