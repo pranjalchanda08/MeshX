@@ -228,6 +228,14 @@ meshx_err_t meshx_uvp_send(void *p_model,
         .send_tag = BIT1,
     };
 
+    /* Guard: ESP-BLE-MESH panics on model send when node is unprovisioned */
+    if (meshx_get_node_addr() == MESHX_ADDR_UNASSIGNED)
+    {
+        MESHX_LOGW(MODULE_ID_MODEL_SERVER, "UVP Send: Node unprovisioned, dropping model send to 0x%04X", dst_addr);
+        MESHX_FREE(&buffer);
+        return MESHX_INVALID_STATE;
+    }
+
     /* Send via ESP-BLE-MESH stack */
     esp_err_t err = esp_ble_mesh_server_model_send_msg(
         esp_model,

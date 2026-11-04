@@ -1180,6 +1180,18 @@ static meshx_err_t mxcp_cmd_fn_uvp_key_rotate_trigger(const uint8_t *payload, ui
     if (payload == NULL || len < 3) return MESHX_INVALID_ARG;
     const mxcp_cmd_uvp_key_rotate_t *cmd = (const mxcp_cmd_uvp_key_rotate_t *)payload;
 
+    /* Guard: reject key rotation on unprovisioned node (node_addr == 0x0000) */
+    if (meshx_get_node_addr() == MESHX_ADDR_UNASSIGNED)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "UVP KR: Cannot rotate keys on unprovisioned node");
+        mxcp_evt_uvp_key_rot_phase_t kr_rsp;
+        memset(&kr_rsp, 0, sizeof(kr_rsp));
+        kr_rsp.current_phase = cmd->phase;
+        kr_rsp.status_code = (uint8_t)MESHX_INVALID_STATE;
+        mxcp_send_event(MXCP_EVT_UVP_KEY_ROTATION_PHASE, (const uint8_t *)&kr_rsp, sizeof(kr_rsp));
+        return MESHX_INVALID_STATE;
+    }
+
     uint32_t current_epoch = meshx_nvs_get_kr_epoch();
     mxcp_evt_uvp_key_rot_phase_t rsp;
     memset(&rsp, 0, sizeof(rsp));
