@@ -160,7 +160,11 @@ meshx_err_t meshx_uvp_send(void *p_model,
     }
 
     uint16_t total_len = MESHX_UVP_HEADER_SIZE + payload_len;
-    uint8_t buffer[MESHX_UVP_MAX_PAYLOAD + MESHX_UVP_HEADER_SIZE];
+    uint8_t *buffer = NULL;
+    if (MESHX_MALLOC(&buffer, total_len) != MESHX_SUCCESS || !buffer)
+    {
+        return MESHX_NO_MEM;
+    }
 
     static uint8_t g_uvp_tid = 0;
     meshx_uvp_header_t *header = (meshx_uvp_header_t *)buffer;
@@ -180,6 +184,14 @@ meshx_err_t meshx_uvp_send(void *p_model,
         .send_ttl = BT_MESH_TTL_DEFAULT,
     };
 
+    /* Guard: Zephyr BLE Mesh panics on model send when node is unprovisioned */
+    if (!bt_mesh_is_provisioned())
+    {
+        MESHX_LOGW(MODULE_ID_MODEL_SERVER, "UVP Send: Node unprovisioned, dropping model send to 0x%04X", dst_addr);
+        MESHX_FREE(&buffer);
+        return MESHX_INVALID_STATE;
+    }
+
     BT_MESH_MODEL_BUF_DEFINE(msg, BT_MESH_MODEL_OP_3(MESHX_UVP_OPCODE_BASE, MESHX_COMPANY_ID_UVP), total_len);
     bt_mesh_model_msg_init(&msg, BT_MESH_MODEL_OP_3(MESHX_UVP_OPCODE_BASE, MESHX_COMPANY_ID_UVP));
     net_buf_simple_add_mem(&msg, buffer, total_len);
@@ -187,9 +199,11 @@ meshx_err_t meshx_uvp_send(void *p_model,
     int err = bt_mesh_model_send(model, &ctx, &msg, NULL, NULL);
     if (err) {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Zephyr UVP send failed: %d", err);
+        MESHX_FREE(&buffer);
         return MESHX_ERR_PLAT;
     }
 
+    MESHX_FREE(&buffer);
     return MESHX_SUCCESS;
 }
 
