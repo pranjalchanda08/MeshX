@@ -381,7 +381,8 @@ static meshx_err_t mxcp_cmd_fn_hosted_mode(const uint8_t *payload, uint8_t len)
 /**
  * @brief Handle MXCP_CMD_NODE_RESET.
  *
- * Erases dynamic composition schema from NVS and triggers a platform-level reset.
+ * Erases dynamic composition schema from NVS, resets BLE Mesh stack and NVS store,
+ * emits MXCP_EVT_NODE_RESET_IND, and triggers a delayed platform-level reset.
  *
  * @param[in] payload Unused.
  * @param[in] len     Unused.
@@ -392,20 +393,34 @@ static meshx_err_t mxcp_cmd_fn_node_reset(const uint8_t *payload, uint8_t len)
 {
     (void)payload;
     (void)len;
-    /* Execute 4-stage graceful teardown before erasing NVS and resetting MCU (REQ-008 / Sheet 06) */
-    meshx_unpair_pre_reset_teardown();
+
+    /* REQ-008: Erase local link records and dynamic composition */
+    meshx_nvs_link_table_erase();
     meshx_nvs_comp_schema_erase();
 
-    /* Erase persistent node store and local DevKey from NVS */
+    /* Erase persistent node store, device key, and full NVS partition */
     meshx_uuid_t uuid;
     if (meshx_get_device_uuid(&uuid) == MESHX_SUCCESS)
     {
         meshx_nvs_erase_device_key(&uuid);
     }
     meshx_nvs_remove(MESHX_NVS_STORE);
+    meshx_nvs_erase();
     meshx_nvs_commit();
 
+    /* Clear in-memory node address */
+    meshx_set_node_addr(MESHX_ADDR_UNASSIGNED);
+
+    /* Reset platform BLE mesh stack (calls bt_mesh_reset and erases Zephyr settings storage_partition) */
+    meshx_plat_ble_mesh_reset();
+
+    /* Emit acknowledgment event to host MCU before resetting hardware */
+    mxcp_send_event(MXCP_EVT_NODE_RESET_IND, NULL, 0);
+
+    /* Allow UART TX buffer to flush frame before hardware reset */
+    meshx_task_delay(50);
     meshx_platform_reset();
+
     return MESHX_SUCCESS;
 }
 

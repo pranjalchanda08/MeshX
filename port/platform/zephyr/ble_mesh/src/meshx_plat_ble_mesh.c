@@ -25,6 +25,9 @@
 #if defined(CONFIG_SETTINGS)
 #include <zephyr/settings/settings.h>
 #endif
+#if defined(CONFIG_FLASH_MAP)
+#include <zephyr/storage/flash_map.h>
+#endif
 #if defined(CONFIG_HWINFO)
 #include <zephyr/drivers/hwinfo.h>
 #endif
@@ -583,4 +586,41 @@ meshx_err_t meshx_plat_app_key_add(const uint8_t *key, uint16_t net_key_id, uint
 
     return MESHX_SUCCESS;
 }
+
+/**
+ * @brief Resets the underlying Zephyr BLE Mesh stack.
+ *
+ * Invokes native bt_mesh_reset() to clear all Network Keys, App Keys, sequence numbers,
+ * IV index, and unbinds models. Resets forced primary address cache.
+ *
+ * @return MESHX_SUCCESS on success.
+ */
+meshx_err_t meshx_plat_ble_mesh_reset(void)
+{
+    MESHX_LOGI(MODULE_ID_MODEL_SERVER, "Resetting Zephyr BLE Mesh stack via bt_mesh_reset()");
+    bt_mesh_reset();
+    g_force_provisioned_addr = 0;
+
+#if defined(CONFIG_FLASH_MAP) && FIXED_PARTITION_EXISTS(storage_partition)
+    const struct flash_area *fa = NULL;
+    int rc = flash_area_open(FIXED_PARTITION_ID(storage_partition), &fa);
+    if (rc == 0 && fa != NULL)
+    {
+        MESHX_LOGI(MODULE_ID_MODEL_SERVER, "Erasing Zephyr settings storage_partition (size: %u bytes)", (unsigned int)fa->fa_size);
+        rc = flash_area_erase(fa, 0, fa->fa_size);
+        if (rc != 0)
+        {
+            MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to erase storage_partition: %d", rc);
+        }
+        flash_area_close(fa);
+    }
+    else
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to open storage_partition: %d", rc);
+    }
+#endif
+
+    return MESHX_SUCCESS;
+}
+
 

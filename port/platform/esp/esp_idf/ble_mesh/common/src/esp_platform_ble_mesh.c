@@ -402,3 +402,20 @@ meshx_err_t meshx_plat_app_key_add(const uint8_t *key, uint16_t net_key_id, uint
 
     return MESHX_SUCCESS;
 }
+
+/**
+ * @brief Resets the underlying ESP-IDF BLE Mesh stack.
+ *
+ * Invokes esp_ble_mesh_node_local_reset() to clear all Network Keys, App Keys, sequence numbers,
+ * and local node provisioning state. Resets forced primary address cache.
+ *
+ * @return MESHX_SUCCESS on success.
+ */
+meshx_err_t meshx_plat_ble_mesh_reset(void)
+{
+    MESHX_LOGI(MODULE_ID_MODEL_SERVER, "Resetting ESP-IDF BLE Mesh stack via esp_ble_mesh_node_local_reset()");
+    esp_err_t err = esp_ble_mesh_node_local_reset();
+    g_force_provisioned_addr = 0;
+    return (err == ESP_OK) ? MESHX_SUCCESS : MESHX_FAIL;
+}
+

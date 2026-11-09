@@ -82,3 +82,8 @@ docs
 .west/
 .scratchpad/
 modules/
+
+# Local MCP Environment configurations
+.env.local
+tools/mcp/.env.local
+

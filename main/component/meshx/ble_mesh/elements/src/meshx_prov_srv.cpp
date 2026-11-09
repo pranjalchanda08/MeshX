@@ -233,6 +233,9 @@ static void meshx_handle_node_reset(dev_struct_t *pdev)
     memset(&pdev->meshx_store, 0, sizeof(pdev->meshx_store));
     pdev->unicast_addr = MESHX_ADDR_UNASSIGNED;
 
+    /* Reset platform BLE mesh stack */
+    meshx_plat_ble_mesh_reset();
+
     /* Notify application about node reset */
     meshx_send_ctrl_msg_to_app(MESHX_CTRL_EVT_NODE_RESET, 0, NULL);
 
