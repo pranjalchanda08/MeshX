@@ -245,6 +245,16 @@ meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, meshx_
  */
 meshx_err_t meshx_get_base_element_id(uint16_t *base_el_id);
 
+/**
+ * @brief Resets the underlying BLE Mesh stack.
+ *
+ * Unbinds all models, erases mesh network keys, app keys, sequence numbers,
+ * IV index, and resets local node provisioning state.
+ *
+ * @return meshx_err_t Returns MESHX_SUCCESS on success, or an appropriate error code on failure.
+ */
+meshx_err_t meshx_plat_ble_mesh_reset(void);
+
 #ifdef __cplusplus
 }
 #endif
