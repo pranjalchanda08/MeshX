@@ -37,6 +37,8 @@ extern "C" int bt_mesh_node_local_app_key_add(uint16_t net_idx, uint16_t app_idx
 
 #define MESHX_TRAIT_MASK_MULTI_ELEMENT       (0x0020) /**< Bit 5: Multi-Gang / Multi-Element per REQ-003 */
 #define MESHX_PROV_FAIL_REASON_INVALID_FMT   (0x02)   /**< ZGB-T02: PROVISIONING_FAILED (0x02) */
+#define MESHX_UUID_TRAIT_MASK_HIGH_IDX       (10)     /**< Device UUID byte 10: high byte of trait mask */
+#define MESHX_UUID_TRAIT_MASK_LOW_IDX        (11)     /**< Device UUID byte 11: low byte of trait mask */
 
 /*
  * @brief Structure to map provisioning callback events to control task events.
@@ -264,8 +266,8 @@ static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_t
              * derives its own keys via Case 2 / HWRNG and is validated by the local element model. */
             if (pdev != NULL && param->node_prov_complete.addr != 0x0001 && !meshx_zgb_is_commissioning())
             {
-                /* 1. Extract 16-bit Product Trait Mask from Device UUID Bytes 10..11 */
-                uint16_t trait_mask = ((uint16_t)pdev->uuid[10] << 8) | (uint16_t)pdev->uuid[11];
+                /* 1. Extract 16-bit Product Trait Mask from Device UUID bytes 10..11 */
+                uint16_t trait_mask = ((uint16_t)pdev->uuid[MESHX_UUID_TRAIT_MASK_HIGH_IDX] << 8) | (uint16_t)pdev->uuid[MESHX_UUID_TRAIT_MASK_LOW_IDX];
 
                 /* 2. Introspect actual element count from device composition data */
                 uint8_t elem_count = 1;

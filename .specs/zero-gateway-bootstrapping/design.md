@@ -1,7 +1,7 @@
 # Design — Zero-Gateway Bootstrap
 
-**Module:** `ZGB`  
-**Status:** Draft  
+**Module:** `ZGB`
+**Status:** Implemented
 **Linked Issue:** https://github.com/pranjalchanda08/MeshX/issues/160
 
 ---

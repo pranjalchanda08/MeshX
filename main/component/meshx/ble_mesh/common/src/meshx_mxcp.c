@@ -39,6 +39,7 @@
 #endif
 
 #define MESHX_DEFAULT_ELEM_COUNT 1U
+#define MESHX_NODE_RESET_UART_FLUSH_DELAY_MS 50U /**< Delay (ms) to allow UART TX buffer to flush frame before hardware reset */
 
 #if CONFIG_ENABLE_UVP_PROVISIONER
 /*
@@ -418,7 +419,7 @@ static meshx_err_t mxcp_cmd_fn_node_reset(const uint8_t *payload, uint8_t len)
     mxcp_send_event(MXCP_EVT_NODE_RESET_IND, NULL, 0);
 
     /* Allow UART TX buffer to flush frame before hardware reset */
-    meshx_task_delay(50);
+    meshx_task_delay(MESHX_NODE_RESET_UART_FLUSH_DELAY_MS);
     meshx_platform_reset();
 
     return MESHX_SUCCESS;
