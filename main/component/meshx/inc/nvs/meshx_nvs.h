@@ -18,89 +18,87 @@
 #include <stdint.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-#define MESHX_NVS_TIMER_PERIOD_DEF 1000
+#define MESHX_NVS_TIMER_PERIOD_DEF      1000
 
 #ifndef MESHX_NVS_TIMER_PERIOD
-#define MESHX_NVS_TIMER_PERIOD MESHX_NVS_TIMER_PERIOD_DEF
+#define MESHX_NVS_TIMER_PERIOD          MESHX_NVS_TIMER_PERIOD_DEF
 #endif /* MESHX_NVS_TIMER_PERIOD */
 
-#define MESHX_NVS_AUTO_COMMIT true
-#define MESHX_NVS_NO_AUTO_COMMIT false
+#define MESHX_NVS_AUTO_COMMIT           true
+#define MESHX_NVS_NO_AUTO_COMMIT        false
 
 #ifndef CONFIG_MAX_ELEMENT_COUNT
-#define CONFIG_MAX_ELEMENT_COUNT 16
+#define CONFIG_MAX_ELEMENT_COUNT        16
 #endif
 
-#define MESHX_NVS_KEY_KR_EPOCH "kr_epoch"
-#define MESHX_NVS_KEY_DEVKEY_PREFIX                                            \
-  "dk_" /**< DevKey registry prefix: "dk_" + 8 hex UUID chars => "dk_XXXXXXXX" \
-           (11 chars) */
-#define MESHX_NVS_KEY_NETKEY_PREFIX                                            \
-  "nk_" /**< NetKey registry prefix: "nk_%04x" (7 chars) */
-#define MESHX_NVS_KEY_APPKEY_PREFIX                                            \
-  "ak_" /**< AppKey registry prefix: "ak_%04x" (7 chars) */
-#define MESHX_NVS_KEY_COMP_SCHEMA "comp_schema"
-#define MESHX_NVS_COMP_MAGIC 0x4D584350 /* 'MXCP' */
-#define MESHX_NVS_COMP_VERSION 0x01
-#define MESHX_COMP_FLAG_OVERRIDE_RO 0x01
+#define MESHX_NVS_KEY_KR_EPOCH          "kr_epoch"
+#define MESHX_NVS_KEY_DEVKEY_PREFIX     "dk_" /**< DevKey registry prefix: "dk_" + 8 hex UUID chars => "dk_XXXXXXXX" (11 chars) */
+#define MESHX_NVS_KEY_NETKEY_PREFIX     "nk_" /**< NetKey registry prefix: "nk_%04x" (7 chars) */
+#define MESHX_NVS_KEY_APPKEY_PREFIX     "ak_" /**< AppKey registry prefix: "ak_%04x" (7 chars) */
+#define MESHX_NVS_KEY_COMP_SCHEMA       "comp_schema"
+#define MESHX_NVS_COMP_MAGIC            0x4D584350 /* 'MXCP' */
+#define MESHX_NVS_COMP_VERSION          0x01
+#define MESHX_COMP_FLAG_OVERRIDE_RO     0x01
+#define MESHX_NVS_KEY_LINK_TABLE        "link_table"
+#define MESHX_NVS_LINK_MAGIC            0x4C4E4B53 /* 'LNKS' */
+#define MESHX_NVS_LINK_VERSION          0x01
+#define MESHX_MAX_PERSISTED_LINKS       16
 
-typedef struct {
-  uint32_t magic;        /**< 0x4D584350 ('MXCP') */
-  uint8_t version;       /**< Format version (0x01) */
-  uint8_t element_count; /**< Total number of elements */
-  uint8_t flags;         /**< Flags (e.g. MESHX_COMP_FLAG_OVERRIDE_RO) */
-  uint8_t reserved;      /**< Alignment padding */
-  uint16_t element_types[CONFIG_MAX_ELEMENT_COUNT]; /**< Array of
-                                                       meshx_element_type_t */
-  uint16_t schema_crc; /**< CRC-16-CCITT over preceding fields */
+typedef struct
+{
+    uint32_t    magic;                                   /**< 0x4D584350 ('MXCP') */
+    uint8_t     version;                                 /**< Format version (0x01) */
+    uint8_t     element_count;                           /**< Total number of elements */
+    uint8_t     flags;                                   /**< Flags (e.g. MESHX_COMP_FLAG_OVERRIDE_RO) */
+    uint8_t     reserved;                                /**< Alignment padding */
+    uint16_t    element_types[CONFIG_MAX_ELEMENT_COUNT]; /**< Array of meshx_element_type_t */
+    uint16_t    schema_crc;                              /**< CRC-16-CCITT over preceding fields */
 } MESHX_PACKED meshx_nvs_comp_schema_t;
-
-#define MESHX_NVS_KEY_LINK_TABLE "link_table"
-#define MESHX_NVS_LINK_MAGIC 0x4C4E4B53 /* 'LNKS' */
-#define MESHX_NVS_LINK_VERSION 0x01
-#define MESHX_MAX_PERSISTED_LINKS 16
 
 /**
  * @brief Individual link entry in NVS
  */
-typedef struct {
-  uint8_t local_element_idx;
-  uint16_t bound_variant;       /**< Element variant type at time of pairing */
-  uint16_t target_unicast_addr; /**< Unicast address of peer (if 1:1 link) */
-  uint16_t target_group_addr;   /**< Group address (0x0000 if 1:1 unicast) */
-  uint16_t func_id;             /**< Function ID bound to this link */
-  uint8_t active;               /**< 1 = active, 0 = free slot */
+typedef struct
+{
+    uint8_t     local_element_idx;
+    uint16_t    bound_variant;       /**< Element variant type at time of pairing */
+    uint16_t    target_unicast_addr; /**< Unicast address of peer (if 1:1 link) */
+    uint16_t    target_group_addr;   /**< Group address (0x0000 if 1:1 unicast) */
+    uint16_t    func_id;             /**< Function ID bound to this link */
+    uint8_t     active;              /**< 1 = active, 0 = free slot */
 } MESHX_PACKED meshx_nvs_link_entry_t;
 
 /**
  * @brief Persistent link table header & records
  */
-typedef struct {
-  uint32_t magic;  /**< 0x4C4E4B53 ('LNKS') */
-  uint8_t version; /**< Format version (0x01) */
-  uint16_t
-      link_epoch;     /**< Monotonic counter incremented on every pair/unpair */
-  uint8_t link_count; /**< Number of active links */
-  uint8_t reserved;
-  meshx_nvs_link_entry_t links[MESHX_MAX_PERSISTED_LINKS];
-  uint16_t table_crc; /**< CRC-16-CCITT across preceding fields */
+typedef struct
+{
+    uint32_t                magic;  /**< 0x4C4E4B53 ('LNKS') */
+    uint8_t                 version; /**< Format version (0x01) */
+    uint16_t                link_epoch;     /**< Monotonic counter incremented on every pair/unpair */
+    uint8_t                 link_count; /**< Number of active links */
+    uint8_t                 reserved;
+    meshx_nvs_link_entry_t  links[MESHX_MAX_PERSISTED_LINKS];
+    uint16_t                table_crc; /**< CRC-16-CCITT across preceding fields */
 } MESHX_PACKED meshx_nvs_link_table_t;
 
 /**
  * @struct meshx_nvs
  * @brief Structure to hold the MeshX NVS data.
  */
-typedef struct meshx_nvs {
-    uint16_t init;                          /**< NVS initialization flag */
-    uint16_t cid;                           /**< Company ID */
-    uint16_t pid;                           /**< Product ID */
-    uintptr_t meshx_nvs_handle;             /**< NVS handle */
+typedef struct meshx_nvs
+{
+    uint16_t    init;              /**< NVS initialization flag */
+    uint16_t    cid;               /**< Company ID */
+    uint16_t    pid;               /**< Product ID */
+    uintptr_t   meshx_nvs_handle;  /**< NVS handle */
 #ifdef MESHX_NVS_TIMER_PERIOD
-  meshx_os_timer_t *meshx_nvs_commit_tmr; /**< NVS stability timer */
-#endif                                    /* MESHX_NVS_TIMER_PERIOD */
+    meshx_os_timer_t *meshx_nvs_commit_tmr; /**< NVS stability timer */
+#endif                                      /* MESHX_NVS_TIMER_PERIOD */
 } meshx_nvs_t;
 
 /**
@@ -174,7 +172,7 @@ meshx_err_t meshx_nvs_remove(char const *key);
  *  - MESHX_SUCCESS: Success.
  */
 meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid,
-                           uint32_t commit_timeout_ms);
+                            uint32_t commit_timeout_ms);
 
 /**
  * @brief Get a value from the NVS.
@@ -204,8 +202,7 @@ meshx_err_t meshx_nvs_get(char const *key, void *blob, uint16_t blob_size);
  * @return
  *  - MESHX_SUCCESS: Success.
  */
-meshx_err_t meshx_nvs_set(char const *key, void const *blob, uint16_t blob_size,
-                          bool arm_timer);
+meshx_err_t meshx_nvs_set(char const *key, void const *blob, uint16_t blob_size, bool arm_timer);
 
 /**
  * @brief Retrieve the context of a specific element from NVS.
@@ -220,8 +217,7 @@ meshx_err_t meshx_nvs_set(char const *key, void const *blob, uint16_t blob_size,
  * @return
  *     - MESHX_SUCCESS: Successfully retrieved the context.
  */
-meshx_err_t meshx_nvs_element_ctx_get(uint16_t element_id,
-                                      meshx_element_type_t element_type,
+meshx_err_t meshx_nvs_element_ctx_get(uint16_t element_id, meshx_element_type_t element_type,
                                       void *blob, size_t blob_size);
 
 /**
@@ -237,8 +233,8 @@ meshx_err_t meshx_nvs_element_ctx_get(uint16_t element_id,
  *     - MESHX_SUCCESS: Successfully stored the context.
  */
 meshx_err_t meshx_nvs_element_ctx_set(uint16_t element_id,
-                                      meshx_element_type_t element_type,
-                                      const void *blob, size_t blob_size);
+                                    meshx_element_type_t element_type,
+                                    const void *blob, size_t blob_size);
 
 /**
  * @brief Remove the context of a specific element from NVS.
@@ -250,7 +246,7 @@ meshx_err_t meshx_nvs_element_ctx_set(uint16_t element_id,
  *     - MESHX_SUCCESS: Successfully removed the context.
  */
 meshx_err_t meshx_nvs_element_ctx_remove(uint16_t element_id,
-                                         meshx_element_type_t element_type);
+                                        meshx_element_type_t element_type);
 
 /**
  * @brief Store composition schema into NVS.
@@ -338,8 +334,7 @@ meshx_err_t meshx_link_reconcile(void);
  * @param[in] dev_key 16-byte immutable DevKey assigned during provisioning.
  * @return MESHX_SUCCESS on success, or error code.
  */
-meshx_err_t meshx_nvs_set_device_key(const meshx_uuid_t *uuid,
-                                     const uint8_t *dev_key);
+meshx_err_t meshx_nvs_set_device_key(const meshx_uuid_t *uuid, const uint8_t *dev_key);
 
 /**
  * @brief Retrieve the DevKey for a previously provisioned node by UUID.
@@ -352,8 +347,7 @@ meshx_err_t meshx_nvs_set_device_key(const meshx_uuid_t *uuid,
  * @return MESHX_SUCCESS if found, MESHX_NOT_FOUND if UUID not in registry, or
  * error code.
  */
-meshx_err_t meshx_nvs_get_device_key(const meshx_uuid_t *uuid,
-                                     uint8_t *dev_key_out);
+meshx_err_t meshx_nvs_get_device_key(const meshx_uuid_t *uuid, uint8_t *dev_key_out);
 
 /**
  * @brief Remove the DevKey entry for a node by UUID.

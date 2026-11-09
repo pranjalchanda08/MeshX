@@ -32,9 +32,23 @@
 #include <zephyr/drivers/hwinfo.h>
 #endif
 
+#define MESHX_MAX_BLE_MFG_CBS 4
+
 uint16_t g_force_provisioned_addr = 0;
 extern uint16_t bt_mesh_primary_addr(void);
 
+static meshx_plat_ble_mfg_data_cb_t s_plat_mfg_cbs[MESHX_MAX_BLE_MFG_CBS] = {0};
+static size_t s_plat_mfg_cb_count = 0;
+static struct bt_le_scan_cb s_plat_scan_cb;
+static bool s_plat_scan_cb_registered = false;
+
+/**
+ * @brief Check if a model is subscribed to a group address.
+ *
+ * @param[in] p_model Pointer to the model instance.
+ * @param[in] addr    Group address to check.
+ * @return MESHX_SUCCESS if subscribed, MESHX_FAIL otherwise.
+ */
 meshx_err_t meshx_is_group_subscribed(meshx_model_t *p_model, uint16_t addr)
 {
     if (p_model == NULL || p_model->p_model == NULL) {
@@ -53,6 +67,13 @@ meshx_err_t meshx_is_group_subscribed(meshx_model_t *p_model, uint16_t addr)
     return MESHX_FAIL;
 }
 
+/**
+ * @brief Create a model publication context.
+ *
+ * @param[in]  p_pub  Pointer to publication context pointer.
+ * @param[in]  nmax   Maximum number of publications.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG on null pointer.
+ */
 meshx_err_t meshx_plat_create_model_pub(void **p_pub, uint16_t nmax)
 {
     if (!p_pub) {
@@ -62,6 +83,12 @@ meshx_err_t meshx_plat_create_model_pub(void **p_pub, uint16_t nmax)
     return MESHX_CALLOC(p_pub, nmax, sizeof(MESHX_MODEL_PUB));
 }
 
+/**
+ * @brief Delete a model publication context.
+ *
+ * @param[in] p_pub Pointer to publication context pointer.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG on null pointer.
+ */
 meshx_err_t meshx_plat_del_model_pub(void **p_pub)
 {
     if (!p_pub) {
@@ -71,6 +98,13 @@ meshx_err_t meshx_plat_del_model_pub(void **p_pub)
     return MESHX_FREE(p_pub);
 }
 
+/**
+ * @brief Get the model ID from a platform model instance.
+ *
+ * @param[in]  p_model   Pointer to the model instance.
+ * @param[out] model_id  Output model ID.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG on null pointer.
+ */
 meshx_err_t meshx_get_model_id(meshx_ptr_t p_model, uint16_t *model_id)
 {
     if (!p_model || !model_id) {
@@ -83,6 +117,12 @@ meshx_err_t meshx_get_model_id(meshx_ptr_t p_model, uint16_t *model_id)
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Allocate memory for a platform composition.
+ *
+ * @param[out] p_comp Pointer to composition pointer.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG on null pointer.
+ */
 meshx_err_t meshx_create_plat_composition(meshx_ptr_t *p_comp)
 {
     if (!p_comp) {
@@ -92,6 +132,12 @@ meshx_err_t meshx_create_plat_composition(meshx_ptr_t *p_comp)
     return MESHX_MALLOC(p_comp, sizeof(MESHX_COMPOSITION));
 }
 
+/**
+ * @brief Initialize runtime context, keys, and subscription groups for a baked Zephyr model.
+ *
+ * @param[in] p_model Pointer to the model instance.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG or MESHX_NO_MEM on failure.
+ */
 meshx_err_t meshx_plat_init_model_keys_groups(void *p_model)
 {
     if (!p_model) {
@@ -151,6 +197,12 @@ meshx_err_t meshx_plat_init_model_keys_groups(void *p_model)
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Initialize runtime context for a baked Zephyr element.
+ *
+ * @param[in] p_elem Pointer to the element instance.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG or MESHX_NO_MEM on failure.
+ */
 meshx_err_t meshx_plat_init_element(void *p_elem)
 {
     if (!p_elem) {
@@ -170,6 +222,17 @@ meshx_err_t meshx_plat_init_element(void *p_elem)
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Add an element to the platform composition.
+ *
+ * @param[in] index      Element index.
+ * @param[in] p_element_list Pointer to element list.
+ * @param[in] p_sig_models Pointer to SIG model list.
+ * @param[in] p_ven_models Pointer to vendor model list.
+ * @param[in] sig_cnt    Number of SIG models.
+ * @param[in] ven_cnt    Number of vendor models.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG on null element list.
+ */
 meshx_err_t meshx_plat_add_element_to_composition(
     uint16_t index,
     meshx_ptr_t p_element_list,
@@ -202,6 +265,16 @@ meshx_err_t meshx_plat_add_element_to_composition(
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Initialize a platform composition structure.
+ *
+ * @param[in] p_composition Pointer to composition structure.
+ * @param[in] p_elements    Pointer to element array.
+ * @param[in] cid           Company ID.
+ * @param[in] pid           Product ID.
+ * @param[in] element_idx   Number of elements.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG on null composition.
+ */
 meshx_err_t meshx_plat_composition_init(
     meshx_ptr_t p_composition,
     meshx_ptr_t p_elements,
@@ -223,6 +296,12 @@ meshx_err_t meshx_plat_composition_init(
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Get the base element ID (primary unicast address).
+ *
+ * @param[out] base_el_id Output base element ID.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG on null pointer.
+ */
 meshx_err_t meshx_get_base_element_id(uint16_t *base_el_id)
 {
     if (!base_el_id) {
@@ -240,6 +319,12 @@ meshx_err_t meshx_get_base_element_id(uint16_t *base_el_id)
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Get the Bluetooth device MAC address.
+ *
+ * @param[out] mac Output MAC address buffer.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG or MESHX_ERR_PLAT on failure.
+ */
 meshx_err_t meshx_platform_get_mac(uint8_t *mac)
 {
     if (mac == NULL) {
@@ -272,6 +357,11 @@ meshx_err_t meshx_platform_get_mac(uint8_t *mac)
     return MESHX_ERR_PLAT;
 }
 
+/**
+ * @brief Initialize the Bluetooth controller and Zephyr settings.
+ *
+ * @return MESHX_SUCCESS on success, MESHX_ERR_PLAT on failure.
+ */
 meshx_err_t meshx_platform_bt_init(void)
 {
     int err = bt_enable(NULL);
@@ -287,6 +377,13 @@ meshx_err_t meshx_platform_bt_init(void)
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Initialize the Zephyr BLE Mesh stack with provisioning and composition.
+ *
+ * @param[in] prov_cfg Pointer to provisioning parameters.
+ * @param[in] comp     Pointer to composition structure.
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
 meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, meshx_ptr_t comp)
 {
     if (comp == NULL || prov_cfg == NULL) {
@@ -349,6 +446,13 @@ meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, meshx_
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Get the active Network Key from the Zephyr BLE Mesh stack.
+ *
+ * @param[in]  net_key_id NetKey Index.
+ * @param[out] key_out    16-byte output buffer for the NetKey.
+ * @return MESHX_SUCCESS on success, MESHX_NOT_SUPPORTED if not implemented.
+ */
 meshx_err_t meshx_plat_net_key_get(uint16_t net_key_id, uint8_t *key_out)
 {
     if (!key_out) {
@@ -363,6 +467,13 @@ meshx_err_t meshx_plat_net_key_get(uint16_t net_key_id, uint8_t *key_out)
     return MESHX_NOT_SUPPORTED;
 }
 
+/**
+ * @brief Add a Network Key to the Zephyr BLE Mesh stack.
+ *
+ * @param[in] key         16-byte NetKey.
+ * @param[in] net_key_id  NetKey Index.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG or MESHX_FAIL on failure.
+ */
 meshx_err_t meshx_plat_net_key_add(const uint8_t *key, uint16_t net_key_id)
 {
     if (!key) {
@@ -383,6 +494,13 @@ meshx_err_t meshx_plat_net_key_add(const uint8_t *key, uint16_t net_key_id)
 #error "CONFIG_BT_EXT_ADV must be enabled for meshx_plat_ble_adv_mfg_data to broadcast full-length BLE advertising packets without truncation"
 #endif
 
+/**
+ * @brief Advertise manufacturer-specific data via BLE extended advertising.
+ *
+ * @param[in] mfg_data Pointer to manufacturer data buffer.
+ * @param[in] mfg_len  Length of manufacturer data in bytes.
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
 meshx_err_t meshx_plat_ble_adv_mfg_data(const uint8_t *mfg_data, uint16_t mfg_len)
 {
     if (!mfg_data || mfg_len == 0)
@@ -434,12 +552,13 @@ meshx_err_t meshx_plat_ble_adv_mfg_data(const uint8_t *mfg_data, uint16_t mfg_le
     return MESHX_SUCCESS;
 }
 
-#define MESHX_MAX_BLE_MFG_CBS 4
-static meshx_plat_ble_mfg_data_cb_t s_plat_mfg_cbs[MESHX_MAX_BLE_MFG_CBS] = {0};
-static size_t s_plat_mfg_cb_count = 0;
-static struct bt_le_scan_cb s_plat_scan_cb;
-static bool s_plat_scan_cb_registered = false;
-
+/**
+ * @brief Parse advertising data and invoke registered manufacturer data callbacks.
+ *
+ * @param[in] data      Pointer to advertising data structure.
+ * @param[in] user_data Pointer to RSSI value.
+ * @return true to continue parsing, false to stop.
+ */
 static bool plat_scan_parse_ad(struct bt_data *data, void *user_data)
 {
     int8_t rssi = *(int8_t *)user_data;
@@ -460,6 +579,12 @@ static bool plat_scan_parse_ad(struct bt_data *data, void *user_data)
     return true;
 }
 
+/**
+ * @brief BLE scan receive callback. Parses advertising data and dispatches to manufacturer data callbacks.
+ *
+ * @param[in] info Pointer to scan receive info.
+ * @param[in] buf  Pointer to advertising data buffer.
+ */
 static void plat_scan_recv_cb(const struct bt_le_scan_recv_info *info, struct net_buf_simple *buf)
 {
     if (s_plat_mfg_cb_count == 0)
@@ -472,6 +597,12 @@ static void plat_scan_recv_cb(const struct bt_le_scan_recv_info *info, struct ne
     bt_data_parse(&ad_buf, plat_scan_parse_ad, &rssi);
 }
 
+/**
+ * @brief Register a manufacturer data callback for BLE scan observations.
+ *
+ * @param[in] cb Manufacturer data callback function.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG on null callback, MESHX_NO_MEM if callback table full.
+ */
 meshx_err_t meshx_plat_ble_register_mfg_data_cb(meshx_plat_ble_mfg_data_cb_t cb)
 {
     if (!cb)

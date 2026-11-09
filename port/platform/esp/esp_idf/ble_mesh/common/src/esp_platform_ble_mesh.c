@@ -321,9 +321,9 @@ meshx_err_t meshx_plat_net_key_add(const uint8_t *key, uint16_t net_key_id)
     return MESHX_SUCCESS;
 }
 
-extern int bt_mesh_pre_provision(const uint8_t net_key[16], uint16_t net_idx,
+extern int bt_mesh_pre_provision(const meshx_key_t net_key, uint16_t net_idx,
                                  uint8_t flags, uint32_t iv_index,
-                                 uint16_t addr, const uint8_t dev_key[16]);
+                                 uint16_t addr, const meshx_key_t dev_key);
 extern void bt_mesh_provision(void);
 
 /**

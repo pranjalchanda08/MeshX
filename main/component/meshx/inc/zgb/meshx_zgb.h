@@ -3,6 +3,9 @@
  *
  * @file meshx_zgb.h
  * @brief Public interface and contracts for Zero-Gateway Bootstrapping (ZGB).
+ *
+ * @author Pranjal Chanda
+ * @copyright Copyright (c) 2024 - 2026 MeshX
  */
 
 #ifndef __MESHX_ZGB_H__
@@ -95,17 +98,17 @@ meshx_err_t meshx_zgb_on_external_prov_start(void);
 meshx_err_t meshx_zgb_on_provision_complete(uint16_t assigned_addr);
 
 /**
- * @brief Absorb a Case-1 passive provisionee node via its native Prov Server.
+ * @brief Absorb a passive provisionee node via its native Prov Server.
  * Direct in-range: drives PB-ADV PDUs to target Prov Server.
  * Out-of-range: tunnels via existing UVP RPR opcodes (0xC0..0xC3).
  * Allocates from unified pool 0x0002..0x7FFF. Zero new UVP opcodes.
  *
- * @param[in]  target_uuid   16-byte UUID of target node.
+ * @param[in]  target_uuid   Pointer to 16-byte UUID of target node.
  * @param[in]  trait_mask    Target semantic trait mask.
  * @param[in]  element_count Number of elements on target.
  * @param[out] out_addr      Assigned unicast address from pool (0x0002..0x7FFF).
  */
-meshx_err_t meshx_zgb_absorb_case1_target(const uint8_t target_uuid[16],
+meshx_err_t meshx_zgb_absorb_case1_target(const meshx_uuid_t *target_uuid,
                                           uint16_t trait_mask,
                                           uint8_t element_count,
                                           uint16_t *out_addr);
@@ -114,12 +117,12 @@ meshx_err_t meshx_zgb_absorb_case1_target(const uint8_t target_uuid[16],
  * @brief Case 3: Process incoming ZGB Arbitration Beacon (AB) or commissioning beacon.
  * Performs min-UUID listen-before-founding arbitration and split-brain detection.
  *
- * @param[in] peer_uuid         16-byte UUID of reporting peer.
+ * @param[in] peer_uuid         Pointer to 16-byte UUID of reporting peer.
  * @param[in] flags             AB flags (MESHX_ZGB_AB_FLAG_*)
  * @param[in] peer_netkey_fp    4-byte NetKey fingerprint (or NULL if unprovisioned)
  * @return MESHX_SUCCESS on normal processing, or error code.
  */
-meshx_err_t meshx_zgb_process_arbitration_beacon(const uint8_t peer_uuid[16],
+meshx_err_t meshx_zgb_process_arbitration_beacon(const meshx_uuid_t *peer_uuid,
                                                  uint8_t flags,
                                                  const uint8_t peer_netkey_fp[4]);
 
@@ -127,10 +130,10 @@ meshx_err_t meshx_zgb_process_arbitration_beacon(const uint8_t peer_uuid[16],
  * @brief Split-brain detection & healing handler.
  * Called when an active foreign anchor is confirmed.
  *
- * @param[in] peer_uuid  UUID of colliding anchor.
+ * @param[in] peer_uuid  Pointer to 16-byte UUID of colliding anchor.
  * @return MESHX_SUCCESS if handled (survived or reset triggered).
  */
-meshx_err_t meshx_zgb_handle_split_brain(const uint8_t peer_uuid[16]);
+meshx_err_t meshx_zgb_handle_split_brain(const meshx_uuid_t *peer_uuid);
 
 #ifdef __cplusplus
 }

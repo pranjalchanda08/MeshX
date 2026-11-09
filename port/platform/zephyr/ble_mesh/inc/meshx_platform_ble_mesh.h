@@ -155,7 +155,7 @@ meshx_err_t meshx_plat_net_key_add(const uint8_t *key, uint16_t net_key_id);
  * @param[in] dev_key  16-byte self Device Key generated from HWRNG.
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
-meshx_err_t meshx_plat_self_provision(const uint8_t net_key[16], uint16_t net_idx, uint16_t addr, const uint8_t dev_key[16]);
+meshx_err_t meshx_plat_self_provision(const meshx_key_t net_key, uint16_t net_idx, uint16_t addr, const meshx_key_t dev_key);
 
 /**
  * @brief Add an Application Key to the local Zephyr BLE Mesh stack.
