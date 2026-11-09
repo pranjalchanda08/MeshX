@@ -31,6 +31,7 @@
 #include "pairing/meshx_pair_orchestrator.h"
 #include "interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h"
 #include "meshx_virtual_topo.h"
+#include "zgb/meshx_zgb.h"
 
 /* UVP Management Virtual Address */
 #ifndef MESHX_MGMT_VIRTUAL_ADDR
@@ -123,6 +124,8 @@ static meshx_err_t mxcp_cmd_fn_get_dev_info           (const uint8_t *payload, u
 #if CONFIG_MESHX_ENABLE_VIRTUAL_TOPO
 static meshx_err_t mxcp_cmd_fn_virtual_topo            (const uint8_t *payload, uint8_t len);
 #endif
+static meshx_err_t mxcp_cmd_fn_bootstrap_commission   (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_bootstrap_abort        (const uint8_t *payload, uint8_t len);
 
 /*
  * @brief Command dispatch table (Host -> Engine).
@@ -180,6 +183,8 @@ static const mxcp_cmd_entry_t mxcp_cmd_table[] = {
 #if CONFIG_MESHX_ENABLE_VIRTUAL_TOPO
     MXCP_CMD_ENTRY(MXCP_CMD_VIRTUAL_TOPO_REQ,        mxcp_cmd_fn_virtual_topo,            0,                                        MXCP_EVT_VIRTUAL_TOPO_STATUS,    MXCP_EVT_NONE),
 #endif
+    MXCP_CMD_ENTRY(MXCP_CMD_BOOTSTRAP_COMMISSION,    mxcp_cmd_fn_bootstrap_commission,    0,                                        MXCP_EVT_PROV_STATE_IND,         MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_BOOTSTRAP_ABORT,         mxcp_cmd_fn_bootstrap_abort,         0,                                        MXCP_EVT_PROV_STATE_IND,         MXCP_EVT_NONE),
 };
 
 #define MXCP_CMD_TABLE_SIZE (sizeof(mxcp_cmd_table) / sizeof(mxcp_cmd_table[0]))
@@ -390,6 +395,16 @@ static meshx_err_t mxcp_cmd_fn_node_reset(const uint8_t *payload, uint8_t len)
     /* Execute 4-stage graceful teardown before erasing NVS and resetting MCU (REQ-008 / Sheet 06) */
     meshx_unpair_pre_reset_teardown();
     meshx_nvs_comp_schema_erase();
+
+    /* Erase persistent node store and local DevKey from NVS */
+    meshx_uuid_t uuid;
+    if (meshx_get_device_uuid(&uuid) == MESHX_SUCCESS)
+    {
+        meshx_nvs_erase_device_key(&uuid);
+    }
+    meshx_nvs_remove(MESHX_NVS_STORE);
+    meshx_nvs_commit();
+
     meshx_platform_reset();
     return MESHX_SUCCESS;
 }
@@ -838,6 +853,34 @@ static meshx_err_t mxcp_cmd_fn_get_dev_info(const uint8_t *payload, uint8_t len)
  *
  * @return MESHX_SUCCESS on success, or an error code on failure.
  */
+static meshx_os_timer_t *s_prov_beacon_timer = NULL;
+
+/**
+ * @brief Timer callback invoked when provisioning beacon duration TTL expires.
+ *
+ * Disables PB-ADV and PB-GATT provisioning bearers and emits an updated
+ * MXCP_EVT_PROV_STATE_IND event to the host controller.
+ *
+ * @param[in] p_timer Pointer to timer instance.
+ */
+static void mxcp_prov_beacon_timeout_cb(const meshx_os_timer_t *p_timer)
+{
+    MESHX_UNUSED(p_timer);
+    MESHX_LOGI(MODULE_ID_COMMON, "MXCP: Prov Beaconing TTL expired. Disabling beacons.");
+
+    meshx_prov_bearer_t bearers = (meshx_prov_bearer_t)(MESHX_PROV_ADV | MESHX_PROV_GATT);
+    meshx_plat_prov_disable(bearers);
+
+    mxcp_evt_prov_state_ind_t ind;
+    memset(&ind, 0, sizeof(ind));
+    ind.unicast_addr = meshx_get_node_addr();
+    ind.net_idx      = meshx_get_net_key_id();
+    ind.state        = (meshx_prov_srv_is_provisioned() || ind.unicast_addr != MESHX_ADDR_UNASSIGNED)
+                           ? MXCP_PROV_STATE_PROVISIONED
+                           : MXCP_PROV_STATE_UNPROVISIONED;
+    mxcp_send_event(MXCP_EVT_PROV_STATE_IND, (const uint8_t *)&ind, sizeof(ind));
+}
+
 static meshx_err_t mxcp_cmd_fn_prov_enable(const uint8_t *payload, uint8_t len)
 {
     mxcp_evt_prov_state_ind_t ind;
@@ -846,7 +889,7 @@ static meshx_err_t mxcp_cmd_fn_prov_enable(const uint8_t *payload, uint8_t len)
     ind.net_idx      = meshx_get_net_key_id();
 
     /* Pre-State Guard: reject if already provisioned */
-    if (ind.unicast_addr != MESHX_ADDR_UNASSIGNED)
+    if (meshx_prov_srv_is_provisioned() || ind.unicast_addr != MESHX_ADDR_UNASSIGNED)
     {
         MESHX_LOGW(MODULE_ID_COMMON, "MXCP: Prov Enable rejected: Node already provisioned (addr=0x%04X)", ind.unicast_addr);
         ind.state = MXCP_PROV_STATE_PROVISIONED;
@@ -855,10 +898,12 @@ static meshx_err_t mxcp_cmd_fn_prov_enable(const uint8_t *payload, uint8_t len)
     }
 
     uint8_t bearer_mask = MXCP_PROV_BEARER_PB_ADV; /* Default to PB-ADV */
+    uint16_t duration_sec = 0;
     if (payload != NULL && len >= sizeof(mxcp_cmd_prov_enable_t))
     {
         const mxcp_cmd_prov_enable_t *cmd = (const mxcp_cmd_prov_enable_t *)payload;
         bearer_mask = cmd->bearer_mask;
+        duration_sec = cmd->duration_sec;
     }
 
     meshx_prov_bearer_t bearers = (meshx_prov_bearer_t)0;
@@ -869,6 +914,23 @@ static meshx_err_t mxcp_cmd_fn_prov_enable(const uint8_t *payload, uint8_t len)
     if (err == MESHX_SUCCESS)
     {
         ind.state = MXCP_PROV_STATE_BEACONING;
+        if (duration_sec > 0)
+        {
+            if (!s_prov_beacon_timer)
+            {
+                meshx_os_timer_create("prov_ttl", duration_sec * 1000U, false, mxcp_prov_beacon_timeout_cb, &s_prov_beacon_timer);
+            }
+            if (s_prov_beacon_timer)
+            {
+                meshx_os_timer_stop(s_prov_beacon_timer);
+                meshx_os_timer_set_period(s_prov_beacon_timer, duration_sec * 1000U);
+                meshx_os_timer_start(s_prov_beacon_timer);
+            }
+        }
+        else if (s_prov_beacon_timer)
+        {
+            meshx_os_timer_stop(s_prov_beacon_timer);
+        }
     }
     else
     {
@@ -893,15 +955,23 @@ static meshx_err_t mxcp_cmd_fn_prov_disable(const uint8_t *payload, uint8_t len)
 {
     MESHX_UNUSED(payload);
     MESHX_UNUSED(len);
+
+    if (s_prov_beacon_timer)
+    {
+        meshx_os_timer_stop(s_prov_beacon_timer);
+    }
+
+    meshx_prov_bearer_t bearers = (meshx_prov_bearer_t)(MESHX_PROV_ADV | MESHX_PROV_GATT);
+    meshx_err_t err = meshx_plat_prov_disable(bearers);
+
     mxcp_evt_prov_state_ind_t ind;
     memset(&ind, 0, sizeof(ind));
     ind.unicast_addr = meshx_get_node_addr();
     ind.net_idx      = meshx_get_net_key_id();
 
-    meshx_prov_bearer_t bearers = (meshx_prov_bearer_t)(MESHX_PROV_ADV | MESHX_PROV_GATT);
-    meshx_err_t err = meshx_plat_prov_disable(bearers);
-
-    ind.state = (ind.unicast_addr != MESHX_ADDR_UNASSIGNED) ? MXCP_PROV_STATE_PROVISIONED : MXCP_PROV_STATE_UNPROVISIONED;
+    ind.state = (meshx_prov_srv_is_provisioned() || ind.unicast_addr != MESHX_ADDR_UNASSIGNED)
+                    ? MXCP_PROV_STATE_PROVISIONED
+                    : MXCP_PROV_STATE_UNPROVISIONED;
     mxcp_send_event(MXCP_EVT_PROV_STATE_IND, (const uint8_t *)&ind, sizeof(ind));
     return err;
 }
@@ -924,9 +994,99 @@ static meshx_err_t mxcp_cmd_fn_prov_get_state(const uint8_t *payload, uint8_t le
     memset(&ind, 0, sizeof(ind));
     ind.unicast_addr = meshx_get_node_addr();
     ind.net_idx      = meshx_get_net_key_id();
-    ind.state        = (ind.unicast_addr != MESHX_ADDR_UNASSIGNED) ? MXCP_PROV_STATE_PROVISIONED : MXCP_PROV_STATE_UNPROVISIONED;
+    if (ind.unicast_addr != MESHX_ADDR_UNASSIGNED)
+    {
+        ind.state = MXCP_PROV_STATE_PROVISIONED;
+    }
+    else
+    {
+        meshx_zgb_state_t zgb_st = meshx_zgb_get_state();
+        if (zgb_st == MESHX_ZGB_STATE_COMMISSIONING)
+        {
+            ind.state = MXCP_PROV_STATE_COMMISSIONING;
+        }
+        else if (zgb_st == MESHX_ZGB_STATE_SUPPRESSED)
+        {
+            ind.state = MXCP_PROV_STATE_SUPPRESSED;
+        }
+        else
+        {
+            ind.state = MXCP_PROV_STATE_UNPROVISIONED;
+        }
+    }
 
     return mxcp_send_event(MXCP_EVT_PROV_STATE_IND, (const uint8_t *)&ind, sizeof(ind));
+}
+
+/**
+ * @brief Handle MXCP_CMD_BOOTSTRAP_COMMISSION (0x39).
+ *
+ * Initiates self-commissioning window ($T_commission = 60s$) for Anchor node.
+ * Rejects with MESHX_INVALID_STATE if node is already provisioned.
+ *
+ * @param[in] payload Unused.
+ * @param[in] len     Unused.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
+ */
+static meshx_err_t mxcp_cmd_fn_bootstrap_commission(const uint8_t *payload, uint8_t len)
+{
+    MESHX_UNUSED(payload);
+    MESHX_UNUSED(len);
+
+    mxcp_evt_prov_state_ind_t ind;
+    memset(&ind, 0, sizeof(ind));
+    ind.unicast_addr = meshx_get_node_addr();
+    ind.net_idx      = meshx_get_net_key_id();
+
+    /* Pre-State Guard: reject if already provisioned */
+    if (meshx_prov_srv_is_provisioned() || ind.unicast_addr != MESHX_ADDR_UNASSIGNED)
+    {
+        MESHX_LOGW(MODULE_ID_COMMON, "MXCP: Bootstrap commission rejected: Node already provisioned (addr=0x%04X)", ind.unicast_addr);
+        ind.state = MXCP_PROV_STATE_PROVISIONED;
+        mxcp_send_event(MXCP_EVT_PROV_STATE_IND, (const uint8_t *)&ind, sizeof(ind));
+        return MESHX_INVALID_STATE;
+    }
+
+    meshx_err_t err = meshx_zgb_start_commissioning();
+    if (err == MESHX_SUCCESS)
+    {
+        ind.state = MXCP_PROV_STATE_COMMISSIONING;
+    }
+    else
+    {
+        ind.state = MXCP_PROV_STATE_UNPROVISIONED;
+    }
+    mxcp_send_event(MXCP_EVT_PROV_STATE_IND, (const uint8_t *)&ind, sizeof(ind));
+    return err;
+}
+
+/**
+ * @brief Handle MXCP_CMD_BOOTSTRAP_ABORT (0x3A).
+ *
+ * Cancels active self-commissioning window, purges staged keys, and stops timers.
+ *
+ * @param[in] payload Unused.
+ * @param[in] len     Unused.
+ *
+ * @return MESHX_SUCCESS on success, or an error code on failure.
+ */
+static meshx_err_t mxcp_cmd_fn_bootstrap_abort(const uint8_t *payload, uint8_t len)
+{
+    MESHX_UNUSED(payload);
+    MESHX_UNUSED(len);
+
+    meshx_err_t err = meshx_zgb_abort_commissioning();
+
+    mxcp_evt_prov_state_ind_t ind;
+    memset(&ind, 0, sizeof(ind));
+    ind.unicast_addr = meshx_get_node_addr();
+    ind.net_idx      = meshx_get_net_key_id();
+    ind.state        = (meshx_prov_srv_is_provisioned() || ind.unicast_addr != MESHX_ADDR_UNASSIGNED)
+                           ? MXCP_PROV_STATE_PROVISIONED
+                           : MXCP_PROV_STATE_UNPROVISIONED;
+    mxcp_send_event(MXCP_EVT_PROV_STATE_IND, (const uint8_t *)&ind, sizeof(ind));
+    return err;
 }
 
 /**

@@ -106,4 +106,12 @@ meshx_err_t meshx_nvs_plat_remove(uintptr_t p_nvs_handle, char const* key);
  */
 meshx_err_t meshx_nvs_plat_commit(uintptr_t p_nvs_handle);
 
+/**
+ * @brief      Roll back all uncommitted staged writes in platform storage.
+ *
+ * @param[in]  p_nvs_handle   Pointer to the opened handle.
+ * @return     MESHX_SUCCESS on success, or platform error.
+ */
+meshx_err_t meshx_nvs_plat_rollback(uintptr_t p_nvs_handle);
+
 #endif /* __MESHX_NVS_INTERFACE_H__ */

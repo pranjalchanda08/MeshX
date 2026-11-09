@@ -19,6 +19,7 @@
 #include <tinycrypt/constants.h>
 #include <string.h>
 #include "meshx_uvp.h"
+#include <zephyr/random/random.h>
 
 #define MODULE_ID_CRYPTO MODULE_ID_COMMON
 
@@ -268,4 +269,21 @@ meshx_err_t meshx_crypto_p256_ecdh_compute(const meshx_p256_pubkey_t peer_public
     MESHX_LOGE(MODULE_ID_CRYPTO, "P-256 ECDH: CONFIG_TINYCRYPT_ECC_DH not enabled");
     return MESHX_NOT_SUPPORTED;
 #endif
+}
+
+/**
+ * @brief Generate random data using Zephyr's random number generator.
+ *
+ * @param[out] buf  Buffer to fill with random data.
+ * @param[in]  len  Length of data to generate.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_crypto_random_fill(uint8_t *buf, size_t len)
+{
+    if (!buf || len == 0)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    sys_rand_get(buf, len);
+    return MESHX_SUCCESS;
 }

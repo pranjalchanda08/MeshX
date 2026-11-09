@@ -59,6 +59,7 @@ static meshx_err_t meshx_nvs_unit_test_cb_handler(int cmd_id, int argc, char **a
 #endif
 
 static meshx_nvs_t meshx_nvs_inst;
+static bool s_nvs_in_transaction = false;
 
 
 static meshx_err_t meshx_nvs_control_msg_handler(dev_struct_t *pdev, control_task_msg_evt_t evt, void *params, uint16_t params_len)
@@ -285,32 +286,40 @@ meshx_err_t meshx_nvs_commit(void)
     if (meshx_nvs_inst.init != MESHX_NVS_INIT_MAGIC)
         return MESHX_INVALID_STATE;
 
-    meshx_err_t err = MESHX_SUCCESS;
+    meshx_err_t first_err = MESHX_SUCCESS;
     meshx_nvs_write_list_t *cur = meshx_nvs_write_list_head;
-    meshx_nvs_write_list_t *prev;
+    meshx_nvs_write_list_t *prev = NULL;
+    meshx_nvs_write_list_t *err_node = NULL;
 
     if (!cur) return MESHX_SUCCESS;
 
     MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_NVS, "Committing pending NVS writes...");
 
     while (cur) {
-        err = meshx_nvs_plat_write(meshx_nvs_inst.meshx_nvs_handle, cur->key, cur->data, cur->len);
-        if (err) {
-            MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "commit failed for key: %s", cur->key);
+        meshx_err_t err = meshx_nvs_plat_write(meshx_nvs_inst.meshx_nvs_handle, cur->key, cur->data, cur->len);
+        if (err != MESHX_SUCCESS) {
+            MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_NVS, "commit failed for key: %s (err=0x%x)", cur->key, err);
+            if (first_err == MESHX_SUCCESS) {
+                first_err = err;
+            }
+            err_node = cur;
+            break; /* Stop processing on first write error to maintain consistency */
         }
         prev = cur;
         cur = cur->next;
         MESHX_FREE(&prev);
     }
 
-    meshx_nvs_write_list_head = NULL;
-
-    if (err == MESHX_SUCCESS) {
-        // Only commit to platform once, after all writes
-        err = meshx_nvs_plat_commit(meshx_nvs_inst.meshx_nvs_handle);
+    if (first_err == MESHX_SUCCESS) {
+        meshx_nvs_write_list_head = NULL;
+        first_err = meshx_nvs_plat_commit(meshx_nvs_inst.meshx_nvs_handle);
+    } else {
+        /* Keep unwritten nodes in write list instead of silently discarding */
+        meshx_nvs_write_list_head = err_node;
+        meshx_nvs_plat_rollback(meshx_nvs_inst.meshx_nvs_handle);
     }
 
-    return err;
+    return first_err;
 }
 
 
@@ -429,7 +438,7 @@ meshx_err_t meshx_nvs_set(char const* key, void const* blob, uint16_t blob_size,
     meshx_nvs_write_list_head = node;
 
 restart_timer:
-    if (arm_timer)
+    if (arm_timer && !s_nvs_in_transaction)
     {
 #if MESHX_NVS_TIMER_PERIOD
         timer_err = meshx_os_timer_restart(meshx_nvs_inst.meshx_nvs_commit_tmr);
@@ -876,6 +885,179 @@ meshx_err_t meshx_nvs_erase_device_key(const meshx_uuid_t *uuid)
                    (*uuid)[0], (*uuid)[1], (*uuid)[2], (*uuid)[3]);
     }
     return err;
+}
+
+/**
+ * @brief Begin an atomic NVS write transaction.
+ *
+ * Disables auto-commit stability timers and stages all subsequent writes
+ * in RAM until committed or rolled back.
+ *
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_STATE if transaction already active or NVS uninitialized.
+ */
+meshx_err_t meshx_nvs_transaction_begin(void)
+{
+    if (meshx_nvs_inst.init != MESHX_NVS_INIT_MAGIC)
+    {
+        return MESHX_INVALID_STATE;
+    }
+    if (s_nvs_in_transaction)
+    {
+        return MESHX_INVALID_STATE;
+    }
+    s_nvs_in_transaction = true;
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Commit an active NVS transaction atomically.
+ *
+ * Writes all staged keys to flash in a single batch. If ANY key fails to write,
+ * automatically rolls back all staged changes and leaves flash in clean state.
+ *
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_STATE if not in transaction, or error code on failure.
+ */
+meshx_err_t meshx_nvs_transaction_commit(void)
+{
+    if (!s_nvs_in_transaction)
+    {
+        return MESHX_INVALID_STATE;
+    }
+    meshx_err_t err = meshx_nvs_commit();
+    s_nvs_in_transaction = false;
+    return err;
+}
+
+/**
+ * @brief Roll back all pending or recently committed changes in active transaction.
+ *
+ * Discards staged writes in RAM and restores clean state.
+ *
+ * @return MESHX_SUCCESS on success.
+ */
+meshx_err_t meshx_nvs_transaction_rollback(void)
+{
+    /* Drain all uncommitted nodes in RAM */
+    meshx_nvs_write_list_t *cur = meshx_nvs_write_list_head;
+    while (cur)
+    {
+        meshx_nvs_write_list_t *prev = cur;
+        cur = cur->next;
+        MESHX_FREE(&prev);
+    }
+    meshx_nvs_write_list_head = NULL;
+
+    /* Drain platform staging buffer */
+    meshx_nvs_plat_rollback(meshx_nvs_inst.meshx_nvs_handle);
+
+    s_nvs_in_transaction = false;
+    MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_NVS, "NVS write transaction rolled back cleanly");
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Execute atomic self-provisioning commit in NVS for Anchor nodes (ZGB-T07).
+ *
+ * Commits NetKey (ID=0), AppKey (ID=0), self-DevKey under "dk_<UUID_4B>",
+ * node address (0x0001), and provisioner role (MASTER=1) in a single atomic transaction.
+ * 100% rollback on write error (preventing DevKey vs address inconsistency).
+ * Zero plaintext key bytes emitted to UART or logging.
+ *
+ * @param[in] net_key 16-byte Network Key.
+ * @param[in] app_key 16-byte Application Key.
+ * @param[in] dev_key 16-byte self Device Key.
+ * @param[in] uuid    16-byte local device UUID.
+ * @param[in] addr    Unicast address to commit (0x0001).
+ * @param[in] role    Provisioner role (1 = MESHX_PROV_ROLE_MASTER).
+ *
+ * @return MESHX_SUCCESS on success, error code on rollback.
+ */
+meshx_err_t meshx_nvs_self_provision_commit(const meshx_key_t net_key,
+                                            const meshx_key_t app_key,
+                                            const meshx_key_t dev_key,
+                                            const meshx_uuid_t *uuid,
+                                            uint16_t addr,
+                                            uint8_t role)
+{
+    if (!net_key || !app_key || !dev_key || !uuid || addr == MESHX_ADDR_UNASSIGNED)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    if (meshx_nvs_inst.init != MESHX_NVS_INIT_MAGIC)
+    {
+        return MESHX_INVALID_STATE;
+    }
+
+    char devkey_key[MESHX_KEY_NAME_MAX_SIZE];
+    meshx_err_t err = meshx_nvs_devkey_format_key((const uint8_t *)uuid, devkey_key, sizeof(devkey_key));
+    if (err != MESHX_SUCCESS)
+    {
+        return err;
+    }
+
+    char netkey_key[MESHX_KEY_NAME_MAX_SIZE] = "nk_0000";
+    char appkey_key[MESHX_KEY_NAME_MAX_SIZE] = "ak_0000";
+
+    meshx_app_store_t store;
+    memset(&store, 0, sizeof(store));
+    store.net_key_id = 0;
+    store.node_addr  = addr;
+    store.prov_role  = role;
+
+    /* Begin atomic transaction */
+    err = meshx_nvs_transaction_begin();
+    if (err != MESHX_SUCCESS)
+    {
+        return err;
+    }
+
+    /* Stage NetKey, AppKey, self-DevKey, and meshx_store without auto-commit */
+    if ((err = meshx_nvs_set(netkey_key, net_key, MESHX_KEY_LEN, MESHX_NVS_NO_AUTO_COMMIT)) != MESHX_SUCCESS ||
+        (err = meshx_nvs_set(appkey_key, app_key, MESHX_KEY_LEN, MESHX_NVS_NO_AUTO_COMMIT)) != MESHX_SUCCESS ||
+        (err = meshx_nvs_set(devkey_key, dev_key, MESHX_KEY_LEN, MESHX_NVS_NO_AUTO_COMMIT)) != MESHX_SUCCESS ||
+        (err = meshx_nvs_set(MESHX_NVS_STORE, &store, sizeof(store), MESHX_NVS_NO_AUTO_COMMIT)) != MESHX_SUCCESS)
+    {
+        meshx_nvs_transaction_rollback();
+        return err;
+    }
+
+    /* Execute atomic batch commit to flash */
+    err = meshx_nvs_transaction_commit();
+    if (err != MESHX_SUCCESS)
+    {
+        meshx_nvs_self_provision_rollback(uuid);
+        return err;
+    }
+
+    MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_NVS, "Atomic self-provision committed: addr=0x%04X, role=%u (zero key material logged)", addr, (unsigned int)role);
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Roll back self-provisioned credentials from NVS.
+ *
+ * Purges NetKey (ID=0), AppKey (ID=0), DevKey ("dk_<UUID_4B>"), and meshx_store.
+ *
+ * @param[in] uuid 16-byte local device UUID.
+ *
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_nvs_self_provision_rollback(const meshx_uuid_t *uuid)
+{
+    meshx_nvs_transaction_rollback();
+
+    char devkey_key[MESHX_KEY_NAME_MAX_SIZE];
+    if (uuid != NULL && meshx_nvs_devkey_format_key((const uint8_t *)uuid, devkey_key, sizeof(devkey_key)) == MESHX_SUCCESS)
+    {
+        meshx_nvs_remove(devkey_key);
+    }
+    meshx_nvs_remove("nk_0000");
+    meshx_nvs_remove("ak_0000");
+    meshx_nvs_remove(MESHX_NVS_STORE);
+    meshx_nvs_commit();
+
+    MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_NVS, "Self-provisioning credentials rolled back from NVS");
+    return MESHX_SUCCESS;
 }
 
 

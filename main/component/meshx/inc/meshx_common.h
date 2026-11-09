@@ -56,7 +56,9 @@ typedef struct meshx_app_store
 {
     uint16_t net_key_id; /**< Network key identifier */
     uint16_t node_addr;  /**< Node address */
-} meshx_app_store_t;
+    uint8_t  prov_role;  /**< Provisioner role (0=STANDALONE, 1=MASTER, 2=STANDBY) */
+    uint8_t  reserved;   /**< Alignment padding */
+} MESHX_PACKED meshx_app_store_t;
 
 /**
  * @brief Structure representing the device composition and elements.
@@ -68,6 +70,7 @@ typedef struct dev_struct
     void *composition;                         /**< Device composition */
     MESHX_ELEMENT *elements;                   /**< Pointer to array of elements */
     size_t element_cnt;                        /**< Total number of elements */
+    uint16_t unicast_addr;                     /**< Primary unicast address (0x0000 = unassigned) */
     meshx_app_store_t meshx_store;             /**< Mesh application store */
 } dev_struct_t;
 

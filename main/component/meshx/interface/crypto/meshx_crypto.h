@@ -30,6 +30,20 @@ typedef uint8_t meshx_p256_privkey_t[MESHX_P256_PRIV_LEN];
 typedef uint8_t meshx_p256_secret_t[MESHX_P256_SECRET_LEN];
 
 /**
+ * @brief Fill buffer with cryptographically secure random bytes from hardware RNG.
+ *
+ * ESP-IDF: Seeds from eFuse and radio/SAR ADC entropy via esp_fill_random().
+ * Zephyr:  Seeds from hardware CSPRNG/sys_rand_get().
+ *
+ * Guarantees ZERO key bytes are printed to console/UART.
+ *
+ * @param[out] buf Pointer to destination buffer.
+ * @param[in]  len Number of random bytes to generate.
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_crypto_random_fill(uint8_t *buf, size_t len);
+
+/**
  * @brief Generate NIST P-256 Elliptic Curve keypair.
  *
  * @param[out] out_public_key  64-byte public key (X || Y raw coordinates).

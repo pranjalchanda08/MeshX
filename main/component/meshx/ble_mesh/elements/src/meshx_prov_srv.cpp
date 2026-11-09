@@ -29,10 +29,14 @@ extern "C" int bt_mesh_node_local_app_key_add(uint16_t net_idx, uint16_t app_idx
                                      CONTROL_TASK_MSG_EVT_EN_NODE_PROV   |  \
                                      CONTROL_TASK_MSG_EVT_SYSTEM_STACK_READY | \
                                      CONTROL_TASK_MSG_EVT_PROXY_CONNECT  |  \
-                                     CONTROL_TASK_MSG_EVT_PROXY_DISCONN )
+                                     CONTROL_TASK_MSG_EVT_PROXY_DISCONN  |  \
+                                     CONTROL_TASK_MSG_EVT_ZGB_TRIGGER_BUTTON_HOLD )
 
 #define MESHX_PROV_SRV_CLIENT_EVENT_BMAP    (CONTROL_TASK_MSG_EVT_SYSTEM_FRESH_BOOT)
 #define MESHX_PROV_SRV_SERVER_EVENT_BMAP    (CONTROL_TASK_MSG_EVT_SYSTEM_STACK_READY)
+
+#define MESHX_TRAIT_MASK_MULTI_ELEMENT       (0x0020) /**< Bit 5: Multi-Gang / Multi-Element per REQ-003 */
+#define MESHX_PROV_FAIL_REASON_INVALID_FMT   (0x02)   /**< ZGB-T02: PROVISIONING_FAILED (0x02) */
 
 /*
  * @brief Structure to map provisioning callback events to control task events.
@@ -222,6 +226,13 @@ static void meshx_handle_node_reset(dev_struct_t *pdev)
     /* Erase dynamic composition schema from NVS */
     meshx_nvs_comp_schema_erase();
 
+    /* Erase persistent node store and local DevKey from NVS */
+    meshx_nvs_remove(MESHX_NVS_STORE);
+    meshx_nvs_erase_device_key((const meshx_uuid_t *)&pdev->uuid);
+    meshx_nvs_commit();
+    memset(&pdev->meshx_store, 0, sizeof(pdev->meshx_store));
+    pdev->unicast_addr = MESHX_ADDR_UNASSIGNED;
+
     /* Notify application about node reset */
     meshx_send_ctrl_msg_to_app(MESHX_CTRL_EVT_NODE_RESET, 0, NULL);
 
@@ -242,16 +253,79 @@ static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_t
         case CONTROL_TASK_MSG_EVT_PROVISION_STOP:
         {
             meshx_disarm_oob_watchdog();
+
+            /* ZGB-T02 / ZGB-005: Capability Integrity Validation.
+             * Validate unprovisioned beacon trait mask against actual composition element count
+             * before committing node credentials to persistent flash.
+             * Gated for external provisioning links only: Self-commissioning Anchor (0x0001)
+             * derives its own keys via Case 2 / HWRNG and is validated by the local element model. */
+            if (pdev != NULL && param->node_prov_complete.addr != 0x0001 && !meshx_zgb_is_commissioning())
+            {
+                /* 1. Extract 16-bit Product Trait Mask from Device UUID Bytes 10..11 */
+                uint16_t trait_mask = ((uint16_t)pdev->uuid[10] << 8) | (uint16_t)pdev->uuid[11];
+
+                /* 2. Introspect actual element count from device composition data */
+                uint8_t elem_count = 1;
+                if (pdev->element_cnt > 0)
+                {
+                    elem_count = (uint8_t)pdev->element_cnt;
+                }
+                else if (meshx_get_element_count() > 0)
+                {
+                    elem_count = (uint8_t)meshx_get_element_count();
+                }
+
+                /* 3. Bit 5 (0x0020) indicates Multi-Gang / Multi-Element */
+                bool is_multi_element = (trait_mask & MESHX_TRAIT_MASK_MULTI_ELEMENT) != 0;
+                bool integrity_match  = is_multi_element ? (elem_count > 1) : (elem_count == 1);
+
+                if (!integrity_match)
+                {
+                    MESHX_LOGE(MODULE_ID_COMMON,
+                               "Prov Srv: Capability integrity mismatch! trait_mask=0x%04x (multi=%d) but elem_count=%u. Aborting link with PROVISIONING_FAILED (0x02).",
+                               trait_mask, (int)is_multi_element, (unsigned int)elem_count);
+
+                    /* Link MUST abort with PROVISIONING_FAILED (0x02) */
+                    mxcp_evt_prov_failed_t fail_evt;
+                    fail_evt.reason = MESHX_PROV_FAIL_REASON_INVALID_FMT;
+                    mxcp_send_event(MXCP_EVT_PROV_FAILED, (const uint8_t *)&fail_evt, sizeof(fail_evt));
+
+                    /* Reset link state by disabling provisioning bearers */
+                    meshx_prov_bearer_t bearers = (meshx_prov_bearer_t)(MESHX_PROV_ADV | MESHX_PROV_GATT);
+                    meshx_plat_prov_disable(bearers);
+
+                    /* Reset volatile store without committing to NVS */
+                    pdev->meshx_store.net_key_id = 0;
+                    pdev->meshx_store.node_addr  = MESHX_ADDR_UNASSIGNED;
+                    pdev->unicast_addr           = MESHX_ADDR_UNASSIGNED;
+
+                    /* Emit unprovisioned state indication */
+                    mxcp_evt_prov_state_ind_t ind;
+                    memset(&ind, 0, sizeof(ind));
+                    ind.unicast_addr = MESHX_ADDR_UNASSIGNED;
+                    ind.net_idx      = 0;
+                    ind.state        = 0; /* MXCP_PROV_STATE_UNPROVISIONED */
+                    mxcp_send_event(MXCP_EVT_PROV_STATE_IND, (const uint8_t *)&ind, sizeof(ind));
+
+                    /* Notify application bus of provisioning failure */
+                    meshx_send_ctrl_msg_to_app(MESHX_CTRL_EVT_PROV_FAILED, MESHX_PROV_FAIL_REASON_INVALID_FMT, NULL);
+
+                    /* Abort immediately: do NOT persist meshx_store, DevKey, or arm reheal */
+                    break;
+                }
+            }
+
             pdev->meshx_store.net_key_id = param->node_prov_complete.net_idx;
             pdev->meshx_store.node_addr  = param->node_prov_complete.addr;
+            pdev->unicast_addr           = param->node_prov_complete.addr;
             meshx_nvs_set(MESHX_NVS_STORE, &pdev->meshx_store, sizeof(pdev->meshx_store), MESHX_NVS_AUTO_COMMIT);
             meshx_nvs_commit(); // Force immediate commit for critical provisioning parameters
 
             /* TASK-HEAL-003: Persist local node's DevKey into NVS registry for Master re-healing lookups.
              * The net_key serves as the immutable DevKey in this custom MeshX stack. */
-            if (pdev && meshx_prov_srv_is_provisioned())
+            if (pdev && (meshx_prov_srv_is_provisioned() || pdev->meshx_store.node_addr != MESHX_ADDR_UNASSIGNED))
             {
-                meshx_err_t dk_err = meshx_nvs_set_device_key(&pdev->uuid,
+                meshx_err_t dk_err = meshx_nvs_set_device_key((const meshx_uuid_t *)&pdev->uuid,
                                                               param->node_prov_complete.net_key);
                 if (dk_err != MESHX_SUCCESS)
                 {
@@ -268,12 +342,21 @@ static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_t
             comp_evt.net_idx = param->node_prov_complete.net_idx;
             comp_evt.addr    = param->node_prov_complete.addr;
             mxcp_send_event(MXCP_EVT_PROV_COMP, (const uint8_t *)&comp_evt, sizeof(comp_evt));
+
+            /* Notify ZGB subsystem of provisioning completion to cancel active timers and synchronize state */
+            meshx_zgb_on_provision_complete(param->node_prov_complete.addr);
             break;
         }
         case CONTROL_TASK_MSG_EVT_IDENTIFY_START:
         {
             MESHX_LOGI(MODULE_ID_COMMON, "Identify Start / Link Open");
             meshx_arm_oob_watchdog();
+
+            /* ZGB-T09 / ZGB-011: External Provisioning Priority Guard.
+             * Abort self-commissioning immediately if external provisioner arrives
+             * before or during commission window; discard generated keys, cancel timers,
+             * and accept external credentials. */
+            meshx_zgb_on_external_prov_start();
 
             /* Emit MXCP_EVT_PROV_LINK_OPEN to Host MCU */
             mxcp_evt_prov_link_open_t open_evt;
@@ -293,6 +376,12 @@ static meshx_err_t meshx_prov_control_task_handler(dev_struct_t *pdev, control_t
             close_evt.bearer = (param != NULL) ? param->node_prov_link_close.bearer : 0x01;
             close_evt.reason = (param != NULL) ? param->node_prov_link_close.reason : 0x00;
             mxcp_send_event(MXCP_EVT_PROV_LINK_CLOSE, (const uint8_t *)&close_evt, sizeof(close_evt));
+            break;
+        }
+        case CONTROL_TASK_MSG_EVT_ZGB_TRIGGER_BUTTON_HOLD:
+        {
+            MESHX_LOGI(MODULE_ID_COMMON, "ZGB: Button hold >= 3s triggered, opening commission window");
+            meshx_zgb_start_commissioning();
             break;
         }
         case CONTROL_TASK_MSG_EVT_NODE_RESET:
@@ -505,6 +594,12 @@ extern "C" meshx_err_t meshx_prov_srv_notify_plat_event(meshx_prov_srv_param_t *
 extern "C" bool meshx_prov_srv_is_provisioned(void)
 {
     uint16_t primary_addr = 0;
+    /* Fast-path: check persisted/restored node address from NVS store */
+    uint16_t node_addr = meshx_get_node_addr();
+    if (node_addr != MESHX_ADDR_UNASSIGNED)
+    {
+        return true;
+    }
     if (MESHX_SUCCESS == meshx_get_base_element_id(&primary_addr))
     {
         return (primary_addr != MESHX_ADDR_UNASSIGNED);

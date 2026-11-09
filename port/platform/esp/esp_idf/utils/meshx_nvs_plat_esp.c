@@ -127,3 +127,15 @@ meshx_err_t meshx_nvs_plat_commit(uintptr_t p_nvs_handle)
 {
     return meshx_kv_engine_commit();
 }
+
+/**
+ * @brief Roll back all uncommitted staged writes in platform storage for ESP-IDF.
+ *
+ * @param[in] p_nvs_handle NVS handle (unused in this implementation).
+ *
+ * @return MESHX_SUCCESS on success, or platform error code.
+ */
+meshx_err_t meshx_nvs_plat_rollback(uintptr_t p_nvs_handle)
+{
+    return meshx_kv_engine_rollback();
+}

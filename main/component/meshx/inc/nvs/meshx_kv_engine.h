@@ -61,6 +61,13 @@ meshx_err_t meshx_kv_engine_set(const char *key, const void *buf, uint16_t len);
 meshx_err_t meshx_kv_engine_commit(void);
 
 /**
+ * @brief Roll back and discard all pending buffered writes in RAM.
+ *
+ * @return meshx_err_t MESHX_SUCCESS on success.
+ */
+meshx_err_t meshx_kv_engine_rollback(void);
+
+/**
  * @brief Remove a key from the KV engine.
  *
  * @param[in] key Key name.

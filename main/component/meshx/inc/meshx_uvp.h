@@ -62,7 +62,6 @@ uint16_t meshx_get_cid(void);
 #define MESHX_UVP_MAX_APP_PAYLOAD       (MESHX_UVP_MAX_PAYLOAD - MESHX_UVP_FUNC_ID_PREFIX_SZ) /**< 375 B app payload budget */
 
 #define MESHX_UVP_HMAC_LEN              16      /**< HMAC-SHA256 truncated to 16 bytes */
-#define MESHX_KEY_LEN                   16      /**< Network Key length */
 
 /**
  * @brief Re-Healing & Redundancy Protocol Constants

@@ -141,9 +141,11 @@ bool meshx_quarantine_is_range_blocked(uint16_t base_addr, uint8_t element_count
 void meshx_quarantine_poll_expiry(void);
 
 typedef enum {
-    MESHX_PROV_ROLE_STANDALONE = 0,     /**< Provisioner is standalone */
-    MESHX_PROV_ROLE_MASTER     = 1,     /**< Provisioner is master */
+    MESHX_PROV_ROLE_STANDALONE = 0,     /**< Provisioner is standalone (unprovisioned default) */
+    MESHX_PROV_ROLE_MASTER     = 1,     /**< Provisioner is master (committed anchor 0x0001) */
     MESHX_PROV_ROLE_STANDBY    = 2,     /**< Provisioner is standby */
+    MESHX_PROV_ROLE_CANDIDATE  = 3,     /**< Provisioner candidate (in LISTEN, not committed, volatile) */
+    MESHX_PROV_ROLE_STALE      = 4,     /**< Provisioner stale (suppressed/split-brain loser, volatile) */
 } meshx_prov_role_t;
 
 

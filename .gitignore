@@ -80,4 +80,5 @@ docs
 *third_party/zephyr
 *third_party/zephyr*
 .west/
+.scratchpad/
 modules/

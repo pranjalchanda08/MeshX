@@ -15,6 +15,46 @@
 
 static struct bt_mesh_prov g_zephyr_prov;
 
+/**
+ * @brief Handle Zephyr BLE Mesh provisioning link open callback.
+ *
+ * Emits MESHX_NODE_PROV_LINK_OPEN_EVT to the MeshX provisioning server.
+ *
+ * @param[in] bearer Bearer type over which link was established (PB-ADV or PB-GATT).
+ */
+static void zephyr_prov_link_open(bt_mesh_prov_bearer_t bearer)
+{
+    MESHX_LOGI(MODULE_ID_MODEL_SERVER, "Zephyr provisioning link open (bearer 0x%02x)", bearer);
+    meshx_prov_srv_param_t prov_srv_param;
+    memset(&prov_srv_param, 0, sizeof(meshx_prov_srv_param_t));
+    prov_srv_param.prov_evt = MESHX_NODE_PROV_LINK_OPEN_EVT;
+    prov_srv_param.param.node_prov_link_open.bearer = (meshx_prov_bearer_t)bearer;
+
+    if (meshx_prov_srv_notify_plat_event(&prov_srv_param) != MESHX_SUCCESS) {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to notify MeshX provisioning link open event");
+    }
+}
+
+/**
+ * @brief Handle Zephyr BLE Mesh provisioning link close callback.
+ *
+ * Emits MESHX_NODE_PROV_LINK_CLOSE_EVT to the MeshX provisioning server.
+ *
+ * @param[in] bearer Bearer type over which link was terminated.
+ */
+static void zephyr_prov_link_close(bt_mesh_prov_bearer_t bearer)
+{
+    MESHX_LOGI(MODULE_ID_MODEL_SERVER, "Zephyr provisioning link close (bearer 0x%02x)", bearer);
+    meshx_prov_srv_param_t prov_srv_param;
+    memset(&prov_srv_param, 0, sizeof(meshx_prov_srv_param_t));
+    prov_srv_param.prov_evt = MESHX_NODE_PROV_LINK_CLOSE_EVT;
+    prov_srv_param.param.node_prov_link_close.bearer = (meshx_prov_bearer_t)bearer;
+
+    if (meshx_prov_srv_notify_plat_event(&prov_srv_param) != MESHX_SUCCESS) {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to notify MeshX provisioning link close event");
+    }
+}
+
 static void zephyr_prov_complete(uint16_t net_idx, uint16_t addr)
 {
     MESHX_LOGI(MODULE_ID_MODEL_SERVER, "Zephyr provisioning complete: net_idx 0x%04x, addr 0x%04x", net_idx, addr);
@@ -47,6 +87,8 @@ meshx_err_t meshx_plat_init_prov(const uint8_t *uuid)
         return MESHX_INVALID_ARG;
     }
     g_zephyr_prov.uuid = uuid;
+    g_zephyr_prov.link_open = zephyr_prov_link_open;
+    g_zephyr_prov.link_close = zephyr_prov_link_close;
     g_zephyr_prov.complete = zephyr_prov_complete;
     g_zephyr_prov.reset = zephyr_prov_reset;
     return MESHX_SUCCESS;

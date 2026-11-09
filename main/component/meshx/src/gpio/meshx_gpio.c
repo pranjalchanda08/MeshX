@@ -21,6 +21,8 @@
 #include "interface/logging/meshx_log.h"
 #include "meshx_err.h"
 #include "module_id.h"
+#include "meshx_control_task.h"
+#include "meshx_os_timer.h"
 
 #ifndef MESHX_GPIO_COUNT_MAX
 #define MESHX_GPIO_COUNT_MAX    128
@@ -194,6 +196,10 @@ meshx_err_t meshx_gpio_init(void)
 
     gpio_runtime.initialized = true;
     MESHX_LOGD(MODULE_ID_COMPONENT_MESHX_GPIO, "GPIO subsystem initialized with %d pins", gpio_runtime.pin_count);
+
+    /* Initialize button hold detector for Zero-Gateway Bootstrapping */
+    meshx_gpio_button_hold_init(CONFIG_ZGB_BUTTON_PIN, CONFIG_ZGB_BUTTON_HOLD_MS);
+
     return MESHX_SUCCESS;
 }
 
@@ -209,6 +215,8 @@ meshx_err_t meshx_gpio_deinit(void)
         MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_GPIO, "GPIO not initialized");
         return MESHX_SUCCESS;
     }
+
+    meshx_gpio_button_hold_deinit();
 
     // Deinitialize platform-specific GPIO
     meshx_err_t err = meshx_gpio_platform_deinit();
@@ -970,5 +978,149 @@ meshx_err_t meshx_gpio_process_hosted_interrupt(uint8_t logical_pin, uint8_t val
         callback(logical_pin, gpio_runtime.pin_states[logical_pin].intr_user_data);
     }
 
+    return MESHX_SUCCESS;
+}
+
+/* ==============================================================================
+ * ZGB Button Hold Detector Implementation (ZGB-T04 / ZGB-T05)
+ * ============================================================================== */
+static meshx_os_timer_t *s_button_hold_timer = NULL;
+static uint8_t s_button_pin = CONFIG_ZGB_BUTTON_PIN;
+
+/**
+ * @brief Timer callback invoked when button hold duration threshold is reached.
+ *
+ * Verifies that the pin is still held low and publishes
+ * CONTROL_TASK_MSG_EVT_ZGB_TRIGGER_BUTTON_HOLD to trigger self-commissioning.
+ *
+ * @param[in] p_timer Pointer to timer instance.
+ */
+static void button_hold_timer_cb(const meshx_os_timer_t *p_timer)
+{
+    MESHX_UNUSED(p_timer);
+    uint8_t level = 1;
+    if (meshx_gpio_platform_get_level(s_button_pin, &level) == MESHX_SUCCESS && level == 0)
+    {
+        MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Button hold >= 3s detected on GPIO%d; publishing trigger event", s_button_pin);
+        control_task_msg_publish(CONTROL_TASK_MSG_CODE_PROVISION,
+                                 CONTROL_TASK_MSG_EVT_ZGB_TRIGGER_BUTTON_HOLD,
+                                 NULL, 0);
+    }
+}
+
+/**
+ * @brief Any-edge GPIO interrupt service routine for button hold detection.
+ *
+ * Starts the hold timer on falling edge (button pressed) and stops it on
+ * rising edge (button released before hold expiration).
+ *
+ * @param[in] arg Context argument containing logical/physical pin number.
+ */
+static void button_hold_isr(void *arg)
+{
+    uint8_t pin = (uint8_t)(uintptr_t)arg;
+    uint8_t level = 1;
+    if (meshx_gpio_platform_get_level(pin, &level) == MESHX_SUCCESS)
+    {
+        if (level == 0)
+        {
+            /* Active-low: button pressed -> start hold timer using direct ISR-safe RTOS timer */
+            if (s_button_hold_timer != NULL)
+            {
+                meshx_rtos_timer_start(&s_button_hold_timer->timer_handle);
+            }
+        }
+        else
+        {
+            /* Rising edge: button released -> stop timer without trigger using direct ISR-safe RTOS timer */
+            if (s_button_hold_timer != NULL)
+            {
+                meshx_rtos_timer_stop(&s_button_hold_timer->timer_handle);
+            }
+        }
+    }
+}
+
+/**
+ * @brief Initialize GPIO button hold detector for Zero-Gateway Bootstrapping.
+ *
+ * Configures button pin as active-low input with pull-up and any-edge interrupt.
+ * Active-low (level 0) starts hold_ms timer; rising edge cancels timer.
+ * Also checks if the button is pre-held at cold boot.
+ *
+ * @param[in] pin     Logical/physical GPIO pin number.
+ * @param[in] hold_ms Hold duration threshold in milliseconds.
+ *
+ * @return MESHX_SUCCESS on success, or error code on failure.
+ */
+meshx_err_t meshx_gpio_button_hold_init(uint8_t pin, uint32_t hold_ms)
+{
+    s_button_pin = pin;
+
+    /* Configure GPIO pin: active-low input with pull-up */
+    meshx_err_t err = meshx_gpio_platform_configure_pin(s_button_pin,
+                                                        MESHX_GPIO_MODE_INPUT,
+                                                        MESHX_GPIO_PULL_UP,
+                                                        MESHX_GPIO_DRIVE_WEAK);
+    if (err != MESHX_SUCCESS)
+    {
+        MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_GPIO, "Failed to configure button pin %d: %d", s_button_pin, err);
+        return err;
+    }
+
+    /* Create one-shot hold timer */
+    if (s_button_hold_timer == NULL)
+    {
+        err = meshx_os_timer_create("btn_hold", hold_ms, false, button_hold_timer_cb, &s_button_hold_timer);
+        if (err != MESHX_SUCCESS)
+        {
+            MESHX_LOGE(MODULE_ID_COMPONENT_MESHX_GPIO, "Failed to create button hold timer: %d", err);
+            return err;
+        }
+    }
+
+    /* Register any-edge interrupt */
+    err = meshx_gpio_platform_register_intr(s_button_pin,
+                                            MESHX_GPIO_INTR_ANY_EDGE,
+                                            button_hold_isr,
+                                            (void *)(uintptr_t)s_button_pin);
+    if (err == MESHX_SUCCESS)
+    {
+        meshx_gpio_platform_intr_enable(s_button_pin, true);
+    }
+    else
+    {
+        MESHX_LOGW(MODULE_ID_COMPONENT_MESHX_GPIO, "Button hold intr registration returned %d", err);
+    }
+
+    /* Handle pre-held button on cold boot */
+    uint8_t level = 1;
+    if (meshx_gpio_platform_get_level(s_button_pin, &level) == MESHX_SUCCESS && level == 0)
+    {
+        MESHX_LOGI(MODULE_ID_COMPONENT_MESHX_GPIO, "Button pre-held at boot on pin %d; starting timer", s_button_pin);
+        meshx_os_timer_start(s_button_hold_timer);
+    }
+
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Deinitialize GPIO button hold detector.
+ *
+ * Disables interrupt, unregisters callback, and deletes the one-shot timer.
+ *
+ * @return MESHX_SUCCESS on success, or error code on failure.
+ */
+meshx_err_t meshx_gpio_button_hold_deinit(void)
+{
+    /* Disable and unregister interrupt before deleting timer to eliminate race conditions */
+    meshx_gpio_platform_intr_enable(s_button_pin, false);
+    meshx_gpio_platform_unregister_intr(s_button_pin);
+    if (s_button_hold_timer != NULL)
+    {
+        meshx_os_timer_stop(s_button_hold_timer);
+        meshx_os_timer_delete(&s_button_hold_timer);
+        s_button_hold_timer = NULL;
+    }
     return MESHX_SUCCESS;
 }

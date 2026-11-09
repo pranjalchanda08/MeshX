@@ -433,6 +433,13 @@ uint16_t meshx_get_net_key_id(void);
 uint16_t meshx_get_node_addr(void);
 
 /**
+ * @brief Set the node's primary unicast address and sync volatile device store.
+ * @param[in] addr Primary unicast address.
+ * @return meshx_err_t MESHX_SUCCESS on success.
+ */
+meshx_err_t meshx_set_node_addr(uint16_t addr);
+
+/**
  * @brief Get the total number of elements on this node.
  * @return size_t The element count.
  */
