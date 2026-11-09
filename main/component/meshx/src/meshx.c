@@ -16,8 +16,11 @@
 #include <meshx_ro_cfg.h>
 #include <meshx_serial.h>
 #include <meshx_uvp_dispatcher.hpp>
+#include <zgb/meshx_zgb.h>
+
 
 #include "interface/gpio/meshx_gpio.h"
+#include "interface/ble_mesh/meshx_ble_mesh_cmn.h"
 #include "interface/utils/meshx_tiny_printf.h"
 #include <stdio.h>
 #include <string.h>
@@ -195,7 +198,30 @@ static meshx_err_t meshx_dev_restore(dev_struct_t *pdev,
                    "No meshx device state found in NVS, starting fresh (err 0x%x)",
                    err);
         memset(&pdev->meshx_store, 0, sizeof(meshx_app_store_t));
+        pdev->unicast_addr = MESHX_ADDR_UNASSIGNED;
         return MESHX_SUCCESS; // Non-fatal
+    }
+
+    /* Restore unicast address into device structure */
+    pdev->unicast_addr = pdev->meshx_store.node_addr;
+
+    /* If device is provisioned, verify DevKey presence in NVS */
+    if (pdev->meshx_store.node_addr != MESHX_ADDR_UNASSIGNED)
+    {
+        uint8_t dev_key[MESHX_KEY_LEN] = {0};
+        meshx_err_t dk_err = meshx_nvs_get_device_key((const meshx_uuid_t *)&pdev->uuid, dev_key);
+        if (dk_err == MESHX_SUCCESS)
+        {
+            MESHX_LOGI(MODULE_ID_COMMON,
+                       "Restored provisioned device state: addr=0x%04X, net_idx=0x%04X, DevKey verified in NVS",
+                       pdev->meshx_store.node_addr, pdev->meshx_store.net_key_id);
+        }
+        else
+        {
+            MESHX_LOGW(MODULE_ID_COMMON,
+                       "Provisioned node 0x%04X missing DevKey in NVS registry (err=%d)",
+                       pdev->meshx_store.node_addr, dk_err);
+        }
     }
 
     return MESHX_SUCCESS;
@@ -292,6 +318,25 @@ static meshx_err_t meshx_ble_mesh_init(meshx_config_t *config)
 
     err = meshx_plat_ble_mesh_init(&g_prov_cfg, g_dev.composition);
     MESHX_ERR_PRINT_RET("Failed to initialize BLE Mesh stack", err);
+
+    /* Boot-time provisioning state validation and address synchronization */
+    if (meshx_prov_srv_is_provisioned())
+    {
+        uint16_t primary_addr = MESHX_ADDR_UNASSIGNED;
+        if (meshx_get_base_element_id(&primary_addr) == MESHX_SUCCESS && primary_addr != MESHX_ADDR_UNASSIGNED)
+        {
+            if (g_dev.meshx_store.node_addr == MESHX_ADDR_UNASSIGNED)
+            {
+                g_dev.meshx_store.node_addr = primary_addr;
+            }
+        }
+        MESHX_LOGI(MODULE_ID_COMMON, "BLE Mesh Stack ready: Node PROVISIONED (addr=0x%04X), unprovisioned beaconing gated",
+                   g_dev.meshx_store.node_addr);
+    }
+    else
+    {
+        MESHX_LOGI(MODULE_ID_COMMON, "BLE Mesh Stack ready: Node UNPROVISIONED, unprovisioned beaconing active");
+    }
 
     /* Publish system ready event to notify lower layers */
     control_task_msg_publish(CONTROL_TASK_MSG_CODE_PROVISION,
@@ -419,6 +464,14 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     err = meshx_load_persistent_config(config);
     MESHX_ERR_PRINT_RET("Failed to load persistent configuration", err);
 
+    /* Derive MeshX Device UUID early so it is accessible during NVS restore */
+    if (memcmp(g_uuid, MESHX_UUID_EMPTY, sizeof(g_uuid)) == 0)
+    {
+        err = meshx_derive_device_uuid(g_uuid, g_cid, g_pid);
+        MESHX_ERR_PRINT_RET("Device UUID derivation failed", err);
+    }
+    memcpy(g_dev.uuid, g_uuid, sizeof(g_dev.uuid));
+
     /* Initialise Control Task messaging early (required for NVS and OS Timers) */
     err = control_task_init();
     MESHX_ERR_PRINT_RET("Control Task Init failed", err);
@@ -467,6 +520,11 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     err = meshx_serial_init();
     MESHX_ERR_PRINT_RET("Serial init failed", err);
 
+    /* Initialize Zero-Gateway Bootstrapping subsystem */
+    err = meshx_zgb_init();
+    MESHX_ERR_PRINT_RET("ZGB init failed", err);
+
+
 #if CONFIG_ENABLE_UNIT_TEST
     /* Initialize unit test console (this also registers the 'ut' command) */
     err = init_unit_test_console();
@@ -479,6 +537,13 @@ meshx_err_t meshx_init(meshx_config_t const *config)
 uint16_t meshx_get_net_key_id(void) { return g_dev.meshx_store.net_key_id; }
 
 uint16_t meshx_get_node_addr(void) { return g_dev.meshx_store.node_addr; }
+
+meshx_err_t meshx_set_node_addr(uint16_t addr)
+{
+    g_dev.meshx_store.node_addr = addr;
+    g_dev.unicast_addr = addr;
+    return MESHX_SUCCESS;
+}
 
 size_t meshx_get_element_count(void) { return g_dev.element_cnt; }
 

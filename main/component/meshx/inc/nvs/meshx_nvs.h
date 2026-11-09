@@ -2,8 +2,9 @@
  * @file meshx_nvs.h
  * @brief Header file for MeshX Non-Volatile Storage (NVS) operations.
  *
- * This file provides APIs to manage the Non-Volatile Storage (NVS) used in the MeshX system.
- * It includes functions to read, write, erase, and manage key-value pairs stored persistently.
+ * This file provides APIs to manage the Non-Volatile Storage (NVS) used in the
+ * MeshX system. It includes functions to read, write, erase, and manage
+ * key-value pairs stored persistently.
  *
  * @author Pranjal Chanda
  *
@@ -12,72 +13,80 @@
 #ifndef __MESHX_NVS_H__
 #define __MESHX_NVS_H__
 
-#include <stdint.h>
-#include <meshx_common.h>
 #include "meshx_os_timer.h"
+#include <meshx_common.h>
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define MESHX_NVS_TIMER_PERIOD_DEF  1000
+#define MESHX_NVS_TIMER_PERIOD_DEF 1000
 
 #ifndef MESHX_NVS_TIMER_PERIOD
-#define MESHX_NVS_TIMER_PERIOD      MESHX_NVS_TIMER_PERIOD_DEF
+#define MESHX_NVS_TIMER_PERIOD MESHX_NVS_TIMER_PERIOD_DEF
 #endif /* MESHX_NVS_TIMER_PERIOD */
 
-#define MESHX_NVS_AUTO_COMMIT       true
-#define MESHX_NVS_NO_AUTO_COMMIT    false
+#define MESHX_NVS_AUTO_COMMIT true
+#define MESHX_NVS_NO_AUTO_COMMIT false
 
 #ifndef CONFIG_MAX_ELEMENT_COUNT
 #define CONFIG_MAX_ELEMENT_COUNT 16
 #endif
 
-#define MESHX_NVS_KEY_KR_EPOCH        "kr_epoch"
-#define MESHX_NVS_KEY_DEVKEY_PREFIX   "dk_"           /**< DevKey registry prefix: "dk_" + 8 hex UUID chars => "dk_XXXXXXXX" (11 chars) */
-#define MESHX_NVS_KEY_COMP_SCHEMA     "comp_schema"
-#define MESHX_NVS_COMP_MAGIC          0x4D584350  /* 'MXCP' */
-#define MESHX_NVS_COMP_VERSION        0x01
-#define MESHX_COMP_FLAG_OVERRIDE_RO   0x01
+#define MESHX_NVS_KEY_KR_EPOCH "kr_epoch"
+#define MESHX_NVS_KEY_DEVKEY_PREFIX                                            \
+  "dk_" /**< DevKey registry prefix: "dk_" + 8 hex UUID chars => "dk_XXXXXXXX" \
+           (11 chars) */
+#define MESHX_NVS_KEY_NETKEY_PREFIX                                            \
+  "nk_" /**< NetKey registry prefix: "nk_%04x" (7 chars) */
+#define MESHX_NVS_KEY_APPKEY_PREFIX                                            \
+  "ak_" /**< AppKey registry prefix: "ak_%04x" (7 chars) */
+#define MESHX_NVS_KEY_COMP_SCHEMA "comp_schema"
+#define MESHX_NVS_COMP_MAGIC 0x4D584350 /* 'MXCP' */
+#define MESHX_NVS_COMP_VERSION 0x01
+#define MESHX_COMP_FLAG_OVERRIDE_RO 0x01
 
 typedef struct {
-    uint32_t magic;                                     /**< 0x4D584350 ('MXCP') */
-    uint8_t  version;                                   /**< Format version (0x01) */
-    uint8_t  element_count;                             /**< Total number of elements */
-    uint8_t  flags;                                     /**< Flags (e.g. MESHX_COMP_FLAG_OVERRIDE_RO) */
-    uint8_t  reserved;                                  /**< Alignment padding */
-    uint16_t element_types[CONFIG_MAX_ELEMENT_COUNT];   /**< Array of meshx_element_type_t */
-    uint16_t schema_crc;                                /**< CRC-16-CCITT over preceding fields */
+  uint32_t magic;        /**< 0x4D584350 ('MXCP') */
+  uint8_t version;       /**< Format version (0x01) */
+  uint8_t element_count; /**< Total number of elements */
+  uint8_t flags;         /**< Flags (e.g. MESHX_COMP_FLAG_OVERRIDE_RO) */
+  uint8_t reserved;      /**< Alignment padding */
+  uint16_t element_types[CONFIG_MAX_ELEMENT_COUNT]; /**< Array of
+                                                       meshx_element_type_t */
+  uint16_t schema_crc; /**< CRC-16-CCITT over preceding fields */
 } MESHX_PACKED meshx_nvs_comp_schema_t;
 
-#define MESHX_NVS_KEY_LINK_TABLE      "link_table"
-#define MESHX_NVS_LINK_MAGIC          0x4C4E4B53  /* 'LNKS' */
-#define MESHX_NVS_LINK_VERSION        0x01
-#define MESHX_MAX_PERSISTED_LINKS     16
+#define MESHX_NVS_KEY_LINK_TABLE "link_table"
+#define MESHX_NVS_LINK_MAGIC 0x4C4E4B53 /* 'LNKS' */
+#define MESHX_NVS_LINK_VERSION 0x01
+#define MESHX_MAX_PERSISTED_LINKS 16
 
 /**
  * @brief Individual link entry in NVS
  */
 typedef struct {
-    uint8_t  local_element_idx;
-    uint16_t bound_variant;       /**< Element variant type at time of pairing */
-    uint16_t target_unicast_addr; /**< Unicast address of peer (if 1:1 link) */
-    uint16_t target_group_addr;   /**< Group address (0x0000 if 1:1 unicast) */
-    uint16_t func_id;             /**< Function ID bound to this link */
-    uint8_t  active;              /**< 1 = active, 0 = free slot */
+  uint8_t local_element_idx;
+  uint16_t bound_variant;       /**< Element variant type at time of pairing */
+  uint16_t target_unicast_addr; /**< Unicast address of peer (if 1:1 link) */
+  uint16_t target_group_addr;   /**< Group address (0x0000 if 1:1 unicast) */
+  uint16_t func_id;             /**< Function ID bound to this link */
+  uint8_t active;               /**< 1 = active, 0 = free slot */
 } MESHX_PACKED meshx_nvs_link_entry_t;
 
 /**
  * @brief Persistent link table header & records
  */
 typedef struct {
-    uint32_t              magic;       /**< 0x4C4E4B53 ('LNKS') */
-    uint8_t               version;     /**< Format version (0x01) */
-    uint16_t              link_epoch;  /**< Monotonic counter incremented on every pair/unpair */
-    uint8_t               link_count;  /**< Number of active links */
-    uint8_t               reserved;
-    meshx_nvs_link_entry_t links[MESHX_MAX_PERSISTED_LINKS];
-    uint16_t              table_crc;   /**< CRC-16-CCITT across preceding fields */
+  uint32_t magic;  /**< 0x4C4E4B53 ('LNKS') */
+  uint8_t version; /**< Format version (0x01) */
+  uint16_t
+      link_epoch;     /**< Monotonic counter incremented on every pair/unpair */
+  uint8_t link_count; /**< Number of active links */
+  uint8_t reserved;
+  meshx_nvs_link_entry_t links[MESHX_MAX_PERSISTED_LINKS];
+  uint16_t table_crc; /**< CRC-16-CCITT across preceding fields */
 } MESHX_PACKED meshx_nvs_link_table_t;
 
 /**
@@ -90,9 +99,9 @@ typedef struct meshx_nvs {
     uint16_t pid;                           /**< Product ID */
     uintptr_t meshx_nvs_handle;             /**< NVS handle */
 #ifdef MESHX_NVS_TIMER_PERIOD
-    meshx_os_timer_t *meshx_nvs_commit_tmr; /**< NVS stability timer */
-#endif /* MESHX_NVS_TIMER_PERIOD */
-}meshx_nvs_t;
+  meshx_os_timer_t *meshx_nvs_commit_tmr; /**< NVS stability timer */
+#endif                                    /* MESHX_NVS_TIMER_PERIOD */
+} meshx_nvs_t;
 
 /**
  * @brief MeshX NVS Initialisation
@@ -115,7 +124,8 @@ meshx_err_t meshx_nvs_erase(void);
 /**
  * @brief Commit changes to the NVS.
  *
- * This function ensures that any pending changes to the NVS are flushed to persistent storage.
+ * This function ensures that any pending changes to the NVS are flushed to
+ * persistent storage.
  *
  * @return
  *  - MESHX_SUCCESS: Success.
@@ -135,24 +145,27 @@ meshx_err_t meshx_nvs_close(void);
 /**
  * @brief Remove a key-value pair from the NVS.
  *
- * This function deletes a specific key-value pair from the NVS based on the provided key.
+ * This function deletes a specific key-value pair from the NVS based on the
+ * provided key.
  *
  * @param[in] key The key identifying the value to be removed.
  *
  * @return
  *  - MESHX_SUCCESS: Success.
  */
-meshx_err_t meshx_nvs_remove(char const* key);
+meshx_err_t meshx_nvs_remove(char const *key);
 
 /**
  * @brief Open the NVS with a timeout.
  *
- * This function initializes the NVS and sets a timeout for stability operations.
+ * This function initializes the NVS and sets a timeout for stability
+ * operations.
  * @note NVS Namespace: MESHX_NVS_NAMESPACE
  *
  * @param[in] cid Company ID
  * @param[in] pid Product ID
- * @param[in] commit_timeout_ms Timeout for stability operations in milliseconds.
+ * @param[in] commit_timeout_ms Timeout for stability operations in
+ * milliseconds.
  *
  *
  * @note commit_timeout_ms = 0 -> use MESHX_NVS_TIMER_PERIOD
@@ -160,7 +173,8 @@ meshx_err_t meshx_nvs_remove(char const* key);
  * @return
  *  - MESHX_SUCCESS: Success.
  */
-meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_ms);
+meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid,
+                           uint32_t commit_timeout_ms);
 
 /**
  * @brief Get a value from the NVS.
@@ -168,7 +182,8 @@ meshx_err_t meshx_nvs_open(uint16_t cid, uint16_t pid, uint32_t commit_timeout_m
  * This function retrieves a value associated with the given key from the NVS.
  *
  * @param[in]    key         The key identifying the value to be retrieved.
- * @param[out]   blob        Pointer to the buffer where the value will be stored.
+ * @param[out]   blob        Pointer to the buffer where the value will be
+ * stored.
  * @param[in]    blob_size   Size of the buffer in bytes.
  *
  * @return
@@ -189,33 +204,41 @@ meshx_err_t meshx_nvs_get(char const *key, void *blob, uint16_t blob_size);
  * @return
  *  - MESHX_SUCCESS: Success.
  */
-meshx_err_t meshx_nvs_set(char const* key, void const* blob, uint16_t blob_size, bool arm_timer);
+meshx_err_t meshx_nvs_set(char const *key, void const *blob, uint16_t blob_size,
+                          bool arm_timer);
 
 /**
  * @brief Retrieve the context of a specific element from NVS.
  *
- * @param[in]   element_id   The ID of the element whose context is to be retrieved.
+ * @param[in]   element_id   The ID of the element whose context is to be
+ * retrieved.
  * @param[in]   element_type The type of the element.
- * @param[out]  blob         Pointer to the buffer where the retrieved context will be stored.
+ * @param[out]  blob         Pointer to the buffer where the retrieved context
+ * will be stored.
  * @param[in]   blob_size    Size of the buffer provided to store the context.
  *
  * @return
  *     - MESHX_SUCCESS: Successfully retrieved the context.
  */
-meshx_err_t meshx_nvs_element_ctx_get(uint16_t element_id, meshx_element_type_t element_type, void *blob, size_t blob_size);
+meshx_err_t meshx_nvs_element_ctx_get(uint16_t element_id,
+                                      meshx_element_type_t element_type,
+                                      void *blob, size_t blob_size);
 
 /**
  * @brief Store the context of a specific element to NVS.
  *
  * @param[in] element_id    The ID of the element whose context is to be stored.
  * @param[in] element_type  The type of the element.
- * @param[in] blob          Pointer to the buffer containing the context to be stored.
+ * @param[in] blob          Pointer to the buffer containing the context to be
+ * stored.
  * @param[in] blob_size     Size of the buffer containing the context.
  *
  * @return
  *     - MESHX_SUCCESS: Successfully stored the context.
  */
-meshx_err_t meshx_nvs_element_ctx_set(uint16_t element_id, meshx_element_type_t element_type, const void *blob, size_t blob_size);
+meshx_err_t meshx_nvs_element_ctx_set(uint16_t element_id,
+                                      meshx_element_type_t element_type,
+                                      const void *blob, size_t blob_size);
 
 /**
  * @brief Remove the context of a specific element from NVS.
@@ -226,7 +249,8 @@ meshx_err_t meshx_nvs_element_ctx_set(uint16_t element_id, meshx_element_type_t 
  * @return
  *     - MESHX_SUCCESS: Successfully removed the context.
  */
-meshx_err_t meshx_nvs_element_ctx_remove(uint16_t element_id, meshx_element_type_t element_type);
+meshx_err_t meshx_nvs_element_ctx_remove(uint16_t element_id,
+                                         meshx_element_type_t element_type);
 
 /**
  * @brief Store composition schema into NVS.
@@ -297,7 +321,8 @@ meshx_err_t meshx_nvs_set_kr_epoch(uint32_t epoch);
 uint16_t meshx_nvs_get_link_epoch(void);
 
 /**
- * @brief Boot-time autonomous self-audit reconciling persisted links against baked elements.
+ * @brief Boot-time autonomous self-audit reconciling persisted links against
+ * baked elements.
  *
  * @return MESHX_SUCCESS on success, or error code.
  */
@@ -313,7 +338,8 @@ meshx_err_t meshx_link_reconcile(void);
  * @param[in] dev_key 16-byte immutable DevKey assigned during provisioning.
  * @return MESHX_SUCCESS on success, or error code.
  */
-meshx_err_t meshx_nvs_set_device_key(const meshx_uuid_t *uuid, const uint8_t *dev_key);
+meshx_err_t meshx_nvs_set_device_key(const meshx_uuid_t *uuid,
+                                     const uint8_t *dev_key);
 
 /**
  * @brief Retrieve the DevKey for a previously provisioned node by UUID.
@@ -323,9 +349,11 @@ meshx_err_t meshx_nvs_set_device_key(const meshx_uuid_t *uuid, const uint8_t *de
  *
  * @param[in]  uuid        16-byte Device UUID to look up.
  * @param[out] dev_key_out 16-byte buffer to receive the stored DevKey.
- * @return MESHX_SUCCESS if found, MESHX_NOT_FOUND if UUID not in registry, or error code.
+ * @return MESHX_SUCCESS if found, MESHX_NOT_FOUND if UUID not in registry, or
+ * error code.
  */
-meshx_err_t meshx_nvs_get_device_key(const meshx_uuid_t *uuid, uint8_t *dev_key_out);
+meshx_err_t meshx_nvs_get_device_key(const meshx_uuid_t *uuid,
+                                     uint8_t *dev_key_out);
 
 /**
  * @brief Remove the DevKey entry for a node by UUID.
@@ -337,9 +365,73 @@ meshx_err_t meshx_nvs_get_device_key(const meshx_uuid_t *uuid, uint8_t *dev_key_
  */
 meshx_err_t meshx_nvs_erase_device_key(const meshx_uuid_t *uuid);
 
+/**
+ * @brief Begin an atomic NVS write transaction.
+ *
+ * Disables auto-commit stability timers and stages all subsequent writes
+ * in RAM until committed or rolled back.
+ *
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_STATE if transaction already
+ * active.
+ */
+meshx_err_t meshx_nvs_transaction_begin(void);
+
+/**
+ * @brief Commit an active NVS transaction atomically.
+ *
+ * Writes all staged keys to flash in a single batch. If ANY key fails to write,
+ * automatically rolls back all staged changes and leaves flash in clean state.
+ *
+ * @return MESHX_SUCCESS on success, error code on failure.
+ */
+meshx_err_t meshx_nvs_transaction_commit(void);
+
+/**
+ * @brief Roll back all pending or recently committed changes in active
+ * transaction.
+ *
+ * Discards staged writes in RAM and restores clean state.
+ *
+ * @return MESHX_SUCCESS on success, error code on failure.
+ */
+meshx_err_t meshx_nvs_transaction_rollback(void);
+
+/**
+ * @brief Execute atomic self-provisioning commit in NVS for Anchor nodes
+ * (ZGB-T07).
+ *
+ * Commits NetKey (ID=0), AppKey (ID=0), self-DevKey under "dk_<UUID_4B>",
+ * node address (0x0001), and provisioner role (MASTER=1) in a single atomic
+ * transaction. 100% rollback on write error (preventing DevKey vs address
+ * inconsistency). Zero plaintext key bytes emitted to UART or logging.
+ *
+ * @param[in] net_key 16-byte Network Key.
+ * @param[in] app_key 16-byte Application Key.
+ * @param[in] dev_key 16-byte self Device Key.
+ * @param[in] uuid    16-byte local device UUID.
+ * @param[in] addr    Unicast address to commit (0x0001).
+ * @param[in] role    Provisioner role (1 = MESHX_PROV_ROLE_MASTER).
+ * @return MESHX_SUCCESS on success, error code on rollback.
+ */
+meshx_err_t meshx_nvs_self_provision_commit(const meshx_key_t net_key,
+                                            const meshx_key_t app_key,
+                                            const meshx_key_t dev_key,
+                                            const meshx_uuid_t *uuid,
+                                            uint16_t addr, uint8_t role);
+
+/**
+ * @brief Roll back self-provisioned credentials from NVS.
+ *
+ * Purges NetKey (ID=0), AppKey (ID=0), DevKey ("dk_<UUID_4B>"), and
+ * meshx_store.
+ *
+ * @param[in] uuid 16-byte local device UUID.
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_nvs_self_provision_rollback(const meshx_uuid_t *uuid);
+
 #ifdef __cplusplus
 } /* extern "C" */
 #endif
 
 #endif /* __MESHX_NVS_H__ */
-

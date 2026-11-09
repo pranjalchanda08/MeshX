@@ -337,3 +337,19 @@ meshx_err_t meshx_nvs_plat_commit(uintptr_t p_nvs_handle)
     s_staged_head = NULL;
     return overall_err;
 }
+
+/**
+ * @brief Rollback all staged changes in NVS.
+ *
+ * This function clears the staging buffer, effectively discarding all pending write and delete operations.
+ * It does not modify the persistent storage.
+ *
+ * @param[in] p_nvs_handle Pointer to the NVS handle (unused in this implementation).
+ * @return MESHX_SUCCESS on success.
+ */
+meshx_err_t meshx_nvs_plat_rollback(uintptr_t p_nvs_handle)
+{
+    MESHX_UNUSED(p_nvs_handle);
+    meshx_zephyr_nvs_clear_staging();
+    return MESHX_SUCCESS;
+}

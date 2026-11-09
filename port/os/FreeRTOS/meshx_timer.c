@@ -86,6 +86,15 @@ meshx_err_t meshx_rtos_timer_start(meshx_rtos_timer_t *timer)
         return MESHX_INVALID_ARG;
     }
 
+    if (xPortInIsrContext()) {
+        BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+        if (xTimerStartFromISR(timer->__timer_handle, &xHigherPriorityTaskWoken) != pdPASS) {
+            return MESHX_FAIL;
+        }
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+        return MESHX_SUCCESS;
+    }
+
     if (xTimerStart(timer->__timer_handle, 0) != pdPASS) {
         return MESHX_FAIL;
     }
@@ -107,6 +116,15 @@ meshx_err_t meshx_rtos_timer_stop(meshx_rtos_timer_t *timer)
 {
     if (timer == NULL || timer->__timer_handle == NULL) {
         return MESHX_INVALID_ARG;
+    }
+
+    if (xPortInIsrContext()) {
+        BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+        if (xTimerStopFromISR(timer->__timer_handle, &xHigherPriorityTaskWoken) != pdPASS) {
+            return MESHX_FAIL;
+        }
+        portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+        return MESHX_SUCCESS;
     }
 
     if (xTimerStop(timer->__timer_handle, 0) != pdPASS) {

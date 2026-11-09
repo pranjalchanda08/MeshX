@@ -228,8 +228,10 @@ meshx_err_t meshx_get_base_element_id(uint16_t *base_el_id)
 
     if (g_force_provisioned_addr != 0) {
         *base_el_id = g_force_provisioned_addr;
-    } else {
+    } else if (bt_mesh_is_provisioned()) {
         *base_el_id = bt_mesh_primary_addr();
+    } else {
+        *base_el_id = MESHX_ADDR_UNASSIGNED;
     }
 
     return MESHX_SUCCESS;
@@ -322,9 +324,16 @@ meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, meshx_
         return merr;
     }
 
-    if (bt_mesh_is_provisioned()) {
+    if (!meshx_prov_srv_is_provisioned() && !bt_mesh_is_provisioned()) {
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Enabling Zephyr node unprovisioned beacons");
+        bt_mesh_prov_enable(BT_MESH_PROV_ADV | BT_MESH_PROV_GATT);
+        MESHX_LOGI(MODULE_ID_MODEL_SERVER, "Zephyr unprovisioned beaconing enabled on boot");
+    } else {
         uint16_t primary_addr = bt_mesh_primary_addr();
-        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Zephyr node already provisioned (primary addr: 0x%04x)", primary_addr);
+        if (primary_addr == MESHX_ADDR_UNASSIGNED) {
+            primary_addr = meshx_get_node_addr();
+        }
+        MESHX_LOGI(MODULE_ID_MODEL_SERVER, "Zephyr node already provisioned (primary addr: 0x%04x); unprovisioned beaconing gated on boot", primary_addr);
         if (meshx_get_node_addr() == MESHX_ADDR_UNASSIGNED && primary_addr != MESHX_ADDR_UNASSIGNED) {
             meshx_prov_srv_param_t prov_srv_param;
             memset(&prov_srv_param, 0, sizeof(meshx_prov_srv_param_t));
@@ -332,9 +341,6 @@ meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, meshx_
             prov_srv_param.param.node_prov_complete.addr = primary_addr;
             meshx_prov_srv_notify_plat_event(&prov_srv_param);
         }
-    } else {
-        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Enabling Zephyr node unprovisioned beacons");
-        bt_mesh_prov_enable(BT_MESH_PROV_ADV | BT_MESH_PROV_GATT);
     }
 
     return MESHX_SUCCESS;
@@ -385,13 +391,16 @@ meshx_err_t meshx_plat_ble_adv_mfg_data(const uint8_t *mfg_data, uint16_t mfg_le
 
     if (s_ext_adv == NULL)
     {
-        const struct bt_le_adv_param ext_param = {
-            .options = BT_LE_ADV_OPT_EXT_ADV,
+        /* Use standard legacy non-connectable advertising on primary channels (37, 38, 39)
+         * with BT_LE_ADV_OPT_USE_IDENTITY (BT_HCI_LE_ADV_PROP_LEGACY) so standard 1M BLE
+         * sniffers and unprovisioned peers capture the beacon immediately. */
+        const struct bt_le_adv_param legacy_param = {
+            .options = BT_LE_ADV_OPT_USE_IDENTITY,
             .interval_min = BT_GAP_ADV_FAST_INT_MIN_2,
             .interval_max = BT_GAP_ADV_FAST_INT_MAX_2,
             .peer = NULL,
         };
-        int err = bt_le_ext_adv_create(&ext_param, NULL, &s_ext_adv);
+        int err = bt_le_ext_adv_create(&legacy_param, NULL, &s_ext_adv);
         if (err != 0)
         {
             MESHX_LOGE(MODULE_ID_COMMON, "bt_le_ext_adv_create failed: %d", err);
@@ -417,7 +426,161 @@ meshx_err_t meshx_plat_ble_adv_mfg_data(const uint8_t *mfg_data, uint16_t mfg_le
         return MESHX_FAIL;
     }
 
-    MESHX_LOGI(MODULE_ID_COMMON, "plat_ble_adv_mfg_data: Advertised via Ext Adv (len=%u)",
+    MESHX_LOGI(MODULE_ID_COMMON, "plat_ble_adv_mfg_data: Advertised via Legacy Adv (len=%u)",
                (unsigned int)mfg_len);
     return MESHX_SUCCESS;
 }
+
+#define MESHX_MAX_BLE_MFG_CBS 4
+static meshx_plat_ble_mfg_data_cb_t s_plat_mfg_cbs[MESHX_MAX_BLE_MFG_CBS] = {0};
+static size_t s_plat_mfg_cb_count = 0;
+static struct bt_le_scan_cb s_plat_scan_cb;
+static bool s_plat_scan_cb_registered = false;
+
+static bool plat_scan_parse_ad(struct bt_data *data, void *user_data)
+{
+    int8_t rssi = *(int8_t *)user_data;
+    if (data->type == BT_DATA_MANUFACTURER_DATA && data->data_len >= 2)
+    {
+        uint16_t cid = data->data[0] | ((uint16_t)data->data[1] << 8);
+        const uint8_t *payload = &data->data[2];
+        uint16_t payload_len = data->data_len - 2;
+
+        for (size_t i = 0; i < s_plat_mfg_cb_count; i++)
+        {
+            if (s_plat_mfg_cbs[i] != NULL)
+            {
+                s_plat_mfg_cbs[i](cid, payload, payload_len, rssi);
+            }
+        }
+    }
+    return true;
+}
+
+static void plat_scan_recv_cb(const struct bt_le_scan_recv_info *info, struct net_buf_simple *buf)
+{
+    if (s_plat_mfg_cb_count == 0)
+    {
+        return;
+    }
+    int8_t rssi = info ? info->rssi : 0;
+    struct net_buf_simple ad_buf;
+    net_buf_simple_clone(buf, &ad_buf);
+    bt_data_parse(&ad_buf, plat_scan_parse_ad, &rssi);
+}
+
+meshx_err_t meshx_plat_ble_register_mfg_data_cb(meshx_plat_ble_mfg_data_cb_t cb)
+{
+    if (!cb)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    for (size_t i = 0; i < s_plat_mfg_cb_count; i++)
+    {
+        if (s_plat_mfg_cbs[i] == cb)
+        {
+            return MESHX_SUCCESS; /* Already registered */
+        }
+    }
+
+    if (s_plat_mfg_cb_count >= MESHX_MAX_BLE_MFG_CBS)
+    {
+        return MESHX_NO_MEM;
+    }
+
+    s_plat_mfg_cbs[s_plat_mfg_cb_count++] = cb;
+
+    if (!s_plat_scan_cb_registered)
+    {
+        s_plat_scan_cb.recv = plat_scan_recv_cb;
+        int err = bt_le_scan_cb_register(&s_plat_scan_cb);
+        if (err == 0 || err == -EEXIST)
+        {
+            s_plat_scan_cb_registered = true;
+            MESHX_LOGI(MODULE_ID_COMMON, "plat_ble: Registered scan observer for manufacturer data");
+        }
+        else
+        {
+            MESHX_LOGW(MODULE_ID_COMMON, "plat_ble: bt_le_scan_cb_register failed: %d", err);
+        }
+    }
+
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Platform self-provisioning wrapper for Case-2 Anchor nodes on Zephyr.
+ *
+ * Directly provisions the Zephyr BLE Mesh node stack with generated Network Key,
+ * primary unicast address, and Device Key without requiring external provisioner link.
+ *
+ * @param[in] net_key  16-byte Network Key.
+ * @param[in] net_idx  Network Key index (typically 0).
+ * @param[in] addr     Assigned primary element unicast address (0x0001).
+ * @param[in] dev_key  16-byte self Device Key.
+ *
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG on bad arguments, or MESHX_FAIL on error.
+ */
+meshx_err_t meshx_plat_self_provision(const meshx_key_t net_key, uint16_t net_idx, uint16_t addr, const meshx_key_t dev_key)
+{
+    if (!net_key || !dev_key || addr == MESHX_ADDR_UNASSIGNED)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    uint8_t flags = 0;
+    uint32_t iv_index = 0;
+
+    int ret = bt_mesh_provision(net_key, net_idx, flags, iv_index, addr, dev_key);
+    if (ret != 0 && ret != -EALREADY)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Zephyr bt_mesh_provision failed: %d", ret);
+        return MESHX_FAIL;
+    }
+
+    /* Disable unprovisioned beacons */
+    bt_mesh_prov_disable(BT_MESH_PROV_ADV | BT_MESH_PROV_GATT);
+
+    /* Update internal forced primary address */
+    g_force_provisioned_addr = addr;
+
+    /* Notify Prov Server of completion */
+    meshx_prov_srv_param_t prov_srv_param;
+    memset(&prov_srv_param, 0, sizeof(meshx_prov_srv_param_t));
+    prov_srv_param.prov_evt = MESHX_NODE_PROV_COMPLETE_EVT;
+    prov_srv_param.param.node_prov_complete.addr    = addr;
+    prov_srv_param.param.node_prov_complete.net_idx = net_idx;
+    memcpy(prov_srv_param.param.node_prov_complete.net_key, net_key, MESHX_KEY_LEN);
+    meshx_prov_srv_notify_plat_event(&prov_srv_param);
+
+    MESHX_LOGI(MODULE_ID_MODEL_SERVER, "Zephyr platform self-provisioning complete: addr=0x%04X, net_idx=0x%04X", addr, net_idx);
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Add an Application Key to the local Zephyr BLE Mesh node stack.
+ *
+ * @param[in] key         16-byte Application Key buffer.
+ * @param[in] net_key_id  Bound Network Key index.
+ * @param[in] app_key_id  Application Key index to add.
+ *
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG on bad arguments, or MESHX_FAIL on error.
+ */
+meshx_err_t meshx_plat_app_key_add(const uint8_t *key, uint16_t net_key_id, uint16_t app_key_id)
+{
+    if (!key)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    uint8_t status = bt_mesh_app_key_add(app_key_id, net_key_id, key);
+    if (status != 0)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Zephyr bt_mesh_app_key_add failed: %d", (int)status);
+        return MESHX_FAIL;
+    }
+
+    return MESHX_SUCCESS;
+}
+

@@ -131,5 +131,29 @@ meshx_err_t meshx_plat_net_key_get(uint16_t net_key_id, uint8_t *key_out);
  */
 meshx_err_t meshx_plat_net_key_add(const uint8_t *key, uint16_t net_key_id);
 
+/**
+ * @brief Platform self-provisioning wrapper for Case-2 Anchor nodes on ESP-IDF.
+ *
+ * Invokes core bt_mesh_pre_provision() + bt_mesh_provision().
+ * Maintains CONFIG_BLE_MESH_PROVISIONER=n and CONFIG_BLE_MESH_PROV=y invariant.
+ *
+ * @param[in] net_key  16-byte Network Key generated from HWRNG.
+ * @param[in] net_idx  Network Key Index (0 for primary subnet).
+ * @param[in] addr     Primary unicast address (0x0001 for Anchor).
+ * @param[in] dev_key  16-byte self Device Key generated from HWRNG.
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_plat_self_provision(const uint8_t net_key[16], uint16_t net_idx, uint16_t addr, const uint8_t dev_key[16]);
+
+/**
+ * @brief Add an Application Key to the local BLE Mesh stack.
+ *
+ * @param[in] key         16-byte AppKey.
+ * @param[in] net_key_id  NetKey Index bound to this AppKey.
+ * @param[in] app_key_id  AppKey Index.
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_plat_app_key_add(const uint8_t *key, uint16_t net_key_id, uint16_t app_key_id);
+
 #endif /* __MESHX_BLE_MESH__ */
 

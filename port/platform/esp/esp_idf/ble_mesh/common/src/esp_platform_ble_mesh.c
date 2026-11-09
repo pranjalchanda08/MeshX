@@ -14,6 +14,7 @@
  *
  */
 #include "string.h"
+#include <errno.h>
 #include "esp_bt_device.h"
 #include "ble_mesh_plat_init.h"
 #include "interface/meshx_platform.h"
@@ -22,6 +23,7 @@
 #include "interface/ble_mesh/meshx_ble_mesh_cmn.h"
 #include "interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h"
 #include "meshx_platform_ble_mesh.h"
+#include "meshx_api.h"
 
 meshx_err_t meshx_is_group_subscribed(meshx_model_t *p_model, uint16_t addr)
 {
@@ -246,17 +248,40 @@ meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, meshx_
         return err;
     }
 
-    esp_ble_mesh_prov_bearer_t bearers = ESP_BLE_MESH_PROV_ADV;
+    /*
+     * Boot-Time Beacon Gating (Milestone 1 / ZGB-001 / ZGB-010):
+     * Only enable unprovisioned beaconing if the node is NOT provisioned.
+     * When already provisioned, gating unprovisioned beaconing prevents illegal
+     * unprovisioned advertising and stack conflicts on reboot.
+     */
+    if (!meshx_prov_srv_is_provisioned() && !esp_ble_mesh_node_is_provisioned())
+    {
+        esp_ble_mesh_prov_bearer_t bearers = ESP_BLE_MESH_PROV_ADV;
 #if defined(CONFIG_BLE_MESH_PB_GATT)
-    bearers = (esp_ble_mesh_prov_bearer_t)(bearers | ESP_BLE_MESH_PROV_GATT);
+        bearers = (esp_ble_mesh_prov_bearer_t)(bearers | ESP_BLE_MESH_PROV_GATT);
 #endif
 
-    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Enabling provisioning with bearers: 0x%02x", bearers);
-    err = esp_ble_mesh_node_prov_enable(bearers);
-    if(err)
+        MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Enabling provisioning with bearers: 0x%02x", bearers);
+        err = esp_ble_mesh_node_prov_enable(bearers);
+        if(err)
+        {
+            MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to enable mesh node (err: %d)", err);
+            return err;
+        }
+        MESHX_LOGI(MODULE_ID_MODEL_SERVER, "Unprovisioned beaconing enabled on boot");
+    }
+    else
     {
-        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to enable mesh node (err: %d)", err);
-        return err;
+        uint16_t primary_addr = esp_ble_mesh_get_primary_element_address();
+        MESHX_LOGI(MODULE_ID_MODEL_SERVER, "Node already provisioned (addr: 0x%04X); unprovisioned beaconing gated on boot", primary_addr);
+        if (meshx_get_node_addr() == MESHX_ADDR_UNASSIGNED && primary_addr != MESHX_ADDR_UNASSIGNED)
+        {
+            meshx_prov_srv_param_t prov_srv_param;
+            memset(&prov_srv_param, 0, sizeof(meshx_prov_srv_param_t));
+            prov_srv_param.prov_evt = MESHX_NODE_PROV_COMPLETE_EVT;
+            prov_srv_param.param.node_prov_complete.addr = primary_addr;
+            meshx_prov_srv_notify_plat_event(&prov_srv_param);
+        }
     }
     MESHX_LOGD(MODULE_ID_MODEL_SERVER, "BLE Mesh Node initialized");
     return MESHX_SUCCESS;
@@ -290,6 +315,88 @@ meshx_err_t meshx_plat_net_key_add(const uint8_t *key, uint16_t net_key_id)
     if (err != ESP_OK)
     {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "esp_ble_mesh_node_add_local_net_key failed: %d", err);
+        return MESHX_FAIL;
+    }
+
+    return MESHX_SUCCESS;
+}
+
+extern int bt_mesh_pre_provision(const uint8_t net_key[16], uint16_t net_idx,
+                                 uint8_t flags, uint32_t iv_index,
+                                 uint16_t addr, const uint8_t dev_key[16]);
+extern void bt_mesh_provision(void);
+
+/**
+ * @brief Platform self-provisioning wrapper for Case-2 Anchor nodes on ESP-IDF.
+ *
+ * Pre-provisions and provisions the local BLE Mesh node stack with generated Network Key,
+ * primary unicast address, and Device Key without an external provisioner.
+ *
+ * @param[in] net_key  16-byte Network Key.
+ * @param[in] net_idx  Network Key index.
+ * @param[in] addr     Primary element unicast address (0x0001).
+ * @param[in] dev_key  16-byte self Device Key.
+ *
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG on bad arguments, or MESHX_FAIL on error.
+ */
+meshx_err_t meshx_plat_self_provision(const meshx_key_t net_key, uint16_t net_idx, uint16_t addr, const meshx_key_t dev_key)
+{
+    if (!net_key || !dev_key || addr == MESHX_ADDR_UNASSIGNED)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    uint8_t flags = 0;
+    uint32_t iv_index = 0;
+
+    int ret = bt_mesh_pre_provision(net_key, net_idx, flags, iv_index, addr, dev_key);
+    if (ret != 0 && ret != -EALREADY)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "bt_mesh_pre_provision failed (err: %d)", ret);
+        return MESHX_FAIL;
+    }
+
+    bt_mesh_provision();
+
+    /* Disable unprovisioned advertising bearers permanently */
+    esp_ble_mesh_node_prov_disable(ESP_BLE_MESH_PROV_ADV | ESP_BLE_MESH_PROV_GATT);
+
+    /* Update internal forced primary address */
+    g_force_provisioned_addr = addr;
+
+    /* Notify Prov Server of completion */
+    meshx_prov_srv_param_t prov_srv_param;
+    memset(&prov_srv_param, 0, sizeof(meshx_prov_srv_param_t));
+    prov_srv_param.prov_evt = MESHX_NODE_PROV_COMPLETE_EVT;
+    prov_srv_param.param.node_prov_complete.addr    = addr;
+    prov_srv_param.param.node_prov_complete.net_idx = net_idx;
+    memcpy(prov_srv_param.param.node_prov_complete.net_key, net_key, MESHX_KEY_LEN);
+    meshx_prov_srv_notify_plat_event(&prov_srv_param);
+
+    MESHX_LOGI(MODULE_ID_MODEL_SERVER, "ESP-IDF self-provisioning initialized successfully: addr=0x%04X, net_idx=0x%04X", addr, net_idx);
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Add an Application Key to the local ESP-IDF BLE Mesh node stack.
+ *
+ * @param[in] key         16-byte Application Key buffer.
+ * @param[in] net_key_id  Bound Network Key index.
+ * @param[in] app_key_id  Application Key index to add.
+ *
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG on bad arguments, or MESHX_FAIL on error.
+ */
+meshx_err_t meshx_plat_app_key_add(const uint8_t *key, uint16_t net_key_id, uint16_t app_key_id)
+{
+    if (!key)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    esp_err_t err = esp_ble_mesh_node_add_local_app_key(key, net_key_id, app_key_id);
+    if (err != ESP_OK)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "esp_ble_mesh_node_add_local_app_key failed: %d", err);
         return MESHX_FAIL;
     }
 

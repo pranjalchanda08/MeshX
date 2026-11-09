@@ -864,8 +864,13 @@ typedef unsigned char meshx_addr_type_t;
 #define MESHX_UUID_ADDR_LEN 16
 #endif
 
+#ifndef MESHX_KEY_LEN
+#define MESHX_KEY_LEN 16
+#endif
+
 typedef uint8_t meshx_bd_addr_t[MESHX_BD_ADDR_LEN];
 typedef uint8_t meshx_uuid_addr_t[MESHX_UUID_ADDR_LEN];
+typedef uint8_t meshx_key_t[MESHX_KEY_LEN];
 typedef meshx_uuid_addr_t meshx_uuid_t;  /**< Device UUID (16 bytes) */
 
 #define MESHX_UUID_EMPTY                                                       \

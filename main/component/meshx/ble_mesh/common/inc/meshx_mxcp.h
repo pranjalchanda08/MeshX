@@ -119,6 +119,8 @@ typedef enum {
     MXCP_CMD_UVP_FAST_PROV_CANCEL      = 0x35,
     MXCP_CMD_NODE_REPLACE_START        = 0x36,
     MXCP_CMD_VIRTUAL_TOPO_REQ          = 0x38,
+    MXCP_CMD_BOOTSTRAP_COMMISSION      = 0x39,
+    MXCP_CMD_BOOTSTRAP_ABORT           = 0x3A,
 
     MXCP_CMD_DISCOVER_CAPABILITIES = 0x70,
     MXCP_CMD_BIND_ELEMENTS         = 0x71,
@@ -195,6 +197,8 @@ typedef enum {
     MXCP_PROV_STATE_BEACONING     = 0x01, /**< Node is actively beaconing (PB-ADV/GATT) */
     MXCP_PROV_STATE_PROVISIONING  = 0x02, /**< Provisioning link/exchange in progress */
     MXCP_PROV_STATE_PROVISIONED   = 0x03, /**< Node is provisioned and operational */
+    MXCP_PROV_STATE_COMMISSIONING = 0x04, /**< Node is in active commission window */
+    MXCP_PROV_STATE_SUPPRESSED    = 0x05, /**< Anchor election suppressed */
 } mxcp_prov_state_t;
 
 typedef enum {

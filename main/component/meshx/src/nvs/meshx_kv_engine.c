@@ -343,6 +343,31 @@ meshx_err_t meshx_kv_engine_commit(void)
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Roll back and discard all pending buffered writes in RAM.
+ *
+ * Drains the pending list and frees any allocated buffers without writing
+ * them to flash.
+ *
+ * @return MESHX_SUCCESS on success.
+ */
+meshx_err_t meshx_kv_engine_rollback(void)
+{
+    kv_pending_t *cur = pending_list;
+    while (cur)
+    {
+        kv_pending_t *prev = cur;
+        cur = cur->next;
+        if (prev->data)
+        {
+            MESHX_FREE(&prev->data);
+        }
+        MESHX_FREE(&prev);
+    }
+    pending_list = NULL;
+    return MESHX_SUCCESS;
+}
+
 /*
  * @brief Remove a value from the KV store.
  *

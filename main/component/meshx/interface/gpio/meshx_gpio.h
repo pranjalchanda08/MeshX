@@ -259,6 +259,36 @@ meshx_err_t meshx_gpio_get_pin_config(uint8_t logical_pin, meshx_gpio_pin_config
  */
 meshx_err_t meshx_gpio_get_pin_state(uint8_t logical_pin, meshx_gpio_pin_state_t *state);
 
+#ifndef CONFIG_ZGB_BUTTON_PIN
+#define CONFIG_ZGB_BUTTON_PIN 9
+#endif
+
+#ifndef CONFIG_ZGB_BUTTON_HOLD_MS
+#define CONFIG_ZGB_BUTTON_HOLD_MS 3000
+#endif
+
+/**
+ * @brief Initialize GPIO button hold detector for Zero-Gateway Bootstrapping.
+ *
+ * Configures button_pin as active-low input with pull-up and any-edge interrupt.
+ * Active-low (level 0) starts hold_ms timer; rising edge (release < hold_ms) cancels timer.
+ * On timeout (hold >= hold_ms), verifies level == 0 and publishes
+ * CONTROL_TASK_MSG_EVT_ZGB_TRIGGER_BUTTON_HOLD to control_task.
+ * Also handles pre-held button on cold boot.
+ *
+ * @param pin Logical or physical pin number (default CONFIG_ZGB_BUTTON_PIN = 9)
+ * @param hold_ms Hold duration threshold in milliseconds (default 3000)
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_gpio_button_hold_init(uint8_t pin, uint32_t hold_ms);
+
+/**
+ * @brief Deinitialize GPIO button hold detector.
+ *
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_gpio_button_hold_deinit(void);
+
 #ifdef __cplusplus
 }
 #endif

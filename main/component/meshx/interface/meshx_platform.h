@@ -21,6 +21,7 @@
 extern "C" {
 #endif
 
+#define meshx_plat_ble_adv_reheal_beacon meshx_plat_ble_adv_mfg_data
 /**
  * @brief Console channel interface types.
  */
@@ -28,19 +29,6 @@ typedef enum {
     MESHX_PLATFORM_TX_PRIO_LOW  = 0, /**< Low priority (e.g. background binary/text logging) */
     MESHX_PLATFORM_TX_PRIO_HIGH = 1  /**< High priority (e.g. MXCP / protocol control frames) */
 } meshx_platform_tx_prio_t;
-
-/**
- * @brief Acquire exclusive access to console/serial transmit channel.
- *
- * For non-multiplexed channels (separate console and serial), this returns true immediately.
- * For multiplexed channels (console shared between logs and serial protocol), this acquires
- * an OS mutex/semaphore with priority-dependent wait behavior.
- *
- * @param[in] prio Priority level (LOW for logs, HIGH for MXCP control).
- * @param[in] timeout_ms Maximum time to wait in milliseconds.
- * @return true if lock was acquired (or not required), false if timeout/failed.
- */
-bool meshx_platform_console_tx_lock(meshx_platform_tx_prio_t prio, uint32_t timeout_ms);
 
 /**
  * @brief Release exclusive access to console/serial transmit channel.
@@ -51,6 +39,17 @@ typedef enum {
     MESHX_PLATFORM_CONSOLE_CHANNEL_UART,     /**< Standard physical logging UART */
     MESHX_PLATFORM_CONSOLE_CHANNEL_USB_CDC   /**< Native USB-to-UART or JTAG/CDC Bridge */
 } meshx_platform_console_channel_t;
+
+
+/**
+ * @brief Callback signature for BLE advertisement manufacturer data observer.
+ *
+ * @param[in] cid       Company Identifier (16-bit LE).
+ * @param[in] data      Pointer to manufacturer specific data payload (excluding 2-byte CID).
+ * @param[in] len       Length of data in bytes.
+ * @param[in] rssi      Received signal strength indicator.
+ */
+typedef void (*meshx_plat_ble_mfg_data_cb_t)(uint16_t cid, const uint8_t *data, uint16_t len, int8_t rssi);
 
 /**
  * @brief Initializes the MeshX platform.
@@ -163,7 +162,26 @@ meshx_err_t meshx_platform_get_mac(uint8_t *mac);
  */
 meshx_err_t meshx_plat_ble_adv_mfg_data(const uint8_t *mfg_data, uint16_t mfg_len);
 
-#define meshx_plat_ble_adv_reheal_beacon meshx_plat_ble_adv_mfg_data
+/**
+ * @brief Acquire exclusive access to console/serial transmit channel.
+ *
+ * For non-multiplexed channels (separate console and serial), this returns true immediately.
+ * For multiplexed channels (console shared between logs and serial protocol), this acquires
+ * an OS mutex/semaphore with priority-dependent wait behavior.
+ *
+ * @param[in] prio Priority level (LOW for logs, HIGH for MXCP control).
+ * @param[in] timeout_ms Maximum time to wait in milliseconds.
+ * @return true if lock was acquired (or not required), false if timeout/failed.
+ */
+bool meshx_platform_console_tx_lock(meshx_platform_tx_prio_t prio, uint32_t timeout_ms);
+
+/**
+ * @brief Register a platform observer callback for BLE advertisement manufacturer data.
+ *
+ * @param[in] cb Callback to invoke when matching or raw manufacturer data is scanned.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_plat_ble_register_mfg_data_cb(meshx_plat_ble_mfg_data_cb_t cb);
 
 #ifdef __cplusplus
 }
