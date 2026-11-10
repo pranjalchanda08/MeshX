@@ -15,6 +15,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "meshx_err.h"
+#include "interface/ble_mesh/meshx_ble_mesh_cmn_def.h"
 
 #ifdef __cplusplus
 extern "C" {

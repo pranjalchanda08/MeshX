@@ -148,7 +148,7 @@ static void zgb_boot_jitter_timer_cb(const meshx_os_timer_t *p_timer)
  * @param[in] data  Pointer to manufacturing data.
  * @param[in] len   Length of manufacturing data.
  * @param[in] rssi  Received Signal Strength.
- *  
+ *
  */
 static void zgb_ble_mfg_data_observer(uint16_t cid, const uint8_t *data, uint16_t len, int8_t rssi)
 {

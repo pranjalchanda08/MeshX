@@ -19,6 +19,7 @@
 #include <string.h>
 
 #include <meshx_err.h>
+#include "interface/ble_mesh/meshx_ble_mesh_cmn_def.h"
 
 #include <zephyr/bluetooth/bluetooth.h>
 #include <zephyr/bluetooth/mesh.h>
