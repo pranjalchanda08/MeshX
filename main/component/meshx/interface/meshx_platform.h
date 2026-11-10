@@ -12,10 +12,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "meshx_err.h"
+#include "interface/ble_mesh/meshx_ble_mesh_cmn_def.h"
 #ifndef DOXYGEN
 #include "meshx_platform_ble_mesh.h"
 #endif
-#include "interface/ble_mesh/meshx_ble_mesh_cmn_def.h"
 
 #ifdef __cplusplus
 extern "C" {
