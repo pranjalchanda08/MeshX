@@ -241,7 +241,7 @@ static meshx_err_t uvp_unified_dispatcher_cb(dev_struct_t *pdev,
     /*
      * Delegate System Management and Pairing Opcodes to Dynamic UVP Registry.
      */
-    bool is_sys_mgmt_opcode = (msg_type >= MESHX_UVP_OP_RPR_SCAN_REQ && msg_type <= MESHX_UVP_OP_REDUNDANCY_CLAIM_ACK);
+    bool is_sys_mgmt_opcode = (msg_type >= MESHX_UVP_OP_RPR_SCAN_REQ && msg_type <= MESHX_UVP_OP_QUERY_SUBNET_DIRECTORY);
 
     if (uvp_ctx.func_id == MESHX_FUNC_ID_SYS_DISCOVERY ||
         uvp_ctx.func_id == MESHX_FUNC_ID_SYS_PAIRING ||
@@ -418,6 +418,7 @@ extern "C" meshx_err_t meshx_uvp_dispatcher_init(void)
     meshx_uvp_register_rpr_handlers();
     meshx_uvp_register_reheal_handlers();
     meshx_uvp_register_pairing_handlers();
+    meshx_uvp_register_island_handlers();
     meshx_uvp_register_discovery_handlers();
     meshx_uvp_register_redundancy_handlers();
 

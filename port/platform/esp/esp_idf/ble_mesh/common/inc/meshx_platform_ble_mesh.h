@@ -13,12 +13,14 @@
 #ifndef __MESHX_BLE_MESH__
 #define __MESHX_BLE_MESH__
 
-#include "stdio.h"
-#include "stdint.h"
+#include <stdio.h>
+#include <stdint.h>
+#include <stdbool.h>
 
 #include "sdkconfig.h"
 #include <meshx_err.h>
 #include "interface/ble_mesh/meshx_ble_mesh_cmn_def.h"
+#include "interface/island_subnet_coex/meshx_island_subnet_coex.h"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
@@ -155,6 +157,47 @@ meshx_err_t meshx_plat_self_provision(const meshx_key_t net_key, uint16_t net_id
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
 meshx_err_t meshx_plat_app_key_add(const uint8_t *key, uint16_t net_key_id, uint16_t app_key_id);
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/**
+ * @brief Provision and bind an additional Subnet Key on the local ESP-IDF BLE Mesh node.
+ *
+ * @param[in] net_idx  Target 12-bit Network Key index.
+ * @param[in] net_key  16-byte Subnet NetKey.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_plat_subnet_add(uint16_t net_idx, const meshx_key_t net_key);
+
+/**
+ * @brief Remove a provisioned Subnet Key from the local ESP-IDF BLE Mesh node.
+ *
+ * @param[in] net_idx  Target 12-bit Network Key index.
+ * @return MESHX_SUCCESS on success, MESHX_NOT_FOUND if absent, or error code.
+ */
+meshx_err_t meshx_plat_subnet_del(uint16_t net_idx);
+
+/**
+ * @brief Enable or disable the platform Subnet Bridging state.
+ *
+ * @param[in] enable true to enable cross-subnet bridging, false to disable.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_plat_subnet_bridge_set(bool enable);
+
+/**
+ * @brief Add a subnet bridging translation rule through the platform abstraction layer.
+ *
+ * @param[in] rule Pointer to the bridging rule descriptor.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG or error code on failure.
+ */
+meshx_err_t meshx_plat_subnet_bridge_rule_add(const meshx_bridge_rule_t *rule);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __MESHX_BLE_MESH__ */
 

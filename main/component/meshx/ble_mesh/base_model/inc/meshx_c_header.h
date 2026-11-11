@@ -50,6 +50,7 @@ extern "C" {
 #include <interface/crypto/meshx_crypto.h>
 #include <meshx_prov_srv.h>
 #include <meshx_config_server.h>
+#include <interface/island_subnet_coex/meshx_island_subnet_coex.h>
 
 /* NOTE: Legacy SIG model headers (gen_srv, light_srv, sensor_srv, gen_cli, light_cli)
  * were decommissioned in TASK-007 (UVP migration). Removed from this header. */

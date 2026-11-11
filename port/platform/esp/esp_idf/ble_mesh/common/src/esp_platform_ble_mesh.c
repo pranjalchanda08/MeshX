@@ -419,3 +419,64 @@ meshx_err_t meshx_plat_ble_mesh_reset(void)
     return (err == ESP_OK) ? MESHX_SUCCESS : MESHX_FAIL;
 }
 
+struct bt_mesh_subnet;
+extern struct bt_mesh_subnet *bt_mesh_subnet_get(uint16_t net_idx);
+extern void bt_mesh_subnet_del(struct bt_mesh_subnet *sub, bool store);
+
+meshx_err_t meshx_plat_subnet_add(uint16_t net_idx, const meshx_key_t net_key)
+{
+    if (!net_key || net_idx > 0x0FFFU)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    if (esp_ble_mesh_node_get_local_net_key(net_idx) != NULL)
+    {
+        return MESHX_SUCCESS;
+    }
+
+    esp_err_t err = esp_ble_mesh_node_add_local_net_key(net_key, net_idx);
+    if (err != ESP_OK)
+    {
+        MESHX_LOGE(MODULE_ID_MODEL_SERVER, "ESP subnet add (0x%03X) failed: %d", net_idx, err);
+        return MESHX_FAIL;
+    }
+
+    MESHX_LOGI(MODULE_ID_MODEL_SERVER, "ESP subnet added: net_idx=0x%03X", net_idx);
+    return MESHX_SUCCESS;
+}
+
+meshx_err_t meshx_plat_subnet_del(uint16_t net_idx)
+{
+    if (net_idx > 0x0FFFU)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    struct bt_mesh_subnet *sub = bt_mesh_subnet_get(net_idx);
+    if (!sub)
+    {
+        return MESHX_NOT_FOUND;
+    }
+
+    bt_mesh_subnet_del(sub, true);
+    MESHX_LOGI(MODULE_ID_MODEL_SERVER, "ESP subnet deleted: net_idx=0x%03X", net_idx);
+    return MESHX_SUCCESS;
+}
+
+meshx_err_t meshx_plat_subnet_bridge_set(bool enable)
+{
+    /* MeshX uses Canonical-Nonce store-and-forward bridging across both RTOS ports */
+    return meshx_subnet_coex_pal_bridge_set(enable);
+}
+
+meshx_err_t meshx_plat_subnet_bridge_rule_add(const meshx_bridge_rule_t *rule)
+{
+    if (!rule)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    return meshx_subnet_coex_pal_bridge_rule_add(rule);
+}
+

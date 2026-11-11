@@ -17,6 +17,7 @@
 #include <meshx_serial.h>
 #include <meshx_uvp_dispatcher.hpp>
 #include <zgb/meshx_zgb.h>
+#include <interface/island_subnet_coex/meshx_island_subnet_coex.h>
 
 
 #include "interface/gpio/meshx_gpio.h"
@@ -521,8 +522,16 @@ meshx_err_t meshx_init(meshx_config_t const *config)
     MESHX_ERR_PRINT_RET("Serial init failed", err);
 
     /* Initialize Zero-Gateway Bootstrapping subsystem */
+#if CONFIG_MESHX_ZGB
     err = meshx_zgb_init();
     MESHX_ERR_PRINT_RET("ZGB init failed", err);
+#endif /* CONFIG_MESHX_ZGB */
+
+
+#if CONFIG_MESHX_ISLAND_SUBNET_COEXISTENCE
+    err = meshx_island_subnet_coex_init();
+    MESHX_ERR_PRINT_RET("Island subnet coexistence init failed", err);
+#endif /* CONFIG_MESHX_ISLAND_SUBNET_COEXISTENCE */
 
 
 #if CONFIG_ENABLE_UNIT_TEST

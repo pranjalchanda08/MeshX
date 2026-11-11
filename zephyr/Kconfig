@@ -43,4 +43,13 @@ config MESHX_TXCM_ENABLE
 	help
 	  Enable retry, deduplication, and transmission control manager for MeshX.
 
+config MESHX_ISLAND_SUBNET_COEXISTENCE
+	bool "Enable Island Subnet Coexistence Feature"
+	default n
+	help
+	  Enable non-destructive island subnet coexistence bridging and routing
+	  between multiple provisioned mesh islands. This allows nodes from different
+	  islands to communicate across subnet boundaries via virtual proxy addresses
+	  and 2-stage store-and-forward routing.
+
 endif # MESHX

@@ -137,6 +137,20 @@ typedef enum {
     MESHX_UVP_OP_REHEAL_BEACON_REQ           = 0xCE, /**< Evicted Node -> BLE Adv: DevKey-signed re-healing beacon */
     MESHX_UVP_OP_REHEAL_ADMIT_RSP            = 0xCF, /**< Master -> Evicted Node: DevKey-encrypted re-admission */
     MESHX_UVP_OP_REDUNDANCY_CLAIM_ACK        = 0xD0, /**< Candidate -> Master: accept standby duty */
+    MESHX_UVP_OP_SUBNET_HEARTBEAT            = 0xD1, /**< Active Bridge -> Cluster: HMAC heartbeat + slot digest */
+    MESHX_UVP_OP_SUBNET_TAKEOVER_CLAIM       = 0xD2, /**< Standby -> Cluster: term takeover claim */
+    MESHX_UVP_OP_SUBNET_CANDIDATE_RPT        = 0xD3, /**< Witness -> Anchor: neighbor subnet candidate report */
+    MESHX_UVP_OP_SUBNET_BRIDGE_INVITE        = 0xD4, /**< Anchor -> Witness: DevKey-sealed K_bridge + NetKey */
+    MESHX_UVP_OP_SUBNET_NAT_SYNC             = 0xD5, /**< Bridge <-> Peer: Tier-2 NAT upsert/delete sync */
+    MESHX_UVP_OP_SUBNET_ROUTE_ADV            = 0xD6, /**< Bridge <-> Peer: split-horizon route advertisement */
+    MESHX_UVP_OP_SUBNET_ROUTER_NACK          = 0xD7, /**< Bridge -> Origin: reliable Stage 2 failure NACK */
+    MESHX_UVP_OP_SUBNET_EPOCH_SYNC           = 0xD8, /**< Bridge <-> Peer: IV Index & KR epoch sync */
+    MESHX_UVP_OP_SUBNET_NACK_ACK             = 0xD9, /**< Origin -> Bridge: acknowledge 0xD7 NACK */
+    MESHX_UVP_OP_SUBNET_INVITE_ACK           = 0xDA, /**< Witness -> Anchor: DevKey-sealed invite commit ACK */
+    MESHX_UVP_OP_SUBNET_DEMOTE               = 0xDB, /**< Winner -> Split-Brain Peer: immediate yield & purge */
+    MESHX_UVP_OP_SUBNET_DISCOVER_REQ         = 0xDC, /**< Node -> Proxy: cross-subnet capability query */
+    MESHX_UVP_OP_SUBNET_DISCOVER_RSP         = 0xDD, /**< Proxy -> Node: capability response with virtual NAT addr */
+    MESHX_UVP_OP_QUERY_SUBNET_DIRECTORY      = 0xDE, /**< Node -> Coordinator: pull global subnet directory */
 } meshx_sys_msg_type_t;
 
 /**

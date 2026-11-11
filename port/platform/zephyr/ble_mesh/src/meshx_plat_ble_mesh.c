@@ -754,4 +754,68 @@ meshx_err_t meshx_plat_ble_mesh_reset(void)
     return MESHX_SUCCESS;
 }
 
+meshx_err_t meshx_plat_subnet_add(uint16_t net_idx, const meshx_key_t net_key)
+{
+    if (!net_key || net_idx > 0x0FFFU)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    if (bt_mesh_subnet_exists(net_idx))
+    {
+        return MESHX_SUCCESS;
+    }
+
+    uint8_t status = bt_mesh_subnet_add(net_idx, net_key);
+    if (status != 0)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "Zephyr bt_mesh_subnet_add(0x%03X) failed: status=0x%02X",
+                   net_idx, status);
+        return MESHX_FAIL;
+    }
+
+    MESHX_LOGI(MODULE_ID_COMMON, "Zephyr subnet added: net_idx=0x%03X", net_idx);
+    return MESHX_SUCCESS;
+}
+
+meshx_err_t meshx_plat_subnet_del(uint16_t net_idx)
+{
+    if (net_idx > 0x0FFFU)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    if (!bt_mesh_subnet_exists(net_idx))
+    {
+        return MESHX_NOT_FOUND;
+    }
+
+    uint8_t status = bt_mesh_subnet_del(net_idx);
+    if (status != 0)
+    {
+        MESHX_LOGE(MODULE_ID_COMMON, "Zephyr bt_mesh_subnet_del(0x%03X) failed: status=0x%02X",
+                   net_idx, status);
+        return MESHX_FAIL;
+    }
+
+    MESHX_LOGI(MODULE_ID_COMMON, "Zephyr subnet deleted: net_idx=0x%03X", net_idx);
+    return MESHX_SUCCESS;
+}
+
+meshx_err_t meshx_plat_subnet_bridge_set(bool enable)
+{
+    /* Zephyr v3.7 uses MeshX application-layer store-and-forward bridging */
+    return meshx_subnet_coex_pal_bridge_set(enable);
+}
+
+meshx_err_t meshx_plat_subnet_bridge_rule_add(const meshx_bridge_rule_t *rule)
+{
+    if (!rule)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    return meshx_subnet_coex_pal_bridge_rule_add(rule);
+}
+
 

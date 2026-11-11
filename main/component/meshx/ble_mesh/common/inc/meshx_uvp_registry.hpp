@@ -99,6 +99,12 @@ meshx_err_t meshx_uvp_register_redundancy_handlers(void);
  */
 meshx_err_t meshx_uvp_register_reheal_handlers(void);
 
+/**
+ * @brief Register Island Subnet Coexistence (0xD1..0xDE) opcode handlers.
+ * @return MESHX_SUCCESS on success.
+ */
+meshx_err_t meshx_uvp_register_island_handlers(void);
+
 #ifdef __cplusplus
 }
 #endif
