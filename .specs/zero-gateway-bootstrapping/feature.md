@@ -2,7 +2,9 @@
 
 **Module:** `ZGB-Case4`  
 **Status:** Deferred to future spec  
-**Linked Issue:** https://github.com/pranjalchanda08/MeshX/issues/160  
+**Linked Issue:** https://github.com/pranjalchanda08/MeshX/issues/162  
+**Active Spec:** [.specs/island-subnet-coexistence/](../island-subnet-coexistence/requirements.md)  
+**Branch:** `fr/162-fr-island-subnet`  
 **Relation to ZGB:** Case 4 is out of scope for the initial bootstrap spec (Cases 1-3). Documented here as a future feature.
 
 ---

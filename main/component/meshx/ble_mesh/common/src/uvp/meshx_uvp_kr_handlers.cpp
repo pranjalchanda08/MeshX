@@ -54,6 +54,7 @@ static meshx_err_t uvp_handle_kr_distribute(const control_task_uvp_meta_t *p_met
             meshx_err_t nk_err = meshx_plat_net_key_add(prep->new_key, meshx_get_net_key_id());
             if (nk_err == MESHX_SUCCESS)
             {
+                (void)meshx_subnet_coex_on_kr_transition(meshx_get_net_key_id(), 1U, prep->new_key, prep->epoch);
                 MESHX_LOGI(MODULE_ID_COMMON, "UVP KR: Phase 1 Key installed for epoch %lu from 0x%04X (curr=%lu)",
                            (unsigned long)prep->epoch, p_ctx->src_addr, (unsigned long)current_epoch);
             }
@@ -105,6 +106,7 @@ static meshx_err_t uvp_handle_kr_switchover(const control_task_uvp_meta_t *p_met
     if (meshx_kr_epoch_is_newer(act->epoch, current_epoch))
     {
         /* Phase 2: Switchover TX Key = K_new (Both keys remain valid for RX during 4-min overlap) */
+        (void)meshx_subnet_coex_on_kr_transition(meshx_get_net_key_id(), 2U, nullptr, act->epoch);
         MESHX_LOGI(MODULE_ID_COMMON, "UVP KR: Phase 2 TX Switchover active for epoch %lu from 0x%04X",
                    (unsigned long)act->epoch, p_ctx->src_addr);
 
@@ -155,6 +157,7 @@ static meshx_err_t uvp_handle_kr_revoke_old(const control_task_uvp_meta_t *p_met
     {
         /* Phase 3: Invalidate K_old, Commit K_new and updated epoch atomically to NVS */
         meshx_nvs_set_kr_epoch(rev->epoch);
+        (void)meshx_subnet_coex_on_kr_transition(meshx_get_net_key_id(), 3U, nullptr, rev->epoch);
         MESHX_LOGI(MODULE_ID_COMMON, "UVP KR: Phase 3 Revocation committed; kr_epoch=%lu (from 0x%04X)",
                    (unsigned long)rev->epoch, p_ctx->src_addr);
 

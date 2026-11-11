@@ -121,6 +121,11 @@ typedef enum {
     MXCP_CMD_VIRTUAL_TOPO_REQ          = 0x38,
     MXCP_CMD_BOOTSTRAP_COMMISSION      = 0x39,
     MXCP_CMD_BOOTSTRAP_ABORT           = 0x3A,
+    MXCP_CMD_SUBNET_LIST               = 0x3B, /**< Query active subnets, slots, and digests */
+    MXCP_CMD_SUBNET_BRIDGE_ADD         = 0x3C, /**< Bind subnet NetKey + Global ID bridge slot */
+    MXCP_CMD_SUBNET_BRIDGE_DEL         = 0x3D, /**< Unbind subnet bridge slot and purge queues */
+    MXCP_CMD_SUBNET_RULE_SET           = 0x3E, /**< Configure cross-subnet bridge rule & group mask */
+    MXCP_CMD_BRIDGE_CLUSTER_KEY_UPDATE = 0x3F, /**< Provision/rotate K_bridge cluster key + epoch */
 
     MXCP_CMD_DISCOVER_CAPABILITIES = 0x70,
     MXCP_CMD_BIND_ELEMENTS         = 0x71,
@@ -188,6 +193,11 @@ typedef enum {
     MXCP_EVT_NODE_REPLACE_SCHEMA_DIFF  = 0xB7, /**< Modality B schema difference */
     MXCP_EVT_UVP_CLAIM_STATUS          = 0xB8, /**< Cascading N+1 claim accepted by candidate */
     MXCP_EVT_VIRTUAL_TOPO_STATUS       = 0xB9, /**< Dynamic SDVT switch status and peer table notification */
+    MXCP_EVT_SUBNET_LIST_RSP           = 0xBA, /**< Active island subnets, slots, and digests */
+    MXCP_EVT_SUBNET_BRIDGE_ADD_RSP     = 0xBB, /**< Result of MXCP_CMD_SUBNET_BRIDGE_ADD */
+    MXCP_EVT_SUBNET_BRIDGE_DEL_RSP     = 0xBC, /**< Result of MXCP_CMD_SUBNET_BRIDGE_DEL */
+    MXCP_EVT_SUBNET_RULE_SET_RSP       = 0xBD, /**< Result of MXCP_CMD_SUBNET_RULE_SET */
+    MXCP_EVT_BRIDGE_CLUSTER_KEY_RSP    = 0xBE, /**< Result of MXCP_CMD_BRIDGE_CLUSTER_KEY_UPDATE */
 
     MXCP_EVT_MAX
 } mxcp_evt_id_t;
@@ -654,6 +664,64 @@ typedef struct {
     uint16_t own_addr;     /**< Local node address */
     uint8_t  peer_count;   /**< Number of active peer rules following this header */
 } MESHX_PACKED mxcp_evt_virtual_topo_status_t;
+
+/** @brief MXCP_CMD_SUBNET_BRIDGE_ADD (0x3C) */
+typedef struct {
+    uint16_t net_idx;
+    uint32_t global_subnet_id;
+    uint8_t  role;
+    uint8_t  net_key[16];
+} MESHX_PACKED mxcp_cmd_subnet_bridge_add_t;
+
+/** @brief MXCP_CMD_SUBNET_BRIDGE_DEL (0x3D) */
+typedef struct {
+    uint16_t net_idx;
+    uint8_t  force_purge;
+} MESHX_PACKED mxcp_cmd_subnet_bridge_del_t;
+
+/** @brief MXCP_CMD_SUBNET_RULE_SET (0x3E) */
+typedef struct {
+    uint16_t net_idx_1;
+    uint16_t net_idx_2;
+    uint16_t addr_1;
+    uint16_t addr_2;
+    uint8_t  directions;
+    uint8_t  enable;
+    uint32_t group_forward_bitmap;
+} MESHX_PACKED mxcp_cmd_subnet_rule_set_t;
+
+/** @brief MXCP_CMD_BRIDGE_CLUSTER_KEY_UPDATE (0x3F) */
+typedef struct {
+    uint32_t cluster_epoch;
+    uint32_t active_term;
+    uint8_t  k_bridge[16];
+} MESHX_PACKED mxcp_cmd_cluster_key_update_t;
+
+typedef struct {
+    uint32_t global_subnet_id;
+    uint16_t local_net_idx;
+    uint8_t  slot_n;
+    uint8_t  kr_phase;
+    uint8_t  role;
+    uint32_t key_epoch;
+    uint32_t boundary_id;
+    uint16_t active_bridge_addr;
+} MESHX_PACKED mxcp_evt_subnet_entry_t;
+
+/** @brief MXCP_EVT_SUBNET_LIST_RSP (0xBA) */
+typedef struct {
+    uint8_t                 status_code;
+    uint32_t                cluster_epoch;
+    uint32_t                active_term;
+    uint8_t                 count;
+    mxcp_evt_subnet_entry_t entries[4];
+} MESHX_PACKED mxcp_evt_subnet_list_rsp_t;
+
+/** @brief Generic status response for 0xBB..0xBE */
+typedef struct {
+    uint8_t  status_code;
+    uint16_t param;
+} MESHX_PACKED mxcp_evt_subnet_op_rsp_t;
 
 /**
  * @brief MXCP wire frame for RX-side parsing.

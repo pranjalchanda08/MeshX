@@ -254,4 +254,12 @@
 #define CONFIG_MESHX_ENABLE_VIRTUAL_TOPO             0
 #endif
 
+/**
+ * @brief Enable Island Subnet Coexistence & Non-Destructive Bridging (Case 4).
+ * Controlled via Kconfig on Zephyr or meshx_config_internal.h on ESP-IDF.
+ */
+#ifndef CONFIG_MESHX_ISLAND_SUBNET_COEXISTENCE
+#define CONFIG_MESHX_ISLAND_SUBNET_COEXISTENCE       1
+#endif
+
 #endif /* __MESHX_CONFIG_INTERNAL_H__ */

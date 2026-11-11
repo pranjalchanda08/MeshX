@@ -286,3 +286,103 @@ meshx_err_t meshx_plat_ble_adv_mfg_data(const uint8_t *mfg_data, uint16_t mfg_le
                (unsigned int)mfg_len);
     return MESHX_SUCCESS;
 }
+
+#define MESHX_ESP_MAX_BLE_MFG_CBS 4
+static meshx_plat_ble_mfg_data_cb_t s_esp_mfg_cbs[MESHX_ESP_MAX_BLE_MFG_CBS] = {0};
+static size_t s_esp_mfg_cb_count = 0;
+static bool s_esp_gap_cb_registered = false;
+
+static void esp_plat_parse_mfg_adv(const uint8_t *adv_data, uint8_t adv_len, int8_t rssi)
+{
+    if (!adv_data || adv_len == 0)
+    {
+        return;
+    }
+
+    uint8_t offset = 0;
+    while (offset < adv_len)
+    {
+        uint8_t field_len = adv_data[offset++];
+        if (field_len == 0 || offset + field_len > adv_len)
+        {
+            break;
+        }
+        uint8_t ad_type = adv_data[offset];
+        if (ad_type == ESP_BLE_AD_MANUFACTURER_SPECIFIC_TYPE && field_len >= 3)
+        {
+            uint16_t cid = (uint16_t)adv_data[offset + 1] | ((uint16_t)adv_data[offset + 2] << 8);
+            const uint8_t *payload = &adv_data[offset + 3];
+            uint16_t payload_len = (uint16_t)(field_len - 3);
+            for (size_t i = 0; i < s_esp_mfg_cb_count; i++)
+            {
+                if (s_esp_mfg_cbs[i] != NULL)
+                {
+                    s_esp_mfg_cbs[i](cid, payload, payload_len, rssi);
+                }
+            }
+        }
+        offset += field_len;
+    }
+}
+
+static void esp_plat_gap_cb(esp_gap_ble_cb_event_t event, esp_ble_gap_cb_param_t *param)
+{
+#ifdef CONFIG_BT_BLUEDROID_ENABLED
+    if (event == ESP_GAP_BLE_SCAN_RESULT_EVT && param != NULL &&
+        param->scan_rst.search_evt == ESP_GAP_SEARCH_INQ_RES_EVT)
+    {
+        uint8_t total_len = (uint8_t)(param->scan_rst.adv_data_len + param->scan_rst.scan_rsp_len);
+        if (total_len > 0)
+        {
+            esp_plat_parse_mfg_adv(param->scan_rst.ble_adv,
+                                   param->scan_rst.adv_data_len,
+                                   (int8_t)param->scan_rst.rssi);
+        }
+    }
+#else
+    (void)event;
+    (void)param;
+#endif
+}
+
+meshx_err_t meshx_plat_ble_register_mfg_data_cb(meshx_plat_ble_mfg_data_cb_t cb)
+{
+    if (!cb)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    for (size_t i = 0; i < s_esp_mfg_cb_count; i++)
+    {
+        if (s_esp_mfg_cbs[i] == cb)
+        {
+            return MESHX_SUCCESS;
+        }
+    }
+
+    if (s_esp_mfg_cb_count >= MESHX_ESP_MAX_BLE_MFG_CBS)
+    {
+        return MESHX_NO_MEM;
+    }
+
+    s_esp_mfg_cbs[s_esp_mfg_cb_count++] = cb;
+
+    if (!s_esp_gap_cb_registered)
+    {
+#ifdef CONFIG_BT_BLUEDROID_ENABLED
+        esp_err_t err = esp_ble_gap_register_callback(esp_plat_gap_cb);
+        if (err == ESP_OK)
+        {
+            s_esp_gap_cb_registered = true;
+        }
+        else
+        {
+            MESHX_LOGW(MODULE_ID_COMMON, "esp_ble_gap_register_callback failed: %d", err);
+        }
+#else
+        s_esp_gap_cb_registered = true;
+#endif
+    }
+
+    return MESHX_SUCCESS;
+}
