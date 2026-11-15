@@ -33,7 +33,7 @@
 #include "meshx_virtual_topo.h"
 #include "zgb/meshx_zgb.h"
 #include "meshx_platform_ble_mesh.h"
-#include "interface/island_subnet_coex/meshx_island_subnet_coex.h"
+#include "meshx_island_subnet_coex.h"
 
 /* UVP Management Virtual Address */
 #ifndef MESHX_MGMT_VIRTUAL_ADDR
@@ -2318,7 +2318,9 @@ static meshx_err_t mxcp_cmd_fn_subnet_bridge_add(const uint8_t *payload, uint8_t
     memcpy(&cmd, payload, sizeof(cmd));
 
     (void)meshx_plat_subnet_add(cmd.net_idx, cmd.net_key);
-    meshx_err_t err = meshx_subnet_coex_bridge_add(cmd.net_idx, cmd.net_key, cmd.global_subnet_id, cmd.role);
+    meshx_subnet_key_t key_struct;
+    memcpy(key_struct.bytes, cmd.net_key, sizeof(key_struct.bytes));
+    meshx_err_t err = meshx_subnet_coex_bridge_add(cmd.net_idx, &key_struct, cmd.global_subnet_id, cmd.role);
 
     mxcp_evt_subnet_op_rsp_t rsp = {
         .status_code = (err == MESHX_SUCCESS) ? 0x00U : (uint8_t)err,
@@ -2384,7 +2386,10 @@ static meshx_err_t mxcp_cmd_fn_cluster_key_update(const uint8_t *payload, uint8_
     mxcp_cmd_cluster_key_update_t cmd;
     memcpy(&cmd, payload, sizeof(cmd));
 
-    meshx_err_t err = meshx_subnet_coex_cluster_key_update(cmd.k_bridge, cmd.cluster_epoch, cmd.active_term);
+    meshx_subnet_key_t key_struct;
+    memcpy(key_struct.bytes, cmd.k_bridge, sizeof(key_struct.bytes));
+    meshx_err_t err = meshx_subnet_coex_cluster_key_update(&key_struct, cmd.cluster_epoch, cmd.active_term);
+    memset(&key_struct, 0, sizeof(key_struct));
     memset(&cmd, 0, sizeof(cmd));
 
     mxcp_evt_subnet_op_rsp_t rsp = {

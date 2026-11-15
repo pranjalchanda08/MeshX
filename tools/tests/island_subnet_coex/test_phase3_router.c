@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
-#include "island_subnet_coex/meshx_router_core.h"
+#include "island/meshx_router_core.h"
 
 extern size_t g_host_alloc_count;
 extern size_t g_host_free_count;
@@ -24,15 +24,18 @@ typedef struct {
 } test_router_spy_t;
 
 static meshx_err_t spy_tx(const meshx_router_queue_entry_t *entry,
-                          const uint8_t nonce13[13],
-                          const uint8_t *tx_net_key,
+                          const meshx_ccm_nonce_t *nonce,
+                          const meshx_subnet_key_t *tx_net_key,
                           void *user_ctx)
 {
     (void)tx_net_key;
     test_router_spy_t *spy = (test_router_spy_t *)user_ctx;
     spy->tx_calls++;
     spy->last_tx_net_idx = entry->tx_net_idx;
-    memcpy(spy->last_nonce, nonce13, 13);
+    if (nonce)
+    {
+        memcpy(spy->last_nonce, nonce->bytes, sizeof(spy->last_nonce));
+    }
     return spy->next_tx_fail ? MESHX_FAIL : MESHX_SUCCESS;
 }
 
@@ -57,8 +60,6 @@ static void test_queue_limits_and_backpressure(void)
 
     uint8_t pdu[120];
     memset(pdu, 0xA5, sizeof(pdu));
-    uint8_t mic[8] = {1,2,3,4,5,6,7,8};
-
     meshx_router_enqueue_params_t p = {
         .ingress_boundary_id = 0x11111111UL,
         .egress_boundary_id  = 0x22222222UL,
@@ -72,8 +73,7 @@ static void test_queue_limits_and_backpressure(void)
         .tx_net_idx          = 1,
         .epoch_id            = 1,
         .ttl                 = 5,
-        .trans_mic_len       = 4,
-        .trans_mic           = mic,
+        .trans_mic           = { .bytes = {1,2,3,4,5,6,7,8}, .len = 4 },
         .tx_epoch            = 0,
         .flags               = MESHX_ROUTER_FLAG_IS_UNICAST,
         .pdu                 = pdu,
@@ -128,17 +128,19 @@ static void test_queue_limits_and_backpressure(void)
 
 static void test_canonical_nonce_and_reasm_epoch(void)
 {
-    uint8_t n1[13], n2[13];
+    meshx_ccm_nonce_t n1, n2;
+    memset(&n1, 0, sizeof(n1));
+    memset(&n2, 0, sizeof(n2));
     /* Must preserve canonical src/dst (e.g., before NAT rewriting) for both Unicast and Group */
-    assert(meshx_router_build_canonical_nonce(0x0002, 0xC005, 0x00000001UL, 0x000042UL, 1, true, n1) == MESHX_SUCCESS);
-    assert(meshx_router_build_canonical_nonce(0x0002, 0xC005, 0x00000001UL, 0x000042UL, 1, true, n2) == MESHX_SUCCESS);
-    assert(memcmp(n1, n2, 13) == 0);
-    assert(n1[0] == 0x01); /* App Nonce type = 0x01 */
-    assert(n1[1] == 0x80); /* SZMIC = 1 bit 7 */
+    assert(meshx_router_build_canonical_nonce(0x0002, 0xC005, 0x00000001UL, 0x000042UL, 1, true, &n1) == MESHX_SUCCESS);
+    assert(meshx_router_build_canonical_nonce(0x0002, 0xC005, 0x00000001UL, 0x000042UL, 1, true, &n2) == MESHX_SUCCESS);
+    assert(memcmp(n1.bytes, n2.bytes, sizeof(n1.bytes)) == 0);
+    assert(n1.bytes[0] == 0x01); /* App Nonce type = 0x01 */
+    assert(n1.bytes[1] == 0x80); /* SZMIC = 1 bit 7 */
 
     /* Group / Unicast DST bytes big-endian at [7..8] */
-    assert(n1[5] == 0x00 && n1[6] == 0x02);
-    assert(n1[7] == 0xC0 && n1[8] == 0x05);
+    assert(n1.bytes[5] == 0x00 && n1.bytes[6] == 0x02);
+    assert(n1.bytes[7] == 0xC0 && n1.bytes[8] == 0x05);
 
     /* Single-Epoch reassembly rejects mismatched epoch on same SAR flow */
     meshx_router_ctx_t ctx;
@@ -170,7 +172,6 @@ static void test_stage2_retries_and_reliable_nack(void)
     test_router_spy_t spy = {0};
     meshx_router_core_init(&ctx, spy_tx, spy_nack, &spy);
 
-    uint8_t mic[8] = {0xAA, 0xBB, 0xCC, 0xDD};
     uint8_t payload[16] = {0x11, 0x22, 0x33};
     meshx_router_enqueue_params_t p = {
         .ingress_boundary_id = 0x1111,
@@ -185,8 +186,7 @@ static void test_stage2_retries_and_reliable_nack(void)
         .tx_net_idx          = 1,
         .epoch_id            = 1,
         .ttl                 = 4,
-        .trans_mic_len       = 4,
-        .trans_mic           = mic,
+        .trans_mic           = { .bytes = {0xAA, 0xBB, 0xCC, 0xDD}, .len = 4 },
         .tx_epoch            = 0,
         .flags               = MESHX_ROUTER_FLAG_IS_UNICAST,
         .pdu                 = payload,
@@ -227,4 +227,3 @@ int main(void)
     printf("PASS: test_phase3_router\n");
     return 0;
 }
-

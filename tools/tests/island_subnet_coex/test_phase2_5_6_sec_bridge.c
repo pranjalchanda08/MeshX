@@ -6,11 +6,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
-#include "island_subnet_coex/meshx_subnet_nvs.h"
-#include "island_subnet_coex/meshx_subnet_security.h"
-#include "island_subnet_coex/meshx_subnet_discovery.h"
-#include "island_subnet_coex/meshx_subnet_bridge.h"
-#include "island_subnet_coex/meshx_island_subnet_coex.h"
+#include "island/meshx_subnet_nvs.h"
+#include "island/meshx_subnet_security.h"
+#include "island/meshx_subnet_discovery.h"
+#include "island/meshx_subnet_bridge.h"
+#include "island/meshx_island_subnet_coex.h"
 
 extern size_t g_host_live_bytes;
 extern void host_nvs_reset(void);
@@ -34,11 +34,16 @@ static void test_nvs_persistence_under_1kb(void)
                         sizeof(meshx_nvs_pairs_blob_t);
     assert(total_blob < 1024U);
 
-    meshx_nvs_kbridge_blob_t kb = {.cluster_epoch = 7, .active_term = 3, .valid = 1};
-    memset(kb.k_bridge, 0x5A, 16);
+    meshx_nvs_kbridge_blob_t kb;
+    memset(&kb, 0, sizeof(kb));
+    kb.cluster_epoch = 7;
+    kb.active_term = 3;
+    kb.valid = 1;
+    memset(kb.k_bridge.bytes, 0x5A, sizeof(kb.k_bridge.bytes));
     assert(meshx_subnet_nvs_save_kbridge(&kb) == MESHX_SUCCESS);
 
-    meshx_nvs_kbridge_blob_t kb_rd = {0};
+    meshx_nvs_kbridge_blob_t kb_rd;
+    memset(&kb_rd, 0, sizeof(kb_rd));
     assert(meshx_subnet_nvs_load_kbridge(&kb_rd) == MESHX_SUCCESS);
     assert(memcmp(&kb, &kb_rd, sizeof(kb)) == 0);
 
@@ -47,25 +52,32 @@ static void test_nvs_persistence_under_1kb(void)
     assert(meshx_subnet_nvs_load_nonce(&ckpt) == MESHX_SUCCESS);
     assert(ckpt == 4096UL);
 
-    meshx_nat_entry_t nat[2] = {0};
+    meshx_nat_entry_t nat[2];
+    memset(nat, 0, sizeof(nat));
     nat[0].global_subnet_src = 0x11112222UL;
     nat[0].orig_addr = 0x0501;
     nat[0].virtual_addr = 0x7800;
     nat[0].flags = MESHX_NAT_FLAG_VALID | MESHX_NAT_FLAG_PERSISTENT;
     assert(meshx_subnet_nvs_save_nat_table(nat, 1) == MESHX_SUCCESS);
 
-    meshx_nat_entry_t nat_rd[MESHX_NAT_TIER2_CAP] = {0};
+    meshx_nat_entry_t nat_rd[MESHX_NAT_TIER2_CAP];
+    memset(nat_rd, 0, sizeof(nat_rd));
     uint8_t nat_cnt = 0;
     assert(meshx_subnet_nvs_load_nat_table(nat_rd, &nat_cnt) == MESHX_SUCCESS);
     assert(nat_cnt == 1 && nat_rd[0].orig_addr == 0x0501);
 
-    meshx_pair_record_t pr = {
-        .global_subnet_src = 0x1111, .global_subnet_dst = 0x2222,
-        .local_elem_addr = 0x0002, .virtual_remote_addr = 0x4403,
-        .remote_phys_addr = 0x0003, .func_id = 0x1001, .active = 1
-    };
+    meshx_pair_record_t pr;
+    memset(&pr, 0, sizeof(pr));
+    pr.global_subnet_src = 0x1111;
+    pr.global_subnet_dst = 0x2222;
+    pr.local_elem_addr = 0x0002;
+    pr.virtual_remote_addr = 0x4403;
+    pr.remote_phys_addr = 0x0003;
+    pr.func_id = 0x1001;
+    pr.active = 1;
     assert(meshx_subnet_nvs_save_pair_records(&pr, 1) == MESHX_SUCCESS);
-    meshx_pair_record_t pr_rd[MESHX_PAIR_RECORD_MAX] = {0};
+    meshx_pair_record_t pr_rd[MESHX_PAIR_RECORD_MAX];
+    memset(pr_rd, 0, sizeof(pr_rd));
     uint8_t pr_cnt = 0;
     assert(meshx_subnet_nvs_load_pair_records(pr_rd, &pr_cnt) == MESHX_SUCCESS);
     assert(pr_cnt == 1 && pr_rd[0].func_id == 0x1001);
@@ -73,23 +85,30 @@ static void test_nvs_persistence_under_1kb(void)
 
 static void test_security_hmac_replay_devkey_rpl(void)
 {
-    uint8_t dev_key[16], k_bridge[16];
-    memset(dev_key, 0x33, 16);
-    memset(k_bridge, 0x77, 16);
+    meshx_subnet_key_t dev_key, k_bridge;
+    memset(dev_key.bytes, 0x33, sizeof(dev_key.bytes));
+    memset(k_bridge.bytes, 0x77, sizeof(k_bridge.bytes));
 
-    /* DevKey AES-128-CCM seal + open (0xD4) */
-    meshx_uvp_bridge_invite_plain_t inv = {0};
+    /* DevKey AES-128-CCM seal + open (MESHX_UVP_OP_SUBNET_BRIDGE_INVITE) */
+    meshx_uvp_bridge_invite_plain_t inv;
+    memset(&inv, 0, sizeof(inv));
     inv.cluster_epoch = 4;
     inv.assigned_slot_n = 2;
     inv.boundary_id = 0xABCDEF01UL;
     uint8_t sealed[128], opened[128];
     uint16_t sealed_len = 0, opened_len = 0;
-    assert(meshx_subnet_sec_seal_devkey(dev_key, 0xD4, 0x0005, 42, (const uint8_t *)&inv, sizeof(inv), sealed, sizeof(sealed), &sealed_len) == MESHX_SUCCESS);
-    assert(meshx_subnet_sec_open_devkey(dev_key, 0xD4, sealed, sealed_len, opened, sizeof(opened), &opened_len) == MESHX_SUCCESS);
+    assert(meshx_subnet_sec_seal_devkey(&dev_key, MESHX_UVP_OP_SUBNET_BRIDGE_INVITE, 0x0005, 42,
+                                        (const uint8_t *)&inv, sizeof(inv),
+                                        sealed, sizeof(sealed), &sealed_len) == MESHX_SUCCESS);
+    assert(meshx_subnet_sec_open_devkey(&dev_key, MESHX_UVP_OP_SUBNET_BRIDGE_INVITE,
+                                        sealed, sealed_len,
+                                        opened, sizeof(opened), &opened_len) == MESHX_SUCCESS);
     assert(opened_len == sizeof(inv) && memcmp(&inv, opened, sizeof(inv)) == 0);
     /* Tamper ciphertext/MIC -> fail */
     sealed[sealed_len - 1] ^= 0xFF;
-    assert(meshx_subnet_sec_open_devkey(dev_key, 0xD4, sealed, sealed_len, opened, sizeof(opened), &opened_len) != MESHX_SUCCESS);
+    assert(meshx_subnet_sec_open_devkey(&dev_key, MESHX_UVP_OP_SUBNET_BRIDGE_INVITE,
+                                        sealed, sealed_len,
+                                        opened, sizeof(opened), &opened_len) != MESHX_SUCCESS);
 
     /* Sign & Verify + Boot +10000 margin + Checkpoints + Sliding Anti-Replay */
     s_ckpt_calls = 0;
@@ -102,12 +121,12 @@ static void test_security_hmac_replay_devkey_rpl(void)
     uint8_t frame[128];
     uint16_t flen = 0;
     uint8_t hb[8] = {1,2,3,4,5,6,7,8};
-    assert(meshx_subnet_sec_sign_frame(&tx_sec, 0xD1, 0x0005, hb, 8, frame, sizeof(frame), &flen) == MESHX_SUBNET_ERR_AUTH);
+    assert(meshx_subnet_sec_sign_frame(&tx_sec, MESHX_UVP_OP_SUBNET_HEARTBEAT, 0x0005, hb, 8, frame, sizeof(frame), &flen) == MESHX_SUBNET_ERR_AUTH);
 
-    assert(meshx_subnet_sec_set_k_bridge(&tx_sec, k_bridge, 1, 2) == MESHX_SUCCESS);
-    assert(meshx_subnet_sec_set_k_bridge(&rx_sec, k_bridge, 1, 2) == MESHX_SUCCESS);
+    assert(meshx_subnet_sec_set_k_bridge(&tx_sec, &k_bridge, 1, 2) == MESHX_SUCCESS);
+    assert(meshx_subnet_sec_set_k_bridge(&rx_sec, &k_bridge, 1, 2) == MESHX_SUCCESS);
 
-    assert(meshx_subnet_sec_sign_frame(&tx_sec, 0xD1, 0x0005, hb, 8, frame, sizeof(frame), &flen) == MESHX_SUCCESS);
+    assert(meshx_subnet_sec_sign_frame(&tx_sec, MESHX_UVP_OP_SUBNET_HEARTBEAT, 0x0005, hb, 8, frame, sizeof(frame), &flen) == MESHX_SUCCESS);
     assert(flen == (MESHX_CLUSTER_AUTH_OVERHEAD + 8U));
 
     uint8_t op = 0;
@@ -116,26 +135,26 @@ static void test_security_hmac_replay_devkey_rpl(void)
     const uint8_t *pl = NULL;
     uint16_t pl_len = 0;
     assert(meshx_subnet_sec_verify_frame(&rx_sec, frame, flen, &op, &term, &sender, &pl, &pl_len) == MESHX_SUCCESS);
-    assert(op == 0xD1 && term == 2 && sender == 0x0005 && pl_len == 8);
+    assert(op == MESHX_UVP_OP_SUBNET_HEARTBEAT && term == 2 && sender == 0x0005 && pl_len == 8);
 
     /* Replay exact same frame -> rejected */
     assert(meshx_subnet_sec_verify_frame(&rx_sec, frame, flen, &op, &term, &sender, &pl, &pl_len) == MESHX_SUBNET_ERR_REPLAY);
 
     /* Stale term rejected */
     tx_sec.active_term = 1;
-    assert(meshx_subnet_sec_sign_frame(&tx_sec, 0xD1, 0x0005, hb, 8, frame, sizeof(frame), &flen) == MESHX_SUCCESS);
+    assert(meshx_subnet_sec_sign_frame(&tx_sec, MESHX_UVP_OP_SUBNET_HEARTBEAT, 0x0005, hb, 8, frame, sizeof(frame), &flen) == MESHX_SUCCESS);
     assert(meshx_subnet_sec_verify_frame(&rx_sec, frame, flen, &op, &term, &sender, &pl, &pl_len) == MESHX_SUBNET_ERR_AUTH);
 
     /* Restore term & verify checkpoint fires after 1024 increments */
     tx_sec.active_term = 2;
     for (int i = 0; i < 1030; i++) {
-        assert(meshx_subnet_sec_sign_frame(&tx_sec, 0xD1, 0x0005, hb, 4, frame, sizeof(frame), &flen) == MESHX_SUCCESS);
+        assert(meshx_subnet_sec_sign_frame(&tx_sec, MESHX_UVP_OP_SUBNET_HEARTBEAT, 0x0005, hb, 4, frame, sizeof(frame), &flen) == MESHX_SUCCESS);
     }
     assert(s_ckpt_calls >= 1);
 
     /* Nonce wrap guard >= 0xFFFF0000 */
     tx_sec.tx_bridge_nonce = MESHX_BRIDGE_NONCE_WRAP_LIMIT;
-    assert(meshx_subnet_sec_sign_frame(&tx_sec, 0xD1, 0x0005, hb, 4, frame, sizeof(frame), &flen) != MESHX_SUCCESS);
+    assert(meshx_subnet_sec_sign_frame(&tx_sec, MESHX_UVP_OP_SUBNET_HEARTBEAT, 0x0005, hb, 4, frame, sizeof(frame), &flen) != MESHX_SUCCESS);
 
     /* Whitelist + RPL */
     assert(meshx_subnet_sec_whitelist_add(&rx_sec, 0x0009, 0x33330001UL) == MESHX_SUCCESS);
@@ -244,12 +263,15 @@ static void test_discovery_and_bridge_fsm(void)
 
     /* Facade & MXCP C API sanity check */
     assert(meshx_island_subnet_coex_init() == MESHX_SUCCESS);
-    uint8_t kbr[16] = {0x99};
-    assert(meshx_subnet_coex_cluster_key_update(kbr, 10, 4) == MESHX_SUCCESS);
+    meshx_subnet_key_t kbr;
+    memset(kbr.bytes, 0x99, sizeof(kbr.bytes));
+    assert(meshx_subnet_coex_cluster_key_update(&kbr, 10, 4) == MESHX_SUCCESS);
     assert(meshx_subnet_coex_is_kr_quarantined() == true);
-    uint8_t nk1[16] = {0x11}, nk2[16] = {0x22};
-    assert(meshx_subnet_coex_bridge_add(0, nk1, 0x11110001UL, MESHX_BRIDGE_ROLE_ACTIVE) == MESHX_SUCCESS);
-    assert(meshx_subnet_coex_bridge_add(1, nk2, 0x22220002UL, MESHX_BRIDGE_ROLE_ACTIVE) == MESHX_SUCCESS);
+    meshx_subnet_key_t nk1, nk2;
+    memset(nk1.bytes, 0x11, sizeof(nk1.bytes));
+    memset(nk2.bytes, 0x22, sizeof(nk2.bytes));
+    assert(meshx_subnet_coex_bridge_add(0, &nk1, 0x11110001UL, MESHX_BRIDGE_ROLE_ACTIVE) == MESHX_SUCCESS);
+    assert(meshx_subnet_coex_bridge_add(1, &nk2, 0x22220002UL, MESHX_BRIDGE_ROLE_ACTIVE) == MESHX_SUCCESS);
     meshx_bridge_rule_t rule = {.directions = 0x03, .net_idx_1 = 0, .net_idx_2 = 1, .addr_1 = 0xFFFF, .addr_2 = 0xFFFF};
     assert(meshx_subnet_coex_rule_set(&rule, true, 0x00000020UL) == MESHX_SUCCESS);
 
@@ -263,11 +285,52 @@ static void test_discovery_and_bridge_fsm(void)
     assert(g_host_live_bytes == 0);
 }
 
+static int     s_uvp_tx_count = 0;
+static uint8_t s_last_uvp_opcode = 0;
+
+static meshx_err_t test_uvp_tx(uint16_t net_idx, uint16_t dst_addr, uint8_t opcode,
+                               const uint8_t *payload, uint16_t payload_len,
+                               bool ack_req, void *user_ctx)
+{
+    (void)net_idx; (void)dst_addr; (void)payload; (void)payload_len;
+    (void)ack_req; (void)user_ctx;
+    s_uvp_tx_count++;
+    s_last_uvp_opcode = opcode;
+    return MESHX_SUCCESS;
+}
+
+/* TASK-04/05: boundary witness classification promotes BRIDGE_ROLE_CANDIDATE and
+ * emits a 0xD3 candidate report only when RSSI/mains thresholds are met. */
+static void test_candidate_witness_report(void)
+{
+    assert(meshx_island_subnet_coex_init() == MESHX_SUCCESS);
+    meshx_subnet_coex_register_uvp_tx(test_uvp_tx, NULL);
+
+    s_uvp_tx_count = 0;
+    meshx_subnet_coex_on_beacon_rx(0x02E5, NULL, 0, -90); /* below -82 dBm -> no report */
+    assert(s_uvp_tx_count == 0);
+
+    meshx_subnet_coex_on_beacon_rx(0x02E5, NULL, 0, -70); /* eligible -> MESHX_UVP_OP_SUBNET_CANDIDATE_RPT */
+    assert(s_uvp_tx_count == 1);
+    assert(s_last_uvp_opcode == MESHX_UVP_OP_SUBNET_CANDIDATE_RPT);
+
+    meshx_subnet_info_t items[4];
+    size_t cnt = 0;
+    uint32_t ce = 0, tm = 0;
+    assert(meshx_subnet_coex_bridge_list(items, 4, &cnt, &ce, &tm) == MESHX_SUCCESS);
+    assert(cnt == 1);
+    assert(items[0].role == (uint8_t)MESHX_BRIDGE_ROLE_CANDIDATE);
+
+    meshx_island_subnet_coex_deinit();
+    assert(g_host_live_bytes == 0);
+}
+
 int main(void)
 {
     test_nvs_persistence_under_1kb();
     test_security_hmac_replay_devkey_rpl();
     test_discovery_and_bridge_fsm();
+    test_candidate_witness_report();
     printf("PASS: test_phase2_5_6_sec_bridge\n");
     return 0;
 }

@@ -54,7 +54,9 @@ static meshx_err_t uvp_handle_kr_distribute(const control_task_uvp_meta_t *p_met
             meshx_err_t nk_err = meshx_plat_net_key_add(prep->new_key, meshx_get_net_key_id());
             if (nk_err == MESHX_SUCCESS)
             {
-                (void)meshx_subnet_coex_on_kr_transition(meshx_get_net_key_id(), 1U, prep->new_key, prep->epoch);
+                meshx_subnet_key_t k_struct;
+                memcpy(k_struct.bytes, prep->new_key, sizeof(k_struct.bytes));
+                (void)meshx_subnet_coex_on_kr_transition(meshx_get_net_key_id(), 1U, &k_struct, prep->epoch);
                 MESHX_LOGI(MODULE_ID_COMMON, "UVP KR: Phase 1 Key installed for epoch %lu from 0x%04X (curr=%lu)",
                            (unsigned long)prep->epoch, p_ctx->src_addr, (unsigned long)current_epoch);
             }

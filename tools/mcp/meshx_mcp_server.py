@@ -248,7 +248,7 @@ def tool_meshx_target_shell(args):
 
 TOOLS = [
     {
-        "name": "meshx_build",6
+        "name": "meshx_build",
         "description": "Builds MeshX firmware for a specific BSP using the active toolchain environment.",
         "inputSchema": {
             "type": "object",

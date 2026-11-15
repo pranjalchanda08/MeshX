@@ -24,6 +24,7 @@
 #include "interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h"
 #include "meshx_platform_ble_mesh.h"
 #include "meshx_api.h"
+#include "island/meshx_island_subnet_coex.h"
 
 meshx_err_t meshx_is_group_subscribed(meshx_model_t *p_model, uint16_t addr)
 {

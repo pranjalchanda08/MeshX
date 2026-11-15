@@ -1,0 +1,273 @@
+/**
+ * @copyright Copyright (c) 2024 - 2026 MeshX
+ *
+ * @file meshx_subnet_security.h
+ * @brief MitM Authentication, HMAC-SHA256 Envelope, Anti-Replay, Whitelist & Cross-Subnet RPL.
+ */
+
+#ifndef MESHX_SUBNET_SECURITY_H
+#define MESHX_SUBNET_SECURITY_H
+
+#include "island/meshx_subnet_types.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/**
+ * @brief Sliding anti-replay sender slot (16-entry cache).
+ */
+typedef struct {
+    uint16_t sender_addr;   /**< Sender unicast address */
+    uint32_t highest_nonce; /**< Highest verified bridge nonce seen from sender */
+    uint16_t seen_bitmap;   /**< Bitmask tracking 16 preceding nonces relative to highest_nonce */
+    bool     valid;         /**< true if entry is active */
+} meshx_replay_sender_t;
+
+/**
+ * @brief Per-subnet Replay Protection Entry (32-entry table: 32 * 16 B).
+ */
+typedef struct {
+    uint16_t net_idx;      /**< BLE Mesh NetKey Index */
+    uint16_t src_addr;     /**< Origin physical address */
+    uint32_t key_epoch;    /**< Subnet key rotation epoch */
+    uint32_t iv_index;     /**< Associated IV Index */
+    uint32_t last_seq_num; /**< Highest sequence number recorded */
+} meshx_subnet_rpl_entry_t;
+
+/**
+ * @brief Canonical (CANONICAL_SRC, global_subnet_src) deduplication cache entry.
+ */
+typedef struct {
+    uint32_t global_subnet_src; /**< Origin island Global Subnet ID */
+    uint32_t iv_index;          /**< IV Index */
+    uint32_t last_seq;          /**< Highest sequence number recorded */
+    uint16_t canonical_src;     /**< Canonical source address */
+    uint8_t  valid;             /**< 1 if valid, 0 if free */
+} meshx_canonical_rpl_entry_t;
+
+/**
+ * @brief Multihop ingress whitelist entry.
+ */
+typedef struct {
+    uint16_t neighbor_bridge_addr;      /**< Physical address of immediate neighbor bridge */
+    uint32_t allowed_global_subnet_src; /**< Authorized origin Global Subnet ID */
+    bool     valid;                     /**< true if whitelist rule is active */
+} meshx_transit_whitelist_entry_t;
+
+/**
+ * @brief Callback for persistent checkpoint save.
+ */
+typedef meshx_err_t (*meshx_sec_ckpt_save_fn_t)(uint32_t nonce_ckpt, void *ctx);
+
+/**
+ * @brief Security manager state context.
+ */
+typedef struct {
+    meshx_subnet_key_t              k_bridge;                                  /**< 16-byte Cluster Bridge Key */
+    bool                            k_bridge_valid;                            /**< true if K_bridge is provisioned and valid */
+    uint32_t                        cluster_epoch;                             /**< Active cluster epoch */
+    uint32_t                        active_term;                               /**< Active failover term */
+    uint32_t                        tx_bridge_nonce;                           /**< Monotonic outbound bridge nonce */
+    uint32_t                        last_saved_nonce_ckpt;                     /**< Nonce checkpoint last committed to NVS */
+    uint32_t                        eviction_floor_nonce;                      /**< Eviction floor for anti-replay cache */
+    meshx_replay_sender_t           replay_cache[MESHX_ANTI_REPLAY_CACHE_SIZE];/**< 16-entry sliding anti-replay window */
+    meshx_subnet_rpl_entry_t        rpl[MESHX_RPL_CACHE_SIZE];                 /**< 32-entry subnet-partitioned RPL */
+    meshx_canonical_rpl_entry_t     canonical_rpl[MESHX_NAT_TIER2_CAP];        /**< Canonical source deduplication RPL */
+    meshx_transit_whitelist_entry_t whitelist[MESHX_TRANSIT_WHITELIST_MAX];    /**< Multihop transit ingress whitelist */
+    meshx_sec_ckpt_save_fn_t        ckpt_cb;                                   /**< Checkpoint save callback */
+    void                           *ckpt_ctx;                                  /**< Checkpoint callback context */
+} meshx_subnet_security_ctx_t;
+
+/**
+ * @brief Initialize security subsystem with persisted nonce checkpoint.
+ *
+ * @param[out] ctx                  Pointer to security context.
+ * @param[in]  persisted_nonce_ckpt Nonce checkpoint loaded from NVS.
+ * @param[in]  ckpt_cb              Checkpoint commit callback.
+ * @param[in]  ckpt_ctx             Callback context pointer.
+ */
+void meshx_subnet_sec_init(meshx_subnet_security_ctx_t *ctx,
+                           uint32_t persisted_nonce_ckpt,
+                           meshx_sec_ckpt_save_fn_t ckpt_cb,
+                           void *ckpt_ctx);
+
+/**
+ * @brief De-initialize security context and scrub key material.
+ *
+ * @param[in,out] ctx Pointer to security context.
+ */
+void meshx_subnet_sec_deinit(meshx_subnet_security_ctx_t *ctx);
+
+/**
+ * @brief Provision K_bridge atomically (callers must commit NVS before activating).
+ *
+ * @param[in,out] ctx           Pointer to security context.
+ * @param[in]     k_bridge      Pointer to 16-byte Cluster Bridge Key.
+ * @param[in]     cluster_epoch Cluster epoch counter.
+ * @param[in]     term          Failover term.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG.
+ */
+meshx_err_t meshx_subnet_sec_set_k_bridge(meshx_subnet_security_ctx_t *ctx,
+                                          const meshx_subnet_key_t *k_bridge,
+                                          uint32_t cluster_epoch,
+                                          uint32_t term);
+
+/**
+ * @brief Wipe Cluster Bridge Key from memory.
+ *
+ * @param[in,out] ctx Pointer to security context.
+ */
+void meshx_subnet_sec_clear_k_bridge(meshx_subnet_security_ctx_t *ctx);
+
+/**
+ * @brief Construct & authenticate outbound UVP frame with 11B header + 16B HMAC tag.
+ *
+ * @param[in,out] ctx         Pointer to security context.
+ * @param[in]     opcode      UVP message opcode (0xD1..0xDE).
+ * @param[in]     sender_addr Sender physical address.
+ * @param[in]     payload     Payload to sign.
+ * @param[in]     payload_len Length of payload in bytes.
+ * @param[out]    out_frame   Destination buffer for signed frame.
+ * @param[in]     out_cap     Capacity of out_frame buffer.
+ * @param[out]    out_len     Total length of signed frame.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_subnet_sec_sign_frame(meshx_subnet_security_ctx_t *ctx,
+                                        uint8_t opcode,
+                                        uint16_t sender_addr,
+                                        const uint8_t *payload,
+                                        uint16_t payload_len,
+                                        uint8_t *out_frame,
+                                        uint16_t out_cap,
+                                        uint16_t *out_len);
+
+/**
+ * @brief Verify inbound authenticated UVP frame (term >= active, 16B HMAC, 16-entry sliding window).
+ *
+ * @param[in,out] ctx             Pointer to security context.
+ * @param[in]     frame           Raw inbound signed frame.
+ * @param[in]     frame_len       Length of signed frame.
+ * @param[out]    out_opcode      Destination for extracted opcode.
+ * @param[out]    out_term        Destination for extracted term.
+ * @param[out]    out_sender      Destination for sender address.
+ * @param[out]    out_payload     Pointer set to start of verified inner payload.
+ * @param[out]    out_payload_len Destination for length of inner payload.
+ * @return MESHX_SUCCESS on success, MESHX_SUBNET_ERR_AUTH on tag mismatch, MESHX_SUBNET_ERR_REPLAY on replay.
+ */
+meshx_err_t meshx_subnet_sec_verify_frame(meshx_subnet_security_ctx_t *ctx,
+                                          const uint8_t *frame,
+                                          uint16_t frame_len,
+                                          uint8_t *out_opcode,
+                                          uint32_t *out_term,
+                                          uint16_t *out_sender,
+                                          const uint8_t **out_payload,
+                                          uint16_t *out_payload_len);
+
+/**
+ * @brief Encrypt DevKey AES-128-CCM commissioning envelopes (0xD4 Bridge Invite).
+ *
+ * @param[in]  dev_key    Pointer to 16-byte Device Key.
+ * @param[in]  opcode     UVP opcode being sealed.
+ * @param[in]  dst_addr   Target destination address.
+ * @param[in]  nonce32    32-bit transaction nonce.
+ * @param[in]  plain      Plaintext payload.
+ * @param[in]  plain_len  Plaintext payload length.
+ * @param[out] out_buf    Destination buffer for sealed envelope.
+ * @param[in]  out_cap    Capacity of destination buffer.
+ * @param[out] out_len    Length of generated sealed envelope.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_subnet_sec_seal_devkey(const meshx_subnet_key_t *dev_key,
+                                         uint8_t opcode,
+                                         uint16_t dst_addr,
+                                         uint32_t nonce32,
+                                         const uint8_t *plain,
+                                         uint16_t plain_len,
+                                         uint8_t *out_buf,
+                                         uint16_t out_cap,
+                                         uint16_t *out_len);
+
+/**
+ * @brief Decrypt DevKey AES-128-CCM commissioning envelopes (0xD4 Bridge Invite / 0xDA Invite ACK).
+ *
+ * @param[in]  dev_key       Pointer to 16-byte Device Key.
+ * @param[in]  opcode        Expected UVP opcode.
+ * @param[in]  sealed        Sealed input buffer.
+ * @param[in]  sealed_len    Length of sealed input buffer.
+ * @param[out] out_plain     Destination buffer for decrypted plaintext.
+ * @param[in]  out_cap       Capacity of out_plain buffer.
+ * @param[out] out_plain_len Destination for length of decrypted plaintext.
+ * @return MESHX_SUCCESS on success, MESHX_SUBNET_ERR_AUTH on authentication failure.
+ */
+meshx_err_t meshx_subnet_sec_open_devkey(const meshx_subnet_key_t *dev_key,
+                                         uint8_t opcode,
+                                         const uint8_t *sealed,
+                                         uint16_t sealed_len,
+                                         uint8_t *out_plain,
+                                         uint16_t out_cap,
+                                         uint16_t *out_plain_len);
+
+/**
+ * @brief Add rule to Multihop Transit Ingress Whitelist.
+ *
+ * @param[in,out] ctx                  Pointer to security context.
+ * @param[in]     neighbor_bridge_addr Physical address of authorized neighbor bridge.
+ * @param[in]     allowed_subnet_src   Authorized origin Global Subnet ID.
+ * @return MESHX_SUCCESS on success, or MESHX_NO_MEM.
+ */
+meshx_err_t meshx_subnet_sec_whitelist_add(meshx_subnet_security_ctx_t *ctx,
+                                           uint16_t neighbor_bridge_addr,
+                                           uint32_t allowed_subnet_src);
+
+/**
+ * @brief Check whether transit ingress packet from neighbor bridge is authorized for claimed subnet.
+ *
+ * @param[in] ctx                  Pointer to security context.
+ * @param[in] neighbor_bridge_addr Immediate transmitter address.
+ * @param[in] claimed_subnet_src   Origin Global Subnet ID claimed in transit header.
+ * @return true if authorized, false otherwise.
+ */
+bool meshx_subnet_sec_whitelist_check(const meshx_subnet_security_ctx_t *ctx,
+                                      uint16_t neighbor_bridge_addr,
+                                      uint32_t claimed_subnet_src);
+
+/**
+ * @brief Check and update subnet-partitioned Replay Protection List.
+ *
+ * @param[in,out] ctx       Pointer to security context.
+ * @param[in]     net_idx   BLE Mesh NetKey Index.
+ * @param[in]     src_addr  Source unicast address.
+ * @param[in]     key_epoch Subnet key rotation epoch.
+ * @param[in]     iv_index  Current IV Index.
+ * @param[in]     seq_num   Received packet sequence number.
+ * @return true if packet is fresh and recorded, false if replayed.
+ */
+bool meshx_subnet_sec_rpl_check_update(meshx_subnet_security_ctx_t *ctx,
+                                       uint16_t net_idx,
+                                       uint16_t src_addr,
+                                       uint32_t key_epoch,
+                                       uint32_t iv_index,
+                                       uint32_t seq_num);
+
+/**
+ * @brief Check and update Stage 2 Canonical Source RPL (canonical_src, global_subnet_src).
+ *
+ * @param[in,out] ctx               Pointer to security context.
+ * @param[in]     global_subnet_src Origin island Global Subnet ID.
+ * @param[in]     canonical_src     Canonical source unicast address.
+ * @param[in]     iv_index          Current IV Index.
+ * @param[in]     seq_num           Sequence number.
+ * @return true if fresh and recorded, false if replayed.
+ */
+bool meshx_subnet_sec_canonical_rpl_check(meshx_subnet_security_ctx_t *ctx,
+                                          uint32_t global_subnet_src,
+                                          uint16_t canonical_src,
+                                          uint32_t iv_index,
+                                          uint32_t seq_num);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* MESHX_SUBNET_SECURITY_H */
