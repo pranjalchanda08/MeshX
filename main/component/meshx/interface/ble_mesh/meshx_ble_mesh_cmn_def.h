@@ -873,5 +873,19 @@ typedef uint8_t meshx_uuid_addr_t[MESHX_UUID_ADDR_LEN];
 typedef uint8_t meshx_key_t[MESHX_KEY_LEN];
 typedef meshx_uuid_addr_t meshx_uuid_t;  /**< Device UUID (16 bytes) */
 
+#ifndef MESHX_BRIDGE_RULE_T_DEFINED
+#define MESHX_BRIDGE_RULE_T_DEFINED
+/**
+ * @brief Cross-subnet bridging rule descriptor passed through the Platform Abstraction Layer.
+ */
+typedef struct {
+    uint8_t  directions;    /**< 0x01 = net_idx_1->net_idx_2, 0x02 = reverse, 0x03 = bidirectional */
+    uint16_t net_idx_1;     /**< Primary subnet NetKey Index */
+    uint16_t net_idx_2;     /**< Secondary subnet NetKey Index */
+    uint16_t addr_1;        /**< Boundary endpoint address on net_idx_1 (0xFFFF = wildcard) */
+    uint16_t addr_2;        /**< Boundary endpoint address on net_idx_2 (0xFFFF = wildcard) */
+} meshx_bridge_rule_t;
+#endif /* MESHX_BRIDGE_RULE_T_DEFINED */
+
 #define MESHX_UUID_EMPTY                                                       \
   (meshx_uuid_addr_t){0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}

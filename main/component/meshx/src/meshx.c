@@ -17,7 +17,7 @@
 #include <meshx_serial.h>
 #include <meshx_uvp_dispatcher.hpp>
 #include <zgb/meshx_zgb.h>
-#include <interface/island_subnet_coex/meshx_island_subnet_coex.h>
+#include "island/meshx_island_subnet_coex.h"
 
 
 #include "interface/gpio/meshx_gpio.h"

@@ -255,6 +255,14 @@
 #endif
 
 /**
+ * @brief Enable ZGB support.
+ * Controlled via Kconfig on Zephyr or meshx_config_internal.h on ESP-IDF.
+ */
+#ifndef CONFIG_MESHX_ZGB
+#define CONFIG_MESHX_ZGB                             1
+#endif
+
+/**
  * @brief Enable Island Subnet Coexistence & Non-Destructive Bridging (Case 4).
  * Controlled via Kconfig on Zephyr or meshx_config_internal.h on ESP-IDF.
  */

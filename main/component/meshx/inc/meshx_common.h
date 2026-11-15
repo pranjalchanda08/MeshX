@@ -16,6 +16,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <inttypes.h>
+
+#ifndef MESHX_PACKED
+#if defined(__GNUC__) || defined(__clang__)
+#define MESHX_PACKED __attribute__((packed))
+#else
+#define MESHX_PACKED
+#endif
+#endif
+
 #include <meshx_err.h>
 #include <meshx_config_internal.h>
 #include <interface/logging/meshx_log.h>

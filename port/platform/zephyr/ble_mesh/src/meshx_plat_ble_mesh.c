@@ -18,6 +18,7 @@
 #include "interface/ble_mesh/server/meshx_ble_mesh_prov_srv.h"
 #include "meshx_api.h"
 #include "meshx_platform_ble_mesh.h"
+#include "island/meshx_island_subnet_coex.h"
 
 #include <zephyr/bluetooth/bluetooth.h>
 #include <zephyr/bluetooth/mesh.h>

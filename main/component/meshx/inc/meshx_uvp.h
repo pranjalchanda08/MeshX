@@ -16,9 +16,33 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "meshx_err.h"
+
+#ifndef MESHX_KEY_LEN
+#define MESHX_KEY_LEN 16
+#endif
+
+#ifndef MESHX_HOST_TEST
 #include "meshx_common.h"
 #include "meshx_manifest.h"
 #include "pairing/meshx_group_allocator.h"
+#else
+#ifndef MESHX_PACKED
+#if defined(__GNUC__) || defined(__clang__)
+#define MESHX_PACKED __attribute__((packed))
+#else
+#define MESHX_PACKED
+#endif
+#endif
+typedef uint8_t meshx_uuid_t[16];
+typedef struct { uint8_t raw[64]; } meshx_capability_manifest_t;
+typedef struct { uint8_t raw[16]; } meshx_freshness_vector_t;
+#ifndef MESHX_CHUNK_BYTE_SIZE
+#define MESHX_CHUNK_BYTE_SIZE 32U
+#endif
+#endif
+
+typedef struct dev_struct dev_struct_t;
 
 #ifdef __cplusplus
 extern "C" {
@@ -137,6 +161,8 @@ typedef enum {
     MESHX_UVP_OP_REHEAL_BEACON_REQ           = 0xCE, /**< Evicted Node -> BLE Adv: DevKey-signed re-healing beacon */
     MESHX_UVP_OP_REHEAL_ADMIT_RSP            = 0xCF, /**< Master -> Evicted Node: DevKey-encrypted re-admission */
     MESHX_UVP_OP_REDUNDANCY_CLAIM_ACK        = 0xD0, /**< Candidate -> Master: accept standby duty */
+
+    /* UVP Island Subnet Coexistence Opcodes (0xD1..0xDE) */
     MESHX_UVP_OP_SUBNET_HEARTBEAT            = 0xD1, /**< Active Bridge -> Cluster: HMAC heartbeat + slot digest */
     MESHX_UVP_OP_SUBNET_TAKEOVER_CLAIM       = 0xD2, /**< Standby -> Cluster: term takeover claim */
     MESHX_UVP_OP_SUBNET_CANDIDATE_RPT        = 0xD3, /**< Witness -> Anchor: neighbor subnet candidate report */

@@ -13,76 +13,86 @@
 #ifndef __MESHX_BLE_MESH__
 #define __MESHX_BLE_MESH__
 
-#include <stdio.h>
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
 
+
+#include "interface/ble_mesh/meshx_ble_mesh_cmn_def.h"
 #include "sdkconfig.h"
 #include <meshx_err.h>
-#include "interface/ble_mesh/meshx_ble_mesh_cmn_def.h"
-#include "interface/island_subnet_coex/meshx_island_subnet_coex.h"
+
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
-#include "esp_ble_mesh_defs.h"
 #include "esp_ble_mesh_common_api.h"
-#include "esp_ble_mesh_networking_api.h"
-#include "esp_ble_mesh_local_data_operation_api.h"
-#include "esp_ble_mesh_provisioning_api.h"
 #include "esp_ble_mesh_config_model_api.h"
-#pragma GCC diagnostic pop
+#include "esp_ble_mesh_defs.h"
+#include "esp_ble_mesh_local_data_operation_api.h"
+#include "esp_ble_mesh_networking_api.h"
+#include "esp_ble_mesh_provisioning_api.h"
 
+#pragma GCC diagnostic pop
 
 /**
  * MESHX_COMMONS
  */
-#define MESHX_COMPOSITION       esp_ble_mesh_comp_t
-#define MESHX_ELEMENT           esp_ble_mesh_elem_t
-#define MESHX_MODEL             esp_ble_mesh_model_t
-#define MESHX_CLIENT            esp_ble_mesh_client_t
-#define MESHX_MODEL_PUB         esp_ble_mesh_model_pub_t
+#define MESHX_COMPOSITION esp_ble_mesh_comp_t
+#define MESHX_ELEMENT esp_ble_mesh_elem_t
+#define MESHX_MODEL esp_ble_mesh_model_t
+#define MESHX_CLIENT esp_ble_mesh_client_t
+#define MESHX_MODEL_PUB esp_ble_mesh_model_pub_t
 
-#define MESHX_SET_ELEM_LOCATION(e, val)       memcpy((void *)&(e)->location, &(val), sizeof((e)->location))
-#define MESHX_SET_ELEM_SIG_COUNT(e, val)      memcpy((void *)&(e)->sig_model_count, &(val), sizeof((e)->sig_model_count))
-#define MESHX_SET_ELEM_VND_COUNT(e, val)      memcpy((void *)&(e)->vnd_model_count, &(val), sizeof((e)->vnd_model_count))
-#define MESHX_SET_ELEM_SIG_MODELS(e, val)     memcpy((void *)&(e)->sig_models, &(val), sizeof((e)->sig_models))
-#define MESHX_SET_ELEM_VND_MODELS(e, val)     memcpy((void *)&(e)->vnd_models, &(val), sizeof((e)->vnd_models))
+#define MESHX_SET_ELEM_LOCATION(e, val)                                        \
+  memcpy((void *)&(e)->location, &(val), sizeof((e)->location))
+#define MESHX_SET_ELEM_SIG_COUNT(e, val)                                       \
+  memcpy((void *)&(e)->sig_model_count, &(val), sizeof((e)->sig_model_count))
+#define MESHX_SET_ELEM_VND_COUNT(e, val)                                       \
+  memcpy((void *)&(e)->vnd_model_count, &(val), sizeof((e)->vnd_model_count))
+#define MESHX_SET_ELEM_SIG_MODELS(e, val)                                      \
+  memcpy((void *)&(e)->sig_models, &(val), sizeof((e)->sig_models))
+#define MESHX_SET_ELEM_VND_MODELS(e, val)                                      \
+  memcpy((void *)&(e)->vnd_models, &(val), sizeof((e)->vnd_models))
 
-#define MESHX_SET_COMP_ELEM_COUNT(comp, val)  ((comp)->element_count = (val))
-#define MESHX_SET_COMP_ELEMS(comp, val)       ((comp)->elements = (val))
-#define MESHX_MODEL_GET_SIG_ID(m)             ((m)->model_id)
-#define MESHX_MODEL_GET_VND_ID(m)             ((m)->vnd.model_id)
-#define MESHX_MODEL_GET_VND_CID(m)            ((m)->vnd.company_id)
-#define MESHX_INIT_ELEMENT(e)                 do {} while(0)
+#define MESHX_SET_COMP_ELEM_COUNT(comp, val) ((comp)->element_count = (val))
+#define MESHX_SET_COMP_ELEMS(comp, val) ((comp)->elements = (val))
+#define MESHX_MODEL_GET_SIG_ID(m) ((m)->model_id)
+#define MESHX_MODEL_GET_VND_ID(m) ((m)->vnd.model_id)
+#define MESHX_MODEL_GET_VND_CID(m) ((m)->vnd.company_id)
+#define MESHX_INIT_ELEMENT(e)                                                  \
+  do {                                                                         \
+  } while (0)
 
-#define MESHX_INIT_MODEL_KEYS_GROUPS(p_baked) \
-    do { \
-        for (size_t k = 0; k < sizeof((p_baked)->keys) / sizeof((p_baked)->keys[0]); k++) { \
-            (p_baked)->keys[k] = MESHX_KEY_UNUSED; \
-        } \
-        for (size_t g = 0; g < sizeof((p_baked)->groups) / sizeof((p_baked)->groups[0]); g++) { \
-            (p_baked)->groups[g] = MESHX_ADDR_UNASSIGNED; \
-        } \
-    } while(0)
+#define MESHX_INIT_MODEL_KEYS_GROUPS(p_baked)                                  \
+  do {                                                                         \
+    for (size_t k = 0;                                                         \
+         k < sizeof((p_baked)->keys) / sizeof((p_baked)->keys[0]); k++) {      \
+      (p_baked)->keys[k] = MESHX_KEY_UNUSED;                                   \
+    }                                                                          \
+    for (size_t g = 0;                                                         \
+         g < sizeof((p_baked)->groups) / sizeof((p_baked)->groups[0]); g++) {  \
+      (p_baked)->groups[g] = MESHX_ADDR_UNASSIGNED;                            \
+    }                                                                          \
+  } while (0)
 
-#define MESHX_SET_MODEL_VND_ID(m, vnd_id_32) \
-    do { \
-        uint32_t _v = (vnd_id_32); \
-        memcpy((void *)&(m)->model_id, &_v, sizeof(uint32_t)); \
-    } while(0)
+#define MESHX_SET_MODEL_VND_ID(m, vnd_id_32)                                   \
+  do {                                                                         \
+    uint32_t _v = (vnd_id_32);                                                 \
+    memcpy((void *)&(m)->model_id, &_v, sizeof(uint32_t));                     \
+  } while (0)
 
 /**
  * MESHX_SERVER_MODELS
  */
-#define MESHX_PROV              esp_ble_mesh_prov_t
-#define MESHX_PROV_CB           esp_ble_mesh_prov_cb_t
-#define MESHX_PROV_CB_EVT       esp_ble_mesh_prov_cb_event_t
-#define MESHX_PROV_CB_PARAM     esp_ble_mesh_prov_cb_param_t
-#define MESHX_CFG_SRV           esp_ble_mesh_cfg_srv_t
+#define MESHX_PROV esp_ble_mesh_prov_t
+#define MESHX_PROV_CB esp_ble_mesh_prov_cb_t
+#define MESHX_PROV_CB_EVT esp_ble_mesh_prov_cb_event_t
+#define MESHX_PROV_CB_PARAM esp_ble_mesh_prov_cb_param_t
+#define MESHX_CFG_SRV esp_ble_mesh_cfg_srv_t
 
-#define MESHX_VND_SRV_CB        esp_ble_mesh_model_cb_t
-#define MESHX_VND_SRV_CB_EVT    esp_ble_mesh_model_cb_event_t
-#define MESHX_VND_SRV_CB_PARAM  esp_ble_mesh_model_cb_param_t
+#define MESHX_VND_SRV_CB esp_ble_mesh_model_cb_t
+#define MESHX_VND_SRV_CB_EVT esp_ble_mesh_model_cb_event_t
+#define MESHX_VND_SRV_CB_PARAM esp_ble_mesh_model_cb_param_t
 
 /**
  * @brief Initialize the vendor server model platform.
@@ -102,7 +112,8 @@ meshx_err_t meshx_plat_bind_uvp_opcodes(void *p_model);
  * @param[in] p_model   Pointer to the platform model instance.
  * @param[in] sub_addr  Group address to subscribe to (0xC000 - 0xC3FF).
  *
- * @return MESHX_SUCCESS on success, MESHX_ERR_NO_MEM if table full, or error code.
+ * @return MESHX_SUCCESS on success, MESHX_ERR_NO_MEM if table full, or error
+ * code.
  */
 meshx_err_t meshx_plat_model_sub_add(void *p_model, uint16_t sub_addr);
 
@@ -112,7 +123,8 @@ meshx_err_t meshx_plat_model_sub_add(void *p_model, uint16_t sub_addr);
  * @param[in] p_model   Pointer to the platform model instance.
  * @param[in] sub_addr  Group address to remove.
  *
- * @return MESHX_SUCCESS on success, MESHX_ERR_NOT_FOUND if not present, or error code.
+ * @return MESHX_SUCCESS on success, MESHX_ERR_NOT_FOUND if not present, or
+ * error code.
  */
 meshx_err_t meshx_plat_model_sub_del(void *p_model, uint16_t sub_addr);
 
@@ -146,7 +158,9 @@ meshx_err_t meshx_plat_net_key_add(const uint8_t *key, uint16_t net_key_id);
  * @param[in] dev_key  16-byte self Device Key generated from HWRNG.
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
-meshx_err_t meshx_plat_self_provision(const meshx_key_t net_key, uint16_t net_idx, uint16_t addr, const meshx_key_t dev_key);
+meshx_err_t meshx_plat_self_provision(const meshx_key_t net_key,
+                                      uint16_t net_idx, uint16_t addr,
+                                      const meshx_key_t dev_key);
 
 /**
  * @brief Add an Application Key to the local BLE Mesh stack.
@@ -156,14 +170,16 @@ meshx_err_t meshx_plat_self_provision(const meshx_key_t net_key, uint16_t net_id
  * @param[in] app_key_id  AppKey Index.
  * @return MESHX_SUCCESS on success, error code otherwise.
  */
-meshx_err_t meshx_plat_app_key_add(const uint8_t *key, uint16_t net_key_id, uint16_t app_key_id);
+meshx_err_t meshx_plat_app_key_add(const uint8_t *key, uint16_t net_key_id,
+                                   uint16_t app_key_id);
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /**
- * @brief Provision and bind an additional Subnet Key on the local ESP-IDF BLE Mesh node.
+ * @brief Provision and bind an additional Subnet Key on the local ESP-IDF BLE
+ * Mesh node.
  *
  * @param[in] net_idx  Target 12-bit Network Key index.
  * @param[in] net_key  16-byte Subnet NetKey.
@@ -188,7 +204,8 @@ meshx_err_t meshx_plat_subnet_del(uint16_t net_idx);
 meshx_err_t meshx_plat_subnet_bridge_set(bool enable);
 
 /**
- * @brief Add a subnet bridging translation rule through the platform abstraction layer.
+ * @brief Add a subnet bridging translation rule through the platform
+ * abstraction layer.
  *
  * @param[in] rule Pointer to the bridging rule descriptor.
  * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG or error code on failure.
@@ -200,4 +217,3 @@ meshx_err_t meshx_plat_subnet_bridge_rule_add(const meshx_bridge_rule_t *rule);
 #endif
 
 #endif /* __MESHX_BLE_MESH__ */
-

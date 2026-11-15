@@ -6,8 +6,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
-#include "island_subnet_coex/meshx_subnet_kr.h"
-#include "island_subnet_coex/meshx_nat_mgr.h"
+#include "island/meshx_subnet_kr.h"
+#include "island/meshx_nat_mgr.h"
 
 extern size_t g_host_live_bytes;
 
@@ -16,42 +16,50 @@ static void test_kr_slots_and_phases(void)
     meshx_subnet_kr_mgr_t mgr;
     meshx_subnet_kr_init(&mgr, true);
 
-    uint8_t k0_old[16], k1_old[16], k1_new[16];
-    memset(k0_old, 0x10, 16);
-    memset(k1_old, 0x20, 16);
-    memset(k1_new, 0x22, 16);
+    meshx_subnet_key_t k0_old, k1_old, k1_new;
+    memset(k0_old.bytes, 0x10, sizeof(k0_old.bytes));
+    memset(k1_old.bytes, 0x20, sizeof(k1_old.bytes));
+    memset(k1_new.bytes, 0x22, sizeof(k1_new.bytes));
 
-    assert(meshx_subnet_kr_slot_bind(&mgr, 0, 0xAAAA0001UL, k0_old, 1, 0x100) == MESHX_SUCCESS);
-    assert(meshx_subnet_kr_slot_bind(&mgr, 1, 0xBBBB0002UL, k1_old, 1, 0x200) == MESHX_SUCCESS);
+    assert(meshx_subnet_kr_slot_bind(&mgr, 0, 0xAAAA0001UL, &k0_old, 1, 0x100) == MESHX_SUCCESS);
+    assert(meshx_subnet_kr_slot_bind(&mgr, 1, 0xBBBB0002UL, &k1_old, 1, 0x200) == MESHX_SUCCESS);
 
     meshx_subnet_crypto_slot_t *s1 = meshx_subnet_kr_find_by_net_idx(&mgr, 1);
     assert(s1 != NULL);
     assert(meshx_subnet_kr_find_by_global_id(&mgr, 0xBBBB0002UL) == s1);
 
     /* Phase 0: 1 ingress key (old), egress = old */
-    const uint8_t *in_keys[2] = {0};
-    uint8_t in_epochs[2] = {0};
+    meshx_kr_active_keys_t in_keys;
+    memset(&in_keys, 0, sizeof(in_keys));
     uint8_t tx_epoch = 99;
-    assert(meshx_subnet_kr_get_ingress_keys(s1, in_keys, in_epochs) == 1);
-    assert(memcmp(meshx_subnet_kr_select_egress_key(s1, &tx_epoch), k1_old, 16) == 0);
+    assert(meshx_subnet_kr_get_ingress_keys(s1, &in_keys) == 1);
+    assert(in_keys.count == 1);
+    const meshx_subnet_key_t *egress_k = meshx_subnet_kr_select_egress_key(s1, &tx_epoch);
+    assert(egress_k != NULL && memcmp(egress_k->bytes, k1_old.bytes, 16) == 0);
     assert(tx_epoch == 0);
 
     /* Phase 1 (DIST): Dual-RX (old + new), egress latched on old (Seg 0 stability) */
-    assert(meshx_subnet_kr_set_phase(&mgr, 1, MESHX_SUBNET_KR_PHASE_DIST, k1_new, 2) == MESHX_SUCCESS);
-    assert(meshx_subnet_kr_get_ingress_keys(s1, in_keys, in_epochs) == 2);
-    assert(memcmp(meshx_subnet_kr_select_egress_key(s1, &tx_epoch), k1_old, 16) == 0);
+    assert(meshx_subnet_kr_set_phase(&mgr, 1, MESHX_SUBNET_KR_PHASE_DIST, &k1_new, 2) == MESHX_SUCCESS);
+    assert(meshx_subnet_kr_get_ingress_keys(s1, &in_keys) == 2);
+    assert(in_keys.count == 2);
+    egress_k = meshx_subnet_kr_select_egress_key(s1, &tx_epoch);
+    assert(egress_k != NULL && memcmp(egress_k->bytes, k1_old.bytes, 16) == 0);
     assert(tx_epoch == 0);
 
     /* Phase 2 (SWITCH): Dual-RX (new + old), egress switches to new */
-    assert(meshx_subnet_kr_set_phase(&mgr, 1, MESHX_SUBNET_KR_PHASE_SWITCH, k1_new, 2) == MESHX_SUCCESS);
-    assert(meshx_subnet_kr_get_ingress_keys(s1, in_keys, in_epochs) == 2);
-    assert(memcmp(meshx_subnet_kr_select_egress_key(s1, &tx_epoch), k1_new, 16) == 0);
+    assert(meshx_subnet_kr_set_phase(&mgr, 1, MESHX_SUBNET_KR_PHASE_SWITCH, &k1_new, 2) == MESHX_SUCCESS);
+    assert(meshx_subnet_kr_get_ingress_keys(s1, &in_keys) == 2);
+    assert(in_keys.count == 2);
+    egress_k = meshx_subnet_kr_select_egress_key(s1, &tx_epoch);
+    assert(egress_k != NULL && memcmp(egress_k->bytes, k1_new.bytes, 16) == 0);
     assert(tx_epoch == 1);
 
     /* Phase 3 (REVOKE): old wiped, 1 ingress key (new), slot 0 unaffected */
     assert(meshx_subnet_kr_set_phase(&mgr, 1, MESHX_SUBNET_KR_PHASE_REVOKE, NULL, 2) == MESHX_SUCCESS);
-    assert(meshx_subnet_kr_get_ingress_keys(s1, in_keys, in_epochs) == 1);
-    assert(memcmp(meshx_subnet_kr_select_egress_key(s1, &tx_epoch), k1_new, 16) == 0);
+    assert(meshx_subnet_kr_get_ingress_keys(s1, &in_keys) == 1);
+    assert(in_keys.count == 1);
+    egress_k = meshx_subnet_kr_select_egress_key(s1, &tx_epoch);
+    assert(egress_k != NULL && memcmp(egress_k->bytes, k1_new.bytes, 16) == 0);
     assert(meshx_subnet_kr_find_by_net_idx(&mgr, 0)->kr_phase == MESHX_SUBNET_KR_PHASE_NORMAL);
 
     assert(meshx_subnet_kr_slot_unbind(&mgr, 0) == MESHX_SUCCESS);
@@ -62,16 +70,17 @@ static void test_kr_quarantine_and_iv_guard(void)
 {
     meshx_subnet_kr_mgr_t mgr;
     meshx_subnet_kr_init(&mgr, true);
-    uint8_t key[16] = {1};
-    assert(meshx_subnet_kr_slot_bind(&mgr, 0, 0x1111UL, key, 1, 0) == MESHX_SUCCESS);
-    assert(meshx_subnet_kr_slot_bind(&mgr, 1, 0x2222UL, key, 1, 0) == MESHX_SUCCESS);
+    meshx_subnet_key_t key;
+    memset(key.bytes, 1, sizeof(key.bytes));
+    assert(meshx_subnet_kr_slot_bind(&mgr, 0, 0x1111UL, &key, 1, 0) == MESHX_SUCCESS);
+    assert(meshx_subnet_kr_slot_bind(&mgr, 1, 0x2222UL, &key, 1, 0) == MESHX_SUCCESS);
 
     /* 0xC4, 0xC5, 0xC6 quarantined cross-subnet, allowed intra-subnet */
     assert(meshx_subnet_kr_is_opcode_quarantined(&mgr, 0xC4, 0, 1) == true);
     assert(meshx_subnet_kr_is_opcode_quarantined(&mgr, 0xC5, 0, 1) == true);
     assert(meshx_subnet_kr_is_opcode_quarantined(&mgr, 0xC6, 0, 1) == true);
     assert(meshx_subnet_kr_is_opcode_quarantined(&mgr, 0xC4, 0, 0) == false);
-    assert(meshx_subnet_kr_is_opcode_quarantined(&mgr, 0xD1, 0, 1) == false);
+    assert(meshx_subnet_kr_is_opcode_quarantined(&mgr, MESHX_UVP_OP_SUBNET_HEARTBEAT, 0, 1) == false);
 
     /* Sequence counter triggers IV Update at >= 0x00F00000 */
     meshx_subnet_crypto_slot_t *s0 = meshx_subnet_kr_find_by_net_idx(&mgr, 0);
@@ -88,15 +97,15 @@ static void test_kr_quarantine_and_iv_guard(void)
 
 static void test_global_id_and_slots(void)
 {
-    uint8_t nk[16] = {0xAA, 0xBB, 0xCC, 0xDD, 1, 2, 3, 4};
+    meshx_subnet_key_t nk = { .bytes = {0xAA, 0xBB, 0xCC, 0xDD, 1, 2, 3, 4, 0, 0, 0, 0, 0, 0, 0, 0} };
     uint8_t salt = 99;
-    uint32_t base_id = meshx_nat_derive_global_subnet_id(nk, 0x02E5U, NULL, 0, &salt);
+    uint32_t base_id = meshx_nat_derive_global_subnet_id(&nk, 0x02E5U, NULL, 0, &salt);
     assert(base_id != MESHX_GLOBAL_SUBNET_INVALID);
     assert(salt == 0);
 
     /* Collision triggers bounded remap loop with salt increment */
     uint32_t peers[1] = {base_id};
-    uint32_t remapped_id = meshx_nat_derive_global_subnet_id(nk, 0x02E5U, peers, 1, &salt);
+    uint32_t remapped_id = meshx_nat_derive_global_subnet_id(&nk, 0x02E5U, peers, 1, &salt);
     assert(remapped_id != MESHX_GLOBAL_SUBNET_INVALID);
     assert(remapped_id != base_id);
     assert(salt >= 1);
@@ -142,27 +151,28 @@ static void test_tier1_tier2_and_groups(void)
     assert(meshx_nat_translate_tier1(14, 0x0003U, &v1) == MESHX_INVALID_ARG);
 
     /* Tier-2 16-entry cache + LRU temp eviction + PERSISTENT full protection */
-    uint8_t uuid[8] = {1,2,3,4,5,6,7,8};
+    meshx_subnet_uuid8_t uuid = { .bytes = {1,2,3,4,5,6,7,8} };
     uint16_t v2 = 0;
     for (uint16_t i = 0; i < MESHX_NAT_TIER2_CAP; i++) {
-        uuid[7] = (uint8_t)i;
+        uuid.bytes[7] = (uint8_t)i;
         uint8_t fl = (i == 0) ? MESHX_NAT_FLAG_TEMP_DISCOVERY : MESHX_NAT_FLAG_PERSISTENT;
-        assert(meshx_nat_tier2_alloc(&mgr, uuid, 0x10000002UL, (uint16_t)(0x0400U + i), fl, (uint16_t)(10 + i), &v2) == MESHX_SUCCESS);
+        assert(meshx_nat_tier2_alloc(&mgr, &uuid, 0x10000002UL, (uint16_t)(0x0400U + i), fl, (uint16_t)(10 + i), &v2) == MESHX_SUCCESS);
     }
     /* 17th entry evicts temp entry 0 (min time 10) */
-    uuid[7] = 0xAA;
-    assert(meshx_nat_tier2_alloc(&mgr, uuid, 0x10000002UL, 0x0555U, MESHX_NAT_FLAG_PERSISTENT, 50, &v2) == MESHX_SUCCESS);
+    uuid.bytes[7] = 0xAA;
+    assert(meshx_nat_tier2_alloc(&mgr, &uuid, 0x10000002UL, 0x0555U, MESHX_NAT_FLAG_PERSISTENT, 50, &v2) == MESHX_SUCCESS);
     /* Now all 16 are PERSISTENT -> 18th fails with MESHX_SUBNET_ERR_NAT_FULL */
-    uuid[7] = 0xBB;
-    assert(meshx_nat_tier2_alloc(&mgr, uuid, 0x10000002UL, 0x0556U, MESHX_NAT_FLAG_PERSISTENT, 60, &v2) == MESHX_SUBNET_ERR_NAT_FULL);
+    uuid.bytes[7] = 0xBB;
+    assert(meshx_nat_tier2_alloc(&mgr, &uuid, 0x10000002UL, 0x0556U, MESHX_NAT_FLAG_PERSISTENT, 60, &v2) == MESHX_SUBNET_ERR_NAT_FULL);
 
     /* 0xD5 sync delete frees 1 slot -> GC & subsequent alloc works */
-    meshx_nat_entry_t del_e = {0};
+    meshx_nat_entry_t del_e;
+    memset(&del_e, 0, sizeof(del_e));
     del_e.global_subnet_src = 0x10000002UL;
     del_e.orig_addr = 0x0555U;
     assert(meshx_nat_tier2_apply_sync(&mgr, &del_e, 2) == MESHX_SUCCESS);
-    uuid[7] = 0xCC;
-    assert(meshx_nat_tier2_alloc(&mgr, uuid, 0x10000002UL, 0x0600U, MESHX_NAT_FLAG_TEMP_DISCOVERY, 70, &v2) == MESHX_SUCCESS);
+    uuid.bytes[7] = 0xCC;
+    assert(meshx_nat_tier2_alloc(&mgr, &uuid, 0x10000002UL, 0x0600U, MESHX_NAT_FLAG_TEMP_DISCOVERY, 70, &v2) == MESHX_SUCCESS);
     assert(meshx_nat_tier2_gc(&mgr, 80) == 1); /* elapsed 80 - 70 = 10 > 5 min TTL */
 
     /* Group prefixing & selective mask */
@@ -188,4 +198,3 @@ int main(void)
     printf("PASS: test_phase4_5_kr_nat\n");
     return 0;
 }
-
