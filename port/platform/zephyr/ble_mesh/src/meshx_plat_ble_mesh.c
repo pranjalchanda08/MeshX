@@ -781,7 +781,7 @@ meshx_err_t meshx_plat_subnet_add(uint16_t net_idx, const meshx_key_t net_key)
 
 meshx_err_t meshx_plat_subnet_del(uint16_t net_idx)
 {
-    if (net_idx > 0x0FFFU)
+    if (net_idx == 0U || net_idx > 0x0FFFU)
     {
         return MESHX_INVALID_ARG;
     }
@@ -805,7 +805,11 @@ meshx_err_t meshx_plat_subnet_del(uint16_t net_idx)
 
 meshx_err_t meshx_plat_subnet_bridge_set(bool enable)
 {
-    /* Zephyr v3.7 uses MeshX application-layer store-and-forward bridging */
+    /* Validate primary subnet exists before activating bridging */
+    if (enable && !bt_mesh_subnet_exists(0U))
+    {
+        return MESHX_INVALID_STATE;
+    }
     return meshx_subnet_coex_pal_bridge_set(enable);
 }
 
@@ -814,6 +818,10 @@ meshx_err_t meshx_plat_subnet_bridge_rule_add(const meshx_bridge_rule_t *rule)
     if (!rule)
     {
         return MESHX_INVALID_ARG;
+    }
+    if (!bt_mesh_subnet_exists(rule->net_idx_1) || !bt_mesh_subnet_exists(rule->net_idx_2))
+    {
+        return MESHX_NOT_FOUND;
     }
 
     return meshx_subnet_coex_pal_bridge_rule_add(rule);

@@ -80,6 +80,7 @@ static void esp_ble_mesh_vendor_server_cb(MESHX_VND_SRV_CB_EVT event,
     control_task_uvp_meta_t uvp_ctx = {
         .src_addr = ctx->addr,
         .dst_addr = ctx->recv_dst,
+        .net_idx = ctx->net_idx,
         .rx_el_id = rx_el_id,
         .uvp_header = *header};
 
@@ -172,13 +173,14 @@ meshx_err_t meshx_plat_bind_uvp_opcodes(void *p_model)
  *
  * @return MESHX_SUCCESS on success, or error code.
  */
-meshx_err_t meshx_uvp_send(void *p_model,
-                           uint16_t dst_addr,
-                           uint16_t type_id,
-                           const void *payload,
-                           uint16_t payload_len,
-                           bool ack_req,
-                           uint16_t app_idx)
+meshx_err_t meshx_uvp_send_on_subnet(void *p_model,
+                                     uint16_t net_idx,
+                                     uint16_t dst_addr,
+                                     uint16_t type_id,
+                                     const void *payload,
+                                     uint16_t payload_len,
+                                     bool ack_req,
+                                     uint16_t app_idx)
 {
     esp_ble_mesh_model_t *esp_model = (esp_ble_mesh_model_t *)p_model;
     uint8_t *buffer = NULL;
@@ -215,12 +217,11 @@ meshx_err_t meshx_uvp_send(void *p_model,
     }
 
     uint8_t el_idx = esp_model->element_idx;
-
-    uint16_t net_idx = meshx_get_net_key_id();
+    uint16_t tx_net_idx = (net_idx == 0xFFFFU) ? meshx_get_net_key_id() : net_idx;
 
     /* Prepare Context */
     esp_ble_mesh_msg_ctx_t ctx = {
-        .net_idx = net_idx,
+        .net_idx = tx_net_idx,
         .app_idx = app_idx,
         .addr = dst_addr,
         .send_ttl = ESP_BLE_MESH_TTL_DEFAULT,
@@ -253,10 +254,35 @@ meshx_err_t meshx_uvp_send(void *p_model,
         return MESHX_ERR_PLAT;
     }
 
-    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "UVP Sent -> DST: 0x%04x, TID: %d, EL: %d, TYPE: 0x%04x",
-               dst_addr, tid, el_idx, type_id);
+    MESHX_LOGD(MODULE_ID_MODEL_SERVER, "UVP Sent -> NET: 0x%03x, DST: 0x%04x, TID: %d, EL: %d, TYPE: 0x%04x",
+               tx_net_idx, dst_addr, tid, el_idx, type_id);
 
     return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Send a UVP message using the default/primary subnet NetKey index.
+ *
+ * @param[in] p_model     Pointer to platform vendor server model instance.
+ * @param[in] dst_addr    Destination unicast, group, or virtual address.
+ * @param[in] type_id     UVP message type identifier.
+ * @param[in] payload     Pointer to payload bytes.
+ * @param[in] payload_len Length of payload in bytes.
+ * @param[in] ack_req     true to request transport acknowledgement.
+ * @param[in] app_idx     AppKey index.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_uvp_send(void *p_model,
+                           uint16_t dst_addr,
+                           uint16_t type_id,
+                           const void *payload,
+                           uint16_t payload_len,
+                           bool ack_req,
+                           uint16_t app_idx)
+{
+    return meshx_uvp_send_on_subnet(p_model, meshx_get_net_key_id(), dst_addr, type_id,
+                                    payload, payload_len, ack_req, app_idx);
 }
 
 /**

@@ -682,6 +682,62 @@ meshx_err_t meshx_comp_del_element_sub_addr(uint8_t element_idx, uint16_t sub_ad
     return err;
 }
 
+/**
+ * @brief Send a UVP message from an element over a specific subnet NetKey index.
+ *
+ * @param[in] net_idx     Target BLE Mesh NetKey index.
+ * @param[in] element_idx Local element index.
+ * @param[in] dst_addr    Destination unicast, virtual, or group address.
+ * @param[in] func_id     Function ID (e.g. MESHX_FUNC_ID_SYS_PAIRING).
+ * @param[in] payload     Pointer to payload data.
+ * @param[in] payload_len Length of payload.
+ * @param[in] ack_req     True to request transport ACK.
+ *
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_comp_send_uvp_on_subnet(uint16_t net_idx,
+                                          uint8_t element_idx,
+                                          uint16_t dst_addr,
+                                          uint16_t func_id,
+                                          const void *payload,
+                                          uint16_t payload_len,
+                                          bool ack_req)
+{
+    meshXComposition &comp = meshXComposition::get_instance();
+    const auto &elements = comp.get_elements();
+    uint8_t target_idx   = element_idx;
+    if (target_idx >= elements.size() || !elements[target_idx])
+    {
+        target_idx = 0;
+    }
+    if (target_idx >= elements.size() || !elements[target_idx])
+    {
+        return MESHX_INVALID_STATE;
+    }
+
+    auto *el = elements[target_idx].get();
+    for (auto &vm : el->get_ven_models())
+    {
+        if (vm && vm->get_model_id() == MESHX_MODEL_ID_UVP)
+        {
+            auto *uvp_model = static_cast<meshXUVPModel *>(vm.get());
+            if (uvp_model)
+            {
+                return uvp_model->send_with_func_id_on_subnet(
+                    net_idx,
+                    dst_addr,
+                    (uint16_t)el->get_element_variant(),
+                    func_id,
+                    payload,
+                    payload_len,
+                    ack_req,
+                    0);
+            }
+        }
+    }
+    return MESHX_NOT_FOUND;
+}
+
 /*
  * @brief Send a UVP message from an element.
  */

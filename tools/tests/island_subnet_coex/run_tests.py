@@ -1,5 +1,6 @@
 import ctypes
 import os
+import shutil
 import subprocess
 import sys
 
@@ -8,10 +9,10 @@ TEST_DIR = os.path.dirname(os.path.abspath(__file__))
 HOST_LIBC_DIR = os.path.join(TEST_DIR, "host_libc")
 BUILD_DIR = os.path.join(TEST_DIR, "_build")
 
-CLANG = r"C:\Program Files\LLVM\bin\clang.exe"
-LLD_LINK = r"C:\Program Files\LLVM\bin\lld-link.exe"
-RISCV_GCC = r"C:\Users\Pranjal Chanda\.espressif\tools\riscv32-esp-elf\esp-14.2.0_20241119\riscv32-esp-elf\bin\riscv32-esp-elf-gcc.exe"
-RISCV_SIZE = r"C:\Users\Pranjal Chanda\.espressif\tools\riscv32-esp-elf\esp-14.2.0_20241119\riscv32-esp-elf\bin\riscv32-esp-elf-size.exe"
+CLANG = os.environ.get("MESHX_CLANG") or shutil.which("clang") or r"C:\Program Files\LLVM\bin\clang.exe"
+LLD_LINK = os.environ.get("MESHX_LLD_LINK") or shutil.which("lld-link") or r"C:\Program Files\LLVM\bin\lld-link.exe"
+RISCV_GCC = os.environ.get("MESHX_RISCV_GCC") or shutil.which("riscv32-esp-elf-gcc") or r"C:\Users\Pranjal Chanda\.espressif\tools\riscv32-esp-elf\esp-14.2.0_20241119\riscv32-esp-elf\bin\riscv32-esp-elf-gcc.exe"
+RISCV_SIZE = os.environ.get("MESHX_RISCV_SIZE") or shutil.which("riscv32-esp-elf-size") or r"C:\Users\Pranjal Chanda\.espressif\tools\riscv32-esp-elf\esp-14.2.0_20241119\riscv32-esp-elf\bin\riscv32-esp-elf-size.exe"
 
 INCLUDES = [
     os.path.join(ROOT, "main", "component", "meshx"),
@@ -81,6 +82,7 @@ def compile_and_run(suite_name: str) -> int:
             "-D_CRT_SECURE_NO_WARNINGS",
             "-DCONFIG_MESHX_ISLAND_SUBNET_COEXISTENCE=1",
             "-DMESHX_HOST_TEST=1",
+            "-DMESHX_ADDR_GROUP_START=0xC000U",
             "-ffreestanding",
             "-fno-builtin",
             "-isystem", HOST_LIBC_DIR,

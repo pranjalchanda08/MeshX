@@ -15,14 +15,20 @@
  *
  * @param[out] buf Pointer to buffer to zero.
  * @param[in]  len Number of bytes to clear.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p buf is NULL.
  */
-static void wipe_sec_bytes(uint8_t *buf, size_t len)
+static meshx_err_t wipe_sec_bytes(uint8_t *buf, size_t len)
 {
+    if (!buf)
+    {
+        return MESHX_INVALID_ARG;
+    }
     volatile uint8_t *vp = (volatile uint8_t *)buf;
     for (size_t i = 0; i < len; i++)
     {
         vp[i] = 0U;
     }
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -110,15 +116,17 @@ meshx_err_t meshx_subnet_sec_init(meshx_subnet_security_ctx_t *ctx,
  * @brief De-initialize security context and scrub key material.
  *
  * @param[in,out] ctx Pointer to security context.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p ctx is NULL.
  */
-void meshx_subnet_sec_deinit(meshx_subnet_security_ctx_t *ctx)
+meshx_err_t meshx_subnet_sec_deinit(meshx_subnet_security_ctx_t *ctx)
 {
     if (!ctx)
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
-    wipe_sec_bytes(ctx->k_bridge.bytes, sizeof(ctx->k_bridge.bytes));
+    meshx_err_t err = wipe_sec_bytes(ctx->k_bridge.bytes, sizeof(ctx->k_bridge.bytes));
     memset(ctx, 0, sizeof(*ctx));
+    return err;
 }
 
 /**
@@ -153,15 +161,17 @@ meshx_err_t meshx_subnet_sec_set_k_bridge(meshx_subnet_security_ctx_t *ctx,
  * @brief Wipe Cluster Bridge Key from memory.
  *
  * @param[in,out] ctx Pointer to security context.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p ctx is NULL.
  */
-void meshx_subnet_sec_clear_k_bridge(meshx_subnet_security_ctx_t *ctx)
+meshx_err_t meshx_subnet_sec_clear_k_bridge(meshx_subnet_security_ctx_t *ctx)
 {
     if (!ctx)
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
-    wipe_sec_bytes(ctx->k_bridge.bytes, sizeof(ctx->k_bridge.bytes));
+    meshx_err_t err = wipe_sec_bytes(ctx->k_bridge.bytes, sizeof(ctx->k_bridge.bytes));
     ctx->k_bridge_valid = false;
+    return err;
 }
 
 /**
@@ -235,7 +245,6 @@ meshx_err_t meshx_subnet_sec_sign_frame(meshx_subnet_security_ctx_t *ctx,
 
     if ((ctx->tx_bridge_nonce - ctx->last_saved_nonce_ckpt) >= MESHX_BRIDGE_NONCE_CHKPT_STEP)
     {
-        ctx->last_saved_nonce_ckpt = ctx->tx_bridge_nonce;
         if (ctx->ckpt_cb)
         {
             err = ctx->ckpt_cb(ctx->tx_bridge_nonce, ctx->ckpt_ctx);
@@ -244,6 +253,7 @@ meshx_err_t meshx_subnet_sec_sign_frame(meshx_subnet_security_ctx_t *ctx,
                 return err;
             }
         }
+        ctx->last_saved_nonce_ckpt = ctx->tx_bridge_nonce;
     }
 
     *out_len = needed;
@@ -259,6 +269,7 @@ meshx_err_t meshx_subnet_sec_sign_frame(meshx_subnet_security_ctx_t *ctx,
  * @return MESHX_SUCCESS if nonce is accepted and recorded, MESHX_SUBNET_ERR_REPLAY if rejected as replay.
  */
 static meshx_err_t replay_check_and_accept(meshx_subnet_security_ctx_t *ctx,
+                                           uint32_t boundary_id,
                                            uint16_t sender_addr,
                                            uint32_t nonce)
 {
@@ -276,7 +287,7 @@ static meshx_err_t replay_check_and_accept(meshx_subnet_security_ctx_t *ctx,
         const meshx_replay_sender_t *s = &ctx->replay_cache[i];
         if (s->valid)
         {
-            if (s->sender_addr == sender_addr)
+            if (s->sender_addr == sender_addr && s->boundary_id == boundary_id)
             {
                 match_idx = i;
                 break;
@@ -298,16 +309,16 @@ static meshx_err_t replay_check_and_accept(meshx_subnet_security_ctx_t *ctx,
         if (nonce > slot->highest_nonce)
         {
             uint32_t delta = nonce - slot->highest_nonce;
-            slot->seen_bitmap = (delta >= 16UL) ? 1U : (uint16_t)((slot->seen_bitmap << delta) | 1U);
+            slot->seen_bitmap = (delta >= 32UL) ? 1UL : ((slot->seen_bitmap << delta) | 1UL);
             slot->highest_nonce = nonce;
             return MESHX_SUCCESS;
         }
         uint32_t diff = slot->highest_nonce - nonce;
-        if (diff >= 16UL || (slot->seen_bitmap & (uint16_t)(1U << diff)) != 0U)
+        if (diff >= 32UL || (slot->seen_bitmap & (1UL << diff)) != 0UL)
         {
             return MESHX_SUBNET_ERR_REPLAY;
         }
-        slot->seen_bitmap |= (uint16_t)(1U << diff);
+        slot->seen_bitmap |= (1UL << diff);
         return MESHX_SUCCESS;
     }
 
@@ -321,30 +332,32 @@ static meshx_err_t replay_check_and_accept(meshx_subnet_security_ctx_t *ctx,
         }
     }
 
-    ctx->replay_cache[dst_idx].seen_bitmap   = 1U;
+    ctx->replay_cache[dst_idx].seen_bitmap   = 1UL;
     ctx->replay_cache[dst_idx].valid         = true;
+    ctx->replay_cache[dst_idx].boundary_id   = boundary_id;
     ctx->replay_cache[dst_idx].highest_nonce = nonce;
     ctx->replay_cache[dst_idx].sender_addr   = sender_addr;
     return MESHX_SUCCESS;
 }
 
 /**
- * @brief Verify inbound authenticated UVP frame (term >= active, 16B HMAC, 16-entry sliding window).
+ * @brief Verify an authenticated UVP frame with boundary-scoped term tracking.
  *
- * @param[in,out] ctx             Pointer to security context.
- * @param[in]     frame           Raw inbound signed frame.
- * @param[in]     frame_len       Length of signed frame.
- * @param[out]    out_opcode      Destination for extracted opcode.
- * @param[out]    out_term        Destination for extracted term.
- * @param[out]    out_sender      Destination for sender address.
- * @param[out]    out_payload     Pointer set to start of verified inner payload.
- * @param[out]    out_payload_len Destination for length of inner payload.
- * @return MESHX_SUCCESS on success, MESHX_SUBNET_ERR_AUTH on tag mismatch, MESHX_SUBNET_ERR_REPLAY on replay.
+ * @param[in,out] ctx           Pointer to security context.
+ * @param[in]     boundary_id   Boundary Global Subnet ID (0 for global scope).
+ * @param[in,out] boundary_term Optional pointer to per-boundary active term.
+ * @param[in]     frame         Raw incoming UVP frame buffer.
+ * @param[in]     frame_len     Length of incoming frame in bytes.
+ * @param[out]    rsp           Parsed verification output descriptor.
+ *
+ * @return MESHX_SUCCESS on success, or MESHX_SUBNET_ERR_AUTH / MESHX_SUBNET_ERR_REPLAY.
  */
-meshx_err_t meshx_subnet_sec_verify_frame(meshx_subnet_security_ctx_t *ctx,
-                                          const uint8_t *frame,
-                                          uint16_t frame_len,
-                                          meshx_sec_verify_rsp_t *rsp)
+meshx_err_t meshx_subnet_sec_verify_frame_scoped(meshx_subnet_security_ctx_t *ctx,
+                                                 uint32_t boundary_id,
+                                                 uint32_t *boundary_term,
+                                                 const uint8_t *frame,
+                                                 uint16_t frame_len,
+                                                 meshx_sec_verify_rsp_t *rsp)
 {
     if (!ctx || !frame || !rsp)
     {
@@ -360,9 +373,10 @@ meshx_err_t meshx_subnet_sec_verify_frame(meshx_subnet_security_ctx_t *ctx,
         return MESHX_SUBNET_ERR_AUTH;
     }
 
+    uint32_t active_term = boundary_term ? *boundary_term : ctx->active_term;
     meshx_uvp_auth_hdr_t hdr;
     memcpy(&hdr, frame, sizeof(hdr));
-    if (hdr.term < ctx->active_term)
+    if (hdr.term < active_term)
     {
         return MESHX_SUBNET_ERR_AUTH;
     }
@@ -385,14 +399,21 @@ meshx_err_t meshx_subnet_sec_verify_frame(meshx_subnet_security_ctx_t *ctx,
         return MESHX_SUBNET_ERR_AUTH;
     }
 
-    if (replay_check_and_accept(ctx, hdr.sender_addr, hdr.bridge_nonce) != MESHX_SUCCESS)
+    if (replay_check_and_accept(ctx, boundary_id, hdr.sender_addr, hdr.bridge_nonce) != MESHX_SUCCESS)
     {
         return MESHX_SUBNET_ERR_REPLAY;
     }
 
-    if (hdr.term > ctx->active_term)
+    if (hdr.term > active_term)
     {
-        ctx->active_term = hdr.term;
+        if (boundary_term)
+        {
+            *boundary_term = hdr.term;
+        }
+        else
+        {
+            ctx->active_term = hdr.term;
+        }
     }
 
     *out_term        = hdr.term;
@@ -401,6 +422,24 @@ meshx_err_t meshx_subnet_sec_verify_frame(meshx_subnet_security_ctx_t *ctx,
     *out_payload     = frame + sizeof(hdr);
     *out_payload_len = (uint16_t)(frame_len - MESHX_CLUSTER_AUTH_OVERHEAD);
     return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Verify an authenticated UVP frame using the global cluster term.
+ *
+ * @param[in,out] ctx       Pointer to security context.
+ * @param[in]     frame     Raw incoming UVP frame buffer.
+ * @param[in]     frame_len Length of incoming frame in bytes.
+ * @param[out]    rsp       Parsed verification output descriptor.
+ *
+ * @return MESHX_SUCCESS on success, or MESHX_SUBNET_ERR_AUTH / MESHX_SUBNET_ERR_REPLAY.
+ */
+meshx_err_t meshx_subnet_sec_verify_frame(meshx_subnet_security_ctx_t *ctx,
+                                          const uint8_t *frame,
+                                          uint16_t frame_len,
+                                          meshx_sec_verify_rsp_t *rsp)
+{
+    return meshx_subnet_sec_verify_frame_scoped(ctx, 0UL, NULL, frame, frame_len, rsp);
 }
 
 /**
@@ -556,19 +595,22 @@ meshx_err_t meshx_subnet_sec_whitelist_add(meshx_subnet_security_ctx_t *ctx,
 /**
  * @brief Check whether transit ingress packet from neighbor bridge is authorized for claimed subnet.
  *
- * @param[in] ctx                  Pointer to security context.
- * @param[in] neighbor_bridge_addr Immediate transmitter address.
- * @param[in] claimed_subnet_src   Origin Global Subnet ID claimed in transit header.
- * @return true if authorized, false otherwise.
+ * @param[in]  ctx                  Pointer to security context.
+ * @param[in]  neighbor_bridge_addr Immediate transmitter address.
+ * @param[in]  claimed_subnet_src   Origin Global Subnet ID claimed in transit header.
+ * @param[out] out_allowed          Set to true if authorized, false otherwise.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p ctx or @p out_allowed is NULL.
  */
-bool meshx_subnet_sec_whitelist_check(const meshx_subnet_security_ctx_t *ctx,
-                                      uint16_t neighbor_bridge_addr,
-                                      uint32_t claimed_subnet_src)
+meshx_err_t meshx_subnet_sec_whitelist_check(const meshx_subnet_security_ctx_t *ctx,
+                                             uint16_t neighbor_bridge_addr,
+                                             uint32_t claimed_subnet_src,
+                                             bool *out_allowed)
 {
-    if (!ctx)
+    if (!ctx || !out_allowed)
     {
-        return false;
+        return MESHX_INVALID_ARG;
     }
+    *out_allowed = false;
     for (size_t i = 0; i < MESHX_TRANSIT_WHITELIST_MAX; i++)
     {
         const meshx_transit_whitelist_entry_t *w = &ctx->whitelist[i];
@@ -576,10 +618,55 @@ bool meshx_subnet_sec_whitelist_check(const meshx_subnet_security_ctx_t *ctx,
             w->neighbor_bridge_addr == neighbor_bridge_addr &&
             w->allowed_global_subnet_src == claimed_subnet_src)
         {
-            return true;
+            *out_allowed = true;
+            return MESHX_SUCCESS;
         }
     }
-    return false;
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Evaluate and update a matched Replay Protection List entry's 32-bit sliding window.
+ *
+ * @param[in,out] e         Matched RPL entry.
+ * @param[in]     iv_index  Current IV Index.
+ * @param[in]     seq_num   Received packet sequence number.
+ * @param[out]    out_valid Set to true if fresh and recorded, false if replayed.
+ * @return MESHX_SUCCESS on success.
+ */
+static meshx_err_t rpl_update_matched_entry(meshx_subnet_rpl_entry_t *e,
+                                            uint32_t iv_index,
+                                            uint32_t seq_num,
+                                            bool *out_valid)
+{
+    if (iv_index < e->iv_index)
+    {
+        return MESHX_SUCCESS;
+    }
+    if (iv_index > e->iv_index)
+    {
+        e->iv_index = iv_index;
+        e->last_seq_num = seq_num;
+        e->seq_window = 1UL;
+        *out_valid = true;
+        return MESHX_SUCCESS;
+    }
+    if (seq_num > e->last_seq_num)
+    {
+        uint32_t delta = seq_num - e->last_seq_num;
+        e->seq_window = (delta >= 32UL) ? 1UL : ((e->seq_window << delta) | 1UL);
+        e->last_seq_num = seq_num;
+        *out_valid = true;
+        return MESHX_SUCCESS;
+    }
+    uint32_t diff = e->last_seq_num - seq_num;
+    if (diff >= 32UL || (e->seq_window & (1UL << diff)) != 0UL)
+    {
+        return MESHX_SUCCESS;
+    }
+    e->seq_window |= (1UL << diff);
+    *out_valid = true;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -591,19 +678,22 @@ bool meshx_subnet_sec_whitelist_check(const meshx_subnet_security_ctx_t *ctx,
  * @param[in]     key_epoch Subnet key rotation epoch.
  * @param[in]     iv_index  Current IV Index.
  * @param[in]     seq_num   Received packet sequence number.
- * @return true if packet is fresh and recorded, false if replayed.
+ * @param[out]    out_valid Set to true if packet is fresh and recorded, false if replayed.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p ctx or @p out_valid is NULL or @p src_addr is 0.
  */
-bool meshx_subnet_sec_rpl_check_update(meshx_subnet_security_ctx_t *ctx,
-                                       uint16_t net_idx,
-                                       uint16_t src_addr,
-                                       uint32_t key_epoch,
-                                       uint32_t iv_index,
-                                       uint32_t seq_num)
+meshx_err_t meshx_subnet_sec_rpl_check_update(meshx_subnet_security_ctx_t *ctx,
+                                              uint16_t net_idx,
+                                              uint16_t src_addr,
+                                              uint32_t key_epoch,
+                                              uint32_t iv_index,
+                                              uint32_t seq_num,
+                                              bool *out_valid)
 {
-    if (!ctx || src_addr == 0U)
+    if (!ctx || !out_valid || src_addr == 0U)
     {
-        return false;
+        return MESHX_INVALID_ARG;
     }
+    *out_valid = false;
     int free_idx = -1;
     int lru_idx = 0;
 
@@ -620,14 +710,7 @@ bool meshx_subnet_sec_rpl_check_update(meshx_subnet_security_ctx_t *ctx,
         }
         if (e->net_idx == net_idx && e->src_addr == src_addr && e->key_epoch == key_epoch)
         {
-            if (iv_index < e->iv_index ||
-                (iv_index == e->iv_index && seq_num <= e->last_seq_num))
-            {
-                return false;
-            }
-            e->iv_index = iv_index;
-            e->last_seq_num = seq_num;
-            return true;
+            return rpl_update_matched_entry(e, iv_index, seq_num, out_valid);
         }
         if (e->iv_index < ctx->rpl[lru_idx].iv_index ||
             (e->iv_index == ctx->rpl[lru_idx].iv_index &&
@@ -640,10 +723,12 @@ bool meshx_subnet_sec_rpl_check_update(meshx_subnet_security_ctx_t *ctx,
     int idx = (free_idx >= 0) ? free_idx : lru_idx;
     ctx->rpl[idx].net_idx       = net_idx;
     ctx->rpl[idx].last_seq_num  = seq_num;
+    ctx->rpl[idx].seq_window    = 1UL;
     ctx->rpl[idx].src_addr      = src_addr;
     ctx->rpl[idx].iv_index      = iv_index;
     ctx->rpl[idx].key_epoch     = key_epoch;
-    return true;
+    *out_valid = true;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -654,18 +739,21 @@ bool meshx_subnet_sec_rpl_check_update(meshx_subnet_security_ctx_t *ctx,
  * @param[in]     canonical_src     Canonical source unicast address.
  * @param[in]     iv_index          Current IV Index.
  * @param[in]     seq_num           Sequence number.
- * @return true if fresh and recorded, false if replayed.
+ * @param[out]    out_valid         Set to true if fresh and recorded, false if replayed.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p ctx or @p out_valid is NULL or @p canonical_src is 0.
  */
-bool meshx_subnet_sec_canonical_rpl_check(meshx_subnet_security_ctx_t *ctx,
-                                          uint32_t global_subnet_src,
-                                          uint16_t canonical_src,
-                                          uint32_t iv_index,
-                                          uint32_t seq_num)
+meshx_err_t meshx_subnet_sec_canonical_rpl_check(meshx_subnet_security_ctx_t *ctx,
+                                                 uint32_t global_subnet_src,
+                                                 uint16_t canonical_src,
+                                                 uint32_t iv_index,
+                                                 uint32_t seq_num,
+                                                 bool *out_valid)
 {
-    if (!ctx || canonical_src == 0U)
+    if (!ctx || !out_valid || canonical_src == 0U)
     {
-        return false;
+        return MESHX_INVALID_ARG;
     }
+    *out_valid = false;
     int free_idx = -1;
     int lru_idx = 0;
 
@@ -685,11 +773,12 @@ bool meshx_subnet_sec_canonical_rpl_check(meshx_subnet_security_ctx_t *ctx,
             if (iv_index < e->iv_index ||
                 (iv_index == e->iv_index && seq_num <= e->last_seq))
             {
-                return false;
+                return MESHX_SUCCESS;
             }
             e->iv_index = iv_index;
             e->last_seq = seq_num;
-            return true;
+            *out_valid = true;
+            return MESHX_SUCCESS;
         }
         if (e->last_seq < ctx->canonical_rpl[lru_idx].last_seq)
         {
@@ -703,5 +792,6 @@ bool meshx_subnet_sec_canonical_rpl_check(meshx_subnet_security_ctx_t *ctx,
     ctx->canonical_rpl[idx].iv_index            = iv_index;
     ctx->canonical_rpl[idx].canonical_src       = canonical_src;
     ctx->canonical_rpl[idx].global_subnet_src   = global_subnet_src;
-    return true;
+    *out_valid = true;
+    return MESHX_SUCCESS;
 }

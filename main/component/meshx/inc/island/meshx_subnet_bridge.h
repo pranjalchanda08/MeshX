@@ -79,29 +79,31 @@ typedef struct {
  * @param[in]  mains_powered True if mains-powered, false if battery-powered.
  * @param[in]  rssi_score    Baseline RSSI quality metric (0..63).
  * @param[in]  now_ms        Current timestamp in milliseconds.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p mgr is NULL.
  */
-void meshx_subnet_bridge_init(meshx_subnet_bridge_mgr_t *mgr,
-                              uint16_t local_addr,
-                              bool mains_powered,
-                              uint8_t rssi_score,
-                              uint32_t now_ms);
+meshx_err_t meshx_subnet_bridge_init(meshx_subnet_bridge_mgr_t *mgr,
+                                     uint16_t local_addr,
+                                     bool mains_powered,
+                                     uint8_t rssi_score,
+                                     uint32_t now_ms);
 
 /**
  * @brief Compute deterministic 16-bit Bridge Failover Score.
  *
  * Format: mains(bit 15) | rssi_score(bits 9..14) | free_heap(bits 4..8) | addr(bits 0..3 tiebreak).
  *
- * @param[in] mains_powered   True if mains powered.
- * @param[in] rssi_score      6-bit RSSI score (0..63).
- * @param[in] free_heap_bytes Free heap in bytes.
- * @param[in] bridge_addr     Unicast bridge address for low-nibble tiebreak.
- *
- * @return 16-bit composite score.
+ * @param[in]  mains_powered   True if mains powered.
+ * @param[in]  rssi_score      6-bit RSSI score (0..63).
+ * @param[in]  free_heap_bytes Free heap in bytes.
+ * @param[in]  bridge_addr     Unicast bridge address for low-nibble tiebreak.
+ * @param[out] out_score       Destination for 16-bit composite score.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p out_score is NULL.
  */
-uint16_t meshx_subnet_bridge_compute_score(bool mains_powered,
-                                           uint8_t rssi_score,
-                                           uint32_t free_heap_bytes,
-                                           uint16_t bridge_addr);
+meshx_err_t meshx_subnet_bridge_compute_score(bool mains_powered,
+                                              uint8_t rssi_score,
+                                              uint32_t free_heap_bytes,
+                                              uint16_t bridge_addr,
+                                              uint16_t *out_score);
 
 /**
  * @brief Configure or add a boundary redundancy tracking entry.
@@ -125,6 +127,32 @@ meshx_err_t meshx_subnet_bridge_add_boundary(meshx_subnet_bridge_mgr_t *mgr,
                                              uint32_t now_ms);
 
 /**
+ * @brief Remove a boundary redundancy tracking entry.
+ *
+ * @param[in,out] mgr         Pointer to bridge manager.
+ * @param[in]     boundary_id Boundary link identifier to remove.
+ * @return MESHX_SUCCESS on success, MESHX_NOT_FOUND if absent, or MESHX_INVALID_ARG.
+ */
+meshx_err_t meshx_subnet_bridge_remove_boundary(meshx_subnet_bridge_mgr_t *mgr,
+                                                uint32_t boundary_id);
+
+/**
+ * @brief Execute periodic watchdog and heartbeat checks across all boundaries.
+ *
+ * @param[in,out] mgr             Pointer to bridge manager.
+ * @param[in]     now_ms          Current timestamp in milliseconds.
+ * @param[in]     free_heap_bytes Current free heap memory in bytes.
+ * @param[out]    out_hb_mask     Bitmask of boundary indices needing Heartbeat TX.
+ * @param[out]    out_claim_mask  Bitmask of boundary indices needing Takeover Claim TX.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG.
+ */
+meshx_err_t meshx_subnet_bridge_tick_all(meshx_subnet_bridge_mgr_t *mgr,
+                                         uint32_t now_ms,
+                                         uint32_t free_heap_bytes,
+                                         uint32_t *out_hb_mask,
+                                         uint32_t *out_claim_mask);
+
+/**
  * @brief Execute periodic watchdog and heartbeat timing checks.
  *
  * Evaluates 4s heartbeat TX for active bridges, and 12s watchdog timeout
@@ -145,30 +173,32 @@ meshx_err_t meshx_subnet_bridge_tick(meshx_subnet_bridge_mgr_t *mgr,
                                      uint32_t *out_claim_boundary_id);
 
 /**
+ * @brief Peer heartbeat or takeover claim event descriptor for split-brain arbitration.
+ */
+typedef struct {
+    uint32_t              boundary_id;    /**< Boundary identifier */
+    uint32_t              rx_term;        /**< Term advertised by peer */
+    uint16_t              peer_addr;      /**< Unicast address of peer bridge */
+    uint16_t              peer_score;     /**< Failover score advertised by peer */
+    uint32_t              now_ms;         /**< Current monotonic timestamp in milliseconds */
+    meshx_router_queue_t *queue_to_purge; /**< Optional queue context to purge if demoted (may be NULL) */
+} meshx_bridge_peer_event_t;
+
+/**
  * @brief Process an inbound UVP Heartbeat message and execute split-brain fencing.
  *
  * Resets watchdog timer for standby bridges. If both peers are Active, triggers
  * score/term arbitration and outputs demote action if local node wins.
  *
  * @param[in,out] mgr               Pointer to bridge manager.
- * @param[in]     boundary_id       Boundary identifier.
- * @param[in]     rx_term           Term advertised by sender.
- * @param[in]     sender_addr       Unicast address of sender bridge.
- * @param[in]     sender_score      Failover score advertised by sender.
- * @param[in]     now_ms            Current timestamp in milliseconds.
- * @param[in,out] queue_to_purge    Optional queue context to purge if demoted (may be NULL).
+ * @param[in]     evt               Pointer to peer heartbeat event descriptor.
  * @param[out]    out_send_demote   Pointer to store whether a Demote packet must be sent.
  * @param[out]    out_demote_target Pointer to store destination unicast address for Demote.
  *
  * @return MESHX_SUCCESS on success, MESHX_NOT_FOUND if boundary unknown, or MESHX_INVALID_ARG.
  */
 meshx_err_t meshx_subnet_bridge_on_heartbeat(meshx_subnet_bridge_mgr_t *mgr,
-                                             uint32_t boundary_id,
-                                             uint32_t rx_term,
-                                             uint16_t sender_addr,
-                                             uint16_t sender_score,
-                                             uint32_t now_ms,
-                                             meshx_router_queue_t *queue_to_purge,
+                                             const meshx_bridge_peer_event_t *evt,
                                              bool *out_send_demote,
                                              uint16_t *out_demote_target);
 
@@ -177,25 +207,17 @@ meshx_err_t meshx_subnet_bridge_on_heartbeat(meshx_subnet_bridge_mgr_t *mgr,
  *
  * Arbitrates takeover claim against current Active bridge status.
  *
- * @param[in,out] mgr             Pointer to bridge manager.
- * @param[in]     boundary_id     Boundary identifier.
- * @param[in]     rx_term         Claim term advertised by candidate.
- * @param[in]     candidate_addr  Unicast address of candidate node.
- * @param[in]     candidate_score Failover score of candidate node.
- * @param[in]     now_ms          Current timestamp in milliseconds.
- * @param[in,out] queue_to_purge  Optional queue context to purge if demoted (may be NULL).
- * @param[out]    out_send_demote Pointer to store whether a Demote packet must be sent.
+ * @param[in,out] mgr               Pointer to bridge manager.
+ * @param[in]     evt               Pointer to peer takeover claim event descriptor.
+ * @param[out]    out_send_demote   Pointer to store whether a Demote packet must be sent.
+ * @param[out]    out_demote_target Pointer to store destination unicast address for Demote.
  *
  * @return MESHX_SUCCESS on success, or appropriate error code.
  */
 meshx_err_t meshx_subnet_bridge_on_takeover_claim(meshx_subnet_bridge_mgr_t *mgr,
-                                                  uint32_t boundary_id,
-                                                  uint32_t rx_term,
-                                                  uint16_t candidate_addr,
-                                                  uint16_t candidate_score,
-                                                  uint32_t now_ms,
-                                                  meshx_router_queue_t *queue_to_purge,
-                                                  bool *out_send_demote);
+                                                  const meshx_bridge_peer_event_t *evt,
+                                                  bool *out_send_demote,
+                                                  uint16_t *out_demote_target);
 
 /**
  * @brief Process an inbound UVP Demote message.
@@ -280,13 +302,39 @@ meshx_err_t meshx_subnet_bridge_route_export(const meshx_subnet_bridge_mgr_t *mg
  * @param[in,out] hdr              Pointer to transit header to inspect and update.
  * @param[in]     current_slot_bit Bit position representing current subnet in mask.
  * @param[in]     now_ms           Current timestamp in milliseconds.
- *
- * @return true if packet is allowed to transit, false if it must be dropped.
+ * @param[out]    out_allowed      Set to true if packet is allowed to transit, false otherwise.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p out_allowed is NULL.
  */
-bool meshx_subnet_bridge_transit_check_and_mark(meshx_subnet_bridge_mgr_t *mgr,
-                                                meshx_subnet_transit_hdr_t *hdr,
-                                                uint8_t current_slot_bit,
-                                                uint32_t now_ms);
+meshx_err_t meshx_subnet_bridge_transit_check_and_mark(meshx_subnet_bridge_mgr_t *mgr,
+                                                       meshx_subnet_transit_hdr_t *hdr,
+                                                       uint8_t current_slot_bit,
+                                                       uint32_t now_ms,
+                                                       bool *out_allowed);
+
+/**
+ * @brief Context descriptor for meshx_subnet_bridge_transit_check_and_mark_ex().
+ */
+typedef struct {
+    uint8_t                   in_slot_bit;      /**< Ingress subnet slot bit index */
+    uint8_t                   out_slot_bit;     /**< Egress subnet slot bit index */
+    uint32_t                  egress_subnet_id; /**< Egress Global Subnet ID */
+    const meshx_subnet_key_t *k_bridge;         /**< Optional 16-byte Cluster Bridge Key for keyed echo digest */
+    uint32_t                  now_ms;           /**< Current monotonic timestamp in milliseconds */
+} meshx_bridge_transit_ctx_t;
+
+/**
+ * @brief Validate transit packet loop prevention with egress check, dual-bit marking, and keyed echo digest.
+ *
+ * @param[in,out] mgr         Pointer to bridge manager.
+ * @param[in,out] hdr         Pointer to transit header to inspect and update.
+ * @param[in]     tctx        Pointer to transit context descriptor.
+ * @param[out]    out_allowed Set to true if packet is allowed to transit, false otherwise.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p tctx or @p out_allowed is NULL.
+ */
+meshx_err_t meshx_subnet_bridge_transit_check_and_mark_ex(meshx_subnet_bridge_mgr_t *mgr,
+                                                          meshx_subnet_transit_hdr_t *hdr,
+                                                          const meshx_bridge_transit_ctx_t *tctx,
+                                                          bool *out_allowed);
 
 #ifdef __cplusplus
 }

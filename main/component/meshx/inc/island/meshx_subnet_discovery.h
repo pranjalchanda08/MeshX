@@ -45,15 +45,17 @@ typedef struct {
  * @brief Initialize neighbor discovery and boundary witness election context.
  *
  * @param[out] disc Pointer to discovery manager context to initialize.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p disc is NULL.
  */
-void meshx_subnet_disc_init(meshx_subnet_discovery_t *disc);
+meshx_err_t meshx_subnet_disc_init(meshx_subnet_discovery_t *disc);
 
 /**
  * @brief Deinitialize neighbor discovery context and clear all state.
  *
  * @param[in,out] disc Pointer to discovery manager context to deinitialize.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p disc is NULL.
  */
-void meshx_subnet_disc_deinit(meshx_subnet_discovery_t *disc);
+meshx_err_t meshx_subnet_disc_deinit(meshx_subnet_discovery_t *disc);
 
 /**
  * @brief Record an RX MIC failure and evaluate the sliding window threshold.
@@ -61,19 +63,22 @@ void meshx_subnet_disc_deinit(meshx_subnet_discovery_t *disc);
  * Evaluates whether >= MESHX_MIC_FAIL_THRESHOLD MIC failures have occurred
  * within MESHX_MIC_FAIL_WINDOW_MS. If triggered, sets witness eligibility.
  *
- * @param[in,out] disc   Pointer to discovery context.
- * @param[in]     now_ms Current timestamp in milliseconds.
- *
- * @return true if boundary witness election threshold is met, false otherwise.
+ * @param[in,out] disc          Pointer to discovery context.
+ * @param[in]     now_ms        Current timestamp in milliseconds.
+ * @param[out]    out_triggered Set to true if boundary witness election threshold is met.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p disc or @p out_triggered is NULL.
  */
-bool meshx_subnet_disc_record_mic_fail(meshx_subnet_discovery_t *disc, uint32_t now_ms);
+meshx_err_t meshx_subnet_disc_record_mic_fail(meshx_subnet_discovery_t *disc,
+                                              uint32_t now_ms,
+                                              bool *out_triggered);
 
 /**
  * @brief Reset recorded MIC failure history and witness eligibility.
  *
  * @param[in,out] disc Pointer to discovery context.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p disc is NULL.
  */
-void meshx_subnet_disc_reset_mic_fails(meshx_subnet_discovery_t *disc);
+meshx_err_t meshx_subnet_disc_reset_mic_fails(meshx_subnet_discovery_t *disc);
 
 /**
  * @brief Evaluate witness candidate criteria for boundary node election.
@@ -81,27 +86,42 @@ void meshx_subnet_disc_reset_mic_fails(meshx_subnet_discovery_t *disc);
  * Checks if RSSI >= MESHX_WITNESS_MIN_RSSI_DBM (-82 dBm), mains powered,
  * and free heap exceeds MESHX_WITNESS_MIN_HEAP_BYTES (4 KB).
  *
- * @param[in] disc            Pointer to discovery context (optional).
- * @param[in] rssi_dbm        Signal strength in dBm.
- * @param[in] mains_powered   True if mains powered, false if battery powered.
- * @param[in] free_heap_bytes Free heap memory in bytes.
- *
- * @return true if candidate qualifies as a boundary witness, false otherwise.
+ * @param[in]  disc            Pointer to discovery context (optional).
+ * @param[in]  rssi_dbm        Signal strength in dBm.
+ * @param[in]  mains_powered   True if mains powered, false if battery powered.
+ * @param[in]  free_heap_bytes Free heap memory in bytes.
+ * @param[out] out_eligible    Set to true if candidate qualifies as a boundary witness.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p out_eligible is NULL.
  */
-bool meshx_subnet_disc_eval_candidate(const meshx_subnet_discovery_t *disc,
-                                      int8_t rssi_dbm,
-                                      bool mains_powered,
-                                      uint32_t free_heap_bytes);
+meshx_err_t meshx_subnet_disc_eval_candidate(const meshx_subnet_discovery_t *disc,
+                                             int8_t rssi_dbm,
+                                             bool mains_powered,
+                                             uint32_t free_heap_bytes,
+                                             bool *out_eligible);
 
 /**
- * @brief Process UVP Discovery Response and allocate ephemeral or mapped virtual NAT address.
+ * @brief Record an outbound DISCOVER_REQ transaction for response correlation.
  *
- * Correlates response with pending requests, allocates inbound NAT translation,
- * and caches entry in correlation table.
+ * @param[in,out] disc              Pointer to discovery manager.
+ * @param[in]     global_subnet_src Origin Global Subnet ID.
+ * @param[in]     requestor_addr    Requesting node unicast address.
+ * @param[in]     trans_id          16-bit discovery transaction ID.
+ * @param[in]     now_ms            Current monotonic timestamp in milliseconds.
  *
- * @param[in,out] disc                 Pointer to discovery context.
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_subnet_disc_record_req(meshx_subnet_discovery_t *disc,
+                                         uint32_t global_subnet_src,
+                                         uint16_t requestor_addr,
+                                         uint16_t trans_id,
+                                         uint32_t now_ms);
+
+/**
+ * @brief Handle DISCOVER_RSP, validate correlation, and allocate a Tier-2 NAT entry.
+ *
+ * @param[in,out] disc                 Pointer to discovery manager.
  * @param[in,out] nat_mgr              Pointer to NAT manager.
- * @param[in]     rsp                  Pointer to parsed discovery response packet.
+ * @param[in]     rsp                  Received DISCOVER_RSP payload.
  * @param[in]     now_min              Current time in minutes for NAT aging.
  * @param[in]     now_ms               Current timestamp in milliseconds.
  * @param[out]    out_virtual_nat_addr Pointer to store assigned virtual address.

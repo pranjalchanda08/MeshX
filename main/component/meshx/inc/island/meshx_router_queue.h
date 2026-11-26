@@ -22,6 +22,7 @@ typedef struct MESHX_PACKED meshx_router_queue_entry {
     uint32_t                        ingress_boundary_id;  /**< Ingress Global Subnet ID */
     uint32_t                        egress_boundary_id;   /**< Egress Global Subnet ID */
     uint32_t                        seq_auth;             /**< Authenticated original sequence number */
+    uint32_t                        orig_iv_index;        /**< Originating island IV Index */
     uint32_t                        rx_timestamp_ms;      /**< Monotonic timestamp at ingress */
     meshx_trans_mic_t               trans_mic;            /**< Preserved Upper Transport MIC */
     uint16_t                        canonical_src;        /**< Canonical source unicast address */
@@ -33,7 +34,6 @@ typedef struct MESHX_PACKED meshx_router_queue_entry {
     uint16_t                        epoch_id;             /**< Key rotation epoch identifier */
     uint8_t                         pdu_len;              /**< Length of trailing payload */
     uint8_t                         ttl;                  /**< Time-to-Live decremented for Stage 2 */
-    uint8_t                         seg_tx_idx;           /**< Current segment TX index */
     uint8_t                         retry_count;          /**< Stage 2 retransmission attempt counter */
     uint8_t                         tx_epoch;             /**< Transmit key epoch flag */
     uint8_t                         flags;                /**< MESHX_ROUTER_FLAG_* */
@@ -41,8 +41,8 @@ typedef struct MESHX_PACKED meshx_router_queue_entry {
 } meshx_router_queue_entry_t;
 
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
-_Static_assert(sizeof(void *) != 4 || sizeof(meshx_router_queue_entry_t) <= 52,
-               "32-bit MCU router queue entry header must be <= 52 bytes");
+_Static_assert(sizeof(void *) != 4 || sizeof(meshx_router_queue_entry_t) <= 56,
+               "32-bit MCU router queue entry header must be <= 56 bytes");
 #endif
 
 /**
@@ -68,6 +68,7 @@ typedef struct {
     uint32_t          ingress_boundary_id; /**< Ingress Global Subnet ID */
     uint32_t          egress_boundary_id;  /**< Egress Global Subnet ID */
     uint32_t          seq_auth;            /**< Authenticated original sequence number */
+    uint32_t          orig_iv_index;       /**< Originating island IV Index */
     uint32_t          now_ms;              /**< Current monotonic timestamp in milliseconds */
     uint16_t          canonical_src;       /**< Canonical source unicast address */
     uint16_t          canonical_dst;       /**< Canonical destination unicast/group address */
@@ -88,15 +89,17 @@ typedef struct {
  * @brief Initialize router queue state to empty.
  *
  * @param[out] q Pointer to queue descriptor.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p q is NULL.
  */
-void meshx_router_queue_init(meshx_router_queue_t *q);
+meshx_err_t meshx_router_queue_init(meshx_router_queue_t *q);
 
 /**
  * @brief De-initialize router queue, wiping and freeing all pending entries.
  *
  * @param[in,out] q Pointer to queue descriptor.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p q is NULL.
  */
-void meshx_router_queue_deinit(meshx_router_queue_t *q);
+meshx_err_t meshx_router_queue_deinit(meshx_router_queue_t *q);
 
 /**
  * @brief Allocate single block and enqueue a validated Stage 1 packet.
@@ -116,10 +119,20 @@ meshx_err_t meshx_router_queue_push(meshx_router_queue_t *q,
 /**
  * @brief Peek head flow if eligible for Stage 2 SAR transmission.
  *
- * @param[in] q Pointer to router queue.
- * @return Pointer to head entry, or NULL if empty.
+ * @param[in]  q         Pointer to router queue.
+ * @param[out] out_entry Destination for head entry pointer (NULL if none).
+ * @return MESHX_SUCCESS if found, MESHX_INVALID_ARG on NULL args, or MESHX_NOT_FOUND.
  */
-meshx_router_queue_entry_t *meshx_router_queue_peek_tx(meshx_router_queue_t *q);
+meshx_err_t meshx_router_queue_peek_tx(meshx_router_queue_t *q, meshx_router_queue_entry_t **out_entry);
+
+/**
+ * @brief Peek the currently in-flight Stage 2 SAR entry.
+ *
+ * @param[in]  q         Pointer to router queue.
+ * @param[out] out_entry Destination for in-flight entry pointer (NULL if none).
+ * @return MESHX_SUCCESS if found, MESHX_INVALID_ARG on NULL args, or MESHX_NOT_FOUND.
+ */
+meshx_err_t meshx_router_queue_peek_inflight(meshx_router_queue_t *q, meshx_router_queue_entry_t **out_entry);
 
 /**
  * @brief Mark an entry as in-flight to serialize Stage 2 SAR per flow.
@@ -144,9 +157,12 @@ meshx_err_t meshx_router_queue_complete_entry(meshx_router_queue_t *q, const mes
  *
  * @param[in,out] q           Pointer to router queue.
  * @param[in]     boundary_id Global Subnet ID to purge.
- * @return Number of entries freed.
+ * @param[out]    out_purged  Optional destination for number of entries freed (may be NULL).
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p q is NULL.
  */
-uint8_t meshx_router_queue_purge_boundary(meshx_router_queue_t *q, uint32_t boundary_id);
+meshx_err_t meshx_router_queue_purge_boundary(meshx_router_queue_t *q,
+                                              uint32_t boundary_id,
+                                              uint8_t *out_purged);
 
 /**
  * @brief Format a 0xD7 Emergency NACK into the static 64-byte buffer with zero heap allocation.

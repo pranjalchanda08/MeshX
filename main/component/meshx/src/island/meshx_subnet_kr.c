@@ -13,13 +13,18 @@
  *
  * @param[out] buf Pointer to buffer to wipe.
  * @param[in]  len Number of bytes to zero out.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p buf is NULL.
  */
-static void wipe_bytes(uint8_t *buf, size_t len)
+static meshx_err_t wipe_bytes(uint8_t *buf, size_t len)
 {
+    if (!buf) {
+        return MESHX_INVALID_ARG;
+    }
     volatile uint8_t *vp = (volatile uint8_t *)buf;
     for (size_t i = 0; i < len; i++) {
         vp[i] = 0U;
     }
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -27,14 +32,16 @@ static void wipe_bytes(uint8_t *buf, size_t len)
  *
  * @param[out] mgr          Pointer to KR manager structure.
  * @param[in]  has_k_bridge Initial Cluster Bridge Key availability flag.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p mgr is NULL.
  */
-void meshx_subnet_kr_init(meshx_subnet_kr_mgr_t *mgr, bool has_k_bridge)
+meshx_err_t meshx_subnet_kr_init(meshx_subnet_kr_mgr_t *mgr, bool has_k_bridge)
 {
     if (!mgr) {
-        return;
+        return MESHX_INVALID_ARG;
     }
     memset(mgr, 0, sizeof(*mgr));
     mgr->has_cluster_bridge_key = has_k_bridge;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -108,8 +115,14 @@ meshx_err_t meshx_subnet_kr_slot_unbind(meshx_subnet_kr_mgr_t *mgr, uint16_t net
     }
     for (size_t i = 0; i < MESHX_MAX_BRIDGING_SLOTS; i++) {
         if (mgr->slot_valid[i] && mgr->slots[i].net_idx == net_idx) {
-            wipe_bytes(mgr->slots[i].old_net_key.bytes, MESHX_SUBNET_KEY_LEN);
-            wipe_bytes(mgr->slots[i].new_net_key.bytes, MESHX_SUBNET_KEY_LEN);
+            meshx_err_t werr = wipe_bytes(mgr->slots[i].old_net_key.bytes, MESHX_SUBNET_KEY_LEN);
+            if (werr != MESHX_SUCCESS) {
+                return werr;
+            }
+            werr = wipe_bytes(mgr->slots[i].new_net_key.bytes, MESHX_SUBNET_KEY_LEN);
+            if (werr != MESHX_SUCCESS) {
+                return werr;
+            }
             memset(&mgr->slots[i], 0, sizeof(mgr->slots[i]));
             mgr->slot_valid[i] = 0U;
             return MESHX_SUCCESS;
@@ -121,41 +134,51 @@ meshx_err_t meshx_subnet_kr_slot_unbind(meshx_subnet_kr_mgr_t *mgr, uint16_t net
 /**
  * @brief O(1) slot lookup by local NetKey Index (up to 4 slots).
  *
- * @param[in] mgr     Pointer to KR manager.
- * @param[in] net_idx Local NetKey Index.
- * @return Pointer to matching crypto slot, or NULL if not found.
+ * @param[in]  mgr      Pointer to KR manager.
+ * @param[in]  net_idx  Local NetKey Index.
+ * @param[out] out_slot Destination for matching crypto slot pointer.
+ * @return MESHX_SUCCESS if found, MESHX_INVALID_ARG on NULL args, or MESHX_NOT_FOUND.
  */
-meshx_subnet_crypto_slot_t *meshx_subnet_kr_find_by_net_idx(meshx_subnet_kr_mgr_t *mgr, uint16_t net_idx)
+meshx_err_t meshx_subnet_kr_find_by_net_idx(meshx_subnet_kr_mgr_t *mgr,
+                                            uint16_t net_idx,
+                                            meshx_subnet_crypto_slot_t **out_slot)
 {
-    if (!mgr) {
-        return NULL;
+    if (!mgr || !out_slot) {
+        return MESHX_INVALID_ARG;
     }
+    *out_slot = NULL;
     for (size_t i = 0; i < MESHX_MAX_BRIDGING_SLOTS; i++) {
         if (mgr->slot_valid[i] && mgr->slots[i].net_idx == net_idx) {
-            return &mgr->slots[i];
+            *out_slot = &mgr->slots[i];
+            return MESHX_SUCCESS;
         }
     }
-    return NULL;
+    return MESHX_NOT_FOUND;
 }
 
 /**
  * @brief Lookup crypto slot by Global Subnet ID.
  *
- * @param[in] mgr              Pointer to KR manager.
- * @param[in] global_subnet_id Target Global Subnet ID.
- * @return Pointer to matching crypto slot, or NULL if not found.
+ * @param[in]  mgr              Pointer to KR manager.
+ * @param[in]  global_subnet_id Target Global Subnet ID.
+ * @param[out] out_slot         Destination for matching crypto slot pointer.
+ * @return MESHX_SUCCESS if found, MESHX_INVALID_ARG on NULL args, or MESHX_NOT_FOUND.
  */
-meshx_subnet_crypto_slot_t *meshx_subnet_kr_find_by_global_id(meshx_subnet_kr_mgr_t *mgr, uint32_t global_subnet_id)
+meshx_err_t meshx_subnet_kr_find_by_global_id(meshx_subnet_kr_mgr_t *mgr,
+                                              uint32_t global_subnet_id,
+                                              meshx_subnet_crypto_slot_t **out_slot)
 {
-    if (!mgr) {
-        return NULL;
+    if (!mgr || !out_slot) {
+        return MESHX_INVALID_ARG;
     }
+    *out_slot = NULL;
     for (size_t i = 0; i < MESHX_MAX_BRIDGING_SLOTS; i++) {
         if (mgr->slot_valid[i] && mgr->slots[i].global_subnet_id == global_subnet_id) {
-            return &mgr->slots[i];
+            *out_slot = &mgr->slots[i];
+            return MESHX_SUCCESS;
         }
     }
-    return NULL;
+    return MESHX_NOT_FOUND;
 }
 
 /**
@@ -174,9 +197,10 @@ meshx_err_t meshx_subnet_kr_set_phase(meshx_subnet_kr_mgr_t *mgr,
                                       const meshx_subnet_key_t *new_key,
                                       uint32_t new_epoch)
 {
-    meshx_subnet_crypto_slot_t *slot = meshx_subnet_kr_find_by_net_idx(mgr, net_idx);
-    if (!slot) {
-        return MESHX_NOT_FOUND;
+    meshx_subnet_crypto_slot_t *slot = NULL;
+    meshx_err_t ferr = meshx_subnet_kr_find_by_net_idx(mgr, net_idx, &slot);
+    if (ferr != MESHX_SUCCESS || !slot) {
+        return (ferr == MESHX_INVALID_ARG) ? ferr : MESHX_NOT_FOUND;
     }
 
     slot->kr_phase  = (uint8_t)new_phase;
@@ -201,9 +225,13 @@ meshx_err_t meshx_subnet_kr_set_phase(meshx_subnet_kr_mgr_t *mgr,
             slot->active_net_key_flag = 1U;
             break;
         case MESHX_SUBNET_KR_PHASE_REVOKE:
-            wipe_bytes(slot->old_net_key.bytes, MESHX_SUBNET_KEY_LEN);
+            if (wipe_bytes(slot->old_net_key.bytes, MESHX_SUBNET_KEY_LEN) != MESHX_SUCCESS) {
+                return MESHX_INVALID_ARG;
+            }
             memcpy(slot->old_net_key.bytes, slot->new_net_key.bytes, MESHX_SUBNET_KEY_LEN);
-            wipe_bytes(slot->new_net_key.bytes, MESHX_SUBNET_KEY_LEN);
+            if (wipe_bytes(slot->new_net_key.bytes, MESHX_SUBNET_KEY_LEN) != MESHX_SUCCESS) {
+                return MESHX_INVALID_ARG;
+            }
             slot->active_net_key_flag = 0U;
             break;
         default:
@@ -217,33 +245,36 @@ meshx_err_t meshx_subnet_kr_set_phase(meshx_subnet_kr_mgr_t *mgr,
  * @brief Select egress TX key for Seg 0 latch according to TRD Phase rules.
  *
  * @param[in]  slot         Pointer to crypto slot.
- * @param[out] out_tx_epoch Destination for selected key epoch flag (0 = old, 1 = new).
- * @return Pointer to selected NetKey structure, or NULL if slot is invalid.
+ * @param[out] out_tx_epoch Optional destination for selected key epoch flag (0 = old, 1 = new).
+ * @param[out] out_key      Destination for selected NetKey structure pointer.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p slot or @p out_key is NULL.
  */
-const meshx_subnet_key_t *meshx_subnet_kr_select_egress_key(const meshx_subnet_crypto_slot_t *slot,
-                                                            uint8_t *out_tx_epoch)
+meshx_err_t meshx_subnet_kr_select_egress_key(const meshx_subnet_crypto_slot_t *slot,
+                                              uint8_t *out_tx_epoch,
+                                              const meshx_subnet_key_t **out_key)
 {
-    if (!slot) {
-        return NULL;
+    if (!slot || !out_key) {
+        return MESHX_INVALID_ARG;
     }
     if (out_tx_epoch) {
         *out_tx_epoch = slot->active_net_key_flag;
     }
-    return (slot->active_net_key_flag != 0U) ? &slot->new_net_key : &slot->old_net_key;
+    *out_key = (slot->active_net_key_flag != 0U) ? &slot->new_net_key : &slot->old_net_key;
+    return MESHX_SUCCESS;
 }
 
 /**
  * @brief Select candidate ingress keys for dual-RX decryption during key transition.
  *
- * @param[in]  slot             Pointer to crypto slot.
- * @param[out] out_active_keys  Destination candidate key list structure.
- * @return Number of candidate keys (1 or 2), or 0 on error.
+ * @param[in]  slot            Pointer to crypto slot.
+ * @param[out] out_active_keys Destination candidate key list structure.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p slot or @p out_active_keys is NULL.
  */
-uint8_t meshx_subnet_kr_get_ingress_keys(const meshx_subnet_crypto_slot_t *slot,
-                                         meshx_kr_active_keys_t *out_active_keys)
+meshx_err_t meshx_subnet_kr_get_ingress_keys(const meshx_subnet_crypto_slot_t *slot,
+                                             meshx_kr_active_keys_t *out_active_keys)
 {
     if (!slot || !out_active_keys) {
-        return 0U;
+        return MESHX_INVALID_ARG;
     }
 
     if (slot->kr_phase == (uint8_t)MESHX_SUBNET_KR_PHASE_DIST) {
@@ -252,7 +283,7 @@ uint8_t meshx_subnet_kr_get_ingress_keys(const meshx_subnet_crypto_slot_t *slot,
         out_active_keys->candidates[1].key   = &slot->new_net_key;
         out_active_keys->candidates[1].epoch = 1U;
         out_active_keys->count = 2U;
-        return 2U;
+        return MESHX_SUCCESS;
     }
     if (slot->kr_phase == (uint8_t)MESHX_SUBNET_KR_PHASE_SWITCH) {
         out_active_keys->candidates[0].key   = &slot->new_net_key;
@@ -260,39 +291,43 @@ uint8_t meshx_subnet_kr_get_ingress_keys(const meshx_subnet_crypto_slot_t *slot,
         out_active_keys->candidates[1].key   = &slot->old_net_key;
         out_active_keys->candidates[1].epoch = 0U;
         out_active_keys->count = 2U;
-        return 2U;
+        return MESHX_SUCCESS;
     }
 
     out_active_keys->candidates[0].key   = &slot->old_net_key;
     out_active_keys->candidates[0].epoch = 0U;
     out_active_keys->count = 1U;
-    return 1U;
+    return MESHX_SUCCESS;
 }
 
 /**
- * @brief Return true if opcode (0xC4, 0xC5, 0xC6) must be blocked from cross-subnet forwarding.
+ * @brief Evaluate whether opcode (0xC4, 0xC5, 0xC6) must be blocked from cross-subnet forwarding.
  *
- * @param[in] mgr             Pointer to KR manager.
- * @param[in] uvp_opcode      UVP message opcode to check.
- * @param[in] ingress_net_idx NetKey Index of packet ingress.
- * @param[in] egress_net_idx  Target NetKey Index of packet egress.
- * @return true if opcode is quarantined, false otherwise.
+ * @param[in]  mgr             Pointer to KR manager.
+ * @param[in]  uvp_opcode      UVP message opcode to check.
+ * @param[in]  ingress_net_idx NetKey Index of packet ingress.
+ * @param[in]  egress_net_idx  Target NetKey Index of packet egress.
+ * @param[out] out_quarantined Set to true if opcode is quarantined, false otherwise.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p out_quarantined is NULL.
  */
-bool meshx_subnet_kr_is_opcode_quarantined(const meshx_subnet_kr_mgr_t *mgr,
-                                           uint8_t uvp_opcode,
-                                           uint16_t ingress_net_idx,
-                                           uint16_t egress_net_idx)
+meshx_err_t meshx_subnet_kr_is_opcode_quarantined(const meshx_subnet_kr_mgr_t *mgr,
+                                                  uint8_t uvp_opcode,
+                                                  uint16_t ingress_net_idx,
+                                                  uint16_t egress_net_idx,
+                                                  bool *out_quarantined)
 {
     MESHX_UNUSED(mgr);
+    if (!out_quarantined) {
+        return MESHX_INVALID_ARG;
+    }
     if (ingress_net_idx == egress_net_idx) {
-        return false;
+        *out_quarantined = false;
+        return MESHX_SUCCESS;
     }
     /* Strict burst quarantine: KR UVP control opcodes (0xC4..0xC6) never cross subnets */
-    if (uvp_opcode >= (uint8_t)MESHX_UVP_OP_KR_DISTRIBUTE &&
-        uvp_opcode <= (uint8_t)MESHX_UVP_OP_KR_REVOKE_OLD) {
-        return true;
-    }
-    return false;
+    *out_quarantined = (uvp_opcode >= (uint8_t)MESHX_UVP_OP_KR_DISTRIBUTE &&
+                        uvp_opcode <= (uint8_t)MESHX_UVP_OP_KR_REVOKE_OLD);
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -312,9 +347,10 @@ meshx_err_t meshx_subnet_kr_alloc_seq(meshx_subnet_kr_mgr_t *mgr,
     if (!mgr || !out_seq || !out_iv_update_needed) {
         return MESHX_INVALID_ARG;
     }
-    meshx_subnet_crypto_slot_t *slot = meshx_subnet_kr_find_by_net_idx(mgr, net_idx);
-    if (!slot) {
-        return MESHX_NOT_FOUND;
+    meshx_subnet_crypto_slot_t *slot = NULL;
+    meshx_err_t ferr = meshx_subnet_kr_find_by_net_idx(mgr, net_idx, &slot);
+    if (ferr != MESHX_SUCCESS || !slot) {
+        return (ferr == MESHX_INVALID_ARG) ? ferr : MESHX_NOT_FOUND;
     }
 
     slot->last_seq_num++;

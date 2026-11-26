@@ -449,7 +449,7 @@ meshx_err_t meshx_plat_subnet_add(uint16_t net_idx, const meshx_key_t net_key)
 
 meshx_err_t meshx_plat_subnet_del(uint16_t net_idx)
 {
-    if (net_idx > 0x0FFFU)
+    if (net_idx == 0U || net_idx > 0x0FFFU)
     {
         return MESHX_INVALID_ARG;
     }
@@ -467,7 +467,10 @@ meshx_err_t meshx_plat_subnet_del(uint16_t net_idx)
 
 meshx_err_t meshx_plat_subnet_bridge_set(bool enable)
 {
-    /* MeshX uses Canonical-Nonce store-and-forward bridging across both RTOS ports */
+    if (enable && esp_ble_mesh_node_get_local_net_key(0U) == NULL)
+    {
+        return MESHX_INVALID_STATE;
+    }
     return meshx_subnet_coex_pal_bridge_set(enable);
 }
 
@@ -476,6 +479,11 @@ meshx_err_t meshx_plat_subnet_bridge_rule_add(const meshx_bridge_rule_t *rule)
     if (!rule)
     {
         return MESHX_INVALID_ARG;
+    }
+    if (esp_ble_mesh_node_get_local_net_key(rule->net_idx_1) == NULL ||
+        esp_ble_mesh_node_get_local_net_key(rule->net_idx_2) == NULL)
+    {
+        return MESHX_NOT_FOUND;
     }
 
     return meshx_subnet_coex_pal_bridge_rule_add(rule);

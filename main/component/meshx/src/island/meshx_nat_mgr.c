@@ -12,40 +12,57 @@
 /**
  * @brief Search dynamic slot registry for an entry matching the Global Subnet ID.
  *
- * @param[in] mgr              Pointer to NAT manager.
- * @param[in] global_subnet_id Target Global Subnet ID.
- * @return Pointer to matching slot entry, or NULL if not found.
+ * @param[in]  mgr              Pointer to NAT manager.
+ * @param[in]  global_subnet_id Target Global Subnet ID.
+ * @param[out] out_entry        Destination for matching slot entry pointer.
+ * @return MESHX_SUCCESS if found, MESHX_INVALID_ARG if args are NULL, or MESHX_NOT_FOUND.
  */
-static meshx_local_slot_entry_t *find_slot_by_global_id(const meshx_nat_mgr_t *mgr,
-                                                        uint32_t global_subnet_id)
+static meshx_err_t find_slot_by_global_id(const meshx_nat_mgr_t *mgr,
+                                          uint32_t global_subnet_id,
+                                          meshx_local_slot_entry_t **out_entry)
 {
+    if (!mgr || !out_entry)
+    {
+        return MESHX_INVALID_ARG;
+    }
     for (meshx_local_slot_entry_t *c = mgr->slots.head; c != NULL; c = c->next)
     {
         if (c->global_subnet_id == global_subnet_id)
         {
-            return c;
+            *out_entry = c;
+            return MESHX_SUCCESS;
         }
     }
-    return NULL;
+    *out_entry = NULL;
+    return MESHX_NOT_FOUND;
 }
 
 /**
  * @brief Search dynamic slot registry for an entry matching the slot index N.
  *
- * @param[in] mgr    Pointer to NAT manager.
- * @param[in] slot_n Slot index [0..13].
- * @return Pointer to matching slot entry, or NULL if not found.
+ * @param[in]  mgr       Pointer to NAT manager.
+ * @param[in]  slot_n    Slot index [0..13].
+ * @param[out] out_entry Destination for matching slot entry pointer.
+ * @return MESHX_SUCCESS if found, MESHX_INVALID_ARG if args are NULL, or MESHX_NOT_FOUND.
  */
-static meshx_local_slot_entry_t *find_slot_by_slot_n(const meshx_nat_mgr_t *mgr, uint8_t slot_n)
+static meshx_err_t find_slot_by_slot_n(const meshx_nat_mgr_t *mgr,
+                                       uint8_t slot_n,
+                                       meshx_local_slot_entry_t **out_entry)
 {
+    if (!mgr || !out_entry)
+    {
+        return MESHX_INVALID_ARG;
+    }
     for (meshx_local_slot_entry_t *c = mgr->slots.head; c != NULL; c = c->next)
     {
         if (c->slot_n == slot_n)
         {
-            return c;
+            *out_entry = c;
+            return MESHX_SUCCESS;
         }
     }
-    return NULL;
+    *out_entry = NULL;
+    return MESHX_NOT_FOUND;
 }
 
 /**
@@ -57,7 +74,8 @@ static meshx_local_slot_entry_t *find_slot_by_slot_n(const meshx_nat_mgr_t *mgr,
  */
 static meshx_err_t is_slot_n_used(const meshx_nat_mgr_t *mgr, uint8_t slot_n)
 {
-    return (find_slot_by_slot_n(mgr, slot_n) != NULL) ? MESHX_SUCCESS : MESHX_NOT_FOUND;
+    meshx_local_slot_entry_t *entry = NULL;
+    return find_slot_by_slot_n(mgr, slot_n, &entry);
 }
 
 /**
@@ -65,40 +83,53 @@ static meshx_err_t is_slot_n_used(const meshx_nat_mgr_t *mgr, uint8_t slot_n)
  *
  * @param[out] mgr             Pointer to NAT manager structure.
  * @param[in]  local_node_addr Local node's primary physical unicast address.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p mgr is NULL.
  */
-void meshx_nat_mgr_init(meshx_nat_mgr_t *mgr, uint16_t local_node_addr)
+meshx_err_t meshx_nat_mgr_init(meshx_nat_mgr_t *mgr, uint16_t local_node_addr)
 {
     if (!mgr)
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     memset(mgr, 0, sizeof(*mgr));
     mgr->local_node_addr = local_node_addr;
     mgr->slots.coordinator_slot = MESHX_NAT_SALT_INVALID;
     mgr->slots.coordinator_addr = local_node_addr;
     mgr->initialized = true;
+    return MESHX_SUCCESS;
 }
 
 /**
  * @brief De-initialize NAT manager and free all dynamically assigned slot nodes.
  *
  * @param[in,out] mgr Pointer to NAT manager structure.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG if @p mgr is NULL, or error from MESHX_FREE.
  */
-void meshx_nat_mgr_deinit(meshx_nat_mgr_t *mgr)
+meshx_err_t meshx_nat_mgr_deinit(meshx_nat_mgr_t *mgr)
 {
     if (!mgr)
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
+    meshx_err_t ret = MESHX_SUCCESS;
     meshx_local_slot_entry_t *cur = mgr->slots.head;
     while (cur)
     {
         meshx_local_slot_entry_t *next = cur->next;
         void *p = (void *)cur;
-        (void)MESHX_FREE(&p);
+        meshx_err_t err = MESHX_FREE(&p);
+        if (err != MESHX_SUCCESS)
+        {
+            mgr->slots.active_count = 0U;
+            if (ret == MESHX_SUCCESS)
+            {
+                ret = err;
+            }
+        }
         cur = next;
     }
     memset(mgr, 0, sizeof(*mgr));
+    return ret;
 }
 
 /**
@@ -109,18 +140,21 @@ void meshx_nat_mgr_deinit(meshx_nat_mgr_t *mgr)
  * @param[in]  peer_ids      Array of known peer Global Subnet IDs to detect collision.
  * @param[in]  peer_count    Number of entries in peer_ids.
  * @param[out] out_salt_used Optional destination for salt iteration counter (0 if no collision).
- * @return Derived non-zero 32-bit Global Subnet ID, or MESHX_GLOBAL_SUBNET_INVALID on failure.
+ * @param[out] out_global_id Destination for derived non-zero 32-bit Global Subnet ID.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG on invalid pointers, or MESHX_NOT_FOUND if all salt attempts collide.
  */
-uint32_t meshx_nat_derive_global_subnet_id(const meshx_subnet_key_t *net_key,
-                                           uint16_t cid,
-                                           const uint32_t *peer_ids,
-                                           size_t peer_count,
-                                           uint8_t *out_salt_used)
+meshx_err_t meshx_nat_derive_global_subnet_id(const meshx_subnet_key_t *net_key,
+                                              uint16_t cid,
+                                              const uint32_t *peer_ids,
+                                              size_t peer_count,
+                                              uint8_t *out_salt_used,
+                                              uint32_t *out_global_id)
 {
-    if (!net_key)
+    if (!net_key || !out_global_id)
     {
-        return MESHX_GLOBAL_SUBNET_INVALID;
+        return MESHX_INVALID_ARG;
     }
+    *out_global_id = MESHX_GLOBAL_SUBNET_INVALID;
 
     uint8_t seed[MESHX_NAT_DERIVE_SEED_LEN];
     memcpy(seed, net_key->bytes, MESHX_SUBNET_KEY_LEN);
@@ -130,7 +164,12 @@ uint32_t meshx_nat_derive_global_subnet_id(const meshx_subnet_key_t *net_key,
     for (uint8_t salt = 0U; salt < MESHX_NAT_MAX_SALT_ATTEMPTS; salt++)
     {
         seed[18] = salt;
-        uint32_t id = meshx_subnet_crc32(seed, sizeof(seed));
+        uint32_t id = MESHX_GLOBAL_SUBNET_INVALID;
+        meshx_err_t cerr = meshx_subnet_crc32(seed, sizeof(seed), &id);
+        if (cerr != MESHX_SUCCESS)
+        {
+            return cerr;
+        }
         if (id == MESHX_GLOBAL_SUBNET_INVALID)
         {
             id = 0x00000001UL;
@@ -150,35 +189,48 @@ uint32_t meshx_nat_derive_global_subnet_id(const meshx_subnet_key_t *net_key,
             {
                 *out_salt_used = salt;
             }
-            return id;
+            *out_global_id = id;
+            return MESHX_SUCCESS;
         }
     }
 
-    return MESHX_GLOBAL_SUBNET_INVALID;
+    return MESHX_NOT_FOUND;
 }
 
 /**
  * @brief Select an available local slot index [0..13], reserving slot 0 for local primary.
  *
- * @param[in] mgr              Pointer to NAT manager.
- * @param[in] is_local_primary True if assigning the local primary subnet.
- * @return Free slot index [0..13], or -1 if all slots are occupied.
+ * @param[in]  mgr              Pointer to NAT manager.
+ * @param[in]  is_local_primary True if assigning the local primary subnet.
+ * @param[out] out_slot_n       Destination for selected free slot index [0..13].
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG on NULL args, or MESHX_NO_MEM if all slots are occupied.
  */
-static int select_free_slot_n(const meshx_nat_mgr_t *mgr, bool is_local_primary)
+static meshx_err_t select_free_slot_n(const meshx_nat_mgr_t *mgr, bool is_local_primary, uint8_t *out_slot_n)
 {
+    if (!mgr || !out_slot_n)
+    {
+        return MESHX_INVALID_ARG;
+    }
     if (is_local_primary && is_slot_n_used(mgr, 0U) != MESHX_SUCCESS)
     {
-        return 0;
+        *out_slot_n = 0U;
+        return MESHX_SUCCESS;
     }
     uint8_t start = is_local_primary ? 0U : 1U;
     for (uint8_t s = start; s < MESHX_SLOT_MAX; s++)
     {
         if (is_slot_n_used(mgr, s) != MESHX_SUCCESS)
         {
-            return (int)s;
+            *out_slot_n = s;
+            return MESHX_SUCCESS;
         }
     }
-    return (!is_local_primary && is_slot_n_used(mgr, 0U) != MESHX_SUCCESS) ? 0 : -1;
+    if (!is_local_primary && is_slot_n_used(mgr, 0U) != MESHX_SUCCESS)
+    {
+        *out_slot_n = 0U;
+        return MESHX_SUCCESS;
+    }
+    return MESHX_NO_MEM;
 }
 
 /**
@@ -202,8 +254,8 @@ meshx_err_t meshx_nat_slot_assign(meshx_nat_mgr_t *mgr,
         return MESHX_INVALID_ARG;
     }
 
-    meshx_local_slot_entry_t *existing = find_slot_by_global_id(mgr, global_subnet_id);
-    if (existing)
+    meshx_local_slot_entry_t *existing = NULL;
+    if (find_slot_by_global_id(mgr, global_subnet_id, &existing) == MESHX_SUCCESS && existing)
     {
         existing->ref_count++;
         if (local_net_idx != MESHX_NET_IDX_INVALID)
@@ -222,10 +274,11 @@ meshx_err_t meshx_nat_slot_assign(meshx_nat_mgr_t *mgr,
         return MESHX_SUCCESS;
     }
 
-    int chosen = select_free_slot_n(mgr, is_local_primary);
-    if (chosen < 0)
+    uint8_t chosen = 0U;
+    meshx_err_t serr = select_free_slot_n(mgr, is_local_primary, &chosen);
+    if (serr != MESHX_SUCCESS)
     {
-        return MESHX_NO_MEM;
+        return serr;
     }
 
     meshx_local_slot_entry_t *node = NULL;
@@ -237,7 +290,7 @@ meshx_err_t meshx_nat_slot_assign(meshx_nat_mgr_t *mgr,
     memset(node, 0, sizeof(*node));
     node->global_subnet_id = global_subnet_id;
     node->local_net_idx = local_net_idx;
-    node->slot_n = (uint8_t)chosen;
+    node->slot_n = chosen;
     node->flags = is_local_primary ? 0x01U : 0x00U;
     node->ref_count = 1U;
 
@@ -263,7 +316,11 @@ meshx_err_t meshx_nat_slot_assign(meshx_nat_mgr_t *mgr,
     {
         mgr->local_global_subnet_id = global_subnet_id;
     }
-    (void)meshx_nat_recompute_slot_digest(mgr);
+    meshx_err_t err = meshx_nat_recompute_slot_digest(mgr, NULL);
+    if (err != MESHX_SUCCESS)
+    {
+        return err;
+    }
 
     if (out_slot_n)
     {
@@ -317,85 +374,107 @@ meshx_err_t meshx_nat_slot_release(meshx_nat_mgr_t *mgr, uint32_t global_subnet_
     }
 
     void *p = (void *)cur;
-    (void)MESHX_FREE(&p);
-    (void)meshx_nat_recompute_slot_digest(mgr);
-    return MESHX_SUCCESS;
+    meshx_err_t ferr = MESHX_FREE(&p);
+    if (ferr != MESHX_SUCCESS)
+    {
+        return ferr;
+    }
+    return meshx_nat_recompute_slot_digest(mgr, NULL);
 }
 
 /**
  * @brief Lookup slot index N [0..13] by Global Subnet ID.
  *
- * @param[in] mgr              Pointer to NAT manager.
- * @param[in] global_subnet_id Subnet identifier.
- * @return Slot index [0..13], or -1 if not found.
+ * @param[in]  mgr              Pointer to NAT manager.
+ * @param[in]  global_subnet_id Subnet identifier.
+ * @param[out] out_slot_n       Destination for slot index [0..13].
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG on NULL pointers, or MESHX_NOT_FOUND.
  */
-int8_t meshx_nat_slot_get_by_global_id(const meshx_nat_mgr_t *mgr, uint32_t global_subnet_id)
+meshx_err_t meshx_nat_slot_get_by_global_id(const meshx_nat_mgr_t *mgr,
+                                            uint32_t global_subnet_id,
+                                            uint8_t *out_slot_n)
 {
-    if (!mgr)
+    if (!mgr || !out_slot_n)
     {
-        return -1;
+        return MESHX_INVALID_ARG;
     }
-    const meshx_local_slot_entry_t *e = find_slot_by_global_id(mgr, global_subnet_id);
-    return e ? (int8_t)e->slot_n : -1;
+    meshx_local_slot_entry_t *e = NULL;
+    meshx_err_t err = find_slot_by_global_id(mgr, global_subnet_id, &e);
+    if (err != MESHX_SUCCESS)
+    {
+        return err;
+    }
+    *out_slot_n = e->slot_n;
+    return MESHX_SUCCESS;
 }
 
 /**
  * @brief Lookup slot index N [0..13] by local NetKey Index.
  *
- * @param[in] mgr           Pointer to NAT manager.
- * @param[in] local_net_idx Local NetKey Index.
- * @return Slot index [0..13], or -1 if not found.
+ * @param[in]  mgr           Pointer to NAT manager.
+ * @param[in]  local_net_idx Local NetKey Index.
+ * @param[out] out_slot_n    Destination for slot index [0..13].
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG on invalid args, or MESHX_NOT_FOUND.
  */
-int8_t meshx_nat_slot_get_by_net_idx(const meshx_nat_mgr_t *mgr, uint16_t local_net_idx)
+meshx_err_t meshx_nat_slot_get_by_net_idx(const meshx_nat_mgr_t *mgr,
+                                          uint16_t local_net_idx,
+                                          uint8_t *out_slot_n)
 {
-    if (!mgr || local_net_idx == MESHX_NET_IDX_INVALID)
+    if (!mgr || !out_slot_n || local_net_idx == MESHX_NET_IDX_INVALID)
     {
-        return -1;
+        return MESHX_INVALID_ARG;
     }
     for (meshx_local_slot_entry_t *c = mgr->slots.head; c != NULL; c = c->next)
     {
         if (c->local_net_idx == local_net_idx)
         {
-            return (int8_t)c->slot_n;
+            *out_slot_n = c->slot_n;
+            return MESHX_SUCCESS;
         }
     }
-    return -1;
+    return MESHX_NOT_FOUND;
 }
 
 /**
  * @brief Get Global Subnet ID associated with a local NetKey Index.
  *
- * @param[in] mgr           Pointer to NAT manager.
- * @param[in] local_net_idx Local NetKey Index.
- * @return Associated Global Subnet ID, or MESHX_GLOBAL_SUBNET_INVALID if not found.
+ * @param[in]  mgr           Pointer to NAT manager.
+ * @param[in]  local_net_idx Local NetKey Index.
+ * @param[out] out_global_id Destination for associated Global Subnet ID.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG on invalid args, or MESHX_NOT_FOUND.
  */
-uint32_t meshx_nat_get_global_id_by_net_idx(const meshx_nat_mgr_t *mgr, uint16_t local_net_idx)
+meshx_err_t meshx_nat_get_global_id_by_net_idx(const meshx_nat_mgr_t *mgr,
+                                               uint16_t local_net_idx,
+                                               uint32_t *out_global_id)
 {
-    if (!mgr || local_net_idx == MESHX_NET_IDX_INVALID)
+    if (!mgr || !out_global_id || local_net_idx == MESHX_NET_IDX_INVALID)
     {
-        return MESHX_GLOBAL_SUBNET_INVALID;
+        return MESHX_INVALID_ARG;
     }
+    *out_global_id = MESHX_GLOBAL_SUBNET_INVALID;
     for (meshx_local_slot_entry_t *c = mgr->slots.head; c != NULL; c = c->next)
     {
         if (c->local_net_idx == local_net_idx)
         {
-            return c->global_subnet_id;
+            *out_global_id = c->global_subnet_id;
+            return MESHX_SUCCESS;
         }
     }
-    return MESHX_GLOBAL_SUBNET_INVALID;
+    return MESHX_NOT_FOUND;
 }
 
 /**
  * @brief Deterministically update slot coordinator & recompute 32-bit CRC32 Slot Digest.
  *
- * @param[in,out] mgr Pointer to NAT manager.
- * @return Computed 32-bit CRC Slot Digest.
+ * @param[in,out] mgr        Pointer to NAT manager.
+ * @param[out]    out_digest Optional destination for computed 32-bit CRC Slot Digest (may be NULL).
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p mgr is NULL.
  */
-uint32_t meshx_nat_recompute_slot_digest(meshx_nat_mgr_t *mgr)
+meshx_err_t meshx_nat_recompute_slot_digest(meshx_nat_mgr_t *mgr, uint32_t *out_digest)
 {
     if (!mgr)
     {
-        return 0UL;
+        return MESHX_INVALID_ARG;
     }
     uint8_t buf[MESHX_SLOT_MAX * 6U];
     size_t pos = 0U;
@@ -419,8 +498,20 @@ uint32_t meshx_nat_recompute_slot_digest(meshx_nat_mgr_t *mgr)
     }
 
     mgr->slots.coordinator_slot = lowest_slot;
-    mgr->slots.table_digest_crc32 = (pos > 0U) ? meshx_subnet_crc32(buf, pos) : 0UL;
-    return mgr->slots.table_digest_crc32;
+    mgr->slots.table_digest_crc32 = 0UL;
+    if (pos > 0U)
+    {
+        meshx_err_t cerr = meshx_subnet_crc32(buf, pos, &mgr->slots.table_digest_crc32);
+        if (cerr != MESHX_SUCCESS)
+        {
+            return cerr;
+        }
+    }
+    if (out_digest)
+    {
+        *out_digest = mgr->slots.table_digest_crc32;
+    }
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -469,29 +560,98 @@ meshx_err_t meshx_nat_reverse_tier1(uint16_t virtual_addr, uint8_t *out_slot_n, 
 }
 
 /**
- * @brief Allocate or lookup Tier-2 NAT mapping (0x7800..0x7FFF) with LRU eviction support.
+ * @brief Deterministically pick an unused Tier-2 virtual address (0x7800..0x7FFF) for a 4-tuple flow.
  *
- * @param[in,out] mgr               Pointer to NAT manager.
- * @param[in]     uuid8             Pointer to 8-byte device UUID prefix.
- * @param[in]     global_subnet_src Origin island Global Subnet ID.
- * @param[in]     orig_addr         True unicast address in origin island (>= 0x0400).
- * @param[in]     flags             MESHX_NAT_FLAG_* attributes.
- * @param[in]     now_min           Current monotonic minute timestamp for LRU tracking.
- * @param[out]    out_virtual_addr  Destination for allocated virtual address (0x7800..0x7FFF).
- * @return MESHX_SUCCESS on success, MESHX_SUBNET_ERR_NAT_FULL if table full with no evictable entries.
+ * @param[in]  mgr               Pointer to NAT manager.
+ * @param[in]  global_subnet_src Origin island Global Subnet ID.
+ * @param[in]  orig_addr         Origin physical unicast address.
+ * @param[in]  global_subnet_dst Destination island Global Subnet ID.
+ * @param[in]  dst_addr          Destination physical unicast address.
+ * @param[out] out_vaddr         Destination for selected virtual address (0x7800..0x7FFF).
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p mgr or @p out_vaddr is NULL.
  */
-meshx_err_t meshx_nat_tier2_alloc(meshx_nat_mgr_t *mgr,
-                                  const meshx_subnet_uuid8_t *uuid8,
-                                  uint32_t global_subnet_src,
-                                  uint16_t orig_addr,
-                                  uint8_t flags,
-                                  uint16_t now_min,
-                                  uint16_t *out_virtual_addr)
+static meshx_err_t pick_tier2_virtual_addr(const meshx_nat_mgr_t *mgr,
+                                           uint32_t global_subnet_src,
+                                           uint16_t orig_addr,
+                                           uint32_t global_subnet_dst,
+                                           uint16_t dst_addr,
+                                           uint16_t *out_vaddr)
 {
-    if (!mgr || !out_virtual_addr || orig_addr == 0U)
+    if (!mgr || !out_vaddr)
     {
         return MESHX_INVALID_ARG;
     }
+    uint8_t hash_in[12] = {
+        MESHX_BE_BYTE(global_subnet_src, MESHX_SHIFT_MSB32),
+        MESHX_BE_BYTE(global_subnet_src, MESHX_SHIFT_BYTE2),
+        MESHX_BE_BYTE(global_subnet_src, MESHX_SHIFT_BYTE1),
+        MESHX_BE_BYTE(global_subnet_src, MESHX_SHIFT_LSB),
+        MESHX_BE_BYTE(orig_addr, MESHX_SHIFT_BYTE1),
+        MESHX_BE_BYTE(orig_addr, MESHX_SHIFT_LSB),
+        MESHX_BE_BYTE(global_subnet_dst, MESHX_SHIFT_MSB32),
+        MESHX_BE_BYTE(global_subnet_dst, MESHX_SHIFT_BYTE2),
+        MESHX_BE_BYTE(global_subnet_dst, MESHX_SHIFT_BYTE1),
+        MESHX_BE_BYTE(global_subnet_dst, MESHX_SHIFT_LSB),
+        MESHX_BE_BYTE(dst_addr, MESHX_SHIFT_BYTE1),
+        MESHX_BE_BYTE(dst_addr, MESHX_SHIFT_LSB),
+    };
+    uint16_t raw_crc = 0U;
+    meshx_err_t cerr = meshx_subnet_crc16(hash_in, sizeof(hash_in), &raw_crc);
+    if (cerr != MESHX_SUCCESS)
+    {
+        return cerr;
+    }
+    uint16_t hash = (uint16_t)(raw_crc & 0x07FFU);
+    uint16_t cand = (uint16_t)(MESHX_NAT_TIER2_START + hash);
+    for (uint16_t probe = 0U; probe < MESHX_NAT_TIER2_CAP; probe++)
+    {
+        bool taken = false;
+        for (size_t j = 0; j < MESHX_NAT_TIER2_CAP; j++)
+        {
+            if ((mgr->tier2[j].flags & MESHX_NAT_FLAG_VALID) != 0U &&
+                mgr->tier2[j].virtual_addr == cand)
+            {
+                taken = true;
+                break;
+            }
+        }
+        if (!taken)
+        {
+            break;
+        }
+        hash = (uint16_t)((hash + 1U) & 0x07FFU);
+        cand = (uint16_t)(MESHX_NAT_TIER2_START + hash);
+    }
+    *out_vaddr = cand;
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Allocate or lookup Tier-2 NAT mapping keyed by full bidirectional 4-tuple.
+ *
+ * @param[in,out] mgr              Pointer to NAT manager.
+ * @param[in]     req              Pointer to 4-tuple flow allocation request.
+ * @param[out]    out_virtual_addr Pointer to receive assigned Tier-2 virtual address.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_nat_tier2_alloc_flow(meshx_nat_mgr_t *mgr,
+                                       const meshx_nat_tier2_flow_req_t *req,
+                                       uint16_t *out_virtual_addr)
+{
+    if (!mgr || !req || !out_virtual_addr || req->orig_addr == 0U)
+    {
+        return MESHX_INVALID_ARG;
+    }
+
+    const meshx_subnet_uuid8_t *uuid8 = req->uuid8;
+    uint32_t global_subnet_src = req->global_subnet_src;
+    uint16_t orig_addr = req->orig_addr;
+    uint32_t global_subnet_dst = req->global_subnet_dst;
+    uint16_t dst_addr = req->dst_addr;
+    uint16_t egress_net_idx = req->egress_net_idx;
+    uint8_t flags = req->flags;
+    uint16_t now_min = req->now_min;
 
     int free_idx = -1;
     int lru_evict_idx = -1;
@@ -508,10 +668,17 @@ meshx_err_t meshx_nat_tier2_alloc(meshx_nat_mgr_t *mgr,
             }
             continue;
         }
-        if (e->global_subnet_src == global_subnet_src && e->orig_addr == orig_addr)
+        if (e->global_subnet_src == global_subnet_src &&
+            e->orig_addr == orig_addr &&
+            e->global_subnet_dst == global_subnet_dst &&
+            e->dst_addr == dst_addr)
         {
             e->last_active_min = now_min;
             e->flags |= (uint8_t)(flags | MESHX_NAT_FLAG_VALID);
+            if (egress_net_idx != 0U)
+            {
+                e->egress_net_idx = egress_net_idx;
+            }
             if (uuid8)
             {
                 memcpy(e->uuid.bytes, uuid8->bytes, MESHX_SUBNET_UUID8_LEN);
@@ -540,13 +707,106 @@ meshx_err_t meshx_nat_tier2_alloc(meshx_nat_mgr_t *mgr,
         memcpy(dst->uuid.bytes, uuid8->bytes, MESHX_SUBNET_UUID8_LEN);
     }
     dst->global_subnet_src = global_subnet_src;
+    dst->global_subnet_dst = global_subnet_dst;
     dst->orig_addr = orig_addr;
-    dst->virtual_addr = (uint16_t)(MESHX_NAT_TIER2_START + (uint16_t)idx);
+    dst->dst_addr = dst_addr;
+    dst->egress_net_idx = egress_net_idx;
+    uint16_t vaddr = 0U;
+    meshx_err_t perr = pick_tier2_virtual_addr(mgr, global_subnet_src, orig_addr,
+                                               global_subnet_dst, dst_addr, &vaddr);
+    if (perr != MESHX_SUCCESS)
+    {
+        return perr;
+    }
+    dst->virtual_addr = vaddr;
     dst->flags = (uint8_t)(flags | MESHX_NAT_FLAG_VALID);
     dst->last_active_min = now_min;
 
     *out_virtual_addr = dst->virtual_addr;
     return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Allocate or lookup Tier-2 NAT mapping using a 2-tuple source key.
+ *
+ * @param[in,out] mgr               Pointer to NAT manager.
+ * @param[in]     uuid8             Optional 8-byte device UUID prefix.
+ * @param[in]     global_subnet_src Origin Global Subnet ID.
+ * @param[in]     orig_addr         Origin physical unicast address.
+ * @param[in]     flags             Entry flags (MESHX_NAT_FLAG_*).
+ * @param[in]     now_min           Current monotonic time in minutes.
+ * @param[out]    out_virtual_addr  Pointer to receive assigned Tier-2 virtual address.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_nat_tier2_alloc(meshx_nat_mgr_t *mgr,
+                                  const meshx_subnet_uuid8_t *uuid8,
+                                  uint32_t global_subnet_src,
+                                  uint16_t orig_addr,
+                                  uint8_t flags,
+                                  uint16_t now_min,
+                                  uint16_t *out_virtual_addr)
+{
+    meshx_nat_tier2_flow_req_t req = {
+        .uuid8             = uuid8,
+        .global_subnet_src = global_subnet_src,
+        .orig_addr         = orig_addr,
+        .global_subnet_dst = 0UL,
+        .dst_addr          = 0U,
+        .egress_net_idx    = 0U,
+        .flags             = flags,
+        .now_min           = now_min,
+    };
+    return meshx_nat_tier2_alloc_flow(mgr, &req, out_virtual_addr);
+}
+
+/**
+ * @brief Reverse Tier-2 Virtual Address by (egress_net_idx, virtual_proxy_addr).
+ *
+ * @param[in]  mgr                   Pointer to NAT manager.
+ * @param[in]  egress_net_idx        Egress NetKey index.
+ * @param[in]  virtual_addr          Tier-2 virtual proxy address.
+ * @param[out] out_global_subnet_src Optional output for origin Global Subnet ID.
+ * @param[out] out_orig_addr         Optional output for origin physical address.
+ * @param[out] out_global_subnet_dst Optional output for destination Global Subnet ID.
+ * @param[out] out_dst_addr          Optional output for destination physical address.
+ *
+ * @return MESHX_SUCCESS on success, or MESHX_NOT_FOUND / MESHX_INVALID_ARG.
+ */
+meshx_err_t meshx_nat_tier2_reverse_by_net(const meshx_nat_mgr_t *mgr,
+                                           uint16_t egress_net_idx,
+                                           uint16_t virtual_addr,
+                                           uint32_t *out_global_subnet_src,
+                                           uint16_t *out_orig_addr,
+                                           uint32_t *out_global_subnet_dst,
+                                           uint16_t *out_dst_addr)
+{
+    if (!mgr || !out_global_subnet_src || !out_orig_addr ||
+        virtual_addr < MESHX_NAT_TIER2_START || virtual_addr > MESHX_NAT_TIER2_END)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    for (size_t i = 0; i < MESHX_NAT_TIER2_CAP; i++)
+    {
+        const meshx_nat_entry_t *e = &mgr->tier2[i];
+        if ((e->flags & MESHX_NAT_FLAG_VALID) != 0U &&
+            e->virtual_addr == virtual_addr &&
+            (e->egress_net_idx == egress_net_idx || e->egress_net_idx == 0U))
+        {
+            *out_global_subnet_src = e->global_subnet_src;
+            *out_orig_addr = e->orig_addr;
+            if (out_global_subnet_dst)
+            {
+                *out_global_subnet_dst = e->global_subnet_dst;
+            }
+            if (out_dst_addr)
+            {
+                *out_dst_addr = e->dst_addr;
+            }
+            return MESHX_SUCCESS;
+        }
+    }
+    return MESHX_NOT_FOUND;
 }
 
 /**
@@ -584,15 +844,16 @@ meshx_err_t meshx_nat_tier2_reverse(const meshx_nat_mgr_t *mgr,
 /**
  * @brief Evict expired TEMP_DISCOVERY Tier-2 entries (TTL > 5 min).
  *
- * @param[in,out] mgr     Pointer to NAT manager.
- * @param[in]     now_min Current monotonic minute timestamp.
- * @return Number of expired entries purged.
+ * @param[in,out] mgr         Pointer to NAT manager.
+ * @param[in]     now_min     Current monotonic minute timestamp.
+ * @param[out]    out_evicted Optional destination for number of expired entries purged (may be NULL).
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p mgr is NULL.
  */
-uint8_t meshx_nat_tier2_gc(meshx_nat_mgr_t *mgr, uint16_t now_min)
+meshx_err_t meshx_nat_tier2_gc(meshx_nat_mgr_t *mgr, uint16_t now_min, uint8_t *out_evicted)
 {
     if (!mgr)
     {
-        return 0U;
+        return MESHX_INVALID_ARG;
     }
     uint8_t evicted = 0U;
     for (size_t i = 0; i < MESHX_NAT_TIER2_CAP; i++)
@@ -607,7 +868,11 @@ uint8_t meshx_nat_tier2_gc(meshx_nat_mgr_t *mgr, uint16_t now_min)
             evicted++;
         }
     }
-    return evicted;
+    if (out_evicted)
+    {
+        *out_evicted = evicted;
+    }
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -632,7 +897,9 @@ meshx_err_t meshx_nat_tier2_apply_sync(meshx_nat_mgr_t *mgr, const meshx_nat_ent
         if ((e->flags & MESHX_NAT_FLAG_VALID) != 0U)
         {
             if (e->global_subnet_src == entry->global_subnet_src &&
-                e->orig_addr == entry->orig_addr)
+                e->orig_addr == entry->orig_addr &&
+                e->global_subnet_dst == entry->global_subnet_dst &&
+                e->dst_addr == entry->dst_addr)
             {
                 match_idx = i;
                 break;
@@ -670,7 +937,18 @@ meshx_err_t meshx_nat_tier2_apply_sync(meshx_nat_mgr_t *mgr, const meshx_nat_ent
     if (mgr->tier2[idx].virtual_addr < MESHX_NAT_TIER2_START ||
         mgr->tier2[idx].virtual_addr > MESHX_NAT_TIER2_END)
     {
-        mgr->tier2[idx].virtual_addr = (uint16_t)(MESHX_NAT_TIER2_START + (uint16_t)idx);
+        uint16_t vaddr = 0U;
+        meshx_err_t perr = pick_tier2_virtual_addr(mgr,
+                                                   entry->global_subnet_src,
+                                                   entry->orig_addr,
+                                                   entry->global_subnet_dst,
+                                                   entry->dst_addr,
+                                                   &vaddr);
+        if (perr != MESHX_SUCCESS)
+        {
+            return perr;
+        }
+        mgr->tier2[idx].virtual_addr = vaddr;
     }
     return MESHX_SUCCESS;
 }
@@ -699,10 +977,11 @@ meshx_err_t meshx_nat_translate_inbound(meshx_nat_mgr_t *mgr,
     {
         return MESHX_INVALID_ARG;
     }
-    int8_t slot_n = meshx_nat_slot_get_by_global_id(mgr, global_subnet_src);
-    if (slot_n >= 0 && orig_addr < MESHX_NAT_ADDR_LIMIT_TIER1)
+    uint8_t slot_n = 0U;
+    if (meshx_nat_slot_get_by_global_id(mgr, global_subnet_src, &slot_n) == MESHX_SUCCESS &&
+        orig_addr < MESHX_NAT_ADDR_LIMIT_TIER1)
     {
-        return meshx_nat_translate_tier1((uint8_t)slot_n, orig_addr, out_virtual_addr);
+        return meshx_nat_translate_tier1(slot_n, orig_addr, out_virtual_addr);
     }
     return meshx_nat_tier2_alloc(mgr, uuid8, global_subnet_src, orig_addr, flags, now_min, out_virtual_addr);
 }
@@ -735,10 +1014,11 @@ meshx_err_t meshx_nat_translate_outbound(const meshx_nat_mgr_t *mgr,
         {
             return err;
         }
-        const meshx_local_slot_entry_t *slot = find_slot_by_slot_n(mgr, slot_n);
-        if (!slot)
+        meshx_local_slot_entry_t *slot = NULL;
+        err = find_slot_by_slot_n(mgr, slot_n, &slot);
+        if (err != MESHX_SUCCESS || !slot)
         {
-            return MESHX_NOT_FOUND;
+            return (err == MESHX_INVALID_ARG) ? err : MESHX_NOT_FOUND;
         }
         *out_global_subnet_id = slot->global_subnet_id;
         *out_phys_addr = phys;
@@ -763,12 +1043,12 @@ meshx_err_t meshx_nat_translate_outbound(const meshx_nat_mgr_t *mgr,
  */
 meshx_err_t meshx_nat_prefix_group_addr(uint8_t slot_n, uint16_t orig_group_addr, uint16_t *out_prefixed_group)
 {
-    if (!out_prefixed_group || slot_n >= MESHX_SLOT_MAX || orig_group_addr < 0xC000U)
+    if (!out_prefixed_group || slot_n >= MESHX_SLOT_MAX || orig_group_addr < MESHX_ADDR_GROUP_START)
     {
         return MESHX_INVALID_ARG;
     }
     uint16_t offset = (uint16_t)(orig_group_addr & MESHX_GROUP_OFFSET_MASK);
-    *out_prefixed_group = (uint16_t)(0xC000U + ((uint16_t)(slot_n + 1U) << MESHX_NAT_SLOT_SHIFT) + offset);
+    *out_prefixed_group = (uint16_t)(MESHX_ADDR_GROUP_START + ((uint16_t)(slot_n + 1U) << MESHX_NAT_SLOT_SHIFT) + offset);
     return MESHX_SUCCESS;
 }
 
@@ -787,13 +1067,13 @@ meshx_err_t meshx_nat_unprefix_group_addr(uint16_t prefixed_group, uint8_t *out_
     {
         return MESHX_INVALID_ARG;
     }
-    uint8_t band = (uint8_t)((prefixed_group - 0xC000U) >> MESHX_NAT_SLOT_SHIFT);
+    uint8_t band = (uint8_t)((prefixed_group - MESHX_ADDR_GROUP_START) >> MESHX_NAT_SLOT_SHIFT);
     if (band == 0U || band > MESHX_SLOT_MAX)
     {
         return MESHX_INVALID_ARG;
     }
     *out_slot_n = (uint8_t)(band - 1U);
-    *out_orig_group_addr = (uint16_t)(0xC000U + (prefixed_group & MESHX_GROUP_OFFSET_MASK));
+    *out_orig_group_addr = (uint16_t)(MESHX_ADDR_GROUP_START + (prefixed_group & MESHX_GROUP_OFFSET_MASK));
     return MESHX_SUCCESS;
 }
 
@@ -803,38 +1083,66 @@ meshx_err_t meshx_nat_unprefix_group_addr(uint16_t prefixed_group, uint8_t *out_
  * @param[in,out] mgr          Pointer to NAT manager.
  * @param[in]     group_offset 10-bit group offset (0..1023).
  * @param[in]     allow        true to permit forwarding, false to block.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p mgr is NULL.
  */
-void meshx_nat_set_group_forward_mask(meshx_nat_mgr_t *mgr, uint16_t group_offset, bool allow)
+meshx_err_t meshx_nat_set_group_forward_mask(meshx_nat_mgr_t *mgr, uint16_t group_offset, bool allow)
 {
     if (!mgr)
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
-    uint32_t bit = 1UL << (group_offset & 31U);
+    uint16_t off = (uint16_t)(group_offset & MESHX_GROUP_OFFSET_MASK);
+    uint32_t word = (uint32_t)(off >> 5U);
+    uint32_t bit = 1UL << (off & 31U);
     if (allow)
     {
-        mgr->group_forward_bitmap |= bit;
+        mgr->group_forward_bits[word] |= bit;
+        if (word == 0U)
+        {
+            mgr->group_forward_bitmap |= bit;
+        }
     }
     else
     {
-        mgr->group_forward_bitmap &= ~bit;
+        mgr->group_forward_bits[word] &= ~bit;
+        if (word == 0U)
+        {
+            mgr->group_forward_bitmap &= ~bit;
+        }
     }
+    return MESHX_SUCCESS;
 }
 
 /**
  * @brief Check whether forwarding is allowed for a group address.
  *
- * @param[in] mgr        Pointer to NAT manager.
- * @param[in] group_addr Group address to evaluate.
- * @return true if forwarding is permitted by policy mask, false otherwise.
+ * @param[in]  mgr         Pointer to NAT manager.
+ * @param[in]  group_addr  Group address to evaluate.
+ * @param[out] out_allowed Destination for forwarding permission result.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p mgr or @p out_allowed is NULL.
  */
-bool meshx_nat_is_group_forward_allowed(const meshx_nat_mgr_t *mgr, uint16_t group_addr)
+meshx_err_t meshx_nat_is_group_forward_allowed(const meshx_nat_mgr_t *mgr,
+                                               uint16_t group_addr,
+                                               bool *out_allowed)
 {
-    if (!mgr || group_addr < 0xC000U)
+    if (!mgr || !out_allowed)
     {
-        return false;
+        return MESHX_INVALID_ARG;
     }
-    uint16_t offset = (uint16_t)(group_addr & MESHX_GROUP_OFFSET_MASK);
-    uint32_t bit = 1UL << (offset & 31U);
-    return (mgr->group_forward_bitmap & bit) != 0UL;
+    if (group_addr < MESHX_ADDR_GROUP_START)
+    {
+        *out_allowed = false;
+        return MESHX_SUCCESS;
+    }
+    if (group_addr < MESHX_ADDR_GROUP_START)
+    {
+        *out_allowed = false;
+        return MESHX_SUCCESS;
+    }
+    uint16_t off = (uint16_t)(group_addr & MESHX_GROUP_OFFSET_MASK);
+    uint32_t word = (uint32_t)(off >> 5U);
+    uint32_t bit = 1UL << (off & 31U);
+    *out_allowed = ((mgr->group_forward_bits[word] & bit) != 0UL) ||
+                   (word == 0U && (mgr->group_forward_bitmap & bit) != 0UL);
+    return MESHX_SUCCESS;
 }

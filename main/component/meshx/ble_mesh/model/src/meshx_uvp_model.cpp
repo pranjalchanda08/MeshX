@@ -146,6 +146,54 @@ meshx_err_t meshXUVPModel::send_with_func_id(uint16_t dst_addr, uint16_t type_id
     return err;
 }
 
+/**
+ * @brief Send a UVP message with func_id prefix over a specific subnet NetKey index.
+ *
+ * @param[in] net_idx     Target BLE Mesh NetKey index.
+ * @param[in] dst_addr    Destination unicast, virtual, or group address.
+ * @param[in] type_id     UVP message type identifier.
+ * @param[in] func_id     Function ID to embed at the wire payload prefix.
+ * @param[in] payload     Application payload (may be nullptr if payload_len == 0).
+ * @param[in] payload_len Application payload length in bytes.
+ * @param[in] ack_req     Whether to request an ACK from the destination.
+ * @param[in] app_idx     AppKey index.
+ *
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshXUVPModel::send_with_func_id_on_subnet(uint16_t net_idx, uint16_t dst_addr, uint16_t type_id, uint16_t func_id, const void *payload, uint16_t payload_len, bool ack_req, uint16_t app_idx)
+{
+    MESHX_MODEL *p_model = this->get_plat_model();
+    if (!p_model)
+    {
+        return MESHX_INVALID_STATE;
+    }
+    const uint16_t wire_len = static_cast<uint16_t>(sizeof(uint16_t) + payload_len);
+    uint8_t stack_buf[64];
+    uint8_t *wire = stack_buf;
+    if (wire_len > static_cast<uint16_t>(sizeof(stack_buf)))
+    {
+        if (MESHX_MALLOC(&wire, wire_len) != MESHX_SUCCESS || !wire)
+        {
+            return MESHX_NO_MEM;
+        }
+    }
+
+    wire[0] = static_cast<uint8_t>(func_id & 0xFFu);
+    wire[1] = static_cast<uint8_t>((func_id >> 8u) & 0xFFu);
+    if (payload && payload_len > 0)
+    {
+        memcpy(wire + sizeof(uint16_t), payload, payload_len);
+    }
+
+    meshx_err_t err = meshx_uvp_send_on_subnet((void *)p_model, net_idx, dst_addr, type_id, wire, wire_len, ack_req, app_idx);
+
+    if (wire != stack_buf)
+    {
+        MESHX_FREE(&wire);
+    }
+    return err;
+}
+
 /*
  * @brief Create a platform-specific model instance.
  *

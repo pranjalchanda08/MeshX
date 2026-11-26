@@ -15,11 +15,11 @@ extern "C" {
 #endif
 
 /* Exact persisted NVS binary footprint:
- * - "sn_kbrg":  16B key + 4B cluster_epoch + 4B active_term + 1B valid = 25B
- * - "sn_nonc":   4B bridge_nonce_checkpoint                             =  4B
- * - "sn_nat":   1B count + 16 * 19B meshx_nat_entry_t                   = 305B
- * - "sl_pair":  1B count + 8 * 20B meshx_pair_record_t                  = 161B
- * Total <= 495 B (plus metadata/slot ids < 796 B < 1,024 B budget) */
+ * - "sn_kbrg":           16B key + 4B cluster_epoch + 4B active_term + 1B valid = 25B
+ * - "sn_nonc":            4B bridge_nonce_checkpoint                             =  4B
+ * - "sl_nat0"/"sl_nat1": 2 * (1B count + 8 * 27B meshx_nat_entry_t)              = 434B
+ * - "sl_pair":           1B count + 8 * 20B meshx_pair_record_t                  = 161B
+ * Total <= 624 B (< 1,024 B budget) */
 
 /**
  * @brief Persistent K_bridge cluster key record stored in NVS ("sn_kbrg").
@@ -67,15 +67,17 @@ typedef struct {
  * @brief Override default NVS operations (used primarily by host tests).
  *
  * @param[in] ops Pointer to custom NVS operations table, or NULL to reset to defaults.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p ops is non-NULL with NULL callbacks.
  */
-void meshx_subnet_nvs_set_ops(const meshx_subnet_nvs_ops_t *ops);
+meshx_err_t meshx_subnet_nvs_set_ops(const meshx_subnet_nvs_ops_t *ops);
 
 /**
  * @brief Get current active NVS operations table.
  *
- * @return Pointer to active operations structure.
+ * @param[out] out_ops Destination for pointer to active operations structure.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p out_ops is NULL.
  */
-const meshx_subnet_nvs_ops_t *meshx_subnet_nvs_get_ops(void);
+meshx_err_t meshx_subnet_nvs_get_ops(const meshx_subnet_nvs_ops_t **out_ops);
 
 /**
  * @brief Save Cluster Bridge Key blob to NVS.
@@ -84,6 +86,13 @@ const meshx_subnet_nvs_ops_t *meshx_subnet_nvs_get_ops(void);
  * @return MESHX_SUCCESS on success, or error code.
  */
 meshx_err_t meshx_subnet_nvs_save_kbridge(const meshx_nvs_kbridge_blob_t *blob);
+
+/**
+ * @brief Erase Cluster Bridge Key record from NVS on revocation.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_subnet_nvs_erase_kbridge(void);
 
 /**
  * @brief Load Cluster Bridge Key blob from NVS.

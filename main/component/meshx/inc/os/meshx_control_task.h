@@ -188,6 +188,7 @@ typedef enum __packed control_task_msg_evt_txcm
 typedef struct {
     uint16_t src_addr;             /**< Source address of the message */
     uint16_t dst_addr;             /**< Destination address of the message */
+    uint16_t net_idx;              /**< Ingress BLE Mesh NetKey index */
     uint8_t rx_el_id;              /**< Locally-resolved element index that received the message */
     meshx_uvp_header_t uvp_header; /**< Extracted UVP header */
 } control_task_uvp_meta_t;

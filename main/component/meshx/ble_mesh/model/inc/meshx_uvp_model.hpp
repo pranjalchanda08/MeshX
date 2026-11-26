@@ -82,6 +82,21 @@ public:
     meshx_err_t send_with_func_id(uint16_t dst_addr, uint16_t type_id, uint16_t func_id, const void* payload, uint16_t payload_len, bool ack_req = false, uint16_t app_idx = 0);
 
     /**
+     * @brief Send a UVP message with func_id prefix over a specific subnet NetKey index.
+     *
+     * @param net_idx     Target BLE Mesh NetKey index.
+     * @param dst_addr    Destination unicast, virtual, or group address.
+     * @param type_id     UVP message type identifier.
+     * @param func_id     Function ID to embed at the wire payload prefix.
+     * @param payload     Application payload (may be nullptr if payload_len == 0).
+     * @param payload_len Application payload length in bytes.
+     * @param ack_req     Whether to request an ACK from the destination.
+     * @param app_idx     App key index.
+     * @return MESHX_SUCCESS on success, error code otherwise.
+     */
+    meshx_err_t send_with_func_id_on_subnet(uint16_t net_idx, uint16_t dst_addr, uint16_t type_id, uint16_t func_id, const void* payload, uint16_t payload_len, bool ack_req = false, uint16_t app_idx = 0);
+
+    /**
      * @brief Create the platform-specific model instance.
      * 
      * For ESP-IDF, this populates the model_id with the combined 32-bit 

@@ -126,6 +126,7 @@ typedef enum {
     MXCP_CMD_SUBNET_BRIDGE_DEL         = 0x3D, /**< Unbind subnet bridge slot and purge queues */
     MXCP_CMD_SUBNET_RULE_SET           = 0x3E, /**< Configure cross-subnet bridge rule & group mask */
     MXCP_CMD_BRIDGE_CLUSTER_KEY_UPDATE = 0x3F, /**< Provision/rotate K_bridge cluster key + epoch */
+    MXCP_CMD_SUBNET_COMMISSION_PAIR    = 0x40, /**< REQ-F01.1 intent-driven probe/bind commissioning */
 
     MXCP_CMD_DISCOVER_CAPABILITIES = 0x70,
     MXCP_CMD_BIND_ELEMENTS         = 0x71,
@@ -198,6 +199,7 @@ typedef enum {
     MXCP_EVT_SUBNET_BRIDGE_DEL_RSP     = 0xBC, /**< Result of MXCP_CMD_SUBNET_BRIDGE_DEL */
     MXCP_EVT_SUBNET_RULE_SET_RSP       = 0xBD, /**< Result of MXCP_CMD_SUBNET_RULE_SET */
     MXCP_EVT_BRIDGE_CLUSTER_KEY_RSP    = 0xBE, /**< Result of MXCP_CMD_BRIDGE_CLUSTER_KEY_UPDATE */
+    MXCP_EVT_SUBNET_COMMISSION_RSP     = 0xBF, /**< Result of MXCP_CMD_SUBNET_COMMISSION_PAIR */
 
     MXCP_EVT_MAX
 } mxcp_evt_id_t;
@@ -695,7 +697,18 @@ typedef struct {
     uint32_t cluster_epoch;
     uint32_t active_term;
     uint8_t  k_bridge[16];
+    uint8_t  revoke;
 } MESHX_PACKED mxcp_cmd_cluster_key_update_t;
+
+/** @brief MXCP_CMD_SUBNET_COMMISSION_PAIR (0x40) */
+typedef struct {
+    uint16_t src_net_idx;
+    uint16_t local_elem_addr;
+    uint32_t remote_global_subnet_id;
+    uint16_t remote_phys_addr;
+    uint16_t func_id;
+    uint8_t  role_flags;
+} MESHX_PACKED mxcp_cmd_subnet_commission_pair_t;
 
 typedef struct {
     uint32_t global_subnet_id;

@@ -60,6 +60,7 @@ static int zephyr_uvp_rx_handler(const struct bt_mesh_model *model,
     control_task_uvp_meta_t uvp_ctx = {
         .src_addr = ctx->addr,
         .dst_addr = ctx->recv_dst,
+        .net_idx = ctx->net_idx,
         .rx_el_id = rx_el_id,
         .uvp_header = *header
     };
@@ -143,13 +144,28 @@ meshx_err_t meshx_plat_model_sub_del(void *p_model, uint16_t sub_addr)
     return MESHX_NOT_FOUND;
 }
 
-meshx_err_t meshx_uvp_send(void *p_model,
-                           uint16_t dst_addr,
-                           uint16_t type_id,
-                           const void *payload,
-                           uint16_t payload_len,
-                           bool ack_req,
-                           uint16_t app_idx)
+/**
+ * @brief Send a UVP message over a specific subnet NetKey index.
+ *
+ * @param[in] p_model     Pointer to platform vendor server model instance.
+ * @param[in] net_idx     Target BLE Mesh NetKey index.
+ * @param[in] dst_addr    Destination unicast, group, or virtual address.
+ * @param[in] type_id     UVP message type identifier.
+ * @param[in] payload     Pointer to payload bytes.
+ * @param[in] payload_len Length of payload in bytes.
+ * @param[in] ack_req     true to request transport acknowledgement.
+ * @param[in] app_idx     AppKey index.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_uvp_send_on_subnet(void *p_model,
+                                     uint16_t net_idx,
+                                     uint16_t dst_addr,
+                                     uint16_t type_id,
+                                     const void *payload,
+                                     uint16_t payload_len,
+                                     bool ack_req,
+                                     uint16_t app_idx)
 {
     struct bt_mesh_model *model = (struct bt_mesh_model *)p_model;
     if (!model || (!payload && payload_len > 0)) {
@@ -178,7 +194,7 @@ meshx_err_t meshx_uvp_send(void *p_model,
     }
 
     struct bt_mesh_msg_ctx ctx = {
-        .net_idx = BT_MESH_KEY_ANY,
+        .net_idx = net_idx,
         .app_idx = app_idx,
         .addr = dst_addr,
         .send_ttl = BT_MESH_TTL_DEFAULT,
@@ -205,5 +221,30 @@ meshx_err_t meshx_uvp_send(void *p_model,
 
     MESHX_FREE(&buffer);
     return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Send a UVP message using BT_MESH_KEY_ANY.
+ *
+ * @param[in] p_model     Pointer to platform vendor server model instance.
+ * @param[in] dst_addr    Destination unicast, group, or virtual address.
+ * @param[in] type_id     UVP message type identifier.
+ * @param[in] payload     Pointer to payload bytes.
+ * @param[in] payload_len Length of payload in bytes.
+ * @param[in] ack_req     true to request transport acknowledgement.
+ * @param[in] app_idx     AppKey index.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_uvp_send(void *p_model,
+                           uint16_t dst_addr,
+                           uint16_t type_id,
+                           const void *payload,
+                           uint16_t payload_len,
+                           bool ack_req,
+                           uint16_t app_idx)
+{
+    return meshx_uvp_send_on_subnet(p_model, BT_MESH_KEY_ANY, dst_addr, type_id,
+                                    payload, payload_len, ack_req, app_idx);
 }
 

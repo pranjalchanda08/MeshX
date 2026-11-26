@@ -177,6 +177,7 @@ typedef enum {
     MESHX_UVP_OP_SUBNET_DISCOVER_REQ         = 0xDC, /**< Node -> Proxy: cross-subnet capability query */
     MESHX_UVP_OP_SUBNET_DISCOVER_RSP         = 0xDD, /**< Proxy -> Node: capability response with virtual NAT addr */
     MESHX_UVP_OP_QUERY_SUBNET_DIRECTORY      = 0xDE, /**< Node -> Coordinator: pull global subnet directory */
+    MESHX_UVP_OP_SUBNET_DATA_TUNNEL          = 0xDF, /**< Node/Bridge <-> Bridge/Node: UVP cross-subnet data tunnel */
 } meshx_sys_msg_type_t;
 
 /**
@@ -526,6 +527,29 @@ meshx_err_t meshx_uvp_send(void       *p_model,
                            uint16_t    payload_len,
                            bool        ack_req,
                            uint16_t    app_idx);
+
+/**
+ * @brief Send a UVP message over a specific BLE Mesh subnet NetKey index.
+ *
+ * @param[in] p_model     Pointer to the UVP Vendor Model instance (meshx_model_t*).
+ * @param[in] net_idx     Target BLE Mesh NetKey index.
+ * @param[in] dst_addr    Destination unicast or group address.
+ * @param[in] type_id     Target element Type ID.
+ * @param[in] payload     Pointer to the TLV payload.
+ * @param[in] payload_len Length of the TLV payload.
+ * @param[in] ack_req     Whether ACK is requested.
+ * @param[in] app_idx     Application key index.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_uvp_send_on_subnet(void       *p_model,
+                                     uint16_t    net_idx,
+                                     uint16_t    dst_addr,
+                                     uint16_t    type_id,
+                                     const void *payload,
+                                     uint16_t    payload_len,
+                                     bool        ack_req,
+                                     uint16_t    app_idx);
 
 /**
  * @brief Start 15s eviction/blindness detection timer (Evicted Node side).

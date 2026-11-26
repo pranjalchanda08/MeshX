@@ -56,7 +56,7 @@ static meshx_err_t spy_nack(uint16_t net_idx, uint16_t dst_addr,
 static void test_queue_limits_and_backpressure(void)
 {
     meshx_router_queue_t q;
-    meshx_router_queue_init(&q);
+    assert(meshx_router_queue_init(&q) == MESHX_SUCCESS);
 
     uint8_t pdu[120];
     memset(pdu, 0xA5, sizeof(pdu));
@@ -119,11 +119,12 @@ static void test_queue_limits_and_backpressure(void)
     assert(g_host_alloc_count == alloc_at_full);
 
     /* Purge by boundary ID clears all 4 entries and frees heap cleanly */
-    uint8_t purged = meshx_router_queue_purge_boundary(&q, 0x22222222UL);
+    uint8_t purged = 0;
+    assert(meshx_router_queue_purge_boundary(&q, 0x22222222UL, &purged) == MESHX_SUCCESS);
     assert(purged == 4);
     assert(q.count == 0);
     assert(g_host_live_bytes == 0);
-    meshx_router_queue_deinit(&q);
+    assert(meshx_router_queue_deinit(&q) == MESHX_SUCCESS);
 }
 
 static void test_canonical_nonce_and_reasm_epoch(void)
@@ -145,7 +146,7 @@ static void test_canonical_nonce_and_reasm_epoch(void)
     /* Single-Epoch reassembly rejects mismatched epoch on same SAR flow */
     meshx_router_ctx_t ctx;
     test_router_spy_t spy = {0};
-    meshx_router_core_init(&ctx, spy_tx, spy_nack, &spy);
+    assert(meshx_router_core_init(&ctx, spy_tx, spy_nack, &spy) == MESHX_SUCCESS);
 
     uint8_t s0[12] = {1,2,3,4,5,6,7,8,9,10,11,12};
     uint8_t s1[12] = {13,14,15,16,17,18,19,20,21,22,23,24};
@@ -166,14 +167,14 @@ static void test_canonical_nonce_and_reasm_epoch(void)
     assert(meshx_router_reasm_segment(&ctx, &seg1_e2, &done) == MESHX_SUCCESS);
     assert(done);
     assert(ctx.reasm.len == 24);
-    meshx_router_core_deinit(&ctx);
+    assert(meshx_router_core_deinit(&ctx) == MESHX_SUCCESS);
 }
 
 static void test_stage2_retries_and_reliable_nack(void)
 {
     meshx_router_ctx_t ctx;
     test_router_spy_t spy = {0};
-    meshx_router_core_init(&ctx, spy_tx, spy_nack, &spy);
+    assert(meshx_router_core_init(&ctx, spy_tx, spy_nack, &spy) == MESHX_SUCCESS);
 
     uint8_t payload[16] = {0x11, 0x22, 0x33};
     meshx_router_enqueue_params_t p = {
@@ -218,7 +219,7 @@ static void test_stage2_retries_and_reliable_nack(void)
     assert(meshx_router_on_nack_ack(&ctx, nack_id) == MESHX_SUCCESS);
     assert(!ctx.pending_nack.active);
 
-    meshx_router_core_deinit(&ctx);
+    assert(meshx_router_core_deinit(&ctx) == MESHX_SUCCESS);
     assert(g_host_live_bytes == 0);
 }
 
