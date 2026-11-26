@@ -8,6 +8,8 @@
 #include "meshx_uvp_registry.hpp"
 #include <meshx_c_header.h>
 
+#if CONFIG_MESHX_ISLAND_SUBNET_COEXISTENCE
+
 /* =========================================================================
  * Island Subnet Coexistence integration bindings
  *
@@ -178,4 +180,13 @@ meshx_err_t meshx_uvp_register_island_handlers(void)
 
     return MESHX_SUCCESS;
 }
+
+#else /* !CONFIG_MESHX_ISLAND_SUBNET_COEXISTENCE */
+
+meshx_err_t meshx_uvp_register_island_handlers(void)
+{
+    return MESHX_SUCCESS;
+}
+
+#endif /* CONFIG_MESHX_ISLAND_SUBNET_COEXISTENCE */
 

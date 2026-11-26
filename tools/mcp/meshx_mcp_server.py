@@ -18,6 +18,8 @@ import concurrent.futures
 # Resolve repository root dynamically (tools/mcp/ -> repo root)
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCRIPTS_DIR = REPO_ROOT / "tools" / "scripts"
+MESHX_PY_NAME = "meshx.py"
+MESHX_SCRIPT_PATH = str(SCRIPTS_DIR / MESHX_PY_NAME)
 
 # Sensitive path scrubbing pattern
 USER_HOME = str(Path.home())
@@ -54,6 +56,100 @@ def sanitize_output(text: str) -> str:
     return text
 
 
+def _find_zephyr_base(project_root):
+    env_base = os.environ.get("ZEPHYR_BASE")
+    if env_base and (Path(env_base) / "VERSION").exists():
+        return env_base
+    candidates = [
+        Path("D:/Zephyr_Project/zephyr"),
+        project_root / "third_party" / "zephyr",
+        project_root.parent / "zephyr",
+    ]
+    for c in candidates:
+        if (c / "VERSION").exists():
+            return str(c)
+    return None
+
+
+def _find_zephyr_sdk(project_root):
+    env_sdk = os.environ.get("ZEPHYR_SDK_INSTALL_DIR") or os.environ.get("ZEPHYR_SDK_INSTALL")
+    if env_sdk and (Path(env_sdk) / "sdk_version").exists():
+        return env_sdk
+    candidates = [
+        Path("D:/Zephyr_Project/zephyr-sdk"),
+        project_root / "third_party" / "zephyr-sdk",
+        project_root / "tools" / "zephyr-sdk",
+        project_root.parent / "zephyr-sdk",
+    ]
+    for c in candidates:
+        if (c / "sdk_version").exists():
+            return str(c)
+    return None
+
+
+def _collect_user_script_dirs():
+    dirs = []
+    try:
+        import site
+        user_base = site.getuserbase()
+        v_tag = f"Python{sys.version_info.major}{sys.version_info.minor}"
+        dirs.extend([
+            os.path.join(user_base, v_tag, "Scripts"),
+            os.path.join(user_base, "Scripts"),
+        ])
+        local_app_data = os.environ.get("LOCALAPPDATA", "")
+        if local_app_data:
+            import glob
+            dirs.extend(glob.glob(os.path.join(local_app_data, "Packages", "PythonSoftwareFoundation.Python*", "LocalCache", "local-packages", v_tag, "Scripts")))
+            dirs.extend(glob.glob(os.path.join(local_app_data, "Programs", "Python", "Python*", "Scripts")))
+    except Exception:
+        pass
+    return [d for d in dirs if os.path.exists(d)]
+
+
+def _collect_system_tool_dirs():
+    dirs = []
+    for prog_dir in [os.environ.get("ProgramFiles", ""), os.environ.get("ProgramFiles(x86)", "")]:
+        if prog_dir:
+            dirs.extend([
+                os.path.join(prog_dir, "CMake", "bin"),
+                os.path.join(prog_dir, "Ninja"),
+            ])
+    local_app_data = os.environ.get("LOCALAPPDATA", "")
+    if local_app_data:
+        dirs.append(os.path.join(local_app_data, "Microsoft", "WinGet", "Links"))
+    return [d for d in dirs if os.path.exists(d)]
+
+
+def ensure_zephyr_env():
+    """Auto-discovers and ensures ZEPHYR_BASE, ZEPHYR_SDK_INSTALL_DIR, and west are in PATH/env."""
+    project_root = REPO_ROOT
+
+    base = _find_zephyr_base(project_root)
+    if base and "ZEPHYR_BASE" not in os.environ:
+        os.environ["ZEPHYR_BASE"] = base
+
+    sdk = _find_zephyr_sdk(project_root)
+    if sdk and "ZEPHYR_SDK_INSTALL_DIR" not in os.environ:
+        os.environ["ZEPHYR_SDK_INSTALL_DIR"] = sdk
+
+    paths_to_add = [
+        str(REPO_ROOT / "tools" / "bin"),
+        str(REPO_ROOT / "tools" / "scripts"),
+    ]
+    paths_to_add.extend(_collect_user_script_dirs())
+    paths_to_add.extend(_collect_system_tool_dirs())
+
+    current_path = os.environ.get("PATH", "")
+    new_parts = [p for p in paths_to_add if p.lower() not in current_path.lower()]
+    if new_parts:
+        os.environ["PATH"] = os.pathsep.join(new_parts) + os.pathsep + current_path
+
+
+# Initialize discovery early
+ensure_zephyr_env()
+
+
 def run_process_with_timeout(cmd, cwd=None, timeout=300):
     """Executes a command within the pre-initialized environment and captures output safely."""
     try:
@@ -66,7 +162,8 @@ def run_process_with_timeout(cmd, cwd=None, timeout=300):
             text=True,
             shell=isinstance(cmd, str),
             encoding="utf-8",
-            errors="replace"
+            errors="replace",
+            env=os.environ.copy()
         )
         stdout, _ = proc.communicate(timeout=timeout)
         return {
@@ -92,11 +189,16 @@ def tool_meshx_build(args):
     bsp = args.get("bsp", os.environ.get("MESHX_DEFAULT_BSP", "esp32_devkitC"))
     clean = args.get("clean", False)
     build_type = args.get("build_type", "Debug")
-    host = args.get("host", "esp")
+    host = args.get("host")
+    if not host:
+        host = "zephyr" if bsp in ["rpi_pico_w"] else "esp"
     defines = args.get("define")
     prod_name = args.get("prod_name")
 
-    cmd = [sys.executable, str(SCRIPTS_DIR / "meshx.py")]
+    if host == "zephyr":
+        ensure_zephyr_env()
+
+    cmd = [sys.executable, MESHX_SCRIPT_PATH]
     if clean:
         cmd.append("-bc")
     else:
@@ -122,8 +224,14 @@ def tool_meshx_flash(args):
     ports = parse_ports(args.get("port") or args.get("ports"))
     bsp = args.get("bsp", os.environ.get("MESHX_DEFAULT_BSP", "esp32_devkitC"))
     target = args.get("target", "all")
+    host = args.get("host")
+    if not host:
+        host = "zephyr" if bsp in ["rpi_pico_w"] else "esp"
 
-    cmd = [sys.executable, str(SCRIPTS_DIR / "meshx.py"), "-B", bsp, "-F", target]
+    if host == "zephyr":
+        ensure_zephyr_env()
+
+    cmd = [sys.executable, MESHX_SCRIPT_PATH, "-B", bsp, "-H", host, "-F", target]
     if ports:
         cmd.extend(["-P", *ports])
 
@@ -140,8 +248,14 @@ def tool_meshx_erase(args):
     target = args.get("target", "chip")
     ports = parse_ports(args.get("port") or args.get("ports"))
     bsp = args.get("bsp", os.environ.get("MESHX_DEFAULT_BSP", "esp32_devkitC"))
+    host = args.get("host")
+    if not host:
+        host = "zephyr" if bsp in ["rpi_pico_w"] else "esp"
 
-    cmd = [sys.executable, str(SCRIPTS_DIR / "meshx.py"), "-B", bsp, "-E", target]
+    if host == "zephyr":
+        ensure_zephyr_env()
+
+    cmd = [sys.executable, MESHX_SCRIPT_PATH, "-B", bsp, "-H", host, "-E", target]
     if ports:
         cmd.extend(["-P", *ports])
 
@@ -155,7 +269,7 @@ def tool_meshx_erase(args):
 
 
 def tool_meshx_list_bsps(args):
-    cmd = [sys.executable, str(SCRIPTS_DIR / "meshx.py"), "--list-bsp"]
+    cmd = [sys.executable, MESHX_SCRIPT_PATH, "--list-bsp"]
     res = run_process_with_timeout(cmd, timeout=30)
     return {
         "output": res["output"]
@@ -276,6 +390,7 @@ TOOLS = [
                     "description": "Array of serial ports for parallel flashing (e.g. ['COM3', 'COM4'])"
                 },
                 "bsp": {"type": "string", "description": "BSP target name"},
+                "host": {"type": "string", "enum": ["esp", "zephyr"], "description": "Target host (esp or zephyr)"},
                 "target": {"type": "string", "enum": ["firmware", "cfg", "all"], "description": "Flash component (default: all)"},
                 "timeout_seconds": {"type": "integer", "description": "Timeout in seconds (default: 300)"}
             }
@@ -294,7 +409,8 @@ TOOLS = [
                     "items": {"type": "string"},
                     "description": "Array of serial ports to erase in parallel"
                 },
-                "bsp": {"type": "string", "description": "BSP target name"}
+                "bsp": {"type": "string", "description": "BSP target name"},
+                "host": {"type": "string", "enum": ["esp", "zephyr"], "description": "Target host (esp or zephyr)"}
             }
         }
     },
@@ -347,6 +463,44 @@ TOOL_DISPATCH = {
 }
 
 
+def _handle_tools_call(req_id, params):
+    name = params.get("name")
+    arguments = params.get("arguments", {})
+    func = TOOL_DISPATCH.get(name)
+    if not func:
+        return {
+            "jsonrpc": "2.0",
+            "id": req_id,
+            "error": {
+                "code": -32601,
+                "message": f"Tool '{name}' not found"
+            }
+        }
+    try:
+        res = func(arguments)
+        return {
+            "jsonrpc": "2.0",
+            "id": req_id,
+            "result": {
+                "content": [
+                    {
+                        "type": "text",
+                        "text": json.dumps(res, indent=2)
+                    }
+                ]
+            }
+        }
+    except Exception as e:
+        return {
+            "jsonrpc": "2.0",
+            "id": req_id,
+            "error": {
+                "code": -32000,
+                "message": f"Execution error: {str(e)}"
+            }
+        }
+
+
 def handle_request(req):
     req_id = req.get("id")
     method = req.get("method")
@@ -367,9 +521,9 @@ def handle_request(req):
                 }
             }
         }
-    elif method == "notifications/initialized":
+    if method == "notifications/initialized":
         return None
-    elif method == "tools/list":
+    if method == "tools/list":
         return {
             "jsonrpc": "2.0",
             "id": req_id,
@@ -377,57 +531,22 @@ def handle_request(req):
                 "tools": TOOLS
             }
         }
-    elif method == "tools/call":
-        name = params.get("name")
-        arguments = params.get("arguments", {})
-        func = TOOL_DISPATCH.get(name)
-        if not func:
-            return {
-                "jsonrpc": "2.0",
-                "id": req_id,
-                "error": {
-                    "code": -32601,
-                    "message": f"Tool '{name}' not found"
-                }
-            }
-        try:
-            res = func(arguments)
-            return {
-                "jsonrpc": "2.0",
-                "id": req_id,
-                "result": {
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": json.dumps(res, indent=2)
-                        }
-                    ]
-                }
-            }
-        except Exception as e:
-            return {
-                "jsonrpc": "2.0",
-                "id": req_id,
-                "error": {
-                    "code": -32000,
-                    "message": f"Execution error: {str(e)}"
-                }
-            }
-    elif method == "ping":
+    if method == "tools/call":
+        return _handle_tools_call(req_id, params)
+    if method == "ping":
         return {
             "jsonrpc": "2.0",
             "id": req_id,
             "result": {}
         }
-    else:
-        return {
-            "jsonrpc": "2.0",
-            "id": req_id,
-            "error": {
-                "code": -32601,
-                "message": f"Method '{method}' not implemented"
-            }
+    return {
+        "jsonrpc": "2.0",
+        "id": req_id,
+        "error": {
+            "code": -32601,
+            "message": f"Method '{method}' not implemented"
         }
+    }
 
 
 def main():

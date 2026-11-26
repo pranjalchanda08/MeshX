@@ -265,9 +265,10 @@
 /**
  * @brief Enable Island Subnet Coexistence & Non-Destructive Bridging (Case 4).
  * Controlled via Kconfig on Zephyr or meshx_config_internal.h on ESP-IDF.
+ * Default is disabled (0) until target certification completes.
  */
 #ifndef CONFIG_MESHX_ISLAND_SUBNET_COEXISTENCE
-#define CONFIG_MESHX_ISLAND_SUBNET_COEXISTENCE       1
+#define CONFIG_MESHX_ISLAND_SUBNET_COEXISTENCE       0
 #endif
 
 #endif /* __MESHX_CONFIG_INTERNAL_H__ */

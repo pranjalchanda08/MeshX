@@ -156,22 +156,22 @@ meshx_err_t meshx_router_queue_push(meshx_router_queue_t *q,
     }
 
     memset(entry, 0, sizeof(*entry));
-    entry->ingress_boundary_id = params->ingress_boundary_id;
-    entry->egress_boundary_id = params->egress_boundary_id;
-    entry->seq_auth = params->seq_auth;
-    entry->orig_iv_index = params->orig_iv_index;
-    entry->rx_timestamp_ms = params->now_ms;
-    entry->canonical_src = params->canonical_src;
-    entry->canonical_dst = params->canonical_dst;
-    entry->orig_src_addr = params->orig_src_addr;
-    entry->orig_dst_addr = params->orig_dst_addr;
-    entry->ingress_src_addr = params->ingress_src_addr;
-    entry->tx_net_idx = params->tx_net_idx;
-    entry->epoch_id = params->epoch_id;
-    entry->pdu_len = params->pdu_len;
-    entry->ttl = params->ttl;
-    entry->tx_epoch = params->tx_epoch;
-    entry->flags = params->flags;
+    entry->ingress_boundary_id  = params->ingress_boundary_id;
+    entry->egress_boundary_id   = params->egress_boundary_id;
+    entry->seq_auth             = params->seq_auth;
+    entry->orig_iv_index        = params->orig_iv_index;
+    entry->rx_timestamp_ms      = params->now_ms;
+    entry->canonical_src        = params->canonical_src;
+    entry->canonical_dst        = params->canonical_dst;
+    entry->orig_src_addr        = params->orig_src_addr;
+    entry->orig_dst_addr        = params->orig_dst_addr;
+    entry->ingress_src_addr     = params->ingress_src_addr;
+    entry->tx_net_idx           = params->tx_net_idx;
+    entry->epoch_id             = params->epoch_id;
+    entry->pdu_len              = params->pdu_len;
+    entry->ttl                  = params->ttl;
+    entry->tx_epoch             = params->tx_epoch;
+    entry->flags                = params->flags;
 
     if (params->trans_mic.len > 0U)
     {

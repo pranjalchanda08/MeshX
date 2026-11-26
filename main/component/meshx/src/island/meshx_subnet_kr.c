@@ -17,11 +17,13 @@
  */
 static meshx_err_t wipe_bytes(uint8_t *buf, size_t len)
 {
-    if (!buf) {
+    if (!buf)
+    {
         return MESHX_INVALID_ARG;
     }
     volatile uint8_t *vp = (volatile uint8_t *)buf;
-    for (size_t i = 0; i < len; i++) {
+    for (size_t i = 0; i < len; i++)
+    {
         vp[i] = 0U;
     }
     return MESHX_SUCCESS;
@@ -36,7 +38,8 @@ static meshx_err_t wipe_bytes(uint8_t *buf, size_t len)
  */
 meshx_err_t meshx_subnet_kr_init(meshx_subnet_kr_mgr_t *mgr, bool has_k_bridge)
 {
-    if (!mgr) {
+    if (!mgr)
+    {
         return MESHX_INVALID_ARG;
     }
     memset(mgr, 0, sizeof(*mgr));
@@ -62,24 +65,30 @@ meshx_err_t meshx_subnet_kr_slot_bind(meshx_subnet_kr_mgr_t *mgr,
                                       uint32_t key_epoch,
                                       uint32_t iv_index)
 {
-    if (!mgr || !active_key || net_idx == MESHX_NET_IDX_INVALID) {
+    if (!mgr || !active_key || net_idx == MESHX_NET_IDX_INVALID)
+    {
         return MESHX_INVALID_ARG;
     }
 
     int target = -1;
     int first_free = -1;
-    for (int i = 0; i < (int)MESHX_MAX_BRIDGING_SLOTS; i++) {
-        if (mgr->slot_valid[i] && mgr->slots[i].net_idx == net_idx) {
+    for (int i = 0; i < (int)MESHX_MAX_BRIDGING_SLOTS; i++)
+    {
+        if (mgr->slot_valid[i] && mgr->slots[i].net_idx == net_idx)
+        {
             target = i;
             break;
         }
-        if (!mgr->slot_valid[i] && first_free < 0) {
+        if (!mgr->slot_valid[i] && first_free < 0)
+        {
             first_free = i;
         }
     }
 
-    if (target < 0) {
-        if (first_free < 0) {
+    if (target < 0)
+    {
+        if (first_free < 0)
+        {
             return MESHX_NO_MEM;
         }
         target = first_free;
@@ -87,15 +96,15 @@ meshx_err_t meshx_subnet_kr_slot_bind(meshx_subnet_kr_mgr_t *mgr,
 
     meshx_subnet_crypto_slot_t *slot = &mgr->slots[target];
     memset(slot, 0, sizeof(*slot));
-    slot->net_idx             = net_idx;
-    slot->global_subnet_id    = global_subnet_id;
-    slot->key_epoch           = key_epoch;
-    slot->kr_phase            = (uint8_t)MESHX_SUBNET_KR_PHASE_NORMAL;
+    slot->net_idx = net_idx;
+    slot->global_subnet_id = global_subnet_id;
+    slot->key_epoch = key_epoch;
+    slot->kr_phase = (uint8_t)MESHX_SUBNET_KR_PHASE_NORMAL;
     memcpy(slot->old_net_key.bytes, active_key->bytes, MESHX_SUBNET_KEY_LEN);
     slot->active_net_key_flag = 0U;
-    slot->iv_index            = iv_index;
-    slot->iv_update_flag      = 0U;
-    slot->last_seq_num        = 0UL;
+    slot->iv_index = iv_index;
+    slot->iv_update_flag = 0U;
+    slot->last_seq_num = 0UL;
 
     mgr->slot_valid[target] = 1U;
     return MESHX_SUCCESS;
@@ -110,17 +119,22 @@ meshx_err_t meshx_subnet_kr_slot_bind(meshx_subnet_kr_mgr_t *mgr,
  */
 meshx_err_t meshx_subnet_kr_slot_unbind(meshx_subnet_kr_mgr_t *mgr, uint16_t net_idx)
 {
-    if (!mgr) {
+    if (!mgr)
+    {
         return MESHX_INVALID_ARG;
     }
-    for (size_t i = 0; i < MESHX_MAX_BRIDGING_SLOTS; i++) {
-        if (mgr->slot_valid[i] && mgr->slots[i].net_idx == net_idx) {
+    for (size_t i = 0; i < MESHX_MAX_BRIDGING_SLOTS; i++)
+    {
+        if (mgr->slot_valid[i] && mgr->slots[i].net_idx == net_idx)
+        {
             meshx_err_t werr = wipe_bytes(mgr->slots[i].old_net_key.bytes, MESHX_SUBNET_KEY_LEN);
-            if (werr != MESHX_SUCCESS) {
+            if (werr != MESHX_SUCCESS)
+            {
                 return werr;
             }
             werr = wipe_bytes(mgr->slots[i].new_net_key.bytes, MESHX_SUBNET_KEY_LEN);
-            if (werr != MESHX_SUCCESS) {
+            if (werr != MESHX_SUCCESS)
+            {
                 return werr;
             }
             memset(&mgr->slots[i], 0, sizeof(mgr->slots[i]));
@@ -143,12 +157,15 @@ meshx_err_t meshx_subnet_kr_find_by_net_idx(meshx_subnet_kr_mgr_t *mgr,
                                             uint16_t net_idx,
                                             meshx_subnet_crypto_slot_t **out_slot)
 {
-    if (!mgr || !out_slot) {
+    if (!mgr || !out_slot)
+    {
         return MESHX_INVALID_ARG;
     }
     *out_slot = NULL;
-    for (size_t i = 0; i < MESHX_MAX_BRIDGING_SLOTS; i++) {
-        if (mgr->slot_valid[i] && mgr->slots[i].net_idx == net_idx) {
+    for (size_t i = 0; i < MESHX_MAX_BRIDGING_SLOTS; i++)
+    {
+        if (mgr->slot_valid[i] && mgr->slots[i].net_idx == net_idx)
+        {
             *out_slot = &mgr->slots[i];
             return MESHX_SUCCESS;
         }
@@ -168,12 +185,15 @@ meshx_err_t meshx_subnet_kr_find_by_global_id(meshx_subnet_kr_mgr_t *mgr,
                                               uint32_t global_subnet_id,
                                               meshx_subnet_crypto_slot_t **out_slot)
 {
-    if (!mgr || !out_slot) {
+    if (!mgr || !out_slot)
+    {
         return MESHX_INVALID_ARG;
     }
     *out_slot = NULL;
-    for (size_t i = 0; i < MESHX_MAX_BRIDGING_SLOTS; i++) {
-        if (mgr->slot_valid[i] && mgr->slots[i].global_subnet_id == global_subnet_id) {
+    for (size_t i = 0; i < MESHX_MAX_BRIDGING_SLOTS; i++)
+    {
+        if (mgr->slot_valid[i] && mgr->slots[i].global_subnet_id == global_subnet_id)
+        {
             *out_slot = &mgr->slots[i];
             return MESHX_SUCCESS;
         }
@@ -199,43 +219,48 @@ meshx_err_t meshx_subnet_kr_set_phase(meshx_subnet_kr_mgr_t *mgr,
 {
     meshx_subnet_crypto_slot_t *slot = NULL;
     meshx_err_t ferr = meshx_subnet_kr_find_by_net_idx(mgr, net_idx, &slot);
-    if (ferr != MESHX_SUCCESS || !slot) {
+    if (ferr != MESHX_SUCCESS || !slot)
+    {
         return (ferr == MESHX_INVALID_ARG) ? ferr : MESHX_NOT_FOUND;
     }
 
-    slot->kr_phase  = (uint8_t)new_phase;
+    slot->kr_phase = (uint8_t)new_phase;
     slot->key_epoch = new_epoch;
 
     switch (new_phase)
     {
-        case MESHX_SUBNET_KR_PHASE_NORMAL:
-            slot->active_net_key_flag = 0U;
-            break;
-        case MESHX_SUBNET_KR_PHASE_DIST:
-            if (new_key) {
-                memcpy(slot->new_net_key.bytes, new_key->bytes, MESHX_SUBNET_KEY_LEN);
-            }
-            /* Keep egress latched on old_net_key until SWITCH (Seg 0 stability) */
-            slot->active_net_key_flag = 0U;
-            break;
-        case MESHX_SUBNET_KR_PHASE_SWITCH:
-            if (new_key) {
-                memcpy(slot->new_net_key.bytes, new_key->bytes, MESHX_SUBNET_KEY_LEN);
-            }
-            slot->active_net_key_flag = 1U;
-            break;
-        case MESHX_SUBNET_KR_PHASE_REVOKE:
-            if (wipe_bytes(slot->old_net_key.bytes, MESHX_SUBNET_KEY_LEN) != MESHX_SUCCESS) {
-                return MESHX_INVALID_ARG;
-            }
-            memcpy(slot->old_net_key.bytes, slot->new_net_key.bytes, MESHX_SUBNET_KEY_LEN);
-            if (wipe_bytes(slot->new_net_key.bytes, MESHX_SUBNET_KEY_LEN) != MESHX_SUCCESS) {
-                return MESHX_INVALID_ARG;
-            }
-            slot->active_net_key_flag = 0U;
-            break;
-        default:
+    case MESHX_SUBNET_KR_PHASE_NORMAL:
+        slot->active_net_key_flag = 0U;
+        break;
+    case MESHX_SUBNET_KR_PHASE_DIST:
+        if (new_key)
+        {
+            memcpy(slot->new_net_key.bytes, new_key->bytes, MESHX_SUBNET_KEY_LEN);
+        }
+        /* Keep egress latched on old_net_key until SWITCH (Seg 0 stability) */
+        slot->active_net_key_flag = 0U;
+        break;
+    case MESHX_SUBNET_KR_PHASE_SWITCH:
+        if (new_key)
+        {
+            memcpy(slot->new_net_key.bytes, new_key->bytes, MESHX_SUBNET_KEY_LEN);
+        }
+        slot->active_net_key_flag = 1U;
+        break;
+    case MESHX_SUBNET_KR_PHASE_REVOKE:
+        if (wipe_bytes(slot->old_net_key.bytes, MESHX_SUBNET_KEY_LEN) != MESHX_SUCCESS)
+        {
             return MESHX_INVALID_ARG;
+        }
+        memcpy(slot->old_net_key.bytes, slot->new_net_key.bytes, MESHX_SUBNET_KEY_LEN);
+        if (wipe_bytes(slot->new_net_key.bytes, MESHX_SUBNET_KEY_LEN) != MESHX_SUCCESS)
+        {
+            return MESHX_INVALID_ARG;
+        }
+        slot->active_net_key_flag = 0U;
+        break;
+    default:
+        return MESHX_INVALID_ARG;
     }
 
     return MESHX_SUCCESS;
@@ -253,10 +278,12 @@ meshx_err_t meshx_subnet_kr_select_egress_key(const meshx_subnet_crypto_slot_t *
                                               uint8_t *out_tx_epoch,
                                               const meshx_subnet_key_t **out_key)
 {
-    if (!slot || !out_key) {
+    if (!slot || !out_key)
+    {
         return MESHX_INVALID_ARG;
     }
-    if (out_tx_epoch) {
+    if (out_tx_epoch)
+    {
         *out_tx_epoch = slot->active_net_key_flag;
     }
     *out_key = (slot->active_net_key_flag != 0U) ? &slot->new_net_key : &slot->old_net_key;
@@ -273,28 +300,31 @@ meshx_err_t meshx_subnet_kr_select_egress_key(const meshx_subnet_crypto_slot_t *
 meshx_err_t meshx_subnet_kr_get_ingress_keys(const meshx_subnet_crypto_slot_t *slot,
                                              meshx_kr_active_keys_t *out_active_keys)
 {
-    if (!slot || !out_active_keys) {
+    if (!slot || !out_active_keys)
+    {
         return MESHX_INVALID_ARG;
     }
 
-    if (slot->kr_phase == (uint8_t)MESHX_SUBNET_KR_PHASE_DIST) {
-        out_active_keys->candidates[0].key   = &slot->old_net_key;
+    if (slot->kr_phase == (uint8_t)MESHX_SUBNET_KR_PHASE_DIST)
+    {
+        out_active_keys->candidates[0].key = &slot->old_net_key;
         out_active_keys->candidates[0].epoch = 0U;
-        out_active_keys->candidates[1].key   = &slot->new_net_key;
+        out_active_keys->candidates[1].key = &slot->new_net_key;
         out_active_keys->candidates[1].epoch = 1U;
         out_active_keys->count = 2U;
         return MESHX_SUCCESS;
     }
-    if (slot->kr_phase == (uint8_t)MESHX_SUBNET_KR_PHASE_SWITCH) {
-        out_active_keys->candidates[0].key   = &slot->new_net_key;
+    if (slot->kr_phase == (uint8_t)MESHX_SUBNET_KR_PHASE_SWITCH)
+    {
+        out_active_keys->candidates[0].key = &slot->new_net_key;
         out_active_keys->candidates[0].epoch = 1U;
-        out_active_keys->candidates[1].key   = &slot->old_net_key;
+        out_active_keys->candidates[1].key = &slot->old_net_key;
         out_active_keys->candidates[1].epoch = 0U;
         out_active_keys->count = 2U;
         return MESHX_SUCCESS;
     }
 
-    out_active_keys->candidates[0].key   = &slot->old_net_key;
+    out_active_keys->candidates[0].key = &slot->old_net_key;
     out_active_keys->candidates[0].epoch = 0U;
     out_active_keys->count = 1U;
     return MESHX_SUCCESS;
@@ -317,10 +347,12 @@ meshx_err_t meshx_subnet_kr_is_opcode_quarantined(const meshx_subnet_kr_mgr_t *m
                                                   bool *out_quarantined)
 {
     MESHX_UNUSED(mgr);
-    if (!out_quarantined) {
+    if (!out_quarantined)
+    {
         return MESHX_INVALID_ARG;
     }
-    if (ingress_net_idx == egress_net_idx) {
+    if (ingress_net_idx == egress_net_idx)
+    {
         *out_quarantined = false;
         return MESHX_SUCCESS;
     }
@@ -344,12 +376,14 @@ meshx_err_t meshx_subnet_kr_alloc_seq(meshx_subnet_kr_mgr_t *mgr,
                                       uint32_t *out_seq,
                                       bool *out_iv_update_needed)
 {
-    if (!mgr || !out_seq || !out_iv_update_needed) {
+    if (!mgr || !out_seq || !out_iv_update_needed)
+    {
         return MESHX_INVALID_ARG;
     }
     meshx_subnet_crypto_slot_t *slot = NULL;
     meshx_err_t ferr = meshx_subnet_kr_find_by_net_idx(mgr, net_idx, &slot);
-    if (ferr != MESHX_SUCCESS || !slot) {
+    if (ferr != MESHX_SUCCESS || !slot)
+    {
         return (ferr == MESHX_INVALID_ARG) ? ferr : MESHX_NOT_FOUND;
     }
 

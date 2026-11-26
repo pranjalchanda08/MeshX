@@ -14,6 +14,7 @@
 #include "interface/ble_mesh/meshx_ble_mesh_cmn.h" /* meshx_model_t */
 #include "meshx_api.h"                             /* meshx_get_net_key_id */
 #include "meshx_virtual_topo.h"
+#include <stdint.h>
 
 static uint8_t g_uvp_tid = 0; /**< Monotonic Transaction ID for UVP messages */
 
@@ -217,8 +218,7 @@ meshx_err_t meshx_uvp_send_on_subnet(void *p_model,
     }
 
     uint8_t el_idx = esp_model->element_idx;
-    uint16_t tx_net_idx = (net_idx == 0xFFFFU) ? meshx_get_net_key_id() : net_idx;
-
+    uint16_t tx_net_idx = (net_idx == UINT16_MAX) ? meshx_get_net_key_id() : net_idx;
     /* Prepare Context */
     esp_ble_mesh_msg_ctx_t ctx = {
         .net_idx = tx_net_idx,

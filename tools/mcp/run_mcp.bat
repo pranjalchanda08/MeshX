@@ -16,6 +16,11 @@ if exist "%~dp0.env.local" (
     )
 )
 
+:: Initialize Zephyr environment if present
+if exist "%REPO_ROOT%\tools\bin\env_zephyr.bat" (
+    call "%REPO_ROOT%\tools\bin\env_zephyr.bat" >&2
+)
+
 if defined MESHX_EXPORT_SCRIPT (
     call "%REPO_ROOT%\tools\bin\env.bat" "!MESHX_EXPORT_SCRIPT!" >&2
 ) else (
