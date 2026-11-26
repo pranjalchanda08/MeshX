@@ -15,6 +15,10 @@ fi
 
 # 2. Invoke MeshX env script with the toolchain export script
 # Redirect banner output to stderr so stdout remains clean JSON-RPC for MCP
+if [ -f "$REPO_ROOT/tools/bin/env_zephyr.sh" ]; then
+    source "$REPO_ROOT/tools/bin/env_zephyr.sh" >&2
+fi
+
 if [ -n "$MESHX_EXPORT_SCRIPT" ]; then
     source "$REPO_ROOT/tools/scripts/env.sh" source "$MESHX_EXPORT_SCRIPT" >&2
 else

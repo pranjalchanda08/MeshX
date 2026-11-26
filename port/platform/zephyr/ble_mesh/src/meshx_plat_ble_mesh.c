@@ -9,6 +9,7 @@
  * @author Pranjal Chanda
  */
 
+#include <stdint.h>
 #include <string.h>
 #include <errno.h>
 #include "interface/meshx_platform.h"
@@ -38,6 +39,10 @@
 uint16_t g_force_provisioned_addr = 0;
 extern uint16_t bt_mesh_primary_addr(void);
 
+typedef struct bt_mesh_model        bt_mesh_model_t;
+typedef struct bt_mesh_elem_rt_ctx  bt_mesh_elem_rt_ctx_t;
+typedef struct bt_mesh_model_rt_ctx bt_mesh_model_rt_ctx_t;
+
 static meshx_plat_ble_mfg_data_cb_t s_plat_mfg_cbs[MESHX_MAX_BLE_MFG_CBS] = {0};
 static size_t s_plat_mfg_cb_count = 0;
 static struct bt_le_scan_cb s_plat_scan_cb;
@@ -50,16 +55,20 @@ static bool s_plat_scan_cb_registered = false;
  * @param[in] addr    Group address to check.
  * @return MESHX_SUCCESS if subscribed, MESHX_FAIL otherwise.
  */
-meshx_err_t meshx_is_group_subscribed(meshx_model_t *p_model, uint16_t addr)
+meshx_err_t meshx_is_group_subscribed(const meshx_model_t *p_model, uint16_t addr)
 {
-    if (p_model == NULL || p_model->p_model == NULL) {
+    if (p_model == NULL || p_model->p_model == NULL)
+    {
         return MESHX_INVALID_ARG;
     }
 
-    struct bt_mesh_model *model = (struct bt_mesh_model *)p_model->p_model;
-    if (model->groups != NULL) {
-        for (size_t i = 0; i < CONFIG_BT_MESH_MODEL_GROUP_COUNT; i++) {
-            if (model->groups[i] == addr) {
+    const bt_mesh_model_t *model = (const bt_mesh_model_t *)p_model->p_model;
+    if (model->groups != NULL)
+    {
+        for (size_t i = 0; i < CONFIG_BT_MESH_MODEL_GROUP_COUNT; i++)
+        {
+            if (model->groups[i] == addr)
+            {
                 return MESHX_SUCCESS;
             }
         }
@@ -77,7 +86,8 @@ meshx_err_t meshx_is_group_subscribed(meshx_model_t *p_model, uint16_t addr)
  */
 meshx_err_t meshx_plat_create_model_pub(void **p_pub, uint16_t nmax)
 {
-    if (!p_pub) {
+    if (!p_pub)
+    {
         return MESHX_INVALID_ARG;
     }
 
@@ -92,7 +102,8 @@ meshx_err_t meshx_plat_create_model_pub(void **p_pub, uint16_t nmax)
  */
 meshx_err_t meshx_plat_del_model_pub(void **p_pub)
 {
-    if (!p_pub) {
+    if (!p_pub)
+    {
         return MESHX_INVALID_ARG;
     }
 
@@ -108,11 +119,12 @@ meshx_err_t meshx_plat_del_model_pub(void **p_pub)
  */
 meshx_err_t meshx_get_model_id(meshx_ptr_t p_model, uint16_t *model_id)
 {
-    if (!p_model || !model_id) {
+    if (!p_model || !model_id)
+    {
         return MESHX_INVALID_ARG;
     }
 
-    struct bt_mesh_model *model = (struct bt_mesh_model *)p_model;
+    const bt_mesh_model_t *model = (const bt_mesh_model_t *)p_model;
     *model_id = model->id;
 
     return MESHX_SUCCESS;
@@ -126,11 +138,24 @@ meshx_err_t meshx_get_model_id(meshx_ptr_t p_model, uint16_t *model_id)
  */
 meshx_err_t meshx_create_plat_composition(meshx_ptr_t *p_comp)
 {
-    if (!p_comp) {
+    if (!p_comp)
+    {
         return MESHX_INVALID_ARG;
     }
 
     return MESHX_MALLOC(p_comp, sizeof(MESHX_COMPOSITION));
+}
+
+/**
+ * @brief Write a runtime-allocated pointer or count into a const-qualified baked Zephyr field.
+ *
+ * @param[in] dst_addr Numeric address of the destination struct member.
+ * @param[in] src      Pointer to source value.
+ * @param[in] size     Number of bytes to copy.
+ */
+static inline void plat_assign_baked_field(uintptr_t dst_addr, const void *src, size_t size)
+{
+    memcpy((void *)dst_addr, src, size);
 }
 
 /**
@@ -141,57 +166,68 @@ meshx_err_t meshx_create_plat_composition(meshx_ptr_t *p_comp)
  */
 meshx_err_t meshx_plat_init_model_keys_groups(void *p_model)
 {
-    if (!p_model) {
+    if (!p_model)
+    {
         return MESHX_INVALID_ARG;
     }
 
-    struct bt_mesh_model *m = (struct bt_mesh_model *)p_model;
+    bt_mesh_model_t *m = (bt_mesh_model_t *)p_model;
 
-    if (!m->rt) {
-        struct bt_mesh_model_rt_ctx *rt = NULL;
-        meshx_err_t err = MESHX_CALLOC((void **)&rt, 1, sizeof(struct bt_mesh_model_rt_ctx));
-        if (err != MESHX_SUCCESS || !rt) {
+    if (!m->rt)
+    {
+        bt_mesh_model_rt_ctx_t *rt = NULL;
+        meshx_err_t err = MESHX_CALLOC((void **)&rt, 1, sizeof(bt_mesh_model_rt_ctx_t));
+        if (err != MESHX_SUCCESS || !rt)
+        {
             return MESHX_NO_MEM;
         }
-        memcpy((void *)&m->rt, &rt, sizeof(rt));
+        plat_assign_baked_field((uintptr_t)&m->rt, &rt, sizeof(bt_mesh_model_rt_ctx_t *));
     }
 
-    if (!m->keys) {
+    if (!m->keys)
+    {
         uint16_t *k = NULL;
         meshx_err_t err = MESHX_CALLOC((void **)&k, CONFIG_BT_MESH_MODEL_KEY_COUNT, sizeof(uint16_t));
-        if (err != MESHX_SUCCESS || !k) {
+        if (err != MESHX_SUCCESS || !k)
+        {
             return MESHX_NO_MEM;
         }
-        for (size_t i = 0; i < CONFIG_BT_MESH_MODEL_KEY_COUNT; i++) {
+        for (size_t i = 0; i < CONFIG_BT_MESH_MODEL_KEY_COUNT; i++)
+        {
             k[i] = BT_MESH_KEY_UNUSED;
         }
         uint16_t cnt = CONFIG_BT_MESH_MODEL_KEY_COUNT;
-        memcpy((void *)&m->keys, &k, sizeof(k));
-        memcpy((void *)&m->keys_cnt, &cnt, sizeof(cnt));
+        plat_assign_baked_field((uintptr_t)&m->keys, &k, sizeof(uint16_t *));
+        plat_assign_baked_field((uintptr_t)&m->keys_cnt, &cnt, sizeof(cnt));
     }
 
-    if (!m->groups) {
+    if (!m->groups)
+    {
         uint16_t *g = NULL;
         meshx_err_t err = MESHX_CALLOC((void **)&g, CONFIG_BT_MESH_MODEL_GROUP_COUNT, sizeof(uint16_t));
-        if (err != MESHX_SUCCESS || !g) {
+        if (err != MESHX_SUCCESS || !g)
+        {
             return MESHX_NO_MEM;
         }
-        for (size_t j = 0; j < CONFIG_BT_MESH_MODEL_GROUP_COUNT; j++) {
+        for (size_t j = 0; j < CONFIG_BT_MESH_MODEL_GROUP_COUNT; j++)
+        {
             g[j] = BT_MESH_ADDR_UNASSIGNED;
         }
         uint16_t cnt = CONFIG_BT_MESH_MODEL_GROUP_COUNT;
-        memcpy((void *)&m->groups, &g, sizeof(g));
-        memcpy((void *)&m->groups_cnt, &cnt, sizeof(cnt));
+        plat_assign_baked_field((uintptr_t)&m->groups, &g, sizeof(uint16_t *));
+        plat_assign_baked_field((uintptr_t)&m->groups_cnt, &cnt, sizeof(cnt));
     }
 
 #if defined(CONFIG_BT_MESH_LABEL_COUNT) && (CONFIG_BT_MESH_LABEL_COUNT > 0)
-    if (!m->uuids) {
+    if (!m->uuids)
+    {
         const uint8_t **u = NULL;
         meshx_err_t err = MESHX_CALLOC((void **)&u, CONFIG_BT_MESH_LABEL_COUNT, sizeof(const uint8_t *));
-        if (err != MESHX_SUCCESS || !u) {
+        if (err != MESHX_SUCCESS || !u)
+        {
             return MESHX_NO_MEM;
         }
-        memcpy((void *)&m->uuids, &u, sizeof(u));
+        plat_assign_baked_field((uintptr_t)&m->uuids, &u, sizeof(const uint8_t **));
     }
 #endif
 
@@ -206,18 +242,21 @@ meshx_err_t meshx_plat_init_model_keys_groups(void *p_model)
  */
 meshx_err_t meshx_plat_init_element(void *p_elem)
 {
-    if (!p_elem) {
+    if (!p_elem)
+    {
         return MESHX_INVALID_ARG;
     }
 
     struct bt_mesh_elem *element = (struct bt_mesh_elem *)p_elem;
-    if (!element->rt) {
-        struct bt_mesh_elem_rt_ctx *rt = NULL;
-        meshx_err_t err = MESHX_CALLOC((void **)&rt, 1, sizeof(struct bt_mesh_elem_rt_ctx));
-        if (err != MESHX_SUCCESS || !rt) {
+    if (!element->rt)
+    {
+        bt_mesh_elem_rt_ctx_t *rt = NULL;
+        meshx_err_t err = MESHX_CALLOC((void **)&rt, 1, sizeof(bt_mesh_elem_rt_ctx_t));
+        if (err != MESHX_SUCCESS || !rt)
+        {
             return MESHX_NO_MEM;
         }
-        memcpy((void *)&element->rt, &rt, sizeof(rt));
+        plat_assign_baked_field((uintptr_t)&element->rt, &rt, sizeof(bt_mesh_elem_rt_ctx_t *));
     }
 
     return MESHX_SUCCESS;
@@ -240,9 +279,10 @@ meshx_err_t meshx_plat_add_element_to_composition(
     meshx_ptr_t p_sig_models,
     meshx_ptr_t p_ven_models,
     uint8_t sig_cnt,
-    uint8_t ven_cnt
-) {
-    if (!p_element_list) {
+    uint8_t ven_cnt)
+{
+    if (!p_element_list)
+    {
         return MESHX_INVALID_ARG;
     }
 
@@ -250,13 +290,15 @@ meshx_err_t meshx_plat_add_element_to_composition(
                index, sig_cnt, ven_cnt);
 
     struct bt_mesh_elem *element = ((struct bt_mesh_elem *)p_element_list) + index;
-    if (!element->rt) {
-        struct bt_mesh_elem_rt_ctx *rt = NULL;
-        meshx_err_t err = MESHX_CALLOC((void **)&rt, 1, sizeof(struct bt_mesh_elem_rt_ctx));
-        if (err != MESHX_SUCCESS || !rt) {
+    if (!element->rt)
+    {
+        bt_mesh_elem_rt_ctx_t *rt = NULL;
+        meshx_err_t err = MESHX_CALLOC((void **)&rt, 1, sizeof(bt_mesh_elem_rt_ctx_t));
+        if (err != MESHX_SUCCESS || !rt)
+        {
             return MESHX_NO_MEM;
         }
-        memcpy((void *)&element->rt, &rt, sizeof(rt));
+        plat_assign_baked_field((uintptr_t)&element->rt, &rt, sizeof(bt_mesh_elem_rt_ctx_t *));
     }
     MESHX_SET_ELEM_SIG_MODELS(element, p_sig_models);
     MESHX_SET_ELEM_SIG_COUNT(element, sig_cnt);
@@ -281,9 +323,10 @@ meshx_err_t meshx_plat_composition_init(
     meshx_ptr_t p_elements,
     uint16_t cid,
     uint16_t pid,
-    uint16_t element_idx
-) {
-    if (!p_composition) {
+    uint16_t element_idx)
+{
+    if (!p_composition)
+    {
         return MESHX_INVALID_ARG;
     }
 
@@ -305,15 +348,21 @@ meshx_err_t meshx_plat_composition_init(
  */
 meshx_err_t meshx_get_base_element_id(uint16_t *base_el_id)
 {
-    if (!base_el_id) {
+    if (!base_el_id)
+    {
         return MESHX_INVALID_ARG;
     }
 
-    if (g_force_provisioned_addr != 0) {
+    if (g_force_provisioned_addr != 0)
+    {
         *base_el_id = g_force_provisioned_addr;
-    } else if (bt_mesh_is_provisioned()) {
+    }
+    else if (bt_mesh_is_provisioned())
+    {
         *base_el_id = bt_mesh_primary_addr();
-    } else {
+    }
+    else
+    {
         *base_el_id = MESHX_ADDR_UNASSIGNED;
     }
 
@@ -328,7 +377,8 @@ meshx_err_t meshx_get_base_element_id(uint16_t *base_el_id)
  */
 meshx_err_t meshx_platform_get_mac(uint8_t *mac)
 {
-    if (mac == NULL) {
+    if (mac == NULL)
+    {
         return MESHX_INVALID_ARG;
     }
 
@@ -336,21 +386,25 @@ meshx_err_t meshx_platform_get_mac(uint8_t *mac)
     size_t count = 1;
     bt_id_get(addrs, &count);
 
-    if (count == 0) {
+    if (count == 0)
+    {
         int id = bt_id_create(NULL, NULL);
-        if (id >= 0) {
+        if (id >= 0)
+        {
             count = 1;
             bt_id_get(addrs, &count);
         }
     }
 
-    if (count > 0) {
+    if (count > 0)
+    {
         memcpy(mac, addrs[0].a.val, MESHX_BD_ADDR_LEN);
         return MESHX_SUCCESS;
     }
 
 #if defined(CONFIG_HWINFO)
-    if (hwinfo_get_device_id(mac, MESHX_BD_ADDR_LEN) >= 0) {
+    if (hwinfo_get_device_id(mac, MESHX_BD_ADDR_LEN) >= 0)
+    {
         return MESHX_SUCCESS;
     }
 #endif
@@ -366,7 +420,8 @@ meshx_err_t meshx_platform_get_mac(uint8_t *mac)
 meshx_err_t meshx_platform_bt_init(void)
 {
     int err = bt_enable(NULL);
-    if (err && err != -EALREADY) {
+    if (err && err != -EALREADY)
+    {
         MESHX_LOGE(MODULE_ID_COMMON, "Zephyr bt_enable failed: %d", err);
         return MESHX_ERR_PLAT;
     }
@@ -387,18 +442,21 @@ meshx_err_t meshx_platform_bt_init(void)
  */
 meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, meshx_ptr_t comp)
 {
-    if (comp == NULL || prov_cfg == NULL) {
+    if (comp == NULL || prov_cfg == NULL)
+    {
         return MESHX_INVALID_ARG;
     }
 
-    struct bt_mesh_prov *p_prov = (struct bt_mesh_prov *)meshx_plat_get_prov();
-    if (p_prov == NULL) {
+    const struct bt_mesh_prov *p_prov = (const struct bt_mesh_prov *)meshx_plat_get_prov();
+    if (p_prov == NULL)
+    {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to get Zephyr provisioning instance");
         return MESHX_ERR_PLAT;
     }
 
     int err = bt_mesh_init(p_prov, (struct bt_mesh_comp *)comp);
-    if (err) {
+    if (err)
+    {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize Zephyr mesh stack: %d", err);
         return MESHX_ERR_PLAT;
     }
@@ -407,35 +465,45 @@ meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, meshx_
     settings_load();
 #endif
 
-    if (prov_cfg->node_name != NULL && prov_cfg->node_name[0] != '\0') {
+    if (prov_cfg->node_name != NULL && prov_cfg->node_name[0] != '\0')
+    {
 #if defined(CONFIG_BT_DEVICE_NAME_DYNAMIC)
         int name_err = bt_set_name((const char *)prov_cfg->node_name);
-        if (name_err) {
+        if (name_err)
+        {
             MESHX_LOGW(MODULE_ID_MODEL_SERVER, "Failed to set Bluetooth device name to '%s': %d",
                        prov_cfg->node_name, name_err);
-        } else {
+        }
+        else
+        {
             MESHX_LOGI(MODULE_ID_MODEL_SERVER, "Bluetooth device name set to: %s", prov_cfg->node_name);
         }
 #endif
     }
 
     meshx_err_t merr = meshx_plat_ven_srv_init();
-    if (merr) {
+    if (merr)
+    {
         MESHX_LOGE(MODULE_ID_MODEL_SERVER, "Failed to initialize vendor model pipeline");
         return merr;
     }
 
-    if (!meshx_prov_srv_is_provisioned() && !bt_mesh_is_provisioned()) {
+    if (!meshx_prov_srv_is_provisioned() && !bt_mesh_is_provisioned())
+    {
         MESHX_LOGD(MODULE_ID_MODEL_SERVER, "Enabling Zephyr node unprovisioned beacons");
         bt_mesh_prov_enable(BT_MESH_PROV_ADV | BT_MESH_PROV_GATT);
         MESHX_LOGI(MODULE_ID_MODEL_SERVER, "Zephyr unprovisioned beaconing enabled on boot");
-    } else {
+    }
+    else
+    {
         uint16_t primary_addr = bt_mesh_primary_addr();
-        if (primary_addr == MESHX_ADDR_UNASSIGNED) {
+        if (primary_addr == MESHX_ADDR_UNASSIGNED)
+        {
             primary_addr = meshx_get_node_addr();
         }
         MESHX_LOGI(MODULE_ID_MODEL_SERVER, "Zephyr node already provisioned (primary addr: 0x%04x); unprovisioned beaconing gated on boot", primary_addr);
-        if (meshx_get_node_addr() == MESHX_ADDR_UNASSIGNED && primary_addr != MESHX_ADDR_UNASSIGNED) {
+        if (meshx_get_node_addr() == MESHX_ADDR_UNASSIGNED && primary_addr != MESHX_ADDR_UNASSIGNED)
+        {
             meshx_prov_srv_param_t prov_srv_param;
             memset(&prov_srv_param, 0, sizeof(meshx_prov_srv_param_t));
             prov_srv_param.prov_evt = MESHX_NODE_PROV_COMPLETE_EVT;
@@ -456,9 +524,13 @@ meshx_err_t meshx_plat_ble_mesh_init(const meshx_prov_params_t *prov_cfg, meshx_
  */
 meshx_err_t meshx_plat_net_key_get(uint16_t net_key_id, uint8_t *key_out)
 {
-    if (!key_out) {
+    MESHX_UNUSED(net_key_id);
+    if (!key_out)
+    {
         return MESHX_INVALID_ARG;
     }
+
+    memset(key_out, 0, 16);
 
     /* Zephyr BLE Mesh does not expose a public API to retrieve a subnet's
      * net key by index. The net keys are managed internally by the stack.
@@ -477,13 +549,15 @@ meshx_err_t meshx_plat_net_key_get(uint16_t net_key_id, uint8_t *key_out)
  */
 meshx_err_t meshx_plat_net_key_add(const uint8_t *key, uint16_t net_key_id)
 {
-    if (!key) {
+    if (!key)
+    {
         return MESHX_INVALID_ARG;
     }
 
     /* Add subnet/net key via Zephyr BLE Mesh config API */
     uint8_t result = bt_mesh_subnet_add(net_key_id, key);
-    if (result != 0) {
+    if (result != 0)
+    {
         MESHX_LOGE(MODULE_ID_COMMON, "bt_mesh_subnet_add failed: %d", result);
         return MESHX_FAIL;
     }
@@ -565,7 +639,7 @@ static bool plat_scan_parse_ad(struct bt_data *data, void *user_data)
     int8_t rssi = *(int8_t *)user_data;
     if (data->type == BT_DATA_MANUFACTURER_DATA && data->data_len >= 2)
     {
-        uint16_t cid = data->data[0] | ((uint16_t)data->data[1] << 8);
+        uint16_t cid = (uint16_t)((uint16_t)data->data[0] | (uint16_t)((uint16_t)data->data[1] << 8));
         const uint8_t *payload = &data->data[2];
         uint16_t payload_len = data->data_len - 2;
 
@@ -586,7 +660,7 @@ static bool plat_scan_parse_ad(struct bt_data *data, void *user_data)
  * @param[in] info Pointer to scan receive info.
  * @param[in] buf  Pointer to advertising data buffer.
  */
-static void plat_scan_recv_cb(const struct bt_le_scan_recv_info *info, struct net_buf_simple *buf)
+static void plat_scan_recv_cb_const(const struct bt_le_scan_recv_info *info, struct net_buf_simple *buf)
 {
     if (s_plat_mfg_cb_count == 0)
     {
@@ -628,7 +702,7 @@ meshx_err_t meshx_plat_ble_register_mfg_data_cb(meshx_plat_ble_mfg_data_cb_t cb)
 
     if (!s_plat_scan_cb_registered)
     {
-        s_plat_scan_cb.recv = plat_scan_recv_cb;
+        s_plat_scan_cb.recv = plat_scan_recv_cb_const;
         int err = bt_le_scan_cb_register(&s_plat_scan_cb);
         if (err == 0 || err == -EEXIST)
         {
@@ -684,7 +758,7 @@ meshx_err_t meshx_plat_self_provision(const meshx_key_t net_key, uint16_t net_id
     meshx_prov_srv_param_t prov_srv_param;
     memset(&prov_srv_param, 0, sizeof(meshx_prov_srv_param_t));
     prov_srv_param.prov_evt = MESHX_NODE_PROV_COMPLETE_EVT;
-    prov_srv_param.param.node_prov_complete.addr    = addr;
+    prov_srv_param.param.node_prov_complete.addr = addr;
     prov_srv_param.param.node_prov_complete.net_idx = net_idx;
     memcpy(prov_srv_param.param.node_prov_complete.net_key, net_key, MESHX_KEY_LEN);
     meshx_prov_srv_notify_plat_event(&prov_srv_param);
@@ -755,9 +829,17 @@ meshx_err_t meshx_plat_ble_mesh_reset(void)
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Add a BLE Mesh subnet NetKey to the Zephyr stack.
+ *
+ * @param[in] net_idx  12-bit NetKey index (0x0000..0x0FFF).
+ * @param[in] net_key  16-byte network key material.
+ * @return MESHX_SUCCESS on success (including if already present),
+ *         MESHX_INVALID_ARG on invalid parameters, or MESHX_FAIL on stack error.
+ */
 meshx_err_t meshx_plat_subnet_add(uint16_t net_idx, const meshx_key_t net_key)
 {
-    if (!net_key || net_idx > 0x0FFFU)
+    if (!net_key || net_idx > UINT16_MAX)
     {
         return MESHX_INVALID_ARG;
     }
@@ -779,6 +861,13 @@ meshx_err_t meshx_plat_subnet_add(uint16_t net_idx, const meshx_key_t net_key)
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Remove a secondary BLE Mesh subnet NetKey from the Zephyr stack.
+ *
+ * @param[in] net_idx  12-bit non-primary NetKey index (0x0001..0x0FFF).
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG if net_idx is primary or out of range,
+ *         MESHX_NOT_FOUND if the subnet does not exist, or MESHX_FAIL on stack error.
+ */
 meshx_err_t meshx_plat_subnet_del(uint16_t net_idx)
 {
     if (net_idx == 0U || net_idx > 0x0FFFU)
@@ -803,6 +892,13 @@ meshx_err_t meshx_plat_subnet_del(uint16_t net_idx)
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Enable or disable Zephyr-side subnet bridging after validating primary subnet presence.
+ *
+ * @param[in] enable  True to enable subnet bridging, false to disable.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_STATE if primary subnet 0 is missing,
+ *         or an error code from the coexistence PAL.
+ */
 meshx_err_t meshx_plat_subnet_bridge_set(bool enable)
 {
     /* Validate primary subnet exists before activating bridging */
@@ -813,6 +909,13 @@ meshx_err_t meshx_plat_subnet_bridge_set(bool enable)
     return meshx_subnet_coex_pal_bridge_set(enable);
 }
 
+/**
+ * @brief Register a subnet bridging rule in the coexistence PAL after verifying both subnets exist.
+ *
+ * @param[in] rule  Pointer to the subnet bridging rule descriptor.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG if rule is NULL,
+ *         MESHX_NOT_FOUND if either subnet does not exist, or a PAL error code.
+ */
 meshx_err_t meshx_plat_subnet_bridge_rule_add(const meshx_bridge_rule_t *rule)
 {
     if (!rule)
@@ -826,5 +929,3 @@ meshx_err_t meshx_plat_subnet_bridge_rule_add(const meshx_bridge_rule_t *rule)
 
     return meshx_subnet_coex_pal_bridge_rule_add(rule);
 }
-
-

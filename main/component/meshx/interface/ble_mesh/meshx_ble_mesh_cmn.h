@@ -23,7 +23,7 @@
 #include "meshx_err.h"
 #include "meshx_ble_mesh_cmn_def.h"
 #include "interface/meshx_platform.h"
- 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -74,7 +74,7 @@ typedef struct meshx_prov_params
  * @return MESHX_SUCCESS if the model is subscribed to the group address,
  *         otherwise MESHX_FAIL.
  */
-meshx_err_t meshx_is_group_subscribed(meshx_model_t *p_model, uint16_t addr);
+meshx_err_t meshx_is_group_subscribed(const meshx_model_t *p_model, uint16_t addr);
 
 /**
  * @brief Creates and initializes model and publication structures.
@@ -258,5 +258,5 @@ meshx_err_t meshx_plat_ble_mesh_reset(void);
 #ifdef __cplusplus
 }
 #endif
- 
+
 #endif /* __MESHX_PLAT_SRV_CMN_H__ */

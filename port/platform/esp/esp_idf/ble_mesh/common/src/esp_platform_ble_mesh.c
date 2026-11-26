@@ -15,6 +15,7 @@
  */
 #include "string.h"
 #include <errno.h>
+#include <stdint.h>
 #include "esp_bt_device.h"
 #include "ble_mesh_plat_init.h"
 #include "interface/meshx_platform.h"
@@ -26,7 +27,7 @@
 #include "meshx_api.h"
 #include "island/meshx_island_subnet_coex.h"
 
-meshx_err_t meshx_is_group_subscribed(meshx_model_t *p_model, uint16_t addr)
+meshx_err_t meshx_is_group_subscribed(const meshx_model_t *p_model, uint16_t addr)
 {
     const uint16_t * res = esp_ble_mesh_is_model_subscribed_to_group(p_model->p_model, addr);
     if(res != NULL)
@@ -424,9 +425,17 @@ struct bt_mesh_subnet;
 extern struct bt_mesh_subnet *bt_mesh_subnet_get(uint16_t net_idx);
 extern void bt_mesh_subnet_del(struct bt_mesh_subnet *sub, bool store);
 
+/**
+ * @brief Add a BLE Mesh subnet NetKey to the ESP-IDF stack.
+ *
+ * @param[in] net_idx  NetKey index.
+ * @param[in] net_key  16-byte network key material.
+ * @return MESHX_SUCCESS on success (including if already present),
+ *         MESHX_INVALID_ARG on invalid parameters, or MESHX_FAIL on stack error.
+ */
 meshx_err_t meshx_plat_subnet_add(uint16_t net_idx, const meshx_key_t net_key)
 {
-    if (!net_key || net_idx > 0x0FFFU)
+    if (!net_key || net_idx > UINT16_MAX)
     {
         return MESHX_INVALID_ARG;
     }
@@ -447,9 +456,16 @@ meshx_err_t meshx_plat_subnet_add(uint16_t net_idx, const meshx_key_t net_key)
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Remove a secondary BLE Mesh subnet NetKey from the ESP-IDF stack.
+ *
+ * @param[in] net_idx  Non-primary NetKey index (must be non-zero).
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG if net_idx is 0 or out of range,
+ *         or MESHX_NOT_FOUND if the subnet does not exist.
+ */
 meshx_err_t meshx_plat_subnet_del(uint16_t net_idx)
 {
-    if (net_idx == 0U || net_idx > 0x0FFFU)
+    if (net_idx == 0U || net_idx > UINT16_MAX)
     {
         return MESHX_INVALID_ARG;
     }
@@ -465,6 +481,13 @@ meshx_err_t meshx_plat_subnet_del(uint16_t net_idx)
     return MESHX_SUCCESS;
 }
 
+/**
+ * @brief Enable or disable ESP-IDF subnet bridging after validating primary subnet presence.
+ *
+ * @param[in] enable  True to enable subnet bridging, false to disable.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_STATE if primary subnet 0 is missing,
+ *         or an error code from the coexistence PAL.
+ */
 meshx_err_t meshx_plat_subnet_bridge_set(bool enable)
 {
     if (enable && esp_ble_mesh_node_get_local_net_key(0U) == NULL)
@@ -474,6 +497,13 @@ meshx_err_t meshx_plat_subnet_bridge_set(bool enable)
     return meshx_subnet_coex_pal_bridge_set(enable);
 }
 
+/**
+ * @brief Register a subnet bridging rule in the coexistence PAL after verifying both subnets exist.
+ *
+ * @param[in] rule  Pointer to the subnet bridging rule descriptor.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG if rule is NULL,
+ *         MESHX_NOT_FOUND if either subnet does not exist, or a PAL error code.
+ */
 meshx_err_t meshx_plat_subnet_bridge_rule_add(const meshx_bridge_rule_t *rule)
 {
     if (!rule)
@@ -488,4 +518,3 @@ meshx_err_t meshx_plat_subnet_bridge_rule_add(const meshx_bridge_rule_t *rule)
 
     return meshx_subnet_coex_pal_bridge_rule_add(rule);
 }
-

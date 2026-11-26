@@ -18,14 +18,16 @@ extern meshx_err_t meshx_nvs_commit(void);
 #define NVS_KEY_PAIRS   "sl_pair"
 #define NVS_NAT_CHUNK_CAP (MESHX_NAT_TIER2_CAP / 2U)
 
-typedef struct MESHX_PACKED {
-    uint8_t           count;
+typedef struct MESHX_PACKED
+{
+    uint8_t count;
     meshx_nat_entry_t entries[NVS_NAT_CHUNK_CAP];
 } nvs_nat_chunk_t;
 
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
 _Static_assert(sizeof(meshx_nvs_kbridge_blob_t) + sizeof(meshx_nvs_nonce_blob_t) +
-               sizeof(meshx_nvs_nat_blob_t) + sizeof(meshx_nvs_pairs_blob_t) < MESHX_SUBNET_NVS_MAX_BUDGET,
+                       sizeof(meshx_nvs_nat_blob_t) + sizeof(meshx_nvs_pairs_blob_t) <
+                   MESHX_SUBNET_NVS_MAX_BUDGET,
                "Total NVS blob footprint must remain under 1 KB");
 #endif
 
@@ -55,10 +57,11 @@ static meshx_err_t default_nvs_write(const char *key, const void *buf, uint16_t 
     return meshx_nvs_set(key, buf, size, true);
 }
 
-static meshx_subnet_nvs_ops_t s_ops = {
-    .read_fn   = default_nvs_read,
-    .write_fn  = default_nvs_write,
-    .commit_fn = meshx_nvs_commit,
+static meshx_subnet_nvs_ops_t s_ops =
+{
+    .read_fn    = default_nvs_read,
+    .write_fn   = default_nvs_write,
+    .commit_fn  = meshx_nvs_commit,
 };
 
 /**
@@ -69,13 +72,15 @@ static meshx_subnet_nvs_ops_t s_ops = {
  */
 meshx_err_t meshx_subnet_nvs_set_ops(const meshx_subnet_nvs_ops_t *ops)
 {
-    if (!ops) {
-        s_ops.read_fn   = default_nvs_read;
-        s_ops.write_fn  = default_nvs_write;
+    if (!ops)
+    {
+        s_ops.read_fn = default_nvs_read;
+        s_ops.write_fn = default_nvs_write;
         s_ops.commit_fn = meshx_nvs_commit;
         return MESHX_SUCCESS;
     }
-    if (!ops->read_fn || !ops->write_fn || !ops->commit_fn) {
+    if (!ops->read_fn || !ops->write_fn || !ops->commit_fn)
+    {
         return MESHX_INVALID_ARG;
     }
     s_ops = *ops;
@@ -90,7 +95,8 @@ meshx_err_t meshx_subnet_nvs_set_ops(const meshx_subnet_nvs_ops_t *ops)
  */
 meshx_err_t meshx_subnet_nvs_get_ops(const meshx_subnet_nvs_ops_t **out_ops)
 {
-    if (!out_ops) {
+    if (!out_ops)
+    {
         return MESHX_INVALID_ARG;
     }
     *out_ops = &s_ops;
@@ -108,7 +114,8 @@ meshx_err_t meshx_subnet_nvs_get_ops(const meshx_subnet_nvs_ops_t **out_ops)
 static meshx_err_t nvs_write_commit(const char *key, const void *buf, uint16_t size)
 {
     meshx_err_t err = s_ops.write_fn(key, buf, size);
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         return err;
     }
     return s_ops.commit_fn();
@@ -122,7 +129,8 @@ static meshx_err_t nvs_write_commit(const char *key, const void *buf, uint16_t s
  */
 meshx_err_t meshx_subnet_nvs_save_kbridge(const meshx_nvs_kbridge_blob_t *blob)
 {
-    if (!blob) {
+    if (!blob)
+    {
         return MESHX_INVALID_ARG;
     }
     return nvs_write_commit(NVS_KEY_KBRIDGE, blob, (uint16_t)sizeof(*blob));
@@ -148,7 +156,8 @@ meshx_err_t meshx_subnet_nvs_erase_kbridge(void)
  */
 meshx_err_t meshx_subnet_nvs_load_kbridge(meshx_nvs_kbridge_blob_t *blob)
 {
-    if (!blob) {
+    if (!blob)
+    {
         return MESHX_INVALID_ARG;
     }
     return s_ops.read_fn(NVS_KEY_KBRIDGE, blob, (uint16_t)sizeof(*blob));
@@ -175,13 +184,15 @@ meshx_err_t meshx_subnet_nvs_save_nonce(uint32_t nonce_ckpt)
  */
 meshx_err_t meshx_subnet_nvs_load_nonce(uint32_t *out_nonce_ckpt)
 {
-    if (!out_nonce_ckpt) {
+    if (!out_nonce_ckpt)
+    {
         return MESHX_INVALID_ARG;
     }
     meshx_nvs_nonce_blob_t blob;
     memset(&blob, 0, sizeof(blob));
     meshx_err_t err = s_ops.read_fn(NVS_KEY_NONCE, &blob, (uint16_t)sizeof(blob));
-    if (err == MESHX_SUCCESS) {
+    if (err == MESHX_SUCCESS)
+    {
         *out_nonce_ckpt = blob.nonce_checkpoint;
     }
     return err;
@@ -196,22 +207,26 @@ meshx_err_t meshx_subnet_nvs_load_nonce(uint32_t *out_nonce_ckpt)
  */
 meshx_err_t meshx_subnet_nvs_save_nat_table(const meshx_nat_entry_t *entries, uint8_t count)
 {
-    if (!entries && count > 0U) {
+    if (!entries && count > 0U)
+    {
         return MESHX_INVALID_ARG;
     }
     uint8_t total = (count > MESHX_NAT_TIER2_CAP) ? MESHX_NAT_TIER2_CAP : count;
     const char *keys[2] = {"sl_nat0", "sl_nat1"};
-    for (uint8_t c = 0U; c < 2U; c++) {
+    for (uint8_t c = 0U; c < 2U; c++)
+    {
         nvs_nat_chunk_t chunk;
         memset(&chunk, 0, sizeof(chunk));
         uint8_t offset = (uint8_t)(c * NVS_NAT_CHUNK_CAP);
         uint8_t rem = (total > offset) ? (uint8_t)(total - offset) : 0U;
         chunk.count = (rem > NVS_NAT_CHUNK_CAP) ? NVS_NAT_CHUNK_CAP : rem;
-        if (chunk.count > 0U) {
+        if (chunk.count > 0U)
+        {
             memcpy(chunk.entries, &entries[offset], (size_t)chunk.count * sizeof(meshx_nat_entry_t));
         }
         meshx_err_t err = nvs_write_commit(keys[c], &chunk, (uint16_t)sizeof(chunk));
-        if (err != MESHX_SUCCESS) {
+        if (err != MESHX_SUCCESS)
+        {
             return err;
         }
     }
@@ -227,24 +242,29 @@ meshx_err_t meshx_subnet_nvs_save_nat_table(const meshx_nat_entry_t *entries, ui
  */
 meshx_err_t meshx_subnet_nvs_load_nat_table(meshx_nat_entry_t *entries, uint8_t *out_count)
 {
-    if (!entries || !out_count) {
+    if (!entries || !out_count)
+    {
         return MESHX_INVALID_ARG;
     }
     *out_count = 0U;
     const char *keys[2] = {"sl_nat0", "sl_nat1"};
     uint8_t total = 0U;
-    for (uint8_t c = 0U; c < 2U; c++) {
+    for (uint8_t c = 0U; c < 2U; c++)
+    {
         nvs_nat_chunk_t chunk;
         memset(&chunk, 0, sizeof(chunk));
         meshx_err_t err = s_ops.read_fn(keys[c], &chunk, (uint16_t)sizeof(chunk));
-        if (err == MESHX_NOT_FOUND) {
+        if (err == MESHX_NOT_FOUND)
+        {
             continue;
         }
-        if (err != MESHX_SUCCESS) {
+        if (err != MESHX_SUCCESS)
+        {
             return err;
         }
         uint8_t copy = (chunk.count > NVS_NAT_CHUNK_CAP) ? NVS_NAT_CHUNK_CAP : chunk.count;
-        if (copy > 0U) {
+        if (copy > 0U)
+        {
             memcpy(&entries[total], chunk.entries, (size_t)copy * sizeof(meshx_nat_entry_t));
             total = (uint8_t)(total + copy);
         }
@@ -262,14 +282,16 @@ meshx_err_t meshx_subnet_nvs_load_nat_table(meshx_nat_entry_t *entries, uint8_t 
  */
 meshx_err_t meshx_subnet_nvs_save_pair_records(const meshx_pair_record_t *records, uint8_t count)
 {
-    if (!records && count > 0U) {
+    if (!records && count > 0U)
+    {
         return MESHX_INVALID_ARG;
     }
     meshx_nvs_pairs_blob_t blob;
     memset(&blob, 0, sizeof(blob));
     uint8_t copy = (count > MESHX_PAIR_RECORD_MAX) ? MESHX_PAIR_RECORD_MAX : count;
     blob.count = copy;
-    if (copy > 0U) {
+    if (copy > 0U)
+    {
         memcpy(blob.records, records, (size_t)copy * sizeof(meshx_pair_record_t));
     }
     return nvs_write_commit(NVS_KEY_PAIRS, &blob, (uint16_t)sizeof(blob));
@@ -284,18 +306,21 @@ meshx_err_t meshx_subnet_nvs_save_pair_records(const meshx_pair_record_t *record
  */
 meshx_err_t meshx_subnet_nvs_load_pair_records(meshx_pair_record_t *records, uint8_t *out_count)
 {
-    if (!records || !out_count) {
+    if (!records || !out_count)
+    {
         return MESHX_INVALID_ARG;
     }
     meshx_nvs_pairs_blob_t blob;
     memset(&blob, 0, sizeof(blob));
     meshx_err_t err = s_ops.read_fn(NVS_KEY_PAIRS, &blob, (uint16_t)sizeof(blob));
-    if (err != MESHX_SUCCESS) {
+    if (err != MESHX_SUCCESS)
+    {
         *out_count = 0U;
         return err;
     }
     uint8_t copy = (blob.count > MESHX_PAIR_RECORD_MAX) ? MESHX_PAIR_RECORD_MAX : blob.count;
-    if (copy > 0U) {
+    if (copy > 0U)
+    {
         memcpy(records, blob.records, (size_t)copy * sizeof(meshx_pair_record_t));
     }
     *out_count = copy;

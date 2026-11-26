@@ -52,6 +52,8 @@ extern "C" {
 #define MXCP_CMD_PROV_AUTH_INPUT_HDR_SIZE (sizeof(uint8_t) + sizeof(uint8_t))
 #define MXCP_CMD_UVP_RPR_TUNNEL_HDR_SIZE  (sizeof(uint16_t) + MXCP_UUID_SIZE + sizeof(uint8_t))
 
+#define MXCP_CMD_PROTO(__name)  static meshx_err_t __name (const uint8_t *payload, uint8_t len)
+
 #define MXCP_TYPE_DIR_CMD  0x00
 #define MXCP_TYPE_DIR_EVT  0x80
 #define MXCP_TYPE_ID_MASK  0x7F

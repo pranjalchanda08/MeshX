@@ -66,7 +66,7 @@ jobs:
           submodules: false
 
       - name: Fix Git Safe Directory in Container
-        run: git config --global --add safe.directory "${GITHUB_WORKSPACE:-*}"
+        run: git config --global --add safe.directory "*"
 
       - name: Initialize required build submodules
         run: git submodule update --init --recursive third_party/nanopb
@@ -78,17 +78,17 @@ jobs:
           path: |
             /workdir/zephyrproject
             ~/.cache/west
-          key: zephyr-modules-${{ runner.os }}-v3.7
-          restore-keys: |
-            zephyr-modules-${{ runner.os }}-
+          key: zephyr-modules-${{ runner.os }}-v3.7-clean
 
       - name: Setup Zephyr Workspace & Hardware Modules
         run: |
-          if [ ! -d "/workdir/zephyrproject/zephyr" ]; then
+          if [ ! -d "/workdir/zephyrproject/zephyr" ] || ! (cd /workdir/zephyrproject && west list >/dev/null 2>&1); then
+            rm -rf /workdir/zephyrproject
             mkdir -p /workdir/zephyrproject
             west init -m https://github.com/zephyrproject-rtos/zephyr.git --mr v3.7-branch /workdir/zephyrproject
             cd /workdir/zephyrproject
-            west update --narrow -o=--depth=1 hal_espressif tinycrypt hal_rpi_pico cmsis
+            MODS=$(west list -f "{name}" | grep -E '^(hal_espressif|hal_rpi_pico|cmsis|cmsis_6|mbedtls|tinycrypt)$' | tr '\n' ' ')
+            west update --narrow -o=--depth=1 $MODS
             west blobs fetch hal_espressif
           fi
           # Register SDK CMake package inside container
@@ -97,15 +97,14 @@ jobs:
 
       - name: Install Host Python Tools
         run: |
-          python3 -m pip install --break-system-packages pyyaml protobuf grpcio-tools
+          python3 -c "import yaml, google.protobuf, grpc_tools" 2>/dev/null || \
+            python3 -m pip install --break-system-packages protobuf grpcio-tools
         shell: bash
 
       - name: Build All MeshX Zephyr Targets
         run: |
           export ZEPHYR_BASE=/workdir/zephyrproject/zephyr
-          # Link modules into workspace root for manifest resolution
-          mkdir -p modules
-          cp -rs /workdir/zephyrproject/modules/* modules/ 2>/dev/null || ln -sf /workdir/zephyrproject/modules/* modules/ 2>/dev/null || true
+          (cd /workdir/zephyrproject && west --version && west list)
 
           # Discover targets dynamically and build each sequentially
           python3 - << 'EOF'

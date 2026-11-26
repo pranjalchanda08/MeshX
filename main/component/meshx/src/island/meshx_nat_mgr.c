@@ -501,11 +501,13 @@ meshx_err_t meshx_nat_recompute_slot_digest(meshx_nat_mgr_t *mgr, uint32_t *out_
     mgr->slots.table_digest_crc32 = 0UL;
     if (pos > 0U)
     {
-        meshx_err_t cerr = meshx_subnet_crc32(buf, pos, &mgr->slots.table_digest_crc32);
+        uint32_t crc = 0UL;
+        meshx_err_t cerr = meshx_subnet_crc32(buf, pos, &crc);
         if (cerr != MESHX_SUCCESS)
         {
             return cerr;
         }
+        mgr->slots.table_digest_crc32 = crc;
     }
     if (out_digest)
     {
