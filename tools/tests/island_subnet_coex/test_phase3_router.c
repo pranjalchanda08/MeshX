@@ -150,17 +150,20 @@ static void test_canonical_nonce_and_reasm_epoch(void)
     uint8_t s0[12] = {1,2,3,4,5,6,7,8,9,10,11,12};
     uint8_t s1[12] = {13,14,15,16,17,18,19,20,21,22,23,24};
     bool done = false;
-    assert(meshx_router_reasm_segment(&ctx, 0, 0x0002, 0x4403, 1, 0x100, 0, 1, s0, 12, &done) == MESHX_SUCCESS);
+    meshx_router_seg_rx_t seg0_e1 = {0, 0x0002, 0x4403, 1, 0x100, 0, 1, s0, 12};
+    assert(meshx_router_reasm_segment(&ctx, &seg0_e1, &done) == MESHX_SUCCESS);
     assert(!done);
 
     /* Epoch change mid-SAR must reset cleanly rather than splicing mixed-epoch segments */
-    assert(meshx_router_reasm_segment(&ctx, 0, 0x0002, 0x4403, 2, 0x100, 1, 1, s1, 12, &done) == MESHX_INVALID_STATE);
+    meshx_router_seg_rx_t seg1_e2 = {0, 0x0002, 0x4403, 2, 0x100, 1, 1, s1, 12};
+    assert(meshx_router_reasm_segment(&ctx, &seg1_e2, &done) == MESHX_INVALID_STATE);
     assert(!done);
 
     /* Fresh epoch 2 segment 0 + segment 1 completes properly */
-    assert(meshx_router_reasm_segment(&ctx, 0, 0x0002, 0x4403, 2, 0x100, 0, 1, s0, 12, &done) == MESHX_SUCCESS);
+    meshx_router_seg_rx_t seg0_e2 = {0, 0x0002, 0x4403, 2, 0x100, 0, 1, s0, 12};
+    assert(meshx_router_reasm_segment(&ctx, &seg0_e2, &done) == MESHX_SUCCESS);
     assert(!done);
-    assert(meshx_router_reasm_segment(&ctx, 0, 0x0002, 0x4403, 2, 0x100, 1, 1, s1, 12, &done) == MESHX_SUCCESS);
+    assert(meshx_router_reasm_segment(&ctx, &seg1_e2, &done) == MESHX_SUCCESS);
     assert(done);
     assert(ctx.reasm.len == 24);
     meshx_router_core_deinit(&ctx);

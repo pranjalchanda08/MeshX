@@ -149,32 +149,31 @@ meshx_err_t meshx_router_build_canonical_nonce(uint16_t canonical_src,
                                                meshx_ccm_nonce_t *out_nonce);
 
 /**
- * @brief Single-Epoch Stage 1 segment collector (isolates pre- vs post-key-rotation segments).
+ * @brief Inbound SAR segment descriptor for meshx_router_reasm_segment().
+ */
+typedef struct {
+    uint16_t       net_idx;   /**< Ingress NetKey Index */
+    uint16_t       src_addr;  /**< Ingress source unicast address */
+    uint16_t       dst_addr;  /**< Ingress destination address */
+    uint16_t       epoch_id;  /**< Key rotation epoch identifier */
+    uint32_t       seq_zero;  /**< 13-bit SeqZero base */
+    uint8_t        seg_o;     /**< Segment offset index [0..seg_n] */
+    uint8_t        seg_n;     /**< Last segment index [0..31] */
+    const uint8_t *seg_data;  /**< Pointer to segment data payload */
+    uint8_t        seg_len;   /**< Segment data length (<= 12 bytes) */
+} meshx_router_seg_rx_t;
+
+/**
+ * @brief Ingest a single SAR segment into the active reassembly context.
  *
  * @param[in,out] ctx          Pointer to router context.
- * @param[in]     net_idx      Ingress NetKey Index.
- * @param[in]     src_addr     Ingress source unicast address.
- * @param[in]     dst_addr     Ingress destination address.
- * @param[in]     epoch_id     Key rotation epoch identifier.
- * @param[in]     seq_zero     13-bit SeqZero base.
- * @param[in]     seg_o        Segment offset index [0..seg_n].
- * @param[in]     seg_n        Last segment index [0..31].
- * @param[in]     seg_data     Pointer to segment data payload.
- * @param[in]     seg_len      Segment data length (<= 12 bytes).
+ * @param[in]     seg          Pointer to inbound segment descriptor.
  * @param[out]    out_complete Set to true if all segments of the block have been received.
  * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG or MESHX_INVALID_STATE on epoch mismatch.
  */
 meshx_err_t meshx_router_reasm_segment(meshx_router_ctx_t *ctx,
-                                       uint16_t net_idx,
-                                       uint16_t src_addr,
-                                       uint16_t dst_addr,
-                                       uint16_t epoch_id,
-                                       uint32_t seq_zero,
-                                       uint8_t  seg_o,
-                                       uint8_t  seg_n,
-                                       const uint8_t *seg_data,
-                                       uint8_t  seg_len,
-                                       bool    *out_complete);
+                                       const meshx_router_seg_rx_t *seg,
+                                       bool *out_complete);
 
 /**
  * @brief Stage 1 Ingress validation, NAT/Group translation & Store-and-Forward Queue admission.

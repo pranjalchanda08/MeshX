@@ -37,7 +37,6 @@ typedef struct MESHX_PACKED meshx_router_queue_entry {
     uint8_t                         retry_count;          /**< Stage 2 retransmission attempt counter */
     uint8_t                         tx_epoch;             /**< Transmit key epoch flag */
     uint8_t                         flags;                /**< MESHX_ROUTER_FLAG_* */
-    uint8_t                         reserved;             /**< Alignment padding byte */
     uint8_t                         pdu[];                /**< Flexible array member holding Upper Transport PDU */
 } meshx_router_queue_entry_t;
 
@@ -138,7 +137,7 @@ meshx_err_t meshx_router_queue_mark_tx_inflight(meshx_router_queue_t *q, meshx_r
  * @param[in]     entry Entry to remove and release.
  * @return MESHX_SUCCESS on success, or MESHX_NOT_FOUND.
  */
-meshx_err_t meshx_router_queue_complete_entry(meshx_router_queue_t *q, meshx_router_queue_entry_t *entry);
+meshx_err_t meshx_router_queue_complete_entry(meshx_router_queue_t *q, const meshx_router_queue_entry_t *entry);
 
 /**
  * @brief Purge all queued entries whose ingress or egress matches boundary_id.

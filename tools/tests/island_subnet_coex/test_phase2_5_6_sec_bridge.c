@@ -97,9 +97,9 @@ static void test_security_hmac_replay_devkey_rpl(void)
     inv.boundary_id = 0xABCDEF01UL;
     uint8_t sealed[128], opened[128];
     uint16_t sealed_len = 0, opened_len = 0;
-    assert(meshx_subnet_sec_seal_devkey(&dev_key, MESHX_UVP_OP_SUBNET_BRIDGE_INVITE, 0x0005, 42,
-                                        (const uint8_t *)&inv, sizeof(inv),
-                                        sealed, sizeof(sealed), &sealed_len) == MESHX_SUCCESS);
+    meshx_sec_devkey_seal_req_t seal_req = {&dev_key, MESHX_UVP_OP_SUBNET_BRIDGE_INVITE, 0x0005, 42, (const uint8_t *)&inv, sizeof(inv)};
+    meshx_sec_devkey_seal_rsp_t seal_rsp = {sealed, sizeof(sealed), &sealed_len};
+    assert(meshx_subnet_sec_seal_devkey(&seal_req, &seal_rsp) == MESHX_SUCCESS);
     assert(meshx_subnet_sec_open_devkey(&dev_key, MESHX_UVP_OP_SUBNET_BRIDGE_INVITE,
                                         sealed, sealed_len,
                                         opened, sizeof(opened), &opened_len) == MESHX_SUCCESS);
@@ -113,48 +113,47 @@ static void test_security_hmac_replay_devkey_rpl(void)
     /* Sign & Verify + Boot +10000 margin + Checkpoints + Sliding Anti-Replay */
     s_ckpt_calls = 0;
     meshx_subnet_security_ctx_t tx_sec, rx_sec;
-    meshx_subnet_sec_init(&tx_sec, 2000UL, test_ckpt_cb, NULL);
-    meshx_subnet_sec_init(&rx_sec, 0UL, NULL, NULL);
+    assert(meshx_subnet_sec_init(&tx_sec, 2000UL, test_ckpt_cb, NULL) == MESHX_SUCCESS);
+    assert(meshx_subnet_sec_init(&rx_sec, 0UL, NULL, NULL) == MESHX_SUCCESS);
     assert(tx_sec.tx_bridge_nonce == 12000UL); /* 2000 + 10000 margin */
 
     /* Without K_bridge -> fail */
     uint8_t frame[128];
     uint16_t flen = 0;
     uint8_t hb[8] = {1,2,3,4,5,6,7,8};
-    assert(meshx_subnet_sec_sign_frame(&tx_sec, MESHX_UVP_OP_SUBNET_HEARTBEAT, 0x0005, hb, 8, frame, sizeof(frame), &flen) == MESHX_SUBNET_ERR_AUTH);
+    meshx_sec_sign_req_t sreq = {MESHX_UVP_OP_SUBNET_HEARTBEAT, 0x0005, hb, 8};
+    meshx_sec_sign_rsp_t srsp = {frame, sizeof(frame), &flen};
+    assert(meshx_subnet_sec_sign_frame(&tx_sec, &sreq, &srsp) == MESHX_SUBNET_ERR_AUTH);
 
     assert(meshx_subnet_sec_set_k_bridge(&tx_sec, &k_bridge, 1, 2) == MESHX_SUCCESS);
     assert(meshx_subnet_sec_set_k_bridge(&rx_sec, &k_bridge, 1, 2) == MESHX_SUCCESS);
 
-    assert(meshx_subnet_sec_sign_frame(&tx_sec, MESHX_UVP_OP_SUBNET_HEARTBEAT, 0x0005, hb, 8, frame, sizeof(frame), &flen) == MESHX_SUCCESS);
+    assert(meshx_subnet_sec_sign_frame(&tx_sec, &sreq, &srsp) == MESHX_SUCCESS);
     assert(flen == (MESHX_CLUSTER_AUTH_OVERHEAD + 8U));
 
-    uint8_t op = 0;
-    uint32_t term = 0;
-    uint16_t sender = 0;
-    const uint8_t *pl = NULL;
-    uint16_t pl_len = 0;
-    assert(meshx_subnet_sec_verify_frame(&rx_sec, frame, flen, &op, &term, &sender, &pl, &pl_len) == MESHX_SUCCESS);
-    assert(op == MESHX_UVP_OP_SUBNET_HEARTBEAT && term == 2 && sender == 0x0005 && pl_len == 8);
+    meshx_sec_verify_rsp_t vrsp = {0};
+    assert(meshx_subnet_sec_verify_frame(&rx_sec, frame, flen, &vrsp) == MESHX_SUCCESS);
+    assert(vrsp.opcode == MESHX_UVP_OP_SUBNET_HEARTBEAT && vrsp.term == 2 && vrsp.sender == 0x0005 && vrsp.payload_len == 8);
 
     /* Replay exact same frame -> rejected */
-    assert(meshx_subnet_sec_verify_frame(&rx_sec, frame, flen, &op, &term, &sender, &pl, &pl_len) == MESHX_SUBNET_ERR_REPLAY);
+    assert(meshx_subnet_sec_verify_frame(&rx_sec, frame, flen, &vrsp) == MESHX_SUBNET_ERR_REPLAY);
 
     /* Stale term rejected */
     tx_sec.active_term = 1;
-    assert(meshx_subnet_sec_sign_frame(&tx_sec, MESHX_UVP_OP_SUBNET_HEARTBEAT, 0x0005, hb, 8, frame, sizeof(frame), &flen) == MESHX_SUCCESS);
-    assert(meshx_subnet_sec_verify_frame(&rx_sec, frame, flen, &op, &term, &sender, &pl, &pl_len) == MESHX_SUBNET_ERR_AUTH);
+    assert(meshx_subnet_sec_sign_frame(&tx_sec, &sreq, &srsp) == MESHX_SUCCESS);
+    assert(meshx_subnet_sec_verify_frame(&rx_sec, frame, flen, &vrsp) == MESHX_SUBNET_ERR_AUTH);
 
     /* Restore term & verify checkpoint fires after 1024 increments */
     tx_sec.active_term = 2;
+    meshx_sec_sign_req_t sreq4 = {MESHX_UVP_OP_SUBNET_HEARTBEAT, 0x0005, hb, 4};
     for (int i = 0; i < 1030; i++) {
-        assert(meshx_subnet_sec_sign_frame(&tx_sec, MESHX_UVP_OP_SUBNET_HEARTBEAT, 0x0005, hb, 4, frame, sizeof(frame), &flen) == MESHX_SUCCESS);
+        assert(meshx_subnet_sec_sign_frame(&tx_sec, &sreq4, &srsp) == MESHX_SUCCESS);
     }
     assert(s_ckpt_calls >= 1);
 
     /* Nonce wrap guard >= 0xFFFF0000 */
     tx_sec.tx_bridge_nonce = MESHX_BRIDGE_NONCE_WRAP_LIMIT;
-    assert(meshx_subnet_sec_sign_frame(&tx_sec, MESHX_UVP_OP_SUBNET_HEARTBEAT, 0x0005, hb, 4, frame, sizeof(frame), &flen) != MESHX_SUCCESS);
+    assert(meshx_subnet_sec_sign_frame(&tx_sec, &sreq4, &srsp) != MESHX_SUCCESS);
 
     /* Whitelist + RPL */
     assert(meshx_subnet_sec_whitelist_add(&rx_sec, 0x0009, 0x33330001UL) == MESHX_SUCCESS);

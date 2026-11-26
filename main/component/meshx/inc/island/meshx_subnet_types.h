@@ -124,6 +124,9 @@ typedef struct {
 #define MESHX_SLOT_MAX                    14U
 #define MESHX_MAX_BRIDGING_SLOTS          4U
 #define MESHX_NET_IDX_INVALID             0xFFFFU
+#define MESHX_SUBNET_PRIMARY_NET_IDX      0U      /**< Primary subnet NetKey index */
+#define MESHX_SUBNET_ADDR_ALL_NODES       0xFFFFU /**< BLE Mesh all-nodes broadcast address */
+#define MESHX_NAT_SYNC_OP_UPSERT          1U      /**< NAT sync replication add/update operation */
 #define MESHX_GLOBAL_SUBNET_INVALID       0x00000000UL
 #define MESHX_COEX_DEFAULT_LOCAL_ADDR     0x0001U
 #define MESHX_COEX_DEFAULT_MASTER_ADDR    0x0001U
@@ -156,13 +159,14 @@ typedef struct {
 #define MESHX_NAT_FLAG_PERSISTENT         0x02U
 #define MESHX_NAT_FLAG_TEMP_DISCOVERY     0x04U
 
-#define MESHX_SUBNET_ERR_NAT_FULL         (-101)
-#define MESHX_SUBNET_ERR_REPLAY           (-102)
-#define MESHX_SUBNET_ERR_AUTH             (-103)
-#define MESHX_SUBNET_ERR_QUARANTINE       (-104)
-#define MESHX_SUBNET_ERR_WHITELIST        (-105)
-#define MESHX_SUBNET_ERR_LOOP             (-106)
-#define MESHX_SUBNET_ERR_MTU              (-107)
+/* Island Subnet Coexistence error codes are defined in meshx_err_t (meshx_err.h). */
+
+#define MESHX_SHIFT_LSB                   0U
+#define MESHX_SHIFT_BYTE1                 8U
+#define MESHX_SHIFT_BYTE2                 16U
+#define MESHX_SHIFT_MSB32                 24U
+
+#define MESHX_BE_BYTE(val, shift) ((uint8_t)(((val) >> (shift)) & MESHX_BYTE_MASK))
 
 /* =========================================================================
  * 2-Stage Store-and-Forward Router & NACK Constants (TRD Pages 4, 7, 10)

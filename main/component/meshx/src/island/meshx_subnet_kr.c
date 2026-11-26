@@ -182,31 +182,32 @@ meshx_err_t meshx_subnet_kr_set_phase(meshx_subnet_kr_mgr_t *mgr,
     slot->kr_phase  = (uint8_t)new_phase;
     slot->key_epoch = new_epoch;
 
-    switch (new_phase) {
-    case MESHX_SUBNET_KR_PHASE_NORMAL:
-        slot->active_net_key_flag = 0U;
-        break;
-    case MESHX_SUBNET_KR_PHASE_DIST:
-        if (new_key) {
-            memcpy(slot->new_net_key.bytes, new_key->bytes, MESHX_SUBNET_KEY_LEN);
-        }
-        /* Keep egress latched on old_net_key until SWITCH (Seg 0 stability) */
-        slot->active_net_key_flag = 0U;
-        break;
-    case MESHX_SUBNET_KR_PHASE_SWITCH:
-        if (new_key) {
-            memcpy(slot->new_net_key.bytes, new_key->bytes, MESHX_SUBNET_KEY_LEN);
-        }
-        slot->active_net_key_flag = 1U;
-        break;
-    case MESHX_SUBNET_KR_PHASE_REVOKE:
-        wipe_bytes(slot->old_net_key.bytes, MESHX_SUBNET_KEY_LEN);
-        memcpy(slot->old_net_key.bytes, slot->new_net_key.bytes, MESHX_SUBNET_KEY_LEN);
-        wipe_bytes(slot->new_net_key.bytes, MESHX_SUBNET_KEY_LEN);
-        slot->active_net_key_flag = 0U;
-        break;
-    default:
-        return MESHX_INVALID_ARG;
+    switch (new_phase)
+    {
+        case MESHX_SUBNET_KR_PHASE_NORMAL:
+            slot->active_net_key_flag = 0U;
+            break;
+        case MESHX_SUBNET_KR_PHASE_DIST:
+            if (new_key) {
+                memcpy(slot->new_net_key.bytes, new_key->bytes, MESHX_SUBNET_KEY_LEN);
+            }
+            /* Keep egress latched on old_net_key until SWITCH (Seg 0 stability) */
+            slot->active_net_key_flag = 0U;
+            break;
+        case MESHX_SUBNET_KR_PHASE_SWITCH:
+            if (new_key) {
+                memcpy(slot->new_net_key.bytes, new_key->bytes, MESHX_SUBNET_KEY_LEN);
+            }
+            slot->active_net_key_flag = 1U;
+            break;
+        case MESHX_SUBNET_KR_PHASE_REVOKE:
+            wipe_bytes(slot->old_net_key.bytes, MESHX_SUBNET_KEY_LEN);
+            memcpy(slot->old_net_key.bytes, slot->new_net_key.bytes, MESHX_SUBNET_KEY_LEN);
+            wipe_bytes(slot->new_net_key.bytes, MESHX_SUBNET_KEY_LEN);
+            slot->active_net_key_flag = 0U;
+            break;
+        default:
+            return MESHX_INVALID_ARG;
     }
 
     return MESHX_SUCCESS;
@@ -282,7 +283,7 @@ bool meshx_subnet_kr_is_opcode_quarantined(const meshx_subnet_kr_mgr_t *mgr,
                                            uint16_t ingress_net_idx,
                                            uint16_t egress_net_idx)
 {
-    (void)mgr;
+    MESHX_UNUSED(mgr);
     if (ingress_net_idx == egress_net_idx) {
         return false;
     }

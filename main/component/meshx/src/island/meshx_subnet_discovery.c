@@ -102,7 +102,7 @@ bool meshx_subnet_disc_eval_candidate(const meshx_subnet_discovery_t *disc,
                                       bool mains_powered,
                                       uint32_t free_heap_bytes)
 {
-    (void)disc;
+    MESHX_UNUSED(disc);
     if (!mains_powered)
     {
         return false;
@@ -251,13 +251,17 @@ meshx_err_t meshx_subnet_disc_commit_pair(meshx_subnet_discovery_t *disc,
     if (nat_mgr && rec->remote_phys_addr >= MESHX_NAT_ADDR_LIMIT_TIER1)
     {
         uint16_t v = 0U;
-        (void)meshx_nat_tier2_alloc(nat_mgr,
-                                    NULL,
-                                    rec->global_subnet_src,
-                                    rec->remote_phys_addr,
-                                    MESHX_NAT_FLAG_PERSISTENT,
-                                    0U,
-                                    &v);
+        meshx_err_t err = meshx_nat_tier2_alloc(nat_mgr,
+                                                NULL,
+                                                rec->global_subnet_src,
+                                                rec->remote_phys_addr,
+                                                MESHX_NAT_FLAG_PERSISTENT,
+                                                0U,
+                                                &v);
+        if (err != MESHX_SUCCESS)
+        {
+            return err;
+        }
     }
     return MESHX_SUCCESS;
 }

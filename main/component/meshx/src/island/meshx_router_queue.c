@@ -19,11 +19,11 @@ _Static_assert(sizeof(meshx_uvp_router_nack_t) <= MESHX_EMERGENCY_NACK_BUF_LEN,
  *
  * @param[in] entry Pointer to dynamically allocated queue entry to wipe and release.
  */
-static void wipe_and_free_entry(meshx_router_queue_entry_t *entry)
+static meshx_err_t wipe_and_free_entry(meshx_router_queue_entry_t *entry)
 {
     if (!entry)
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     size_t total = sizeof(*entry) + (size_t)entry->pdu_len;
     volatile uint8_t *vp = (volatile uint8_t *)entry;
@@ -32,16 +32,21 @@ static void wipe_and_free_entry(meshx_router_queue_entry_t *entry)
         vp[i] = 0U;
     }
     void *ptr = (void *)entry;
-    (void)MESHX_FREE(&ptr);
+    return MESHX_FREE(&ptr);
 }
 
 /**
  * @brief Recalculate whether any active SAR flow is currently transmitting.
  *
  * @param[in,out] q Pointer to router queue.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if q is NULL.
  */
-static void refresh_active_sar_flag(meshx_router_queue_t *q)
+static meshx_err_t refresh_active_sar_flag(meshx_router_queue_t *q)
 {
+    if (!q)
+    {
+        return MESHX_INVALID_ARG;
+    }
     q->active_sar_flow_present = 0U;
     for (meshx_router_queue_entry_t *c = q->head; c != NULL; c = c->next)
     {
@@ -51,6 +56,7 @@ static void refresh_active_sar_flag(meshx_router_queue_t *q)
             break;
         }
     }
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -115,7 +121,7 @@ meshx_err_t meshx_router_queue_push(meshx_router_queue_t *q,
                           : MESHX_MAX_UPPER_PDU_LEN;
     if (params->pdu_len > max_pdu)
     {
-        return (meshx_err_t)MESHX_SUBNET_ERR_MTU;
+        return MESHX_SUBNET_ERR_MTU;
     }
     if (params->pdu_len > 0U && !params->pdu)
     {
@@ -230,7 +236,7 @@ meshx_err_t meshx_router_queue_mark_tx_inflight(meshx_router_queue_t *q,
  * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG or MESHX_NOT_FOUND.
  */
 meshx_err_t meshx_router_queue_complete_entry(meshx_router_queue_t *q,
-                                              meshx_router_queue_entry_t *entry)
+                                              const meshx_router_queue_entry_t *entry)
 {
     if (!q || !entry)
     {

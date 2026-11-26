@@ -40,28 +40,28 @@ static meshx_boundary_redundancy_t *find_boundary(meshx_subnet_bridge_mgr_t *mgr
  * @param[in] sender_score Failover score advertised by remote peer.
  * @param[in] sender_addr  Unicast address of remote peer.
  *
- * @return true if peer wins arbitration, false if local node wins.
+ * @return MESHX_SUCCESS if peer wins arbitration, MESHX_FAIL if local node wins.
  */
-static bool peer_wins_arbitration(uint32_t local_term,
-                                  uint16_t local_score,
-                                  uint16_t local_addr,
-                                  uint32_t rx_term,
-                                  uint16_t sender_score,
-                                  uint16_t sender_addr)
+static meshx_err_t peer_wins_arbitration(uint32_t local_term,
+                                         uint16_t local_score,
+                                         uint16_t local_addr,
+                                         uint32_t rx_term,
+                                         uint16_t sender_score,
+                                         uint16_t sender_addr)
 {
     if (rx_term > local_term)
     {
-        return true;
+        return MESHX_SUCCESS;
     }
     if (rx_term < local_term)
     {
-        return false;
+        return MESHX_FAIL;
     }
     if (sender_score != local_score)
     {
-        return sender_score > local_score;
+        return (sender_score > local_score) ? MESHX_SUCCESS : MESHX_FAIL;
     }
-    return sender_addr > local_addr;
+    return (sender_addr > local_addr) ? MESHX_SUCCESS : MESHX_FAIL;
 }
 
 /**
@@ -79,7 +79,7 @@ void meshx_subnet_bridge_init(meshx_subnet_bridge_mgr_t *mgr,
                               uint8_t rssi_score,
                               uint32_t now_ms)
 {
-    (void)now_ms;
+    MESHX_UNUSED(now_ms);
     if (!mgr)
     {
         return;
@@ -312,7 +312,7 @@ meshx_err_t meshx_subnet_bridge_on_heartbeat(meshx_subnet_bridge_mgr_t *mgr,
     if (b->role == MESHX_BRIDGE_ROLE_ACTIVE && sender_addr != b->local_addr)
     {
         if (peer_wins_arbitration(b->active_term, b->local_score, b->local_addr,
-                                  rx_term, sender_score, sender_addr))
+                                  rx_term, sender_score, sender_addr) == MESHX_SUCCESS)
         {
             b->role = MESHX_BRIDGE_ROLE_STANDBY;
             b->active_term = rx_term;

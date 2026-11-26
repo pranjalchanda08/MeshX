@@ -1,5 +1,5 @@
 CompileFlags:
-  CompilationDatabase: build/weact_c3/Debug/all_in_one
+  CompilationDatabase: build\weact_c3\zephyr\Debug\test_profile
   Add:
     - --target=riscv32-esp-elf
   Remove:
