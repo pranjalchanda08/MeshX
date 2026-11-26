@@ -185,9 +185,9 @@ typedef struct {
 #define MESHX_NONCE_TYPE_DEVICE           0x02U
 
 #define MESHX_SUBNET_PLAIN_TX_BUF_LEN     160U
-#define MESHX_SUBNET_FRAME_TX_BUF_LEN     128U
+#define MESHX_SUBNET_FRAME_TX_BUF_LEN     192U
 
-#define MESHX_TRANSIT_DEFAULT_HOP_LIMIT   4U
+#define MESHX_TRANSIT_DEFAULT_HOP_LIMIT   15U
 #define MESHX_TRANSIT_ECHO_FILTER_SIZE    32U
 #define MESHX_TRANSIT_ECHO_TTL_MS         5000U
 #define MESHX_TRANSIT_MAGIC_VER           0x41U   /**< Version 1 Transit encapsulation */
@@ -280,11 +280,14 @@ typedef enum {
  * Packed Data Structures (TRD Pages 2, 4, 5, 6, 7, 8, 10, 11)
  * ========================================================================= */
 
-/** Tier-2 Dynamic NAT Entry: 19 Bytes (16 entries = 304 Bytes RAM) */
+/** Tier-2 Dynamic NAT Entry: 27 Bytes (16 entries = 432 Bytes RAM) */
 typedef struct MESHX_PACKED {
     meshx_subnet_uuid8_t uuid;              /**< Truncated 64-bit UUID prefix of remote device */
     uint32_t             global_subnet_src; /**< Origin island Global Subnet ID */
+    uint32_t             global_subnet_dst; /**< Destination island Global Subnet ID */
     uint16_t             orig_addr;         /**< True unicast address in origin island */
+    uint16_t             dst_addr;          /**< Destination unicast address */
+    uint16_t             egress_net_idx;    /**< Egress NetKey Index for reverse lookup */
     uint16_t             virtual_addr;      /**< Mapped virtual address 0x7800..0x7FFF (or Tier-1) */
     uint8_t              flags;             /**< MESHX_NAT_FLAG_* */
     uint16_t             last_active_min;   /**< LRU activity minute stamp for temp cleanup */
@@ -303,19 +306,17 @@ typedef struct MESHX_PACKED {
     uint8_t  active;              /**< 1 = active binding, 0 = free */
 } meshx_pair_record_t;
 
-/** Multi-Island Transit Header: 23 Bytes (max 85B App PDU + 23B = 108B) */
+/** Multi-Island Transit Header: 23 Bytes (REQ-F06.1) */
 typedef struct MESHX_PACKED {
-    uint8_t  magic_ver;            /**< MESHX_TRANSIT_MAGIC_VER (0x41) */
-    uint8_t  flags;                /**< bit 0: is_group, bit 1: nack_req */
-    uint8_t  hop_limit;            /**< Decremented per hop; drop when 0 */
-    uint8_t  payload_len;          /**< Inner App PDU length (<= 85 B) */
-    uint32_t visited_subnets_mask; /**< Bitmask of traversed slot indices / CRC bits */
-    uint32_t global_subnet_src;    /**< Origin island ID */
-    uint32_t global_subnet_dst;    /**< Final destination island ID */
-    uint16_t orig_src_addr;        /**< Origin element address */
-    uint16_t orig_dst_addr;        /**< Final physical/group destination address */
-    uint16_t tx_tag_crc16;         /**< Disambiguating tag CRC-16 */
-    uint8_t  reserved;
+    uint16_t visited_subnets_mask; /**< 16-bit bitmask of traversed subnets */
+    uint8_t  hop_limit;            /**< Decremented per hop (init 15; drop when <= 1) */
+    uint16_t orig_subnet_id;       /**< 16-bit truncated origin Global Subnet ID */
+    uint16_t orig_phys_src;        /**< Origin physical unicast address */
+    uint16_t orig_seq_num;         /**< Origin sequence number (low 16 bits) */
+    uint32_t orig_seq_auth;        /**< Canonical 24-bit SeqAuth */
+    uint32_t orig_iv_index;        /**< Origin IV Index */
+    uint16_t boundary_id;          /**< 16-bit boundary identifier */
+    uint32_t active_term;          /**< Active cluster redundancy term */
 } meshx_subnet_transit_hdr_t;
 
 /* =========================================================================
@@ -466,6 +467,21 @@ typedef struct MESHX_PACKED {
     uint8_t  start_idx;
 } meshx_uvp_dir_query_t;
 
+#define MESHX_SUBNET_DIRECTORY_MAX_ENTRIES 8U
+
+typedef struct MESHX_PACKED {
+    uint32_t global_subnet_id;
+    uint16_t phys_addr;
+    uint16_t virtual_addr;
+    uint16_t func_id;
+    uint8_t  role_flags;
+} meshx_subnet_directory_entry_t;
+
+typedef struct MESHX_PACKED {
+    uint8_t                        entry_count;
+    meshx_subnet_directory_entry_t entries[MESHX_SUBNET_DIRECTORY_MAX_ENTRIES];
+} meshx_subnet_directory_t;
+
 /** Per-Subnet Crypto Slot (4 slots static) */
 typedef struct MESHX_PACKED {
     uint16_t           net_idx;
@@ -499,33 +515,50 @@ typedef struct MESHX_PACKED {
     uint32_t                  table_digest_crc32;
 } meshx_local_slot_registry_t;
 
+/** Option B UVP Data-Plane Tunnel Header (preceded by 0xDF opcode byte): 27 Bytes */
+typedef struct MESHX_PACKED {
+    uint8_t           ttl;
+    uint8_t           flags;
+    uint8_t           key_epoch;
+    uint16_t          orig_src_addr;
+    uint16_t          orig_dst_addr;
+    uint16_t          egress_net_idx;
+    uint32_t          orig_seq_auth;
+    uint32_t          orig_iv_index;
+    meshx_trans_mic_t trans_mic;
+    uint8_t           pdu_len;
+} meshx_uvp_data_tunnel_hdr_t;
+
 /* Compile-time size verification of fixed-width wire & RAM records */
 #if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
-_Static_assert(sizeof(meshx_nat_entry_t) == 19, "meshx_nat_entry_t must be 19 bytes");
+_Static_assert(sizeof(meshx_nat_entry_t) == 27, "meshx_nat_entry_t must be 27 bytes");
 _Static_assert(sizeof(meshx_pair_record_t) == 20, "meshx_pair_record_t must be 20 bytes");
 _Static_assert(sizeof(meshx_subnet_transit_hdr_t) == 23, "meshx_subnet_transit_hdr_t must be 23 bytes");
 _Static_assert(sizeof(meshx_uvp_route_adv_t) == 35, "meshx_uvp_route_adv_t must be 35 bytes");
 _Static_assert(sizeof(meshx_uvp_auth_hdr_t) == 11, "meshx_uvp_auth_hdr_t must be 11 bytes");
 _Static_assert(sizeof(meshx_uvp_bridge_invite_plain_t) == 48, "meshx_uvp_bridge_invite_plain_t must be 48 bytes");
+_Static_assert(sizeof(meshx_uvp_data_tunnel_hdr_t) == 27, "meshx_uvp_data_tunnel_hdr_t must be 27 bytes");
 #endif
 
 /**
  * @brief Calculate CRC-16-CCITT (poly 0x1021, init 0xFFFF) over a byte buffer.
  *
- * @param[in] data Pointer to input data buffer.
- * @param[in] len  Number of bytes to process.
- * @return Computed 16-bit CRC value.
+ * @param[in]  data    Pointer to input data buffer.
+ * @param[in]  len     Number of bytes to process.
+ * @param[out] out_crc Destination for computed 16-bit CRC value.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p data or @p out_crc is NULL.
  */
-uint16_t meshx_subnet_crc16(const uint8_t *data, size_t len);
+meshx_err_t meshx_subnet_crc16(const uint8_t *data, size_t len, uint16_t *out_crc);
 
 /**
  * @brief Calculate IEEE 802.3 CRC-32 (poly 0xEDB88320, init 0xFFFFFFFF) over a byte buffer.
  *
- * @param[in] data Pointer to input data buffer.
- * @param[in] len  Number of bytes to process.
- * @return Computed 32-bit CRC value.
+ * @param[in]  data    Pointer to input data buffer.
+ * @param[in]  len     Number of bytes to process.
+ * @param[out] out_crc Destination for computed 32-bit CRC value.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p data or @p out_crc is NULL.
  */
-uint32_t meshx_subnet_crc32(const uint8_t *data, size_t len);
+meshx_err_t meshx_subnet_crc32(const uint8_t *data, size_t len, uint32_t *out_crc);
 
 #ifdef __cplusplus
 }

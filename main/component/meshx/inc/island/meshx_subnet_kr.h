@@ -28,8 +28,9 @@ typedef struct {
  *
  * @param[out] mgr          Pointer to KR manager structure.
  * @param[in]  has_k_bridge Initial Cluster Bridge Key availability flag.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p mgr is NULL.
  */
-void meshx_subnet_kr_init(meshx_subnet_kr_mgr_t *mgr, bool has_k_bridge);
+meshx_err_t meshx_subnet_kr_init(meshx_subnet_kr_mgr_t *mgr, bool has_k_bridge);
 
 /**
  * @brief Bind or update a local net_idx <-> global_subnet_id crypto slot (up to 4 simultaneous).
@@ -61,20 +62,26 @@ meshx_err_t meshx_subnet_kr_slot_unbind(meshx_subnet_kr_mgr_t *mgr, uint16_t net
 /**
  * @brief O(1) slot lookup by local NetKey Index (up to 4 slots).
  *
- * @param[in] mgr     Pointer to KR manager.
- * @param[in] net_idx Local NetKey Index.
- * @return Pointer to matching crypto slot, or NULL if not found.
+ * @param[in]  mgr      Pointer to KR manager.
+ * @param[in]  net_idx  Local NetKey Index.
+ * @param[out] out_slot Destination for matching crypto slot pointer.
+ * @return MESHX_SUCCESS if found, MESHX_INVALID_ARG on NULL args, or MESHX_NOT_FOUND.
  */
-meshx_subnet_crypto_slot_t *meshx_subnet_kr_find_by_net_idx(meshx_subnet_kr_mgr_t *mgr, uint16_t net_idx);
+meshx_err_t meshx_subnet_kr_find_by_net_idx(meshx_subnet_kr_mgr_t *mgr,
+                                            uint16_t net_idx,
+                                            meshx_subnet_crypto_slot_t **out_slot);
 
 /**
  * @brief Lookup crypto slot by Global Subnet ID.
  *
- * @param[in] mgr              Pointer to KR manager.
- * @param[in] global_subnet_id Target Global Subnet ID.
- * @return Pointer to matching crypto slot, or NULL if not found.
+ * @param[in]  mgr              Pointer to KR manager.
+ * @param[in]  global_subnet_id Target Global Subnet ID.
+ * @param[out] out_slot         Destination for matching crypto slot pointer.
+ * @return MESHX_SUCCESS if found, MESHX_INVALID_ARG on NULL args, or MESHX_NOT_FOUND.
  */
-meshx_subnet_crypto_slot_t *meshx_subnet_kr_find_by_global_id(meshx_subnet_kr_mgr_t *mgr, uint32_t global_subnet_id);
+meshx_err_t meshx_subnet_kr_find_by_global_id(meshx_subnet_kr_mgr_t *mgr,
+                                              uint32_t global_subnet_id,
+                                              meshx_subnet_crypto_slot_t **out_slot);
 
 /**
  * @brief Transition a specific subnet slot through Phases 0 -> 1 -> 2 -> 3 independently.
@@ -96,35 +103,39 @@ meshx_err_t meshx_subnet_kr_set_phase(meshx_subnet_kr_mgr_t *mgr,
  * @brief Select egress TX key for Seg 0 latch according to TRD Phase rules.
  *
  * @param[in]  slot         Pointer to crypto slot.
- * @param[out] out_tx_epoch Destination for selected key epoch flag (0 = old, 1 = new).
- * @return Pointer to selected NetKey structure, or NULL if slot is invalid.
+ * @param[out] out_tx_epoch Optional destination for selected key epoch flag (0 = old, 1 = new).
+ * @param[out] out_key      Destination for selected NetKey structure pointer.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p slot or @p out_key is NULL.
  */
-const meshx_subnet_key_t *meshx_subnet_kr_select_egress_key(const meshx_subnet_crypto_slot_t *slot,
-                                                            uint8_t *out_tx_epoch);
+meshx_err_t meshx_subnet_kr_select_egress_key(const meshx_subnet_crypto_slot_t *slot,
+                                              uint8_t *out_tx_epoch,
+                                              const meshx_subnet_key_t **out_key);
 
 /**
  * @brief Select candidate ingress keys for dual-RX decryption during key transition.
  *
- * @param[in]  slot             Pointer to crypto slot.
- * @param[out] out_active_keys  Destination candidate key list structure.
- * @return Number of candidate keys (1 or 2), or 0 on error.
+ * @param[in]  slot            Pointer to crypto slot.
+ * @param[out] out_active_keys Destination candidate key list structure.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p slot or @p out_active_keys is NULL.
  */
-uint8_t meshx_subnet_kr_get_ingress_keys(const meshx_subnet_crypto_slot_t *slot,
-                                         meshx_kr_active_keys_t *out_active_keys);
+meshx_err_t meshx_subnet_kr_get_ingress_keys(const meshx_subnet_crypto_slot_t *slot,
+                                             meshx_kr_active_keys_t *out_active_keys);
 
 /**
- * @brief Return true if opcode (0xC4, 0xC5, 0xC6) must be blocked from cross-subnet forwarding.
+ * @brief Evaluate whether opcode (0xC4, 0xC5, 0xC6) must be blocked from cross-subnet forwarding.
  *
- * @param[in] mgr             Pointer to KR manager.
- * @param[in] uvp_opcode      UVP message opcode to check.
- * @param[in] ingress_net_idx NetKey Index of packet ingress.
- * @param[in] egress_net_idx  Target NetKey Index of packet egress.
- * @return true if opcode is quarantined, false otherwise.
+ * @param[in]  mgr             Pointer to KR manager.
+ * @param[in]  uvp_opcode      UVP message opcode to check.
+ * @param[in]  ingress_net_idx NetKey Index of packet ingress.
+ * @param[in]  egress_net_idx  Target NetKey Index of packet egress.
+ * @param[out] out_quarantined Set to true if opcode is quarantined, false otherwise.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p out_quarantined is NULL.
  */
-bool meshx_subnet_kr_is_opcode_quarantined(const meshx_subnet_kr_mgr_t *mgr,
-                                           uint8_t uvp_opcode,
-                                           uint16_t ingress_net_idx,
-                                           uint16_t egress_net_idx);
+meshx_err_t meshx_subnet_kr_is_opcode_quarantined(const meshx_subnet_kr_mgr_t *mgr,
+                                                  uint8_t uvp_opcode,
+                                                  uint16_t ingress_net_idx,
+                                                  uint16_t egress_net_idx,
+                                                  bool *out_quarantined);
 
 /**
  * @brief Advance sequence counter on slot and signal if pre-wrap IV Update is required (>= 0xF00000).

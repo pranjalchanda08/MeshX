@@ -170,7 +170,14 @@ static meshx_err_t uvp_unified_dispatcher_cb(dev_struct_t *pdev,
     /*
      * Application-Layer Security Guard: Block 0xFFFF (All-Nodes) on UVP System Management
      */
-    if ((uvp_ctx.func_id == MESHX_FUNC_ID_SYS_DISCOVERY || uvp_ctx.func_id == MESHX_FUNC_ID_SYS_PAIRING) &&
+    const uint8_t *raw_bytes = static_cast<const uint8_t *>(payload);
+    bool is_island_coex = (uvp_ctx.func_id == MESHX_FUNC_ID_SYS_PAIRING &&
+                           raw_bytes != NULL &&
+                           payload_len >= 1U &&
+                           raw_bytes[0] >= MESHX_UVP_OP_SUBNET_HEARTBEAT &&
+                           raw_bytes[0] <= MESHX_UVP_OP_SUBNET_DATA_TUNNEL);
+    if (!is_island_coex &&
+        (uvp_ctx.func_id == MESHX_FUNC_ID_SYS_DISCOVERY || uvp_ctx.func_id == MESHX_FUNC_ID_SYS_PAIRING) &&
         (p_meta->dst_addr == MESHX_KEY_UNUSED || uvp_ctx.dst_addr == MESHX_KEY_UNUSED))
     {
         MESHX_LOGW(MODULE_ID_COMMON, "UVP Dispatcher: Security violation! Dropping 0xFFFF broadcast on system func 0x%04X",

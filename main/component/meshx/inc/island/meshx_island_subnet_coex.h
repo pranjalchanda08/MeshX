@@ -17,6 +17,7 @@
 #include <stddef.h>
 #include "meshx_err.h"
 #include "island/meshx_subnet_types.h"
+#include "island/meshx_router_core.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -75,6 +76,13 @@ typedef meshx_err_t (*meshx_subnet_uvp_tx_fn_t)(uint16_t net_idx,
                                               uint16_t payload_len,
                                               bool     ack_req,
                                               void    *user_ctx);
+
+typedef void (*meshx_subnet_data_rx_fn_t)(uint16_t net_idx,
+                                          uint16_t canonical_src,
+                                          uint16_t canonical_dst,
+                                          const uint8_t *pdu,
+                                          uint8_t pdu_len,
+                                          void *user_ctx);
 
 /**
  * @brief Initialize the island subnet coexistence feature and restore state from NVS.
@@ -178,6 +186,93 @@ void meshx_subnet_coex_on_beacon_rx(uint16_t company_id,
 void meshx_subnet_coex_register_uvp_tx(meshx_subnet_uvp_tx_fn_t tx_cb, void *user_ctx);
 
 /**
+ * @brief Register Stage 2 data-plane TX callback for bridged Upper Transport PDUs.
+ *
+ * @param[in] tx_cb    Stage 2 transmit callback.
+ * @param[in] user_ctx User context pointer.
+ */
+void meshx_subnet_coex_register_data_tx(meshx_router_send_fn_t tx_cb, void *user_ctx);
+
+/**
+ * @brief Register Option B local delivery callback for tunneled cross-subnet data PDUs.
+ *
+ * @param[in] rx_cb    Callback invoked for locally delivered tunneled PDUs.
+ * @param[in] user_ctx User context pointer.
+ */
+void meshx_subnet_coex_register_data_rx(meshx_subnet_data_rx_fn_t rx_cb, void *user_ctx);
+
+/**
+ * @brief Request descriptor for Option B UVP data-tunnel transmission (0xDF).
+ */
+typedef struct {
+    uint16_t       net_idx;            /**< Target NetKey index */
+    uint16_t       bridge_or_dst_addr; /**< Next-hop bridge or destination address */
+    uint16_t       canonical_dst;      /**< Canonical destination address */
+    uint32_t       iv_index;           /**< Current IV index */
+    uint32_t       seq_auth;           /**< Canonical 24-bit SeqAuth */
+    uint8_t        ttl;                /**< Network TTL */
+    const uint8_t *pdu;                /**< Upper Transport PDU payload */
+    uint8_t        pdu_len;            /**< Length of PDU payload in bytes */
+} meshx_subnet_data_tx_req_t;
+
+/**
+ * @brief Stage 1 segment metadata descriptor for meshx_subnet_coex_on_seg_rx().
+ */
+typedef struct {
+    uint32_t                 iv_index;  /**< Ingress IV index */
+    uint32_t                 seq_auth;  /**< Canonical 24-bit SeqAuth */
+    uint8_t                  ttl;       /**< Network TTL */
+    uint8_t                  szmic;     /**< TransMIC size flag (0 = 32-bit, 1 = 64-bit) */
+    const meshx_trans_mic_t *trans_mic; /**< Preserved Upper Transport MIC */
+    uint32_t                 now_ms;    /**< Current monotonic timestamp in milliseconds */
+} meshx_subnet_seg_meta_t;
+
+/**
+ * @brief Send an Upper PDU across subnets via the Option B UVP data tunnel (0xDF).
+ *
+ * @param[in] req Pointer to data-tunnel transmit request descriptor.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_subnet_coex_send_data(const meshx_subnet_data_tx_req_t *req);
+
+/**
+ * @brief Ingest a Stage 1 SAR segment into the coexistence router.
+ *
+ * @param[in]  seg                Incoming segment descriptor.
+ * @param[in]  meta               Segment metadata (IV index, SeqAuth, TTL, MIC, timestamp).
+ * @param[out] out_send_block_ack Set true if a Lower Transport Block ACK should be sent.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_subnet_coex_on_seg_rx(const meshx_router_seg_rx_t *seg,
+                                        const meshx_subnet_seg_meta_t *meta,
+                                        bool *out_send_block_ack);
+
+/**
+ * @brief Ingest a reassembled Stage 1 Upper Transport PDU for bridging.
+ *
+ * @param[in]  pdu                Reassembled Stage 1 PDU descriptor.
+ * @param[in]  now_ms             Current monotonic timestamp in milliseconds.
+ * @param[out] out_send_block_ack Set true if a Lower Transport Block ACK should be sent.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_subnet_coex_on_pdu_rx(const meshx_router_stage1_pdu_t *pdu,
+                                        uint32_t now_ms,
+                                        bool *out_send_block_ack);
+
+/**
+ * @brief Notify coexistence router of Stage 2 Lower SAR completion.
+ *
+ * @param[in] ack_ok true if egress transmission/ACK succeeded, false otherwise.
+ * @param[in] now_ms Current monotonic timestamp in milliseconds.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_subnet_coex_on_stage2_tx_complete(bool ack_ok, uint32_t now_ms);
+
+/**
  * @brief Periodic coexistence scheduler tick.
  *
  * Drives Stage 2 store-and-forward retransmissions, active bridge heartbeats,
@@ -273,6 +368,77 @@ meshx_err_t meshx_subnet_coex_rule_set(const meshx_bridge_rule_t *rule,
 meshx_err_t meshx_subnet_coex_cluster_key_update(const meshx_subnet_key_t *k_bridge,
                                                  uint32_t new_cluster_epoch,
                                                  uint32_t new_term);
+
+/**
+ * @brief Install, update, or revoke the shared Cluster Bridge Key (K_bridge).
+ *
+ * @param[in] k_bridge          Pointer to 16-byte K_bridge key (unused when @p revoke is true).
+ * @param[in] new_cluster_epoch Updated cluster epoch counter.
+ * @param[in] new_term          Updated cluster term counter.
+ * @param[in] revoke            true to wipe K_bridge from RAM and NVS, false to install/update.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_subnet_coex_cluster_key_update_ex(const meshx_subnet_key_t *k_bridge,
+                                                    uint32_t new_cluster_epoch,
+                                                    uint32_t new_term,
+                                                    bool revoke);
+
+/**
+ * @brief Set local immutable Device Key used to decrypt 0xD4 Bridge Invite envelopes.
+ *
+ * @param[in] dev_key Pointer to 16-byte local Device Key.
+ *
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG.
+ */
+meshx_err_t meshx_subnet_coex_set_dev_key(const meshx_subnet_key_t *dev_key);
+
+/**
+ * @brief Commit a cross-subnet pairing record and persist NAT/pair state to NVS.
+ *
+ * @param[in] rec Pointer to pairing record to commit.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_subnet_coex_commit_pair(const meshx_pair_record_t *rec);
+
+/**
+ * @brief Send a DevKey-sealed OTA K_bridge rekey (0xD4) to a commissioned peer bridge.
+ *
+ * @param[in] net_idx           Target NetKey index.
+ * @param[in] peer_addr         Unicast address of peer bridge.
+ * @param[in] peer_dev_key      Peer bridge 16-byte Device Key.
+ * @param[in] new_k_bridge      New 16-byte Cluster Bridge Key.
+ * @param[in] new_cluster_epoch Updated cluster epoch counter.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_subnet_coex_ota_rekey_peer(uint16_t net_idx,
+                                             uint16_t peer_addr,
+                                             const meshx_subnet_key_t *peer_dev_key,
+                                             const meshx_subnet_key_t *new_k_bridge,
+                                             uint32_t new_cluster_epoch);
+
+/**
+ * @brief Intent-driven REQ-F01.1 probe and bind commissioning for a cross-subnet pair.
+ *
+ * @param[in]  src_net_idx             Source subnet NetKey index.
+ * @param[in]  local_elem_addr         Local element unicast address.
+ * @param[in]  remote_global_subnet_id Remote Global Subnet ID.
+ * @param[in]  remote_phys_addr        Remote physical element unicast address.
+ * @param[in]  func_id                 Bound functional ID.
+ * @param[in]  role_flags              Role bitmask (producer/consumer).
+ * @param[out] out_virtual_addr        Optional pointer to receive assigned virtual NAT address.
+ *
+ * @return MESHX_SUCCESS on success, or error code.
+ */
+meshx_err_t meshx_subnet_coex_commission_pair(uint16_t src_net_idx,
+                                              uint16_t local_elem_addr,
+                                              uint32_t remote_global_subnet_id,
+                                              uint16_t remote_phys_addr,
+                                              uint16_t func_id,
+                                              uint8_t role_flags,
+                                              uint16_t *out_virtual_addr);
 
 /** @} */
 

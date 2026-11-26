@@ -15,17 +15,18 @@ extern "C" {
 #endif
 
 /**
- * @brief Sliding anti-replay sender slot (16-entry cache).
+ * @brief Sliding anti-replay sender slot (16-entry cache, 32-bit sliding window).
  */
 typedef struct {
+    uint32_t boundary_id;   /**< Boundary scope for this sender */
     uint16_t sender_addr;   /**< Sender unicast address */
     uint32_t highest_nonce; /**< Highest verified bridge nonce seen from sender */
-    uint16_t seen_bitmap;   /**< Bitmask tracking 16 preceding nonces relative to highest_nonce */
+    uint32_t seen_bitmap;   /**< Bitmask tracking 32 preceding nonces relative to highest_nonce */
     bool     valid;         /**< true if entry is active */
 } meshx_replay_sender_t;
 
 /**
- * @brief Per-subnet Replay Protection Entry (32-entry table: 32 * 16 B).
+ * @brief Per-subnet Replay Protection Entry (32-entry table with 32-bit sliding window).
  */
 typedef struct {
     uint16_t net_idx;      /**< BLE Mesh NetKey Index */
@@ -33,6 +34,7 @@ typedef struct {
     uint32_t key_epoch;    /**< Subnet key rotation epoch */
     uint32_t iv_index;     /**< Associated IV Index */
     uint32_t last_seq_num; /**< Highest sequence number recorded */
+    uint32_t seq_window;   /**< 32-bit sliding window relative to last_seq_num */
 } meshx_subnet_rpl_entry_t;
 
 /**
@@ -97,8 +99,9 @@ meshx_err_t meshx_subnet_sec_init(meshx_subnet_security_ctx_t *ctx,
  * @brief De-initialize security context and scrub key material.
  *
  * @param[in,out] ctx Pointer to security context.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p ctx is NULL.
  */
-void meshx_subnet_sec_deinit(meshx_subnet_security_ctx_t *ctx);
+meshx_err_t meshx_subnet_sec_deinit(meshx_subnet_security_ctx_t *ctx);
 
 /**
  * @brief Provision K_bridge atomically (callers must commit NVS before activating).
@@ -118,8 +121,9 @@ meshx_err_t meshx_subnet_sec_set_k_bridge(meshx_subnet_security_ctx_t *ctx,
  * @brief Wipe Cluster Bridge Key from memory.
  *
  * @param[in,out] ctx Pointer to security context.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p ctx is NULL.
  */
-void meshx_subnet_sec_clear_k_bridge(meshx_subnet_security_ctx_t *ctx);
+meshx_err_t meshx_subnet_sec_clear_k_bridge(meshx_subnet_security_ctx_t *ctx);
 
 /**
  * @brief Request descriptor for meshx_subnet_sec_sign_frame().
@@ -199,6 +203,24 @@ meshx_err_t meshx_subnet_sec_verify_frame(meshx_subnet_security_ctx_t *ctx,
                                           meshx_sec_verify_rsp_t *rsp);
 
 /**
+ * @brief Verify inbound authenticated UVP frame scoped to a boundary's active term.
+ *
+ * @param[in,out] ctx           Pointer to security context.
+ * @param[in]     boundary_id   Boundary identifier for replay/term scoping (0 = global).
+ * @param[in,out] boundary_term Pointer to boundary-scoped active term (NULL = use ctx->active_term).
+ * @param[in]     frame         Raw inbound signed frame.
+ * @param[in]     frame_len     Length of signed frame.
+ * @param[out]    rsp           Pointer to verification output descriptor.
+ * @return MESHX_SUCCESS on success, MESHX_SUBNET_ERR_AUTH on tag/term mismatch, MESHX_SUBNET_ERR_REPLAY on replay.
+ */
+meshx_err_t meshx_subnet_sec_verify_frame_scoped(meshx_subnet_security_ctx_t *ctx,
+                                                 uint32_t boundary_id,
+                                                 uint32_t *boundary_term,
+                                                 const uint8_t *frame,
+                                                 uint16_t frame_len,
+                                                 meshx_sec_verify_rsp_t *rsp);
+
+/**
  * @brief Encrypt DevKey AES-128-CCM commissioning envelopes (0xD4 Bridge Invite).
  *
  * @param[in]  req Pointer to DevKey seal request descriptor.
@@ -243,14 +265,16 @@ meshx_err_t meshx_subnet_sec_whitelist_add(meshx_subnet_security_ctx_t *ctx,
 /**
  * @brief Check whether transit ingress packet from neighbor bridge is authorized for claimed subnet.
  *
- * @param[in] ctx                  Pointer to security context.
- * @param[in] neighbor_bridge_addr Immediate transmitter address.
- * @param[in] claimed_subnet_src   Origin Global Subnet ID claimed in transit header.
- * @return true if authorized, false otherwise.
+ * @param[in]  ctx                  Pointer to security context.
+ * @param[in]  neighbor_bridge_addr Immediate transmitter address.
+ * @param[in]  claimed_subnet_src   Origin Global Subnet ID claimed in transit header.
+ * @param[out] out_allowed          Set to true if authorized, false otherwise.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p ctx or @p out_allowed is NULL.
  */
-bool meshx_subnet_sec_whitelist_check(const meshx_subnet_security_ctx_t *ctx,
-                                      uint16_t neighbor_bridge_addr,
-                                      uint32_t claimed_subnet_src);
+meshx_err_t meshx_subnet_sec_whitelist_check(const meshx_subnet_security_ctx_t *ctx,
+                                             uint16_t neighbor_bridge_addr,
+                                             uint32_t claimed_subnet_src,
+                                             bool *out_allowed);
 
 /**
  * @brief Check and update subnet-partitioned Replay Protection List.
@@ -261,14 +285,16 @@ bool meshx_subnet_sec_whitelist_check(const meshx_subnet_security_ctx_t *ctx,
  * @param[in]     key_epoch Subnet key rotation epoch.
  * @param[in]     iv_index  Current IV Index.
  * @param[in]     seq_num   Received packet sequence number.
- * @return true if packet is fresh and recorded, false if replayed.
+ * @param[out]    out_valid Set to true if packet is fresh and recorded, false if replayed.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p ctx or @p out_valid is NULL or @p src_addr is 0.
  */
-bool meshx_subnet_sec_rpl_check_update(meshx_subnet_security_ctx_t *ctx,
-                                       uint16_t net_idx,
-                                       uint16_t src_addr,
-                                       uint32_t key_epoch,
-                                       uint32_t iv_index,
-                                       uint32_t seq_num);
+meshx_err_t meshx_subnet_sec_rpl_check_update(meshx_subnet_security_ctx_t *ctx,
+                                              uint16_t net_idx,
+                                              uint16_t src_addr,
+                                              uint32_t key_epoch,
+                                              uint32_t iv_index,
+                                              uint32_t seq_num,
+                                              bool *out_valid);
 
 /**
  * @brief Check and update Stage 2 Canonical Source RPL (canonical_src, global_subnet_src).
@@ -278,13 +304,15 @@ bool meshx_subnet_sec_rpl_check_update(meshx_subnet_security_ctx_t *ctx,
  * @param[in]     canonical_src     Canonical source unicast address.
  * @param[in]     iv_index          Current IV Index.
  * @param[in]     seq_num           Sequence number.
- * @return true if fresh and recorded, false if replayed.
+ * @param[out]    out_valid         Set to true if fresh and recorded, false if replayed.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p ctx or @p out_valid is NULL or @p canonical_src is 0.
  */
-bool meshx_subnet_sec_canonical_rpl_check(meshx_subnet_security_ctx_t *ctx,
-                                          uint32_t global_subnet_src,
-                                          uint16_t canonical_src,
-                                          uint32_t iv_index,
-                                          uint32_t seq_num);
+meshx_err_t meshx_subnet_sec_canonical_rpl_check(meshx_subnet_security_ctx_t *ctx,
+                                                 uint32_t global_subnet_src,
+                                                 uint16_t canonical_src,
+                                                 uint32_t iv_index,
+                                                 uint32_t seq_num,
+                                                 bool *out_valid);
 
 #ifdef __cplusplus
 }

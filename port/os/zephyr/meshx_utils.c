@@ -10,6 +10,7 @@
  */
 
 #include "interface/rtos/meshx_rtos_utils.h"
+#include "meshx_err.h"
 #include <zephyr/kernel.h>
 #include <string.h>
 
@@ -83,6 +84,9 @@ meshx_err_t meshx_rtos_free(void **ptr)
     if (ptr && *ptr) {
         k_free(*ptr);
         *ptr = NULL;
+    }
+    else {
+        return MESHX_INVALID_ARG;
     }
     return MESHX_SUCCESS;
 }

@@ -26,6 +26,8 @@ static char s_log_buf[65536];
 static size_t s_log_pos = 0;
 static volatile int s_aborted = 0;
 static void (*s_py_abort_cb)(const char *msg) = NULL;
+static void *s_abort_jmp[5];
+static int s_jmp_armed = 0;
 
 static void heap_init_if_needed(void)
 {
@@ -291,12 +293,18 @@ void host_assert_fail(const char *expr, const char *file, int line)
     s_aborted = 1;
     printf("ASSERTION FAILED: %s at %s:%d\n", expr, file, line);
     if (s_py_abort_cb) s_py_abort_cb(s_log_buf);
+    if (s_jmp_armed) {
+        __builtin_longjmp(s_abort_jmp, 1);
+    }
 }
 
 void abort(void)
 {
     s_aborted = 1;
     if (s_py_abort_cb) s_py_abort_cb("abort() called");
+    if (s_jmp_armed) {
+        __builtin_longjmp(s_abort_jmp, 1);
+    }
 }
 
 void __chkstk(void) {}
@@ -309,7 +317,12 @@ __declspec(dllexport) int host_dll_run(void (*abort_cb)(const char *msg), const 
     s_log_buf[0] = '\0';
     s_free_list = NULL;
     heap_init_if_needed();
-    int rc = main();
+    int rc = 1;
+    s_jmp_armed = 1;
+    if (__builtin_setjmp(s_abort_jmp) == 0) {
+        rc = main();
+    }
+    s_jmp_armed = 0;
     if (out_log) *out_log = s_log_buf;
     if (s_aborted && rc == 0) rc = 1;
     return rc;

@@ -5,6 +5,7 @@
  * @brief 2-Stage Decoupled Store-and-Forward Bridge Router & Canonical Nonce Engine.
  */
 
+#include <stdint.h>
 #include <string.h>
 #include "island/meshx_router_core.h"
 
@@ -45,11 +46,14 @@ static meshx_err_t build_nack_payload(uint32_t nack_id,
 static meshx_err_t dispatch_entry_stage2(meshx_router_ctx_t *ctx,
                                          meshx_router_queue_entry_t *entry)
 {
+    if (!ctx->tx_cb) {
+        return MESHX_NOT_SUPPORTED;
+    }
     meshx_ccm_nonce_t nonce13;
     uint8_t szmic = (entry->trans_mic.len >= MESHX_TRANS_MIC_MAX_LEN) ? 1U : 0U;
     meshx_err_t err = meshx_router_build_canonical_nonce(entry->canonical_src,
                                                          entry->canonical_dst,
-                                                         0U,
+                                                         entry->orig_iv_index,
                                                          entry->seq_auth,
                                                          szmic,
                                                          true,
@@ -62,10 +66,7 @@ static meshx_err_t dispatch_entry_stage2(meshx_router_ctx_t *ctx,
     if (err != MESHX_SUCCESS) {
         return err;
     }
-    if (ctx->tx_cb) {
-        return ctx->tx_cb(entry, &nonce13, NULL, ctx->cb_ctx);
-    }
-    return MESHX_SUCCESS;
+    return ctx->tx_cb(entry, &nonce13, NULL, ctx->cb_ctx);
 }
 
 /**
@@ -75,36 +76,43 @@ static meshx_err_t dispatch_entry_stage2(meshx_router_ctx_t *ctx,
  * @param[in]  tx_cb   Stage 2 packet transmission callback.
  * @param[in]  nack_cb Reliable 0xD7 NACK transmission callback.
  * @param[in]  cb_ctx  Opaque context passed to callbacks.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p ctx is NULL.
  */
-void meshx_router_core_init(meshx_router_ctx_t *ctx,
-                            meshx_router_send_fn_t tx_cb,
-                            meshx_router_nack_send_fn_t nack_cb,
-                            void *cb_ctx)
+meshx_err_t meshx_router_core_init(meshx_router_ctx_t *ctx,
+                                   meshx_router_send_fn_t tx_cb,
+                                   meshx_router_nack_send_fn_t nack_cb,
+                                   void *cb_ctx)
 {
     if (!ctx) {
-        return;
+        return MESHX_INVALID_ARG;
     }
     memset(ctx, 0, sizeof(*ctx));
-    meshx_router_queue_init(&ctx->queue);
+    meshx_err_t qerr = meshx_router_queue_init(&ctx->queue);
+    if (qerr != MESHX_SUCCESS) {
+        return qerr;
+    }
     ctx->next_nack_id = 1UL;
     ctx->tx_cb        = tx_cb;
     ctx->nack_cb      = nack_cb;
     ctx->cb_ctx       = cb_ctx;
     ctx->initialized  = true;
+    return MESHX_SUCCESS;
 }
 
 /**
  * @brief De-initialize router core context and purge all queues and reassembly state.
  *
  * @param[in,out] ctx Pointer to router context.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p ctx is NULL.
  */
-void meshx_router_core_deinit(meshx_router_ctx_t *ctx)
+meshx_err_t meshx_router_core_deinit(meshx_router_ctx_t *ctx)
 {
     if (!ctx) {
-        return;
+        return MESHX_INVALID_ARG;
     }
-    meshx_router_queue_deinit(&ctx->queue);
+    meshx_err_t qerr = meshx_router_queue_deinit(&ctx->queue);
     memset(ctx, 0, sizeof(*ctx));
+    return qerr;
 }
 
 /**
@@ -147,20 +155,16 @@ meshx_err_t meshx_router_build_canonical_nonce(uint16_t canonical_src,
 }
 
 /**
- * @brief Single-Epoch Stage 1 segment collector (isolates pre- vs post-key-rotation segments).
+ * @brief Ingest a single SAR segment into the active single-epoch reassembly context.
+ *
+ * Isolates pre- vs post-key-rotation segments on the same flow and marks
+ * @p out_complete true once all segments up to @p seg->seg_n are received.
  *
  * @param[in,out] ctx          Pointer to router context.
- * @param[in]     net_idx      Ingress NetKey Index.
- * @param[in]     src_addr     Ingress source unicast address.
- * @param[in]     dst_addr     Ingress destination address.
- * @param[in]     epoch_id     Key rotation epoch identifier.
- * @param[in]     seq_zero     13-bit SeqZero base.
- * @param[in]     seg_o        Segment offset index [0..seg_n].
- * @param[in]     seg_n        Last segment index [0..31].
- * @param[in]     seg_data     Pointer to segment data payload.
- * @param[in]     seg_len      Segment data length (<= 12 bytes).
+ * @param[in]     seg          Pointer to inbound segment descriptor.
  * @param[out]    out_complete Set to true if all segments of the block have been received.
- * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG or MESHX_INVALID_STATE on epoch mismatch.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG, MESHX_SUBNET_ERR_MTU, or
+ *         MESHX_INVALID_STATE on epoch mismatch.
  */
 meshx_err_t meshx_router_reasm_segment(meshx_router_ctx_t *ctx,
                                        const meshx_router_seg_rx_t *seg,
@@ -212,7 +216,7 @@ meshx_err_t meshx_router_reasm_segment(meshx_router_ctx_t *ctx,
     }
     ctx->reasm.rx_mask |= (1UL << seg->seg_o);
 
-    uint32_t expected_mask = (seg->seg_n == (MESHX_MAX_SEGMENTS - 1U)) ? 0xFFFFFFFFUL : ((1UL << (seg->seg_n + 1U)) - 1UL);
+    uint32_t expected_mask = (seg->seg_n == (MESHX_MAX_SEGMENTS - 1U)) ? UINT32_MAX : ((1UL << (seg->seg_n + 1U)) - 1UL);
     if ((ctx->reasm.rx_mask & expected_mask) == expected_mask) {
         ctx->reasm.in_use = false;
         *out_complete = true;
@@ -221,11 +225,95 @@ meshx_err_t meshx_router_reasm_segment(meshx_router_ctx_t *ctx,
 }
 
 /**
+ * @brief Populate forwarding-queue enqueue parameters from a Stage 1 PDU descriptor.
+ *
+ * @param[in]  pdu        Reassembled Stage 1 packet descriptor.
+ * @param[in]  now_ms     Current monotonic timestamp in milliseconds.
+ * @param[out] out_params Destination enqueue parameter structure.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if pointers are NULL.
+ */
+static meshx_err_t build_stage1_enqueue_params(const meshx_router_stage1_pdu_t *pdu,
+                                               uint32_t now_ms,
+                                               meshx_router_enqueue_params_t *out_params)
+{
+    if (!pdu || !out_params) {
+        return MESHX_INVALID_ARG;
+    }
+    memset(out_params, 0, sizeof(*out_params));
+    out_params->ingress_boundary_id = (pdu->global_subnet_src != MESHX_GLOBAL_SUBNET_INVALID)
+                                          ? pdu->global_subnet_src
+                                          : (uint32_t)pdu->net_idx;
+    out_params->egress_boundary_id  = pdu->global_subnet_dst;
+    out_params->seq_auth            = pdu->seq_auth;
+    out_params->orig_iv_index       = pdu->iv_index;
+    out_params->now_ms              = now_ms;
+    out_params->canonical_src       = (pdu->canonical_src != 0U) ? pdu->canonical_src : pdu->src_addr;
+    out_params->canonical_dst       = (pdu->canonical_dst != 0U) ? pdu->canonical_dst : pdu->dst_addr;
+    out_params->orig_src_addr       = pdu->src_addr;
+    out_params->orig_dst_addr       = (pdu->orig_dst_addr != 0U) ? pdu->orig_dst_addr : pdu->dst_addr;
+    out_params->ingress_src_addr    = pdu->src_addr;
+    out_params->tx_net_idx          = (pdu->egress_net_idx != 0U || pdu->net_idx == 0U)
+                                          ? pdu->egress_net_idx
+                                          : pdu->net_idx;
+    out_params->ttl                 = (uint8_t)(pdu->ttl - 1U);
+    out_params->trans_mic           = pdu->trans_mic;
+    if (out_params->trans_mic.len == 0U) {
+        out_params->trans_mic.len = (pdu->szmic != 0U) ? MESHX_TRANS_MIC_MAX_LEN : 4U;
+    }
+    out_params->pdu                 = pdu->pdu;
+    out_params->pdu_len             = pdu->pdu_len;
+    out_params->flags               = (pdu->dst_addr < 0x8000U ? MESHX_ROUTER_FLAG_IS_UNICAST : 0U) |
+                                      (pdu->is_multihop_transit ? MESHX_ROUTER_FLAG_MULTIHOP : 0U);
+    return MESHX_SUCCESS;
+}
+
+/**
+ * @brief Send a rate-limited emergency 0xD7 NACK when Stage 1 queue admission fails.
+ *
+ * @param[in,out] ctx    Pointer to router context.
+ * @param[in]     pdu    Rejected Stage 1 packet descriptor.
+ * @param[in]     params Populated enqueue parameter structure for NACK metadata.
+ * @param[in]     now_ms Current monotonic timestamp in milliseconds.
+ * @return MESHX_SUCCESS if skipped/rate-limited/sent, or NACK TX callback error code.
+ */
+static meshx_err_t maybe_send_emergency_nack(meshx_router_ctx_t *ctx,
+                                             const meshx_router_stage1_pdu_t *pdu,
+                                             const meshx_router_enqueue_params_t *params,
+                                             uint32_t now_ms)
+{
+    if (!ctx->nack_cb) {
+        return MESHX_SUCCESS;
+    }
+    bool rate_limited = (ctx->last_nack_src == pdu->src_addr &&
+                         (now_ms - ctx->last_nack_ms) < 1000UL &&
+                         ctx->last_nack_ms != 0UL);
+    if (rate_limited) {
+        return MESHX_SUCCESS;
+    }
+
+    const uint8_t *nack_buf = NULL;
+    uint8_t nack_len = 0U;
+    uint32_t nack_id = ctx->next_nack_id++;
+    if (meshx_router_queue_build_emergency_nack(&ctx->queue,
+                                                nack_id,
+                                                params,
+                                                MESHX_NACK_REASON_QUEUE_FULL,
+                                                &nack_buf,
+                                                &nack_len) != MESHX_SUCCESS) {
+        return MESHX_SUCCESS;
+    }
+
+    ctx->last_nack_src = pdu->src_addr;
+    ctx->last_nack_ms  = (now_ms == 0UL) ? 1UL : now_ms;
+    return ctx->nack_cb(pdu->net_idx, pdu->src_addr, nack_buf, nack_len, ctx->cb_ctx);
+}
+
+/**
  * @brief Stage 1 Ingress validation, NAT/Group translation & Store-and-Forward Queue admission.
  *
- * @param[in,out] ctx                      Pointer to router context.
- * @param[in]     pdu                      Reassembled Stage 1 packet descriptor.
- * @param[in]     now_ms                   Current monotonic timestamp in milliseconds.
+ * @param[in,out] ctx                       Pointer to router context.
+ * @param[in]     pdu                       Reassembled Stage 1 packet descriptor.
+ * @param[in]     now_ms                    Current monotonic timestamp in milliseconds.
  * @param[out]    out_send_stage1_block_ack Set to true if Lower Transport Block ACK should be sent.
  * @return MESHX_SUCCESS on success, or error code.
  */
@@ -237,55 +325,26 @@ meshx_err_t meshx_router_stage1_ingress(meshx_router_ctx_t *ctx,
     if (out_send_stage1_block_ack) {
         *out_send_stage1_block_ack = false;
     }
-    if (!ctx || !pdu || !out_send_stage1_block_ack) {
-        return MESHX_INVALID_ARG;
-    }
-    if (pdu->ttl <= 1U) {
+    if (!ctx || !pdu || !out_send_stage1_block_ack || pdu->ttl <= 1U) {
         return MESHX_INVALID_ARG;
     }
 
     meshx_router_enqueue_params_t params;
-    memset(&params, 0, sizeof(params));
-    params.ingress_boundary_id = (uint32_t)pdu->net_idx;
-    params.egress_boundary_id  = pdu->global_subnet_dst;
-    params.seq_auth            = pdu->seq_auth;
-    params.now_ms              = now_ms;
-    params.canonical_src       = pdu->src_addr;
-    params.canonical_dst       = pdu->dst_addr;
-    params.orig_src_addr       = pdu->src_addr;
-    params.orig_dst_addr       = pdu->dst_addr;
-    params.ingress_src_addr    = pdu->src_addr;
-    params.tx_net_idx          = pdu->net_idx;
-    params.ttl                 = (uint8_t)(pdu->ttl - 1U);
-    params.trans_mic           = pdu->trans_mic;
-    if (params.trans_mic.len == 0U) {
-        params.trans_mic.len = (pdu->szmic != 0U) ? MESHX_TRANS_MIC_MAX_LEN : 4U;
+    meshx_err_t err = build_stage1_enqueue_params(pdu, now_ms, &params);
+    if (err != MESHX_SUCCESS) {
+        return err;
     }
-    params.pdu                 = pdu->pdu;
-    params.pdu_len             = pdu->pdu_len;
-    params.flags               = (pdu->dst_addr < 0x8000U ? MESHX_ROUTER_FLAG_IS_UNICAST : 0U) |
-                                 (pdu->is_multihop_transit ? MESHX_ROUTER_FLAG_MULTIHOP : 0U);
 
     bool should_nack = false;
-    meshx_err_t err = meshx_router_queue_push(&ctx->queue, &params, &should_nack);
+    err = meshx_router_queue_push(&ctx->queue, &params, &should_nack);
     if (err == MESHX_SUCCESS) {
         *out_send_stage1_block_ack = true;
         return MESHX_SUCCESS;
     }
-    if (should_nack && ctx->nack_cb) {
-        const uint8_t *nack_buf = NULL;
-        uint8_t nack_len = 0U;
-        uint32_t nack_id = ctx->next_nack_id++;
-        if (meshx_router_queue_build_emergency_nack(&ctx->queue,
-                                                    nack_id,
-                                                    &params,
-                                                    MESHX_NACK_REASON_QUEUE_FULL,
-                                                    &nack_buf,
-                                                    &nack_len) == MESHX_SUCCESS) {
-            meshx_err_t nack_err = ctx->nack_cb(pdu->net_idx, pdu->src_addr, nack_buf, nack_len, ctx->cb_ctx);
-            if (nack_err != MESHX_SUCCESS) {
-                return nack_err;
-            }
+    if (should_nack) {
+        meshx_err_t nack_err = maybe_send_emergency_nack(ctx, pdu, &params, now_ms);
+        if (nack_err != MESHX_SUCCESS) {
+            return nack_err;
         }
     }
     return err;
@@ -324,8 +383,8 @@ meshx_err_t meshx_router_stage2_pump(meshx_router_ctx_t *ctx, uint32_t now_ms)
         }
     }
 
-    meshx_router_queue_entry_t *head = meshx_router_queue_peek_tx(&ctx->queue);
-    if (head && (head->flags & MESHX_ROUTER_FLAG_TX_IN_FLIGHT) == 0U) {
+    meshx_router_queue_entry_t *head = NULL;
+    if (meshx_router_queue_peek_tx(&ctx->queue, &head) == MESHX_SUCCESS && head) {
         head->rx_timestamp_ms = now_ms;
         return dispatch_entry_stage2(ctx, head);
     }
@@ -336,10 +395,14 @@ meshx_err_t meshx_router_stage2_pump(meshx_router_ctx_t *ctx, uint32_t now_ms)
 /**
  * @brief Handle Stage 2 completion notification from BLE Mesh Lower SAR.
  *
+ * Advances the queue on ACK, retries Stage 2 dispatch up to
+ * `MESHX_STAGE2_MAX_RETRIES`, or emits a reliable `0xD7` Router NACK once
+ * retries are exhausted.
+ *
  * @param[in,out] ctx    Pointer to router context.
  * @param[in]     ack_ok true if Lower Transport Block ACK was received, false on timeout/abort.
  * @param[in]     now_ms Current monotonic timestamp in milliseconds.
- * @return MESHX_SUCCESS on success, or error code.
+ * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG, MESHX_NOT_FOUND, or error code.
  */
 meshx_err_t meshx_router_stage2_on_tx_complete(meshx_router_ctx_t *ctx,
                                                bool ack_ok,
@@ -348,9 +411,10 @@ meshx_err_t meshx_router_stage2_on_tx_complete(meshx_router_ctx_t *ctx,
     if (!ctx) {
         return MESHX_INVALID_ARG;
     }
-    meshx_router_queue_entry_t *head = meshx_router_queue_peek_tx(&ctx->queue);
-    if (!head) {
-        return MESHX_NOT_FOUND;
+    meshx_router_queue_entry_t *head = NULL;
+    meshx_err_t perr = meshx_router_queue_peek_inflight(&ctx->queue, &head);
+    if (perr != MESHX_SUCCESS || !head) {
+        return (perr == MESHX_INVALID_ARG) ? perr : MESHX_NOT_FOUND;
     }
 
     if (ack_ok) {
@@ -358,8 +422,8 @@ meshx_err_t meshx_router_stage2_on_tx_complete(meshx_router_ctx_t *ctx,
         if (err != MESHX_SUCCESS) {
             return err;
         }
-        meshx_router_queue_entry_t *next = meshx_router_queue_peek_tx(&ctx->queue);
-        if (next && (next->flags & MESHX_ROUTER_FLAG_TX_IN_FLIGHT) == 0U) {
+        meshx_router_queue_entry_t *next = NULL;
+        if (meshx_router_queue_peek_tx(&ctx->queue, &next) == MESHX_SUCCESS && next) {
             next->rx_timestamp_ms = now_ms;
             return dispatch_entry_stage2(ctx, next);
         }

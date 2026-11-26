@@ -12,44 +12,51 @@
  * @brief Initialize neighbor discovery and boundary witness election context.
  *
  * @param[out] disc Pointer to discovery manager context to initialize.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p disc is NULL.
  */
-void meshx_subnet_disc_init(meshx_subnet_discovery_t *disc)
+meshx_err_t meshx_subnet_disc_init(meshx_subnet_discovery_t *disc)
 {
     if (!disc)
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     memset(disc, 0, sizeof(*disc));
+    return MESHX_SUCCESS;
 }
 
 /**
  * @brief Deinitialize neighbor discovery context and clear all state.
  *
  * @param[in,out] disc Pointer to discovery manager context to deinitialize.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p disc is NULL.
  */
-void meshx_subnet_disc_deinit(meshx_subnet_discovery_t *disc)
+meshx_err_t meshx_subnet_disc_deinit(meshx_subnet_discovery_t *disc)
 {
     if (!disc)
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     memset(disc, 0, sizeof(*disc));
+    return MESHX_SUCCESS;
 }
 
 /**
  * @brief Record an RX MIC failure and evaluate the sliding window threshold.
  *
- * @param[in,out] disc   Pointer to discovery context.
- * @param[in]     now_ms Current timestamp in milliseconds.
- *
- * @return true if boundary witness election threshold is met, false otherwise.
+ * @param[in,out] disc          Pointer to discovery context.
+ * @param[in]     now_ms        Current timestamp in milliseconds.
+ * @param[out]    out_triggered Set to true if boundary witness election threshold is met.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p disc or @p out_triggered is NULL.
  */
-bool meshx_subnet_disc_record_mic_fail(meshx_subnet_discovery_t *disc, uint32_t now_ms)
+meshx_err_t meshx_subnet_disc_record_mic_fail(meshx_subnet_discovery_t *disc,
+                                              uint32_t now_ms,
+                                              bool *out_triggered)
 {
-    if (!disc)
+    if (!disc || !out_triggered)
     {
-        return false;
+        return MESHX_INVALID_ARG;
     }
+    *out_triggered = false;
 
     disc->mic_fail_timestamps[disc->mic_fail_head] = now_ms;
     disc->mic_fail_head = (uint8_t)((disc->mic_fail_head + 1U) % MESHX_MIC_FAIL_THRESHOLD);
@@ -64,72 +71,112 @@ bool meshx_subnet_disc_record_mic_fail(meshx_subnet_discovery_t *disc, uint32_t 
         if ((now_ms - oldest_ts) <= MESHX_MIC_FAIL_WINDOW_MS)
         {
             disc->witness_eligible = true;
-            return true;
+            *out_triggered = true;
         }
     }
-    return false;
+    return MESHX_SUCCESS;
 }
 
 /**
  * @brief Reset recorded MIC failure history and witness eligibility.
  *
  * @param[in,out] disc Pointer to discovery context.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p disc is NULL.
  */
-void meshx_subnet_disc_reset_mic_fails(meshx_subnet_discovery_t *disc)
+meshx_err_t meshx_subnet_disc_reset_mic_fails(meshx_subnet_discovery_t *disc)
 {
     if (!disc)
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     memset(disc->mic_fail_timestamps, 0, sizeof(disc->mic_fail_timestamps));
     disc->mic_fail_head = 0U;
     disc->mic_fail_count = 0U;
     disc->witness_eligible = false;
+    return MESHX_SUCCESS;
 }
 
 /**
  * @brief Evaluate witness candidate criteria for boundary node election.
  *
- * @param[in] disc            Pointer to discovery context (optional).
- * @param[in] rssi_dbm        Signal strength in dBm.
- * @param[in] mains_powered   True if mains powered, false if battery powered.
- * @param[in] free_heap_bytes Free heap memory in bytes.
- *
- * @return true if candidate qualifies as a boundary witness, false otherwise.
+ * @param[in]  disc            Pointer to discovery context (optional).
+ * @param[in]  rssi_dbm        Signal strength in dBm.
+ * @param[in]  mains_powered   True if mains powered, false if battery powered.
+ * @param[in]  free_heap_bytes Free heap memory in bytes.
+ * @param[out] out_eligible    Set to true if candidate qualifies as a boundary witness.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p out_eligible is NULL.
  */
-bool meshx_subnet_disc_eval_candidate(const meshx_subnet_discovery_t *disc,
-                                      int8_t rssi_dbm,
-                                      bool mains_powered,
-                                      uint32_t free_heap_bytes)
+meshx_err_t meshx_subnet_disc_eval_candidate(const meshx_subnet_discovery_t *disc,
+                                             int8_t rssi_dbm,
+                                             bool mains_powered,
+                                             uint32_t free_heap_bytes,
+                                             bool *out_eligible)
 {
-    MESHX_UNUSED(disc);
-    if (!mains_powered)
+    if (!out_eligible)
     {
-        return false;
+        return MESHX_INVALID_ARG;
     }
-    if (rssi_dbm < MESHX_WITNESS_MIN_RSSI_DBM)
-    {
-        return false;
-    }
-    if (free_heap_bytes <= MESHX_WITNESS_MIN_HEAP_BYTES)
-    {
-        return false;
-    }
-    return true;
+    *out_eligible = mains_powered &&
+                    (rssi_dbm >= MESHX_WITNESS_MIN_RSSI_DBM) &&
+                    (free_heap_bytes > MESHX_WITNESS_MIN_HEAP_BYTES) &&
+                    !(disc && disc->mic_fail_count > 0U && !disc->witness_eligible);
+    return MESHX_SUCCESS;
 }
 
 /**
- * @brief Process UVP Discovery Response and allocate ephemeral or mapped virtual NAT address.
+ * @brief Record an outbound DISCOVER_REQ transaction for response correlation.
  *
- * @param[in,out] disc                 Pointer to discovery context.
- * @param[in,out] nat_mgr              Pointer to NAT manager.
- * @param[in]     rsp                  Pointer to parsed discovery response packet.
- * @param[in]     now_min              Current time in minutes for NAT aging.
- * @param[in]     now_ms               Current timestamp in milliseconds.
- * @param[out]    out_virtual_nat_addr Pointer to store assigned virtual address.
+ * @param[in,out] disc              Pointer to discovery manager.
+ * @param[in]     global_subnet_src Origin Global Subnet ID.
+ * @param[in]     requestor_addr    Requesting node unicast address.
+ * @param[in]     trans_id          16-bit discovery transaction ID.
+ * @param[in]     now_ms            Current monotonic timestamp in milliseconds.
  *
- * @return MESHX_SUCCESS on success, or appropriate error code.
+ * @return MESHX_SUCCESS on success, or error code.
  */
+meshx_err_t meshx_subnet_disc_record_req(meshx_subnet_discovery_t *disc,
+                                         uint32_t global_subnet_src,
+                                         uint16_t requestor_addr,
+                                         uint16_t trans_id,
+                                         uint32_t now_ms)
+{
+    if (!disc || requestor_addr == 0U)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    int free_idx = -1;
+    int oldest_idx = 0;
+    for (int i = 0; i < (int)MESHX_DISCOVERY_TX_PENDING_MAX; i++)
+    {
+        meshx_disc_correlation_t *c = &disc->corr[i];
+        if (c->valid)
+        {
+            if (c->requestor_addr == requestor_addr && c->trans_id == trans_id &&
+                (c->global_subnet_src == global_subnet_src || c->global_subnet_src == 0UL))
+            {
+                c->timestamp_ms = now_ms;
+                return MESHX_SUCCESS;
+            }
+            if (c->timestamp_ms < disc->corr[oldest_idx].timestamp_ms)
+            {
+                oldest_idx = i;
+            }
+        }
+        else if (free_idx < 0)
+        {
+            free_idx = i;
+        }
+    }
+    int idx = (free_idx >= 0) ? free_idx : oldest_idx;
+    memset(&disc->corr[idx], 0, sizeof(disc->corr[idx]));
+    disc->corr[idx].valid = true;
+    disc->corr[idx].global_subnet_src = global_subnet_src;
+    disc->corr[idx].requestor_addr = requestor_addr;
+    disc->corr[idx].trans_id = trans_id;
+    disc->corr[idx].timestamp_ms = now_ms;
+    return MESHX_SUCCESS;
+}
+
 meshx_err_t meshx_subnet_disc_handle_rsp(meshx_subnet_discovery_t *disc,
                                          meshx_nat_mgr_t *nat_mgr,
                                          const meshx_uvp_discover_rsp_t *rsp,
@@ -140,6 +187,33 @@ meshx_err_t meshx_subnet_disc_handle_rsp(meshx_subnet_discovery_t *disc,
     if (!disc || !nat_mgr || !rsp || !out_virtual_nat_addr)
     {
         return MESHX_INVALID_ARG;
+    }
+
+    int match_idx = -1;
+    for (int i = 0; i < (int)MESHX_DISCOVERY_TX_PENDING_MAX; i++)
+    {
+        const meshx_disc_correlation_t *c = &disc->corr[i];
+        if (!c->valid)
+        {
+            continue;
+        }
+        if ((now_ms - c->timestamp_ms) > MESHX_DISC_CORR_TIMEOUT_MS)
+        {
+            continue;
+        }
+        if (c->requestor_addr == rsp->requestor_addr &&
+            c->trans_id == rsp->trans_id &&
+            (c->remote_phys_addr == 0U ||
+             (c->global_subnet_src == rsp->global_subnet_src &&
+              c->remote_phys_addr == rsp->remote_phys_addr)))
+        {
+            match_idx = i;
+            break;
+        }
+    }
+    if (match_idx < 0)
+    {
+        return MESHX_NOT_FOUND;
     }
 
     uint16_t virtual_addr = 0U;
@@ -155,42 +229,10 @@ meshx_err_t meshx_subnet_disc_handle_rsp(meshx_subnet_discovery_t *disc,
         return err;
     }
 
-    int match_idx = -1;
-    int free_idx = -1;
-    int oldest_idx = 0;
-
-    for (int i = 0; i < (int)MESHX_DISCOVERY_TX_PENDING_MAX; i++)
-    {
-        meshx_disc_correlation_t *c = &disc->corr[i];
-        if (c->valid)
-        {
-            if (c->global_subnet_src == rsp->global_subnet_src &&
-                c->requestor_addr == rsp->requestor_addr &&
-                c->trans_id == rsp->trans_id &&
-                c->remote_phys_addr == rsp->remote_phys_addr)
-            {
-                match_idx = i;
-                break;
-            }
-            if (c->timestamp_ms < disc->corr[oldest_idx].timestamp_ms)
-            {
-                oldest_idx = i;
-            }
-        }
-        else if (free_idx < 0)
-        {
-            free_idx = i;
-        }
-    }
-
-    int idx = (match_idx >= 0) ? match_idx : ((free_idx >= 0) ? free_idx : oldest_idx);
-    disc->corr[idx].valid                   = true;
-    disc->corr[idx].timestamp_ms            = now_ms;
-    disc->corr[idx].assigned_virtual_addr   = virtual_addr;
-    disc->corr[idx].trans_id                = rsp->trans_id;
-    disc->corr[idx].requestor_addr          = rsp->requestor_addr;
-    disc->corr[idx].remote_phys_addr        = rsp->remote_phys_addr;
-    disc->corr[idx].global_subnet_src       = rsp->global_subnet_src;
+    disc->corr[match_idx].timestamp_ms          = now_ms;
+    disc->corr[match_idx].assigned_virtual_addr = virtual_addr;
+    disc->corr[match_idx].remote_phys_addr      = rsp->remote_phys_addr;
+    disc->corr[match_idx].global_subnet_src     = rsp->global_subnet_src;
 
     *out_virtual_nat_addr = virtual_addr;
     return MESHX_SUCCESS;
@@ -218,7 +260,7 @@ meshx_err_t meshx_subnet_disc_commit_pair(meshx_subnet_discovery_t *disc,
     int free_idx = -1;
     for (int i = 0; i < (int)MESHX_PAIR_RECORD_MAX; i++)
     {
-        meshx_pair_record_t *p = &disc->pairs[i];
+        const meshx_pair_record_t *p = &disc->pairs[i];
         if (p->active != 0U)
         {
             if (p->local_elem_addr == rec->local_elem_addr &&

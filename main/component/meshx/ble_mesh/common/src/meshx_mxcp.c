@@ -134,6 +134,7 @@ static meshx_err_t mxcp_cmd_fn_subnet_bridge_add      (const uint8_t *payload, u
 static meshx_err_t mxcp_cmd_fn_subnet_bridge_del      (const uint8_t *payload, uint8_t len);
 static meshx_err_t mxcp_cmd_fn_subnet_rule_set        (const uint8_t *payload, uint8_t len);
 static meshx_err_t mxcp_cmd_fn_cluster_key_update     (const uint8_t *payload, uint8_t len);
+static meshx_err_t mxcp_cmd_fn_subnet_commission_pair (const uint8_t *payload, uint8_t len);
 
 /*
  * @brief Command dispatch table (Host -> Engine).
@@ -198,6 +199,7 @@ static const mxcp_cmd_entry_t mxcp_cmd_table[] = {
     MXCP_CMD_ENTRY(MXCP_CMD_SUBNET_BRIDGE_DEL,         mxcp_cmd_fn_subnet_bridge_del,     sizeof(mxcp_cmd_subnet_bridge_del_t),     MXCP_EVT_SUBNET_BRIDGE_DEL_RSP,  MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_SUBNET_RULE_SET,           mxcp_cmd_fn_subnet_rule_set,       sizeof(mxcp_cmd_subnet_rule_set_t),       MXCP_EVT_SUBNET_RULE_SET_RSP,    MXCP_EVT_NONE),
     MXCP_CMD_ENTRY(MXCP_CMD_BRIDGE_CLUSTER_KEY_UPDATE, mxcp_cmd_fn_cluster_key_update,    sizeof(mxcp_cmd_cluster_key_update_t),    MXCP_EVT_BRIDGE_CLUSTER_KEY_RSP, MXCP_EVT_NONE),
+    MXCP_CMD_ENTRY(MXCP_CMD_SUBNET_COMMISSION_PAIR,    mxcp_cmd_fn_subnet_commission_pair, sizeof(mxcp_cmd_subnet_commission_pair_t), MXCP_EVT_SUBNET_COMMISSION_RSP,  MXCP_EVT_NONE),
 };
 
 #define MXCP_CMD_TABLE_SIZE (sizeof(mxcp_cmd_table) / sizeof(mxcp_cmd_table[0]))
@@ -2305,8 +2307,8 @@ static meshx_err_t mxcp_cmd_fn_subnet_list(const uint8_t *payload, uint8_t len)
         rsp.entries[i].active_bridge_addr = items[i].active_bridge_addr;
     }
 
-    (void)mxcp_send_event(MXCP_EVT_SUBNET_LIST_RSP, (const uint8_t *)&rsp, (uint8_t)sizeof(rsp));
-    return err;
+    meshx_err_t evt_err = mxcp_send_event(MXCP_EVT_SUBNET_LIST_RSP, (const uint8_t *)&rsp, (uint8_t)sizeof(rsp));
+    return (err == MESHX_SUCCESS) ? evt_err : err;
 }
 
 static meshx_err_t mxcp_cmd_fn_subnet_bridge_add(const uint8_t *payload, uint8_t len)
@@ -2317,17 +2319,22 @@ static meshx_err_t mxcp_cmd_fn_subnet_bridge_add(const uint8_t *payload, uint8_t
     mxcp_cmd_subnet_bridge_add_t cmd;
     memcpy(&cmd, payload, sizeof(cmd));
 
-    (void)meshx_plat_subnet_add(cmd.net_idx, cmd.net_key);
-    meshx_subnet_key_t key_struct;
-    memcpy(key_struct.bytes, cmd.net_key, sizeof(key_struct.bytes));
-    meshx_err_t err = meshx_subnet_coex_bridge_add(cmd.net_idx, &key_struct, cmd.global_subnet_id, cmd.role);
+    meshx_err_t err = meshx_plat_subnet_add(cmd.net_idx, cmd.net_key);
+    if (err == MESHX_SUCCESS) {
+        meshx_subnet_key_t key_struct;
+        memcpy(key_struct.bytes, cmd.net_key, sizeof(key_struct.bytes));
+        err = meshx_subnet_coex_bridge_add(cmd.net_idx, &key_struct, cmd.global_subnet_id, cmd.role);
+        if (err != MESHX_SUCCESS && cmd.net_idx != 0U) {
+            (void)meshx_plat_subnet_del(cmd.net_idx);
+        }
+    }
 
     mxcp_evt_subnet_op_rsp_t rsp = {
         .status_code = (err == MESHX_SUCCESS) ? 0x00U : (uint8_t)err,
         .param       = cmd.net_idx,
     };
-    (void)mxcp_send_event(MXCP_EVT_SUBNET_BRIDGE_ADD_RSP, (const uint8_t *)&rsp, (uint8_t)sizeof(rsp));
-    return err;
+    meshx_err_t evt_err = mxcp_send_event(MXCP_EVT_SUBNET_BRIDGE_ADD_RSP, (const uint8_t *)&rsp, (uint8_t)sizeof(rsp));
+    return (err == MESHX_SUCCESS) ? evt_err : err;
 }
 
 static meshx_err_t mxcp_cmd_fn_subnet_bridge_del(const uint8_t *payload, uint8_t len)
@@ -2338,15 +2345,21 @@ static meshx_err_t mxcp_cmd_fn_subnet_bridge_del(const uint8_t *payload, uint8_t
     mxcp_cmd_subnet_bridge_del_t cmd;
     memcpy(&cmd, payload, sizeof(cmd));
 
-    meshx_err_t err = meshx_subnet_coex_bridge_del(cmd.net_idx, cmd.force_purge != 0U);
-    (void)meshx_plat_subnet_del(cmd.net_idx);
+    meshx_err_t err = (cmd.net_idx == 0U) ? MESHX_INVALID_ARG
+                                          : meshx_subnet_coex_bridge_del(cmd.net_idx, cmd.force_purge != 0U);
+    if (err == MESHX_SUCCESS) {
+        meshx_err_t plat_err = meshx_plat_subnet_del(cmd.net_idx);
+        if (plat_err != MESHX_SUCCESS && plat_err != MESHX_NOT_FOUND) {
+            err = plat_err;
+        }
+    }
 
     mxcp_evt_subnet_op_rsp_t rsp = {
         .status_code = (err == MESHX_SUCCESS) ? 0x00U : (uint8_t)err,
         .param       = cmd.net_idx,
     };
-    (void)mxcp_send_event(MXCP_EVT_SUBNET_BRIDGE_DEL_RSP, (const uint8_t *)&rsp, (uint8_t)sizeof(rsp));
-    return err;
+    meshx_err_t evt_err = mxcp_send_event(MXCP_EVT_SUBNET_BRIDGE_DEL_RSP, (const uint8_t *)&rsp, (uint8_t)sizeof(rsp));
+    return (err == MESHX_SUCCESS) ? evt_err : err;
 }
 
 static meshx_err_t mxcp_cmd_fn_subnet_rule_set(const uint8_t *payload, uint8_t len)
@@ -2366,16 +2379,18 @@ static meshx_err_t mxcp_cmd_fn_subnet_rule_set(const uint8_t *payload, uint8_t l
     };
     meshx_err_t err = meshx_subnet_coex_rule_set(&rule, cmd.enable != 0U, cmd.group_forward_bitmap);
     if (err == MESHX_SUCCESS) {
-        (void)meshx_plat_subnet_bridge_rule_add(&rule);
-        (void)meshx_plat_subnet_bridge_set(cmd.enable != 0U);
+        err = meshx_plat_subnet_bridge_rule_add(&rule);
+        if (err == MESHX_SUCCESS) {
+            err = meshx_plat_subnet_bridge_set(cmd.enable != 0U);
+        }
     }
 
     mxcp_evt_subnet_op_rsp_t rsp = {
         .status_code = (err == MESHX_SUCCESS) ? 0x00U : (uint8_t)err,
         .param       = cmd.net_idx_2,
     };
-    (void)mxcp_send_event(MXCP_EVT_SUBNET_RULE_SET_RSP, (const uint8_t *)&rsp, (uint8_t)sizeof(rsp));
-    return err;
+    meshx_err_t evt_err = mxcp_send_event(MXCP_EVT_SUBNET_RULE_SET_RSP, (const uint8_t *)&rsp, (uint8_t)sizeof(rsp));
+    return (err == MESHX_SUCCESS) ? evt_err : err;
 }
 
 static meshx_err_t mxcp_cmd_fn_cluster_key_update(const uint8_t *payload, uint8_t len)
@@ -2388,7 +2403,10 @@ static meshx_err_t mxcp_cmd_fn_cluster_key_update(const uint8_t *payload, uint8_
 
     meshx_subnet_key_t key_struct;
     memcpy(key_struct.bytes, cmd.k_bridge, sizeof(key_struct.bytes));
-    meshx_err_t err = meshx_subnet_coex_cluster_key_update(&key_struct, cmd.cluster_epoch, cmd.active_term);
+    meshx_err_t err = meshx_subnet_coex_cluster_key_update_ex(&key_struct,
+                                                              cmd.cluster_epoch,
+                                                              cmd.active_term,
+                                                              cmd.revoke != 0U);
     memset(&key_struct, 0, sizeof(key_struct));
     memset(&cmd, 0, sizeof(cmd));
 
@@ -2396,7 +2414,37 @@ static meshx_err_t mxcp_cmd_fn_cluster_key_update(const uint8_t *payload, uint8_
         .status_code = (err == MESHX_SUCCESS) ? 0x00U : (uint8_t)err,
         .param       = (uint16_t)((err == MESHX_SUCCESS) ? 1U : 0U),
     };
-    (void)mxcp_send_event(MXCP_EVT_BRIDGE_CLUSTER_KEY_RSP, (const uint8_t *)&rsp, (uint8_t)sizeof(rsp));
-    return err;
+    meshx_err_t evt_err = mxcp_send_event(MXCP_EVT_BRIDGE_CLUSTER_KEY_RSP, (const uint8_t *)&rsp, (uint8_t)sizeof(rsp));
+    return (err == MESHX_SUCCESS) ? evt_err : err;
+}
+
+/**
+ * @brief Handle MXCP_CMD_SUBNET_COMMISSION_PAIR (0x40) probe/bind commissioning.
+ * @param[in]   payload Payload pointer
+ * @param[in]   len     Payload Len
+ * @return meshx_err_t 
+ */
+static meshx_err_t mxcp_cmd_fn_subnet_commission_pair(const uint8_t *payload, uint8_t len)
+{
+    if (!payload || len < sizeof(mxcp_cmd_subnet_commission_pair_t)) {
+        return MESHX_INVALID_ARG;
+    }
+    mxcp_cmd_subnet_commission_pair_t cmd;
+    memcpy(&cmd, payload, sizeof(cmd));
+
+    uint16_t virtual_addr = 0U;
+    meshx_err_t err = meshx_subnet_coex_commission_pair(cmd.src_net_idx,
+                                                        cmd.local_elem_addr,
+                                                        cmd.remote_global_subnet_id,
+                                                        cmd.remote_phys_addr,
+                                                        cmd.func_id,
+                                                        cmd.role_flags,
+                                                        &virtual_addr);
+    mxcp_evt_subnet_op_rsp_t rsp = {
+        .status_code = (err == MESHX_SUCCESS) ? 0x00U : (uint8_t)err,
+        .param       = virtual_addr,
+    };
+    meshx_err_t evt_err = mxcp_send_event(MXCP_EVT_SUBNET_COMMISSION_RSP, (const uint8_t *)&rsp, (uint8_t)sizeof(rsp));
+    return (err == MESHX_SUCCESS) ? evt_err : err;
 }
 

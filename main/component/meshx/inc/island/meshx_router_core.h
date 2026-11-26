@@ -19,8 +19,12 @@ extern "C" {
  */
 typedef struct {
     uint16_t          net_idx;             /**< Ingress BLE Mesh NetKey Index */
+    uint16_t          egress_net_idx;      /**< Target egress BLE Mesh NetKey Index */
     uint16_t          src_addr;            /**< Ingress source unicast address */
     uint16_t          dst_addr;            /**< Ingress destination unicast/group/virtual address */
+    uint16_t          canonical_src;       /**< Canonical origin source address (0 = use src_addr) */
+    uint16_t          canonical_dst;       /**< Canonical destination address (0 = use dst_addr) */
+    uint16_t          orig_dst_addr;       /**< Translated egress destination address (0 = use dst_addr) */
     uint32_t          iv_index;            /**< Ingress IV Index */
     uint32_t          seq_auth;            /**< Authenticated original sequence number */
     uint8_t           ttl;                 /**< Ingress Time-to-Live */
@@ -30,6 +34,7 @@ typedef struct {
     uint8_t           pdu_len;             /**< Length of PDU payload in bytes */
     bool              is_multihop_transit; /**< true if packet carries a 23B multihop transit header */
     uint32_t          visited_mask;        /**< Multihop visited slot bitmask */
+    uint32_t          global_subnet_src;   /**< Origin island Global Subnet ID */
     uint32_t          global_subnet_dst;   /**< Final destination island Global Subnet ID */
 } meshx_router_stage1_pdu_t;
 
@@ -96,14 +101,16 @@ typedef struct {
  * @brief Main Router Context (static BSS allocated).
  */
 typedef struct {
-    meshx_router_queue_t        queue;        /**< Bounded 4-flow forwarding queue */
-    meshx_reasm_epoch_ctx_t     reasm;        /**< Single-epoch reassembly context */
-    meshx_pending_nack_t        pending_nack; /**< Reliable Stage 2 NACK tracker */
-    uint32_t                    next_nack_id; /**< Monotonic NACK sequence generator */
-    meshx_router_send_fn_t      tx_cb;        /**< Stage 2 TX injection callback */
-    meshx_router_nack_send_fn_t nack_cb;      /**< 0xD7 NACK injection callback */
-    void                       *cb_ctx;       /**< Opaque callback context */
-    bool                        initialized;  /**< true if router core is initialized */
+    meshx_router_queue_t        queue;            /**< Bounded 4-flow forwarding queue */
+    meshx_reasm_epoch_ctx_t     reasm;            /**< Single-epoch reassembly context */
+    meshx_pending_nack_t        pending_nack;     /**< Reliable Stage 2 NACK tracker */
+    uint32_t                    next_nack_id;     /**< Monotonic NACK sequence generator */
+    uint16_t                    last_nack_src;    /**< Last sender rate-limited for emergency NACK */
+    uint32_t                    last_nack_ms;     /**< Timestamp of last emergency NACK TX */
+    meshx_router_send_fn_t      tx_cb;            /**< Stage 2 TX injection callback */
+    meshx_router_nack_send_fn_t nack_cb;          /**< 0xD7 NACK injection callback */
+    void                       *cb_ctx;           /**< Opaque callback context */
+    bool                        initialized;      /**< true if router core is initialized */
 } meshx_router_ctx_t;
 
 /**
@@ -113,18 +120,20 @@ typedef struct {
  * @param[in]  tx_cb   Stage 2 packet transmission callback.
  * @param[in]  nack_cb Reliable 0xD7 NACK transmission callback.
  * @param[in]  cb_ctx  Opaque context passed to callbacks.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p ctx is NULL.
  */
-void meshx_router_core_init(meshx_router_ctx_t *ctx,
-                            meshx_router_send_fn_t tx_cb,
-                            meshx_router_nack_send_fn_t nack_cb,
-                            void *cb_ctx);
+meshx_err_t meshx_router_core_init(meshx_router_ctx_t *ctx,
+                                   meshx_router_send_fn_t tx_cb,
+                                   meshx_router_nack_send_fn_t nack_cb,
+                                   void *cb_ctx);
 
 /**
  * @brief De-initialize router core context and purge all queues and reassembly state.
  *
  * @param[in,out] ctx Pointer to router context.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p ctx is NULL.
  */
-void meshx_router_core_deinit(meshx_router_ctx_t *ctx);
+meshx_err_t meshx_router_core_deinit(meshx_router_ctx_t *ctx);
 
 /**
  * @brief Build the 13-byte Canonical Bridge Nonce from CANONICAL_SRC / CANONICAL_DST / SEQ / IVI.

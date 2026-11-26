@@ -187,6 +187,27 @@ meshx_err_t meshx_comp_send_uvp(uint8_t element_idx,
                                 uint16_t payload_len,
                                 bool ack_req);
 
+/**
+ * @brief Send a UVP message from an element over a specific subnet NetKey index.
+ *
+ * @param[in] net_idx     Target BLE Mesh NetKey index.
+ * @param[in] element_idx Local element index.
+ * @param[in] dst_addr    Destination unicast, virtual, or group address.
+ * @param[in] func_id     Function ID (e.g. MESHX_FUNC_ID_SYS_PAIRING).
+ * @param[in] payload     Pointer to payload data.
+ * @param[in] payload_len Length of payload.
+ * @param[in] ack_req     True to request transport ACK.
+ *
+ * @return MESHX_SUCCESS on success, error code otherwise.
+ */
+meshx_err_t meshx_comp_send_uvp_on_subnet(uint16_t net_idx,
+                                          uint8_t element_idx,
+                                          uint16_t dst_addr,
+                                          uint16_t func_id,
+                                          const void *payload,
+                                          uint16_t payload_len,
+                                          bool ack_req);
+
 #ifdef __cplusplus
 }
 #endif

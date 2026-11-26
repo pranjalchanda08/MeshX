@@ -50,6 +50,9 @@ MeshX decouples **Hop Flow Control** from **Application Delivery Confirmation**:
 3. **End-to-End Model Layer Confirmation**:
    - Acknowledged application models (e.g. `Generic OnOff Set Acknowledged`) retain their end-to-end retry timers until the authentic Model Layer Status response arrives from the destination node.
 
+### 2.2 Option B UVP Data-Plane Tunnel (`0xDF` / `MESHX_UVP_OP_SUBNET_DATA_TUNNEL`)
+To keep `D:/MeshX` self-contained without patching external Zephyr or ESP-IDF BLE Mesh Lower-Transport internals, MeshX-to-MeshX cross-subnet data-plane traffic uses UVP opcode `0xDF` (`MESHX_UVP_OP_SUBNET_DATA_TUNNEL`) carrying `meshx_uvp_data_tunnel_hdr_t` (27 B: `ttl`, `flags`, `key_epoch`, `orig_src_addr`, `orig_dst_addr`, `egress_net_idx`, `orig_seq_auth`, `orig_iv_index`, `trans_mic`, `pdu_len`) followed by the Upper PDU (`<= 108 B`). Bridges feed incoming `0xDF` frames into `meshx_subnet_coex_on_pdu_rx()`, translate addresses via NAT, queue Stage 2, and emit `0xDF` on `entry->tx_net_idx` via `coex_router_tx_cb()`; destination nodes validate canonical replay and deliver to `meshx_subnet_coex_register_data_rx()`.
+
 ```mermaid
 flowchart LR
     classDef stage1 fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
@@ -134,6 +137,9 @@ The router queue employs a **per-flow dynamic linked-list allocation model (Opti
   - The flexible array member `uint8_t pdu[]` resides directly at the tail of the struct.
 
 ### 4.2 Allocation & Deallocation Lifecycle State Machine
+
+### 2.2 Option B UVP Data-Plane Tunnel (`0xDF` / `MESHX_UVP_OP_SUBNET_DATA_TUNNEL`)
+To keep `D:/MeshX` self-contained without patching external Zephyr or ESP-IDF BLE Mesh Lower-Transport internals, MeshX-to-MeshX cross-subnet data-plane traffic uses UVP opcode `0xDF` (`MESHX_UVP_OP_SUBNET_DATA_TUNNEL`) carrying `meshx_uvp_data_tunnel_hdr_t` (27 B: `ttl`, `flags`, `key_epoch`, `orig_src_addr`, `orig_dst_addr`, `egress_net_idx`, `orig_seq_auth`, `orig_iv_index`, `trans_mic`, `pdu_len`) followed by the Upper PDU (`<= 108 B`). Bridges feed incoming `0xDF` frames into `meshx_subnet_coex_on_pdu_rx()`, translate addresses via NAT, queue Stage 2, and emit `0xDF` on `entry->tx_net_idx` via `coex_router_tx_cb()`; destination nodes validate canonical replay and deliver to `meshx_subnet_coex_register_data_rx()`.
 
 ```mermaid
 flowchart TD

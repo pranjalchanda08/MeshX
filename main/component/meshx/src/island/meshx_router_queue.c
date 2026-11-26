@@ -63,27 +63,30 @@ static meshx_err_t refresh_active_sar_flag(meshx_router_queue_t *q)
  * @brief Initialize router queue state to empty.
  *
  * @param[out] q Pointer to queue descriptor.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p q is NULL.
  */
-void meshx_router_queue_init(meshx_router_queue_t *q)
+meshx_err_t meshx_router_queue_init(meshx_router_queue_t *q)
 {
     if (!q)
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     memset(q, 0, sizeof(*q));
     q->max_capacity = MESHX_ROUTER_QUEUE_CAPACITY;
+    return MESHX_SUCCESS;
 }
 
 /**
  * @brief De-initialize router queue, wiping and freeing all pending entries.
  *
  * @param[in,out] q Pointer to queue descriptor.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p q is NULL.
  */
-void meshx_router_queue_deinit(meshx_router_queue_t *q)
+meshx_err_t meshx_router_queue_deinit(meshx_router_queue_t *q)
 {
     if (!q)
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     meshx_router_queue_entry_t *cur = q->head;
     while (cur)
@@ -93,6 +96,7 @@ void meshx_router_queue_deinit(meshx_router_queue_t *q)
         cur = next;
     }
     memset(q, 0, sizeof(*q));
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -155,6 +159,7 @@ meshx_err_t meshx_router_queue_push(meshx_router_queue_t *q,
     entry->ingress_boundary_id = params->ingress_boundary_id;
     entry->egress_boundary_id = params->egress_boundary_id;
     entry->seq_auth = params->seq_auth;
+    entry->orig_iv_index = params->orig_iv_index;
     entry->rx_timestamp_ms = params->now_ms;
     entry->canonical_src = params->canonical_src;
     entry->canonical_dst = params->canonical_dst;
@@ -197,16 +202,67 @@ meshx_err_t meshx_router_queue_push(meshx_router_queue_t *q,
 /**
  * @brief Peek head flow if eligible for Stage 2 SAR transmission.
  *
- * @param[in] q Pointer to router queue.
- * @return Pointer to head entry, or NULL if empty.
+ * @param[in]  q         Pointer to router queue.
+ * @param[out] out_entry Destination for head entry pointer (NULL if none).
+ * @return MESHX_SUCCESS if found, MESHX_INVALID_ARG on NULL args, or MESHX_NOT_FOUND.
  */
-meshx_router_queue_entry_t *meshx_router_queue_peek_tx(meshx_router_queue_t *q)
+meshx_err_t meshx_router_queue_peek_tx(meshx_router_queue_t *q, meshx_router_queue_entry_t **out_entry)
 {
-    if (!q)
+    if (!q || !out_entry)
     {
-        return NULL;
+        return MESHX_INVALID_ARG;
     }
-    return q->head;
+    *out_entry = NULL;
+    for (meshx_router_queue_entry_t *e = q->head; e != NULL; e = e->next)
+    {
+        if ((e->flags & MESHX_ROUTER_FLAG_TX_IN_FLIGHT) != 0U)
+        {
+            continue;
+        }
+        bool flow_busy = false;
+        for (const meshx_router_queue_entry_t *c = q->head; c != NULL; c = c->next)
+        {
+            if (c != e &&
+                (c->flags & MESHX_ROUTER_FLAG_TX_IN_FLIGHT) != 0U &&
+                c->canonical_src == e->canonical_src &&
+                c->canonical_dst == e->canonical_dst)
+            {
+                flow_busy = true;
+                break;
+            }
+        }
+        if (!flow_busy)
+        {
+            *out_entry = e;
+            return MESHX_SUCCESS;
+        }
+    }
+    return MESHX_NOT_FOUND;
+}
+
+/**
+ * @brief Peek the currently in-flight Stage 2 SAR entry.
+ *
+ * @param[in]  q         Pointer to router queue.
+ * @param[out] out_entry Destination for in-flight entry pointer (NULL if none).
+ * @return MESHX_SUCCESS if found, MESHX_INVALID_ARG on NULL args, or MESHX_NOT_FOUND.
+ */
+meshx_err_t meshx_router_queue_peek_inflight(meshx_router_queue_t *q, meshx_router_queue_entry_t **out_entry)
+{
+    if (!q || !out_entry)
+    {
+        return MESHX_INVALID_ARG;
+    }
+    *out_entry = NULL;
+    for (meshx_router_queue_entry_t *e = q->head; e != NULL; e = e->next)
+    {
+        if ((e->flags & MESHX_ROUTER_FLAG_TX_IN_FLIGHT) != 0U)
+        {
+            *out_entry = e;
+            return MESHX_SUCCESS;
+        }
+    }
+    return MESHX_NOT_FOUND;
 }
 
 /**
@@ -282,13 +338,16 @@ meshx_err_t meshx_router_queue_complete_entry(meshx_router_queue_t *q,
  *
  * @param[in,out] q           Pointer to router queue.
  * @param[in]     boundary_id Global Subnet ID to purge.
- * @return Number of entries freed.
+ * @param[out]    out_purged  Optional destination for number of entries freed (may be NULL).
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if @p q is NULL.
  */
-uint8_t meshx_router_queue_purge_boundary(meshx_router_queue_t *q, uint32_t boundary_id)
+meshx_err_t meshx_router_queue_purge_boundary(meshx_router_queue_t *q,
+                                              uint32_t boundary_id,
+                                              uint8_t *out_purged)
 {
     if (!q)
     {
-        return 0U;
+        return MESHX_INVALID_ARG;
     }
 
     uint8_t removed = 0U;
@@ -329,7 +388,11 @@ uint8_t meshx_router_queue_purge_boundary(meshx_router_queue_t *q, uint32_t boun
     }
 
     refresh_active_sar_flag(q);
-    return removed;
+    if (out_purged)
+    {
+        *out_purged = removed;
+    }
+    return MESHX_SUCCESS;
 }
 
 /**

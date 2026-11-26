@@ -43,7 +43,6 @@ static meshx_err_t island_uvp_tx(uint16_t net_idx,
                                  bool ack_req,
                                  void *user_ctx)
 {
-    MESHX_UNUSED(net_idx);
     MESHX_UNUSED(user_ctx);
     MESHX_UNUSED(opcode);
     if (!payload || payload_len < 1U)
@@ -51,12 +50,13 @@ static meshx_err_t island_uvp_tx(uint16_t net_idx,
         return MESHX_INVALID_ARG;
     }
 
-    return meshx_comp_send_uvp(0,
-                               dst_addr,
-                               MESHX_FUNC_ID_SYS_PAIRING,
-                               payload,
-                               payload_len,
-                               ack_req);
+    return meshx_comp_send_uvp_on_subnet(net_idx,
+                                         0,
+                                         dst_addr,
+                                         MESHX_FUNC_ID_SYS_PAIRING,
+                                         payload,
+                                         payload_len,
+                                         ack_req);
 }
 
 /**
@@ -67,8 +67,20 @@ static meshx_err_t island_uvp_tx(uint16_t net_idx,
 static void island_tick_timer_cb(const meshx_os_timer_t *p_timer)
 {
     MESHX_UNUSED(p_timer);
-    s_island_now_ms += MESHX_ISLAND_TICK_PERIOD_MS;
-    (void)meshx_subnet_coex_tick(s_island_now_ms);
+    unsigned int now_ms = 0U;
+    if (meshx_rtos_get_sys_time(&now_ms) == MESHX_SUCCESS)
+    {
+        s_island_now_ms = (uint32_t)now_ms;
+    }
+    else
+    {
+        s_island_now_ms += MESHX_ISLAND_TICK_PERIOD_MS;
+    }
+    meshx_err_t tick_err = meshx_subnet_coex_tick(s_island_now_ms);
+    if (tick_err != MESHX_SUCCESS && tick_err != MESHX_INVALID_STATE)
+    {
+        MESHX_LOGW(MODULE_ID_COMMON, "Island coex tick failed: %d", (int)tick_err);
+    }
 }
 
 /**
@@ -89,22 +101,20 @@ static meshx_err_t uvp_handle_island_coex(const control_task_uvp_meta_t *p_meta,
                                           const uint8_t *payload,
                                           uint16_t payload_len)
 {
-    MESHX_UNUSED(p_meta);
     if (!p_ctx || !payload || payload_len < 1U)
     {
         return MESHX_INVALID_ARG;
     }
 
     uint8_t opcode = payload[0];
-    const uint8_t *body = (payload_len > 1U) ? (payload + 1) : payload;
-    uint16_t body_len = (uint16_t)(payload_len - 1U);
+    uint16_t rx_net_idx = p_meta ? p_meta->net_idx : meshx_get_net_key_id();
 
     return meshx_subnet_coex_handle_uvp(opcode,
                                         p_ctx->src_addr,
                                         p_ctx->dst_addr,
-                                        meshx_get_net_key_id(),
-                                        body,
-                                        body_len);
+                                        rx_net_idx,
+                                        payload,
+                                        payload_len);
 }
 
 meshx_err_t meshx_uvp_register_island_handlers(void)
@@ -124,6 +134,7 @@ meshx_err_t meshx_uvp_register_island_handlers(void)
         MESHX_UVP_OP_SUBNET_DISCOVER_REQ,
         MESHX_UVP_OP_SUBNET_DISCOVER_RSP,
         MESHX_UVP_OP_QUERY_SUBNET_DIRECTORY,
+        MESHX_UVP_OP_SUBNET_DATA_TUNNEL,
     };
 
     for (size_t i = 0; i < sizeof(k_island_opcodes) / sizeof(k_island_opcodes[0]); i++)
@@ -150,12 +161,20 @@ meshx_err_t meshx_uvp_register_island_handlers(void)
                                                  &s_island_tick_timer);
         if (terr == MESHX_SUCCESS && s_island_tick_timer)
         {
-            (void)meshx_os_timer_start(s_island_tick_timer);
+            meshx_err_t start_err = meshx_os_timer_start(s_island_tick_timer);
+            if (start_err != MESHX_SUCCESS)
+            {
+                return start_err;
+            }
         }
     }
 
     /* Register the foreign-subnet boundary witness scan observer. */
-    (void)meshx_plat_ble_register_mfg_data_cb(island_mfg_data_observer);
+    meshx_err_t mfg_err = meshx_plat_ble_register_mfg_data_cb(island_mfg_data_observer);
+    if (mfg_err != MESHX_SUCCESS && mfg_err != MESHX_NOT_SUPPORTED)
+    {
+        return mfg_err;
+    }
 
     return MESHX_SUCCESS;
 }
