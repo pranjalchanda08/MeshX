@@ -5,6 +5,7 @@
  * @brief MitM Authentication, HMAC-SHA256 Envelope, Anti-Replay, Whitelist & Cross-Subnet RPL.
  */
 
+#include <stdint.h>
 #include <string.h>
 #include "island/meshx_subnet_security.h"
 #include "interface/crypto/meshx_crypto.h"
@@ -29,16 +30,20 @@ static void wipe_sec_bytes(uint8_t *buf, size_t len)
  *
  * @param[in] a First 16-byte buffer.
  * @param[in] b Second 16-byte buffer.
- * @return true if buffers are identical, false otherwise.
+ * @return MESHX_SUCCESS if buffers are identical, MESHX_SUBNET_ERR_AUTH otherwise.
  */
-static bool ct_memcmp16(const uint8_t *a, const uint8_t *b)
+static meshx_err_t ct_memcmp16(const uint8_t *a, const uint8_t *b)
 {
+    if (!a || !b)
+    {
+        return MESHX_INVALID_ARG;
+    }
     uint8_t diff = 0U;
     for (size_t i = 0; i < MESHX_HMAC_TAG_LEN; i++)
     {
         diff |= (uint8_t)(a[i] ^ b[i]);
     }
-    return diff == 0U;
+    return (diff == 0U) ? MESHX_SUCCESS : MESHX_SUBNET_ERR_AUTH;
 }
 
 /**
@@ -48,18 +53,24 @@ static bool ct_memcmp16(const uint8_t *a, const uint8_t *b)
  * @param[in]  dst_addr  Destination unicast address.
  * @param[in]  nonce32   32-bit transaction nonce.
  * @param[out] out_nonce Destination 13-byte nonce structure.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if out_nonce is NULL.
  */
-static void build_devkey_ccm_nonce(uint8_t opcode, uint16_t dst_addr, uint32_t nonce32, meshx_ccm_nonce_t *out_nonce)
+static meshx_err_t build_devkey_ccm_nonce(uint8_t opcode, uint16_t dst_addr, uint32_t nonce32, meshx_ccm_nonce_t *out_nonce)
 {
+    if (!out_nonce)
+    {
+        return MESHX_INVALID_ARG;
+    }
     memset(out_nonce, 0, sizeof(*out_nonce));
     out_nonce->bytes[0] = MESHX_NONCE_TYPE_DEVICE;
     out_nonce->bytes[1] = opcode;
-    out_nonce->bytes[2] = (uint8_t)((nonce32 >> 24) & MESHX_BYTE_MASK);
-    out_nonce->bytes[3] = (uint8_t)((nonce32 >> 16) & MESHX_BYTE_MASK);
-    out_nonce->bytes[4] = (uint8_t)((nonce32 >> 8) & MESHX_BYTE_MASK);
-    out_nonce->bytes[5] = (uint8_t)(nonce32 & MESHX_BYTE_MASK);
-    out_nonce->bytes[6] = (uint8_t)((dst_addr >> 8) & MESHX_BYTE_MASK);
-    out_nonce->bytes[7] = (uint8_t)(dst_addr & MESHX_BYTE_MASK);
+    out_nonce->bytes[2] = MESHX_BE_BYTE(nonce32, MESHX_SHIFT_MSB32);
+    out_nonce->bytes[3] = MESHX_BE_BYTE(nonce32, MESHX_SHIFT_BYTE2);
+    out_nonce->bytes[4] = MESHX_BE_BYTE(nonce32, MESHX_SHIFT_BYTE1);
+    out_nonce->bytes[5] = MESHX_BE_BYTE(nonce32, MESHX_SHIFT_LSB);
+    out_nonce->bytes[6] = MESHX_BE_BYTE(dst_addr, MESHX_SHIFT_BYTE1);
+    out_nonce->bytes[7] = MESHX_BE_BYTE(dst_addr, MESHX_SHIFT_LSB);
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -69,21 +80,22 @@ static void build_devkey_ccm_nonce(uint8_t opcode, uint16_t dst_addr, uint32_t n
  * @param[in]  persisted_nonce_ckpt Nonce checkpoint loaded from NVS.
  * @param[in]  ckpt_cb              Checkpoint commit callback.
  * @param[in]  ckpt_ctx             Callback context pointer.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if ctx is NULL.
  */
-void meshx_subnet_sec_init(meshx_subnet_security_ctx_t *ctx,
-                           uint32_t persisted_nonce_ckpt,
-                           meshx_sec_ckpt_save_fn_t ckpt_cb,
-                           void *ckpt_ctx)
+meshx_err_t meshx_subnet_sec_init(meshx_subnet_security_ctx_t *ctx,
+                                  uint32_t persisted_nonce_ckpt,
+                                  meshx_sec_ckpt_save_fn_t ckpt_cb,
+                                  void *ckpt_ctx)
 {
     if (!ctx)
     {
-        return;
+        return MESHX_INVALID_ARG;
     }
     memset(ctx, 0, sizeof(*ctx));
     ctx->ckpt_cb = ckpt_cb;
     ctx->ckpt_ctx = ckpt_ctx;
     ctx->last_saved_nonce_ckpt = persisted_nonce_ckpt;
-    if (persisted_nonce_ckpt <= (0xFFFFFFFFUL - MESHX_BRIDGE_NONCE_BOOT_MARGIN))
+    if (persisted_nonce_ckpt <= (UINT32_MAX - MESHX_BRIDGE_NONCE_BOOT_MARGIN))
     {
         ctx->tx_bridge_nonce = persisted_nonce_ckpt + MESHX_BRIDGE_NONCE_BOOT_MARGIN;
     }
@@ -91,6 +103,7 @@ void meshx_subnet_sec_init(meshx_subnet_security_ctx_t *ctx,
     {
         ctx->tx_bridge_nonce = MESHX_BRIDGE_NONCE_WRAP_LIMIT;
     }
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -165,25 +178,27 @@ void meshx_subnet_sec_clear_k_bridge(meshx_subnet_security_ctx_t *ctx)
  * @return MESHX_SUCCESS on success, or error code.
  */
 meshx_err_t meshx_subnet_sec_sign_frame(meshx_subnet_security_ctx_t *ctx,
-                                        uint8_t opcode,
-                                        uint16_t sender_addr,
-                                        const uint8_t *payload,
-                                        uint16_t payload_len,
-                                        uint8_t *out_frame,
-                                        uint16_t out_cap,
-                                        uint16_t *out_len)
+                                        const meshx_sec_sign_req_t *req,
+                                        meshx_sec_sign_rsp_t *rsp)
 {
-    if (!ctx || !out_frame || !out_len || (payload_len > 0U && !payload))
+    if (!ctx || !req || !rsp || !rsp->out_frame || !rsp->out_len || (req->payload_len > 0U && !req->payload))
     {
         return MESHX_INVALID_ARG;
     }
+    uint8_t opcode = req->opcode;
+    uint16_t sender_addr = req->sender_addr;
+    const uint8_t *payload = req->payload;
+    uint16_t payload_len = req->payload_len;
+    uint8_t *out_frame = rsp->out_frame;
+    uint16_t out_cap = rsp->out_cap;
+    uint16_t *out_len = rsp->out_len;
     if (!ctx->k_bridge_valid)
     {
-        return (meshx_err_t)MESHX_SUBNET_ERR_AUTH;
+        return MESHX_SUBNET_ERR_AUTH;
     }
     if (ctx->tx_bridge_nonce >= MESHX_BRIDGE_NONCE_WRAP_LIMIT)
     {
-        return (meshx_err_t)MESHX_SUBNET_ERR_REPLAY;
+        return MESHX_SUBNET_ERR_REPLAY;
     }
     uint16_t needed = (uint16_t)(MESHX_CLUSTER_AUTH_OVERHEAD + payload_len);
     if (out_cap < needed)
@@ -223,7 +238,11 @@ meshx_err_t meshx_subnet_sec_sign_frame(meshx_subnet_security_ctx_t *ctx,
         ctx->last_saved_nonce_ckpt = ctx->tx_bridge_nonce;
         if (ctx->ckpt_cb)
         {
-            (void)ctx->ckpt_cb(ctx->tx_bridge_nonce, ctx->ckpt_ctx);
+            err = ctx->ckpt_cb(ctx->tx_bridge_nonce, ctx->ckpt_ctx);
+            if (err != MESHX_SUCCESS)
+            {
+                return err;
+            }
         }
     }
 
@@ -237,15 +256,15 @@ meshx_err_t meshx_subnet_sec_sign_frame(meshx_subnet_security_ctx_t *ctx,
  * @param[in,out] ctx         Pointer to security context.
  * @param[in]     sender_addr Sender physical address.
  * @param[in]     nonce       Inbound bridge nonce.
- * @return true if nonce is accepted and recorded, false if rejected as replay.
+ * @return MESHX_SUCCESS if nonce is accepted and recorded, MESHX_SUBNET_ERR_REPLAY if rejected as replay.
  */
-static bool replay_check_and_accept(meshx_subnet_security_ctx_t *ctx,
-                                    uint16_t sender_addr,
-                                    uint32_t nonce)
+static meshx_err_t replay_check_and_accept(meshx_subnet_security_ctx_t *ctx,
+                                           uint16_t sender_addr,
+                                           uint32_t nonce)
 {
     if (nonce == 0UL || nonce <= ctx->eviction_floor_nonce)
     {
-        return false;
+        return MESHX_SUBNET_ERR_REPLAY;
     }
 
     int match_idx = -1;
@@ -281,15 +300,15 @@ static bool replay_check_and_accept(meshx_subnet_security_ctx_t *ctx,
             uint32_t delta = nonce - slot->highest_nonce;
             slot->seen_bitmap = (delta >= 16UL) ? 1U : (uint16_t)((slot->seen_bitmap << delta) | 1U);
             slot->highest_nonce = nonce;
-            return true;
+            return MESHX_SUCCESS;
         }
         uint32_t diff = slot->highest_nonce - nonce;
         if (diff >= 16UL || (slot->seen_bitmap & (uint16_t)(1U << diff)) != 0U)
         {
-            return false;
+            return MESHX_SUBNET_ERR_REPLAY;
         }
         slot->seen_bitmap |= (uint16_t)(1U << diff);
-        return true;
+        return MESHX_SUCCESS;
     }
 
     int dst_idx = free_idx;
@@ -306,7 +325,7 @@ static bool replay_check_and_accept(meshx_subnet_security_ctx_t *ctx,
     ctx->replay_cache[dst_idx].valid         = true;
     ctx->replay_cache[dst_idx].highest_nonce = nonce;
     ctx->replay_cache[dst_idx].sender_addr   = sender_addr;
-    return true;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -325,27 +344,27 @@ static bool replay_check_and_accept(meshx_subnet_security_ctx_t *ctx,
 meshx_err_t meshx_subnet_sec_verify_frame(meshx_subnet_security_ctx_t *ctx,
                                           const uint8_t *frame,
                                           uint16_t frame_len,
-                                          uint8_t *out_opcode,
-                                          uint32_t *out_term,
-                                          uint16_t *out_sender,
-                                          const uint8_t **out_payload,
-                                          uint16_t *out_payload_len)
+                                          meshx_sec_verify_rsp_t *rsp)
 {
-    if (!ctx || !frame || !out_opcode || !out_term || !out_sender ||
-        !out_payload || !out_payload_len)
+    if (!ctx || !frame || !rsp)
     {
         return MESHX_INVALID_ARG;
     }
+    uint8_t *out_opcode = &rsp->opcode;
+    uint32_t *out_term = &rsp->term;
+    uint16_t *out_sender = &rsp->sender;
+    const uint8_t **out_payload = &rsp->payload;
+    uint16_t *out_payload_len = &rsp->payload_len;
     if (!ctx->k_bridge_valid || frame_len < MESHX_CLUSTER_AUTH_OVERHEAD)
     {
-        return (meshx_err_t)MESHX_SUBNET_ERR_AUTH;
+        return MESHX_SUBNET_ERR_AUTH;
     }
 
     meshx_uvp_auth_hdr_t hdr;
     memcpy(&hdr, frame, sizeof(hdr));
     if (hdr.term < ctx->active_term)
     {
-        return (meshx_err_t)MESHX_SUBNET_ERR_AUTH;
+        return MESHX_SUBNET_ERR_AUTH;
     }
 
     uint16_t mac_in_len = (uint16_t)(frame_len - MESHX_HMAC_TAG_LEN);
@@ -359,16 +378,16 @@ meshx_err_t meshx_subnet_sec_verify_frame(meshx_subnet_security_ctx_t *ctx,
     {
         return err;
     }
-    bool tag_ok = ct_memcmp16(hmac_full, frame + mac_in_len);
+    bool tag_ok = (ct_memcmp16(hmac_full, frame + mac_in_len) == MESHX_SUCCESS);
     wipe_sec_bytes(hmac_full, sizeof(hmac_full));
     if (!tag_ok)
     {
-        return (meshx_err_t)MESHX_SUBNET_ERR_AUTH;
+        return MESHX_SUBNET_ERR_AUTH;
     }
 
-    if (!replay_check_and_accept(ctx, hdr.sender_addr, hdr.bridge_nonce))
+    if (replay_check_and_accept(ctx, hdr.sender_addr, hdr.bridge_nonce) != MESHX_SUCCESS)
     {
-        return (meshx_err_t)MESHX_SUBNET_ERR_REPLAY;
+        return MESHX_SUBNET_ERR_REPLAY;
     }
 
     if (hdr.term > ctx->active_term)
@@ -398,20 +417,23 @@ meshx_err_t meshx_subnet_sec_verify_frame(meshx_subnet_security_ctx_t *ctx,
  * @param[out] out_len    Length of generated sealed envelope.
  * @return MESHX_SUCCESS on success, or error code.
  */
-meshx_err_t meshx_subnet_sec_seal_devkey(const meshx_subnet_key_t *dev_key,
-                                         uint8_t opcode,
-                                         uint16_t dst_addr,
-                                         uint32_t nonce32,
-                                         const uint8_t *plain,
-                                         uint16_t plain_len,
-                                         uint8_t *out_buf,
-                                         uint16_t out_cap,
-                                         uint16_t *out_len)
+meshx_err_t meshx_subnet_sec_seal_devkey(const meshx_sec_devkey_seal_req_t *req,
+                                         meshx_sec_devkey_seal_rsp_t *rsp)
 {
-    if (!dev_key || !out_buf || !out_len || (plain_len > 0U && !plain))
+    if (!req || !rsp || !req->dev_key || !rsp->out_buf || !rsp->out_len ||
+        (req->plain_len > 0U && !req->plain))
     {
         return MESHX_INVALID_ARG;
     }
+    const meshx_subnet_key_t *dev_key = req->dev_key;
+    uint8_t opcode = req->opcode;
+    uint16_t dst_addr = req->dst_addr;
+    uint32_t nonce32 = req->nonce32;
+    const uint8_t *plain = req->plain;
+    uint16_t plain_len = req->plain_len;
+    uint8_t *out_buf = rsp->out_buf;
+    uint16_t out_cap = rsp->out_cap;
+    uint16_t *out_len = rsp->out_len;
     uint16_t needed = (uint16_t)(MESHX_CCM_NONCE_LEN + plain_len + MESHX_DEVKEY_CCM_MIC_LEN);
     if (out_cap < needed)
     {
@@ -419,10 +441,14 @@ meshx_err_t meshx_subnet_sec_seal_devkey(const meshx_subnet_key_t *dev_key,
     }
 
     meshx_ccm_nonce_t nonce13;
-    build_devkey_ccm_nonce(opcode, dst_addr, nonce32, &nonce13);
+    meshx_err_t err = build_devkey_ccm_nonce(opcode, dst_addr, nonce32, &nonce13);
+    if (err != MESHX_SUCCESS)
+    {
+        return err;
+    }
     memcpy(out_buf, nonce13.bytes, MESHX_CCM_NONCE_LEN);
 
-    meshx_err_t err = meshx_crypto_aes_ccm_encrypt(dev_key->bytes,
+    err = meshx_crypto_aes_ccm_encrypt(dev_key->bytes,
                                                    nonce13.bytes,
                                                    MESHX_CCM_NONCE_LEN,
                                                    plain,
@@ -465,7 +491,7 @@ meshx_err_t meshx_subnet_sec_open_devkey(const meshx_subnet_key_t *dev_key,
     uint16_t cipher_len = (uint16_t)(sealed_len - MESHX_DEVKEY_SEAL_OVERHEAD);
     if (out_cap < cipher_len || sealed[0] != MESHX_NONCE_TYPE_DEVICE || sealed[1] != opcode)
     {
-        return (meshx_err_t)MESHX_SUBNET_ERR_AUTH;
+        return MESHX_SUBNET_ERR_AUTH;
     }
 
     meshx_err_t err = meshx_crypto_aes_ccm_decrypt(dev_key->bytes,
@@ -478,7 +504,7 @@ meshx_err_t meshx_subnet_sec_open_devkey(const meshx_subnet_key_t *dev_key,
                                                    out_plain);
     if (err != MESHX_SUCCESS)
     {
-        return (meshx_err_t)MESHX_SUBNET_ERR_AUTH;
+        return MESHX_SUBNET_ERR_AUTH;
     }
     *out_plain_len = cipher_len;
     return MESHX_SUCCESS;
@@ -503,7 +529,7 @@ meshx_err_t meshx_subnet_sec_whitelist_add(meshx_subnet_security_ctx_t *ctx,
     int free_idx = -1;
     for (int i = 0; i < (int)MESHX_TRANSIT_WHITELIST_MAX; i++)
     {
-        meshx_transit_whitelist_entry_t *w = &ctx->whitelist[i];
+        const meshx_transit_whitelist_entry_t *w = &ctx->whitelist[i];
         if (w->valid)
         {
             if (w->neighbor_bridge_addr == neighbor_bridge_addr &&
@@ -584,32 +610,30 @@ bool meshx_subnet_sec_rpl_check_update(meshx_subnet_security_ctx_t *ctx,
     for (int i = 0; i < (int)MESHX_RPL_CACHE_SIZE; i++)
     {
         meshx_subnet_rpl_entry_t *e = &ctx->rpl[i];
-        if (e->src_addr != 0U)
+        if (e->src_addr == 0U)
         {
-            if (e->net_idx == net_idx && e->src_addr == src_addr && e->key_epoch == key_epoch)
+            if (free_idx < 0)
             {
-                if (iv_index < e->iv_index)
-                {
-                    return false;
-                }
-                if (iv_index == e->iv_index && seq_num <= e->last_seq_num)
-                {
-                    return false;
-                }
-                e->iv_index = iv_index;
-                e->last_seq_num = seq_num;
-                return true;
+                free_idx = i;
             }
-            if (e->iv_index < ctx->rpl[lru_idx].iv_index ||
-                (e->iv_index == ctx->rpl[lru_idx].iv_index &&
-                 e->last_seq_num < ctx->rpl[lru_idx].last_seq_num))
-            {
-                lru_idx = i;
-            }
+            continue;
         }
-        else if (free_idx < 0)
+        if (e->net_idx == net_idx && e->src_addr == src_addr && e->key_epoch == key_epoch)
         {
-            free_idx = i;
+            if (iv_index < e->iv_index ||
+                (iv_index == e->iv_index && seq_num <= e->last_seq_num))
+            {
+                return false;
+            }
+            e->iv_index = iv_index;
+            e->last_seq_num = seq_num;
+            return true;
+        }
+        if (e->iv_index < ctx->rpl[lru_idx].iv_index ||
+            (e->iv_index == ctx->rpl[lru_idx].iv_index &&
+             e->last_seq_num < ctx->rpl[lru_idx].last_seq_num))
+        {
+            lru_idx = i;
         }
     }
 
@@ -648,30 +672,28 @@ bool meshx_subnet_sec_canonical_rpl_check(meshx_subnet_security_ctx_t *ctx,
     for (int i = 0; i < (int)MESHX_NAT_TIER2_CAP; i++)
     {
         meshx_canonical_rpl_entry_t *e = &ctx->canonical_rpl[i];
-        if (e->valid)
+        if (!e->valid)
         {
-            if (e->global_subnet_src == global_subnet_src && e->canonical_src == canonical_src)
+            if (free_idx < 0)
             {
-                if (iv_index < e->iv_index)
-                {
-                    return false;
-                }
-                if (iv_index == e->iv_index && seq_num <= e->last_seq)
-                {
-                    return false;
-                }
-                e->iv_index = iv_index;
-                e->last_seq = seq_num;
-                return true;
+                free_idx = i;
             }
-            if (e->last_seq < ctx->canonical_rpl[lru_idx].last_seq)
-            {
-                lru_idx = i;
-            }
+            continue;
         }
-        else if (free_idx < 0)
+        if (e->global_subnet_src == global_subnet_src && e->canonical_src == canonical_src)
         {
-            free_idx = i;
+            if (iv_index < e->iv_index ||
+                (iv_index == e->iv_index && seq_num <= e->last_seq))
+            {
+                return false;
+            }
+            e->iv_index = iv_index;
+            e->last_seq = seq_num;
+            return true;
+        }
+        if (e->last_seq < ctx->canonical_rpl[lru_idx].last_seq)
+        {
+            lru_idx = i;
         }
     }
 

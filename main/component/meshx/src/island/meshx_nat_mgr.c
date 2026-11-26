@@ -53,11 +53,11 @@ static meshx_local_slot_entry_t *find_slot_by_slot_n(const meshx_nat_mgr_t *mgr,
  *
  * @param[in] mgr    Pointer to NAT manager.
  * @param[in] slot_n Slot index [0..13].
- * @return true if slot is active, false if free.
+ * @return MESHX_SUCCESS if slot is active, MESHX_NOT_FOUND if free.
  */
-static bool is_slot_n_used(const meshx_nat_mgr_t *mgr, uint8_t slot_n)
+static meshx_err_t is_slot_n_used(const meshx_nat_mgr_t *mgr, uint8_t slot_n)
 {
-    return (find_slot_by_slot_n(mgr, slot_n) != NULL);
+    return (find_slot_by_slot_n(mgr, slot_n) != NULL) ? MESHX_SUCCESS : MESHX_NOT_FOUND;
 }
 
 /**
@@ -125,7 +125,7 @@ uint32_t meshx_nat_derive_global_subnet_id(const meshx_subnet_key_t *net_key,
     uint8_t seed[MESHX_NAT_DERIVE_SEED_LEN];
     memcpy(seed, net_key->bytes, MESHX_SUBNET_KEY_LEN);
     seed[16] = (uint8_t)(cid & MESHX_BYTE_MASK);
-    seed[17] = (uint8_t)((cid >> 8) & MESHX_BYTE_MASK);
+    seed[17] = MESHX_BE_BYTE(cid, MESHX_SHIFT_BYTE1);
 
     for (uint8_t salt = 0U; salt < MESHX_NAT_MAX_SALT_ATTEMPTS; salt++)
     {
@@ -136,15 +136,12 @@ uint32_t meshx_nat_derive_global_subnet_id(const meshx_subnet_key_t *net_key,
             id = 0x00000001UL;
         }
         bool clash = false;
-        if (peer_ids && peer_count > 0U)
+        for (size_t i = 0; peer_ids && i < peer_count; i++)
         {
-            for (size_t i = 0; i < peer_count; i++)
+            if (peer_ids[i] == id)
             {
-                if (peer_ids[i] == id)
-                {
-                    clash = true;
-                    break;
-                }
+                clash = true;
+                break;
             }
         }
         if (!clash)
@@ -158,6 +155,30 @@ uint32_t meshx_nat_derive_global_subnet_id(const meshx_subnet_key_t *net_key,
     }
 
     return MESHX_GLOBAL_SUBNET_INVALID;
+}
+
+/**
+ * @brief Select an available local slot index [0..13], reserving slot 0 for local primary.
+ *
+ * @param[in] mgr              Pointer to NAT manager.
+ * @param[in] is_local_primary True if assigning the local primary subnet.
+ * @return Free slot index [0..13], or -1 if all slots are occupied.
+ */
+static int select_free_slot_n(const meshx_nat_mgr_t *mgr, bool is_local_primary)
+{
+    if (is_local_primary && is_slot_n_used(mgr, 0U) != MESHX_SUCCESS)
+    {
+        return 0;
+    }
+    uint8_t start = is_local_primary ? 0U : 1U;
+    for (uint8_t s = start; s < MESHX_SLOT_MAX; s++)
+    {
+        if (is_slot_n_used(mgr, s) != MESHX_SUCCESS)
+        {
+            return (int)s;
+        }
+    }
+    return (!is_local_primary && is_slot_n_used(mgr, 0U) != MESHX_SUCCESS) ? 0 : -1;
 }
 
 /**
@@ -201,27 +222,7 @@ meshx_err_t meshx_nat_slot_assign(meshx_nat_mgr_t *mgr,
         return MESHX_SUCCESS;
     }
 
-    int chosen = -1;
-    if (is_local_primary && !is_slot_n_used(mgr, 0U))
-    {
-        chosen = 0;
-    }
-    else
-    {
-        uint8_t start = is_local_primary ? 0U : 1U;
-        for (uint8_t s = start; s < MESHX_SLOT_MAX; s++)
-        {
-            if (!is_slot_n_used(mgr, s))
-            {
-                chosen = (int)s;
-                break;
-            }
-        }
-        if (chosen < 0 && !is_slot_n_used(mgr, 0U))
-        {
-            chosen = 0;
-        }
-    }
+    int chosen = select_free_slot_n(mgr, is_local_primary);
     if (chosen < 0)
     {
         return MESHX_NO_MEM;
@@ -334,7 +335,7 @@ int8_t meshx_nat_slot_get_by_global_id(const meshx_nat_mgr_t *mgr, uint32_t glob
     {
         return -1;
     }
-    meshx_local_slot_entry_t *e = find_slot_by_global_id(mgr, global_subnet_id);
+    const meshx_local_slot_entry_t *e = find_slot_by_global_id(mgr, global_subnet_id);
     return e ? (int8_t)e->slot_n : -1;
 }
 
@@ -409,9 +410,9 @@ uint32_t meshx_nat_recompute_slot_digest(meshx_nat_mgr_t *mgr)
         if (pos + 6U <= sizeof(buf))
         {
             buf[pos++] = (uint8_t)(c->global_subnet_id & MESHX_BYTE_MASK);
-            buf[pos++] = (uint8_t)((c->global_subnet_id >> 8) & MESHX_BYTE_MASK);
-            buf[pos++] = (uint8_t)((c->global_subnet_id >> 16) & MESHX_BYTE_MASK);
-            buf[pos++] = (uint8_t)((c->global_subnet_id >> 24) & MESHX_BYTE_MASK);
+            buf[pos++] = MESHX_BE_BYTE(c->global_subnet_id, MESHX_SHIFT_BYTE1);
+            buf[pos++] = MESHX_BE_BYTE(c->global_subnet_id, MESHX_SHIFT_BYTE2);
+            buf[pos++] = MESHX_BE_BYTE(c->global_subnet_id, MESHX_SHIFT_MSB32);
             buf[pos++] = c->slot_n;
             buf[pos++] = c->flags;
         }
@@ -499,38 +500,37 @@ meshx_err_t meshx_nat_tier2_alloc(meshx_nat_mgr_t *mgr,
     for (int i = 0; i < (int)MESHX_NAT_TIER2_CAP; i++)
     {
         meshx_nat_entry_t *e = &mgr->tier2[i];
-        if ((e->flags & MESHX_NAT_FLAG_VALID) != 0U)
+        if ((e->flags & MESHX_NAT_FLAG_VALID) == 0U)
         {
-            if (e->global_subnet_src == global_subnet_src && e->orig_addr == orig_addr)
+            if (free_idx < 0)
             {
-                e->last_active_min = now_min;
-                e->flags |= (uint8_t)(flags | MESHX_NAT_FLAG_VALID);
-                if (uuid8)
-                {
-                    memcpy(e->uuid.bytes, uuid8->bytes, MESHX_SUBNET_UUID8_LEN);
-                }
-                *out_virtual_addr = e->virtual_addr;
-                return MESHX_SUCCESS;
+                free_idx = i;
             }
-            if ((e->flags & MESHX_NAT_FLAG_PERSISTENT) == 0U)
-            {
-                if (lru_evict_idx < 0 || e->last_active_min < min_lru_time)
-                {
-                    lru_evict_idx = i;
-                    min_lru_time = e->last_active_min;
-                }
-            }
+            continue;
         }
-        else if (free_idx < 0)
+        if (e->global_subnet_src == global_subnet_src && e->orig_addr == orig_addr)
         {
-            free_idx = i;
+            e->last_active_min = now_min;
+            e->flags |= (uint8_t)(flags | MESHX_NAT_FLAG_VALID);
+            if (uuid8)
+            {
+                memcpy(e->uuid.bytes, uuid8->bytes, MESHX_SUBNET_UUID8_LEN);
+            }
+            *out_virtual_addr = e->virtual_addr;
+            return MESHX_SUCCESS;
+        }
+        if ((e->flags & MESHX_NAT_FLAG_PERSISTENT) == 0U &&
+            (lru_evict_idx < 0 || e->last_active_min < min_lru_time))
+        {
+            lru_evict_idx = i;
+            min_lru_time = e->last_active_min;
         }
     }
 
     int idx = (free_idx >= 0) ? free_idx : lru_evict_idx;
     if (idx < 0)
     {
-        return (meshx_err_t)MESHX_SUBNET_ERR_NAT_FULL;
+        return MESHX_SUBNET_ERR_NAT_FULL;
     }
 
     meshx_nat_entry_t *dst = &mgr->tier2[idx];
@@ -600,13 +600,11 @@ uint8_t meshx_nat_tier2_gc(meshx_nat_mgr_t *mgr, uint16_t now_min)
         meshx_nat_entry_t *e = &mgr->tier2[i];
         if ((e->flags & MESHX_NAT_FLAG_VALID) != 0U &&
             (e->flags & MESHX_NAT_FLAG_TEMP_DISCOVERY) != 0U &&
-            (e->flags & MESHX_NAT_FLAG_PERSISTENT) == 0U)
+            (e->flags & MESHX_NAT_FLAG_PERSISTENT) == 0U &&
+            (uint16_t)(now_min - e->last_active_min) > MESHX_NAT_TEMP_TTL_MIN)
         {
-            if ((uint16_t)(now_min - e->last_active_min) > MESHX_NAT_TEMP_TTL_MIN)
-            {
-                memset(e, 0, sizeof(*e));
-                evicted++;
-            }
+            memset(e, 0, sizeof(*e));
+            evicted++;
         }
     }
     return evicted;
@@ -664,7 +662,7 @@ meshx_err_t meshx_nat_tier2_apply_sync(meshx_nat_mgr_t *mgr, const meshx_nat_ent
     int idx = (match_idx >= 0) ? match_idx : free_idx;
     if (idx < 0)
     {
-        return (meshx_err_t)MESHX_SUBNET_ERR_NAT_FULL;
+        return MESHX_SUBNET_ERR_NAT_FULL;
     }
 
     memcpy(&mgr->tier2[idx], entry, sizeof(*entry));
@@ -737,7 +735,7 @@ meshx_err_t meshx_nat_translate_outbound(const meshx_nat_mgr_t *mgr,
         {
             return err;
         }
-        meshx_local_slot_entry_t *slot = find_slot_by_slot_n(mgr, slot_n);
+        const meshx_local_slot_entry_t *slot = find_slot_by_slot_n(mgr, slot_n);
         if (!slot)
         {
             return MESHX_NOT_FOUND;

@@ -86,8 +86,9 @@ typedef struct {
  * @param[in]  persisted_nonce_ckpt Nonce checkpoint loaded from NVS.
  * @param[in]  ckpt_cb              Checkpoint commit callback.
  * @param[in]  ckpt_ctx             Callback context pointer.
+ * @return MESHX_SUCCESS on success, or MESHX_INVALID_ARG if ctx is NULL.
  */
-void meshx_subnet_sec_init(meshx_subnet_security_ctx_t *ctx,
+meshx_err_t meshx_subnet_sec_init(meshx_subnet_security_ctx_t *ctx,
                            uint32_t persisted_nonce_ckpt,
                            meshx_sec_ckpt_save_fn_t ckpt_cb,
                            void *ckpt_ctx);
@@ -121,72 +122,91 @@ meshx_err_t meshx_subnet_sec_set_k_bridge(meshx_subnet_security_ctx_t *ctx,
 void meshx_subnet_sec_clear_k_bridge(meshx_subnet_security_ctx_t *ctx);
 
 /**
- * @brief Construct & authenticate outbound UVP frame with 11B header + 16B HMAC tag.
+ * @brief Request descriptor for meshx_subnet_sec_sign_frame().
+ */
+typedef struct {
+    uint8_t        opcode;      /**< UVP opcode */
+    uint16_t       sender_addr; /**< Local sender unicast address */
+    const uint8_t *payload;     /**< Payload to sign */
+    uint16_t       payload_len; /**< Length of payload in bytes */
+} meshx_sec_sign_req_t;
+
+/**
+ * @brief Response buffer descriptor for meshx_subnet_sec_sign_frame().
+ */
+typedef struct {
+    uint8_t  *out_frame; /**< Destination buffer for signed frame */
+    uint16_t  out_cap;   /**< Capacity of out_frame buffer */
+    uint16_t *out_len;   /**< Total length of signed frame */
+} meshx_sec_sign_rsp_t;
+
+/**
+ * @brief Output descriptor for meshx_subnet_sec_verify_frame().
+ */
+typedef struct {
+    uint8_t        opcode;      /**< Extracted opcode */
+    uint32_t       term;        /**< Extracted term */
+    uint16_t       sender;      /**< Extracted sender address */
+    const uint8_t *payload;     /**< Pointer set to start of verified inner payload */
+    uint16_t       payload_len; /**< Length of inner payload */
+} meshx_sec_verify_rsp_t;
+
+/**
+ * @brief Request descriptor for meshx_subnet_sec_seal_devkey().
+ */
+typedef struct {
+    const meshx_subnet_key_t *dev_key;   /**< Pointer to 16-byte Device Key */
+    uint8_t                   opcode;    /**< UVP opcode being sealed */
+    uint16_t                  dst_addr;  /**< Target destination address */
+    uint32_t                  nonce32;   /**< 32-bit transaction nonce */
+    const uint8_t            *plain;     /**< Plaintext payload */
+    uint16_t                  plain_len; /**< Plaintext payload length */
+} meshx_sec_devkey_seal_req_t;
+
+/**
+ * @brief Response buffer descriptor for meshx_subnet_sec_seal_devkey().
+ */
+typedef struct {
+    uint8_t  *out_buf; /**< Destination buffer for sealed envelope */
+    uint16_t  out_cap; /**< Capacity of destination buffer */
+    uint16_t *out_len; /**< Length of generated sealed envelope */
+} meshx_sec_devkey_seal_rsp_t;
+
+/**
+ * @brief Sign outbound UVP frame with K_bridge (HMAC-SHA256 truncated to 16B).
  *
- * @param[in,out] ctx         Pointer to security context.
- * @param[in]     opcode      UVP message opcode (0xD1..0xDE).
- * @param[in]     sender_addr Sender physical address.
- * @param[in]     payload     Payload to sign.
- * @param[in]     payload_len Length of payload in bytes.
- * @param[out]    out_frame   Destination buffer for signed frame.
- * @param[in]     out_cap     Capacity of out_frame buffer.
- * @param[out]    out_len     Total length of signed frame.
+ * @param[in,out] ctx Pointer to security context.
+ * @param[in]     req Pointer to sign request descriptor.
+ * @param[out]    rsp Pointer to sign response buffer descriptor.
  * @return MESHX_SUCCESS on success, or error code.
  */
 meshx_err_t meshx_subnet_sec_sign_frame(meshx_subnet_security_ctx_t *ctx,
-                                        uint8_t opcode,
-                                        uint16_t sender_addr,
-                                        const uint8_t *payload,
-                                        uint16_t payload_len,
-                                        uint8_t *out_frame,
-                                        uint16_t out_cap,
-                                        uint16_t *out_len);
+                                        const meshx_sec_sign_req_t *req,
+                                        meshx_sec_sign_rsp_t *rsp);
 
 /**
  * @brief Verify inbound authenticated UVP frame (term >= active, 16B HMAC, 16-entry sliding window).
  *
- * @param[in,out] ctx             Pointer to security context.
- * @param[in]     frame           Raw inbound signed frame.
- * @param[in]     frame_len       Length of signed frame.
- * @param[out]    out_opcode      Destination for extracted opcode.
- * @param[out]    out_term        Destination for extracted term.
- * @param[out]    out_sender      Destination for sender address.
- * @param[out]    out_payload     Pointer set to start of verified inner payload.
- * @param[out]    out_payload_len Destination for length of inner payload.
+ * @param[in,out] ctx       Pointer to security context.
+ * @param[in]     frame     Raw inbound signed frame.
+ * @param[in]     frame_len Length of signed frame.
+ * @param[out]    rsp       Pointer to verification output descriptor.
  * @return MESHX_SUCCESS on success, MESHX_SUBNET_ERR_AUTH on tag mismatch, MESHX_SUBNET_ERR_REPLAY on replay.
  */
 meshx_err_t meshx_subnet_sec_verify_frame(meshx_subnet_security_ctx_t *ctx,
                                           const uint8_t *frame,
                                           uint16_t frame_len,
-                                          uint8_t *out_opcode,
-                                          uint32_t *out_term,
-                                          uint16_t *out_sender,
-                                          const uint8_t **out_payload,
-                                          uint16_t *out_payload_len);
+                                          meshx_sec_verify_rsp_t *rsp);
 
 /**
  * @brief Encrypt DevKey AES-128-CCM commissioning envelopes (0xD4 Bridge Invite).
  *
- * @param[in]  dev_key    Pointer to 16-byte Device Key.
- * @param[in]  opcode     UVP opcode being sealed.
- * @param[in]  dst_addr   Target destination address.
- * @param[in]  nonce32    32-bit transaction nonce.
- * @param[in]  plain      Plaintext payload.
- * @param[in]  plain_len  Plaintext payload length.
- * @param[out] out_buf    Destination buffer for sealed envelope.
- * @param[in]  out_cap    Capacity of destination buffer.
- * @param[out] out_len    Length of generated sealed envelope.
+ * @param[in]  req Pointer to DevKey seal request descriptor.
+ * @param[out] rsp Pointer to DevKey seal response buffer descriptor.
  * @return MESHX_SUCCESS on success, or error code.
  */
-meshx_err_t meshx_subnet_sec_seal_devkey(const meshx_subnet_key_t *dev_key,
-                                         uint8_t opcode,
-                                         uint16_t dst_addr,
-                                         uint32_t nonce32,
-                                         const uint8_t *plain,
-                                         uint16_t plain_len,
-                                         uint8_t *out_buf,
-                                         uint16_t out_cap,
-                                         uint16_t *out_len);
+meshx_err_t meshx_subnet_sec_seal_devkey(const meshx_sec_devkey_seal_req_t *req,
+                                         meshx_sec_devkey_seal_rsp_t *rsp);
 
 /**
  * @brief Decrypt DevKey AES-128-CCM commissioning envelopes (0xD4 Bridge Invite / 0xDA Invite ACK).

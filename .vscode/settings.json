@@ -10,7 +10,7 @@
     "editor.wordWrapColumn": 100,
     "cmake.sourceDirectory": "${workspaceFolder}",
     "cmake.cmakePath": "cmake",
-    "sonarlint.pathToCompileCommands": "${workspaceFolder}/build/weact_c3/Debug/all_in_one/compile_commands.json",
+    "sonarlint.pathToCompileCommands": "${workspaceFolder}/build/weact_c3/zephyr/Debug/test_profile/compile_commands.json",
     "idf.pythonInstallPath": "/usr/bin/python3",
     "clangd.arguments": [
         "--query-driver=**/*riscv32*,**/*gcc*"

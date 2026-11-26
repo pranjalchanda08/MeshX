@@ -147,7 +147,7 @@ meshx_err_t meshx_subnet_coex_handle_uvp(uint8_t opcode,
  *
  * @param[in] now_ms Current monotonic timestamp in milliseconds.
  */
-void meshx_subnet_coex_record_rx_mic_fail(uint32_t now_ms);
+bool meshx_subnet_coex_record_rx_mic_fail(uint32_t now_ms);
 
 /**
  * @brief Reset the sliding MIC failure counter upon valid local packet reception.

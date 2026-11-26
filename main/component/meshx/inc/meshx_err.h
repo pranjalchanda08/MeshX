@@ -70,6 +70,16 @@ typedef enum
     MESHX_ERR_TABLE_FULL,                  /**< Link or group subscription table full */
     MESHX_ERR_BUSY,                        /**< Pairing transaction in progress / resource busy */
 
+    /* Island Subnet Coexistence Error Codes (Base: 0x7000) */
+    MESHX_ERR_SUBNET_BASE = 0x7000,        /**< Island Subnet error base */
+    MESHX_SUBNET_ERR_NAT_FULL,             /**< NAT table full */
+    MESHX_SUBNET_ERR_REPLAY,               /**< Replay attack / stale nonce */
+    MESHX_SUBNET_ERR_AUTH,                 /**< Authentication / MIC failure */
+    MESHX_SUBNET_ERR_QUARANTINE,           /**< Key Rotation quarantine active */
+    MESHX_SUBNET_ERR_WHITELIST,            /**< Whitelist policy violation */
+    MESHX_SUBNET_ERR_LOOP,                 /**< Routing loop detected */
+    MESHX_SUBNET_ERR_MTU,                  /**< Payload exceeds MTU */
+
     MESHX_ERR_MAX        /**< Maximum Error */
 } meshx_err_t;
 

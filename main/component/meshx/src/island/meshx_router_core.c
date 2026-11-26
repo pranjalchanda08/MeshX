@@ -16,11 +16,14 @@
  * @param[in]  reason_code Reject reason code (MESHX_NACK_REASON_*).
  * @param[out] out_nack    Destination structure for constructed NACK.
  */
-static void build_nack_payload(uint32_t nack_id,
-                               const meshx_router_queue_entry_t *entry,
-                               uint8_t reason_code,
-                               meshx_uvp_router_nack_t *out_nack)
+static meshx_err_t build_nack_payload(uint32_t nack_id,
+                                      const meshx_router_queue_entry_t *entry,
+                                      uint8_t reason_code,
+                                      meshx_uvp_router_nack_t *out_nack)
 {
+    if (!entry || !out_nack) {
+        return MESHX_INVALID_ARG;
+    }
     memset(out_nack, 0, sizeof(*out_nack));
     out_nack->nack_id           = nack_id;
     out_nack->orig_seq_auth     = entry->seq_auth;
@@ -29,6 +32,7 @@ static void build_nack_payload(uint32_t nack_id,
     out_nack->orig_src_addr     = entry->orig_src_addr;
     out_nack->orig_dst_addr     = entry->orig_dst_addr;
     out_nack->reason_code       = reason_code;
+    return MESHX_SUCCESS;
 }
 
 /**
@@ -54,7 +58,10 @@ static meshx_err_t dispatch_entry_stage2(meshx_router_ctx_t *ctx,
         return err;
     }
 
-    meshx_router_queue_mark_tx_inflight(&ctx->queue, entry);
+    err = meshx_router_queue_mark_tx_inflight(&ctx->queue, entry);
+    if (err != MESHX_SUCCESS) {
+        return err;
+    }
     if (ctx->tx_cb) {
         return ctx->tx_cb(entry, &nonce13, NULL, ctx->cb_ctx);
     }
@@ -125,17 +132,17 @@ meshx_err_t meshx_router_build_canonical_nonce(uint16_t canonical_src,
     }
     out_nonce->bytes[0]  = is_app_nonce ? MESHX_NONCE_TYPE_APPLICATION : MESHX_NONCE_TYPE_DEVICE;
     out_nonce->bytes[1]  = (szmic != 0U) ? 0x80U : 0x00U;
-    out_nonce->bytes[2]  = (uint8_t)((seq_auth >> 16) & MESHX_BYTE_MASK);
-    out_nonce->bytes[3]  = (uint8_t)((seq_auth >> 8) & MESHX_BYTE_MASK);
-    out_nonce->bytes[4]  = (uint8_t)(seq_auth & MESHX_BYTE_MASK);
-    out_nonce->bytes[5]  = (uint8_t)((canonical_src >> 8) & MESHX_BYTE_MASK);
-    out_nonce->bytes[6]  = (uint8_t)(canonical_src & MESHX_BYTE_MASK);
-    out_nonce->bytes[7]  = (uint8_t)((canonical_dst >> 8) & MESHX_BYTE_MASK);
-    out_nonce->bytes[8]  = (uint8_t)(canonical_dst & MESHX_BYTE_MASK);
-    out_nonce->bytes[9]  = (uint8_t)((iv_index >> 24) & MESHX_BYTE_MASK);
-    out_nonce->bytes[10] = (uint8_t)((iv_index >> 16) & MESHX_BYTE_MASK);
-    out_nonce->bytes[11] = (uint8_t)((iv_index >> 8) & MESHX_BYTE_MASK);
-    out_nonce->bytes[12] = (uint8_t)(iv_index & MESHX_BYTE_MASK);
+    out_nonce->bytes[2]  = MESHX_BE_BYTE(seq_auth, MESHX_SHIFT_BYTE2);
+    out_nonce->bytes[3]  = MESHX_BE_BYTE(seq_auth, MESHX_SHIFT_BYTE1);
+    out_nonce->bytes[4]  = MESHX_BE_BYTE(seq_auth, MESHX_SHIFT_LSB);
+    out_nonce->bytes[5]  = MESHX_BE_BYTE(canonical_src, MESHX_SHIFT_BYTE1);
+    out_nonce->bytes[6]  = MESHX_BE_BYTE(canonical_src, MESHX_SHIFT_LSB);
+    out_nonce->bytes[7]  = MESHX_BE_BYTE(canonical_dst, MESHX_SHIFT_BYTE1);
+    out_nonce->bytes[8]  = MESHX_BE_BYTE(canonical_dst, MESHX_SHIFT_LSB);
+    out_nonce->bytes[9]  = MESHX_BE_BYTE(iv_index, MESHX_SHIFT_MSB32);
+    out_nonce->bytes[10] = MESHX_BE_BYTE(iv_index, MESHX_SHIFT_BYTE2);
+    out_nonce->bytes[11] = MESHX_BE_BYTE(iv_index, MESHX_SHIFT_BYTE1);
+    out_nonce->bytes[12] = MESHX_BE_BYTE(iv_index, MESHX_SHIFT_LSB);
     return MESHX_SUCCESS;
 }
 
@@ -156,34 +163,26 @@ meshx_err_t meshx_router_build_canonical_nonce(uint16_t canonical_src,
  * @return MESHX_SUCCESS on success, MESHX_INVALID_ARG or MESHX_INVALID_STATE on epoch mismatch.
  */
 meshx_err_t meshx_router_reasm_segment(meshx_router_ctx_t *ctx,
-                                       uint16_t net_idx,
-                                       uint16_t src_addr,
-                                       uint16_t dst_addr,
-                                       uint16_t epoch_id,
-                                       uint32_t seq_zero,
-                                       uint8_t  seg_o,
-                                       uint8_t  seg_n,
-                                       const uint8_t *seg_data,
-                                       uint8_t  seg_len,
-                                       bool    *out_complete)
+                                       const meshx_router_seg_rx_t *seg,
+                                       bool *out_complete)
 {
     if (out_complete) {
         *out_complete = false;
     }
-    if (!ctx || !seg_data || !out_complete || seg_n >= MESHX_MAX_SEGMENTS || seg_o > seg_n) {
+    if (!ctx || !seg || !seg->seg_data || !out_complete || seg->seg_n >= MESHX_MAX_SEGMENTS || seg->seg_o > seg->seg_n) {
         return MESHX_INVALID_ARG;
     }
-    size_t offset = (size_t)seg_o * (size_t)MESHX_SAR_SEGMENT_MAX_DATA_LEN;
-    if (offset + (size_t)seg_len > MESHX_MAX_UPPER_PDU_LEN) {
-        return (meshx_err_t)MESHX_SUBNET_ERR_MTU;
+    size_t offset = (size_t)seg->seg_o * (size_t)MESHX_SAR_SEGMENT_MAX_DATA_LEN;
+    if (offset + (size_t)seg->seg_len > MESHX_MAX_UPPER_PDU_LEN) {
+        return MESHX_SUBNET_ERR_MTU;
     }
 
     if (ctx->reasm.in_use) {
-        bool same_flow = (ctx->reasm.net_idx == net_idx &&
-                          ctx->reasm.src_addr == src_addr &&
-                          ctx->reasm.dst_addr == dst_addr &&
-                          ctx->reasm.seq_zero == seq_zero);
-        if (same_flow && ctx->reasm.epoch_id != epoch_id) {
+        bool same_flow = (ctx->reasm.net_idx == seg->net_idx &&
+                          ctx->reasm.src_addr == seg->src_addr &&
+                          ctx->reasm.dst_addr == seg->dst_addr &&
+                          ctx->reasm.seq_zero == seg->seq_zero);
+        if (same_flow && ctx->reasm.epoch_id != seg->epoch_id) {
             /* Single-Epoch Isolation: discard stale epoch segments on key transition */
             memset(&ctx->reasm, 0, sizeof(ctx->reasm));
             return MESHX_INVALID_STATE;
@@ -196,24 +195,24 @@ meshx_err_t meshx_router_reasm_segment(meshx_router_ctx_t *ctx,
     if (!ctx->reasm.in_use) {
         memset(&ctx->reasm, 0, sizeof(ctx->reasm));
         ctx->reasm.in_use   = true;
-        ctx->reasm.net_idx  = net_idx;
-        ctx->reasm.src_addr = src_addr;
-        ctx->reasm.dst_addr = dst_addr;
-        ctx->reasm.epoch_id = epoch_id;
-        ctx->reasm.seq_zero = seq_zero;
-        ctx->reasm.seg_n    = seg_n;
+        ctx->reasm.net_idx  = seg->net_idx;
+        ctx->reasm.src_addr = seg->src_addr;
+        ctx->reasm.dst_addr = seg->dst_addr;
+        ctx->reasm.epoch_id = seg->epoch_id;
+        ctx->reasm.seq_zero = seg->seq_zero;
+        ctx->reasm.seg_n    = seg->seg_n;
     }
 
-    if (seg_len > 0U) {
-        memcpy(&ctx->reasm.buf[offset], seg_data, seg_len);
-        uint8_t end_pos = (uint8_t)(offset + seg_len);
+    if (seg->seg_len > 0U) {
+        memcpy(&ctx->reasm.buf[offset], seg->seg_data, seg->seg_len);
+        uint8_t end_pos = (uint8_t)(offset + seg->seg_len);
         if (end_pos > ctx->reasm.len) {
             ctx->reasm.len = end_pos;
         }
     }
-    ctx->reasm.rx_mask |= (1UL << seg_o);
+    ctx->reasm.rx_mask |= (1UL << seg->seg_o);
 
-    uint32_t expected_mask = (seg_n == (MESHX_MAX_SEGMENTS - 1U)) ? 0xFFFFFFFFUL : ((1UL << (seg_n + 1U)) - 1UL);
+    uint32_t expected_mask = (seg->seg_n == (MESHX_MAX_SEGMENTS - 1U)) ? 0xFFFFFFFFUL : ((1UL << (seg->seg_n + 1U)) - 1UL);
     if ((ctx->reasm.rx_mask & expected_mask) == expected_mask) {
         ctx->reasm.in_use = false;
         *out_complete = true;
@@ -269,25 +268,27 @@ meshx_err_t meshx_router_stage1_ingress(meshx_router_ctx_t *ctx,
 
     bool should_nack = false;
     meshx_err_t err = meshx_router_queue_push(&ctx->queue, &params, &should_nack);
-    if (err != MESHX_SUCCESS) {
-        if (should_nack && ctx->nack_cb) {
-            const uint8_t *nack_buf = NULL;
-            uint8_t nack_len = 0U;
-            uint32_t nack_id = ctx->next_nack_id++;
-            if (meshx_router_queue_build_emergency_nack(&ctx->queue,
-                                                        nack_id,
-                                                        &params,
-                                                        MESHX_NACK_REASON_QUEUE_FULL,
-                                                        &nack_buf,
-                                                        &nack_len) == MESHX_SUCCESS) {
-                (void)ctx->nack_cb(pdu->net_idx, pdu->src_addr, nack_buf, nack_len, ctx->cb_ctx);
+    if (err == MESHX_SUCCESS) {
+        *out_send_stage1_block_ack = true;
+        return MESHX_SUCCESS;
+    }
+    if (should_nack && ctx->nack_cb) {
+        const uint8_t *nack_buf = NULL;
+        uint8_t nack_len = 0U;
+        uint32_t nack_id = ctx->next_nack_id++;
+        if (meshx_router_queue_build_emergency_nack(&ctx->queue,
+                                                    nack_id,
+                                                    &params,
+                                                    MESHX_NACK_REASON_QUEUE_FULL,
+                                                    &nack_buf,
+                                                    &nack_len) == MESHX_SUCCESS) {
+            meshx_err_t nack_err = ctx->nack_cb(pdu->net_idx, pdu->src_addr, nack_buf, nack_len, ctx->cb_ctx);
+            if (nack_err != MESHX_SUCCESS) {
+                return nack_err;
             }
         }
-        return err;
     }
-
-    *out_send_stage1_block_ack = true;
-    return MESHX_SUCCESS;
+    return err;
 }
 
 /**
@@ -303,21 +304,23 @@ meshx_err_t meshx_router_stage2_pump(meshx_router_ctx_t *ctx, uint32_t now_ms)
         return MESHX_INVALID_ARG;
     }
 
-    if (ctx->pending_nack.active) {
-        if ((now_ms - ctx->pending_nack.last_tx_ms) >= MESHX_SUBNET_NACK_TIMEOUT_MS) {
-            if (ctx->pending_nack.retry_count < MESHX_STAGE2_MAX_RETRIES) {
-                ctx->pending_nack.retry_count++;
-                ctx->pending_nack.last_tx_ms = now_ms;
-                if (ctx->nack_cb) {
-                    (void)ctx->nack_cb(ctx->pending_nack.return_net_idx,
-                                       ctx->pending_nack.return_dst_addr,
-                                       ctx->pending_nack.payload,
-                                       (uint8_t)sizeof(ctx->pending_nack.payload),
-                                       ctx->cb_ctx);
-                }
-            } else {
-                ctx->pending_nack.active = false;
+    if (ctx->pending_nack.active &&
+        (now_ms - ctx->pending_nack.last_tx_ms) >= MESHX_SUBNET_NACK_TIMEOUT_MS) {
+        if (ctx->pending_nack.retry_count < MESHX_STAGE2_MAX_RETRIES) {
+            ctx->pending_nack.retry_count++;
+            ctx->pending_nack.last_tx_ms = now_ms;
+            meshx_err_t nack_err = ctx->nack_cb
+                ? ctx->nack_cb(ctx->pending_nack.return_net_idx,
+                               ctx->pending_nack.return_dst_addr,
+                               ctx->pending_nack.payload,
+                               (uint8_t)sizeof(ctx->pending_nack.payload),
+                               ctx->cb_ctx)
+                : MESHX_SUCCESS;
+            if (nack_err != MESHX_SUCCESS) {
+                return nack_err;
             }
+        } else {
+            ctx->pending_nack.active = false;
         }
     }
 
@@ -378,12 +381,18 @@ meshx_err_t meshx_router_stage2_on_tx_complete(meshx_router_ctx_t *ctx,
     ctx->pending_nack.last_tx_ms      = now_ms;
     ctx->pending_nack.retry_count     = 0U;
     ctx->pending_nack.active          = true;
-    build_nack_payload(ctx->pending_nack.nack_id,
-                       head,
-                       MESHX_NACK_REASON_STAGE2_FAIL,
-                       (meshx_uvp_router_nack_t *)(void *)ctx->pending_nack.payload);
+    meshx_err_t nack_build_err = build_nack_payload(ctx->pending_nack.nack_id,
+                                                    head,
+                                                    MESHX_NACK_REASON_STAGE2_FAIL,
+                                                    (meshx_uvp_router_nack_t *)(void *)ctx->pending_nack.payload);
+    if (nack_build_err != MESHX_SUCCESS) {
+        return nack_build_err;
+    }
 
-    (void)meshx_router_queue_complete_entry(&ctx->queue, head);
+    meshx_err_t q_err = meshx_router_queue_complete_entry(&ctx->queue, head);
+    if (q_err != MESHX_SUCCESS) {
+        return q_err;
+    }
 
     if (ctx->nack_cb) {
         return ctx->nack_cb(ret_net_idx,
